@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>minDate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Minimum  date to display.</Description>
+	<Tooltip>Minimum  date to display in the selector</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

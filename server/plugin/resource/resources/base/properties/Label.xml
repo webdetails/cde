@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>label</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Label</Description>
+	<Tooltip>Label to be used</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>9</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

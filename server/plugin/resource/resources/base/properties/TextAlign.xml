@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>TextAlign</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Text Align</Description>
+	<Tooltip>Text Align</Tooltip>
+	<InputType>TextAlign</InputType>
+	<OutputType>String</OutputType>
+	<Order>75</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

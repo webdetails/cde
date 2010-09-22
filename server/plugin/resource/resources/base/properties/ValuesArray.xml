@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>valuesArray</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Values array</Description>
+	<Tooltip>Array to be used </Tooltip>
+	<InputType>ValuesArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>44</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

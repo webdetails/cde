@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>fill</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Shows a color gradient on the plot</Description>
+	<Tooltip>If true, Shows a color gradient on the plot.</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

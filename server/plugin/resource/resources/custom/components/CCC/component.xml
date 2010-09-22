@@ -1,0 +1,506 @@
+<DesignerComponents>
+	<DesignerComponent>
+		<Header>
+			<Name>Protovis Component</Name>
+			<IName>protovis</IName>
+			<Description>Protovis Chart Component</Description>
+			<Category>CHARTS</Category>
+			<CatDescription>Charts</CatDescription>
+			<Type>PalleteEntry</Type>
+			<Version>1.0</Version>
+		</Header>
+		<Contents>
+			<Model>
+				<Property name="width" type="number">width</Property>
+				<Property name="height" type="number">height</Property>
+				<Definition name="chartDefinition">
+					<Property type="query">dataSource</Property>
+				</Definition>
+				<Property name="parameters">xActionArrayParameter</Property>
+				<Property type="boolean">executeAtStart</Property>
+				<Property type="function">preChange</Property>
+				<Property type="function">postChange</Property>
+				<Property type="function">postFetch</Property>
+				<Property type="function">customfunction</Property>
+				<Property type="string">htmlObject</Property>
+				<Property type="function">preExecution</Property>
+				<Property type="function">postExecution</Property>
+				<Property type="number">tooltip</Property>
+				<Property type="number">listeners</Property>
+			</Model>
+			<Implementation>
+				<Code src="protovis-implementation.js" />
+				<Dependencies>
+					<Dependency src="protovis.js" version="3.3">Protovis</Dependency>
+				</Dependencies>
+				<CustomProperties>
+					<DesignerProperty>
+						<Header>
+							<Name>customfunction</Name>
+							<Parent>BaseProperty</Parent>
+							<DefaultValue></DefaultValue>
+							<Description>Custom Chart Script</Description>
+							<Tooltip>Custom Chart Script</Tooltip>
+							<InputType>JavaScript</InputType>
+							<OutputType>Function</OutputType>
+							<Order>40</Order>
+							<Version>1.0</Version>
+						</Header>
+					</DesignerProperty>
+				</CustomProperties>
+			</Implementation>
+		</Contents>
+	</DesignerComponent>
+
+	<DesignerComponent>
+		<Header>
+			<Name>CCC Dot Chart</Name>
+			<IName>cccDotChart</IName>
+			<Description>CCC Dot Chart</Description>
+			<Category>CHARTS</Category>
+			<CatDescription>Charts</CatDescription>
+			<Type>PalleteEntry</Type>
+			<Version>1.0</Version>
+		</Header>
+		<Contents>
+			<Model>
+				<Definition name="chartDefinition">
+					<Property name="width">width</Property>
+					<Property name="height" >height</Property>
+					<Property >dataSource</Property>
+					<Property name="crosstabMode">cccCrosstabMode</Property>
+					<Property name="seriesInRows">cccSeriesInRows</Property>
+					<Property>postFetch</Property>
+					<Property name="animate">cccAnimate</Property>
+					<Property name="clickable">cccClickable</Property>
+					<Property name="clickAction">cccClickAction</Property>
+					<Property name="timeSeries">cccTimeSeries</Property>
+					<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+					<Property name="orientation">cccOrientation</Property>
+					<Property name="colors">cccColors</Property>
+					<Property name="showValues">cccShowValues</Property>
+					<Property name="valueFormat">cccValueFormat</Property>
+					<Property name="tooltipFormat">cccTooltipFormat</Property>
+					<Property name="valuesAnchor">cccValuesAnchor</Property>
+					<!-- <Property name="showDots">showDots</Property>-->
+					<Property name="title">title</Property>
+					<Property name="titlePosition">cccTitlePosition</Property>
+					<Property name="titleSize">cccTitleSize</Property>
+					<Property name="legend">cccShowLegend</Property>
+					<Property name="legendPosition">cccLegendPosition</Property>
+					<Property name="legendSize">cccLegendSize</Property>
+					<Property name="legendAlign">cccLegendAlign</Property>
+					<Property name="showXScale">cccShowXScale</Property>
+					<Property name="xAxisSize">cccXAxisSize</Property>
+					<Property name="showYScale">cccShowYScale</Property>
+					<Property name="yAxisSize">cccYAxisSize</Property>
+					<Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+					<Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+					<Property name="axisOffset">cccAxisOffset</Property>
+					<Property name="originIsZero">cccOriginIsZero</Property>
+				</Definition>
+				<Property name="parameters">xActionArrayParameter</Property>
+				<Property type="boolean">executeAtStart</Property>
+				<Property type="function">preChange</Property>
+				<Property type="function">postChange</Property>
+				<Property>htmlObject</Property>
+				<Property>preExecution</Property>
+				<Property>postExecution</Property>
+				<Property>tooltip</Property>
+				<Property>listeners</Property>
+			</Model>
+			<Implementation>
+				<Code src="ccc-implementation.js" />
+				<Dependencies>
+					<Dependency src="jquery.tipsy.js" version="1.0">Jquery tipsy</Dependency>
+					<Dependency src="protovis.js" version="3.3">Protovis</Dependency>
+					<Dependency src="tipsy.js" version="1.0">Tipsy</Dependency>
+					<Dependency src="pvc-d1.0.js" version="1.0">pvc</Dependency>
+				</Dependencies>
+				<Styles>
+					<Style src="tipsy.css" version="1.0">Tipsy</Style>
+				</Styles>
+			</Implementation>
+		</Contents>
+	</DesignerComponent>
+	<DesignerComponent>
+		<Header>
+			<Name>CCC Line Chart</Name>
+			<IName>cccLineChart</IName>
+			<Description>CCC Line Chart</Description>
+			<Category>CHARTS</Category>
+			<CatDescription>Charts</CatDescription>
+			<Type>PalleteEntry</Type>
+			<Version>1.0</Version>
+		</Header>
+		<Contents>
+			<Model>
+				<Definition name="chartDefinition">
+					<Property name="width">width</Property>
+					<Property name="height" >height</Property>
+					<Property >dataSource</Property>
+					<Property name="crosstabMode">cccCrosstabMode</Property>
+					<Property name="seriesInRows">cccSeriesInRows</Property>
+					<Property>postFetch</Property>
+					<Property name="animate">cccAnimate</Property>
+					<Property name="clickable">cccClickable</Property>
+					<Property name="clickAction">cccClickAction</Property>
+					<Property name="timeSeries">cccTimeSeries</Property>
+					<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+					<Property name="orientation">cccOrientation</Property>
+					<Property name="colors">cccColors</Property>
+					<Property name="showValues">cccShowValues</Property>
+					<Property name="showDots">cccShowDots</Property>
+					<Property name="valueFormat">cccValueFormat</Property>
+					<Property name="tooltipFormat">cccTooltipFormat</Property>
+					<Property name="valuesAnchor">cccValuesAnchor</Property>
+					<Property name="title">title</Property>
+					<Property name="titlePosition">cccTitlePosition</Property>
+					<Property name="titleSize">cccTitleSize</Property>
+					<Property name="legend">cccShowLegend</Property>
+					<Property name="legendPosition">cccLegendPosition</Property>
+					<Property name="legendSize">cccLegendSize</Property>
+					<Property name="legendAlign">cccLegendAlign</Property>
+					<Property name="showXScale">cccShowXScale</Property>
+					<Property name="xAxisSize">cccXAxisSize</Property>
+					<Property name="showYScale">cccShowYScale</Property>
+					<Property name="yAxisSize">cccYAxisSize</Property>
+					<Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+					<Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+					<Property name="axisOffset">cccAxisOffset</Property>
+					<Property name="originIsZero">cccOriginIsZero</Property>
+				</Definition>
+				<Property name="parameters">xActionArrayParameter</Property>
+				<Property type="boolean">executeAtStart</Property>
+				<Property type="function">preChange</Property>
+				<Property type="function">postChange</Property>
+				<Property>htmlObject</Property>
+				<Property>preExecution</Property>
+				<Property>postExecution</Property>
+				<Property>tooltip</Property>
+				<Property>listeners</Property>
+			</Model>
+			<Implementation/>
+		</Contents>
+	</DesignerComponent>
+	<DesignerComponent>
+		<Header>
+			<Name>CCC Stacked Line Chart</Name>
+			<IName>cccStackedLineChart</IName>
+			<Description>CCC Stacked Line Chart</Description>
+			<Category>CHARTS</Category>
+			<CatDescription>Charts</CatDescription>
+			<Type>PalleteEntry</Type>
+			<Version>1.0</Version>
+		</Header>
+		<Contents>
+			<Model>
+				<Definition name="chartDefinition">
+					<Property name="width">width</Property>
+					<Property name="height" >height</Property>
+					<Property>dataSource</Property>
+					<Property name="crosstabMode">cccCrosstabMode</Property>
+					<Property name="seriesInRows">cccSeriesInRows</Property>
+					<Property>postFetch</Property>
+					<Property name="animate">cccAnimate</Property>
+					<Property name="clickable">cccClickable</Property>
+					<Property name="clickAction">cccClickAction</Property>
+					<Property name="timeSeries">cccTimeSeries</Property>
+					<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+					<Property name="orientation">cccOrientation</Property>
+					<Property name="colors">cccColors</Property>
+					<Property name="showValues">cccShowValues</Property>
+					<Property name="showDots">cccShowDots</Property>
+					<Property name="valueFormat">cccValueFormat</Property>
+					<Property name="tooltipFormat">cccTooltipFormat</Property>
+					<Property name="valuesAnchor">cccValuesAnchor</Property>
+					<Property name="title">title</Property>
+					<Property name="titlePosition">cccTitlePosition</Property>
+					<Property name="titleSize">cccTitleSize</Property>
+					<Property name="legend">cccShowLegend</Property>
+					<Property name="legendPosition">cccLegendPosition</Property>
+					<Property name="legendSize">cccLegendSize</Property>
+					<Property name="legendAlign">cccLegendAlign</Property>
+					<Property name="showXScale">cccShowXScale</Property>
+					<Property name="xAxisSize">cccXAxisSize</Property>
+					<Property name="showYScale">cccShowYScale</Property>
+					<Property name="yAxisSize">cccYAxisSize</Property>
+					<Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+					<Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+					<Property name="axisOffset">cccAxisOffset</Property>
+					<Property name="originIsZero">cccOriginIsZero</Property>
+				</Definition>
+				<Property name="parameters">xActionArrayParameter</Property>
+				<Property type="boolean">executeAtStart</Property>
+				<Property type="function">preChange</Property>
+				<Property type="function">postChange</Property>
+				<Property>htmlObject</Property>
+				<Property>preExecution</Property>
+				<Property>postExecution</Property>
+				<Property>tooltip</Property>
+				<Property>listeners</Property>
+			</Model>
+			<Implementation/>
+		</Contents>
+	</DesignerComponent>
+	<DesignerComponent>
+		<Header>
+			<Name>CCC Stacked Area Chart</Name>
+			<IName>cccStackedAreaChart</IName>
+			<Description>CCC Stacked Area Chart</Description>
+			<Category>CHARTS</Category>
+			<CatDescription>Charts</CatDescription>
+			<Type>PalleteEntry</Type>
+			<Version>1.0</Version>
+		</Header>
+		<Contents>
+			<Model>
+				<Definition name="chartDefinition">
+					<Property name="width">width</Property>
+					<Property name="height" >height</Property>
+					<Property>dataSource</Property>
+					<Property name="crosstabMode">cccCrosstabMode</Property>
+					<Property name="seriesInRows">cccSeriesInRows</Property>
+					<Property>postFetch</Property>
+					<Property name="animate">cccAnimate</Property>
+					<Property name="clickable">cccClickable</Property>
+					<Property name="clickAction">cccClickAction</Property>
+					<Property name="timeSeries">cccTimeSeries</Property>
+					<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+					<Property name="orientation">cccOrientation</Property>
+					<Property name="colors">cccColors</Property>
+					<Property name="showValues">cccShowValues</Property>
+<!--          <Property name="showDots">cccShowDots</Property>-->
+		  <Property name="valueFormat">cccValueFormat</Property>
+		  <Property name="tooltipFormat">cccTooltipFormat</Property>
+		  <Property name="valuesAnchor">cccValuesAnchor</Property>
+		  <Property name="title">title</Property>
+		  <Property name="titlePosition">cccTitlePosition</Property>
+		  <Property name="titleSize">cccTitleSize</Property>
+		  <Property name="legend">cccShowLegend</Property>
+		  <Property name="legendPosition">cccLegendPosition</Property>
+		  <Property name="legendSize">cccLegendSize</Property>
+		  <Property name="legendAlign">cccLegendAlign</Property>
+		  <Property name="showXScale">cccShowXScale</Property>
+		  <Property name="xAxisSize">cccXAxisSize</Property>
+		  <Property name="showYScale">cccShowYScale</Property>
+		  <Property name="yAxisSize">cccYAxisSize</Property>
+		  <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+		  <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+		  <Property name="axisOffset">cccAxisOffset</Property>
+		  <Property name="originIsZero">cccOriginIsZero</Property>
+	  </Definition>
+	  <Property name="parameters">xActionArrayParameter</Property>
+	  <Property type="boolean">executeAtStart</Property>
+	  <Property type="function">preChange</Property>
+	  <Property type="function">postChange</Property>
+	  <Property>htmlObject</Property>
+	  <Property>preExecution</Property>
+	  <Property>postExecution</Property>
+	  <Property>tooltip</Property>
+	  <Property>listeners</Property>
+  </Model>
+  <Implementation/>
+	</Contents>
+</DesignerComponent>
+<DesignerComponent>
+	<Header>
+		<Name>CCC Bar Chart</Name>
+		<IName>cccBarChart</IName>
+		<Description>CCC Bar Chart</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Definition name="chartDefinition">
+				<Property name="width">width</Property>
+				<Property name="height" >height</Property>
+				<Property>dataSource</Property>
+				<Property name="crosstabMode">cccCrosstabMode</Property>
+				<Property name="seriesInRows">cccSeriesInRows</Property>
+				<Property>postFetch</Property>
+				<Property name="animate">cccAnimate</Property>
+				<Property name="clickable">cccClickable</Property>
+				<Property name="clickAction">cccClickAction</Property>
+				<Property name="timeSeries">cccTimeSeries</Property>
+				<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+
+				<Property name="stacked">cccStacked</Property>
+				<Property name="maxBarSize">cccMaxBarSize</Property>
+				<Property name="panelSizeRatio">cccPanelSizeRatio</Property>
+				<Property name="barSizeRatio">cccBarSizeRatio</Property>
+
+				<Property name="orientation">cccOrientation</Property>
+				<Property name="colors">cccColors</Property>
+				<Property name="showValues">cccShowValues</Property>
+<!--          <Property name="showDots">cccShowDots</Property>-->
+		  <Property name="valueFormat">cccValueFormat</Property>
+		  <Property name="tooltipFormat">cccTooltipFormat</Property>
+		  <Property name="valuesAnchor">cccValuesAnchor</Property>
+		  <Property name="title">title</Property>
+		  <Property name="titlePosition">cccTitlePosition</Property>
+		  <Property name="titleSize">cccTitleSize</Property>
+		  <Property name="legend">cccShowLegend</Property>
+		  <Property name="legendPosition">cccLegendPosition</Property>
+		  <Property name="legendSize">cccLegendSize</Property>
+		  <Property name="legendAlign">cccLegendAlign</Property>
+		  <Property name="showXScale">cccShowXScale</Property>
+		  <Property name="xAxisSize">cccXAxisSize</Property>
+		  <Property name="showYScale">cccShowYScale</Property>
+		  <Property name="yAxisSize">cccYAxisSize</Property>
+		  <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+		  <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+		  <Property name="axisOffset">cccAxisOffset</Property>
+		  <Property name="originIsZero">cccOriginIsZero</Property>
+	  </Definition>
+	  <Property name="parameters">xActionArrayParameter</Property>
+	  <Property type="boolean">executeAtStart</Property>
+	  <Property type="function">preChange</Property>
+	  <Property type="function">postChange</Property>
+	  <Property>htmlObject</Property>
+	  <Property>preExecution</Property>
+	  <Property>postExecution</Property>
+	  <Property>tooltip</Property>
+	  <Property>listeners</Property>
+  </Model>
+  <Implementation/>
+	</Contents>
+</DesignerComponent>
+
+<DesignerComponent>
+	<Header>
+		<Name>CCC Bar Chart</Name>
+		<IName>cccBarChart</IName>
+		<Description>CCC Bar Chart</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Definition name="chartDefinition">
+				<Property name="width">width</Property>
+				<Property name="height" >height</Property>
+				<Property>dataSource</Property>
+				<Property name="crosstabMode">cccCrosstabMode</Property>
+				<Property name="seriesInRows">cccSeriesInRows</Property>
+				<Property>postFetch</Property>
+				<Property name="animate">cccAnimate</Property>
+				<Property name="clickable">cccClickable</Property>
+				<Property name="clickAction">cccClickAction</Property>
+				<Property name="timeSeries">cccTimeSeries</Property>
+				<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+
+				<Property name="stacked">cccStacked</Property>
+				<Property name="maxBarSize">cccMaxBarSize</Property>
+				<Property name="panelSizeRatio">cccPanelSizeRatio</Property>
+				<Property name="banelSizeRatio">cccBarSizeRatio</Property>
+
+				<Property name="orientation">cccOrientation</Property>
+				<Property name="colors">cccColors</Property>
+				<Property name="showValues">cccShowValues</Property>
+<!--          <Property name="showDots">cccShowDots</Property>-->
+		  <Property name="valueFormat">cccValueFormat</Property>
+		  <Property name="tooltipFormat">cccTooltipFormat</Property>
+		  <Property name="valuesAnchor">cccValuesAnchor</Property>
+		  <Property name="title">title</Property>
+		  <Property name="titlePosition">cccTitlePosition</Property>
+		  <Property name="titleSize">cccTitleSize</Property>
+		  <Property name="legend">cccShowLegend</Property>
+		  <Property name="legendPosition">cccLegendPosition</Property>
+		  <Property name="legendSize">cccLegendSize</Property>
+		  <Property name="legendAlign">cccLegendAlign</Property>
+		  <Property name="showXScale">cccShowXScale</Property>
+		  <Property name="xAxisSize">cccXAxisSize</Property>
+		  <Property name="showYScale">cccShowYScale</Property>
+		  <Property name="yAxisSize">cccYAxisSize</Property>
+		  <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+		  <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+		  <Property name="axisOffset">cccAxisOffset</Property>
+		  <Property name="originIsZero">cccOriginIsZero</Property>
+	  </Definition>
+	  <Property name="parameters">xActionArrayParameter</Property>
+	  <Property type="boolean">executeAtStart</Property>
+	  <Property type="function">preChange</Property>
+	  <Property type="function">postChange</Property>
+	  <Property>htmlObject</Property>
+	  <Property>preExecution</Property>
+	  <Property>postExecution</Property>
+	  <Property>tooltip</Property>
+	  <Property>listeners</Property>
+  </Model>
+  <Implementation/>
+	</Contents>
+</DesignerComponent>
+<DesignerComponent>
+	<Header>
+		<Name>CCC Pie Chart</Name>
+		<IName>cccPieChart</IName>
+		<Description>CCC Pie Chart</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Definition name="chartDefinition">
+				<Property name="width">width</Property>
+				<Property name="height" >height</Property>
+				<Property>dataSource</Property>
+				<Property name="crosstabMode">cccCrosstabMode</Property>
+				<Property name="seriesInRows">cccSeriesInRows</Property>
+				<Property>postFetch</Property>
+				<Property name="animate">cccAnimate</Property>
+				<Property name="clickable">cccClickable</Property>
+				<Property name="clickAction">cccClickAction</Property>
+				<Property name="timeSeries">cccTimeSeries</Property>
+				<Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
+
+				<Property name="innerGap">cccInnerGap</Property>
+				<Property name="explodedSliceIndex">cccExplodedSliceIndex</Property>
+				<Property name="explodedSliceRadius">cccExplodedSliceRadius</Property>
+
+				<Property name="orientation">cccOrientation</Property>
+				<Property name="colors">cccColors</Property>
+				<Property name="showValues">cccShowValues</Property>
+<!--          <Property name="showDots">cccShowDots</Property>-->
+		  <Property name="valueFormat">cccValueFormat</Property>
+		  <Property name="tooltipFormat">cccTooltipFormat</Property>
+		  <Property name="valuesAnchor">cccValuesAnchor</Property>
+		  <Property name="title">title</Property>
+		  <Property name="titlePosition">cccTitlePosition</Property>
+		  <Property name="titleSize">cccTitleSize</Property>
+		  <Property name="legend">cccShowLegend</Property>
+		  <Property name="legendPosition">cccLegendPosition</Property>
+		  <Property name="legendSize">cccLegendSize</Property>
+		  <Property name="legendAlign">cccLegendAlign</Property>
+		  <Property name="showXScale">cccShowXScale</Property>
+		  <Property name="xAxisSize">cccXAxisSize</Property>
+		  <Property name="showYScale">cccShowYScale</Property>
+		  <Property name="yAxisSize">cccYAxisSize</Property>
+		  <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
+		  <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+		  <Property name="axisOffset">cccAxisOffset</Property>
+		  <Property name="originIsZero">cccOriginIsZero</Property>
+	  </Definition>
+	  <Property name="parameters">xActionArrayParameter</Property>
+	  <Property type="boolean">executeAtStart</Property>
+	  <Property type="function">preChange</Property>
+	  <Property type="function">postChange</Property>
+	  <Property>htmlObject</Property>
+	  <Property>preExecution</Property>
+	  <Property>postExecution</Property>
+	  <Property>tooltip</Property>
+	  <Property>listeners</Property>
+  </Model>
+  <Implementation/>
+	</Contents>
+</DesignerComponent>
+
+
+</DesignerComponents>

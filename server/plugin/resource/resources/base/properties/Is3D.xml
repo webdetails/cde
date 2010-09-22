@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>is3d</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>3D Chart</Description>
+	<Tooltip>If true, renders the chart 3 dimensionally. </Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

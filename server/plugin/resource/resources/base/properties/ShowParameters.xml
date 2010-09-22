@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>showParameters</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Show parameters</Description>
+	<Tooltip>If true, parameters will be selectable on the rendered report</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

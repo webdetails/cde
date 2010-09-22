@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>size</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Size</Description>
+	<Tooltip>List Elements Size </Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

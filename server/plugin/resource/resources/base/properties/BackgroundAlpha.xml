@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>backgroundAlpha</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Background Alpha</Description>
+	<Tooltip>Background Alpha</Tooltip>
+	<InputType>Float</InputType>
+	<OutputType>NUMBER</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

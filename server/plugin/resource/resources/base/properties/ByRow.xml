@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>byRow</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>By Row</Description>
+	<Advanced>true</Advanced>
+	<Tooltip>By Row</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

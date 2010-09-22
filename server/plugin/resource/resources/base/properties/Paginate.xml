@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>paginate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Paginate</Description>
+	<Tooltip>Paginate</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

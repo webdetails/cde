@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>minTextLenght</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Minimal word length</Description>
+	<Tooltip>The minimal word length to check if there is a match.</Tooltip>
+	<InputType>Integer</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

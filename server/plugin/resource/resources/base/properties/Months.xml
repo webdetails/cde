@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>months</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Months displayed.</Description>
+	<Tooltip>The number of months to display</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>urlTarget</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>_blank</DefaultValue>
+	<Description>Url Target</Description>
+	<Tooltip>Url Target.</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

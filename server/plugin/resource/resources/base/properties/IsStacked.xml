@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>isStacked</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Stacked Chart</Description>
+	<Tooltip>If true, stacks the series of the chart, one on top of the other. </Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

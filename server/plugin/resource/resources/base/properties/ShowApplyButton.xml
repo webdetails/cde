@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>showApplyButton</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Show apply Button</Description>
+	<Tooltip>Show apply Button in multi selection mode.</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

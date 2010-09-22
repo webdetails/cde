@@ -1,0 +1,278 @@
+<!--===========================================================================
+  This is the build file for the Community Dashboard Framework Plugin project.
+
+  This build file will use the common_build.xml file as the default build
+  process and should only override the tasks that need to differ from
+  the common build file.
+
+  See common_build.xml for more details
+============================================================================-->
+<project name="Dashboard Designer Framework" basedir="." default="dist" 
+         xmlns:ivy="antlib:org.apache.ivy.ant" >
+
+  <description>
+    This build file is used to create the Dashboard Designer project
+    and works with the common_build.xml file.
+  </description>
+
+
+  <!--Include the ant-contrib tasks-->
+<!--
+        <taskdef resource="net/sf/antcontrib/antlib.xml">
+          <classpath>
+            <pathelement location="dev-lib/ant-contrib-1.0b3.jar"/>
+          </classpath>
+        </taskdef>
+        <taskdef name='yui-compressor' classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+          <classpath>
+            <pathelement location="dev-lib/yui-compressor-ant-task-0.5.jar"/>
+            <pathelement location="dev-lib/yuicompressor-2.3.6.jar"/>
+          </classpath>
+        </taskdef>
+-->
+  <!-- Import the common_build.xml file which contains all the default tasks -->
+  <import file="common_build.xml"/>
+
+  <!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN common_build.xml.
+    -->
+
+          <!-- Global properties -->
+  <property name='CLIENT' value='../../client' />
+  <property file='${CLIENT}/includes.properties' />
+
+  <target name="compile.compile" depends="init" description="Performs the actual javac compile">
+    <javac destdir="${classes.dir}"
+           debug="${javac.debug}"
+           deprecation="${javac.deprecation}"
+           fork="true"
+           source="${javac.source}"
+           target="${javac.target}">
+      <classpath>
+        <path refid="classpath" />
+      </classpath>
+      <src path="${src.dir}" />
+    </javac>
+  </target>
+
+  <property name="plugin.name"
+            value="pentaho-cdf-dd"
+            description="Name of the plugin" />
+
+  <property name="resource.dir"
+            value="resource"
+            description="Name of the resource directory" />
+
+  <property name="stage.dir"
+            value="${bin.dir}/stage"
+            description="Name of the resource directory" />
+
+  <!--property name="samples.stage.dir"
+              value="${bin.dir}/stage-samples"
+              description="Name of the resource directory" />
+
+    <property name="solution.stage.dir"
+              value="${bin.dir}/stage-solution"
+              description="Name of the resource directory" /-->
+
+  <tstamp/>
+
+  <!-- Build the project.revision property -->
+  <condition property="distribution.version" value="${project.stage}-${DSTAMP}" else="${project.stage}-${project.version}">
+    <equals arg1="${project.version}" arg2="SNAPSHOT"/>
+  </condition>
+
+  <echo>distribution.version = ${distribution.version}</echo>
+
+  <target name="dist" depends="clean, resolve,jar,dist-plugin"/>
+  <target name="dist-compile" depends="jar,dist-plugin"/>
+
+  <property name="plugin.artifact.id" value="${plugin.name}"/>
+  <property name="plugin.zipfile" value="${plugin.artifact.id}-${distribution.version}.zip"/>
+  <!--<property name="plugin.samples.zipfile" value="${plugin.artifact.id}-samples-${distribution.version}.zip"/>-->
+  <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${distribution.version}.zip"/>
+
+
+
+  <!--=======================================================================
+        dist
+
+        Creates a distribution of this project's plugin zip
+        ====================================================================-->
+  <target name="dist-plugin" depends="jar,write-patches" description="Creates a distribution">
+    <!-- delete and re-create the plugin dist folder tree -->
+
+    <copy todir='${resource.dir}'>
+      <fileset file='../../client/includes.properties' />
+    </copy>
+    <mkdir dir="${stage.dir}" />
+    <mkdir dir="${stage.dir}/${plugin.name}" />
+    <mkdir dir="${stage.dir}/${plugin.name}/lib" />
+
+    <!-- copy the plugin jar to the plugin dist lib folder -->
+    <copy todir="${stage.dir}/${plugin.name}/lib" overwrite="true">
+      <fileset dir="${dist.dir}">
+        <include name="${ivy.artifact.id}-${project.revision}.jar" />
+      </fileset>
+      <fileset dir="${devlib.dir}">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
+    <!-- Copy the client files to the resource dir -->
+    <delete dir="${resource.dir}/css"/>
+    <delete dir="${resource.dir}/js"/>
+    <delete dir="${resource.dir}/images"/>
+
+    <copy todir="${resource.dir}" overwrite="true">
+      <fileset dir="../../client/">
+        <include name="css/**/*" />
+        <include name="js/**/*" />
+        <include name="images/**/*" />
+      </fileset>
+    </copy>
+    <copy todir="${resource.dir}/resources" overwrite="true">
+      <fileset dir="../../client/">
+        <include name="cdf-dd.html" />
+      </fileset>
+    </copy>
+    <delete>
+      <fileset dir="${resource.dir}" includes="**/*.bak"/>
+    </delete>
+
+
+    <!-- Copy the plugin.xml and any other files from the resource dir -->
+    <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
+      <fileset dir="${resource.dir}">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+
+    <!-- create the version file -->
+    <echo file="${stage.dir}/${plugin.name}/VERSION.txt">${distribution.version}</echo>
+
+
+    <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
+      <fileset dir="${basedir}">
+        <include name="readme.txt"/>
+      </fileset>
+    </copy>
+
+    <!-- create a zip file -->
+    <zip zipfile="${dist.dir}/${plugin.zipfile}"
+         basedir="${stage.dir}"
+         includes="${plugin.artifact.id}/**/*"
+         excludes="**/Thumbs.db" />
+  </target>
+
+
+  <!--=======================================================================
+        install-plugin
+
+        Installs the plugin locally
+        ====================================================================-->
+  <target name="install-plugin" depends="dist" description="Installs the plugin locally">
+
+    <fail message="plugin.local.install.solutions.dir not set - cannot copy" unless="plugin.local.install.solutions.dir"/>
+
+    <delete dir="${plugin.local.install.solutions.dir}/system/${plugin.name}"/>
+    <copy todir="${plugin.local.install.solutions.dir}/system/${plugin.name}">
+      <fileset dir="${stage.dir}/${plugin.name}">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <get src="http://127.0.0.1:8080/pentaho/Publish?publish=now&amp;class=org.pentaho.platform.plugin.services.pluginmgr.PluginAdapter&amp;userid=${plugin.local.install.user}&amp;password=${plugin.local.install.pass}" dest="${stage.dir}/blah.html"/>
+
+  </target>
+
+
+  <!--=======================================================================
+      publish-pentaho-nojar (override)
+
+      Publishes the jar and plugin zip package to the Maven repository
+      ====================================================================-->
+  <target name="publish-pentaho-nojar"
+          depends="install-antcontrib,create-pom,ivy.deliver">
+    <ant antfile="common_build.xml" target="publish-pentaho-nojar" />
+
+    <ivy:makepom ivyfile="package-ivy.xml" pomfile="plugin-pom.xml" />
+    <ivy:makepom ivyfile="package-ivy.xml" pomfile="samples-pom.xml" />
+    <ivy:makepom ivyfile="package-ivy.xml" pomfile="solution-pom.xml" />
+
+    <replace file="plugin-pom.xml" token="jar" value="zip" />
+    <replace file="plugin-pom.xml" token="%artifact-name%" value="${plugin.artifact.id}" />
+    <antcall target="maven-publish-artifact">
+      <param name="publish.pomFile" value="plugin-pom.xml" />
+      <param name="publish.file" value="${dist.dir}/${plugin.zipfile}" />
+    </antcall>
+
+    <replace file="samples-pom.xml" token="jar" value="zip" />
+    <replace file="samples-pom.xml" token="%artifact-name%" value="${plugin.artifact.id}-samples" />
+    <antcall target="maven-publish-artifact">
+      <param name="publish.pomFile" value="samples-pom.xml" />
+      <param name="publish.file" value="${dist.dir}/${plugin.samples.zipfile}" />
+    </antcall>
+
+    <replace file="solution-pom.xml" token="jar" value="zip" />
+    <replace file="solution-pom.xml" token="%artifact-name%" value="${plugin.artifact.id}-solution" />
+    <antcall target="maven-publish-artifact">
+      <param name="publish.pomFile" value="solution-pom.xml" />
+      <param name="publish.file" value="${dist.dir}/${plugin.solution.zipfile}" />
+    </antcall>
+  </target>
+
+  <target name="minify-client">
+    <concat destfile="${CLIENT}/scripts.js">
+      <filelist dir='${CLIENT}' files='${scripts}'/>
+    </concat>
+    <concat destfile="${CLIENT}/styles.css">
+      <filelist dir='${CLIENT}' files='${styles}'/>
+    </concat>
+    <yui-compressor
+      warn="false"
+      munge="false"
+      preserveallsemicolons="false"
+      fromdir="${CLIENT}"
+      todir="${CLIENT}/mini/">
+
+      <include name="scripts.js" />
+    </yui-compressor>
+    <yui-compressor
+      warn="false"
+      preserveallsemicolons="false"
+      fromdir="${CLIENT}"
+      todir="${CLIENT}/mini">
+
+      <include name="styles.css" />
+    </yui-compressor>
+    <checksum file='${CLIENT}/mini/scripts-min.js' algorithm='md5' property='scriptsMD5'/>
+    <checksum file='${CLIENT}/mini/styles-min.css' algorithm='md5' property='stylesMD5'/>
+    <copy file='${CLIENT}/mini/scripts-min.js' tofile='${CLIENT}/js/${scriptsMD5}.js' />
+    <copy file='${CLIENT}/mini/styles-min.css' tofile='${CLIENT}/css/${stylesMD5}.css' />
+    <property name='versions.file' value='resource/versions.properties'/>
+    <echo file='${versions.file}' append='false'/>
+    <echo file='${versions.file}' append='true'>scripts.file: js/${scriptsMD5}.js&#13;&#10;</echo>
+    <echo file='${versions.file}' append='true'>styles.file: css/${stylesMD5}.css&#13;&#10;</echo>
+
+  </target>
+
+  <target name='write-patches'>
+    <property name="scripts.patch" value="resource/resources/scripts.html" />
+    <property name="styles.patch" value="resource/resources/styles.html" />
+
+    <echo file='${scripts.patch}' append='false'/>
+    <for list='${scripts}' param='filename'>
+      <sequential>
+        <echo file='${scripts.patch}' append='true'>&lt;script language="javascript" type="text/javascript" src="@{filename}"/&gt;&lt;/script&gt;&#13;&#10;</echo>
+      </sequential>
+    </for>
+
+    <echo file='${styles.patch}' append='false'/>
+    <for list='${styles}' param='filename'>
+      <sequential>
+        <echo file='${styles.patch}' append='true'>&lt;link href="@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
+      </sequential>
+    </for>
+  </target>
+</project>

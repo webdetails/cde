@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>separator</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Separator</Description>
+	<Tooltip>How to separate the options</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>9</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

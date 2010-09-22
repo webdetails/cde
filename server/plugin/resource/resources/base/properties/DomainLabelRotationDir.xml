@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>domainLabelRotationDir</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>down</DefaultValue>
+	<Description>Label Rotation Dir</Description>
+	<Tooltip>Label Rotation Dir</Tooltip>
+	<InputType>DomainLabelRotation</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

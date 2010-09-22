@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>matchType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>fromStart</DefaultValue>
+	<Description>Match type.</Description>
+	<Tooltip>The type of the word match.</Tooltip>
+	<InputType>MatchType</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

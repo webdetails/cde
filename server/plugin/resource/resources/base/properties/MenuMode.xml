@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>menuMode</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>horizontal</DefaultValue>
+	<Advanced>true</Advanced>
+	<Description>Menu Mode</Description>
+	<Tooltip>Menu Mode</Tooltip>
+	<InputType>MenuMode</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

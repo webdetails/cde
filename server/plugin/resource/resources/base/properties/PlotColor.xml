@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>Plotbgcolor</Name>
+	<Parent>Color</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Plot Color</Description>
+	<Tooltip>Plot Color</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Color</InputType>
+	<OutputType>String</OutputType>
+	<Order>56</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

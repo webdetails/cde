@@ -1,0 +1,192 @@
+/*
+------------------------------
+	grey theme
+------------------------------
+*/
+.greyJqiwarning .greyJqi{ background-color: #cccccc; }
+.greyJqifade{
+	position: absolute;
+	background-color: #ffffff;
+}
+div.greyJqi{
+	position: absolute;
+	background-color: transparent;
+	padding: 10px;
+	text-align: left;
+}
+div.greyJqi .greyJqiclose{
+    float: right;
+    margin: -20px 0 0 0;
+    cursor: pointer;
+    color: #777777;
+    font-size: 11px;
+}
+div.greyJqi .greyJqicontainer{
+	position: relative;
+	background-color: #DBDBDB;
+	border: solid 1px #5F5D5A;
+	color: #000000;
+}
+div.greyJqi .greyJqimessage{
+	position: relative;
+	background-color: #DBDBDB;
+	border-top: solid 1px #C6B8AE;
+	border-bottom: solid 1px #C6B8AE;
+	height:350px;
+}
+div.greyJqi .greyJqimessage h3{
+	margin: 0;
+	padding: 7px 0 7px 15px;
+	color: #4D4A47;
+}
+div.greyJqi .greyJqimessage p{
+	padding: 10px;
+	color: #777777;
+}
+div.greyJqi .greyJqimessage img.helpImg{
+	position: absolute;
+	bottom: -25px;
+	left: 10px;
+}
+div.greyJqi .greyJqibuttons{
+	text-align: right;
+}
+div.greyJqi button{
+	border: solid #777777 1px;
+	font-size: 12px;
+	padding: 3px 10px 3px 10px;
+	margin: 5px 5px 5px 10px;
+}
+div.greyJqi button:hover{
+	border: solid #aaaaaa 1px;
+}
+
+/* this makes it possible to add next button beside scrollable */
+div.scrollable {
+	float:left;		
+}
+
+/* prev, next, prevPage and nextPage buttons */
+a.prev, a.next, a.prevPage, a.nextPage {
+	display:block;
+	width:18px;
+	height:18px;
+	background:url(../images/left.png) no-repeat;
+	float:left;
+	margin:43px 10px;
+	cursor:pointer;
+}
+
+/* mouseover state */
+a.prev:hover, a.next:hover, a.prevPage:hover, a.nextPage:hover {
+	background-position:0px -18px;		
+}
+
+/* disabled navigational button */
+a.disabled {
+	visibility:hidden !important;		
+}
+
+/* next button uses another background image */
+a.next, a.nextPage {
+	background-image:url(../images/right.png);
+	clear:right;	
+}
+
+
+
+/*********** navigator ***********/
+
+
+/* position and dimensions of the navigator */
+div.navi {
+	margin-left:328px;
+	width:200px;
+	height:20px;
+}
+
+
+/* items inside navigator */
+div.navi a {
+	width:8px;
+	height:8px;
+	float:left;
+	margin:3px;
+	background:url(../images/navigator.png) 0 0 no-repeat;     
+	cursor:pointer;	
+}
+
+/* mouseover state */
+div.navi a:hover {
+	background-position:0 -8px;      
+}
+
+/* active state (current page state) */
+div.navi a.active {
+	background-position:0 -16px;     
+} 	
+
+/* root element for the whole scrollable setup */
+div.scrollable {  
+	position:relative;
+	overflow:hidden;
+	width: 646px;	 
+	height:300px;	
+}
+
+/* 
+	root element for scrollable items. It is 
+	absolutely positioned with large width. 
+*/
+#thumbs {	
+	position:absolute;
+	width:20000em;	
+	clear:both;
+	border:1px solid #222;
+}
+
+/* custom positioning for navigational links */
+a.prev, a.next {
+	margin-top:118px;	
+}
+
+
+
+/* single item */
+#thumbs div {
+	float:left;
+	width:214px;
+	height:300px;
+	background:#333 url(../images/scrollable-gradient.png) repeat-x 0 146px;
+	color:#fff;
+	border-left:1px solid #333;
+	cursor:pointer;
+}
+
+/* style when mouse is over the item */
+#thumbs div.hover {
+	background-color:#444;	
+}
+
+/* style when element is active (clicked) */
+#thumbs div.active {
+	background-color:#066;
+	cursor:default;
+}
+
+#thumbs h3, #thumbs p, #thumbs span {
+	margin:13px;		
+	font-family:"bitstream vera sans";
+	font-size:13px;
+	color:#fff;	
+}
+
+#thumbs h3 em {
+	font-style:normal;
+	color:yellow;
+}
+
+.templates {
+	position: relative;
+	top:30px;
+}

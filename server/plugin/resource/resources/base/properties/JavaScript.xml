@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>JavaScript</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Javascript code </Description>
+	<Tooltip>JavaScript code to be included</Tooltip>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>17</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

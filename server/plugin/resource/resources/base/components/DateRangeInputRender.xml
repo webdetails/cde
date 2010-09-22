@@ -1,0 +1,25 @@
+<DesignerComponent>
+	<Header>
+		<Name>Date range input Component</Name>
+		<IName>DateRangeInput</IName>
+		<Description>Date range input Component</Description>
+		<Category>SELECTORS</Category>
+		<CatDescription>Selects</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property name="parameter">arrayParameter</Property>
+			<Property>listeners</Property>
+			<Property>singleInput</Property>
+			<Property>inputSeparator</Property>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

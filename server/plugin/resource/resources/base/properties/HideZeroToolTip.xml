@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>hideZeroToolTip</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Hide Zero Values</Description>
+	<Tooltip>If true, Hides the tooltip when value is zero.</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

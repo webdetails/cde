@@ -1,0 +1,36 @@
+<DesignerComponent>
+	<Header>
+		<Name>TimePlot</Name>
+		<IName>TimePlot</IName>
+		<Description>TimePlot Component</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>title</Property>
+			<Property>chartType</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>cdaParams</Property>
+			<Definition name="chartDefinition">
+				<Property>dataSource</Property>
+				<Property>width</Property>
+				<Property>height</Property>
+				<Property>dots</Property>
+				<Property>fill</Property>
+				<Property>columns</Property>
+				<Property>hideZeroToolTipValues</Property>
+				<Property>showValues</Property>
+			</Definition>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

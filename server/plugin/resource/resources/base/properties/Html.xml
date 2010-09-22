@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Html</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>HTML</Description>
+	<Tooltip>Html code to be added</Tooltip>
+	<InputType>Html</InputType>
+	<OutputType>String</OutputType>
+	<Order>15</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

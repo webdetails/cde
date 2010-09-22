@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>cache</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Cache</Description>
+	<Tooltip>Is this data access's output supposed to be cached?</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>91</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

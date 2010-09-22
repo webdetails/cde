@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>directory</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Directory</Description>
+	<Tooltip>Kettle directory on the repository</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>26</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

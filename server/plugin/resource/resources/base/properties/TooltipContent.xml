@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>tooltipContent</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>({1},{0}) = {2})</DefaultValue>
+	<Description>Tooltip Content</Description>
+	<Tooltip>Tooltip Content</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

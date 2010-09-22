@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>postExecution</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Post Execution</Description>
+	<Tooltip>Function to be executed after the component is updated</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>93</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

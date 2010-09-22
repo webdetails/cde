@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>OutputMode</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>include</DefaultValue>
+	<Description>Output Mode</Description>
+	<Tooltip>Whether the output columns refer to columns that should be Included or Excluded from the final output</Tooltip>
+	<InputType>OutputMode</InputType>
+	<OutputType>String</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

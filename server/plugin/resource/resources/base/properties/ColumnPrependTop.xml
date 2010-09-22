@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnPrependTop</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Prepend gutter to top</Description>
+	<Tooltip>Prepend space to the top of the element</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>34</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

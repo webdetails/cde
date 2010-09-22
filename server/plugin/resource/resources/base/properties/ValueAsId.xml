@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>valueAsId</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Value as id</Description>
+	<Tooltip>If false, uses the first column of the dataset as id. If true, Use the value as the id</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>lineWidth</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>1</DefaultValue>
+	<Description>Line Width</Description>
+	<Tooltip>JFreeChart line width</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>30</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

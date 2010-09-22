@@ -1,0 +1,22 @@
+<DesignerComponent>
+	<Header>
+		<Name>Text Component</Name>
+		<IName>textComponent</IName>
+		<Description>Text Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>expression</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

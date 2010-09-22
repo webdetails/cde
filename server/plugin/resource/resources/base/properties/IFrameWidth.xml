@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>iframeWidth</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>IFrame Width</Description>
+	<Tooltip>IFrame Width</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

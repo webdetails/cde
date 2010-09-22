@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>showValue</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Show value</Description>
+	<Tooltip>If true, will show a tooltip with the returned value.</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Advanced>true</Advanced>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnSpan</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>5</DefaultValue>
+	<Description>Span size</Description>
+	<Tooltip>Column span size, numeric. The total must be 24</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

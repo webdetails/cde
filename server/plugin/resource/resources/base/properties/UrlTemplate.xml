@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>urlTemplate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Url Template</Description>
+	<Tooltip>Url Template.</Tooltip>
+	<InputType>UrlTemplate</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

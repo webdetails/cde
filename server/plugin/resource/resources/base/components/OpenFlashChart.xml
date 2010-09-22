@@ -1,0 +1,39 @@
+<DesignerComponent>
+	<Header>
+		<Name>OpenFlashChart Component</Name>
+		<IName>OpenFlashChart</IName>
+		<Description>OpenFlashChart Component</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Definition name="chartDefinition">
+				<Property name="title">title</Property>
+				<Property name="subtitle">subtitle</Property>
+				<Property name="chartType">chartType</Property>
+				<Property name="width">width</Property>
+				<Property name="height">height</Property>
+				<Property>dataSource</Property>
+				<Property name="is3d">is3d</Property>
+				<Property name="includeLegend">includeLegend</Property>
+				<Property name="isStacked">isStacked</Property>
+				<Property name="useBaseUrl">useBaseUrl</Property>
+				<Property name="backgroundColor">backgroundColor</Property>
+				<Property name="legendFontIsBold">legendFontIsBold</Property>
+				<Property name="legendFontIsItalic">legendFontIsItalic</Property>
+				<Property name="markersVisible">markersVisible</Property>
+			</Definition>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnAppendBottom</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Prepend gutter to bottom</Description>
+	<Tooltip>Prepend space to the bottom of the element</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>35</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

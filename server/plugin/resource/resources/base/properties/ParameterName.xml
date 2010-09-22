@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>parameterName</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>PARAM</DefaultValue>
+	<Description>Parameter Name</Description>
+	<Tooltip>Parameter Name.</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

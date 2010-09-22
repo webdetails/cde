@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>sDom</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>sDom control</Description>
+	<Tooltip>Configuration of where the controls will be in the table</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>String</OutputType>
+	<Order>43</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

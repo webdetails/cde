@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>legendFontIsItalic</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Legend Font Italic</Description>
+	<Tooltip>Legend Font Italic</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

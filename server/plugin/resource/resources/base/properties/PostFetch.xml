@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>postFetch</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Post Fetch</Description>
+	<Tooltip>Code executed after this component's data is fetched from the server</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>93</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

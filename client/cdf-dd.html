@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+
+
+		<!-- Generic stuff -->
+                @STYLES@
+		<!-- Framework CSS -->
+		<!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+		<!-- CDF -->
+		<link rel="stylesheet" href="../pentaho-cdf/js/autobox/jquery.ui.autobox.css" type="text/css" />
+		<link rel="stylesheet" href="../pentaho-cdf/js/blueprint/screen.css" type="text/css" />
+		<link rel="stylesheet" href="../pentaho-cdf/js/fancybox/jquery.fancybox-1.3.1.css" type="text/css" />
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>CDF - DD</title>
+		@HEADER@
+	</head>
+	<body>
+		<div class="outside">
+
+			<div class="container">  
+
+				<div class="cdfdd-toolbar span-24 last">
+					<!--img id="cde-header" src='images/NAV/CDE_Header.png'  /-->
+					<!--div class="span-10 cdfdd-logo round">
+						<a href="http://www.webdetails.pt" title="CDF - Dashboard Editor" border=0>
+							<img src="images/cdf-logo-small.png" />
+							<img sr c="images/cdf-de.png" />
+						</a>
+					</div-->
+
+					<!-- Common operations -->
+					
+					<div class="span-11 prepend-2 cdfdd-main">
+						<a onclick="cdfdd.saveAs(true)" title="New" class="tooltip"><img src="images/NAV/Xnew.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
+						<a onclick="cdfdd.save()" title="Save" class="tooltip"><img src="images/NAV/Xsave.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
+						<a onclick="cdfdd.saveAs()" title="Save as" class="tooltip"><img src="images/NAV/Xsave_as.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
+            
+            <a id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()" title="Reload" class="tooltip"><img src="images/NAV/Xreload.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+						
+            <a onclick="cdfdd.saveSettings()" title="Settings" class="tooltip"><img src="images/NAV/Xsettings.png"onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+					</div>
+
+					<!-- Modes -->
+					<div class="span-9 cdfdd-modes">
+						<a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" title="Layout" class="tooltip"><img src="images/NAV/Xlayout.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+						<a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" title="Components" class="tooltip"><img src="images/NAV/Xcomponents.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+						<a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" title="Datasources" class="tooltip"><img src="images/NAV/Xdatasources.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+					</div>
+
+					<div class="span-2 last cdfdd-preview last">
+						<a onclick="cdfdd.previewMode()" title="Preview" class="tooltip"><img src="images/NAV/Xpreview.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)" /></a>
+					</div>
+
+
+				</div>
+
+				<hr class="hr-hidden" />
+
+				<div id="cdfdd-panels" class="span-24 round last" >
+
+				</div>
+
+				<hr class="hr-hidden" />
+
+				<div class="span-21" >&nbsp;</div>
+				<div class="logo span-3 last" >
+					<a href="http://www.webdetails.pt" title="WebDetails" border=0>
+						<img src="images/NAV/logo_webdetails.png" />
+					</a>
+				</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+	<div id="wizardDialog" class="jqmWindow" style="display: none">
+
+	</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+	var CDFDDFileName = '@FILENAME@';
+	var CDFDDServerUrl = '@SERVERURL@';
+	var CDFDDDataUrl = "cdf-structure.js";
+	var WEB_CONTEXT_BASE = CDFDDServerUrl + "../../";
+	</script>
+
+
+	<!-- CDF-DD files -->
+	<script type="text/javascript" src="../pentaho-cdf/js/json.js"></script>
+	
+        @SCRIPTS@
+	<script type="text/javascript" src="getcomponentdefinitions"></script>
+
+	<!-- CDF files -->
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/jquery.blockUI.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.ext.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/Base.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/Dashboards.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/CoreComponents.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/NavigationComponents.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/MapComponents.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/OlapUtils.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/captify/captify.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"></script>
+	<script language="javascript" type="text/javascript" src="../pentaho-cdf/js/fancybox/jquery.fancybox-1.3.1.js"></script>
+	<link rel="stylesheet" href="../pentaho-cdf/js/captify/captify.css" type="text/css"/>
+
+
+
+	<script type="text/javascript">
+		<!-- Layout formats -->
+		$( function(){
+				$(".round").corner();
+				} ) ;
+</script>
+		</body>
+	</html>

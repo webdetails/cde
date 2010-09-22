@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>PropertyDateDim</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>ex: [Date].[Date]</DefaultValue>
+	<Description>Property date dimension</Description>
+	<Tooltip>Property date dimension</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>20</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

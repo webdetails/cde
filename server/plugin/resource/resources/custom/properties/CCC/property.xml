@@ -1,0 +1,500 @@
+
+<DesignerProperties>
+  <DesignerProperty>
+    <Header>
+      <Name>cccCrosstabMode</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Crosstab mode</Description>
+      <Tooltip>Datasource is crosstab mode (mdx)</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>87</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccSeriesInRows</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Series in rows</Description>
+      <Tooltip>Datasource series are in rows?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>88</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccClickable</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Clickable</Description>
+      <Tooltip>Chart is clickable?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>87</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccClickAction</Name>
+      <Parent>BaseProperty</Parent>
+<!--      <DefaultValue>function(serie,category,value){}</DefaultValue>-->
+      <DefaultValue/>
+      <Description>Click action</Description>
+      <Tooltip>Action to be called on click</Tooltip>
+      <Advanced>false</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>90</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccStacked</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Stacked</Description>
+      <Tooltip>Chart is stacked?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>42</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccMaxBarSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>100</DefaultValue>
+      <Description>Max bar size</Description>
+      <Tooltip>Max bar size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>43</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccPanelSizeRatio</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.8</DefaultValue>
+      <Description>Panel Size Ratio</Description>
+      <Tooltip>Panel size ratio</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>44</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccBarSizeRatio</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.9</DefaultValue>
+      <Description>Bar Size Ratio</Description>
+      <Tooltip>Bar size ratio</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>45</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccInnerGap</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.9</DefaultValue>
+      <Description>Inner gap</Description>
+      <Tooltip>Pie inner gap</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>42</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccExplodedSliceIndex</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0</DefaultValue>
+      <Description>Exploded slice idx</Description>
+      <Tooltip>Exploded slice index</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>43</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccExplodedSliceRadius</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0</DefaultValue>
+      <Description>Exploded slice radius</Description>
+      <Tooltip>Exploded slice radius</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>44</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccValueFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+<!--      <DefaultValue>'function(d){return pv.Format.number().fractionDigits(0, 2).format(d)}'</DefaultValue>-->
+      <Description>Value format</Description>
+      <Tooltip>Function to format how the values appears</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>91</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccTooltipFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+<!--      <DefaultValue>function(s,c,v){return s+", "+c+":  " + myself.options.valueFormat(v) }</DefaultValue>-->
+      <Description>Tooltip format</Description>
+      <Tooltip>Function to format how the tooltip appears</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>92</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccTitlePosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>top</DefaultValue>
+      <Description>Title position</Description>
+      <Tooltip>Title position</Tooltip>
+      <InputType>Anchor</InputType>
+      <OutputType>String</OutputType>
+      <Order>40</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccTitleSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>25</DefaultValue>
+      <Description>Title size</Description>
+      <Tooltip>Title area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>41</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccShowLegend</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Show legend</Description>
+      <Tooltip>Show the legend?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>71</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccLegendPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>bottom</DefaultValue>
+      <Description>Legend position</Description>
+      <Tooltip>Legend position</Tooltip>
+      <InputType>Anchor</InputType>
+      <OutputType>String</OutputType>
+      <Order>72</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccLegendSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Legend size</Description>
+      <Tooltip>Legend area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>73</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccLegendAlign</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>center</DefaultValue>
+      <Description>Legend align</Description>
+      <Tooltip>Legend alignsize</Tooltip>
+      <InputType>SquareAlign</InputType>
+      <OutputType>String</OutputType>
+      <Order>74</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccOrientation</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>vertical</DefaultValue>
+      <Description>Orientation</Description>
+      <Tooltip>Orientation of the chart, horizontal or vertical</Tooltip>
+      <InputType>MenuMode</InputType>
+      <OutputType>String</OutputType>
+      <Advanced>true</Advanced>
+      <Order>68</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccAnimate</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Animate</Description>
+      <Tooltip>Animate the chart?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>true</Advanced>
+      <Order>69</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccColors</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Colors</Description>
+      <Tooltip>Colorschema for the chart</Tooltip>
+      <Description>Column Headers</Description>
+      <Tooltip>The table column header</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>67</Order>
+      <Version>1.0</Version>
+      <Advanced>true</Advanced>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccTimeSeries</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Timeseries</Description>
+      <Tooltip>Timeseries chart?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>false</Advanced>
+      <Order>45</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccTimeSeriesFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>%Y-%m-%d</DefaultValue>
+      <Description>Timeseries format</Description>
+      <Tooltip>Timeseries format</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Advanced>false</Advanced>
+      <Order>46</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccShowValues</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Show values</Description>
+      <Tooltip>Show values next to markers</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>true</Advanced>
+      <Order>51</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccValuesAnchor</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>right</DefaultValue>
+      <Description>Values position</Description>
+      <Tooltip>Values position</Tooltip>
+      <InputType>AnchorCenter</InputType>
+      <OutputType>String</OutputType>
+      <Order>52</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccShowDots</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Show dots</Description>
+      <Tooltip>Show dots next to markers</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>true</Advanced>
+      <Order>53</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  
+  <!-- Scales -->
+  <DesignerProperty>
+    <Header>
+      <Name>cccShowXScale</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Show xx scale</Description>
+      <Tooltip>Show xx scale?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>80</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccShowYScale</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Show yy scale</Description>
+      <Tooltip>Show yy scale?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>81</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccXAxisSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>XX axis size</Description>
+      <Tooltip>XX axis area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>82</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccYAxisSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>50</DefaultValue>
+      <Description>YY axis size</Description>
+      <Tooltip>YY axis area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>83</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccXAxisFullGrid</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Show xx grid</Description>
+      <Tooltip>Show xx axis full grid?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>84</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccYAxisFullGrid</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Show yy grid</Description>
+      <Tooltip>Show yy axis full grid?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>85</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccAxisOffset</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"0"</DefaultValue>
+      <Description>Axis offset</Description>
+      <Tooltip>YY axis area size</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>86</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccOriginIsZero</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Origin is zero</Description>
+      <Tooltip>Start the axis at zero?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>87</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+</DesignerProperties>

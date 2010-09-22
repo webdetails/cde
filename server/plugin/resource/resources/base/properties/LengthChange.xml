@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>lengthChange</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Length Change</Description>
+	<Tooltip>Allow user to change the displayed size?</Tooltip>
+	<InputType>Boolean</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
