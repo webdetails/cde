@@ -149,7 +149,9 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 		types: [],
 		name: "Add Row",
 		description: "Add a new row",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/add_row.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addrow.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addrow_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addrow_onclick.png",
 
 
 		constructor: function(){
@@ -260,7 +262,9 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL],
 		name: "Add Columns",
 		description: "Add a new column",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/add_column.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcolumn.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcolumn_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcolumn_onclick.png",
 
 
 		constructor: function(){
@@ -362,8 +366,9 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL],
 		name: "Add Space",
 		description: "Adds a horizontal rule",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/spacer-24x24.png",
-
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/spacer.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/spacer_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/spacer_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddSpaceOperation");
@@ -433,7 +438,9 @@ var LayoutAddImageOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
 		name: "Add Image",
 		description: "Adds an image",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/image-24x24.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/image.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/image_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/image_onclick.png",   
 
 
 		constructor: function(){
@@ -510,7 +517,9 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/html-24x24.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/html.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/html_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/html_onclick.png",   
 
 
 		constructor: function(){
@@ -589,7 +598,9 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 		types: [],
 		name: "Add Resource",
 		description: "Adds a resource external file or code to the dashboard",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/attach-24x24.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent_onclick.png",
 
 
 		constructor: function(){

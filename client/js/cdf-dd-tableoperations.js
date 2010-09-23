@@ -69,6 +69,9 @@ var BaseOperation = Base.extend({
 		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/toolbar-folder-add-48x48.png",
 		order: 20,
 		logger: {},
+		hoverIcon: null, //icon to display on hover
+		clickIcon: null, //icon while clicking
+		showInactiveIcon: false, //show icon when !canExecute
 
 		execute: function(tableManager){
 			this.logger.error("Method not implemented; " + tableManager.getTableId() + "; " + tableManager.getSelectedCell());
@@ -85,18 +88,28 @@ var BaseOperation = Base.extend({
 
 		getHtml: function(tableManager,idx){
 
-			var code;
+			var code ='';
 			var tableManagerId = tableManager.getTableId();
 
 			if (this.canExecute(tableManager)){
+				
+				var mouseHoverCmd = '';
+				if(this.hoverIcon){
+					mouseHoverCmd = 'onmouseover="$(this).attr(\'src\',\'' + this.hoverIcon + '\')" onmouseout="$(this).attr(\'src\',\'' + this.getIcon() + '\')"';
+				}
+				var mouseClickCmd ='';
+				if(this.clickIcon){
+					mouseClickCmd = 'onmousedown="$(this).attr(\'src\',\'' + this.clickIcon + '\')" onmouseup="$(this).attr(\'src\',\'' + this.getIcon() + '\')"';
+				}
+				
 				code = '\
 				<a title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\
-				<img border="0" src="'+ this.getIcon() +'" class="cdfdd"></img>\
+				<img border="0" src="'+ this.getIcon() +'" class="cdfdd"' + mouseHoverCmd + ' ' + mouseClickCmd + ' ></img>\
 				</a>\
 				';
 			}
-			else{
-				var _icon = this.getIcon().replace(/(.*)\//,"$1/X");
+			else if (this.showInactiveIcon) {
+				var _icon = this.getIcon().replace(/(.*)\//,"$1/X");// "../iconName.png -> ../XiconName.png
 					
 				code = '\
 				<img border="0" alt="' + this.getName() + '" src="'+ _icon +'" class="cdfdd"></img>\
@@ -125,7 +138,7 @@ var AddRowOperation = BaseOperation.extend({
 		types: ["GenericRow"],
 		name: "New Row",
 		description: "Adds a new row to the layout on the specific position",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/toolbar-folder-add-48x48.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addrow.png",
 
 		constructor: function(){
 			this.logger = new Logger("AddRowOperation");
@@ -142,6 +155,8 @@ var MoveUpOperation = BaseOperation.extend({
 		name: "Move Up",
 		description: "Move up",
 		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("MoveUpOperation");
@@ -226,6 +241,8 @@ var MoveDownOperation = BaseOperation.extend({
 		name: "Move Down",
 		description: "Move down",
 		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("MoveDownOperation");
@@ -309,7 +326,9 @@ var DeleteOperation = BaseOperation.extend({
 		types: ["GenericDelete"],
 		name: "Delete",
 		description: "Delete",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/delete.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("DeleteOperation");
@@ -384,7 +403,9 @@ var ApplyTemplateOperation = BaseOperation.extend({
 		types: ["GenericApplyTemplate"],
 		name: "Apply Template",
 		description: "Applys a template.",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/apply_template.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("ApplyTemplateOperation");
@@ -400,7 +421,9 @@ var SaveAsTemplateOperation = BaseOperation.extend({
 		types: ["GenericSaveAsTemplate"],
 		name: "Save as Template",
 		description: "Save sa template.",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/save-24x24.png",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("SaveAsTemplateOperation");
