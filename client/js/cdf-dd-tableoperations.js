@@ -103,7 +103,7 @@ var BaseOperation = Base.extend({
 				}
 				
 				code = '\
-				<a title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\
+				<a class="tooltip" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\
 				<img border="0" src="'+ this.getIcon() +'" class="cdfdd"' + mouseHoverCmd + ' ' + mouseClickCmd + ' ></img>\
 				</a>\
 				';

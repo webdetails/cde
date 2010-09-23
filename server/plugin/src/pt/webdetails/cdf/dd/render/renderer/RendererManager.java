@@ -60,7 +60,7 @@ public class RendererManager {
       }
     };
     String[] files = dir.list(subFolders);
-    for (String file : files) {
+    if(files != null) for (String file : files) {
       try {
         Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
         GenericRenderer renderer = new GenericRenderer("resources/base/renderers/" + file + "/", doc);
