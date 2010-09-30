@@ -23,81 +23,107 @@ import pt.webdetails.cdf.dd.render.components.GenericComponent;
  *
  * @author pdpi
  */
-public class RendererManager {
+public class RendererManager
+{
 
   public static final String PLUGIN_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/");
   private static RendererManager _engine;
   private String path;
   private Hashtable<String, GenericRenderer> rendererPool;
 
-  public RendererManager() {
+  public RendererManager()
+  {
     init(PLUGIN_DIR + "resources/");
   }
 
-  public RendererManager(String path) {
+  public RendererManager(String path)
+  {
     init(path);
   }
 
-  public static RendererManager getInstance() {
-    if (_engine == null) {
+  public static RendererManager getInstance()
+  {
+    if (_engine == null)
+    {
       _engine = new RendererManager();
     }
     return _engine;
   }
 
-  public void refresh() {
+  public void refresh()
+  {
     init(this.path);
   }
 
-  private void indexBaseComponents() {
+  private void indexBaseComponents()
+  {
     File dir = new File(path + "base/renderers/");
-    FilenameFilter subFolders = new FilenameFilter() {
+    FilenameFilter subFolders = new FilenameFilter()
+    {
 
-      public boolean accept(File systemFolder, String name) {
+      public boolean accept(File systemFolder, String name)
+      {
         File plugin = new File(systemFolder.getPath() + "/" + name + "/renderer.xml");
         return plugin.exists() && plugin.canRead();
 
       }
     };
     String[] files = dir.list(subFolders);
-    if(files != null) for (String file : files) {
-      try {
-        Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
-        GenericRenderer renderer = new GenericRenderer("resources/base/renderers/" + file + "/", doc);
-        if (renderer != null) {
-          rendererPool.put(renderer.getName(), renderer);
+    if (files != null)
+    {
+      for (String file : files)
+      {
+        try
+        {
+          Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
+          GenericRenderer renderer = new GenericRenderer("resources/base/renderers/" + file + "/", doc);
+          if (renderer != null)
+          {
+            rendererPool.put(renderer.getName(), renderer);
+          }
         }
-      } catch (Exception e) {
-        Logger.getLogger(RendererManager.class.getName()).log(Level.SEVERE, null, e);
+        catch (Exception e)
+        {
+          Logger.getLogger(RendererManager.class.getName()).log(Level.SEVERE, null, e);
+        }
       }
     }
   }
 
-  private void indexCustomComponents() {
+  private void indexCustomComponents()
+  {
     File dir = new File(path + "custom/components/");
-    FilenameFilter subFolders = new FilenameFilter() {
+    FilenameFilter subFolders = new FilenameFilter()
+    {
 
-      public boolean accept(File systemFolder, String name) {
+      public boolean accept(File systemFolder, String name)
+      {
         File plugin = new File(systemFolder.getPath() + "/" + name + "/renderer.xml");
         return plugin.exists() && plugin.canRead();
 
       }
     };
     String[] files = dir.list(subFolders);
-    for (String file : files) {
-      try {
+    for (String file : files)
+    {
+      try
+      {
         Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
         GenericRenderer renderer = new GenericRenderer("resources/custom/renderers/" + file + "/", doc);
-        if (renderer != null) {
+        if (renderer != null)
+        {
           rendererPool.put(renderer.getName(), renderer);
         }
-      } catch (Exception e) {
+      }
+      catch (Exception e)
+      {
         Logger.getLogger(RendererManager.class.getName()).log(Level.SEVERE, null, e);
       }
     }
   }
 
-  private void init(String path) {
+  private void init(String path)
+  {
     this.path = path;
     this.rendererPool = new Hashtable<String, GenericRenderer>();
 
@@ -113,8 +139,8 @@ public class RendererManager {
   }
   return entry;
   }*/
-
-  GenericRenderer getRenderer(String name) {
+  GenericRenderer getRenderer(String name)
+  {
     return rendererPool.get(name);
   }
 }
