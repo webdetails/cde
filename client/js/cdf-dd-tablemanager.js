@@ -384,29 +384,42 @@ var TableManager = Base.extend({
 					}
 							
 				});
+
 				
 			$(".advancedProperties").live('click',function() {
-				var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
-				if(myself.length > 0){
-				var row = myself.parent().prevAll().length;
-				var col = myself.prevAll().length;
-				var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
-				_tableManager.selectCell(row,col,'advanced');
-				$(".advancedProperties").attr("class","advancedProperties propertiesSelected");
-				$(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesUnSelected");
-				}
+
+					var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
+					tbody.fadeOut(300);
+					setTimeout(function(){
+							var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
+							if(myself.length > 0){
+								var row = myself.parent().prevAll().length;
+								var col = myself.prevAll().length;
+								var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+								_tableManager.selectCell(row,col,'advanced');
+								$(".advancedProperties").attr("class","advancedProperties propertiesSelected");
+								$(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesUnSelected");
+
+							}
+						},500);
 			});
 		
 			$(".simpleProperties").live('click',function() {
-				var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td")
-				if(myself.length > 0){
-				var row = myself.parent().prevAll().length;
-				var col = myself.prevAll().length;
-				var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
-				_tableManager.selectCell(row,col,'simple');
-				$(".advancedProperties").attr("class","advancedProperties propertiesUnSelected");
-				$(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesSelected");
-				}
+				var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
+				tbody.fadeOut(300);
+				setTimeout(function(){
+						var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td")
+						if(myself.length > 0){
+							var row = myself.parent().prevAll().length;
+							var col = myself.prevAll().length;
+							var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+							_tableManager.selectCell(row,col,'simple');
+							$(".advancedProperties").attr("class","advancedProperties propertiesUnSelected");
+							$(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesSelected");
+						}
+
+					},500);
+
 			});
 			
 
