@@ -283,7 +283,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String resource;
     if (pathString.split("/").length > 2)
     {
-      resource = pathString.replaceAll("^/.*?/", "");
+      resource = pathString.replaceAll("^/.*?/", "").replaceAll("&.*$","");
     }
     else
     {
