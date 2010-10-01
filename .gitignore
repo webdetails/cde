@@ -6,3 +6,4 @@ server/plugin/resource/images/
 server/plugin/resource/js/
 server/plugin/resource/css/
 server/plugin/resource/includes.properties
+.DS_Store
