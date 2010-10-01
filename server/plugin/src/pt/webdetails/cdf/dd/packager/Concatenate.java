@@ -54,8 +54,10 @@ class Concatenate
         String fileLocation;
         if (file.getPath().contains("resources/custom"))
         {
-          // fileLocation = file.getPath().replaceAll(file.getName(), "").replaceAll("\\\\", "/").replaceAll(rootpath, "getResource?resource=");
-          fileLocation = "";
+          fileLocation = file.getPath().replaceAll("\\\\", "/") // Fix windows slashes
+                  .replaceAll(file.getName(), "") // Remove this file's name
+                  .replaceAll(rootpath, "getResource?resource=");   //
+          //fileLocation = "";
         }
         else
         {
