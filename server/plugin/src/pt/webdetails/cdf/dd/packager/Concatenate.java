@@ -61,7 +61,7 @@ class Concatenate
         }
         buffer.append(tmp.toString() //
                 // We need to replace all the URL formats
-                .replaceAll("(url\\(['\"]?)", "$1" + fileLocation).replaceAll("/+","/")); // Standard URLs
+                .replaceAll("(url\\(['\"]?)", "$1" + fileLocation.replaceAll("/+","/"))); // Standard URLs
                 //.replaceAll("(progid:DXImageTransform.Microsoft.AlphaImageLoader\\(src=')", "$1" + fileLocation + "../")); // these are IE-Only
 
 
