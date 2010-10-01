@@ -63,10 +63,10 @@ class Concatenate
         {
           fileLocation = file.getPath().replaceAll(file.getName(), "").replaceAll("\\\\", "/").replaceAll(rootpath, "..");
         }
-        buffer.append(tmp.toString() //
+        buffer.append(tmp.toString()); //
                 // We need to replace all the URL formats
-                .replaceAll("(url\\(['\"]?)", "$1" + fileLocation) // Standard URLs
-                .replaceAll("(progid:DXImageTransform.Microsoft.AlphaImageLoader\\(src=')", "$1" + fileLocation + "../")); // these are IE-Only
+                //.replaceAll("(url\\(['\"]?)", "$1" + fileLocation) // Standard URLs
+                //.replaceAll("(progid:DXImageTransform.Microsoft.AlphaImageLoader\\(src=')", "$1" + fileLocation + "../")); // these are IE-Only
 
 
       }

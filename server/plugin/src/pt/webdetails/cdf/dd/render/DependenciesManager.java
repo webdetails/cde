@@ -32,14 +32,14 @@ public class DependenciesManager {
 
         public String filter(String input) {
           input = input.replaceAll("\\?", "&");
-          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource?resource=" + input + "\"></script>";
+          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource/" + input + "\"></script>";
         }
       };
       StringFilter cssFilter = new StringFilter() {
 
         public String filter(String input) {
           input = input.replaceAll("\\?", "&");
-          return "\t\t<link href='getCssResource?resource=" + input+ "' rel='stylesheet' type='text/css' />";
+          return "\t\t<link href='getCssResource/" + input+ "' rel='stylesheet' type='text/css' />";
         }
       };
       _engine = new DependenciesManager();
