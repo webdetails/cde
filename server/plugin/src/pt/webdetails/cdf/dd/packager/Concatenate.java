@@ -48,12 +48,21 @@ class Concatenate
         {
           tmp.append(fr.readLine());
         }
-        rootpath = rootpath.replaceAll("\\\\","/").replaceAll("/+","/");
-        String fileLocation = file.getPath().replaceAll(file.getName(), "").replaceAll("\\\\","/").replaceAll(rootpath, "..");
+        rootpath = rootpath.replaceAll("\\\\", "/").replaceAll("/+", "/");
+        // Quick and dirty hack: if the path aims at the custom components, we point at getResource, else we point at the static resource folders
+
+        String fileLocation = "";
+        if (file.getPath().contains("resources/custom"))
+        {
+          fileLocation = file.getPath().replaceAll("\\\\", "/") // Fix windows slashes
+                  .replaceAll(file.getName(), "") // Remove this file's name
+                  .replaceAll(rootpath, "../");   //
+          //fileLocation = "";
+        }
         buffer.append(tmp.toString() //
                 // We need to replace all the URL formats
-                .replaceAll("(url\\(['\"]?)", "$1" + fileLocation) // Standard URLs
-                .replaceAll("(progid:DXImageTransform.Microsoft.AlphaImageLoader\\(src=')", "$1" + fileLocation + "../")); // these are IE-Only
+                .replaceAll("(url\\(['\"]?)", "$1" + fileLocation.replaceAll("/+","/"))); // Standard URLs
+                //.replaceAll("(progid:DXImageTransform.Microsoft.AlphaImageLoader\\(src=')", "$1" + fileLocation + "../")); // these are IE-Only
 
 
       }

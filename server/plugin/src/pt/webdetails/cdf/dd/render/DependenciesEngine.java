@@ -137,7 +137,7 @@ public class DependenciesEngine
 
     public String getDeps()
     {
-      return path + ((hash == null) ? "" : "&v=" + hash);
+      return path + ((hash == null) ? "" : "?v=" + hash);
     }
   }
 }

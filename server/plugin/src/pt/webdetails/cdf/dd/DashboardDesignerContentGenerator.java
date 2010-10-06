@@ -92,7 +92,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         IParameterProvider.class, OutputStream.class
       };
 
-      final String method = pathParams.getStringParameter("path", null).replace("/", "").toLowerCase();
+      final String method = pathParams.getStringParameter("path", null).split("/")[1].toLowerCase();
 
       try
       {
@@ -279,7 +279,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public void getresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
 
-    String resource = pathParams.getStringParameter("resource", null);
+    String pathString = this.parameterProviders.get("path").getStringParameter("path", null);
+    String resource;
+    if (pathString.split("/").length > 2)
+    {
+      resource = pathString.replaceAll("^/.*?/", "");
+    }
+    else
+    {
+      resource = pathParams.getStringParameter("resource", null);
+    }
     resource = resource.startsWith("/") ? resource : "/" + resource;
     getResource(
             out, resource);
