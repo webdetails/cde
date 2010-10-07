@@ -167,6 +167,10 @@ var ValuesArrayRenderer = CellRenderer.extend({
 			multiDimensionArray: true,
 			
 			cssPrefix: "StringList",
+			
+			hasTypedValues: false,//if true, args also have a type
+			
+			typesArray: [],//only used if hasTypedValues
 
 			constructor: function(){
 				this.base();
@@ -196,15 +200,25 @@ var ValuesArrayRenderer = CellRenderer.extend({
 							</div>');
 					        
                                                 vals = JSON.parse(arrayValue);	
-                                                for(val in vals){
-													if(myself.multiDimensionArray){
-														myself.addParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]),content);
-													}
-													else{
-														myself.addParameters(val,vals[val],"null",content);
-													}
-                                                }
-                                                var index = vals.length; 
+						for(val in vals){
+							 if(myself.multiDimensionArray){
+								if(myself.hasTypedValues){	
+									myself.addTypedParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), vals[val][2], content);
+								}
+								else {
+									myself.addParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), content);
+								}
+							 }
+							 else{
+									if(myself.hasTypedValues){
+										 myself.addTypedParameters(val,vals[val],"null",null,content);
+									}
+									else {
+										myself.addParameters(val,vals[val],"null",content);
+									}
+							 }
+						}
+						var index = vals.length; 
 //						if(arrayValue.length>0)
 //							arrayValue = arrayValue.substring(1,arrayValue.length-1);
 //														
@@ -228,7 +242,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
 							},
 							loaded: function(){
 								$('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
-									myself.addParameters(index,"","",$("#" + myself.cssPrefix));
+									if(myself.hasTypedValues) myself.addTypedParameters(index,"","","",$("#" + myself.cssPrefix));
+									else myself.addParameters(index,"","",$("#" + myself.cssPrefix));
+									
 									$("#remove_button_"+index).bind('click',myself.removeParameter);
 									$("#parameter_button_"+index).bind('click',myself.addParamterValue);
 									index++;
@@ -240,10 +256,13 @@ var ValuesArrayRenderer = CellRenderer.extend({
 								var array = [];
 								for(var i = 0; i < index; i++){
 									if($("#arg_" + i).length > 0 && $("#arg_" + i).val().length > 0){
-										if(myself.multiDimensionArray)
-											array.push([$("#arg_" + i).val(),$("#val_" + i).val()]);
-										else
+										if(myself.multiDimensionArray){
+										 if(myself.hasTypedValues) array.push([$("#arg_" + i).val(),$("#val_" + i).val(), $("#type_" + i).val()]);
+										 else array.push([$("#arg_" + i).val(),$("#val_" + i).val()]);//TODO:ok?
+										}
+										else{
 											array.push($("#arg_" + i).val());
+										}
 									}
 								}
 								arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
@@ -277,6 +296,32 @@ var ValuesArrayRenderer = CellRenderer.extend({
 					argInput + 
 					(this.multiDimensionArray ? ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  removeButton) + 
 					'</div>\n';
+				container.find('.' + this.cssPrefix).append(row);
+			},
+			
+			addTypedParameters : function(i,arg,val,type,container){
+			  //used when hasTypedValues=true, assumes multiDimensionalArray
+				var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
+				var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
+				var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
+					'<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
+					'<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n'; 
+				var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
+					'<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
+					'<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
+					
+				 var typeOptions = "";
+				 for(var j = 0; j < this.typesArray.length; j++){
+						typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
+						typeOptions += this.typesArray[j] + '</option>';
+				 }
+				 var typeSelect = '<div class="'+this.cssPrefix+'Type">' + 
+						'<span class="'+this.cssPrefix+'TextLabel">Type'+i+':</span>' +
+						'<select  id="type_' + i + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n'; 
+				var row = 
+					'<did id="parameters_' + i +'" >\n' + 
+					argInput + 
+					'<div class="' + this.cssPrefix +'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix +'Types">' +  typeSelect + parameterButton + removeButton  +'<br /></div>\n';
 				container.find('.' + this.cssPrefix).append(row);
 			},
 						
@@ -316,6 +361,14 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
 			this.logger = new Logger("ArrayRenderer");
 			this.logger.debug("Creating new ArrayRenderer");
 		}
+});
+
+var CdaParametersRenderer = ValuesArrayRenderer.extend({
+	 		cssPrefix: "ParameterList",
+			
+			hasTypedValues: true,
+			//TODO: this should be fetched from somewhere
+			typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray']
 });
 
 var ComponentsJavascriptParameterModel = BaseModel.extend({

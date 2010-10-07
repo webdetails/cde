@@ -8,6 +8,12 @@
 	width:225px;
 }
 
+.ParameterListContainer {
+	background-color: #bdbdbd;
+	width:565px;
+	height: 250px;
+}
+
 .StringList, .StringArray {
 	width:390px;
 	height: 200px;
@@ -22,6 +28,16 @@
 	width:210px;
 }
 
+.ParameterList {
+	width:550px;
+	height: 200px;
+	float:left;	
+	position:relative;
+	top:10px;
+	left:10px;
+	overflow:auto;
+}
+
 .StringListAddButton, .StringArrayAddButton {
 	float:left;	
 	top:15px;
@@ -33,21 +49,28 @@
 	left:160px;
 }
 
-.StringListText , .StringArrayText {
+.ParameterListAddButton {
+	float:left;	
+	top:15px;
+	position:relative;
+	left:500px;
+}
+
+.StringListText , .StringArrayText, .ParameterListText {
 	float:left;	
 	width:100px;
 	position:relative;
 	font-size:9pt; 
 }
 
-.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove{
+.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove, .ParameterListParameter , .ParameterListRemove{
 	float:left;	
 	position:relative;
 	top:3px;
 	left:10px;
 }
 
-.StringListTextLabel, .StringArrayTextLabel{
+.StringListTextLabel, .StringArrayTextLabel, .ParameterListTextLabel{
 	float:left;	
 	position:relative;
 	top:5px;
@@ -60,19 +83,28 @@
 	float:left;	
 	width:220px;
 }
+.ParameterListValues {
+	display:block;
+	float:left;	
+	width:150px;
+}
+.ParameterListTypes {
+	display:block;
+	float:left;	
+	width:220px;
+}
 
-.StringListArgs, .StringArrayArgs {
+.StringListArgs, .StringArrayArgs, .ParameterListArgs {
 	display:block;
 	float:left;	
 	width:150px;
 }
 
-
 .jqiStringListfade, .jqiStringArrayfade{
 	position: absolute; 
 	background-color: #aaaaaa; 
 }
-div.jqiStringList, div.jqiStringArray { 
+div.jqiStringList, div.jqiStringArray, div.jqiParameterList { 
 	width: 420px;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
 	position: absolute; 
@@ -88,11 +120,14 @@ div.jqiStringList, div.jqiStringArray {
 div.jqiStringArray{ 
 	width: 230px; 
 }
+div.jqiParameterList {
+	width: 580px;
+}
 
-div.jqiStringList .jqiStringListcontainer, div.jqiStringArray .jqiStringArraycontainer {
+div.jqiStringList .jqiStringListcontainer, div.jqiStringArray .jqiStringArraycontainer, div.jqiParameterList .jqiParameterListcontainer {
 	font-weight: bold; 
 }
-div.jqiStringList .jqiStringListclose, div.jqiStringArray .jqiStringArrayclose {
+div.jqiStringList .jqiStringListclose, div.jqiStringArray .jqiStringArrayclose, div.jqiParameterList .jqiParameterListClose {
 	position: absolute;
 	top: 4px; right: -2px; 
 	width: 18px; 
@@ -100,18 +135,18 @@ div.jqiStringList .jqiStringListclose, div.jqiStringArray .jqiStringArrayclose {
 	color: #bbbbbb; 
 	font-weight: bold; 
 }
-div.jqiStringList .jqiStringListmessage, div.jqiStringArray .jqiStringArraymessage{ 
+div.jqiStringList .jqiStringListmessage, div.jqiStringArray .jqiStringArraymessage, div.jqiParameterList .jqiParameterListmessage{ 
 	padding: 10px; 
 	line-height: 20px; 
 	color: #444444; 
 }
-div.jqiStringList .jqiStringListbuttons, div.jqiStringArray .jqiStringArraybuttons{ 
+div.jqiStringList .jqiStringListbuttons, div.jqiStringArray .jqiStringArraybuttons, div.jqiParameterList .jqiParameterListbuttons { 
 	text-align: right; 
 	padding: 5px 0 5px 0; 
 	border: solid 1px #eeeeee; 
 	background-color: #f4f4f4;
 }
-div.jqiStringList button, div.jqiStringArray button{ 
+div.jqiStringList button, div.jqiStringArray button, div.jqiParameterList button{ 
 	padding: 3px 10px; 
 	margin: 0 10px; 
 	background-color: #2F6073; 
@@ -120,18 +155,18 @@ div.jqiStringList button, div.jqiStringArray button{
 	font-weight: bold; 
 	font-size: 12px; 
 }
-div.jqiStringList button:hover, div.jqiStringArray button:hover{ 
+div.jqiStringList button:hover, div.jqiStringArray button:hover, div.jqiParameterList button:hover{ 
 	background-color: #728A8C;
 }
-div.jqiStringList button.jqiStringListdefaultbutton, div.jqiStringArray button.jqiStringArraydefaultbutton{ 
+div.jqiStringList button.jqiStringListdefaultbutton, div.jqiStringArray button.jqiStringArraydefaultbutton, div.jqiParameterList button.jqiParameterListdefaultbutton{ 
 	/*background-color: #8DC05B;*/
 	background-color: #BF5E26;
 }
-.jqiStringListwarning .jqiStringList .jqiStringListbuttons, .jqiStringArraywarning .jqiStringArray .jqiStringArraybuttons{ 
+.jqiStringListwarning .jqiStringList .jqiStringListbuttons, .jqiStringArraywarning .jqiStringArray .jqiStringArraybuttons, .jqiParameterListwarning .jqiParameterList .jqiParameterListbuttons{ 
 	background-color: #BF5E26;
 }
 
-ul.StringListParameter {
+ul.StringListParameter, ul.ParameterListParameter {
 	list-style-type: none;
 	cursor: default;  
 	border:1px solid;
@@ -142,37 +177,38 @@ ul.StringListParameter {
 	width:248px;
 	background-color:#ffffff;
 	margin: 10px;
+	padding-left:0;
 }
 
-.StringListParameterContainer p  {
+.StringListParameterContainer p, .ParameterListParameterContainer p,  {
 	text-align: left;
 	position:relative;
 	left:5px;
 	top:5px;
 }
 
-ul.StringListParameter li {
+ul.StringListParameter li, ul.ParameterListParameter li {
  list-style-type: none; 
  position:relative;
  left:5px;
  width:239px;
 }
 
-ul.StringListParameter li  div:hover {
+ul.StringListParameter li  div:hover, ul.ParameterListParameter li  div:hover {
 	background-color: #DBDBDB;
 }
 
 
-.jqiStringListParametersfade {
+.jqiStringListParametersfade, .jqiParameterListParametersfade {
 	position: absolute; 
 	background-color: #aaaaaa; 
 }
 
-.jqiStringListParametersbox    {
+.jqiStringListParametersbox, .jqiParameterListParametersbox {
 	padding-top:50px;
 }
 
-div.jqiStringListParameters { 
+div.jqiStringListParameters, div.jqiParameterListParameters { 
 	width: 280px; 
 	height: 275px; 
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
@@ -184,10 +220,10 @@ div.jqiStringListParameters {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-div.jqiStringListParameters .jqiStringListParameterscontainer { 
+div.jqiStringListParameters .jqiStringListParameterscontainer, div.jqiParameterListParameters .jqiParameterListParameterscontainer { 
 	font-weight: bold; 
 }
-div.jqiStringListParameters .jqiStringListParametersclose{ 
+div.jqiStringListParameters .jqiStringListParametersclose, div.jqiParameterListParameters .jqiParameterListParametersclose{ 
 	position: absolute;
 	top: 4px; right: -2px; 
 	width: 18px; 
@@ -195,17 +231,17 @@ div.jqiStringListParameters .jqiStringListParametersclose{
 	color: #bbbbbb; 
 	font-weight: bold; 
 }
-div.jqiStringListParameters .jqiStringListParametersmessage{ 
+div.jqiStringListParameters .jqiStringListParametersmessage, div.jqiParameterListParameters .jqiParameterListParametersmessage{ 
 	
 	color: #444444; 
 }
-div.jqiStringListParameters .jqiStringListParametersbuttons{ 
+div.jqiStringListParameters .jqiStringListParametersbuttons, div.jqiParameterListParameters .jqiParameterListParametersbuttons{ 
 	text-align: right; 
 	width:267px;
 	top:-10px;
 }
 
-.jqiStringListParametersbuttons button {
+.jqiStringListParametersbuttons button, .jqiParameterListParametersbuttons button {
 	font-size:11px;
 }
 
