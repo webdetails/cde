@@ -471,6 +471,34 @@
   </DesignerProperty>
   <DesignerProperty>
     <Header>
+      <Name>cccXAxisPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>bottom</DefaultValue>
+      <Description>X axis position</Description>
+      <Tooltip>X axis position</Tooltip>
+      <InputType>TopBottom</InputType>
+      <OutputType>String</OutputType>
+      <Order>52</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccYAxisPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>left</DefaultValue>
+      <Description>Y axis position</Description>
+      <Tooltip>Y axis position</Tooltip>
+      <InputType>LeftRight</InputType>
+      <OutputType>String</OutputType>
+      <Order>53</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
       <Name>cccAxisOffset</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"0"</DefaultValue>
@@ -497,4 +525,19 @@
       <Version>1.0</Version>
     </Header>
   </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccExtensionPoints</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Extension points</Description>
+      <Tooltip>CCC Extension points</Tooltip>
+      <InputType>ValuesArray</InputType>
+      <OutputType>Array</OutputType>
+      <Order>99</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
 </DesignerProperties>

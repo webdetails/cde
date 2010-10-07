@@ -151,3 +151,36 @@ var SquareAlignRenderer = SelectRenderer.extend({
 			return this.translationHash[getExpression(row)];
 		}
 });
+
+var LeftRightRenderer = SelectRenderer.extend({
+
+		translationHash: {
+			'left':'Left',
+			'right':'Right'
+		},
+
+		getData: function(row){
+			return " {'left':'Left', 'right':'Right', 'selected':'" + (this.getExpression(row)) + "'}";
+		},
+
+		getFormattedExpression: function(row, getExpression){
+			return this.translationHash[getExpression(row)];
+		}
+});
+
+
+var TopBottomRenderer = SelectRenderer.extend({
+
+		translationHash: {
+			'top':'Top',
+			'bottom':'Bottom'
+		},
+
+		getData: function(row){
+			return " {'top':'Top', 'bottom':'Bottom', 'selected':'" + (this.getExpression(row)) + "'}";
+		},
+
+		getFormattedExpression: function(row, getExpression){
+			return this.translationHash[getExpression(row)];
+		}
+});
