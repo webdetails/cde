@@ -35,12 +35,13 @@ var CccComponent = BaseComponent.extend({
     var o = $.extend({},this.chartDefinition);
     o.canvas = this.htmlObject+'protovis';
     // Extension points
-    var ep = {};
-    o.extensionPoints.forEach(function(a){
-      ep[a[0]]=a[1];
-    });
-    o.extensionPoints=ep;
-    
+	if(typeof o.extensionPoints != "undefined"){
+		var ep = {};
+		o.extensionPoints.forEach(function(a){
+			ep[a[0]]=a[1];
+		});
+		o.extensionPoints=ep;
+    }
     this.chart =  new this.cccType(o);
     this.chart.setData(values,{
       crosstabMode: this.crosstabMode,
