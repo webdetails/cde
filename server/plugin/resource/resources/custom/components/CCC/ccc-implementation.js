@@ -30,11 +30,17 @@ var CccComponent = BaseComponent.extend({
 
   render: function(values) {
 
-    Dashboards.log("YAY ! WORKED! Calling " + this.cccType);
     $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
 
     var o = $.extend({},this.chartDefinition);
     o.canvas = this.htmlObject+'protovis';
+    // Extension points
+    var ep = {};
+    o.extensionPoints.forEach(function(a){
+      ep[a[0]]=a[1];
+    });
+    o.extensionPoints=ep;
+    
     this.chart =  new this.cccType(o);
     this.chart.setData(values,{
       crosstabMode: this.crosstabMode,

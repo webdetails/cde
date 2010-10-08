@@ -18,6 +18,10 @@ import org.w3c.dom.Element;
 public class Parameters implements Renderer {
 
   private JSONObject definition;
+  private final String NAME_ATTR = "name",
+                       DEFAULT_ATTR = "default",
+                       TYPE_ATTR = "type",
+                       ELEMENT_NAME = "Parameter";
 
   public void renderInto(Element dataAccess) {
     JXPathContext context = JXPathContext.newContext(definition);
@@ -28,10 +32,16 @@ public class Parameters implements Renderer {
     Iterator paramIterator = params.iterator();
     while (paramIterator.hasNext()) {
       JSONArray param = (JSONArray) paramIterator.next();
-      Element parameter = doc.createElement("Parameter");
-      parameter.setAttribute("type", "String");
-      parameter.setAttribute("name", (String) param.get(0));
-      parameter.setAttribute("default", (String) param.get(1));
+      Element parameter = doc.createElement(ELEMENT_NAME);
+      //parameter.setAttribute("type", "String");
+      parameter.setAttribute(NAME_ATTR, (String) param.get(0));
+      parameter.setAttribute(DEFAULT_ATTR, (String) param.get(1));
+      if(param.size() > 2){
+        parameter.setAttribute(TYPE_ATTR,  (String) param.get(2));
+      }
+      else{
+        parameter.setAttribute(TYPE_ATTR, "String");
+      }
       parameters.appendChild(parameter);
     }
   }

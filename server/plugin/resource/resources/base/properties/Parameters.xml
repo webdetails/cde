@@ -5,7 +5,7 @@
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Parameters</Description>
 	<Tooltip>Parameters to be sent to the xaction</Tooltip>
-	<InputType>ValuesArray</InputType>
+	<InputType>CdaParameters</InputType>
 	<OutputType>Array</OutputType>
 	<Order>28</Order>
 	<Version>1.0</Version>
