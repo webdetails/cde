@@ -174,7 +174,7 @@ class Dashboard implements Serializable
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
-          return "\t\t<link href='" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getCssResource/" + input + "' rel='stylesheet' type='text/css' />";
+          return "\t\t<link href='" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getCssResource/" + input + "' rel='stylesheet' type='text/css' />\n";
         }
       };
       StringFilter js = new StringFilter()
@@ -183,7 +183,7 @@ class Dashboard implements Serializable
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
-          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getJsResource/" + input + "\"></script>";
+          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getJsResource/" + input + "\"></script>\n";
         }
       };
       if (debug)
