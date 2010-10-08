@@ -18,9 +18,11 @@ import pt.webdetails.cdf.dd.util.XPathUtils;
  *
  * @author pdpi
  */
-public class GenericProperty {
+public class GenericProperty
+{
 
-  public static enum OutputType {
+  public static enum OutputType
+  {
 
     STRING, BOOLEAN, NUMBER, FUNCTION, ARRAY, QUERY, LITERAL, VOID
   };
@@ -31,27 +33,36 @@ public class GenericProperty {
   private Node definition;
   private String version;
   private OutputType type;
+  private Pattern functionPattern;
 
-  public GenericProperty(String path, Node doc) {
+  public GenericProperty(String path, Node doc)
+  {
+    this();
     init(path, doc);
   }
 
-  public GenericProperty() {
+  public GenericProperty()
+  {
+    functionPattern = Pattern.compile("(?s)\"(function\\(.*?})\"");
   }
 
-  public String getName() {
+  public String getName()
+  {
     return name;
   }
 
-  public String getVersion() {
+  public String getVersion()
+  {
     return version;
   }
 
-  public OutputType getOutputType() {
+  public OutputType getOutputType()
+  {
     return this.type;
   }
 
-  public String getDefinition() {
+  public String getDefinition()
+  {
     Set<String> attribs = attributes.keySet();
 
     StringBuilder entryString = new StringBuilder();
@@ -59,7 +70,8 @@ public class GenericProperty {
             "var " + this.name + "Property = BasePropertyType.extend({" + newLine
             + "\ttype: " + attributes.get("name") + "," + newLine
             + "\tstub: {" + newLine);
-    for (String attrib : attribs) {
+    for (String attrib : attribs)
+    {
       entryString.append("\t\t" + attrib + ": " + attributes.get(attrib) + "," + newLine);
     }
     entryString.append(
@@ -69,11 +81,14 @@ public class GenericProperty {
     return entryString.toString();
   }
 
-  public String render(String name, JXPathContext node) {
-    if (node == null) {
+  public String render(String name, JXPathContext node)
+  {
+    if (node == null)
+    {
       return "";
     }
-    switch (this.type) {
+    switch (this.type)
+    {
       case ARRAY:
         return renderArray(name, node);
       case BOOLEAN:
@@ -94,62 +109,90 @@ public class GenericProperty {
     throw new TypeNotPresentException("", null);
   }
 
-  private String renderString(String name, JXPathContext node) {
+  private String renderString(String name, JXPathContext node)
+  {
     String value = XPathUtils.getStringValue(node, "properties/value[../name='" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "']");
-    if (value.equals("")) {
+    if (value.equals(""))
+    {
       return "";
     }
-    if (value.charAt(0) != '\"') {
+    if (value.charAt(0) != '\"')
+    {
       value = "\"" + value + "\"";
     }
     return name + ": " + value + "," + newLine;
   }
 
-  private String renderLiteral(String name, JXPathContext node) {
+  private String renderLiteral(String name, JXPathContext node)
+  {
     String value = XPathUtils.getStringValue(node, "properties/value[../name='" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "']");
-    if (value.equals("")) {
+    if (value.equals(""))
+    {
       return "";
     }
     return name + ": " + value + "," + newLine;
   }
 
-  private String renderBoolean(String name, JXPathContext node) {
+  private String renderBoolean(String name, JXPathContext node)
+  {
     String value = XPathUtils.getStringValue(node, "properties/value[../name='" + this.name + "']");
-    if (value.equals("")) {
+    if (value.equals(""))
+    {
       return "";
     }
     return name + ": " + (value.equals("true") ? "true" : "false") + "," + newLine;
   }
 
-  private String renderFunction(String name, JXPathContext node) {
+  private String renderFunction(String name, JXPathContext node)
+  {
     String value = XPathUtils.getStringValue(node, "properties/value[../name='" + this.name + "']");
-    if (value.equals("")) {
+    if (value.equals(""))
+    {
       return "";
     }
     return name + ": " + getFunctionParameter(value, true) + "," + newLine;
   }
 
-  private String renderNumber(String name, JXPathContext node) {
+  private String renderNumber(String name, JXPathContext node)
+  {
     String value = XPathUtils.getValue(node, "properties/value[../name='" + this.name + "']").toString();
-    if (value.equals("")) {
+    if (value.equals(""))
+    {
       return "";
     }
     return name + ": " + value + "," + newLine;
   }
 
-  private String renderArray(String name, JXPathContext node) {
+  private String renderArray(String name, JXPathContext node)
+  {
     String value = XPathUtils.getStringValue(node, "properties/value[../name='" + this.name + "']");
-    if (value.equals("")) {
+    Matcher m = functionPattern.matcher(value);
+    if (m.find())
+    {
+      StringBuffer sb = new StringBuffer();
+      m.reset();
+      while (m.find())
+      {
+        m.appendReplacement(sb, m.group(1).replaceAll("\\\"","\""));
+      }
+      m.appendTail(sb);
+      value=sb.toString();
+    }
+
+    if (value.equals(""))
+    {
       return "";
     }
     return name + ": " + value + "," + newLine;
   }
 
-  private String renderQuery(JXPathContext node) {
+  private String renderQuery(JXPathContext node)
+  {
     throw new UnsupportedOperationException("Feature implemented in DatasourceProperty -- something went wrong!");
   }
 
-  public void init(String path, Node doc) {
+  public void init(String path, Node doc)
+  {
     this.definition = doc;
     this.name = XmlDom4JHelper.getNodeText("Header/Name", definition);
     this.version = XmlDom4JHelper.getNodeText("Header/Version", definition);
@@ -161,13 +204,16 @@ public class GenericProperty {
     attributes.put("type", "\"" + XmlDom4JHelper.getNodeText("Header/InputType", definition) + "\"");
     attributes.put("order", XmlDom4JHelper.getNodeText("Header/Order", definition));
     String advanced = XmlDom4JHelper.getNodeText("Header/Advanced", definition);
-    if (advanced != null && advanced.toLowerCase().equals("true")) {
+    if (advanced != null && advanced.toLowerCase().equals("true"))
+    {
       attributes.put("classType", "\"advanced\"");
 
     }
     String value = XmlDom4JHelper.getNodeText("Header/DefaultValue", definition);
-    if (value.equals("")) {
-      switch (this.type) {
+    if (value.equals(""))
+    {
+      switch (this.type)
+      {
         case ARRAY:
           value = "\"[]\"";
           break;
@@ -186,7 +232,9 @@ public class GenericProperty {
         default:
           value = "";
       }
-    } else if (this.type == type.STRING) {
+    }
+    else if (this.type == type.STRING)
+    {
       value = "\"" + value + "\"";
     }
     attributes.put("value", value);
@@ -194,19 +242,23 @@ public class GenericProperty {
     attributes.put("name", "\"" + innerName + "\"");
   }
 
-  protected String replaceParameters(String value) {
+  protected String replaceParameters(String value)
+  {
     Pattern pattern = Pattern.compile("\\$\\{[^}]*\\}");
     Matcher matcher = pattern.matcher(value);
-    while (matcher.find()) {
+    while (matcher.find())
+    {
       String parameter = matcher.group();
       value = value.replace(matcher.group(), "Dashboards.ev(" + parameter.substring(2, parameter.length() - 1) + ")");
     }
     return value;
   }
 
-  protected String getFunctionParameter(String stringValue, Boolean placeReturnString) {
+  protected String getFunctionParameter(String stringValue, Boolean placeReturnString)
+  {
 
-    if (stringValue.matches("(?is)^ *function.*")) {
+    if (stringValue.matches("(?is)^ *function.*"))
+    {
       return stringValue;
     }
 
