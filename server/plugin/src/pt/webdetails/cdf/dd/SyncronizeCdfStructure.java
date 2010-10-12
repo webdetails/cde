@@ -14,26 +14,30 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public class SyncronizeCdfStructure {
+public class SyncronizeCdfStructure
+{
 
   private static SyncronizeCdfStructure syncronizeCdfStructure = null;
   public static String EMPTY_STRUCTURE_FILE = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/empty-structure.json");
   public static String EMPTY_WCDF_FILE = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/empty.wcdf");
 
-
-  static SyncronizeCdfStructure getInstance() {
-    if (syncronizeCdfStructure == null) {
+  static SyncronizeCdfStructure getInstance()
+  {
+    if (syncronizeCdfStructure == null)
+    {
       syncronizeCdfStructure = new SyncronizeCdfStructure();
     }
     return syncronizeCdfStructure;
   }
 
-  public void syncronize(final IPentahoSession userSession, final OutputStream out, final IParameterProvider requestParams) throws Exception {
+  public void syncronize(final IPentahoSession userSession, final OutputStream out, final IParameterProvider requestParams) throws Exception
+  {
 
     //Read parameters
     final Iterator<String> keys = requestParams.getParameterNames();
     final HashMap<String, String> parameters = new HashMap<String, String>();
-    while (keys.hasNext()) {
+    while (keys.hasNext())
+    {
       final String key = keys.next();
       parameters.put(key, requestParams.getStringParameter(key, null));
     }
@@ -44,26 +48,34 @@ public class SyncronizeCdfStructure {
     setFilePath(userSession, parameters);
 
     //Call sync method
-    try {
+    try
+    {
 
       final XmlStructure dashboardStucture = new XmlStructure(userSession);
       final Class[] params = new Class[1];
       params[0] = HashMap.class;
       final Method mthd = dashboardStucture.getClass().getMethod(operation, params);
       final Object result = mthd.invoke(dashboardStucture, parameters);
-      if (result != null) {
+      if (result != null)
+      {
         JsonUtils.buildJsonResult(out, true, result);
       }
-
-      JsonUtils.buildJsonResult(out, true, null);
+      else
+      {
+        JsonUtils.buildJsonResult(out, true, null);
+      }
 
     }
-    catch (NoSuchMethodException e) {
+    catch (NoSuchMethodException e)
+    {
       throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_001_INVALID_SYNCRONIZE_METHOD_EXCEPTION"));
     }
-    catch (Exception e) {
-      if (e.getCause() != null) {
-        if (e.getCause().getClass().equals(StructureException.class)) {
+    catch (Exception e)
+    {
+      if (e.getCause() != null)
+      {
+        if (e.getCause().getClass().equals(StructureException.class))
+        {
           JsonUtils.buildJsonResult(out, false, e.getCause().getMessage());
         }
 
@@ -75,18 +87,25 @@ public class SyncronizeCdfStructure {
 
   }
 
-
-  private void setFilePath(final IPentahoSession userSession, final HashMap<String, String> parameters) throws Exception {
+  private void setFilePath(final IPentahoSession userSession, final HashMap<String, String> parameters) throws Exception
+  {
 
     final ICacheManager cacheManager = PentahoSystem.getCacheManager(userSession);
     Object previousFile = cacheManager.getFromSessionCache(userSession, "previous_dashboard_file");
 
-    if (parameters.get("file") == null) {
+    if (parameters.get("file") == null)
+    {
       if (previousFile == null)
+      {
         throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
+      }
       else
+      {
         parameters.put("file", (String) ((HashMap) previousFile).get("file"));
-    } else {
+      }
+    }
+    else
+    {
       previousFile = new HashMap<String, String>();
       ((HashMap) previousFile).put("file", (String) parameters.get("file"));
       cacheManager.putInSessionCache(userSession, "previous_dashboard_file", previousFile);
