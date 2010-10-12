@@ -51,13 +51,19 @@ class Concatenate
         rootpath = rootpath.replaceAll("\\\\", "/").replaceAll("/+", "/");
         // Quick and dirty hack: if the path aims at the custom components, we point at getResource, else we point at the static resource folders
 
+        String filePath = file.getPath().replaceAll("\\\\", "/"); // Fix windows slashes'
         String fileLocation = "";
-        if (file.getPath().contains("resources/custom"))
+        if (filePath.contains("resources/custom"))
         {
-          fileLocation = file.getPath().replaceAll("\\\\", "/") // Fix windows slashes
+          fileLocation = filePath
                   .replaceAll(file.getName(), "") // Remove this file's name
                   .replaceAll(rootpath, "../");   //
           //fileLocation = "";
+        }
+        else if(filePath.matches(".*pentaho-cdf-dd/css/.*/.*$")){
+          fileLocation = filePath
+                  .replaceAll(file.getName(), "") // Remove this file's name
+                  .replaceAll(rootpath, "../");
         }
         buffer.append(tmp.toString() //
                 // We need to replace all the URL formats
