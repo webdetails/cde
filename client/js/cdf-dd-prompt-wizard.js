@@ -165,7 +165,7 @@ var PromptWizard = WizardManager.extend({
 				value = value+" ";
 			}
 
-			this.invoker.callback(value);
+			this.invoker.promptCallback(value);
 		}
 
 	},{

@@ -4,10 +4,7 @@
  */
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.jxpath.JXPathContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

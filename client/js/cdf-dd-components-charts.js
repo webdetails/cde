@@ -3,19 +3,11 @@
 
 var ChartTypeRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'BarChart':'Bar Chart',
 			'PieChart':'Pie Chart', 
 			'LineChart':'Line Chart',
 			'AreaChart':'Area Chart'
-		},
-
-		getData: function(row){
-			return " {'BarChart':'Bar Chart','PieChart':'Pie Chart', 'AreaChart':'Area Chart','LineChart':'Line Chart','selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
 });
 
@@ -25,7 +17,7 @@ var ChartTypeRenderer = SelectRenderer.extend({
 
 var DomainPeriodTypeRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'Year':'Year',
 			'Quarter':'Quarter', 
 			'Month':'Month',
@@ -35,49 +27,26 @@ var DomainPeriodTypeRenderer = SelectRenderer.extend({
 			'Minute':'Minute',
 			'Second':'Second',
 			'Millisecond':'Millisecond'
-		},
-
-		getData: function(row){
-			return " {'Year':'Year','Quarter':'Quarter', 'Month':'Month', 'Week':'Week', 'Day':'Day', 'Hour':'Hour', 'Minute':'Minute', 'Second':'Second', 'Millisecond':'Millisecond', 'selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
 });
 
 
 var OrientationRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'vertical':'Vertical',
 			'horizontal':'Horizontal'
-		},
-
-		getData: function(row){
-			return " {'vertical':'Vertical','horizontal':'Horizontal', 'selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
+		
 });
 
 
 
 var DomainLabelRotationRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'up':'Clockwise',
 			'down':'CounterClockWise'
-		},
-
-		getData: function(row){
-			return " {'up':'Clockwise','down':'CounterClockWise', 'selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
 });
 
@@ -88,45 +57,20 @@ var DomainLabelRotationRenderer = SelectRenderer.extend({
 
 var DatasetTypeRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'CategoryDataset':'Category Dataset',
 			'TimeSeriesCollection':'TimeSeries Collection'
-		},
-
-		getData: function(row){
-			return " {'':'Choose','CategoryDataset':'Category Dataset','TimeSeriesCollection':'TimeSeries Collection','selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
 });
 
-
-
-
-;
 
 var TopCountAxisRenderer = SelectRenderer.extend({
 
-		translationHash: {
+		selectData: {
 			'rows':'Rows',
 			'columns ':'Columns '
-		},
-
-		getData: function(row){
-			return " {'rows':'Rows','columns':'Columns', 'selected':'" + (this.getExpression(row)) + "'}";
-		},
-
-		getFormattedExpression: function(row, getExpression){
-			return this.translationHash[getExpression(row)];
 		}
 });
-
-
-
-
-
 
 
 var UrlTemplateRenderer = CellRenderer.extend({

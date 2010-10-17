@@ -62,7 +62,7 @@ var DatasourcesPanel = Panel.extend({
 			this.propertiesTable.setTitle("Properties");
 			var propertiesTableModel = new PropertiesTableModel('datasourcesPropertiesTableModel');
 			propertiesTableModel.setColumnGetExpressions([
-				function(row){return row.name},
+				function(row){return row.description},
 				function(row){return CDFDDUtils.ev(row.value)}
 				]);
 
@@ -120,6 +120,7 @@ var DatasourcesPanel = Panel.extend({
 			var output = [];
 			var myself = this;
 			$.each(data,function(i,row){
+        if(row.type != "Label")
 					output.push(row);
 				});
 			return output;

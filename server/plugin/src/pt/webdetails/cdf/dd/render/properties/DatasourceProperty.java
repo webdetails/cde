@@ -15,76 +15,122 @@ import pt.webdetails.cdf.dd.util.XPathUtils;
  *
  * @author pdpi
  */
-public class DatasourceProperty extends GenericProperty {
+public class DatasourceProperty extends GenericProperty
+{
 
-  public DatasourceProperty(String path, Node doc) {
+  public DatasourceProperty(String path, Node doc)
+  {
     // We don't actually want this constructor to do stuff
     super();
   }
 
-  public DatasourceProperty() {
+  public DatasourceProperty()
+  {
     super();
   }
 
   @Override
-  public String getDefinition() {
+  public String getDefinition()
+  {
     return "";
   }
 
   @Override
-  public String render(String name, JXPathContext node) {
+  public String render(String name, JXPathContext node)
+  {
     boolean isCda = false;
     boolean isBuiltIn = false;
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
     Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
 
-    if (!(pointer instanceof NullPointer)) {
+    if (!(pointer instanceof NullPointer))
+    {
       JXPathContext query = node.getRelativeContext(pointer);
       isBuiltIn = !StringUtils.isEmpty(XPathUtils.getStringValue(query, "meta"));
       isCda = !StringUtils.isEmpty(XPathUtils.getStringValue(query, "properties/value[../name='dataAccessId']"));
     }
 
-    if (isCda) {
+    if (isCda)
+    {
       return renderCdaDatasource(name, node);
-    } else if (isBuiltIn) {
+    }
+    else if (isBuiltIn)
+    {
       return renderBuiltinCdaDatasource(name, node);
-    } else {
+    }
+    else
+    {
       return renderDatasource(name, node);
     }
   }
 
   @Override
-  public String getName() {
+  public String getName()
+  {
     return "dataSource";
   }
 
-  private String renderCdaDatasource(String name, JXPathContext node) {
+  private String renderCdaDatasource(String name, JXPathContext node)
+  {
     StringBuilder output = new StringBuilder();
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
-    if (queryName.length() > 0) {
+    if (queryName.length() > 0)
+    {
       Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
-      if (!(pointer instanceof NullPointer)) {
+      if (!(pointer instanceof NullPointer))
+      {
 
         JXPathContext query = node.getRelativeContext(pointer);
-        output.append("dataAccessId: \"" + XPathUtils.getStringValue(query, "properties/value[../name='dataAccessId']") + "\"," + newLine);
-        output.append("solution: \"" + XPathUtils.getStringValue(query, "properties/value[../name='solution']") + "\"," + newLine);
-        output.append("path: \"" + XPathUtils.getStringValue(query, "properties/value[../name='path']") + "\"," + newLine);
-        output.append("file: \"" + XPathUtils.getStringValue(query, "properties/value[../name='file']") + "\"," + newLine);
+        output.append("dataAccessId: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='dataAccessId']")).append("\",").append(newLine);
+
+        // Check if we have a cdaFile
+        if (XPathUtils.exists(query, "properties/value[../name='cdaPath']"))
+        {
+          output.append("path: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='cdaPath']")).append("\",").append(newLine);
+        }
+        else
+        {
+          // legacy
+          output.append("solution: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='solution']")).append("\",").append(newLine);
+          output.append("path: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='path']")).append("\",").append(newLine);
+          output.append("file: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='file']")).append("\",").append(newLine);
+
+        }
       }
     }
     return replaceParameters(output.toString());
 
   }
 
-  public String renderDatasource(String name, JXPathContext node) {
+  public String renderDatasource(String name, JXPathContext node)
+  {
     StringBuilder output = new StringBuilder();
-    if (name.length() > 0) {
+
+
+
+
+    if (name.length() > 0)
+    {
       String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
-      if (queryName.length() == 0) {
+
+
+
+
+      if (queryName.length() == 0)
+      {
         return "";
+
+
+
+
       }
       Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
-      if (!(pointer instanceof NullPointer)) {
+
+
+
+
+      if (!(pointer instanceof NullPointer))
+      {
 
         JXPathContext query = node.getRelativeContext(pointer);
         output.append("jndi: \"" + XPathUtils.getStringValue(query, "properties/value[../name='jndi']") + "\"," + newLine);
@@ -95,35 +141,74 @@ public class DatasourceProperty extends GenericProperty {
         String mdxQuery = XPathUtils.getStringValue(query, "properties/value[../name='mdxquery']");
         String processedQuery;
         String queryType;
-        if (!mdxQuery.equals("")) {
+
+
+
+
+        if (!mdxQuery.equals(""))
+        {
           processedQuery = getFunctionParameter(mdxQuery, true);
           queryType = "\"mdx\"";
-        } else {
+
+
+
+
+        }
+        else
+        {
           processedQuery = getFunctionParameter(XPathUtils.getStringValue(query, "properties/value[../name='sqlquery']"), true);
           queryType = "\"sql\"";
+
+
+
+
         }
         output.append("\t\tquery: " + processedQuery + "," + newLine);
         output.append("\t\tqueryType:" + queryType + "," + newLine);
+
+
+
+
       }
 
     }
     return replaceParameters(output.toString());
+
+
+
+
   }
 
-  private String renderBuiltinCdaDatasource(String name, JXPathContext node) {
+  private String renderBuiltinCdaDatasource(String name, JXPathContext node)
+  {
     StringBuilder output = new StringBuilder();
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
-    if (queryName.length() > 0) {
+
+
+
+
+    if (queryName.length() > 0)
+    {
       Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
-      if (!(pointer instanceof NullPointer)) {
+
+
+
+
+      if (!(pointer instanceof NullPointer))
+      {
 
         JXPathContext query = node.getRelativeContext(pointer);
         output.append("dataAccessId: \"" + XPathUtils.getStringValue(query, "properties/value[../name='name']") + "\"," + newLine);
-        output.append("path: \"" + XPathUtils.getStringValue(query, "/filename").replaceAll(".cdfde",".cda") + "\","+ newLine);
+        output.append("path: \"" + XPathUtils.getStringValue(query, "/filename").replaceAll(".cdfde", ".cda") + "\"," + newLine);
+
+
+
+
       }
     }
     return replaceParameters(output.toString());
 
+
+
   }
 }
-

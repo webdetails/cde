@@ -1,8 +1,8 @@
 <DesignerComponent>
 	<Header>
-		<Name>XAction Component</Name>
-		<IName>xAction</IName>
-		<Description>XAction Component</Description>
+		<Name>Xaction Component</Name>
+		<IName>xaction</IName>
+		<Description>Xaction Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Others</CatDescription>
 		<Type>PalleteEntry</Type>

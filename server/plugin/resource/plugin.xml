@@ -4,6 +4,7 @@
 		<static-path url="/pentaho-cdf-dd/js" localFolder="js"/>
 		<static-path url="/pentaho-cdf-dd/css" localFolder="css"/>
 		<static-path url="/pentaho-cdf-dd/images" localFolder="images"/>
+		<static-path url="/pentaho-cdf-dd/lang" localFolder="lang"/>
 	</static-paths>
 	<content-types>
 		<content-type type="wcdf" mime-type="text/html">
@@ -27,15 +28,15 @@
 		</content-type>
 	</content-types>
 	<overlays>
-		<overlay id="launch" resourcebundle="content/pentaho-cdf-dd/messages.properties">
+		<overlay id="launch" resourcebundle="content/pentaho-cdf-dd/lang/messages.properties">
 			<button 
 				id="launch_new_cde" 
 				label="${Launcher.NEW_CDE}" 
 				image="content/pentaho-cdf-dd/images/overlay/quicklaunch_button_cde.png"
 				command="openURL('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'content/pentaho-cdf-dd/NewDashboard')"/>
 		</overlay>
-		<overlay id="startup.dashboardToolbar"  resourcebundle="../content/pentaho-cdf-dd/messages">
-			<overlay id="startup.dashboardToolbar" resourcebundle="../content/pentaho-cdf-dd/messages">
+		<overlay id="startup.dashboardToolbar"  resourcebundle="../content/pentaho-cdf-dd/lang/messages">
+			<overlay id="startup.dashboardToolbar" resourcebundle="../content/pentaho-cdf-dd/lang/messages">
 				<toolbarbutton id="newAnalysisButton" removeelement="false"/>
 				<toolbar id="mainToolbar">
 					<toolbarbutton id="newCDE" image="content/pentaho-cdf-dd/images/overlay/cde_toolbar_icon.png" onclick="mainToolbarHandler.openUrl('${tabName}','${tabName}','content/pentaho-cdf-dd/NewDashboard')" tooltiptext="${openNewCDE}" insertafter="newCDEButton"/>

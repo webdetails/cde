@@ -5,14 +5,9 @@
 package pt.webdetails.cdf.dd.render.datasources;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Set;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.dom4j.Node;
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 
 /**

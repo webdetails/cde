@@ -2,480 +2,470 @@
 
 var ParameterEntry = PalleteEntry.extend({
 
-		id: "PARAMETER_ENTRY",
-		name: "Simple parameter",
-		description: "Simple parameter",
-		category: "GENERIC",
-		categoryDesc: "Generic",
+  id: "PARAMETER_ENTRY",
+  name: "Simple parameter",
+  description: "Simple parameter",
+  category: "GENERIC",
+  categoryDesc: "Generic",
 
-		getStub: function(){
-			 return ComponentsParameterModel.getStub();
-		}
+  getStub: function(){
+    return ComponentsParameterModel.getStub();
+  }
 
-	});
+});
 
 var ComponentsParameterModel = BaseModel.extend({
-	},{
-		MODEL: 'ComponentsParameter',
+  },{
+    MODEL: 'ComponentsParameter',
 
-		getStub: function(){
+    getStub: function(){
 
-			var _stub = {
-				id: TableManager.generateGUID(),
-				type: ComponentsParameterModel.MODEL,
-				typeDesc: "Parameter",
-				parent: IndexManager.ROOTID,
-				properties: []
-			};
+      var _stub = {
+        id: TableManager.generateGUID(),
+        type: ComponentsParameterModel.MODEL,
+        typeDesc: "Parameter",
+        parent: IndexManager.ROOTID,
+        properties: []
+      };
 
-			_stub.properties.push(PropertiesManager.getProperty("name"));
-			_stub.properties.push(PropertiesManager.getProperty("propertyValue"));
+      _stub.properties.push(PropertiesManager.getProperty("name"));
+      _stub.properties.push(PropertiesManager.getProperty("propertyValue"));
 
-			return _stub;
-		}
-	});
+      return _stub;
+    }
+  });
 BaseModel.registerModel(ComponentsParameterModel);
 CDFDDComponentsArray.push(new ParameterEntry());
 
 var ComponentsOlapParameterModel = ComponentsParameterModel.extend({
-	},{
-		MODEL: 'ComponentsOlapParameter',
+  },{
+    MODEL: 'ComponentsOlapParameter',
 
-		getStub: function(){
-			var _stub = ComponentsParameterModel.getStub();
-			_stub.dimension = "";
-			return _stub;
-		}
-	});
+    getStub: function(){
+      var _stub = ComponentsParameterModel.getStub();
+      _stub.dimension = "";
+      return _stub;
+    }
+  });
 BaseModel.registerModel(ComponentsOlapParameterModel);
 
 
 // Javascript Paramenter
 var JavascriptParameterEntry = PalleteEntry.extend({
 
-		id: "JAVASCRIPT_PARAMETER_ENTRY",
-		name: "Custom parameter",
-		description: "Custom parameter with javascript code",
-		category: "GENERIC",
-		categoryDesc: "Generic",
-		getStub: function(){
-			 return ComponentsJavascriptParameterModel.getStub();
-		}
+  id: "JAVASCRIPT_PARAMETER_ENTRY",
+  name: "Custom parameter",
+  description: "Custom parameter with javascript code",
+  category: "GENERIC",
+  categoryDesc: "Generic",
+  getStub: function(){
+    return ComponentsJavascriptParameterModel.getStub();
+  }
 
-	});
+});
 	
 	
 var PromptRenderer = CellRenderer.extend({
 
-			constructor: function(){
-				this.base();
-				this.logger = new Logger("PromptRenderer");
-				this.logger.debug("Creating new PromptRenderer");
-				this.wizard = "PROMPT_WIZARD";
-			},
+  callback: null,
+  editArea: null,
+  value: null,
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("PromptRenderer");
+    this.logger.debug("Creating new PromptRenderer");
+    this.wizard = "PROMPT_WIZARD";
+  },
 			
-			render: function(row,placeholder, getExpression,setExpression,editable, getRow){
-			
-				if(editable){
-				
-					this.row = row;
-					this.getExpression = getExpression;
-					this.setExpression = setExpression;
-					this.placeholder = placeholder;
-					this.getRow = getRow;
-					
-						var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
-						this.editArea = _editArea;
+  render: function(placeholder, value, callback){
+
+    this.value=value;
+    this.placeholder = placeholder;
+    this.callback = callback;
+
+    var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
+    this.editArea = _editArea;
 						
-						_editArea.find("code").text(this.getFormattedExpression(row, getExpression));
-						var myself= {row: row,getRow: getRow, getExpression:getExpression, setExpression:setExpression,editArea:_editArea,wizard:this.wizard};
-						myself.callback = this.callback;
-						myself.getValue = this.getValue;
-						myself.getPropertyValue = this.getPropertyValue;
-						var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-								var wizard = PromptWizardManager.getWizard(myself.wizard);
-								wizard.setInvoker(myself);
-								wizard.render();
-							}).appendTo($("div.edit",_editArea));
+    _editArea.find("code").text(this.getFormattedValue(value));
+    var myself= this;
 
-						_editArea.appendTo(placeholder);
-				}
-				else
-					$("<td>"+ this.getFormattedExpression(row, getExpression) +"</td>").appendTo(placeholder);
-			},
+    var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
+      var wizard = PromptWizardManager.getWizard(myself.wizard);
+      wizard.setInvoker(myself);
+      wizard.render();
+    }).appendTo($("div.edit",_editArea));
+
+    _editArea.appendTo(placeholder);
+
+  },
 
 
-			validate: function(settings, original){
-				return true;
-			},
+  validate: function(settings, original){
+    return true;
+  },
 			
-			getFormattedExpression: function(row, getExpression){
-				var _value = getExpression(row);
-				if(_value.length > 30){
-					_value = _value.substring(0,20) + " (...)";
-				}
-				return _value;
-			},
-			
-			getValue: function(){
-				return this.getExpression(this.row);
-			},
-			
-			getPropertyValue: function(id){
-				return this.getRow(id).value;
-			},
-			
-			callback: function(value){
-				this.setExpression(this.row,value);
-				this.editArea.find("code").text(value.length > 30 ? value.substring(0,20) + " (...)" : value);
-			}
+  getFormattedValue: function(_value){
+    
+    if(_value.length > 30){
+      _value = _value.substring(0,20) + " (...)";
+    }
+    return _value;
+  },
+
+  getValue: function(){
+    return this.value;
+  },
+
+  getPropertyValue: function(id){
+    return this.getTableManager().getTableModel().getRowByName(id).value;
+  },
+
+  promptCallback: function(value){
+    this.callback(value)
+    this.value = value;
+    this.editArea.find("code").text(value.length > 30 ? value.substring(0,20) + " (...)" : value);
+  }
 });
 
 var JavaScriptRenderer = PromptRenderer.extend({
 
-		constructor: function(){
-			this.base();
-			this.logger = new Logger("JavascriptRenderer");
-			this.logger.debug("Creating new JascriptRenderer");
-			this.wizard = "JAVASCRIPT_WIZARD";
-		}
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("JavascriptRenderer");
+    this.logger.debug("Creating new JascriptRenderer");
+    this.wizard = "JAVASCRIPT_WIZARD";
+  }
 });
 
 var MdxQueryRenderer = PromptRenderer.extend({
 
-		constructor: function(){
-			this.base();
-			this.logger = new Logger("MdxQueryRenderer");
-			this.logger.debug("Creating new MdxQueryRenderer");
-			this.wizard = "MDX_WIZARD";
-		}
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("MdxQueryRenderer");
+    this.logger.debug("Creating new MdxQueryRenderer");
+    this.wizard = "MDX_WIZARD";
+  }
 });
 
 var SqlQueryRenderer = PromptRenderer.extend({
 
-		constructor: function(){
-			this.base();
-			this.logger = new Logger("SqlQueryRenderer");
-			this.logger.debug("Creating new SqlQueryRenderer");
-			this.wizard = "SQL_WIZARD";
-		}
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("SqlQueryRenderer");
+    this.logger.debug("Creating new SqlQueryRenderer");
+    this.wizard = "SQL_WIZARD";
+  }
 });
 
 
 var ValuesArrayRenderer = CellRenderer.extend({
 
-			multiDimensionArray: true,
+  multiDimensionArray: true,
 			
-			cssPrefix: "StringList",
+  cssPrefix: "StringList",
 			
-			hasTypedValues: false,//if true, args also have a type
+  hasTypedValues: false,//if true, args also have a type
 			
-			typesArray: [],//only used if hasTypedValues
+  typesArray: [],//only used if hasTypedValues
 
-			constructor: function(){
-				this.base();
-				this.logger = new Logger("ValuesArrayRenderer");
-				this.logger.debug("Creating new ValuesArrayRenderer");
-			},
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("ValuesArrayRenderer");
+    this.logger.debug("Creating new ValuesArrayRenderer");
+  },
 			
-			render: function(row,placeholder, getExpression,setExpression,editable, getRow){
+  render: function(placeholder, value, callback){
 			
-				if(editable){
 					
-					this.row = row;
-					this.getExpression = getExpression;
-					this.setExpression = setExpression;
-					this.placeholder = placeholder;
+    var _editArea = $("<td>"+ value  +"</td>");
+    var myself = this;
 					
-					var _editArea = $("<td>"+ this.getExpression(row)  +"</td>");
-					var myself = this;
+    _editArea.click(function(){
 					
-					_editArea.click(function(){
-					
-						var arrayValue = myself.getExpression(row);
-						var content = $('\
+      var arrayValue = value;
+      var content = $('\
 							<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\
 								<div class="' + myself.cssPrefix +'"></div>\
 								<input class="' + myself.cssPrefix +'AddButton" type="button" value="Add"></input>\
 							</div>');
 					        
-                                                vals = JSON.parse(arrayValue);	
-						for(val in vals){
-							 if(myself.multiDimensionArray){
-								if(myself.hasTypedValues){	
-									myself.addTypedParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), vals[val][2], content);
-								}
-								else {
-									myself.addParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), content);
-								}
-							 }
-							 else{
-									if(myself.hasTypedValues){
-										 myself.addTypedParameters(val,vals[val],"null",null,content);
-									}
-									else {
-										myself.addParameters(val,vals[val],"null",content);
-									}
-							 }
-						}
-						var index = vals.length; 
-//						if(arrayValue.length>0)
-//							arrayValue = arrayValue.substring(1,arrayValue.length-1);
-//														
-//						var values = myself.multiDimensionArray ? arrayValue.split("],[") : arrayValue.split(",");
-//						var index = 0;
-//						for(v in values){
-//							var value = values[v].replace(/"/g,"")
-//								.replace(/]$/,"").replace(/\[?/,"").replace(/]$/,"")
-//								.split(",");
-//							myself.addParameters(index,value[0],(value[1] != undefined ? value[1] : ""),content);
-//							index++;
-//						}
-						$.prompt('<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix +'Container">' + content.html() + '</div>',{ buttons: { Ok: true, Cancel: false} , prefix: 'jqi' + myself.cssPrefix,
-							callback: function(v,m,f){
-								if(v){
-									// A bit of a hack to make null happen
-									arrayValue = arrayValue.replace(/"null"/g,"null");
-									myself.setExpression(row,arrayValue);
-									_editArea.text(arrayValue);
-								}
-							},
-							loaded: function(){
-								$('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
-									if(myself.hasTypedValues) myself.addTypedParameters(index,"","","",$("#" + myself.cssPrefix));
-									else myself.addParameters(index,"","",$("#" + myself.cssPrefix));
+      vals = JSON.parse(arrayValue);
+      for(val in vals){
+        if(myself.multiDimensionArray){
+          if(myself.hasTypedValues){
+            myself.addTypedParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), vals[val][2], content);
+          }
+          else {
+            myself.addParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), content);
+          }
+        }
+        else{
+          if(myself.hasTypedValues){
+            myself.addTypedParameters(val,vals[val],"null",null,content);
+          }
+          else {
+            myself.addParameters(val,vals[val],"null",content);
+          }
+        }
+      }
+      var index = vals.length;
+
+      $.prompt('<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix +'Container">' + content.html() + '</div>',{
+        buttons: {
+          Ok: true,
+          Cancel: false
+        } ,
+        prefix: 'jqi' + myself.cssPrefix,
+        callback: function(v,m,f){
+          if(v){
+            // A bit of a hack to make null happen
+            arrayValue = arrayValue.replace(/"null"/g,"null");
+            callback(arrayValue);
+            _editArea.text(arrayValue);
+          }
+        },
+        loaded: function(){
+          $('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
+            if(myself.hasTypedValues) myself.addTypedParameters(index,"","","",$("#" + myself.cssPrefix));
+            else myself.addParameters(index,"","",$("#" + myself.cssPrefix));
 									
-									$("#remove_button_"+index).bind('click',myself.removeParameter);
-									$("#parameter_button_"+index).bind('click',myself.addParamterValue);
-									index++;
-								});
-								$('.' + myself.cssPrefix + 'Remove').bind('click',myself.removeParameter);
-								$('.' + myself.cssPrefix + 'Parameter').bind('click',myself.addParamterValue);
-							},
-							submit: function(v,m,f){
-								var array = [];
-								for(var i = 0; i < index; i++){
-									if($("#arg_" + i).length > 0 && $("#arg_" + i).val().length > 0){
-										if(myself.multiDimensionArray){
-										 if(myself.hasTypedValues) array.push([$("#arg_" + i).val(),$("#val_" + i).val(), $("#type_" + i).val()]);
-										 else array.push([$("#arg_" + i).val(),$("#val_" + i).val()]);//TODO:ok?
-										}
-										else{
-											array.push($("#arg_" + i).val());
-										}
-									}
-								}
-								arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
-							}
-							});
-					 });
+            $("#remove_button_"+index).bind('click',myself.removeParameter);
+            $("#parameter_button_"+index).bind('click',myself.addParamterValue);
+            index++;
+          });
+          $('.' + myself.cssPrefix + 'Remove').bind('click',myself.removeParameter);
+          $('.' + myself.cssPrefix + 'Parameter').bind('click',myself.addParamterValue);
+        },
+        submit: function(v,m,f){
+          var array = [];
+          for(var i = 0; i < index; i++){
+            if($("#arg_" + i).length > 0 && $("#arg_" + i).val().length > 0){
+              if(myself.multiDimensionArray){
+                if(myself.hasTypedValues) array.push([$("#arg_" + i).val(),$("#val_" + i).val(), $("#type_" + i).val()]);
+                else array.push([$("#arg_" + i).val(),$("#val_" + i).val()]);//TODO:ok?
+              }
+              else{
+                array.push($("#arg_" + i).val());
+              }
+            }
+          }
+          arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
+        }
+      });
+    });
 					 
-					_editArea.appendTo(placeholder);
-				}
-				else{
-					$("<td>"+ getExpression(row) +"</td>").appendTo(placeholder);
-				}
-			},
+    _editArea.appendTo(placeholder);
 
-			validate: function(settings, original){
-				return true;
-			},
-			
-			addParameters : function(i,arg,val,container){
+  },
 
-				var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
-				var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
-				var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-					'<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
-					'<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n'; 
-				var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-					'<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
-					'<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n'; 
-				var row = 
-					'<did id="parameters_' + i +'" >\n' + 
-					argInput + 
-					(this.multiDimensionArray ? ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  removeButton) + 
-					'</div>\n';
-				container.find('.' + this.cssPrefix).append(row);
-			},
+  validate: function(settings, original){
+    return true;
+  },
 			
-			addTypedParameters : function(i,arg,val,type,container){
-			  //used when hasTypedValues=true, assumes multiDimensionalArray
-				var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
-				var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
-				var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-					'<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
-					'<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n'; 
-				var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-					'<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
-					'<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
+  addParameters : function(i,arg,val,container){
+
+    var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
+    var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
+    var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
+    '<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
+    '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
+    var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
+    '<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
+    '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
+    var row =
+    '<did id="parameters_' + i +'" >\n' +
+    argInput +
+    (this.multiDimensionArray ? ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  removeButton) +
+    '</div>\n';
+    container.find('.' + this.cssPrefix).append(row);
+  },
+			
+  addTypedParameters : function(i,arg,val,type,container){
+    //used when hasTypedValues=true, assumes multiDimensionalArray
+    var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
+    var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
+    var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
+    '<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
+    '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
+    var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
+    '<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
+    '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
 					
-				 var typeOptions = "";
-				 for(var j = 0; j < this.typesArray.length; j++){
-						typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
-						typeOptions += this.typesArray[j] + '</option>';
-				 }
-				 var typeSelect = '<div class="'+this.cssPrefix+'Type">' + 
-						'<span class="'+this.cssPrefix+'TextLabel">Type'+i+':</span>' +
-						'<select  id="type_' + i + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n'; 
-				var row = 
-					'<did id="parameters_' + i +'" >\n' + 
-					argInput + 
-					'<div class="' + this.cssPrefix +'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix +'Types">' +  typeSelect + parameterButton + removeButton  +'<br /></div>\n';
-				container.find('.' + this.cssPrefix).append(row);
-			},
+    var typeOptions = "";
+    for(var j = 0; j < this.typesArray.length; j++){
+      typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
+      typeOptions += this.typesArray[j] + '</option>';
+    }
+    var typeSelect = '<div class="'+this.cssPrefix+'Type">' +
+    '<span class="'+this.cssPrefix+'TextLabel">Type'+i+':</span>' +
+    '<select  id="type_' + i + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n';
+    var row =
+    '<did id="parameters_' + i +'" >\n' +
+    argInput +
+    '<div class="' + this.cssPrefix +'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix +'Types">' +  typeSelect + parameterButton + removeButton  +'<br /></div>\n';
+    container.find('.' + this.cssPrefix).append(row);
+  },
 						
-			removeParameter : function(){
-				$("#" + this.id.replace("remove_button_","parameters_")).remove();
-			},
+  removeParameter : function(){
+    $("#" + this.id.replace("remove_button_","parameters_")).remove();
+  },
 						
-			addParamterValue : function(){
-				var id = this.id;
-				var content = '<div id="parameterList" class="StringListParameterContainer">';
-				var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(); 
-				if(filters.length == 0)
-					content += "<p>No Parameters!</p>";
-				else{
-					content += '<p>Choose Parameter:</p><ul class="StringListParameter">';
-					$.each(filters,function(i,filter){content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'' + filter.properties[0].value + '\')">' + filter.properties[0].value + '</div></li>';});
-					content += '</ul>';
-				}
+  addParamterValue : function(){
+    var id = this.id;
+    var content = '<div id="parameterList" class="StringListParameterContainer">';
+    var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    if(filters.length == 0)
+      content += "<p>No Parameters!</p>";
+    else{
+      content += '<p>Choose Parameter:</p><ul class="StringListParameter">';
+      $.each(filters,function(i,filter){
+        content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'' + filter.properties[0].value + '\')">' + filter.properties[0].value + '</div></li>';
+      });
+      content += '</ul>';
+    }
 				
-				$.prompt(content + '</div>',{buttons: {Cancel: false}, prefix:'jqiStringListParameters',focus:1});
-			}
+    $.prompt(content + '</div>',{
+      buttons: {
+        Cancel: false
+      },
+      prefix:'jqiStringListParameters',
+      focus:1
+    });
+  }
 },{
-	setParameterValue: function(id,value){
-		$("#" + id.replace("parameter_button_","val_")).val(value);
-		$.prompt.close();
-	}
+  setParameterValue: function(id,value){
+    $("#" + id.replace("parameter_button_","val_")).val(value);
+    $.prompt.close();
+  }
 });
 
 var ArrayRenderer = ValuesArrayRenderer.extend({
 		
-		multiDimensionArray: false,
+  multiDimensionArray: false,
 		
-		cssPrefix: "StringArray",
+  cssPrefix: "StringArray",
 
-		constructor: function(){
-			this.base();
-			this.logger = new Logger("ArrayRenderer");
-			this.logger.debug("Creating new ArrayRenderer");
-		}
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("ArrayRenderer");
+    this.logger.debug("Creating new ArrayRenderer");
+  }
 });
 
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
-	 		cssPrefix: "ParameterList",
+  cssPrefix: "ParameterList",
 			
-			hasTypedValues: true,
-			//TODO: this should be fetched from somewhere
-			typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray']
+  hasTypedValues: true,
+  //TODO: this should be fetched from somewhere
+  typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray']
 });
 
 var ComponentsJavascriptParameterModel = BaseModel.extend({
-	},{
-		MODEL: 'ComponentsJavascriptParameter',
+  },{
+    MODEL: 'ComponentsJavascriptParameter',
 
-		getStub: function(){
+    getStub: function(){
 
-			var _stub = {
-				id: TableManager.generateGUID(),
-				type: ComponentsJavascriptParameterModel.MODEL,
-				typeDesc: "Custom Parameter",
-				parent: IndexManager.ROOTID,
-				properties: []
-			};
+      var _stub = {
+        id: TableManager.generateGUID(),
+        type: ComponentsJavascriptParameterModel.MODEL,
+        typeDesc: "Custom Parameter",
+        parent: IndexManager.ROOTID,
+        properties: []
+      };
 
-			_stub.properties.push(PropertiesManager.getProperty("name"));
-			_stub.properties.push(PropertiesManager.getProperty("javaScript"));
+      _stub.properties.push(PropertiesManager.getProperty("name"));
+      _stub.properties.push(PropertiesManager.getProperty("javaScript"));
 
-			return _stub;
-		}
-	});
+      return _stub;
+    }
+  });
 BaseModel.registerModel(ComponentsJavascriptParameterModel);
 CDFDDComponentsArray.push(new JavascriptParameterEntry());
 
 
-// Date Parameter - disabled for now
+
 var DateParameterEntry = PalleteEntry.extend({
 
-		id: "DATE_PARAMETER_ENTRY",
-		name: "Date parameter",
-		description: "Date parameter",
-		category: "GENERIC",
-		categoryDesc: "Generic",
-		getStub: function(){
-			 return ComponentsDateParameterModel.getStub();
-		}
+  id: "DATE_PARAMETER_ENTRY",
+  name: "Date parameter",
+  description: "Date parameter",
+  category: "GENERIC",
+  categoryDesc: "Generic",
+  getStub: function(){
+    return ComponentsDateParameterModel.getStub();
+  }
 
-	});
+});
 
 var ComponentsDateParameterModel = BaseModel.extend({
-	},{
-		MODEL: 'ComponentsDateParameter',
+  },{
+    MODEL: 'ComponentsDateParameter',
 
-		getStub: function(){
+    getStub: function(){
 
-			var _stub = {
-				id: TableManager.generateGUID(),
-				type: ComponentsDateParameterModel.MODEL,
-				typeDesc: "DateParameter",
-				parent: IndexManager.ROOTID,
-				properties: []
-			};
+      var _stub = {
+        id: TableManager.generateGUID(),
+        type: ComponentsDateParameterModel.MODEL,
+        typeDesc: "DateParameter",
+        parent: IndexManager.ROOTID,
+        properties: []
+      };
 
-			_stub.properties.push(PropertiesManager.getProperty("name"));
-			_stub.properties.push(PropertiesManager.getProperty("propertyDateValue"));
-			_stub.properties.push(PropertiesManager.getProperty("propertyDateDim"));
+      _stub.properties.push(PropertiesManager.getProperty("name"));
+      _stub.properties.push(PropertiesManager.getProperty("propertyDateValue"));
+      //_stub.properties.push(PropertiesManager.getProperty("propertyDateDim")); <- what's this for?'
 
-			return _stub;
-		}
-	});
+      return _stub;
+    }
+  });
 BaseModel.registerModel(ComponentsDateParameterModel);
 CDFDDComponentsArray.push(new DateParameterEntry());
 
 
 // Function Entry
 var FunctionEntry = PalleteEntry.extend({
-		id: "FUNCTION_ENTRY",
-		name: "JavaScript Function",
-		description: "JavaScript function",
-		category: "SCRIPT",
-		categoryDesc: "Scripts",
-		getStub: function(){
-			 return ComponentsFunctionModel.getStub();
-		}
-	});
+  id: "FUNCTION_ENTRY",
+  name: "JavaScript Function",
+  description: "JavaScript function",
+  category: "SCRIPT",
+  categoryDesc: "Scripts",
+  getStub: function(){
+    return ComponentsFunctionModel.getStub();
+  }
+});
 
 var ComponentsFunctionModel = BaseModel.extend({
-	},{
-		MODEL: 'ComponentsFunction',
+  },{
+    MODEL: 'ComponentsFunction',
 
-		getStub: function(){
+    getStub: function(){
 
-			var _stub = {
-				id: TableManager.generateGUID(),
-				type: ComponentsFunctionModel.MODEL,
-				typeDesc: "Function",
-				parent: IndexManager.ROOTID,
-				properties: []
-			};
+      var _stub = {
+        id: TableManager.generateGUID(),
+        type: ComponentsFunctionModel.MODEL,
+        typeDesc: "Function",
+        parent: IndexManager.ROOTID,
+        properties: []
+      };
 
-			_stub.properties.push(PropertiesManager.getProperty("name"));
-			_stub.properties.push(PropertiesManager.getProperty("javaScript"));
+      _stub.properties.push(PropertiesManager.getProperty("name"));
+      _stub.properties.push(PropertiesManager.getProperty("javaScript"));
 
-			return _stub;
-		}
-	});
+      return _stub;
+    }
+  });
 BaseModel.registerModel(ComponentsFunctionModel);
 CDFDDComponentsArray.push(new FunctionEntry());
 
 var CdaQueryRenderer = PromptRenderer.extend({
 
-		constructor: function(){
-			this.base();
-			this.logger = new Logger("CdaQueryRenderer");
-			this.logger.debug("Creating new CdaQueryRenderer");
-			this.wizard = "CDA_WIZARD";
-		}
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("CdaQueryRenderer");
+    this.logger.debug("Creating new CdaQueryRenderer");
+    this.wizard = "CDA_WIZARD";
+  }
 });
 
