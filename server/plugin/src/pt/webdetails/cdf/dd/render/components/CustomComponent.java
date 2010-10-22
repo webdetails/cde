@@ -33,6 +33,7 @@ public class CustomComponent extends GenericComponent
   public void setDefinition(Node definition)
   {
     DependenciesEngine cdfDeps = DependenciesManager.getInstance().getEngine("CDF");
+    DependenciesEngine rawDeps = DependenciesManager.getInstance().getEngine("CDF-RAW");
     DependenciesEngine styleDeps = DependenciesManager.getInstance().getEngine("CDF-CSS");
     DependenciesEngine ddDeps = DependenciesManager.getInstance().getEngine("CDFDD");
     this.componentName = XmlDom4JHelper.getNodeText("Header/IName", definition);
@@ -85,6 +86,24 @@ public class CustomComponent extends GenericComponent
       catch (Exception e)
       {
         logger.error("failed to register " + path + src);
+      }
+
+    }
+
+    List<Node> rawCode = definition.selectNodes("Contents/Implementation/Raw/*");
+
+    for (Node node : rawCode)
+    {
+      String name = XmlDom4JHelper.getNodeText("@name", node);
+      String depVer = XmlDom4JHelper.getNodeText("@version", node);
+      src = XmlDom4JHelper.getNodeText(".", node);
+      try
+      {
+        rawDeps.registerRaw(name, depVer, src);
+      }
+      catch (Exception e)
+      {
+        logger.error("failed to register code fragment: " + src);
       }
 
     }

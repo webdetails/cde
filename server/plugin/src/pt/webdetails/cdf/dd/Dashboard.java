@@ -210,7 +210,9 @@ class Dashboard implements Serializable
         styles = DependenciesManager.getInstance().getEngine("CDF-CSS").getPackagedDependencies();
       }
     }
-    return cdfDependencies + dependencies + styles;
+
+    String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
+    return cdfDependencies + raw + dependencies + styles;
   }
 
   protected static synchronized Cache getCache() throws CacheException

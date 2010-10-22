@@ -1,4 +1,4 @@
-// 3ec4c9b296db63c46643ed7db009f9cd188d4511
+// 40c6f5ffe4b15a3df4723b1de6a55d8730f44c95
 /**
  * @class The built-in Array class.
  * @name Array
@@ -312,6 +312,9 @@ pv.error = function(e) {
  * @param {function} the event handler callback.
  */
 pv.listen = function(target, type, listener) {
+  if (type == 'load' || type == 'onload')
+      return pv.listenForPageLoad (pv.listener(listener));
+
   listener = pv.listener(listener);
   return target.addEventListener
       ? target.addEventListener(type, listener, false)
@@ -351,6 +354,43 @@ pv.ancestor = function(a, e) {
   return false;
 };
 
+/**
+ * Binds to the page ready event in a browser-agnostic
+ * fashion (i.e. that works under IE!)
+ */
+pv.listenForPageLoad = function(listener) {
+
+    // Catch cases where $(document).ready() is called after the
+    // browser event has already occurred.
+    if ( document.readyState === "complete" ) {
+        listener();
+    }
+
+    if (pv.renderer() == "svgweb") {
+        // SVG web adds addEventListener to IE.
+        window.addEventListener( "SVGLoad", listener, false );
+    } else {
+        // Mozilla, Opera and webkit nightlies currently support this event
+        if ( document.addEventListener ) {
+            window.addEventListener( "load", listener, false );
+
+        // If IE event model is used
+        } else if ( document.attachEvent ) {
+            window.attachEvent( "onload", listener );
+        }
+    }
+}
+
+/**
+ * @public Returns the name of the renderer we're using -
+ *
+ * 'nativesvg' is the default - the native svg of the browser.
+ * 'svgweb' is if we identify svgweb is there.
+ */
+pv.renderer = function() {
+    return (typeof window.svgweb === "undefined") ? "nativesvg" : "svgweb";
+}
+
 /** @private Returns a locally-unique positive id. */
 pv.id = function() {
   var id = 1; return function() { return id++; };
@@ -373,8 +413,9 @@ pv.listen(window, "load", function() {
     * could overwrite local variables here (such as the index, `i`)!  To protect
     * against this, all variables are explicitly scoped on a pv.$ object.
     */
-    pv.$ = {i:0, x:document.getElementsByTagName("script")};
-    for (; pv.$.i < pv.$.x.length; pv.$.i++) {
+   pv.$ = {i:0, x:document.getElementsByTagName("script")};
+    pv.$.xlen = pv.$.x.length;
+    for (; pv.$.i < pv.$.xlen; pv.$.i++) {
       pv.$.s = pv.$.x[pv.$.i];
       if (pv.$.s.type == "text/javascript+protovis") {
         try {
@@ -5074,7 +5115,10 @@ pv.SvgScene.expect = function(e, type, attributes, style) {
   for (var name in style) {
     var value = style[name];
     if (value == this.implicit.css[name]) value = null;
-    if (value == null) e.style.removeProperty(name);
+    if (value == null) {
+        if (pv.renderer() != 'svgweb') // svgweb doesn't support removeproperty TODO SVGWEB
+            e.style.removeProperty(name);
+    }
     else e.style[name] = value;
   }
   return e;
@@ -5108,7 +5152,11 @@ pv.SvgScene.title = function(e, s) {
       if (e.parentNode) e.parentNode.replaceChild(a, e);
       a.appendChild(e);
     }
-    a.setAttributeNS(this.xlink, "title", s.title);
+
+    // Set the title. Using xlink:title ensures the call works in IE
+    // but only FireFox seems to show the title.
+    // without xlink: in there, it breaks IE.
+    a.setAttributeNS(this.xlink, "xlink:title", s.title);
     return a;
   }
   if (a) a.parentNode.replaceChild(e, a);
@@ -5771,7 +5819,7 @@ pv.SvgScene.dot = function(scenes) {
     };
     if (path) {
       svg.transform = "translate(" + s.left + "," + s.top + ")";
-      if (s.shapeAngle) svg.transform += " rotate(" + 180 * s.shapeAngle / Math.PI + ")";
+      if (s.angle) svg.transform += " rotate(" + 180 * s.shapeAngle / Math.PI + ")";
       svg.d = path;
       e = this.expect(e, "path", svg);
     } else {
@@ -5842,8 +5890,19 @@ pv.SvgScene.label = function(scenes) {
     /* text-baseline, text-align */
     var x = 0, y = 0, dy = 0, anchor = "start";
     switch (s.textBaseline) {
-      case "middle": dy = ".35em"; break;
-      case "top": dy = ".71em"; y = s.textMargin; break;
+      case "middle":
+          if (pv.renderer() == 'svgweb')
+              y = 3; // flex doesn't seem to use dy, so this moves it to be 'about right'
+          else
+              dy = ".35em";
+          break;
+      case "top":
+          if (pv.renderer() == 'svgweb') {
+              y = 9 + s.textMargin; // flex doesn't seem to use dy, so this moves it to be 'about right'
+          } else {
+              dy = ".71em"; y = s.textMargin;
+          }
+        break;
       case "bottom": y = "-" + s.textMargin; break;
     }
     switch (s.textAlign) {
@@ -5870,7 +5929,14 @@ pv.SvgScene.label = function(scenes) {
         "text-decoration": s.textDecoration
       });
     if (e.firstChild) e.firstChild.nodeValue = s.text;
-    else e.appendChild(document.createTextNode(s.text));
+    else {
+        if (pv.renderer() == "svgweb") { // SVGWeb needs an extra 'true' to create SVG text nodes properly in IE.
+            e.appendChild(document.createTextNode(s.text, true));
+        } else {
+            e.appendChild(document.createTextNode(s.text));
+        }
+    }
+
     e = this.append(e, scenes, i);
   }
   return e;
@@ -6050,20 +6116,44 @@ pv.SvgScene.panel = function(scenes) {
         e = g && g.firstChild;
       }
       if (!g) {
-        g = s.canvas.appendChild(this.create("svg"));
+        g = this.create("svg");
         g.setAttribute("font-size", "10px");
         g.setAttribute("font-family", "sans-serif");
         g.setAttribute("fill", "none");
         g.setAttribute("stroke", "none");
         g.setAttribute("stroke-width", 1.5);
-        for (var j = 0; j < this.events.length; j++) {
-          g.addEventListener(this.events[j], this.dispatch, false);
+
+        if (pv.renderer() == "svgweb") { // SVGWeb requires a separate mechanism for setting event listeners.
+            // width/height can't be set on the fragment
+            g.setAttribute("width", s.width + s.left + s.right);
+            g.setAttribute("height", s.height + s.top + s.bottom);
+
+            var frag = document.createDocumentFragment(true);
+
+            g.addEventListener('SVGLoad', function() {
+                this.appendChild(frag);
+                for (var j = 0; j < pv.Scene.events.length; j++) {
+                  this.addEventListener(pv.Scene.events[j], pv.SvgScene.dispatch, false);
+                }
+                scenes.$g = this;
+            }, false);
+
+            svgweb.appendChild (g, s.canvas);
+            g = frag;
+        } else {
+            for (var j = 0; j < this.events.length; j++) {
+              g.addEventListener(this.events[j], this.dispatch, false);
+            }
+            g = s.canvas.appendChild(g);
         }
+
         e = g.firstChild;
       }
       scenes.$g = g;
-      g.setAttribute("width", s.width + s.left + s.right);
-      g.setAttribute("height", s.height + s.top + s.bottom);
+      if (pv.renderer() != 'svgweb') {
+        g.setAttribute("width", s.width + s.left + s.right);
+        g.setAttribute("height", s.height + s.top + s.bottom);
+      }
     }
 
     /* clip (nest children) */
@@ -7004,7 +7094,15 @@ pv.Mark.prototype.render = function() {
        * decoupled (see pv.Scene) to allow different rendering engines.
        */
       pv.Scene.scale = scale;
+
+      var id = null; // SVGWeb performance enhancement.
+      if (mark.scene && mark.scene.$g && mark.scene.$g.suspendRedraw)
+        id = mark.scene.$g.suspendRedraw(1000);
+
       pv.Scene.updateAll(mark.scene);
+
+      if (id) // SVGWeb performance enhancement.
+          mark.scene.$g.unsuspendRedraw(id);
     }
     delete mark.scale;
   }
@@ -7319,25 +7417,30 @@ pv.Mark.prototype.buildImplied = function(s) {
  * @returns {pv.Vector} the mouse location.
  */
 pv.Mark.prototype.mouse = function() {
-
-  /* Compute xy-coordinates relative to the panel. */
-  var x = pv.event.pageX || 0,
-      y = pv.event.pageY || 0,
+  var x = (pv.renderer() == 'svgweb' ? pv.event.clientX * 1 : pv.event.pageX) || 0,
+      y = (pv.renderer() == 'svgweb' ? pv.event.clientY * 1 : pv.event.pageY) || 0,
       n = this.root.canvas();
-  do {
-    x -= n.offsetLeft;
-    y -= n.offsetTop;
-  } while (n = n.offsetParent);
 
-  /* Compute the inverse transform of all enclosing panels. */
-  var t = pv.Transform.identity,
-      p = this.properties.transform ? this : this.parent,
-      pz = [];
-  do { pz.push(p); } while (p = p.parent);
-  while (p = pz.pop()) t = t.translate(p.left(), p.top()).times(p.transform());
-  t = t.invert();
+      /* Compute xy-coordinates relative to the panel.
+       * This is not necessary if we're using svgweb, as svgweb gives us
+       * the necessary relative co-ordinates anyway (well, it seems to
+       * in my code.
+       */
+      if (pv.renderer() != 'svgweb') {
+          do {
+            x -= n.offsetLeft;
+            y -= n.offsetTop;
+          } while (n = n.offsetParent);
+      }
 
-  return pv.vector(x * t.k + t.x, y * t.k + t.y);
+      /* Compute the inverse transform of all enclosing panels. */
+      var t = pv.Transform.identity,
+          p = this.properties.transform ? this : this.parent,
+          pz = [];
+      do { pz.push(p); } while (p = p.parent);
+      while (p = pz.pop()) t = t.translate(p.left(), p.top()).times(p.transform());
+      t = t.invert();
+      return pv.vector(x * t.k + t.x, y * t.k + t.y);
 };
 
 /**
@@ -8893,7 +8996,7 @@ pv.Panel.prototype.buildImplied = function(s) {
     } else {
       var cache = this.$canvas || (this.$canvas = []);
       if (!(c = cache[this.index])) {
-        c = cache[this.index] = document.createElement("span");
+        c = cache[this.index] =  document.createElement(pv.renderer() == "svgweb" ? "div" : "span"); // SVGWeb requires a div, not a span
         if (this.$dom) { // script element for text/javascript+protovis
           this.$dom.parentNode.insertBefore(c, this.$dom);
         } else { // find the last element in the body
@@ -11092,6 +11195,7 @@ pv.Layout.Network.prototype = pv.extend(pv.Layout)
         return v.map(function(d, i) {
             if (typeof d != "object") d = {nodeValue: d};
             d.index = i;
+            d.linkDegree = 0;
             return d;
           });
       })
@@ -11128,9 +11232,6 @@ pv.Layout.Network.prototype.buildImplied = function(s) {
   pv.Layout.prototype.buildImplied.call(this, s);
   if (s.$id >= this.$id) return true;
   s.$id = this.$id;
-  s.nodes.forEach(function(d) {
-      d.linkDegree = 0;
-    });
   s.links.forEach(function(d) {
       var v = d.linkValue;
       (d.sourceNode || (d.sourceNode = s.nodes[d.source])).linkDegree += v;

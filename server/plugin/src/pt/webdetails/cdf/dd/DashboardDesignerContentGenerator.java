@@ -249,13 +249,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
 
     setResponseHeaders(CSS_TYPE, 3600 * 24 * 8, null); // 1 week cache
-    getresource(
-            pathParams, out);
-
-
-
-
-
+    getresource(pathParams, out);
 
   }
 
@@ -266,13 +260,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
-    getresource(
-            pathParams, out);
+    getresource(pathParams, out);
 
+  }
 
-
-
-
+  public void getuntypedresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    response.setHeader("Content-Type", "text/plain");
+    response.setHeader("content-disposition", "inline");
+    getresource(pathParams, out);
 
   }
 
