@@ -75,12 +75,12 @@ var TableManager = Base.extend({
 
     isLayoutTable=false;
     var table = ''+
-      //	(isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
+    //	(isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
     '<table id="'+ this.tableId +'" class="myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\
 			<caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
-      (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
-      (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
-      '</caption>\
+    (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
+    (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
+    '</caption>\
 			<thead>\
 			</thead>\
 			<tbody class="ui-widget-content">\
@@ -183,6 +183,10 @@ var TableManager = Base.extend({
     var myself=this;
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row),function(value){
       _setExpression.apply(myself,[row, value]);
+
+      // Rerender this column
+      tr.find("td:eq("+colIdx+")").remove();
+      myself.renderColumn(tr,row,colIdx);
     });
 
   },
@@ -229,11 +233,11 @@ var TableManager = Base.extend({
         typeDesc: "<i>Group</i>",
         parent: IndexManager.ROOTID,
         properties: [{
-            name: "Group",
-            description: "Group",
-            value: categoryDesc,
-            type: "Label"
-          }]
+          name: "Group",
+          description: "Group",
+          value: categoryDesc,
+          type: "Label"
+        }]
       };
       insertAtIdx = this.getTableModel().getData().length;
       this.insertAtIdx(_stub,insertAtIdx);
@@ -256,8 +260,8 @@ var TableManager = Base.extend({
 
     if(this.isSelectedCell)
       var _ops = CellOperations.getOperationsByType(
-    this.getTableModel().getEvaluatedRowType(this.selectedCell[0])
-  );
+        this.getTableModel().getEvaluatedRowType(this.selectedCell[0])
+        );
     this.setOperations(this.getOperations().concat(_ops));
 
     this.logger.debug("Found " + this.getOperations().length + " operations for this cell");
@@ -315,8 +319,8 @@ var TableManager = Base.extend({
 
     $('#'+this.getTableId()).find("tr.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
 
-    // Uncomment following cells to enable td highlight
-    //$('#'+this.getTableId()).find("tr td.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
+  // Uncomment following cells to enable td highlight
+  //$('#'+this.getTableId()).find("tr td.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
 
   },
 
@@ -330,7 +334,7 @@ var TableManager = Base.extend({
       tableManager.getTableModel().setData(data);
       tableManager.cleanSelections();
       tableManager.init();
-      //tableManager.selectCell(targetIdx,colIdx);
+    //tableManager.selectCell(targetIdx,colIdx);
 
     }
   },
@@ -456,7 +460,7 @@ var TableManager = Base.extend({
 							
     });
 
-				
+
     $(".advancedProperties").live('click',function() {
 
       var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
@@ -571,7 +575,7 @@ var TableModel = Base.extend({
 
 
   init: function(){
-    // Do nothing
+  // Do nothing
   },
 
   setId: function(id){
@@ -662,16 +666,16 @@ var PropertiesTableModel = TableModel.extend({
 
     this.setColumnNames(['Property','Value']);
     this.setColumnGetExpressions([function(row){
-        return row.description
-      },function(row){
-        return row.value
-      }]);
+      return row.description
+    },function(row){
+      return row.value
+    }]);
     this.setColumnSetExpressions([undefined,function(row,value){
-        row.value = value
-      }]);
+      row.value = value
+    }]);
     this.setColumnTypes(['String', function(row){
-        return row.type
-      }]);
+      return row.type
+    }]);
     this.setColumnSizes(['40%','60%']);
     this.setEditable([false, true]);
     this.setRowId(function(row){
@@ -1083,6 +1087,9 @@ var ColorRenderer = CellRenderer.extend({
 
 var TextAreaRenderer = CellRenderer.extend({
 
+  // Locally set the value. Please not that this will only be used
+  value: null,
+
   constructor: function(tableManager){
     this.base(tableManager);
     this.logger = new Logger("TextAreaRenderer");
@@ -1091,14 +1098,18 @@ var TextAreaRenderer = CellRenderer.extend({
 
   render: function(placeholder, value, callback){
 
+    // Storing the var for later use when render() is not called again
+    this.value = value;
+
 
     var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-      var _inner = 'Edit<br /><textarea wrap="off" cols="80" class="cdfddEdit" name="textarea">' + value + '</textarea>';
+
+      var _inner = 'Edit<br /><textarea wrap="off" cols="80" class="cdfddEdit" name="textarea">' + myself.value + '</textarea>';
       // Store what we need in a global var
-      cdfdd.textarea = [myself,placeholder, value, callback];
+      cdfdd.textarea = [myself,placeholder, myself.value, callback];
       $.prompt(_inner,{
         buttons: {
           Ok: true,
@@ -1120,6 +1131,7 @@ var TextAreaRenderer = CellRenderer.extend({
       // set value. We need to add a space to prevent a string like function(){}
       // to be interpreted by json as a function instead of a string
       var value = f.textarea;
+      this.value = value;
       if(value.length != 0 && value.substr(value.length-1,1)!=" "){
         value = value+" ";
       }
@@ -1341,7 +1353,7 @@ var ResourceFileRenderer = CellRenderer.extend({
             collapseSpeed: 1000,
             multiFolder: false,
             folderClick:
-              function(obj,folder){
+            function(obj,folder){
               if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");
               $(obj).attr("class","selectedFolder");
             }
@@ -1384,5 +1396,3 @@ var ResourceFileRenderer = CellRenderer.extend({
   }
 
 });
-
-
