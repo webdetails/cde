@@ -47,7 +47,11 @@ var CccComponent = BaseComponent.extend({
       crosstabMode: this.crosstabMode,
       seriesInRows: this.seriesInRows
     });
-    this.chart.render();
+    // We only render the chart once we know for certain we can
+    var myself = this;
+    pv.listenForPageLoad(function() {
+        myself.chart.render();
+    });
   }
 
 });
