@@ -89,6 +89,22 @@ var CDFDD = Base.extend({
         if ($(e.target).is('input, textarea')){
           return;
         }
+        else{
+          //Dashboards.log("Target event:" + e.target)
+        }
+
+
+        if ($(e.target).is('input, textarea')){
+          switch(e.which){
+            case 38:
+              Dashboards.log("Go up");
+              break;
+            case 40:
+              Dashboards.log("Go down");
+              break;
+          }
+
+        }
 
         switch(e.which){
           case 49:
@@ -258,7 +274,7 @@ var CDFDD = Base.extend({
           collapseSpeed: 1000,
           multiFolder: false,
           folderClick:
-            function(obj,folder){
+          function(obj,folder){
             if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");
             $(obj).attr("class","selectedFolder");
             selectedFolder = folder;
@@ -518,7 +534,7 @@ var Panel = Base.extend({
 			<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\
 			<div class="panel-content">' + this.getContent() + '</div> \
 			</div>';
-    //<h2 class="panel-title">'+this.name+'</h2> \
+  //<h2 class="panel-title">'+this.name+'</h2> \
   },
 
   getContent: function(){
@@ -568,12 +584,12 @@ var Panel = Base.extend({
         //may be hovered
         Panel.unsetHover(x);
         $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/$2"))
-        //enable
-        //$(x).attr("src", $(x).attr("src").replace(DISABLED_STR,ENABLED_STR));
+      //enable
+      //$(x).attr("src", $(x).attr("src").replace(DISABLED_STR,ENABLED_STR));
       }else{
         $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"))
-        //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
-        //disable
+      //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
+      //disable
 						
       }
 					
@@ -615,33 +631,33 @@ var Panel = Base.extend({
     }
   }
 		
-  //		//TODO: temp
-  //		initHoverPics: function(){
-  //      var END = ".png";
-  //      var HEND = "_hover.png";
-  //      var endLen = END.length;
-  //      var hendLen = HEND.length;
-  //
-  //      var me = $("#" + this.id);
-  //
-  //
-  //
-  //      var hoverIn = function(){
-  //        var src = $(this).attr("src");
-  //        $(this).attr("src", src.slice(0, src.len - endLen) + "_hover.png");
-  //      }
-  //      var hoverOut = function(){
-  //        var src = $(this).attr("src");
-  //        $(this).attr("src", src.slice(0, src.len - hendLen) + ".png");
-  //      }
-  //      me.find("img").each(function(idx, comp){
-  //        //TODO: check if exists or something
-  //        //hover( handlerIn(eventObject), handlerOut(eventObject) )
-  //        if($(comp).attr("src").search(ENABLED_STR) == -1) {//not enabled
-  //                $(comp).hover
-  //        }
-  //      })
-  //		}
+//		//TODO: temp
+//		initHoverPics: function(){
+//      var END = ".png";
+//      var HEND = "_hover.png";
+//      var endLen = END.length;
+//      var hendLen = HEND.length;
+//
+//      var me = $("#" + this.id);
+//
+//
+//
+//      var hoverIn = function(){
+//        var src = $(this).attr("src");
+//        $(this).attr("src", src.slice(0, src.len - endLen) + "_hover.png");
+//      }
+//      var hoverOut = function(){
+//        var src = $(this).attr("src");
+//        $(this).attr("src", src.slice(0, src.len - hendLen) + ".png");
+//      }
+//      me.find("img").each(function(idx, comp){
+//        //TODO: check if exists or something
+//        //hover( handlerIn(eventObject), handlerOut(eventObject) )
+//        if($(comp).attr("src").search(ENABLED_STR) == -1) {//not enabled
+//                $(comp).hover
+//        }
+//      })
+//		}
 });
 
 
@@ -685,24 +701,24 @@ var Logger = Base.extend({
 // Utility functions
 
 var CDFDDUtils = Base.extend({
-},{
-  ev: function(v){
-    return (typeof v=='function'?v():v);
-  },
-  getProperty: function(stub, name){
-    var result;
-    if(typeof stub.properties == 'undefined')
-      return;
+  },{
+    ev: function(v){
+      return (typeof v=='function'?v():v);
+    },
+    getProperty: function(stub, name){
+      var result;
+      if(typeof stub.properties == 'undefined')
+        return;
 
-    $.each(stub.properties,function(i,p){
-      if(p.name == name){
-        result = p;
-        return false;
-      }
-    });
-    return result;
-  }
-});
+      $.each(stub.properties,function(i,p){
+        if(p.name == name){
+          result = p;
+          return false;
+        }
+      });
+      return result;
+    }
+  });
 
 
 var cdfdd;

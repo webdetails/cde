@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Comments component</Name>
-		<IName>commentRender</IName>
+		<IName>comments</IName>
 		<Description>Comment Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Other components</CatDescription>
