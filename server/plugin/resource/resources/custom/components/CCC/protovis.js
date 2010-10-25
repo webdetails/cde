@@ -5119,7 +5119,7 @@ pv.SvgScene.expect = function(e, type, attributes, style) {
         if (pv.renderer() != 'svgweb') // svgweb doesn't support removeproperty TODO SVGWEB
             e.style.removeProperty(name);
     }
-	else e.style.setProperty(name,value,'');
+    else e.style.setProperty(name,value,'');
   }
   return e;
 };

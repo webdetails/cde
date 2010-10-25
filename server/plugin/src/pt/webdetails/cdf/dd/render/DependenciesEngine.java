@@ -98,6 +98,30 @@ public class DependenciesEngine
 
   }
 
+  public void registerRaw(String name, String version, String contents) throws Exception
+  {
+    Dependency dep;
+    try
+    {
+      dep = dependencyPool.get(name);
+    }
+    catch (Exception e)
+    {
+      dep = null;
+    }
+    if (dep != null && dep instanceof RawDependency)
+    {
+      dep.update(version, contents);
+    }
+    else
+    {
+      dep = new RawDependency(version, contents);
+      dependencyPool.put(name, dep);
+    }
+
+
+  }
+
   private String byteToHex(byte[] bytes)
   {
     StringBuffer hexString = new StringBuffer();
@@ -114,7 +138,11 @@ public class DependenciesEngine
 
     private String path;
     private String hash;
-    private String version;
+    protected String version;
+
+    protected Dependency()
+    {
+    }
 
     public Dependency(String version, String path, String hash)
     {
@@ -138,6 +166,37 @@ public class DependenciesEngine
     public String getDeps()
     {
       return path + ((hash == null) ? "" : "?v=" + hash);
+    }
+  }
+
+  private class RawDependency extends Dependency
+  {
+
+    private String contents;
+
+    public RawDependency(String version, String contents)
+    {
+      super();
+      this.contents = contents;
+      this.version = version;
+    }
+
+    @Override
+    public void update(String version, String contents)
+    {
+
+      // Update only if the submitted version is newer than the existing one.
+      // I assume version numberings always increase lexicographically
+      if (this.version == null || this.version.compareTo(version) < 0)
+      {
+        this.contents = contents;
+        this.version = version;
+      }
+    }
+
+    public String getDeps()
+    {
+      return contents;
     }
   }
 }
