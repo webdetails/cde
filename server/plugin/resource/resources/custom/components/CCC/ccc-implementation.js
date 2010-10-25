@@ -14,17 +14,18 @@ var CccComponent = BaseComponent.extend({
 
 
     this.query = new Query(this.chartDefinition);
-
-    this.query.fetchData(this.parameters, function(values) {
-      changedValues = undefined;
-      if((typeof(myself.postFetch)=='function')){
-        changedValues = myself.postFetch(values);
-        $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
-      }
-      if (changedValues != undefined) {
-        values = changedValues;
-      }
-      myself.render(values);
+    pv.listenForPageLoad(function() {
+      myself.query.fetchData(this.parameters, function(values) {
+        changedValues = undefined;
+        if((typeof(myself.postFetch)=='function')){
+          changedValues = myself.postFetch(values);
+          $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
+        }
+        if (changedValues != undefined) {
+          values = changedValues;
+        }
+        myself.render(values);
+      });
     });
   },
 
@@ -47,11 +48,7 @@ var CccComponent = BaseComponent.extend({
       crosstabMode: this.crosstabMode,
       seriesInRows: this.seriesInRows
     });
-    // We only render the chart once we know for certain we can
-    var myself = this;
-    pv.listenForPageLoad(function() {
-        myself.chart.render();
-    });
+    this.chart.render();
   }
 
 });
