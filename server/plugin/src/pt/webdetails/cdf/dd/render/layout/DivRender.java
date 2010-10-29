@@ -22,7 +22,7 @@ public class DivRender extends Render {
     	getPropertyBag().addClass(getPropertyString("roundCorners"));
         getPropertyBag().addClass(getPropertyString("cssClass"));
         getPropertyBag().addStyle("background-color", getPropertyString("backgroundColor"));
-        getPropertyBag().addStyle("height", getPropertyString("height"));
+        getPropertyBag().addStyle("height", getPropertyString("height") + "px");
         getPropertyBag().addStyle("text-align", getPropertyString("textAlign"));
 
     }
