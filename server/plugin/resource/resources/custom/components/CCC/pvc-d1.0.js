@@ -607,7 +607,7 @@ pvc.LegendPanel = pvc.BasePanel.extend({
   minMarginX: 8,
   minMarginY: 20,
   textMargin: 6,
-  padding: 20,
+  padding: 24,
   textAdjust: 7,
   shape: "square",
   markerSize: 15,
@@ -1119,7 +1119,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
     var xAxisSize = bypassAxis?0:this.options.xAxisSize;
 
 
-    var scale = new pv.Scale.ordinal(this.dataEngine.getVisibleCategoriesIndexes());
+    var scale = new pv.Scale.ordinal(this.dataEngine.getVisibleCategories());
 
     var size = this.options.orientation=="vertical"?this.basePanel.width:this.basePanel.height;
 
@@ -1326,7 +1326,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
     [pvc.BasePanel.paralelLength[this.anchor]](null)
     [pvc.BasePanel.oppositeAnchor[this.anchor]](10)
     [pvc.BasePanel.relativeAnchor[this.anchor]](function(d){
-      return myself.scale(this.index) + myself.scale.range().band/2;
+      return myself.scale(d) + myself.scale.range().band/2;
     })
     .textAlign("center")
     .textBaseline("middle")
@@ -1457,6 +1457,7 @@ pvc.PieChart = pvc.Base.extend({
       innerGap: 0.9,
       explodedSliceRadius: 0,
       explodedSliceIndex: null,
+      showTooltips: true,
       tooltipFormat: function(s,c,v){
         return c+":  " + v + " (" + Math.round(v/this.sum*100,1) + "%)";
       }
@@ -1480,7 +1481,8 @@ pvc.PieChart = pvc.Base.extend({
       innerGap: this.options.innerGap,
       explodedSliceRadius: this.options.explodedSliceRadius,
       explodedSliceIndex: this.options.explodedSliceIndex,
-      showValues: this.options.showValues
+      showValues: this.options.showValues,
+      showTooltips: this.options.showTooltips
     });
 
     this.pieChartPanel.appendTo(this.basePanel); // Add it
@@ -1518,6 +1520,7 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
   innerGap: 0.9,
   explodedSliceRadius: 0,
   explodedSliceIndex: null,
+  showTooltips: true,
   showValues: true,
 
   sum: 0,
@@ -1577,10 +1580,15 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
       var c = myself.chart.dataEngine.getCategories()[this.index]
       return myself.chart.options.tooltipFormat.call(myself,s,c,v);
     })
-    .event("mouseover", pv.Behavior.tipsy({
-      gravity: "s",
-      fade: true
-    }));
+
+    if(this.showTooltips){
+      this.pvPie
+      .event("mouseover", pv.Behavior.tipsy({
+        gravity: "s",
+        fade: true
+      }));
+
+    }
 
 
     if (this.chart.options.clickable){
@@ -1657,6 +1665,7 @@ pvc.BarChart = pvc.CategoricalAbstract.extend({
       maxBarSize: 2000,
       originIsZero: true,
       axisOffset: 0,
+      showTooltips: true,
       orientation: "vertical"
     };
 
@@ -1680,6 +1689,7 @@ pvc.BarChart = pvc.CategoricalAbstract.extend({
       barSizeRatio: this.options.barSizeRatio,
       maxBarSize: this.options.maxBarSize,
       showValues: this.options.showValues,
+      showTooltips: this.options.showTooltips,
       orientation: this.options.orientation
     });
 
@@ -1721,6 +1731,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
   stacked: false,
   panelSizeRatio: 1,
   barSizeRatio: 0.5,
+  showTooltips: true,
   maxBarSize: 200,
   showValues: true,
   orientation: "vertical",
@@ -1848,10 +1859,15 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
       return myself.chart.options.tooltipFormat.call(myself,s,c,v);
     
     })
-    .event("mouseover", pv.Behavior.tipsy({
-      gravity: "s",
-      fade: true
-    }));
+
+    if(this.showTooltips){
+      this.pvBar
+      .event("mouseover", pv.Behavior.tipsy({
+        gravity: "s",
+        fade: true
+      }));
+    }
+
 
     if (this.chart.options.clickable){
       this.pvBar
@@ -1905,6 +1921,7 @@ pvc.ScatterAbstract = pvc.CategoricalAbstract.extend({
       showLines: false,
       showAreas: false,
       showValues: false,
+      showTooltips: true,
       axisOffset: 0.05,
       valuesAnchor: "right",
       stacked: false,
@@ -1936,6 +1953,7 @@ pvc.ScatterAbstract = pvc.CategoricalAbstract.extend({
       showLines: this.options.showLines,
       showDots: this.options.showDots,
       showAreas: this.options.showAreas,
+      showTooltips: this.options.showTooltips,
       orientation: this.options.orientation,
       timeSeries: this.options.timeSeries,
       timeSeriesFormat: this.options.timeSeriesFormat
@@ -2096,6 +2114,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
   showLines: true,
   showDots: true,
   showValues: true,
+  showTooltips: true,
   valuesAnchor: "right",
   orientation: "vertical",
 
@@ -2114,9 +2133,13 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
 
     this.pvPanel = this._parent.getPvPanel().add(this.type)
     .width(this.width)
-    .height(this.height)
-    .events("all")
-    .event("mousemove", pv.Behavior.point(Infinity));
+    .height(this.height);
+
+    if(this.showTooltips || this.chart.options.clickable ){
+      this.pvPanel
+      .events("all")
+      .event("mousemove", pv.Behavior.point(Infinity));
+    }
 
     var anchor = this.orientation == "vertical"?"bottom":"left";
 
@@ -2124,7 +2147,11 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
 
     var lScale = this.chart.getLinearScale(true);
     var oScale = this.chart.getOrdinalScale(true);
-    var tScale = this.chart.getTimeseriesScale(true);
+    var tScale;
+    if(this.timeSeries){
+      tScale = this.chart.getTimeseriesScale(true);
+    }
+    
     var parser = pv.Format.date(this.timeSeriesFormat);
     
     var maxLineSize;
@@ -2210,17 +2237,20 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
       };
       return myself.chart.options.tooltipFormat.call(myself,s,c,v);
     })
-    .event("point", pv.Behavior.tipsy({
-      gravity: "s",
-      fade: true
-    }));
 
+    if(this.showTooltips){
+      this.pvLine
+      .event("point", pv.Behavior.tipsy({
+        gravity: "s",
+        fade: true
+      }));
+    }
 
     this.pvDot = this.pvLine.add(pv.Dot)
-    .shapeSize(20)
+    .shapeSize(12)
     .lineWidth(1.5)
     .strokeStyle(this.showDots?colorFunc:null)
-    .fillStyle(this.showDots?"white":null)
+    .fillStyle(this.showDots?colorFunc:null)
     
 
     if (this.chart.options.clickable){
