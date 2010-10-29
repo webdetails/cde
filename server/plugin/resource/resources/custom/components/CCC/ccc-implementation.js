@@ -15,7 +15,7 @@ var CccComponent = BaseComponent.extend({
 
     this.query = new Query(this.chartDefinition);
     pv.listenForPageLoad(function() {
-      myself.query.fetchData(this.parameters, function(values) {
+      myself.query.fetchData(myself.parameters, function(values) {
         changedValues = undefined;
         if((typeof(myself.postFetch)=='function')){
           changedValues = myself.postFetch(values);
