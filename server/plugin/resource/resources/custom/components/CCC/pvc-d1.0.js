@@ -30,7 +30,13 @@ pvc.sumOrSet = function(v1,v2){
 
 pvc.nonEmpty = function(d){
   return typeof d != "undefined"
-  }
+}
+
+pvc.padMatrixWithZeros = function(d){
+  return d.map(function(v){return v.map(function(a){
+      return typeof a == "undefined"?0:a;
+    })})
+}
 
 
 /**
@@ -1791,7 +1797,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
       .orient(anchor)
       .order("inside-out")
       .offset("wiggle")*/
-      .layers(this.chart.dataEngine.getVisibleTransposedValues())
+      .layers(pvc.padMatrixWithZeros(this.chart.dataEngine.getVisibleTransposedValues()))
       [this.orientation == "vertical"?"y":"x"](function(d){
         return myself.chart.animate(0, lScale(d||0)-lScale(0))
       })
@@ -1800,7 +1806,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
 
       this.pvBar = this.pvBarPanel.layer.add(pv.Bar)
       .data(function(d){
-        return d||0
+        return d
       })
       //[anchor](lScale(0))
       [pvc.BasePanel.paralelLength[anchor]](maxBarSize)
@@ -1852,7 +1858,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
     // Labels:
 
     this.pvBar
-    .title(function(d){
+    .text(function(d){
       var v = myself.chart.options.valueFormat(d);
       var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
       var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
@@ -2166,7 +2172,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
     if (this.stacked){
       
       this.pvScatterPanel = this.pvPanel.add(pv.Layout.Stack)
-      .layers(this.chart.dataEngine.getVisibleTransposedValues())
+      .layers(pvc.padMatrixWithZeros(this.chart.dataEngine.getVisibleTransposedValues()))
       [this.orientation == "vertical"?"x":"y"](function(){
         if(myself.timeSeries){
           return tScale(parser.parse(myself.chart.dataEngine.getCategoryByIndex(this.index)));
@@ -2389,7 +2395,7 @@ pvc.DataEngine = Base.extend({
    */
 
   getSerieByIndex: function(idx){
-    return (this.series || this.translator.getColumns())[idx];
+    return this.getSeries()[idx];
   },
 
 
@@ -2447,7 +2453,23 @@ pvc.DataEngine = Base.extend({
    */
 
   getCategories: function(){
-    return this.categories || this.translator.getRows();
+
+    if( this.categories == null ){
+
+      if(this.chart.options.timeSeries){
+        var parser = pv.Format.date(this.chart.options.timeSeriesFormat);
+        this.categories = this.translator.getRows().sort(function(a,b){
+          return parser.parse(a) - parser.parse(b)
+        });
+
+      }
+      else{
+        this.categories = this.translator.getRows()
+      }
+
+    }
+
+    return this.categories;
   },
 
   /*
@@ -2456,7 +2478,7 @@ pvc.DataEngine = Base.extend({
    */
 
   getCategoryByIndex: function(idx){
-    return (this.categories || this.translator.getRows())[idx];
+    return this.getCategories()[idx];
   },
 
   /*
@@ -2700,9 +2722,11 @@ pvc.DataEngine = Base.extend({
   getCategoriesMaxSumOfVisibleSeries: function(){
 
     var myself=this;
-    return pv.max(pv.range(0,this.getCategoriesSize()).map(function(idx){
-      return pv.sum(myself.getVisibleValuesForCategoryIndex(idx))
+    var max = pv.max(pv.range(0,this.getCategoriesSize()).map(function(idx){
+      return pv.sum(myself.getVisibleValuesForCategoryIndex(idx).filter(pvc.nonEmpty))
     }));
+    pvc.log("getCategoriesMaxSumOfVisibleSeries: " + max);
+    return max;
   },
 
   /**
@@ -2715,9 +2739,11 @@ pvc.DataEngine = Base.extend({
   getVisibleSeriesMaxSum: function(){
 
     var myself=this;
-    return pv.max(this.getVisibleSeriesIndexes().map(function(idx){
-      return pv.sum(myself.getValuesForSeriesIndex(idx))
+    var max = pv.max(this.getVisibleSeriesIndexes().map(function(idx){
+      return pv.sum(myself.getValuesForSeriesIndex(idx).filter(pvc.nonEmpty))
     }));
+    pvc.log("getVisibleSeriesMaxSum: " + max);
+    return max;
   },
 
   /*
@@ -2726,10 +2752,11 @@ pvc.DataEngine = Base.extend({
   getVisibleSeriesAbsoluteMax: function(){
 
     var myself=this;
-    return pv.max(this.getVisibleSeriesIndexes().map(function(idx){
+    var max = pv.max(this.getVisibleSeriesIndexes().map(function(idx){
       return pv.max(myself.getValuesForSeriesIndex(idx).filter(pvc.nonEmpty))
     }));
-
+    pvc.log("getVisibleSeriesAbsoluteMax: " + max);
+    return max;
   },
 
   /*
@@ -2738,10 +2765,11 @@ pvc.DataEngine = Base.extend({
   getVisibleSeriesAbsoluteMin: function(){
 
     var myself=this;
-    return pv.min(this.getVisibleSeriesIndexes().map(function(idx){
+    var min = pv.min(this.getVisibleSeriesIndexes().map(function(idx){
       return pv.min(myself.getValuesForSeriesIndex(idx).filter(pvc.nonEmpty))
     }));
-
+    pvc.log("getVisibleSeriesAbsoluteMin: " + min);
+    return min;
   },
 
 
