@@ -33,9 +33,17 @@ pvc.nonEmpty = function(d){
 }
 
 pvc.padMatrixWithZeros = function(d){
-  return d.map(function(v){return v.map(function(a){
+  return d.map(function(v){
+    return v.map(function(a){
       return typeof a == "undefined"?0:a;
-    })})
+    })
+  })
+}
+
+pvc.cloneMatrix = function(m){
+  return m.map(function(d){
+    return d.slice()
+  });
 }
 
 
@@ -2587,7 +2595,7 @@ pvc.DataEngine = Base.extend({
   getTransposedValues: function(){
 
 
-    return pv.transpose(this.getValues().slice());
+    return pv.transpose(pvc.cloneMatrix(this.getValues()));
 
   },
 
@@ -2874,7 +2882,7 @@ pvc.CrosstabTranslator = pvc.DataTranslator.extend({
     });
     a1.splice(0,0,"x");
 
-    this.values = this.resultset.slice();
+    this.values = pvc.cloneMatrix(this.resultset);
     this.values.splice(0,0,a1);
 
   }
