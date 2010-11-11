@@ -62,6 +62,16 @@ public class DateParameterComponent extends ParameterComponent
       cal.add(Calendar.DATE, -1);
       return format.format(cal.getTime());
     }
+    else if(value.equals("lastWeek")){
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DATE, -7);
+      return format.format(cal.getTime());
+    }
+    else if(value.equals("lastMonth")){
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.MONTH, -1);
+      return format.format(cal.getTime());
+    }
     else if(value.equals("monthStart")){
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.DATE, 1);

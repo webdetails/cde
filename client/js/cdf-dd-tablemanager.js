@@ -1221,7 +1221,7 @@ var DateRenderer = CellRenderer.extend({
 			
   getData: function(value){
     var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
-    var _str = "{'today':'Today','yesterday':'Yesterday','monthStart':'First day of month','yearStart':'First day of year','pickDate':'Pick Date', 'selected':'" + value + "'}";
+    var _str = "{'today':'Today','yesterday':'Yesterday','lastWeek':'One week ago','lastMonth':'One month ago','monthStart':'First day of month','yearStart':'First day of year','pickDate':'Pick Date', 'selected':'" + value + "'}";
 
     return _str;
   },
