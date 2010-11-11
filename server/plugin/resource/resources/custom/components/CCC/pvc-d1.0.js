@@ -1242,7 +1242,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         var size = this.options.orientation=="vertical"?
         this.basePanel.width:
-        this.basePanel.height - xAxisSize;
+        this.basePanel.height;
 
         var parser = pv.Format.date(this.options.timeSeriesFormat);
         var categories =  this.dataEngine.getVisibleCategories().sort(function(a,b){
