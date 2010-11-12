@@ -3,6 +3,7 @@ package pt.webdetails.cdf.dd;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,6 +61,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DATA_URL_VALUE = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/Syncronize";
   public static final String SERVER_URL_VALUE = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/";
   private Packager packager;
+
+  public enum MimeTypes
+  {
+
+    JPG, JPEG, PNG, GIF, BMP
+  }
 
   public DashboardDesignerContentGenerator()
   {
@@ -273,6 +280,50 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   }
 
+  public void getimg(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    String pathString = this.parameterProviders.get("path").getStringParameter("path", "");
+    String resource;
+    if (pathString.split("/").length > 2)
+    {
+      resource = pathString.replaceAll("^/.*?/", "");
+    }
+    else
+    {
+      resource = pathParams.getStringParameter("path", "");
+    }
+    resource = resource.startsWith("/") ? resource : "/" + resource;
+
+    String[] path = resource.split("/");
+    String[] fileName = path[path.length - 1].split("\\.");
+
+    final String mimeType;
+    switch (MimeTypes.valueOf(fileName[fileName.length - 1].toUpperCase()))
+    {
+      case PNG:
+        mimeType = "image/png";
+        break;
+      case JPG:
+      case JPEG:
+        mimeType = "image/jpeg";
+        break;
+      case GIF:
+        mimeType = "image/gif";
+        break;
+      case BMP:
+        mimeType = "image/bmp";
+        break;
+      default:
+        mimeType = "";
+    }
+    setResponseHeaders(mimeType, 3600 * 24 * 8, null); // 1 week cache
+    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    // Set cache for 1 year, give or take.
+    response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
+    getSolutionResource(out, resource);
+
+  }
+
   public void getresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
 
@@ -287,14 +338,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       resource = pathParams.getStringParameter("resource", null);
     }
     resource = resource.startsWith("/") ? resource : "/" + resource;
-    getResource(
-            out, resource);
-
-
-
-
-
-
+    getResource(out, resource);
   }
 
   public void edit(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -507,36 +551,38 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final InputStream in = new FileInputStream(file);
     final byte[] buff = new byte[4096];
 
-
-
-
-
-
     int n = in.read(buff);
-
-
-
-
-
-
     while (n != -1)
     {
       out.write(buff, 0, n);
       n = in.read(buff);
-
-
-
-
-
-
     }
     in.close();
+  }
 
+  private void getSolutionResource(final OutputStream out, final String resource) throws IOException
+  {
 
+    setCacheControl();
+    final String path = PentahoSystem.getApplicationContext().getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
 
+    final File file = new File(path);
 
+    if (!file.getAbsolutePath().startsWith(PentahoSystem.getApplicationContext().getSolutionPath("")))
+    {
+      // File not inside solution! run away!
+      throw new FileNotFoundException("Not allowed");
+    }
+    final InputStream in = new FileInputStream(file);
+    final byte[] buff = new byte[4096];
 
-
+    int n = in.read(buff);
+    while (n != -1)
+    {
+      out.write(buff, 0, n);
+      n = in.read(buff);
+    }
+    in.close();
   }
 
   private void setCacheControl()

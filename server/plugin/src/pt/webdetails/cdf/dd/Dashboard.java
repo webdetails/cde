@@ -4,8 +4,9 @@
  */
 package pt.webdetails.cdf.dd;
 
-import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import net.sf.json.JSONObject;
@@ -51,6 +52,7 @@ class Dashboard implements Serializable
   private static final String CACHE_NAME = "pentaho-cde";
   /* FIELDS */
   private String template, header, content, footer;
+  private String dashboardLocation;
   private Date loaded;
   private DashboardDesignerContentGenerator generator;
   private static CacheManager cacheManager;
@@ -60,7 +62,7 @@ class Dashboard implements Serializable
     this.generator = generator;
     IPentahoSession userSession = generator.getUserSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    final String path = generator.getStructureRelativePath(pathParams);
+    this.dashboardLocation = generator.getStructureRelativePath(pathParams);
     XmlStructure structure = new XmlStructure(userSession);
     WcdfDescriptor wcdf;
     try
@@ -73,7 +75,7 @@ class Dashboard implements Serializable
       final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
       final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? "http://" + pathParams.getParameter("root").toString() : "" : "";
       final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-      DashboardCacheKey key = new DashboardCacheKey(path, template);
+      DashboardCacheKey key = new DashboardCacheKey(dashboardLocation, template);
       key.setAbs(absolute);
       key.setDebug(debug);
       try
@@ -84,7 +86,7 @@ class Dashboard implements Serializable
         {
           Dashboard cached = (Dashboard) cacheElement.getValue();
           logger.info("Got dashboard from cache");
-          ISolutionFile dash = solutionRepository.getSolutionFile(path, 0);
+          ISolutionFile dash = solutionRepository.getSolutionFile(dashboardLocation, 0);
           ISolutionFile templ = solutionRepository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + template, 0);
 
           if (dash.getLastModified() <= cached.getLoaded().getTime()
@@ -110,7 +112,7 @@ class Dashboard implements Serializable
       final RenderComponents componentsRenderer = new RenderComponents();
 
 
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(path, true));
+      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true));
 
       json.put("settings", wcdf.toJSON());
       final JXPathContext doc = JXPathContext.newContext(json);
@@ -122,6 +124,7 @@ class Dashboard implements Serializable
 
       // set all dashboard members
       this.content = dashboardBody.toString();
+      replaceTokens();
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
       cache.put(new Element(key, this));
@@ -141,6 +144,17 @@ class Dashboard implements Serializable
     tokens.put(DASHBOARD_CONTENT_TAG, this.content);
 
     return ResourceManager.getInstance().getResourceAsString(this.template, tokens);
+
+  }
+
+  private void replaceTokens()
+  {
+    final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}",
+            IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}";
+    String path = dashboardLocation.replaceAll("(.+/).*", "$1");
+    this.content = this.content // Start with the same content
+            .replaceAll("\\$\\{dashboardPath\\}", path.replaceAll("(^/.*/$)","$1")) // replace the dashboard path token
+            .replaceAll(IMG_TAG_REGEXP, "getimg/" + path + "$1" + "?v=" + new Date().getTime());// build the image links, with a timestamp for caching purposes
 
   }
 

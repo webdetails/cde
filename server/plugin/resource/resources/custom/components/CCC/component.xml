@@ -80,7 +80,6 @@
           <Property >dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -119,6 +118,7 @@
         <Property>htmlObject</Property>
         <Property>preExecution</Property>
         <Property>postExecution</Property>
+        <Property>postFetch</Property>
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
@@ -154,7 +154,6 @@
           <Property >dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -188,6 +187,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
@@ -217,7 +217,6 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -251,6 +250,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
@@ -280,7 +280,6 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -314,6 +313,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
@@ -343,7 +343,6 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -383,6 +382,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
@@ -413,7 +413,6 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -453,6 +452,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
@@ -482,7 +482,6 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
-          <Property>postFetch</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -521,6 +520,7 @@
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
         <Property type="boolean">executeAtStart</Property>
+        <Property>postFetch</Property>
         <Property type="function">preChange</Property>
         <Property type="function">postChange</Property>
         <Property>htmlObject</Property>
