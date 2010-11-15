@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
@@ -32,6 +33,7 @@ import net.sf.ehcache.CacheManager;
 import mondrian.olap.InvalidArgumentException;
 import net.sf.ehcache.Element;
 import org.pentaho.platform.api.engine.ISolutionFile;
+import org.pentaho.platform.util.messages.LocaleHelper;
 
 /**
  *
@@ -46,6 +48,7 @@ class Dashboard implements Serializable
   private static final String DASHBOARD_CONTENT_TAG = "@CONTENT@";
   private static final String DASHBOARD_FOOTER_TAG = "@FOOTER@";
   private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
+  private static final String I18N_BOILERPLATE = "resources/i18n-boilerplate.js";
   private static Log logger = LogFactory.getLog(Dashboard.class);
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
@@ -295,6 +298,68 @@ class Dashboard implements Serializable
   public String getTemplate()
   {
     return template;
+  }
+
+  private String renderI18nLoader()
+  {
+    try
+    {
+      Locale locale = LocaleHelper.getLocale();
+      logger.debug("Rendering dashboard with locale: " + locale.getLanguage());
+      HashMap<String, String> tokens = new HashMap<String, String>();
+      tokens.put("@GLOBAL_MESSAGE_SET_NAME@", CdfConstants.BASE_GLOBAL_MESSAGE_SET_FILENAME);
+      tokens.put("@GLOBAL_MESSAGE_SET_PATH@", header);
+      tokens.put("@GLOBAL_MESSAGE_SET@", header);
+      tokens.put("@LANGUAGE_CODE@", locale.getLanguage());
+      intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET_PATH\\}", messageSetPath);
+      intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET\\}", buildMessageSetCode(i18nTagsList));
+      String boilerplate = ResourceManager.getInstance().getResourceAsString(I18N_BOILERPLATE);
+      return boilerplate;
+    }
+    catch (Exception e)
+    {
+      return "";
+    }
+  }
+
+  private String processI18nTags(String content)
+  {
+    ArrayList<String> tagsList = new ArrayList<String>();
+    String tagPattern = "CDF.i18n\\(\"";
+    String[] test = content.split(tagPattern);
+    if (test.length == 1)http://127.0.0.1:8080/pentaho/content/pentaho-cdf-dd/Render?solution=metrics&path=/sumo/sumo_dashboard&file=sumo_forumOverview.wcdf
+    {
+      return content;
+    }
+    StringBuffer resBuffer = new StringBuffer();
+    int i;
+    String tagValue;
+    resBuffer.append(test[0]);
+    for (i = 1; i < test.length; i++)
+    {
+
+      // First tag is processed differently that other because is the only case where I don't
+      // have key in first position
+      resBuffer.append("<span id=\"");
+      if (i != 0)
+      {
+        // Right part of the string with the value of the tag herein
+        tagValue = test[i].substring(0, test[i].indexOf("\")"));
+        tagsList.add(tagValue);
+        resBuffer.append(updateSelectorName(tagValue));
+        resBuffer.append("\"/>");
+        resBuffer.append(test[i].substring(test[i].indexOf("\")") + 2, test[i].length()));
+      }
+    }
+    return resBuffer.toString();
+  }
+
+  private String updateSelectorName(String name)
+  {
+    // If we've the character . in the message key substitute it conventionally to _
+    // when dynamically generating the selector name. The "." character is not permitted in the
+    // selector id name
+    return name.replace(".", "_");
   }
 }
 
