@@ -299,7 +299,7 @@ class Dashboard implements Serializable
   {
     return template;
   }
-
+/*
   private String renderI18nLoader()
   {
     try
@@ -352,7 +352,7 @@ class Dashboard implements Serializable
       }
     }
     return resBuffer.toString();
-  }
+  }*/
 
   private String updateSelectorName(String name)
   {
