@@ -153,7 +153,7 @@ class Dashboard implements Serializable
             IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     this.content = this.content // Start with the same content
-            .replaceAll("\\$\\{dashboardPath\\}", path.replaceAll("(^/.*/$)","$1")) // replace the dashboard path token
+            .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)","$1")) // replace the dashboard path token
             .replaceAll(IMG_TAG_REGEXP, "getimg/" + path + "$1" + "?v=" + new Date().getTime());// build the image links, with a timestamp for caching purposes
 
   }
