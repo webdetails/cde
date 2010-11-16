@@ -569,6 +569,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final File file = new File(path);
 
     if (!file.getAbsolutePath().replaceAll("\\\\","/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\","/").replaceAll("/+", "/")))
+
     {
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
