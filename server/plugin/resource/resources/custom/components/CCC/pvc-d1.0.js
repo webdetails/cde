@@ -1847,8 +1847,9 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
         return myself.chart.animate(0, lScale(d||0)-lScale(0))
       })
       [anchor](lScale(0))
-      [this.orientation == "vertical"?"x":"y"](oScale.by(pv.index))
-
+      [this.orientation == "vertical"?"x":"y"](function(d){
+        return oScale(this.index) + barPositionOffset;
+      });
       this.pvBar = this.pvBarPanel.layer.add(pv.Bar)
       .data(function(d){
         return d
@@ -1878,7 +1879,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
       this.pvBarPanel = this.pvPanel.add(pv.Panel)
       .data(this.chart.dataEngine.getVisibleCategoriesIndexes())
       [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-        return oScale(this.index) + barPositionOffset;
+        return oScale(this.index);
       })
       [anchor](0)
       [pvc.BasePanel.paralelLength[anchor]](oScale.range().band)
@@ -1905,8 +1906,8 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
     this.pvBar
     .text(function(d){
       var v = myself.chart.options.valueFormat(d);
-      var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
-      var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
+      var s = myself.chart.dataEngine.getVisibleSeries()[myself.stacked?this.parent.index:this.index]
+      var c = myself.chart.dataEngine.getVisibleCategories()[myself.stacked?this.index:this.parent.index]
       return myself.chart.options.tooltipFormat.call(myself,s,c,v);
     
     })
