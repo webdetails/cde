@@ -16,50 +16,59 @@ import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
+import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
 
 @SuppressWarnings("unchecked")
-public class XmlStructure implements IStructure {
+public class XmlStructure implements IStructure
+{
 
   private IPentahoSession userSession = null;
   public static final String BASE_URL = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2];
   public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
 
-  public XmlStructure(IPentahoSession userSession) {
+  public XmlStructure(IPentahoSession userSession)
+  {
     this.userSession = userSession;
 
   }
 
-  public void delete(HashMap parameters) throws Exception {
+  public void delete(HashMap parameters) throws Exception
+  {
 
     System.out.println("deleting File:" + (String) parameters.get("file"));
 
     //1. Delete File
     ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    if (!solutionRepository.removeSolutionFile((String) parameters.get("file"))) {
+    if (!solutionRepository.removeSolutionFile((String) parameters.get("file")))
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
 
   }
 
-  public JSON load(HashMap parameters) throws Exception {
+  public JSON load(HashMap parameters) throws Exception
+  {
 
     String filePath = (String) parameters.get("file");
     System.out.println("Loading File:" + filePath);
 
     JSONObject result = null;
 
-    try {
+    try
+    {
 
       InputStream file = null;
       InputStream wcdfFile = null;
       //1. Get file
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-      if (solutionRepository.resourceExists(filePath)) {
+      if (solutionRepository.resourceExists(filePath))
+      {
         file = solutionRepository.getResourceInputStream(filePath, true);
-      } else {
+      }
+      else
+      {
         file = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
       }
 
@@ -77,23 +86,28 @@ public class XmlStructure implements IStructure {
       file.close();
 
 
-    } catch (FileNotFoundException e) {
+    }
+    catch (FileNotFoundException e)
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_001_LOAD_FILE_NOT_FOUND_EXCEPTION"));
-    } catch (IOException e) {
+    }
+    catch (IOException e)
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
     }
 
     return result;
   }
 
-
-  public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException {
+  public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
+  {
 
 
     ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     WcdfDescriptor wcdf = new WcdfDescriptor();
 
-    if (solutionRepository.resourceExists(wcdfFilePath)) {
+    if (solutionRepository.resourceExists(wcdfFilePath))
+    {
       Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfFilePath);
 
       wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
@@ -106,13 +120,14 @@ public class XmlStructure implements IStructure {
 
   }
 
-
-  public void save(HashMap parameters) throws Exception {
+  public void save(HashMap parameters) throws Exception
+  {
 
     String filePath = (String) parameters.get("file");
     System.out.println("Saving File:" + filePath);
 
-    try {
+    try
+    {
 
       //1. Build file parameters
       String[] file = buildFileParameters(filePath);
@@ -120,7 +135,8 @@ public class XmlStructure implements IStructure {
       //2. Publish file to pentaho repository
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(file[0] + file[1].replace(".cdfde", "_tmp.cdfde"))) {
+      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(file[0] + file[1].replace(".cdfde", "_tmp.cdfde")))
+      {
         parameters.put("file", file[0] + file[1].replace(".cdfde", "_tmp.cdfde"));
         delete(parameters);
       }
@@ -129,26 +145,36 @@ public class XmlStructure implements IStructure {
       int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], ((String) parameters.get("cdfstructure")).getBytes("UTF-8"), true);
 
       //3. Check publish result
-      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
+      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
+      {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
 
       //4. Write CDA File
-      CdaRenderer renderer = CdaRenderer.getInstance();
-      renderer.setContext((String) parameters.get("cdfstructure"));
-      status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1].replace("cdfde","cda"), renderer.render().getBytes("UTF-8"), true);
+      CdaRenderer cdaRenderer = CdaRenderer.getInstance();
+      cdaRenderer.setContext((String) parameters.get("cdfstructure"));
+      status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1].replace("cdfde", "cda"), cdaRenderer.render().getBytes("UTF-8"), true);
+
+      //4. Write CDW File
+      String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
+      CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
+      cdwRenderer.render();
 
       //5. Check publish result again.
-      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
+      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
+      {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
-    } catch (PentahoAccessControlException e) {
+    }
+    catch (PentahoAccessControlException e)
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
 
   }
 
-  public void saveas(HashMap parameters) throws Exception {
+  public void saveas(HashMap parameters) throws Exception
+  {
 
     ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
@@ -171,15 +197,20 @@ public class XmlStructure implements IStructure {
 
     //3. Publish new wcdf file
     int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfContentAsString.getBytes("UTF-8"), true);
-    if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL) {
+    if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL)
+    {
       //4. Save cdf structure
       parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
       save(parameters);
-    } else
+    }
+    else
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+    }
   }
 
-  public void newfile(HashMap parameters) throws Exception {
+  public void newfile(HashMap parameters) throws Exception
+  {
 
     //1. Read Empty Structure
     InputStream cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
@@ -189,7 +220,8 @@ public class XmlStructure implements IStructure {
     saveas(parameters);
   }
 
-  public void savesettings(HashMap parameters) throws Exception {
+  public void savesettings(HashMap parameters) throws Exception
+  {
 
     String filePath = (String) parameters.get("file");
     String titleStr = (String) parameters.get("title");
@@ -199,14 +231,16 @@ public class XmlStructure implements IStructure {
 
     System.out.println("Saving settings file:" + filePath);
 
-    try {
+    try
+    {
 
       //1. Build file parameters
       String[] file = buildFileParameters(filePath);
 
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-      if (solutionRepository.resourceExists(filePath)) {
+      if (solutionRepository.resourceExists(filePath))
+      {
 
         Document wcdfDoc = solutionRepository.getResourceAsDocument(filePath);
         Node cdfNode = wcdfDoc.selectSingleNode("/cdf");
@@ -218,24 +252,32 @@ public class XmlStructure implements IStructure {
 
         int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfDoc.asXML().getBytes("UTF-8"), true);
 
-        if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
+        if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
+        {
           throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
         }
-      } else
+      }
+      else
+      {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
+      }
 
 
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
 
   }
 
-  private void setNodeValue(Node cdfNode, String elementName, String value) {
+  private void setNodeValue(Node cdfNode, String elementName, String value)
+  {
 
     Node node = cdfNode.selectSingleNode(elementName);
 
-    if (node == null) {
+    if (node == null)
+    {
       node = ((Element) cdfNode).addElement(elementName);
     }
 
@@ -243,8 +285,12 @@ public class XmlStructure implements IStructure {
 
   }
 
-  private String[] buildFileParameters(String filePath) {
-    String[] result = {"", ""};
+  private String[] buildFileParameters(String filePath)
+  {
+    String[] result =
+    {
+      "", ""
+    };
     String[] file = filePath.split("/");
     String fileName = file[file.length - 1];
     String path = filePath.substring(0, filePath.indexOf(fileName));
@@ -253,4 +299,3 @@ public class XmlStructure implements IStructure {
     return result;
   }
 }
-

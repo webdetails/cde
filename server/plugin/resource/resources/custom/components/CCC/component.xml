@@ -10,6 +10,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Property name="width" type="number">width</Property>
@@ -72,6 +75,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -146,6 +152,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -209,6 +218,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -272,6 +284,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -335,6 +350,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -405,6 +423,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">
@@ -474,6 +495,9 @@
       <Type>PalleteEntry</Type>
       <Version>1.0</Version>
     </Header>
+    <Metadata>
+        <meta name='cdwSupport'>true</meta>
+    </Metadata>
     <Contents>
       <Model>
         <Definition name="chartDefinition">

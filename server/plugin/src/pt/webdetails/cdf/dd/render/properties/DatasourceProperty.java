@@ -41,7 +41,7 @@ public class DatasourceProperty extends GenericProperty
     boolean isCda = false;
     boolean isBuiltIn = false;
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
-    Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
+    Pointer pointer = node.getPointer("/datasources/rows[properties[name='name' and value='" + queryName + "']]");
 
     if (!(pointer instanceof NullPointer))
     {
@@ -189,7 +189,7 @@ public class DatasourceProperty extends GenericProperty
 
     if (queryName.length() > 0)
     {
-      Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
+      Pointer pointer = node.getPointer("/datasources/rows[properties[name='name' and value='" + queryName + "']]");
 
 
 
