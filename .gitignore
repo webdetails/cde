@@ -10,6 +10,5 @@ server/plugin/resource/includes.properties
 server/plugin/resource/resources/scripts.html
 server/plugin/resource/resources/styles.html
 
-nbproject/private/:if expand("%") == ""|browse confirm w|else|confirm w|endif
-
+nbproject/private/
 .DS_Store
