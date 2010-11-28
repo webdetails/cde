@@ -1879,7 +1879,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
       this.pvBarPanel = this.pvPanel.add(pv.Panel)
       .data(this.chart.dataEngine.getVisibleCategoriesIndexes())
       [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-        return oScale(this.index);
+        return oScale(this.index) + barPositionOffset;
       })
       [anchor](0)
       [pvc.BasePanel.paralelLength[anchor]](oScale.range().band)
@@ -1894,9 +1894,11 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
       [pvc.BasePanel.relativeAnchor[anchor]](function(d){
         return bScale(myself.chart.dataEngine.getVisibleSeriesIndexes()[this.index]) + barPositionOffset;
       })
-      [anchor](lScale(0))
+      [anchor](function(d){
+        return lScale(pv.min([0,d]))
+      })
       [pvc.BasePanel.orthogonalLength[anchor]](function(d){
-        return myself.chart.animate(0, lScale(d||0) - lScale(0))
+        return myself.chart.animate(0, Math.abs(lScale(d||0) - lScale(0)))
       })
       [pvc.BasePanel.paralelLength[anchor]](maxBarSize)
 
