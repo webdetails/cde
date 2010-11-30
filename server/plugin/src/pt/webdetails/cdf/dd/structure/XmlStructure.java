@@ -158,7 +158,7 @@ public class XmlStructure implements IStructure
       //4. Write CDW File
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
-      cdwRenderer.render();
+      cdwRenderer.render(file[0], file[1]);
 
       //5. Check publish result again.
       if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)

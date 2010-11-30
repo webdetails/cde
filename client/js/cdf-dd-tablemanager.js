@@ -1388,7 +1388,24 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   formatSelection: function(file){
-    return "../pentaho-cdf/GetCDFResource?resource=" + file;
+    var common = true,
+        splitFile = file.split("/"),
+        splitPath = cdfdd.getDashboardData().filename.split("/"),
+        finalPath = "",
+        i = 0;
+
+        while (common){
+            if (splitFile[i] !== splitPath[i]) {
+                common = false;
+            } else {
+                finalPath += '../';
+            }
+            i += 1;
+        }
+        
+        finalPath += splitFile.slice(i - 1).join('/');
+
+        return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
   },
 
   validate: function(settings, original){
@@ -1396,3 +1413,5 @@ var ResourceFileRenderer = CellRenderer.extend({
   }
 
 });
+
+

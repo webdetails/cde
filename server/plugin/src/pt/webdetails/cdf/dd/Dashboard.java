@@ -5,11 +5,8 @@
 package pt.webdetails.cdf.dd;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
@@ -33,7 +30,6 @@ import net.sf.ehcache.CacheManager;
 import mondrian.olap.InvalidArgumentException;
 import net.sf.ehcache.Element;
 import org.pentaho.platform.api.engine.ISolutionFile;
-import org.pentaho.platform.util.messages.LocaleHelper;
 
 /**
  *
@@ -44,9 +40,9 @@ class Dashboard implements Serializable
   /* CONSTANTS */
 
   // Dashboard rendering
-  private static final String DASHBOARD_HEADER_TAG = "@HEADER@";
-  private static final String DASHBOARD_CONTENT_TAG = "@CONTENT@";
-  private static final String DASHBOARD_FOOTER_TAG = "@FOOTER@";
+  private static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
+  private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
+  private static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
   private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
   private static final String I18N_BOILERPLATE = "resources/i18n-boilerplate.js";
   private static Log logger = LogFactory.getLog(Dashboard.class);
@@ -55,7 +51,7 @@ class Dashboard implements Serializable
   private static final String CACHE_NAME = "pentaho-cde";
   /* FIELDS */
   private String template, header, content, footer;
-  private String dashboardLocation;
+  private String templateFile, dashboardLocation;
   private Date loaded;
   private DashboardDesignerContentGenerator generator;
   private static CacheManager cacheManager;
@@ -72,13 +68,13 @@ class Dashboard implements Serializable
     {
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
-      this.template = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
+      this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
       Cache cache = getCache();
       final boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
       final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
       final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? "http://" + pathParams.getParameter("root").toString() : "" : "";
       final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-      DashboardCacheKey key = new DashboardCacheKey(dashboardLocation, template);
+      DashboardCacheKey key = new DashboardCacheKey(dashboardLocation, templateFile);
       key.setAbs(absolute);
       key.setDebug(debug);
       try
@@ -90,13 +86,14 @@ class Dashboard implements Serializable
           Dashboard cached = (Dashboard) cacheElement.getValue();
           logger.info("Got dashboard from cache");
           ISolutionFile dash = solutionRepository.getSolutionFile(dashboardLocation, 0);
-          ISolutionFile templ = solutionRepository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + template, 0);
+          ISolutionFile templ = solutionRepository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + templateFile, 0);
 
           if (dash.getLastModified() <= cached.getLoaded().getTime()
-                  && dash.getLastModified() <= cached.getLoaded().getTime())
+                  && templ.getLastModified() <= cached.getLoaded().getTime())
           {
             this.content = cached.content;
             this.header = cached.header;
+            this.template = cached.template;
             this.loaded = cached.loaded;
             return;
           }
@@ -126,39 +123,45 @@ class Dashboard implements Serializable
       dashboardBody.append(componentsRenderer.render(doc));
 
       // set all dashboard members
-      this.content = dashboardBody.toString();
-      replaceTokens();
+      this.content = replaceTokens(dashboardBody.toString());
+      this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile));
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
       cache.put(new Element(key, this));
     }
     catch (Exception e)
     {
-      this.template = null;
+      this.templateFile = null;
     }
   }
 
   public String render() throws Exception
   {
 
-    final HashMap<String, String> tokens = new HashMap<String, String>();
-    tokens.put(DASHBOARD_HEADER_TAG, this.header + generator.getCdfContext());
-    tokens.put(DASHBOARD_FOOTER_TAG, this.footer);
-    tokens.put(DASHBOARD_CONTENT_TAG, this.content);
-
-    return ResourceManager.getInstance().getResourceAsString(this.template, tokens);
+    return this.template.replaceAll(DASHBOARD_HEADER_TAG, Matcher.quoteReplacement(this.header + generator.getCdfContext())) // Replace the Header
+            .replaceAll(DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement(this.footer)) // And the Footer
+            .replaceAll(DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement(this.content)); // And even the content!
 
   }
 
-  private void replaceTokens()
+  private String replaceTokens(String content)
   {
     final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}",
-            IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}";
-    String path = dashboardLocation.replaceAll("(.+/).*", "$1");
-    this.content = this.content // Start with the same content
-            .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)","$1")) // replace the dashboard path token
-            .replaceAll(IMG_TAG_REGEXP, "getimg/" + path + "$1" + "?v=" + new Date().getTime());// build the image links, with a timestamp for caching purposes
+            ABS_IMG_TAG_REGEXP = "\\$\\{img:(/.+)\\}",
+            ABS_RES_TAG_REGEXP = "\\$\\{res:(/.+)\\}",
+            REL_IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}",
+            REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
+    final long timestamp = new Date().getTime();
+    String path = dashboardLocation.replaceAll("(.+/).*", "$1");
+    String fixedContent = content // Start with the same content
+            .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
+            .replaceAll(ABS_IMG_TAG_REGEXP, "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(REL_IMG_TAG_REGEXP, "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(ABS_RES_TAG_REGEXP, "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(REL_RES_TAG_REGEXP, "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
+
+    return fixedContent;
   }
 
   private String renderHeaders(final IParameterProvider pathParams)
@@ -297,61 +300,61 @@ class Dashboard implements Serializable
 
   public String getTemplate()
   {
-    return template;
+    return templateFile;
   }
-/*
+  /*
   private String renderI18nLoader()
   {
-    try
-    {
-      Locale locale = LocaleHelper.getLocale();
-      logger.debug("Rendering dashboard with locale: " + locale.getLanguage());
-      HashMap<String, String> tokens = new HashMap<String, String>();
-      tokens.put("@GLOBAL_MESSAGE_SET_NAME@", CdfConstants.BASE_GLOBAL_MESSAGE_SET_FILENAME);
-      tokens.put("@GLOBAL_MESSAGE_SET_PATH@", header);
-      tokens.put("@GLOBAL_MESSAGE_SET@", header);
-      tokens.put("@LANGUAGE_CODE@", locale.getLanguage());
-      intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET_PATH\\}", messageSetPath);
-      intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET\\}", buildMessageSetCode(i18nTagsList));
-      String boilerplate = ResourceManager.getInstance().getResourceAsString(I18N_BOILERPLATE);
-      return boilerplate;
-    }
-    catch (Exception e)
-    {
-      return "";
-    }
+  try
+  {
+  Locale locale = LocaleHelper.getLocale();
+  logger.debug("Rendering dashboard with locale: " + locale.getLanguage());
+  HashMap<String, String> tokens = new HashMap<String, String>();
+  tokens.put("@GLOBAL_MESSAGE_SET_NAME@", CdfConstants.BASE_GLOBAL_MESSAGE_SET_FILENAME);
+  tokens.put("@GLOBAL_MESSAGE_SET_PATH@", header);
+  tokens.put("@GLOBAL_MESSAGE_SET@", header);
+  tokens.put("@LANGUAGE_CODE@", locale.getLanguage());
+  intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET_PATH\\}", messageSetPath);
+  intro = intro.replaceAll("#\\{GLOBAL_MESSAGE_SET\\}", buildMessageSetCode(i18nTagsList));
+  String boilerplate = ResourceManager.getInstance().getResourceAsString(I18N_BOILERPLATE);
+  return boilerplate;
+  }
+  catch (Exception e)
+  {
+  return "";
+  }
   }
 
   private String processI18nTags(String content)
   {
-    ArrayList<String> tagsList = new ArrayList<String>();
-    String tagPattern = "CDF.i18n\\(\"";
-    String[] test = content.split(tagPattern);
-    if (test.length == 1)http://127.0.0.1:8080/pentaho/content/pentaho-cdf-dd/Render?solution=metrics&path=/sumo/sumo_dashboard&file=sumo_forumOverview.wcdf
-    {
-      return content;
-    }
-    StringBuffer resBuffer = new StringBuffer();
-    int i;
-    String tagValue;
-    resBuffer.append(test[0]);
-    for (i = 1; i < test.length; i++)
-    {
+  ArrayList<String> tagsList = new ArrayList<String>();
+  String tagPattern = "CDF.i18n\\(\"";
+  String[] test = content.split(tagPattern);
+  if (test.length == 1)http://127.0.0.1:8080/pentaho/content/pentaho-cdf-dd/Render?solution=metrics&path=/sumo/sumo_dashboard&file=sumo_forumOverview.wcdf
+  {
+  return content;
+  }
+  StringBuffer resBuffer = new StringBuffer();
+  int i;
+  String tagValue;
+  resBuffer.append(test[0]);
+  for (i = 1; i < test.length; i++)
+  {
 
-      // First tag is processed differently that other because is the only case where I don't
-      // have key in first position
-      resBuffer.append("<span id=\"");
-      if (i != 0)
-      {
-        // Right part of the string with the value of the tag herein
-        tagValue = test[i].substring(0, test[i].indexOf("\")"));
-        tagsList.add(tagValue);
-        resBuffer.append(updateSelectorName(tagValue));
-        resBuffer.append("\"/>");
-        resBuffer.append(test[i].substring(test[i].indexOf("\")") + 2, test[i].length()));
-      }
-    }
-    return resBuffer.toString();
+  // First tag is processed differently that other because is the only case where I don't
+  // have key in first position
+  resBuffer.append("<span id=\"");
+  if (i != 0)
+  {
+  // Right part of the string with the value of the tag herein
+  tagValue = test[i].substring(0, test[i].indexOf("\")"));
+  tagsList.add(tagValue);
+  resBuffer.append(updateSelectorName(tagValue));
+  resBuffer.append("\"/>");
+  resBuffer.append(test[i].substring(test[i].indexOf("\")") + 2, test[i].length()));
+  }
+  }
+  return resBuffer.toString();
   }*/
 
   private String updateSelectorName(String name)

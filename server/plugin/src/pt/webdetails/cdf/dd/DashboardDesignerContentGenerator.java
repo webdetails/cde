@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
@@ -62,10 +63,35 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public static final String SERVER_URL_VALUE = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/";
   private Packager packager;
 
-  public enum MimeTypes
+  public enum FileTypes
   {
 
-    JPG, JPEG, PNG, GIF, BMP
+    JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
+  }
+  public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
+
+  static
+  {
+
+    /*
+     * Image types
+     */
+    mimeTypes.put(FileTypes.JPG, "image/jpeg");
+    mimeTypes.put(FileTypes.JPEG, "image/jpeg");
+    mimeTypes.put(FileTypes.PNG, "image/png");
+    mimeTypes.put(FileTypes.GIF, "image/gif");
+    mimeTypes.put(FileTypes.BMP, "image/bmp");
+
+
+    /*
+     * HTML (and related) types
+     */
+    // Deprecated, should be application/javascript, but IE doesn't like that
+    mimeTypes.put(FileTypes.JS, "text/javascript");
+    mimeTypes.put(FileTypes.HTM, "text/html");
+    mimeTypes.put(FileTypes.HTML, "text/html");
+    mimeTypes.put(FileTypes.CSS, "text/css");
+    mimeTypes.put(FileTypes.XML, "text/xml");
   }
 
   public DashboardDesignerContentGenerator()
@@ -298,7 +324,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String[] fileName = path[path.length - 1].split("\\.");
 
     final String mimeType;
-    switch (MimeTypes.valueOf(fileName[fileName.length - 1].toUpperCase()))
+    switch (FileTypes.valueOf(fileName[fileName.length - 1].toUpperCase()))
     {
       case PNG:
         mimeType = "image/png";
@@ -316,6 +342,47 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       default:
         mimeType = "";
     }
+    setResponseHeaders(mimeType, 3600 * 24 * 8, null); // 1 week cache
+    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    // Set cache for 1 year, give or take.
+    response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
+    getSolutionResource(out, resource);
+
+  }
+
+  public void res(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    String pathString = this.parameterProviders.get("path").getStringParameter("path", "");
+    String resource;
+    if (pathString.split("/").length > 2)
+    {
+      resource = pathString.replaceAll("^/.*?/", "");
+    }
+    else
+    {
+      resource = pathParams.getStringParameter("path", "");
+    }
+    resource = resource.startsWith("/") ? resource : "/" + resource;
+
+    String[] path = resource.split("/");
+    String[] fileName = path[path.length - 1].split("\\.");
+
+
+    String mimeType;
+    try
+    {
+      final FileTypes fileType = FileTypes.valueOf(fileName[fileName.length - 1].toUpperCase());
+      mimeType = mimeTypes.get(fileType);
+    }
+    catch (java.lang.IllegalArgumentException ex)
+    {
+      mimeType = "";
+    }
+    catch (EnumConstantNotPresentException ex)
+    {
+      mimeType = "";
+    }
+
     setResponseHeaders(mimeType, 3600 * 24 * 8, null); // 1 week cache
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
@@ -568,8 +635,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final File file = new File(path);
 
-    if (!file.getAbsolutePath().replaceAll("\\\\","/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\","/").replaceAll("/+", "/")))
-
+    if (!file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
     {
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");

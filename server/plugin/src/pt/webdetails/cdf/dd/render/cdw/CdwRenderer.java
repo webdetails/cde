@@ -8,6 +8,8 @@ import java.util.Iterator;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 
 /**
@@ -17,6 +19,7 @@ import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 public class CdwRenderer
 {
 
+  private static final Log logger = LogFactory.getLog(CdwRenderer.class);
   JXPathContext document;
   WcdfDescriptor descriptor;
 
@@ -31,12 +34,12 @@ public class CdwRenderer
     this(JXPathContext.newContext(JSONSerializer.toJSON(document.replaceAll("^\n*", ""))), descriptor);
   }
 
-  public void render()
+  public void render(String path, String name)
   {
-    render(this.document);
+    render(this.document, path, name);
   }
 
-  protected void render(JXPathContext document)
+  protected void render(JXPathContext document, String path, String name)
   {
     CdwFile cdw = new CdwFile();
     cdw.populateHeaders(descriptor);
@@ -46,11 +49,12 @@ public class CdwRenderer
     {
       Pointer chartSource = charts.next();
       CggChart chart = new CggChart(chartSource);
-      chart.render();
+      chart.setPath(path);
+      chart.renderToFile();
       cdw.addChart(chart);
     }
 
-    cdw.writeFile();
+    cdw.writeFile(path, name);
 
   }
 }

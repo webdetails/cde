@@ -10,6 +10,9 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.repository.ISolutionRepository;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
 
@@ -23,88 +26,101 @@ public class CggChart
   private static final Log logger = LogFactory.getLog(CggChart.class);
   JXPathContext document;
   Pointer chart;
-  String filename, chartName;
+  String path, chartName;
 
   public CggChart(Pointer chart)
   {
     this.chart = chart;
     this.document = JXPathContext.newContext(chart.getRootNode());
-    this.filename = "";
+    this.path = "";
     this.chartName = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='name']/value").getValue().toString();
   }
 
-  public void render()
+  public void renderToFile()
   {
-    StringBuilder dataSource = new StringBuilder();
-    renderPreamble(dataSource);
+    StringBuilder chartScript = new StringBuilder();
+    renderPreamble(chartScript);
 
-    renderChart(dataSource);
-    renderDatasource(dataSource);
+    renderChart(chartScript);
+    renderDatasource(chartScript);
 
-    dataSource.append("renderCcccFromComponent(render_" + this.chartName + ", data);\n");
-    dataSource.append("output = document.body.innerHTML.match('<svg.*/svg>')[0];\n");
+    chartScript.append("renderCcccFromComponent(render_" + this.chartName + ", data);\n");
+    chartScript.append("output = document.body.innerHTML.match('<svg.*/svg>')[0];\n");
 
-    writeFile(dataSource);
+    writeFile(chartScript);
   }
 
-  private void renderDatasource(StringBuilder dataSource)
+  private void renderDatasource(StringBuilder chartScript)
   {
     String datasourceName = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='dataSource']/value").getNode().toString();
     JXPathContext datasourceContext = JXPathContext.newContext(document.getPointer("/datasources/rows[properties[name='name' and value='" + datasourceName + "']]").getNode());
 
-    renderDatasourcePreamble(dataSource, datasourceContext);
-    renderParameters(dataSource, JSONArray.fromObject(datasourceContext.getValue("properties/.[name='parameters']/value", String.class)));
+    renderDatasourcePreamble(chartScript, datasourceContext);
+    renderParameters(chartScript, JSONArray.fromObject(datasourceContext.getValue("properties/.[name='parameters']/value", String.class)));
 
-    dataSource.append("var data = JSON.parse(String(datasource.execute()));\n");
+    chartScript.append("var data = JSON.parse(String(datasource.execute()));\n");
   }
 
   /**
    * Sets up the includes, place holders and any other niceties needed for the chart
    */
-  private void renderPreamble(StringBuilder dataSource)
+  private void renderPreamble(StringBuilder chartScript)
   {
-    dataSource.append("lib('protovis-bundle.js');\n");
-    dataSource.append("lib('ccc-utils.js');\n\n");
+    chartScript.append("lib('protovis-bundle.js');\n");
+    chartScript.append("lib('ccc-utils.js');\n\n");
 
-    dataSource.append("elem = document.createElement('div');\n"
+    chartScript.append("elem = document.createElement('div');\n"
             + "elem.setAttribute('id','canvas');\n"
             + "document.body.appendChild(elem);\n\n");
   }
 
-  private void renderChart(StringBuilder dataSource)
+  private void renderChart(StringBuilder chartScript)
   {
     ComponentManager engine = ComponentManager.getInstance();
     JXPathContext context = document.getRelativeContext(chart);
     BaseComponent renderer = engine.getRenderer(context);
     renderer.setNode(context);
-    dataSource.append(renderer.render(context));
+    chartScript.append(renderer.render(context));
 
 
   }
 
-  private void writeFile(StringBuilder dataSource)
+  private void writeFile(StringBuilder chartScript)
   {
-    logger.debug(dataSource.toString());
+    try
+    {
+      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
+      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, this.chartName + ".js", chartScript.toString().getBytes("UTF-8"), true);
+    }
+    catch (Exception e)
+    {
+      logger.error("failed to write script file for " + chartName + ": " + e.getCause().getMessage());
+    }
   }
 
-  private void renderDatasourcePreamble(StringBuilder dataSource, JXPathContext context)
+  private void renderDatasourcePreamble(StringBuilder chartScript, JXPathContext context)
   {
     String dataAccessId = (String) context.getValue("properties/.[name='name']/value", String.class);
 
-    dataSource.append("var datasource = datasourceFactory.createDatasource('cda');\n");
-    dataSource.append("datasource.setDefinitionFile(render_" + this.chartName + ".chartDefinition.path);\n");
-    dataSource.append("datasource.setDataAccessId('" + dataAccessId + "');\n\n");
+    chartScript.append("var datasource = datasourceFactory.createDatasource('cda');\n");
+    chartScript.append("datasource.setDefinitionFile(render_" + this.chartName + ".chartDefinition.path);\n");
+    chartScript.append("datasource.setDataAccessId('" + dataAccessId + "');\n\n");
   }
 
-  private void renderParameters(StringBuilder dataSource, JSONArray params)
+  private void renderParameters(StringBuilder chartScript, JSONArray params)
   {
     Iterator<JSONArray> it = params.iterator();
     while (it.hasNext())
     {
       JSONArray param = it.next();
       String paramName = param.get(0).toString();
-      dataSource.append("var param" + paramName + " = params.get('" + paramName + "') || ''\n");
-      dataSource.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
+      chartScript.append("var param" + paramName + " = params.get('" + paramName + "') || ''\n");
+      chartScript.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
     }
+  }
+
+  public void setPath(String path)
+  {
+    this.path = path;
   }
 }
