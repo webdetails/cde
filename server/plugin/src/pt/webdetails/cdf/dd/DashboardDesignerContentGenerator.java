@@ -37,6 +37,7 @@ import pt.webdetails.cdf.dd.render.components.ComponentManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
+import pt.webdetails.cdf.dd.util.Utils;
 
 @SuppressWarnings("unchecked")
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
@@ -58,8 +59,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DESIGNER_STYLES_TAG = "@STYLES@";
   private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   private static final String DATA_URL_TAG = "cdf-structure.js";
-  private static final String DATA_URL_VALUE = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/Syncronize";
-  public static final String SERVER_URL_VALUE = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/";
+  private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
+  public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
   private Packager packager;
 
   public enum MimeTypes

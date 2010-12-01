@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import pt.webdetails.cdf.dd.util.Utils;
 
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
@@ -24,7 +25,7 @@ public class CdfTemplates {
   public static String CDF_DD_TEMPLATES = "cdf-dd/templates/";
   public static String DEFAULT_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates/");
   public static String CUSTOM_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath(CDF_DD_TEMPLATES);
-  public static String RESOURCE_TEMPLATE_DIR = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2] + "/content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
+  public static String RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
   public static String UNKNOWN_IMAGE = RESOURCE_TEMPLATE_DIR + "unknown.png";
   public static String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
 
