@@ -24,7 +24,6 @@ import pt.webdetails.cdf.dd.render.CdaRenderer;
 public class XmlStructure implements IStructure {
 
   private IPentahoSession userSession = null;
-  public static final String BASE_URL = "/" + PentahoSystem.getApplicationContext().getBaseUrl().split("[/]+")[2];
   public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
 
   public XmlStructure(IPentahoSession userSession) {

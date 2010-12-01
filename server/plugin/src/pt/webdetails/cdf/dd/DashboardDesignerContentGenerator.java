@@ -114,7 +114,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     catch (Exception e)
     {
       final String message = e.getCause() != null ? e.getCause().getClass().getName() + " - " + e.getCause().getMessage() : e.getClass().getName() + " - " + e.getMessage();
-      logger.error(message);
+      logger.error(message,e);
     }
 
   }
