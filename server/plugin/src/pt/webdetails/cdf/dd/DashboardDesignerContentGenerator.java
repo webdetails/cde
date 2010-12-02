@@ -149,9 +149,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
 
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
-
-
-    // 0 - Check security
     final String path = ((String) pathParams.getParameter("file")).replaceAll("cdfde", "wcdf");
     if (pathParams.hasParameter("path") && !hasAccess(out, path, ISolutionRepository.ACTION_UPDATE))
     {

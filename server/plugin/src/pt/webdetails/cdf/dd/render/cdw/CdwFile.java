@@ -4,6 +4,10 @@
  */
 package pt.webdetails.cdf.dd.render.cdw;
 
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.logging.Log;
@@ -15,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 
@@ -67,11 +72,11 @@ public class CdwFile
       this.charts = (Element) root.appendChild(cdwDocument.createElement("charts"));
     }
 
-    Element chart = cdwDocument.createElement("chart");
+    Element chart = (Element) this.charts.appendChild(cdwDocument.createElement("chart"));
 
-    setParams();
-    setHeaders();
-    setSource();
+    setHeaders(chart, chartDefinition);
+    setSource(chart, chartDefinition);
+    setParams(chart, chartDefinition.getParameters());
   }
 
   public void writeFile(String path, String name)
@@ -81,11 +86,21 @@ public class CdwFile
     try
     {
       DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
-
       DOMImplementationLS impl = (DOMImplementationLS) registry.getDOMImplementation("LS");
+      LSOutput output = impl.createLSOutput();
+
+      Writer outputWriter = new StringWriter();
+      output.setCharacterStream(outputWriter);
+      output.setEncoding("UTF-8");
       LSSerializer writer = impl.createLSSerializer();
+      writer.write(root, output);
+      outputWriter.flush();
+      outputWriter.toString();
+      //DOMSerializerImpl config = (DOMSerializerImpl) writer.getDomConfig();
+      //config.setParameter("format-pretty-print", "true");
+      // TODO: Set encoding
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, name.replaceAll("cdfde$", "cdw"), writer.writeToString(cdwDocument).getBytes("UTF-8"), true);
+      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, name.replaceAll("cdfde$", "cdw"), outputWriter.toString().getBytes("UTF-8"), true);
     }
     catch (Exception e)
     {
@@ -93,15 +108,25 @@ public class CdwFile
     }
   }
 
-  private void setParams()
+  private void setParams(Element chart, Map<String, String> parameters)
   {
+    Element paramsElement = (Element) chart.appendChild(cdwDocument.createElement("parameters"));
+    for (Entry<String, String> elem : parameters.entrySet())
+    {
+      Element param = (Element) paramsElement.appendChild(cdwDocument.createElement("parameter"));
+      param.setAttribute("type", elem.getValue());
+      param.setTextContent(elem.getKey());
+    }
   }
 
-  private void setHeaders()
+  private void setHeaders(Element chart, CggChart chartDefinition)
   {
+    chart.setAttribute("id", chartDefinition.getId());
+    chart.setAttribute("name", chartDefinition.getName());
   }
 
-  private void setSource()
+  private void setSource(Element chart, CggChart chartDefinition)
   {
+    chart.appendChild(cdwDocument.createElement("script")).setTextContent(chartDefinition.getFilename());
   }
 }

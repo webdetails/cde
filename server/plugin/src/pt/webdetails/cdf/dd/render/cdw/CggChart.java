@@ -4,7 +4,9 @@
  */
 package pt.webdetails.cdf.dd.render.cdw;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import net.sf.json.JSONArray;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
@@ -24,9 +26,11 @@ public class CggChart
 {
 
   private static final Log logger = LogFactory.getLog(CggChart.class);
+  private static final String CGG_EXTENSION = ".js";
   JXPathContext document;
   Pointer chart;
-  String path, chartName;
+  String path, chartName, chartTitle;
+  Map<String, String> parameters;
 
   public CggChart(Pointer chart)
   {
@@ -34,6 +38,7 @@ public class CggChart
     this.document = JXPathContext.newContext(chart.getRootNode());
     this.path = "";
     this.chartName = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='name']/value").getValue().toString();
+    this.chartTitle = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='title']/value").getValue().toString();
   }
 
   public void renderToFile()
@@ -66,8 +71,7 @@ public class CggChart
    */
   private void renderPreamble(StringBuilder chartScript)
   {
-    chartScript.append("lib('protovis-bundle.js');\n");
-    chartScript.append("lib('ccc-utils.js');\n\n");
+    chartScript.append("lib('protovis-bundle.js');\n\n");
 
     chartScript.append("elem = document.createElement('div');\n"
             + "elem.setAttribute('id','canvas');\n"
@@ -90,7 +94,7 @@ public class CggChart
     try
     {
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, this.chartName + ".js", chartScript.toString().getBytes("UTF-8"), true);
+      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, this.chartName + CGG_EXTENSION, chartScript.toString().getBytes("UTF-8"), true);
     }
     catch (Exception e)
     {
@@ -109,18 +113,42 @@ public class CggChart
 
   private void renderParameters(StringBuilder chartScript, JSONArray params)
   {
+    parameters = new HashMap<String, String>();
     Iterator<JSONArray> it = params.iterator();
     while (it.hasNext())
     {
       JSONArray param = it.next();
       String paramName = param.get(0).toString();
-      chartScript.append("var param" + paramName + " = params.get('" + paramName + "') || ''\n");
+      String defaultValue = param.get(1).toString();
+      chartScript.append("var param" + paramName + " = params.get('" + paramName + "');\n");
+      chartScript.append("param" + paramName + " = (param" + paramName + " !== null && param" + paramName + " !== '')? param" + paramName + " : '"+ defaultValue+ "';\n");
       chartScript.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
+      parameters.put(param.get(0).toString(), param.get(2).toString());
     }
   }
 
   public void setPath(String path)
   {
     this.path = path;
+  }
+
+  public String getFilename()
+  {
+    return (path + "/" + this.chartName + CGG_EXTENSION).replaceAll("/+", "/");
+  }
+
+  public Map<String, String> getParameters()
+  {
+    return parameters;
+  }
+
+  public String getName()
+  {
+    return (chartTitle != null && !chartTitle.isEmpty()) ? chartTitle : chartName;
+  }
+
+  public String getId()
+  {
+    return chartName;
   }
 }

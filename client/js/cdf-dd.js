@@ -126,6 +126,11 @@ var CDFDD = Base.extend({
               cdfdd.previewMode();
             }
             break;
+          case 71:
+            if (e.shiftKey){
+              cdfdd.cggDialog();
+            }
+            break
           case 191:
             if (e.shiftKey){
               cdfdd.toggleHelp();
@@ -484,8 +489,39 @@ var CDFDD = Base.extend({
   },
   getDashboardWcdf: function(){
     return this.dashboardWcdf
-  }
+  },
 
+  cggDialog: function() {
+    var components = cdfdd.dashboardData.components.rows;
+    var cggCandidates = components.filter(function(e){return e.meta_cdwSupport == 'true';});
+    
+    var ph = $('#cggDialog');
+    ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
+    
+    ph.empty(); 
+    
+    ph.append("<h3>Choose what charts to render as CGG");
+    cggCandidates.map(function(e){
+        var checkbox = $("<input type='checkbox'>");
+        checkbox[0].checked = (e.meta_cdwRender  == 'true' || false);
+        checkbox.change(function(){
+           e.meta_cdwRender = "" + this.checked;
+        });
+        var name = '',
+            title = '';
+        e.properties.map(function(p){
+            if (p.name == 'title') {
+                title = p.value;
+            } else if (p.name == 'name') {
+                name = p.value;
+            }
+        });
+        var label = "<span>" + (title !== '' ? title : name) + "</span>";
+        ph.append(checkbox);
+        ph.append(label +"<br>");
+        ph.jqmShow();
+    });
+  }
 },
 {
   LAYOUT: function(){

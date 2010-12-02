@@ -44,7 +44,7 @@ public class CdwRenderer
     CdwFile cdw = new CdwFile();
     cdw.populateHeaders(descriptor);
 
-    Iterator<Pointer> charts = document.iteratePointers("/components/rows[meta_cdwSupport='true']");
+    Iterator<Pointer> charts = document.iteratePointers("/components/rows[meta_cdwSupport='true' and meta_cdwRender='true']");
     while (charts.hasNext())
     {
       Pointer chartSource = charts.next();
