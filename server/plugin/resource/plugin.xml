@@ -39,7 +39,7 @@
 			<overlay id="startup.dashboardToolbar" resourcebundle="../content/pentaho-cdf-dd/lang/messages">
 				<toolbarbutton id="newAnalysisButton" removeelement="false"/>
 				<toolbar id="mainToolbar">
-					<toolbarbutton id="newCDE" image="content/pentaho-cdf-dd/images/overlay/cde_toolbar_icon.png" onclick="mainToolbarHandler.openUrl('${tabName}','${tabName}','content/pentaho-cdf-dd/NewDashboard')" tooltiptext="${openNewCDE}" insertafter="newCDEButton"/>
+					<toolbarbutton id="newCDE" image="../content/pentaho-cdf-dd/images/overlay/cde_toolbar_icon.png" onclick="mainToolbarHandler.openUrl('${tabName}','${tabName}','content/pentaho-cdf-dd/NewDashboard')" tooltiptext="${openNewCDE}" insertafter="newCDEButton"/>
 				</toolbar>
 			</overlay>
 		</overlay>
