@@ -1609,7 +1609,7 @@
             "order":15,
             "description":"HTML",
             "name":"html",
-            "value":"Pedro Alves, webedetails ",
+            "value":"Pedro Alves, webdetails ",
             "type":"Html",
             "tooltip":"Html code to be added"
           },
