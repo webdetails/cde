@@ -728,3 +728,16 @@ table.cdfdd caption {
   height: 30px;
   /*padding-top: 0px;*/
 }
+
+
+#cggDialog {
+
+    display: none;
+    width: 400px;
+    margin-left: -200px;
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    height: auto;
+    background: #ddd;
+}
