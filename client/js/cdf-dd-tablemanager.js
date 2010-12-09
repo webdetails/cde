@@ -1393,18 +1393,17 @@ var ResourceFileRenderer = CellRenderer.extend({
         splitPath = cdfdd.getDashboardData().filename.split("/"),
         finalPath = "",
         i = 0;
-
         while (common){
             if (splitFile[i] !== splitPath[i]) {
                 common = false;
-            } else {
-                finalPath += '../';
             }
             i += 1;
         }
         
+        $.each(splitPath.slice(i),function(i,j){
+          finalPath+="../";
+        })
         finalPath += splitFile.slice(i - 1).join('/');
-
         return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
   },
 
