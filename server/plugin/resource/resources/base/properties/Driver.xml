@@ -3,8 +3,8 @@
 	<Name>driver</Name>
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
-	<Description>Name</Description>
-	<Tooltip>Name</Tooltip>
+	<Description>Driver</Description>
+	<Tooltip>Driver</Tooltip>
 	<InputType>String</InputType>
 	<OutputType>String</OutputType>
 	<Order>5</Order>
