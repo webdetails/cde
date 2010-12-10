@@ -5,7 +5,7 @@
 	<DefaultValue></DefaultValue>
 	<Description>Jndi</Description>
 	<Tooltip>JNDI string for the desired connection</Tooltip>
-	<InputType>String</InputType>
+	<InputType>Jndi</InputType>
 	<OutputType>String</OutputType>
 	<Order>21</Order>
 	<Version>1.0</Version>

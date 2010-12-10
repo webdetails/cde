@@ -523,3 +523,31 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
     }
   }
 });
+
+
+var JndiRenderer = SelectRenderer.extend({
+
+  logger: null,
+  selectData: [''],
+  catalogs:[],
+
+
+  getDataInit: function(){
+
+    var myself = this;
+    $.getJSON(CDFDDServerUrl + "OlapUtils", {
+      operation: "GetOlapCubes"
+    }, function(json) {
+      if(json.status == "true"){
+        var catalogs = json.result.catalogs;
+        var hash = {};
+        $.each(catalogs,function(i,catalog){
+          hash[catalog.jndi]=1;
+        });
+        for(jndi in hash){
+          myself.selectData.push(jndi);
+        }
+      }
+    });
+  }
+});
