@@ -5,7 +5,7 @@
 	<DefaultValue></DefaultValue>
 	<Description>Mondrian schema</Description>
 	<Tooltip>Mondrian schema location</Tooltip>
-	<InputType>String</InputType>
+	<InputType>MondrianCatalog</InputType>
 	<OutputType>String</OutputType>
 	<Order>22</Order>
 	<Version>1.0</Version>

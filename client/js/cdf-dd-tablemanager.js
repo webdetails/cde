@@ -13,6 +13,7 @@ var TableManager = Base.extend({
   operations: [],
   linkedTableManager: undefined,
   linkedTableManagerOperation: undefined,
+  parentTableManager: undefined,
   cellRendererPool: {},
 
   constructor: function(id){
@@ -21,7 +22,7 @@ var TableManager = Base.extend({
     this.tableId = "table-" + id;
 
     // set a Default Table Model
-    this.setTableModel(new TableModel());
+    // this.setTableModel(new TableModel());
 
     // Register this tablemanager in the global area
     TableManager.register(this);
@@ -188,6 +189,18 @@ var TableManager = Base.extend({
       tr.find("td:eq("+colIdx+")").remove();
       myself.renderColumn(tr,row,colIdx);
     });
+
+  },
+
+  renderColumnByRow: function(row,colIdx){
+
+      if(typeof colIdx == "undefined")
+        colIdx = 1;
+
+      var rowIdx = this.getTableModel().getRowIndexByName(row.name);
+      var tr = $("#"+this.getId()).find("tbody > tr:eq("+rowIdx+")");
+      tr.find("td:eq(1)").remove();
+      this.renderColumn(tr,row,colIdx);
 
   },
 
@@ -409,7 +422,8 @@ var TableManager = Base.extend({
     return this.selectedCell
   },
   setLinkedTableManager: function(linkedTableManager){
-    this.linkedTableManager = linkedTableManager
+    this.linkedTableManager = linkedTableManager;
+    linkedTableManager.parentTableManager = this;
   },
   getLinkedTableManager: function(){
     return this.linkedTableManager
@@ -560,6 +574,17 @@ var TableModel = Base.extend({
     return row;
   },
 
+
+  getRowIndexByName:function(name){
+    var idx;
+    $.each(this.data,function(i,r){
+      if(r.name == name){
+        idx = i;
+        return false;
+      }
+    });
+    return idx;
+  },
 
   getEvaluatedRowType: function(rowNumber){
 
@@ -836,6 +861,8 @@ var SelectRenderer = CellRenderer.extend({
     this.logger = new Logger("SelectRenderer");
     this.logger.debug("Creating new SelectRenderer");
 
+    this.getDataInit();
+
   },
 
   render: function(placeholder, value, callback){
@@ -846,16 +873,18 @@ var SelectRenderer = CellRenderer.extend({
 
     
     _editArea.editable(function(value,settings){
-      
-      if (!$.isArray(myself.getData()) && typeof myself.revertedSelectData[value]!= "undefined"){
-        myself.logger.debug("Saving new value: " + myself.revertedSelectData[value] );
-        callback(myself.revertedSelectData[value]);
-      }
-      else{
-        myself.logger.debug("Saving new value: " + value );
-        callback(value);
-      }
 
+      var valueId;
+      if (!$.isArray(myself.getData()) && typeof myself.revertedSelectData[value]!= "undefined"){
+        valueId = myself.revertedSelectData[value]
+              }
+      else{
+        valueId = value;
+      }
+      
+      myself.logger.debug("Saving new value: " + valueId  );
+      callback(valueId);
+      myself.postChange(valueId);
       return value;
     }, {
       type      : "autocomplete",
@@ -914,9 +943,15 @@ var SelectRenderer = CellRenderer.extend({
   getData: function(){
     // Default implementation
     return this.selectData;
+  },
+
+  getDataInit: function(){
+  // Default implementation - do nothing
+  },
+
+  postChange: function(){
+  // Default implementation - do nothing
   }
-
-
 
 });
 
@@ -1389,22 +1424,22 @@ var ResourceFileRenderer = CellRenderer.extend({
 
   formatSelection: function(file){
     var common = true,
-        splitFile = file.split("/"),
-        splitPath = cdfdd.getDashboardData().filename.split("/"),
-        finalPath = "",
-        i = 0;
-        while (common){
-            if (splitFile[i] !== splitPath[i]) {
-                common = false;
-            }
-            i += 1;
-        }
+    splitFile = file.split("/"),
+    splitPath = cdfdd.getDashboardData().filename.split("/"),
+    finalPath = "",
+    i = 0;
+    while (common){
+      if (splitFile[i] !== splitPath[i]) {
+        common = false;
+      }
+      i += 1;
+    }
         
-        $.each(splitPath.slice(i),function(i,j){
-          finalPath+="../";
-        })
-        finalPath += splitFile.slice(i - 1).join('/');
-        return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
+    $.each(splitPath.slice(i),function(i,j){
+      finalPath+="../";
+    })
+    finalPath += splitFile.slice(i - 1).join('/');
+    return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
   },
 
   validate: function(settings, original){

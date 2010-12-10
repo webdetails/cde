@@ -468,3 +468,58 @@ var CdaQueryRenderer = PromptRenderer.extend({
   }
 });
 
+var MondrianCatalogRenderer = SelectRenderer.extend({
+
+  logger: null,
+  selectData: {
+    '':''
+  },
+  catalogs:[],
+
+
+  getDataInit: function(){
+    
+    var myself = this;
+    $.getJSON(CDFDDServerUrl + "OlapUtils", {
+      operation: "GetOlapCubes"
+    }, function(json) {
+      if(json.status == "true"){
+        var catalogs = json.result.catalogs;
+        myself.catalogs = catalogs;
+        $.each(catalogs,function(i,catalog){
+          myself.selectData[catalog.schema.replace("solution:","/")] = catalog.name;
+        });
+      }
+    });
+  },
+
+  postChange: function(value){
+    // Searching for value
+    var jndi,cube,seen=false;
+    $.each(this.catalogs,function(i,c){
+      if(c.schema == "solution:"+value.substring(1)){
+        seen = true;
+        cube = c.cubes[0].name;
+        jndi = c.jndi;
+        return false;
+      }
+    });
+
+    if(seen){
+      Dashboards.log("Found: " + jndi);
+      // Update other fields
+      var jndiRow = this.getTableManager().getTableModel().getRowByName("jndi");
+      if(jndiRow != undefined){
+        jndiRow.value=jndi;
+        this.getTableManager().renderColumnByRow(jndiRow);
+      }
+      
+      var queryRow = this.getTableManager().getTableModel().getRowByName("query");
+      if(queryRow != undefined && queryRow.value==""){
+        queryRow.value="select {} on ROWS, {} on COLUMNS from "+cube;
+        this.getTableManager().renderColumnByRow(queryRow);
+      }
+
+    }
+  }
+});

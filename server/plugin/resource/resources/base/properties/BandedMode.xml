@@ -2,7 +2,7 @@
 <Header>
 	<Name>BandedMode</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue>classic</DefaultValue>
+	<DefaultValue>compact</DefaultValue>
 	<Description>Banded Mode</Description>
 	<Tooltip>Banded Mode</Tooltip>
 	<InputType>BandedMode</InputType>
