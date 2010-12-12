@@ -90,7 +90,7 @@ var CDFDD = Base.extend({
           return;
         }
         else{
-          //Dashboards.log("Target event:" + e.target)
+        //Dashboards.log("Target event:" + e.target)
         }
 
 
@@ -309,7 +309,10 @@ var CDFDD = Base.extend({
 							
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
-            //var saveAsParams = {operation: fromScratch  ? "newFile" : "saveas", file: selectedFolder + selectedFile, title: selectedTitle, description: selectedDescription, cdfstructure: JSON.toJSONString(myself.dashboardData,true) };
+
+            CDFDDFileName = selectedFolder + selectedFile;
+            myself.dashboardData.filename = CDFDDFileName;
+
             var saveAsParams = {
               operation: fromScratch  ? "newFile" : "saveas",
               file: selectedFolder + selectedFile,
@@ -320,7 +323,6 @@ var CDFDD = Base.extend({
             $.post(CDFDDDataUrl, saveAsParams, function(result) {
               var json = eval("(" + result + ")");
               if(json.status == "true"){
-                CDFDDFileName = selectedFolder + selectedFile;
                 if(selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1,selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function(){
@@ -493,7 +495,9 @@ var CDFDD = Base.extend({
 
   cggDialog: function() {
     var components = cdfdd.dashboardData.components.rows;
-    var cggCandidates = components.filter(function(e){return e.meta_cdwSupport == 'true';});
+    var cggCandidates = components.filter(function(e){
+      return e.meta_cdwSupport == 'true';
+    });
     
     var ph = $('#cggDialog');
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
@@ -502,24 +506,24 @@ var CDFDD = Base.extend({
     
     ph.append("<h3>Choose what charts to render as CGG");
     cggCandidates.map(function(e){
-        var checkbox = $("<input type='checkbox'>");
-        checkbox[0].checked = (e.meta_cdwRender  == 'true' || false);
-        checkbox.change(function(){
-           e.meta_cdwRender = "" + this.checked;
-        });
-        var name = '',
-            title = '';
-        e.properties.map(function(p){
-            if (p.name == 'title') {
-                title = p.value;
-            } else if (p.name == 'name') {
-                name = p.value;
-            }
-        });
-        var label = "<span>" + (title !== '' ? title : name) + "</span>";
-        ph.append(checkbox);
-        ph.append(label +"<br>");
-        ph.jqmShow();
+      var checkbox = $("<input type='checkbox'>");
+      checkbox[0].checked = (e.meta_cdwRender  == 'true' || false);
+      checkbox.change(function(){
+        e.meta_cdwRender = "" + this.checked;
+      });
+      var name = '',
+      title = '';
+      e.properties.map(function(p){
+        if (p.name == 'title') {
+          title = p.value;
+        } else if (p.name == 'name') {
+          name = p.value;
+        }
+      });
+      var label = "<span>" + (title !== '' ? title : name) + "</span>";
+      ph.append(checkbox);
+      ph.append(label +"<br>");
+      ph.jqmShow();
     });
   }
 },
