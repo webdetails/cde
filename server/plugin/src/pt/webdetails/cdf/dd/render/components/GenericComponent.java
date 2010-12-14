@@ -339,7 +339,7 @@ public class GenericComponent extends BaseComponent implements IComponent
       }
       catch (Exception e)
       {
-        log.error("ERROR: Component " + this.getName() + " failed to render property " + propertyName);
+        log.error("ERROR: Component " + this.getName() + " failed to render property " + propertyName,e);
       }
     }
     String output = !values.toString().equals("")
