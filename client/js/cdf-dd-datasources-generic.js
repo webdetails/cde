@@ -325,3 +325,15 @@ var CdaEditorRenderer = StringRenderer.extend({
     $("#wizardDialog").jqmShow()
   }
 });
+
+var CggPathRenderer = ResourceFileRenderer.extend({
+
+  getFileExtensions: function(){
+    return ".js";
+  },
+
+  formatSelection: function(file){
+    return file;
+  }
+
+})
