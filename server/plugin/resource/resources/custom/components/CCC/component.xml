@@ -443,7 +443,7 @@
           <Property name="stacked">cccStacked</Property>
           <Property name="maxBarSize">cccMaxBarSize</Property>
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
-          <Property name="banelSizeRatio">cccBarSizeRatio</Property>
+          <Property name="barSizeRatio">cccBarSizeRatio</Property>
 
           <Property name="orientation">cccOrientation</Property>
           <Property name="colors">cccColors</Property>
