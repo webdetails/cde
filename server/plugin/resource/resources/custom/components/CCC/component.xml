@@ -11,7 +11,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -38,13 +38,14 @@
           <Dependency src="protovis.js" version="3.3">Protovis</Dependency>
         </Dependencies>
         <Raw>
-            <Fragment name='svgweb' version='1.0'><![CDATA[
+          <Fragment name='svgweb' version='1.0'><![CDATA[
                <!--[if lt IE 9]><script
     type="text/javascript" src="getJsResource/resources/custom/components/CCC/svg.js"
     data-path="getUntypedResource/resources/custom/components/CCC/">
 </script><![endif]--> 
     <meta name="svg.render.forceflash" content="true"> 
-            ]]></Fragment>
+            ]]>
+          </Fragment>
         </Raw>
         <CustomProperties>
           <DesignerProperty>
@@ -76,7 +77,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -153,7 +154,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -219,7 +220,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -285,7 +286,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -351,7 +352,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -396,6 +397,10 @@
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
+          <Property name="secondAxis">cccBarLine</Property>
+          <Property name="secondAxisIndependentScale">cccBarLineIndependentScale</Property>
+          <Property name="secondAxisIdx">cccBarLineIdx</Property>
+
           <Property name="extensionPoints">cccExtensionPoints</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
@@ -424,7 +429,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>
@@ -496,7 +501,7 @@
       <Version>1.0</Version>
     </Header>
     <Metadata>
-        <meta name='cdwSupport'>true</meta>
+      <meta name='cdwSupport'>true</meta>
     </Metadata>
     <Contents>
       <Model>

@@ -527,6 +527,48 @@
   </DesignerProperty>
   <DesignerProperty>
     <Header>
+      <Name>cccBarLine</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Bar line</Description>
+      <Tooltip>Bar line</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>90</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccBarLineIndependentScale</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Independent line scale</Description>
+      <Tooltip>Bar line</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>91</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccBarLineIdx</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>-1</DefaultValue>
+      <Description>Line data index</Description>
+      <Tooltip>Series index to be used for the line</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>92</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
       <Name>cccExtensionPoints</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"[]"</DefaultValue>
