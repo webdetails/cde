@@ -123,8 +123,8 @@ class Dashboard implements Serializable
       dashboardBody.append(componentsRenderer.render(doc));
 
       // set all dashboard members
-      this.content = replaceTokens(dashboardBody.toString());
-      this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile));
+      this.content = replaceTokens(dashboardBody.toString(),absolute,absRoot);
+      this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile),absolute,absRoot);
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
       cache.put(new Element(key, this));
@@ -144,7 +144,7 @@ class Dashboard implements Serializable
 
   }
 
-  private String replaceTokens(String content)
+  private String replaceTokens(String content, boolean absolute, String absRoot)
   {
     final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}",
             ABS_IMG_TAG_REGEXP = "\\$\\{img:(/.+)\\}",
@@ -153,13 +153,14 @@ class Dashboard implements Serializable
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
+    String root = absolute ? absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE: "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
-            .replaceAll(ABS_IMG_TAG_REGEXP, "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(REL_IMG_TAG_REGEXP, "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(ABS_RES_TAG_REGEXP, "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(REL_RES_TAG_REGEXP, "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
+            .replaceAll(ABS_IMG_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(REL_IMG_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(ABS_RES_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(REL_RES_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
 
     return fixedContent;
   }
