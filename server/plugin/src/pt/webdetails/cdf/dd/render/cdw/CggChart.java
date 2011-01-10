@@ -49,7 +49,7 @@ public class CggChart
     renderChart(chartScript);
     renderDatasource(chartScript);
 
-    chartScript.append("renderCcccFromComponent(render_" + this.chartName + ", data);\n");
+    chartScript.append("renderCccFromComponent(render_" + this.chartName + ", data);\n");
     chartScript.append("output = document.body.innerHTML.match('<svg.*/svg>')[0];\n");
 
     writeFile(chartScript);
