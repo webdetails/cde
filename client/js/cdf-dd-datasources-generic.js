@@ -301,15 +301,15 @@ var CdaEditorRenderer = StringRenderer.extend({
   render: function(placeholder, value, callback){
 
      
-      var myself = this;
+    var myself = this;
 
-      var _editArea = $("<td></td>");
-      var path = value
-      var _prompt = $('<button class="cdfddInput" style="width:auto">Edit this file</button>').bind("click",function(){
-        CdaEditorRenderer.popup(path);
-      });
-      _editArea.append(_prompt);
-      _editArea.appendTo(placeholder);
+    var _editArea = $("<td></td>");
+    var path = value
+    var _prompt = $('<button class="cdfddInput" style="width:auto">Edit this file</button>').bind("click",function(){
+      CdaEditorRenderer.popup(path);
+    });
+    _editArea.append(_prompt);
+    _editArea.appendTo(placeholder);
 
   },
   validate: function(settings, original){

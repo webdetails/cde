@@ -132,6 +132,6 @@ CggDialComponent = CggComponent.extend({
     data.script = escape(this.script);
     data.outputType='svg';
     return data;
-  },
+  }
 
 });

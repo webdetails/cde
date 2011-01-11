@@ -14,7 +14,7 @@ public class SpaceRender extends Render {
         getPropertyBag().addStyle("background-color", getPropertyString("backgroundColor"));
         getPropertyBag().addClass(getPropertyString("cssClass"));
         getPropertyBag().addClass("space");
-        getPropertyBag().addStyle("height", getPropertyString("height"));
+        getPropertyBag().addStyle("height", getPropertyString("height")+"px");
 
     }
 

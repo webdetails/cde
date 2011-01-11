@@ -820,7 +820,7 @@ var IntegerRenderer = StringRenderer.extend({
 
   validate: function(value){
 
-    if(!value.match(/^\d*$/)){
+    if(!value.match(/^[-]?\d*$/)){
       $.prompt('Argument '+ value + ' must be numeric');
       return false;
     }
