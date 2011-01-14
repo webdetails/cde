@@ -63,11 +63,21 @@ class Dashboard implements Serializable
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     this.dashboardLocation = generator.getStructureRelativePath(pathParams);
     XmlStructure structure = new XmlStructure(userSession);
-    WcdfDescriptor wcdf;
+    
+    WcdfDescriptor wcdf=null;
     try
     {
+      
+      String fileName = pathParams.getStringParameter("file", "");
+      if(fileName != null && fileName.endsWith(".wcdf")){
+        wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
+      }
+      else {//we may just be receiving a .cde file (preview)
+        wcdf = new WcdfDescriptor();
+        wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
+      }
+     
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
-      wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
       Cache cache = getCache();
       final boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
