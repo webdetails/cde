@@ -337,3 +337,15 @@ var CggPathRenderer = ResourceFileRenderer.extend({
   }
 
 })
+
+var KtrPathRenderer = ResourceFileRenderer.extend({
+
+  getFileExtensions: function(){
+    return ".ktr";
+  },
+
+  formatSelection: function(file){
+    return file;
+  }
+
+})

@@ -5,7 +5,7 @@
 	<DefaultValue></DefaultValue>
 	<Description>Kettle Transformation File</Description>
 	<Tooltip>ktr File</Tooltip>
-	<InputType>String</InputType>
+	<InputType>KtrPath</InputType>
 	<OutputType>String</OutputType>
 	<Order>1</Order>
 	<Advanced>true</Advanced>
