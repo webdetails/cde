@@ -168,6 +168,10 @@ var ValuesArrayRenderer = CellRenderer.extend({
   hasTypedValues: false,//if true, args also have a type
 			
   typesArray: [],//only used if hasTypedValues
+	
+	//used for value input labels
+	argTitle: 'Arg',
+	valTitle: 'Val',
 
   constructor: function(tableManager){
     this.base(tableManager);
@@ -267,10 +271,10 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
     var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
     var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
+    '<span class="'+this.cssPrefix+'TextLabel">' + this.argTitle +':</span>' +
     '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
     var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
+    '<span class="'+this.cssPrefix+'TextLabel">' + this.valTitle +':</span>' +
     '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
     var row =
     '<did id="parameters_' + i +'" >\n' +
@@ -280,15 +284,15 @@ var ValuesArrayRenderer = CellRenderer.extend({
     container.find('.' + this.cssPrefix).append(row);
   },
 			
-  addTypedParameters : function(i,arg,val,type,container){
+  addTypedParameters : function(i,arg,val,type,container){//ToDo: should be refactored with addParameters
     //used when hasTypedValues=true, assumes multiDimensionalArray
     var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
     var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
     var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Arg'+i+':</span>' +
+    '<span class="'+this.cssPrefix+'TextLabel">' + this.argTitle +':</span>' +
     '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
     var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Val'+i+':</span>' +
+    '<span class="'+this.cssPrefix+'TextLabel">' + this.valTitle +':</span>' +
     '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
 					
     var typeOptions = "";
@@ -297,7 +301,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       typeOptions += this.typesArray[j] + '</option>';
     }
     var typeSelect = '<div class="'+this.cssPrefix+'Type">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Type'+i+':</span>' +
+    '<span class="'+this.cssPrefix+'TextLabel">Type'+':</span>' +
     '<select  id="type_' + i + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n';
     var row =
     '<did id="parameters_' + i +'" >\n' +
@@ -358,6 +362,16 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
   hasTypedValues: true,
   //TODO: this should be fetched from somewhere
   typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray']
+});
+
+var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
+	argTitle: 'Index',
+	valTitle: 'Name'
+});
+
+var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
+	argTitle: 'Name',
+	valTitle: 'Frmla'
 });
 
 var ComponentsJavascriptParameterModel = BaseModel.extend({

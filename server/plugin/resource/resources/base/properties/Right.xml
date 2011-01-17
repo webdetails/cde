@@ -3,7 +3,7 @@
 	<Name>Right</Name>
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
-	<Description>Left</Description>
+	<Description>Right</Description>
 	<Tooltip>The Right part of the join</Tooltip>
 	<InputType>String</InputType>
 	<OutputType>String</OutputType>
