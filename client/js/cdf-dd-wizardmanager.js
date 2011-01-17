@@ -655,14 +655,13 @@ var OlapParameterWizard = OlapWizard.extend({
 					name: "CDFDDPreviewComponent",
 					type: this.getSelectedOptions().type,
 					valueAsId: true,
-				//	valuesArray: [['1','Lisbon'],['2','Dusseldorf']],
 					size: this.getSelectedOptions().type=="selectMultiComponent"?5:1,
 					selectMulti: true,
 					queryDefinition: {
 						queryType: 'mdx',
 						jndi: this.getSelectedOptions().jndi,
 						catalog: this.getSelectedOptions().schema,
-						query: this.getSelectedOptions().query
+						query: this.getSelectedOptions().query,
 						cube: this.getSelectedOptions().cube
 					},
 
