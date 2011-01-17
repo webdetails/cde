@@ -32,7 +32,8 @@ public class Messages {
     if (bundle == null) {
       IPentahoSession session = new StandaloneSession( "dashboards messages" ); //$NON-NLS-1$
         try {
-          InputStream in = PentahoSystem.get(ISolutionRepository.class, session).getResourceInputStream("system/"+DashboardDesignerContentGenerator.PLUGIN_NAME+"/messages.properties", true); //$NON-NLS-1$ //$NON-NLS-2$
+          String messagesPath = "system/"+DashboardDesignerContentGenerator.PLUGIN_NAME+"/lang/messages.properties";//$NON-NLS-1$ //$NON-NLS-2$
+          InputStream in = PentahoSystem.get(ISolutionRepository.class, session).getResourceInputStream(messagesPath, true, ISolutionRepository.ACTION_EXECUTE); 
           bundle = new PropertyResourceBundle( in );
           Messages.locales.put(locale, bundle);
         } catch (Exception e) {
