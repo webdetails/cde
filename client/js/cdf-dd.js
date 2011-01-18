@@ -162,12 +162,10 @@ var CDFDD = Base.extend({
       // Default to Clean or the first available style if Clean isn't available
       var cleanStyle = myself.styles.indexOf('Clean');
       wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+      //only set style setting
       var saveSettingsParams = {
         operation: "saveSettings",
         file: CDFDDFileName.replace(".cdfde",".wcdf"),
-        title: wcdf.title,
-        author: wcdf.author,
-        description: wcdf.description,
         style: wcdf.style
       };
       $.post(CDFDDDataUrl, saveSettingsParams, function(result) {

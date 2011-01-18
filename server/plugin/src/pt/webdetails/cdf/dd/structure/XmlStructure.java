@@ -100,8 +100,6 @@ public class XmlStructure implements IStructure
 
   public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
   {
-
-
     ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     WcdfDescriptor wcdf = new WcdfDescriptor();
 
@@ -114,9 +112,7 @@ public class XmlStructure implements IStructure
       wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
       wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
     }
-
     return wcdf;
-
   }
 
   public void save(HashMap parameters) throws Exception
@@ -244,10 +240,11 @@ public class XmlStructure implements IStructure
         Document wcdfDoc = solutionRepository.getResourceAsDocument(filePath);
         Node cdfNode = wcdfDoc.selectSingleNode("/cdf");
 
-        setNodeValue(cdfNode, "title", titleStr);
-        setNodeValue(cdfNode, "author", authorStr);
-        setNodeValue(cdfNode, "description", descriptionStr);
-        setNodeValue(cdfNode, "style", styleStr);
+        //only override explicitly set elements, leave others as they are (initStyles will only set style)
+        if(parameters.containsKey("title")) setNodeValue(cdfNode, "title", titleStr);
+        if(parameters.containsKey("author")) setNodeValue(cdfNode, "author", authorStr);
+        if(parameters.containsKey("description")) setNodeValue(cdfNode, "description", descriptionStr);
+        if(parameters.containsKey("style")) setNodeValue(cdfNode, "style", styleStr);
 
         int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfDoc.asXML().getBytes("UTF-8"), true);
 
