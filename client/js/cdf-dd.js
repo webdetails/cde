@@ -235,7 +235,7 @@ var CDFDD = Base.extend({
       });
     }
     else {
-      this.saveAs(true);
+      this.saveAs(false);
     }
 
   },
