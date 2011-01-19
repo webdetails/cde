@@ -290,13 +290,19 @@ var CDFDD = Base.extend({
       myself.logger.debug("  unstrip: " + i + ", " + t);
       $.each(t.rows,function(j,c){
         myself.logger.debug("  unstrip component "+ c.type +" property count: " + c.properties.length );
-        $.each(c.properties,function(k,properties){
-          $.each(properties,function(p){
-            if(!strip[p])
-              delete properties[p];
-          });
-        })
-      })
+        $.each(c.properties,function(idx,p){
+          try {
+            var property = PropertiesManager.getPropertyType(p.name).stub;
+            for (var attr in property) if (property.hasOwnProperty(attr)) {
+              if (!p.hasOwnProperty(attr)){
+                p[attr] = property[attr];
+              }
+            }
+          } catch (e) {
+            Dashboards.log(p.name + ": " + e);
+          }
+        });
+      });
     });
     return o;
 
