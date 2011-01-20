@@ -271,7 +271,7 @@ var OlapWizard = WizardManager.extend({
 			var myself = this;
 
 			$.getJSON(CDFDDServerUrl + "OlapUtils", params, function(json) {
-					if(json.status == "true"){
+					if(json && json.status == "true"){
 
 						var catalogs = json.result.catalogs;
 						myself.setCatalogs(catalogs);
@@ -693,25 +693,25 @@ var OlapParameterWizard = OlapWizard.extend({
 			// 2 - Add parameter to components
 			// 3 - Add selector to components
 
-			// 1
+			// 1 - Add query to datasources
 			var datasourcesPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
 			var datasourcesTableManager = datasourcesPalleteManager.getLinkedTableManager();
 
-			var queryModel = BaseModel.getModel(DatasourcesMdxModel.MODEL);
+			var queryModel = BaseModel.getModel('Componentsmdx_mondrianJndi');//TODO: any way to fetch this?
+			
 			var datasourceStub = queryModel.getStub();
 
 			CDFDDUtils.getProperty(datasourceStub,"name").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
 			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema;
-			CDFDDUtils.getProperty(datasourceStub,"cube").value = this.getSelectedOptions().cube;
-			CDFDDUtils.getProperty(datasourceStub,"mdxquery").value = this.buildQuery(false);
-
-			var mdxEntry = new MdxEntry();
+			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false);
+			
+			var mdxEntry = datasourcesPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];//TODO: any way to fetch this?
 			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
 			datasourceStub.parent = mdxEntry.getCategory();
 			datasourcesTableManager.insertAtIdx(datasourceStub,insertAtIdx);
 
-			// 2
+			// 2 - Add parameter to components
 			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
 			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
 
@@ -731,7 +731,7 @@ var OlapParameterWizard = OlapWizard.extend({
 			parameterStub.parent = parameterEntry.getCategory();
 			componentsTableManager.insertAtIdx(parameterStub,insertAtIdx);
 			
-			// 3
+			// 3 - Add selector to components
 			
 			var model = "";
 			if (type == "selectComponent"){
