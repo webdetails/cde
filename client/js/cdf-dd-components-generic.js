@@ -265,9 +265,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
   validate: function(settings, original){
     return true;
   },
-			
+
   addParameters : function(i,arg,val,container){
 
+    if(val) { val = val.replace(/["]/g,'&quot;');}//for output only, will come back ok
+    
     var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
     var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
     var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
@@ -283,9 +285,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
     '</div>\n';
     container.find('.' + this.cssPrefix).append(row);
   },
-			
+    
   addTypedParameters : function(i,arg,val,type,container){//ToDo: should be refactored with addParameters
     //used when hasTypedValues=true, assumes multiDimensionalArray
+    
+    if(val) { val = val.replace(/["]/g,'&quot;');}//for output only, will come back ok
+      
     var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
     var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
     var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
@@ -371,7 +376,7 @@ var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
 
 var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
 	argTitle: 'Name',
-	valTitle: 'Frmla'
+	valTitle: 'Value'
 });
 
 var ComponentsJavascriptParameterModel = BaseModel.extend({
