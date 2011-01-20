@@ -339,7 +339,14 @@ var CDFDD = Base.extend({
   },
 		
   previewMode: function(){
-		
+    
+    if (CDFDDFileName == "/null/null/null") {
+      $.notifyBar({
+        html: "Need to save an initial dashboard before previews are available."
+      });
+      return;
+    }
+    
     var fullPath =  CDFDDFileName.split("/");
     var solution = fullPath[1];
     var path = fullPath.slice(2,fullPath.length-1).join("/");
