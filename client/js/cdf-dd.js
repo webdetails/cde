@@ -195,7 +195,7 @@ var CDFDD = Base.extend({
     $.post(CDFDDDataUrl, loadParams, function(result) {
       var json = eval("(" + result + ")");
       if(json.status == "true"){
-        myself.setDashboardData(json.result.data);
+        myself.setDashboardData(myself.unstrip(json.result.data));
         myself.setDashboardWcdf(json.result.wcdf);
         myself.init();
       }
@@ -213,7 +213,7 @@ var CDFDD = Base.extend({
       operation: "save",
       file: CDFDDFileName,
       // cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: JSON.stringify(this.dashboardData,"",2)
+      cdfstructure: JSON.stringify(this.strip(this.dashboardData),"",1)
     };
     if (CDFDDFileName != "/null/null/null") {
       $.post(CDFDDDataUrl, saveParams, function(result) {
@@ -237,6 +237,69 @@ var CDFDD = Base.extend({
     }
 
   },
+
+  strip: function(original){
+
+    // accepted values
+    var strip = {
+      type: true,
+      name: true,
+      value: true,
+      url: true
+    };
+
+    // Removes extra information and saves space
+    var myself = this;
+    var o = Util.clone(original);
+    $.each(o,function(i,t){
+      if(typeof t !== "object"){
+        return;
+      }
+      $.each(t.rows,function(j,c){
+        $.each(c.properties,function(k,properties){
+          $.each(properties,function(p){
+            if(!strip[p])
+              delete properties[p];
+          });
+        })
+      })
+    });
+    return o;
+
+  },
+
+  unstrip: function(original){
+
+    // accepted values
+    var strip = {
+      type: true,
+      name: true,
+      value: true,
+      url: true
+    };
+
+    // Removes extra information and saves space
+    var myself = this;
+    var o = Util.clone(original);
+    $.each(o,function(i,t){
+      if(typeof t !== "object"){
+        return true;
+      }
+      myself.logger.debug("  unstrip: " + i + ", " + t);
+      $.each(t.rows,function(j,c){
+        myself.logger.debug("  unstrip component "+ c.type +" property count: " + c.properties.length );
+        $.each(c.properties,function(k,properties){
+          $.each(properties,function(p){
+            if(!strip[p])
+              delete properties[p];
+          });
+        })
+      })
+    });
+    return o;
+
+  },
+
 
   toggleHelp: function(){
     $("#keyboard_shortcuts_help").toggle();

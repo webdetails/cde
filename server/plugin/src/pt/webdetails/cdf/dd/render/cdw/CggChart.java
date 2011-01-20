@@ -50,7 +50,6 @@ public class CggChart
     renderDatasource(chartScript);
 
     chartScript.append("renderCccFromComponent(render_" + this.chartName + ", data);\n");
-    chartScript.append("output = document.body.innerHTML.match('<svg.*/svg>')[0];\n");
 
     writeFile(chartScript);
   }
@@ -63,7 +62,7 @@ public class CggChart
     renderDatasourcePreamble(chartScript, datasourceContext);
     renderParameters(chartScript, JSONArray.fromObject(datasourceContext.getValue("properties/.[name='parameters']/value", String.class)));
 
-    chartScript.append("var data = JSON.parse(String(datasource.execute()));\n");
+    chartScript.append("var data = eval('new Object(' + String(datasource.execute()) + ');');\n");
   }
 
   /**
@@ -73,9 +72,9 @@ public class CggChart
   {
     chartScript.append("lib('protovis-bundle.js');\n\n");
 
-    chartScript.append("elem = document.createElement('div');\n"
+    chartScript.append("elem = document.createElement('g');\n"
             + "elem.setAttribute('id','canvas');\n"
-            + "document.body.appendChild(elem);\n\n");
+            + "document.lastChild.appendChild(elem);\n\n");
   }
 
   private void renderChart(StringBuilder chartScript)

@@ -83,7 +83,7 @@ if (!Array.prototype.filter)
  *
  **/
 (function($){
-    $.support.svg = $.support.svg || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Shape", "1.0");    
+    $.support.svg = $.support.svg || document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
 })(jQuery);/**
  * The main component
  */
@@ -457,7 +457,12 @@ pvc.BasePanel = Base.extend({
         for (p in this.chart.options.extensionPoints){
             if (p.indexOf(prefix) == 0){
                 var m = p.substring(prefix.length);
-                mark[m](this.chart.options.extensionPoints[p]);
+                // Distinguish between mark methods and properties
+                if (typeof mark[m] === "function") {
+                    mark[m](this.chart.options.extensionPoints[p]);
+                } else {
+                    mark[m] = this.chart.options.extensionPoints[p];
+                }
             }
 
         }
@@ -1934,7 +1939,10 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
     maxBarSize: 200,
     showValues: true,
     orientation: "vertical",
-
+    tipsySettings: {
+        gravity: "s",
+        fade: true
+    },
 
     constructor: function(chart, options){
 
@@ -2093,11 +2101,10 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
         })
 
         if(this.showTooltips){
+            // Extend default
+            this.extend(this.tipsySettings,"tooltip_");
             this.pvBar
-            .event("mouseover", pv.Behavior.tipsy({
-                gravity: "s",
-                fade: true
-            }));
+            .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
         }
 
 

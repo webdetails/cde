@@ -590,7 +590,7 @@ var LayoutResourceModel = BaseModel.extend({
 			return _stub;
 		}
 	});
-BaseModel.registerModel(LayoutHtmlModel);
+BaseModel.registerModel(LayoutResourceModel);
 
 var LayoutAddResourceOperation = AddRowOperation.extend({
 
