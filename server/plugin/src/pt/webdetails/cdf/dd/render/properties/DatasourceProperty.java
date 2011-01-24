@@ -9,6 +9,8 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Node;
+import org.pentaho.platform.util.logging.Logger;
+
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 /**
@@ -105,78 +107,42 @@ public class DatasourceProperty extends GenericProperty
   public String renderDatasource(String name, JXPathContext node)
   {
     StringBuilder output = new StringBuilder();
-
-
-
-
+    
     if (name.length() > 0)
     {
       String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
-
-
-
-
       if (queryName.length() == 0)
       {
         return "";
-
-
-
-
       }
       Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
 
-
-
-
       if (!(pointer instanceof NullPointer))
       {
-
         JXPathContext query = node.getRelativeContext(pointer);
         output.append("jndi: \"" + XPathUtils.getStringValue(query, "properties/value[../name='jndi']") + "\"," + newLine);
         output.append("\t\tcatalog: \"" + XPathUtils.getStringValue(query, "properties/value[../name='catalog']") + "\"," + newLine);
         output.append("\t\tcube: \"" + XPathUtils.getStringValue(query, "properties/value[../name='cube']") + "\"," + newLine);
-
-
+        
         String mdxQuery = XPathUtils.getStringValue(query, "properties/value[../name='mdxquery']");
         String processedQuery;
         String queryType;
-
-
-
 
         if (!mdxQuery.equals(""))
         {
           processedQuery = getFunctionParameter(mdxQuery, true);
           queryType = "\"mdx\"";
-
-
-
-
         }
         else
         {
           processedQuery = getFunctionParameter(XPathUtils.getStringValue(query, "properties/value[../name='sqlquery']"), true);
           queryType = "\"sql\"";
-
-
-
-
         }
         output.append("\t\tquery: " + processedQuery + "," + newLine);
         output.append("\t\tqueryType:" + queryType + "," + newLine);
-
-
-
-
       }
-
     }
     return replaceParameters(output.toString());
-
-
-
-
   }
 
   private String renderBuiltinCdaDatasource(String name, JXPathContext node)
@@ -184,31 +150,21 @@ public class DatasourceProperty extends GenericProperty
     StringBuilder output = new StringBuilder();
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
 
-
-
-
     if (queryName.length() > 0)
     {
       Pointer pointer = node.getPointer("/datasources/rows[properties[name='name' and value='" + queryName + "']]");
-
-
-
-
       if (!(pointer instanceof NullPointer))
       {
-
         JXPathContext query = node.getRelativeContext(pointer);
         output.append("dataAccessId: \"" + XPathUtils.getStringValue(query, "properties/value[../name='name']") + "\"," + newLine);
-        output.append("path: \"" + XPathUtils.getStringValue(query, "/filename").replaceAll(".cdfde", ".cda") + "\"," + newLine);
-
-
-
-
+        String fileName = XPathUtils.getStringValue(query, "/filename");
+        if(fileName.contains(".wcdf")){
+          Logger.error(this, "renderBuiltinCdaDatasource: [fileName] receiving a .wcdf when a .cdfde was expected!");
+          fileName = fileName.replace(".wcdf", ".cda");
+        }
+        output.append("path: \"" + fileName.replaceAll(".cdfde", ".cda") + "\"," + newLine);
       }
     }
     return replaceParameters(output.toString());
-
-
-
   }
 }

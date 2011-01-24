@@ -162,12 +162,10 @@ var CDFDD = Base.extend({
       // Default to Clean or the first available style if Clean isn't available
       var cleanStyle = myself.styles.indexOf('Clean');
       wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+      //only set style setting
       var saveSettingsParams = {
         operation: "saveSettings",
         file: CDFDDFileName.replace(".cdfde",".wcdf"),
-        title: wcdf.title,
-        author: wcdf.author,
-        description: wcdf.description,
         style: wcdf.style
       };
       $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
@@ -235,7 +233,7 @@ var CDFDD = Base.extend({
       });
     }
     else {
-      this.saveAs(true);
+      this.saveAs(false);
     }
 
   },
@@ -410,7 +408,14 @@ var CDFDD = Base.extend({
   },
 		
   previewMode: function(){
-		
+    
+    if (CDFDDFileName == "/null/null/null") {
+      $.notifyBar({
+        html: "Need to save an initial dashboard before previews are available."
+      });
+      return;
+    }
+    
     var fullPath =  CDFDDFileName.split("/");
     var solution = fullPath[1];
     var path = fullPath.slice(2,fullPath.length-1).join("/");
