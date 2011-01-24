@@ -457,12 +457,7 @@ pvc.BasePanel = Base.extend({
         for (p in this.chart.options.extensionPoints){
             if (p.indexOf(prefix) == 0){
                 var m = p.substring(prefix.length);
-                // Distinguish between mark methods and properties
-                if (typeof mark[m] === "function") {
-                    mark[m](this.chart.options.extensionPoints[p]);
-                } else {
-                    mark[m] = this.chart.options.extensionPoints[p];
-                }
+                mark[m](this.chart.options.extensionPoints[p]);
             }
 
         }
@@ -1939,10 +1934,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
     maxBarSize: 200,
     showValues: true,
     orientation: "vertical",
-    tipsySettings: {
-        gravity: "s",
-        fade: true
-    },
+
 
     constructor: function(chart, options){
 
@@ -2062,7 +2054,7 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
         }
 
 
-        if(this.chart.options.secondAxis && this.chart.options.secondAxisIndependentScale){
+        if(this.chart.options.secondAxis){
             // Second axis - support for lines
             this.pvSecondLine = this.pvPanel.add(pv.Line)
             .data(function(d){
@@ -2101,10 +2093,11 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
         })
 
         if(this.showTooltips){
-            // Extend default
-            this.extend(this.tipsySettings,"tooltip_");
             this.pvBar
-            .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+            .event("mouseover", pv.Behavior.tipsy({
+                gravity: "s",
+                fade: true
+            }));
         }
 
 
