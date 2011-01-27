@@ -608,6 +608,7 @@ var OlapParameterWizard = OlapWizard.extend({
 			selector.append('<option value="checkComponent">Check Box</option>');
 			selector.append('<option value="radioComponent">Radio Box</option>');
 			selector.append('<option value="autocompleteBoxComponent">Autocomplete</option>');
+			selector.append('<option value="multiButtonComponent">Multiple Buttons</option>');
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			var topCounts = ["",5,10,15,20,25,50,100];
 			for(t in topCounts)
@@ -657,7 +658,9 @@ var OlapParameterWizard = OlapWizard.extend({
 				this.getSelectedOptions().jndi = catalog.jndi;
 				this.getSelectedOptions().schema = catalog.schema;
 				this.getSelectedOptions().cube = this.getCube();
-
+				this.getSelectedOptions().topCount = $("#cdfdd-olap-parameter-topcount").val();
+				
+				var topCount = this.getSelectedOptions().topCount;
 				this.getSelectedOptions().query = this.buildQuery(true,topCount.length > 0 ? topCount : undefined);
 				this.preview();
 			}
@@ -704,7 +707,7 @@ var OlapParameterWizard = OlapWizard.extend({
 						query: this.getSelectedOptions().query,
 						cube: this.getSelectedOptions().cube
 					},
-
+				//	parameter: 'CDFDDPreviewParam',
 					htmlObject: "cdfdd-olap-preview-area",
 					executeAtStart: true,
 					preChange: function(c){return false}
@@ -739,21 +742,38 @@ var OlapParameterWizard = OlapWizard.extend({
 			
 			
 			// 3 - Add selector to components
-			
+			var type = this.getSelectedOptions().type;
 			var model = "";
-			if (type == "selectComponent"){
-				model = ComponentsSelectModel.MODEL;
-			}else if (type == "selectMultiComponent"){
-				model = ComponentsSelectMultiModel.MODEL;
-			}else if (type == "autocompleteBoxComponent"){
-				model = ComponentsAutoCompleteBoxModel.MODEL;
-			}else if (type == "radioComponent"){
-				model = ComponentsRadioModel.MODEL;
-			}else if (type == "checkComponent"){
-				model = ComponentsCheckModel.MODEL;
-			}else{
-				this.logger.error("Not done yet!");
-				alert("Type" + type +" not implemented");
+			var entry = null;
+			
+			switch(type){
+				case "selectComponent":
+					model = ComponentsSelectModel.MODEL;
+					entry = new SelectEntry();
+					break;
+				case "selectMultiComponent":
+					model = ComponentsSelectMultiModel.MODEL;
+					entry = new SelectMultiEntry();
+					break;
+				case "autocompleteBoxComponent":
+					model = ComponentsAutoCompleteBoxModel.MODEL;
+					entry = new AutocompleteBoxEntry();
+					break;
+				case "radioComponent":
+					model = ComponentsRadioModel.MODEL;
+					entry = new radioEntry();
+					break;
+				case "checkComponent":
+					model = ComponentsCheckModel.MODEL;
+					entry = new checkEntry();
+					break;
+				case "multiButtonComponent":
+					model = ComponentsmultiButtonModel.MODEL;
+					entry = new multiButtonEntry();
+					break;
+				default:
+					this.logger.error("Not done yet!");
+					alert("Type" + type +" not implemented");
 			}
 
 			var selectorModel = BaseModel.getModel(model);
@@ -763,15 +783,18 @@ var OlapParameterWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(selectorStub,"parameter").value = this.getSelectedOptions().name+"Parameter";
 			CDFDDUtils.getProperty(selectorStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(selectorStub,"htmlObject").value =  $("#cdfdd-olap-parameter-htmlobject").val();
-			CDFDDUtils.getProperty(selectorStub,"preChange").value =  this.getJavaScriptParameterFunction(type , dimension);;
+	//		CDFDDUtils.getProperty(selectorStub,"preChange").value =  this.getJavaScriptParameterFunction(type , dimension);;
 			
 			var listenners = this.getListenners();
-			if(listenners.length > 0)
+			if(listenners.length > 0){
 				CDFDDUtils.getProperty(selectorStub,"listeners").value = listenners;
+			}
 
-			var selectEntry = new SelectEntry();
-			var insertAtIdx = componentsTableManager.createOrGetParent(selectEntry.getCategory(), selectEntry.getCategoryDesc());
-			selectorStub.parent = selectEntry.getCategory();
+			//insert entry
+			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
+			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
+			var insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
+			selectorStub.parent = entry.getCategory();
 			componentsTableManager.insertAtIdx(selectorStub,insertAtIdx);
 
 		},

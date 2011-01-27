@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd.render.components;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -66,6 +67,21 @@ public class ComponentManager
     PropertyManager.getInstance().refresh();
     init(this.path);
   }
+  
+  private List<File> listAllFiles(File dir, FilenameFilter filter){
+    ArrayList<File> files = new ArrayList<File>();
+    
+    for(File file : dir.listFiles()){
+      if(file.isDirectory()){
+        files.addAll(listAllFiles(file, filter));
+      }
+      else if(filter.accept(dir, file.getName())){
+        files.add(file);
+      }
+    }
+
+    return files;
+  }
 
   private void indexBaseComponents()
   {
@@ -78,12 +94,14 @@ public class ComponentManager
         return !name.startsWith(".") && name.endsWith(".xml");
       }
     };
-    String[] files = dir.list(xmlFiles);
-    for (String file : files)
+   // String[] files = dir.list(xmlFiles);
+    List<File> files = listAllFiles(dir, xmlFiles);
+    
+    for (File file : files)
     {
       try
       {
-        Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file, null);
+        Document doc = XmlDom4JHelper.getDocFromFile(file.getPath(), null);
 
         // To support multiple definitions on the same file, we'll iterate through all
         // the //DesignerComponent nodes
@@ -91,7 +109,6 @@ public class ComponentManager
 
         for (Node component : components)
         {
-
           // To figure out whether the component is generic or has a special implementation,
           // we directly look for the class override in the definition
           String className = XmlDom4JHelper.getNodeText("Override", component);
