@@ -266,7 +266,7 @@ div.cdfdd-operations{
 
 
 div#cdfdd-olap-preview{
-  border:1px solid #999999;
+  border:1px solid #333333;
   height:230px;
   width:500px;
   text-align: center;
@@ -274,6 +274,13 @@ div#cdfdd-olap-preview{
   padding-top:5px;
   margin-top:5px;
   overflow:auto;
+  background: none repeat scroll 0 0 #FFFFFF;
+  color: #333333;
+}
+div#cdfdd-olap-preview.disabled{
+  border:1px solid #999999;
+  color: #999999;
+  background:#2A2F31;
 }
 
 div.cdfdd-wizard-title {

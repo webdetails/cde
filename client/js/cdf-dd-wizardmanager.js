@@ -510,6 +510,32 @@ var OlapWizard = WizardManager.extend({
 		resetSelectedWizardObjects: function(){
 			this.selectedWizardObjects = {rows:[], columns:[], filters:[]};
 		},
+		
+		addQueryToDatasources : function(series){
+						// 1 - Add query to datasources
+			var datasourcesPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
+			var datasourcesTableManager = datasourcesPalleteManager.getLinkedTableManager();
+
+			var queryModel = BaseModel.getModel('Componentsmdx_mondrianJndi');//TODO: any way to fetch this?
+			var topCount = this.getSelectedOptions().topCount;
+			topCount = (topCount.length > 0) ? topCount : undefined;
+			var datasourceStub = queryModel.getStub();
+
+			CDFDDUtils.getProperty(datasourceStub,"name").value = this.getSelectedOptions().name+"Query";
+			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
+			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema.replace('solution:','/');
+			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false, topCount);
+			
+			if(series != undefined){
+				CDFDDUtils.getProperty(datasourceStub,"cdacalculatedcolumns").value = '[["Series",="' + series + '"]]';
+				CDFDDUtils.getProperty(datasourceStub,"output").value = '["2,0,1"]';
+			}
+			
+			var mdxEntry = datasourcesPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];//TODO: any way to fetch this?
+			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
+			datasourceStub.parent = mdxEntry.getCategory();
+			datasourcesTableManager.insertAtIdx(datasourceStub,insertAtIdx);
+		},
 
 		buildQuery: function(preview,topCount){
 			
@@ -531,15 +557,22 @@ var OlapWizard = WizardManager.extend({
 					conditions.push(filterValue);
 			}
 			
-			var preRows = topCount != undefined ? "TopCount(" : "";
-			var posRows = topCount != undefined ? "," + topCount + ")" : "";
+			var preRows = topCount != undefined ?
+					"TopCount(" :
+					"";
+			var posRows = topCount != undefined ?
+					", " + topCount + ', ' + columns + ")" :
+					"";
 			var nonEmptyPreStr = columns.length > 0 ? "NON EMPTY(" : "";
 			var nonEmptyPosStr = columns.length > 0 ? ")" : "";
 			
-			var query = sets.join(" , \n") + members.join(" , \n") + " select " + nonEmptyPreStr + preRows + "{" + rows + "} " + posRows + nonEmptyPosStr + " on ROWS, \n " + nonEmptyPreStr + "{" + columns + "}" + nonEmptyPosStr + " on Columns \n from [" + cube + "]";
+			var query = sets.join(" , \n") + members.join(" , \n") + " select " + nonEmptyPreStr +
+				preRows + "{" + rows + "}" + posRows + nonEmptyPosStr + " on ROWS, \n " +
+				nonEmptyPreStr + "{" + columns + "}" + nonEmptyPosStr + " on Columns \n from [" + cube + "]";
 		
-			if(conditions.length > 0)
+			if(conditions.length > 0){
 				query += "\n where (" + conditions.join(" , ") + ")";
+			}
 		
 			return sets.length > 0  || members.length > 0 ? "with \n" + query : query;
 		
@@ -611,6 +644,11 @@ var OlapParameterWizard = OlapWizard.extend({
 			var catalog = this.getCatalog();
 			var valid = this.selectedWizardObjects.rows.length > 0 && catalog != undefined;
 			var topCount = $("#cdfdd-olap-parameter-topcount").val();
+			
+			$("#cdfdd-olap-preview").removeClass('disabled');//enable preview area, will be disabled if unchecked
+			if (!preview){
+				$("#cdfdd-olap-preview").addClass('disabled');
+			}
 
 			if(valid & preview){
 
@@ -623,6 +661,8 @@ var OlapParameterWizard = OlapWizard.extend({
 				this.getSelectedOptions().query = this.buildQuery(true,topCount.length > 0 ? topCount : undefined);
 				this.preview();
 			}
+			
+			
 
 			// Name
 			var name = $("#cdfdd-olap-parameter-name").val();
@@ -694,42 +734,9 @@ var OlapParameterWizard = OlapWizard.extend({
 			// 3 - Add selector to components
 
 			// 1 - Add query to datasources
-			var datasourcesPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
-			var datasourcesTableManager = datasourcesPalleteManager.getLinkedTableManager();
-
-			var queryModel = BaseModel.getModel('Componentsmdx_mondrianJndi');//TODO: any way to fetch this?
 			
-			var datasourceStub = queryModel.getStub();
-
-			CDFDDUtils.getProperty(datasourceStub,"name").value = this.getSelectedOptions().name+"Query";
-			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
-			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema;
-			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false);
+			this.addQueryToDatasources();
 			
-			var mdxEntry = datasourcesPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];//TODO: any way to fetch this?
-			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
-			datasourceStub.parent = mdxEntry.getCategory();
-			datasourcesTableManager.insertAtIdx(datasourceStub,insertAtIdx);
-
-			// 2 - Add parameter to components
-			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
-			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
-
-			var parameterModel = BaseModel.getModel(ComponentsOlapParameterModel.MODEL);
-			var parameterStub = parameterModel.getStub();
-			var parameterId = this.getSelectedOptions().name + "Parameter"
-			var dimension = this.selectedWizardObjects.rows[0].member;
-			var type =  this.getSelectedOptions().type;
-			
-			CDFDDUtils.getProperty(parameterStub,"name").value = parameterId;
-			CDFDDUtils.getProperty(parameterStub,"propertyValue").value = dimension;
-			
-			parameterStub.dimension = dimension;
-
-			var parameterEntry = new ParameterEntry();
-			var insertAtIdx = componentsTableManager.createOrGetParent(parameterEntry.getCategory(), parameterEntry.getCategoryDesc());
-			parameterStub.parent = parameterEntry.getCategory();
-			componentsTableManager.insertAtIdx(parameterStub,insertAtIdx);
 			
 			// 3 - Add selector to components
 			
@@ -800,9 +807,9 @@ var OlapChartWizard = OlapWizard.extend({
 			var content = $('\
 			<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" ></input></div>\
 			<hr/>\
+			<div class="cdfdd-component-options-label">Title: <input id="cdfdd-olap-parameter-title" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-title" name="cdfdd-olap-parameter-title"></input></div>\
 			<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\
 			<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\
-			<div class="cdfdd-component-options-label">Chart Type:<select class="cdfdd-component-options-chartType" select onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-chart-type" name="cdfdd-olap-parameter-chart-type"></select></div>\
 			<div class="cdfdd-component-options-label">Orientation:<select class="cdfdd-component-options-orientation" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-orientation" name="cdfdd-olap-parameter-orientation"></select></div>\
 			<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\
 			');
@@ -817,8 +824,6 @@ var OlapChartWizard = OlapWizard.extend({
 			appendOption(typeSelector,[["BarChart","Bar Chart"],["PieChart","Pie Chart"],["LineChart","Line Chart"]]);
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			appendOption(topCountSelector,[["",""],["5","5"],["10","10"],["15","15"]]);
-			var chartTypeSelector = $("#cdfdd-olap-parameter-chart-type",content);
-			appendOption(chartTypeSelector,[["jFreeChart","JFree Chart"],["openFlashChart","OpenFlash Chart"]]);
 			var orientationSelector = $("#cdfdd-olap-parameter-orientation",content);
 			appendOption(orientationSelector,[["horizontal","Horizontal"],["vertical","Vertical"]]);
 			componentOptions.html(content);
@@ -850,20 +855,29 @@ var OlapChartWizard = OlapWizard.extend({
 			var catalog = this.getCatalog();
 			var valid = this.selectedWizardObjects.rows.length > 0 && this.selectedWizardObjects.columns.length > 0  && catalog != undefined;;
 
+			$("#cdfdd-olap-preview").removeClass('disabled');//enable preview area, will be disabled if unchecked
+			if (!preview){
+				$("#cdfdd-olap-preview").addClass('disabled');
+			}
+
 			if(valid & preview){
 
 				this.getSelectedOptions().name = $("#cdfdd-olap-parameter-name").val();
-				this.getSelectedOptions().chartType = $("#cdfdd-olap-parameter-chart-type").val();
+				this.getSelectedOptions().title = $("#cdfdd-olap-parameter-title").val();
 				this.getSelectedOptions().type = $("#cdfdd-olap-parameter-type").val();
 				this.getSelectedOptions().topCount = $("#cdfdd-olap-parameter-topcount").val();
 				this.getSelectedOptions().orientation = $("#cdfdd-olap-parameter-orientation").val();
 				this.getSelectedOptions().jndi = catalog.jndi;
 				this.getSelectedOptions().schema = catalog.schema;
 				this.getSelectedOptions().cube = this.getCube();
+				var topCount = this.getSelectedOptions().topCount;
+				topCount = (topCount.length > 0) ? topCount : undefined;
 
-				this.getSelectedOptions().query = this.buildQuery(true);
+				this.getSelectedOptions().query = this.buildQuery(true,topCount);
 				this.preview();
 			}
+			
+
 
 			// Name
 			var name = $("#cdfdd-olap-parameter-name").val();
@@ -871,7 +885,7 @@ var OlapChartWizard = OlapWizard.extend({
 				$("#cdfdd-olap-parameter-name").removeClass("invalid");
 				valid = valid & true;
 			}
-			else{
+			else {
 				$("#cdfdd-olap-parameter-name").addClass("invalid");
 				valid = false;
 			}
@@ -885,47 +899,113 @@ var OlapChartWizard = OlapWizard.extend({
 			}
 				
 		},
-
-		preview: function(){
-			
-			this.logger.debug("Launching preview");
+		
+		getSeriesName : function(){
+			var row = this.selectedWizardObjects.rows[0];
+			if(row){
+				for(var i=0;i<row.membersArray.length;i++){
+					if(row.member == row.membersArray[i].qualifiedName){
+						return row.membersArray[i].name;
+					}
+				}
+			}
+			return null;
+		},
+		
+		preview : function(){
+						this.logger.debug("Launching preview");
 
 			// Build cdf component
 			CDFDDPreviewComponentDefinition = 
 				{
-					width: 380,
-					height: 175,
-					chartType: this.getSelectedOptions().type,
-					datasetType: "CategoryDataset",
-					is3d: false,
-					byRow: false,
-					isStacked: false,
-					includeLegend: false,
-					interiorGap: 0.4,
-					domainLabelRotation: 0,
-					backgroundColor: "#E2F0B7",
-					title: "",
-					topCount: this.getSelectedOptions().topCount,
+					width: 440,
+					height: 200,
+					title : "Preview",
+					titlePosition: "top",
+					titleSize: 40,
+					
+				//	stacked: false,
+					legend: false,
+					maxBarSize: 100,
+					
+					innerGap: 0.9,
+					explodedSliceIndex: 0,
+					explodedSliceRadius: 0,
+					
+					//backgroundColor: "#FFFFFF",
+					//topCount: this.getSelectedOptions().topCount,
 					orientation: this.getSelectedOptions().orientation,
 					queryType: 'mdx',
 					jndi: this.getSelectedOptions().jndi,
 					catalog: this.getSelectedOptions().schema,
-					query: this.getSelectedOptions().query					
+					title: this.getSelectedOptions().title,
+					query: this.getSelectedOptions().query,
+					crosstabMode: false,
+					seriesInRows: false,
+					animate: false,
+					clickable: false,
+					timeSeries: false,
+					timeSeriesFormat: "%Y-%m-%d",
+					stacked: false,
+					panelSizeRatio: 0.8,
+					barSizeRatio: 0.9,
+					colors: [],
+					showValues: false,
+					valuesAnchor: "right",
+					titlePosition: "top",
+					titleSize: 25,
+					legend: true,
+					legendPosition: "bottom",
+					legendAlign: "center",
+					showXScale: true,
+					xAxisPosition: "bottom",
+					xAxisSize: 30,
+					showYScale: true,
+					yAxisPosition: "left",
+					yAxisSize: 50,
+					xAxisFullGrid: false,
+					yAxisFullGrid: false,
+					axisOffset: 0,
+					originIsZero: true,
+					secondAxis: false,
+					secondAxisIndependentScale: true,
+					secondAxisIdx: -1,
+					secondAxisOriginIsZero: true,
+					secondAxisColor: "blue",
+					extensionPoints: [] 
 				};
+				var self = this;
 				
 			CDFDDPreviewComponent = 
 				{
 					name: "CDFDDPreviewComponent",
-					type: this.getSelectedOptions().chartType,
+					type: this.getComponentType(),
 					chartDefinition: CDFDDPreviewComponentDefinition,
 					htmlObject: "cdfdd-olap-preview-area",
-					executeAtStart: true
-				};	
-				
+					executeAtStart: true,
+					postFetch: function (values){
+						var seriesName = self.getSeriesName();
+						if(seriesName == null) {seriesName = 'Series';}
+						
+						if(values[0] && values[0].length == 2 ){
+							values.map(function(d){
+                d.splice(0,0,seriesName);
+							});
+						}
+						values.map(function(row){//parse numeric values, otherwise sum will concatenate them
+							row.splice(2,1, parseFloat(row[2]));
+						});
+						
+						return {resultset : values,
+						metadata : [
+							{ colIndex:0, colName:'Series', colType:'String'},
+							{colIndex:1, colName:'First', colType : 'String'},
+							{colIndex:2, colName:'Second', colType : 'Numeric'}] };
+					}
+				};
 				
 			Dashboards.components = [];
 			Dashboards.init([CDFDDPreviewComponent]);
-
 		},
 
 
@@ -934,7 +1014,10 @@ var OlapChartWizard = OlapWizard.extend({
 			this.apply();
 			$('#'+ WizardManager.MAIN_DIALOG).jqmHide();
 
-			
+		},
+		
+		getComponentType : function(){
+			return 'ccc' + this.getSelectedOptions().type;  //BarChart | LineChart | PieChart
 		},
 
 		apply: function(){
@@ -948,56 +1031,38 @@ var OlapChartWizard = OlapWizard.extend({
 
 
 			// 1. Add query to datasources
+			
+			this.addQueryToDatasources(this.getSeriesName());
+			
 			// 2. Add chart to components
 			
-			var datasourcesPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
-			var datasourcesTableManager = datasourcesPalleteManager.getLinkedTableManager();
-
-			var queryModel = BaseModel.getModel(DatasourcesMdxModel.MODEL);
-			var datasourceStub = queryModel.getStub();
-
-			CDFDDUtils.getProperty(datasourceStub,"name").value = this.getSelectedOptions().name+"Query";
-			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
-			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema;
-			CDFDDUtils.getProperty(datasourceStub,"cube").value = this.getSelectedOptions().cube;
-			CDFDDUtils.getProperty(datasourceStub,"mdxquery").value = this.buildQuery(false);
-
-
-			var mdxEntry = new MdxEntry();
-			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
-			datasourceStub.parent = mdxEntry.getCategory();
-			datasourcesTableManager.insertAtIdx(datasourceStub,insertAtIdx);
-
+			var type = this.getComponentType();
 			
-			// 2
-			//var type =  this.getSelectedOptions().type;
-			
-			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
-			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
-			var cindexManager = componentsTableManager.getTableModel().getIndexManager();
-			var model = this.getSelectedOptions().chartType == "jFreeChart" ? ComponentsJFreeChartModel.MODEL : ComponentsOpenFlashChartModel.MODEL ;
-			
-
-			var chartModel = BaseModel.getModel(model);
+			var chartModel = BaseModel.getModel('Components' + type);
 			var chartStub = chartModel.getStub();
 			
-
 			CDFDDUtils.getProperty(chartStub,"name").value = this.getSelectedOptions().name+"Chart";
-			CDFDDUtils.getProperty(chartStub,"chartType").value = this.getSelectedOptions().type;
+			CDFDDUtils.getProperty(chartStub,"title").value = this.getSelectedOptions().name; //ToDo: new form field
 			CDFDDUtils.getProperty(chartStub,"htmlObject").value = $("#cdfdd-olap-parameter-htmlobject").val();
 			CDFDDUtils.getProperty(chartStub,"dataSource").value = this.getSelectedOptions().name+"Query";
-			CDFDDUtils.getProperty(chartStub,"topCount").value = this.getSelectedOptions().topCount;
 			CDFDDUtils.getProperty(chartStub,"height").value = "300";
 			CDFDDUtils.getProperty(chartStub,"width").value = "400";
 			
 			var listenners = this.getListenners();
-			if(listenners.length > 0)
+			if(listenners.length > 0){
 				CDFDDUtils.getProperty(chartStub,"listeners").value = listenners;
-
-			var chartEntry = new JFreeChartEntry();
+			}
+			
+			var entryName = type.toUpperCase() + '_ENTRY';
+			
+			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
+			var chartEntry = componentsPalleteManager.getEntries()[entryName];
+			
+			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
 			var insertAtIdx = componentsTableManager.createOrGetParent(chartEntry.getCategory(), chartEntry.getCategoryDesc());
 			chartStub.parent = chartEntry.getCategory();
 			componentsTableManager.insertAtIdx(chartStub,insertAtIdx);
+			
 		}
 
 
