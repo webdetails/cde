@@ -22,12 +22,15 @@ import pt.webdetails.cdf.dd.util.Utils;
 public class CdfTemplates {
 
   private IPentahoSession userSession = null;
-  public static String CDF_DD_TEMPLATES = "cdf-dd/templates/";
-  public static String DEFAULT_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates/");
-  public static String CUSTOM_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath(CDF_DD_TEMPLATES);
+  private static String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
+  private static String CDF_DD_TEMPLATES = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates";
+  private static String CDF_DD_TEMPLATES_CUSTOM = CDF_DD_TEMPLATES + "/custom";
+  
+  public static String DEFAULT_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES);
+  public static String CUSTOM_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES_CUSTOM);
   public static String RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
   public static String UNKNOWN_IMAGE = RESOURCE_TEMPLATE_DIR + "unknown.png";
-  public static String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
+
 
 
   public CdfTemplates(IPentahoSession userSession) {
@@ -70,12 +73,14 @@ public class CdfTemplates {
 
   public void save(final HashMap parameters) throws Exception {
 
-    final String file = (String) parameters.get("file");
-    System.out.println("Saving File:" + file);
+    final String fileName = (String) parameters.get("file");
+    System.out.println("Saving File:" + fileName);
 
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-    final int status = solutionRepository.publish(SOLUTION_PATH, CDF_DD_TEMPLATES, file, ((String) parameters.get("cdfstructure")).getBytes("UTF-8"), true);
+    String cdfStructure = (String) parameters.get(DashboardDesignerContentGenerator.PathParams.CDF_STRUCTURE);
+    byte[] fileData = cdfStructure.getBytes("UTF-8");
+    final int status = solutionRepository.publish(SOLUTION_PATH, CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true);
 
     if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));

@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -70,15 +72,24 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
   
+  /**
+   * Path parameters received by content generator
+   */
   protected static class PathParams{
     
+    /**
+     * Debug flag
+     */
+    public static final String DEBUG = "debug"; 
+    public static final String ROOT = "root"; 
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
     public static final String FILE = "file";
-    
-    public static final String DEBUG = "debug"; 
-    public static final String ROOT = "root"; 
-    
+    /**
+     * JSON structure
+     */
+    public static final String CDF_STRUCTURE = "cdfstructure";
+
   }
 
   static
@@ -144,6 +155,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       catch (NoSuchMethodException e)
       {
         logger.error(Messages.getErrorString("DashboardDesignerContentGenerator.ERROR_001_INVALID_METHOD_EXCEPTION") + " : " + method);
+      }
+      catch (InvocationTargetException e){
+        //get to the cause and rethrow properly
+        Throwable target = e.getTargetException();
+        if(!e.equals(target)){//just in case
+          //get to the real cause
+          while(target != null && target instanceof InvocationTargetException){
+            target = ((InvocationTargetException)target).getTargetException();
+          }
+        }
+        if(target instanceof Exception) throw (Exception) target;
+        else throw new DashboardDesignerException(target);
       }
     }
     catch (Exception e)
