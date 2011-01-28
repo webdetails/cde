@@ -66,14 +66,23 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public enum FileTypes
   {
-
     JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
+  
+  protected static class PathParams{
+    
+    public static final String SOLUTION = "solution";
+    public static final String PATH = "path";
+    public static final String FILE = "file";
+    
+    public static final String DEBUG = "debug"; 
+    public static final String ROOT = "root"; 
+    
+  }
 
   static
   {
-
     /*
      * Image types
      */
@@ -82,7 +91,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     mimeTypes.put(FileTypes.PNG, "image/png");
     mimeTypes.put(FileTypes.GIF, "image/gif");
     mimeTypes.put(FileTypes.BMP, "image/bmp");
-
 
     /*
      * HTML (and related) types
@@ -126,7 +134,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         IParameterProvider.class, OutputStream.class
       };
 
-      final String method = pathParams.getStringParameter("path", null).split("/")[1].toLowerCase();
+      final String method = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
 
       try
       {
@@ -148,10 +156,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void syncronize(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
-    final String path = ((String) pathParams.getParameter("file")).replaceAll("cdfde", "wcdf");
-    if (pathParams.hasParameter("path") && !hasAccess(out, path, ISolutionRepository.ACTION_UPDATE))
+    final String path = ((String) pathParams.getParameter(PathParams.FILE)).replaceAll("cdfde", "wcdf");
+    if (pathParams.hasParameter(PathParams.PATH) && !hasAccess(out, path, ISolutionRepository.ACTION_UPDATE))
     {
       final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -184,7 +191,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getcomponentimplementations(IParameterProvider pathParams, OutputStream out) throws Exception
   {
-
     ComponentManager engine = ComponentManager.getInstance();
     out.write(engine.getImplementations().getBytes());
   }
@@ -196,12 +202,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
    */
   public void refresh(IParameterProvider pathParams, OutputStream out) throws Exception
   {
-
     DependenciesManager.refresh();
     ComponentManager.getInstance().refresh();
     ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs());
-
-
   }
 
   public void getcontent(IParameterProvider pathParams, OutputStream out) throws Exception
@@ -214,7 +217,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     Dashboard dashboard = new Dashboard(pathParams, this);
     out.write(dashboard.getHeader().getBytes());
-
   }
 
   public void render(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -237,7 +239,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
           throws IOException
   {
-
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     if (solutionRepository.getSolutionFile(path, actionUpdate) == null)
     {
@@ -248,16 +249,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private String getDashboardStyle(final IParameterProvider pathParams) throws IOException
   {
-
     // If we have the style available as a parameter, use it. Else, load wcdf
     if (pathParams.hasParameter("style"))
     {
       return pathParams.getStringParameter("style", CdfStyles.DEFAULTSTYLE);
-
-
-
-
-
 
     }
 
@@ -266,33 +261,23 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     final Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfRelativePath);
 
-
-
-
-
-
     return XmlDom4JHelper.getNodeText(
             "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
-
   }
 
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     setResponseHeaders(CSS_TYPE, 3600 * 24 * 8, null); // 1 week cache
     getresource(pathParams, out);
-
   }
 
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     setResponseHeaders(JAVASCRIPT_TYPE, 3600 * 24 * 8, null); // 1 week cache
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     getresource(pathParams, out);
-
   }
 
   public void getuntypedresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -350,7 +335,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void res(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    String pathString = this.parameterProviders.get("path").getStringParameter("path", "");
+    String pathString = this.parameterProviders.get("path").getStringParameter(PathParams.PATH, "");
     String resource;
     if (pathString.split("/").length > 2)
     {
@@ -358,7 +343,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     else
     {
-      resource = pathParams.getStringParameter("path", "");
+      resource = pathParams.getStringParameter(PathParams.PATH, "");
     }
     resource = resource.startsWith("/") ? resource : "/" + resource;
 
@@ -414,28 +399,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       out.write("Access Denied".getBytes("UTF-8"));
 
-
-
-
       return;
-
-
-
-
     }
-
 
     final String header = DependenciesManager.getInstance().getEngine("CDFDD").getDependencies();
     final HashMap<String, String> tokens = new HashMap<String, String>();
     tokens.put(DESIGNER_HEADER_TAG, header);
 
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
-
-
-
-
-
-
     if (pathParams.hasParameter("debug") && pathParams.getParameter("debug").toString().equals("true"))
     {
       Packager pack = Packager.getInstance();
@@ -444,23 +415,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       //DEBUG MODE
       tokens.put(DESIGNER_STYLES_TAG, scripts);
       tokens.put(DESIGNER_SCRIPTS_TAG, styles);
-
-
-
-
     }
     else
     {
       String stylesHash = packager.minifyPackage("styles");
       String scriptsHash = packager.minifyPackage("scripts");
       // NORMAL MODE
-
       tokens.put(DESIGNER_STYLES_TAG, "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />");
       tokens.put(DESIGNER_SCRIPTS_TAG, "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>");
-
-
-
-
     }
     tokens.put(FILE_NAME_TAG, getStructureRelativePath(pathParams));
     tokens.put(SERVER_URL_TAG, SERVER_URL_VALUE);
@@ -468,43 +430,22 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final String resource = ResourceManager.getInstance().getResourceAsString(DESIGNER_RESOURCE, tokens);
 
-
     // Cache the output - Disabled for security check reasons
     // setCacheControl();
 
     out.write(resource.getBytes());
-
-
-
-
-
-
   }
 
   public void synctemplates(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     final CdfTemplates cdfTemplates = new CdfTemplates(userSession);
 
     cdfTemplates.syncronize(out, pathParams);
-
-
-
-
-
-
   }
 
   public void syncstyles(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     CdfStyles.getInstance().syncronize(userSession, out, pathParams);
-
-
-
-
-
-
   }
 
   public void olaputils(final IParameterProvider pathParams, final OutputStream out)
@@ -514,33 +455,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     olapUtils.executeOperation(pathParams);
 
-
-
-
-
     try
     {
-
       final Object result = olapUtils.executeOperation(pathParams);
       JsonUtils.buildJsonResult(out, true, result);
-
-
-
-
-
-
     }
     catch (Exception ex)
     {
       logger.fatal(ex);
       JsonUtils.buildJsonResult(out, false,
               "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage());
-
-
-
-
-
-
     }
 
   }
@@ -550,65 +474,34 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final String folder = pathParams.getStringParameter("dir", null);
     final String fileExtensions = pathParams.getStringParameter("fileExtensions", null);
     FileExplorer.getInstance().browse(folder, fileExtensions, userSession, out);
-
-
-
-
-
-
   }
 
   public Log getLogger()
   {
     return logger;
-
-
-
-
-
-
   }
 
   String getWcdfRelativePath(final IParameterProvider pathParams)
   {
-    final String path = "/" + pathParams.getStringParameter("solution", null) + "/" + pathParams.getStringParameter("path", null) + "/" + pathParams.getStringParameter("file", null);
-
-
-
-
-
+    final String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null) + 
+                        "/" + pathParams.getStringParameter(PathParams.PATH, null) + 
+                        "/" + pathParams.getStringParameter(PathParams.FILE, null);
 
     return path.replaceAll("//+", "/");
-
-
-
-
-
-
   }
 
   String getStructureRelativePath(final IParameterProvider pathParams)
   {
-    String path = "/" + pathParams.getStringParameter("solution", null) + "/" + pathParams.getStringParameter("path", null) + "/" + pathParams.getStringParameter("file", null);
+    String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null) + 
+                  "/" + pathParams.getStringParameter(PathParams.PATH, null) + 
+                  "/" + pathParams.getStringParameter(PathParams.FILE, null);
+    
     path = path.replaceAll("//+", "/");
-
-
-
-
-
-
     return path.replace(".wcdf", ".cdfde");
-
-
-
-
-
-
   }
 
   private void getResource(final OutputStream out, final String resource) throws IOException
   {
-
     setCacheControl();
     final String path = PentahoSystem.getApplicationContext().getSolutionPath("system/" + PLUGIN_NAME + resource); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -633,7 +526,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final File file = new File(path);
 
-    if (!file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
+    if (!isFileWithinPath(file, PentahoSystem.getApplicationContext().getSolutionPath("")))
+        //file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
     {
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
@@ -648,6 +542,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       n = in.read(buff);
     }
     in.close();
+  }
+  
+  private boolean isFileWithinPath( File file, String absPathBase){
+    final String filePath = normalizePathSeparators(file.getAbsolutePath());
+    final String basePath = normalizePathSeparators(absPathBase);
+    return filePath.startsWith(basePath);
+  }
+  
+  private String normalizePathSeparators(String path){
+    return path.replaceAll("\\\\", "/").replaceAll("/+", "/");
   }
 
   private void setCacheControl()
@@ -723,31 +627,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String rootdir = PentahoSystem.getApplicationContext().getSolutionPath("system/" + PLUGIN_NAME);
     props.load(new FileInputStream(rootdir + "/includes.properties"));
 
-
-
-
-
     if (!packager.isPackageRegistered("scripts"))
     {
-      packager.registerPackage("scripts", Packager.Filetype.JS, rootdir, rootdir + "/js/scripts.js", props.get("scripts").toString().split(","));
-
-
-
-
+      String[] files = props.get("scripts").toString().split(",");
+      packager.registerPackage("scripts", Packager.Filetype.JS, rootdir, rootdir + "/js/scripts.js", files);
     }
     if (!packager.isPackageRegistered("styles"))
     {
-      packager.registerPackage("styles", Packager.Filetype.CSS, rootdir, rootdir + "/css/styles.css", props.get("styles").toString().split(","));
-
-
-
-
-
-
-
-
-
-
+      String[] files = props.get("styles").toString().split(",");
+      packager.registerPackage("styles", Packager.Filetype.CSS, rootdir, rootdir + "/css/styles.css", files);
     }
   }
 
@@ -756,8 +644,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
     IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
     // If CDF is present, we're going to produce components from the output of its discovery service
-    if (cdf
-            != null)
+    if (cdf != null)
     {
       // Basic setup
       cdf.setParameterProviders(parameterProviders);
@@ -786,8 +673,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
     IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
     // If CDF is present, we're going to produce components from the output of its discovery service
-    if (cdf
-            != null)
+    if (cdf != null)
     {
       // Basic setup
       cdf.setParameterProviders(parameterProviders);
@@ -817,31 +703,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     response.setHeader("Content-Type", mimeType);
 
-
-
-
-
     if (attachmentName != null)
     {
       response.setHeader("content-disposition", "attachment; filename=" + attachmentName);
-
-
-
-
     } // Cache?
+    
     if (cacheDuration > 0)
     {
       response.setHeader("Cache-Control", "max-age=" + cacheDuration);
-
-
-
-
     }
     else
     {
       response.setHeader("Cache-Control", "max-age=0, no-store");
-
-
     }
   }
 

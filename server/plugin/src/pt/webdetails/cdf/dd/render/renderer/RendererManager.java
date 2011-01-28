@@ -6,18 +6,15 @@ package pt.webdetails.cdf.dd.render.renderer;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Collection;
 import java.util.Hashtable;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.jxpath.JXPathContext;
 
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import org.dom4j.Document;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
-import pt.webdetails.cdf.dd.render.components.GenericComponent;
 
 /**
  *
