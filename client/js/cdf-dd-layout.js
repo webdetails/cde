@@ -829,7 +829,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 					var templateParams = {operation:"save", file:file, cdfstructure: JSON.stringify(template)} ;
 					
 					$.post(CDFDDDataUrl.replace("Syncronize","SyncTemplates"), templateParams, function(result) {
-						var json = eval("(" + result + ")");
+						var json = Util.parseJsonResult(result);
 						if(json.status == "true"){
 							$.notifyBar({ html: "Template saved successfully", delay: 1000 });
 						}

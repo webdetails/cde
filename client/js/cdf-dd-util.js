@@ -1,7 +1,7 @@
 
 var Util = 
 	{
-	
+	 logger : new Logger("CDE.Util")
 	};
 
 Util.clone = function clone(obj) {
@@ -31,4 +31,18 @@ Util.clone = function clone(obj) {
 	}
 
 	return c;
+}
+
+//parse a json result as string, always yielding valid result
+Util.parseJsonResult = function(jsonStr){
+	var json = { status : false, result : 'Could not parse result.' }
+	if(jsonStr){
+		try{
+		 json = eval("(" + jsonStr + ")");//ToDo: is jquery's json parser a viable alternative?
+		}
+		catch (e) {
+			this.logger.error('Could not parse json result «' + jsonStr + '», ' + e);
+		}
+	}
+	return json;
 }

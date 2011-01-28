@@ -821,8 +821,9 @@ var CDFDDUtils = Base.extend({
     },
     getProperty: function(stub, name){
       var result;
-      if(typeof stub.properties == 'undefined')
-        return;
+      if(typeof stub.properties == 'undefined'){
+        return null;
+      }
 
       $.each(stub.properties,function(i,p){
         if(p.name == name){
