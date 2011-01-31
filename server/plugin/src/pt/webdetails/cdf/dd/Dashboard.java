@@ -4,7 +4,9 @@
  */
 package pt.webdetails.cdf.dd;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
@@ -134,7 +136,15 @@ class Dashboard implements Serializable
 
       // set all dashboard members
       this.content = replaceTokens(dashboardBody.toString(),absolute,absRoot);
-      this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile),absolute,absRoot);
+      
+      try{//attempt to read template file
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile),absolute,absRoot);
+      } catch(IOException e){
+        //couldn't open template file, attempt to use default
+        logger.error(MessageFormat.format("Couldn''t open template file {0}.", this.templateFile), e);
+        String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile),absolute,absRoot);
+      }
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
       cache.put(new Element(key, this));
