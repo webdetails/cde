@@ -1,10 +1,14 @@
 package pt.webdetails.cdf.dd;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.io.SAXReader;
 import org.pentaho.platform.api.engine.IFileInfo;
-import org.pentaho.platform.api.engine.IFileInfoGenerator;
+//import org.pentaho.platform.api.engine.IFileInfoGenerator;
 import org.pentaho.platform.api.engine.ILogger;
+import org.pentaho.platform.api.engine.ISolutionFile;
+import org.pentaho.platform.api.engine.ISolutionFileMetaProvider;
 import org.pentaho.platform.engine.core.solution.FileInfo;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
@@ -18,7 +22,7 @@ import java.io.InputStream;
  */
 
 
-public class DashboardDesignerFileInfoGenerator implements IFileInfoGenerator {
+public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProvider {
 
   private ILogger logger;
 
@@ -27,6 +31,23 @@ public class DashboardDesignerFileInfoGenerator implements IFileInfoGenerator {
 
   public ContentType getContentType() {
     return ContentType.DOM4JDOC;
+  }
+  
+  public IFileInfo getFileInfo(ISolutionFile solutionFile, InputStream in) {
+    String solution = solutionFile.getSolution();
+    String path = solutionFile.getFullPath();
+    String fileName = solutionFile.getFileName();
+    SAXReader reader = new SAXReader();
+    
+    try {
+      
+      Document doc = reader.read(in);
+      return getFileInfo(solution, path, fileName, doc);
+      
+    } catch (DocumentException e) {
+      logger.error("Error parsing document",e);
+      return null;
+    }
   }
 
   public IFileInfo getFileInfo(String solution, String path, String filename,
