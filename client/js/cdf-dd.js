@@ -161,7 +161,9 @@ var CDFDD = Base.extend({
       var wcdf = myself.getDashboardWcdf();
       // Default to Clean or the first available style if Clean isn't available
       var cleanStyle = myself.styles.indexOf('Clean');
-      wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+      if(!wcdf.style) {
+				wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+			}
       //only set style setting
       var saveSettingsParams = {
         operation: "saveSettings",
