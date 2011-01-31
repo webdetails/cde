@@ -561,7 +561,7 @@ var OlapWizard = WizardManager.extend({
 					"TopCount(" :
 					"";
 			var posRows = topCount != undefined ?
-					", " + topCount + ', ' + columns + ")" :
+					", " + topCount + ((columns)? ', ' + columns + ")"  : ")"):
 					"";
 			var nonEmptyPreStr = columns.length > 0 ? "NON EMPTY(" : "";
 			var nonEmptyPosStr = columns.length > 0 ? ")" : "";
