@@ -540,11 +540,13 @@ var OlapWizard = WizardManager.extend({
 		buildQuery: function(preview,topCount){
 			
 			var rows = this.getSelectedRowsValue(preview).join(" * ");
-			var columns = this.getSelectedColumnsValue(preview).join(" * ");
+			var columnsArr = this.getSelectedColumnsValue(preview);
+			var columns = columnsArr.join(" * ");
 			var cube = this.getSelectedOptions().cube;
 			var sets = [];
 			var members = [];
 			var conditions = [];
+			var isFirstColumnMeasure = columnsArr.length > 0 && this.getSelectedWizardObject("columns",0).olapObject.type == 'measure';
 			
 			for(o in this.selectedWizardObjects.filters){
 				var filterValue = this.selectedWizardObjects.filters[o].getFilterValue(preview);
@@ -553,15 +555,16 @@ var OlapWizard = WizardManager.extend({
 					if(filterValue.member != undefined) members.push(filterValue.member);
 					if(filterValue.condition != undefined) conditions.push(filterValue.condition);
 				}
-				else
+				else{
 					conditions.push(filterValue);
+				}
 			}
 			
 			var preRows = topCount != undefined ?
 					"TopCount(" :
 					"";
 			var posRows = topCount != undefined ?
-					", " + topCount + ((columns)? ', ' + columns + ")"  : ")"):
+					", " + topCount + ((isFirstColumnMeasure)? ', ' + columnsArr[0] + ")"  : ")"):
 					"";
 			var nonEmptyPreStr = columns.length > 0 ? "NON EMPTY(" : "";
 			var nonEmptyPosStr = columns.length > 0 ? ")" : "";
