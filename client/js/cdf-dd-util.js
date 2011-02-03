@@ -8,7 +8,7 @@ Util.clone = function clone(obj) {
 
 	var c = obj instanceof Array ? [] : {};
 
-	for (var i in obj) {
+	for (var i in obj) if (obj.hasOwnProperty(i)) {
 		var prop = obj[i];
 
 		if (typeof prop == 'object') {
