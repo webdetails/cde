@@ -30,8 +30,10 @@ import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.services.solution.BaseContentGenerator;
+import org.pentaho.platform.engine.services.solution.SolutionReposHelper;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 import pt.webdetails.cdf.dd.olap.OlapUtils;
@@ -68,20 +70,22 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public enum FileTypes
   {
+
     JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
-  
+
   /**
    * Path parameters received by content generator
    */
-  protected static class PathParams{
-    
+  protected static class PathParams
+  {
+
     /**
      * Debug flag
      */
-    public static final String DEBUG = "debug"; 
-    public static final String ROOT = "root"; 
+    public static final String DEBUG = "debug";
+    public static final String ROOT = "root";
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
     public static final String FILE = "file";
@@ -89,7 +93,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
      * JSON structure
      */
     public static final String CDF_STRUCTURE = "cdfstructure";
-
   }
 
   static
@@ -130,6 +133,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public void createContent() throws Exception
   {
 
+    // Make sure we have the env. correctly inited
+    if (SolutionReposHelper.getSolutionRepositoryThreadVariable() == null && PentahoSystem.getObjectFactory().objectDefined(ISolutionRepository.class.getSimpleName()))
+    {
+      SolutionReposHelper.setSolutionRepositoryThreadVariable(PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession()));
+    }
+
+
     final IParameterProvider pathParams = parameterProviders.get("path");
     final IParameterProvider requestParams = parameterProviders.get("request");
 
@@ -156,23 +166,32 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       {
         logger.error(Messages.getErrorString("DashboardDesignerContentGenerator.ERROR_001_INVALID_METHOD_EXCEPTION") + " : " + method);
       }
-      catch (InvocationTargetException e){
+      catch (InvocationTargetException e)
+      {
         //get to the cause and rethrow properly
         Throwable target = e.getTargetException();
-        if(!e.equals(target)){//just in case
+        if (!e.equals(target))
+        {//just in case
           //get to the real cause
-          while(target != null && target instanceof InvocationTargetException){
-            target = ((InvocationTargetException)target).getTargetException();
+          while (target != null && target instanceof InvocationTargetException)
+          {
+            target = ((InvocationTargetException) target).getTargetException();
           }
         }
-        if(target instanceof Exception) throw (Exception) target;
-        else throw new DashboardDesignerException(target);
+        if (target instanceof Exception)
+        {
+          throw (Exception) target;
+        }
+        else
+        {
+          throw new DashboardDesignerException(target);
+        }
       }
     }
     catch (Exception e)
     {
       final String message = e.getCause() != null ? e.getCause().getClass().getName() + " - " + e.getCause().getMessage() : e.getClass().getName() + " - " + e.getMessage();
-      logger.error(message,e);
+      logger.error(message, e);
     }
 
   }
@@ -506,19 +525,19 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   String getWcdfRelativePath(final IParameterProvider pathParams)
   {
-    final String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null) + 
-                        "/" + pathParams.getStringParameter(PathParams.PATH, null) + 
-                        "/" + pathParams.getStringParameter(PathParams.FILE, null);
+    final String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null)
+            + "/" + pathParams.getStringParameter(PathParams.PATH, null)
+            + "/" + pathParams.getStringParameter(PathParams.FILE, null);
 
     return path.replaceAll("//+", "/");
   }
 
   String getStructureRelativePath(final IParameterProvider pathParams)
   {
-    String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null) + 
-                  "/" + pathParams.getStringParameter(PathParams.PATH, null) + 
-                  "/" + pathParams.getStringParameter(PathParams.FILE, null);
-    
+    String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null)
+            + "/" + pathParams.getStringParameter(PathParams.PATH, null)
+            + "/" + pathParams.getStringParameter(PathParams.FILE, null);
+
     path = path.replaceAll("//+", "/");
     return path.replace(".wcdf", ".cdfde");
   }
@@ -550,7 +569,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final File file = new File(path);
 
     if (!isFileWithinPath(file, PentahoSystem.getApplicationContext().getSolutionPath("")))
-        //file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
+    //file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
     {
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
@@ -566,14 +585,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     in.close();
   }
-  
-  private boolean isFileWithinPath( File file, String absPathBase){
+
+  private boolean isFileWithinPath(File file, String absPathBase)
+  {
     final String filePath = normalizePathSeparators(file.getAbsolutePath());
     final String basePath = normalizePathSeparators(absPathBase);
     return filePath.startsWith(basePath);
   }
-  
-  private String normalizePathSeparators(String path){
+
+  private String normalizePathSeparators(String path)
+  {
     return path.replaceAll("\\\\", "/").replaceAll("/+", "/");
   }
 
@@ -730,7 +751,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       response.setHeader("content-disposition", "attachment; filename=" + attachmentName);
     } // Cache?
-    
+
     if (cacheDuration > 0)
     {
       response.setHeader("Cache-Control", "max-age=" + cacheDuration);
