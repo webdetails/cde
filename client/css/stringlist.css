@@ -1,111 +1,47 @@
 
-.StringListContainer, .StringArrayContainer {
+.StringListContainer, .StringArrayContainer, .ParameterListContainer {
+	height:300px;
 	background-color: #bdbdbd;
-	width:405px;
-	height: 250px;
+}
+
+.StringListContainer{
+	width:420px;
 }
 .StringArrayContainer {
-	width:225px;
+	width:240px;
 }
-
 .ParameterListContainer {
-	background-color: #bdbdbd;
-	width:565px;
-	height: 250px;
+	width:780px;
 }
 
-.StringList, .StringArray {
-	width:390px;
-	height: 200px;
-	float:left;	
+.StringList, .StringArray, .ParameterList {
+	height: 260px;
+	float:left;
 	position:relative;
 	top:10px;
 	left:10px;
 	overflow:auto;
+}
+
+.StringList {
+	width:400px;
 }
 
 .StringArray{
-	width:210px;
+	width:220px;
 }
 
 .ParameterList {
-	width:550px;
-	height: 200px;
-	float:left;	
-	position:relative;
-	top:10px;
-	left:10px;
-	overflow:auto;
+	width:760px;
 }
 
-.StringListAddButton, .StringArrayAddButton {
-	float:left;	
-	top:15px;
-	position:relative;
-	left:340px;
+.ParameterList td{
+	text-align: center;
 }
 
-.StringArrayAddButton {
-	left:160px;
-}
 
-.ParameterListAddButton {
-	float:left;	
-	top:15px;
-	position:relative;
-	left:500px;
-}
 
-.StringListText , .StringArrayText, .ParameterListText {
-	float:left;	
-	width:100px;
-	position:relative;
-	font-size:9pt; 
-}
-
-.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove, .ParameterListParameter , .ParameterListRemove{
-	float:left;	
-	position:relative;
-	top:3px;
-	left:10px;
-}
-
-.StringListTextLabel, .StringArrayTextLabel, .ParameterListTextLabel{
-	float:left;	
-	position:relative;
-	top:5px;
-	width:35px;
-	font-size: 10px;
-}
-
-.StringListValues, .StringArrayValues{
-	display:block;
-	float:left;	
-	width:220px;
-}
-.ParameterListValues {
-	display:block;
-	float:left;	
-	width:150px;
-}
-.ParameterListTypes {
-	display:block;
-	float:left;	
-	width:220px;
-}
-
-.StringListArgs, .StringArrayArgs, .ParameterListArgs {
-	display:block;
-	float:left;	
-	width:150px;
-}
-
-.jqiStringListfade, .jqiStringArrayfade{
-	position: absolute; 
-	background-color: #aaaaaa; 
-}
 div.jqiStringList, div.jqiStringArray, div.jqiParameterList { 
-	width: 420px;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
 	position: absolute; 
 	background-color: #ffffff; 
@@ -117,11 +53,119 @@ div.jqiStringList, div.jqiStringArray, div.jqiParameterList {
 	padding: 7px;
 }
 
+div.jqiStringList {
+	width: 440px;
+}
+
 div.jqiStringArray{ 
-	width: 230px; 
+	width: 260px; 
 }
 div.jqiParameterList {
-	width: 580px;
+	width: 800px;
+}
+
+.StringListAddButton, .StringArrayAddButton, .ParameterListAddButton{
+	float:right;
+	right:10px;
+	top:15px;
+	position:relative;
+}
+
+
+.StringListText , .StringArrayText, .ParameterListText {
+	float:left;
+/*	width:100px;*/
+	position:relative;
+	font-size:9pt; 
+}
+
+/* StringList: names */
+.StringListArgs{
+	float:left;
+	width: 100px;
+}
+.StringListArgs .StringListText {
+	width: 60px;
+}
+/* rest */
+.StringListValues {
+	width: 270px;
+	display:block;
+	float:left;
+}
+/* StringList: values */
+.StringListVal {
+	float: left;
+	width: 190px;
+}
+.StringListVal .StringListText{
+	float:left;
+	width: 150px;
+}
+
+.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove, .ParameterListParameter , .ParameterListRemove{
+	float:left;
+	position:relative;
+	top:3px;
+	left:10px;
+}
+
+.StringListTextLabel, .StringArrayTextLabel {
+	float:left;
+	position:relative;
+	top:5px;
+	width:35px;
+	font-size: 10px;
+}
+
+.ParameterListTextLabel {
+	float:none;
+	font-size: 10px;
+}
+
+.ParameterList th {
+	text-align: center;
+}
+
+.StringArrayValues{
+	display:block;
+	float:left;
+	width:220px;
+}
+/*.StringListVal, .StringArrayVal {
+	width: 150px;
+	float:left;
+}*/
+
+.ParameterListValues {
+	display:block;
+	float:left;
+	width:150px;
+}
+.ParameterListTypes {
+	display:block;
+	float:left;
+	width:220px;
+}
+
+.StringArrayArgs{
+	display:block;
+	float:left;
+	width:160px;
+}
+.StringArrayText{
+	width: 120px;
+}
+
+/*.StringListArgs, .StringArrayArgs, .ParameterListArgs {
+	display:block;
+	float:left;
+	width:180px;
+}*/
+
+.jqiStringListfade, .jqiStringArrayfade{
+	position: absolute; 
+	background-color: #aaaaaa; 
 }
 
 div.jqiStringList .jqiStringListcontainer, div.jqiStringArray .jqiStringArraycontainer, div.jqiParameterList .jqiParameterListcontainer {

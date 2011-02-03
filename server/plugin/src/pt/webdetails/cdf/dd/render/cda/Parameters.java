@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
+import org.pentaho.platform.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -21,6 +22,7 @@ public class Parameters implements Renderer {
   private final String NAME_ATTR = "name",
                        DEFAULT_ATTR = "default",
                        TYPE_ATTR = "type",
+                       ACCESS_ATTR = "access",
                        ELEMENT_NAME = "Parameter";
 
   public void renderInto(Element dataAccess) {
@@ -33,15 +35,21 @@ public class Parameters implements Renderer {
     while (paramIterator.hasNext()) {
       JSONArray param = (JSONArray) paramIterator.next();
       Element parameter = doc.createElement(ELEMENT_NAME);
-      //parameter.setAttribute("type", "String");
       parameter.setAttribute(NAME_ATTR, (String) param.get(0));
       parameter.setAttribute(DEFAULT_ATTR, (String) param.get(1));
       if(param.size() > 2){
         parameter.setAttribute(TYPE_ATTR,  (String) param.get(2));
+        if(param.size() > 3){
+          String access = (String) param.get(3);
+          if(!StringUtil.isEmpty(access)){
+            parameter.setAttribute(ACCESS_ATTR, access);
+          }
+        }
       }
       else{
         parameter.setAttribute(TYPE_ATTR, "String");
       }
+      
       parameters.appendChild(parameter);
     }
   }

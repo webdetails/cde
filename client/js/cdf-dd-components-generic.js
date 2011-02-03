@@ -169,9 +169,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
 			
   typesArray: [],//only used if hasTypedValues
 	
+  rowWidth: 400,
+  
 	//used for value input labels
 	argTitle: 'Arg',
-	valTitle: 'Val',
+	valTitle: 'Value',
 
   constructor: function(tableManager){
     this.base(tableManager);
@@ -188,38 +190,28 @@ var ValuesArrayRenderer = CellRenderer.extend({
 					
       var arrayValue = value;
       var content = $('\
-							<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\
-								<div class="' + myself.cssPrefix +'"></div>\
-								<input class="' + myself.cssPrefix +'AddButton" type="button" value="Add"></input>\
-							</div>');
-					        
+            <div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\
+              <div class="' + myself.cssPrefix +'"></div>\
+              <input class="' + myself.cssPrefix +'AddButton" type="button" value="Add"></input>\
+            </div>');
+      
       vals = JSON.parse(arrayValue);
-      for(val in vals){
-        if(myself.multiDimensionArray){
-          if(myself.hasTypedValues){
-            myself.addTypedParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), vals[val][2], content);
-          }
-          else {
-            myself.addParameters(val,vals[val][0],(vals[val][1] === undefined ? "" : vals[val][1] === null ? "null" : vals[val][1]), content);
-          }
-        }
-        else{
-          if(myself.hasTypedValues){
-            myself.addTypedParameters(val,vals[val],"null",null,content);
-          }
-          else {
-            myself.addParameters(val,vals[val],"null",content);
-          }
-        }
+      
+      for(var i=0; i < vals.length; i++){
+        myself.addParameter(i, vals[i], content);
       }
+      
       var index = vals.length;
 
       $.prompt('<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix +'Container">' + content.html() + '</div>',{
+        
         buttons: {
           Ok: true,
           Cancel: false
         } ,
+        
         prefix: 'jqi' + myself.cssPrefix,
+        
         callback: function(v,m,f){
           if(v){
             // A bit of a hack to make null happen
@@ -228,11 +220,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
             _editArea.text(arrayValue);
           }
         },
-        loaded: function(){
+        
+        loaded: function(){ //button bindings
           $('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
-            if(myself.hasTypedValues) myself.addTypedParameters(index,"","","",$("#" + myself.cssPrefix));
-            else myself.addParameters(index,"","",$("#" + myself.cssPrefix));
-									
+            
+            myself.addParameter(index, ["","",""], $("#" + myself.cssPrefix));
+            
             $("#remove_button_"+index).bind('click',myself.removeParameter);
             $("#parameter_button_"+index).bind('click',myself.addParamterValue);
             index++;
@@ -240,17 +233,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
           $('.' + myself.cssPrefix + 'Remove').bind('click',myself.removeParameter);
           $('.' + myself.cssPrefix + 'Parameter').bind('click',myself.addParamterValue);
         },
+        
         submit: function(v,m,f){
           var array = [];
           for(var i = 0; i < index; i++){
             if($("#arg_" + i).length > 0 && $("#arg_" + i).val().length > 0){
-              if(myself.multiDimensionArray){
-                if(myself.hasTypedValues) array.push([$("#arg_" + i).val(),$("#val_" + i).val(), $("#type_" + i).val()]);
-                else array.push([$("#arg_" + i).val(),$("#val_" + i).val()]);//TODO:ok?
-              }
-              else{
-                array.push($("#arg_" + i).val());
-              }
+              array.push( myself.getParameterValues(i) );
             }
           }
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
@@ -265,60 +253,126 @@ var ValuesArrayRenderer = CellRenderer.extend({
   validate: function(settings, original){
     return true;
   },
+  
+  /**
+   * @param i line number 
+   * @param values {Array} 
+   **/
+  addParameter : function(i, values, container){//TODO: still not done
+    if(this.multiDimensionArray){
+      if(this.hasTypedValues){
+        var val = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
+        var type = values.length >= 3 ? values[2] : null;
+        this.addTypedParameters(i,values[0], val, type, container);
+      }
+      else {
+        this.addParameters(i,values[0],(values[1] === undefined ? "" : values[1] === null ? "null" : values[1]), container);
+      }
+    }
+    else{
+      this.addParameters(i,values[0],"null",container);
+    }
+  },
 
   addParameters : function(i,arg,val,container){
 
     if(val) { val = val.replace(/["]/g,'&quot;');}//for output only, will come back ok
     
-    var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
-    var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
-    var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-    '<span class="'+this.cssPrefix+'TextLabel">' + this.argTitle +':</span>' +
-    '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
-    var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-    '<span class="'+this.cssPrefix+'TextLabel">' + this.valTitle +':</span>' +
-    '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
+    var parameterButton = this.getParameterButton(i);
+    var removeButton = this.getRemoveButton(i);
+    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i );
+    var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
+
     var row =
-    '<did id="parameters_' + i +'" >\n' +
-    argInput +
-    (this.multiDimensionArray ? ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  removeButton) +
-    '</div>\n';
+      '<did id="parameters_' + i +'" >\n' +
+      argInput +
+      (this.multiDimensionArray ? 
+        ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  
+        removeButton) +
+      '</div>\n';
+    
     container.find('.' + this.cssPrefix).append(row);
   },
     
-  addTypedParameters : function(i,arg,val,type,container){//ToDo: should be refactored with addParameters
+  addTypedParameters : function(i,arg,val,type,container){//ToDo: should be refactored with addParameters, currently not used
     //used when hasTypedValues=true, assumes multiDimensionalArray
     
     if(val) { val = val.replace(/["]/g,'&quot;');}//for output only, will come back ok
-      
-    var parameterButton = 	'<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
-    var removeButton = 	'<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
-    var argInput = 		'<div class="'+this.cssPrefix+'Args">' +
-    '<span class="'+this.cssPrefix+'TextLabel">' + this.argTitle +':</span>' +
-    '<input  id="arg_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + arg + '"></input></div>\n';
-    var valInput = 		'<div class="'+this.cssPrefix+'Val">' +
-    '<span class="'+this.cssPrefix+'TextLabel">' + this.valTitle +':</span>' +
-    '<input  id="val_' + i + '" class="' + this.cssPrefix +'Text" type="text" value="' + val + '"></input></div>\n';
+    
+    var parameterButton = this.getParameterButton(i);
+    var removeButton = this.getRemoveButton(i);
+    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
+    var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
 					
-    var typeOptions = "";
-    for(var j = 0; j < this.typesArray.length; j++){
-      typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
-      typeOptions += this.typesArray[j] + '</option>';
-    }
-    var typeSelect = '<div class="'+this.cssPrefix+'Type">' +
-    '<span class="'+this.cssPrefix+'TextLabel">Type'+':</span>' +
-    '<select  id="type_' + i + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n';
+    var typeSelect = this.getTypeSelector('Type', type, 'type_' + i);
     var row =
     '<did id="parameters_' + i +'" >\n' +
     argInput +
     '<div class="' + this.cssPrefix +'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix +'Types">' +  typeSelect + parameterButton + removeButton  +'<br /></div>\n';
     container.find('.' + this.cssPrefix).append(row);
   },
-						
+  
+  /**
+   * @returns {Array} Values to be stored for each parameter_<i>
+   **/ 
+  getParameterValues : function(i) {
+    
+    if(!this.multiDimensionArray){
+      return   $('#arg_' + i).val() ;
+    } else {  
+    
+      var result = []
+      
+      result.push( $('#arg_' + i).val() );//name
+      result.push( $('#val_' + i).val() );//value
+      if(this.hasTypedValues){
+        result.push( $('#type_' + i).val() );//type
+      }
+      
+      return result;
+    }
+  },
+	
+	//TODO: redo, move to another file
+	
+	//parameters field generation (begin)
+  
+  getParameterButton : function (i){
+    return '<input id="parameter_button_' + i + '" class="' + this.cssPrefix +'Parameter" type="button" value="..."></input>\n';
+  },
+  getRemoveButton : function (i){
+    return '<input id="remove_button_' + i + '" class="' + this.cssPrefix +'Remove" type="button" value="-" ></input>\n';
+  },
+  
+  getTextInput : function (title, value, cssClass, id){
+    return '<div class="'+ cssClass + '">' +
+    (title != null ?   ('<span class="'+this.cssPrefix+'TextLabel">' + title +':</span>') : '' )+
+    '<input  id="' + id + '" class="' + this.cssPrefix +'Text" type="text" value="' + value + '"></input></div>\n';
+  },
+  
+  getTypeSelector : function (title, type, id){
+    var typeOptions = "";
+    for(var j = 0; j < this.typesArray.length; j++){
+      typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
+      typeOptions += this.typesArray[j] + '</option>';
+    }
+    return '<div class="'+this.cssPrefix+'Type">' +
+    (title != null ? ('<span class="'+this.cssPrefix+'TextLabel">'+ title + ':</span>' ) : '' )+
+    '<select  id="' + id + '" class="' + this.cssPrefix +'Text">' + typeOptions + '</select></div>\n';
+  },  
+	
+  getAccessCheckbox : function(access, cssClass, id){
+    var checked = (access == 'private');
+    return '<div class="' + cssClass + '" <input id="' + id + '" type="checkbox" value="private" ' + (checked ? 'checked="checked"' : '' ) + ' /></div>';
+  },
+  //parameters field generation (end)
+  
+  
   removeParameter : function(){
     $("#" + this.id.replace("remove_button_","parameters_")).remove();
   },
-						
+  
+  //TODO: change name (2 refs)
   addParamterValue : function(){
     var id = this.id;
     var content = '<div id="parameterList" class="StringListParameterContainer">';
@@ -361,12 +415,73 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
   }
 });
 
+var IndexArrayRenderer = ArrayRenderer.extend({
+    argTitle: 'Index'
+});
+
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
   cssPrefix: "ParameterList",
-			
+	argTitle: 'Name',
+	valTitle: 'Value',
   hasTypedValues: true,
   //TODO: this should be fetched from somewhere
-  typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray']
+  typesArray: ['String','Integer','Numeric','Date','StringArray','IntegerArray','NumericArray','DateArray'],
+  
+  /**
+   * @returns {Array} 
+   **/ 
+  getParameterValues : function(i) {
+    var name = $("#arg_" + i).val();
+    var value = $("#val_" + i).val();
+    var type = $("#type_" + i).val();
+    var access = $("#access_" + i).attr('checked') ? 'private' : '';
+    return [name, value, type, access];
+  },
+  
+  addParameter : function(i, values, container){
+    
+    var arg = values[0];
+    var val = values[1];
+    var type = values[2];
+    var access = values[3];
+    
+    
+    if(val ===  undefined) { val = "" ; }
+    else if(val ===  null) { val = "null" ; }
+    else if(val) { val = val.replace(/["]/g,'&quot;');}//for output only, will come back ok
+    
+    var parameterButton = this.getParameterButton(i);
+    var removeButton = this.getRemoveButton(i);
+    
+    var argInput = this.getTextInput(null, arg, this.cssPrefix + 'Args', 'arg_' + i);
+    var valInput = this.getTextInput(null, val, this.cssPrefix + 'Val', 'val_' + i);
+    var typeSelect = this.getTypeSelector(null, type, 'type_' + i);
+    var accessCb = this.getAccessCheckbox(access, this.cssPrefix + 'Access', 'access_' + i);
+    
+
+    
+    var row = '<tr id="parameters_' + i + '" >';
+    row += '<td>' + argInput + '</td>';
+    row += '<td>' + valInput + '</td>';
+    row += '<td>' + typeSelect + '</td>';
+    row += '<td>' + accessCb + '</td>';
+    row += '<td>' + removeButton + '</td>';
+    row += '</tr>';
+    
+    if(i==0){//add table and header
+      container.find('.' + this.cssPrefix).append('<table> </table>');
+      var hdr = '<tr>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Type</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Private?</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>'
+      hdr += '</tr>';
+      row = hdr + row;
+    }
+    container.find('.' + this.cssPrefix + ' table').append(row);
+	}
+  
 });
 
 var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
@@ -376,7 +491,7 @@ var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
 
 var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
 	argTitle: 'Name',
-	valTitle: 'Value'
+	valTitle: 'Form.' 
 });
 
 var ComponentsJavascriptParameterModel = BaseModel.extend({
