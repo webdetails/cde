@@ -3,7 +3,7 @@
 var OlapMembersWizardEntry = PalleteWizardEntry.extend({
 
 		id: "MDXMEBMERSWIZARD_ENTRY",
-		name: "OLAP members wizard",
+		name: "OLAP Selector wizard",
 		description: "Generates a query to fetch the members of a dimension. Useful to use with selectors",
 		category: "Wizards",
 		categoryDesc: "Wizards",

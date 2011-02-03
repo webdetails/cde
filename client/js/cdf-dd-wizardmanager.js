@@ -525,11 +525,7 @@ var OlapWizard = WizardManager.extend({
 			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
 			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema.replace('solution:','/');
 			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false, topCount);
-			
-			if(series != undefined){
-				CDFDDUtils.getProperty(datasourceStub,"cdacalculatedcolumns").value = '[["Series",="' + series + '"]]';
-				CDFDDUtils.getProperty(datasourceStub,"output").value = '["2,0,1"]';
-			}
+			if(this.includeUniqueName) CDFDDUtils.getProperty(datasourceStub,"output").value = '["1","0"]';
 			
 			var mdxEntry = datasourcesPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];//TODO: any way to fetch this?
 			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
@@ -538,6 +534,8 @@ var OlapWizard = WizardManager.extend({
 		},
 
 		buildQuery: function(preview,topCount){
+			
+			var isSelector = this.includeUniqueName == true;
 			
 			var rows = this.getSelectedRowsValue(preview).join(" * ");
 			var columnsArr = this.getSelectedColumnsValue(preview);
@@ -559,19 +557,35 @@ var OlapWizard = WizardManager.extend({
 					conditions.push(filterValue);
 				}
 			}
+			//ini
+			var rootDim = this.getSelectedWizardObject('rows',0).member;
+			rootDim = rootDim.substring(0, rootDim.indexOf(']') + 1);
 			
+			var memberDecl = "with member [Measures].[Name] as '" + rootDim + ".CurrentMember.UniqueName'";
+
+			var filterBegin = " filter(";
+			var filterEnd = ", not isempty((" + rootDim + ".CurrentMember" + 
+				(columnsArr.length > 0 ? (", " + columnsArr[0] ) : "") + ")) ) ";
+			var preMeasure = "[Measures].[Name]";
+			if(columns.length > 0) preMeasure += ',';
+			
+			//fim
 			var preRows = topCount != undefined ?
 					"TopCount(" :
 					"";
+			if(isSelector){ preRows += filterBegin; }
+					
 			var posRows = topCount != undefined ?
 					", " + topCount + ((isFirstColumnMeasure)? ', ' + columnsArr[0] + ")"  : ")"):
 					"";
+			if(isSelector){ posRows = filterEnd + posRows; }
+					
 			var nonEmptyPreStr = columns.length > 0 ? "NON EMPTY(" : "";
 			var nonEmptyPosStr = columns.length > 0 ? ")" : "";
 			
-			var query = sets.join(" , \n") + members.join(" , \n") + " select " + nonEmptyPreStr +
+			var query = (isSelector ? memberDecl : '' ) + sets.join(" , \n") + members.join(" , \n") + " select " + nonEmptyPreStr +
 				preRows + "{" + rows + "}" + posRows + nonEmptyPosStr + " on ROWS, \n " +
-				nonEmptyPreStr + "{" + columns + "}" + nonEmptyPosStr + " on Columns \n from [" + cube + "]";
+				nonEmptyPreStr + "{" +  (isSelector ? preMeasure : '' ) + columns + "}" + nonEmptyPosStr + " on Columns \n from [" + cube + "]";
 		
 			if(conditions.length > 0){
 				query += "\n where (" + conditions.join(" , ") + ")";
@@ -588,6 +602,7 @@ var OlapWizard = WizardManager.extend({
 var OlapParameterWizard = OlapWizard.extend({
 
 		wizardId: "OLAP_PARAMETER_WIZARD",
+		includeUniqueName : true,
 
 		constructor: function(){
 			this.base();
@@ -665,6 +680,8 @@ var OlapParameterWizard = OlapWizard.extend({
 				
 				var topCount = this.getSelectedOptions().topCount;
 				this.getSelectedOptions().query = this.buildQuery(true,topCount.length > 0 ? topCount : undefined);
+				
+			//	alert(this.getSelectedOptions().query);
 				this.preview();
 			}
 			
@@ -710,10 +727,10 @@ var OlapParameterWizard = OlapWizard.extend({
 						query: this.getSelectedOptions().query,
 						cube: this.getSelectedOptions().cube
 					},
-				//	parameter: 'CDFDDPreviewParam',
+		//			parameter: 'CDFDDPreviewParam',
+		//			postChange: function(){alert("value:" + CDFDDPreviewParam);},
 					htmlObject: "cdfdd-olap-preview-area",
-					executeAtStart: true,
-					preChange: function(c){return false}
+					executeAtStart: true
 				};
 			Dashboards.components = [];
 			Dashboards.init([CDFDDPreviewComponent]);
@@ -736,13 +753,29 @@ var OlapParameterWizard = OlapWizard.extend({
 			$('#'+ WizardManager.MAIN_DIALOG).jqmHide();
 
 			// 1 - Add query to datasources
-			// 2 - Add parameter to components
-			// 3 - Add selector to components
-
-			// 1 - Add query to datasources
 			
 			this.addQueryToDatasources();
 			
+			// 2 - Add parameter to components
+			
+			var componentsPaletteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
+			var componentsTableManager = componentsPaletteManager.getLinkedTableManager();
+
+			var parameterModel = BaseModel.getModel(ComponentsOlapParameterModel.MODEL);
+			var parameterStub = parameterModel.getStub();
+			var parameterId = this.getSelectedOptions().name + "Parameter"
+			var dimension = this.selectedWizardObjects.rows[0].member;
+			var type =  this.getSelectedOptions().type;
+			
+			CDFDDUtils.getProperty(parameterStub,"name").value = parameterId;
+			CDFDDUtils.getProperty(parameterStub,"propertyValue").value = dimension;
+			
+			parameterStub.dimension = dimension;
+
+			var parameterEntry = new ParameterEntry();
+			var insertAtIdx = componentsTableManager.createOrGetParent(parameterEntry.getCategory(), parameterEntry.getCategoryDesc());
+			parameterStub.parent = parameterEntry.getCategory();
+			componentsTableManager.insertAtIdx(parameterStub,insertAtIdx);
 			
 			// 3 - Add selector to components
 			var type = this.getSelectedOptions().type;
@@ -786,7 +819,8 @@ var OlapParameterWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(selectorStub,"parameter").value = this.getSelectedOptions().name+"Parameter";
 			CDFDDUtils.getProperty(selectorStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(selectorStub,"htmlObject").value =  $("#cdfdd-olap-parameter-htmlobject").val();
-	//		CDFDDUtils.getProperty(selectorStub,"preChange").value =  this.getJavaScriptParameterFunction(type , dimension);;
+			CDFDDUtils.getProperty(selectorStub,"valueAsId").value = false;
+			
 			
 			var listenners = this.getListenners();
 			if(listenners.length > 0){
@@ -794,23 +828,11 @@ var OlapParameterWizard = OlapWizard.extend({
 			}
 
 			//insert entry
-			var componentsPalleteManager = PalleteManager.getPalleteManager(ComponentsPanel.PALLETE_ID);
-			var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
-			var insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
+			insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
 			selectorStub.parent = entry.getCategory();
 			componentsTableManager.insertAtIdx(selectorStub,insertAtIdx);
 
 		},
-		
-		getJavaScriptParameterFunction: function(type, member){
-			var _function = 'function(value){\n\nif(value == "" || value == "' + member + '")\n\treturn "' + member + '";\n';
-			if(type == "selectComponent" || type =="radioComponent")
-				_function+= 'else\n\tvalue = "' + member + '.[" + value + "]";\n';
-			else
-				_function+= 'else{\n\tvar values = []; \n\tfor(v in value) \n\tvalues.push("' + member + '.[" + value[v] + "]");\n\tvalue = values.join(\',\');\n}\n';
-				
-			return _function + '\nreturn value;\n\n}';
-		}
 
 
 	},{
@@ -957,16 +979,13 @@ var OlapChartWizard = OlapWizard.extend({
 					innerGap: 0.9,
 					explodedSliceIndex: 0,
 					explodedSliceRadius: 0,
-					
-					//backgroundColor: "#FFFFFF",
-					//topCount: this.getSelectedOptions().topCount,
 					orientation: this.getSelectedOptions().orientation,
 					queryType: 'mdx',
 					jndi: this.getSelectedOptions().jndi,
 					catalog: this.getSelectedOptions().schema,
 					title: this.getSelectedOptions().title,
 					query: this.getSelectedOptions().query,
-					crosstabMode: false,
+					crosstabMode: true,
 					seriesInRows: false,
 					animate: false,
 					clickable: false,
@@ -1010,23 +1029,14 @@ var OlapChartWizard = OlapWizard.extend({
 					htmlObject: "cdfdd-olap-preview-area",
 					executeAtStart: true,
 					postFetch: function (values){
-						var seriesName = self.getSeriesName();
-						if(seriesName == null) {seriesName = 'Series';}
-						
-						if(values[0] && values[0].length == 2 ){
-							values.map(function(d){
-                d.splice(0,0,seriesName);
-							});
-						}
 						values.map(function(row){//parse numeric values, otherwise sum will concatenate them
-							row.splice(2,1, parseFloat(row[2]));
+							row.splice(1,1, parseFloat(row[1]));
 						});
 						
 						return {resultset : values,
 						metadata : [
-							{ colIndex:0, colName:'Series', colType:'String'},
-							{colIndex:1, colName:'First', colType : 'String'},
-							{colIndex:2, colName:'Second', colType : 'Numeric'}] };
+							{colIndex:0, colName:'Name', colType : 'String'},
+							{colIndex:1, colName:'Value', colType : 'Numeric'}] };
 					}
 				};
 				
@@ -1073,6 +1083,8 @@ var OlapChartWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(chartStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(chartStub,"height").value = "300";
 			CDFDDUtils.getProperty(chartStub,"width").value = "400";
+			CDFDDUtils.getProperty(chartStub,"cccCrosstabMode").value = true;
+			CDFDDUtils.getProperty(chartStub,"cccOrientation").value = this.getSelectedOptions().orientation;
 			
 			var listenners = this.getListenners();
 			if(listenners.length > 0){
