@@ -114,7 +114,7 @@ public class CdaRenderer
     JXPathContext cda = JXPathContext.newContext(cdaDefinitions);
     String type = ((String) context.getValue("type", String.class)).replaceAll("Components(.*)", "$1");
     String conntype = ((String) context.getValue("meta_conntype", String.class));
-    if (conntype.equals("null"))
+    if (conntype.isEmpty() || conntype.equals("null"))
     {
       throw new Exception("No connection here!");
     }
@@ -300,7 +300,6 @@ public class CdaRenderer
     JSON json = JSONSerializer.toJSON(string.replaceAll("^\n*", ""));
     setContext(JXPathContext.newContext(json));
   }
-
 
   private static String capitalize(String s)
   {
