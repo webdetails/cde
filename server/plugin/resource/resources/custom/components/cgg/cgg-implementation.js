@@ -53,16 +53,17 @@ var CggComponent = BaseComponent.extend({
         url: url,
         data: data,
         // IE9 and "decent" browsers will succeed this call, so the success handler deals with those cases.
-        success: function (data) {
+        success: function (xmlData) {
           ph.empty();
           try {
             // ideally we can just add the <svg> node to our document
-            ph[0].appendChild(document.importNode(data.lastChild, true));
+            ph[0].appendChild(document.importNode(xmlData.lastChild, true));
             ph.find("svg").width(myself.width).height(myself.height);
           } catch (e) {
             // In IE9, document.importNode doesn't work with mixed SVG and HTML, so we instead add the chart as an <object>
             var obj = myself.createObj(url,script,data,myself.width,myself.height);
-            ph.append(obj);
+            ph[0].innerHTML = arguments[2].responseText;
+            ph.find("svg").width(myself.width).height(myself.height);
           }
         },
         error:function(){
@@ -95,12 +96,12 @@ var CggComponent = BaseComponent.extend({
    */
   objectUrl: function(baseUrl, script, params) {
 
-    var objUrl = url + '?',
+    var objUrl = baseUrl + '?',
       pArray = [];
 
     for (var p in params) {
       if (params.hasOwnProperty(p)){
-        pArray.push(escape('param' + p + '=' + params[p]));
+        pArray.push(escape(p) + '=' + escape(params[p]));
       }
     }
     objUrl += '&' + pArray.join('&');
