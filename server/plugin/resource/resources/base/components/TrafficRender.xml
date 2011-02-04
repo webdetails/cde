@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Traffic component</Name>
-		<IName>trafficRender</IName>
+		<IName>traffic</IName>
 		<Description>Traffic Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Other components</CatDescription>
