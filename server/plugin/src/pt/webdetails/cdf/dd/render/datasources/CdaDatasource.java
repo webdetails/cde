@@ -58,6 +58,7 @@ public class CdaDatasource extends BaseComponent {
     String desc = "";
     JXPathContext context = JXPathContext.newContext(def);
     String connType = (String) context.getValue("metadata/conntype");
+    connType = connType != null ? connType : "";
     String daType = (String) context.getValue("metadata/datype");
     StringBuilder output = new StringBuilder();
     output.append("var Components" + iname + "Model = BaseModel.extend({" + newLine
