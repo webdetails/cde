@@ -903,7 +903,7 @@ var OlapChartWizard = OlapWizard.extend({
 
 			var componentOptions = $("#cdfdd-component-options");
 			var typeSelector = $("#cdfdd-olap-parameter-type",content);
-			appendOption(typeSelector,[["BarChart","Bar Chart"],["PieChart","Pie Chart"],["LineChart","Line Chart"]]);
+			appendOption(typeSelector,[["BarChart","Bar Chart"],["PieChart","Pie Chart"],["LineChart","Line Chart"],["DotChart","Dot Chart"]]);
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			appendOption(topCountSelector,[["",""],["5","5"],["10","10"],["15","15"]]);
 			var orientationSelector = $("#cdfdd-olap-parameter-orientation",content);
