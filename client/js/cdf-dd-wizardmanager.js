@@ -501,6 +501,19 @@ var OlapWizard = WizardManager.extend({
 			return listeners.length > 1 ? listeners.replace(/,$/,"]") : "";
 		},
 		
+		getComponentParameters : function(){
+			var params = '[';
+			
+			for(var i=0; i< this.selectedWizardObjects.filters.length;i++){
+				var name = this.selectedWizardObjects.filters[i].olapObject.properties[0].value;
+				if(i>0) params += ',';
+				params += '["' + name + '","' + name + '"]';
+			}
+			
+			return params + ']';
+			
+		},
+		
 		// Resets
 		
 		resetOlapObjects: function(){
@@ -512,7 +525,7 @@ var OlapWizard = WizardManager.extend({
 		},
 		
 		addQueryToDatasources : function(series){
-						// 1 - Add query to datasources
+
 			var datasourcesPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
 			var datasourcesTableManager = datasourcesPalleteManager.getLinkedTableManager();
 
@@ -525,12 +538,30 @@ var OlapWizard = WizardManager.extend({
 			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
 			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema.replace('solution:','/');
 			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false, topCount);
-			if(this.includeUniqueName) CDFDDUtils.getProperty(datasourceStub,"output").value = '["1","0"]';
+			if(this.includeUniqueName) { CDFDDUtils.getProperty(datasourceStub,"output").value = '["1","0"]'; }
+			
+			if(this.selectedWizardObjects.filters){
+				var queryParamsStr = '[';
+				for(var i=0; i<this.selectedWizardObjects.filters.length; i++){
+					var filter = this.selectedWizardObjects.filters[i].olapObject;//ToDo: for now accepts only as string
+					if(i > 0) { queryParamsStr += ','; }
+					queryParamsStr += '[' + '"' + filter.properties[0].value + '",' +
+					                        '"' + filter.dimension + '", "String",""]' ;//["<name>","<default>","String",""]
+				}
+				queryParamsStr += ']';
+				CDFDDUtils.getProperty(datasourceStub,"parameters").value = queryParamsStr;
+			}
 			
 			var mdxEntry = datasourcesPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];//TODO: any way to fetch this?
 			var insertAtIdx = datasourcesTableManager.createOrGetParent(mdxEntry.getCategory(), mdxEntry.getCategoryDesc());
 			datasourceStub.parent = mdxEntry.getCategory();
 			datasourcesTableManager.insertAtIdx(datasourceStub,insertAtIdx);
+			
+		},
+		
+		getFilterValue: function(filter, preview){
+			if(preview) { return filter.olapObject.dimension; }
+			else { return '${' + filter.olapObject.properties[0].value + '}'; }
 		},
 
 		buildQuery: function(preview,topCount){
@@ -547,15 +578,16 @@ var OlapWizard = WizardManager.extend({
 			var isFirstColumnMeasure = columnsArr.length > 0 && this.getSelectedWizardObject("columns",0).olapObject.type == 'measure';
 			
 			for(o in this.selectedWizardObjects.filters){
-				var filterValue = this.selectedWizardObjects.filters[o].getFilterValue(preview);
-				if(typeof filterValue == 'object'){ 
-					if(filterValue.set != undefined) sets.push(filterValue.set);
-					if(filterValue.member != undefined) members.push(filterValue.member);
-					if(filterValue.condition != undefined) conditions.push(filterValue.condition);
-				}
-				else{
-					conditions.push(filterValue);
-				}
+				conditions.push(this.getFilterValue(this.selectedWizardObjects.filters[o], preview));
+				//~ var filterValue = this.selectedWizardObjects.filters[o].getFilterValue(preview);
+				//~ if(typeof filterValue == 'object'){ 
+					//~ if(filterValue.set != undefined) sets.push(filterValue.set);
+					//~ if(filterValue.member != undefined) members.push(filterValue.member);
+					//~ if(filterValue.condition != undefined) conditions.push(filterValue.condition);
+				//~ }
+				//~ else{
+					//~ conditions.push(filterValue);
+				//~ }
 			}
 			//ini
 			var rootDim = this.getSelectedWizardObject('rows',0).member;
@@ -792,15 +824,15 @@ var OlapParameterWizard = OlapWizard.extend({
 					entry = new SelectMultiEntry();
 					break;
 				case "autocompleteBoxComponent":
-					model = ComponentsAutoCompleteBoxModel.MODEL;
+					model = ComponentsAutocompleteBoxModel.MODEL;
 					entry = new AutocompleteBoxEntry();
 					break;
 				case "radioComponent":
-					model = ComponentsRadioModel.MODEL;
+					model = ComponentsradioModel.MODEL;
 					entry = new radioEntry();
 					break;
 				case "checkComponent":
-					model = ComponentsCheckModel.MODEL;
+					model = ComponentscheckModel.MODEL;
 					entry = new checkEntry();
 					break;
 				case "multiButtonComponent":
@@ -826,6 +858,8 @@ var OlapParameterWizard = OlapWizard.extend({
 			if(listenners.length > 0){
 				CDFDDUtils.getProperty(selectorStub,"listeners").value = listenners;
 			}
+			
+			CDFDDUtils.getProperty(selectorStub, "xActionArrayParameter").value = this.getComponentParameters();
 
 			//insert entry
 			insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
@@ -1090,6 +1124,8 @@ var OlapChartWizard = OlapWizard.extend({
 			if(listenners.length > 0){
 				CDFDDUtils.getProperty(chartStub,"listeners").value = listenners;
 			}
+			
+			 CDFDDUtils.getProperty(chartStub, "xActionArrayParameter").value = this.getComponentParameters();
 			
 			var entryName = type.toUpperCase() + '_ENTRY';
 			
