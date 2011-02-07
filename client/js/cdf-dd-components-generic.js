@@ -223,9 +223,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
         
         loaded: function(){ //button bindings
           $('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
-            
-            myself.addParameter(index, ["","",""], $("#" + myself.cssPrefix));
-            
+            if(myself.multiDimensionArray){
+              myself.addParameter(index, ["","",""], $("#" + myself.cssPrefix));
+            }
+            else {
+              myself.addParameter(index, "", $("#" + myself.cssPrefix));
+            }
             $("#remove_button_"+index).bind('click',myself.removeParameter);
             $("#parameter_button_"+index).bind('click',myself.addParamterValue);
             index++;
@@ -270,7 +273,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       }
     }
     else{
-      this.addParameters(i,values[0],"null",container);
+      this.addParameters(i,values,"null",container);
     }
   },
 
