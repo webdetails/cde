@@ -5,7 +5,7 @@
 	<DefaultValue></DefaultValue>
 	<Description>Left</Description>
 	<Tooltip>The Left part of the join</Tooltip>
-	<InputType>String</InputType>
+	<InputType>Datasource</InputType>
 	<OutputType>String</OutputType>
 	<Order>11</Order>
 	<Version>1.0</Version>
