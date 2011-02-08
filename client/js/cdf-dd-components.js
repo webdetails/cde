@@ -133,18 +133,23 @@ var ComponentsPanel = Panel.extend({
     return output;
 		
   },
+  
+  //Get components
+  getComponents: function(){
+    return this.componentsTable.getTableModel().getData();
+  },
 		
   setComponentsPallete: function(componentsPallete){
-    this.componentsPallete = componentsPallete
+    this.componentsPallete = componentsPallete;
     },
   getComponentsPallete: function(){
-    return this.componentsPallete
+    return this.componentsPallete;
     },
   setComponentsArray: function(componentsArray){
-    this.componentsArray = componentsArray
+    this.componentsArray = componentsArray;
     },
   getComponentsArray: function(){
-    return this.componentsArray
+    return this.componentsArray;
     }
 
 },{
@@ -199,5 +204,148 @@ var ComponentsDeleteOperation = DeleteOperation.extend({
 
 CellOperations.registerOperation(new ComponentsDeleteOperation);
 
+var ComponentValidations = {}; 
+//name is always property 0
+ComponentValidations.NAME_PROP_IDX = 0;
+ComponentValidations.STATUS_ERROR = 'error';
+ComponentValidations.STATUS_OK = 'ok';
+ComponentValidations.STATUS_WARN = 'warn';
 
+ComponentValidations.aggregateStatus = function(overallStatus, validationStatus){
+  if(validationStatus == null) return overallStatus;
+  
+  switch(overallStatus){
+    case ComponentValidations.STATUS_OK:
+      overallStatus = validationStatus;
+      break;
+    case ComponentValidations.STATUS_WARN:
+      if(validationStatus == ComponentValidations.STATUS_ERROR){
+        overallStatus = validationStatus;
+      }
+      break;
+  }
+  
+  return overallStatus;
+};
+ 
+ComponentValidations.validateComponentNames = function(components){
+  
+  if(components == null) components = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getComponents();
+  //TODO: also validate datasources
+  var validations = [];
+  var names = {};
+  for(var i=0;i<components.length;i++){
+    var comp = components[i];
+    if(comp.type != 'Label' && comp.properties != undefined){
+      //param / comp
+          var name = comp.properties[this.NAME_PROP_IDX].value;
+          if(name == null || name == ''){
+            var msg = 'A Component of type "' + comp.typeDesc + '" doesn\'t have a name.';
+            validations.push([ComponentValidations.STATUS_ERROR, msg]);
+          }
+          else {
+            if (names[name] != undefined){
+              var msg = 'A component of type "' + comp.typeDesc + '" has the same name "' + name + '" as a component of type "' + names[name] + '"';
+              validations.push([ComponentValidations.STATUS_ERROR, msg]);
+            }
+            names[name] = comp.typeDesc;
+          }
+    }
+  }
+  
+  if (validations.length > 0){
+    return {status : this.STATUS_ERROR, validations : validations };
+  }
+  else {
+    return {status : this.STATUS_OK, validations : [] };
+  }
+};
 
+ComponentValidations.validateHtmlObjects = function(components){
+  //validate:
+  //        multiple references to same htmlObj - ERROR
+  //        references to inexistent htmlObj - ERROR
+  //        component with no reference to htmlObj - WARN
+  var statusMultipleHtmlObjRef = this.STATUS_ERROR;
+  var statusNoHtmlObjRef = this.STATUS_WARN;
+  var statusNoSuchHtmlObj = this.STATUS_WARN;
+  
+  if(components == null) components = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getComponents();
+  
+  //init count
+  var htmlObjRefs = {};
+  var htmlObjects = Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects();
+  for(var i=0; i < htmlObjects.length; i++){
+    var htmlObj = htmlObjects[i];
+    var objName = htmlObj.properties[this.NAME_PROP_IDX].value;
+    if(objName != null){
+      htmlObjRefs[ objName ] = [];
+    }
+  }
+  
+  var validations = [];
+  var status = this.STATUS_OK;
+  
+  //validate
+  for(var i=0; i< components.length; i++){
+    var comp = components[i];
+    var compName = comp.properties[this.NAME_PROP_IDX].value;
+    
+    if(compName != '') for(p in comp.properties){
+      if(comp.properties[p].name == 'htmlObject'){
+        var htmlObj = comp.properties[p].value;
+        
+        if( htmlObj == '' || htmlObj == null ){
+          var msg = 'Component "' + compName + '" has no html object';
+          validations.push( [statusNoHtmlObjRef, msg] );
+          status = this.aggregateStatus(status, statusNoHtmlObjRef);
+        }
+        else {
+          var objRefs = htmlObjRefs[ htmlObj ];
+          if(objRefs == null){
+            var msg = 'Component "' + compName + '" references inexistent html object "' + htmlObj + '"';
+            validations.push( [statusNoSuchHtmlObj, msg] );
+            status = this.aggregateStatus(status, statusNoSuchHtmlObj);
+          }
+          else {          
+            if(objRefs.length > 0){
+              var msg = 'Components "' + compName + '" and "' + objRefs[0] + '" have the same html object "' + htmlObj + '"';
+              validations.push([statusMultipleHtmlObjRef, msg]);
+              status = this.aggregateStatus(status, statusMultipleHtmlObjRef);
+            }
+            objRefs.push(compName);
+          }
+        }
+      }
+    }
+  }
+  
+  return {status: status, validations : validations};
+};
+
+ComponentValidations.validateComponents = function(){
+  var status = this.STATUS_OK;
+  var validations = [];
+  
+  var nameValidations = this.validateComponentNames();
+  status = this.aggregateStatus(status, nameValidations.status);
+  validations = nameValidations.validations;
+  
+  var htmlObjValidations = this.validateHtmlObjects();
+  status = this.aggregateStatus(status, htmlObjValidations.status);
+  validations = validations.concat(htmlObjValidations.validations);
+  
+  var msg = 'Validations: <br/>';
+  
+  if(status == this.STATUS_OK) {
+    msg += 'No obvious problems detected.';
+  }
+  else {
+    for(var i=0; i < validations.length;i++){
+      msg += '<br/>';
+      msg += '[' + validations[i][0] + '] ' + validations[i][1];//ToDo: change to status, message
+    }
+  }
+  
+  $.prompt(msg);
+};

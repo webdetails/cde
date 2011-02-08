@@ -26,7 +26,6 @@ if (!Array.prototype.map)
   };
 }
 
-
 $.editable.addInputType('autocomplete', {
   element : $.editable.types.text.element,
   plugin : function(settings, original) {
@@ -134,6 +133,11 @@ var CDFDD = Base.extend({
           case 191:
             if (e.shiftKey){
               cdfdd.toggleHelp();
+            }
+            break;
+          case 86:
+            if (e.shiftKey){ //shift+v
+              ComponentValidations.validateComponents();
             }
             break;
         }
