@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class Olap4jProperties implements Renderer
+public class Olap4jProperties implements CdaElementRenderer
 {
 
   private JSONObject definition;

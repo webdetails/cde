@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
@@ -22,6 +23,8 @@ public class CdwRenderer
   private static final Log logger = LogFactory.getLog(CdwRenderer.class);
   JXPathContext document;
   WcdfDescriptor descriptor;
+  
+  private static String CDW_ELEMENTS_JXPATH = "/components/rows[meta_cdwSupport='true' and meta_cdwRender='true']";
 
   public CdwRenderer(JXPathContext document, WcdfDescriptor descriptor)
   {
@@ -38,13 +41,19 @@ public class CdwRenderer
   {
     render(this.document, path, name);
   }
+  
+  public boolean isEmpty(){
+    if(document == null) return true;
+    Pointer pointer = document.getPointer(CDW_ELEMENTS_JXPATH); 
+    return pointer == null || pointer instanceof NullPointer;
+  }
 
   protected void render(JXPathContext document, String path, String name)
   {
     CdwFile cdw = new CdwFile();
     cdw.populateHeaders(descriptor);
 
-    Iterator<Pointer> charts = document.iteratePointers("/components/rows[meta_cdwSupport='true' and meta_cdwRender='true']");
+    Iterator<Pointer> charts = document.iteratePointers(CDW_ELEMENTS_JXPATH);
     while (charts.hasNext())
     {
       Pointer chartSource = charts.next();

@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class Variables implements Renderer
+public class Variables implements CdaElementRenderer
 {
 
   private JSONObject definition;

@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class DataFile implements Renderer
+public class DataFile implements CdaElementRenderer
 {
 
   private JSONObject definition;

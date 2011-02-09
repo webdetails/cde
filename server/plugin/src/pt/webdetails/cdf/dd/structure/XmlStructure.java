@@ -126,18 +126,20 @@ public class XmlStructure implements IStructure
 
       //1. Build file parameters
       String[] file = buildFileParameters(filePath);
+      String path = file[0];
+      String cdeFileName = file[1];
 
       //2. Publish file to pentaho repository
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(file[0] + file[1].replace(".cdfde", "_tmp.cdfde")))
+      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
       {
-        parameters.put("file", file[0] + file[1].replace(".cdfde", "_tmp.cdfde"));
+        parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
         delete(parameters);
       }
 
       //int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], json.toString(2).getBytes("UTF-8"), true);
-      int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], ((String) parameters.get("cdfstructure")).getBytes("UTF-8"), true);
+      int status = solutionRepository.publish(SOLUTION_PATH, path, cdeFileName, ((String) parameters.get("cdfstructure")).getBytes("UTF-8"), true);
 
       //3. Check publish result
       if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
@@ -148,13 +150,26 @@ public class XmlStructure implements IStructure
       //4. Write CDA File
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
-      status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1].replace("cdfde", "cda"), cdaRenderer.render().getBytes("UTF-8"), true);
+      String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
+      if(cdaRenderer.isEmpty()){
+        deleteFileIfExists(solutionRepository, path, cdaFileName);
+      }
+      else {
+        status = solutionRepository.publish(SOLUTION_PATH, path, cdaFileName, cdaRenderer.render().getBytes("UTF-8"), true);
+      }
+      
 
       //4. Write CDW File
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
-      cdwRenderer.render(file[0], file[1]);
-
+      
+      String cdwFileName = cdeFileName.replace(".cdfde", ".cdw");
+      if(cdwRenderer.isEmpty()){
+        deleteFileIfExists(solutionRepository, path, cdwFileName);
+      }
+      else {
+        cdwRenderer.render(path, cdeFileName);
+      }
       //5. Check publish result again.
       if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
       {
@@ -166,6 +181,14 @@ public class XmlStructure implements IStructure
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
 
+  }
+
+  private void deleteFileIfExists(ISolutionRepository solutionRepository, String path, String fileName) {
+    String fullName = path + fileName;
+    fullName = fullName.replaceAll("//+", "/");
+    if(solutionRepository.resourceExists(fullName)){
+      solutionRepository.removeSolutionFile(fullName); 
+    }
   }
 
   public void saveas(HashMap parameters) throws Exception

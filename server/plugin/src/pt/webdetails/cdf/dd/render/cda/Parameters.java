@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class Parameters implements Renderer {
+public class Parameters implements CdaElementRenderer {
 
   private JSONObject definition;
   private final String NAME_ATTR = "name",
