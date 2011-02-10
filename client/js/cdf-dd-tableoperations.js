@@ -355,12 +355,24 @@ var DeleteOperation = BaseOperation.extend({
 			else{
 				toIdx = nextSibling.index - 1;
 			}
-
-			this.logger.debug("Deleting nodes from " + fromIdx + " to " + toIdx );
-
+			
 			// Store the parent to update the table
 			var _parentId = indexManager.getIndex()[rowId].parent;
-
+			
+			//check if last in group, except in layout
+			var deleteParent = tableManager.id != LayoutPanel.TREE &&
+			                   _parentId != IndexManager.ROOTID && 
+			                   indexManager.isFirstChild(rowId) && 
+			                   indexManager.isLastChild(rowId);
+			if(deleteParent){
+				//start deleting in parent
+				fromIdx = indexManager.getIndex()[_parentId].index;
+				//update grandpa
+				_parentId = indexManager.getIndex()[_parentId].parent;
+			}
+			
+			this.logger.debug("Deleting nodes from " + fromIdx + " to " + toIdx );
+			
 			// Build a new data array
 			tableManager.getTableModel().getData().splice(fromIdx, toIdx-fromIdx + 1);
 			indexManager.updateIndex();
