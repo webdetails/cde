@@ -21,6 +21,7 @@
 				<Property name="colSortable">colSortable</Property>
 				<Property name="colSearchable">colSearchable</Property>
 				<Property name="paginate">paginate</Property>
+				<Property>paginateServerside</Property>
 				<Property name="paginationType">paginationType</Property>
 				<Property name="filter">filter</Property>
 				<Property name="info">info</Property>
