@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>paginateServerside</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Paginate server-side</Description>
+	<Tooltip>Paginate server-side</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>91</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
