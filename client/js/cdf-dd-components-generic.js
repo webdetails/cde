@@ -168,8 +168,6 @@ var ValuesArrayRenderer = CellRenderer.extend({
   hasTypedValues: false,//if true, args also have a type
 			
   typesArray: [],//only used if hasTypedValues
-	
-  rowWidth: 400,
   
 	//used for value input labels
 	argTitle: 'Arg',
@@ -349,7 +347,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   
   getTextInput : function (title, value, cssClass, id){
     return '<div class="'+ cssClass + '">' +
-    (title != null ?   ('<span class="'+this.cssPrefix+'TextLabel">' + title +':</span>') : '' )+
+    (title != null ?   ('<span class="'+this.cssPrefix+'TextLabel">' + title +'</span>') : '' )+
     '<input  id="' + id + '" class="' + this.cssPrefix +'Text" type="text" value="' + value + '"></input></div>\n';
   },
   
@@ -405,6 +403,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
   }
 });
 
+/**
+ * Single value renderer
+ */
 var ArrayRenderer = ValuesArrayRenderer.extend({
 		
   multiDimensionArray: false,
@@ -420,6 +421,23 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
 
 var IndexArrayRenderer = ArrayRenderer.extend({
     argTitle: 'Index'
+});
+
+
+//arg, value, no param button, //TODO: own css
+var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
+    //disable parameter button
+    getParameterButton : function(i) { return ''; }
+});
+
+var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
+    argTitle: 'Index',
+    valTitle : 'Order'
+});
+
+//used by ExtraOptions
+var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
+  argTitle : 'Option'
 });
 
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
