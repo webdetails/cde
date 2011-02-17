@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -19,9 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.Document;
 
 import org.pentaho.platform.api.engine.IContentGenerator;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -34,23 +34,28 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.services.solution.BaseContentGenerator;
 import org.pentaho.platform.engine.services.solution.SolutionReposHelper;
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 import pt.webdetails.cdf.dd.olap.OlapUtils;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
-import pt.webdetails.cdf.dd.util.Utils;
 
 @SuppressWarnings("unchecked")
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
 {
 
-  private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   public static final String PLUGIN_NAME = "pentaho-cdf-dd";
   public static final String PLUGIN_PATH = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
+  /**
+   * solution folder for custom components, styles and templates
+   */
+  public static final String SOLUTION_DIR = "cde";
+  public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
+
+  private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
   private static final String CSS_TYPE = "text/css";
@@ -65,12 +70,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   private static final String DATA_URL_TAG = "cdf-structure.js";
   private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
-  public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
+  private static final String ENCODING = "UTF-8";
+  
+//  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
+  
   private Packager packager;
 
   public enum FileTypes
   {
-
     JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
@@ -266,7 +273,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     // Check security
     if (!hasAccess(out, getWcdfRelativePath(pathParams), ISolutionRepository.ACTION_EXECUTE))
     {
-      out.write("Access Denied".getBytes("UTF-8"));
+      out.write("Access Denied".getBytes(ENCODING));
       return;
     }
 
@@ -275,7 +282,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     // Response
     setResponseHeaders(MIME_TYPE, 0, null);
-    out.write(dashboard.render().getBytes()); // TODO: Can we assume the default encoding works?
+    out.write(dashboard.render().getBytes(ENCODING));
   }
 
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
@@ -289,23 +296,23 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     return true;
   }
 
-  private String getDashboardStyle(final IParameterProvider pathParams) throws IOException
-  {
-    // If we have the style available as a parameter, use it. Else, load wcdf
-    if (pathParams.hasParameter("style"))
-    {
-      return pathParams.getStringParameter("style", CdfStyles.DEFAULTSTYLE);
-
-    }
-
-    String wcdfRelativePath = getWcdfRelativePath(pathParams);
-
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    final Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfRelativePath);
-
-    return XmlDom4JHelper.getNodeText(
-            "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
-  }
+//  private String getDashboardStyle(final IParameterProvider pathParams) throws IOException
+//  {
+//    // If we have the style available as a parameter, use it. Else, load wcdf
+//    if (pathParams.hasParameter("style"))
+//    {
+//      return pathParams.getStringParameter("style", CdfStyles.DEFAULTSTYLE);
+//
+//    }
+//
+//    String wcdfRelativePath = getWcdfRelativePath(pathParams);
+//
+//    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+//    final Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfRelativePath);
+//
+//    return XmlDom4JHelper.getNodeText(
+//            "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
+//  }
 
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
@@ -418,7 +425,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-
     String pathString = this.parameterProviders.get("path").getStringParameter("path", null);
     String resource;
     if (pathString.split("/").length > 2)
@@ -429,8 +435,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       resource = pathParams.getStringParameter("resource", null);
     }
-    resource = resource.startsWith("/") ? resource : "/" + resource;
-    getResource(out, resource);
+    
+    if(!Utils.pathStartsWith(resource, SOLUTION_DIR) && 
+       !Utils.pathStartsWith(resource, PLUGIN_PATH)){
+      resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
+    }
+    
+    getSolutionResource(out, resource);
   }
 
   public void edit(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -439,7 +450,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     if (pathParams.hasParameter("path") && !hasAccess(out, getWcdfRelativePath(pathParams), ISolutionRepository.ACTION_UPDATE))
     {
-      out.write("Access Denied".getBytes("UTF-8"));
+      out.write("Access Denied".getBytes(ENCODING));
 
       return;
     }
@@ -451,7 +462,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     if (pathParams.hasParameter("debug") && pathParams.getParameter("debug").toString().equals("true"))
     {
-      Packager pack = Packager.getInstance();
       final String scripts = ResourceManager.getInstance().getResourceAsString(DESIGNER_SCRIPTS_RESOURCE);
       final String styles = ResourceManager.getInstance().getResourceAsString(DESIGNER_STYLES_RESOURCE);
       //DEBUG MODE
@@ -542,48 +552,28 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     return path.replace(".wcdf", ".cdfde");
   }
 
-  private void getResource(final OutputStream out, final String resource) throws IOException
-  {
-    setCacheControl();
-    final String path = PentahoSystem.getApplicationContext().getSolutionPath("system/" + PLUGIN_NAME + resource); //$NON-NLS-1$ //$NON-NLS-2$
-
-    final File file = new File(path);
-    final InputStream in = new FileInputStream(file);
-    final byte[] buff = new byte[4096];
-
-    int n = in.read(buff);
-    while (n != -1)
-    {
-      out.write(buff, 0, n);
-      n = in.read(buff);
-    }
-    in.close();
-  }
-
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
 
     setCacheControl();
-    final String path = PentahoSystem.getApplicationContext().getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
+    final String path = Utils.getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
 
     final File file = new File(path);
 
     if (!isFileWithinPath(file, PentahoSystem.getApplicationContext().getSolutionPath("")))
-    //file.getAbsolutePath().replaceAll("\\\\", "/").replaceAll("/+", "/").startsWith(PentahoSystem.getApplicationContext().getSolutionPath("").replaceAll("\\\\", "/").replaceAll("/+", "/")))
     {
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
     }
-    final InputStream in = new FileInputStream(file);
-    final byte[] buff = new byte[4096];
-
-    int n = in.read(buff);
-    while (n != -1)
-    {
-      out.write(buff, 0, n);
-      n = in.read(buff);
+    
+    InputStream in = null;
+    try{
+      in = new FileInputStream(file);
+      IOUtils.copy(in, out);
     }
-    in.close();
+    finally {
+      IOUtils.closeQuietly(in);
+    }
   }
 
   private boolean isFileWithinPath(File file, String absPathBase)
@@ -628,7 +618,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
             "method", "listDataAccessTypes");
     cda.setCallbacks(output);
     cda.createContent();
-    out.write(outputStream.toString().getBytes("UTF-8"));
+    out.write(outputStream.toString().getBytes(ENCODING));
     JSON json = JSONSerializer.toJSON(outputStream.toString());
 
   }

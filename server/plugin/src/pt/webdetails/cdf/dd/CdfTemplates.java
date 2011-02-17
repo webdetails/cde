@@ -2,6 +2,8 @@ package pt.webdetails.cdf.dd;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.io.IOUtils;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.repository.ISolutionRepository;
@@ -22,9 +24,10 @@ import pt.webdetails.cdf.dd.util.Utils;
 public class CdfTemplates {
 
   private IPentahoSession userSession = null;
+  
   private static String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
   private static String CDF_DD_TEMPLATES = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates";
-  private static String CDF_DD_TEMPLATES_CUSTOM = CDF_DD_TEMPLATES + "/custom";
+  private static String CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
   
   public static String DEFAULT_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES);
   public static String CUSTOM_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES_CUSTOM);
@@ -141,10 +144,16 @@ public class CdfTemplates {
       final String imgResourcePath = image.exists() ? RESOURCE_TEMPLATE_DIR + image.getName() : UNKNOWN_IMAGE;
       template.put("img", imgResourcePath);
       template.put("type", type);
-      final FileInputStream cdfdeFile = new FileInputStream(jsonFiles[i]);
-      template.put("structure", JsonUtils.readJsonFromInputStream(cdfdeFile));
-      cdfdeFile.close();
-      result.add(template);
+      FileInputStream cdfdeFile = null;
+      try{
+        cdfdeFile = new FileInputStream(jsonFiles[i]);
+        template.put("structure", JsonUtils.readJsonFromInputStream(cdfdeFile));
+        result.add(template);
+      }
+      finally {
+        IOUtils.closeQuietly(cdfdeFile);
+      }
+
     }
   }
 

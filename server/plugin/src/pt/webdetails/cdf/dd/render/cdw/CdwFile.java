@@ -21,6 +21,7 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
+
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 
 /**
@@ -31,6 +32,8 @@ public class CdwFile
 {
 
   private static final Log logger = LogFactory.getLog(CdwFile.class);
+  private static final String ENCODING = "UTF-8";
+  
   Document cdwDocument;
   Element root, charts, metadata;
 
@@ -59,7 +62,12 @@ public class CdwFile
     {
       metadata = (Element) root.appendChild(cdwDocument.createElement("metadata"));
     }
-    // TODO: This needs to be resilient to multiple calls! Empty the metadata somehow
+    else {
+      //empty the metadata
+      while(metadata.hasChildNodes()){
+        metadata.removeChild( metadata.getFirstChild() );
+      }
+    }
     metadata.appendChild(cdwDocument.createElement("title")).setTextContent(descriptor.getTitle());
     metadata.appendChild(cdwDocument.createElement("author")).setTextContent(descriptor.getAuthor());
     metadata.appendChild(cdwDocument.createElement("description")).setTextContent(descriptor.getDescription());
@@ -81,8 +89,6 @@ public class CdwFile
 
   public void writeFile(String path, String name)
   {
-
-
     try
     {
       DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
@@ -91,16 +97,13 @@ public class CdwFile
 
       Writer outputWriter = new StringWriter();
       output.setCharacterStream(outputWriter);
-      output.setEncoding("UTF-8");
+      output.setEncoding(ENCODING);
       LSSerializer writer = impl.createLSSerializer();
       writer.write(root, output);
       outputWriter.flush();
-      outputWriter.toString();
-      //DOMSerializerImpl config = (DOMSerializerImpl) writer.getDomConfig();
-      //config.setParameter("format-pretty-print", "true");
-      // TODO: Set encoding
+
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, name.replaceAll("cdfde$", "cdw"), outputWriter.toString().getBytes("UTF-8"), true);
+      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, name.replaceAll("cdfde$", "cdw"), outputWriter.toString().getBytes(ENCODING), true);
     }
     catch (Exception e)
     {

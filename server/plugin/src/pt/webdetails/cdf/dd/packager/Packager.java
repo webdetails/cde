@@ -4,7 +4,6 @@
  */
 package pt.webdetails.cdf.dd.packager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.File;
@@ -19,9 +18,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -174,11 +174,13 @@ class FileSet
 
   private String minify() throws IOException, NoSuchAlgorithmException
   {
+    InputStream concatenatedStream;
+    FileWriter wout;
+    Reader freader;
+    //FileWriter output;
     try
     {
-      InputStream concatenatedStream;
-      Reader freader;
-      FileWriter output = new FileWriter(location);
+      //output = new FileWriter(location);
       switch (this.filetype)
       {
         case JS:
@@ -192,17 +194,17 @@ class FileSet
           concatenatedStream = Concatenate.concat(this.files.toArray(new File[this.files.size()]), rootdir);
           freader = new InputStreamReader(concatenatedStream, "UTF8");
 
-          int input;
-          FileWriter wout = new FileWriter(location);
-          while ((input = freader.read()) != -1)
-          {
-            wout.write(input);
-          }
+          //FileWriter 
+          wout = new FileWriter(location);
+          
+          IOUtils.copy(freader,wout);
+          
           //CSSMin.formatFile(freader, new FileOutputStream(location));
           wout.close();
           break;
       }
       FileInputStream script = new FileInputStream(location);
+      
       byte[] fileContent = new byte[(int) location.length()];
       script.read(fileContent);
       this.dirty = false;

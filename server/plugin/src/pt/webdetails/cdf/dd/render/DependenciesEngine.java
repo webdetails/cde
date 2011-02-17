@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
@@ -86,13 +88,19 @@ public class DependenciesEngine
     else
     {
       File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
-      FileInputStream fis = new FileInputStream(f);
-      byte[] fileContent = new byte[(int) f.length()];
-      fis.read(fileContent);
-      String hash = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
-      dep = new Dependency(version, path, hash);
-      dependencyPool.put(name, dep);
-      packager.addFileToPackage(this.name, f);
+      FileInputStream fis = null;
+      try {
+        fis = new FileInputStream(f);
+        byte[] fileContent = new byte[(int) f.length()];
+        fis.read(fileContent);
+        String hash = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
+        dep = new Dependency(version, path, hash);
+        dependencyPool.put(name, dep);
+        packager.addFileToPackage(this.name, f);
+      } 
+      finally {
+        IOUtils.closeQuietly(fis);
+      }
     }
 
 

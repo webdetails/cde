@@ -9,6 +9,7 @@ import pt.webdetails.cdf.dd.render.DependenciesEngine;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.properties.GenericProperty;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
+import pt.webdetails.cdf.dd.util.Utils;
 
 public class CustomComponent extends GenericComponent
 {
@@ -47,28 +48,31 @@ public class CustomComponent extends GenericComponent
       String name = XmlDom4JHelper.getNodeText(".", node);
       String depVer = XmlDom4JHelper.getNodeText("@version", node);
       src = XmlDom4JHelper.getNodeText("@src", node);
+      
+      String srcPath = Utils.joinPath(this.path, src);
+      
       String app = XmlDom4JHelper.getNodeText("@app", node);
       // by default, dependencies are for CDF
       if (app == null || app.equals("CDF"))
       {
         try
         {
-          cdfDeps.register(name, depVer, path + src);
+          cdfDeps.register(name, depVer, srcPath);
         }
         catch (Exception e)
         {
-          logger.error("failed to register " + path + src);
+          logger.error("failed to register " + srcPath);
         }
       }
       else if (app.equals("CDFDD"))
       {
         try
         {
-          ddDeps.register(name, depVer, path + src);
+          ddDeps.register(name, depVer, srcPath);
         }
         catch (Exception e)
         {
-          logger.error("failed to register " + path + src);
+          logger.error("failed to register " + srcPath);
         }
       }
     }
@@ -79,13 +83,14 @@ public class CustomComponent extends GenericComponent
       String name = XmlDom4JHelper.getNodeText(".", node);
       String depVer = XmlDom4JHelper.getNodeText("@version", node);
       src = XmlDom4JHelper.getNodeText("@src", node);
+      String srcPath = Utils.joinPath(this.path, src);  
       try
       {
-        styleDeps.register(name, depVer, path + src);
+        styleDeps.register(name, depVer, srcPath);
       }
       catch (Exception e)
       {
-        logger.error("failed to register " + path + src);
+        logger.error("failed to register " + srcPath);
       }
 
     }
@@ -109,15 +114,16 @@ public class CustomComponent extends GenericComponent
     }
 
     src = XmlDom4JHelper.getNodeText("Contents/Implementation/Code/@src", definition);
+    String srcPath = Utils.joinPath(this.path, src);
     if (src != null)
     {
       try
       {
-        cdfDeps.register(this.componentName, ver, path + src);
+        cdfDeps.register(this.componentName, ver, srcPath);
       }
       catch (Exception e)
       {
-        logger.error("failed to register " + path + src);
+        logger.error("failed to register " + srcPath);
       }
     }
     List<Node> props = definition.selectNodes("Contents/Implementation/CustomProperties/*");

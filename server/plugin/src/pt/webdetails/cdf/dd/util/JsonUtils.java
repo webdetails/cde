@@ -10,24 +10,17 @@ import net.sf.json.JSONSerializer;
 
 import java.io.*;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * @author pedro
  */
 public class JsonUtils {
 
   public static JSON readJsonFromInputStream(final InputStream input) throws IOException {
-
-    final InputStreamReader in = new InputStreamReader(input, "UTF-8");
-    final BufferedReader bin = new BufferedReader(in);
-
-    final StringBuffer str = new StringBuffer();
-    String c;
-    while ((c = bin.readLine()) != null) {
-      str.append(c);
-    }
-
-    return (JSON) JSONSerializer.toJSON(str.toString());
-
+    
+    String contents = IOUtils.toString(input, "UTF-8");
+    return (JSON) JSONSerializer.toJSON(contents);
   }
 
   public static void buildJsonResult(final OutputStream out, final Boolean sucess, final Object result) {
@@ -39,9 +32,13 @@ public class JsonUtils {
       jsonResult.put("result", result);
     }
 
-    final PrintWriter pw = new PrintWriter(out);
-    pw.print(jsonResult.toString(2));
-    pw.flush();
-    pw.close();
+    PrintWriter pw = null;
+    try {
+      pw = new PrintWriter(out);
+      pw.print(jsonResult.toString(2));
+      pw.flush();
+    } finally{
+      IOUtils.closeQuietly(pw);
+    }
   }
 }

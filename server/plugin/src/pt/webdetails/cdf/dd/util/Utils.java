@@ -9,6 +9,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
@@ -30,7 +33,7 @@ public class Utils {
         // Note - this method is deprecated and returns different values in 3.6
         // and 3.7. Change this in future versions
 
-        URI uri = new URI(PentahoSystem.getApplicationContext().getBaseUrl());
+        URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
         baseUrl = uri.getPath();
         if(!baseUrl.endsWith("/")){
           baseUrl+="/";
@@ -38,7 +41,7 @@ public class Utils {
       }
       catch (URISyntaxException ex)
       {
-        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(),ex);
+        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getFullyQualifiedServerURL(),ex);
       }
 
     }
@@ -65,5 +68,23 @@ public class Utils {
       Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
+  
+  public static String getSolutionPath(){
+    return StringUtils.replace(PentahoSystem.getApplicationContext().getSolutionPath("") , "\\", "/");
+  }
+  public static String getSolutionPath(String path){
+    return joinPath(getSolutionPath(), path);
+  }
+  
+  public static String joinPath(String...paths){
+    return StringUtils.defaultString(StringUtils.join(paths, "/")).replaceAll("/+", "/");
+  }
 
+  public static boolean pathStartsWith(String fileName, String pathStart){
+    if(pathStart == null) return true;
+    else if(fileName == null) return false; 
+    
+    return FilenameUtils.getPath(fileName).startsWith(pathStart);
+  }
+  
 }

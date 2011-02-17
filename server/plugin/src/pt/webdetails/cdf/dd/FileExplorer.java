@@ -12,7 +12,6 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 public class FileExplorer {
 	
 	private static FileExplorer fileExplorer = null;
-	private static String fileSeparator = System.getProperty("file.separator");
 	
 	static FileExplorer getInstance() {
 		if(fileExplorer == null) {
