@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>isMultiple</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Multiple Selection</Description>
+	<Tooltip>Allow multiple selection</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -62,7 +62,9 @@ public class DependenciesManager
         }
       };
       _engine = new DependenciesManager();
-      String basePath = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME);
+
+      //String basePath = PentahoSystem.getApplicationContext().getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH);
+      String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
       _engine.registerEngine("CDF-CSS", new DependenciesEngine("CDF-CSS", cssFilter, basePath, "CSS"));
       _engine.registerEngine("CDF", new DependenciesEngine("CDF", jsFilter, basePath, "JS"));
       _engine.registerEngine("CDF-RAW", new DependenciesEngine("CDF-RAW", rawFilter, basePath, "JS"));

@@ -9,6 +9,7 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
@@ -31,13 +32,17 @@ public class Messages {
     ResourceBundle bundle = Messages.locales.get(locale);
     if (bundle == null) {
       IPentahoSession session = new StandaloneSession( "dashboards messages" ); //$NON-NLS-1$
+      InputStream in = null;
         try {
           String messagesPath = "system/"+DashboardDesignerContentGenerator.PLUGIN_NAME+"/lang/messages.properties";//$NON-NLS-1$ //$NON-NLS-2$
-          InputStream in = PentahoSystem.get(ISolutionRepository.class, session).getResourceInputStream(messagesPath, true, ISolutionRepository.ACTION_EXECUTE); 
+          in = PentahoSystem.get(ISolutionRepository.class, session).getResourceInputStream(messagesPath, true, ISolutionRepository.ACTION_EXECUTE); 
           bundle = new PropertyResourceBundle( in );
           Messages.locales.put(locale, bundle);
         } catch (Exception e) {
           Logger.error( Messages.class.getName(), "Could not get localization bundle", e ); //$NON-NLS-1$
+        }
+        finally {
+          IOUtils.closeQuietly(in);
         }
     }
     return bundle;

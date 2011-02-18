@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
  *
  * @author pdpi
  */
-public interface Renderer {
+public interface CdaElementRenderer {
 
   public void renderInto(Element dataAccess);
   public void setDefinition(JSONObject definition);

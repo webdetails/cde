@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../pentaho-cdf/js/autobox/jquery.ui.autobox.css" type="text/css" />
     <link rel="stylesheet" href="../pentaho-cdf/js/blueprint/screen.css" type="text/css" />
     <link rel="stylesheet" href="../pentaho-cdf/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" />
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>CDF - DD</title>
 		@HEADER@
@@ -34,7 +33,7 @@
           <!-- Common operations -->
 
           <div class="span-11 prepend-2 cdfdd-main">
-            <a onclick="cdfdd.saveAs(true)" class="tooltip"><img src="images/NAV/Xnew.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
+            <a onclick="cdfdd.newDashboard()" class="tooltip"><img src="images/NAV/Xnew.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
             <a onclick="cdfdd.save()" class="tooltip"><img src="images/NAV/Xsave.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
             <a onclick="cdfdd.saveAs()" class="tooltip"><img src="images/NAV/Xsave_as.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 
@@ -91,6 +90,7 @@
         <p><span>configure CGG</span>&lt;Shift&gt; + g</p>
         <p><span>save</span>&lt;Shift&gt; + s</p>
         <p><span>preview</span>&lt;Shift&gt; + p</p>
+        <p><span>validate components (testing)</span>&lt;Shift&gt; + v</p>
 
         <span><span colspan="2" style="text-align: right;">
             <a href="#" onclick="cdfdd.toggleHelp()" style="color: #0091F6; font-weight: normal;">close</a></span>

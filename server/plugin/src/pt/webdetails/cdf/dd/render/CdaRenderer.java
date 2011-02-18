@@ -19,6 +19,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,6 +36,8 @@ public class CdaRenderer
   private static CdaRenderer _instance;
   private JXPathContext doc;
   private JSON cdaDefinitions;
+  
+  private static String CDA_ELEMENTS_JXPATH = "/datasources/rows[meta='CDA']"; 
 
   private CdaRenderer()
   {
@@ -60,6 +63,12 @@ public class CdaRenderer
     this.setContext(doc);
     return this.render();
   }
+  
+  public boolean isEmpty(){
+    if(doc == null) return true;
+    Pointer pointer = doc.getPointer(CDA_ELEMENTS_JXPATH); 
+    return pointer == null || pointer instanceof NullPointer;
+  }
 
   public String render() throws Exception
   {
@@ -75,7 +84,7 @@ public class CdaRenderer
     cdaFile.appendChild(root);
     Element connections = cdaFile.createElement("DataSources");
     root.appendChild(connections);
-    Iterator<Pointer> pointers = doc.iteratePointers("/datasources/rows[meta='CDA']");
+    Iterator<Pointer> pointers = doc.iteratePointers(CDA_ELEMENTS_JXPATH);
     while (pointers.hasNext())
     {
       Pointer pointer = pointers.next();
@@ -146,20 +155,15 @@ public class CdaRenderer
       {
         Variables vars = new Variables();
         vars.setContext(context);
-        vars.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        vars.renderInto(connection);
+        renderProperty(vars, context, paramName, connection);
       }
       else if (paramName.matches("olap4j.*"))
       {
-        Olap4jProperties properties = new Olap4jProperties(paramName);
-        properties.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        properties.renderInto(connection);
+        renderProperty(new Olap4jProperties(paramName), context, paramName, connection);
       }
       else if (paramName.equals("dataFile"))
       {
-        DataFile dataFile = new DataFile();
-        dataFile.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        dataFile.renderInto(connection);
+        renderProperty(new DataFile(), context, paramName, connection);
       }
       /*else if (paramName.equals("ktrFile"))
       {
@@ -178,18 +182,23 @@ public class CdaRenderer
     }
     return connection;
   }
+  
+  private void renderProperty(CdaElementRenderer renderer, JXPathContext context, String propertyName, Element element){
+    renderer.setDefinition((JSONObject) context.getValue("properties/.[name='" + propertyName + "']"));
+    renderer.renderInto(element);
+  }
 
   private Element exportDataAccess(Document doc, JXPathContext context, String connectionId)
   {
     String tagName = "DataAccess";
-    Boolean compound = false;
+   // Boolean compound = false;
     JXPathContext cda = JXPathContext.newContext(cdaDefinitions);
     String type = ((String) context.getValue("type", String.class)).replaceAll("Components(.*)", "$1");
     String daType = ((String) context.getValue("meta_datype", String.class));
     if (type.equals("join") || type.equals("union"))
     {
       tagName = "CompoundDataAccess";
-      compound = true;
+    //  compound = true;
     }
     String name = (String) context.getValue("properties/.[name='name']/value", String.class);
     JXPathContext conn = JXPathContext.newContext((JSONObject) cda.getValue(type + "/definition/dataaccess", JSONObject.class));
@@ -223,23 +232,19 @@ public class CdaRenderer
       }
       else if (paramName.equals("parameters"))
       {
-        Parameters parameters = new Parameters();
-        parameters.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        parameters.renderInto(dataAccess);
+        renderProperty(new Parameters(), context, paramName, dataAccess);
       }
       else if (paramName.equals("output"))
       {
         Output output = new Output();
         output.setContext(context);
-        output.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        output.renderInto(dataAccess);
+        renderProperty(output, context, paramName, dataAccess);
       }
       else if (paramName.equals("variables"))
-      {
+      {        
         Variables vars = new Variables();
         vars.setContext(context);
-        vars.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        vars.renderInto(dataAccess);
+        renderProperty(vars, context, paramName, dataAccess);
       }
       else if (paramName.equals("outputMode"))
       {
@@ -249,34 +254,25 @@ public class CdaRenderer
       else if (paramName.equals("columns"))
       {
         Element cols = dataAccess.getOwnerDocument().createElement("Columns");
-        Columns columns = new Columns();
-        columns.setDefinition((JSONObject) context.getValue("properties/.[name='cdacolumns']"));
-        columns.renderInto(cols);
-
-        CalculatedColumns calcColumns = new CalculatedColumns();
-        calcColumns.setDefinition((JSONObject) context.getValue("properties/.[name='cdacalculatedcolumns']"));
-        calcColumns.renderInto(cols);
+        renderProperty(new Columns(), context, "cdacolumns", cols);
+        renderProperty(new CalculatedColumns(), context, "cdacalculatedcolumns", cols);
         dataAccess.appendChild(cols);
       }
       else if (paramName.equals("top") || paramName.equals("bottom")
               || paramName.equals("left") || paramName.equals("right"))
       {
         Element compoundElem = dataAccess.getOwnerDocument().createElement(capitalize(paramName));
-        CompoundComponent cmp = new CompoundComponent();
-        cmp.setDefinition((JSONObject) context.getValue("properties/.[name='" + paramName + "']"));
-        cmp.renderInto(compoundElem);
+        
+        renderProperty(new CompoundComponent(), context, paramName, compoundElem);
+        
         dataAccess.appendChild(compoundElem);
         if (paramName.equals("left"))
         {
-          Keys keys = new Keys();
-          keys.setDefinition((JSONObject) context.getValue("properties/.[name='leftkeys']"));
-          keys.renderInto(compoundElem);
+          renderProperty(new Keys(), context, "leftkeys", compoundElem);
         }
         else if (paramName.equals("right"))
         {
-          Keys keys = new Keys();
-          keys.setDefinition((JSONObject) context.getValue("properties/.[name='rightkeys']"));
-          keys.renderInto(compoundElem);
+          renderProperty(new Keys(), context, "rightkeys", compoundElem);
         }
       }
       else

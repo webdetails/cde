@@ -15,7 +15,6 @@ import java.io.SequenceInputStream;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import org.apache.commons.lang.StringUtils;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 /**
  *

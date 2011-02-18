@@ -16,36 +16,40 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PropertyBag {
 
-    private Hashtable properties;
+    private Hashtable<String, Object> properties;
     protected static final Log logger = LogFactory.getLog(PropertyBag.class);
+    
+    private static final String ID_KEY = "id";
+    private static final String CLASSES_KEY = "classes";
+    private static final String STYLES_KEY = "styles";
 
     public PropertyBag() {
 
-        properties = new Hashtable();
+        properties = new Hashtable<String, Object>();
 
     }
 
     public void addId(String id) {
         if (id.length() > 0) {
-            properties.put("id", id.replace(' ', '_'));
+            properties.put(ID_KEY, id.replace(' ', '_'));
         }
     }
 
     public void addClass(String _class) {
         if (_class.length() > 0) {
-            if (!properties.containsKey("classes")) {
-                properties.put("classes", new Vector());
+            if (!properties.containsKey(CLASSES_KEY)) {
+                properties.put(CLASSES_KEY, new Vector<String>());
             }
-            ((Vector) properties.get("classes")).add(_class);
+            ((Vector<String>) properties.get(CLASSES_KEY)).add(_class);
         }
     }
 
     public void addStyle(String style, String value) {
         if (value.length() > 0) {
-            if (!properties.containsKey("styles")) {
-                properties.put("styles", new Vector());
+            if (!properties.containsKey(STYLES_KEY)) {
+                properties.put(STYLES_KEY, new Vector<String>());
             }
-            ((Vector) properties.get("styles")).add(style + ":" + value + ";");
+            ((Vector<String>) properties.get(STYLES_KEY)).add(style + ":" + value + ";");
         }
     }
 
@@ -65,18 +69,18 @@ public class PropertyBag {
     }
 
     public String getPropertiesString() {
-        String str = properties.containsKey("id") ? "id='" + (String) properties.get("id") + "' " : "";
-        if (properties.containsKey("classes")) {
+        String str = properties.containsKey(ID_KEY) ? "id='" + (String) properties.get("id") + "' " : "";
+        if (properties.containsKey(CLASSES_KEY)) {
             str += " class='";
-            Iterator nodeIterator = ((Vector<String>) properties.get("classes")).iterator();
+            Iterator<String> nodeIterator = ((Vector<String>) properties.get(CLASSES_KEY)).iterator();
             while (nodeIterator.hasNext()) {
                 str += nodeIterator.next() + " ";
             }
             str += "' ";
         }
-        if (properties.containsKey("styles")) {
+        if (properties.containsKey(STYLES_KEY)) {
             str += " style='";
-            Iterator nodeIterator = ((Vector<String>) properties.get("styles")).iterator();
+            Iterator<String> nodeIterator = ((Vector<String>) properties.get(STYLES_KEY)).iterator();
             while (nodeIterator.hasNext()) {
                 str += nodeIterator.next();
             }

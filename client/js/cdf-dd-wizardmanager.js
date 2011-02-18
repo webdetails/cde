@@ -654,10 +654,10 @@ var OlapParameterWizard = OlapWizard.extend({
 			var olapMain = $("#cdfdd-component-options");
 			var selector = $("#cdfdd-olap-parameter-type",content);
 			selector.append('<option value="selectComponent">Select</option>');
-			selector.append('<option value="selectMultiComponent">Select Multiple</option>');
-			selector.append('<option value="checkComponent">Check Box</option>');
+			//~ selector.append('<option value="selectMultiComponent">Select Multiple</option>');
+			//~ selector.append('<option value="checkComponent">Check Box</option>');
 			selector.append('<option value="radioComponent">Radio Box</option>');
-			selector.append('<option value="autocompleteBoxComponent">Autocomplete</option>');
+			//~ selector.append('<option value="autocompleteBoxComponent">Autocomplete</option>');
 			selector.append('<option value="multiButtonComponent">Multiple Buttons</option>');
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			var topCounts = ["",5,10,15,20,25,50,100];
@@ -851,8 +851,9 @@ var OlapParameterWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(selectorStub,"parameter").value = this.getSelectedOptions().name+"Parameter";
 			CDFDDUtils.getProperty(selectorStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(selectorStub,"htmlObject").value =  $("#cdfdd-olap-parameter-htmlobject").val();
-			CDFDDUtils.getProperty(selectorStub,"valueAsId").value = false;
-			
+			if(CDFDDUtils.getProperty(selectorStub,"valueAsId")){
+				CDFDDUtils.getProperty(selectorStub,"valueAsId").value = false;
+			}
 			
 			var listenners = this.getListenners();
 			if(listenners.length > 0){

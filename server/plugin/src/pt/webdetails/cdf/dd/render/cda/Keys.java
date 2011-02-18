@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class Keys implements Renderer {
+public class Keys implements CdaElementRenderer {
 
   private JSONObject definition;
 

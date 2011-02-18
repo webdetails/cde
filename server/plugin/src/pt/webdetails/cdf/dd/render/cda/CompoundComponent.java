@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class CompoundComponent implements Renderer {
+public class CompoundComponent implements CdaElementRenderer {
 
   private JSONObject definition;
 

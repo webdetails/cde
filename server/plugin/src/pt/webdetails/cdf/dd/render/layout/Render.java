@@ -6,7 +6,6 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-@SuppressWarnings("unchecked")
 public abstract class Render {
 
     private JXPathContext node;

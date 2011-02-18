@@ -26,7 +26,6 @@ if (!Array.prototype.map)
   };
 }
 
-
 $.editable.addInputType('autocomplete', {
   element : $.editable.types.text.element,
   plugin : function(settings, original) {
@@ -82,6 +81,9 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
+    
+    // Enable alert when leaving page
+    this.setExitNotification(true);
 
     // Keyboard shortcuts
     $(function(){
@@ -134,6 +136,11 @@ var CDFDD = Base.extend({
           case 191:
             if (e.shiftKey){
               cdfdd.toggleHelp();
+            }
+            break;
+          case 86:
+            if (e.shiftKey){ //shift+v
+              ComponentValidations.validateComponents();
             }
             break;
         }
@@ -312,6 +319,19 @@ var CDFDD = Base.extend({
   toggleHelp: function(){
     $("#keyboard_shortcuts_help").toggle();
   },
+  
+  newDashboard: function(){
+    var myself = this;
+    $.prompt('Are you sure you want to start a new dashboard?<br/>Unsaved changes will be lost.',{
+      buttons: {
+        Ok: true,
+        Cancel: false
+      } ,
+      callback: function(v,m,f){
+        if(v) myself.saveAs(true);
+      }
+    });
+  },
 		
   saveAs: function(fromScratch){
 		
@@ -395,6 +415,7 @@ var CDFDD = Base.extend({
                 if(selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1,selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function(){
+                  cdfdd.setExitNotification(false);
                   window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
               }
@@ -567,6 +588,19 @@ var CDFDD = Base.extend({
   },
   getDashboardWcdf: function(){
     return this.dashboardWcdf
+  },
+  
+  setExitNotification: function(enable){
+    if(window.parent && window.parent != window){//only do this outside of puc (puc's close tab won't trigger this, only closing puc)
+      return;
+    }
+    
+    if(enable){
+      window.onbeforeunload = function(e) { return 'Any unsaved changes will be lost.'; }
+    }
+    else {
+      window.onbeforeunload = function() {null};
+    }
   },
 
   cggDialog: function() {

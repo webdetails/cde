@@ -2,6 +2,10 @@ package pt.webdetails.cdf.dd.structure;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -26,6 +30,8 @@ public class XmlStructure implements IStructure
 
   private IPentahoSession userSession = null;
   public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
+  
+  private static final String ENCODING = "UTF-8";
 
   public XmlStructure(IPentahoSession userSession)
   {
@@ -55,11 +61,10 @@ public class XmlStructure implements IStructure
 
     JSONObject result = null;
 
+    InputStream file = null;
+    InputStream wcdfFile = null;
     try
     {
-
-      InputStream file = null;
-      InputStream wcdfFile = null;
       //1. Get file
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
       if (solutionRepository.resourceExists(filePath))
@@ -82,9 +87,6 @@ public class XmlStructure implements IStructure
 
       result.put("data", data);
       result.put("wcdf", wcdf);
-      file.close();
-
-
     }
     catch (FileNotFoundException e)
     {
@@ -93,6 +95,11 @@ public class XmlStructure implements IStructure
     catch (IOException e)
     {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
+    }
+    finally
+    {
+      IOUtils.closeQuietly(file);
+      IOUtils.closeQuietly(wcdfFile);
     }
 
     return result;
@@ -126,18 +133,20 @@ public class XmlStructure implements IStructure
 
       //1. Build file parameters
       String[] file = buildFileParameters(filePath);
+      String path = file[0];
+      String cdeFileName = file[1];
 
       //2. Publish file to pentaho repository
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
-      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(file[0] + file[1].replace(".cdfde", "_tmp.cdfde")))
+      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
       {
-        parameters.put("file", file[0] + file[1].replace(".cdfde", "_tmp.cdfde"));
+        parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
         delete(parameters);
       }
 
       //int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], json.toString(2).getBytes("UTF-8"), true);
-      int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], ((String) parameters.get("cdfstructure")).getBytes("UTF-8"), true);
+      int status = solutionRepository.publish(SOLUTION_PATH, path, cdeFileName, ((String) parameters.get("cdfstructure")).getBytes(ENCODING), true);
 
       //3. Check publish result
       if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
@@ -148,13 +157,26 @@ public class XmlStructure implements IStructure
       //4. Write CDA File
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
-      status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1].replace("cdfde", "cda"), cdaRenderer.render().getBytes("UTF-8"), true);
+      String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
+      if(cdaRenderer.isEmpty()){
+        deleteFileIfExists(solutionRepository, path, cdaFileName);
+      }
+      else {
+        status = solutionRepository.publish(SOLUTION_PATH, path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
+      }
+      
 
       //4. Write CDW File
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
-      cdwRenderer.render(file[0], file[1]);
-
+      
+      String cdwFileName = cdeFileName.replace(".cdfde", ".cdw");
+      if(cdwRenderer.isEmpty()){
+        deleteFileIfExists(solutionRepository, path, cdwFileName);
+      }
+      else {
+        cdwRenderer.render(path, cdeFileName);
+      }
       //5. Check publish result again.
       if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
       {
@@ -168,6 +190,14 @@ public class XmlStructure implements IStructure
 
   }
 
+  private void deleteFileIfExists(ISolutionRepository solutionRepository, String path, String fileName) {
+    String fullName = path + fileName;
+    fullName = fullName.replaceAll("//+", "/");
+    if(solutionRepository.resourceExists(fullName)){
+      solutionRepository.removeSolutionFile(fullName); 
+    }
+  }
+
   public void saveas(HashMap parameters) throws Exception
   {
 
@@ -175,12 +205,9 @@ public class XmlStructure implements IStructure
 
     //1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
-    InputStream wcdfFileStream = new FileInputStream(wcdfFile);
-    byte wcdfContent[] = new byte[(int) wcdfFile.length()];
-    wcdfFileStream.read(wcdfContent);
-
+    String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
+    
     //2. Replace wcdf file title and description
-    String wcdfContentAsString = new String(wcdfContent, "UTF-8");
     String title = (String) parameters.get("title");
     String description = (String) parameters.get("description");
     wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_TITLE@", title.length() > 0 ? title : "Dashboard");
@@ -191,7 +218,7 @@ public class XmlStructure implements IStructure
     final String[] file = buildFileParameters(filePath);
 
     //3. Publish new wcdf file
-    int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfContentAsString.getBytes("UTF-8"), true);
+    int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfContentAsString.getBytes(ENCODING), true);
     if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL)
     {
       //4. Save cdf structure
@@ -208,11 +235,19 @@ public class XmlStructure implements IStructure
   {
 
     //1. Read Empty Structure
-    InputStream cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
+    InputStream cdfstructure = null;
 
-    //2. Save file
-    parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
-    saveas(parameters);
+    try{
+      cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
+      
+      //2. Save file
+      parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
+      saveas(parameters);
+    }
+    finally {
+      IOUtils.closeQuietly(cdfstructure);
+    }
+
   }
 
   public void savesettings(HashMap parameters) throws Exception
@@ -231,6 +266,8 @@ public class XmlStructure implements IStructure
 
       //1. Build file parameters
       String[] file = buildFileParameters(filePath);
+      String path = file[0];
+      String fileName = file[1];
 
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
@@ -246,7 +283,7 @@ public class XmlStructure implements IStructure
         if(parameters.containsKey("description")) setNodeValue(cdfNode, "description", descriptionStr);
         if(parameters.containsKey("style")) setNodeValue(cdfNode, "style", styleStr);
 
-        int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfDoc.asXML().getBytes("UTF-8"), true);
+        int status = solutionRepository.publish(SOLUTION_PATH, path, fileName, wcdfDoc.asXML().getBytes(ENCODING), true);
 
         if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
         {
@@ -283,15 +320,20 @@ public class XmlStructure implements IStructure
 
   private String[] buildFileParameters(String filePath)
   {
-    String[] result =
-    {
-      "", ""
-    };
-    String[] file = filePath.split("/");
-    String fileName = file[file.length - 1];
-    String path = filePath.substring(0, filePath.indexOf(fileName));
-    result[0] = path;
-    result[1] = fileName;
-    return result;
+    String path = FilenameUtils.getFullPath(filePath);
+    String fileName = FilenameUtils.getName(filePath);
+    
+    return new String[] {path, fileName};
+    
+//    String[] result =
+//    {
+//      "", ""
+//    };
+//    String[] file = filePath.split("/");
+//    String fileName = file[file.length - 1];
+//    String path = filePath.substring(0, filePath.indexOf(fileName));
+//    result[0] = path;
+//    result[1] = fileName;
+//    return result;
   }
 }

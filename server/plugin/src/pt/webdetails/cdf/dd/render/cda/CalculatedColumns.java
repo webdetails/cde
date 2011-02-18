@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
  *
  * @author pdpi
  */
-public class CalculatedColumns implements Renderer {
+public class CalculatedColumns implements CdaElementRenderer {
 
   private JSONObject definition;
 
