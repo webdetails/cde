@@ -364,7 +364,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 	
   getAccessCheckbox : function(access, cssClass, id){
     var checked = (access == 'private');
-    return '<div class="' + cssClass + '" <input id="' + id + '" type="checkbox" value="private" ' + (checked ? 'checked="checked"' : '' ) + ' /></div>';
+    return '<div class="' + cssClass + '"> <input id="' + id + '" type="checkbox" value="private" ' + (checked ? 'checked="checked"' : '' ) + ' /></div>';
   },
   //parameters field generation (end)
   
