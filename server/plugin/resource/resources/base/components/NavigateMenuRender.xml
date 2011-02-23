@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Navigation Menu Component</Name>
-		<IName>navigateMenu</IName>
+		<IName>navigator</IName>
 		<Description>Navigation Menu Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Other</CatDescription>
