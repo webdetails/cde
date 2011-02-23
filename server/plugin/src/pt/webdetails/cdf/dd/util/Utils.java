@@ -31,9 +31,10 @@ public class Utils {
       try
       {
         // Note - this method is deprecated and returns different values in 3.6
-        // and 3.7. Change this in future versions
-
-        URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
+        // and 3.7. Change this in future versions -- but not yet
+// getFullyQualifiedServerURL only available from 3.7
+//      URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
+        URI uri = new URI(PentahoSystem.getApplicationContext().getBaseUrl());
         baseUrl = uri.getPath();
         if(!baseUrl.endsWith("/")){
           baseUrl+="/";
@@ -41,7 +42,7 @@ public class Utils {
       }
       catch (URISyntaxException ex)
       {
-        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getFullyQualifiedServerURL(),ex);
+        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(),ex);
       }
 
     }
