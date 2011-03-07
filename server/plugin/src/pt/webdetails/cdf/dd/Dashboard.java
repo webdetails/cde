@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -65,20 +66,22 @@ class Dashboard implements Serializable
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     this.dashboardLocation = generator.getStructureRelativePath(pathParams);
     XmlStructure structure = new XmlStructure(userSession);
-    
-    WcdfDescriptor wcdf=null;
+
+    WcdfDescriptor wcdf = null;
     try
     {
-      
+
       String fileName = pathParams.getStringParameter("file", "");
-      if(fileName != null && fileName.endsWith(".wcdf")){
+      if (fileName != null && fileName.endsWith(".wcdf"))
+      {
         wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
       }
-      else {//we may just be receiving a .cde file (preview)
+      else
+      {//we may just be receiving a .cde file (preview)
         wcdf = new WcdfDescriptor();
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
       }
-     
+
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
       Cache cache = getCache();
@@ -100,18 +103,31 @@ class Dashboard implements Serializable
           ISolutionFile dash = solutionRepository.getSolutionFile(dashboardLocation, 0);
           ISolutionFile templ = solutionRepository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + templateFile, 0);
 
-          if (dash.getLastModified() <= cached.getLoaded().getTime()
-                  && templ.getLastModified() <= cached.getLoaded().getTime())
+          // Cache is invalidated if
+          Calendar cal = Calendar.getInstance();
+          cal.set(cal.HOUR_OF_DAY, 00);
+          cal.set(cal.MINUTE, 00);
+          cal.set(cal.SECOND, 1);
+          boolean cacheInvalid = dash.getLastModified() > cached.getLoaded().getTime()
+                  || templ.getLastModified() > cached.getLoaded().getTime(),
+                  cacheExpired = cal.getTime().after(cached.getLoaded());
+
+
+          if (cacheExpired)
+          {
+            logger.info("Dashboard expired, re-rendering");
+          }
+          else if (cacheInvalid)
+          {
+            logger.info("Dashboard cache invalidated, re-rendering");
+          }
+          else
           {
             this.content = cached.content;
             this.header = cached.header;
             this.template = cached.template;
             this.loaded = cached.loaded;
             return;
-          }
-          else
-          {
-            logger.info("Dashboard expired, re-rendering");
           }
         }
       }
@@ -135,15 +151,18 @@ class Dashboard implements Serializable
       dashboardBody.append(componentsRenderer.render(doc));
 
       // set all dashboard members
-      this.content = replaceTokens(dashboardBody.toString(),absolute,absRoot);
-      
-      try{//attempt to read template file
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile),absolute,absRoot);
-      } catch(IOException e){
+      this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
+
+      try
+      {//attempt to read template file
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
+      }
+      catch (IOException e)
+      {
         //couldn't open template file, attempt to use default
         logger.error(MessageFormat.format("Couldn''t open template file {0}.", this.templateFile), e);
         String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile),absolute,absRoot);
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
       }
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
@@ -173,7 +192,7 @@ class Dashboard implements Serializable
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
-    String root = absolute ? absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE: "";
+    String root = absolute ? absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
