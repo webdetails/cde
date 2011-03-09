@@ -1267,7 +1267,8 @@ var DateRenderer = CellRenderer.extend({
 
     if (selectedValue.match(/\d{4}-\d{2}-\d{2}/)){
       var dateArray = selectedValue.split('-');
-      date = new Date(dateArray[0],dateArray[1],dateArray[2]);
+      // Date(d,m,y) expects month to be 0-11, date picker gives us 1-12
+      date = new Date(dateArray[0],dateArray[1] - 1,dateArray[2]);
       return  this.toDateString(date);
     }
     else{
