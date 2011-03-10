@@ -163,7 +163,8 @@ pvc.Base = Base.extend({
     preRender: function(){
 
         pvc.log("Prerendering in pvc");
-
+        // Now's as good a time as any to completely clear out all tipsy tooltips
+        $('.tipsy').remove();
         // If we don't have data, we just need to set a "no data" message
         // and go on with life.
         if (this.resultset.length === 0) {
@@ -457,7 +458,12 @@ pvc.BasePanel = Base.extend({
         for (p in this.chart.options.extensionPoints){
             if (p.indexOf(prefix) == 0){
                 var m = p.substring(prefix.length);
-                mark[m](this.chart.options.extensionPoints[p]);
+                // Distinguish between mark methods and properties
+                if (typeof mark[m] === "function") {
+                    mark[m](this.chart.options.extensionPoints[p]);
+                } else {
+                    mark[m] = this.chart.options.extensionPoints[p];
+                }
             }
 
         }
@@ -1644,6 +1650,10 @@ pvc.PieChart = pvc.Base.extend({
 
   pieChartPanel : null,
   legendSource: "categories",
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
 
   constructor: function(o){
 
@@ -1779,11 +1789,9 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
     })
 
     if(this.showTooltips){
+      this.extend(this.tipsySettings,"tooltip_");
       this.pvPie
-      .event("mouseover", pv.Behavior.tipsy({
-        gravity: "s",
-        fade: true
-      }));
+      .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
 
     }
 
@@ -1842,7 +1850,8 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
 
   }
 
-});/**
+});
+/**
  * BarChart is the main class for generating... bar charts (another surprise!).
  */
 
@@ -1934,7 +1943,10 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
     maxBarSize: 200,
     showValues: true,
     orientation: "vertical",
-
+    tipsySettings: {
+        gravity: "s",
+        fade: true
+    },
 
     constructor: function(chart, options){
 
@@ -2093,11 +2105,10 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
         })
 
         if(this.showTooltips){
+            // Extend default
+            this.extend(this.tipsySettings,"tooltip_");
             this.pvBar
-            .event("mouseover", pv.Behavior.tipsy({
-                gravity: "s",
-                fade: true
-            }));
+            .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
         }
 
 
@@ -2143,6 +2154,10 @@ pvc.BarChartPanel = pvc.BasePanel.extend({
 pvc.ScatterAbstract = pvc.CategoricalAbstract.extend({
 
   scatterChartPanel : null,
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
 
   constructor: function(o){
 
@@ -2470,11 +2485,9 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
     })
 
     if(this.showTooltips){
+      this.extend(this.tipsySettings,"tooltip_");
       this.pvLine
-      .event("point", pv.Behavior.tipsy({
-        gravity: "s",
-        fade: true
-      }));
+      .event("point", pv.Behavior.tipsy(this.tipsySettings));
     }
 
     this.pvDot = this.pvLine.add(pv.Dot)
@@ -2532,6 +2545,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
   }
 
 });
+
 /**
  *
  * Base panel. A lot of them will exist here, with some common properties.
