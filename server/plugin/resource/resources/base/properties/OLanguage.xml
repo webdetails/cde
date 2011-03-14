@@ -9,5 +9,6 @@
 	<OutputType>String</OutputType>
 	<Order>17</Order>
 	<Version>1.0</Version>
+        <Advanced>true</Advanced>
 </Header>
 </DesignerProperty>
