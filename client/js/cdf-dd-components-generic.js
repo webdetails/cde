@@ -238,9 +238,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
         submit: function(v,m,f){
           var array = [];
           for(var i = 0; i < index; i++){
-            if($("#arg_" + i).length > 0 && $("#arg_" + i).val().length > 0){
-              array.push( myself.getParameterValues(i) );
-            }
+            array.push( myself.getParameterValues(i) );
           }
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
