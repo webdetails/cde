@@ -50,6 +50,9 @@ public class CggChart
     renderDatasource(chartScript);
 
     chartScript.append("renderCccFromComponent(render_" + this.chartName + ", data);\n");
+    chartScript.append(
+            "document.lastChild.setAttribute('width', " + this.chartName + ".chartDefinition.width);\n"+
+            "document.lastChild.setAttribute('height', " + this.chartName + ".chartDefinition.height);");
 
     writeFile(chartScript);
   }
