@@ -238,7 +238,8 @@ var ValuesArrayRenderer = CellRenderer.extend({
         submit: function(v,m,f){
           var array = [];
           for(var i = 0; i < index; i++){
-            array.push( myself.getParameterValues(i) );
+            var paramVal = myself.getParameterValues(i);
+            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push( paramVal ); //don't attempt to add deleted lines
           }
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
