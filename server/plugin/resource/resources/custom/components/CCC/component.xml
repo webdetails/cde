@@ -537,10 +537,12 @@
           <Property name="title">title</Property>
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
+<!--
           <Property name="legend">cccShowLegend</Property>
           <Property name="legendPosition">cccLegendPosition</Property>
           <Property name="legendSize">cccLegendSize</Property>
           <Property name="legendAlign">cccLegendAlign</Property>
+-->
           <Property name="showXScale">cccShowXScale</Property>
           <Property name="xAxisPosition">cccXAxisPosition</Property>
           <Property name="xAxisSize">cccXAxisSize</Property>

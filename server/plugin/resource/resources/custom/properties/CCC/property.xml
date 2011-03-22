@@ -712,7 +712,7 @@
       <Name>cccMaxColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>darkgreen</DefaultValue>
-      <Description>color (min)</Description>
+      <Description>color (max)</Description>
       <Tooltip>Color used for the maximal value of the scale</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>
@@ -726,8 +726,8 @@
       <Name>cccNullColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>#efc5ad</DefaultValue>
-      <Description>color (min)</Description>
-      <Tooltip>Color used for the maximal value of the scale</Tooltip>
+      <Description>color (missing-value)</Description>
+      <Tooltip>Color used for missing values (value = null).</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>
       <Order>92</Order>

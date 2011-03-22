@@ -88,3 +88,9 @@ var CccPieChartComponent = CccComponent.extend({
   cccType: pvc.PieChart
 
 });
+
+var CccHeatGridChartComponent = CccComponent.extend({
+
+  cccType: pvc.HeatGridChart
+
+});

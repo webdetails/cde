@@ -3504,10 +3504,6 @@ pvc.RelationalTranslator = pvc.DataTranslator.extend({
 });
 
 NoDataException = function() {};
-
-
-
-
 /**
  * HeatGridChart is the main class for generating... heatGrid charts.
  *  A heatGrid visualizes a matrix of values by a grid (matrix) of *
@@ -3526,29 +3522,37 @@ pvc.HeatGridChart = pvc.CategoricalAbstract.extend({
 
     constructor: function(o){
 
-
         this.base(o);
+
+	// enforce some defaults for the HeatGridChart
+        this.options.legend = false;
+        this.options.orthoAxisOrdinal = true;
+        this.options.orginIsZero = true;
 
         var _defaults = {
             showValues: true,
-            originIsZero: true,
+            //originIsZero: true,
             axisOffset: 0,
             showTooltips: true,
             orientation: "vertical",
             // use a categorical here based on series labels
-            orthoAxisOrdinal: true,
+            //orthoAxisOrdinal: true,
             scalingType: "linear",    // "normal" (distribution) or "linear"
             normPerBaseCategory: true,
+            orthoAxisOrdinal: true,
             numSD: 2,                 // width (only for normal distribution)
             minColor: "white",
             maxColor: "darkgreen",
             nullColor:  "#efc5ad"  // white with a shade of orange
         };
 
-
         // Apply options
         $.extend(this.options,_defaults, o);
 
+	// enforce some defaults for the HeatGridChart
+        this.options.legend = false;
+        this.options.orthoAxisOrdinal = true;
+        this.options.orginIsZero = true;
 
     },
 
