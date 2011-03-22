@@ -527,6 +527,34 @@
   </DesignerProperty>
   <DesignerProperty>
     <Header>
+      <Name>cccOrthoFixedMin</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>null</DefaultValue>
+      <Description>loBound Ortho</Description>
+      <Tooltip>Lower bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>88</Order>
+      <Advanced>true</Advanced>
+      <Version>1.1</Version>
+    </Header>
+  </DesignerProperty>
+ <DesignerProperty>
+    <Header>
+      <Name>cccOrthoFixedMax</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>null</DefaultValue>
+      <Description>upBound Ortho</Description>
+      <Tooltip>Upper bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>89</Order>
+      <Advanced>true</Advanced>
+      <Version>1.1</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
       <Name>cccBarLine</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"false"</DefaultValue>
@@ -595,42 +623,25 @@
       <Version>1.0</Version>
     </Header>
   </DesignerProperty>
-
   <DesignerProperty>
     <Header>
-      <Name>cccOrthoFixedMin</Name>
+      <Name>cccExtensionPoints</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>null</DefaultValue>
-      <Description>loBound Ortho</Description>
-      <Tooltip>Lower bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>88</Order>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Extension points</Description>
+      <Tooltip>CCC Extension points</Tooltip>
+      <InputType>ValuesArray</InputType>
+      <OutputType>Array</OutputType>
+      <Order>99</Order>
       <Advanced>true</Advanced>
-      <Version>1.3</Version>
+      <Version>1.0</Version>
     </Header>
   </DesignerProperty>
- <DesignerProperty>
-    <Header>
-      <Name>cccOrthoFixedMax</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>null</DefaultValue>
-      <Description>upBound Ortho</Description>
-      <Tooltip>Upper bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>89</Order>
-      <Advanced>true</Advanced>
-      <Version>1.3</Version>
-    </Header>
-  </DesignerProperty>
-
-<!--  some properties for the HeatGrid -->
   <DesignerProperty>
     <Header>
       <Name>cccOrthoAxisOrdinal</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>false</DefaultValue>
+      <DefaultValue>"false"</DefaultValue>
       <Description>ortho axis ordinal</Description>
       <Tooltip>Determines whether the orthogonal axis should be ordinal (y-axis in normal orientation)</Tooltip>
       <InputType>Boolean</InputType>
@@ -644,7 +655,7 @@
     <Header>
       <Name>cccScalingType</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>"linear"</DefaultValue>
+      <DefaultValue>linear</DefaultValue>
       <Description>Scaling-type</Description>
       <Tooltip>The scaling of data is either linear of normal (distribution)</Tooltip>
       <InputType>String</InputType>
@@ -672,7 +683,7 @@
     <Header>
       <Name>cccNormPerBaseCategory</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>true</DefaultValue>
+      <DefaultValue>"true"</DefaultValue>
       <Description>Norm. per BC</Description>
       <Tooltip>Normalize per base-axis category (true/false). If set to false the scaling is based on the full matrix (not per column/category)</Tooltip>
       <InputType>Boolean</InputType>
@@ -726,19 +737,6 @@
   </DesignerProperty>
 
 
-  <DesignerProperty>
-    <Header>
-      <Name>cccExtensionPoints</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>"[]"</DefaultValue>
-      <Description>Extension points</Description>
-      <Tooltip>CCC Extension points</Tooltip>
-      <InputType>ValuesArray</InputType>
-      <OutputType>Array</OutputType>
-      <Order>99</Order>
-      <Advanced>true</Advanced>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+
 
 </DesignerProperties>

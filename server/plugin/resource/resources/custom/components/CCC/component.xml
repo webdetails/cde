@@ -504,7 +504,7 @@
   <DesignerComponent>
     <Header>
       <Name>CCC HeatGrid</Name>
-      <IName>cccHeatGrid</IName>
+      <IName>cccHeatGridChart</IName>
       <Description>CCC Heat Grid</Description>
       <Category>CHARTS</Category>
       <CatDescription>Charts</CatDescription>
