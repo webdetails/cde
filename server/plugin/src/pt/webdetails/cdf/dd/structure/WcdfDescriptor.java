@@ -15,7 +15,8 @@ public class WcdfDescriptor {
   private String author;
   private String description = "";
   private String style;
-  
+  private String rendererType;
+
   public WcdfDescriptor() {
   }
 
@@ -31,6 +32,7 @@ public class WcdfDescriptor {
     json.put("author",getAuthor());
     json.put("description",getDescription());
     json.put("style",getStyle());
+    json.put("rendererType",getRendererType());
 
     return json;
 
@@ -67,6 +69,22 @@ public class WcdfDescriptor {
 
   public void setStyle(String style) {
     this.style = style;
+  }
+
+  /**
+   * @return the rendererType
+   */
+  public String getRendererType()
+  {
+    return rendererType;
+  }
+
+  /**
+   * @param rendererType the rendererType to set
+   */
+  public void setRendererType(String rendererType)
+  {
+    this.rendererType = rendererType;
   }
 
 }

@@ -54,7 +54,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
    */
   public static final String SOLUTION_DIR = "cde";
   public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
-
   private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
@@ -71,13 +70,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DATA_URL_TAG = "cdf-structure.js";
   private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
   private static final String ENCODING = "UTF-8";
-  
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
-  
   private Packager packager;
 
   public enum FileTypes
   {
+
     JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
@@ -313,7 +311,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //    return XmlDom4JHelper.getNodeText(
 //            "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
 //  }
-
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     setResponseHeaders(CSS_TYPE, 3600 * 24 * 8, null); // 1 week cache
@@ -435,12 +432,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       resource = pathParams.getStringParameter("resource", null);
     }
-    
-    if(!Utils.pathStartsWith(resource, SOLUTION_DIR) && 
-       !Utils.pathStartsWith(resource, PLUGIN_PATH)){
+
+    if (!Utils.pathStartsWith(resource, SOLUTION_DIR)
+            && !Utils.pathStartsWith(resource, PLUGIN_PATH))
+    {
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
-    
+
     getSolutionResource(out, resource);
   }
 
@@ -493,6 +491,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final CdfTemplates cdfTemplates = new CdfTemplates(userSession);
 
     cdfTemplates.syncronize(out, pathParams);
+  }
+
+  public void listrenderers(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    out.write("{\"result\": [\"mobile\",\"blueprint\"]}".getBytes("utf-8"));
   }
 
   public void syncstyles(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -565,13 +568,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
     }
-    
+
     InputStream in = null;
-    try{
+    try
+    {
       in = new FileInputStream(file);
       IOUtils.copy(in, out);
     }
-    finally {
+    finally
+    {
       IOUtils.closeQuietly(in);
     }
   }
