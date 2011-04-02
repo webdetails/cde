@@ -1,4 +1,3 @@
-
 <DesignerProperties>
   <DesignerProperty>
     <Header>
@@ -539,7 +538,7 @@
       <Version>1.1</Version>
     </Header>
   </DesignerProperty>
- <DesignerProperty>
+  <DesignerProperty>
     <Header>
       <Name>cccOrthoFixedMax</Name>
       <Parent>BaseProperty</Parent>
@@ -736,7 +735,150 @@
     </Header>
   </DesignerProperty>
 
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletMeasures</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Bullet Measures</Description>
+      <Tooltip>Measures on the bullet chart</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>60</Order>
+      <Version>1.0</Version>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletMarkers</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Bullet Markers</Description>
+      <Tooltip>Markers on the bullet chart</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>61</Order>
+      <Version>1.0</Version>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
 
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletRanges</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[30,60,90]"</DefaultValue>
+      <Description>Bullet Ranges</Description>
+      <Tooltip>Ranges on the bullet chart</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>62</Order>
+      <Version>1.0</Version>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
 
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletRanges</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[30,60,90]"</DefaultValue>
+      <Description>Bullet Ranges</Description>
+      <Tooltip>Ranges on the bullet chart</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>62</Order>
+      <Version>1.0</Version>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
 
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletTitle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>Title</DefaultValue>
+      <Description>Bullet title</Description>
+      <Tooltip>Bullet chart title</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>65</Order>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletSubtitle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>Subtitle</DefaultValue>
+      <Description>Bullet subtitle</Description>
+      <Tooltip>Bullet chart subtitle</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>66</Order>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccOrientationHorizontal</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>horizontal</DefaultValue>
+      <Description>Orientation</Description>
+      <Tooltip>Orientation of the chart, horizontal or vertical</Tooltip>
+      <InputType>MenuMode</InputType>
+      <OutputType>String</OutputType>
+      <Advanced>true</Advanced>
+      <Order>67</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>Bullet size</Description>
+      <Tooltip>Bullet chart size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>70</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletSpacing</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>Bullet spacing</Description>
+      <Tooltip>Space between multiple bullet charts</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>71</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccBulletMargin</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>100</DefaultValue>
+      <Description>Bullet margin</Description>
+      <Tooltip>Bullet chart margin</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>72</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
 </DesignerProperties>

@@ -172,7 +172,7 @@ pvc.Base = Base.extend({
         }
         // If we don't have data, we just need to set a "no data" message
         // and go on with life.
-        if (this.resultset.length === 0) {
+        if (!this.allowNoData && this.resultset.length === 0) {
             throw new NoDataException();
         }
 
@@ -516,6 +516,13 @@ pvc.BasePanel = Base.extend({
         bottom: "left",
         left: "bottom",
         right: "bottom"
+    },
+
+    relativeAnchorMirror: {
+        top: "right",
+        bottom: "right",
+        left: "top",
+        right: "top"
     },
 
     oppositeAnchor:{
@@ -1121,6 +1128,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
                 elements: this.getAxisOrdinalElements("x")
             });
 
+//            this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.appendTo(this.basePanel); // Add it
 
@@ -1283,7 +1291,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         if (this.options.orientation == "vertical") {
             scale =  (this.options.orthoAxisOrdinal) ?
             this.getPerpOrdinalScale("y")    :
-            scale = this.getLinearScale();
+            this.getLinearScale();
         } else { 
             scale = this.options.timeSeries  ?
             this.getTimeseriesScale()     :
@@ -1598,20 +1606,27 @@ pvc.AxisPanel = pvc.BasePanel.extend({
 
     renderAxis: function(){
 
-        var scaleRange = this.scale.range();
+        var min, max;
+        if (this.ordinal) {
+          min = this.scale.min;
+          max = this.scale.max;
+        } else {
+          var scaleRange = this.scale.range();
+          min = scaleRange[0];
+          max = scaleRange[1];
+        }
         this.pvRule = this.pvPanel
         .add(pv.Rule)
         .strokeStyle(this.tickColor)
         [pvc.BasePanel.oppositeAnchor[this.anchor]](0)
-        [pvc.BasePanel.relativeAnchor[this.anchor]](this.scale.min)
-        [pvc.BasePanel.paralelLength[this.anchor]](this.scale.max - this.scale.min)
+        [pvc.BasePanel.relativeAnchor[this.anchor]](min)
+        [pvc.BasePanel.paralelLength[this.anchor]](max - min)
 
         if (this.ordinal == true){
             this.renderOrdinalAxis();
         }
         else{
             this.renderLinearAxis();
-      
         }
     
     },
@@ -2915,6 +2930,24 @@ pvc.DataEngine = Base.extend({
         return this.categories;
     },
 
+  getCategoryMin: function() {
+    var cat = this.getCategories();
+    var min = cat[0];
+    for(var i in cat)
+      if (cat[i] < min)
+        min = cat[i];
+    return min;
+  },
+
+  getCategoryMax: function() {
+    var cat = this.getCategories();
+    var max = cat[0];
+    for(var i in cat)
+      if (cat[i] > max)
+        max = cat[i];
+    return max;
+  },
+
     /*
    * Returns the categories on the underlying data
    *
@@ -3536,7 +3569,6 @@ pvc.HeatGridChart = pvc.CategoricalAbstract.extend({
             showTooltips: true,
             orientation: "vertical",
             // use a categorical here based on series labels
-            //orthoAxisOrdinal: true,
             scalingType: "linear",    // "normal" (distribution) or "linear"
             normPerBaseCategory: true,
             orthoAxisOrdinal: true,
@@ -3550,8 +3582,8 @@ pvc.HeatGridChart = pvc.CategoricalAbstract.extend({
         $.extend(this.options,_defaults, o);
 
 	// enforce some defaults for the HeatGridChart
-        this.options.legend = false;
         this.options.orthoAxisOrdinal = true;
+        this.options.legend = false;
         this.options.orginIsZero = true;
 
     },
@@ -3702,19 +3734,25 @@ pvc.HeatGridChartPanel = pvc.BasePanel.extend({
         if (opts.clickable){
             this.pvHeatGrid
             .cursor("pointer")
-            .event("click",function(d){
+            .event("click",function(row, rowCol){
                 var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
                 var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
-                return myself.chart.options.clickAction(s,c, d);
+                var d = row[rowCol];
+                return myself.chart.options.clickAction(s,c,d);
             });
         }
 
         if(this.showValues){
+            
+            var getValue = function(row, rowAgain, rowCol){
+                return row[rowCol];
+            };
+            
             this.pvHeatGridLabel = this.pvHeatGrid
             .anchor("center")
             .add(pv.Label)
             .bottom(0)
-            .text(pv.identity)
+            .text(getValue);
 
             // Extend heatGridLabel
             this.extend(this.pvHeatGridLabel,"heatGridLabel_");
@@ -3840,5 +3878,900 @@ pvc.HeatGridChartPanel = pvc.BasePanel.extend({
     return fill;  // run an array of values to compute the colors per column
 }
 
+
+});
+/**
+ * MetricAbstract is the base class for all chart types that have
+ * a two linear axis.
+ * If the base-axis is a categorical axis you should use categoricalAbstract.
+ * 
+ * If you have issues with this class please contact CvK at cde@vinzi.nl 
+ */
+
+pvc.MetricAbstract = pvc.CategoricalAbstract.extend({
+
+  constructor: function(o){
+    
+    this.base(o);
+    var _defaults = {
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+    return;
+  },
+
+  preRender: function(){
+    this.base();
+    pvc.log("Prerendering in MetricAbstract");
+    return;
+  },
+
+
+  /*
+   * Indicates if x-axis (horizontal axis) is an ordinal scale
+   */
+     // CvK: if we move ordinal-ordinal to a separate class this functions
+  // can be probably be thrown out as it becomes identical to the
+  // parent fucntion.
+  isXAxisOrdinal: function(){
+    var isOrdinal = false;
+    if (this.options.orientation == "vertical") 
+      isOrdinal = false;
+    else 
+      isOrdinal =  this.options.orthoAxisOrdinal;
+    return isOrdinal;
+  },
+
+
+  /*
+   * Indicates if y-axis (vertical axis) is an ordinal scale
+   */
+     // CvK: if we move ordinal-ordinal to a separate class this functions
+  // can be probably be thrown out as it becomes identical to the
+  // parent fucntion.
+  
+  isYAxisOrdinal: function(){
+    var isOrdinal = false;
+    if (this.options.orientation == "vertical")
+      isOrdinal =  this.options.orthoAxisOrdinal;
+    else
+      isOrdinal = false;
+    return isOrdinal;
+  },
+
+
+  getLinearBaseScale: function(bypassAxis){
+    
+    var yAxisSize = bypassAxis?0:this.options.yAxisSize;
+    var xAxisSize = bypassAxis?0:this.options.xAxisSize;
+    
+    var isVertical = this.options.orientation=="vertical"
+    
+    // compute the input-domain of the scale
+    var domainMin = this.dataEngine.getCategoryMin();
+    var domainMax = this.dataEngine.getCategoryMax();
+    // Adding a small relative offset to the scale to prevent that
+    // points are located on top of the axis:
+    var offset = (domainMax - domainMin) * this.options.axisOffset;
+    domainMin -= offset;
+    domainMax += offset;
+    
+    // compute the output-range
+    var rangeMin, rangeMax;
+    if (isVertical) {
+      rangeMin = yAxisSize;
+      rangeMax = this.basePanel.width;
+    } else {
+      rangeMin = 0;
+      rangeMax = this.basePanel.height - xAxisSize;
+    }
+    
+    // create the (linear) Scale
+    var scale = new pv.Scale.linear()
+      .domain(domainMin, domainMax)
+      .range(rangeMin, rangeMax);
+    
+    return scale;
+  },
+
+  /*
+   * get the scale for the axis with horizontal orientation
+   */
+  
+  getXScale: function(){
+    var scale = null;
+    
+    if (this.options.orientation == "vertical") {
+      scale = this.options.timeSeries  ?
+        this.getTimeseriesScale()     :
+        this.getLinearBaseScale();   // linear is the default
+    } else {
+      scale = this.getLinearScale();
+    } 
+    
+    return scale;
+  },
+
+  /*
+   * get the scale for the axis with the vertical orientation.
+   */
+  
+  getYScale: function(){
+    var scale = null;
+    if (this.options.orientation == "vertical") {
+      scale = this.getLinearScale();
+    } else { 
+      scale = this.options.timeSeries  ?
+        this.getTimeseriesScale()     :
+        this.getLinearBaseScale();
+    }
+    return scale;
+  }
+
+}  )
+
+
+/*********
+ *  Panel use to draw line and dotCharts
+ *     LScatter is for graphs with a linear base-axis
+ *
+ *  The original ScatterChartPanel was difficult to generalize as
+ *  many (scattered) changes were needed in the long create function.
+ *     OScatter could be develofor graphs with a ordinal base-axis
+ *
+ *  Later we might consider to merge LScatter and OScatter again, and 
+ *  refactor the general stuff to an abstract base class.
+ *********/
+
+
+/*
+ * Scatter chart panel. Base class for generating the other xy charts. Specific options are:
+ * <i>orientation</i> - horizontal or vertical. Default: vertical
+ * <i>showDots</i> - Show or hide dots. Default: true
+ * <i>showValues</i> - Show or hide line value. Default: false
+ * <i>stacked</i> -  Stacked? Default: false
+ * <i>panelSizeRatio</i> - Ratio of the band occupied by the pane;. Default: 0.5 (50%)
+ * <i>lineSizeRatio</i> - In multiple series, percentage of inner
+ * band occupied by lines. Default: 0.5 (50%)
+ * <i>maxLineSize</i> - Maximum size of a line in pixels. Default: 2000
+ *
+ * Has the following protovis extension points:
+ *
+ * <i>chart_</i> - for the main chart Panel
+ * <i>line_</i> - for the actual line
+ * <i>linePanel_</i> - for the panel where the lines sit
+ * <i>lineDot_</i> - the dots on the line
+ * <i>lineLabel_</i> - for the main line label
+ */
+
+
+pvc.MetricScatterChartPanel = pvc.BasePanel.extend({
+
+  _parent: null,
+  pvLine: null,
+  pvArea: null,
+  pvDot: null,
+  pvLabel: null,
+  pvCategoryPanel: null,
+  data: null,
+
+  timeSeries: false,
+  timeSeriesFormat: "%Y-%m-%d",
+
+  stacked: false,
+  showAreas: false,
+  showLines: true,
+  showDots: true,
+  showValues: true,
+  showTooltips: true,
+  valuesAnchor: "right",
+  orientation: "vertical",
+
+
+  constructor: function(chart, options){
+
+    this.base(chart,options);
+
+  },
+
+
+  prepareDataFunctions:  function() {
+    /*
+        This function implements a number of helper functions via
+        closures. The helper functions are all stored in this.DF
+        Overriding this function allows you to implement
+        a different ScatterScart.
+     */
+    var myself = this;
+
+    var baseScale = this.chart.getLinearBaseScale(true);
+    var orthoScale = this.chart.getLinearScale(true); 
+
+    if(this.timeSeries){
+      tScale = this.chart.getTimeseriesScale(true);
+    }
+    
+    // create empty container for the functions and data
+    myself.DF = {}
+
+    myself.DF.baseValues = this.chart.dataEngine.getVisibleCategories();
+    myself.DF.visibleSerieIds = this.chart.dataEngine.getVisibleSeriesIndexes()
+//    myself.DF.data = this.chart.dataEngine.getVisibleTransposedValues();
+
+    // calculate a position along the base-axis
+    myself.DF.baseCalculation = (myself.timeSeries) ?
+      function(d){ return tScale(parser.parse(d.category)); }   :
+      function(d) { return baseScale(d.category);  };
+      
+
+    // calculate a position along the orthogonal axis
+    myself.DF.orthoCalculation = function(d){
+      return myself.chart.animate(0, orthoScale(d.value));
+    };
+
+    // get a data-series for the ID
+    var pFunc = null;
+    if (this.timeSeries) {
+      var parser = pv.Format.date(this.timeSeriesFormat);
+      pFunc = function(a,b){ 
+        return parser.parse(a.category)-parser.parse(b.category);};
+    }  
+    myself.DF.getDataForSerieId = 
+      function(d){ var res = myself.chart.dataEngine
+            .getObjectsForSeriesIndex(d, pFunc);
+            res.sort(function(a, b) {return a.category - b.category; })
+            return res;
+          };
+
+
+    var colors = this.chart.colors(
+         pv.range(this.chart.dataEngine.getSeriesSize()));
+    myself.DF.colorFunc = function(d){
+      // return colors(d.serieIndex)
+      return colors(myself.chart.dataEngine.getVisibleSeriesIndexes()
+              [this.parent.index])
+    };
+
+  },
+
+  create: function(){
+
+    var myself = this;
+    this.width = this._parent.width;
+    this.height = this._parent.height;
+
+    this.pvPanel = this._parent.getPvPanel().add(this.type)
+    .width(this.width)
+    .height(this.height);
+
+    // add clipping for bounds
+    if  (   (myself.chart.options.orthoFixedMin != null)
+         || (myself.chart.options.orthoFixedMax != null) )
+      this.pvPanel["overflow"]("hidden");
+
+    if(this.showTooltips || this.chart.options.clickable ){
+      this.pvPanel
+      .events("all")
+      .event("mousemove", pv.Behavior.point(Infinity));
+    }
+
+    var anchor = this.orientation == "vertical"?"bottom":"left";
+
+    // prepare data and functions when creating (rendering) the chart.
+    this.prepareDataFunctions();
+
+    var maxLineSize;
+
+    // Stacked?
+    if (this.stacked){
+
+      pvc.log("WARNING: the stacked option of metric charts still needs to be implemented.");
+
+/*    CvK:  have to rewrite this code  
+      this.pvScatterPanel = this.pvPanel.add(pv.Layout.Stack)
+      .layers(pvc.padMatrixWithZeros(this.chart.dataEngine.getVisibleTransposedValues()))
+      [this.orientation == "vertical"?"x":"y"](function(){
+        if(myself.timeSeries){
+          return tScale(parser.parse(myself.chart.dataEngine.getCategoryByIndex(this.index)));
+        }
+        else{
+          return oScale(myself.chart.dataEngine.getCategoryByIndex(this.index)) + oScale.range().band/2;
+        }
+      })
+      [anchor](lScale(0))
+      [this.orientation == "vertical"?"y":"x"](function(d){
+        return myself.chart.animate(0,lScale(d)-lScale(0));
+      })
+
+      this.pvArea = this.pvScatterPanel.layer.add(pv.Area)
+      .fillStyle(this.showAreas?colorFunc:null);
+
+      this.pvLine = this.pvArea.anchor(pvc.BasePanel.oppositeAnchor[anchor]).add(pv.Line)
+      .lineWidth(this.showLines?1.5:0.001);
+    //[pvc.BasePanel.paralelLength[anchor]](maxLineSize)
+    */    
+    }
+    else {
+
+      // Add the serie identifiers to the scatterPanel
+      // CvK: Why do we need a new pvPanel and can't we use existing pvPanel?
+      this.pvScatterPanel = this.pvPanel.add(pv.Panel)
+           .data(myself.DF.visibleSerieIds);
+
+      // add the area's
+      // CvK: why adding area's if showArea
+      this.pvArea = this.pvScatterPanel.add(pv.Area)
+        .fillStyle(this.showAreas?myself.DF.colorFunc:null);
+
+      var lineWidth = this.showLines ? 1.5 : 0.001;
+      // add line and make lines invisible if not needed.
+      this.pvLine = this.pvArea.add(pv.Line)
+      .data(myself.DF.getDataForSerieId)
+      .lineWidth(lineWidth)
+      [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.baseCalculation)
+      [anchor](myself.DF.orthoCalculation)
+    }
+
+    
+    this.pvLine
+      .strokeStyle(myself.DF.colorFunc)
+      .text(function(d){
+        var v, c;
+        var s = myself.chart.dataEngine.getVisibleSeries()[this.parent.index]
+        if( typeof d == "object"){
+          v = d.value;
+          c = d.category
+        }
+        else{
+          v = d
+          c = myself.chart.dataEngine.getVisibleCategories()[this.index]
+        };
+        return myself.chart.options.tooltipFormat.call(myself,s,c,v);
+      })
+
+    if(this.showTooltips){
+      this.extend(this.tipsySettings,"tooltip_");
+      this.pvLine
+        .event("point", pv.Behavior.tipsy(this.tipsySettings));
+    }
+
+    this.pvDot = this.pvLine.add(pv.Dot)
+    .shapeSize(12)
+    .lineWidth(1.5)
+    .strokeStyle(this.showDots?myself.DF.colorFunc:null)
+    .fillStyle(this.showDots?myself.DF.colorFunc:null)
+    
+
+    if (this.chart.options.clickable){
+      this.pvDot
+      .cursor("pointer")
+      .event("click",function(d){
+        var v, c;
+        var s = myself.chart.dataEngine.getSeries()[this.parent.index]
+        if( typeof d == "object"){
+          v = d.value;
+          c = d.category
+        }
+        else{
+          v = d
+          c = myself.chart.dataEngine.getCategories()[this.index]
+        }
+        return myself.chart.options.clickAction(s,c, v);
+      });
+    }
+
+
+
+    if(this.showValues){
+      this.pvLabel = this.pvDot
+      .anchor(this.valuesAnchor)
+      .add(pv.Label)
+      .bottom(0)
+      .text(function(d){
+        return myself.chart.options.valueFormat(typeof d == "object"?d.value:d)
+      })
+
+      // Extend lineLabel
+      this.extend(this.pvLabel,"lineLabel_");
+    }
+
+
+    // Extend line and linePanel
+    this.extend(this.pvScatterPanel,"scatterPanel_");
+    this.extend(this.pvArea,"area_");
+    this.extend(this.pvLine,"line_");
+    this.extend(this.pvDot,"dot_");
+    this.extend(this.pvLabel,"label_");
+
+
+    // Extend body
+    this.extend(this.pvPanel,"chart_");
+
+  }
+
+});
+
+
+
+
+
+
+/**
+ * ScatterAbstract is the class that will be extended by dot, line, stackedline and area charts.
+ */
+
+pvc.MetricScatterAbstract = pvc.MetricAbstract.extend({
+
+  scatterChartPanel : null,
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
+
+  constructor: function(o){
+
+    this.base(o);
+
+    var _defaults = {
+      showDots: false,
+      showLines: false,
+      showAreas: false,
+      showValues: false,
+      showTooltips: true,
+      axisOffset: 0.05,
+      valuesAnchor: "right",
+      stacked: false,
+      originIsZero: true,
+      orientation: "vertical",
+      timeSeries: false,
+      timeSeriesFormat: "%Y-%m-%d",
+      panelSizeRatio: 1,
+      orthoFixedMin: null,
+      orthoFixedMax: null
+    };
+
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  },
+
+  preRender: function(){
+
+    this.base();
+
+    pvc.log("Prerendering in MetricScatterAbstract");
+
+
+    this.scatterChartPanel = new pvc.MetricScatterChartPanel(this, {
+      stacked: this.options.stacked,
+      showValues: this.options.showValues,
+      valuesAnchor: this.options.valuesAnchor,
+      showLines: this.options.showLines,
+      showDots: this.options.showDots,
+      showAreas: this.options.showAreas,
+      showTooltips: this.options.showTooltips,
+      orientation: this.options.orientation,
+      timeSeries: this.options.timeSeries,
+      timeSeriesFormat: this.options.timeSeriesFormat
+    });
+
+    this.scatterChartPanel.appendTo(this.basePanel); // Add it
+
+  }
+
+}
+);
+
+/**
+ * Metric Dot Chart
+ *
+ */
+
+pvc.mDotChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: true,
+      showLines: false,
+      showAreas: false,
+      showValues: false,
+      stacked: false
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+  }
+});
+
+
+/**
+ * Metric Line Chart
+ *
+ */
+
+pvc.mLineChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: true,
+      showAreas: false,
+      showValues: false,
+      stacked: false
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+
+
+/**
+ * Metric Stacked Line Chart
+ *
+ */
+
+pvc.mStackedLineChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: true,
+      showAreas: false,
+      showValues: false,
+      stacked: true
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+
+/**
+ * Metric Stacked Area Chart
+ *
+ */
+
+pvc.mStackedAreaChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: false,
+      showAreas: true,
+      showValues: false,
+      stacked: true
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+/**
+ * Bullet chart generation
+ */
+
+pvc.BulletChart = pvc.Base.extend({
+
+  bulletChartPanel : null,
+  allowNoData: true,
+
+  constructor: function(o){
+
+    this.base(o);
+
+    var _defaults = {
+      showValues: true,
+      orientation: "horizontal",
+      showTooltips: true,
+      legend: false,
+
+      bulletSize: 30,        // Bullet size
+      bulletSpacing: 50,     // Spacing between bullets
+      bulletMargin: 100,     // Left margin
+
+      // Defaults
+      bulletMarkers: [],     // Array of markers to appear
+      bulletMeasures: [],    // Array of measures
+      bulletRanges: [],      // Ranges
+      bulletTitle: "Bullet", // Title
+      bulletSubtitle: "",    // Subtitle
+
+      crosstabMode: true,
+      seriesInRows: true,
+
+      tipsySettings: {
+        gravity: "s",
+        fade: true
+      }
+
+    };
+
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  },
+
+  preRender: function(){
+
+    this.base();
+
+    pvc.log("Prerendering in bulletChart");
+
+
+    this.bulletChartPanel = new pvc.BulletChartPanel(this, {
+      showValues: this.options.showValues,
+      showTooltips: this.options.showTooltips,
+      orientation: this.options.orientation
+    });
+
+    this.bulletChartPanel.appendTo(this.basePanel); // Add it
+
+  }
+
+}
+);
+
+
+
+/*
+ * Bullet chart panel. Generates a bar chart. Specific options are:
+ * <i>orientation</i> - horizontal or vertical. Default: vertical
+ * <i>showValues</i> - Show or hide bar value. Default: false
+ *
+ * Has the following protovis extension points:
+ *
+ * <i>chart_</i> - for the main chart Panel
+ * <i>bulletsPanel_</i> - for the bullets panel
+ * <i>bulletPanel_</i> - for the bullets pv.Layout.Bullet
+ * <i>bulletRange_</i> - for the bullet range
+ * <i>bulletMeasure_</i> - for the bullet measure
+ * <i>bulletMarker_</i> - for the marker
+ * <i>bulletRule_</i> - for the axis rule
+ * <i>bulletRuleLabel_</i> - for the axis rule label
+ * <i>bulletTitle_</i> - for the bullet title
+ * <i>bulletSubtitle_</i> - for the main bar label
+ */
+
+
+pvc.BulletChartPanel = pvc.BasePanel.extend({
+
+  _parent: null,
+  pvBullets: null,
+  pvBullet: null,
+  data: null,
+
+  showTooltips: true,
+  showValues: true,
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
+
+  constructor: function(chart, options){
+
+    this.base(chart,options);
+
+  },
+
+  create: function(){
+
+    var myself = this;
+    this.width = this._parent.width;
+    this.height = this._parent.height;
+
+    var data = this.buildData();
+
+    this.pvPanel = this._parent.getPvPanel().add(pv.Panel)
+    .width(this.width)
+    .height(this.height);
+
+    var anchor = myself.chart.options.orientation=="horizontal"?"left":"bottom";
+    var size, angle, align, titleOffset, ruleAnchor, leftPos, topPos;
+    
+    if(myself.chart.options.orientation=="horizontal"){
+      size = this.width - this.chart.options.bulletMargin - 20;
+      angle=0;
+      align = "right";
+      titleOffset = 0;
+      ruleAnchor = "bottom";
+      leftPos = this.chart.options.bulletMargin;
+      topPos = function(){
+        return this.index * (myself.chart.options.bulletSize + myself.chart.options.bulletSpacing);
+      }
+    }
+    else
+    {
+      size = this.height - this.chart.options.bulletMargin - 20;
+      angle = -Math.PI/2;
+      align = "left";
+      titleOffset = -12;
+      ruleAnchor = "right";
+      leftPos = function(){
+        return myself.chart.options.bulletMargin + this.index * (myself.chart.options.bulletSize + myself.chart.options.bulletSpacing);
+      }
+      topPos = undefined;
+
+    }
+
+    this.pvBullets = this.pvPanel.add(pv.Panel)
+    .data(data)
+    [pvc.BasePanel.orthogonalLength[anchor]](size)
+    [pvc.BasePanel.paralelLength[anchor]](this.chart.options.bulletSize)
+    .margin(20)
+    .left(leftPos) // titles will be on left always
+    .top(topPos);
+    
+
+    this.pvBullet = this.pvBullets.add(pv.Layout.Bullet)
+    .orient(anchor)
+    .ranges(function(d){
+      return d.ranges
+    })
+    .measures(function(d){
+      return d.measures
+    })
+    .markers(function(d){
+      return d.markers
+    });
+
+    this.pvBulletRange = this.pvBullet.range.add(pv.Bar);
+    this.pvBulletMeasure = this.pvBullet.measure.add(pv.Bar)
+    .text(function(d){
+      return myself.chart.options.valueFormat(d);
+    });
+
+
+    this.pvBulletMarker = this.pvBullet.marker.add(pv.Dot)
+    .shape("square")
+    .fillStyle("white")
+    .text(function(d){
+      return myself.chart.options.valueFormat(d);
+    });
+
+
+    if(this.showTooltips){
+      // Extend default
+      this.extend(this.tipsySettings,"tooltip_");
+      this.pvBulletMeasure.event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+      this.pvBulletMarker.event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+    }
+
+    this.pvBulletRule = this.pvBullet.tick.add(pv.Rule)
+
+    this.pvBulletRuleLabel = this.pvBulletRule.anchor(ruleAnchor).add(pv.Label)
+    .text(this.pvBullet.x.tickFormat);
+
+    this.pvBulletTitle = this.pvBullet.anchor(anchor).add(pv.Label)
+    .font("bold 12px sans-serif")
+    .textAngle(angle)
+    .left(-10)
+    .textAlign(align)
+    .textBaseline("bottom")
+    .left(titleOffset)
+    .text(function(d){
+      return d.title
+    });
+
+    this.pvBulletSubtitle = this.pvBullet.anchor(anchor).add(pv.Label)
+    .textStyle("#666")
+    .textAngle(angle)
+    .textAlign(align)
+    .textBaseline("top")
+    .left(titleOffset)
+    .text(function(d){
+      return d.subtitle
+    });
+
+    // Extension points
+    this.extend(this.pvBullets,"bulletsPanel_");
+    this.extend(this.pvBullet,"bulletPanel_");
+    this.extend(this.pvBulletRange,"bulletRange_");
+    this.extend(this.pvBulletMeasure,"bulletMeasure_");
+    this.extend(this.pvBulletMarker,"bulletMarker_");
+    this.extend(this.pvBulletRule,"bulletRule_");
+    this.extend(this.pvBulletRuleLabel,"bulletRuleLabel_");
+    this.extend(this.pvBulletTitle,"bulletTitle_");
+    this.extend(this.pvBulletSubtitle,"bulletSubtitle_");
+
+    // Extend body
+    this.extend(this.pvPanel,"chart_");
+
+  },
+
+  /*
+   * Data array to back up bullet charts; Case 1:
+   *
+   * <i>1) No data is passed</i> - In this case, we'll grab all the value from the options
+   * and generate only one bullet
+   *
+   */
+
+  buildData: function(){
+
+    pvc.log("In buildData: " + this.chart.dataEngine.getInfo() );
+
+
+    var defaultData = {
+      title: this.chart.options.bulletTitle,
+      subtitle: this.chart.options.bulletSubtitle,
+      ranges:this.chart.options.bulletRanges,
+      measures: this.chart.options.bulletMeasures,
+      markers: this.chart.options.bulletMarkers
+    };
+    
+    var data = [];
+
+    if(this.chart.dataEngine.getSeriesSize() == 0 ){
+      // No data
+      data.push($.extend({},defaultData));
+
+    }
+    else{
+
+      // We have data. Iterate through the series.
+      for(var i in this.chart.dataEngine.getVisibleSeriesIndexes()){
+        var s = this.chart.dataEngine.getSerieByIndex(i);
+        var v = this.chart.dataEngine.getVisibleValuesForSeriesIndex(i);
+        var d = $.extend({},defaultData);
+
+        switch(v.length){
+          case 0:
+            // Value only
+            d.measures = [s];
+            break;
+          case 2:
+            // Name, value and markers
+            d.markers = [v[1]]
+          case 1:
+            // name and value
+            d.title = s;
+            d.measures = [v[0]];
+            break;
+          default:
+            // greater or equal 4
+            d.title = s;
+            d.subtitle = v[0];
+            d.measures = [v[1]];
+            d.markers = [v[2]]
+            d.ranges = v.slice(3);
+        }
+
+
+        data.push(d);
+      }
+
+    }
+   
+    return data;
+  }
 
 });

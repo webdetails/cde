@@ -6,26 +6,37 @@ var CccComponent = BaseComponent.extend({
   update : function() {
     if (this.parameters == undefined) {
       this.parameters = [];
-    };
+    }
 
     // clear previous table
     $("#"+this.htmlObject).empty();
     var myself = this;
 
 
-    this.query = new Query(this.chartDefinition);
     pv.listenForPageLoad(function() {
-      myself.query.fetchData(myself.parameters, function(values) {
-        changedValues = undefined;
-        if((typeof(myself.postFetch)=='function')){
-          changedValues = myself.postFetch(values);
-          $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
-        }
-        if (changedValues != undefined) {
-          values = changedValues;
-        }
-        myself.render(values);
-      });
+
+      if(myself.chartDefinition.dataAccessId){
+      
+        myself.query = new Query(myself.chartDefinition);
+
+        myself.query.fetchData(myself.parameters, function(values) {
+          changedValues = undefined;
+          if((typeof(myself.postFetch)=='function')){
+            changedValues = myself.postFetch(values);
+            $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
+          }
+          if (changedValues != undefined) {
+            values = changedValues;
+          }
+          myself.render(values);
+        });
+
+      }
+      else{
+        // initialize the component only
+        myself.render()
+      }
+
     });
   },
 
@@ -36,18 +47,20 @@ var CccComponent = BaseComponent.extend({
     var o = $.extend({},this.chartDefinition);
     o.canvas = this.htmlObject+'protovis';
     // Extension points
-	if(typeof o.extensionPoints != "undefined"){
-		var ep = {};
-		o.extensionPoints.forEach(function(a){
-			ep[a[0]]=a[1];
-		});
-		o.extensionPoints=ep;
+    if(typeof o.extensionPoints != "undefined"){
+      var ep = {};
+      o.extensionPoints.forEach(function(a){
+        ep[a[0]]=a[1];
+      });
+      o.extensionPoints=ep;
     }
     this.chart =  new this.cccType(o);
-    this.chart.setData(values,{
-      crosstabMode: this.crosstabMode,
-      seriesInRows: this.seriesInRows
-    });
+    if(arguments.length > 0){
+      this.chart.setData(values,{
+        crosstabMode: this.crosstabMode,
+        seriesInRows: this.seriesInRows
+      });
+    }
     this.chart.render();
   }
 
@@ -92,5 +105,11 @@ var CccPieChartComponent = CccComponent.extend({
 var CccHeatGridChartComponent = CccComponent.extend({
 
   cccType: pvc.HeatGridChart
+
+});
+
+var CccBulletChartComponent = CccComponent.extend({
+
+  cccType: pvc.BulletChart
 
 });

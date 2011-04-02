@@ -578,6 +578,66 @@
     </Contents>
   </DesignerComponent>
 
+  <DesignerComponent>
+    <Header>
+      <Name>CCC Bullet Chart</Name>
+      <IName>cccBulletChart</IName>
+      <Description>CCC Bullet Chart</Description>
+      <Category>CHARTS</Category>
+      <CatDescription>Charts</CatDescription>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Metadata>
+      <meta name='cdwSupport'>true</meta>
+    </Metadata>
+    <Contents>
+      <Model>
+        <Definition name="chartDefinition">
+          <Property name="width">width</Property>
+          <Property name="height" >height</Property>
+          <Property>dataSource</Property>
+
+          <Property name="bulletTitle">cccBulletTitle</Property>
+          <Property name="bulletSubtitle">cccBulletSubtitle</Property>
+
+          <Property name="bulletMeasures">cccBulletMeasures</Property>
+          <Property name="bulletMarkers">cccBulletMarkers</Property>
+          <Property name="bulletRanges">cccBulletRanges</Property>
+
+          <Property name="orientation">cccOrientationHorizontal</Property>
+
+          <Property name="bulletSize">cccBulletSize</Property>
+          <Property name="bulletSpacing">cccBulletSpacing</Property>
+          <Property name="bulletMargin">cccBulletMargin</Property>
+
+
+          <!--Property name="colors">cccColors</Property-->
+
+          <Property name="valueFormat">cccValueFormat</Property>
+
+          <Property name="title">title</Property>
+          <Property name="titlePosition">cccTitlePosition</Property>
+          <Property name="titleSize">cccTitleSize</Property>
+
+
+          <Property name="extensionPoints">cccExtensionPoints</Property>
+        </Definition>
+        <Property name="parameters">xActionArrayParameter</Property>
+        <Property>executeAtStart</Property>
+        <Property>postFetch</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+      </Model>
+      <Implementation/>
+    </Contents>
+  </DesignerComponent>
+
 
 
 </DesignerComponents>
