@@ -100,3 +100,16 @@ var CccWaterfallChartComponent = CccComponent.extend({
   cccType: pvc.WaterfallChart
 
 });
+
+
+var CccMetricDotChartComponent = CccComponent.extend({
+
+  cccType: pvc.MetricDotChart
+
+});
+
+var CccMetricLineChartComponent = CccComponent.extend({
+
+  cccType: pvc.MetricLineChart
+
+});
