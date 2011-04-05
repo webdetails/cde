@@ -94,3 +94,9 @@ var CccHeatGridChartComponent = CccComponent.extend({
   cccType: pvc.HeatGridChart
 
 });
+
+var CccWaterfallChartComponent = CccComponent.extend({
+
+  cccType: pvc.WaterfallChart
+
+});
