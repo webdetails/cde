@@ -1,0 +1,52 @@
+<DesignerComponent>
+	<Header>
+		<Name>Carousel Component</Name>
+		<IName>carousel</IName>
+		<Description>Carousel Component</Description>
+		<Category>LAYOUTCOMPONENTS</Category>
+		<CatDescription>Layout</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Definition name="queryDefinition">
+				<Property type="query">dataSource</Property>
+			</Definition>
+			<Property name="width" type="number">width</Property>
+			<Property name="height" type="number">height</Property>
+			<Property type="boolean">executeAtStart</Property>
+			<Property type="string">htmlObject</Property>
+			<Property type="function">preExecution</Property>
+			<Property type="function">postExecution</Property>
+			<Property type="number">tooltip</Property>
+			<Property type="number">listeners</Property>
+		</Model>
+		<Implementation>
+			<Code src="carousel-implementation.js" />
+                        <Dependencies>
+                            <Dependency src="lib/iscroll.js" version="4.0">iScroll</Dependency>
+                            <Dependency src="lib/event.js" version="1.0">EventDetector</Dependency>
+                        </Dependencies>
+                        <Styles>
+                          <Style src="carousel.css" version="1.0">Carousel</Style>
+                        </Styles>
+<!--			<CustomProperties>
+				<DesignerProperty>
+					<Header>
+						<Name>customfunction</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Custom Script</Description>
+						<Tooltip>Custom component script</Tooltip>
+						<InputType>JavaScript</InputType>
+						<OutputType>Function</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>
+				</DesignerProperty>
+			</CustomProperties>
+-->
+		</Implementation>
+	</Contents>
+</DesignerComponent>
