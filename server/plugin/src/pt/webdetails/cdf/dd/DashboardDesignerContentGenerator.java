@@ -28,6 +28,7 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
+import org.pentaho.platform.api.engine.ObjectFactoryException;
 import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -256,13 +257,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getcontent(IParameterProvider pathParams, OutputStream out) throws Exception
   {
-    Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
     out.write(dashboard.getContent().getBytes());
   }
 
   public void getheaders(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
     out.write(dashboard.getHeader().getBytes());
   }
 
@@ -276,7 +277,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
 
     // Build pieces: render dashboard, footers and headers
-    final Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
 
     // Response
     setResponseHeaders(MIME_TYPE, 0, null);
@@ -286,6 +287,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
           throws IOException
   {
+    IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     if (solutionRepository.getSolutionFile(path, actionUpdate) == null)
     {
@@ -678,10 +680,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
   }
 
-  String getCdfContext() throws Exception
+  String getCdfContext()
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
+    IContentGenerator cdf;
+    try
+    {
+      IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
+      cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
+    }
+    catch (ObjectFactoryException e)
+    {
+      cdf = null;
+    }
     // If CDF is present, we're going to produce components from the output of its discovery service
     if (cdf != null)
     {
@@ -700,8 +710,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       // Call CDF
       output.add(channel);
       cdf.setCallbacks(output);
-      cdf.createContent();
 
+      try
+      {
+        cdf.createContent();
+      }
+      catch (Exception e)
+      {
+        logger.error(e);
+      }
       return outputStream.toString();
     }
     return "";
