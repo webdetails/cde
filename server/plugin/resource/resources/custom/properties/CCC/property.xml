@@ -528,7 +528,7 @@
     <Header>
       <Name>cccOrthoFixedMin</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>null</DefaultValue>
+      <DefaultValue></DefaultValue>
       <Description>loBound Ortho</Description>
       <Tooltip>Lower bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
       <InputType>Float</InputType>
@@ -542,7 +542,7 @@
     <Header>
       <Name>cccOrthoFixedMax</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>null</DefaultValue>
+      <DefaultValue></DefaultValue>
       <Description>upBound Ortho</Description>
       <Tooltip>Upper bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
       <InputType>Float</InputType>
