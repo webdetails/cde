@@ -108,8 +108,27 @@ var CccHeatGridChartComponent = CccComponent.extend({
 
 });
 
+<<<<<<< HEAD
 var CccBulletChartComponent = CccComponent.extend({
 
   cccType: pvc.BulletChart
+=======
+var CccWaterfallChartComponent = CccComponent.extend({
+
+  cccType: pvc.WaterfallChart
+
+});
+
+
+var CccMetricDotChartComponent = CccComponent.extend({
+
+  cccType: pvc.MetricDotChart
+
+});
+
+var CccMetricLineChartComponent = CccComponent.extend({
+
+  cccType: pvc.MetricLineChart
+>>>>>>> a9750cf6898b62ed4c0c6e2048f64b356713f256
 
 });
