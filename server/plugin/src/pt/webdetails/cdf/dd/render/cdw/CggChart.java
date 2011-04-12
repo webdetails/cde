@@ -49,10 +49,16 @@ public class CggChart
     renderChart(chartScript);
     renderDatasource(chartScript);
 
-    chartScript.append("renderCccFromComponent(render_" + this.chartName + ", data);\n");
-    chartScript.append(
-            "document.lastChild.setAttribute('width', render_" + this.chartName + ".chartDefinition.width);\n"+
-            "document.lastChild.setAttribute('height', render_" + this.chartName + ".chartDefinition.height);");
+    // Adding abbility to process external height and width
+    chartScript.append("var w = parseInt(params.get('width')) || render_").append(this.chartName).append(".chartDefinition.width;\n");
+    chartScript.append("var h = parseInt(params.get('height')) || render_").append(this.chartName).append(".chartDefinition.height;\n");
+    chartScript.append("render_").append(this.chartName).append(".chartDefinition.width = w; render_").append(this.chartName).append(".chartDefinition.height = h;\n");
+
+    chartScript.append("print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');\n");
+
+    chartScript.append("renderCccFromComponent(render_").append(this.chartName).append(", data);\n");
+    chartScript.append("document.lastChild.setAttribute('width', render_").append(this.chartName).append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_").append(this.chartName).append(
+            ".chartDefinition.height);");
 
     writeFile(chartScript);
   }
