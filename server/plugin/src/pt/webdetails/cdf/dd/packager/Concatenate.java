@@ -64,6 +64,9 @@ class Concatenate
                   .replaceAll(file.getName(), "") // Remove this file's name
                   .replaceAll(rootpath, "../");
         }
+        else if(filePath.matches(".*cde/components/.*/.*$")){
+          fileLocation = "../../res/" + filePath.substring(filePath.indexOf("cde/components/")).replaceAll(file.getName()+"$", "");
+        }
         buffer.append(tmp.toString() //
                 // We need to replace all the URL formats
                 .replaceAll("(url\\(['\"]?)", "$1" + fileLocation.replaceAll("/+","/"))); // Standard URLs
