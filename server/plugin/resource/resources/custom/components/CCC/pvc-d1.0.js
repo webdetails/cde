@@ -1,5 +1,9 @@
 
-var pvc = {}
+var pvc = {
+
+  debug: false
+
+}
 
 /**
  *
@@ -9,7 +13,7 @@ var pvc = {}
 
 pvc.log = function(m){
 
-    if (typeof console != "undefined"){
+    if (typeof console != "undefined" && pvc.debug){
         console.log("[pvChart]: " + m);
     }
 };
@@ -172,7 +176,7 @@ pvc.Base = Base.extend({
         }
         // If we don't have data, we just need to set a "no data" message
         // and go on with life.
-        if (this.resultset.length === 0) {
+        if (!this.allowNoData && this.resultset.length === 0) {
             throw new NoDataException();
         }
 
@@ -516,6 +520,13 @@ pvc.BasePanel = Base.extend({
         bottom: "left",
         left: "bottom",
         right: "bottom"
+    },
+
+    relativeAnchorMirror: {
+        top: "right",
+        bottom: "right",
+        left: "top",
+        right: "top"
     },
 
     oppositeAnchor:{
@@ -1121,6 +1132,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
                 elements: this.getAxisOrdinalElements("x")
             });
 
+//            this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.appendTo(this.basePanel); // Add it
 
@@ -1283,7 +1295,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         if (this.options.orientation == "vertical") {
             scale =  (this.options.orthoAxisOrdinal) ?
             this.getPerpOrdinalScale("y")    :
-            scale = this.getLinearScale();
+            this.getLinearScale();
         } else { 
             scale = this.options.timeSeries  ?
             this.getTimeseriesScale()     :
@@ -1394,6 +1406,14 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
             max = this.dataEngine.getVisibleSeriesAbsoluteMax();
             min = this.dataEngine.getVisibleSeriesAbsoluteMin();
 
+        }
+        
+        /* If the bounds are the same, things break,
+         * so we add a wee bit of variation.
+         */
+        if (min === max) {
+            min = min !== 0 ? min * 0.99 : this.options.originIsZero ? 0 : -0.1;
+            max = max !== 0 ? max * 1.01 : 0.1;
         }
         if(min > 0 && this.options.originIsZero){
             min = 0
@@ -1541,6 +1561,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
 
     _parent: null,
     pvRule: null,
+    pvTicks: null,
     pvLabel: null,
     pvRuleGrid: null,
 
@@ -1586,6 +1607,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         // Extend panel
         this.extend(this.pvPanel, this.panelName + "_");
         this.extend(this.pvRule, this.panelName + "Rule_");
+        this.extend(this.pvTicks, this.panelName + "Ticks_");
         this.extend(this.pvLabel, this.panelName + "Label_");
         this.extend(this.pvRuleGrid, this.panelName + "Grid_");
 
@@ -1598,20 +1620,27 @@ pvc.AxisPanel = pvc.BasePanel.extend({
 
     renderAxis: function(){
 
-        var scaleRange = this.scale.range();
+        var min, max;
+        if (this.ordinal) {
+          min = this.scale.min;
+          max = this.scale.max;
+        } else {
+          var scaleRange = this.scale.range();
+          min = scaleRange[0];
+          max = scaleRange[1];
+        }
         this.pvRule = this.pvPanel
         .add(pv.Rule)
         .strokeStyle(this.tickColor)
         [pvc.BasePanel.oppositeAnchor[this.anchor]](0)
-        [pvc.BasePanel.relativeAnchor[this.anchor]](this.scale.min)
-        [pvc.BasePanel.paralelLength[this.anchor]](this.scale.max - this.scale.min)
+        [pvc.BasePanel.relativeAnchor[this.anchor]](min)
+        [pvc.BasePanel.paralelLength[this.anchor]](max - min)
 
         if (this.ordinal == true){
             this.renderOrdinalAxis();
         }
         else{
             this.renderLinearAxis();
-      
         }
     
     },
@@ -1647,7 +1676,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
     
         var scale = this.scale;
 
-        this.pvLabel = this.pvRule.add(pv.Rule)
+        this.pvTicks = this.pvRule.add(pv.Rule)
         .data(this.scale.ticks())
         [pvc.BasePanel.paralelLength[this.anchor]](null)
         [pvc.BasePanel.oppositeAnchor[this.anchor]](0)
@@ -1655,7 +1684,9 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         [pvc.BasePanel.orthogonalLength[this.anchor]](function(d){
             return myself.tickLength/(this.index%2 + 1)
         })
-        .strokeStyle(this.tickColor)
+        .strokeStyle(this.tickColor);
+
+        this.pvLabel = this.pvTicks
         .anchor(this.anchor)
         .add(pv.Label)
         .text(scale.tickFormat)
@@ -1974,6 +2005,7 @@ pvc.BarChart = pvc.CategoricalAbstract.extend({
             panelSizeRatio: 0.9,
             barSizeRatio: 0.9,
             maxBarSize: 2000,
+            valuesAnchor: "center",
             originIsZero: true,
             axisOffset: 0,
             showTooltips: true,
@@ -1996,12 +2028,14 @@ pvc.BarChart = pvc.CategoricalAbstract.extend({
         pvc.log("Prerendering in barChart");
 
 
-        this.barChartPanel = new pvc.BarChartPanel(this, {
+        this.barChartPanel = new pvc.WaterfallChartPanel(this, {
             stacked: this.options.stacked,
+          waterfal: false,
             panelSizeRatio: this.options.panelSizeRatio,
             barSizeRatio: this.options.barSizeRatio,
             maxBarSize: this.options.maxBarSize,
             showValues: this.options.showValues,
+            valuesAnchor: this.options.valuesAnchor,
             showTooltips: this.options.showTooltips,
             orientation: this.options.orientation
         });
@@ -2014,326 +2048,17 @@ pvc.BarChart = pvc.CategoricalAbstract.extend({
 );
 
 
-/*
- * Bar chart panel. Generates a bar chart. Specific options are:
- * <i>orientation</i> - horizontal or vertical. Default: vertical
- * <i>showValues</i> - Show or hide bar value. Default: false
- * <i>stacked</i> -  Stacked? Default: false
- * <i>panelSizeRatio</i> - Ratio of the band occupied by the pane;. Default: 0.5 (50%)
- * <i>barSizeRatio</i> - In multiple series, percentage of inner
- * band occupied by bars. Default: 0.5 (50%)
- * <i>maxBarSize</i> - Maximum size of a bar in pixels. Default: 2000
+/***************
+ *  removed BarChartPanel  (CvK)
  *
- * Has the following protovis extension points:
+ * Refactored the CODE:  BarChartPanel is now replaced by the
+ *    WaterfallChartPanel as the Waterfallchart code is easier to extend.
+ *    (in a next refactoringstep we could take the waterfall specific
+ *     code out of the Waterfallchart panel out and make 
+ *     restore inherence to waterfall being a special case of barChart.
  *
- * <i>chart_</i> - for the main chart Panel
- * <i>bar_</i> - for the actual bar
- * <i>barPanel_</i> - for the panel where the bars sit
- * <i>barLabel_</i> - for the main bar label
- */
+ ***************/
 
-
-pvc.BarChartPanel = pvc.BasePanel.extend({
-
-    _parent: null,
-    pvBar: null,
-    pvBarLabel: null,
-    pvCategoryPanel: null,
-    pvSecondLie: null,
-    pvSecondDot: null,
-    data: null,
-
-    stacked: false,
-    panelSizeRatio: 1,
-    barSizeRatio: 0.5,
-    showTooltips: true,
-    maxBarSize: 200,
-    showValues: true,
-    orientation: "vertical",
-    tipsySettings: {
-        gravity: "s",
-        fade: true
-    },
-
-    constructor: function(chart, options){
-
-        this.base(chart,options);
-
-    },
-
-
-    create: function(){
-
-        var myself = this;
-        this.width = this._parent.width;
-        this.height = this._parent.height;
-
-        this.pvPanel = this._parent.getPvPanel().add(this.type)
-        .width(this.width)
-        .height(this.height)
-
-        if  (   (myself.chart.options.orthoFixedMin != null)
-             || (myself.chart.options.orthoFixedMax != null) )
-          this.pvPanel["overflow"]("hidden");
-
-        var anchor = this.orientation == "vertical"?"bottom":"left";
-
-        // Extend body, resetting axisSizes
-
-        var lScale = this.chart.getLinearScale(true);
-        var l2Scale = this.chart.getSecondScale(true);
-        var oScale = this.chart.getOrdinalScale(true);
-
-        var colors = this.chart.colors(pv.range(this.chart.dataEngine.getSeriesSize()));
-        var colorFunc = function(d){
-            return colors(myself.chart.dataEngine.getVisibleSeriesIndexes()[this.parent.index])
-        };
-        var colorFunc2 = function(d){
-            return colors(myself.chart.dataEngine.getVisibleSeriesIndexes()[this.index])
-        };
-        var maxBarSize;
-
-
-        // Stacked?
-        if (this.stacked){
-
-
-            maxBarSize = oScale.range().band;
-            var bScale = new pv.Scale.ordinal([0])
-            .splitBanded(0, oScale.range().band, this.barSizeRatio);
-
-
-            var barPositionOffset = 0;
-            if (maxBarSize > this.maxBarSize){
-                barPositionOffset = (maxBarSize - this.maxBarSize)/2 ;
-                maxBarSize = this.maxBarSize;
-            }
-      
-     
-            this.pvBarPanel = this.pvPanel.add(pv.Layout.Stack)
-            /*
-      .orient(anchor)
-      .order("inside-out")
-      .offset("wiggle")*/
-            .layers(pvc.padMatrixWithZeros(this.chart.dataEngine.getVisibleTransposedValues()))
-            [this.orientation == "vertical"?"y":"x"](function(d){
-                return myself.chart.animate(0, lScale(d||0)-lScale(0))
-            })
-            [anchor](lScale(0))
-            [this.orientation == "vertical"?"x":"y"](function(d){
-                return oScale(this.index) + barPositionOffset;
-            });
-            this.pvBar = this.pvBarPanel.layer.add(pv.Bar)
-            .data(function(d){
-                return d
-            })
-            //[anchor](lScale(0))
-            [pvc.BasePanel.paralelLength[anchor]](maxBarSize)
-            .fillStyle(colorFunc)
-
-        /*[pvc.BasePanel.relativeAnchor[anchor]](function(d){
-        return this.parent.left() + barPositionOffset
-      })*/;
-
-        }
-        else{
-
-            var bScale = new pv.Scale.ordinal(this.chart.dataEngine.getVisibleSeriesIndexes())
-            .splitBanded(0, oScale.range().band, this.barSizeRatio);
-
-            // We need to take into account the maxValue if our band is higher than that
-            maxBarSize = bScale.range().band;
-            var barPositionOffset = 0;
-            if (maxBarSize > this.maxBarSize){
-                barPositionOffset = (maxBarSize - this.maxBarSize)/2 ;
-                maxBarSize = this.maxBarSize;
-            }
-
-
-
-            this.pvBarPanel = this.pvPanel.add(pv.Panel)
-            .data(this.chart.dataEngine.getVisibleCategoriesIndexes())
-            [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-                var res = oScale(this.index);
-                return res;
-            })
-            [anchor](0)
-            [pvc.BasePanel.paralelLength[anchor]](oScale.range().band)
-            [pvc.BasePanel.orthogonalLength[anchor]](this[pvc.BasePanel.orthogonalLength[anchor]])
-
-
-            this.pvBar = this.pvBarPanel.add(pv.Bar)
-            .data(function(d){
-                var res = myself.chart.dataEngine
-                     .getVisibleValuesForCategoryIndex(d);
-                return res;
-                })
-            .fillStyle(colorFunc2)
-            [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-                var res = bScale(myself.chart.dataEngine.getVisibleSeriesIndexes()[this.index]) + barPositionOffset;
-                return res;
-            })
-            [anchor](function(d){
-                return lScale(pv.min([0,d]))
-            })
-            [pvc.BasePanel.orthogonalLength[anchor]](function(d){
-                return myself.chart.animate(0, Math.abs(lScale(d||0) - lScale(0)))
-            })
-            [pvc.BasePanel.paralelLength[anchor]](maxBarSize)  ; 
-
-           if      (myself.chart.options.orthoFixedMin != null)
-               // CvK: adding markers for datapoints that are off-axis
-               //  UNDERFLOW  =  datavalues < orthoFixedMin
-              this.generateOverflowMarker(anchor, true, maxBarSize, 
-                   0, bScale,
-                   function(d){
-                     var res = myself.chart.dataEngine
-                       .getVisibleValuesForCategoryIndex(d);
-                     // check for off-grid values (and replace by null)
-                     var fixedMin = myself.chart.options.orthoFixedMin;
-                     for(var i=0; i<res.length; i++)
-                       res[i] = (res[i] < fixedMin) ? fixedMin : null; 
-                     return res;
-                   });
-
-           if (myself.chart.options.orthoFixedMax != null)
-              // CvK: overflow markers: max > orthoFixedMax
-              this.generateOverflowMarker(anchor, false, maxBarSize, 
-                   Math.PI, bScale,
-                   function(d){
-                     var res = myself.chart.dataEngine
-                       .getVisibleValuesForCategoryIndex(d);
-                     // check for off-grid values (and replace by null)
-                     var fixedMax = myself.chart.options.orthoFixedMax;
-                     for(var i=0; i<res.length; i++)
-                       res[i] = (res[i] > fixedMax) ? fixedMax : null; 
-                     return res;
-                   });
-
-        }
-
-        if(this.chart.options.secondAxis){
-            // Second axis - support for lines
-            this.pvSecondLine = this.pvPanel.add(pv.Line)
-            .data(function(d){
-                return myself.chart.dataEngine.getObjectsForSecondAxis(d, this.timeSeries?function(a,b){
-                    return parser.parse(a.category) - parser.parse(b.category);
-                    }: null)
-                })
-            .strokeStyle(this.chart.options.secondAxisColor)
-            [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-                if(myself.timeSeries){
-                    return tScale(parser.parse(d.category));
-                }
-                else{
-                    return oScale(d.category) + oScale.range().band/2;
-                }
-            })
-            [anchor](function(d){
-                return myself.chart.animate(0,l2Scale(d.value));
-            })
-
-            this.pvSecondDot = this.pvSecondLine.add(pv.Dot)
-            .shapeSize(8)
-            .lineWidth(1.5)
-            .fillStyle(this.chart.options.secondAxisColor)
-        }
-
-
-
-        // Labels:
-
-        this.pvBar
-        .text(function(d){
-            var v = myself.chart.options.valueFormat(d);
-            var s = myself.chart.dataEngine.getVisibleSeries()[myself.stacked?this.parent.index:this.index]
-            var c = myself.chart.dataEngine.getVisibleCategories()[myself.stacked?this.index:this.parent.index]
-            return myself.chart.options.tooltipFormat.call(myself,s,c,v);
-    
-        })
-
-        if(this.showTooltips){
-            // Extend default
-            this.extend(this.tipsySettings,"tooltip_");
-            this.pvBar
-            .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
-        }
-
-
-        if (this.chart.options.clickable){
-            this.pvBar
-            .cursor("pointer")
-            .event("click",function(d){
-                var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
-                var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
-                return myself.chart.options.clickAction(s,c, d);
-            });
-        }
-
-        if(this.showValues){
-            this.pvBarLabel = this.pvBar
-            .anchor("center")
-            .add(pv.Label)
-            .bottom(0)
-            .text(pv.identity)
-
-            // Extend barLabel
-            this.extend(this.pvBarLabel,"barLabel_");
-        }
-
-
-        // Extend bar and barPanel
-        this.extend(this.pvBar,"barPanel_");
-        this.extend(this.pvBar,"bar_");
-    
-
-        // Extend body
-        this.extend(this.pvPanel,"chart_");
-
-    },
-
-
-
-      /*******
-       *  Function used to generate overflow and underflowmarkers.
-       *  This function is only used when fixedMinX and orthoFixedMax are set
-       *
-       *******/
-      generateOverflowMarker: function(anchor, underflow, maxBarSize, angle,
-                                     bScale, dataFunction)
-
-      {
-        var myself = this;
-        var offGridBarOffset = maxBarSize/2;
-
-        var offGridBorderOffset = (underflow) ?
-          this.chart.getLinearScale(true).min + 8  :
-          this.chart.getLinearScale(true).max - 8   ;
-
-        if (this.orientation != "vertical")
-          angle += Math.PI/2.0;
-
-	this.overflowMarkers = this.pvBarPanel.add(pv.Dot)
-          .shape("triangle")
-          .shapeSize(10)
-          .shapeAngle(angle)
-          .lineWidth(1.5)
-          .strokeStyle("red")
-          .fillStyle("white")
-          .data(dataFunction)
-        [pvc.BasePanel.relativeAnchor[anchor]](function(d){
-          var res = bScale(myself.chart.dataEngine
-                           .getVisibleSeriesIndexes()[this.index])
-                           + offGridBarOffset;
-          return res;
-        })
-	[anchor](function(d){ 
-          // draw the markers at a fixed position (null values are
-          // shown off-grid (-1000)
-          return (d != null) ? offGridBorderOffset: -10000; }) ;
-     }
-
-});
 
 
 
@@ -2576,7 +2301,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
 
     // add clipping for bounds
     if  (   (myself.chart.options.orthoFixedMin != null)
-         || (myself.chart.options.orthoFixedMax != null) )
+      || (myself.chart.options.orthoFixedMax != null) )
       this.pvPanel["overflow"]("hidden");
 
     if(this.showTooltips || this.chart.options.clickable ){
@@ -2647,6 +2372,10 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
           }: null)
         })
       .lineWidth(this.showLines?1.5:0.001)
+      .segmented(true)
+      .visible(function(d) {
+        return d.value==null?false:true;
+      })
       [pvc.BasePanel.relativeAnchor[anchor]](function(d){
 
         if(myself.timeSeries){
@@ -2670,7 +2399,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
     .text(function(d){
       var v, c;
       var s = myself.chart.dataEngine.getVisibleSeries()[this.parent.index]
-      if( typeof d == "object"){
+      if( d != null && typeof d == "object"){
         v = d.value;
         c = d.category
       }
@@ -2700,7 +2429,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
       .event("click",function(d){
         var v, c;
         var s = myself.chart.dataEngine.getSeries()[this.parent.index]
-        if( typeof d == "object"){
+        if(  d != null && typeof d == "object"){
           v = d.value;
           c = d.category
         }
@@ -2720,7 +2449,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
       .add(pv.Label)
       .bottom(0)
       .text(function(d){
-        return myself.chart.options.valueFormat(typeof d == "object"?d.value:d)
+        return myself.chart.options.valueFormat( (d != null && typeof d == "object")?d.value:d)
       })
 
       // Extend lineLabel
@@ -2915,6 +2644,24 @@ pvc.DataEngine = Base.extend({
         return this.categories;
     },
 
+  getCategoryMin: function() {
+    var cat = this.getCategories();
+    var min = cat[0];
+    for(var i in cat)
+      if (cat[i] < min)
+        min = cat[i];
+    return min;
+  },
+
+  getCategoryMax: function() {
+    var cat = this.getCategories();
+    var max = cat[0];
+    for(var i in cat)
+      if (cat[i] > max)
+        max = cat[i];
+    return max;
+  },
+
     /*
    * Returns the categories on the underlying data
    *
@@ -3049,7 +2796,7 @@ pvc.DataEngine = Base.extend({
         var myself = this;
         var ar = [];
         this.getSecondAxisValues().map(function(v,i){
-            if(typeof v != "undefined" && v != null){
+            if(typeof v != "undefined" /* && v != null */ ){
                 ar.push({
                     category: myself.getCategories()[i],
                     value: v
@@ -3139,7 +2886,7 @@ pvc.DataEngine = Base.extend({
         var myself = this;
         var ar = [];
         this.getValues().map(function(a,i){
-            if(typeof a[idx] != "undefined" && a[idx] != null){
+            if(typeof a[idx] != "undefined" /* && a[idx] != null */){
                 ar.push({
                     serieIndex: idx,
                     category: myself.getCategories()[i],
@@ -3189,7 +2936,7 @@ pvc.DataEngine = Base.extend({
         var myself = this;
         var ar=[];
         this.getValues()[idx].map(function(a,i){
-            if(typeof a != "undefined" && a!= null){
+            if(typeof a != "undefined" /* && a!= null */){
                 ar.push({
                     categoryIndex: idx,
                     serie: myself.getSeries()[i],
@@ -3536,7 +3283,6 @@ pvc.HeatGridChart = pvc.CategoricalAbstract.extend({
             showTooltips: true,
             orientation: "vertical",
             // use a categorical here based on series labels
-            //orthoAxisOrdinal: true,
             scalingType: "linear",    // "normal" (distribution) or "linear"
             normPerBaseCategory: true,
             orthoAxisOrdinal: true,
@@ -3550,8 +3296,8 @@ pvc.HeatGridChart = pvc.CategoricalAbstract.extend({
         $.extend(this.options,_defaults, o);
 
 	// enforce some defaults for the HeatGridChart
-        this.options.legend = false;
         this.options.orthoAxisOrdinal = true;
+        this.options.legend = false;
         this.options.orginIsZero = true;
 
     },
@@ -3702,19 +3448,25 @@ pvc.HeatGridChartPanel = pvc.BasePanel.extend({
         if (opts.clickable){
             this.pvHeatGrid
             .cursor("pointer")
-            .event("click",function(d){
+            .event("click",function(row, rowCol){
                 var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
                 var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
-                return myself.chart.options.clickAction(s,c, d);
+                var d = row[rowCol];
+                return myself.chart.options.clickAction(s,c,d);
             });
         }
 
         if(this.showValues){
+            
+            var getValue = function(row, rowAgain, rowCol){
+                return row[rowCol];
+            };
+            
             this.pvHeatGridLabel = this.pvHeatGrid
             .anchor("center")
             .add(pv.Label)
             .bottom(0)
-            .text(pv.identity)
+            .text(getValue);
 
             // Extend heatGridLabel
             this.extend(this.pvHeatGridLabel,"heatGridLabel_");
@@ -3840,5 +3592,1570 @@ pvc.HeatGridChartPanel = pvc.BasePanel.extend({
     return fill;  // run an array of values to compute the colors per column
 }
 
+
+});
+/**
+ * MetricAbstract is the base class for all chart types that have
+ * a two linear axis.
+ * If the base-axis is a categorical axis you should use categoricalAbstract.
+ * 
+ * If you have issues with this class please contact CvK at cde@vinzi.nl 
+ */
+
+pvc.MetricAbstract = pvc.CategoricalAbstract.extend({
+
+  constructor: function(o){
+    
+    this.base(o);
+    var _defaults = {
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+    return;
+  },
+
+  preRender: function(){
+    this.base();
+    pvc.log("Prerendering in MetricAbstract");
+    return;
+  },
+
+
+  /*
+   * Indicates if x-axis (horizontal axis) is an ordinal scale
+   */
+     // CvK: if we move ordinal-ordinal to a separate class this functions
+  // can be probably be thrown out as it becomes identical to the
+  // parent fucntion.
+  isXAxisOrdinal: function(){
+    var isOrdinal = false;
+    if (this.options.orientation == "vertical") 
+      isOrdinal = false;
+    else 
+      isOrdinal =  this.options.orthoAxisOrdinal;
+    return isOrdinal;
+  },
+
+
+  /*
+   * Indicates if y-axis (vertical axis) is an ordinal scale
+   */
+     // CvK: if we move ordinal-ordinal to a separate class this functions
+  // can be probably be thrown out as it becomes identical to the
+  // parent fucntion.
+  
+  isYAxisOrdinal: function(){
+    var isOrdinal = false;
+    if (this.options.orientation == "vertical")
+      isOrdinal =  this.options.orthoAxisOrdinal;
+    else
+      isOrdinal = false;
+    return isOrdinal;
+  },
+
+
+  getLinearBaseScale: function(bypassAxis){
+    
+    var yAxisSize = bypassAxis?0:this.options.yAxisSize;
+    var xAxisSize = bypassAxis?0:this.options.xAxisSize;
+    
+    var isVertical = this.options.orientation=="vertical"
+    
+    // compute the input-domain of the scale
+    var domainMin = this.dataEngine.getCategoryMin();
+    var domainMax = this.dataEngine.getCategoryMax();
+    // Adding a small relative offset to the scale to prevent that
+    // points are located on top of the axis:
+    var offset = (domainMax - domainMin) * this.options.axisOffset;
+    domainMin -= offset;
+    domainMax += offset;
+    
+    // compute the output-range
+    var rangeMin, rangeMax;
+    if (isVertical) {
+      rangeMin = yAxisSize;
+      rangeMax = this.basePanel.width;
+    } else {
+      rangeMin = 0;
+      rangeMax = this.basePanel.height - xAxisSize;
+    }
+    
+    // create the (linear) Scale
+    var scale = new pv.Scale.linear()
+      .domain(domainMin, domainMax)
+      .range(rangeMin, rangeMax);
+    
+    return scale;
+  },
+
+  /*
+   * get the scale for the axis with horizontal orientation
+   */
+  
+  getXScale: function(){
+    var scale = null;
+    
+    if (this.options.orientation == "vertical") {
+      scale = this.options.timeSeries  ?
+        this.getTimeseriesScale()     :
+        this.getLinearBaseScale();   // linear is the default
+    } else {
+      scale = this.getLinearScale();
+    } 
+    
+    return scale;
+  },
+
+  /*
+   * get the scale for the axis with the vertical orientation.
+   */
+  
+  getYScale: function(){
+    var scale = null;
+    if (this.options.orientation == "vertical") {
+      scale = this.getLinearScale();
+    } else { 
+      scale = this.options.timeSeries  ?
+        this.getTimeseriesScale()     :
+        this.getLinearBaseScale();
+    }
+    return scale;
+  }
+
+}  )
+
+
+/*********
+ *  Panel use to draw line and dotCharts
+ *     LScatter is for graphs with a linear base-axis
+ *
+ *  The original ScatterChartPanel was difficult to generalize as
+ *  many (scattered) changes were needed in the long create function.
+ *     OScatter could be develofor graphs with a ordinal base-axis
+ *
+ *  Later we might consider to merge LScatter and OScatter again, and 
+ *  refactor the general stuff to an abstract base class.
+ *********/
+
+
+/*
+ * Scatter chart panel. Base class for generating the other xy charts. Specific options are:
+ * <i>orientation</i> - horizontal or vertical. Default: vertical
+ * <i>showDots</i> - Show or hide dots. Default: true
+ * <i>showValues</i> - Show or hide line value. Default: false
+ * <i>stacked</i> -  Stacked? Default: false
+ * <i>panelSizeRatio</i> - Ratio of the band occupied by the pane;. Default: 0.5 (50%)
+ * <i>lineSizeRatio</i> - In multiple series, percentage of inner
+ * band occupied by lines. Default: 0.5 (50%)
+ * <i>maxLineSize</i> - Maximum size of a line in pixels. Default: 2000
+ *
+ * Has the following protovis extension points:
+ *
+ * <i>chart_</i> - for the main chart Panel
+ * <i>line_</i> - for the actual line
+ * <i>linePanel_</i> - for the panel where the lines sit
+ * <i>lineDot_</i> - the dots on the line
+ * <i>lineLabel_</i> - for the main line label
+ */
+
+
+pvc.MetricScatterChartPanel = pvc.BasePanel.extend({
+
+  _parent: null,
+  pvLine: null,
+  pvArea: null,
+  pvDot: null,
+  pvLabel: null,
+  pvCategoryPanel: null,
+  data: null,
+
+  timeSeries: false,
+  timeSeriesFormat: "%Y-%m-%d",
+
+  stacked: false,
+  showAreas: false,
+  showLines: true,
+  showDots: true,
+  showValues: true,
+  showTooltips: true,
+  valuesAnchor: "right",
+  orientation: "vertical",
+
+
+  constructor: function(chart, options){
+
+    this.base(chart,options);
+
+  },
+
+
+  prepareDataFunctions:  function() {
+    /*
+        This function implements a number of helper functions via
+        closures. The helper functions are all stored in this.DF
+        Overriding this function allows you to implement
+        a different ScatterScart.
+     */
+    var myself = this;
+
+    var baseScale = this.chart.getLinearBaseScale(true);
+    var orthoScale = this.chart.getLinearScale(true); 
+
+    if(this.timeSeries){
+      tScale = this.chart.getTimeseriesScale(true);
+    }
+    
+    // create empty container for the functions and data
+    myself.DF = {}
+
+    myself.DF.baseValues = this.chart.dataEngine.getVisibleCategories();
+    myself.DF.visibleSerieIds = this.chart.dataEngine.getVisibleSeriesIndexes()
+//    myself.DF.data = this.chart.dataEngine.getVisibleTransposedValues();
+
+    // calculate a position along the base-axis
+    myself.DF.baseCalculation = (myself.timeSeries) ?
+      function(d){ return tScale(parser.parse(d.category)); }   :
+      function(d) { return baseScale(d.category);  };
+      
+
+    // calculate a position along the orthogonal axis
+    myself.DF.orthoCalculation = function(d){
+      return myself.chart.animate(0, orthoScale(d.value));
+    };
+
+    // get a data-series for the ID
+    var pFunc = null;
+    if (this.timeSeries) {
+      var parser = pv.Format.date(this.timeSeriesFormat);
+      pFunc = function(a,b){ 
+        return parser.parse(a.category)-parser.parse(b.category);};
+    }  
+    myself.DF.getDataForSerieId = 
+      function(d){ var res = myself.chart.dataEngine
+            .getObjectsForSeriesIndex(d, pFunc);
+            res.sort(function(a, b) {return a.category - b.category; })
+            return res;
+          };
+
+
+    var colors = this.chart.colors(
+         pv.range(this.chart.dataEngine.getSeriesSize()));
+    myself.DF.colorFunc = function(d){
+      // return colors(d.serieIndex)
+      return colors(myself.chart.dataEngine.getVisibleSeriesIndexes()
+              [this.parent.index])
+    };
+
+  },
+
+  create: function(){
+
+    var myself = this;
+    this.width = this._parent.width;
+    this.height = this._parent.height;
+
+    this.pvPanel = this._parent.getPvPanel().add(this.type)
+    .width(this.width)
+    .height(this.height);
+
+    // add clipping for bounds
+    if  (   (myself.chart.options.orthoFixedMin != null)
+         || (myself.chart.options.orthoFixedMax != null) )
+      this.pvPanel["overflow"]("hidden");
+
+    if(this.showTooltips || this.chart.options.clickable ){
+      this.pvPanel
+      .events("all")
+      .event("mousemove", pv.Behavior.point(Infinity));
+    }
+
+    var anchor = this.orientation == "vertical"?"bottom":"left";
+
+    // prepare data and functions when creating (rendering) the chart.
+    this.prepareDataFunctions();
+
+    var maxLineSize;
+
+    // Stacked?
+    if (this.stacked){
+
+      pvc.log("WARNING: the stacked option of metric charts still needs to be implemented.");
+
+/*    CvK:  have to rewrite this code  
+      this.pvScatterPanel = this.pvPanel.add(pv.Layout.Stack)
+      .layers(pvc.padMatrixWithZeros(this.chart.dataEngine.getVisibleTransposedValues()))
+      [this.orientation == "vertical"?"x":"y"](function(){
+        if(myself.timeSeries){
+          return tScale(parser.parse(myself.chart.dataEngine.getCategoryByIndex(this.index)));
+        }
+        else{
+          return oScale(myself.chart.dataEngine.getCategoryByIndex(this.index)) + oScale.range().band/2;
+        }
+      })
+      [anchor](lScale(0))
+      [this.orientation == "vertical"?"y":"x"](function(d){
+        return myself.chart.animate(0,lScale(d)-lScale(0));
+      })
+
+      this.pvArea = this.pvScatterPanel.layer.add(pv.Area)
+      .fillStyle(this.showAreas?colorFunc:null);
+
+      this.pvLine = this.pvArea.anchor(pvc.BasePanel.oppositeAnchor[anchor]).add(pv.Line)
+      .lineWidth(this.showLines?1.5:0.001);
+    //[pvc.BasePanel.paralelLength[anchor]](maxLineSize)
+    */    
+    }
+    else {
+
+      // Add the serie identifiers to the scatterPanel
+      // CvK: Why do we need a new pvPanel and can't we use existing pvPanel?
+      this.pvScatterPanel = this.pvPanel.add(pv.Panel)
+           .data(myself.DF.visibleSerieIds);
+
+      // add the area's
+      // CvK: why adding area's if showArea
+      this.pvArea = this.pvScatterPanel.add(pv.Area)
+        .fillStyle(this.showAreas?myself.DF.colorFunc:null);
+
+      var lineWidth = this.showLines ? 1.5 : 0.001;
+      // add line and make lines invisible if not needed.
+      this.pvLine = this.pvArea.add(pv.Line)
+      .data(myself.DF.getDataForSerieId)
+      .lineWidth(lineWidth)
+      [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.baseCalculation)
+      [anchor](myself.DF.orthoCalculation)
+    }
+
+    
+    this.pvLine
+      .strokeStyle(myself.DF.colorFunc)
+      .text(function(d){
+        var v, c;
+        var s = myself.chart.dataEngine.getVisibleSeries()[this.parent.index]
+        if( typeof d == "object"){
+          v = d.value;
+          c = d.category
+        }
+        else{
+          v = d
+          c = myself.chart.dataEngine.getVisibleCategories()[this.index]
+        };
+        return myself.chart.options.tooltipFormat.call(myself,s,c,v);
+      })
+
+    if(this.showTooltips){
+      this.extend(this.tipsySettings,"tooltip_");
+      this.pvLine
+        .event("point", pv.Behavior.tipsy(this.tipsySettings));
+    }
+
+    this.pvDot = this.pvLine.add(pv.Dot)
+    .shapeSize(12)
+    .lineWidth(1.5)
+    .strokeStyle(this.showDots?myself.DF.colorFunc:null)
+    .fillStyle(this.showDots?myself.DF.colorFunc:null)
+    
+
+    if (this.chart.options.clickable){
+      this.pvDot
+      .cursor("pointer")
+      .event("click",function(d){
+        var v, c;
+        var s = myself.chart.dataEngine.getSeries()[this.parent.index]
+        if( typeof d == "object"){
+          v = d.value;
+          c = d.category
+        }
+        else{
+          v = d
+          c = myself.chart.dataEngine.getCategories()[this.index]
+        }
+        return myself.chart.options.clickAction(s,c, v);
+      });
+    }
+
+
+
+    if(this.showValues){
+      this.pvLabel = this.pvDot
+      .anchor(this.valuesAnchor)
+      .add(pv.Label)
+      .bottom(0)
+      .text(function(d){
+        return myself.chart.options.valueFormat(typeof d == "object"?d.value:d)
+      })
+
+      // Extend lineLabel
+      this.extend(this.pvLabel,"lineLabel_");
+    }
+
+
+    // Extend line and linePanel
+    this.extend(this.pvScatterPanel,"scatterPanel_");
+    this.extend(this.pvArea,"area_");
+    this.extend(this.pvLine,"line_");
+    this.extend(this.pvDot,"dot_");
+    this.extend(this.pvLabel,"label_");
+
+
+    // Extend body
+    this.extend(this.pvPanel,"chart_");
+
+  }
+
+});
+
+
+
+
+
+
+/**
+ * ScatterAbstract is the class that will be extended by dot, line, stackedline and area charts.
+ */
+
+pvc.MetricScatterAbstract = pvc.MetricAbstract.extend({
+
+  scatterChartPanel : null,
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
+
+  constructor: function(o){
+
+    this.base(o);
+
+    var _defaults = {
+      showDots: false,
+      showLines: false,
+      showAreas: false,
+      showValues: false,
+      showTooltips: true,
+      axisOffset: 0.05,
+      valuesAnchor: "right",
+      stacked: false,
+      originIsZero: true,
+      orientation: "vertical",
+      timeSeries: false,
+      timeSeriesFormat: "%Y-%m-%d",
+      panelSizeRatio: 1,
+      orthoFixedMin: null,
+      orthoFixedMax: null
+    };
+
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  },
+
+  preRender: function(){
+
+    this.base();
+
+    pvc.log("Prerendering in MetricScatterAbstract");
+
+
+    this.scatterChartPanel = new pvc.MetricScatterChartPanel(this, {
+      stacked: this.options.stacked,
+      showValues: this.options.showValues,
+      valuesAnchor: this.options.valuesAnchor,
+      showLines: this.options.showLines,
+      showDots: this.options.showDots,
+      showAreas: this.options.showAreas,
+      showTooltips: this.options.showTooltips,
+      orientation: this.options.orientation,
+      timeSeries: this.options.timeSeries,
+      timeSeriesFormat: this.options.timeSeriesFormat
+    });
+
+    this.scatterChartPanel.appendTo(this.basePanel); // Add it
+
+  }
+
+}
+);
+
+/**
+ * Metric Dot Chart
+ *
+ */
+
+pvc.MetricDotChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: true,
+      showLines: false,
+      showAreas: false,
+      showValues: false,
+      stacked: false
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+  }
+});
+
+
+/**
+ * Metric Line Chart
+ *
+ */
+
+pvc.MetricLineChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: true,
+      showAreas: false,
+      showValues: false,
+      stacked: false
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+
+
+/**
+ * Metric Stacked Line Chart
+ *
+ */
+
+pvc.mStackedLineChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: true,
+      showAreas: false,
+      showValues: false,
+      stacked: true
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+
+/**
+ * Metric Stacked Area Chart
+ *
+ */
+
+pvc.mStackedAreaChart = pvc.MetricScatterAbstract.extend({
+
+  constructor: function(o){
+
+    this.base();
+
+    var _defaults = {
+      showDots: false, // ask
+      showLines: false,
+      showAreas: true,
+      showValues: false,
+      stacked: true
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  }
+});
+
+/**
+ * WaterfallChart is the main class for generating... waterfall charts.
+ * 
+ * The waterfall chart is an alternative to the pie chart for
+ * showing distributions. The advantage of the waterfall chart is that
+ * it possibilities to visualize sub-totals and offers more convenient
+ * possibilities to compare the size of categories (in a pie-chart you
+ * have to compare wedges that are at a different angle, which
+ * requires some additional processing/brainpower of the end-user).
+ *
+ * Waterfall charts are basically Bar-charts with some added
+ * functionality. Given the complexity of the added features this
+ * class has it's own code-base. However, it would be easy to
+ * derive a BarChart class from this class by swithing of a few 
+ * features.
+ * 
+ * If you have an issue or suggestions regarding the Waterfall-charts
+ * please contact CvK at cde@vinzi.nl
+ */
+
+
+
+pvc.WaterfallChart = pvc.CategoricalAbstract.extend({
+
+  wfChartPanel : null,
+
+  constructor: function(o){
+
+    this.base(o);
+
+    var _defaults = {
+      showValues: true,
+      stacked: true,
+      waterfall: true,
+      panelSizeRatio: 0.9,
+      barSizeRatio: 0.9,
+      maxBarSize: 2000,
+      originIsZero: true,
+      axisOffset: 0,
+      showTooltips: true,
+      orientation: "vertical",
+      orthoFixedMin: null,
+      orthoFixedMax: null
+    };
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+    //  force stacked to be true (default of base-class is false)
+    this.options.stacked = true;
+
+    return;
+  },
+
+  callWithHiddenFirstSeries: function(callFunc) {
+    var res;
+    var de = this.dataEngine;
+
+    if (de.isVisible("series", 0)) {
+      de.toggleSerieVisibility(0);
+      res = callFunc.call(this);
+      de.toggleSerieVisibility(0);
+    } else
+      res = callFunc();
+
+    return res;
+  } ,
+
+  preRender: function(){
+
+    // first series are symbolic labels, so hide it such that
+    // the axis-range computation is possible in "AbstractCategoricalAxis.
+    this.callWithHiddenFirstSeries( this.base );
+
+    pvc.log("Prerendering in waterfallChart");
+
+
+    this.wfChartPanel = new pvc.WaterfallChartPanel(this, {
+      stacked: this.options.stacked,
+      waterfall: this.options.waterfall,
+      panelSizeRatio: this.options.panelSizeRatio,
+      barSizeRatio: this.options.barSizeRatio,
+      maxBarSize: this.options.maxBarSize,
+      showValues: this.options.showValues,
+      showTooltips: this.options.showTooltips,
+      orientation: this.options.orientation
+    });
+
+    this.wfChartPanel.appendTo(this.basePanel); // Add it
+
+    return;
+  }
+}
+);
+
+
+/*
+ * Waterfall chart panel (also bar-chart). Generates a bar chart. Specific options are:
+ * <i>orientation</i> - horizontal or vertical. Default: vertical
+ * <i>showValues</i> - Show or hide bar value. Default: false
+ * <i>stacked</i> -  Stacked? Default: false
+ * <i>panelSizeRatio</i> - Ratio of the band occupied by the pane;. Default: 0.5 (50%)
+ * <i>barSizeRatio</i> - In multiple series, percentage of inner
+ * band occupied by bars. Default: 0.5 (50%)
+ * <i>maxBarSize</i> - Maximum size of a bar in pixels. Default: 2000
+ *
+ * Has the following protovis extension points:
+ *
+ * <i>chart_</i> - for the main chart Panel
+ * <i>bar_</i> - for the actual bar
+ * <i>barPanel_</i> - for the panel where the bars sit
+ * <i>barLabel_</i> - for the main bar label
+ */
+
+
+pvc.WaterfallChartPanel = pvc.BasePanel.extend({
+
+  _parent: null,
+  pvBar: null,
+  pvBarLabel: null,
+  pvCategoryPanel: null,
+  pvSecondLie: null,
+  pvSecondDot: null,
+  data: null,
+  
+  stacked: false,
+  panelSizeRatio: 1,
+  barSizeRatio: 0.5,
+  showTooltips: true,
+  maxBarSize: 200,
+  showValues: true,
+  orientation: "vertical",
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
+  ruleData: null,
+
+
+  constructor: function(chart, options){
+
+    this.base(chart,options);
+
+    return;
+  },
+
+
+  callWithHiddenFirstSeries: function(env, callFunc) {
+    var res;
+    var de = this.chart.dataEngine;
+
+    if (de.isVisible("series", 0)) {
+      de.toggleSerieVisibility(0);
+      switch (arguments.length) {
+      case 2:
+        res = callFunc.call(env);
+        break;
+      case 3:
+        res = callFunc.call(env, arguments[2]);
+        break;
+      case 4:
+        res = callFunc.call(env, arguments[2], arguments[3]);
+        break;
+      default: pvc.log("ERROR: wrong number of arguments in callWithHiddenFirstSeries!!")
+
+      }
+      de.toggleSerieVisibility(0);
+    } else
+      res = callFunc();
+
+    return res;
+  } ,
+
+
+  /****
+   *  Functions that transforms a dataset to waterfall-format.
+   *
+   * The assumption made is that the first category is a tekst column
+   * containing one of the following values:
+   *    - "U":  If this category (row) needs go upwards (height
+   *       increases)
+   *    - "D": If the waterfall goes downward.
+   *    - other values: the waterfall resets to zero (used represent
+   *        intermediate subtotal) Currently subtotals need to be
+   *        provided in the dataset.
+   *  This function computes the offsets of each bar and stores the
+   *  offset in the first category (for stacked charts)
+   ****/
+  
+  constructWaterfall: function(dataset) 
+  {
+    var cumulated = 0.0;
+    var ruleData = [[],[]];
+    
+    var cats = this.chart.dataEngine.getVisibleCategoriesIndexes(); 
+    
+    for(var c=0; c<dataset[0].length; c++) {
+      var mult;
+      
+      // store the category
+      ruleData[0].push(cats[c]);
+
+      // determine next action (direction)
+      if (dataset[0][c] == "U")
+        mult = 1.0;
+      else if (dataset[0][c] == "D")
+        mult = -1.0;
+      else {
+        mult = 1.0; cumulated = 0.0;
+      }
+      if (mult > 0.0)
+        dataset[0][c] = cumulated;
+      
+      // update the other series and determine new cumulated
+      for(var ser=1; ser<dataset.length; ser++) {
+        var val = Math.abs(dataset[ser][c]);
+        dataset[ser][c] = val;  // negative values not allowed
+        // only use negative values for internal usage in waterfall
+        cumulated += mult*val;
+      }
+      if (mult < 0.0)
+        dataset[0][c] = cumulated;
+      ruleData[1].push(cumulated);
+    }
+    return ruleData;
+  },
+
+
+  getDataSet:  function() {
+    var dataset = null
+    // check whether it does not kill the source-data    
+    dataset = this.stacked ?  
+      pvc.padMatrixWithZeros(this.chart.dataEngine
+                             .getVisibleTransposedValues()) :
+      this.chart.dataEngine.getVisibleCategoriesIndexes();
+
+    if (this.waterfall)
+      this.ruleData = this.constructWaterfall(dataset)
+
+    return dataset;
+  } ,
+
+
+
+
+    /*
+     *   This function implements a number of helper functions in order
+     *   to increase the readibily and extendibility of the code by:
+     *    1: providing symbolic names to the numerous anonymous
+     *        functions that need to be passed to CC
+     *    2: by moving large parts of the local variabele (parameters
+     *       and scaling functions out of the 'create' function to this
+     *       prepareDataFunctions blok. 
+     *    3: More sharing of code due to introduction of the 'this.DF'
+     *        for storing all helper functions.
+     *    4: increased code-sharing between stacked and non-stacked
+     *       variant of the bar chart.
+     *    The create function is now much cleaner and easier to understand.
+     *
+     *   These helper functions (closures) are all stored in 'this.DF'
+     *
+     *   Overriding this 'prepareDataFunctions' allows you to implement
+     *   a different ScatterScart.
+     *   however, it is also possible to replace specific functions
+     *   from the 'this.DF' object.
+     */
+  prepareDataFunctions:  function(stacked) {
+    var myself = this;
+
+    // create empty container for the functions and data
+    this.DF = {}
+
+    // first series are symbolic labels, so hide it such that
+    // the axis-range computation is possible.
+    var lScale = this.waterfall ?
+      this.callWithHiddenFirstSeries(this.chart,
+           this.chart.getLinearScale, true):
+      this.chart.getLinearScale(true);
+    var l2Scale = this.chart.getSecondScale(true);
+    var oScale = this.chart.getOrdinalScale(true);
+    var bSCale = null;
+
+    // determine barPositionOffset and bScale
+    this.DF.maxBarSize = null;
+    var barPositionOffset = 0;
+    if (stacked) {
+      this.DF.maxBarSize = oScale.range().band;
+
+      //CvK: check whether bScale is ever used for stacked graphs!)
+      bScale = new pv.Scale.ordinal([0])
+        .splitBanded(0, oScale.range().band, this.barSizeRatio);      
+      
+    } else {
+      bScale = new pv.Scale.ordinal(
+        this.chart.dataEngine.getVisibleSeriesIndexes())
+        .splitBanded(0, oScale.range().band, this.barSizeRatio);
+      // We need to take into account the maxValue if our band is higher than that
+      this.DF.maxBarSize = bScale.range().band;
+    }
+    if (this.DF.maxBarSize > this.maxBarSize) {
+      barPositionOffset = (this.DF.maxBarSize - this.maxBarSize)/2 ;
+      this.DF.maxBarSize = this.maxBarSize;
+    }
+    // export needed for generated overflow markers.
+    this.DF.bScale = bScale;
+
+
+    /*
+     * fuctions to determine positions along base axis.
+     */
+    this.DF.basePositionFunc = stacked ?
+      function(d){ var res = oScale(this.index) + barPositionOffset;
+            // This function used this pointer instead of d !!
+            return res } :
+      null;
+
+    this.DF.baseRulePosFunc = stacked ?
+      function(d){ var res = oScale(d) + barPositionOffset;
+            return res } :
+      null;
+
+    this.DF.catContainerBasePosFunc = (stacked) ? null :
+      function(d){  return oScale(this.index); };
+
+    this.DF.catContainerWidth = (stacked) ? null :
+      oScale.range().band;
+
+    this.DF.relBasePosFunc  = (stacked) ? null :
+      function(d){ var res = bScale(myself.chart.dataEngine
+           .getVisibleSeriesIndexes()[this.index]) + barPositionOffset;
+        return res; };
+
+    this.DF.secBasePosFunc = 
+      function(d){
+        if(myself.timeSeries){
+          return tScale(parser.parse(d.category));
+        }
+        else{
+          return oScale(d.category) + oScale.range().band/2;
+        }
+      };
+
+    /*
+     * functions to determine positions along orthogonal axis
+     */
+    this.DF.orthoBotPos = stacked ?
+      lScale(0) :
+      function(d){ return lScale(pv.min([0,d])); };
+
+    this.DF.orthoLengthFunc = stacked ? 
+      function(d){ var res = myself.chart.animate(0, lScale(d||0)-lScale(0));
+            return res; } :
+      function(d){ var res = myself.chart.animate(0, 
+                          Math.abs(lScale(d||0) - lScale(0)));
+            return res;
+          };
+
+    this.DF.secOrthoLengthFunc = 
+      function(d){ return myself.chart.animate(0,l2Scale(d.value));};
+
+
+    /*
+     * fuctions to determine the color palette.
+     */
+    var colors = this.chart.colors(pv.range(this.chart.dataEngine.getSeriesSize()));
+    // colorFunc is used for the base dataseries
+    this.DF.colorFunc = function(d){
+      var ind = this.parent.index;
+      if (myself.waterfall) {
+        if (ind == 0)
+          return pv.Color.names["transparent"];
+//        ind--;   don't do the ind-- otherwise it doesn't match legend
+      }
+      return colors (myself.chart.dataEngine
+       .getVisibleSeriesIndexes()[ind]);
+    };
+    // colorFunc2 is used for ....
+    this.DF.colorFunc2 = function(d){
+      return colors(myself.chart.dataEngine
+                .getVisibleSeriesIndexes()[this.index])
+    };
+
+    return;
+  } ,
+
+
+
+  /****
+   *  Functions used to draw a set of horizontal rules that connect
+   *  the bars that compose the waterfall
+   ****/
+  drawWaterfalls: function(panel) {
+    var ruleData = this.ruleData;
+
+    if (this.stacked)
+      this.drawRules(panel, ruleData[0], ruleData[1], 2);
+    else
+      pvc.log("Waterfall not implemented for none-stacked");
+  } ,
+
+  drawRules: function(panel, cats, vals, offset) {
+    var data = []; 
+
+    var anchor = this.orientation == "vertical"?"bottom":"left";
+
+    // build the dataset as a hashmap
+    var x1 = this.DF.baseRulePosFunc(cats[0]) +offset;
+    for(var i=0; i<cats.length-1; i++) 
+      // this is the function for stacked data
+    {
+      var x2 = this.DF.baseRulePosFunc(cats[i+1]) + offset;
+      data.push({
+        x: x1, 
+        y:  this.DF.orthoLengthFunc(vals[i]), 
+        w: x2 - x1
+      });
+      x1 = x2;  // go to next element
+    }
+
+    panel.add(pv.Rule)
+    .data(data)
+    [pvc.BasePanel.relativeAnchor[anchor]](function(d) { return d.x })
+    [anchor](function(d) { return d.y })
+    [pvc.BasePanel.paralelLength[anchor]](function(d) { return d.w })
+
+    return;
+  },
+
+
+
+  create: function(){
+    var myself = this;
+    this.width = this._parent.width;
+    this.height = this._parent.height;
+
+    this.pvPanel = this._parent.getPvPanel().add(this.type)
+      .width(this.width)
+      .height(this.height)
+
+    if  (   (myself.chart.options.orthoFixedMin != null)
+            || (myself.chart.options.orthoFixedMax != null) )
+      this.pvPanel["overflow"]("hidden");
+
+    var anchor = this.orientation == "vertical"?"bottom":"left";
+
+    // prepare data and functions when creating (rendering) the chart.
+    this.prepareDataFunctions(this.stacked);
+
+
+    var maxBarSize = this.DF.maxBarSize;
+
+    if (this.stacked){
+      var dataset = this.getDataSet();
+
+      if (this.orientation == "vertical")
+        pvc.log("WARNING: currently the 'horizontal' orientation is not possible for stacked barcharts and waterfall charts (will be implemented later)");
+
+      if (this.waterfall)
+        this.drawWaterfalls(this.pvPanel);
+
+      this.pvBarPanel = this.pvPanel.add(pv.Layout.Stack)
+        .layers(dataset)
+      [this.orientation == "vertical"?"y":"x"](myself.DF.orthoLengthFunc)
+      [anchor](myself.DF.orthoBotPos)
+      [this.orientation == "vertical"?"x":"y"](myself.DF.basePositionFunc);
+
+      this.pvBar = this.pvBarPanel.layer.add(pv.Bar)
+        .data(function(d){
+          return d
+        })
+      [pvc.BasePanel.paralelLength[anchor]](maxBarSize)
+        .fillStyle(myself.DF.colorFunc);
+
+    } else {   //  not this.stacked
+
+      // define a panel for each category label.
+      // later the individuals bars of series will be drawn in 
+      // these panels.
+      this.pvBarPanel = this.pvPanel.add(pv.Panel)
+        .data(this.getDataSet() )
+      [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.catContainerBasePosFunc)
+      [anchor](0)
+      [pvc.BasePanel.paralelLength[anchor]](myself.DF.catContainerWidth)
+      // pvBarPanel[X]  = this[X]  (copy the function)
+      [pvc.BasePanel.orthogonalLength[anchor]](
+        this[pvc.BasePanel.orthogonalLength[anchor]])
+
+      // next add the bars to the bar-contains in pvBarPanel
+      this.pvBar = this.pvBarPanel.add(pv.Bar)
+        .data(function(d){
+          var res = myself.chart.dataEngine
+            .getVisibleValuesForCategoryIndex(d);
+          return res;
+        })
+        .fillStyle(myself.DF.colorFunc2)
+      [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.relBasePosFunc)
+      [anchor](myself.DF.orthoBotPos)
+      [pvc.BasePanel.orthogonalLength[anchor]](myself.DF.orthoLengthFunc)
+      [pvc.BasePanel.paralelLength[anchor]](maxBarSize)  ; 
+
+    }  // end of if (stacked)
+
+    // generate red markers if some data falls outside the panel bounds
+    this.generateOverflowMarkers(anchor, this.stacked);
+
+
+    if(this.chart.options.secondAxis){
+      // Second axis - support for lines
+      this.pvSecondLine = this.pvPanel.add(pv.Line)
+        .data(function(d){
+          return myself.chart.dataEngine.getObjectsForSecondAxis(d, 
+             this.timeSeries ? function(a,b){
+               return parser.parse(a.category) - parser.parse(b.category);
+          }: null)
+        })
+        .strokeStyle(this.chart.options.secondAxisColor)
+      [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.secBasePosFunc)
+      [anchor](myself.DF.secOrthoLengthFunc);
+
+      this.pvSecondDot = this.pvSecondLine.add(pv.Dot)
+        .shapeSize(8)
+        .lineWidth(1.5)
+        .fillStyle(this.chart.options.secondAxisColor)
+        }
+
+    // add Labels:
+    this.pvBar
+      .text(function(d){
+        var v = myself.chart.options.valueFormat(d);
+        var s = myself.chart.dataEngine
+          .getVisibleSeries()[myself.stacked?this.parent.index:this.index]
+        var c = myself.chart.dataEngine
+          .getVisibleCategories()[myself.stacked?this.index:this.parent.index]
+        return myself.chart.options.tooltipFormat.call(myself,s,c,v);
+    
+      })
+
+    if(this.showTooltips){
+      // Extend default
+      this.extend(this.tipsySettings,"tooltip_");
+      this.pvBar
+        .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+    }
+
+
+    if (this.chart.options.clickable){
+      this.pvBar
+        .cursor("pointer")
+        .event("click",function(d){
+          var s = myself.chart.dataEngine
+            .getSeries()[myself.stacked?this.parent.index:this.index]
+          var c = myself.chart.dataEngine
+            .getCategories()[myself.stacked?this.index:this.parent.index]
+          return myself.chart.options.clickAction(s,c, d);
+        });
+    }
+
+    if(this.showValues){
+      this.pvBarLabel = this.pvBar
+        .anchor("center")
+        .add(pv.Label)
+        .bottom(0)
+        .text(pv.identity)
+      
+      // Extend barLabel
+      this.extend(this.pvBarLabel,"barLabel_");
+    }
+
+
+    // Extend bar and barPanel
+    // Pedro & Tiago: I'm wondering whether I should stick to the
+    // bar labels here, or not??
+    // currently the first branch is always discarded (&& false)
+    if (this.waterfall && false) {
+      this.extend(this.pvBar,"wfPanel_");
+      this.extend(this.pvBar,"wf_");
+    } else {
+      this.extend(this.pvBar,"barPanel_");
+      this.extend(this.pvBar,"bar_");
+    }
+    
+
+    // Extend body
+    this.extend(this.pvPanel,"chart_");
+
+  },
+
+
+  /*******
+   *  Function used to generate overflow and underflowmarkers.
+   *  This function is only used when fixedMinX and orthoFixedMax are set
+   *
+   *******/
+
+  generateOverflowMarkers: function(anchor, stacked)
+  {
+    var myself = this;
+
+    if (stacked) {
+      if (   (myself.chart.options.orthoFixedMin != null)
+          || (myself.chart.options.orthoFixedMin != null) )  
+        pvc.log("WARNING: overflow markers not implemented for Stacked graph yet");
+    } else {
+      if      (myself.chart.options.orthoFixedMin != null)
+        // CvK: adding markers for datapoints that are off-axis
+        //  UNDERFLOW  =  datavalues < orthoFixedMin
+        this.doGenOverflMarks(anchor, true, this.DF.maxBarSize, 
+           0, this.DF.bScale,
+           function(d){
+             var res = myself.chart.dataEngine
+               .getVisibleValuesForCategoryIndex(d);
+             // check for off-grid values (and replace by null)
+             var fixedMin = myself.chart.options.orthoFixedMin;
+             for(var i=0; i<res.length; i++)
+               res[i] = (res[i] < fixedMin) ? fixedMin : null; 
+             return res;
+           });
+      
+      if (myself.chart.options.orthoFixedMax != null)
+        // CvK: overflow markers: max > orthoFixedMax
+        this.doGenOverflMarks(anchor, false, this.DF.maxBarSize, 
+           Math.PI, this.DF.bScale,
+           function(d){
+             var res = myself.chart.dataEngine
+               .getVisibleValuesForCategoryIndex(d);
+             // check for off-grid values (and replace by null)
+             var fixedMax = myself.chart.options.orthoFixedMax;
+             for(var i=0; i<res.length; i++)
+               res[i] = (res[i] > fixedMax) ? fixedMax : null; 
+             return res;
+           });
+    };
+    return;
+  },
+
+  // helper routine used for both underflow and overflow marks
+  doGenOverflMarks: function(anchor, underflow, maxBarSize, angle,
+                                     bScale, dataFunction)
+  {
+    var myself = this;
+    var offGridBarOffset = maxBarSize/2;
+    
+    var offGridBorderOffset = (underflow) ?
+      this.chart.getLinearScale(true).min + 8  :
+      this.chart.getLinearScale(true).max - 8   ;
+    
+    if (this.orientation != "vertical")
+      angle += Math.PI/2.0;
+    
+    this.overflowMarkers = this.pvBarPanel.add(pv.Dot)
+      .shape("triangle")
+      .shapeSize(10)
+      .shapeAngle(angle)
+      .lineWidth(1.5)
+      .strokeStyle("red")
+      .fillStyle("white")
+      .data(dataFunction)
+    [pvc.BasePanel.relativeAnchor[anchor]](function(d){
+      var res = bScale(myself.chart.dataEngine
+                       .getVisibleSeriesIndexes()[this.index])
+        + offGridBarOffset;
+      return res;
+    })
+    [anchor](function(d){ 
+      // draw the markers at a fixed position (null values are
+      // shown off-grid (-1000)
+      return (d != null) ? offGridBorderOffset: -10000; }) ;
+  }
+
+});
+/**
+ * Bullet chart generation
+ */
+
+pvc.BulletChart = pvc.Base.extend({
+
+  bulletChartPanel : null,
+  allowNoData: true,
+
+  constructor: function(o){
+
+    this.base(o);
+
+    var _defaults = {
+      showValues: true,
+      orientation: "horizontal",
+      showTooltips: true,
+      legend: false,
+
+      bulletSize: 30,        // Bullet size
+      bulletSpacing: 50,     // Spacing between bullets
+      bulletMargin: 100,     // Left margin
+
+      // Defaults
+      bulletMarkers: [],     // Array of markers to appear
+      bulletMeasures: [],    // Array of measures
+      bulletRanges: [],      // Ranges
+      bulletTitle: "Bullet", // Title
+      bulletSubtitle: "",    // Subtitle
+
+      crosstabMode: true,
+      seriesInRows: true,
+
+      tipsySettings: {
+        gravity: "s",
+        fade: true
+      }
+
+    };
+
+
+    // Apply options
+    $.extend(this.options,_defaults, o);
+
+
+  },
+
+  preRender: function(){
+
+    this.base();
+
+    pvc.log("Prerendering in bulletChart");
+
+
+    this.bulletChartPanel = new pvc.BulletChartPanel(this, {
+      showValues: this.options.showValues,
+      showTooltips: this.options.showTooltips,
+      orientation: this.options.orientation
+    });
+
+    this.bulletChartPanel.appendTo(this.basePanel); // Add it
+
+  }
+
+}
+);
+
+
+
+/*
+ * Bullet chart panel. Generates a bar chart. Specific options are:
+ * <i>orientation</i> - horizontal or vertical. Default: vertical
+ * <i>showValues</i> - Show or hide bar value. Default: false
+ *
+ * Has the following protovis extension points:
+ *
+ * <i>chart_</i> - for the main chart Panel
+ * <i>bulletsPanel_</i> - for the bullets panel
+ * <i>bulletPanel_</i> - for the bullets pv.Layout.Bullet
+ * <i>bulletRange_</i> - for the bullet range
+ * <i>bulletMeasure_</i> - for the bullet measure
+ * <i>bulletMarker_</i> - for the marker
+ * <i>bulletRule_</i> - for the axis rule
+ * <i>bulletRuleLabel_</i> - for the axis rule label
+ * <i>bulletTitle_</i> - for the bullet title
+ * <i>bulletSubtitle_</i> - for the main bar label
+ */
+
+
+pvc.BulletChartPanel = pvc.BasePanel.extend({
+
+  _parent: null,
+  pvBullets: null,
+  pvBullet: null,
+  data: null,
+
+  showTooltips: true,
+  showValues: true,
+  tipsySettings: {
+    gravity: "s",
+    fade: true
+  },
+
+  constructor: function(chart, options){
+
+    this.base(chart,options);
+
+  },
+
+  create: function(){
+
+    var myself = this;
+    this.width = this._parent.width;
+    this.height = this._parent.height;
+
+    var data = this.buildData();
+
+    this.pvPanel = this._parent.getPvPanel().add(pv.Panel)
+    .width(this.width)
+    .height(this.height);
+
+    var anchor = myself.chart.options.orientation=="horizontal"?"left":"bottom";
+    var size, angle, align, titleOffset, ruleAnchor, leftPos, topPos;
+    
+    if(myself.chart.options.orientation=="horizontal"){
+      size = this.width - this.chart.options.bulletMargin - 20;
+      angle=0;
+      align = "right";
+      titleOffset = 0;
+      ruleAnchor = "bottom";
+      leftPos = this.chart.options.bulletMargin;
+      topPos = function(){
+        return this.index * (myself.chart.options.bulletSize + myself.chart.options.bulletSpacing);
+      }
+    }
+    else
+    {
+      size = this.height - this.chart.options.bulletMargin - 20;
+      angle = -Math.PI/2;
+      align = "left";
+      titleOffset = -12;
+      ruleAnchor = "right";
+      leftPos = function(){
+        return myself.chart.options.bulletMargin + this.index * (myself.chart.options.bulletSize + myself.chart.options.bulletSpacing);
+      }
+      topPos = undefined;
+
+    }
+
+    this.pvBullets = this.pvPanel.add(pv.Panel)
+    .data(data)
+    [pvc.BasePanel.orthogonalLength[anchor]](size)
+    [pvc.BasePanel.paralelLength[anchor]](this.chart.options.bulletSize)
+    .margin(20)
+    .left(leftPos) // titles will be on left always
+    .top(topPos);
+    
+
+    this.pvBullet = this.pvBullets.add(pv.Layout.Bullet)
+    .orient(anchor)
+    .ranges(function(d){
+      return d.ranges
+    })
+    .measures(function(d){
+      return d.measures
+    })
+    .markers(function(d){
+      return d.markers
+    });
+
+    this.pvBulletRange = this.pvBullet.range.add(pv.Bar);
+    this.pvBulletMeasure = this.pvBullet.measure.add(pv.Bar)
+    .text(function(d){
+      return myself.chart.options.valueFormat(d);
+    });
+
+
+    this.pvBulletMarker = this.pvBullet.marker.add(pv.Dot)
+    .shape("square")
+    .fillStyle("white")
+    .text(function(d){
+      return myself.chart.options.valueFormat(d);
+    });
+
+
+    if(this.showTooltips){
+      // Extend default
+      this.extend(this.tipsySettings,"tooltip_");
+      this.pvBulletMeasure.event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+      this.pvBulletMarker.event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+    }
+
+    this.pvBulletRule = this.pvBullet.tick.add(pv.Rule)
+
+    this.pvBulletRuleLabel = this.pvBulletRule.anchor(ruleAnchor).add(pv.Label)
+    .text(this.pvBullet.x.tickFormat);
+
+    this.pvBulletTitle = this.pvBullet.anchor(anchor).add(pv.Label)
+    .font("bold 12px sans-serif")
+    .textAngle(angle)
+    .left(-10)
+    .textAlign(align)
+    .textBaseline("bottom")
+    .left(titleOffset)
+    .text(function(d){
+      return d.title
+    });
+
+    this.pvBulletSubtitle = this.pvBullet.anchor(anchor).add(pv.Label)
+    .textStyle("#666")
+    .textAngle(angle)
+    .textAlign(align)
+    .textBaseline("top")
+    .left(titleOffset)
+    .text(function(d){
+      return d.subtitle
+    });
+
+    // Extension points
+    this.extend(this.pvBullets,"bulletsPanel_");
+    this.extend(this.pvBullet,"bulletPanel_");
+    this.extend(this.pvBulletRange,"bulletRange_");
+    this.extend(this.pvBulletMeasure,"bulletMeasure_");
+    this.extend(this.pvBulletMarker,"bulletMarker_");
+    this.extend(this.pvBulletRule,"bulletRule_");
+    this.extend(this.pvBulletRuleLabel,"bulletRuleLabel_");
+    this.extend(this.pvBulletTitle,"bulletTitle_");
+    this.extend(this.pvBulletSubtitle,"bulletSubtitle_");
+
+    // Extend body
+    this.extend(this.pvPanel,"chart_");
+
+  },
+
+  /*
+   * Data array to back up bullet charts; Case 1:
+   *
+   * <i>1) No data is passed</i> - In this case, we'll grab all the value from the options
+   * and generate only one bullet
+   *
+   */
+
+  buildData: function(){
+
+    pvc.log("In buildData: " + this.chart.dataEngine.getInfo() );
+
+
+    var defaultData = {
+      title: this.chart.options.bulletTitle,
+      subtitle: this.chart.options.bulletSubtitle,
+      ranges:this.chart.options.bulletRanges,
+      measures: this.chart.options.bulletMeasures,
+      markers: this.chart.options.bulletMarkers
+    };
+    
+    var data = [];
+
+    if(this.chart.dataEngine.getSeriesSize() == 0 ){
+      // No data
+      data.push($.extend({},defaultData));
+
+    }
+    else{
+
+      // We have data. Iterate through the series.
+      for(var i in this.chart.dataEngine.getVisibleSeriesIndexes()){
+        var s = this.chart.dataEngine.getSerieByIndex(i);
+        var v = this.chart.dataEngine.getVisibleValuesForSeriesIndex(i);
+        var d = $.extend({},defaultData);
+
+        switch(v.length){
+          case 0:
+            // Value only
+            d.measures = [s];
+            break;
+          case 2:
+            // Name, value and markers
+            d.markers = [v[1]]
+          case 1:
+            // name and value
+            d.title = s;
+            d.measures = [v[0]];
+            break;
+          default:
+            // greater or equal 4
+            d.title = s;
+            d.subtitle = v[0];
+            d.measures = [v[1]];
+            d.markers = [v[2]]
+            d.ranges = v.slice(3);
+        }
+
+
+        data.push(d);
+      }
+
+    }
+   
+    return data;
+  }
 
 });
