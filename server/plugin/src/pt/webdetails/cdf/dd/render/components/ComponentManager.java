@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd.render.components;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -181,7 +182,10 @@ public class ComponentManager
       }
     };
     String[] files = dir.list(subFolders);
+    
     if (files != null) {
+      
+      Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
       for (String file : files) {
         try {
           String xmlPath = Utils.joinPath(dir.getPath(), file, COMPONENT_FILE);
