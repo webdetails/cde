@@ -1925,9 +1925,9 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
     })
 
     if(this.showTooltips){
-      this.extend(this.tipsySettings,"tooltip_");
+      this.extend(this.chart.tipsySettings,"tooltip_");
       this.pvPie
-      .event("mouseover", pv.Behavior.tipsy(this.tipsySettings));
+      .event("mouseover", pv.Behavior.tipsy(this.chart.tipsySettings));
 
     }
 
@@ -2411,9 +2411,9 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
     })
 
     if(this.showTooltips){
-      this.extend(this.tipsySettings,"tooltip_");
+      this.extend(this.chart.tipsySettings,"tooltip_");
       this.pvLine
-      .event("point", pv.Behavior.tipsy(this.tipsySettings));
+      .event("point", pv.Behavior.tipsy(this.chart.tipsySettings));
     }
 
     this.pvDot = this.pvLine.add(pv.Dot)
@@ -3946,9 +3946,9 @@ pvc.MetricScatterChartPanel = pvc.BasePanel.extend({
       })
 
     if(this.showTooltips){
-      this.extend(this.tipsySettings,"tooltip_");
+      this.extend(this.chart.tipsySettings,"tooltip_");
       this.pvLine
-        .event("point", pv.Behavior.tipsy(this.tipsySettings));
+        .event("point", pv.Behavior.tipsy(this.chart.tipsySettings));
     }
 
     this.pvDot = this.pvLine.add(pv.Dot)
