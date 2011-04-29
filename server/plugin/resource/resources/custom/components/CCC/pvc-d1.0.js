@@ -2847,7 +2847,7 @@ pvc.DataEngine = Base.extend({
     getVisibleTransposedValues: function(){
         var myself = this;
         var res = this.getVisibleSeriesIndexes().map(function(sIdx){
-            return myself.getValuesForSeriesIndex(sIdx)
+            return myself.getVisibleValuesForSeriesIndex(sIdx)
         })
         return res;
     },
@@ -4307,6 +4307,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
     _parent: null,
     pvBar: null,
     pvBarLabel: null,
+    pvWaterfallLine: null,
     pvCategoryPanel: null,
     pvSecondLie: null,
     pvSecondDot: null,
@@ -4646,7 +4647,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
             x1 = x2;  // go to next element
         }
 
-        panel.add(pv.Rule)
+        this.pvWaterfallLine = panel.add(pv.Rule)
         .data(data)
         [pvc.BasePanel.relativeAnchor[anchor]](function(d) {
             return d.x
@@ -4657,6 +4658,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
         [pvc.BasePanel.paralelLength[anchor]](function(d) {
             return d.w
         })
+        .strokeStyle("#c0c0c0");
 
         return;
     },
@@ -4801,6 +4803,8 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
             this.extend(this.pvBarLabel,"barLabel_");
         }
 
+        // Extend waterfall line
+        this.extend(this.pvWaterfallLine,"barWaterfallLine_");
 
         // Extend bar and barPanel
         this.extend(this.pvBar,"barPanel_");
