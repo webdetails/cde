@@ -15,7 +15,7 @@ var CccComponent = BaseComponent.extend({
 
     pv.listenForPageLoad(function() {
 
-      if(myself.chartDefinition.dataAccessId){
+      if(myself.chartDefinition.dataAccessId || myself.chartDefinition.query){
       
         myself.query = new Query(myself.chartDefinition);
 
