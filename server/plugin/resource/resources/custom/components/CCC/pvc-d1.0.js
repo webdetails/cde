@@ -1070,7 +1070,6 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         // Apply options
         $.extend(this.options,_defaults, o);
-
         // Sanitize some options:
         if (this.options.showYScale == false){
             this.options.yAxisSize = 0
@@ -1094,6 +1093,14 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         this.base();
 
         pvc.log("Prerendering in CategoricalAbstract");
+        
+        // Sanitize some options:
+        if (this.options.showYScale == false){
+            this.options.yAxisSize = 0
+        }
+        if (this.options.showXScale == false){
+            this.options.xAxisSize = 0
+        }
 
         this.xScale = this.getXScale();
         this.yScale = this.getYScale();
@@ -1132,7 +1139,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
                 elements: this.getAxisOrdinalElements("x")
             });
 
-//            this.xAxisPanel.setScale(this.xScale);
+            //            this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.setScale(this.xScale);
             this.xAxisPanel.appendTo(this.basePanel); // Add it
 
@@ -1341,8 +1348,8 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
             var scale = new pv.Scale.ordinal(categories);
 
             var size = this.options.orientation=="vertical"?
-                         this.basePanel.width:
-                         this.basePanel.height;
+            this.basePanel.width:
+            this.basePanel.height;
 
             if (   this.options.orientation=="vertical"
                 && this.options.yAxisPosition == "left"){
@@ -1350,7 +1357,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
                 scale.max = size - secondYAxisSize;
             }
             else if (   this.options.orientation=="vertical" 
-                     && this.options.yAxisPosition == "right"){
+                && this.options.yAxisPosition == "right"){
                 scale.min = secondYAxisSize;
                 scale.max = size-yAxisSize;
             }
@@ -1421,12 +1428,12 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         // CvK:  added to set bounds
         if(   ('orthoFixedMin' in this.options)
-           && (this.options.orthoFixedMin != null)
-           && !(isNaN(Number(this.options.orthoFixedMin))))
+            && (this.options.orthoFixedMin != null)
+            && !(isNaN(Number(this.options.orthoFixedMin))))
             min = this.options.orthoFixedMin;
         if(   ('orthoFixedMax' in this.options)
-           && (this.options.orthoFixedMax != null)
-           && !(isNaN(Number(this.options.orthoFixedMax))))
+            && (this.options.orthoFixedMax != null)
+            && !(isNaN(Number(this.options.orthoFixedMax))))
             max = this.options.orthoFixedMax;
 
 
@@ -1622,12 +1629,12 @@ pvc.AxisPanel = pvc.BasePanel.extend({
 
         var min, max;
         if (this.ordinal) {
-          min = this.scale.min;
-          max = this.scale.max;
+            min = this.scale.min;
+            max = this.scale.max;
         } else {
-          var scaleRange = this.scale.range();
-          min = scaleRange[0];
-          max = scaleRange[1];
+            var scaleRange = this.scale.range();
+            min = scaleRange[0];
+            max = scaleRange[1];
         }
         this.pvRule = this.pvPanel
         .add(pv.Rule)
@@ -1977,7 +1984,7 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
 
     var size = 0;
     if(this.explodedSliceIndex == null){
-      size = this.explodedSliceRadius
+      size = this.explodedSliceRadius;
     }
     else{
       size = this.explodedSliceIndex==idx?this.explodedSliceRadius:0;
