@@ -567,7 +567,6 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 CellOperations.registerOperation(new LayoutAddHtmlOperation());
 
 
-
 var LayoutResourceModel = BaseModel.extend({
 	},{
 		MODEL: 'LayoutResource',
@@ -592,6 +591,38 @@ var LayoutResourceModel = BaseModel.extend({
 	});
 BaseModel.registerModel(LayoutResourceModel);
 
+var LayoutResourceCodeModel = LayoutResourceModel.extend({
+},{	
+	MODEL: 'LayoutResourceCode',
+	
+	getStub: function(){
+		var _stub = LayoutResourceModel.getStub();
+		_stub.type = this.MODEL;
+		_stub.properties = [];
+		_stub.properties.push(PropertiesManager.getProperty("name"));
+		_stub.properties.push(PropertiesManager.getProperty("resourceType"));
+		_stub.properties.push(PropertiesManager.getProperty("resourceCode"));
+		return _stub;
+	}
+});
+BaseModel.registerModel(LayoutResourceCodeModel);
+
+var LayoutResourceFileModel = LayoutResourceModel.extend({
+},{
+	MODEL: 'LayoutResourceFile',
+	
+	getStub: function(){
+		var _stub = LayoutResourceModel.getStub();
+		_stub.type = this.MODEL;
+		_stub.properties = [];
+		_stub.properties.push(PropertiesManager.getProperty("name"));
+		_stub.properties.push(PropertiesManager.getProperty("resourceType"));
+		_stub.properties.push(PropertiesManager.getProperty("resourceFile"));
+		return _stub;
+	}
+});
+BaseModel.registerModel(LayoutResourceFileModel);
+
 var LayoutAddResourceOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_RESOURCE",
@@ -611,13 +642,20 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 
 			// Add a row. This special type goes always to the beginning;
 			
-			$.prompt('Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>',
+			$.prompt('Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>\
+							 <select id="resourceSource"><option value="file">External File</option><option value="code">Code Snippet</option></select>',
 			{buttons: { Ok: true, Cancel: false },
 			submit: function(v){
 				if(v){
-					var _stub = LayoutResourceModel.getStub();
 					
-					_stub.properties[1].value = $("#resourceType").val();
+					var resourceType = $("#resourceType").val();
+					var resourceSource = $("#resourceSource").val();
+					
+					var _stub = (resourceSource == 'file')? LayoutResourceFileModel.getStub() : LayoutResourceCodeModel.getStub();
+					
+					//var _stub = LayoutResourceModel.getStub();
+					
+					_stub.properties[1].value = resourceType;
 					
 					var indexManager = tableManager.getTableModel().getIndexManager();
 
@@ -674,7 +712,7 @@ CellOperations.registerOperation(new LayoutMoveDownOperation);
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL],//TODO: new types
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");

@@ -711,7 +711,7 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
 }
 
 .cdfdd-resourceFileNameRender {
-  width:218px;
+  width:210px;
   float:left;
 }
 
@@ -720,7 +720,7 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
   border:1px solid #999999;
   color:#000000;
   position:relative;
-  left:10px;
+ /* left:10px;*/
   width: 18px;
   height: 16px;
 }

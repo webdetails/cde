@@ -50,17 +50,17 @@ var PromptFunction = Base.extend({
 
 	});
 	
-var JavascriptEvalFunction = PromptFunction.extend({
+//var JavascriptEvalFunction = PromptFunction.extend({
+//
+//	type: "eval",
+//	parent: "Functions",
+//	name: "eval",
+//	value: "eval(stringValue)"
+//	
+//});
+//WizardFunctionsManager.register(new JavascriptEvalFunction());
 
-	type: "eval",
-	parent: "Functions",
-	name: "eval",
-	value: "eval(stringValue)"
-	
-});
-WizardFunctionsManager.register(new JavascriptEvalFunction());
-
-var JavascriptEvalFunction = PromptFunction.extend({
+var JavascriptDecodeURIFunction = PromptFunction.extend({
 
 	type: "decodeURI",
 	parent: "Functions",
@@ -68,7 +68,7 @@ var JavascriptEvalFunction = PromptFunction.extend({
 	value: "decodeURI(stringValue)"
 	
 });
-WizardFunctionsManager.register(new JavascriptEvalFunction());
+WizardFunctionsManager.register(new JavascriptDecodeURIFunction());
 
 var JavascriptToStringFunction = PromptFunction.extend({
 

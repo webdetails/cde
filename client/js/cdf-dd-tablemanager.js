@@ -1187,9 +1187,104 @@ var TextAreaRenderer = CellRenderer.extend({
 
 });
 
-var HtmlRenderer = TextAreaRenderer.extend({});
+//new
+var CodeRenderer = CellRenderer.extend({
 
-var ResourceRenderer = TextAreaRenderer.extend({});
+  // Locally set the value. Please not that this will only be used
+  value: null,
+  editor: null,
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("CodeRenderer");
+    this.logger.debug("Creating new CodeRenderer");
+  },
+
+  render: function(placeholder, value, callback){
+
+    // Storing the var for later use when render() is not called again
+    this.value = value;
+
+
+    var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
+    _editArea.find("code").text(this.getFormattedValue(value));
+    var myself=this;
+    var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
+      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:95%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      // Store what we need in a global var
+      cdfdd.textarea = [myself,placeholder, myself.value, callback];
+      $.prompt(_inner,{
+        buttons: {
+          Ok: true,
+          Cancel: false
+        },
+        callback: myself.callback,
+        opacity: 0.2,
+        prefix:'brownJqi'
+      });
+      //editor
+      myself.editor = new CodeEditor();
+      myself.editor.initEditor('codeArea');
+      myself.editor.setMode(myself.getCodeType());
+      myself.editor.setContents(myself.value);
+      //
+    }).appendTo($("div.edit",_editArea));
+
+    _editArea.appendTo(placeholder);
+
+  },
+
+  callback: function(v,m,f){
+    if (v){
+      // set value. We need to add a space to prevent a string like function(){}
+      // to be interpreted by json as a function instead of a string
+      var value = cdfdd.textarea[0].editor.getContents();
+      this.value = value;
+      if(value.length != 0 && value.substr(value.length-1,1)!=" "){
+        value = value+" ";
+      }
+      cdfdd.textarea[3](value);
+      $("code",cdfdd.textarea[1]).text(cdfdd.textarea[0].getFormattedValue(value));
+    }
+    delete cdfdd.textarea;
+  },
+
+  getCodeType: function(){
+    return 'javascript'; //TODO:
+  },
+
+  getFormattedValue: function(_value){
+    
+    if(_value.length > 30){
+      _value = _value.substring(0,20) + " (...)";
+    }
+    return _value;
+  }
+
+});
+
+
+var HtmlRenderer =  CodeRenderer.extend({//TextAreaRenderer.extend({
+  
+  getCodeType: function(){
+    return 'html';
+  }
+  
+});
+
+var ResourceRenderer = CodeRenderer.extend({ //TextAreaRenderer.extend({
+
+  getCodeType: function(){
+    var rtype =this.getTableManager().getTableModel().getRowByName("resourceType");
+    if(rtype != null) {
+      return rtype.value.toLowerCase();
+    }
+    else {
+      return null;
+    }
+  }
+});
+
 	
 var DateRenderer = CellRenderer.extend({
 
@@ -1338,11 +1433,84 @@ var DateRangeRenderer = DateRenderer.extend({
   }
 	
 });
-	
+
+
 var ResourceFileRenderer = CellRenderer.extend({
 
   callback: null,
+  
+  editor: null,
+  fileName : null,
+  
+  renderEditorButton: function(){
+    var myself = this;
+    return $('<button class="cdfddInput">...</button>').click(function(){
+      if(myself.fileName == null) return;
+      var url = "extEditor?path=" + myself.fileName + "&mode=" + myself.getResourceType();
+      var _inner = "<iframe id=externalEditor src='" + url + "' width='100%' height='400px' ></iframe>";
 
+      // Store what we need in a global var
+      var action;
+      var extEditor = {
+        
+        edit:
+        {// external editor
+          html: _inner,
+          buttons: {
+            'Open File in new Tab/Window' : 'newtab',
+            'Close' : 'close'
+          },
+          opacity: 0.2,
+          top: '5%',
+          prefix:'brownJqi',
+          submit: function(val, msg, form){
+            action = val;
+            var status = $('iframe#externalEditor').contents().find('#infoArea');
+            if(status != null && status.text().indexOf('*') > -1){
+              $.prompt.goToState('confirm');
+              return false;
+            }
+            else {
+              if(action == 'newtab'){
+                window.open(url);
+              }
+              return true;
+            }
+          
+          }
+        },
+        
+        confirm:
+        {//confirm exit //TODO: style elsewhere
+          html: '<div height="100%" width="100%" style="text-align:center;font-size:15px;"> <br> <br> <span>Any unsaved changes will be lost. Continue anyway?</span> <br> <br> </div>',
+          buttons: { Yes:true, Cancel: false },
+          submit: function(val, msg, form){
+            if(val){
+              if(action == 'newtab') {
+                window.open(url);
+              }
+             //$.prompt.close();
+              return true;
+            }
+            else {
+              $.prompt.goToState('edit');
+              return false;
+            }
+          }
+        }
+        
+      };
+      
+      $.prompt(extEditor,{
+        //opacity: 0.2,
+        prefix:'brownJqi',
+        top: '5%'
+        
+      });
+    });
+  },
+  
+/////////////////
   constructor: function(tableManager){
     this.base(tableManager);
     this.logger = new Logger("ResourceFileRenderer");
@@ -1353,13 +1521,21 @@ var ResourceFileRenderer = CellRenderer.extend({
     
     this.callback = callback;
 
+    this.value = value;//new
+    
+    this.validate(value);
+
     var content = $('<td></td>');
     var _editArea = $('<div class="cdfdd-resourceFileNameRender" >'+ value +'</div>');
-    var _fileExplorer = $('<button class="cdfdd-resourceFileExplorerRender">...</button>');
+    var _fileExplorer = $('<button class="cdfdd-resourceFileExplorerRender"> ^ </button>');
+    var myself = this;
+
+    var _prompt = this.renderEditorButton();
+    
     content.append(_editArea);
     content.append(_fileExplorer);
-					
-    var myself = this;
+    content.append(_prompt);
+
     _editArea.editable(function(value,settings){
       myself.logger.debug("Saving new value: " + value );
       callback(value)
@@ -1368,17 +1544,82 @@ var ResourceFileRenderer = CellRenderer.extend({
       cssclass: "cdfddInput",
       select: true,
       onsubmit: function(settings,original){
-        return myself.validate($('input',this).val());
+        var value = $('input',this).val();
+        myself.fileName = value;
+        return myself.validate(value);
       }
     });
-					
+
     var fileExtensions = this.getFileExtensions();
     _fileExplorer.bind('click',function(){
-						
-      var fileExplorercontent = 'Choose Resouce:<div id="container_id" class="urltargetfolderexplorer"></div>';
-      var selectedFile = "";
 
-      $.prompt(fileExplorercontent,{
+      var fileExplorercontent = 'Choose Resource:<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var selectedFile = "";
+      var selectedFolder = "";
+      
+      var openOrNew =
+      {
+        browse:
+        {// file explorer
+          html: fileExplorercontent,
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          opacity: 0.2,
+          submit: function(v,m,f){
+            if(v){
+              if(selectedFile.length > 0){
+                myself.fileName = selectedFile;//new
+                var file = myself.formatSelection(selectedFile);
+                _editArea.text(file);
+                myself.callback(file);
+                return true;
+              }
+              else if(selectedFolder.length > 0){
+                $.prompt.goToState('newFile');
+                return false;
+              }
+            }
+            return true;
+          }
+          
+        },
+        
+        newFile:
+        {// new file prompt when folder selected
+          html: '<div> New File: <input name="fileName"></input></div>',
+          buttons: {
+            Ok: true,
+            Cancel: false
+          },
+          submit: function(v,m,f){
+            if(v){
+              //new file
+              selectedFile = selectedFolder + f.fileName;
+              
+              //check extension
+              var ext = selectedFile.substring( selectedFile.lastIndexOf('.') + 1);
+              if( '.' + ext != myself.getFileExtensions() ){
+                selectedFile += myself.getFileExtensions();
+              }
+              
+              myself.fileName = selectedFile;//new
+              var file = myself.formatSelection(selectedFile);
+              _editArea.text(file);
+              myself.callback(file);
+              return true;
+            }
+            else {
+              $.prompt.goToState('browse');
+              return false;
+            }
+          }
+        }
+      }
+      
+      $.prompt(openOrNew,{
+        opacity: '0.2',
         loaded: function(){
           selectedFile = "";
           $('#container_id').fileTree(
@@ -1392,6 +1633,7 @@ var ResourceFileRenderer = CellRenderer.extend({
             function(obj,folder){
               if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");
               $(obj).attr("class","selectedFolder");
+              selectedFolder = folder;//TODO:
             }
           },
           function(file) {
@@ -1399,34 +1641,36 @@ var ResourceFileRenderer = CellRenderer.extend({
             $(".selectedFile").attr("class","");
             $("a[rel='" + file + "']").attr("class","selectedFile");
           });
-        },
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
-        opacity: 0.2,
-        callback: function(v,m,f){
-          if(v && selectedFile.length > 0){
-            var file = myself.formatSelection(selectedFile);
-            _editArea.text(file);
-            myself.callback(file);
-          }
         }
       });
+      
     });
-					
+
     content.appendTo(placeholder);
 
   },
+  
+  getResourceType: function(){
+    var rtype =this.getTableManager().getTableModel().getRowByName("resourceType");
+    if(rtype != null){
+      return rtype.value.toLowerCase();
+    }
+    else {
+      return null;
+    }
+    
+  },
 
   getFileExtensions: function(){
-    return this.getTableManager().getTableModel().getRowByName("resourceType").value == "Css" ? ".css" : ".js";
+    return this.getResourceType() == "css" ? ".css" : ".js";
   },
 
   formatSelection: function(file){
-    var common = true,
-    splitFile = file.split("/"),
-    splitPath = cdfdd.getDashboardData().filename.split("/"),
+    var common = true;
+    var splitFile = file.split("/");
+    var dashFile = cdfdd.getDashboardData().filename;
+    if(dashFile == null) dashFile = '';
+    splitPath = dashFile.split("/"),
     finalPath = "",
     i = 0;
     while (common){
@@ -1444,6 +1688,43 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   validate: function(settings, original){
+    //set .fileName if possible
+    if(settings.indexOf('${res:') > -1){
+      var fileName = settings.replace('${res:', '').replace('}','');
+      if (fileName.charAt(0) == '.'){//relative path, append dashboard location
+        var basePath =  cdfdd.getDashboardData().filename;
+        if(basePath == null){
+          this.fileName = null;
+          return true;
+        }
+        var lastSep = basePath.lastIndexOf('/');
+        basePath = basePath.substring(0, lastSep);
+        
+        if(fileName.indexOf('..') > -1){//resolve
+          var base = basePath.split('/');
+          //if(base[base.length -1] == '') {
+          //  base = base.slice(0, base.length-1);
+          //}
+          var file = fileName.split('/');
+          var baseEnd = base.length -1;
+          var fileStart = 0;
+          while(file[fileStart] == '..' && baseEnd > 0){
+            fileStart++;
+            baseEnd--;
+          }
+          fileName = file.slice(fileStart).concat(base.slice(0,baseEnd)).join('/');
+        }
+        
+        else {fileName = basePath + '/' + fileName;}
+      }
+      this.fileName = fileName;
+    }
+    else if (settings != null && settings != '') {//needs a solution path
+      this.fileName = settings;
+    }
+    else {
+      this.fileName = null;
+    }
     return true;
   }
 

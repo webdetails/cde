@@ -32,7 +32,9 @@ var WizardManager = Base.extend({
 			this.resetWizard();
 			this.renderWizard();
 			$('#'+WizardManager.MAIN_DIALOG).jqmShow();
-		
+			if(typeof this.postRenderWizard == 'function'){
+				this.postRenderWizard();
+			}
 		},
 
 		resetAll: function(){ 
@@ -50,6 +52,10 @@ var WizardManager = Base.extend({
 		renderWizard: function(){
 			this.logger.warn("renderWizard: Method not implmemented");
 			// $("#" + WizardManager.WIZARD_BODY).append( content );
+		},
+		
+		postRenderWizard: function(){
+			
 		},
 
 		initWizard: function(){

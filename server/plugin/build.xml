@@ -131,6 +131,7 @@
 	  <copy todir="${resource.dir}/resources" overwrite="true">
 		  <fileset dir="../../client/">
 			  <include name="cdf-dd.html" />
+			  <include name="ext-editor.html" />
 		  </fileset>
 	  </copy>
 	  <delete>

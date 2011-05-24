@@ -7,11 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +23,7 @@ import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -34,6 +38,7 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.services.solution.BaseContentGenerator;
 import org.pentaho.platform.engine.services.solution.SolutionReposHelper;
+
 
 import pt.webdetails.cdf.dd.olap.OlapUtils;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
@@ -71,6 +76,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DATA_URL_TAG = "cdf-structure.js";
   private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
   private static final String ENCODING = "UTF-8";
+  /**
+   * 1 week cache
+   */
+  private static final int RESOURCE_CACHE_DURATION = 3600 * 24 * 8; //1 week cache
+  private static final int NO_CACHE_DURATION = 0;
+  
+  private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
   
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
   
@@ -92,6 +104,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
      * Debug flag
      */
     public static final String DEBUG = "debug";
+    
     public static final String ROOT = "root";
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
@@ -100,6 +113,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
      * JSON structure
      */
     public static final String CDF_STRUCTURE = "cdfstructure";
+    
+    public static final String DATA = "data";
   }
 
   static
@@ -316,13 +331,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    setResponseHeaders(CSS_TYPE, 3600 * 24 * 8, null); // 1 week cache
+    setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null); 
     getresource(pathParams, out);
   }
 
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    setResponseHeaders(JAVASCRIPT_TYPE, 3600 * 24 * 8, null); // 1 week cache
+    setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null); 
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -374,7 +389,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       default:
         mimeType = "";
     }
-    setResponseHeaders(mimeType, 3600 * 24 * 8, null); // 1 week cache
+    setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null); 
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -415,7 +430,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       mimeType = "";
     }
 
-    setResponseHeaders(mimeType, 3600 * 24 * 8, null); // 1 week cache
+    setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -653,7 +668,59 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       return null;
     }
   }
+  
+  
+// UNDER TESTING v
+  public void getfile(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    String path = pathParams.getStringParameter(PathParams.PATH, "");
+    
+    String contents = ExternalFileEditorBackend.getFileContents(path, userSession);
+    
+    setResponseHeaders("text/plain", NO_CACHE_DURATION, null);
+    IOUtils.write(contents, out);
+  }
+  
+  public void writefile(IParameterProvider pathParams, OutputStream out) throws Exception
+  {
+    String path = pathParams.getStringParameter(PathParams.PATH, null);
+    String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
+    String contents = pathParams.getStringParameter(PathParams.DATA, null);
+    
+    if( ExternalFileEditorBackend.writeFile(path, solution, userSession, contents)){
+      //saved ok
+      IOUtils.write("file '" + path + "' saved ok", out);
+    }
+    else {
+      //baah!
+      IOUtils.write("error saving file " + path, out);//TODO:...
+    }
+  }
+  
+  public void canedit(IParameterProvider pathParams, OutputStream out) throws IOException{
+    String path = pathParams.getStringParameter(PathParams.PATH, null);
+    
+    Boolean result = ExternalFileEditorBackend.canEdit(path, userSession);
+    IOUtils.write(result.toString(), out);
+  }
+  
+//  public void externaleditor(IParameterProvider pathParams, OutputStream out){
+//    
+//    String path = pathParams.getStringParameter(PathParams.PATH, null);
+//    
+//    
+//  }
+  public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
+    
+    IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
 
+  }
+  
+//  UNDER TESTING ^ 
+  
+  
   private void init() throws IOException
   {
     this.packager = Packager.getInstance();

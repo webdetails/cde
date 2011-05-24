@@ -269,7 +269,7 @@ var CDADataSourceModel = BaseModel.extend({
 
       _stub.properties.push(PropertiesManager.getProperty("name"));
       _stub.properties.push(PropertiesManager.getProperty("cdaPath"));
-      _stub.properties.push(PropertiesManager.getProperty("cdaEditor"));
+     // _stub.properties.push(PropertiesManager.getProperty("cdaEditor")); //TODO:remove?
       _stub.properties.push(PropertiesManager.getProperty("dataAccessId"));
 
       return _stub;
@@ -283,6 +283,10 @@ var CdaPathRenderer = ResourceFileRenderer.extend({
   getFileExtensions: function(){
     return ".cda";
   },
+	
+	getResourceType: function(){
+		return 'cda';
+	},
 
   formatSelection: function(file){
     return file;
@@ -304,8 +308,8 @@ var CdaEditorRenderer = StringRenderer.extend({
     var myself = this;
 
     var _editArea = $("<td></td>");
-    var path = value
-    var _prompt = $('<button class="cdfddInput" style="width:auto">Edit this file</button>').bind("click",function(){
+    var path = value;
+    var _prompt = $('<button class="cdfddInput" style="width:auto">Edit in CDA</button>').bind("click",function(){
       CdaEditorRenderer.popup(path);
     });
     _editArea.append(_prompt);
@@ -320,7 +324,8 @@ var CdaEditorRenderer = StringRenderer.extend({
   popup: function(path)  {
 
     $("#wizardDialog").empty();
-    $("#wizardDialog").append("<iframe src='../cda/editFile?path="+path+"&initialState=exEdit' width='100%' height='95%' ></iframe>");
+    $("#wizardDialog").append("<iframe src='../cda/editFile?path="+path+"&initialState=exEdit' width='100%' height='95%' ></iframe>");//TODO:testing...
+		//$("#wizardDialog").append("<iframe src='extEditor?path="+path+"&mode=xml' width='100%' height='95%' ></iframe>"); //http://localhost:8080/pentaho/content/pentaho-cdf-dd/exteditor?path=steel-wheels%2F00_dbgChart.cda&mode=xml
     $("#wizardDialog").append("<button onclick='$(\"#wizardDialog\").jqmHide()'class='cdfddInput' style='float:right;width: auto'>Close</button>");
     $("#wizardDialog").jqmShow()
   }
@@ -331,6 +336,10 @@ var CggPathRenderer = ResourceFileRenderer.extend({
   getFileExtensions: function(){
     return ".js";
   },
+	
+	getResourceType: function(){
+		return 'javascript';
+	},
 
   formatSelection: function(file){
     return file;
