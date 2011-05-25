@@ -1686,33 +1686,34 @@ var ResourceFileRenderer = CellRenderer.extend({
     finalPath += splitFile.slice(i - 1).join('/');
     return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
   },
-
-  validate: function(settings, original){
-    //set .fileName if possible
+  
+  setFileName: function(settings)
+  {//set .fileName if possible
     if(settings.indexOf('${res:') > -1){
       var fileName = settings.replace('${res:', '').replace('}','');
-      if (fileName.charAt(0) == '.'){//relative path, append dashboard location
+      if (fileName.charAt(0) == '.')
+      {//relative path, append dashboard location
         var basePath =  cdfdd.getDashboardData().filename;
-        if(basePath == null){
+        if(basePath == null)
+        {
           this.fileName = null;
-          return true;
+          return;
         }
         var lastSep = basePath.lastIndexOf('/');
         basePath = basePath.substring(0, lastSep);
         
-        if(fileName.indexOf('..') > -1){//resolve
+        if(fileName.indexOf('..') > -1)
+        {//resolve
           var base = basePath.split('/');
-          //if(base[base.length -1] == '') {
-          //  base = base.slice(0, base.length-1);
-          //}
           var file = fileName.split('/');
-          var baseEnd = base.length -1;
+          var baseEnd = base.length;
           var fileStart = 0;
-          while(file[fileStart] == '..' && baseEnd > 0){
+          while(file[fileStart] == '..' && baseEnd > 0)
+          { 
             fileStart++;
             baseEnd--;
           }
-          fileName = file.slice(fileStart).concat(base.slice(0,baseEnd)).join('/');
+          fileName = base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
         }
         
         else {fileName = basePath + '/' + fileName;}
@@ -1725,6 +1726,10 @@ var ResourceFileRenderer = CellRenderer.extend({
     else {
       this.fileName = null;
     }
+  },
+
+  validate: function(settings, original){
+    this.setFileName(settings);
     return true;
   }
 
