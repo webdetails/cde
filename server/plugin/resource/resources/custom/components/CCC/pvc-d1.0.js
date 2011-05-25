@@ -1571,6 +1571,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
     pvTicks: null,
     pvLabel: null,
     pvRuleGrid: null,
+    pvScale: null,
 
     ordinal: false,
     anchor: "bottom",
@@ -1609,6 +1610,8 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         .width(this.width)
         .height(this.height)
 
+
+
         this.renderAxis();
 
         // Extend panel
@@ -1617,6 +1620,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         this.extend(this.pvTicks, this.panelName + "Ticks_");
         this.extend(this.pvLabel, this.panelName + "Label_");
         this.extend(this.pvRuleGrid, this.panelName + "Grid_");
+
 
     },
 
@@ -1627,12 +1631,16 @@ pvc.AxisPanel = pvc.BasePanel.extend({
 
     renderAxis: function(){
 
-        var min, max;
+        var min, max,myself=this;
+        myself.pvScale = this.scale;
+        myself.extend(myself.pvScale, myself.panelName + "Scale_");
+
+
         if (this.ordinal) {
-            min = this.scale.min;
-            max = this.scale.max;
+            min = myself.pvScale.min;
+            max = myself.pvScale.max;
         } else {
-            var scaleRange = this.scale.range();
+            var scaleRange = myself.pvScale.range();
             min = scaleRange[0];
             max = scaleRange[1];
         }
@@ -1682,9 +1690,9 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         var myself = this;
     
         var scale = this.scale;
-
+        
         this.pvTicks = this.pvRule.add(pv.Rule)
-        .data(this.scale.ticks())
+        .data(scale.ticks())
         [pvc.BasePanel.paralelLength[this.anchor]](null)
         [pvc.BasePanel.oppositeAnchor[this.anchor]](0)
         [pvc.BasePanel.relativeAnchor[this.anchor]](this.scale)
@@ -1984,7 +1992,7 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
 
     var size = 0;
     if(this.explodedSliceIndex == null){
-      size = this.explodedSliceRadius;
+      size = this.explodedSliceRadius
     }
     else{
       size = this.explodedSliceIndex==idx?this.explodedSliceRadius:0;
@@ -5172,7 +5180,8 @@ pvc.BulletChartPanel = pvc.BasePanel.extend({
     else{
 
       // We have data. Iterate through the series.
-      for(var i in this.chart.dataEngine.getVisibleSeriesIndexes()){
+      var indices = this.chart.dataEngine.getVisibleSeriesIndexes()
+      for(var i in indices) if (indices.hasOwnProperty(i)){
         var s = this.chart.dataEngine.getSerieByIndex(i);
         var v = this.chart.dataEngine.getVisibleValuesForSeriesIndex(i);
         var d = $.extend({},defaultData);
@@ -5285,7 +5294,7 @@ pvc.ParallelCoordinates = pvc.Base.extend({
  * Has the following protovis extension points:
  *
  * <i>chart_</i> - for the main chart Panel
- * <i>parCoord_</i> - for the main pie wedge
+ * <i>parCoord_</i> - for the parallel coordinates
  *    << to be completed >>
  */
 
@@ -5593,7 +5602,7 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
      *******/
     // Draw the data to the parallel dimensions 
     // (the light grey dataset is a fixed background)
-    this.pvPanel.add(pv.Panel)
+    this.pvParCoord = this.pvPanel.add(pv.Panel)
       .data(myself.data)
       .visible(selectVisible)
       .add(pv.Line)
@@ -5728,8 +5737,14 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
                   "" :
                   filter[d.dim].max.toFixed(numDigits) + dimDescr[d.dim].unit});
 
+
+    /*****
+     *  add the extension points
+     *******/
+
     // Extend ParallelCoordinates
     this.extend(this.pvParCoord,"parCoord_");
+    // the parCoord panel is the base-panel (not the colored dynamic overlay)
 
     // Extend body
     this.extend(this.pvPanel,"chart_");
