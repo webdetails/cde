@@ -11,13 +11,16 @@ import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+/**
+ * External Editor (stub)
+ */
 public class ExternalFileEditorBackend {
 
   private static Log logger = LogFactory.getLog(ExternalFileEditorBackend.class);
   
   private static final String ENCODING = "UTF-8";
   
-  protected static String getFileContents(final String filePath, IPentahoSession userSession) throws IOException //TODO
+  protected static String getFileContents(final String filePath, IPentahoSession userSession) throws IOException
   {
     if(StringUtils.isEmpty(filePath)){
       logger.error("getFileContents: no path given");

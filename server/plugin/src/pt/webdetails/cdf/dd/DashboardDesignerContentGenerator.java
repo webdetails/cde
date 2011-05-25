@@ -7,14 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +20,6 @@ import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -670,7 +666,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   }
   
   
-// UNDER TESTING v
+// External Editor v
+  
   public void getfile(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     String path = pathParams.getStringParameter(PathParams.PATH, "");
@@ -687,12 +684,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
     String contents = pathParams.getStringParameter(PathParams.DATA, null);
     
-    if( ExternalFileEditorBackend.writeFile(path, solution, userSession, contents)){
-      //saved ok
+    if( ExternalFileEditorBackend.writeFile(path, solution, userSession, contents))
+    {//saved ok
       IOUtils.write("file '" + path + "' saved ok", out);
     }
-    else {
-      //baah!
+    else 
+    {//error
       IOUtils.write("error saving file " + path, out);//TODO:...
     }
   }
@@ -704,21 +701,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(result.toString(), out);
   }
   
-//  public void externaleditor(IParameterProvider pathParams, OutputStream out){
-//    
-//    String path = pathParams.getStringParameter(PathParams.PATH, null);
-//    
-//    
-//  }
   public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
-    
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
-
   }
   
-//  UNDER TESTING ^ 
+//  External Editor ^ 
   
   
   private void init() throws IOException
