@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,6 +44,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
+import pt.webdetails.cpf.PluginUtils;
 
 @SuppressWarnings("unchecked")
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
@@ -465,8 +467,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       final String scripts = ResourceManager.getInstance().getResourceAsString(DESIGNER_SCRIPTS_RESOURCE);
       final String styles = ResourceManager.getInstance().getResourceAsString(DESIGNER_STYLES_RESOURCE);
       //DEBUG MODE
-      tokens.put(DESIGNER_STYLES_TAG, scripts);
-      tokens.put(DESIGNER_SCRIPTS_TAG, styles);
+      tokens.put(DESIGNER_STYLES_TAG, styles);
+      tokens.put(DESIGNER_SCRIPTS_TAG, scripts);
     }
     else
     {
@@ -726,31 +728,25 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   String getCdfIncludes(String dashboard) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
-    // If CDF is present, we're going to produce components from the output of its discovery service
-    if (cdf != null)
-    {
-      // Basic setup
-      cdf.setParameterProviders(parameterProviders);
-      cdf.setOutputHandler(outputHandler);
-      // We need to arrange for a callback object that will serve as a communications channel
-      ArrayList<Object> output = new ArrayList<Object>();
-      HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      // The outputstream provides CDF with a sink we can later retrieve data from
-      channel.put("output", outputStream);
-      // Setup the desired function to call on CDF's side of things.
-      channel.put("method", "GetHeaders");
-      // Call CDF
-      channel.put("payload", dashboard);
-      output.add(channel);
-      cdf.setCallbacks(output);
-      cdf.createContent();
+    return getCdfIncludes(dashboard, null, false, "");
+  }
 
-      return outputStream.toString();
+  String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot) throws Exception
+  {
+
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("dashboardContent", dashboard);
+    params.put("debug", debug);
+    if (type != null)
+    {
+      params.put("dashboardType", type);
     }
-    return "";
+    if (!"".equals(absRoot) && absRoot != null)
+    {
+      params.put("root", absRoot);
+    }
+
+    return PluginUtils.callPlugin("pentaho-cdf", "GetHeaders", params);
   }
 
   private void setResponseHeaders(final String mimeType, final int cacheDuration, final String attachmentName)

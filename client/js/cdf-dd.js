@@ -592,6 +592,8 @@ var CDFDD = Base.extend({
                 style: style,
                 rendererType: rendererType
               });
+              // We need to reload the layout engine in case the rendererType changed
+              cdfdd.layout.init();
               $.notifyBar({
                 html: "Dashboard Settings saved successfully",
                 delay: 1000

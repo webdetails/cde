@@ -54,54 +54,27 @@ public class BlueprintDashboard extends AbstractDashboard
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
   /* FIELDS */
-  private String template, header, content, footer;
-  private String templateFile, dashboardLocation;
-  private Date loaded;
-  private DashboardDesignerContentGenerator generator;
-  private static CacheManager cacheManager;
+  protected final static String TYPE = "blueprint";
 
   public BlueprintDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
   {
-    super(pathParams,generator);
-    this.generator = generator;
+    super(pathParams, generator);
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    this.dashboardLocation = generator.getStructureRelativePath(pathParams);
-    XmlStructure structure = new XmlStructure(userSession);
 
-    WcdfDescriptor wcdf = null;
+
+
+    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
+    final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
+
+    final RenderLayout layoutRenderer = new RenderLayout();
+    final RenderComponents componentsRenderer = new RenderComponents();
+
     try
     {
-
-      String fileName = pathParams.getStringParameter("file", "");
-      if (fileName != null && fileName.endsWith(".wcdf"))
-      {
-        wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
-      }
-      else
-      {//we may just be receiving a .cde file (preview)
-        wcdf = new WcdfDescriptor();
-        wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
-      }
-
-      this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
-      this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
-      final boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
-      final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
-      final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? "http://" + pathParams.getParameter("root").toString() : "" : "";
-      final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-      DashboardCacheKey key = new DashboardCacheKey(dashboardLocation, templateFile);
-      key.setAbs(absolute);
-      key.setDebug(debug);
-
-
-      final RenderLayout layoutRenderer = new RenderLayout();
-      final RenderComponents componentsRenderer = new RenderComponents();
-
-
       final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true));
 
-      json.put("settings", wcdf.toJSON());
+      json.put("settings", getWcdf().toJSON());
       final JXPathContext doc = JXPathContext.newContext(json);
 
       final StringBuilder dashboardBody = new StringBuilder();
@@ -112,27 +85,17 @@ public class BlueprintDashboard extends AbstractDashboard
       // set all dashboard members
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
-      try
-      {//attempt to read template file
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
-      }
-      catch (IOException e)
-      {
-        //couldn't open template file, attempt to use default
-        logger.error(MessageFormat.format("Couldn''t open template file {0}.", this.templateFile), e);
-        String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
-      }
+
       this.header = renderHeaders(pathParams, this.content.toString());
       this.loaded = new Date();
     }
     catch (Exception e)
     {
-      this.templateFile = null;
+      logger.error(e);
     }
   }
 
-  private String renderHeaders(final IParameterProvider pathParams, String contents)
+  protected String renderHeaders(final IParameterProvider pathParams, String contents)
   {
     String dependencies, styles, cdfDependencies;
     final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
@@ -141,7 +104,7 @@ public class BlueprintDashboard extends AbstractDashboard
     // Acquire CDF headers
     try
     {
-      cdfDependencies = generator.getCdfIncludes(contents);
+      cdfDependencies = generator.getCdfIncludes(contents, getType(), debug, absRoot);
     }
     catch (Exception e)
     {
@@ -197,5 +160,9 @@ public class BlueprintDashboard extends AbstractDashboard
     String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
     return raw + cdfDependencies + dependencies + styles;
   }
-}
 
+  public String getType()
+  {
+    return TYPE;
+  }
+}

@@ -1,4 +1,3 @@
-
 var LayoutPanel = Panel.extend({
 
 		id: "layout",
@@ -15,8 +14,22 @@ var LayoutPanel = Panel.extend({
 			Panel.register(this);
 
 		},
-
 		init: function(){
+	                operationSets = {
+	                  blueprint: [
+	                    new LayoutSaveAsTemplateOperation(),
+			    new LayoutApplyTemplateOperation(),
+			    new LayoutAddResourceOperation(),
+			    new LayoutAddRowOperation()
+	                  ],
+	                  mobile: [
+	                    new LayoutSaveAsTemplateOperation(),
+			    new LayoutApplyTemplateOperation(),
+			    new LayoutAddResourceOperation(),
+			    new LayoutAddCarouselOperation(),
+			    new LayoutAddRowOperation()
+	                  ]
+	                };
 
 			this.base();
 			this.logger.debug("Specific init");
@@ -26,11 +39,8 @@ var LayoutPanel = Panel.extend({
 			this.treeTable = new TableManager(LayoutPanel.TREE);
 			this.treeTable.setTitle("Layout Structure");
 
-			this.treeTable.setInitialOperations([
-				new LayoutSaveAsTemplateOperation(),
-				new LayoutApplyTemplateOperation(),
-				new LayoutAddResourceOperation(),
-				new LayoutAddRowOperation()]);
+                        var dashboardType = cdfdd.dashboardWcdf.rendererType || "blueprint";
+			this.treeTable.setInitialOperations(operationSets[dashboardType]);
 
 			var treeTableModel = new TableModel('layoutTreeTableModel');
 			treeTableModel.setColumnNames(['Type','Name']);
@@ -646,7 +656,8 @@ CellOperations.registerOperation(new LayoutAddResourceOperation());
 var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
+                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -660,7 +671,8 @@ CellOperations.registerOperation(new LayoutMoveUpOperation);
 var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
+                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -674,7 +686,8 @@ CellOperations.registerOperation(new LayoutMoveDownOperation);
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
+                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");

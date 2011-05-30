@@ -52,10 +52,11 @@ abstract class AbstractDashboard implements Serializable, Dashboard
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
   /* FIELDS */
-  private String template, header, content, footer;
-  private String templateFile, dashboardLocation;
-  private Date loaded;
-  private DashboardDesignerContentGenerator generator;
+  protected String template, header, content, footer;
+  protected String templateFile, dashboardLocation;
+  protected Date loaded;
+  private WcdfDescriptor wcdf;
+  protected DashboardDesignerContentGenerator generator;
   private static CacheManager cacheManager;
 
   public AbstractDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
@@ -66,7 +67,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     this.dashboardLocation = generator.getStructureRelativePath(pathParams);
     XmlStructure structure = new XmlStructure(userSession);
 
-    WcdfDescriptor wcdf = null;
+    wcdf = null;
     try
     {
 
@@ -83,13 +84,9 @@ abstract class AbstractDashboard implements Serializable, Dashboard
 
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
-      final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
       final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? "http://" + pathParams.getParameter("root").toString() : "" : "";
       final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-      DashboardCacheKey key = new DashboardCacheKey(dashboardLocation, templateFile);
-      key.setAbs(absolute);
-      key.setDebug(debug);
-      
+
       final RenderLayout layoutRenderer = new RenderLayout();
       final RenderComponents componentsRenderer = new RenderComponents();
 
@@ -155,12 +152,12 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     return fixedContent;
   }
 
-  private String renderHeaders(final IParameterProvider pathParams)
+  protected String renderHeaders(final IParameterProvider pathParams)
   {
     return renderHeaders(pathParams, "");
   }
 
-  private String renderHeaders(final IParameterProvider pathParams, String contents)
+  protected String renderHeaders(final IParameterProvider pathParams, String contents)
   {
     String dependencies, styles, cdfDependencies;
     final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
@@ -169,7 +166,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     // Acquire CDF headers
     try
     {
-      cdfDependencies = generator.getCdfIncludes(contents);
+      cdfDependencies = generator.getCdfIncludes(contents, getType(), debug, absRoot);
     }
     catch (Exception e)
     {
@@ -249,5 +246,21 @@ abstract class AbstractDashboard implements Serializable, Dashboard
   public String getTemplate()
   {
     return templateFile;
+  }
+
+  /**
+   * @return the wcdf
+   */
+  protected WcdfDescriptor getWcdf()
+  {
+    return wcdf;
+  }
+
+  /**
+   * @param wcdf the wcdf to set
+   */
+  protected void setWcdf(WcdfDescriptor wcdf)
+  {
+    this.wcdf = wcdf;
   }
 }

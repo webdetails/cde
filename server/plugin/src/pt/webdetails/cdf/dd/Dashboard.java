@@ -20,4 +20,6 @@ public interface Dashboard
   public String getContent();
 
   public Date getLoaded();
+  
+  public String getType();
 }
