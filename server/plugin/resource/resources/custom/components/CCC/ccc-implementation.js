@@ -20,7 +20,7 @@ var CccComponent = BaseComponent.extend({
         myself.query = new Query(myself.chartDefinition);
 
         myself.query.fetchData(myself.parameters, function(values) {
-          changedValues = undefined;
+          var changedValues = undefined;
           if((typeof(myself.postFetch)=='function')){
             changedValues = myself.postFetch(values);
             $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');

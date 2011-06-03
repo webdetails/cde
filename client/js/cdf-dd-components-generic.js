@@ -641,7 +641,7 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
         var catalogs = json.result.catalogs;
         myself.catalogs = catalogs;
         $.each(catalogs,function(i,catalog){
-          myself.selectData[catalog.schema.replace("solution:","/")] = catalog.name;
+          myself.selectData[catalog.schema.replace("solution:","")] = catalog.name;
         });
       }
     });
