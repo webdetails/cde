@@ -104,6 +104,14 @@ var CodeEditor = Base.extend({
 		return this.editor.getReadOnly();
 	},
 	
+	insert: function(text){
+		this.editor.insert(text);
+	},
+	
+	getEditor: function(){
+		return this.editor;
+	},
+	
 	onChange: function(callback){
 		this.editor.getSession().on('change', callback);
 	}
