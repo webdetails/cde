@@ -651,7 +651,7 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
     // Searching for value
     var jndi,cube,seen=false;
     $.each(this.catalogs,function(i,c){
-      if(c.schema == "solution:"+value.substring(1)){
+      if(c.schema == "solution:"+value){
         seen = true;
         cube = c.cubes[0].name;
         jndi = c.jndi;
