@@ -11,6 +11,7 @@ import net.sf.json.JSONSerializer;
 import java.io.*;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author pedro
@@ -19,7 +20,7 @@ public class JsonUtils {
 
   public static JSON readJsonFromInputStream(final InputStream input) throws IOException {
     
-    String contents = IOUtils.toString(input, "UTF-8");
+    String contents = StringUtils.trim(IOUtils.toString(input, "UTF-8"));
     return (JSON) JSONSerializer.toJSON(contents);
   }
 
