@@ -56,9 +56,11 @@
         var save = function(){
           editor.saveFile(params.path, editor.getContents(),
             function(result){
-              alert(result);
               if(result.indexOf('saved ok') > -1){
                 setDirty(false);
+              }
+              else {
+                alert(result);
               }
             }
           );

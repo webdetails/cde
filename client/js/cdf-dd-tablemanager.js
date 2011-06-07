@@ -1691,7 +1691,7 @@ var ResourceFileRenderer = CellRenderer.extend({
   {//set .fileName if possible
     if(settings.indexOf('${res:') > -1){
       var fileName = settings.replace('${res:', '').replace('}','');
-      if (fileName.charAt(0) == '.')
+      if (fileName.charAt(0) != '/')
       {//relative path, append dashboard location
         var basePath =  cdfdd.getDashboardData().filename;
         if(basePath == null)
@@ -1718,6 +1718,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         
         else {fileName = basePath + '/' + fileName;}
       }
+      
       this.fileName = fileName;
     }
     else if (settings != null && settings != '') {//needs a solution path
@@ -1729,7 +1730,9 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   validate: function(settings, original){
-    this.setFileName(settings);
+    if(settings != '' && ( this.fileName == null || settings != this.formatSelection(this.fileName))){
+      this.setFileName(settings);//if set manually
+    }
     return true;
   }
 
