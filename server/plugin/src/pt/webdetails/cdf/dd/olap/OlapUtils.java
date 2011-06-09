@@ -17,6 +17,8 @@ import mondrian.olap.Position;
 import mondrian.olap.Query;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.commons.connection.IPentahoResultSet;
@@ -127,6 +129,11 @@ public class OlapUtils {
         JSONObject result = new JSONObject();
 
         Connection connection = jndi != null ? getMdxConnection(catalog,jndi) : getMdxConnection(catalog);
+        
+        if(connection == null){
+          logger.error("Failed to get valid connection");
+          return null;
+        }
 
         JSONArray dimensionsArray = getDimensions(connection, cube);
         System.out.println(dimensionsArray.toString(2));
@@ -136,9 +143,7 @@ public class OlapUtils {
         System.out.println(measuresArray.toString(2));
         result.put("measures", measuresArray);
 
-
         return result;
-
     }
 
     private JSONArray getDimensions(Connection connection,  String cube) {
@@ -223,15 +228,28 @@ public class OlapUtils {
     }
     
     private Connection getMdxConnection(String catalog) {
+      
+      if(catalog != null && !catalog.startsWith("solution:")) 
+      {
+        if(catalog.startsWith("/")){
+          catalog = StringUtils.substring(catalog, 1);
+        }
+        catalog = "solution:" + catalog;
+      }
 
-        MondrianCatalog selectedCatalog = mondrianCatalogService.getCatalog(catalog, userSession);
-        selectedCatalog.getDataSourceInfo();
-        logger.info("Found catalog " + selectedCatalog.toString());
-        
-        String connectStr = "provider=mondrian;dataSource=" + selectedCatalog.getEffectiveDataSource().getJndi() +
-        "; Catalog=" + selectedCatalog.getDefinition();
-        
-        return getMdxConnectionFromConnectionString(connectStr);
+      MondrianCatalog selectedCatalog = mondrianCatalogService.getCatalog(catalog, userSession);
+      if(selectedCatalog == null)
+      {
+        logger.error("Received catalog '" + catalog  + "' doesn't appear to be valid");
+        return null;
+      }
+      selectedCatalog.getDataSourceInfo();
+      logger.info("Found catalog " + selectedCatalog.toString());
+      
+      String connectStr = "provider=mondrian;dataSource=" + selectedCatalog.getEffectiveDataSource().getJndi() +
+      "; Catalog=" + selectedCatalog.getDefinition();
+      
+      return getMdxConnectionFromConnectionString(connectStr);
     }
     
     private Connection getMdxConnection(String catalog, String jndi) {
