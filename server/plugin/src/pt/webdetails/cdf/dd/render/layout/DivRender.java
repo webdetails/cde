@@ -1,6 +1,8 @@
 package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringUtils;
+
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public class DivRender extends Render {
@@ -22,7 +24,10 @@ public class DivRender extends Render {
     	getPropertyBag().addClass(getPropertyString("roundCorners"));
         getPropertyBag().addClass(getPropertyString("cssClass"));
         getPropertyBag().addStyle("background-color", getPropertyString("backgroundColor"));
-        getPropertyBag().addStyle("height", getPropertyString("height") + "px");
+        String height = getPropertyString("height");
+        if(StringUtils.isNotEmpty(height)){
+          getPropertyBag().addStyle("height", height + "px");
+        }
         getPropertyBag().addStyle("text-align", getPropertyString("textAlign"));
 
     }
@@ -40,4 +45,4 @@ public class DivRender extends Render {
         return id.length() > 0 ? id : XPathUtils.getStringValue(getNode(), "id");
     }
 
-    }
+}
