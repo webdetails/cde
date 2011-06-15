@@ -163,6 +163,41 @@ var ComponentsPanel = Panel.extend({
 });
 
 
+//Copy paste
+var ComponentsDuplicateOperation = BaseOperation.extend({
+		id: "COMPONENTS_DUPLICATE",
+		types: ["Components"],
+		name: "Duplicate component",
+		description: "Insert a clone of this component",
+		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent.png",
+		hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent_mouseover.png",
+		clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addcomponent_onclick.png",
+
+		constructor: function(){
+			this.logger = new Logger("ComponentsDuplicateOperation");
+		},
+
+		canExecute: function(tableManager){
+			return tableManager.isSelectedCell;
+		},
+
+		execute: function(tableManager){
+			if(tableManager.isSelectedCell){
+				var rowIdx = tableManager.getSelectedCell()[0];
+				var originalRow = tableManager.getTableModel().getData()[rowIdx];
+				var clonedRow = $.extend(true,{},originalRow);
+				clonedRow.id = TableManager.generateGUID();
+				//if(clonedRow.properties && clonedRow.properties[0].name == 'name'){//rename?
+				//	clonedRow.properties[0].value += 'New';
+				//}
+				tableManager.insertAtIdx(clonedRow, rowIdx);
+			}
+		}
+	
+});
+
+CellOperations.registerOperation(new ComponentsDuplicateOperation);
+
 var ComponentsMoveUpOperation = MoveUpOperation.extend({
 
   id: "COMPONENTS_MOVE_UP",
@@ -203,6 +238,7 @@ var ComponentsDeleteOperation = DeleteOperation.extend({
 });
 
 CellOperations.registerOperation(new ComponentsDeleteOperation);
+
 
 var ComponentValidations = {}; 
 //name is always property 0
