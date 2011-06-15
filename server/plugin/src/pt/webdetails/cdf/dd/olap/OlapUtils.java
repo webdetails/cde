@@ -229,12 +229,9 @@ public class OlapUtils {
     
     private Connection getMdxConnection(String catalog) {
       
-      if(catalog != null && !catalog.startsWith("solution:")) 
+      if(catalog != null && catalog.startsWith("/")) 
       {
-        if(catalog.startsWith("/")){
-          catalog = StringUtils.substring(catalog, 1);
-        }
-        catalog = "solution:" + catalog;
+        catalog = StringUtils.substring(catalog, 1);
       }
 
       MondrianCatalog selectedCatalog = mondrianCatalogService.getCatalog(catalog, userSession);
