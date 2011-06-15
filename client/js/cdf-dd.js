@@ -448,12 +448,19 @@ var CDFDD = Base.extend({
 
     this.logger.info("Saving temporary dashboard...");
 
+    //temporarily set the filename to tmp
+    var tmpFileName = CDFDDFileName.replace(".cdfde","_tmp.cdfde");
+    this.dashboardData.filename = tmpFileName;
+    var serializedDashboard = JSON.stringify(this.dashboardData,"",2);
+    this.dashboardData.filename = CDFDDFileName;
+
     var saveParams = {
       operation: "save",
-      file: CDFDDFileName.replace(".cdfde","_tmp.cdfde"),
+      file: tmpFileName,
       //cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: JSON.stringify(this.dashboardData,"",2)
+      cdfstructure: serializedDashboard//JSON.stringify(this.dashboardData,"",2)
     };
+
 
     $.post(CDFDDDataUrl, saveParams, function(result) {
       var json = eval("(" + result + ")");
@@ -467,7 +474,7 @@ var CDFDD = Base.extend({
           height:$(window).height()
         });
       }
-      else{
+      else {
         $.notifyBar({
           html: "Errors saving file: " + json.result
         });
