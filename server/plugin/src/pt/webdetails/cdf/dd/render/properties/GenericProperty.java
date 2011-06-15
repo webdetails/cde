@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
@@ -116,10 +117,15 @@ public class GenericProperty
     {
       return "";
     }
+    
     if (value.charAt(0) != '\"')
     {
       value = "\"" + value + "\"";
     }
+    //escape newlines
+    value = StringUtils.replace(value, "\n", "\\n");
+    value = StringUtils.replace(value, "\r", "\\r");
+    
     return name + ": " + value + "," + newLine;
   }
 
