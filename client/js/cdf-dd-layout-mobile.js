@@ -12,6 +12,7 @@ var LayoutCarouselModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("showTitle"));
 
     return _stub;
   }
@@ -85,6 +86,7 @@ var LayoutCarouselItemModel = BaseModel.extend({}, {
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("title"));
 
     return _stub;
   }

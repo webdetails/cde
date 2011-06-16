@@ -30,7 +30,9 @@ public class CarouselItemRender extends DivRender
   {
 
     StringBuilder div = new StringBuilder();
-    div.append("<li class='cdfCarouselItem'><div class='cdfCarouselItemTitle'></div><div  ");
+    div.append("<li class='cdfCarouselItem'><div class='cdfCarouselItemTitle'>");
+    div.append(getPropertyString("title"));
+    div.append("</div><div  ");
     div.append(getPropertyBagString());
     div.append(">");
 

@@ -22,8 +22,12 @@ public class CarouselRender extends DivRender
     super.processProperties();
     getPropertyBag().addId(getId());
     getPropertyBag().addClass("cdfCarousel");
-    getPropertyBag().addClass("hidden");
- 
+    if (getPropertyBoolean("showTitle"))
+    {
+      getPropertyBag().addClass("showTitle");
+    }
+    getPropertyBag().addClass("cdfCarousel");
+
   }
 
   @Override
