@@ -597,6 +597,7 @@ var OlapWizard = WizardManager.extend({
 			}
 			//ini
 			var rootDim = this.getSelectedWizardObject('rows',0).member;
+			if(rootDim == null){ rootDim = ''; }
 			rootDim = rootDim.substring(0, rootDim.indexOf(']') + 1);
 			
 			var memberDecl = "with member [Measures].[Name] as '" + rootDim + ".CurrentMember.UniqueName'";
