@@ -30,7 +30,6 @@ public class XmlStructure implements IStructure
 
   private IPentahoSession userSession = null;
   public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
-  
   private static final String ENCODING = "UTF-8";
 
   public XmlStructure(IPentahoSession userSession)
@@ -118,6 +117,7 @@ public class XmlStructure implements IStructure
       wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
       wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
       wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
+      wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
     }
     return wcdf;
   }
@@ -158,23 +158,27 @@ public class XmlStructure implements IStructure
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
       String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
-      if(cdaRenderer.isEmpty()){
+      if (cdaRenderer.isEmpty())
+      {
         deleteFileIfExists(solutionRepository, path, cdaFileName);
       }
-      else {
+      else
+      {
         status = solutionRepository.publish(SOLUTION_PATH, path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
       }
-      
+
 
       //4. Write CDW File
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
-      
+
       String cdwFileName = cdeFileName.replace(".cdfde", ".cdw");
-      if(cdwRenderer.isEmpty()){
+      if (cdwRenderer.isEmpty())
+      {
         deleteFileIfExists(solutionRepository, path, cdwFileName);
       }
-      else {
+      else
+      {
         cdwRenderer.render(path, cdeFileName);
       }
       //5. Check publish result again.
@@ -190,11 +194,13 @@ public class XmlStructure implements IStructure
 
   }
 
-  private void deleteFileIfExists(ISolutionRepository solutionRepository, String path, String fileName) {
+  private void deleteFileIfExists(ISolutionRepository solutionRepository, String path, String fileName)
+  {
     String fullName = path + fileName;
     fullName = fullName.replaceAll("//+", "/");
-    if(solutionRepository.resourceExists(fullName)){
-      solutionRepository.removeSolutionFile(fullName); 
+    if (solutionRepository.resourceExists(fullName))
+    {
+      solutionRepository.removeSolutionFile(fullName);
     }
   }
 
@@ -206,7 +212,7 @@ public class XmlStructure implements IStructure
     //1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
     String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
-    
+
     //2. Replace wcdf file title and description
     String title = (String) parameters.get("title");
     String description = (String) parameters.get("description");
@@ -237,14 +243,16 @@ public class XmlStructure implements IStructure
     //1. Read Empty Structure
     InputStream cdfstructure = null;
 
-    try{
+    try
+    {
       cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
-      
+
       //2. Save file
       parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
       saveas(parameters);
     }
-    finally {
+    finally
+    {
       IOUtils.closeQuietly(cdfstructure);
     }
 
@@ -258,6 +266,7 @@ public class XmlStructure implements IStructure
     String authorStr = (String) parameters.get("author");
     String descriptionStr = (String) parameters.get("description");
     String styleStr = (String) parameters.get("style");
+    String rendererType = (String) parameters.get("rendererType");
 
     System.out.println("Saving settings file:" + filePath);
 
@@ -278,10 +287,26 @@ public class XmlStructure implements IStructure
         Node cdfNode = wcdfDoc.selectSingleNode("/cdf");
 
         //only override explicitly set elements, leave others as they are (initStyles will only set style)
-        if(parameters.containsKey("title")) setNodeValue(cdfNode, "title", titleStr);
-        if(parameters.containsKey("author")) setNodeValue(cdfNode, "author", authorStr);
-        if(parameters.containsKey("description")) setNodeValue(cdfNode, "description", descriptionStr);
-        if(parameters.containsKey("style")) setNodeValue(cdfNode, "style", styleStr);
+        if (parameters.containsKey("title"))
+        {
+          setNodeValue(cdfNode, "title", titleStr);
+        }
+        if (parameters.containsKey("author"))
+        {
+          setNodeValue(cdfNode, "author", authorStr);
+        }
+        if (parameters.containsKey("description"))
+        {
+          setNodeValue(cdfNode, "description", descriptionStr);
+        }
+        if (parameters.containsKey("style"))
+        {
+          setNodeValue(cdfNode, "style", styleStr);
+        }
+        if (parameters.containsKey("rendererType"))
+        {
+          setNodeValue(cdfNode, "rendererType", rendererType);
+        }
 
         int status = solutionRepository.publish(SOLUTION_PATH, path, fileName, wcdfDoc.asXML().getBytes(ENCODING), true);
 
@@ -322,9 +347,12 @@ public class XmlStructure implements IStructure
   {
     String path = FilenameUtils.getFullPath(filePath);
     String fileName = FilenameUtils.getName(filePath);
-    
-    return new String[] {path, fileName};
-    
+
+    return new String[]
+            {
+              path, fileName
+            };
+
 //    String[] result =
 //    {
 //      "", ""

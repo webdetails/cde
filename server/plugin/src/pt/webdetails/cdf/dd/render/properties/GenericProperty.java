@@ -180,9 +180,10 @@ public class GenericProperty
       while (m.find())
       {
         m.appendReplacement(sb, m.group(1).replaceAll("\\\"","\"").replaceAll("\\$","\\\\\\$"));
+
       }
       m.appendTail(sb);
-      value=sb.toString();
+      value = sb.toString();
     }
 
     if (value.equals(""))
