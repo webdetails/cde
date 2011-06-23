@@ -15,6 +15,7 @@
 			<Definition name="queryDefinition">
 				<Property>dataSource</Property>
 			</Definition>
+			<Property>parameters</Property>
 			<Property>showApplyButton</Property>
 			<Property>matchType</Property>
 			<Property>minTextLenght</Property>
