@@ -27,7 +27,8 @@ var LayoutPanel = Panel.extend({
 			    new LayoutApplyTemplateOperation(),
 			    new LayoutAddResourceOperation(),
 			    new LayoutAddCarouselOperation(),
-			    new LayoutAddRowOperation()
+			    new LayoutAddRowOperation(),
+                            new LayoutAddFilterBlockOperation()
 	                  ]
 	                };
 
@@ -657,7 +658,7 @@ var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
+                  LayoutCarouselModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -672,7 +673,7 @@ var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
+                  LayoutCarouselModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -687,7 +688,7 @@ var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
-                  LayoutCarouselModel.MODEL],//,LayoutCarouselItemModel.MODEL],
+                  LayoutCarouselModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
