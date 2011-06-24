@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>externalApplyButtonId</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>External apply button</Description>
+	<Tooltip>Holder of external button to use as apply button.</Tooltip>
+	<InputType>HtmlObject</InputType>
+	<OutputType>String</OutputType>
+	<Order>90</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
