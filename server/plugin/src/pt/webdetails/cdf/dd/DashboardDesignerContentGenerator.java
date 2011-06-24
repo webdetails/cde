@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +29,7 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
+import org.pentaho.platform.api.engine.ObjectFactoryException;
 import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -43,6 +45,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
+import pt.webdetails.cpf.PluginUtils;
 
 @SuppressWarnings("unchecked")
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
@@ -55,7 +58,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
    */
   public static final String SOLUTION_DIR = "cde";
   public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
-
   private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
@@ -81,11 +83,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
   
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
-  
   private Packager packager;
 
   public enum FileTypes
   {
+
     JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
   }
   public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
@@ -269,13 +271,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getcontent(IParameterProvider pathParams, OutputStream out) throws Exception
   {
-    Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
     out.write(dashboard.getContent().getBytes());
   }
 
   public void getheaders(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
     out.write(dashboard.getHeader().getBytes());
   }
 
@@ -289,7 +291,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
 
     // Build pieces: render dashboard, footers and headers
-    final Dashboard dashboard = new Dashboard(pathParams, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(pathParams, this);
 
     // Response
     setResponseHeaders(MIME_TYPE, 0, null);
@@ -299,6 +301,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
           throws IOException
   {
+    IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
     if (solutionRepository.getSolutionFile(path, actionUpdate) == null)
     {
@@ -324,7 +327,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //    return XmlDom4JHelper.getNodeText(
 //            "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
 //  }
-
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null); 
@@ -446,12 +448,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       resource = pathParams.getStringParameter("resource", null);
     }
-    
-    if(!Utils.pathStartsWith(resource, SOLUTION_DIR) && 
-       !Utils.pathStartsWith(resource, PLUGIN_PATH)){
+
+    if (!Utils.pathStartsWith(resource, SOLUTION_DIR)
+            && !Utils.pathStartsWith(resource, PLUGIN_PATH))
+    {
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
-    
+
     getSolutionResource(out, resource);
   }
 
@@ -476,8 +479,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       final String scripts = ResourceManager.getInstance().getResourceAsString(DESIGNER_SCRIPTS_RESOURCE);
       final String styles = ResourceManager.getInstance().getResourceAsString(DESIGNER_STYLES_RESOURCE);
       //DEBUG MODE
-      tokens.put(DESIGNER_STYLES_TAG, scripts);
-      tokens.put(DESIGNER_SCRIPTS_TAG, styles);
+      tokens.put(DESIGNER_STYLES_TAG, styles);
+      tokens.put(DESIGNER_SCRIPTS_TAG, scripts);
     }
     else
     {
@@ -504,6 +507,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final CdfTemplates cdfTemplates = new CdfTemplates(userSession);
 
     cdfTemplates.syncronize(out, pathParams);
+  }
+
+  public void listrenderers(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    out.write("{\"result\": [\"mobile\",\"blueprint\"]}".getBytes("utf-8"));
   }
 
   public void syncstyles(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -576,13 +584,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       // File not inside solution! run away!
       throw new FileNotFoundException("Not allowed");
     }
-    
+
     InputStream in = null;
-    try{
+    try
+    {
       in = new FileInputStream(file);
       IOUtils.copy(in, out);
     }
-    finally {
+    finally
+    {
       IOUtils.closeQuietly(in);
     }
   }
@@ -729,10 +739,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
   }
 
-  String getCdfContext() throws Exception
+  String getCdfContext()
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
+    IContentGenerator cdf;
+    try
+    {
+      IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
+      cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
+    }
+    catch (ObjectFactoryException e)
+    {
+      cdf = null;
+    }
     // If CDF is present, we're going to produce components from the output of its discovery service
     if (cdf != null)
     {
@@ -751,8 +769,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       // Call CDF
       output.add(channel);
       cdf.setCallbacks(output);
-      cdf.createContent();
 
+      try
+      {
+        cdf.createContent();
+      }
+      catch (Exception e)
+      {
+        logger.error(e);
+      }
       return outputStream.toString();
     }
     return "";
@@ -760,31 +785,25 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   String getCdfIncludes(String dashboard) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
-    // If CDF is present, we're going to produce components from the output of its discovery service
-    if (cdf != null)
-    {
-      // Basic setup
-      cdf.setParameterProviders(parameterProviders);
-      cdf.setOutputHandler(outputHandler);
-      // We need to arrange for a callback object that will serve as a communications channel
-      ArrayList<Object> output = new ArrayList<Object>();
-      HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      // The outputstream provides CDF with a sink we can later retrieve data from
-      channel.put("output", outputStream);
-      // Setup the desired function to call on CDF's side of things.
-      channel.put("method", "GetHeaders");
-      // Call CDF
-      channel.put("payload", dashboard);
-      output.add(channel);
-      cdf.setCallbacks(output);
-      cdf.createContent();
+    return getCdfIncludes(dashboard, null, false, "");
+  }
 
-      return outputStream.toString();
+  String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot) throws Exception
+  {
+
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("dashboardContent", dashboard);
+    params.put("debug", debug);
+    if (type != null)
+    {
+      params.put("dashboardType", type);
     }
-    return "";
+    if (!"".equals(absRoot) && absRoot != null)
+    {
+      params.put("root", absRoot);
+    }
+
+    return PluginUtils.callPlugin("pentaho-cdf", "GetHeaders", params);
   }
 
   private void setResponseHeaders(final String mimeType, final int cacheDuration, final String attachmentName)

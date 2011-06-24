@@ -32,7 +32,7 @@ public class Utils {
       {
         // Note - this method is deprecated and returns different values in 3.6
         // and 3.7. Change this in future versions -- but not yet
-// getFullyQualifiedServerURL only available from 3.7
+// getFullyQualifiedServerUeRL only available from 3.7
 //      URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
         URI uri = new URI(PentahoSystem.getApplicationContext().getBaseUrl());
         baseUrl = uri.getPath();

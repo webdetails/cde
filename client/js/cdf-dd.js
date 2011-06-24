@@ -42,6 +42,7 @@ var CDFDD = Base.extend({
   dashboardData: {},
   dashboardWcdf: {},
   styles: [],
+  renderers: [],
 
   // Panels
   layout: {},
@@ -159,7 +160,12 @@ var CDFDD = Base.extend({
       myself.styles = json.result;
                                         
     });
-
+    $.getJSON("listRenderers", {
+      operation: "listStyles"
+    }, function(json) {
+      myself.renderers = json.result;
+                                        
+    });
   },
 
   initStyles: function(callback) {
@@ -503,15 +509,31 @@ var CDFDD = Base.extend({
   },
 		
   saveSettings: function(){
+    var myself = this;
+    var ready = true;
+    function sCallback() {
+        if (myself.styles.length > 0 && myself.renderers.length > 0) {
+          myself.saveSettingsCallback();
+        }
+    }
     if (this.styles.length == 0){
-      var myself = this;
+      ready = false;
       $.getJSON("SyncStyles", {
         operation: "listStyles"
       }, function(json) {
         myself.styles = json.result;
-        myself.saveSettingsCallback();
+        sCallback();
       });
-    }else{
+    };
+    if (this.renderers.length == 0){
+      ready = false;
+      $.getJSON("listRenderers", {},
+        function(json) {
+          myself.renderers = json.result;
+          sCallback();
+      });
+    };
+    if(ready){
       this.saveSettingsCallback();
     }
 		
@@ -523,6 +545,7 @@ var CDFDD = Base.extend({
     var description = this.getDashboardWcdf().description;
     var author = this.getDashboardWcdf().author;
     var style = this.getDashboardWcdf().style;
+    var rendererType = this.getDashboardWcdf().rendererType;
     var myself = this;
     var content = '\
 				<span><b>Settings:</b></span><br/><hr/>\
@@ -534,8 +557,12 @@ var CDFDD = Base.extend({
     $.each(this.styles,function(i,obj){
       content += ('<option value="'+ obj +'" ' + (style==obj?'selected':'') +' >'+ obj+'</option>');
     });
+    content += '</select><span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">';
+    $.each(this.renderers,function(i,obj){
+      content += ('<option value="'+ obj +'" ' + (rendererType==obj?'selected':'') +' >'+ obj+'</option>');
+    });
     content += '</select>';
-			
+	
     $.prompt(content,{
       buttons: {
         Save: true,
@@ -546,6 +573,7 @@ var CDFDD = Base.extend({
         author = $("#authorInput").val();
         description = $("#descriptionInput").val();
         style = $("#styleInput").val();
+        rendererType = $("#rendererInput").val(); 
       },
       callback: function(v,m,f){
         if(v){
@@ -557,7 +585,8 @@ var CDFDD = Base.extend({
             title: title,
             author: author,
             description: description,
-            style: style
+            style: style,
+            rendererType: rendererType
           };
 						
           $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
@@ -567,8 +596,11 @@ var CDFDD = Base.extend({
                 title: title,
                 author: author,
                 description: description,
-                style: style
+                style: style,
+                rendererType: rendererType
               });
+              // We need to reload the layout engine in case the rendererType changed
+              cdfdd.layout.init();
               $.notifyBar({
                 html: "Dashboard Settings saved successfully",
                 delay: 1000
