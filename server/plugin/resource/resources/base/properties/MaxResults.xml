@@ -1,10 +1,10 @@
 <DesignerProperty>
 <Header>
-	<Name>minTextLenght</Name>
+	<Name>maxResults</Name>
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
-	<Description>Minimum word length</Description>
-	<Tooltip>The minimum word length to check if there is a match.</Tooltip>
+	<Description>Results limit</Description>
+	<Tooltip>Maximum number of results to display.</Tooltip>
 	<InputType>Integer</InputType>
 	<Advanced>true</Advanced>
 	<OutputType>Number</OutputType>

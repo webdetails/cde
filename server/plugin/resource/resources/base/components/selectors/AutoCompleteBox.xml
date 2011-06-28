@@ -15,8 +15,10 @@
 			<Definition name="queryDefinition">
 				<Property>dataSource</Property>
 			</Definition>
-			<Property>parameters</Property>
+			<Property>searchParam</Property>
+			<Property>maxResults</Property>
 			<Property>showApplyButton</Property>
+			<Property>externalApplyButtonId</Property>
 			<Property>matchType</Property>
 			<Property>minTextLenght</Property>
 			<Property>scrollHeight</Property>
