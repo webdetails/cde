@@ -79,9 +79,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
    */
   private static final int RESOURCE_CACHE_DURATION = 3600 * 24 * 8; //1 week cache
   private static final int NO_CACHE_DURATION = 0;
-  
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
-  
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
   private Packager packager;
 
@@ -102,7 +100,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
      * Debug flag
      */
     public static final String DEBUG = "debug";
-    
     public static final String ROOT = "root";
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
@@ -111,7 +108,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
      * JSON structure
      */
     public static final String CDF_STRUCTURE = "cdfstructure";
-    
     public static final String DATA = "data";
   }
 
@@ -329,13 +325,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //  }
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null); 
+    setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
     getresource(pathParams, out);
   }
 
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null); 
+    setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -387,7 +383,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       default:
         mimeType = "";
     }
-    setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null); 
+    setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -674,52 +670,49 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       return null;
     }
   }
-  
-  
+
 // External Editor v
-  
   public void getfile(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     String path = pathParams.getStringParameter(PathParams.PATH, "");
-    
+
     String contents = ExternalFileEditorBackend.getFileContents(path, userSession);
-    
+
     setResponseHeaders("text/plain", NO_CACHE_DURATION, null);
     IOUtils.write(contents, out);
   }
-  
+
   public void writefile(IParameterProvider pathParams, OutputStream out) throws Exception
   {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
     String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
     String contents = pathParams.getStringParameter(PathParams.DATA, null);
-    
-    if( ExternalFileEditorBackend.writeFile(path, solution, userSession, contents))
+
+    if (ExternalFileEditorBackend.writeFile(path, solution, userSession, contents))
     {//saved ok
       IOUtils.write("file '" + path + "' saved ok", out);
     }
-    else 
+    else
     {//error
       IOUtils.write("error saving file " + path, out);//TODO:...
     }
   }
-  
-  public void canedit(IParameterProvider pathParams, OutputStream out) throws IOException{
+
+  public void canedit(IParameterProvider pathParams, OutputStream out) throws IOException
+  {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
-    
+
     Boolean result = ExternalFileEditorBackend.canEdit(path, userSession);
     IOUtils.write(result.toString(), out);
   }
-  
+
   public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
   }
-  
+
 //  External Editor ^ 
-  
-  
   private void init() throws IOException
   {
     this.packager = Packager.getInstance();
@@ -741,46 +734,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   String getCdfContext()
   {
-    IContentGenerator cdf;
-    try
-    {
-      IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-      cdf = pluginManager.getContentGenerator("pentaho-cdf", userSession);
-    }
-    catch (ObjectFactoryException e)
-    {
-      cdf = null;
-    }
-    // If CDF is present, we're going to produce components from the output of its discovery service
-    if (cdf != null)
-    {
-      // Basic setup
-      cdf.setParameterProviders(parameterProviders);
-      cdf.setOutputHandler(outputHandler);
-      // We need to arrange for a callback object that will serve as a communications channel
-      ArrayList<Object> output = new ArrayList<Object>();
-      HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      // The outputstream provides CDF with a sink we can later retrieve data from
-      channel.put("output", outputStream);
-      // Setup the desired function to call on CDF's side of things.
-      channel.put("method", "Context");
-      channel.put("usersession", userSession);
-      // Call CDF
-      output.add(channel);
-      cdf.setCallbacks(output);
 
-      try
-      {
-        cdf.createContent();
-      }
-      catch (Exception e)
-      {
-        logger.error(e);
-      }
-      return outputStream.toString();
-    }
-    return "";
+    Map<String, Object> params = new HashMap<String, Object>();
+    return PluginUtils.callPlugin("pentaho-cdf", "Context", params);
+
   }
 
   String getCdfIncludes(String dashboard) throws Exception
