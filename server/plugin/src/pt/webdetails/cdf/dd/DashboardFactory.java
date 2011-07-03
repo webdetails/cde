@@ -61,6 +61,7 @@ public class DashboardFactory
   {
     Dashboard dashboard = null;
     final boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
+    final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     XmlStructure structure = new XmlStructure(userSession);
     String wcdfPath = getWcdfPath(pathParams);
@@ -96,7 +97,7 @@ public class DashboardFactory
     /* Next, if we're using the cache, we try to find
      * the dashboard in there.
      */
-    key = new DashboardCacheKey(dashboardPath, CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()));
+    key = new DashboardCacheKey(dashboardPath, CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()), debug);
     if (!bypassCache)
     {
       dashboard = getDashboardFromCache(key);
@@ -295,6 +296,14 @@ class DashboardCacheKey
     this.template = template;
     this.abs = false;
     this.debug = false;
+  }
+
+  public DashboardCacheKey(String cdfde, String template, boolean debug)
+  {
+    this.cdfde = cdfde;
+    this.template = template;
+    this.abs = false;
+    this.debug = debug;
   }
 
   @Override
