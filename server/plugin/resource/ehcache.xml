@@ -38,7 +38,7 @@
                                          to this area and then asynchronously written to disk. The default size is 30MB.
 																					
         -->	
-    <diskStore path="java.io.tmpdir/_pentaho-cda"/>
+    <diskStore path="java.io.tmpdir/_pentaho-cde"/>
     
 	<defaultCache
         maxElementsInMemory="1000"
