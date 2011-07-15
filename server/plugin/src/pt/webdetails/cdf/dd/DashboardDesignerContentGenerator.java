@@ -10,8 +10,11 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletResponse;
@@ -324,8 +327,20 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //  }
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
+    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
-    getresource(pathParams, out);
+    try
+    {
+      getresource(pathParams, out);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
   }
 
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -334,7 +349,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
-    getresource(pathParams, out);
+    try
+    {
+      getresource(pathParams, out);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
   }
 
   public void getuntypedresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -397,7 +423,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
-    getSolutionResource(out, resource);
+    try
+    {
+      getresource(pathParams, out);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
 
   }
 
@@ -438,7 +475,18 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
-    getSolutionResource(out, resource);
+    try
+    {
+      getSolutionResource(out, resource);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
 
   }
 
@@ -461,7 +509,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
 
-    getSolutionResource(out, resource);
+    String[] roots = new String[2];
+    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
+    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath(SOLUTION_DIR);
+    getSolutionResource(out, resource, roots);
   }
 
   public void edit(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -579,10 +630,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
-    getSolutionResource(out, resource, null);
+    String[] roots = new String[1];
+    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath("");
+    getSolutionResource(out, resource, roots);
   }
 
-  private void getSolutionResource(final OutputStream out, final String resource, final String root) throws IOException
+  private void getSolutionResource(final OutputStream out, final String resource, final String[] allowedRoots) throws IOException
   {
 
     setCacheControl();
@@ -599,10 +652,17 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       throw new SecurityException("Not allowed");
     }
     final File file = new File(path);
-    final String referencePath = root != null ? root : PentahoSystem.getApplicationContext().getSolutionPath("");
-    if (!isFileWithinPath(file, referencePath))
+    boolean allowed = false;
+    for (String root : allowedRoots)
     {
-      // File not inside solution! run away!
+      if (isFileWithinPath(file, root))
+      {
+        allowed = true;
+        break;
+      }
+    }
+    if (!allowed)
+    {
       throw new SecurityException("Not allowed");
     }
 
@@ -624,9 +684,16 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private boolean isFileWithinPath(File file, String absPathBase)
   {
-    final String filePath = normalizePathSeparators(file.getAbsolutePath());
-    final String basePath = normalizePathSeparators(absPathBase);
-    return filePath.startsWith(basePath);
+    try
+    {
+      final String filePath = normalizePathSeparators(file.getCanonicalPath());
+      final String basePath = normalizePathSeparators(absPathBase);
+      return filePath.startsWith(basePath);
+    }
+    catch (Exception e)
+    {
+      return false;
+    }
   }
 
   private String normalizePathSeparators(String path)
