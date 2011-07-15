@@ -11,7 +11,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -329,18 +328,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
-    try
-    {
-      getresource(pathParams, out);
-    }
-    catch (SecurityException e)
-    {
-      response.sendError(response.SC_FORBIDDEN);
-    }
-    catch (FileNotFoundException e)
-    {
-      response.sendError(response.SC_NOT_FOUND);
-    }
+
+    getresource(pathParams, out);
+
   }
 
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -369,18 +359,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     response.setHeader("Content-Type", "text/plain");
     response.setHeader("content-disposition", "inline");
 
-    try
-    {
       getresource(pathParams, out);
-    }
-    catch (SecurityException e)
-    {
-      response.sendError(response.SC_FORBIDDEN);
-    }
-    catch (FileNotFoundException e)
-    {
-      response.sendError(response.SC_NOT_FOUND);
-    }
   }
 
   public void getimg(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -508,11 +487,23 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
-
+    
+    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     String[] roots = new String[2];
     roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
     roots[1] = PentahoSystem.getApplicationContext().getSolutionPath(SOLUTION_DIR);
-    getSolutionResource(out, resource, roots);
+    try
+    {
+      getSolutionResource(out, resource, roots);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
   }
 
   public void edit(final IParameterProvider pathParams, final OutputStream out) throws Exception
