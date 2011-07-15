@@ -29,7 +29,6 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
-import org.pentaho.platform.api.engine.ObjectFactoryException;
 import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -343,8 +342,19 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     response.setHeader("Content-Type", "text/plain");
     response.setHeader("content-disposition", "inline");
-    getresource(pathParams, out);
 
+    try
+    {
+      getresource(pathParams, out);
+    }
+    catch (SecurityException e)
+    {
+      response.sendError(response.SC_FORBIDDEN);
+    }
+    catch (FileNotFoundException e)
+    {
+      response.sendError(response.SC_NOT_FOUND);
+    }
   }
 
   public void getimg(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -569,16 +579,31 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
+    getSolutionResource(out, resource, null);
+  }
+
+  private void getSolutionResource(final OutputStream out, final String resource, final String root) throws IOException
+  {
 
     setCacheControl();
     final String path = Utils.getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
 
-    final File file = new File(path);
+    final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
+    final String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
 
-    if (!isFileWithinPath(file, PentahoSystem.getApplicationContext().getSolutionPath("")))
+    List allowedFormats = Arrays.asList(formats.split(","));
+    String extension = resource.replaceAll(".*\\.(.*)", "$1");
+    if (allowedFormats.indexOf(extension) < 0)
+    {
+      // We can't provide this type of file
+      throw new SecurityException("Not allowed");
+    }
+    final File file = new File(path);
+    final String referencePath = root != null ? root : PentahoSystem.getApplicationContext().getSolutionPath("");
+    if (!isFileWithinPath(file, referencePath))
     {
       // File not inside solution! run away!
-      throw new FileNotFoundException("Not allowed");
+      throw new SecurityException("Not allowed");
     }
 
     InputStream in = null;
@@ -586,6 +611,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       in = new FileInputStream(file);
       IOUtils.copy(in, out);
+    }
+    catch (FileNotFoundException e)
+    {
+      throw e;
     }
     finally
     {
@@ -608,7 +637,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private void setCacheControl()
   {
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
-    final String maxAge = resLoader.getPluginSetting(this.getClass(), "pentaho-cdf-dd/max-age");
+    final String maxAge = resLoader.getPluginSetting(this.getClass(), "max-age");
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     if (maxAge != null && response != null)
     {
