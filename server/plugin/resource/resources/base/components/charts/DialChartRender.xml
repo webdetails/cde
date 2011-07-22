@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Dial Chart Component</Name>
-		<IName>DialChart</IName>
+		<IName>Dial</IName>
 		<Description>Dial Chart Component</Description>
 		<Category>CHARTS</Category>
 		<CatDescription>Charts</CatDescription>
