@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd.render;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.String;
 import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,9 +14,11 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.packager.Packager;
+import pt.webdetails.cdf.dd.packager.Packager.Mode;
 
 /**
  *
@@ -51,7 +54,10 @@ public class DependenciesEngine
 
   public String getPackagedDependencies(StringFilter filter)
   {
-    String hash = packager.minifyPackage(name);
+    final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
+    final String minification = resLoader.getPluginSetting(this.getClass(), "packager/minification").toUpperCase();
+    Mode mode = Mode.valueOf(minification != null ? minification : "MINIFY");
+    String hash = packager.minifyPackage(name, mode);
     return filter.filter(packagedPath + "?v=" + hash);
   }
 
@@ -89,7 +95,8 @@ public class DependenciesEngine
     {
       File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
       FileInputStream fis = null;
-      try {
+      try
+      {
         fis = new FileInputStream(f);
         byte[] fileContent = new byte[(int) f.length()];
         fis.read(fileContent);
@@ -97,8 +104,9 @@ public class DependenciesEngine
         dep = new Dependency(version, path, hash);
         dependencyPool.put(name, dep);
         packager.addFileToPackage(this.name, f);
-      } 
-      finally {
+      }
+      finally
+      {
         IOUtils.closeQuietly(fis);
       }
     }
