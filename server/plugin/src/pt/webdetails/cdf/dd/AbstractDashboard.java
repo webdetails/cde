@@ -161,7 +161,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
   {
     String dependencies, styles, cdfDependencies;
     final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? "http://" + pathParams.getParameter("root").toString() : "" : "";
+    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? pathParams.getParameter("root").toString() : "" : "";
     final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
     // Acquire CDF headers
     try
@@ -176,13 +176,14 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
+      final String adornedRoot = "http://" + absRoot;
       StringFilter css = new StringFilter()
       {
 
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
-          return "\t\t<link href='" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getCssResource/" + input + "' rel='stylesheet' type='text/css' />\n";
+          return "\t\t<link href='" + adornedRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getCssResource/" + input + "' rel='stylesheet' type='text/css' />\n";
         }
       };
       StringFilter js = new StringFilter()
@@ -191,7 +192,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
-          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getJsResource/" + input + "\"></script>\n";
+          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + adornedRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getJsResource/" + input + "\"></script>\n";
         }
       };
       if (debug)
