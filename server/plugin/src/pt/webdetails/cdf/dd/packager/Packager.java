@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 
 import java.security.MessageDigest;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import pt.webdetails.cdf.dd.packager.Packager.Mode;
 
 /**
  *
@@ -36,6 +38,12 @@ public class Packager
   {
 
     CSS, JS
+  };
+
+  public enum Mode
+  {
+
+    MINIFY, CONCATENATE
   };
   static Log logger = LogFactory.getLog(Packager.class);
   private static Packager _instance;
@@ -103,9 +111,14 @@ public class Packager
 
   public String minifyPackage(String pkg)
   {
+    return minifyPackage(pkg, Mode.MINIFY);
+  }
+
+  public String minifyPackage(String pkg, Mode mode)
+  {
     try
     {
-      return this.fileSets.get(pkg).update();
+      return this.fileSets.get(pkg).update(mode);
     }
     catch (IOException ex)
     {
@@ -172,7 +185,7 @@ class FileSet
     location = null;
   }
 
-  private String minify() throws IOException, NoSuchAlgorithmException
+  private String minify(Mode mode) throws IOException, NoSuchAlgorithmException
   {
     InputStream concatenatedStream;
     FileWriter wout;
@@ -187,8 +200,21 @@ class FileSet
           concatenatedStream = Concatenate.concat(this.files.toArray(new File[this.files.size()]));
           freader = new InputStreamReader(concatenatedStream, "UTF8");
 
-          JSMin jsmin = new JSMin(concatenatedStream, new FileOutputStream(location));
-          jsmin.jsmin();
+          switch (mode)
+          {
+            case MINIFY:
+              JSMin jsmin = new JSMin(concatenatedStream, new FileOutputStream(location));
+              jsmin.jsmin();
+              break;
+            case CONCATENATE:
+              OutputStream fos = new FileOutputStream(location);
+              byte[] buffer = null;
+              while (concatenatedStream.available() > 0)
+              {
+                concatenatedStream.read(buffer, 0, 4096);
+                fos.write(buffer);
+              }
+          }
           break;
         case CSS:
           concatenatedStream = Concatenate.concat(this.files.toArray(new File[this.files.size()]), rootdir);
@@ -196,24 +222,29 @@ class FileSet
 
           //FileWriter 
           wout = new FileWriter(location);
-          
-          IOUtils.copy(freader,wout);
-          
+
+          IOUtils.copy(freader, wout);
+
           //CSSMin.formatFile(freader, new FileOutputStream(location));
           wout.close();
           break;
       }
       FileInputStream script = new FileInputStream(location);
-      
       byte[] fileContent = new byte[(int) location.length()];
+
       script.read(fileContent);
+
       this.dirty = false;
+
       this.latestVersion = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
+
       return latestVersion;
     }
     catch (Exception ex)
     {
       Logger.getLogger(FileSet.class.getName()).log(Level.SEVERE, null, ex);
+
+
       return null;
     }
   }
@@ -234,7 +265,17 @@ class FileSet
     return update(false);
   }
 
+  public String update(Mode mode) throws IOException, NoSuchAlgorithmException
+  {
+    return update(false, mode);
+  }
+
   public String update(boolean force) throws IOException, NoSuchAlgorithmException
+  {
+    return update(force, Mode.MINIFY);
+  }
+
+  public String update(boolean force, Mode mode) throws IOException, NoSuchAlgorithmException
   {
     // If we're not otherwise sure we must update, we actively check if the
     //minified file is older than any file in the set.
@@ -249,6 +290,6 @@ class FileSet
         }
       }
     }
-    return (dirty || force) ? this.minify() : this.latestVersion;
+    return (dirty || force) ? this.minify(mode) : this.latestVersion;
   }
 }
