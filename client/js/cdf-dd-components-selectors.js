@@ -45,6 +45,20 @@ var DataSourceProperty = BasePropertyType.extend({
 });
 PropertiesManager.register(new DataSourceProperty());
 
+// dataSource
+var JFreeChartDataSourceProperty = DataSourceProperty.extend({
+  type: "jFreeChartDataSource",
+  stub: {
+    name: "jFreeChartDataSource",
+    description: "Datasource",
+    tooltip: "DataSource to be used in this selector",
+    type: "Datasource",
+    value: "",
+    order: 43
+  }
+});
+PropertiesManager.register(new JFreeChartDataSourceProperty());
+
 var DatasourceRenderer = SelectRenderer.extend({
 
   getData: function(){

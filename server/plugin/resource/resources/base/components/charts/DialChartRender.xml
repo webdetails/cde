@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Dial Chart Component</Name>
-		<IName>DialChart</IName>
+		<IName>Dial</IName>
 		<Description>Dial Chart Component</Description>
 		<Category>CHARTS</Category>
 		<CatDescription>Charts</CatDescription>
@@ -12,10 +12,9 @@
 			<Property>htmlObject</Property>
 			<Property>listeners</Property>
 			<Definition name="chartDefinition">
-				<Property>dataSource</Property>
+				<Property>jFreeChartDataSource</Property>
 				<Property name="title">title</Property>
 				<Property name="subtitle">subtitle</Property>
-				<Property name="chartType">chartType</Property>
 				<Property name="width">width</Property>
 				<Property name="height">height</Property>
 				<Property name="rangeTitle">rangeTitle</Property>

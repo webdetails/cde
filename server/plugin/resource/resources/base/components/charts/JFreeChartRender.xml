@@ -18,7 +18,7 @@
 				<Property name="width">width</Property>
 				<Property name="height">height</Property>
 				<Property name="caption">caption</Property>
-				<Property>dataSource</Property>
+				<Property>jFreeChartDataSource</Property>
 				<Property name="transformation">transformation</Property>
 				<Property name="directory">directory</Property>
 				<Property name="importStep">importStep</Property>
