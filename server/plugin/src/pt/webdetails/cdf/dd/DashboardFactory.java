@@ -7,6 +7,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -29,6 +30,7 @@ public class DashboardFactory
 
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
+  
   private static CacheManager cacheManager;
   private static DashboardFactory instance;
   private static Log logger = LogFactory.getLog(DashboardFactory.class);
@@ -60,7 +62,7 @@ public class DashboardFactory
   public Dashboard loadDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator gen)
   {
     Dashboard dashboard = null;
-    final boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
+    boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
     final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     XmlStructure structure = new XmlStructure(userSession);
@@ -75,7 +77,7 @@ public class DashboardFactory
      */
     try
     {
-      if (!wcdfPath.isEmpty())
+      if (!wcdfPath.isEmpty() && wcdfPath.endsWith(".wcdf"))
       {
         wcdf = structure.loadWcdfDescriptor(wcdfPath);
       }
@@ -86,6 +88,8 @@ public class DashboardFactory
          */
         wcdf = new WcdfDescriptor();
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
+        wcdf.setRendererType(Renderers.BLUEPRINT.toString());
+        bypassCache = true;//no cache for preview
       }
     }
     catch (IOException ioe)

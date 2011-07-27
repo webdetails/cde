@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -27,11 +26,7 @@ import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 
 /**
