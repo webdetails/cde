@@ -37,9 +37,8 @@ public class MobileDashboard extends AbstractDashboard
   // Dashboard rendering
   private static Log logger = LogFactory.getLog(Dashboard.class);
   /* FIELDS */
-  protected String template, header, content, footer;
-  protected Date loaded;
   protected final static String TYPE = "mobile";
+  protected final static String MOBILE_TEMPLATE = "resources/mobile/index.html";
 
   public MobileDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
   {
@@ -70,7 +69,10 @@ public class MobileDashboard extends AbstractDashboard
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
       this.header = renderHeaders(pathParams, this.content.toString());
+      this.templateFile = MOBILE_TEMPLATE;
+      this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
       this.loaded = new Date();
+
     }
     catch (Exception e)
     {
@@ -78,8 +80,7 @@ public class MobileDashboard extends AbstractDashboard
     }
   }
 
-  @Override
-  public String render()
+  public String renderToJson()
   {
     JSONObject json = new JSONObject();
     JSONObject meta = new JSONObject();

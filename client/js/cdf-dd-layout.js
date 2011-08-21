@@ -728,7 +728,8 @@ var LayoutDeleteOperation = DeleteOperation.extend({
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,
                   LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,
                   LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
-                  LayoutCarouselModel.MODEL],
+                  
+LayoutCarouselModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
