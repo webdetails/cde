@@ -633,8 +633,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final String path = Utils.getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
 
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
-    final String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
+    String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
 
+    if(formats == null){
+      logger.error("Could not obtain resources/downloadable-formats settings entry, please check plugin.xml and make sure settings are refreshed.");
+      formats = ""; //avoid NPE
+    }
+    
     List allowedFormats = Arrays.asList(formats.split(","));
     String extension = resource.replaceAll(".*\\.(.*)", "$1");
     if (allowedFormats.indexOf(extension) < 0)
