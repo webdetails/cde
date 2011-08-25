@@ -12,7 +12,7 @@
 			<Property>parameter</Property>
 			<Property>htmlObject</Property>
 			<Property>listeners</Property>
-                        <Property name="parameters">xActionArrayParameter</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
 			<Definition name="queryDefinition">
 				<Property>dataSource</Property>
 			</Definition>
