@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>externalPlugin</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>jQuery Plugin</Description>
+	<Tooltip>chosen: uses chosen.jquery.js to render select tags</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -19,6 +19,7 @@
 			<Property>postFetch</Property>
 			<Property>valuesArray</Property>
 			<Property>valueAsId</Property>
+			<Property>externalPlugin</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
