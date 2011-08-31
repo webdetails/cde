@@ -11,6 +11,7 @@
 		<Model>
 			<Property>label</Property>
 			<Property>htmlObject</Property>
+			<Property name="buttonStyle">tableStyle</Property>
 			<Property>listeners</Property>
 			<Property>expression</Property>
 			<Property>executeAtStart</Property>
