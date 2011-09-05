@@ -9,9 +9,15 @@ var CccComponent = BaseComponent.extend({
     }
 
     // clear previous table
-    $("#"+this.htmlObject).empty();
+    var ph = $("#"+this.htmlObject).empty();
     var myself = this;
+    
+    // Set up defaults for height and width
+    if(typeof(this.chartDefinition.width) === "undefined")
+      this.chartDefinition.width = ph.width();
 
+    if(typeof(this.chartDefinition.height) === "undefined")
+      this.chartDefinition.height = ph.height();
 
     pv.listenForPageLoad(function() {
 

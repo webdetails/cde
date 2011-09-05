@@ -20,6 +20,7 @@
 			<Property>valuesArray</Property>
 			<Property>valueAsId</Property>
 			<Property>size</Property>
+			<Property>externalPlugin</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>

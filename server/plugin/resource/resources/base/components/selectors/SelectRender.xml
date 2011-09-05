@@ -12,13 +12,14 @@
 			<Property>parameter</Property>
 			<Property>htmlObject</Property>
 			<Property>listeners</Property>
-                        <Property name="parameters">xActionArrayParameter</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
 			<Definition name="queryDefinition">
 				<Property>dataSource</Property>
 			</Definition>
 			<Property>postFetch</Property>
 			<Property>valuesArray</Property>
 			<Property>valueAsId</Property>
+			<Property>externalPlugin</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
