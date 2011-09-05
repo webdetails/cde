@@ -97,6 +97,7 @@ li.cdfCarouselItem {
   display: inline-block;
   float:left;
   text-align: center;
+  min-height:1px;
 }
 
 div.status {
@@ -154,4 +155,3 @@ div.statusBullets div.statusBullet.active {
   background-color: white;
   box-shadow: inset -1px 0px 2px black;
 }
-file:///Users/pdpi/Sites/scroller/scroller.html
