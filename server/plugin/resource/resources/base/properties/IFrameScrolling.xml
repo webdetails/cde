@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>iframeScrolling</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>no</DefaultValue>
+	<Description>IFrame Scrolling</Description>
+	<Tooltip>Set IFrame scrolling behavior (no|yes|auto)</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

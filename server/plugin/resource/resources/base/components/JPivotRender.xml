@@ -17,6 +17,7 @@
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Property>iframeHeight</Property>
 			<Property>iframeWidth</Property>
+			<Property>iframeScrolling</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
