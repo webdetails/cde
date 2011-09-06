@@ -8,6 +8,7 @@ body {
         color: inherit;
         font-weight: inherit;
         line-height: inherit;
+        text-align: left;
 }
 
 div.cmdHeader {
@@ -89,3 +90,5 @@ div.cmdContent > div {
 .cdfCarouselHolder {
   width: 100%;
 }
+
+a[]

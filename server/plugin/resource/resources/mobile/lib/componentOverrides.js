@@ -4,4 +4,6 @@ SelectComponent = SelectComponent.extend({
     this.base();
     cdfmobile.refreshSelector(this);
   }
-})
+});
+
+

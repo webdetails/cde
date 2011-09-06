@@ -87,9 +87,9 @@ var LayoutAddFilterBlockOperation = AddRowOperation.extend({
   types: [],
   name: "Add a Filter Block",
   description: "Add a block in which to add your filters",
-  icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERPAGE.png",
-  hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERPAGE_mouseover.png",
-  clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERPAGE_onclick.png",
+  icon: "getResource?resource=/images/NAV/FILTERPAGE.png",
+  hoverIcon: "getResource?resource=/images/NAV/FILTERPAGE_mouseover.png",
+  clickIcon: "getResource?resource=/images/NAV/FILTERPAGE_onclick.png",
 
 
   constructor: function () {
@@ -122,9 +122,9 @@ var LayoutAddFilterRowOperation = AddRowOperation.extend({
   types: [FilterBlockModel.MODEL,FilterHeaderModel.MODEL,FilterRowModel.MODEL],
   name: "Add Filter Row",
   description: "Add a new row for a parameter selector",
-  icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERLINE.png",
-  hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERLINE_mouseover.png",
-  clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERLINE_onclick.png",
+  icon: "getResource?resource=/images/NAV/FILTERLINE.png",
+  hoverIcon: "getResource?resource=/images/NAV/FILTERLINE_mouseover.png",
+  clickIcon: "getResource?resource=/images/NAV/FILTERLINE_onclick.png",
 
 
   constructor: function () {
@@ -186,9 +186,9 @@ var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
   types: [FilterBlockModel.MODEL,FilterHeaderModel.MODEL,FilterRowModel.MODEL],
   name: "Add Filter Header",
   description: "Add a new group header for the filters panel",
-  icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERGROUPHEADER.png",
-  hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERGROUPHEADER_mouseover.png",
-  clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/FILTERGROUPHEADER_onclick.png",
+  icon: "getResource?resource=/images/NAV/FILTERGROUPHEADER.png",
+  hoverIcon: "getResource?resource=/images/NAV/FILTERGROUPHEADER_mouseover.png",
+  clickIcon: "getResource?resource=/images/NAV/FILTERGROUPHEADER_onclick.png",
 
 
   constructor: function () {
@@ -278,9 +278,9 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
   types: [],
   name: "Add Carousel",
   description: "Add a new carousel that cycles between components",
-  icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL.png",
-  hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL_mouseover.png",
-  clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL_onclick.png",
+  icon: "getResource?resource=/images/NAV/ADDCAROUSEL.png",
+  hoverIcon: "getResource?resource=/images/NAV/ADDCAROUSEL_mouseover.png",
+  clickIcon: "getResource?resource=/images/NAV/ADDCAROUSEL_onclick.png",
 
 
   constructor: function () {
@@ -355,9 +355,9 @@ var LayoutAddCarouselItemOperation = AddRowOperation.extend({
   types: [LayoutCarouselModel.MODEL],
   name: "Add Carousel Item",
   description: "Add a new item to a carousel",
-  icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL_ITEM.png",
-  hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL_ITEM_mouseover.png",
-  clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/ADDCAROUSEL_ITEM_onclick.png",
+  icon: "getResource?resource=/images/NAV/ADDCAROUSEL_ITEM.png",
+  hoverIcon: "getResource?resource=/images/NAV/ADDCAROUSEL_ITEM_mouseover.png",
+  clickIcon: "getResource?resource=/images/NAV/ADDCAROUSEL_ITEM_onclick.png",
 
 
   constructor: function () {

@@ -58,6 +58,7 @@ function Scroller(element,options,$_){
     $mask.width(_width);
     $wrapper = $mask.parent();
     $holder.css('left', - _width * _currentPage);
+    $holder.find(".cdfCarouselItem:not(:nth-child("+(_currentPage+1)+")) *").hide();
     $holder.bind("webkitAnimationEnd", resetAnimation);
     $holder.bind("animationend", resetAnimation);
     $status = $("<div class='status'></div>").appendTo($wrapper);
@@ -98,29 +99,44 @@ function Scroller(element,options,$_){
     return $holder;
   };
 
+  /* scrolling procedure:
+   *  - display the item you're navigating to,
+   *  - scroll,
+   *  - hide the item you're navigating from.
+   */
   this.scrollLeft = function() {
     var cloneLeft = $.extend({},scrollLeft);
+    var $previous, $next;
     if (_currentPage < _count - 1) {
+      $previous = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
       _currentPage += 1;
+      $next = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
     } else {
       $holder.removeClass('bounce-last');
       $holder.addClass('bounce-last');
     }
     refreshStatus();
     cloneLeft.left = - _currentPage * _width;
+    $next.show();
     $holder.css(cloneLeft);
+    $previous.hide();
   };
 
   this.scrollRight = function() {
     var cloneLeft = $.extend({},scrollLeft);
     if (_currentPage > 0) {
+      $previous = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
       _currentPage -= 1;
+      $next = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
+
     } else {
       $holder.removeClass('bounce-first');
       $holder.addClass('bounce-first');
     }
     cloneLeft.left = - _currentPage * _width;
+    $next.show();
     $holder.css(cloneLeft);
+    $previous.hide();
     refreshStatus();
   };
 
