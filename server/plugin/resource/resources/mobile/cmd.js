@@ -118,7 +118,7 @@ function CDFMobile() {
              */
             var heightRatio = availableHeight / originalHeight,
             widthRatio = availableWidth / originalWidth,
-            availableRatio = availableHeight > availableWidth ? heightRatio : widthRatio,
+            availableRatio = windowHeight > windowWidth ? heightRatio : widthRatio,
             targetWidth = originalWidth * availableRatio,
             targetHeight = originalHeight * availableRatio;
 
