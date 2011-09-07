@@ -25,7 +25,7 @@ function CDFMobile() {
        // _title.text(_dashboard.meta.title);
 
         _innerFilters.empty().append($("#filters"));
-        _dashboard.empty().append(_staging.children());
+        _dashboard.empty().append(_staging.children(':not(script)'));
         updateNavigation();
         reloadCarousels();
     };
