@@ -100,6 +100,11 @@ li.cdfCarouselItem {
   min-height:1px;
 }
 
+li.cdfCarouselItem.hidden {
+  height: 1px;
+  overflow:hidden;
+}
+
 div.status {
   margin-top: 20px;
   width:100%;

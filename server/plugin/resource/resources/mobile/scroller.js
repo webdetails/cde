@@ -9,13 +9,13 @@ function Scroller(element,options,$_){
     _count = $holder.children().length,
     _currentPage = 0,
     _width = _options.width,
-    _duration = (_options.duration || 300) + "ms";
+    _duration = (_options.duration || 300);
 
   var scrollLeft = {
       "-webkit-transition-property": "left",
       "-moz-transition-property": "left",
-      "-webkit-transition-duration": _duration,
-      "-moz-transition-duration": _duration,
+      "-webkit-transition-duration": _duration + "ms",
+      "-moz-transition-duration": _duration + "ms",
       position: 'relative',
       left: 0
     };
@@ -44,6 +44,7 @@ function Scroller(element,options,$_){
     _width = availableSpace;
     cleanup();
     init();
+    fitMaskHeight();
   };
 
   function resetAnimation (){
@@ -51,6 +52,9 @@ function Scroller(element,options,$_){
     $holder.removeClass('bounce-last');
   };
   
+  function fitMaskHeight() {
+    $mask.height($('li.cdfCarouselItem:nth-child('+(_currentPage + 1)+')').height());
+  }
   function createStructure() {
     $holder.wrap("<div class='mask'>").addClass('bounce');
     $mask = $holder.parent();
@@ -58,7 +62,7 @@ function Scroller(element,options,$_){
     $mask.width(_width);
     $wrapper = $mask.parent();
     $holder.css('left', - _width * _currentPage);
-    $holder.find(".cdfCarouselItem:not(:nth-child("+(_currentPage+1)+")) *").hide();
+    $holder.find(".cdfCarouselItem:not(:nth-child("+(_currentPage+1)+"))");
     $holder.bind("webkitAnimationEnd", resetAnimation);
     $holder.bind("animationend", resetAnimation);
     $status = $("<div class='status'></div>").appendTo($wrapper);
@@ -106,43 +110,34 @@ function Scroller(element,options,$_){
    */
   this.scrollLeft = function() {
     var cloneLeft = $.extend({},scrollLeft);
-    var $previous, $next;
+    var $next;
     if (_currentPage < _count - 1) {
-      $previous = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
       _currentPage += 1;
-      $next = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
+      cloneLeft.left = - _currentPage * _width;
+      $holder.css(cloneLeft);
+      refreshStatus();
+      fitMaskHeight();
     } else {
       $holder.removeClass('bounce-last');
       $holder.addClass('bounce-last');
     }
-    refreshStatus();
-    cloneLeft.left = - _currentPage * _width;
-    $next.show();
-    $holder.css(cloneLeft);
-    $previous.hide();
   };
 
   this.scrollRight = function() {
     var cloneLeft = $.extend({},scrollLeft);
     if (_currentPage > 0) {
-      $previous = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
       _currentPage -= 1;
-      $next = $holder.find(".cdfCarouselItem:nth-child("+(_currentPage+1)+") *");
-
+      cloneLeft.left = - _currentPage * _width;
+      $holder.css(cloneLeft);
+      refreshStatus();
+      fitMaskHeight();
     } else {
       $holder.removeClass('bounce-first');
       $holder.addClass('bounce-first');
     }
-    cloneLeft.left = - _currentPage * _width;
-    $next.show();
-    $holder.css(cloneLeft);
-    $previous.hide();
-    refreshStatus();
   };
 
-  this.fitToContainer = function() {
-    fitToContainer();
-  }
+  this.fitToContainer = fitToContainer;
 
   /******************
    * Initialization *
