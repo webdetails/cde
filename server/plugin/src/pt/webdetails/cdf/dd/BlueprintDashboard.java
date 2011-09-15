@@ -87,6 +87,8 @@ public class BlueprintDashboard extends AbstractDashboard
     final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
     final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? pathParams.getParameter("root").toString() : "" : "";
     final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
+    
+    final String title = "<title>"+getWcdf().getTitle()+"</title>";
     // Acquire CDF headers
     try
     {
@@ -145,7 +147,7 @@ public class BlueprintDashboard extends AbstractDashboard
     }
 
     String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
-    return raw + cdfDependencies + dependencies + styles;
+    return title + raw + cdfDependencies + dependencies + styles;
   }
 
   public String getType()

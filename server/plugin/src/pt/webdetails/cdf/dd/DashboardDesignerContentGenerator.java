@@ -684,7 +684,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       final String filePath = normalizePathSeparators(file.getCanonicalPath());
       final String basePath = normalizePathSeparators(absPathBase);
-      return filePath.startsWith(basePath);
+      File base = new File(basePath);
+      return filePath.startsWith(normalizePathSeparators(base.getCanonicalPath()));
     }
     catch (Exception e)
     {

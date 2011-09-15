@@ -25,7 +25,7 @@ function CDFMobile() {
        // _title.text(_dashboard.meta.title);
 
         _innerFilters.empty().append($("#filters"));
-        _dashboard.empty().append(_staging.children());
+        _dashboard.empty().append(_staging.children(':not(script)'));
         updateNavigation();
         reloadCarousels();
     };
@@ -82,8 +82,8 @@ function CDFMobile() {
         $.each(charts,
         function(i, comp) {
             /* First thing first: don't even try to resize charts that haven't
-       * been initialized!
-       */
+             * been initialized!
+             */
             if (!comp.chart) {
                 return;
             }
@@ -91,37 +91,41 @@ function CDFMobile() {
             var $e = $("#" + comp.htmlObject + " svg"),
             e = $e[0],
             /* Next step is measuring the available space for our charts. We always
-       * have the full window width available to us, but that's not the case
-       * with the height, so we trim out the space we know must be reserved.
-       */
+             * have the full window width available to us, but that's not the case
+             * with the height, so we trim out the space we know must be reserved.
+             */
             windowWidth = window.innerWidth,
             windowHeight = window.innerHeight,
             availableWidth = windowWidth - 20,
             availableHeight = windowHeight - headerFooterPadding - 150,
             /* In the name of sanity, we'd rather calculate everything relative
-       * to the original sizes, rather than the last calculated size, so
-       * we'll store/retrieve the original values in a data attribute.
-       */
-            originalHeight = $e.attr('data-originalHeight') || $e.height(),
-            originalWidth = $e.attr('data-originalWidth') || $e.width();
+             * to the original sizes, rather than the last calculated size, so
+             * we'll store/retrieve the original values in a data attribute.
+             */
+            originalHeight = $e.attr('data-originalHeight') || $e.parent().height(),
+            originalWidth = $e.attr('data-originalWidth') || $e.parent().width();
             $e.attr('data-originalHeight', originalHeight);
             $e.attr('data-originalWidth', originalWidth);
 
             /* Next we calculate the ratios between original and available space.
-        * To keep the original proportions, we have to multiply both axes
-        * by the same ratio, so we need to pick the smallest of the two so
-        * we stay within the available space
-        */
+             * To keep the original proportions, we have to multiply both axes
+             * by the same ratio. If there's more available height than width,
+             * we're in portrait mode, so we'll use the height ratio to make the
+             * chart fit within the available space. If the width is bigger,
+             * we're in landscape mode. Rather than having a tiny chart we'll use
+             *the full width, and overflow vertically as needed -- effectively a
+             * zoom mode.
+             */
             var heightRatio = availableHeight / originalHeight,
             widthRatio = availableWidth / originalWidth,
-            availableRatio = heightRatio < widthRatio ? heightRatio: widthRatio,
+            availableRatio = windowHeight > windowWidth ? heightRatio : widthRatio,
             targetWidth = originalWidth * availableRatio,
             targetHeight = originalHeight * availableRatio;
 
             /* Finally, set the width and height to our desired values for the chart
-       * object, the component and the svg. We also need to give the svg a
-       * viewBox, or the svg will think we just enlarged its canvas.
-       */
+             * object, the component and the svg. We also need to give the svg a
+             * viewBox, or the svg will think we just enlarged its canvas.
+             */
 
             comp.chart.options.width = targetWidth;
             comp.chart.options.height = targetHeight;
@@ -136,18 +140,18 @@ function CDFMobile() {
     };
 
     /* The navigation pull-down menu gets its data from the loaded
-   * dashboard. We expect to find a mobileNav component with a
-   * navList() method that provides a listing of the dashboards
-   * you can navigate to from your present location. if such a
-   * component isn't found, we assume that this is a dead-end
-   * dashboard and hide the navigation pull-down instead.
-   */
+     * dashboard. We expect to find a mobileNav component with a
+     * navList() method that provides a listing of the dashboards
+     * you can navigate to from your present location. if such a
+     * component isn't found, we assume that this is a dead-end
+     * dashboard and hide the navigation pull-down instead.
+     */
     function updateNavigation() {
         /* First we check for the existence of the mobileNav component.
-     * We check for either the bare mobileNav name, or the the
-     * CDE-style render_mobileNav name.
-     * If it doesn't exist, we just hide the navigation pull-down.
-     */
+         * We check for either the bare mobileNav name, or the the
+         * CDE-style render_mobileNav name.
+         * If it doesn't exist, we just hide the navigation pull-down.
+         */
         var navComponent = window.mobileNav || window.render_mobileNav;
         if (!navComponent) {
             _navSelector.hide();
@@ -284,12 +288,14 @@ function CDFMobile() {
 
     this.filtersOk = function() {
         Dashboards.log("Accepting Filters");
-        history.back();
     };
 
     this.filtersCancel = function() {
         Dashboards.log("Rejecting Filters");
-        history.back();
+        $.mobile.changePage(
+            "#" + $.mobile.urlHistory.getPrev().url,
+            {transition:'flip', reverse:true}
+        );
     };
     this.refreshSelector = function(component) {
         $("#" + component.htmlObject + " select").attr('data-theme', _jqmTheme).selectmenu();
@@ -346,6 +352,8 @@ $(function() {
         //      label: "Ok",
         label: "Done",
         icon: "check",
+        location: "#dashboardView",
+        transition: "flip",
         callback: cdfmobile.filtersOk,
     }
     ]);

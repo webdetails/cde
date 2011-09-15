@@ -9,21 +9,34 @@ var CccComponent = BaseComponent.extend({
     }
 
     // clear previous table
-    $("#"+this.htmlObject).empty();
+    var ph = $("#"+this.htmlObject).empty();
     var myself = this;
+    
+    // Set up defaults for height and width
+    if(typeof(this.chartDefinition.width) === "undefined")
+      this.chartDefinition.width = ph.width();
 
+    if(typeof(this.chartDefinition.height) === "undefined")
+      this.chartDefinition.height = ph.height();
+  
+    if (Modernizr.svg) {
+      this.renderChart();
+    } else {
+      pv.listenForPageLoad(function() {myself.renderChart();});
+    }
+  },
 
-    pv.listenForPageLoad(function() {
-
-      if(myself.chartDefinition.dataAccessId || myself.chartDefinition.query){
+  renderChart: function() {
+      var myself = this;
+      if(this.chartDefinition.dataAccessId || myself.chartDefinition.query){
       
-        myself.query = new Query(myself.chartDefinition);
+        this.query = new Query(this.chartDefinition);
 
-        myself.query.fetchData(myself.parameters, function(values) {
+        this.query.fetchData(this.parameters, function(values) {
           var changedValues = undefined;
           if((typeof(myself.postFetch)=='function')){
             changedValues = myself.postFetch(values);
-            $("#" + this.htmlObject).append('<div id="'+ this.htmlObject  +'protovis"></div>');
+            $("#" + this.htmlObject).append('<div id="'+ myself.htmlObject  +'protovis"></div>');
           }
           if (changedValues != undefined) {
             values = changedValues;
@@ -34,10 +47,8 @@ var CccComponent = BaseComponent.extend({
       }
       else{
         // initialize the component only
-        myself.render()
+        this.render()
       }
-
-    });
   },
 
   render: function(values) {
