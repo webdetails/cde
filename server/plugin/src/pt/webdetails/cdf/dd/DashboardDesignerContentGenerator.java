@@ -326,7 +326,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //  }
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+   // final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
 
     getresource(pathParams, out);
@@ -345,11 +345,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     catch (SecurityException e)
     {
-      response.sendError(response.SC_FORBIDDEN);
+      response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
     catch (FileNotFoundException e)
     {
-      response.sendError(response.SC_NOT_FOUND);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
   }
 
@@ -408,11 +408,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     catch (SecurityException e)
     {
-      response.sendError(response.SC_FORBIDDEN);
+      response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
     catch (FileNotFoundException e)
     {
-      response.sendError(response.SC_NOT_FOUND);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
   }
@@ -460,11 +460,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     catch (SecurityException e)
     {
-      response.sendError(response.SC_FORBIDDEN);
+      response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
     catch (FileNotFoundException e)
     {
-      response.sendError(response.SC_NOT_FOUND);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
   }
@@ -498,11 +498,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     catch (SecurityException e)
     {
-      response.sendError(response.SC_FORBIDDEN);
+      response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
     catch (FileNotFoundException e)
     {
-      response.sendError(response.SC_NOT_FOUND);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
   }
 
@@ -640,7 +640,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       formats = ""; //avoid NPE
     }
     
-    List allowedFormats = Arrays.asList(formats.split(","));
+    List<String> allowedFormats = Arrays.asList(formats.split(","));
     String extension = resource.replaceAll(".*\\.(.*)", "$1");
     if (allowedFormats.indexOf(extension) < 0)
     {
@@ -729,7 +729,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     cda.setCallbacks(output);
     cda.createContent();
     out.write(outputStream.toString().getBytes(ENCODING));
-    JSON json = JSONSerializer.toJSON(outputStream.toString());
+    //JSON json = JSONSerializer.toJSON(outputStream.toString());
 
   }
 

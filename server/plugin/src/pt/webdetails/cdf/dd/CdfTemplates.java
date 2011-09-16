@@ -42,6 +42,12 @@ public class CdfTemplates {
 
   }
 
+  /**
+   * Invokes operation through reflection
+   * @param out
+   * @param requestParams
+   * @throws Exception
+   */
   public void syncronize(final OutputStream out, final IParameterProvider requestParams) throws Exception {
 
     //Read parameters

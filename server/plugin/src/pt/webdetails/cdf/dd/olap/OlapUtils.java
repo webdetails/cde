@@ -51,9 +51,9 @@ public class OlapUtils {
     Connection nativeConnection = null;
     String lastQuery = null;
     IPentahoResultSet resultSet = null;
-    private boolean useExtendedColumnNames = false;
-    private boolean returnNullCells = false;
-    private static final String DIRECTION_UP = "up";
+//    private boolean useExtendedColumnNames = false;
+//    private boolean returnNullCells = false;
+//    private static final String DIRECTION_UP = "up";
     private static final String DIRECTION_DOWN = "down";
 
     public OlapUtils(IPentahoSession userSession) {
@@ -353,7 +353,7 @@ public class OlapUtils {
 
         String query = "select NON EMPTY {[Measures].[Quantity]} ON COLUMNS,  NON EMPTY  [Product].Children ON ROWS from [SteelWheelsSales] where [Markets].[All Markets].[EMEA]";
         Query mdxQuery = connection.parseQuery(query);
-        MemberExpr member = (MemberExpr) mdxQuery.slicerAxis.getChildren()[0];
+        MemberExpr member = (MemberExpr) mdxQuery.getSlicerAxis().getChildren()[0];
         member.getMember();
 
 

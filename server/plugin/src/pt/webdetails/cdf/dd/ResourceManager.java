@@ -24,6 +24,8 @@ public class ResourceManager {
   public static ResourceManager instance;
 
   public static final String PLUGIN_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/");
+  public static final String SOLUTION_DIR = PentahoSystem.getApplicationContext().getSolutionPath(DashboardDesignerContentGenerator.SOLUTION_DIR + "/");
+  
   private static final HashSet<String> CACHEABLE_EXTENSIONS = new HashSet<String>();
   private static final HashMap<String, String> cacheContainer = new HashMap<String, String>();
 
@@ -63,6 +65,12 @@ public class ResourceManager {
 
     // Read file
     File file = new File(PLUGIN_DIR + path);
+    // if not under plugin dir, try cde's solution dir
+    if(!file.exists())
+    {
+      file = new File(SOLUTION_DIR + path);
+    }
+    
     String resourceContents = FileUtils.readFileToString(file);
 
     if (tokens != null) {

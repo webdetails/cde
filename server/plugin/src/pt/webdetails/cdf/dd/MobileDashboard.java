@@ -4,8 +4,6 @@
  */
 package pt.webdetails.cdf.dd;
 
-import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Date;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -15,11 +13,7 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.RenderComponents;
-import pt.webdetails.cdf.dd.render.StringFilter;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
-import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
