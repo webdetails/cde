@@ -9,15 +9,21 @@ function Scroller(element,options,$_){
     _count = $holder.children().length,
     _currentPage = 0,
     _width = _options.width,
-    _duration = (_options.duration || 300);
+    _duration = (_options.duration || 300),
+    _animationType;
 
   var scrollLeft = {
-      "-webkit-transition-property": "left",
+      "-webkit-transition": "-webkit-transform "+ _duration+ "ms linear",
+      "-moz-transition": "-moz-transform "+ _duration+ "ms linear",
+/*      "-webkit-transition-property": "left",
       "-moz-transition-property": "left",
       "-webkit-transition-duration": _duration + "ms",
       "-moz-transition-duration": _duration + "ms",
+*/
       position: 'relative',
-      left: 0
+      "-webkit-tranform": "translate3d(0,0,0)",
+      "-moz-tranform": "translate3d(0,0,0)",
+      _left: 0
     };
 
   /*******************
@@ -53,7 +59,12 @@ function Scroller(element,options,$_){
   };
   
   function fitMaskHeight() {
-    $mask.height($('li.cdfCarouselItem:nth-child('+(_currentPage + 1)+')').height());
+    /* We want to adjust height to the item on display,
+     * but we must account for the margins, borders,
+     * padding on the item's parent object.
+     */
+    var extraHeight = $holder.outerHeight(true) -$holder.height();
+    $mask.height($('li.cdfCarouselItem:nth-child('+(_currentPage + 1)+')').height() + extraHeight);
   }
   function createStructure() {
     $holder.wrap("<div class='mask'>").addClass('bounce');
@@ -61,7 +72,9 @@ function Scroller(element,options,$_){
     $mask.wrap("<div class='scroller-wrapper'>");
     $mask.width(_width);
     $wrapper = $mask.parent();
-    $holder.css('left', - _width * _currentPage);
+    // $holder.css('left', - _width * _currentPage);
+    $holder.css('-webkit-transform', "transform3d(0," + (- _width * _currentPage) + "px,0)");
+    $holder.css('-moz-transform', "transform3d(0," + (- _width * _currentPage) + "px,0)");
     $holder.find(".cdfCarouselItem:not(:nth-child("+(_currentPage+1)+"))");
     $holder.bind("webkitAnimationEnd", resetAnimation);
     $holder.bind("animationend", resetAnimation);
@@ -113,7 +126,8 @@ function Scroller(element,options,$_){
     var $next;
     if (_currentPage < _count - 1) {
       _currentPage += 1;
-      cloneLeft.left = - _currentPage * _width;
+      cloneLeft['-webkit-transform'] = "transform3d(0," + (- _width * _currentPage) + "px,0)";
+      cloneLeft['-moz-transform'] = "transform3d(0," + (- _width * _currentPage) + "px,0)";
       $holder.css(cloneLeft);
       refreshStatus();
       fitMaskHeight();
@@ -127,7 +141,8 @@ function Scroller(element,options,$_){
     var cloneLeft = $.extend({},scrollLeft);
     if (_currentPage > 0) {
       _currentPage -= 1;
-      cloneLeft.left = - _currentPage * _width;
+      cloneLeft['-webkit-transform'] = "transform3d(0," + (- _width * _currentPage) + "px,0)";
+      cloneLeft['-moz-transform'] = "transform3d(0," + (- _width * _currentPage) + "px,0)";
       $holder.css(cloneLeft);
       refreshStatus();
       fitMaskHeight();

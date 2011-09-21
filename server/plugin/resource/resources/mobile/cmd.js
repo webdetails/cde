@@ -1,3 +1,18 @@
+/* This is a reset for the 
+ */
+
+$.blockUI.defaults.fadeIn = 0;
+$.blockUI.defaults.message = '<div style="padding: 15px;"><img src="' + webAppPath + '/content/pentaho-cdf/resources/style/images/busy.gif" /><h3>Processing...</h3></div>';
+$.blockUI.defaults.css.left = '40%';
+$.blockUI.defaults.css.top = '30%';
+$.blockUI.defaults.css.marginLeft = '85px';
+$.blockUI.defaults.css.width = '170px';
+$.blockUI.defaults.css.opacity = '.8';
+$.blockUI.defaults.css['-webkit-border-radius'] = '10px'; 
+$.blockUI.defaults.css['-moz-border-radius'] = '10px';
+
+
+
 function CDFMobile() {
 
     var myself = this;
