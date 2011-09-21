@@ -1,8 +1,13 @@
 package pt.webdetails.cdf.dd;
 
 import net.sf.json.JSONArray;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
+
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.io.File;
@@ -16,9 +21,13 @@ import java.util.Iterator;
 @SuppressWarnings("unchecked")
 public class CdfStyles {
 
+  private static Log logger = LogFactory.getLog(CdfStyles.class);
 
   private static CdfStyles instance;
-  public static String RESOURCE_STYLES_DIR = "resources/styles";
+  
+  private static String RESOURCE_STYLES_DIR = "resources/styles";
+  private static String RESOURCE_STYLES_DIR_SOLUTION = "styles";
+  
   public static final String DEFAULTSTYLE = "Clean";
 
 
@@ -66,17 +75,20 @@ public class CdfStyles {
 
 
     final File defaultStylesDir = new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR);
-
+    final File customStylesDir = new File(ResourceManager.SOLUTION_DIR + RESOURCE_STYLES_DIR_SOLUTION);
+    
     final FilenameFilter htmlFilter = new FilenameFilter() {
       public boolean accept(final File dir, final String name) {
         return name.endsWith(".html");
       }
     };
 
+    //get bundled styles
     File[] styleFiles = defaultStylesDir.listFiles(htmlFilter);
 
     if (styleFiles == null) {
-      throw new DashboardDesignerException("No styles found in plugin directory");
+      logger.error("No styles directory found in resources");
+      styleFiles = new File[0];
     }
 
     Arrays.sort(styleFiles);
@@ -85,10 +97,24 @@ public class CdfStyles {
       final String name = styleFile.getName();
       result.add(name.substring(0,name.lastIndexOf('.')));
     }
-
+   
+    //append custom styles
+    if(customStylesDir.isDirectory()){
+      File[] customStyleFiles = customStylesDir.listFiles(htmlFilter);
+      Arrays.sort(customStyleFiles);
+      for (File styleFile : customStyleFiles) 
+      {
+        final String name = styleFile.getName();
+        String styleEntry = name.substring(0,name.lastIndexOf('.'));
+        if(!ArrayUtils.contains(styleFiles, styleEntry))
+        {
+          result.add(styleEntry);
+        }
+        else logger.error("Custom style " + styleEntry + " has same name as another style in resources.");
+      } 
+    }
 
     return result;
-
   }
 
 
@@ -103,7 +129,8 @@ public class CdfStyles {
   }
 
   public String getResourceLocation(String style) {
-
-    return RESOURCE_STYLES_DIR + "/" + style + ".html";
+    File styleFile = new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR + "/" + style + ".html");
+    if(styleFile.exists()) return RESOURCE_STYLES_DIR + "/" + style + ".html";
+    else return RESOURCE_STYLES_DIR_SOLUTION + "/" + style + ".html";
   }
 }

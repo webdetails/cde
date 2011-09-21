@@ -1122,7 +1122,6 @@ var ColorRenderer = CellRenderer.extend({
 
 var TextAreaRenderer = CellRenderer.extend({
 
-  // Locally set the value. Please not that this will only be used
   value: null,
 
   constructor: function(tableManager){
@@ -1190,7 +1189,6 @@ var TextAreaRenderer = CellRenderer.extend({
 //new
 var CodeRenderer = CellRenderer.extend({
 
-  // Locally set the value. Please not that this will only be used
   value: null,
   editor: null,
 
