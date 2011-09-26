@@ -45,9 +45,12 @@ var CccComponent = BaseComponent.extend({
         });
 
       }
+      else if(this.valuesArray != undefined){
+        this.render(this.valuesArray);
+      }
       else{
         // initialize the component only
-        this.render()
+        this.render();
       }
   },
 

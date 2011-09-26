@@ -145,7 +145,7 @@ public class DatasourceProperty extends GenericProperty
     return replaceParameters(output.toString());
   }
 
-  private String renderBuiltinCdaDatasource(String name, JXPathContext node)
+  protected String renderBuiltinCdaDatasource(String name, JXPathContext node)
   {
     StringBuilder output = new StringBuilder();
     String queryName = XPathUtils.getStringValue(node, "properties/value[../name='" + getName() + "']");
