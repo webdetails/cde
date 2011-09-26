@@ -827,11 +827,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   String getCdfContext()
   {
-
-    // TODO: Add request params so that CDF can add them to the context object
-    Map<String, Object> params = new HashMap<String, Object>();
-    return PluginUtils.callPlugin("pentaho-cdf", "Context", params);
-
+    return PluginUtils.callPlugin("pentaho-cdf", "Context", parameterProviders.get(IParameterProvider.SCOPE_REQUEST));
   }
 
   String getCdfIncludes(String dashboard) throws Exception

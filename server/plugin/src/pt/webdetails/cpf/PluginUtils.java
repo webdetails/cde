@@ -31,6 +31,14 @@ public class PluginUtils
 
   public static String callPlugin(String pluginName, String method, Map<String, Object> params)
   {
+    IParameterProvider requestParams = new SimpleParameterProvider(params);
+    return callPlugin(pluginName, method, requestParams);
+
+  }
+
+  public static String callPlugin(String pluginName, String method, IParameterProvider params)
+  {
+
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
     IContentGenerator contentGenerator;
@@ -44,13 +52,19 @@ public class PluginUtils
       return null;
     }
     return callPlugin(userSession, contentGenerator, method, params);
-
   }
 
+
+  
   public static String callPlugin(IPentahoSession userSession, IContentGenerator contentGenerator, String method, Map<String, Object> params)
   {
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     IParameterProvider requestParams = new SimpleParameterProvider(params);
+    return callPlugin(userSession, contentGenerator, method, requestParams);
+  }
+  public static String callPlugin(IPentahoSession userSession, IContentGenerator contentGenerator, String method, IParameterProvider params)
+  {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    IParameterProvider requestParams = params;
     Map<String, Object> pathMap = new HashMap<String, Object>();
     pathMap.put("path", "/" + method);
     IParameterProvider pathParams = new SimpleParameterProvider(pathMap);
@@ -58,10 +72,9 @@ public class PluginUtils
     paramProvider.put(IParameterProvider.SCOPE_REQUEST, requestParams);
     paramProvider.put("path", pathParams);
 
-    
+
     return callPlugin(userSession, contentGenerator, outputStream, paramProvider);
   }
-
   public static String callPlugin(IPentahoSession userSession, IContentGenerator cda, OutputStream outputStream, Map<String, IParameterProvider> paramProvider)
   {
     IOutputHandler outputHandler = new SimpleOutputHandler(outputStream, false);
