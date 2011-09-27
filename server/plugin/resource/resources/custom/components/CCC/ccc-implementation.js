@@ -19,7 +19,7 @@ var CccComponent = BaseComponent.extend({
     if(typeof(this.chartDefinition.height) === "undefined")
       this.chartDefinition.height = ph.height();
   
-    if (Modernizr.svg) {
+    if (Modernizr != undefined && Modernizr.svg) {
       this.renderChart();
     } else {
       pv.listenForPageLoad(function() {myself.renderChart();});
