@@ -217,7 +217,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     }
 
     String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
-    return title + raw + cdfDependencies + dependencies + styles;
+    return title + cdfDependencies + raw + dependencies + styles;
   }
 
   public String getContent()
