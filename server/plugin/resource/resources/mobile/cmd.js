@@ -2,15 +2,31 @@
  */
 
 $.blockUI.defaults.fadeIn = 0;
-$.blockUI.defaults.message = '<div style="padding: 15px;"><img src="' + webAppPath + '/content/pentaho-cdf/resources/style/images/busy.gif" /><h3>Processing...</h3></div>';
-$.blockUI.defaults.css.left = '40%';
-$.blockUI.defaults.css.top = '30%';
-$.blockUI.defaults.css.marginLeft = '85px';
-$.blockUI.defaults.css.width = '170px';
+$.blockUI.defaults.message = '<div style="padding: 15px;"><img src="res/system/pentaho-cdf-dd/resources/mobile/img/spinner.gif" />';
+$.blockUI.defaults.css.left = '50%';
+$.blockUI.defaults.css.top = '50%';
+$.blockUI.defaults.css.marginLeft = '-210px';
+$.blockUI.defaults.css.marginTop = '-220px';
+$.blockUI.defaults.css.width = '420px';
+$.blockUI.defaults.css.height = '440px';
+
 $.blockUI.defaults.css.opacity = '.8';
 $.blockUI.defaults.css['-webkit-border-radius'] = '10px'; 
 $.blockUI.defaults.css['-moz-border-radius'] = '10px';
 
+Dashboards.blockUIwithDrag = function() {
+  if (typeof Dashboards.i18nSupport !== "undefined" && Dashboards.i18nSupport != null) {
+    // If i18n support is enabled process the message accordingly
+    $.blockUI.defaults.message = '<div style="padding: 15px;"><img src="' + webAppPath + '/content/pentaho-cdf/resources/style/images/busy.gif" /><h3>' + Dashboards.i18nSupport.prop('processing.message') + '</h3></div>';
+  }
+
+  $.blockUI();
+  var handle = $('<div id="blockUIDragHandle"> <a href="javascript:$.unblockUI()" title="Click to unblock">X</a></div>')
+  $("div.blockUI.blockMsg").prepend(handle);
+  $("div.blockUI.blockMsg").draggable({
+    handle: "#blockUIDragHandle"
+  });
+};
 
 
 function CDFMobile() {
