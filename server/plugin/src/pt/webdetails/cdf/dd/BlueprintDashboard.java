@@ -147,7 +147,7 @@ public class BlueprintDashboard extends AbstractDashboard
     }
 
     String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
-    return title + raw + cdfDependencies + dependencies + styles;
+    return title + cdfDependencies + raw + dependencies + styles;
   }
 
   public String getType()
