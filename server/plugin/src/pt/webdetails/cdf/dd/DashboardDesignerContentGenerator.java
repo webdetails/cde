@@ -53,7 +53,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 {
 
   public static final String PLUGIN_NAME = "pentaho-cdf-dd";
-  public static final String PLUGIN_PATH = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
+  public static final String SYSTEM_PATH = "system";
+  public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
   /**
    * solution folder for custom components, styles and templates
    */
@@ -326,7 +327,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 //  }
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-   // final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    // final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
 
     getresource(pathParams, out);
@@ -359,7 +360,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     response.setHeader("Content-Type", "text/plain");
     response.setHeader("content-disposition", "inline");
 
-      getresource(pathParams, out);
+    getresource(pathParams, out);
   }
 
   public void getimg(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -487,11 +488,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
-    
+
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     String[] roots = new String[2];
     roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
-    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath(SOLUTION_DIR);
+    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
     try
     {
       getSolutionResource(out, resource, roots);
@@ -621,8 +622,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
-    String[] roots = new String[1];
-    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath("");
+    String[] roots = new String[2];
+    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
+    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
     getSolutionResource(out, resource, roots);
   }
 
@@ -635,11 +637,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
     String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
 
-    if(formats == null){
+    if (formats == null)
+    {
       logger.error("Could not obtain resources/downloadable-formats settings entry, please check plugin.xml and make sure settings are refreshed.");
       formats = ""; //avoid NPE
     }
-    
+
     List<String> allowedFormats = Arrays.asList(formats.split(","));
     String extension = resource.replaceAll(".*\\.(.*)", "$1");
     if (allowedFormats.indexOf(extension) < 0)
@@ -648,15 +651,26 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       throw new SecurityException("Not allowed");
     }
     final File file = new File(path);
+    final String system = PentahoSystem.getApplicationContext().getSolutionPath(SYSTEM_PATH);
+    File rootFile;
     boolean allowed = false;
     for (String root : allowedRoots)
     {
       if (isFileWithinPath(file, root))
       {
-        allowed = true;
-        break;
+        /* If the file's within the specified root, it looks good. But if the
+         * file is within /system/, we need to check whether the root specifically
+         * allows for files in there as well.
+         */
+        rootFile = new File(root);
+        if (!isFileWithinPath(file, system) || isFileWithinPath(rootFile, system))
+        {
+          allowed = true;
+          break;
+        }
       }
     }
+
     if (!allowed)
     {
       throw new SecurityException("Not allowed");
@@ -670,6 +684,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     catch (FileNotFoundException e)
     {
+      logger.warn("Couldn't find file " + file.getCanonicalPath());
       throw e;
     }
     finally
@@ -810,7 +825,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     this.packager = Packager.getInstance();
     Properties props = new Properties();
-    String rootdir = PentahoSystem.getApplicationContext().getSolutionPath("system/" + PLUGIN_NAME);
+    String rootdir = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
     props.load(new FileInputStream(rootdir + "/includes.properties"));
 
     if (!packager.isPackageRegistered("scripts"))
