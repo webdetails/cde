@@ -670,7 +670,7 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
       
       var queryRow = this.getTableManager().getTableModel().getRowByName("query");
       if(queryRow != undefined && queryRow.value==""){
-        queryRow.value="select {} on ROWS, {} on COLUMNS from ["+cube+"];
+        queryRow.value="select {} on ROWS, {} on COLUMNS from ["+cube+"]";
         this.getTableManager().renderColumnByRow(queryRow);
       }
 
