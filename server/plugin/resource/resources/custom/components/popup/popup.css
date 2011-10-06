@@ -1,0 +1,47 @@
+.tooltipComponent {
+  position: absolute;
+  border: 6px solid #361b0a;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 5px rgba(0,0,0,0.3);
+  padding: 10px;
+  background-color: white;
+}
+
+.tooltipComponent a.close {
+    position: absolute;
+    text-decoration: none;
+    top: 10px;
+    right: 10px;
+    width: 14px;
+    height: 14px;
+    background-image: url("img/close_button.png");
+}
+.tooltipComponent .arrow {
+  position: absolute;
+}
+
+.tooltipComponent.east .arrow {
+  background-image: url("img/vertex_l.png");
+  height: 45px;
+  width: 18px;
+  left: -18px;
+}
+.tooltipComponent.west .arrow {
+  background-image: url("img/vertex_r.png");
+  height: 45px;
+  width: 18px;
+  right: -18px;
+}
+.tooltipComponent.north .arrow {
+  background-image: url("img/vertex_d.png");
+  height: 18px;
+  width: 45px;
+  bottom: -18px;
+}
+.tooltipComponent.south .arrow {
+  background-image: url("img/vertex_u.png");
+  top: -18px;
+  height: 18px;
+  width: 45px;
+}
+
