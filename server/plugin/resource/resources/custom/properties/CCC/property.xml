@@ -737,6 +737,36 @@
 
   <DesignerProperty>
     <Header>
+      <Name>cccStructDatasource</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Structure source</Description>
+      <Tooltip>Structure of (complex) chart</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>25</Order>
+      <Advanced>false</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>cccSelectParam</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>select parameter</Description>
+      <Tooltip>Name of variable used for selection.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>50</Order>
+      <Advanced>false</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
       <Name>cccBulletMeasures</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"[]"</DefaultValue>
