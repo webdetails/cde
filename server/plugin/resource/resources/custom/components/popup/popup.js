@@ -6,6 +6,7 @@ var PopupComponent = BaseComponent.extend({
   ph: undefined,
   arrow: undefined,
   content: undefined,
+  cancel: undefined,
 
   update: function(){
     var myself = this;
@@ -13,13 +14,14 @@ var PopupComponent = BaseComponent.extend({
     this.ph = $('<div>');
     this.content = $("#" + this.htmlObject).appendTo(this.ph);
     this.ph.hide().appendTo($('body'));
-    this.ph.addClass('tooltipComponent');
-    var link = $("<a>&nbsp;</a>");
-    link.addClass("close").click(function(){
+    this.ph.addClass('popupComponent');
+    this.cancel = $("<a>&nbsp;</a>");
+    this.cancel.addClass("close").click(function(){
         myself.hide();
     });
-    link.appendTo(this.ph);
+    this.cancel.appendTo(this.ph);
     this.arrow = $("<div class='arrow'>").appendTo(this.ph);
+    this.content.removeClass('hidePopup');
   },
 
   popup: function(target,gravity) {
@@ -30,9 +32,14 @@ var PopupComponent = BaseComponent.extend({
         'left': 'auto',
         'right': 'auto'
       },
-      minimumDistance = 20, /* Minimum distance from the edges */
-      vertexOffset = 27, /* How much clearance we need to display the vertex */
-      vertexSize = 45, /* How big is the vertex along the tooltip edge */
+      /* Minimum distance from the edges */
+      minimumDistance = 20,
+      /* How much clearance we need to display the vertex, 
+       * should be (vertex depth - border depth)
+       */
+      vertexOffset = 18 - 6,
+      /* Size of the vertex along the tooltip edge */
+      vertexSize = 45, 
       targetOffset,
       phHeight = this.ph.outerHeight(),
       phWidth = this.ph.outerWidth();
@@ -41,6 +48,7 @@ var PopupComponent = BaseComponent.extend({
     gravity = gravity || this.gravity;
     /* Clear positioning for the arrow */
     this.arrow.css({top: "", left: "", bottom: "", right: ""});
+    this.arrow.show();
     this.ph.removeClass('north south east west');
     /* The gravity parameter is what decides where the tooltip
      * attaches to the target element. The tooltip is positioned
@@ -63,47 +71,92 @@ var PopupComponent = BaseComponent.extend({
     var minWidth = minimumDistance,
       maxWidth = document.width - minimumDistance,
       minHeight = minimumDistance,
-      maxHeight = document.height - minimumDistance;
+      maxHeight = document.height - minimumDistance,
+      targetWidth, targetHeight,
+      paddingNear, paddingFar;
 
     switch(gravity) {
       /*************** NORTH ***************/
       case 'N':
+        paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
+        paddingFar = parseInt(target.css('padding-bottom').replace(/(.*)px/,"$1"),10);
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
-        css.top = this.offset(target.height(),phHeight,pos.top,vertexOffset,minHeight,maxHeight,'near');
-        targetOffset = pos.left - css.left; 
+        targetHeight = "ownerSVGDocument" in target[0] ? target.attr("height") :
+            target.outerHeight() - target.css('padding-bottom').replace(/(.*)px/,"$1");
+        css.top = this.offset(targetHeight,phHeight,pos.top,vertexOffset,minHeight,maxHeight,'near');
+        targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
         this.arrow.css('left',this.center(target.outerWidth(),vertexSize,targetOffset,0,phWidth));
         this.ph.addClass(css.top < pos.top ? 'north':'south');
         break;
 
       /*************** SOUTH ***************/
       case 'S':
+        paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
+        paddingFar = parseInt(target.css('padding-bottom').replace(/(.*)px/,"$1"),10);
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
-        targetOffset = pos.left - css.left; 
+        targetHeight = "ownerSVGDocument" in target[0] ? target.attr("height") :
+            target.outerHeight() - target.css('padding-bottom').replace(/(.*)px/,"$1");
+        css.top = this.offset(targetHeight,phHeight,pos.top,vertexOffset,minHeight,maxHeight,'far');
+        targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
         this.arrow.css('left',this.center(target.outerWidth(),vertexSize,targetOffset,0,phWidth));
-        css.top = this.offset(target.height(),phHeight,pos.top,vertexOffset,minHeight,maxHeight,'far');
         this.ph.addClass(css.top < pos.top ? 'north':'south');
         break;
 
       /*************** WEST ***************/
       case 'W':
+        paddingNear = parseInt(target.css('padding-left').replace(/(.*)px/,"$1"),10);
+        paddingFar = parseInt(target.css('padding-right').replace(/(.*)px/,"$1"),10);
+
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
-        css.left = this.offset(target.width(),phWidth,pos.left,vertexOffset,minWidth,maxWidth,'near');
-        targetOffset = pos.top - css.top; 
+        css.left = this.offset(target.width()+paddingNear,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'near');
+        targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
         this.ph.addClass(css.left < pos.left ? 'west':'east');
         break;
 
       /*************** EAST ***************/
       case 'E':
+        paddingNear = parseInt(target.css('padding-left').replace(/(.*)px/,"$1"),10);
+        paddingFar = parseInt(target.css('padding-right').replace(/(.*)px/,"$1"),10);
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
-        css.left = this.offset(target.width(),phWidth,pos.left,vertexOffset,minWidth,maxWidth,'far');
-        targetOffset = pos.top - css.top; 
+        css.left = this.offset(target.width()+paddingNear,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'far');
+        targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
         this.ph.addClass(css.left < pos.left ? 'west':'east');
         break;
     }
     this.ph.css(css);
     this.ph.show();
+
+    var escHandler,
+    myself = this;
+    escHandler = function(e) {
+      if (e.which == 27) {
+        myself.ph.hide();
+        $(document).unbind('keydown',escHandler);
+      }
+    };
+    $(document).keydown(escHandler);
+    var dragHandler;
+    dragHandler = function() {
+      myself.arrow.hide();
+    }
+    this.ph.bind('drag',dragHandler);
+    this.ph.draggable();
+    var basePos,dragPos;
+    this.ph.bind('touchstart',function(e){
+      basePos = myself.ph.offset();
+      dragPos = {left: e.originalEvent.touches[0].pageX, top: e.originalEvent.touches[0].pageY};
+    });
+    this.ph.bind('touchmove',function(e){
+        var finalPos = {
+          top: basePos.top + e.originalEvent.touches[0].pageY - dragPos.top,
+          left: basePos.left + e.originalEvent.touches[0].pageX - dragPos.left
+        };
+        myself.ph.offset(finalPos);
+        myself.arrow.hide();
+        e.preventDefault();
+    });
   },
 
   hide: function() {
