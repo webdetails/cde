@@ -79,12 +79,12 @@ var PopupComponent = BaseComponent.extend({
       /*************** NORTH ***************/
       case 'N':
         paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
-        paddingFar = parseInt(target.css('padding-bottom').replace(/(.*)px/,"$1"),10);
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
-        targetHeight = "ownerSVGDocument" in target[0] ? target.attr("height") :
-            target.outerHeight() - target.css('padding-bottom').replace(/(.*)px/,"$1");
-        css.top = this.offset(targetHeight,phHeight,pos.top,vertexOffset,minHeight,maxHeight,'near');
+        targetHeight = "ownerSVGElement" in target[0] ?
+            (target.attr("height") ? target.attr("height") - 0 : 0):
+            target.height();
         targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
+        css.top = this.offset(targetHeight,phHeight,pos.top+paddingNear,vertexOffset,minHeight,maxHeight,'near');
         this.arrow.css('left',this.center(target.outerWidth(),vertexSize,targetOffset,0,phWidth));
         this.ph.addClass(css.top < pos.top ? 'north':'south');
         break;
@@ -92,11 +92,11 @@ var PopupComponent = BaseComponent.extend({
       /*************** SOUTH ***************/
       case 'S':
         paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
-        paddingFar = parseInt(target.css('padding-bottom').replace(/(.*)px/,"$1"),10);
+        targetHeight = "ownerSVGElement" in target[0] ?
+            (target.attr("height") ? target.attr("height") - 0 : 0):
+            target.height();
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
-        targetHeight = "ownerSVGDocument" in target[0] ? target.attr("height") :
-            target.outerHeight() - target.css('padding-bottom').replace(/(.*)px/,"$1");
-        css.top = this.offset(targetHeight,phHeight,pos.top,vertexOffset,minHeight,maxHeight,'far');
+        css.top = this.offset(targetHeight,phHeight,pos.top+paddingNear,vertexOffset,minHeight,maxHeight,'far');
         targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
         this.arrow.css('left',this.center(target.outerWidth(),vertexSize,targetOffset,0,phWidth));
         this.ph.addClass(css.top < pos.top ? 'north':'south');
@@ -105,10 +105,12 @@ var PopupComponent = BaseComponent.extend({
       /*************** WEST ***************/
       case 'W':
         paddingNear = parseInt(target.css('padding-left').replace(/(.*)px/,"$1"),10);
-        paddingFar = parseInt(target.css('padding-right').replace(/(.*)px/,"$1"),10);
 
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
-        css.left = this.offset(target.width()+paddingNear,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'near');
+        targetWidth = "ownerSVGElement" in target[0] ?
+            (target.attr("width") ? target.attr("width") - 0 : 0):
+            target.width();
+        css.left = this.offset(target.width(),phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'near');
         targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
         this.ph.addClass(css.left < pos.left ? 'west':'east');
@@ -117,9 +119,11 @@ var PopupComponent = BaseComponent.extend({
       /*************** EAST ***************/
       case 'E':
         paddingNear = parseInt(target.css('padding-left').replace(/(.*)px/,"$1"),10);
-        paddingFar = parseInt(target.css('padding-right').replace(/(.*)px/,"$1"),10);
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
-        css.left = this.offset(target.width()+paddingNear,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'far');
+        targetWidth = "ownerSVGElement" in target[0] ?
+            (target.attr("width") ? target.attr("width") - 0 : 0):
+            target.width();
+        css.left = this.offset(targetWidth,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'far');
         targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
         this.ph.addClass(css.left < pos.left ? 'west':'east');

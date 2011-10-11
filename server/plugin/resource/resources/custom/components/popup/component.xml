@@ -12,6 +12,7 @@
 		<Model>
 			<Property>executeAtStart</Property>
 			<Property>htmlObject</Property>
+                        <Property>gravity</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
@@ -26,24 +27,7 @@
 				</Style>
 			</Styles>
 			<Dependencies/>
-    <!--
-      <CustomProperties>
-        <DesignerProperty>
-          <Header>
-            <Name>csvFieldSeparator</Name>
-            <Parent>BaseProperty</Parent>
-            <DefaultValue>,</DefaultValue>
-            <Description>CSV field separator</Description>
-            <Tooltip>CSV field separator</Tooltip>
-            <InputType>String</InputType>
-            <OutputType>String</OutputType>
-            <Order>51</Order>
-            <Advanced>true</Advanced>
-            <Version>1.0</Version>
-          </Header>
-        </DesignerProperty>
-      </CustomProperties>
-    -->
+
     </Implementation>
 	</Contents>
 </DesignerComponent>
