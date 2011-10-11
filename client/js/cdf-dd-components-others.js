@@ -14,6 +14,16 @@ var AccessRenderer = SelectRenderer.extend({
 		}
 });
 
+var GravityRenderer = SelectRenderer.extend({
+
+		selectData: {
+                    'N': 'Top',
+                    'S': 'Bottom',
+                    'W': 'Left',
+                    'E': 'Right'
+		}
+});
+
 var OutputModeRenderer = SelectRenderer.extend({
 
 		selectData: {
