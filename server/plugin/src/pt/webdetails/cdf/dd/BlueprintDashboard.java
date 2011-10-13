@@ -72,7 +72,7 @@ public class BlueprintDashboard extends AbstractDashboard
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
 
-      this.header = renderHeaders(pathParams, this.content.toString());
+      this.header = replaceTokens(renderHeaders(pathParams, this.content.toString()), absolute, absRoot);
       this.loaded = new Date();
     }
     catch (Exception e)
