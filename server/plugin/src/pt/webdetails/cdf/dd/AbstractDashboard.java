@@ -110,7 +110,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
         String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
         this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
       }
-      this.header = renderHeaders(pathParams, this.content.toString());
+      this.header = replaceTokens(renderHeaders(pathParams, this.content.toString()), absolute, absRoot);
       this.loaded = new Date();
     }
     catch (Exception e)
