@@ -18,7 +18,9 @@ var ExportButtonComponent = BaseComponent.extend({
     var bar = $('<span class="exportButton"></span>').appendTo(this.ph);
     var component = Dashboards.getComponentByName( "render_" + this.componentName );
     var overrideParameters = Dashboards.propertiesArrayToObject(myself.parameters);    
-    bar.text( this.label ).click( function(){component.query.export(myself.outputType, overrideParameters)} );
+    bar.text( this.label ).click( function(){
+      component.query.exportData(myself.outputType, overrideParameters);
+    } );
   }
 
 });
