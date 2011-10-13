@@ -526,6 +526,7 @@
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
 
           <Property name="stacked">cccStacked</Property>
+          <Property name="percentage">cccPercentage</Property>
           <Property name="maxBarSize">cccMaxBarSize</Property>
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
