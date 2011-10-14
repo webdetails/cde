@@ -129,8 +129,10 @@ abstract class AbstractDashboard implements Serializable, Dashboard
   protected String replaceTokens(String content, boolean absolute, String absRoot)
   {
     final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}",
+            ABS_DIR_RES_TAG_REGEXP = "\\$\\{res:(/.+/)\\}",
             ABS_IMG_TAG_REGEXP = "\\$\\{img:(/.+)\\}",
             ABS_RES_TAG_REGEXP = "\\$\\{res:(/.+)\\}",
+            REL_DIR_RES_TAG_REGEXP = "\\$\\{res:(.+/)\\}",
             REL_IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}",
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
@@ -141,6 +143,8 @@ abstract class AbstractDashboard implements Serializable, Dashboard
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
             .replaceAll(ABS_IMG_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
             .replaceAll(REL_IMG_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+            .replaceAll(ABS_DIR_RES_TAG_REGEXP, root + "res$1")// Directories don't need the caching timestamp
+            .replaceAll(REL_DIR_RES_TAG_REGEXP, root + "res" + path + "$1")// Directories don't need the caching timestamp
             .replaceAll(ABS_RES_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
             .replaceAll(REL_RES_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
 
