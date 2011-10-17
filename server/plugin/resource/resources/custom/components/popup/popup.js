@@ -64,9 +64,10 @@ var PopupComponent = BaseComponent.extend({
      * gravity.
      *
      * Then we do vertical positioning for the arrow pointing towards
-     * the element. Here we'll just
+     * the element. Here we'll just center it vertically with the target.
      *
-     * For vertical (N/S) attachment, reverse left and top.
+     * For vertical (N/S) attachment, reverse the vertical and horizontal
+     * axes.
      */
     var minWidth = minimumDistance,
       maxWidth = document.width - minimumDistance,
