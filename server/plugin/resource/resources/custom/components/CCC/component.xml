@@ -88,6 +88,7 @@
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
@@ -167,6 +168,7 @@
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
@@ -235,6 +237,7 @@
           <Property >dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -314,6 +317,7 @@
           <Property >dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -383,6 +387,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -451,6 +456,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -519,6 +525,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -599,6 +606,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -680,6 +688,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -760,6 +769,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -832,6 +842,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -911,6 +922,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
 
@@ -961,6 +973,7 @@
           <Property>dataSource</Property>
           <Property name="crosstabMode">cccCrosstabMode</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="structDatasource">cccStructDatasource</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
@@ -1009,6 +1022,7 @@
         <Definition name="chartDefinition">
           <Property name="width">width</Property>
           <Property name="height" >height</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
           <Property>dataSource</Property>
 
           <Property name="bulletTitle">cccBulletTitle</Property>

@@ -1,2774 +1,1886 @@
 {
-  "layout":{
-    "title":"CDF - Sample structure",
-    "rows":[{
-        "id":"96e9b1da-04b0-3d22-b429-c30640aedaa2",
-        "type":"LayoutResource",
-        "typeDesc":"Resource",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"css",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":19,
-            "description":"Type",
-            "name":"resourceType",
-            "value":"Css",
-            "type":"Label",
-            "tooltip":"Resource Type to include"
-          },
-          {
-            "order":18,
-            "description":"Resource file",
-            "name":"resourceFile",
-            "value":"",
-            "type":"ResourceFile",
-            "tooltip":"Resource file to include"
-          },
-          {
-            "order":19,
-            "description":"Resource code",
-            "name":"resourceCode",
-            "value":".title {\u000a  font-style: italic;\u000a  font-size: 20px;\u000a  margin-top: 10px;\u000a} \u000a\u000a.heading {\u000a  font-weight: bold;\u000a  font-size: 12px;\u000a  font: \"Helvetica,Arial,Sans Serif\"\u000a  margin-top: 10px;\u000a  margin-bottom: 5px;\u000a} \u000a\u000atable tr.even, table tr.odd{\u000a background-color: white;\u000a} \u000a\u000atable thead th {\u000a border-bottom: 1px solid #CCC\u000a} \u000a\u000a\u000atable tbody td.number {\u000a text-align: right;\u000a} \u000a\u000a.legend{\u000a font-style: italic;\u000a} ",
-            "type":"Resource",
-            "tooltip":"Resource code to include"
-          }
-        ]
-      },
-      {
-        "id":"10e648f8-cae0-e401-b088-2dda96fa3ba7",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"header",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"30",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"3c459745-f70c-429d-a11c-5ece5761bcbf",
-        "type":"LayoutColumn",
-        "typeDesc":"Column",
-        "parent":"10e648f8-cae0-e401-b088-2dda96fa3ba7",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"cdeLogo",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":30,
-            "description":"Span size",
-            "name":"columnSpan",
-            "value":"6",
-            "type":"Integer",
-            "tooltip":"Column span size, numeric. The total must be 24"
-          },
-          {
-            "order":32,
-            "description":"Prepend size",
-            "name":"columnPrepend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Prepend size - optional"
-          },
-          {
-            "order":33,
-            "description":"Append size",
-            "name":"columnAppend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Append size - optional"
-          },
-          {
-            "order":34,
-            "description":"Prepend gutter to top",
-            "name":"columnPrependTop",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the top of the element"
-          },
-          {
-            "order":35,
-            "description":"Prepend gutter to bottom",
-            "name":"columnAppendBottom",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the bottom of the element"
-          },
-          {
-            "order":36,
-            "description":"Right border",
-            "name":"columnBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns"
-          },
-          {
-            "order":37,
-            "description":"Big right border",
-            "name":"columnBigBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns, "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"center",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"eaadb4d7-47b2-306e-e199-b720a2d67a06",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"3c459745-f70c-429d-a11c-5ece5761bcbf",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"<img src=\"${img:images/cde.png}\" /> ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"f7f149e9-b398-e8b8-7d14-c2e626469678",
-        "type":"LayoutColumn",
-        "typeDesc":"Column",
-        "parent":"10e648f8-cae0-e401-b088-2dda96fa3ba7",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"title",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":30,
-            "description":"Span size",
-            "name":"columnSpan",
-            "value":"12",
-            "type":"Integer",
-            "tooltip":"Column span size, numeric. The total must be 24"
-          },
-          {
-            "order":32,
-            "description":"Prepend size",
-            "name":"columnPrepend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Prepend size - optional"
-          },
-          {
-            "order":33,
-            "description":"Append size",
-            "name":"columnAppend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Append size - optional"
-          },
-          {
-            "order":34,
-            "description":"Prepend gutter to top",
-            "name":"columnPrependTop",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the top of the element"
-          },
-          {
-            "order":35,
-            "description":"Prepend gutter to bottom",
-            "name":"columnAppendBottom",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the bottom of the element"
-          },
-          {
-            "order":36,
-            "description":"Right border",
-            "name":"columnBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns"
-          },
-          {
-            "order":37,
-            "description":"Big right border",
-            "name":"columnBigBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns, "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"center",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"3a3119a3-18b2-70e5-03aa-012f5de09aa6",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"f7f149e9-b398-e8b8-7d14-c2e626469678",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"&nbsp; ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"title",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"6eac8043-7097-919a-82aa-903152dc9413",
-        "type":"LayoutColumn",
-        "typeDesc":"Column",
-        "parent":"10e648f8-cae0-e401-b088-2dda96fa3ba7",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"logo",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":30,
-            "description":"Span size",
-            "name":"columnSpan",
-            "value":"6",
-            "type":"Integer",
-            "tooltip":"Column span size, numeric. The total must be 24"
-          },
-          {
-            "order":32,
-            "description":"Prepend size",
-            "name":"columnPrepend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Prepend size - optional"
-          },
-          {
-            "order":33,
-            "description":"Append size",
-            "name":"columnAppend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Append size - optional"
-          },
-          {
-            "order":34,
-            "description":"Prepend gutter to top",
-            "name":"columnPrependTop",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the top of the element"
-          },
-          {
-            "order":35,
-            "description":"Prepend gutter to bottom",
-            "name":"columnAppendBottom",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the bottom of the element"
-          },
-          {
-            "order":36,
-            "description":"Right border",
-            "name":"columnBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns"
-          },
-          {
-            "order":37,
-            "description":"Big right border",
-            "name":"columnBigBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns, "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"center",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"fd8b48fd-6409-b35b-03b4-8762a96c7142",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"6eac8043-7097-919a-82aa-903152dc9413",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"<a href=\"http://www.webdetails.pt\"><img src=\"${img:images/wd.png}\" /></a> ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"5a376f7c-edb3-0aa2-291d-4d512631ed6e",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"body",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "type":"LayoutColumn",
-        "typeDesc":"Column",
-        "parent":"5a376f7c-edb3-0aa2-291d-4d512631ed6e",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"dash",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":30,
-            "description":"Span size",
-            "name":"columnSpan",
-            "value":"12",
-            "type":"Integer",
-            "tooltip":"Column span size, numeric. The total must be 24"
-          },
-          {
-            "order":32,
-            "description":"Prepend size",
-            "name":"columnPrepend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Prepend size - optional"
-          },
-          {
-            "order":33,
-            "description":"Append size",
-            "name":"columnAppend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Append size - optional"
-          },
-          {
-            "order":34,
-            "description":"Prepend gutter to top",
-            "name":"columnPrependTop",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the top of the element"
-          },
-          {
-            "order":35,
-            "description":"Prepend gutter to bottom",
-            "name":"columnAppendBottom",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the bottom of the element"
-          },
-          {
-            "order":36,
-            "description":"Right border",
-            "name":"columnBorder",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns"
-          },
-          {
-            "order":37,
-            "description":"Big right border",
-            "name":"columnBigBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns, "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"3fd16adb-dd34-df4e-a4f5-4214d6eaee27",
-        "type":"LayoutSpace",
-        "typeDesc":"Space",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"15",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"aca2e53a-c469-8a7d-74bc-ea5eca6d1e6e",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"heading",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"2aff3f48-3078-4299-edb7-1bada6c84a04",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"aca2e53a-c469-8a7d-74bc-ea5eca6d1e6e",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"A sample chart ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"8b1ed907-632f-4a52-9a59-8eac4beeed20",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"chart",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"300",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"ef3ff44a-cf53-6a6b-1e51-97524356cb24",
-        "type":"LayoutSpace",
-        "typeDesc":"Space",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"15",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"981d354a-4ba7-c704-14fa-d9dd0480d340",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"heading",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"22addbb7-b3dc-578c-e308-e3b18c7eb64b",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"981d354a-4ba7-c704-14fa-d9dd0480d340",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"A sample table ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"4aab5bb9-47da-85ff-6c5c-6c7df199036c",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"table",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"310",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"8c063634-1960-829d-6da3-31677c2a47c1",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"24b6d9ca-6881-d733-3034-589f5ba8cbbe",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"legend",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"legend",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"right",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"a01770e0-1b25-4f39-af71-15a91e4bdd85",
-        "type":"LayoutColumn",
-        "typeDesc":"Column",
-        "parent":"5a376f7c-edb3-0aa2-291d-4d512631ed6e",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"doc",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":30,
-            "description":"Span size",
-            "name":"columnSpan",
-            "value":"12",
-            "type":"Integer",
-            "tooltip":"Column span size, numeric. The total must be 24"
-          },
-          {
-            "order":32,
-            "description":"Prepend size",
-            "name":"columnPrepend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Prepend size - optional"
-          },
-          {
-            "order":33,
-            "description":"Append size",
-            "name":"columnAppend",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Append size - optional"
-          },
-          {
-            "order":34,
-            "description":"Prepend gutter to top",
-            "name":"columnPrependTop",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the top of the element"
-          },
-          {
-            "order":35,
-            "description":"Prepend gutter to bottom",
-            "name":"columnAppendBottom",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Prepend space to the bottom of the element"
-          },
-          {
-            "order":36,
-            "description":"Right border",
-            "name":"columnBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns"
-          },
-          {
-            "order":37,
-            "description":"Big right border",
-            "name":"columnBigBorder",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Generates a border between the columns, "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"9ea0d4fa-05ac-a3ca-3bd3-d3ef822dc3fd",
-        "type":"LayoutSpace",
-        "typeDesc":"Space",
-        "parent":"a01770e0-1b25-4f39-af71-15a91e4bdd85",
-        "properties":[{
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"15",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"f921c2e8-3eca-b85d-65ea-9bd42251ade5",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"a01770e0-1b25-4f39-af71-15a91e4bdd85",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"startupNotesTitle",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"heading",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"d6133561-0f9e-127a-65bf-28ceda7973de",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"f921c2e8-3eca-b85d-65ea-9bd42251ade5",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"How to start ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"f5fd18eb-bf79-99ff-b76a-7cc89845c1ca",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"a01770e0-1b25-4f39-af71-15a91e4bdd85",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"startupNotes",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"10a86200-361b-a9b8-55a3-dcdd736705e8",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"f5fd18eb-bf79-99ff-b76a-7cc89845c1ca",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"<p>\u000aCDE is the outcome of real-world needs. Created by <a href=\"http://www.webdetails.pt\">webdetails</a>\u000awith the collaboration of the community, allows a rapid development and deploy of dashboards in \u000athe Pentaho platform.\u000a</p>\u000a\u000a<p>\u000aTotally extensible, virtually everything is possible, and CDE doesn't stop any\u000aof the advanced tricks supported  by CDF.\u000a</p>\u000a\u000a<p>\u000aOn the left, you can see a sample that is using CDA for the data access (MDX and SQL queries) and a chart\u000arendered by CCC. All integrated seamlessly in CDE. The result is a fully featured, lightning fast dashboard.\u000a</p>\u000a\u000a<p>\u000aTo edit this dashboard, either go to the pentaho user console, right click on the wcdf file and press edit\u000aor directly go to the url of the browser window and swap Render for Edit. A decent browser is recommended\u000afor using the editor (eg: firefox) though the dashboards should be able to render even on Internet Explorer 7.\u000aFor CCC charts to render in IE, flash plugin version 10 is required.\u000a</p>\u000a\u000a<p>\u000aTo start a dashboard, click on the pentaho user console icon or menu. Before adding content to the dashboard\u000asave it in a desired location. \u000a</p>\u000a\u000a\u000a<p>\u000aCDE has 3 main sections: Layout, Components and Datasources. There are a few handy shortcuts available\u000alisted by the key '?'. The layout engine uses blueprint css framework; You have a total of 24 columns\u000aon which to layout your columns. While weird at start it will prove invaluably helpful once you get used\u000ato it.\u000a</p>\u000a\u000a<p>\u000aFor the datasources, it's highly recommended that you use CDA. You can decide to use external cda files or\u000aCDE can generate them for you. Once you save a dashboard, you'll notice a .cda file with the same name of the\u000adashboard in which you can preview if the query is correct.\u000a</p>\u000a\u000a<p>\u000aThe components make the bridge between layout and data sources. Specify where the component is to be placed\u000ausing the htmlObject property and for those who access data select the correct data source. Look at the source\u000aof this dashboard to see how it works\u000a</p>\u000a\u000a<p>Thanks to everyone that has been collaborating in this effort so far.\u000aYou can report any issues in the pentaho forums and feel free to <a href=\"mailto:imagine@webdetails.pt\">\u000acontact us</a> if you need support / consulting help.\u000a</p>\u000a\u000a<p>\u000aEnjoy\u000a</p> ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      },
-      {
-        "id":"f8aa036e-bb8c-ea27-6c14-fecef979bb56",
-        "type":"LayoutRow",
-        "typeDesc":"Row",
-        "parent":"a01770e0-1b25-4f39-af71-15a91e4bdd85",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"signature",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "order":56,
-            "description":"BackgroundColor",
-            "name":"backgroundColor",
-            "value":"",
-            "classType":"advanced",
-            "type":"Color",
-            "tooltip":"Element background color"
-          },
-          {
-            "order":70,
-            "description":"Corners",
-            "name":"roundCorners",
-            "value":"",
-            "type":"RoundCorners",
-            "tooltip":"Corners type"
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"legend",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          },
-          {
-            "order":75,
-            "description":"Text Align",
-            "name":"textAlign",
-            "value":"right",
-            "type":"TextAlign",
-            "tooltip":"Text Align"
-          }
-        ]
-      },
-      {
-        "id":"cdcf86ed-5609-1220-8c20-d0275b540fcd",
-        "type":"LayoutHtml",
-        "typeDesc":"Html",
-        "parent":"f8aa036e-bb8c-ea27-6c14-fecef979bb56",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":15,
-            "description":"HTML",
-            "name":"html",
-            "value":"Pedro Alves, webdetails ",
-            "type":"Html",
-            "tooltip":"Html code to be added"
-          },
-          {
-            "order":55,
-            "description":"Color",
-            "name":"color",
-            "value":"",
-            "type":"Color",
-            "tooltip":"Element color"
-          },
-          {
-            "order":49,
-            "description":"Font Size",
-            "name":"fontSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Font size, in pixels "
-          },
-          {
-            "order":80,
-            "description":"Css Class",
-            "name":"cssClass",
-            "value":"",
-            "type":"String",
-            "tooltip":"Css Class to be used when this element is rendered"
-          }
-        ]
-      }
+ "layout": {
+  "title": "CDF - Sample structure",
+  "rows": [
+   {
+    "id": "96e9b1da-04b0-3d22-b429-c30640aedaa2",
+    "type": "LayoutResource",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "css",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "",
+      "type": "ResourceFile"
+     },
+     {
+      "name": "resourceCode",
+      "value": ".title {\n  font-style: italic;\n  font-size: 20px;\n  margin-top: 10px;\n} \n\n.heading {\n  font-weight: bold;\n  font-size: 12px;\n  font: \"Helvetica,Arial,Sans Serif\"\n  margin-top: 10px;\n  margin-bottom: 5px;\n} \n\ntable tr.even, table tr.odd{\n background-color: white;\n} \n\ntable thead th {\n border-bottom: 1px solid #CCC\n} \n\n\ntable tbody td.number {\n text-align: right;\n} \n\n.legend{\n font-style: italic;\n} ",
+      "type": "Resource"
+     }
     ]
-  },
-  "components":{
-    "rows":[{
-        "id":"CHARTS",
-        "name":"Charts",
-        "type":"Label",
-        "typeDesc":"<i>Group</i>",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "name":"Group",
-            "description":"Group",
-            "value":"Charts",
-            "type":"Label"
-          }
-        ]
-      },
-      {
-        "id":"53394484-b04f-3155-3e3d-060f4e8fe1f4",
-        "type":"ComponentscccBarChart",
-        "typeDesc":"CCC Bar Chart",
-        "parent":"CHARTS",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"bar",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":50,
-            "description":"Width",
-            "name":"width",
-            "value":"470",
-            "type":"Integer",
-            "tooltip":"Element width, in pixels "
-          },
-          {
-            "order":50,
-            "description":"Height",
-            "name":"height",
-            "value":"300",
-            "type":"Integer",
-            "tooltip":"Element height, in pixels "
-          },
-          {
-            "name":"dataSource",
-            "description":"Datasource",
-            "tooltip":"DataSource to be used in this selector",
-            "type":"Datasource",
-            "value":"mdxQuery",
-            "order":43
-          },
-          {
-            "order":87,
-            "description":"Crosstab mode",
-            "name":"cccCrosstabMode",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Datasource is crosstab mode (mdx)"
-          },
-          {
-            "order":88,
-            "description":"Series in rows",
-            "name":"cccSeriesInRows",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Datasource series are in rows?"
-          },
-          {
-            "order":69,
-            "description":"Animate",
-            "name":"cccAnimate",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Animate the chart?"
-          },
-          {
-            "order":87,
-            "description":"Clickable",
-            "name":"cccClickable",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Chart is clickable?"
-          },
-          {
-            "order":90,
-            "description":"Click action",
-            "name":"cccClickAction",
-            "value":"function(s,c,v){\u000a  Dashboards.log(\"Clicked on: \" + s + \", \" + c);\u000a\u000a  // Manually changing territory to fire both changes at once\u000a  territory=s;\u000a  Dashboards.fireChange('productLine',c);\u000a} ",
-            "type":"JavaScript",
-            "tooltip":"Action to be called on click"
-          },
-          {
-            "order":45,
-            "description":"Timeseries",
-            "name":"cccTimeSeries",
-            "value":"false",
-            "type":"Boolean",
-            "tooltip":"Timeseries chart?"
-          },
-          {
-            "order":46,
-            "description":"Timeseries format",
-            "name":"cccTimeSeriesFormat",
-            "value":"%Y-%m-%d",
-            "type":"String",
-            "tooltip":"Timeseries format"
-          },
-          {
-            "order":42,
-            "description":"Stacked",
-            "name":"cccStacked",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Chart is stacked?"
-          },
-          {
-            "order":43,
-            "description":"Max bar size",
-            "name":"cccMaxBarSize",
-            "value":100,
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Max bar size"
-          },
-          {
-            "order":44,
-            "description":"Panel Size Ratio",
-            "name":"cccPanelSizeRatio",
-            "value":0.8,
-            "classType":"advanced",
-            "type":"Float",
-            "tooltip":"Panel size ratio"
-          },
-          {
-            "order":45,
-            "description":"Bar Size Ratio",
-            "name":"cccBarSizeRatio",
-            "value":0.9,
-            "classType":"advanced",
-            "type":"Float",
-            "tooltip":"Bar size ratio"
-          },
-          {
-            "order":68,
-            "description":"Orientation",
-            "name":"cccOrientation",
-            "value":"vertical",
-            "classType":"advanced",
-            "type":"MenuMode",
-            "tooltip":"Orientation of the chart, horizontal or vertical"
-          },
-          {
-            "order":67,
-            "description":"Colors",
-            "name":"cccColors",
-            "value":"[\"#000\",\"#333\",\"#666\",\"#999\"]",
-            "classType":"advanced",
-            "type":"Array",
-            "tooltip":"Colorschema for the chart"
-          },
-          {
-            "order":51,
-            "description":"Show values",
-            "name":"cccShowValues",
-            "value":"false",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show values next to markers"
-          },
-          {
-            "order":91,
-            "description":"Value format",
-            "name":"cccValueFormat",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to format how the values appears"
-          },
-          {
-            "order":92,
-            "description":"Tooltip format",
-            "name":"cccTooltipFormat",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to format how the tooltip appears"
-          },
-          {
-            "order":52,
-            "description":"Values position",
-            "name":"cccValuesAnchor",
-            "value":"right",
-            "classType":"advanced",
-            "type":"AnchorCenter",
-            "tooltip":"Values position"
-          },
-          {
-            "order":1,
-            "description":"Title",
-            "name":"title",
-            "value":"Sales by territory and market",
-            "type":"String",
-            "tooltip":"Title"
-          },
-          {
-            "order":40,
-            "description":"Title position",
-            "name":"cccTitlePosition",
-            "value":"left",
-            "classType":"advanced",
-            "type":"Anchor",
-            "tooltip":"Title position"
-          },
-          {
-            "order":41,
-            "description":"Title size",
-            "name":"cccTitleSize",
-            "value":25,
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Title area size"
-          },
-          {
-            "order":71,
-            "description":"Show legend",
-            "name":"cccShowLegend",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Show the legend?"
-          },
-          {
-            "order":72,
-            "description":"Legend position",
-            "name":"cccLegendPosition",
-            "value":"bottom",
-            "classType":"advanced",
-            "type":"Anchor",
-            "tooltip":"Legend position"
-          },
-          {
-            "order":73,
-            "description":"Legend size",
-            "name":"cccLegendSize",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Legend area size"
-          },
-          {
-            "order":74,
-            "description":"Legend align",
-            "name":"cccLegendAlign",
-            "value":"center",
-            "classType":"advanced",
-            "type":"SquareAlign",
-            "tooltip":"Legend alignsize"
-          },
-          {
-            "order":80,
-            "description":"Show xx scale",
-            "name":"cccShowXScale",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show xx scale?"
-          },
-          {
-            "order":52,
-            "description":"X axis position",
-            "name":"cccXAxisPosition",
-            "value":"bottom",
-            "classType":"advanced",
-            "type":"TopBottom",
-            "tooltip":"X axis position"
-          },
-          {
-            "order":82,
-            "description":"XX axis size",
-            "name":"cccXAxisSize",
-            "value":"50",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"XX axis area size"
-          },
-          {
-            "order":81,
-            "description":"Show yy scale",
-            "name":"cccShowYScale",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show yy scale?"
-          },
-          {
-            "order":53,
-            "description":"Y axis position",
-            "name":"cccYAxisPosition",
-            "value":"left",
-            "classType":"advanced",
-            "type":"LeftRight",
-            "tooltip":"Y axis position"
-          },
-          {
-            "order":83,
-            "description":"YY axis size",
-            "name":"cccYAxisSize",
-            "value":50,
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"YY axis area size"
-          },
-          {
-            "order":84,
-            "description":"Show xx grid",
-            "name":"cccXAxisFullGrid",
-            "value":"false",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show xx axis full grid?"
-          },
-          {
-            "order":85,
-            "description":"Show yy grid",
-            "name":"cccYAxisFullGrid",
-            "value":"false",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show yy axis full grid?"
-          },
-          {
-            "order":86,
-            "description":"Axis offset",
-            "name":"cccAxisOffset",
-            "value":"0",
-            "classType":"advanced",
-            "type":"Float",
-            "tooltip":"YY axis area size"
-          },
-          {
-            "order":87,
-            "description":"Origin is zero",
-            "name":"cccOriginIsZero",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Start the axis at zero?"
-          },
-          {
-            "order":99,
-            "description":"Extension points",
-            "name":"cccExtensionPoints",
-            "value":"[[\"xAxisLabel_textAngle\",\"-0.3\"],[\"xAxisLabel_textAlign\",\"right\"]]",
-            "classType":"advanced",
-            "type":"ValuesArray",
-            "tooltip":"CCC Extension points"
-          },
-          {
-            "order":40,
-            "description":"Parameters",
-            "name":"xActionArrayParameter",
-            "value":"[]",
-            "type":"ValuesArray",
-            "tooltip":" Parameters to pass to the component"
-          },
-          {
-            "order":91,
-            "description":"Execute at start",
-            "name":"executeAtStart",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Execute at start?"
-          },
-          {
-            "order":93,
-            "description":"Post Fetch",
-            "name":"postFetch",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Code executed after this component's data is fetched from the server"
-          },
-          {
-            "order":94,
-            "description":"Pre Change",
-            "name":"preChange",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed before the component is changed. It's a function of the type function(value){return value}, and can be used for validation"
-          },
-          {
-            "order":95,
-            "description":"Post Change",
-            "name":"postChange",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed after the component is changed. It's a function of the type function(value){...}"
-          },
-          {
-            "order":90,
-            "description":"HtmlObject",
-            "name":"htmlObject",
-            "value":"chart",
-            "type":"HtmlObject",
-            "tooltip":"HtmlObject to prompt"
-          },
-          {
-            "order":92,
-            "description":"Pre Execution",
-            "name":"preExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed before the component is updated"
-          },
-          {
-            "order":93,
-            "description":"Post Execution",
-            "name":"postExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed after the component is updated"
-          },
-          {
-            "order":99,
-            "description":"Tooltip",
-            "name":"tooltip",
-            "value":"",
-            "classType":"advanced",
-            "type":"Html",
-            "tooltip":"Tooltip to be displayed on component's mouse hover"
-          },
-          {
-            "order":13,
-            "description":"Listeners",
-            "name":"listeners",
-            "value":"[]",
-            "type":"Listeners",
-            "tooltip":"Parameters to listen to"
-          }
-        ]
-      },
-      {
-        "id":"OTHERCOMPONENTS",
-        "name":"Others",
-        "type":"Label",
-        "typeDesc":"<i>Group</i>",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "name":"Group",
-            "description":"Group",
-            "value":"Others",
-            "type":"Label"
-          }
-        ]
-      },
-      {
-        "id":"902221aa-edd5-e06f-6731-c60fa0b6472a",
-        "type":"ComponentsTable",
-        "typeDesc":"table Component",
-        "parent":"OTHERCOMPONENTS",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"table",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":90,
-            "description":"HtmlObject",
-            "name":"htmlObject",
-            "value":"table",
-            "type":"HtmlObject",
-            "tooltip":"HtmlObject to prompt"
-          },
-          {
-            "order":13,
-            "description":"Listeners",
-            "name":"listeners",
-            "value":"['territory','productLine']",
-            "type":"Listeners",
-            "tooltip":"Parameters to listen to"
-          },
-          {
-            "order":40,
-            "description":"Parameters",
-            "name":"xActionArrayParameter",
-            "value":"[[\"territory\",\"territory\"],[\"productLine\",\"productLine\"]]",
-            "type":"ValuesArray",
-            "tooltip":" Parameters to pass to the component"
-          },
-          {
-            "name":"dataSource",
-            "description":"Datasource",
-            "tooltip":"DataSource to be used in this selector",
-            "type":"Datasource",
-            "value":"sqlQuery",
-            "order":43
-          },
-          {
-            "order":40,
-            "description":"Column Headers",
-            "name":"colHeaders",
-            "value":"[\"Customer\",\"Total\"]",
-            "type":"Array",
-            "tooltip":"The table column header"
-          },
-          {
-            "order":40,
-            "description":"Column Types",
-            "name":"colTypes",
-            "value":"[\"string\",\"number\"]",
-            "type":"Array",
-            "tooltip":"The table column types"
-          },
-          {
-            "order":40,
-            "description":"Column Formats",
-            "name":"colFormats",
-            "value":"[null,\"%.2f\"]",
-            "classType":"advanced",
-            "type":"Array",
-            "tooltip":"The table column formats"
-          },
-          {
-            "order":40,
-            "description":"Column Widths",
-            "name":"colWidths",
-            "value":"[]",
-            "classType":"advanced",
-            "type":"Array",
-            "tooltip":"The table widths"
-          },
-          {
-            "order":40,
-            "description":"Sortable Column",
-            "name":"colSortable",
-            "value":"[]",
-            "classType":"advanced",
-            "type":"Array",
-            "tooltip":"Is the column sortable? Example: [true,false]"
-          },
-          {
-            "order":42,
-            "description":"Searchable Column",
-            "name":"colSearchable",
-            "value":"[]",
-            "classType":"advanced",
-            "type":"Array",
-            "tooltip":"Is the column searchable? Example: [true,false]"
-          },
-          {
-            "order":41,
-            "description":"Paginate",
-            "name":"paginate",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Paginate"
-          },
-          {
-            "order":56,
-            "description":"Pagination Type",
-            "name":"paginationType",
-            "value":"two_button",
-            "classType":"advanced",
-            "type":"PaginationType",
-            "tooltip":"Pagination Type"
-          },
-          {
-            "order":41,
-            "description":"Show Filter",
-            "name":"filter",
-            "value":"false",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Show option"
-          },
-          {
-            "order":41,
-            "description":"Info Filter",
-            "name":"info",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Info option"
-          },
-          {
-            "order":41,
-            "description":"Sort Data",
-            "name":"sort",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Sort Data"
-          },
-          {
-            "order":43,
-            "description":"Sort by",
-            "name":"sortBy",
-            "value":"[]",
-            "classType":"advanced",
-            "type":"ValuesArray",
-            "tooltip":"Choose the columns where the sorting will default. Example: [[0,asc],[1,desc]]"
-          },
-          {
-            "order":41,
-            "description":"Page Length",
-            "name":"displayLength",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"The page lengh"
-          },
-          {
-            "order":41,
-            "description":"Length Change",
-            "name":"lengthChange",
-            "value":"false",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Allow user to change the displayed size?"
-          },
-          {
-            "order":56,
-            "description":"Style",
-            "name":"tableStyle",
-            "value":"classic",
-            "classType":"advanced",
-            "type":"TableStyle",
-            "tooltip":"Table style"
-          },
-          {
-            "order":42,
-            "description":"Draw Function",
-            "name":"drawCallback",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Custom function to be executed when a page table is rendered"
-          },
-          {
-            "order":43,
-            "description":"sDom control",
-            "name":"sDom",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Configuration of where the controls will be in the table"
-          },
-          {
-            "order":17,
-            "description":"oLanguage",
-            "name":"oLanguage",
-            "value":"",
-            "type":"JavaScript",
-            "tooltip":"oLanguage"
-          },
-          {
-            "order":91,
-            "description":"Execute at start",
-            "name":"executeAtStart",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Execute at start?"
-          },
-          {
-            "order":94,
-            "description":"Pre Change",
-            "name":"preChange",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed before the component is changed. It's a function of the type function(value){return value}, and can be used for validation"
-          },
-          {
-            "order":95,
-            "description":"Post Change",
-            "name":"postChange",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed after the component is changed. It's a function of the type function(value){...}"
-          },
-          {
-            "order":93,
-            "description":"Post Fetch",
-            "name":"postFetch",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Code executed after this component's data is fetched from the server"
-          },
-          {
-            "order":92,
-            "description":"Pre Execution",
-            "name":"preExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed before the component is updated"
-          },
-          {
-            "order":93,
-            "description":"Post Execution",
-            "name":"postExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed after the component is updated"
-          },
-          {
-            "order":50,
-            "description":"Refresh Period",
-            "name":"refreshPeriod",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Time interval (in seconds) to refresh the component. If 0 or not set component won't refresh."
-          },
-          {
-            "order":99,
-            "description":"Tooltip",
-            "name":"tooltip",
-            "value":"",
-            "classType":"advanced",
-            "type":"Html",
-            "tooltip":"Tooltip to be displayed on component's mouse hover"
-          }
-        ]
-      },
-      {
-        "id":"91c91b19-d561-3b0a-97b3-62d99b7a12df",
-        "type":"ComponentstextComponent",
-        "typeDesc":"Text Component",
-        "parent":"OTHERCOMPONENTS",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"legend",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":40,
-            "description":"Expression",
-            "name":"expression",
-            "value":"function(){\u000a  return \"Information for \" + territory + \" for product line \"+ productLine;\u000a} ",
-            "type":"JavaScript",
-            "tooltip":"Javascript expression to be evaluate."
-          },
-          {
-            "order":90,
-            "description":"HtmlObject",
-            "name":"htmlObject",
-            "value":"legend",
-            "type":"HtmlObject",
-            "tooltip":"HtmlObject to prompt"
-          },
-          {
-            "order":13,
-            "description":"Listeners",
-            "name":"listeners",
-            "value":"['territory','productLine']",
-            "type":"Listeners",
-            "tooltip":"Parameters to listen to"
-          },
-          {
-            "order":91,
-            "description":"Execute at start",
-            "name":"executeAtStart",
-            "value":"true",
-            "classType":"advanced",
-            "type":"Boolean",
-            "tooltip":"Execute at start?"
-          },
-          {
-            "order":92,
-            "description":"Pre Execution",
-            "name":"preExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed before the component is updated"
-          },
-          {
-            "order":93,
-            "description":"Post Execution",
-            "name":"postExecution",
-            "value":"",
-            "classType":"advanced",
-            "type":"JavaScript",
-            "tooltip":"Function to be executed after the component is updated"
-          },
-          {
-            "order":50,
-            "description":"Refresh Period",
-            "name":"refreshPeriod",
-            "value":"",
-            "classType":"advanced",
-            "type":"Integer",
-            "tooltip":"Time interval (in seconds) to refresh the component. If 0 or not set component won't refresh."
-          },
-          {
-            "order":99,
-            "description":"Tooltip",
-            "name":"tooltip",
-            "value":"",
-            "classType":"advanced",
-            "type":"Html",
-            "tooltip":"Tooltip to be displayed on component's mouse hover"
-          }
-        ]
-      },
-      {
-        "id":"GENERIC",
-        "name":"Generic",
-        "type":"Label",
-        "typeDesc":"<i>Group</i>",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "name":"Group",
-            "description":"Group",
-            "value":"Generic",
-            "type":"Label"
-          }
-        ]
-      },
-      {
-        "id":"10b1c0dc-0117-6693-5a3a-b9ff4f243cc2",
-        "type":"ComponentsParameter",
-        "typeDesc":"Parameter",
-        "parent":"GENERIC",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"territory",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":20,
-            "description":"Property value",
-            "name":"propertyValue",
-            "value":"EMEA",
-            "type":"String",
-            "tooltip":"Property value"
-          }
-        ]
-      },
-      {
-        "id":"20bd3eaf-8832-051a-96ff-e10e384a0dec",
-        "type":"ComponentsParameter",
-        "typeDesc":"Parameter",
-        "parent":"GENERIC",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"productLine",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":20,
-            "description":"Property value",
-            "name":"propertyValue",
-            "value":"Classic Cars",
-            "type":"String",
-            "tooltip":"Property value"
-          }
-        ]
-      }
+   },
+   {
+    "id": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "header",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
     ]
-  },
-  "datasources":{
-    "rows":[{
-        "id":"MDX",
-        "name":"MDX Queries",
-        "type":"Label",
-        "typeDesc":"<i>Group</i>",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "name":"Group",
-            "description":"Group",
-            "value":"MDX Queries",
-            "type":"Label"
-          }
-        ]
-      },
-      {
-        "id":"ed049ea5-f42a-d74e-34cc-92c9240991e9",
-        "type":"Componentsmdx_mondrianJndi",
-        "typeDesc":"mdx over mondrianJndi",
-        "meta":"CDA",
-        "meta_conntype":"mondrian.jndi",
-        "meta_datype":"mdx",
-        "parent":"MDX",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"mdxQuery",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":22,
-            "description":"Mondrian schema",
-            "name":"catalog",
-            "value":"../steel-wheels/analysis/steelwheels.mondrian.xml",
-            "type":"String",
-            "tooltip":"Mondrian schema location"
-          },
-          {
-            "order":21,
-            "description":"Jndi",
-            "name":"jndi",
-            "value":"SampleData",
-            "type":"String",
-            "tooltip":"JNDI string for the desired connection"
-          },
-          {
-            "order":11,
-            "description":"Access Level",
-            "name":"access",
-            "value":"public",
-            "type":"Access",
-            "tooltip":"The Access Level (Scope) for this data access"
-          },
-          {
-            "order":28,
-            "description":"Parameters",
-            "name":"parameters",
-            "value":"[]",
-            "type":"CdaParameters",
-            "tooltip":"Parameters to be sent to the xaction"
-          },
-          {
-            "order":40,
-            "description":"Output Options",
-            "name":"output",
-            "value":"[]",
-            "type":"Array",
-            "tooltip":"Output options for this data access"
-          },
-          {
-            "order":40,
-            "description":"Output Mode",
-            "name":"outputMode",
-            "value":"include",
-            "type":"OutputMode",
-            "tooltip":"Whether the output columns refer to columns that should be Included or Excluded from the final output"
-          },
-          {
-            "order":40,
-            "description":"Column Configurations",
-            "name":"cdacolumns",
-            "value":"[]",
-            "type":"ValuesArray",
-            "tooltip":"Column Configurations"
-          },
-          {
-            "order":40,
-            "description":"Column Configurations",
-            "name":"cdacalculatedcolumns",
-            "value":"[]",
-            "type":"ValuesArray",
-            "tooltip":"Column Configurations"
-          },
-          {
-            "order":25,
-            "description":"Query",
-            "name":"query",
-            "value":"select NON EMPTY [Markets].[All Markets].Children ON COLUMNS,\u000a  NON EMPTY [Product].[All Products].Children ON ROWS\u000afrom [SteelWheelsSales]\u000a ",
-            "type":"SqlQuery",
-            "tooltip":"Query to be executed in the selected datasource"
-          },
-          {
-            "order":91,
-            "description":"Cache",
-            "name":"cache",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Is this data access's output supposed to be cached?"
-          },
-          {
-            "order":50,
-            "description":"Cache Duration",
-            "name":"cacheDuration",
-            "value":3600,
-            "type":"Integer",
-            "tooltip":"Cache Duration, in seconds"
-          },
-          {
-            "order":40,
-            "description":"Banded Mode",
-            "name":"bandedMode",
-            "value":"compact",
-            "type":"BandedMode",
-            "tooltip":"Banded Mode"
-          }
-        ]
-      },
-      {
-        "id":"SQL",
-        "name":"SQL Queries",
-        "type":"Label",
-        "typeDesc":"<i>Group</i>",
-        "parent":"UnIqEiD",
-        "properties":[{
-            "name":"Group",
-            "description":"Group",
-            "value":"SQL Queries",
-            "type":"Label"
-          }
-        ]
-      },
-      {
-        "id":"60e59c7f-0c44-975a-6e1b-53466bed4c5a",
-        "type":"Componentssql_sqlJndi",
-        "typeDesc":"sql over sqlJndi",
-        "meta":"CDA",
-        "meta_conntype":"sql.jndi",
-        "meta_datype":"sql",
-        "parent":"SQL",
-        "properties":[{
-            "order":5,
-            "description":"Name",
-            "name":"name",
-            "value":"sqlQuery",
-            "type":"Id",
-            "tooltip":"Name"
-          },
-          {
-            "order":21,
-            "description":"Jndi",
-            "name":"jndi",
-            "value":"SampleData",
-            "type":"String",
-            "tooltip":"JNDI string for the desired connection"
-          },
-          {
-            "order":11,
-            "description":"Access Level",
-            "name":"access",
-            "value":"public",
-            "type":"Access",
-            "tooltip":"The Access Level (Scope) for this data access"
-          },
-          {
-            "order":28,
-            "description":"Parameters",
-            "name":"parameters",
-            "value":"[[\"productLine\",\"Classic Cars\",\"String\"],[\"territory\",\"APAC\",\"String\"]]",
-            "type":"CdaParameters",
-            "tooltip":"Parameters to be sent to the xaction"
-          },
-          {
-            "order":40,
-            "description":"Output Options",
-            "name":"output",
-            "value":"[]",
-            "type":"Array",
-            "tooltip":"Output options for this data access"
-          },
-          {
-            "order":40,
-            "description":"Output Mode",
-            "name":"outputMode",
-            "value":"include",
-            "type":"OutputMode",
-            "tooltip":"Whether the output columns refer to columns that should be Included or Excluded from the final output"
-          },
-          {
-            "order":40,
-            "description":"Column Configurations",
-            "name":"cdacolumns",
-            "value":"[]",
-            "type":"ValuesArray",
-            "tooltip":"Column Configurations"
-          },
-          {
-            "order":40,
-            "description":"Column Configurations",
-            "name":"cdacalculatedcolumns",
-            "value":"[]",
-            "type":"ValuesArray",
-            "tooltip":"Column Configurations"
-          },
-          {
-            "order":25,
-            "description":"Query",
-            "name":"query",
-            "value":"SELECT\u000ac.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total\u000aFROM ORDERFACT f\u000ainner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )\u000ainner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)\u000awhere p.PRODUCTLINE=${productLine}\u000aand c.TERRITORY=${territory}\u000agroup by c.CUSTOMERNAME\u000aorder by total desc ",
-            "type":"SqlQuery",
-            "tooltip":"Query to be executed in the selected datasource"
-          },
-          {
-            "order":91,
-            "description":"Cache",
-            "name":"cache",
-            "value":"true",
-            "type":"Boolean",
-            "tooltip":"Is this data access's output supposed to be cached?"
-          },
-          {
-            "order":50,
-            "description":"Cache Duration",
-            "name":"cacheDuration",
-            "value":3600,
-            "type":"Integer",
-            "tooltip":"Cache Duration, in seconds"
-          }
-        ]
-      }
+   },
+   {
+    "id": "3c459745-f70c-429d-a11c-5ece5761bcbf",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
+    "properties": [
+     {
+      "name": "name",
+      "value": "cdeLogo",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "6",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     }
     ]
-  },
-  "filename":"/cde_sample/cde_sample1.cdfde"
+   },
+   {
+    "id": "eaadb4d7-47b2-306e-e199-b720a2d67a06",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "3c459745-f70c-429d-a11c-5ece5761bcbf",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<img src=\"${img:images/cde.png}\" /> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f7f149e9-b398-e8b8-7d14-c2e626469678",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
+    "properties": [
+     {
+      "name": "name",
+      "value": "title",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "12",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "3a3119a3-18b2-70e5-03aa-012f5de09aa6",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f7f149e9-b398-e8b8-7d14-c2e626469678",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "&nbsp; ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "title",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "6eac8043-7097-919a-82aa-903152dc9413",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
+    "properties": [
+     {
+      "name": "name",
+      "value": "logo",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "6",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "fd8b48fd-6409-b35b-03b4-8762a96c7142",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "6eac8043-7097-919a-82aa-903152dc9413",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<a href=\"http://www.webdetails.pt\"><img src=\"${img:images/wd.png}\" /></a> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "5a376f7c-edb3-0aa2-291d-4d512631ed6e",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "body",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "5a376f7c-edb3-0aa2-291d-4d512631ed6e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "dash",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "12",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "3fd16adb-dd34-df4e-a4f5-4214d6eaee27",
+    "type": "LayoutSpace",
+    "typeDesc": "Space",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "height",
+      "value": "15",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "aca2e53a-c469-8a7d-74bc-ea5eca6d1e6e",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "heading",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "2aff3f48-3078-4299-edb7-1bada6c84a04",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "aca2e53a-c469-8a7d-74bc-ea5eca6d1e6e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "A sample chart ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "8b1ed907-632f-4a52-9a59-8eac4beeed20",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "chart",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "300",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "ef3ff44a-cf53-6a6b-1e51-97524356cb24",
+    "type": "LayoutSpace",
+    "typeDesc": "Space",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "height",
+      "value": "15",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "981d354a-4ba7-c704-14fa-d9dd0480d340",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "heading",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "22addbb7-b3dc-578c-e308-e3b18c7eb64b",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "981d354a-4ba7-c704-14fa-d9dd0480d340",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "A sample table ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "4aab5bb9-47da-85ff-6c5c-6c7df199036c",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "table",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "310",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "8c063634-1960-829d-6da3-31677c2a47c1",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "24b6d9ca-6881-d733-3034-589f5ba8cbbe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "legend",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "legend",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "right",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "a01770e0-1b25-4f39-af71-15a91e4bdd85",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "5a376f7c-edb3-0aa2-291d-4d512631ed6e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "doc",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "12",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "9ea0d4fa-05ac-a3ca-3bd3-d3ef822dc3fd",
+    "type": "LayoutSpace",
+    "typeDesc": "Space",
+    "parent": "a01770e0-1b25-4f39-af71-15a91e4bdd85",
+    "properties": [
+     {
+      "name": "height",
+      "value": "15",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f921c2e8-3eca-b85d-65ea-9bd42251ade5",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "a01770e0-1b25-4f39-af71-15a91e4bdd85",
+    "properties": [
+     {
+      "name": "name",
+      "value": "startupNotesTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "heading",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "d6133561-0f9e-127a-65bf-28ceda7973de",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f921c2e8-3eca-b85d-65ea-9bd42251ade5",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "How to start ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f5fd18eb-bf79-99ff-b76a-7cc89845c1ca",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "a01770e0-1b25-4f39-af71-15a91e4bdd85",
+    "properties": [
+     {
+      "name": "name",
+      "value": "startupNotes",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "10a86200-361b-a9b8-55a3-dcdd736705e8",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f5fd18eb-bf79-99ff-b76a-7cc89845c1ca",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<p>\nCDE is the outcome of real-world needs. Created by <a href=\"http://www.webdetails.pt\">webdetails</a>\nwith the collaboration of the community, allows a rapid development and deploy of dashboards in \nthe Pentaho platform.\n</p>\n\n<p>\nTotally extensible, virtually everything is possible, and CDE doesn't stop any\nof the advanced tricks supported  by CDF.\n</p>\n\n<p>\nOn the left, you can see a sample that is using CDA for the data access (MDX and SQL queries) and a chart\nrendered by CCC. All integrated seamlessly in CDE. The result is a fully featured, lightning fast dashboard.\n</p>\n\n<p>\nTo edit this dashboard, either go to the pentaho user console, right click on the wcdf file and press edit\nor directly go to the url of the browser window and swap Render for Edit. A decent browser is recommended\nfor using the editor (eg: firefox) though the dashboards should be able to render even on Internet Explorer 7.\nFor CCC charts to render in IE, flash plugin version 10 is required.\n</p>\n\n<p>\nTo start a dashboard, click on the pentaho user console icon or menu. Before adding content to the dashboard\nsave it in a desired location. \n</p>\n\n\n<p>\nCDE has 3 main sections: Layout, Components and Datasources. There are a few handy shortcuts available\nlisted by the key '?'. The layout engine uses blueprint css framework; You have a total of 24 columns\non which to layout your columns. While weird at start it will prove invaluably helpful once you get used\nto it.\n</p>\n\n<p>\nFor the datasources, it's highly recommended that you use CDA. You can decide to use external cda files or\nCDE can generate them for you. Once you save a dashboard, you'll notice a .cda file with the same name of the\ndashboard in which you can preview if the query is correct.\n</p>\n\n<p>\nThe components make the bridge between layout and data sources. Specify where the component is to be placed\nusing the htmlObject property and for those who access data select the correct data source. Look at the source\nof this dashboard to see how it works\n</p>\n\n<p>Thanks to everyone that has been collaborating in this effort so far.\nYou can report any issues in the pentaho forums and feel free to <a href=\"mailto:imagine@webdetails.pt\">\ncontact us</a> if you need support / consulting help.\n</p>\n\n<p>\nEnjoy\n</p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f8aa036e-bb8c-ea27-6c14-fecef979bb56",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "a01770e0-1b25-4f39-af71-15a91e4bdd85",
+    "properties": [
+     {
+      "name": "name",
+      "value": "signature",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "legend",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "right",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "cdcf86ed-5609-1220-8c20-d0275b540fcd",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f8aa036e-bb8c-ea27-6c14-fecef979bb56",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Pedro Alves, webdetails ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   }
+  ]
+ },
+ "components": {
+  "rows": [
+   {
+    "id": "CHARTS",
+    "name": "Charts",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Charts",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "c601ae78-53fe-e690-c0c8-bb2f2d37bdd1",
+    "type": "ComponentscccBarChart",
+    "typeDesc": "CCC Bar Chart",
+    "meta_cdwSupport": "true",
+    "parent": "CHARTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "bar",
+      "type": "Id"
+     },
+     {
+      "name": "width",
+      "value": "470",
+      "type": "Integer"
+     },
+     {
+      "name": "height",
+      "value": "300",
+      "type": "Integer"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "mdxQuery"
+     },
+     {
+      "name": "cccCrosstabMode",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccSeriesInRows",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccAnimate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickable",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "function(s,c,v){\n  Dashboards.log(\"Clicked on: \" + s + \", \" + c);\n\n  // Manually changing territory to fire both changes at once\n  territory=s;\n  Dashboards.fireChange('productLine',c);\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTimeSeries",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccTimeSeriesFormat",
+      "value": "%Y-%m-%d",
+      "type": "String"
+     },
+     {
+      "name": "cccStacked",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccMaxBarSize",
+      "value": 100,
+      "type": "Integer"
+     },
+     {
+      "name": "cccPanelSizeRatio",
+      "value": 0.8,
+      "type": "Float"
+     },
+     {
+      "name": "cccBarSizeRatio",
+      "value": 0.9,
+      "type": "Float"
+     },
+     {
+      "name": "cccOrientation",
+      "value": "vertical",
+      "type": "MenuMode"
+     },
+     {
+      "name": "cccColors",
+      "value": "[\"#000\",\"#333\",\"#666\",\"#999\"]",
+      "type": "Array"
+     },
+     {
+      "name": "cccShowValues",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccValueFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTooltipFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccValuesAnchor",
+      "value": "right",
+      "type": "AnchorCenter"
+     },
+     {
+      "name": "title",
+      "value": "Sales by territory and market",
+      "type": "String"
+     },
+     {
+      "name": "cccTitlePosition",
+      "value": "top",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccTitleSize",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowLegend",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccLegendPosition",
+      "value": "bottom",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccLegendSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cccLegendAlign",
+      "value": "center",
+      "type": "SquareAlign"
+     },
+     {
+      "name": "cccShowXScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccXAxisPosition",
+      "value": "bottom",
+      "type": "TopBottom"
+     },
+     {
+      "name": "cccXAxisSize",
+      "value": 30,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowYScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisPosition",
+      "value": "left",
+      "type": "LeftRight"
+     },
+     {
+      "name": "cccYAxisSize",
+      "value": 50,
+      "type": "Integer"
+     },
+     {
+      "name": "cccXAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccAxisOffset",
+      "value": "0",
+      "type": "Float"
+     },
+     {
+      "name": "cccOriginIsZero",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccOrthoFixedMax",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "cccBarLine",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccBarLineIndependentScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccBarLineIdx",
+      "value": -1,
+      "type": "Integer"
+     },
+     {
+      "name": "cccBarLineOriginIsZero",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccBarLineTickColor",
+      "value": "blue",
+      "type": "String"
+     },
+     {
+      "name": "cccExtensionPoints",
+      "value": "[[\"xAxisLabel_textAngle\",\"-0.3\"],[\"xAxisLabel_textAlign\",\"right\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "htmlObject",
+      "value": "chart",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     }
+    ],
+    "meta_cdwRender": "false"
+   },
+   {
+    "id": "OTHERCOMPONENTS",
+    "name": "Others",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Others",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "902221aa-edd5-e06f-6731-c60fa0b6472a",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "table",
+      "type": "Id"
+     },
+     {
+      "name": "htmlObject",
+      "value": "table",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "['territory','productLine']",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[[\"territory\",\"territory\"],[\"productLine\",\"productLine\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "sqlQuery"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[\"Customer\",\"Total\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"string\",\"number\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[null,\"%.2f\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     }
+    ]
+   },
+   {
+    "id": "91c91b19-d561-3b0a-97b3-62d99b7a12df",
+    "type": "ComponentstextComponent",
+    "typeDesc": "Text Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "legend",
+      "type": "Id"
+     },
+     {
+      "name": "expression",
+      "value": "function(){\n  return \"Information for \" + territory + \" for product line \"+ productLine;\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "htmlObject",
+      "value": "legend",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "['territory','productLine']",
+      "type": "Listeners"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     }
+    ]
+   },
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Generic",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "10b1c0dc-0117-6693-5a3a-b9ff4f243cc2",
+    "type": "ComponentsParameter",
+    "typeDesc": "Parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "territory",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "EMEA",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "20bd3eaf-8832-051a-96ff-e10e384a0dec",
+    "type": "ComponentsParameter",
+    "typeDesc": "Parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "productLine",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "Classic Cars",
+      "type": "String"
+     }
+    ]
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "MDX",
+    "name": "MDX Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "MDX Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "ed049ea5-f42a-d74e-34cc-92c9240991e9",
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "value": "mdxQuery",
+      "type": "Id"
+     },
+     {
+      "name": "catalog",
+      "value": "../steel-wheels/analysis/steelwheels.mondrian.xml",
+      "type": "String"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "query",
+      "value": "select NON EMPTY [Markets].[All Markets].Children ON COLUMNS,\n  NON EMPTY [Product].[All Products].Children ON ROWS\nfrom [SteelWheelsSales]\n ",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "bandedMode",
+      "value": "compact",
+      "type": "BandedMode"
+     }
+    ]
+   },
+   {
+    "id": "SQL",
+    "name": "SQL Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "SQL Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "60e59c7f-0c44-975a-6e1b-53466bed4c5a",
+    "type": "Componentssql_sqlJndi",
+    "typeDesc": "sql over sqlJndi",
+    "meta": "CDA",
+    "meta_conntype": "sql.jndi",
+    "meta_datype": "sql",
+    "parent": "SQL",
+    "properties": [
+     {
+      "name": "name",
+      "value": "sqlQuery",
+      "type": "Id"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[[\"productLine\",\"Classic Cars\",\"String\"],[\"territory\",\"APAC\",\"String\"]]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "query",
+      "value": "SELECT\nc.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total\nFROM ORDERFACT f\ninner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )\ninner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)\nwhere p.PRODUCTLINE=${productLine}\nand c.TERRITORY=${territory}\ngroup by c.CUSTOMERNAME\norder by total desc ",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   }
+  ]
+ },
+ "filename": "/cde_sample/cde_sample1.cdfde"
 }

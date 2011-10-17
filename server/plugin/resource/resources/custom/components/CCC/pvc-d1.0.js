@@ -113,6 +113,8 @@ pvc.Base = Base.extend({
     legendSource: "series",
     colors: null,
 
+    // renderCallback
+    renderCallback: undefined,
 
     constructor: function(options){
         var myself = this;
@@ -186,6 +188,7 @@ pvc.Base = Base.extend({
         }
 
         // Getting data engine and initialize the translator
+        this.dataEngine.clearDataCache();
         this.dataEngine.setData(this.metadata,this.resultset);
         this.dataEngine.setCrosstabMode(this.options.crosstabMode);
         this.dataEngine.setSeriesInRows(this.options.seriesInRows);
@@ -264,6 +267,10 @@ pvc.Base = Base.extend({
                 this.preRender();
             }
 
+            if( typeof this.options.renderCallback !== "undefined" ){
+                this.options.renderCallback.call(this);
+            }
+        
             this.basePanel.getPvPanel().render();
     
             if(this.options.animate == true && !bypassAnimation){
@@ -1282,12 +1289,12 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         if (this.options.orientation == "vertical") {
             scale = this.options.timeSeries  ?
-            this.getTimeseriesScale()     :
+            this.getTimeseriesScale(false,true)     :
             this.getOrdinalScale();
         } else {
             scale =  (this.options.orthoAxisOrdinal) ?
             this.getPerpOrdinalScale("x")    :
-            this.getLinearScale();
+            this.getLinearScale(false,true);
         } 
 
         return scale;
@@ -1395,7 +1402,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
     },
     /**
     **/
-    getLinearScale: function(bypassAxis){
+    getLinearScale: function(bypassAxis,bypassOffset){
 
         var yAxisSize = bypassAxis?0:this.options.yAxisSize;
         var xAxisSize = bypassAxis?0:this.options.xAxisSize;
@@ -1422,8 +1429,12 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
             min = min !== 0 ? min * 0.99 : this.options.originIsZero ? 0 : -0.1;
             max = max !== 0 ? max * 1.01 : 0.1;
         }
-        if(min > 0 && this.options.originIsZero){
-            min = 0
+        if(min * max > 0 && this.options.originIsZero){
+            if(min > 0){
+                min = 0;
+            }else{
+                max = 0;
+            }
         }
 
         // CvK:  added to set bounds
@@ -1439,7 +1450,8 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         // Adding a small offset to the scale:
         var offset = (max - min) * this.options.axisOffset;
-        var scale = new pv.Scale.linear(min - offset,max + offset)
+        offset = bypassOffset?0:offset;
+        var scale = new pv.Scale.linear(min - (this.options.originIsZero && min == 0 ? 0 : offset),max + (this.options.originIsZero && max == 0 ? 0 : offset));
 
 
         if( !isVertical && this.options.yAxisPosition == "left"){
@@ -1465,11 +1477,10 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
      * Scale for the timeseries axis. xx if orientation is vertical, yy otherwise
      *
      */
-    getTimeseriesScale: function(bypassAxis){
+    getTimeseriesScale: function(bypassAxis,bypassOffset){
 
         var yAxisSize = bypassAxis?0:this.options.yAxisSize;
         var xAxisSize = bypassAxis?0:this.options.xAxisSize;
-        var secondAxisSize = bypassAxis?0:this.options.secondAxisSize;
 
         var size = this.options.orientation=="vertical"?
         this.basePanel.width:
@@ -1483,8 +1494,9 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         // Adding a small offset to the scale:
         var max = parser.parse(categories[categories.length -1]);
-        var min = parser.parse(categories[0]);
+        var min = parser.parse(categories[0]);        
         var offset = (max.getTime() - min.getTime()) * this.options.axisOffset;
+        offset = bypassOffset?0:offset;
 
         var scale = new pv.Scale.linear(new Date(min.getTime() - offset),new Date(max.getTime() + offset));
 
@@ -1527,13 +1539,17 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         var max = this.dataEngine.getSecondAxisMax();
         var min = this.dataEngine.getSecondAxisMin();
 
-        if(min > 0 && this.options.secondAxisOriginIsZero){
-            min = 0
+        if(min * max > 0 && this.options.secondAxisOriginIsZero){
+            if(min > 0){
+                min = 0;
+            }else{
+                max = 0;
+            }
         }
 
         // Adding a small offset to the scale:
         var offset = (max - min) * this.options.secondAxisOffset;
-        var scale = new pv.Scale.linear(min - offset,max + offset)
+        var scale = new pv.Scale.linear(min - (this.options.secondAxisOriginIsZero && min == 0 ? 0 : offset),max + (this.options.secondAxisOriginIsZero && max == 0 ? 0 : offset));
 
 
         if( !isVertical && this.options.yAxisPosition == "left"){
@@ -1951,10 +1967,9 @@ pvc.PieChartPanel = pvc.BasePanel.extend({
       this.pvPie
       .cursor("pointer")
       .event("click",function(d){
-        var s = myself.chart.dataEngine.getVisibleSeries()[this.parent.index];
-        var c = myself.chart.dataEngine.getVisibleCategories()[this.index];
-        var elem = this.scene.$g.childNodes[this.index];
-        return myself.chart.options.clickAction(s,c, d,elem);
+        var s = myself.chart.dataEngine.getVisibleSeries()[this.parent.index]
+        var c = myself.chart.dataEngine.getVisibleCategories()[this.index]
+        return myself.chart.options.clickAction(s,c, d);
       });
     }
 
@@ -2334,13 +2349,11 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
     var oScale = this.chart.getOrdinalScale(true);
     var tScale;
     if(this.timeSeries){
-      tScale = this.chart.getTimeseriesScale(true);
+      tScale = this.chart.getTimeseriesScale(true,true);
     }
     
     var parser = pv.Format.date(this.timeSeriesFormat);
     
-    var maxLineSize;
-
     var colors = this.chart.colors(pv.range(this.chart.dataEngine.getSeriesSize()));
     var colorFunc = function(d){
       // return colors(d.serieIndex)
@@ -2444,8 +2457,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
       .cursor("pointer")
       .event("click",function(d){
         var v, c;
-        var s = myself.chart.dataEngine.getSeries()[this.parent.index];
-        var elem = this.scene.$g.childNodes[this.index];
+        var s = myself.chart.dataEngine.getSeries()[this.parent.index]
         if(  d != null && typeof d == "object"){
           v = d.value;
           c = d.category
@@ -2454,7 +2466,7 @@ pvc.ScatterChartPanel = pvc.BasePanel.extend({
           v = d
           c = myself.chart.dataEngine.getCategories()[this.index]
         }
-        return myself.chart.options.clickAction(s,c, v, elem);
+        return myself.chart.options.clickAction(s,c, v);
       });
     }
 
@@ -2510,6 +2522,11 @@ pvc.DataEngine = Base.extend({
     hiddenData: null,
     secondAxis: false, // Do we have double axis?
     secondAxisIdx: 0,
+    
+    visibleCategoriesIndexes: undefined,
+    visibleCategories: undefined,
+    visibleSeriesIndexes: undefined,
+    visibleSeries: undefined,
 
     constructor: function(chart){
 
@@ -2529,8 +2546,8 @@ pvc.DataEngine = Base.extend({
     },
 
     /**
-   * Creates the appropriate translator
-   */
+     * Creates the appropriate translator
+     */
 
     createTranslator: function(){
 
@@ -2550,8 +2567,8 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns some information on the data points
-   */
+     * Returns some information on the data points
+     */
 
     getInfo: function(){
 
@@ -2568,9 +2585,9 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the series on the underlying data
-   *
-   */
+     * Returns the series on the underlying data
+     *
+     */
 
     getSeries: function(){
         var res = this.series || this.translator.getColumns();
@@ -2578,9 +2595,9 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns a serie on the underlying data by an index
-   *
-   */
+     * Returns a serie on the underlying data by an index
+     *
+     */
 
     getSerieByIndex: function(idx){
         return this.getSeries()[idx];
@@ -2588,46 +2605,59 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns an array with the indexes for the series
-   *
-   */
+     * Returns an array with the indexes for the series
+     *
+     */
     getSeriesIndexes: function(){
         // we'll just return everything
         return pv.range(this.getSeries().length)
     },
 
     /*
-   * Returns an array with the indexes for the visible series
-   *
-   */
+     * Returns an array with the indexes for the visible series
+     *
+     */
     getVisibleSeriesIndexes: function(){
 
-        var myself=this;
-        var res =  pv.range(this.getSeries().length).filter(function(v){
-            return !myself.hiddenData.series[v];
-        });
-        return res;
+        if (typeof this.visibleSeriesIndexes === "undefined"){
+            
+            var myself=this;
+            var res =  pv.range(this.getSeries().length).filter(function(v){
+                return !myself.hiddenData.series[v];
+            });
+            this.visibleSeriesIndexes = res;
+        }
+        
+        return this.visibleSeriesIndexes;
+
     },
 
     /*
-   * Returns an array with the visible categories. Use only when index information
-   * is not required
-   *
-   */
+     * Returns an array with the visible categories. Use only when index information
+     * is not required
+     *
+     */
     getVisibleSeries: function(){
 
-        var myself = this;
-        return this.getVisibleSeriesIndexes().map(function(idx){
-            return myself.getSerieByIndex(idx);
-        })
+
+
+        if (typeof this.visibleSeries === "undefined"){
+            var myself = this;
+            var res = this.getVisibleSeriesIndexes().map(function(idx){
+                return myself.getSerieByIndex(idx);
+            });
+            this.visibleSeries = res;
+        }
+        
+        return this.visibleSeries;
     },
 
 
     /*
-   * Togles the serie visibility based on an index. Returns true if serie is now
-   * visible, false otherwise.
-   *
-   */
+     * Togles the serie visibility based on an index. Returns true if serie is now
+     * visible, false otherwise.
+     *
+     */
 
     toggleSerieVisibility: function(idx){
 
@@ -2637,9 +2667,9 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the categories on the underlying data
-   *
-   */
+     * Returns the categories on the underlying data
+     *
+     */
 
     getCategories: function(){
 
@@ -2661,73 +2691,83 @@ pvc.DataEngine = Base.extend({
         return this.categories;
     },
 
-  getCategoryMin: function() {
-    var cat = this.getCategories();
-    var min = cat[0];
-    for(var i in cat)
-      if (cat[i] < min)
-        min = cat[i];
-    return min;
-  },
+    getCategoryMin: function() {
+        var cat = this.getCategories();
+        var min = cat[0];
+        for(var i in cat)
+            if (cat[i] < min)
+                min = cat[i];
+        return min;
+    },
 
-  getCategoryMax: function() {
-    var cat = this.getCategories();
-    var max = cat[0];
-    for(var i in cat)
-      if (cat[i] > max)
-        max = cat[i];
-    return max;
-  },
+    getCategoryMax: function() {
+        var cat = this.getCategories();
+        var max = cat[0];
+        for(var i in cat)
+            if (cat[i] > max)
+                max = cat[i];
+        return max;
+    },
 
     /*
-   * Returns the categories on the underlying data
-   *
-   */
+     * Returns the categories on the underlying data
+     *
+     */
 
     getCategoryByIndex: function(idx){
         return this.getCategories()[idx];
     },
 
     /*
-   * Returns an array with the indexes for the categories
-   *
-   */
+     * Returns an array with the indexes for the categories
+     *
+     */
     getCategoriesIndexes: function(){
         // we'll just return everything
         return pv.range(this.getCategories().length)
     },
 
     /*
-   * Returns an array with the indexes for the visible categories
-   *
-   */
+     * Returns an array with the indexes for the visible categories
+     *
+     */
     getVisibleCategoriesIndexes: function(){
-
-        var myself=this;
-        var res = pv.range(this.getCategories().length).filter(function(v){
-            return !myself.hiddenData.categories[v];
-        });
-        return res;
+        
+        if (typeof this.visibleCategoriesIndexes === "undefined"){
+            var myself=this;
+            var res = pv.range(this.getCategories().length).filter(function(v){
+                return !myself.hiddenData.categories[v];
+            });
+            this.visibleCategoriesIndexes = res;
+        }
+        
+        return this.visibleCategoriesIndexes;
     },
 
     /*
-   * Returns an array with the visible categories. Use only when index information
-   * is not required
-   *
-   */
+     * Returns an array with the visible categories. Use only when index information
+     * is not required
+     *
+     */
     getVisibleCategories: function(){
   
-        var myself = this;
-        return this.getVisibleCategoriesIndexes().map(function(idx){
-            return myself.getCategoryByIndex(idx);
-        })
+        if (typeof this.visibleCategories === "undefined"){
+            var myself = this;
+            var res = this.getVisibleCategoriesIndexes().map(function(idx){
+                return myself.getCategoryByIndex(idx);
+            });
+        
+            this.visibleCategories = res;
+        }
+        
+        return this.visibleCategories;
     },
 
     /*
-   * Togles the category visibility based on an index. Returns true if category is now
-   * visible, false otherwise.
-   *
-   */
+     * Togles the category visibility based on an index. Returns true if category is now
+     * visible, false otherwise.
+     *
+     */
 
     toggleCategoryVisibility: function(idx){
 
@@ -2736,10 +2776,10 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Togles the visibility of category or series based on an index.
-   * Returns true if is now visible, false otherwise.
-   *
-   */
+     * Togles the visibility of category or series based on an index.
+     * Returns true if is now visible, false otherwise.
+     *
+     */
 
     toggleVisibility: function(axis,idx){
 
@@ -2755,11 +2795,26 @@ pvc.DataEngine = Base.extend({
 
     },
 
+    
     /*
-   * Returns the visibility status of a category or series based on an index.
-   * Returns true if is visible, false otherwise.
-   *
-   */
+     * Clears the cache that's used for optimization
+     *
+     */
+
+    clearDataCache: function(){
+        
+        this.visibleCategoriesIndexes = undefined;
+        this.visibleCategories = undefined;
+        this.visibleSeriesIndexes = undefined;
+        this.visibleSeries = undefined;
+    
+    },
+
+    /*
+     * Returns the visibility status of a category or series based on an index.
+     * Returns true if is visible, false otherwise.
+     *
+     */
     isVisible: function(axis,idx){
 
         // Accepted values for axis: series|categories
@@ -2775,8 +2830,8 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the values for the dataset
-   */
+     * Returns the values for the dataset
+     */
 
     getValues: function(){
 
@@ -2789,8 +2844,8 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the values for the second axis of the dataset
-   */
+     * Returns the values for the second axis of the dataset
+     */
 
     getSecondAxisValues: function(){
 
@@ -2804,9 +2859,9 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the object for the second axis in the form {category: catName, value: val}
-   *
-   */
+     * Returns the object for the second axis in the form {category: catName, value: val}
+     *
+     */
 
     getObjectsForSecondAxis: function(sortF){
 
@@ -2828,16 +2883,16 @@ pvc.DataEngine = Base.extend({
             return ar;
     },
     /*
-   * Returns the maximum value for the second axis of the dataset
-   */
+     * Returns the maximum value for the second axis of the dataset
+     */
     getSecondAxisMax:function(){
 
         return pv.max(this.getSecondAxisValues().filter(pvc.nonEmpty))
     },
     
     /*
-   * Returns the minimum value for the second axis of the dataset
-   */
+     * Returns the minimum value for the second axis of the dataset
+     */
     getSecondAxisMin:function(){
 
         return pv.min(this.getSecondAxisValues().filter(pvc.nonEmpty))
@@ -2846,8 +2901,8 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the transposed values for the dataset
-   */
+     * Returns the transposed values for the dataset
+     */
 
     getTransposedValues: function(){
 
@@ -2858,8 +2913,8 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the transposed values for the visible dataset
-   */
+     * Returns the transposed values for the visible dataset
+     */
 
     getVisibleTransposedValues: function(){
         var myself = this;
@@ -2870,9 +2925,9 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the values for a given series idx
-   *
-   */
+     * Returns the values for a given series idx
+     *
+     */
 
     getValuesForSeriesIndex: function(idx){
         return this.getValues().map(function(a){
@@ -2881,9 +2936,9 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the visible values for a given category idx
-   *
-   */
+     * Returns the visible values for a given category idx
+     *
+     */
 
     getVisibleValuesForSeriesIndex: function(idx){
 
@@ -2894,9 +2949,9 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the object for a given series idx in the form {category: catName, value: val}
-   *
-   */
+     * Returns the object for a given series idx in the form {category: catName, value: val}
+     *
+     */
 
     getObjectsForSeriesIndex: function(idx, sortF){
 
@@ -2920,18 +2975,18 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns the values for a given category idx
-   *
-   */
+     * Returns the values for a given category idx
+     *
+     */
 
     getValuesForCategoryIndex: function(idx){
         return this.getValues()[idx];
     },
 
     /*
-   * Returns the visible values for a given category idx
-   *
-   */
+     * Returns the visible values for a given category idx
+     *
+     */
 
     getVisibleValuesForCategoryIndex: function(idx){
 
@@ -2944,9 +2999,9 @@ pvc.DataEngine = Base.extend({
 
 
     /*
-   * Returns the object for a given category idx in the form {serie: value}
-   *
-   */
+     * Returns the object for a given category idx in the form {serie: value}
+     *
+     */
 
     getObjectsForCategoryIndex: function(idx){
 
@@ -2965,25 +3020,25 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Returns how many series we have
-   */
+     * Returns how many series we have
+     */
 
     getSeriesSize: function(){
         return this.getSeries().length;
     },
 
     /*
-   * Returns how many categories, or data points, we have
-   */
+     * Returns how many categories, or data points, we have
+     */
     getCategoriesSize: function(){
         return this.getCategories().length;
     },
 
     /**
-   * For every category in the data, get the maximum of the sum of the series
-   * values.
-   *
-   */
+     * For every category in the data, get the maximum of the sum of the series
+     * values.
+     *
+     */
 
     getCategoriesMaxSumOfVisibleSeries: function(){
 
@@ -2996,11 +3051,11 @@ pvc.DataEngine = Base.extend({
     },
 
     /**
-   * For every serie in the data, get the maximum of the sum of the category
-   * values. If only one serie, gets the sum of the value. Useful to build
-   * pieCharts
-   *
-   */
+     * For every serie in the data, get the maximum of the sum of the category
+     * values. If only one serie, gets the sum of the value. Useful to build
+     * pieCharts
+     *
+     */
 
     getVisibleSeriesMaxSum: function(){
 
@@ -3013,8 +3068,8 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Get the maximum value in all series
-   */
+     * Get the maximum value in all series
+     */
     getVisibleSeriesAbsoluteMax: function(){
 
         var myself=this;
@@ -3026,8 +3081,8 @@ pvc.DataEngine = Base.extend({
     },
 
     /*
-   * Get the minimum value in all series
-   */
+     * Get the minimum value in all series
+     */
     getVisibleSeriesAbsoluteMin: function(){
 
         var myself=this;
@@ -3054,12 +3109,6 @@ pvc.DataEngine = Base.extend({
 
     isSeriesInRows: function(){
         return this.seriesInRows;
-    },
-
-    resetDataCache: function(){
-        this.series = null;
-        this.categories = null;
-        this.values = null;
     }
 
 });
@@ -3466,11 +3515,10 @@ pvc.HeatGridChartPanel = pvc.BasePanel.extend({
             this.pvHeatGrid
             .cursor("pointer")
             .event("click",function(row, rowCol){
-                var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index];
-                var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index];
+                var s = myself.chart.dataEngine.getSeries()[myself.stacked?this.parent.index:this.index]
+                var c = myself.chart.dataEngine.getCategories()[myself.stacked?this.index:this.parent.index]
                 var d = row[rowCol];
-                var elem = this.scene.$g.childNodes[this.index];
-                return myself.chart.options.clickAction(s,c,d,elem);
+                return myself.chart.options.clickAction(s,c,d);
             });
         }
 
@@ -3980,9 +4028,8 @@ pvc.MetricScatterChartPanel = pvc.BasePanel.extend({
       this.pvDot
       .cursor("pointer")
       .event("click",function(d){
-        var v, c, elem;
+        var v, c;
         var s = myself.chart.dataEngine.getSeries()[this.parent.index]
-        elem = this.scene.$g.childNodes[this.index];
         if( typeof d == "object"){
           v = d.value;
           c = d.category
@@ -3991,7 +4038,7 @@ pvc.MetricScatterChartPanel = pvc.BasePanel.extend({
           v = d
           c = myself.chart.dataEngine.getCategories()[this.index]
         }
-        return myself.chart.options.clickAction(s,c, v, elem);
+        return myself.chart.options.clickAction(s,c, v);
       });
     }
 
@@ -4280,8 +4327,12 @@ pvc.WaterfallChart = pvc.CategoricalAbstract.extend({
         // the axis-range computation is possible in "AbstractCategoricalAxis.
         this.callWithHiddenFirstSeries( this.base );
 
-        pvc.log("Prerendering in Bar- or WaterfallChart");
-
+	var logMessage = "Prerendering a ";
+	if (this.options.waterfall)
+            logMessage += "WaterfallChart";
+	else logMessage +=  ((this.options.stacked) ?
+			     "stacked" : "normal")  +  " BarChart";
+	pvc.log(logMessage);
 
         this.wfChartPanel = new pvc.WaterfallChartPanel(this, {
             stacked: this.options.stacked,
@@ -4438,6 +4489,10 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
 
 
     getDataSet:  function() {
+        
+        //clear needed to force re-fetch of visible series
+        this.chart.dataEngine.clearDataCache();
+        
         var dataset = null
         // check whether it does not kill the source-data    
         dataset = this.stacked ?  
@@ -4512,7 +4567,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
         /** end fix **/
         var l2Scale = this.chart.getSecondScale(true);
         var oScale = this.chart.getOrdinalScale(true);
-        var bSCale = null;
+        var bScale = null;
 
         // determine barPositionOffset and bScale
         this.DF.maxBarSize = null;
@@ -4559,7 +4614,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
 
         this.DF.catContainerBasePosFunc = (stacked) ? null :
         function(d){
-            return oScale(this.index);
+            return oScale(myself.chart.dataEngine.getVisibleCategories()[d]);
         };
 
         this.DF.catContainerWidth = (stacked) ? null :
@@ -4784,9 +4839,9 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
         .text(function(d){
             var v = myself.chart.options.valueFormat(d);
             var s = myself.chart.dataEngine
-            .getVisibleSeries()[myself.stacked?this.parent.index:this.index];
+            .getVisibleSeries()[myself.stacked?this.parent.index:this.index]
             var c = myself.chart.dataEngine
-            .getVisibleCategories()[myself.stacked?this.index:this.parent.index];
+            .getVisibleCategories()[myself.stacked?this.index:this.parent.index]
             return myself.chart.options.tooltipFormat.call(myself,s,c,v);
     
         })
@@ -4804,11 +4859,10 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
             .cursor("pointer")
             .event("click",function(d){
                 var s = myself.chart.dataEngine
-                .getSeries()[myself.stacked?this.parent.index:this.index];
+                .getVisibleSeries()[myself.stacked?this.parent.index:this.index]
                 var c = myself.chart.dataEngine
-                .getCategories()[myself.stacked?this.index:this.parent.index];
-                var elem = this.scene.$g.childNodes[this.index];
-                return myself.chart.options.clickAction(s,c, d, elem);
+                .getVisibleCategories()[myself.stacked?this.index:this.parent.index]
+                return myself.chart.options.clickAction(s,c, d);
             });
         }
 
@@ -5226,11 +5280,10 @@ pvc.BulletChartPanel = pvc.BasePanel.extend({
   }
 
 });
-
 /**
  * Parallel coordinates offer a way to visualize data and make (sub-)selections
  * on this dataset.
- * Enhanced version of protovis example 
+ * This code has been based on a protovis example:
  *    http://vis.stanford.edu/protovis/ex/cars.html
  */
 
@@ -5253,8 +5306,12 @@ pvc.ParallelCoordinates = pvc.Base.extend({
       botRuleOffset: 30,
       leftRuleOffset: 60,
       rightRuleOffset: 60,
+	// sort the categorical (non-numerical dimensions)
       sortCategorical: true,
+	// map numerical dimension too (uniform (possible non-linear)
+	// distribution of the observed values)
       mapAllDimensions: true,
+	// number of digits after decimal point.
       numDigits: 0
     };
 
@@ -5270,7 +5327,6 @@ pvc.ParallelCoordinates = pvc.Base.extend({
     this.base();
 
     pvc.log("Prerendering in parallelCoordinates");
-
 
     this.parCoordPanel = new pvc.ParCoordPanel(this, {
       topRuleOffset : this.options.topRuleOffset,
@@ -5313,9 +5369,10 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
   pvParCoord: null,
 
   dimensions: null, 
+  dimensionDescr: null,
+
   data: null,
 
-  dimensionDescr: null,
 
   constructor: function(chart, options){
 
@@ -5323,6 +5380,12 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
 
   },
 
+    /*****
+     * retrieve the data from database and transform it to maps.
+     *    - this.dimensions: all dimensions
+     *    - this.dimensionDescr: description of dimensions
+     *    - this.data: array with hashmap per data-point
+     *****/
   retrieveData: function () {
     var de = this.chart.dataEngine;
     var numDigit = this.chart.options.numDigits;
@@ -5338,33 +5401,36 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
     /******
      *  Generate a Coordinate mapping. 
      *  This mapping is required for categorical dimensions and
-     *  optional for the numerical dimensions.
+     *  optional for the numerical dimensions (in 4 steps)
      ********/
-    // Only the first row is used to test whether a dimension is
-    // categorical or numerical!
+    // 1: generate an array of coorMapping-functions
+    // BEWARE: Only the first row (index 0) is used to test whether 
+    // a dimension is categorical or numerical!
     var pCoordMapping = (this.chart.options.mapAllDimensions) ?
       pCoordIndex.map( function(d) {return (isNaN(values[d][0])) ? 
-              {categorical: true, len: 0, map: new Array() } : 
+              {categorical: true, len: 0, map: [] } : 
                              {categorical: false, len: 0,
-                                 map: new Array(), theValue: new Array() }; })
+                                 map: [], displayValue: [] }; })
     : pCoordIndex.map( function(d) {return (isNaN(values[d][0])) ? 
-              {categorical: true, len: 0, map: new Array() } : 
+              {categorical: true, len: 0, map: [] } : 
               null; }) ;
-    // ... and a function to update the mapping
-    //  For non-categorical value the original-value is store in theValue
-    var coordMapping = function(i, val) {
+  
+      // 2: and generate a helper-function to update the mapping
+      //  For non-categorical value the original-value is store in displayValue
+    var coordMapUpdate = function(i, val) {
       var cMap = pCoordMapping[i];
+      var k = null; // define in outer scope.
       if (cMap.categorical == false) {
         var keyVal = val.toFixed(numDigit);   // force the number to be a string
-        var k = cMap.map[keyVal];
+        k = cMap.map[keyVal];
         if (k == null) {
           k = cMap.len;
           cMap.len++;
           cMap.map[keyVal] = k;
-          cMap.theValue[keyVal] = val;
+          cMap.displayValue[keyVal] = val;
         }
       } else {
-        var k = cMap.map[val];
+        k = cMap.map[val];
         if (k == null) {
           k = cMap.len;
           cMap.len++;
@@ -5373,12 +5439,15 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       }
       return k;
     };
-    // for the categorical dimensions map == theValue
+
+    // 3. determine the value to be displayed
+    //   for the categorical dimensions map == displayValue
     for(var d in pCoordMapping)
       if (   pCoordMapping[d]
           && pCoordMapping[d].categorical)
-        pCoordMapping[d].theValue = pCoordMapping[d].map
+        pCoordMapping[d].displayValue = pCoordMapping[d].map
 
+    // 4. apply the sorting of the dimension
     if (   this.chart.options.sortCategorical
         || this.chart.options.mapAllDimensions) {
       // prefill the coordMapping in order to get it in sorted order.
@@ -5387,10 +5456,10 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
          if (pCoordMapping[i]) {
            // add all data
            for (var col=0; col<values[i].length; col++)
-             coordMapping(i, values[i][col])
+               coordMapUpdate(i, values[i][col]);
            // create a sorted array
            var cMap = pCoordMapping[i].map;
-           var sorted = new Array();
+           var sorted = [];
            for(var item in cMap)
              sorted.push(item);
            sorted.sort();
@@ -5405,38 +5474,48 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       }
     }
 
-    //   local function to transform a data-row to a hashMap
-    //   (key-value pairs) 
+    /*************
+    *  Generate the full dataset (using the coordinate mapping).
+    *  (in 2 steps)
+    ******/
+    //   1. generate helper-function to transform a data-row to a hashMap
+    //   (key-value pairs). 
     //   closure uses pCoordKeys and values
     var generateHashMap = function(col) {
-      var record = new Object();
+      var record = {};
       for(var i in pCoordIndex) {
          record[pCoordKeys[i]] = (pCoordMapping[i]) ?
-          coordMapping(i, values[i][col]) :
-          values[i][col];
+              coordMapUpdate(i, values[i][col]) :
+              values[i][col];
       }
       return record;
-    }
-    // generate array with a hashmap per data-point
-    this.data = dataRowIndex.map(function(col) { return generateHashMap (col)})
+    };
+    // 2. generate array with a hashmap per data-point
+    this.data = dataRowIndex.map(function(col) { return generateHashMap (col)});
 
     
-    //generate a description of the parallel-dimensions
+    /*************
+    *  Generate an array of descriptors for the dimensions (in 3 steps).
+    ******/
+    // 1. find the dimensions
     var descrVals = this.dimensions.map(function(cat)
            {
-             var item = new Object();
+             var item = {};
              // the part after "__" is assumed to be the units
              var elements = cat.split("__");
-             item["id"] = cat;
-             item["name"] = elements[0];
-             item["unit"] = (elements.length >1)? elements[1] : "";
+             item.id = cat;
+             item.name = elements[0];
+             item.unit = (elements.length >1)? elements[1] : "";
              return item;
            });
-    // extend the record with min, max and step
+
+    // 2. compute the min, max and step(-size) per dimension)
     for(var i=0; i<descrVals.length; i++) {
       var item = descrVals[i];
       var index = pCoordIndex[i];
-      item["orgRowIndex"] = index;
+	// orgRowIndex is the index in the original dataset
+	// some indices might be (non-existent/invisible)
+      item.orgRowIndex = index;
 
       // determine min, max and estimate step-size
       var len = values[index].length;
@@ -5445,10 +5524,10 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       // two version of the same code (one with mapping and one without)
       if (pCoordMapping[index]) {
         theMin = theMax = theMin2 = theMax2 =
-               pCoordMapping[index].theValue[ values[index][0] ] ;
+               pCoordMapping[index].displayValue[ values[index][0] ] ;
 
         for(var k=1; k<len; k++) {
-          var v = pCoordMapping[index].theValue[ values[index][k] ] ;
+          var v = pCoordMapping[index].displayValue[ values[index][k] ] ;
           if (v < theMin)
           {
             theMin2 = theMin;
@@ -5477,22 +5556,20 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       }   // end else:  coordinate mapping applied
 
       var theStep = ((theMax - theMax2) + (theMin2-theMin))/2;
-      item["min"] = theMin;
-      item["max"] = theMax;
-      item["step"] = theStep;
+      item.min = theMin;
+      item.max = theMax;
+      item.step = theStep;
 
-      // include the mapping in the 
-      item["categorical"] = false; 
-//      item["theValue"] = null;
+      // 3. and include the mapping (and reverse mapping) 
+      item.categorical = false; 
       if (pCoordMapping[index]) {
-        item["map"] = pCoordMapping[index].map;
-//        item["theValue"] = pCoordMapping[index].theValue;
-        item["mapLength"] = pCoordMapping[index].len;
-        item["categorical"] = pCoordMapping[index].categorical; 
+        item.map = pCoordMapping[index].map;
+        item.mapLength = pCoordMapping[index].len;
+        item.categorical = pCoordMapping[index].categorical; 
 
         // create the reverse-mapping from key to original value
         if (item.categorical == false) {
-          item["orgValue"] = new Array();
+          item.orgValue = [];
           var theMap =  pCoordMapping[index].map;
           for (key in theMap)
             item.orgValue[ theMap[key] ] = 0.0+key;
@@ -5503,15 +5580,17 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
     // generate a object using the given set of keys and values
     //  (map from keys[i] to vals[i])
     var genKeyVal = function (keys, vals) {
-       var record = new Object();
+       var record = {};
       for (var i = 0; i<keys.length; i++)
          record[keys[i]] = vals[i];
       return record;
-    }
+    };
     this.dimensionDescr = genKeyVal(this.dimensions, descrVals);
     
     return;
   } ,
+
+
 
 
 
@@ -5537,6 +5616,7 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
     topRulePos = this.height- topRuleOffs;
     ruleHeight = topRulePos - botRuleOffs,
     labelTopOffs = topRuleOffs - 12,
+      // use dims to get the elements of dimDescr in the appropriate order!!
     dims = this.dimensions,
     dimDescr = this.dimensionDescr;
 
@@ -5544,18 +5624,20 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
      *   Generate the scales x, y and color
      *******/
     // getDimSc is the basis for getDimensionScale and getDimColorScale
-    var getDimSc = function(t) {
+    var getDimSc = function(t, addMargin) {
       var theMin = dimDescr[t].min;
       var theMax = dimDescr[t].max;
       var theStep = dimDescr[t].step;
       // add some margin at top and bottom (based on step)
-      theMin -= theStep;
-      theMax += theStep;
+      if (addMargin) {
+        theMin -= theStep;
+        theMax += theStep;
+      }
       return pv.Scale.linear(theMin, theMax)
               .range(botRuleOffs, topRulePos);
     }; 
     var getDimensionScale = function(t) {
-      var scale = getDimSc(t)
+	var scale = getDimSc(t, true)
               .range(botRuleOffs, topRulePos);
       var dd = dimDescr[t];
       if (   dd.orgValue
@@ -5564,15 +5646,15 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
         var func = function(x) { var res = scale( dd.orgValue[x]);
                       return res; };
         // wire domain() and invert() to the original scale
-        func["domain"] = function() { return scale.domain(); };
-        func["invert"] = function(d) { return scale.invert(d); };
+        func.domain = function() { return scale.domain(); };
+        func.invert = function(d) { return scale.invert(d); };
         return func;
       }
       else
         return scale;
     }; 
     var getDimColorScale = function(t) {
-      var scale = getDimSc(t)
+	var scale = getDimSc(t, false)
               .range("steelblue", "brown");
         return scale;
     }; 
@@ -5593,17 +5675,77 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
 
     var selectVisible = (this.chart.options.mapAllDimensions) ?
       function(d) { return dims.every(  
+	    // all dimension are handled via a mapping.
             function(t) {
               var dd = dimDescr[t];
               var val = (dd.orgValue && (dd.categorical == false)) ?
-                dd.orgValue[d[t]] : d[t];
-              return (val >= filter[t].min) && (val <= filter[t].max) }
+                    dd.orgValue[d[t]] : d[t];
+	      return (val >= filter[t].min) && (val <= filter[t].max); }
         )}
     : function(d) { return dims.every(  
             function(t) {
-              return (d[t] >= filter[t].min) && (d[t] <= filter[t].max) }
+		// TO DO: check whether this operates correctly for
+		// categorical dimensions  (when mapAllDimensions == false
+		return (d[t] >= filter[t].min) && (d[t] <= filter[t].max); }
         )};
  
+
+    /*****
+     *   generateLinePattern produces a line pattern based on
+     *          1. the current dataset.
+     *          2. the current filter settings.
+     *          3. the provided colorMethod.
+     *  The result is an array where each element contains at least
+     *            {x1, y1, x2, y2, color}
+     *  Two auxiliary fields are 
+     *  Furthermore auxiliary functions are provided
+     *     - genAuxData: generate the auxiliary dataset (of clean is)
+     *     - drawLinePattern
+     *     - colorFuncBg
+     *     - colorFuncFreq
+     *     - colorFuncActive
+     *******/
+      var auxData = null;
+      var genAuxData = function() {
+	  if (auxData === null) {
+	      // generate a new (reusable) structure.
+	      auxData = [];
+	      var genNewArray = function (k, l) {
+		  // generated an array with null values
+		  var arr = []
+		  for (var a=0; a<k; a++) {
+		      var elem = []
+		      for (var b=0; b<l; b++) 
+			  elem.push(0);
+		      arr.push(0);
+		  }
+		  return arr;
+	      };
+	      for(var i =0; i<dims.length -1; i++) {
+		  var currDimLen = dimDescr[ dims[i] ].mapLength;
+		  var nextDimLen = dimDescr[ dims[i+1] ].mapLength;
+		  auxData.push( genNewArray(currDimLen, nextDimLen) )
+	      }
+	  } else {
+	  // re-use the existing data-structure if it exists already
+	      for (var a in auxData)
+		  for (var b in a)
+		      for (c=0; c<b.length; c++)
+			  b[c] = 0;
+	  }
+
+      };
+      var generateLinePattern = function (colFunc) {
+	  // find a filtered data-set
+	  var filterData = selectVisible(myself.data)
+
+      };
+      var drawLinePattern = function (panel, pattern) {
+      };
+      var colorFuncBg = function() {
+	  return "#ddd";
+      };
+
 
     /*****
      *   Draw the chart and its annotations (except dynamic content)
@@ -5615,9 +5757,9 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       .visible(selectVisible)
       .add(pv.Line)
       .data(dims)
-      .left(function(t, d) { return x(t)})
+	  .left(function(t, d) { return x(t); } )
       .bottom(function(t, d) { var res = y[t] (d[t]);
-                      return res})
+			       return res; })
       .strokeStyle("#ddd")
       .lineWidth(1)
       .antialias(false);
@@ -5638,7 +5780,7 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
 
     // add labels on the categorical dimension
     //  compute the array of labels
-    var labels = new Array();
+    var labels = [];
     var labelXoffs = 6,
     labelYoffs = 3;
     for(d in dimDescr) {
@@ -5650,7 +5792,7 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
             x:  xVal,
             y:  y[dim.id](dim.map[l]) + labelYoffs,
             label: l
-          }
+          };
       }
     }
     var dimLabels = this.pvPanel.add(pv.Panel)
@@ -5661,6 +5803,11 @@ pvc.ParCoordPanel = pvc.BasePanel.extend({
       .text(function(d) { return d.label})
       .textAlign("left");
     
+      
+    /*****
+     *   Add an additional panel over the top for the dynamic content
+     *    (and draw the (full) dataset)
+     *******/
     // Draw the selected (changeable) data on a new panel on top
     var change = this.pvPanel.add(pv.Panel);
     var line = change.add(pv.Panel)
@@ -6155,66 +6302,68 @@ pvc.DataTreePanel = pvc.BasePanel.extend({
 
       var noBox = false;
 
-      // switch order (assume computational artifact)
-      if (dat[4] < dat[0]) {
-        dat = dat.reverse();
-        pvc.log(" dataset "+ elem.box_id +
-		" repaired (_p95 was smaller than _p5)");
+	if (typeof(dat[2]) != "undefined") {
+        // switch order (assume computational artifact)
+        if (dat[4] < dat[0]) {
+          dat = dat.reverse();
+          pvc.log(" dataset "+ elem.box_id +
+	  	" repaired (_p95 was smaller than _p5)");
+          }
+        if (dat[4] > dat[0])
+          sp.hScale = pv.Scale.linear( dat[0], dat[4]);
+        else {
+          noBox = true;
+          // generate a fake scale centered around dat[0] (== dat[4])
+          sp.hScale = pv.Scale.linear( dat[0] - 1e-10, dat[0] + 1e-10);
         }
-      if (dat[4] > dat[0])
-        sp.hScale = pv.Scale.linear( dat[0], dat[4]);
-      else {
-        noBox = true;
-        // generate a fake scale centered around dat[0] (== dat[4])
-        sp.hScale = pv.Scale.linear( dat[0] - 1e-10, dat[0] + 1e-10);
-      }
-      sp.hScale.range(elem.left + rlMargin, elem.left + elem.width - rlMargin);
-      var avLabel = "" + dat[2];   // prepare the label
+        sp.hScale.range(elem.left + rlMargin, elem.left + elem.width - rlMargin);
+        var avLabel = "" + dat[2];   // prepare the label
 
-      for(var i=0; i< dat.length; i++) dat[i] = sp.hScale( dat[i]) 
+        for(var i=0; i< dat.length; i++) dat[i] = sp.hScale( dat[i]) 
 
-      sp.bot = elem.bottom + elem.height / 3,
-      sp.top = elem.bottom + 2 * elem.height / 3,
-      sp.mid = (sp.top + sp.bot) / 2;   // 2/3 of height
-      sp.textBottom = elem.bottom + margin;
-      sp.textBottom = sp.bot - opts.valueFontsize - 1;
+        sp.bot = elem.bottom + elem.height / 3,
+        sp.top = elem.bottom + 2 * elem.height / 3,
+        sp.mid = (sp.top + sp.bot) / 2;   // 2/3 of height
+        sp.textBottom = elem.bottom + margin;
+        sp.textBottom = sp.bot - opts.valueFontsize - 1;
 
-      // and add the new set of rules for a box-plot.
-      var lwa = 3;   // constant for "lineWidth Average"
-      if (noBox) {
-          sp.vRules.push({"left": dat[0],
+        // and add the new set of rules for a box-plot.
+        var lwa = 3;   // constant for "lineWidth Average"
+        if (noBox) {
+            sp.vRules.push({"left": dat[0],
                           "bottom": sp.bot,
                           "lWidth": lwa,
                           "height": sp.top - sp.bot});
-      } else {
-        sp.hRules.push({"left": dat[0],
+        } else {
+          sp.hRules.push({"left": dat[0],
                         "width":  dat[1] - dat[0],
                         "lWidth": 1,
                         "bottom": sp.mid});
-        sp.hRules.push({"left": dat[1],
+          sp.hRules.push({"left": dat[1],
                         "width":  dat[3] - dat[1],
                         "lWidth": 1,
                         "bottom": sp.bot});
-        sp.hRules.push({"left": dat[1],
+          sp.hRules.push({"left": dat[1],
                         "width":  dat[3] - dat[1],
                         "lWidth": 1,
                         "bottom": sp.top});
-        sp.hRules.push({"left": dat[3],
+          sp.hRules.push({"left": dat[3],
                         "width":  dat[4] - dat[3],
                         "lWidth": 1,
                         "bottom": sp.mid});
-        for(var i=0; i<dat.length; i++)
-          sp.vRules.push({"left": dat[i],
+          for(var i=0; i<dat.length; i++)
+            sp.vRules.push({"left": dat[i],
                           "bottom": sp.bot,
                           "lWidth": (i == 2) ? lwa : 1,
                           "height": sp.top - sp.bot});
-      }
+        }
 
-      sp.labels.push({left: dat[2],
+        sp.labels.push({left: dat[2],
                       bottom: sp.textBottom,
                       text: this.labelFixedDigits(avLabel),
                       size: opts.smValueFont,
                       color: opts.boxplotColor});
+    }
     }
   } ,
 
