@@ -40,8 +40,8 @@
         <Raw>
           <Fragment name='svgweb' version='1.0'><![CDATA[
                <!--[if lt IE 9]><script
-    type="text/javascript" src="${res:system/pentaho-cdf-dd/resources/custom/components/CCC/svg.js}"
-    data-path="${res:system/pentaho-cdf-dd/resources/custom/components/CCC/}">
+    type="text/javascript" src="${res:/system/pentaho-cdf-dd/resources/custom/components/CCC/svg.js}"
+    data-path="${res:/system/pentaho-cdf-dd/resources/custom/components/CCC/}">
 </script><![endif]--> 
     <meta name="svg.render.forceflash" content="true"> 
             ]]>
