@@ -839,7 +839,7 @@ var FloatRenderer = StringRenderer.extend({
 
   validate: function(value){
 
-    if(!value.match(/^\d*\.?\d*$/)){
+    if(!value.match(/^[-]?\d*\.?\d*$/)){
       $.prompt('Argument '+ value + ' must be numeric');
       return false;
     }
