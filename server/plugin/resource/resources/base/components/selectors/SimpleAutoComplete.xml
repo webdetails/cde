@@ -16,6 +16,7 @@
 			<Definition name="queryDefinition">
 				<Property>dataSource</Property>
 			</Definition>
+			<Property>searchParam</Property>
 			<Property>maxResults</Property>
 			<Property name='minTextLength'>minTextLenght</Property>
 			<Property>executeAtStart</Property>
