@@ -70,9 +70,9 @@ var PopupComponent = BaseComponent.extend({
      * axes.
      */
     var minWidth = minimumDistance,
-      maxWidth = document.width - minimumDistance,
+      maxWidth = $(document).width() - minimumDistance,
       minHeight = minimumDistance,
-      maxHeight = document.height - minimumDistance,
+      maxHeight = $(document).height() - minimumDistance,
       targetWidth, targetHeight,
       paddingNear, paddingFar;
 
