@@ -44,6 +44,9 @@
 			<Property>refreshPeriod</Property>
 			<Property>tooltip</Property>
 			<Property>extraOptions</Property>
+			<Property>expandParameters</Property>
+			<Property>expandOnClick</Property>
+			<Property>expandContainerObject</Property>			
 		</Model>
 	</Contents>
 </DesignerComponent>
