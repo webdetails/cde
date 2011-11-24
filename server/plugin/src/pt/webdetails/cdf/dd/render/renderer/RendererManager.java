@@ -4,15 +4,9 @@
  */
 package pt.webdetails.cdf.dd.render.renderer;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Hashtable;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
-import org.dom4j.Document;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 
@@ -52,80 +46,12 @@ public class RendererManager
     init(this.path);
   }
 
-  private void indexBaseComponents()
-  {
-    File dir = new File(path + "base/renderers/");
-    FilenameFilter subFolders = new FilenameFilter()
-    {
-
-      public boolean accept(File systemFolder, String name)
-      {
-        File plugin = new File(systemFolder.getPath() + "/" + name + "/renderer.xml");
-        return plugin.exists() && plugin.canRead();
-
-      }
-    };
-    String[] files = dir.list(subFolders);
-    if (files != null)
-    {
-      for (String file : files)
-      {
-        try
-        {
-          Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
-          GenericRenderer renderer = new GenericRenderer("resources/base/renderers/" + file + "/", doc);
-          if (renderer != null)
-          {
-            rendererPool.put(renderer.getName(), renderer);
-          }
-        }
-        catch (Exception e)
-        {
-          Logger.getLogger(RendererManager.class.getName()).log(Level.SEVERE, null, e);
-        }
-      }
-    }
-  }
-
-  private void indexCustomComponents()
-  {
-    File dir = new File(path + "custom/components/");
-    FilenameFilter subFolders = new FilenameFilter()
-    {
-
-      public boolean accept(File systemFolder, String name)
-      {
-        File plugin = new File(systemFolder.getPath() + "/" + name + "/renderer.xml");
-        return plugin.exists() && plugin.canRead();
-
-      }
-    };
-    String[] files = dir.list(subFolders);
-    for (String file : files)
-    {
-      try
-      {
-        Document doc = XmlDom4JHelper.getDocFromFile(dir.getPath() + "/" + file + "/renderer.xml", null);
-        GenericRenderer renderer = new GenericRenderer("resources/custom/renderers/" + file + "/", doc);
-        if (renderer != null)
-        {
-          rendererPool.put(renderer.getName(), renderer);
-        }
-      }
-      catch (Exception e)
-      {
-        Logger.getLogger(RendererManager.class.getName()).log(Level.SEVERE, null, e);
-      }
-    }
-  }
+  
 
   private void init(String path)
   {
     this.path = path;
     this.rendererPool = new Hashtable<String, GenericRenderer>();
-
-    indexBaseComponents();
-    indexCustomComponents();
   }
 
   /*public String getEntry() {
@@ -139,5 +65,20 @@ public class RendererManager
   GenericRenderer getRenderer(String name)
   {
     return rendererPool.get(name);
+  }
+
+  public String getDefinitions()
+  {
+    StringBuilder defs = new StringBuilder();
+    for (GenericRenderer renderer : rendererPool.values())
+    {
+      defs.append(renderer.getDefinition());
+    }
+    return defs.toString();
+  }
+  
+    public void registerRenderer(GenericRenderer renderer)
+  {
+    rendererPool.put(renderer.getName().toLowerCase(), renderer);
   }
 }

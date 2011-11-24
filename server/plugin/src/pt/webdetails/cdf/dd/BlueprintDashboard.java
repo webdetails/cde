@@ -5,6 +5,7 @@
 package pt.webdetails.cdf.dd;
 
 import java.util.Date;
+import javax.servlet.ServletRequest;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
@@ -102,7 +103,7 @@ public class BlueprintDashboard extends AbstractDashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
-      final String adornedRoot = "http://" + absRoot; 
+      final String adornedRoot = generator.getScheme() + "://" + absRoot; 
       StringFilter css = new StringFilter()
       {
 

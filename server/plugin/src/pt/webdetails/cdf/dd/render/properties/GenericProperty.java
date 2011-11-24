@@ -10,9 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
-import org.dom4j.Document;
 import org.dom4j.Node;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
+import pt.webdetails.cdf.dd.render.renderer.GenericRenderer;
+import pt.webdetails.cdf.dd.render.renderer.RendererManager;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 /**
@@ -27,6 +28,12 @@ public class GenericProperty
 
     STRING, BOOLEAN, NUMBER, FUNCTION, ARRAY, QUERY, LITERAL, VOID
   };
+
+  public static enum RendererType
+  {
+
+    CUSTOM, VALUELIST, DYNAMICLIST
+  }
   public static final String newLine = System.getProperty("line.separator");
   private HashMap<String, String> attributes;
   private String path;
@@ -117,7 +124,7 @@ public class GenericProperty
     {
       return "";
     }
-    
+
     if (value.charAt(0) != '\"')
     {
       value = "\"" + value + "\"";
@@ -125,7 +132,7 @@ public class GenericProperty
     //escape newlines
     value = StringUtils.replace(value, "\n", "\\n");
     value = StringUtils.replace(value, "\r", "\\r");
-    
+
     return name + ": " + value + "," + newLine;
   }
 
@@ -179,7 +186,7 @@ public class GenericProperty
       m.reset();
       while (m.find())
       {
-        m.appendReplacement(sb, m.group(1).replaceAll("\\\"","\"").replaceAll("\\$","\\\\\\$"));
+        m.appendReplacement(sb, m.group(1).replaceAll("\\\"", "\"").replaceAll("\\$", "\\\\\\$"));
 
       }
       m.appendTail(sb);
@@ -201,6 +208,9 @@ public class GenericProperty
   public void init(String path, Node doc)
   {
     this.definition = doc;
+    String typeString = XmlDom4JHelper.getNodeText("Header/InputType/@type", definition);
+    typeString = typeString == null ? "" : typeString.toUpperCase();
+    RendererType rendererType = typeString.equals("") ? RendererType.CUSTOM : RendererType.valueOf(typeString);
     this.name = XmlDom4JHelper.getNodeText("Header/Name", definition);
     this.version = XmlDom4JHelper.getNodeText("Header/Version", definition);
     this.type = OutputType.valueOf(XmlDom4JHelper.getNodeText("Header/OutputType", definition).toUpperCase());
@@ -208,7 +218,20 @@ public class GenericProperty
     attributes = new HashMap<String, String>();
     attributes.put("description", "\"" + XmlDom4JHelper.getNodeText("Header/Description", definition) + "\"");
     attributes.put("tooltip", "\"" + XmlDom4JHelper.getNodeText("Header/Tooltip", definition) + "\"");
-    attributes.put("type", "\"" + XmlDom4JHelper.getNodeText("Header/InputType", definition) + "\"");
+    switch (rendererType)
+    {
+      case CUSTOM:
+        attributes.put("type", "\"" + XmlDom4JHelper.getNodeText("Header/InputType", definition) + "\"");
+        break;
+      case VALUELIST:
+        GenericRenderer renderer = new GenericRenderer(this.definition);
+        RendererManager rmanager = RendererManager.getInstance();
+        rmanager.registerRenderer(renderer);
+        attributes.put("type", "\"" + renderer.getName() + "\"");
+        break;
+      case DYNAMICLIST:
+        break;
+    }
     attributes.put("order", XmlDom4JHelper.getNodeText("Header/Order", definition));
     String advanced = XmlDom4JHelper.getNodeText("Header/Advanced", definition);
     if (advanced != null && advanced.toLowerCase().equals("true"))
@@ -240,7 +263,7 @@ public class GenericProperty
           value = "";
       }
     }
-    else if (this.type == type.STRING)
+    else if (this.type == this.type.STRING)
     {
       value = "\"" + value + "\"";
     }

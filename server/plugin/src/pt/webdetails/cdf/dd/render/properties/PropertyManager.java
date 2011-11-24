@@ -21,6 +21,7 @@ import org.dom4j.Node;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
+import pt.webdetails.cdf.dd.render.components.ComponentManager;
 import pt.webdetails.cdf.dd.render.renderer.RendererManager;
 
 /**
@@ -194,6 +195,7 @@ public class PropertyManager
   public String getDefinitions()
   {
     StringBuilder defs = new StringBuilder();
+    defs.append(RendererManager.getInstance().getDefinitions());
     for (GenericProperty prop : propertyPool.values())
     {
       defs.append(prop.getDefinition());

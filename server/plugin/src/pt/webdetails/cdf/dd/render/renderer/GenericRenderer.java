@@ -1,13 +1,13 @@
 package pt.webdetails.cdf.dd.render.renderer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.Document;
 import org.dom4j.Node;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
-import pt.webdetails.cdf.dd.render.DependenciesEngine;
-import pt.webdetails.cdf.dd.render.DependenciesManager;
+import pt.webdetails.cdf.dd.render.properties.GenericProperty.RendererType;
 
 /**
  *
@@ -16,57 +16,69 @@ import pt.webdetails.cdf.dd.render.DependenciesManager;
 public class GenericRenderer
 {
 
+  RendererType type;
   protected static final Log logger = LogFactory.getLog(GenericRenderer.class);
-  private String path;
   private String name;
-  private String parent;
+  private Map<String, String> values;
 
-  public GenericRenderer(String path, Document definition)
+  public GenericRenderer(Node definition)
   {
-    this.path = path;
     setDefinition(definition);
   }
 
-  private void setDefinition(Document definition)
+  private void setDefinition(Node definition)
   {
-    DependenciesEngine ddDeps = DependenciesManager.getInstance().getEngine("CDFDD");
-    this.name = XmlDom4JHelper.getNodeText("/DesignerRenderer/Header/Name", definition);
-    this.parent = XmlDom4JHelper.getNodeText("/DesignerRenderer/Implementation/Parent", definition);
-    String src = XmlDom4JHelper.getNodeText("/DesignerRenderer/Contents/Implementation/Code/@src", definition);
-    String ver = XmlDom4JHelper.getNodeText("/DesignerRenderer/Header/Version", definition);
-    if (src != null)
-    {
-      try
-      {
-        ddDeps.register("RENDER_" + this.name, ver, path + src);
-      }
-      catch (Exception e)
-      {
-        logger.error("failed to register " + path);
-      }
-    }
-
-
-    List<Node> deps = definition.selectNodes("/DesignerRenderer/Content/Implementation/Dependencies/*");
-
-    for (Node node : deps)
-    {
-      String name = XmlDom4JHelper.getNodeText(".", node);
-      String depVer = XmlDom4JHelper.getNodeText("@version", node);
-      src = XmlDom4JHelper.getNodeText("@src", node);
-      try
-      {
-        ddDeps.register(name, depVer, path + src);
-      }
-      catch (Exception e)
-      {
-        logger.error("failed to register " + path);
-      }
+    this.name = XmlDom4JHelper.getNodeText("Header/Name", definition) + "Custom";
+    this.values = new HashMap<String, String>();
+    String typeString = XmlDom4JHelper.getNodeText("Header/InputType/@type", definition);
+    typeString = typeString == null ? "" : typeString.toUpperCase();
+    this.type = typeString.equals("") ? RendererType.CUSTOM : RendererType.valueOf(typeString);
+    List<Node> vals = definition.selectNodes("Values/Value");
+    for (Node val : vals) {
+      String value = XmlDom4JHelper.getNodeText("@display", val),
+              key = XmlDom4JHelper.getNodeText(".", val);
+      values.put(key,value);
     }
   }
 
   public String getName()
   {
     return name;
+  }
+
+  public String getDefinition()
+  {
+    StringBuilder str = new StringBuilder();
+    str.append("var ");
+    str.append(name);
+    str.append("Renderer = SelectRenderer.extend({\n\n");
+    str.append("selectData: {");
+    switch (this.type)
+    {
+      case VALUELIST:
+        for (String key : values.keySet())
+        {
+          str.append("'" + key + "': ");
+          str.append("'" + values.get(key) + "',\n");
+        }
+        break;
+      case DYNAMICLIST:
+        break;
+    }
+    str.deleteCharAt(str.length() - 2); // Delete the extra comma
+    str.append("}\n});");
+
+    return str.toString();
+    /*
+    var GravityRenderer = SelectRenderer.extend({
+    
+    selectData: {
+    'N': 'Top',
+    'S': 'Bottom',
+    'W': 'Left',
+    'E': 'Right'
+    }
+    });
+     */
   }
 }

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -71,6 +72,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
   private static final String DESIGNER_SCRIPTS_RESOURCE = "resources/scripts.html";
   private static final String DESIGNER_HEADER_TAG = "@HEADER@";
+  private static final String DESIGNER_CDF_TAG = "@CDF@";
   private static final String DESIGNER_STYLES_TAG = "@STYLES@";
   private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   private static final String DATA_URL_TAG = "cdf-structure.js";
@@ -511,6 +513,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 
+    boolean debugMode = pathParams.hasParameter("debug") && pathParams.getParameter("debug").toString().equals("true");
     if (pathParams.hasParameter("path") && !hasAccess(out, getWcdfRelativePath(pathParams), ISolutionRepository.ACTION_UPDATE))
     {
       out.write("Access Denied".getBytes(ENCODING));
@@ -523,7 +526,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     tokens.put(DESIGNER_HEADER_TAG, header);
 
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
-    if (pathParams.hasParameter("debug") && pathParams.getParameter("debug").toString().equals("true"))
+    if (debugMode)
     {
       final String scripts = ResourceManager.getInstance().getResourceAsString(DESIGNER_SCRIPTS_RESOURCE);
       final String styles = ResourceManager.getInstance().getResourceAsString(DESIGNER_STYLES_RESOURCE);
@@ -539,6 +542,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       tokens.put(DESIGNER_STYLES_TAG, "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />");
       tokens.put(DESIGNER_SCRIPTS_TAG, "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>");
     }
+    tokens.put(DESIGNER_CDF_TAG, getCdfIncludes("", "desktop", debugMode, null));
     tokens.put(FILE_NAME_TAG, getStructureRelativePath(pathParams));
     tokens.put(SERVER_URL_TAG, SERVER_URL_VALUE);
     tokens.put(DATA_URL_TAG, DATA_URL_VALUE);
@@ -892,5 +896,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   IPentahoSession getUserSession()
   {
     return userSession;
+  }
+
+  public String getScheme()
+  {
+    ServletRequest req = (ServletRequest)(parameterProviders.get("path").getParameter("httprequest"));
+    return req.getScheme();
   }
 }

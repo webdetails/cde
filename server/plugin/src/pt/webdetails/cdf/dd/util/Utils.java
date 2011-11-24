@@ -38,7 +38,7 @@ public class Utils {
         baseUrl = uri.getPath();
         if(!baseUrl.endsWith("/")){
           baseUrl+="/";
-        }
+        } 
       }
       catch (URISyntaxException ex)
       {
