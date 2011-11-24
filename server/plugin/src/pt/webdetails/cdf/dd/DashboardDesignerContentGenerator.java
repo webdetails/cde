@@ -84,6 +84,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final int RESOURCE_CACHE_DURATION = 3600 * 24 * 8; //1 week cache
   private static final int NO_CACHE_DURATION = 0;
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
+  private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";  
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
   private Packager packager;
 
@@ -794,6 +795,21 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(contents, out);
   }
 
+  
+  public void createfolder(IParameterProvider pathParams, OutputStream out) throws Exception {
+    
+    String path = pathParams.getStringParameter(PathParams.PATH, null);
+    String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
+    
+    if (ExternalFileEditorBackend.createFolder(path, userSession)) {
+      IOUtils.write("Path " + path + " created ok", out);      
+    } else {
+      
+      IOUtils.write("error creating folder " + path, out);//TODO:...
+    }
+    
+  }
+  
   public void writefile(IParameterProvider pathParams, OutputStream out) throws Exception
   {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
@@ -824,6 +840,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
   }
 
+  public void componenteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  {
+    String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
+    IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
+  }
+  
+  
+  
 //  External Editor ^ 
   private void init() throws IOException
   {

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>expandContainerObject</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Expand container Object</Description>
+	<Tooltip>Id for container object with expanded row contents</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

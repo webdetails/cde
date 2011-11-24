@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>expandOnClick</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Expand On Click</Description>
+	<Tooltip>If true, expand row when clicked and show content from expandContainerObject</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

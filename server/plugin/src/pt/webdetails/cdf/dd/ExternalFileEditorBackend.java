@@ -9,6 +9,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.ISolutionRepository;
+import org.pentaho.platform.api.repository.ISolutionRepositoryService;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 /**
@@ -55,6 +56,31 @@ public class ExternalFileEditorBackend {
     }
   }
   
+  protected static boolean createFolder(String path, IPentahoSession userSession) throws IOException, PentahoAccessControlException
+  {
+    String[] folder = StringUtils.split(path, "/");
+    String folderName = folder[folder.length - 1];
+    String folderPath = path.substring(0, path.indexOf(folderName));
+
+
+
+    ISolutionRepositoryService service = PentahoSystem.get(ISolutionRepositoryService.class, userSession);
+
+
+    boolean status = service.createFolder(userSession, "", folderPath, folderName, "");
+
+
+    if (status)
+    {
+      return true;
+    }
+    else
+    {
+      logger.error("createFolder: creating " + path + " returned error. Folder Already exists?");
+      return false;
+    }
+  }
+  
   
   protected static boolean writeFile(String path, String solution, IPentahoSession userSession, String contents) throws IOException, PentahoAccessControlException //TODO:
   {    
@@ -69,7 +95,7 @@ public class ExternalFileEditorBackend {
     final boolean resourceExists = solutionRepository.resourceExists(path);
     // ok if either new file or has update permissions
     if (!resourceExists || solutionRepository.getSolutionFile(path, ISolutionRepository.ACTION_CREATE) != null)
-    {
+    {            
       int status = solutionRepository.publish(rootDir, filePath, fileName, contents.getBytes(ENCODING), true);
       if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL)
       {
