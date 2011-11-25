@@ -1,3 +1,4 @@
+<DesignerComponents>
 <DesignerComponent>
 	<Header>
 		<Name>Popup</Name>
@@ -31,3 +32,147 @@
     </Implementation>
 	</Contents>
 </DesignerComponent>
+
+
+<DesignerComponent>
+  <Header>
+    <Name>ExportPopupComponent</Name>
+    <IName>ExportPopupComponent</IName>
+    <Description>ExportPopupComponent</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property>tooltip</Property>
+      <Property>gravity</Property>
+      <Property>title</Property>
+      <Property>chartExportComponent</Property>
+      <Property>chartExportType</Property>
+      <Property>chartExportLabel</Property>
+      <Property>dataExportComponent</Property>
+      <Property>dataExportType</Property>
+      <Property>dataExportLabel</Property>
+      <Property>dataExportAttachmentName</Property>
+      <Property name="contentLinks">xActionArrayParameter</Property>
+	  <Property>preExecution</Property>
+	  <Property>postExecution</Property>
+	  <Property>tooltip</Property>
+	  <Property>refreshPeriod</Property>
+	  <Property>listeners</Property>
+    </Model>
+    <Implementation>
+      <Code src="popup.js"/>
+      <Styles>
+        <Style version="1.0" src="ExportPopupComponent.css">ExportPopupComponentExtra</Style>
+        <Style version="1.0" src="popup.css">ExportPopupComponent</Style>        
+      </Styles>
+      <Dependencies/>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>dataExportComponent</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue/>
+            <Description>Data Component to Export</Description>
+            <Tooltip>Id for Data Component to Export</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>dataExportType</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>xls</DefaultValue>
+            <Description>Data Export Type</Description>
+            <Tooltip>can be csv or xls</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+			<Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>dataExportLabel</Name>
+            <Parent>AdvancedProperty</Parent>
+            <DefaultValue>Export Table</DefaultValue>
+            <Description>Data Export Label</Description>
+            <Tooltip>Label to appear in popup</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+			<Advanced>true</Advanced>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>dataExportAttachmentName</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>export</DefaultValue>
+            <Description>Name for table Export attachment</Description>
+            <Tooltip>Name for table export attachment</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+			<Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>chartExportComponent</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue/>
+            <Description>Chart Component to Export</Description>
+            <Tooltip>Id for Chart Component to Export</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>chartExportType</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>png</DefaultValue>
+            <Description>Chart Export Type</Description>
+            <Tooltip>can be png or svg</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+			<Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>chartExportLabel</Name>
+            <Parent>AdvancedProperty</Parent>
+            <DefaultValue>Export Chart</DefaultValue>
+            <Description>Chart Export Label</Description>
+            <Tooltip>Label to appear in popup</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+			<Advanced>true</Advanced>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>
+
+
+</DesignerComponents>

@@ -1,0 +1,24 @@
+
+
+.popupTitle {
+    font-size:10px;    
+    line-height: 20px;
+    display: inline-block;
+}
+
+.popupTitle:hover {
+     color: #006cb8;
+}
+
+.exportOptions div {
+    font-size: 10px;
+    line-height: 20px;
+}
+
+.exportOptions div:hover {
+    color: #006cb8;
+    cursor: pointer;
+}
+
+
+
