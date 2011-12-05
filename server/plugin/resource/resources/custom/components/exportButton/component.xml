@@ -21,6 +21,7 @@
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
 			<Property>tooltip</Property>
+			<Property>refreshPeriod</Property>
 			<Property>listeners</Property>
 		</Model>
 		<Implementation>

@@ -190,3 +190,154 @@ var PopupComponent = BaseComponent.extend({
              near;
   }
 });
+
+
+var ExportPopupComponent = PopupComponent.extend({
+
+  ph: undefined,
+  arrow: undefined,
+  content: undefined,
+  cancel: undefined,
+  dataComponent: undefined,
+  chartComponent: undefined,
+
+  update: function(){
+    var myself = this;
+    if (this.ph) {this.ph.remove();}
+    
+    this.chartComponent = window["render_"+this.chartExportComponent];
+    this.dataComponent = window["render_"+this.dataExportComponent];
+        
+    this.ph = $('<div>');
+    $("#" + this.htmlObject).empty();
+    var link = $('<div class="popupTitle">');
+    link.text(this.title || 'Export');
+    link.click(function(e) {
+        myself.popup(link);
+        e.stopPropagation();
+    })
+    $("#" + this.htmlObject).append(link);
+    
+    
+    if (this.chartComponent) {
+        var realChartExportLabel = "Export Chart";
+        if (this.chartExportLabel && this.chartExportLabel.length > 0)
+            realChartExportLabel = this.chartExportLabel;
+        var chartExportElt = $('<div class="exportElement">');
+        chartExportElt.text(realChartExportLabel);
+        chartExportElt.click(function() {myself.exportChart();});
+        chartExportElt.appendTo(myself.ph);
+    }
+    
+    if (this.dataComponent) {
+        var realTableExportLabel = "Export Data";
+        if (this.dataExportLabel && this.dataExportLabel.length > 0)
+            realTableExportLabel = this.dataExportLabel;
+        var dataExportElt = $('<div class="exportElement">');
+        dataExportElt.text(realTableExportLabel);
+        dataExportElt.click(function() {myself.exportData();});
+        dataExportElt.appendTo(myself.ph);
+    }
+    
+    
+    
+    $(this.contentLinks).each(function (i, elt) {
+        var popupElt = $('<div class="exportElement">');
+        popupElt.text(elt[0]);
+        popupElt.click(elt[1]);
+        popupElt.appendTo(myself.ph);
+    });
+    
+//    this.content = .appendTo(this.ph);
+    this.ph.hide().appendTo($('body'));
+    this.ph.addClass('popupComponent');
+    this.ph.addClass('exportOptions');
+    this.cancel = $("<a>&nbsp;</a>");
+    this.cancel.addClass("close").click(function(){
+        myself.hide();
+    });
+    
+    this.cancel.appendTo(this.ph);
+    this.arrow = $("<div class='arrow'>").appendTo(this.ph);
+//    this.content.removeClass('hidePopup');
+    
+  },
+  
+   popup: function(target,gravity) {
+   	this.base(target, gravity);
+   	
+     var myself = this;
+      
+      var docClick = function (e) {
+          var x = e.pageX;
+          var y = e.pageY;
+          var linkPos = $("#" + myself.htmlObject).position();
+
+          if ((x < linkPos.left || x > linkPos.left + $("#" + myself.htmlObject).width()) ||
+                (y < linkPos.top || y > linkPos.top + $("#" + myself.htmlObject).height())) {
+                myself.hide();            
+                $(document).unbind('click', docClick);
+          }
+      };            
+      $(document).click(docClick);
+  
+   },
+  
+  
+  exportData: function(){
+
+    // Get query
+    Dashboards.log("Exporting to " + this.dataExportType);
+
+    var parameters = this.dataComponent.parameters;
+    var dataAccess = this.dataComponent.chartDefinition.dataAccessId;
+    var path = this.dataComponent.chartDefinition.path;
+    var url = "../cda/doQuery?path="+path+"&dataAccessId="+dataAccess+"&outputType=" + this.dataExportType + "&settingattachmentName="+this.dataExportAttachmentName+"." + this.dataExportType;
+    // Get parameter values; metadata is a special parameter, carries important
+    // info for dashboard operation but has no data so isn't exported
+    for(var i=0; i<parameters.length; i++){
+      url += "&param" + parameters[i][0] + "="
+      + (parameters[i][0] != 'metadata' ?
+        Dashboards.ev(Dashboards.getParameterValue(parameters[i][1])) :
+        'false');
+    }
+    document.location.href = url;
+  },  
+  
+  
+  
+  exportChart: function(){
+
+    Dashboards.log("Exporting to " + this.chartExportType);
+
+    var parameters = this.chartComponent.parameters;
+    var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
+    var path = this.chartComponent.chartDefinition.path;
+
+    var loc = (Dashboards.getQueryParameter("solution") + "/" + Dashboards.getQueryParameter("path") + "/").replace(/\/\//g,"/");
+
+    var url = "../cgg/draw?script="+ loc +  this.chartExportComponent + ".js&outputType=" + this.chartExportType;
+    var param;
+    // Get parameter values; metadata is a special parameter, carries important
+    // info for dashboard operation but has no data so isn't exported
+    for(var i=0; i<parameters.length; i++){
+      param = Dashboards.ev(Dashboards.getParameterValue(parameters[i][1]));
+      if( param !== undefined ){
+        url += "&param" + parameters[i][0] + "=" + (parameters[i][0] != 'metadata' ? encodeURIComponent( param ) : 'false');
+      }
+    }
+
+    // duplicate chart size
+    url+="&paramwidth="+ (this.chartComponent.chartDefinition.width*2) +"&paramheight="+ (this.chartComponent.chartDefinition.height*2) ;
+
+    $.fancybox({
+      type:"iframe",
+      href: url,
+      width: this.chartComponent.chartDefinition.width * 2,
+      height: this.chartComponent.chartDefinition.height * 2
+    });
+
+  }
+  
+  });
+

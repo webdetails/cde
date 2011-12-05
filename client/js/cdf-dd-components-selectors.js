@@ -25,7 +25,9 @@ var ListenersRenderer = SelectMultiRenderer.extend({
   },
 
   getFormattedValue: function(value){
-    return value.replace(/','/g,"', '");;
+  	var v = value.replace(/','/g,"', '");
+	if(v.length > 20 ) v = v.substring(0,20) + " (...)";
+    return v;
   }
 });
 

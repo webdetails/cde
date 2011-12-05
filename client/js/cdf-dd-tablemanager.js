@@ -978,8 +978,8 @@ var SelectMultiRenderer = CellRenderer.extend({
   render: function(placeholder, value, callback){
 
     this.value = value;
-    var _editArea = $("<td>"+ value + "</td>");
     var myself = this;
+    var _editArea = $("<td>"+ myself.getFormattedValue(value) + "</td>");
     _editArea.editable(function(value,settings){
 
       var selector = $(this);
@@ -990,7 +990,7 @@ var SelectMultiRenderer = CellRenderer.extend({
       myself.logger.debug("Saving new value: " + value );
       callback(value);
 
-      return myself.getFormattedValue(value);
+      return value;
     } , {
       cssclass: "cdfddInput",
       data   : this.getData(),
