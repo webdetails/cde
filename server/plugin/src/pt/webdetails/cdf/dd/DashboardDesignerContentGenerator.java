@@ -884,6 +884,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("dashboardContent", dashboard);
     params.put("debug", debug);
+    params.put("scheme",getScheme());
     if (type != null)
     {
       params.put("dashboardType", type);
