@@ -79,7 +79,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
 
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
-      final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? generator.getScheme() + pathParams.getParameter("root").toString() : "" : "";
+      final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? generator.getScheme() + "://" +  pathParams.getParameter("root").toString() : "" : "";
       final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
 
       final RenderLayout layoutRenderer = new RenderLayout();

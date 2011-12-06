@@ -51,7 +51,7 @@ public class BlueprintDashboard extends AbstractDashboard
 
 
 
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
+    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? generator.getScheme() + "://" + pathParams.getParameter("root").toString() : "" : "";
     final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
 
     final RenderLayout layoutRenderer = new RenderLayout();
