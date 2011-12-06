@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 <title>Component Editor </title>
@@ -54,6 +55,7 @@
 
 $.ajaxSetup({
   type: "POST",
+  async:false,
   traditional: true,
   scriptCharset: "utf-8",
   contentType: "application/x-www-form-urlencoded;charset=UTF-8"
@@ -258,7 +260,7 @@ var jsEditor = editors['.js'];
 //Create content
 var html = htmlEditor.getContents();
 var headFinish = html.indexOf('</head>');
-html = html.substring(0, headFinish) + '<script>' + jsEditor.getContents() + "<\/script>" + html.substring(headFinish);
+html = html.substring(0, headFinish) + '<script>' + jsEditor.getContents() + '<\/script>' + html.substring(headFinish);
 headFinish = html.indexOf('</head>');
 html = html.substring(0, headFinish) + '<style>' + cssEditor.getContents() + "</style>" + html.substring(headFinish);
 
@@ -473,6 +475,18 @@ if (expandedMode) {
 
 }
 
+function hideEditComponents() {
+  $('#menu').css('display', 'none');
+  $('#tabs').css('display', 'none');
+	$('#scriptTab').css('display', 'none');
+	$('#htmlTab').css('display', 'none');
+	$('#cssTab').css('display', 'none');
+        $('#resultTab').css('visibility', 'visible');    
+	$('#resultTab').css('display', 'block');	  
+    $('#resultTab').css('height', '90%');  
+    $('#resultTab').css('width', '90%');  
+}
+
 
 </script>
 
@@ -550,8 +564,21 @@ $(document).ready(function() {
 	})();
 
 
+  if (urlParams['view']) {
+    $('#menu').css('visibility', 'hidden');
+    $('#tabs').css('visibility', 'hidden');
+    $('#scriptTab').css('visibility', 'hidden');
+    $('#htmlTab').css('visibility', 'hidden');
+    $('#cssTab').css('visibility', 'hidden');    
+    $('#resultTab').css('visibility', 'hidden');    
+    
+  }
+
+
 	if (urlParams['expanded'])
 		toggleView();
+
+
 
 	if (urlParams['component']) {
 		componentName = urlParams['component'];
@@ -561,6 +588,11 @@ $(document).ready(function() {
 
 	if (urlParams['runComponent'])
 		runComponent();
+  
+  
+  if (urlParams['view'])
+    hideEditComponents();  
+  
 });
 
 </script>
