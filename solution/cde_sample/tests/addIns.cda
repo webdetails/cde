@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="test" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="products" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="sparklineQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="test" id="test"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>select Descendants([Time],2) ON COLUMNS,
+  NON EMPTY [Product].Children ON ROWS
+from [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="products"
+               id="products"
+               type="sql">
+      <Columns/>
+      <Parameters>
+         <Parameter default="" name="term" type="String"/>
+      </Parameters>
+      <Query>select distinct(productline) from products where products.productline like '%' + ${term}+'%' order by productline</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sparklineQuery"
+               id="sparklineQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default Sparkline",
+"Custom Sparkline"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+});
+
+
+model.addRow(new Object[]{ new String("Row 1")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+});
+
+
+return model;</Query>
+   </DataAccess>
+</CDADescriptor>
