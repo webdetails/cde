@@ -345,13 +345,14 @@ var ExportPopupComponent = PopupComponent.extend({
       $(this).addClass('exportChartPopupButtonClicked');      
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true); 
-             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
+      
+      $('#width').val(200);
+      $('#height').val(200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+      
+      
+//             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
 
-    var dimensions = [200, 200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
-    window.open(url + "&attachmentName=chart." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1]);     
-        
-      $(this).removeClass('exportChartPopupButtonClicked');        
-
+   
    });
     popupButtonsDiv.append(smallButton);
 
@@ -365,11 +366,11 @@ var ExportPopupComponent = PopupComponent.extend({
     
     $('#width').attr('disabled', true); 
     $('#height').attr('disabled', true); 
-           $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
-    var dimensions = [400, 400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
-    window.open(url + "&attachmentName=chart." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1]);     
     
-      $(this).removeClass('exportChartPopupButtonClicked');        
+      $('#width').val(400);
+      $('#height').val(400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+    
+    
    });
    
    mediumButton.getComponentData = function () {
@@ -388,13 +389,12 @@ var ExportPopupComponent = PopupComponent.extend({
       $(this).addClass('exportChartPopupButtonClicked');      
     
       $('#width').attr('disabled', true); 
-      $('#height').attr('disabled', true); 
-       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
-
-    var dimensions = [800, 800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
-    window.open(url + "&attachmentName=chart." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1]);     
-      $(this).removeClass('exportChartPopupButtonClicked');   
-    
+      $('#height').attr('disabled', true);
+      
+      $('#width').val(800);
+      $('#height').val(800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+      
+//       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');    
 
    });
 
@@ -408,7 +408,12 @@ var ExportPopupComponent = PopupComponent.extend({
     $(this).addClass('exportChartPopupButtonClicked'); 
     $('#width').removeAttr('disabled'); 
     $('#height').removeAttr('disabled'); 
-    $('.exportChartOkButton').removeClass('exportChartOkButtonDisabled');
+    
+      $('#width').val(myself.chartComponent.chartDefinition.width);
+      $('#height').val(myself.chartComponent.chartDefinition.height);      
+    
+    
+//    $('.exportChartOkButton').removeClass('exportChartOkButtonDisabled');
           
    });
    
@@ -418,14 +423,32 @@ var ExportPopupComponent = PopupComponent.extend({
    popupButtonsDiv.append(inputsWidthDiv);   
    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
    popupButtonsDiv.append(inputsHeightDiv);   
-   var okButton = $("<div class='exportChartPopupButton exportChartOkButton exportChartOkButtonDisabled'>Ok</div>");
+   var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Ok</div>");
    okButton.click(function() {    
-      if ($(this).hasClass('exportChartOkButtonDisabled'))
-        return;
-     
       var dimensions;
-      dimensions = [$('#width').val(), $('height').val()];
-      window.open(url + "&attachmentName=chart." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1]);     
+      
+      switch ($('.exportChartPopupButtonClicked').text()) {
+        case "Small":
+          dimensions = [200, 200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          break;
+        case "Medium":
+          dimensions = [400, 400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          break;
+        case "Large":
+          dimensions = [800, 800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          break;        
+        case "Custom":
+          dimensions = [$('#width').val(), $('#height').val()];
+          break;
+      }
+      
+    
+      var _exportIframe =  $('<iframe style="display:none">');
+      _exportIframe.detach();
+      _exportIframe[0].src = url + "&attachmentName=chart." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
+      _exportIframe.appendTo($('body'));     
+    
+    
    });
    popupButtonsDiv.append(okButton);   
     
