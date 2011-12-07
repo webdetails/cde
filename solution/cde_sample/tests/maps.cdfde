@@ -447,6 +447,77 @@
     ]
    },
    {
+    "id": "0318b910-aac2-83c2-b494-30d143d9dcbd",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "Credits",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "right",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "b55df4a5-1995-2741-97f9-2572cc18a2ad",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "0318b910-aac2-83c2-b494-30d143d9dcbd",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Map Component Development has been sponsored by <a href='http://www.d4is.com'>D4is Solutions</a> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
     "id": "5e871a57-1180-ad52-1696-30bf387afd00",
     "type": "LayoutRow",
     "typeDesc": "Row",
