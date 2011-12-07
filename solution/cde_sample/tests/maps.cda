@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="rrrQuery" type="mondrian.jndi">
+         <Catalog>/steel-wheels/analysis/SampleData.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="teste_chartQuery" type="mondrian.jndi">
+         <Catalog>/steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="BogusForMap" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="ForMapWithMarkers" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="ForMapWithGeo" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="rrrQuery"
+               id="rrrQuery"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Output indexes="1,0" mode="include"/>
+      <Parameters/>
+      <Query>with member [Measures].[Name] as '[Positions].CurrentMember.UniqueName' select TopCount( filter({Descendants([Positions].[All Positions] ,[Positions].[Positions])}, not isempty(([Positions].CurrentMember)) ) , 50) on ROWS, 
+ {[Measures].[Name]} on Columns 
+ from [Quadrant Analysis]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="teste_chartQuery"
+               id="teste_chartQuery"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>select NON EMPTY(TopCount({Descendants([Markets].[All Markets] ,[Markets].[Territory])}, 10, [Measures].[Sales])) on ROWS, 
+ NON EMPTY({[Measures].[Sales]}) on Columns 
+ from [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="BogusForMap"
+               id="BogusForMap"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select top 1 0 FROM Customers</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="ForMapWithMarkers"
+               id="ForMapWithMarkers"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select top 3 customernumber - 100 As Longitude, 
+55.45 As Latitude, 
+CustomerName As Description from customers</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
+               id="ForMapWithGeo"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select top 5 city as City, CustomerName as Description
+from customers</Query>
+   </DataAccess>
+</CDADescriptor>

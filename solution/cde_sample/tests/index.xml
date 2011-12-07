@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <index>
-    <name>CDE Samples</name>
-    <description>CDE Samples</description>
+    <name>CDE Reference</name>
+    <description>CDE Reference</description>
     <icon>reporting.png</icon>
-    <visible>false</visible>
+    <visible>true</visible>
     <display-type>list</display-type>
 </index>

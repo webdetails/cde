@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="BogusForMap" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="ForMapWithMarkers" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="ForMapWithGeo" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="salesGraphQuery" type="mondrian.jndi">
+         <Catalog>/steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="BogusForMap"
+               id="BogusForMap"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select top 1 0 FROM Customers</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="ForMapWithMarkers"
+               id="ForMapWithMarkers"
+               type="sql">
+      <Columns>
+         <Column idx="0">
+            <Name>Latitude</Name>
+         </Column>
+         <Column idx="1">
+            <Name>Longitude</Name>
+         </Column>
+         <Column idx="2">
+            <Name>Description</Name>
+         </Column>
+      </Columns>
+      <Parameters/>
+      <Query>select top 3 customernumber - 110, 38.45, CustomerName, '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-green.png' from customers</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
+               id="ForMapWithGeo"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select top 8 city, 
+country as country,
+CustomerName as Description
+from customers 
+where customernumber &lt;&gt; 125</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="salesGraphQuery"
+               id="salesGraphQuery"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters>
+         <Parameter default="none" name="customer" type="String"/>
+      </Parameters>
+      <Query>select NON EMPTY(TopCount({Descendants([Product].[All Products] ,[Product].[Line])}, 10, [Measures].[Quantity])) on ROWS, 
+ NON EMPTY({[Measures].[Quantity]}) on Columns 
+ from [SteelWheelsSales]
+where ([Customer].[${customer}])</Query>
+   </DataAccess>
+</CDADescriptor>

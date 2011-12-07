@@ -1,0 +1,1348 @@
+{
+ "layout": {
+  "title": "CDF - Sample structure",
+  "rows": [
+   {
+    "id": "7bae4c43-4df1-1af3-6521-f40db8db57f4",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "GoogleAPIKeyDefinition",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     },
+     {
+      "name": "resourceCode",
+      "value": "/* typemap */ \n\nvar API_KEY = '<GoogleApiKey>'; ",
+      "type": "Resource"
+     }
+    ]
+   },
+   {
+    "id": "1dc266d5-7b94-4aa0-5200-991bdb65706f",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceCode",
+      "value": "#mapTeste, #testWithMarker, #testWithGeoLocalization {\n    width: 800px;\n    height: 500px;\n    margin-bottom:25px;    \n} \n\n\n#HiddenContent {\n    display:none;\n} ",
+      "type": "Resource"
+     }
+    ]
+   },
+   {
+    "id": "c06586e1-5194-4d7f-0a5e-addbe038f0f5",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "40",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "53a47b11-e0eb-d7b8-0394-7b43d50c052e",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "c06586e1-5194-4d7f-0a5e-addbe038f0f5",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Map Component Full Test ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "18",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "898fb4ea-8222-7d4c-ed86-68a2312d0e61",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "5740f1e7-7345-9cd1-3097-ca55fe5b514c",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "898fb4ea-8222-7d4c-ed86-68a2312d0e61",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Full Map with CGG Markers and PopupWindows ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "14",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "fda770ca-e9ed-7f55-52cc-2989a49795ef",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "testWithGeoLocalization",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "5e871a57-1180-ad52-1696-30bf387afd00",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HiddenContent",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "49cd1edc-63ca-7ed6-e335-1231856422c9",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "5e871a57-1180-ad52-1696-30bf387afd00",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HiddenContentCol",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   }
+  ]
+ },
+ "components": {
+  "rows": [
+   {
+    "id": "CUSTOMCOMPONENTS",
+    "name": "Custom",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Custom",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "2a31515b-0268-c4d9-6c58-3a9f17799ad5",
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "NewMapComponent",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "GeoLocalizedMap",
+      "type": "Id"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "htmlObject",
+      "value": "testWithGeoLocalization",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithGeo"
+     },
+     {
+      "name": "mapEngineType",
+      "value": "open",
+      "type": "String"
+     },
+     {
+      "name": "defaultZoomLevel",
+      "value": "2",
+      "type": "Integer"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "10",
+      "type": "Float"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "35",
+      "type": "Float"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "marker",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerWidth",
+      "value": "50",
+      "type": "Integer"
+     },
+     {
+      "name": "markerHeight",
+      "value": "50",
+      "type": "Integer"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": "300",
+      "type": "Integer"
+     },
+     {
+      "name": "popupHeight",
+      "value": "300",
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "HiddenContentCol",
+      "type": "String"
+     },
+     {
+      "name": "markerCggGraph",
+      "value": "cde_sample/tests/FullMapTest.cdw",
+      "type": "String"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[[\"customer\",\"description\"]]",
+      "type": "ValuesArray"
+     }
+    ]
+   },
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Generic",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "dc7565c1-1acd-d4d4-0e9c-eab103162f65",
+    "type": "ComponentsParameter",
+    "typeDesc": "Parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "CustomerNameParameter",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "None",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "CHARTS",
+    "name": "Charts",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Charts",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "dc9f31a9-16bf-6846-dab6-bbdb6cda3583",
+    "type": "ComponentscccPieChart",
+    "typeDesc": "CCC Pie Chart",
+    "meta_cdwSupport": "true",
+    "parent": "CHARTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "salesGraphChart",
+      "type": "Id"
+     },
+     {
+      "name": "width",
+      "value": "290",
+      "type": "Integer"
+     },
+     {
+      "name": "height",
+      "value": "290",
+      "type": "Integer"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "salesGraphQuery"
+     },
+     {
+      "name": "cccCrosstabMode",
+      "value": true,
+      "type": "Boolean"
+     },
+     {
+      "name": "cccSeriesInRows",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccAnimate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickable",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTimeSeries",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccTimeSeriesFormat",
+      "value": "%Y-%m-%d",
+      "type": "String"
+     },
+     {
+      "name": "cccInnerGap",
+      "value": 0.9,
+      "type": "Float"
+     },
+     {
+      "name": "cccExplodedSliceIndex",
+      "value": 0,
+      "type": "Integer"
+     },
+     {
+      "name": "cccExplodedSliceRadius",
+      "value": 0,
+      "type": "Integer"
+     },
+     {
+      "name": "cccOrientation",
+      "value": "horizontal",
+      "type": "MenuMode"
+     },
+     {
+      "name": "cccColors",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "cccShowValues",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccValueFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTooltipFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccValuesAnchor",
+      "value": "right",
+      "type": "AnchorCenter"
+     },
+     {
+      "name": "title",
+      "value": "Sales For Product",
+      "type": "String"
+     },
+     {
+      "name": "cccTitlePosition",
+      "value": "top",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccTitleSize",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowLegend",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccLegendPosition",
+      "value": "bottom",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccLegendSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cccLegendAlign",
+      "value": "center",
+      "type": "SquareAlign"
+     },
+     {
+      "name": "cccShowXScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccXAxisPosition",
+      "value": "bottom",
+      "type": "TopBottom"
+     },
+     {
+      "name": "cccXAxisSize",
+      "value": 30,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowYScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisPosition",
+      "value": "left",
+      "type": "LeftRight"
+     },
+     {
+      "name": "cccYAxisSize",
+      "value": 50,
+      "type": "Integer"
+     },
+     {
+      "name": "cccXAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccAxisOffset",
+      "value": "0",
+      "type": "Float"
+     },
+     {
+      "name": "cccOriginIsZero",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccExtensionPoints",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[[\"customer\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "htmlObject",
+      "value": "HiddenContentCol",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "listeners",
+      "value": "['CustomerNameParameter']",
+      "type": "Listeners"
+     }
+    ],
+    "meta_cdwRender": "false"
+   },
+   {
+    "id": "45bf31ab-d7a9-6e2c-7b33-30b87415a4d7",
+    "type": "ComponentscccPieChart",
+    "typeDesc": "CCC Pie Chart",
+    "meta_cdwSupport": "true",
+    "parent": "CHARTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "salesGraphForMarker",
+      "type": "Id"
+     },
+     {
+      "name": "width",
+      "value": "75",
+      "type": "Integer"
+     },
+     {
+      "name": "height",
+      "value": "75",
+      "type": "Integer"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "salesGraphQuery"
+     },
+     {
+      "name": "cccCrosstabMode",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccSeriesInRows",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccAnimate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickable",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTimeSeries",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccTimeSeriesFormat",
+      "value": "%Y-%m-%d",
+      "type": "String"
+     },
+     {
+      "name": "cccInnerGap",
+      "value": 0.9,
+      "type": "Float"
+     },
+     {
+      "name": "cccExplodedSliceIndex",
+      "value": 0,
+      "type": "Integer"
+     },
+     {
+      "name": "cccExplodedSliceRadius",
+      "value": 0,
+      "type": "Integer"
+     },
+     {
+      "name": "cccOrientation",
+      "value": "vertical",
+      "type": "MenuMode"
+     },
+     {
+      "name": "cccColors",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "cccShowValues",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccValueFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccTooltipFormat",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "cccValuesAnchor",
+      "value": "right",
+      "type": "AnchorCenter"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "cccTitlePosition",
+      "value": "top",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccTitleSize",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowLegend",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccLegendPosition",
+      "value": "bottom",
+      "type": "Anchor"
+     },
+     {
+      "name": "cccLegendSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cccLegendAlign",
+      "value": "center",
+      "type": "SquareAlign"
+     },
+     {
+      "name": "cccShowXScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccXAxisPosition",
+      "value": "bottom",
+      "type": "TopBottom"
+     },
+     {
+      "name": "cccXAxisSize",
+      "value": 30,
+      "type": "Integer"
+     },
+     {
+      "name": "cccShowYScale",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisPosition",
+      "value": "left",
+      "type": "LeftRight"
+     },
+     {
+      "name": "cccYAxisSize",
+      "value": 50,
+      "type": "Integer"
+     },
+     {
+      "name": "cccXAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccYAxisFullGrid",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccAxisOffset",
+      "value": "0",
+      "type": "Float"
+     },
+     {
+      "name": "cccOriginIsZero",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cccExtensionPoints",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[[\"customer\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "htmlObject",
+      "value": "",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     }
+    ],
+    "meta_cdwRender": "true"
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "SQL",
+    "name": "SQL Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "SQL Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "cdec5ed0-ebb9-eb04-9b9c-cff3fb27823b",
+    "type": "Componentssql_sqlJndi",
+    "typeDesc": "sql over sqlJndi",
+    "meta": "CDA",
+    "meta_conntype": "sql.jndi",
+    "meta_datype": "sql",
+    "parent": "SQL",
+    "properties": [
+     {
+      "name": "name",
+      "value": "BogusForMap",
+      "type": "Id"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "Jndi"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "select top 1 0 FROM Customers",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "9c9147d4-9bf8-d92d-694b-223258056c9b",
+    "type": "Componentssql_sqlJndi",
+    "typeDesc": "sql over sqlJndi",
+    "meta": "CDA",
+    "meta_conntype": "sql.jndi",
+    "meta_datype": "sql",
+    "parent": "SQL",
+    "properties": [
+     {
+      "name": "name",
+      "value": "ForMapWithMarkers",
+      "type": "Id"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "Jndi"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[[\"0\",\"Latitude\"],[\"1\",\"Longitude\"],[\"2\",\"Description\"]]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "select top 3 customernumber - 110, 38.45, CustomerName, '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-green.png' from customers",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "c2b02ea7-21de-39db-31a1-6aee7f119a8b",
+    "type": "Componentssql_sqlJndi",
+    "typeDesc": "sql over sqlJndi",
+    "meta": "CDA",
+    "meta_conntype": "sql.jndi",
+    "meta_datype": "sql",
+    "parent": "SQL",
+    "properties": [
+     {
+      "name": "name",
+      "value": "ForMapWithGeo",
+      "type": "Id"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "Jndi"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "select top 8 city, \ncountry as country,\nCustomerName as Description\nfrom customers \nwhere customernumber <> 125",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "MDX",
+    "name": "MDX Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "MDX Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "ccf80bd9-e07b-5b1c-7a14-bf45d164ee57",
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "value": "salesGraphQuery",
+      "type": "Id"
+     },
+     {
+      "name": "catalog",
+      "value": "/steel-wheels/analysis/steelwheels.mondrian.xml",
+      "type": "MondrianCatalog"
+     },
+     {
+      "name": "jndi",
+      "value": "SampleData",
+      "type": "Jndi"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[[\"customer\",\"none\",\"String\",\"\"]]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": " select NON EMPTY(TopCount({Descendants([Product].[All Products] ,[Product].[Line])}, 10, [Measures].[Quantity])) on ROWS, \n NON EMPTY({[Measures].[Quantity]}) on Columns \n from [SteelWheelsSales]\nwhere ([Customer].[${customer}])",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "bandedMode",
+      "value": "compact",
+      "type": "BandedMode"
+     }
+    ]
+   }
+  ]
+ },
+ "filename": "/cde_sample/tests/FullMapTest.cdfde"
+}
