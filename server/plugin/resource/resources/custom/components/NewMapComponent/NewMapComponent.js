@@ -41,21 +41,33 @@
 
                    
         var opts =            {
-            name: name,
+            q: name,
             maxRows: 1,
             dataType: "json",
             featureClass: featureClass
         };
 
-  		$.get('http://ws.geonames.org/searchJSON', opts,        
-        function (result) {          			
-	        if(typeof result == 'string') result = JSON.parse(result);
-            if (result.geonames && result.geonames.length > 0) {
-                location = [parseFloat(result.geonames[0].lng), 
-                            parseFloat(result.geonames[0].lat)];
-            }            
-            st.continuationFunction(location);
-        });
+
+
+		var callBackName = 'GeoNameContinuation' + $.now() + st.position;
+		window[callBackName] = function (result) {
+			if (result.geonames && result.geonames.length > 0) {
+    			location = [parseFloat(result.geonames[0].lng), 
+        					parseFloat(result.geonames[0].lat)];
+		  		st.continuationFunction(location);
+		  	}
+		}
+	
+	
+		name = name.replace(/&/g,",");
+		var request = 'http://ws.geonames.org/searchJSON?q=' +  encodeURIComponent(name)  + '&maxRows=1&featureClass=' + featureClass + '&callback=' + callBackName;
+		
+		
+			var aObj = new JSONscriptRequest(request);
+			// Build the script tag
+			aObj.buildScriptTag();
+			// Execute (add) the script tag
+			aObj.addScriptTag();        
     }
   };
   Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames));
@@ -303,7 +315,7 @@ var NewMapComponent = BaseComponent.extend({
         
         
         target = this.ph;
-        var state = {address: address, addressType: addressType};
+        var state = {address: address, addressType: addressType, position: position};
         if (mapping.country != undefined) state.country = data[mapping.country];
         if (mapping.city != undefined) state.city = data[mapping.city];
         if (mapping.county != undefined) state.county = data[mapping.county];
