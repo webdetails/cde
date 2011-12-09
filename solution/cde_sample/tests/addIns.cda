@@ -1,36 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDADescriptor>
    <DataSources>
-      <Connection id="test" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
-         <Jndi>SampleData</Jndi>
-      </Connection>
-      <Connection id="products" type="sql.jndi">
-         <Jndi>SampleData</Jndi>
-      </Connection>
       <Connection id="sparklineQuery" type="scripting.scripting">
          <Initscript></Initscript>
          <Language>beanshell</Language>
       </Connection>
+      <Connection id="dataBarQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="trendArrowQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="hyperlinkQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="test" id="test"
-               type="mdx">
-      <BandedMode>compact</BandedMode>
-      <Columns/>
-      <Parameters/>
-      <Query>select Descendants([Time],2) ON COLUMNS,
-  NON EMPTY [Product].Children ON ROWS
-from [SteelWheelsSales]</Query>
-   </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="products"
-               id="products"
-               type="sql">
-      <Columns/>
-      <Parameters>
-         <Parameter default="" name="term" type="String"/>
-      </Parameters>
-      <Query>select distinct(productline) from products where products.productline like '%' + ${term}+'%' order by productline</Query>
-   </DataAccess>
    <DataAccess access="public" cache="true" cacheDuration="3600" connection="sparklineQuery"
                id="sparklineQuery"
                type="scriptable">
@@ -58,9 +45,123 @@ model.addRow(new Object[]{ new String("Row 1")
 });
 
 
+model.addRow(new Object[]{ new String("Row 2")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="dataBarQuery"
+               id="dataBarQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default barData",
+"Custom barData"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
 model.addRow(new Object[]{ new String("Row 1")
-,new String("37,40,30,23,50,23,14,15,17,25,33,23")
-,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+,new Float("26") ,new Float("50")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new Float("30") ,new Float("77")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new Float("14.5") ,new Float("65")
+});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="trendArrowQuery"
+               id="trendArrowQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default trendArrow",
+"Custom trendArrow"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new Float("26") ,new Float("50")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new Float("-30") ,new Float("77")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new Float("-14.5") ,new Float("-65")
+});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="hyperlinkQuery"
+               id="hyperlinkQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default hyperlink",
+"Custom hyperlink"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new String("www.webdetails.org") ,new String("www.webdetails.pt")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new String("ctools.webdetails.org") ,new String("http://ctools.webdetails.org")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new String("cdf.webdetails.org") ,new String("cde.webdetails.org")
 });
 
 

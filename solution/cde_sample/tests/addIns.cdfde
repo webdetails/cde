@@ -56,7 +56,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "Spacer",
       "type": "Id"
      },
      {
@@ -591,14 +591,14 @@
     ]
    },
    {
-    "id": "a0878970-4172-9e14-2db0-163c7ce1ddda",
+    "id": "6b969f76-b323-4ae2-e012-3ce3c6f4a179",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "PvSparklineTitle",
       "type": "Id"
      },
      {
@@ -618,7 +618,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellHeader",
       "type": "String"
      },
      {
@@ -629,24 +629,95 @@
     ]
    },
    {
-    "id": "990ede07-ed94-952a-28dd-a8f5d0c997d4",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "a0878970-4172-9e14-2db0-163c7ce1ddda",
+    "id": "b959321d-ab82-4acc-b582-a62691506f95",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "6b969f76-b323-4ae2-e012-3ce3c6f4a179",
     "properties": [
      {
       "name": "name",
-      "value": "table",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "pvSparkline ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "4d5bf12c-6334-b8a3-e8f4-17e936f6cbc8",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "PvSparklineBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "f2fedb67-dcef-f41a-1aa4-2357659c6ac0",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "4d5bf12c-6334-b8a3-e8f4-17e936f6cbc8",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
       "type": "Id"
      },
      {
       "name": "columnSpan",
-      "value": "24",
+      "value": "22",
       "type": "Integer"
      },
      {
       "name": "columnPrepend",
-      "value": "",
+      "value": "1",
       "type": "Integer"
      },
      {
@@ -702,14 +773,14 @@
     ]
    },
    {
-    "id": "fa84398f-2f49-51bb-48d0-0bc20f716fd0",
+    "id": "099a0f42-d5ef-98c9-2126-6bb337566e32",
     "type": "LayoutRow",
     "typeDesc": "Row",
-    "parent": "UnIqEiD",
+    "parent": "f2fedb67-dcef-f41a-1aa4-2357659c6ac0",
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "PvSparklineDesc",
       "type": "Id"
      },
      {
@@ -740,24 +811,204 @@
     ]
    },
    {
-    "id": "c5f4e490-612a-7cd0-e7c0-077e21636b27",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "fa84398f-2f49-51bb-48d0-0bc20f716fd0",
+    "id": "10310df8-74b6-60b2-65bb-4dfa71d6b0ae",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "099a0f42-d5ef-98c9-2126-6bb337566e32",
     "properties": [
      {
       "name": "name",
-      "value": "auto",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<i>pvSparkline</i> is a simple implementation of sparklines in \n<a href=\"http://mbostock.github.com/protovis/\">Protovis</a>.\n\nCheck this page for full reference.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a CVS column with numbers, eg: 12,34.2,23,45\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      height: 10,\n      strokeStyle: \"#000\",\n      lineWidth: 1,\n      width: undefined,\n      canvasMargin: 2\n    }     \n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: {lineWidth:2,strokeStyle:\"red\"}\n \n </p>\n \n </p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "bfe0ad39-95b9-1a7b-3965-6302752df9dd",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "f2fedb67-dcef-f41a-1aa4-2357659c6ac0",
+    "properties": [
+     {
+      "name": "name",
+      "value": "PvSparklineObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "5891483b-222c-0850-3005-7be3d815ec04",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "DataBarTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "a14f8a68-30ce-f996-ea4c-dd71e61a3062",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "5891483b-222c-0850-3005-7be3d815ec04",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "dataBar ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "864537cb-c40a-483c-7319-d49d5e6c8cd5",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "DataBarBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "6286a1f6-a39e-726f-4bd4-7e56295af0de",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "864537cb-c40a-483c-7319-d49d5e6c8cd5",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
       "type": "Id"
      },
      {
       "name": "columnSpan",
-      "value": 5,
+      "value": "22",
       "type": "Integer"
      },
      {
       "name": "columnPrepend",
-      "value": "",
+      "value": "1",
       "type": "Integer"
      },
      {
@@ -803,6 +1054,735 @@
      {
       "name": "cssClass",
       "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "2982eacd-4bea-8d45-6ec2-f7a08ae883bb",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "6286a1f6-a39e-726f-4bd4-7e56295af0de",
+    "properties": [
+     {
+      "name": "name",
+      "value": "DataBarDesc",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "337b7bfa-ba65-8c75-d684-748092b391c3",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "2982eacd-4bea-8d45-6ec2-f7a08ae883bb",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<i>dataBar</i> turn a numeric cell into a bar. Maximum is the column's absolute max.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a numeric value, eg: 42.5\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      widthRatio:1,\n      height: 10,\n      startColor: \"#55A4D6\",\n      endColor: \"#448FC8\",\n      stroke: null,\n      max: undefined,\n      includeValue: false,\n      valueFormat: function(v, format, st) {\n        return \"<span class='value'>\" + sprintf(format,v) + \"</span>\";\n      }\n    }\n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: \n {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\"} \n </p>\n \n </p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "82b71465-a15f-54bc-c1ba-6c15012cab2b",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "6286a1f6-a39e-726f-4bd4-7e56295af0de",
+    "properties": [
+     {
+      "name": "name",
+      "value": "DataBarObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "6b70c6bd-5721-1343-b078-f14750f8d3fb",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "TrendArrowTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "c4a65149-06de-8d3c-c3df-5404ab0fff4a",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "6b70c6bd-5721-1343-b078-f14750f8d3fb",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "trendArrow ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "61ffafc8-bc82-6efe-dfac-b3bef0f8832f",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "TrendArrowBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "8cd46af4-b2e8-25da-5759-51c36e4173ab",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "61ffafc8-bc82-6efe-dfac-b3bef0f8832f",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "22",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "1",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "3fc61d2d-bfa5-9881-de7f-fa5ea2ba61c8",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "8cd46af4-b2e8-25da-5759-51c36e4173ab",
+    "properties": [
+     {
+      "name": "name",
+      "value": "TrendArrowDesc",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "35bf3f56-b114-a17b-ff31-9f5177575621",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "3fc61d2d-bfa5-9881-de7f-fa5ea2ba61c8",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<i>trendArrow</i> adds a trend arrow to a numeric cell.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a numeric value, eg: 42.5\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      includeValue: false,\n      valueFormat: function(v,format,st) {\n        return sprintf(format,v);\n      }\n    }\n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: \n       { includeValue: true,valueFormat: function(v,format,st) {return v + \"&euro;\";}};\n       \n </p>\n \n </p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "a8f42ded-3d81-1c6e-7041-9c9575441dd2",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "8cd46af4-b2e8-25da-5759-51c36e4173ab",
+    "properties": [
+     {
+      "name": "name",
+      "value": "TrendArrowObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "6aaf56ca-78f1-657e-26a8-d4549d5b7767",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HyperlinkTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "fa2c2409-08aa-eb7d-ecd8-2269c7da4171",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "6aaf56ca-78f1-657e-26a8-d4549d5b7767",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "hyperlink ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "8e4db190-94b4-451a-411a-ed33daad04bf",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HyperlinkBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "38d2e3dd-7dcf-4e0b-a523-927516bebb6a",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8e4db190-94b4-451a-411a-ed33daad04bf",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "22",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "1",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "c6cc7bd3-66b4-3fe3-ab0b-17be29d9e9ef",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "38d2e3dd-7dcf-4e0b-a523-927516bebb6a",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HyperlinkDesc",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "647ebbe0-cd05-4878-ae4f-10e363816f4f",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "c6cc7bd3-66b4-3fe3-ab0b-17be29d9e9ef",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<i>hyperlink</i> turns a cell into a clickable link. Specific styling can be formatted with CSS\n\nIf a regexp is given, it will only be applied if the text matches it.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a URI string, eg: http://www.webdetails.pt\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      openInNewTab: true,\n      prependHttpIfNeeded: true,\n      regexp: null\n    }\n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: \n       { includeValue: true,valueFormat: function(v,format,st) {return v + \"&euro;\";}};\n       \n </p>\n \n </p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "78f45a2a-d514-ae1a-9298-3c0cb80c1f66",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "38d2e3dd-7dcf-4e0b-a523-927516bebb6a",
+    "properties": [
+     {
+      "name": "name",
+      "value": "HyperlinkObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "03e9e06a-58e4-bb35-2f58-9cef972231b4",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "footer",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "footer",
       "type": "String"
      },
      {
@@ -831,207 +1811,14 @@
     ]
    },
    {
-    "id": "54724e13-c9c6-dda8-9003-066d793bd89e",
+    "id": "895acc62-a7cc-e854-5b14-d60a2ffa12e8",
     "type": "ComponentsTable",
     "typeDesc": "table Component",
     "parent": "OTHERCOMPONENTS",
     "properties": [
      {
       "name": "name",
-      "value": "table",
-      "type": "Id"
-     },
-     {
-      "name": "htmlObject",
-      "value": "table",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "listeners",
-      "value": "[]",
-      "type": "Listeners"
-     },
-     {
-      "name": "xActionArrayParameter",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "dataSource",
-      "type": "Datasource",
-      "value": "test"
-     },
-     {
-      "name": "cccClickAction",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "colHeaders",
-      "value": "[\"Product\",\"Value\",\"Trend\",\"Trend 2\",\"protovis sparkline\",\"Sparkline\",\"Spark Bar\",\"Spark Pie?\",\"Or Bullet Line?\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colTypes",
-      "value": "[\"string\",\"number\",\"trendArrow\",\"trendArrow\",\"pvSparkline\",\"sparkline\",\"sparkline\",\"sparkline\",\"sparkline\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colFormats",
-      "value": "[null,\"%0.0f%%\",\"%.2f%%\",\"%.1f &euro;\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
-      "value": "[\"140\",\"30\",\"50\",\"50\",\"50\",\"50\",\"50\",\"50\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colSortable",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "paginate",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "paginateServerside",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
-     },
-     {
-      "name": "filter",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "info",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "sort",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "sortBy",
-      "value": "[]",
-      "type": "SortByArray"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "lengthChange",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "tableStyle",
-      "value": "themeroller",
-      "type": "TableStyle"
-     },
-     {
-      "name": "drawCallback",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "sDom",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "oLanguage",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "executeAtStart",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "preChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postFetch",
-      "value": "function(data) {\n    var labels = [\"Medicare\",\"Medicaid\",\"Managed Care\",\"Commercial Insurance\",\"Private\",\"Q-Mix\",\"Tricare\"];\n    var i = 0;\n    data.metadata = data.metadata.slice(0,9);\n    data.resultset = data.resultset.map(function(row) {\n      var values = row.slice(2,row.length);\n      r = row.slice(0,2);\n      r.push((Math.random() - 0.5) * 2);\n      r.push((Math.random() - 0.5) * 2);\n      r.push(values.join(','));\n      r.push(values.join(','));\n      var max = Math.max.apply(Math,values);\n      r.push(values.map(function(v){return v - max/2;}).join(','));\n      r.push(values.slice(0,3).join(','));\n      r.push([Math.random()*80+10,Math.random()*60+40,100,80,40].join(','));\n      r[0] = labels[i++];\n      return r\n    });\n    return data;\n}",
-      "type": "JavaScript"
-     },
-     {
-      "name": "preExecution",
-      "value": "function() {\n \n    \n    var pvopts = {\n        width: 75\n    }\n    this.setAddInOptions(\"colType\",\"pvSparkline\",pvopts);\n    \n    function trendOpts(state) {\n        /* We have separate options for columns 2 and 3,\n         * so we have a function with a map from col idxs\n         * to options. Both of these display the value for\n         * the cell, and respect the column format as declared\n         * at the component level.\n         */\n        var opts = {\n          2:{\n            includeValue: true,\n            valueFormat: function(v,format) {\n              /* For column 2, we want to represent the absolute value\n               * for the change. Plain old text will do fine here.\n               */\n              return sprintf(format,Math.abs(v));\n            }\n          },\n          3: {\n            includeValue: true,\n            valueFormat: function(v,format) {\n            /* Column 3 will display the signed value, in either red or\n             * black, depending on whether the value is negative or positive.\n             * Since we need styling, we return an html string.\n             */\n              return \"<span style='color: \" + (v > 0 ? \"black\" : \"red\") + \"'>\" +\n                sprintf(format,v) +\n                \"</span>\";\n            }\n          }\n        };\n        return opts[state.colIdx];\n    }\n    this.setAddInOptions(\"colType\",\"trendArrow\",trendOpts);\n    \n    function sparkOpts(state) {\n      var opts = {\n        5: cols.sparkline,\n        6: cols.sparkbar,\n        7: cols.sparkpie,\n        8: cols.sparkbullet\n      };\n      return opts[state.colIdx];\n    }\n    this.setAddInOptions(\"colType\",\"sparkline\",sparkOpts);\n}",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postExecution",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
-      "name": "extraOptions",
-      "value": "[]",
-      "type": "OptionArray"
-     },
-     {
-      "name": "expandParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "expandContainerObject",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "dc7db903-05b3-a145-7757-8ec980d366d9",
-    "type": "ComponentsTable",
-    "typeDesc": "table Component",
-    "parent": "OTHERCOMPONENTS",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Sparkline1",
+      "value": "Sparkline",
       "type": "Id"
      },
      {
@@ -1217,34 +2004,774 @@
     ]
    },
    {
-    "id": "SCRIPT",
-    "name": "Scripts",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
+    "id": "60d065ed-c39f-e906-e133-3f4f845d8759",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
     "properties": [
      {
-      "name": "Group",
-      "value": "Scripts",
-      "type": "Label"
+      "name": "name",
+      "value": "dataBar",
+      "type": "Id"
+     },
+     {
+      "name": "htmlObject",
+      "value": "DataBarObj",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "dataBarQuery"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"string\",\"dataBar\",\"dataBar\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"dataBar\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\"};\n        }\n    });\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
      }
     ]
    },
    {
-    "id": "39fa6209-f7ac-2336-72d6-e29f92fa137a",
-    "type": "ComponentsFunction",
-    "typeDesc": "Function",
-    "parent": "SCRIPT",
+    "id": "e35a05ab-5c18-ef10-d3b4-4dda2f7ade89",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
     "properties": [
      {
       "name": "name",
-      "value": "ColumnOptions",
+      "value": "trendArrow",
       "type": "Id"
      },
      {
-      "name": "javaScript",
-      "value": "var cols = {\n  sparkline: {\n  /* Column  4 is a vanilla line chart sparkline, with\n   * a red dot marking the minimum value, and a green dot\n   * marking the maximum value.\n   */\n    width: 130,\n    height: 20,\n    lineColor: \"black\",\n    minSpotColor: \"#dd3333\",\n    maxSpotColor: \"#33dd33\"\n  },\n  sparkbar: {\n  /* Column  5 is a bar chart-like sparkline, with\n   * a black/red positive/negative values. For the sake\n   * of exploring what can be tweaked, its bars are really\n   * chunky, at 15px wide, and tightly packed, with a 0px gap.\n   */\n    width: 130,\n    height: 20,\n    barWidth:15,\n    type: 'bar',\n    barSpacing: 0,\n    barColor: \"black\",\n    negBarColor: \"red\"\n  },\n  sparkpie: {\n    type: 'pie',\n    sliceColors: [\"black\",\"magenta\",\"cyan\"]\n  },\n  sparkbullet: {\n    type:\"bullet\",\n    rangeColors: [\"green\", \"yellow\", \"red\"],\n    performanceColor: \"blue\",\n    targetColor: \"black\"\n  }\n}",
+      "name": "htmlObject",
+      "value": "TrendArrowObj",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "trendArrowQuery"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
       "type": "JavaScript"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"string\",\"trendArrow\",\"trendArrow\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"trendArrow\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return { includeValue: true,\n            valueFormat: function(v,format,st) {return v + \"&euro;\";}};\n        }\n    });\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "951f50ae-b7c2-dff0-0e6b-1532ed2318b8",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "hyperlink",
+      "type": "Id"
+     },
+     {
+      "name": "htmlObject",
+      "value": "HyperlinkObj",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "hyperlinkQuery"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"string\",\"hyperlink\",\"hyperlink\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"hyperlink\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return { regexp: \".*webdetails.org\"};\n        }\n    });\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "dc7db903-05b3-a145-7757-8ec980d366d9",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "pvSparkline",
+      "type": "Id"
+     },
+     {
+      "name": "htmlObject",
+      "value": "PvSparklineObj",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "sparklineQuery"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"string\",\"pvSparkline\",\"pvSparkline\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"pvSparkline\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return {lineWidth:2,strokeStyle:\"red\"};\n        }\n    });\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
      }
     ]
    }
@@ -1252,176 +2779,6 @@
  },
  "datasources": {
   "rows": [
-   {
-    "id": "MDX",
-    "name": "MDX Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "MDX Queries",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "39bd4bbb-1793-c8d1-1f3b-34d3bb877f1f",
-    "type": "Componentsmdx_mondrianJndi",
-    "typeDesc": "mdx over mondrianJndi",
-    "meta": "CDA",
-    "meta_conntype": "mondrian.jndi",
-    "meta_datype": "mdx",
-    "parent": "MDX",
-    "properties": [
-     {
-      "name": "name",
-      "value": "test",
-      "type": "Id"
-     },
-     {
-      "name": "catalog",
-      "value": "steel-wheels/analysis/steelwheels.mondrian.xml",
-      "type": "MondrianCatalog"
-     },
-     {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "query",
-      "value": "select Descendants([Time],2) ON COLUMNS,\n  NON EMPTY [Product].Children ON ROWS\nfrom [SteelWheelsSales]\n",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     },
-     {
-      "name": "bandedMode",
-      "value": "compact",
-      "type": "BandedMode"
-     }
-    ]
-   },
-   {
-    "id": "SQL",
-    "name": "SQL Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "SQL Queries",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "78e482fa-8698-3d5e-7e51-24cea8871221",
-    "type": "Componentssql_sqlJndi",
-    "typeDesc": "sql over sqlJndi",
-    "meta": "CDA",
-    "meta_conntype": "sql.jndi",
-    "meta_datype": "sql",
-    "parent": "SQL",
-    "properties": [
-     {
-      "name": "name",
-      "value": "products",
-      "type": "Id"
-     },
-     {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "parameters",
-      "value": "[[\"term\",\"\",\"String\",\"\"]]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "query",
-      "value": "select distinct(productline) from products where products.productline like '%' + ${term}+'%' order by productline",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     }
-    ]
-   },
    {
     "id": "SCRIPTING",
     "name": "SCRIPTING Queries",
@@ -1437,7 +2794,7 @@
     ]
    },
    {
-    "id": "9eafca94-5c8a-1d20-d12f-3824def5d116",
+    "id": "509ef380-c804-e7e2-ea71-87dc23ae677f",
     "type": "Componentsscriptable_scripting",
     "typeDesc": "scriptable over scripting",
     "meta": "CDA",
@@ -1492,7 +2849,220 @@
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default Sparkline\",\n\"Custom Sparkline\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n});\n\n\nreturn model;",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default Sparkline\",\n\"Custom Sparkline\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n,new String(\"37,40,30,23,50,23,14,15,17,25,33,23\")\n});\n\n\nreturn model;",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "a4bca940-80a0-7286-2b65-08a976ff06f6",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "dataBarQuery",
+      "type": "Id"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default barData\",\n\"Custom barData\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"65\")\n});\n\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "f6c26306-390c-560f-81d5-7c3b776b5c68",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "trendArrowQuery",
+      "type": "Id"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default trendArrow\",\n\"Custom trendArrow\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"-30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"-14.5\") ,new Float(\"-65\")\n});\n\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "9eafca94-5c8a-1d20-d12f-3824def5d116",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "hyperlinkQuery",
+      "type": "Id"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default hyperlink\",\n\"Custom hyperlink\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new String(\"www.webdetails.org\") ,new String(\"www.webdetails.pt\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new String(\"ctools.webdetails.org\") ,new String(\"http://ctools.webdetails.org\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new String(\"cdf.webdetails.org\") ,new String(\"cde.webdetails.org\")\n});\n\n\nreturn model;\n\n",
       "type": "SqlQuery"
      },
      {
