@@ -231,7 +231,7 @@ var NewMapComponent = BaseComponent.extend({
             
             if (mapping.marker) marker = elt[mapping.marker];         
             if (marker == undefined) {
-            	var st = {};
+            	var st = {data: elt, position: position};
 				var addinName = this.markerImageGetter;				
 				
 				//Check for cgg graph marker  
@@ -247,7 +247,6 @@ var NewMapComponent = BaseComponent.extend({
 				} else {	
 					//Else resolve to urlMarker addin
 					st.url = myself.marker;
-					st.position = position;
 					defaultMarkers = myself.marker == undefined;
 					addinName = 'urlMarker';				
 				}
