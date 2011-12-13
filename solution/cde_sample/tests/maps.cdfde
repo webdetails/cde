@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "bbe15273-4bcc-7290-77bf-3a2e9205064a",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "wd_style",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../cdeReference.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "7bae4c43-4df1-1af3-6521-f40db8db57f4",
     "type": "LayoutResourceCode",
     "typeDesc": "Resource",
@@ -43,7 +66,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "#mapTeste, #testWithMarker, #testWithGeoLocalization {\n    width: 700px;\n    height: 500px;\n    margin-bottom:25px;    \n} \n\n\n#aHiddenContent {\n    display:none;\n} ",
+      "value": "#simpleTest, #testWithMarker, #testWithGeoLocalization {\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n ",
       "type": "Resource"
      }
     ]
@@ -76,7 +99,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDheader",
       "type": "String"
      },
      {
@@ -147,7 +170,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellHeader",
       "type": "String"
      },
      {
@@ -198,7 +221,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "mapTeste",
+      "value": "",
       "type": "Id"
      },
      {
@@ -215,6 +238,79 @@
       "name": "roundCorners",
       "value": "",
       "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "bb846800-9c98-a8c2-7fc0-a2490f52ea02",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "ab249d52-0093-1b89-f2ad-1be957bca4bd",
+    "properties": [
+     {
+      "name": "name",
+      "value": "simpleTest",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "5",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "cssClass",
@@ -256,7 +352,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellHeader",
       "type": "String"
      },
      {
@@ -307,7 +403,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "testWithMarker",
+      "value": "",
       "type": "Id"
      },
      {
@@ -324,6 +420,79 @@
       "name": "roundCorners",
       "value": "",
       "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "a9446f13-1535-f707-3069-e0eb428a7c0a",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "65cf4247-43f6-462c-aadf-5fa7edcd4304",
+    "properties": [
+     {
+      "name": "name",
+      "value": "testWithMarker",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "cssClass",
@@ -365,7 +534,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellHeader",
       "type": "String"
      },
      {
@@ -416,13 +585,81 @@
     "properties": [
      {
       "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "d998a5de-19b9-e3b7-3990-ca074f13d50e",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "fda770ca-e9ed-7f55-52cc-2989a49795ef",
+    "properties": [
+     {
+      "name": "name",
       "value": "testWithGeoLocalization",
       "type": "Id"
      },
      {
-      "name": "height",
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
       "value": "",
       "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
      },
      {
       "name": "backgroundColor",
@@ -435,42 +672,9 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "0318b910-aac2-83c2-b494-30d143d9dcbd",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Credits",
-      "type": "Id"
-     },
-     {
       "name": "height",
-      "value": "30",
+      "value": "",
       "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
      },
      {
       "name": "cssClass",
@@ -479,41 +683,8 @@
      },
      {
       "name": "textAlign",
-      "value": "right",
+      "value": "",
       "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "b55df4a5-1995-2741-97f9-2572cc18a2ad",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "0318b910-aac2-83c2-b494-30d143d9dcbd",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "Map Component Development has been sponsored by <a href='http://www.d4is.com'>D4is Solutions</a> ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
      }
     ]
    },
@@ -627,6 +798,77 @@
       "type": "TextAlign"
      }
     ]
+   },
+   {
+    "id": "2b4e374e-2e74-1351-b9ff-98b1a6e5c217",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "footer",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "footer",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "2f9d2096-8997-6bf6-4a71-c62deeabb023",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "2b4e374e-2e74-1351-b9ff-98b1a6e5c217",
+    "properties": [
+     {
+      "name": "name",
+      "value": "Credits",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Map Component Development has been sponsored by <a href='http://www.d4is.com'>D4is Solutions</a> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
    }
   ]
  },
@@ -654,7 +896,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "mapas",
+      "value": "SimpleMap",
       "type": "Id"
      },
      {
@@ -664,7 +906,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "mapTeste",
+      "value": "simpleTest",
       "type": "HtmlObject"
      },
      {
@@ -827,7 +1069,7 @@
      },
      {
       "name": "defaultZoomLevel",
-      "value": "4",
+      "value": "2",
       "type": "Integer"
      },
      {
@@ -1119,259 +1361,27 @@
  "datasources": {
   "rows": [
    {
-    "id": "MDX",
-    "name": "MDX Queries",
+    "id": "SCRIPTING",
+    "name": "SCRIPTING Queries",
     "type": "Label",
     "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "Group",
-      "value": "MDX Queries",
+      "value": "SCRIPTING Queries",
       "type": "Label"
      }
     ]
    },
    {
-    "id": "ebdbc44d-79a0-886e-7493-945e854dd7d4",
-    "type": "Componentsmdx_mondrianJndi",
-    "typeDesc": "mdx over mondrianJndi",
+    "id": "1bc6fcbf-4672-c3db-6bf9-92b4d0e6d634",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
     "meta": "CDA",
-    "meta_conntype": "mondrian.jndi",
-    "meta_datype": "mdx",
-    "parent": "MDX",
-    "properties": [
-     {
-      "name": "name",
-      "value": "rrrQuery",
-      "type": "Id"
-     },
-     {
-      "name": "catalog",
-      "value": "/steel-wheels/analysis/SampleData.mondrian.xml",
-      "type": "MondrianCatalog"
-     },
-     {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[\"1\",\"0\"]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "query",
-      "value": "with member [Measures].[Name] as '[Positions].CurrentMember.UniqueName' select TopCount( filter({Descendants([Positions].[All Positions] ,[Positions].[Positions])}, not isempty(([Positions].CurrentMember)) ) , 50) on ROWS, \n {[Measures].[Name]} on Columns \n from [Quadrant Analysis]",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     },
-     {
-      "name": "bandedMode",
-      "value": "compact",
-      "type": "BandedMode"
-     }
-    ]
-   },
-   {
-    "id": "dacb8c0c-f37d-ea72-c3c9-2075616e9c77",
-    "type": "Componentsmdx_mondrianJndi",
-    "typeDesc": "mdx over mondrianJndi",
-    "meta": "CDA",
-    "meta_conntype": "mondrian.jndi",
-    "meta_datype": "mdx",
-    "parent": "MDX",
-    "properties": [
-     {
-      "name": "name",
-      "value": "teste_chartQuery",
-      "type": "Id"
-     },
-     {
-      "name": "catalog",
-      "value": "/steel-wheels/analysis/steelwheels.mondrian.xml",
-      "type": "MondrianCatalog"
-     },
-     {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "query",
-      "value": " select NON EMPTY(TopCount({Descendants([Markets].[All Markets] ,[Markets].[Territory])}, 10, [Measures].[Sales])) on ROWS, \n NON EMPTY({[Measures].[Sales]}) on Columns \n from [SteelWheelsSales]",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     },
-     {
-      "name": "bandedMode",
-      "value": "compact",
-      "type": "BandedMode"
-     }
-    ]
-   },
-   {
-    "id": "SQL",
-    "name": "SQL Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "SQL Queries",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "cdec5ed0-ebb9-eb04-9b9c-cff3fb27823b",
-    "type": "Componentssql_sqlJndi",
-    "typeDesc": "sql over sqlJndi",
-    "meta": "CDA",
-    "meta_conntype": "sql.jndi",
-    "meta_datype": "sql",
-    "parent": "SQL",
-    "properties": [
-     {
-      "name": "name",
-      "value": "BogusForMap",
-      "type": "Id"
-     },
-     {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "query",
-      "value": "select top 1 0 FROM Customers",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     }
-    ]
-   },
-   {
-    "id": "9c9147d4-9bf8-d92d-694b-223258056c9b",
-    "type": "Componentssql_sqlJndi",
-    "typeDesc": "sql over sqlJndi",
-    "meta": "CDA",
-    "meta_conntype": "sql.jndi",
-    "meta_datype": "sql",
-    "parent": "SQL",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
     "properties": [
      {
       "name": "name",
@@ -1379,9 +1389,14 @@
       "type": "Id"
      },
      {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
      },
      {
       "name": "access",
@@ -1415,7 +1430,7 @@
      },
      {
       "name": "query",
-      "value": "select top 3 customernumber - 100 As Longitude, \n55.45 As Latitude, \nCustomerName As Description from customers",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Longitude\",\n\"Latitude\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nFloat.class\n,Float.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Float(3), new Float(45.45), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new Float(12), new Float(45.45), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new Float(14), new Float(45.45), new String(\"Signal Gift Stores\")});\nreturn model;\n\n\n",
       "type": "SqlQuery"
      },
      {
@@ -1431,13 +1446,13 @@
     ]
    },
    {
-    "id": "c2b02ea7-21de-39db-31a1-6aee7f119a8b",
-    "type": "Componentssql_sqlJndi",
-    "typeDesc": "sql over sqlJndi",
+    "id": "cbf44bc8-199c-1c07-2496-20ccf0c86bf7",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
     "meta": "CDA",
-    "meta_conntype": "sql.jndi",
-    "meta_datype": "sql",
-    "parent": "SQL",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
     "properties": [
      {
       "name": "name",
@@ -1445,9 +1460,14 @@
       "type": "Id"
      },
      {
-      "name": "jndi",
-      "value": "SampleData",
-      "type": "Jndi"
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
      },
      {
       "name": "access",
@@ -1481,7 +1501,7 @@
      },
      {
       "name": "query",
-      "value": "select top 5 city as City, CustomerName as Description\nfrom customers",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"City\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Nantes\"), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new String(\"Melbourne\"), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new String(\"Las Vegas\"), new String(\"Signal Gift Stores\")});\nmodel.addRow(new Object[]{ new String(\"Paris\"), new String(\"La Rochelle Gifts\")});\nmodel.addRow(new Object[]{ new String(\"Stavern\"), new String(\"Baane Mini Imports\")});\nreturn model;\n\n\n",
       "type": "SqlQuery"
      },
      {

@@ -1,58 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDADescriptor>
    <DataSources>
-      <Connection id="BogusForMap" type="sql.jndi">
-         <Jndi>SampleData</Jndi>
-      </Connection>
-      <Connection id="ForMapWithMarkers" type="sql.jndi">
-         <Jndi>SampleData</Jndi>
-      </Connection>
-      <Connection id="ForMapWithGeo" type="sql.jndi">
-         <Jndi>SampleData</Jndi>
-      </Connection>
-      <Connection id="salesGraphQuery" type="mondrian.jndi">
+      <Connection id="salesGraphQueryOld" type="mondrian.jndi">
          <Catalog>/steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
+      <Connection id="ForMapWithGeo" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="salesGraphQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="BogusForMap"
-               id="BogusForMap"
-               type="sql">
-      <Columns/>
-      <Parameters/>
-      <Query>select top 1 0 FROM Customers</Query>
-   </DataAccess>
    <DataAccess access="public" cache="true" cacheDuration="3600"
-               connection="ForMapWithMarkers"
-               id="ForMapWithMarkers"
-               type="sql">
-      <Columns>
-         <Column idx="0">
-            <Name>Latitude</Name>
-         </Column>
-         <Column idx="1">
-            <Name>Longitude</Name>
-         </Column>
-         <Column idx="2">
-            <Name>Description</Name>
-         </Column>
-      </Columns>
-      <Parameters/>
-      <Query>select top 3 customernumber - 110, 38.45, CustomerName, '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-green.png' from customers</Query>
-   </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
-               id="ForMapWithGeo"
-               type="sql">
-      <Columns/>
-      <Parameters/>
-      <Query>select top 8 city, 
-country as country,
-CustomerName as Description
-from customers 
-where customernumber &lt;&gt; 125</Query>
-   </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="salesGraphQuery"
-               id="salesGraphQuery"
+               connection="salesGraphQueryOld"
+               id="salesGraphQueryOld"
                type="mdx">
       <BandedMode>compact</BandedMode>
       <Columns/>
@@ -63,5 +27,104 @@ where customernumber &lt;&gt; 125</Query>
  NON EMPTY({[Measures].[Quantity]}) on Columns 
  from [SteelWheelsSales]
 where ([Customer].[${customer}])</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
+               id="ForMapWithGeo"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"City",
+"Country",
+"Description"
+};
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new String("Nantes"), new String("France"), new String("Atelier graphique")});
+model.addRow(new Object[]{ new String("Melbourne"), new String("Australia"), new String("Australian Collectors, Co.")});
+model.addRow(new Object[]{ new String("Las Vegas"), new String("USA"), new String("Signal Gift Stores")});
+model.addRow(new Object[]{ new String("Moscow"), new String("Russia"), new String("La Rochelle Gifts")});
+model.addRow(new Object[]{ new String("Stavern"),new String("Norway"),  new String("Baane Mini Imports")});
+model.addRow(new Object[]{ new String("San Rafael"), new String("Argentina"), new String("Mini Gifts Distributors Ltd.")});
+model.addRow(new Object[]{ new String("Frankfurt"), new String("Germany"), new String("Blauer See Auto, Co.")});
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="salesGraphQuery"
+               id="salesGraphQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters>
+         <Parameter default="none" name="customer" type="String"/>
+      </Parameters>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Product",
+"Quantity",
+};
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+switch (dataRow.get("customer")) {
+ case "Mini Gifts Distributors Ltd.":
+    model.addRow(new Object[]{new String("Classic Cars"), new Float(2381)});
+    model.addRow(new Object[]{new String("Vintage Cars"), new Float(1753)});
+    model.addRow(new Object[]{new String("Trucks and Buses"), new Float(1232)});
+    model.addRow(new Object[]{new String("Ships"), new Float(371)});
+    model.addRow(new Object[]{new String("Motorcycles"), new Float(360)});
+    model.addRow(new Object[]{new String("Trains"), new Float(269)});
+    break;
+    case "Atelier graphique":
+    model.addRow(new Object[]{new String("Vintage Cars"), new Float(153)});
+    model.addRow(new Object[]{new String("Trucks and Buses"), new Float(1232)});
+    model.addRow(new Object[]{new String("Ships"), new Float(900)});
+    model.addRow(new Object[]{new String("Motorcycles"), new Float(660)});
+    model.addRow(new Object[]{new String("Trains"), new Float(1069)});
+
+    break;
+case "Signal Gift Stores":
+    model.addRow(new Object[]{new String("Trucks and Buses"), new Float(1232)});
+    model.addRow(new Object[]{new String("Ships"), new Float(900)});
+    model.addRow(new Object[]{new String("Motorcycles"), new Float(660)});
+break;
+case "Australian Collectors, Co.":
+ model.addRow(new Object[]{new String("Classic Cars"), new Float(1381)});
+    model.addRow(new Object[]{new String("Vintage Cars"), new Float(2753)});
+    model.addRow(new Object[]{new String("Trucks and Buses"), new Float(532)});
+    model.addRow(new Object[]{new String("Ships"), new Float(871)});
+break;
+case "La Rochelle Gifts":
+  model.addRow(new Object[]{new String("Motorcycles"), new Float(360)});
+    model.addRow(new Object[]{new String("Trains"), new Float(269)});
+break;
+case "Baane Mini Imports":
+  model.addRow(new Object[]{new String("Classic Cars"), new Float(1381)});
+    model.addRow(new Object[]{new String("Vintage Cars"), new Float(2753)});
+    model.addRow(new Object[]{new String("Trucks and Buses"), new Float(2432)});
+    model.addRow(new Object[]{new String("Ships"), new Float(671)});
+    model.addRow(new Object[]{new String("Motorcycles"), new Float(360)});
+    model.addRow(new Object[]{new String("Trains"), new Float(530)});
+break;
+case "Blauer See Auto, Co.":
+        model.addRow(new Object[]{new String("Trains"), new Float(369)});
+    model.addRow(new Object[]{new String("Motorcycles"), new Float(1600)});
+break;
+}
+return model;</Query>
    </DataAccess>
 </CDADescriptor>
