@@ -852,12 +852,12 @@
      },
      {
       "name": "markerWidth",
-      "value": "80",
+      "value": "36",
       "type": "Integer"
      },
      {
       "name": "markerHeight",
-      "value": "30",
+      "value": "52",
       "type": "Integer"
      },
      {
@@ -975,12 +975,12 @@
      },
      {
       "name": "markerWidth",
-      "value": "80",
+      "value": "36",
       "type": "Integer"
      },
      {
       "name": "markerHeight",
-      "value": "30",
+      "value": "52",
       "type": "Integer"
      },
      {

@@ -423,7 +423,7 @@ var ExportPopupComponent = PopupComponent.extend({
    popupButtonsDiv.append(inputsWidthDiv);   
    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
    popupButtonsDiv.append(inputsHeightDiv);   
-   var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Ok</div>");
+   var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
    okButton.click(function() {    
       var dimensions;
       
