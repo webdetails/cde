@@ -40,7 +40,7 @@ String.class
 
 TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
 model.addRow(new Object[]{ new String("Row 1")
-,new String("37,40,30,23,50,23,14,15,17,25,33,23")
+,new String("17,20,20,8,43,13,16,23,11,12,43,40")
 ,new String("37,40,30,23,50,23,14,15,17,25,33,23")
 });
 

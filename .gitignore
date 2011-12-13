@@ -9,6 +9,5 @@ server/plugin/resource/css/
 server/plugin/resource/includes.properties
 server/plugin/resource/resources/scripts.html
 server/plugin/resource/resources/styles.html
-
 nbproject/private/
 .DS_Store
