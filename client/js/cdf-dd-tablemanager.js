@@ -896,7 +896,7 @@ var SelectRenderer = CellRenderer.extend({
         },
         minLength: 0,
         focus:  function (event, data) {
-    		if (data != undefined) $('input').val(data.item.value);
+    		if (data != undefined) $('input', _editArea).val(data.item.value);
 	    },
         delay:this.getDelay()
       },
