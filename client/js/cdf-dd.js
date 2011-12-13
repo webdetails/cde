@@ -31,7 +31,7 @@ $.editable.addInputType('autocomplete', {
   plugin : function(settings, original) {
     $('input').focus(function(){
       this.select();
-    })
+    });
     $('input',this).autocomplete(settings.autocomplete);
   }
 });

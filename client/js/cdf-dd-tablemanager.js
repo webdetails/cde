@@ -895,6 +895,9 @@ var SelectRenderer = CellRenderer.extend({
           myself.autoCompleteRequest(req,add);
         },
         minLength: 0,
+        focus:  function (event, data) {
+    		if (data != undefined) $('input').val(data.item.value);
+	    },
         delay:this.getDelay()
       },
       onsubmit: function(settings,original){
@@ -909,8 +912,10 @@ var SelectRenderer = CellRenderer.extend({
   },
 
   autoCompleteRequest: function(req,add){
-    
-    add(this.autocompleteArray)
+
+add(jQuery.grep(this.autocompleteArray, function(elt, i){
+  		return elt.indexOf(req.term) == 0;
+	}));
     
   },
 
