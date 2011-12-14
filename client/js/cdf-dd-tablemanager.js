@@ -914,7 +914,7 @@ var SelectRenderer = CellRenderer.extend({
   autoCompleteRequest: function(req,add){
 
 add(jQuery.grep(this.autocompleteArray, function(elt, i){
-  		return elt.indexOf(req.term) == 0;
+  		return elt.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
 	}));
     
   },
