@@ -9,10 +9,10 @@ var jsTemplateForComponent = "/** \n" +
 "    ph: undefined,\n" +
 "    update : function() {\n" +
  "       var myself=this;\n" +
+ "        //NOT USING QUERY\n "       +
+"        this.render.call(myself);\n" +
         
-"        <COMPONENTNAME>.render.call(myself);\n" +
-        
- "       /* USE QUERY ?\n" +
+ "       /* USING QUERY\n" +
         
   "      var query = new Query(myself.chartDefinition);\n" +
 
@@ -25,13 +25,13 @@ var jsTemplateForComponent = "/** \n" +
 "            if (changedValues != undefined) {\n" + 
 "                values = changedValues;\n" +
 "            }\n" +
-"            KpiListComponent.render.call(myself,values);\n" +
+"            myself.render.call(myself,values);\n" +
 "        });\n" +        
 "        */\n" +
-"    }\n" +
-"},\n" +
-"{\n" +    
-"    render: function(values){\n" +        
+"    },\n" +
+"    render: function(values){\n" +  
+"        this.ph = $('#' + this.htmlObject);\n" + 
+"         this.ph.html('<COMPONENTNAME>');\n" +
 "    }\n" +
 "});";
 
@@ -46,13 +46,13 @@ var htmlTemplateForComponent = '<html>\n' +
 '<head>\n' +
 '\n' +
 '<!-- Generico -->\n' +
-'<script src="content/pentaho-cdf/js/jquery.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/jquery.ui.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/jquery.blockUI.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/Base.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/Dashboards.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/CoreComponents.js" type="text/javascript" language="javascript"></script>\n' +
-'<script src="content/pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"  type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/jquery.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/jquery.ui.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/jquery.blockUI.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/Base.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/Dashboards.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/CoreComponents.js" type="text/javascript" language="javascript"></script>\n' +
+'<script src="../pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"  type="text/javascript" language="javascript"></script>\n' +
 '</head>\n' +
 '\n' +
 '<body>\n' +

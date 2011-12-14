@@ -27,7 +27,7 @@
 
 <link href="css/jqueryfileTree.css" rel="stylesheet">
 <link href="css/jquery.treeTable.css" rel="stylesheet">
-<link href="jquery.impromptu.css" rel="stylesheet">
+<link href="css/jquery.impromptu.css" rel="stylesheet">
 <link href="../pentaho-cdf/js/captify/captify.css" type="text/css" rel="stylesheet">
 
 
@@ -150,7 +150,7 @@ function callback(file, extension, containerDiv) {
 
 	var edit = drawEditor(containerDiv + 'externalEditor', file, extension, containerDiv);
 	
-	editors[extension] = edit.editor;
+	editors[extension] = edit;
 	_button.click (function () {save(edit); });
 
 }
@@ -250,11 +250,11 @@ function chooseFileLoader(fileExtension, containerDiv){
 function runComponent() {
 
 //Get css editor
-var cssEditor = editors['.css'];
+var cssEditor = editors['.css'].editor;
 //Get html editor
-var htmlEditor = editors['.html'];
+var htmlEditor = editors['.html'].editor;
 //Get js editor
-var jsEditor = editors['.js'];
+var jsEditor = editors['.js'].editor;
 
 
 //Create content
@@ -289,6 +289,12 @@ doc.write(html);
 doc.close();
 
 
+}
+
+function saveAll() {
+  for (editor in editors) {
+    save(editors[editor]);
+  }
 }
 
 
@@ -425,9 +431,9 @@ function newComponentCallBack() {
     	}
    	);
 	
-	editors['.js'].setContents(jsTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
-	editors['.html'].setContents(htmlTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
-	editors['.css'].setContents(cssTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	editors['.js'].editor.setContents(jsTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	editors['.html'].editor.setContents(htmlTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
+	editors['.css'].editor.setContents(cssTemplateForComponent.replace(/<COMPONENTNAME>/g, componentName));
 	
 }
 
@@ -514,7 +520,7 @@ A 4ª tem que mostrar o resultado mediante o press de um botão
 <input type='button' value = 'Run' onclick='javascript:runComponent();'></input>
 <input type='button' value = 'New' onclick='javascript:newComponent();'></input>
 <input type='button' value = 'Load' onclick='javascript:loadComponent();'></input>
-
+<input type='button' value = 'Save All' onclick='javascript:saveAll();'></input>
 <input type='button' value='Simple/Expanded'  onclick='toggleView()'></input>
 
 
