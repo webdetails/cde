@@ -174,7 +174,7 @@ pvc.Base = Base.extend({
         try {
             $('.tipsy').remove();
         } catch(e) {
-            // Do nothing
+        // Do nothing
         }
         // If we don't have data, we just need to set a "no data" message
         // and go on with life.
@@ -471,18 +471,20 @@ pvc.BasePanel = Base.extend({
 
     extend: function(mark, prefix){
 
-        for (p in this.chart.options.extensionPoints){
-            if (p.indexOf(prefix) == 0){
-                var m = p.substring(prefix.length);
-                // Distinguish between mark methods and properties
-                if (typeof mark[m] === "function") {
-                    mark[m](this.chart.options.extensionPoints[p]);
-                } else {
-                    mark[m] = this.chart.options.extensionPoints[p];
+        // if mark is null or undefined, skip
+        if ( !!mark )
+            for (p in this.chart.options.extensionPoints){
+                if (p.indexOf(prefix) == 0){
+                    var m = p.substring(prefix.length);
+                    // Distinguish between mark methods and properties
+                    if (typeof mark[m] === "function") {
+                        mark[m](this.chart.options.extensionPoints[p]);
+                    } else {
+                        mark[m] = this.chart.options.extensionPoints[p];
+                    }
                 }
-            }
 
-        }
+            }
 
     },
 
@@ -1072,8 +1074,8 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
             // CvK  added extra parameter for implementation of HeatGrid
             orthoAxisOrdinal: false
-            // if orientation==vertical then perpendicular-axis is the y-axis
-            //  else perpendicular-axis is the x-axis.
+        // if orientation==vertical then perpendicular-axis is the y-axis
+        //  else perpendicular-axis is the x-axis.
         };
 
 
@@ -1190,7 +1192,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
     generateSecondXAxis: function(){
 
         if( this.options.secondAxisIndependentScale && this.options.orientation == "horizontal"){
-            this.secondXAxisPanel = new pvc.XAxisPanel(this, {
+            this.secondXAxisPanel = new pvc.SecondXAxisPanel(this, {
                 ordinal: this.isXAxisOrdinal(),
                 showAllTimeseries: false,
                 anchor: pvc.BasePanel.oppositeAnchor[this.options.xAxisPosition],
@@ -1214,7 +1216,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         if( this.options.secondAxisIndependentScale && this.options.orientation == "vertical"){
 
-            this.secondYAxisPanel = new pvc.YAxisPanel(this, {
+            this.secondYAxisPanel = new pvc.SecondYAxisPanel(this, {
                 ordinal: this.isYAxisOrdinal(),
                 showAllTimeseries: false,
                 anchor: pvc.BasePanel.oppositeAnchor[this.options.yAxisPosition],
@@ -1276,8 +1278,8 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         }
         
         return onSeries ?
-            this.dataEngine.getVisibleSeries() :
-            this.dataEngine.getVisibleCategories();
+        this.dataEngine.getVisibleSeries() :
+        this.dataEngine.getVisibleCategories();
     },
 
 
@@ -1291,12 +1293,12 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         if (this.options.orientation == "vertical") {
             scale = this.options.timeSeries  ?
-                this.getTimeseriesScale(false,true)     :
-                this.getOrdinalScale();
+            this.getTimeseriesScale(false,true)     :
+            this.getOrdinalScale();
         } else {
             scale =  (this.options.orthoAxisOrdinal) ?
-                this.getPerpOrdinalScale("x")    :
-                this.getLinearScale(false,true);
+            this.getPerpOrdinalScale("x")    :
+            this.getLinearScale(false,true);
         } 
 
         return scale;
@@ -1310,12 +1312,12 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         var scale = null;
         if (this.options.orientation == "vertical") {
             scale =  (this.options.orthoAxisOrdinal) ?
-                this.getPerpOrdinalScale("y")    :
-                this.getLinearScale();
+            this.getPerpOrdinalScale("y")    :
+            this.getLinearScale();
         } else { 
             scale = this.options.timeSeries  ?
-                this.getTimeseriesScale()     :
-                this.getOrdinalScale();
+            this.getTimeseriesScale()     :
+            this.getOrdinalScale();
         }
         return scale;
     },
@@ -1357,8 +1359,8 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
             var scale = new pv.Scale.ordinal(categories);
 
             var size = this.options.orientation=="vertical"?
-                this.basePanel.width:
-                this.basePanel.height;
+            this.basePanel.width:
+            this.basePanel.height;
 
             if (   this.options.orientation=="vertical"
                 && this.options.yAxisPosition == "left"){
@@ -1484,9 +1486,18 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
         var yAxisSize = bypassAxis?0:this.options.yAxisSize;
         var xAxisSize = bypassAxis?0:this.options.xAxisSize;
 
+        var secondXAxisSize = 0, secondYAxisSize = 0;
+        
+        if( this.options.orientation == "vertical"){
+            secondYAxisSize = bypassAxis?0:this.options.secondAxisSize;
+        }
+        else{
+            secondXAxisSize = bypassAxis?0:this.options.secondAxisSize;
+        }
+
         var size = this.options.orientation=="vertical"?
-            this.basePanel.width:
-            this.basePanel.height;
+        this.basePanel.width:
+        this.basePanel.height;
 
         var parser = pv.Format.date(this.options.timeSeriesFormat);
         var categories =  this.dataEngine.getVisibleCategories().sort(function(a,b){
@@ -1504,16 +1515,16 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
 
         if(this.options.orientation=="vertical" && this.options.yAxisPosition == "left"){
             scale.min = yAxisSize;
-            scale.max = size;
+            scale.max = size - secondYAxisSize;
             
         }
         else if(this.options.orientation=="vertical" && this.options.yAxisPosition == "right"){
-            scale.min = 0;
+            scale.min = secondYAxisSize;
             scale.max = size - yAxisSize;
         }
         else{
             scale.min = 0;
-            scale.max = size - xAxisSize;
+            scale.max = size - xAxisSize - secondXAxisSize;
         }
 
         scale.range( scale.min , scale.max);
@@ -1643,7 +1654,7 @@ pvc.CategoricalAbstract = pvc.TimeseriesAbstract.extend({
             return this.index==0
         });
 
-        /*
+    /*
         this.extend(this.pvPanel, this.panelName + "_");
         this.extend(this.pvRule, this.panelName + "Rule_");
         */
@@ -1762,10 +1773,10 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         var myself = this;
         
         var align =  (this.anchor == "bottom" || this.anchor == "top") ?
-            "center" : 
-            (this.anchor == "left")  ?
-            "right" :
-            "left";
+        "center" : 
+        (this.anchor == "left")  ?
+        "right" :
+        "left";
        
         this.pvTicks = this.pvRule.add(pv.Rule)
         .data(this.elements)
@@ -1871,6 +1882,20 @@ pvc.XAxisPanel = pvc.AxisPanel.extend({
 
 });
 
+/*
+ * SecondXAxisPanel panel.
+ *
+ *
+ */
+pvc.SecondXAxisPanel = pvc.XAxisPanel.extend({
+
+    panelName: "secondXAxis",
+
+    constructor: function(chart, options){
+        this.base(chart,options);
+    }
+});
+
 
 /*
  * YAxisPanel panel.
@@ -1889,10 +1914,24 @@ pvc.YAxisPanel = pvc.AxisPanel.extend({
 
     }
 
-
-
 });
 
+/*
+ * SecondYAxisPanel panel.
+ *
+ *
+ */
+pvc.SecondYAxisPanel = pvc.YAxisPanel.extend({
+
+    panelName: "secondYAxis",
+
+    constructor: function(chart, options){
+
+        this.base(chart,options);
+
+    }
+
+});
 
 
 /**
@@ -4972,7 +5011,7 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
 
         if(this.showValues){
             this.pvBarLabel = this.pvBar
-            .anchor("center")
+            .anchor(this.valuesAnchor ? this.valuesAnchor : 'center')
             .add(pv.Label)
             .bottom(0)
             .text(function(d){
@@ -4988,9 +5027,15 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
             this.extend(this.pvWaterfallLine,"barWaterfallLine_");
 
         // Extend bar and barPanel
-        this.extend(this.pvBar,"barPanel_");
+        this.extend(this.pvBarPanel,"barPanel_");
         this.extend(this.pvBar,"bar_");
     
+        // Extend secondAxis
+        if(this.pvSecondLine)
+            this.extend(this.pvSecondLine,"barSecondLine_");
+
+        if(this.pvSecondDot)
+            this.extend(this.pvSecondDot,"barSecondDot_");
 
         // Extend body
         this.extend(this.pvPanel,"chart_");
