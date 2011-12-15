@@ -87,10 +87,16 @@ public class CdfTemplates {
 
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
+    if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
+    {
+      File templatesFolder = new File(SOLUTION_PATH + CDF_DD_TEMPLATES_CUSTOM);
+      solutionRepository.createFolder(templatesFolder);
+    }
+    
     String cdfStructure = (String) parameters.get(DashboardDesignerContentGenerator.PathParams.CDF_STRUCTURE);
     byte[] fileData = cdfStructure.getBytes("UTF-8");
     final int status = solutionRepository.publish(SOLUTION_PATH, CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true);
-
+    
     if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
