@@ -40,8 +40,8 @@
 <script src="getJsResource/resources/ace/src/mode-html.js" type="text/javascript" language="javascript"></script>
 <script src="getJsResource/resources/ace/src/theme-twilight.js" type="text/javascript" language="javascript"></script>
 <script src="getJsResource/resources/ace/src/theme-eclipse.js" type="text/javascript" language="javascript"></script>
-<script src="getJsResource/resources/ace/src/keybinding-vim.js" type="text/javascript" language="javascript"></script>
 
+<script src="https://raw.github.com/misfo/jim/master/build/jim-ace.min.js" type="text/javascript" language="javascript"></script>
 
 
 
@@ -103,7 +103,7 @@ function drawEditor(containerDiv, file, extension, parent) {
 	editor.initEditor(containerDiv);
  
   if (viMode)
-    editor.editor.setKeyboardHandler(require("ace/keyboard/keybinding/vim").Vim);  
+    Jim.aceInit(editor.editor);  
 	editor.loadFile(file);
 	
 	var editorWrapper = {};
