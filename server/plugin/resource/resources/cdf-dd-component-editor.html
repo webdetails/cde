@@ -41,7 +41,7 @@
 <script src="getJsResource/resources/ace/src/theme-twilight.js" type="text/javascript" language="javascript"></script>
 <script src="getJsResource/resources/ace/src/theme-eclipse.js" type="text/javascript" language="javascript"></script>
 
-
+<script src="https://raw.github.com/misfo/jim/master/build/jim-ace.min.js" type="text/javascript" language="javascript"></script>
 
 
 
@@ -52,6 +52,9 @@
 
 
 <script>
+
+
+var viMode = false;
 
 $.ajaxSetup({
   type: "POST",
@@ -95,8 +98,12 @@ function setDirty (editorW, dirty){
         
 function drawEditor(containerDiv, file, extension, parent) {
 	var editor = new CodeEditor();
+ 
 	editor.setMode(extension.replace('.', ''));
 	editor.initEditor(containerDiv);
+ 
+  if (viMode)
+    Jim.aceInit(editor.editor);  
 	editor.loadFile(file);
 	
 	var editorWrapper = {};
@@ -580,6 +587,9 @@ $(document).ready(function() {
     
   }
 
+
+  if (urlParams['StillInThe70s'])
+      viMode = true;
 
 	if (urlParams['expanded'])
 		toggleView();

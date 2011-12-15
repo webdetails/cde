@@ -14,7 +14,7 @@ var jsTemplateForComponent = "/** \n" +
         
  "       /* USING QUERY\n" +
         
-  "      var query = new Query(myself.chartDefinition);\n" +
+  "      var query = new Query(myself.queryDefinition);\n" +
 
 "        query.fetchData(myself.parameters, function(values) {\n" +
 "            var changedValues = undefined;\n" +
@@ -94,8 +94,16 @@ var componentTemplateForComponent = '<DesignerComponent>\n' +
 '        <Version>1.0</Version>\n' + 
 '    </Header>\n' + 
 '    <Contents>\n' + 
-'        <Model>\n' + 
+'        <Model>\n' +
+' <!-- Uncomment for datasource usage ' + 
+'      <Definition name="queryDefinition">\n' + 
+'        <Property type="query">dataSource</Property>\n' + 
+'      </Definition>\n' + 
+' -->' +
 '            <Property>executeAtStart</Property>\n' + 
+'            <Property>preExecution</Property>\n' + 
+'            <Property>postExecution</Property>\n' + 
+'            <Property>refreshPeriod</Property>\n' + 
 '            <Property>htmlObject</Property>\n' + 
 '            <Property>tooltip</Property>\n' + 
 '            <Property>parameters</Property>\n' + 
