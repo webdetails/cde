@@ -152,8 +152,10 @@ var NewMapComponent = BaseComponent.extend({
            	return;
        	}
 
-		if (!myself.queryDefinition)       
+		if (!myself.queryDefinition)  {  
 			myself.render({});
+			return
+		}
        var query = new Query(myself.queryDefinition);
         query.fetchData(myself.parameters, function(values) {
             var changedValues = undefined;
