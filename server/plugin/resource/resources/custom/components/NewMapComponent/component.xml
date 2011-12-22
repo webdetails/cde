@@ -40,6 +40,8 @@
         <Implementation>
             <Code src="NewMapComponent.js" />
 		      <Dependencies>
+		      
+		                <Dependency src="ToolTips.js" version="1.0">ToolTips</Dependency>          
           <Dependency src="MapComponentAsyncLoader.js" version="1.0">MapComponentAsyncLoader</Dependency>
         </Dependencies>
             <Styles>
