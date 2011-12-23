@@ -598,11 +598,11 @@
     <Header>
       <Name>cccBarLineIdx</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>-1</DefaultValue>
+      <DefaultValue>"[]"</DefaultValue>
       <Description>Line data index</Description>
       <Tooltip>Series index to be used for the line</Tooltip>
-      <InputType>Integer</InputType>
-      <OutputType>Number</OutputType>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
       <Order>92</Order>
       <Advanced>true</Advanced>
       <Version>1.0</Version>

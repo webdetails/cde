@@ -1,3 +1,10 @@
+if(!Object.keys) Object.keys = function(o){
+ if (o !== Object(o))
+      throw new TypeError('Object.keys called on non-object');
+ var ret=[],p;
+ for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+ return ret;
+}
 
 var pvc = {
 
@@ -198,13 +205,24 @@ pvc.Base = Base.extend({
         // Create the color info
         if (typeof this.options.colors == 'undefined' || this.options.colors == null || this.options.colors.length == 0){
             this.colors = pv.Colors.category10;
-        }
-        else{
+        } else {
             this.colors = function() {
                 var scale = pv.colors(this.options.colors);
                 scale.domain.apply(scale, arguments);
                 return scale;
+            }
+        };
+        if (typeof this.options.secondAxisColor == 'undefined' || this.options.secondAxisColor == null || this.options.secondAxisColor.length == 0){
+            this.secondAxisColor = pv.Colors.category10;
+        }
+        else{
+            this.secondAxisColor = function() {
+                var sec = this.options.secondAxisColor;
+                var scale = pv.colors(sec instanceof Array ? sec : [sec]);
+                scale.domain.apply(scale, arguments);
+                return scale;
             };
+
         }
 
 
@@ -710,9 +728,11 @@ pvc.LegendPanel = pvc.BasePanel.extend({
   },
 
   create: function(){
-    var myself = this;
-    var c = this.chart.colors();
-    var x,y;
+    var myself = this,
+      c, cLen,
+      c1 = this.chart.colors(),
+      c2 = this.chart.secondAxisColor(),
+      x,y;
 
 
     //pvc.log("Debug PMartins");
@@ -720,9 +740,18 @@ pvc.LegendPanel = pvc.BasePanel.extend({
     var data = this.chart.legendSource=="series"?
     this.chart.dataEngine.getSeries():
     this.chart.dataEngine.getCategories();
+    cLen = data.length;
 
-
-
+    if (this.chart.options.secondAxis) {
+        var args = this.chart.dataEngine.getSecondAxisSeries();
+        args.unshift(0);
+        args.unshift(data.length);
+        data.splice.apply(data, args);
+    }
+    c = function(arg) {return arg < cLen ?
+      c1.apply(this,arguments) :
+      c2.apply(this,[arg - cLen]);
+    };
     //determine the size of the biggest cell
     //Size will depend on positioning and font size mainly
     var maxtext = 0;
@@ -845,7 +874,11 @@ pvc.LegendPanel = pvc.BasePanel.extend({
 
       this.pvDot = this.pvRule.anchor("center").add(pv.Dot)
       .shapeSize(this.markerSize)
-      .shape(this.shape)
+      .shape(function(){
+        return myself.shape ? myself.shape :
+          this.parent.index < cLen  ? 'square':
+           'bar';
+      })
       .lineWidth(0)
       .fillStyle(function(){
         return c(this.parent.index);
@@ -873,8 +906,16 @@ pvc.LegendPanel = pvc.BasePanel.extend({
       this.pvDot = this.pvLegendPanel.add(pv.Dot)
       .left(this.markerSize/2)
       .shapeSize(this.markerSize)
-      .shape(this.shape)
-      .lineWidth(0)
+      .shape(function(){
+        return myself.shape ? myself.shape :
+          this.parent.index < cLen  ? 'square':
+           'bar';
+      })
+      .angle(1.57)
+      .lineWidth(2)
+      .strokeStyle(function(){
+        return c(this.parent.index);
+      })
       .fillStyle(function(){
         return c(this.parent.index);
       })
@@ -1753,7 +1794,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         }
         this.pvRule = this.pvPanel
         .add(pv.Rule)
-        .strokeStyle(this.tickColor)
+        .strokeStyle("black")
         [pvc.BasePanel.oppositeAnchor[this.anchor]](0)
         [pvc.BasePanel.relativeAnchor[this.anchor]](min)
         [pvc.BasePanel.paralelLength[this.anchor]](max - min)
@@ -1812,7 +1853,7 @@ pvc.AxisPanel = pvc.BasePanel.extend({
         [pvc.BasePanel.orthogonalLength[this.anchor]](function(d){
             return myself.tickLength/(this.index%2 + 1)
         })
-        .strokeStyle(this.tickColor);
+        .strokeStyle("black");
 
         this.pvLabel = this.pvTicks
         .anchor(this.anchor)
@@ -2986,25 +3027,32 @@ pvc.DataEngine = Base.extend({
         return this.secondAxisValues;
 
     },
+    
+    getSecondAxisSeries: function() {
+       return this.translator.getSecondAxisSeries();
+    },
 
-
+    getSecondAxisIndices: function() {
+        return Object.keys(this.secondAxisValues);
+    },
     /*
      * Returns the object for the second axis in the form {category: catName, value: val}
      *
      */
 
-    getObjectsForSecondAxis: function(sortF){
-
+    getObjectsForSecondAxis: function(idx,sortF){
+        var idx = idx || 0;
         var myself = this;
         var ar = [];
-        this.getSecondAxisValues().map(function(v,i){
-            if(typeof v != "undefined" /* && v != null */ ){
-                ar.push({
-                    category: myself.getCategories()[i],
-                    value: v
-                }) ;
-            }
-        })
+        this.getSecondAxisValues()[idx].map(function(v,j){
+          if(typeof v != "undefined" /* && v != null */ ){
+              ar.push({
+                  serieIndex: idx,
+                  category: myself.getCategories()[j],
+                  value: v
+              }) ;
+          }
+        });
 
         if (typeof sortF == "function"){
             return ar.sort(sortF)
@@ -3017,7 +3065,11 @@ pvc.DataEngine = Base.extend({
      */
     getSecondAxisMax:function(){
 
-        return pv.max(this.getSecondAxisValues().filter(pvc.nonEmpty))
+        return pv.max(this.getSecondAxisValues()
+          .filter(pvc.nonEmpty)
+          .reduce(function(a, b) {  
+            return a.concat(b);
+          }));
     },
     
     /*
@@ -3025,7 +3077,11 @@ pvc.DataEngine = Base.extend({
      */
     getSecondAxisMin:function(){
 
-        return pv.min(this.getSecondAxisValues().filter(pvc.nonEmpty))
+        return pv.min(this.getSecondAxisValues()
+          .filter(pvc.nonEmpty)
+          .reduce(function(a, b) {  
+            return a.concat(b);
+          }));
     },
 
 
@@ -3277,7 +3333,19 @@ pvc.DataTranslator = Base.extend({
 
 
         // Skips first row
-        return this.secondAxisValues.slice(1);
+        return this.secondAxisValues.map(function(a){
+            return a.slice(1);
+        });
+
+    },
+
+    getSecondAxisSeries: function(){
+
+
+        // Skips first row
+        return this.secondAxisValues.map(function(a){
+            return a[0];
+        });
 
     },
 
@@ -3317,13 +3385,18 @@ pvc.DataTranslator = Base.extend({
         }
         if(this.dataEngine.chart.options.secondAxis){
             var idx = this.dataEngine.chart.options.secondAxisIdx;
-            if (idx>=0){
-                idx++; // first row is cat name
+            if (!(idx instanceof  Array)) {
+              idx = [idx];
             }
+            idx.sort();
 
             // Transpose, splice, transpose back
             pv.transpose(this.values);
-            this.secondAxisValues = this.values.splice(idx , 1)[0];
+            this.secondAxisValues = [];
+            for (var i = idx.length - 1; i >=0 ;i --) {
+              var index = Number(idx[i]); index = index < 0 ? index : index + 1;
+              this.secondAxisValues.unshift(this.values.splice(index , 1)[0]);
+            }
             pv.transpose(this.values);
         }
 
@@ -4957,22 +5030,33 @@ pvc.WaterfallChartPanel = pvc.BasePanel.extend({
 
 
         if(this.chart.options.secondAxis){
-            // Second axis - support for lines
-            this.pvSecondLine = this.pvPanel.add(pv.Line)
+            // Second axis - support for line
+            this.pvSecondScatterPanel = this.pvPanel.add(pv.Panel)
+              .data(this.chart.dataEngine.getSecondAxisIndices());
+            this.pvArea = this.pvSecondScatterPanel.add(pv.Area)
+             .fillStyle(null);
+            this.pvSecondLine = this.pvArea.add(pv.Line)
+            .segmented(true)
             .data(function(d){
-                return myself.chart.dataEngine.getObjectsForSecondAxis(d, 
+                return myself.chart.dataEngine.getObjectsForSecondAxis(d,
                     this.timeSeries ? function(a,b){
                     return parser.parse(a.category) - parser.parse(b.category);
                     }: null)
                 })
-            .strokeStyle(this.chart.options.secondAxisColor)
+            .strokeStyle(function(){
+              var colors = myself.chart.options.secondAxisColor;
+              colors = colors instanceof Array ? colors : [colors];
+              return colors[this.parent.index % colors.length];})
             [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.secBasePosFunc)
             [anchor](myself.DF.secOrthoLengthFunc);
 
             this.pvSecondDot = this.pvSecondLine.add(pv.Dot)
             .shapeSize(8)
             .lineWidth(1.5)
-            .fillStyle(this.chart.options.secondAxisColor)
+            .fillStyle(function(){
+              var colors = myself.chart.options.secondAxisColor;
+              colors = colors instanceof Array ? colors : [colors];
+              return colors[this.parent.index % colors.length];});
         }
 
         // add Labels:
@@ -7176,14 +7260,22 @@ pvc.BoxplotChartPanel = pvc.BasePanel.extend({
                     return parser.parse(a.category) - parser.parse(b.category);
                     }: null)
                 })
-            .strokeStyle(this.chart.options.secondAxisColor)
+            .strokeStyle(function(){
+              var cols = this.chart.options.secondAxisColor;
+              cols = cols instanceof Array ? cols : [cols];
+              return cols[this.parent.index % cols.length];
+            })
             [pvc.BasePanel.relativeAnchor[anchor]](myself.DF.secBasePosFunc)
             [anchor](myself.DF.secOrthoLengthFunc);
 
             this.pvSecondDot = this.pvSecondLine.add(pv.Dot)
             .shapeSize(8)
             .lineWidth(1.5)
-            .fillStyle(this.chart.options.secondAxisColor)
+            .fillStyle(function(){
+              var cols = this.chart.options.secondAxisColor;
+              cols = cols instanceof Array ? cols : [cols];
+              return cols[this.parent.index % cols.length];
+            });
         }
 
         // add Labels:
