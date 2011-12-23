@@ -200,8 +200,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
       }
       
       var index = vals.length;
-
-      $.prompt('<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix +'Container">' + content.html() + '</div>',{
+      var wrapper = $("<div>",{id: myself.cssPrefix, 'class': myself.cssPrefix+'Container'});
+      wrapper.append(content);
+      $.prompt(wrapper.html(),{
         
         buttons: {
           Ok: true,
@@ -704,4 +705,75 @@ var JndiRenderer = SelectRenderer.extend({
       }
     });
   }
+});
+
+var ArraySelectRenderer = ValuesArrayRenderer.extend({
+  cssPrefix: "GenericSelect",
+  getParameterValues: function(i) {
+    var value = $("#val_" + i).val();
+    return value;
+  },
+  addParameter: function(i, val, container) {
+    var table;
+    if(i==0){//add table and header
+      table = $('<table> </table>').appendTo(container.find('.' + this.cssPrefix));
+      var hdr = '<tr>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>'
+      hdr += '</tr>';
+      $(hdr).appendTo(table);
+    } else {
+      table = container.find('.' + this.cssPrefix + ' table') 
+    }
+
+    if(val ===  undefined) { val = "" ; }
+    else if(val ===  null) { val = "null" ; }
+    else if(val instanceof Array) { val = val[0];}
+    val.replace(/["]/g,'&quot;');//for output only, will come back ok
+
+    var valInput = "<input id='val_" + i + "' type='text' value='"+val+"' />";
+    var removeButton = this.getRemoveButton(i);
+    var row = '<tr id="parameters_' + i + '" >';
+    row += '<td>' + this.argType + " " + i + "</td>";
+    row += '<td>' + valInput + '</td>';
+    row += '<td>' + removeButton + '</td>';
+    row += '</tr>';
+
+    table.append(row);
+    var myself = this;
+    setTimeout(function(){
+      $("#val_" + i).autocomplete({
+        source : function(req, add){
+          myself.autoCompleteRequest(req,add);
+        },
+        minLength: 0,
+        delay:myself.getDelay(),
+        select: function(evt,ui) {
+          $("#val_" + i).find("input").val(ui.item.value);
+        },
+        focus:  function (evt, data) {
+          if (data != undefined) $('#val_' + i).val(data.item.value);
+        },
+        onsubmit: function(settings,original){
+          return myself.validate($('input',this).val());
+        },
+        height: 12
+      });
+    },10);
+  },
+  autoCompleteRequest: function(req,add) {
+    var results = this.selectData.map(function(e){return {label: e[1], value: e[0]};}) 
+    add(jQuery.grep(results, function(elt, i){
+      return elt.value.indexOf(req.term) >= 0;
+    }));
+  },
+  validate: function(settings, original){
+    return true;
+  },
+  getData: function(){
+    // Default implementation
+    return this.selectData;
+  },
+  getDelay: function() {return 300;}
 });

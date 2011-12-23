@@ -15,70 +15,70 @@ import pt.webdetails.cdf.dd.render.properties.GenericProperty.RendererType;
  */
 public class GenericRenderer
 {
-
+  
   RendererType type;
   protected static final Log logger = LogFactory.getLog(GenericRenderer.class);
   private String name;
   private Map<String, String> values;
-
+  private String source;
+  private String baseType;
+  
   public GenericRenderer(Node definition)
   {
     setDefinition(definition);
   }
-
+  
   private void setDefinition(Node definition)
   {
     this.name = XmlDom4JHelper.getNodeText("Header/Name", definition) + "Custom";
     this.values = new HashMap<String, String>();
     String typeString = XmlDom4JHelper.getNodeText("Header/InputType/@type", definition);
+    baseType = XmlDom4JHelper.getNodeText("Header/InputType/@base", definition, "SelectRenderer");
+    
     typeString = typeString == null ? "" : typeString.toUpperCase();
     this.type = typeString.equals("") ? RendererType.CUSTOM : RendererType.valueOf(typeString);
+    source = XmlDom4JHelper.getNodeText("Values/@source", definition);
+    type = source != null ? RendererType.DYNAMICLIST : type;
     List<Node> vals = definition.selectNodes("Values/Value");
-    for (Node val : vals) {
+    for (Node val : vals)
+    {
       String value = XmlDom4JHelper.getNodeText("@display", val),
               key = XmlDom4JHelper.getNodeText(".", val);
-      values.put(key,value);
+      values.put(key, value);
     }
   }
-
+  
   public String getName()
   {
     return name;
   }
-
+  
   public String getDefinition()
   {
     StringBuilder str = new StringBuilder();
     str.append("var ");
     str.append(name);
-    str.append("Renderer = SelectRenderer.extend({\n\n");
-    str.append("selectData: {");
+    str.append("Renderer = " + baseType + ".extend({\n\n");
+    str.append("selectData: ");
     switch (this.type)
     {
       case VALUELIST:
+        str.append("{");
         for (String key : values.keySet())
         {
           str.append("'" + key + "': ");
           str.append("'" + values.get(key) + "',\n");
         }
+        str.deleteCharAt(str.length() - 2); // Delete the extra comma
+        str.append("}");
         break;
       case DYNAMICLIST:
+        str.append(source);
+        str.append("\n");
         break;
     }
-    str.deleteCharAt(str.length() - 2); // Delete the extra comma
-    str.append("}\n});");
-
-    return str.toString();
-    /*
-    var GravityRenderer = SelectRenderer.extend({
+    str.append("\n});");
     
-    selectData: {
-    'N': 'Top',
-    'S': 'Bottom',
-    'W': 'Left',
-    'E': 'Right'
-    }
-    });
-     */
+    return str.toString();
   }
 }

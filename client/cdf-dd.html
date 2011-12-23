@@ -5,9 +5,8 @@
 
 
     <!-- Generic stuff -->
-    @STYLES@
     <!-- Framework CSS -->
-    <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+    <!--[if lt IE 8]><link rel="stylesheet" href="../pentaho-cdf/js/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
     <!-- CDF -->
     <link rel="stylesheet" href="../pentaho-cdf/js/autobox/jquery.ui.autobox.css" type="text/css" />
     <link rel="stylesheet" href="../pentaho-cdf/js/blueprint/screen.css" type="text/css" />
@@ -107,27 +106,15 @@
     </script>
 
 
-    <!-- CDF-DD files -->
     <script type="text/javascript" src="../pentaho-cdf/js/json.js"></script>
 
+    <!-- CDF files -->
+    @CDF@
+    @STYLES@
+    <!-- CDF-DD files -->
     @SCRIPTS@
     <script type="text/javascript" src="getcomponentdefinitions"></script>
 
-    <!-- CDF files -->
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/jquery.blockUI.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.ext.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/modernizr-2.0.6.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/Base.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/Dashboards.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/CoreComponents.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/NavigationComponents.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/MapComponents.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/OlapUtils.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/captify/captify.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"></script>
-    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/fancybox/jquery.fancybox-1.3.4.js"></script>
-    <link rel="stylesheet" href="../pentaho-cdf/js/captify/captify.css" type="text/css"/>
 
     <!-- CCC files -->
     <script language="javascript" type="text/javascript" src="getJsResource/resources/custom/components/CCC/protovis.js"></script>

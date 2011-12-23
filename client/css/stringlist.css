@@ -1,5 +1,8 @@
 
-.StringListContainer, .StringArrayContainer, .ParameterListContainer {
+.StringListContainer,
+.GenericSelectContainer,
+.StringArrayContainer,
+.ParameterListContainer {
 	height:300px;
 	background-color: #bdbdbd;
 }
@@ -14,7 +17,7 @@
 	width:780px;
 }
 
-.StringList, .StringArray, .ParameterList {
+.StringList, .StringArray, .ParameterList, .GenericSelect {
 	height: 260px;
 	float:left;
 	position:relative;
@@ -23,7 +26,7 @@
 	overflow:auto;
 }
 
-.StringList {
+.StringList, .GenericSelect {
 	width:400px;
 }
 
@@ -41,7 +44,7 @@
 
 
 
-div.jqiStringList, div.jqiStringArray, div.jqiParameterList { 
+div.jqiStringList, div.jqiStringArray, div.jqiParameterList, div.jqiGenericSelect { 
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
 	position: absolute; 
 	background-color: #ffffff; 
@@ -53,7 +56,7 @@ div.jqiStringList, div.jqiStringArray, div.jqiParameterList {
 	padding: 7px;
 }
 
-div.jqiStringList {
+div.jqiStringList, div.jqiGenericSelect {
 	width: 440px;
 }
 
@@ -64,7 +67,7 @@ div.jqiParameterList {
 	width: 800px;
 }
 
-.StringListAddButton, .StringArrayAddButton, .ParameterListAddButton{
+.StringListAddButton, .StringArrayAddButton, .ParameterListAddButton, .GenericSelectAddButton {
 	float:right;
 	right:10px;
 	top:15px;
@@ -72,7 +75,7 @@ div.jqiParameterList {
 }
 
 
-.StringListText , .StringArrayText, .ParameterListText {
+.StringListText , .StringArrayText, .ParameterListText, .GenericSelectText {
 	float:left;
 /*	width:100px;*/
 	position:relative;
@@ -80,21 +83,21 @@ div.jqiParameterList {
 }
 
 /* StringList: names */
-.StringListArgs{
+.StringListArgs, .GenericSelectArgs {
 	float:left;
 	width: 100px;
 }
-.StringListArgs .StringListText {
+.StringListArgs .StringListText, .GenericSelectArgs .GenericSelectText {
 	width: 60px;
 }
 /* rest */
-.StringListValues {
+.StringListValues, .GenericSelectValues {
 	width: 270px;
 	display:block;
 	float:left;
 }
 /* StringList: values */
-.StringListVal {
+.StringListVal, .GenericSelectVal {
 	float: left;
 	width: 190px;
 }
@@ -103,14 +106,16 @@ div.jqiParameterList {
 	width: 150px;
 }
 
-.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove, .ParameterListParameter , .ParameterListRemove{
+.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove,
+.GenericSelectParameter, .GenericSelectRemove, .GenericSelectParameter, .GenericSelectRemove,
+.ParameterListParameter , .ParameterListRemove {
 	float:left;
 	position:relative;
 	top:3px;
 	left:10px;
 }
 
-.StringListTextLabel, .StringArrayTextLabel {
+.StringListTextLabel, .GenericArrayTextLabel, .StringArrayTextLabel {
 	float:left;
 	position:relative;
 	top:5px;
@@ -163,15 +168,22 @@ div.jqiParameterList {
 	width:180px;
 }*/
 
-.jqiStringListfade, .jqiStringArrayfade{
+.jqiStringListfade, .jqiGenericSelectfade, .jqiStringArrayfade{
 	position: absolute; 
 	background-color: #aaaaaa; 
 }
 
-div.jqiStringList .jqiStringListcontainer, div.jqiStringArray .jqiStringArraycontainer, div.jqiParameterList .jqiParameterListcontainer {
+div.jqiStringList .jqiStringListcontainer,
+div.jqiGenericSelect .jqiGenericSelectcontainer,
+div.jqiStringArray .jqiStringArraycontainer,
+div.jqiParameterList .jqiParameterListcontainer {
 	font-weight: bold; 
 }
-div.jqiStringList .jqiStringListclose, div.jqiStringArray .jqiStringArrayclose, div.jqiParameterList .jqiParameterListClose {
+
+div.jqiStringList .jqiStringListclose,
+div.jqiGenericSelect .jqiGenericSelectclose,
+div.jqiStringArray .jqiStringArrayclose,
+div.jqiParameterList .jqiParameterListClose {
 	position: absolute;
 	top: 4px; right: -2px; 
 	width: 18px; 
@@ -179,18 +191,29 @@ div.jqiStringList .jqiStringListclose, div.jqiStringArray .jqiStringArrayclose, 
 	color: #bbbbbb; 
 	font-weight: bold; 
 }
-div.jqiStringList .jqiStringListmessage, div.jqiStringArray .jqiStringArraymessage, div.jqiParameterList .jqiParameterListmessage{ 
+
+div.jqiStringList .jqiStringListmessage,
+div.jqiGenericSelect .jqiGenericSelectmessage,
+div.jqiStringArray .jqiStringArraymessage,
+div.jqiParameterList .jqiParameterListmessage{ 
 	padding: 10px; 
 	line-height: 20px; 
 	color: #444444; 
 }
-div.jqiStringList .jqiStringListbuttons, div.jqiStringArray .jqiStringArraybuttons, div.jqiParameterList .jqiParameterListbuttons { 
+div.jqiStringList .jqiStringListbuttons,
+div.jqiGenericSelect .jqiGenericSelectbuttons,
+div.jqiStringArray .jqiStringArraybuttons,
+div.jqiParameterList .jqiParameterListbuttons { 
 	text-align: right; 
 	padding: 5px 0 5px 0; 
 	border: solid 1px #eeeeee; 
 	background-color: #f4f4f4;
 }
-div.jqiStringList button, div.jqiStringArray button, div.jqiParameterList button{ 
+
+div.jqiStringList button,
+div.jqiGenericSelect button,
+div.jqiStringArray button,
+div.jqiParameterList button{ 
 	padding: 3px 10px; 
 	margin: 0 10px; 
 	background-color: #2F6073; 
@@ -199,18 +222,31 @@ div.jqiStringList button, div.jqiStringArray button, div.jqiParameterList button
 	font-weight: bold; 
 	font-size: 12px; 
 }
-div.jqiStringList button:hover, div.jqiStringArray button:hover, div.jqiParameterList button:hover{ 
+div.jqiStringList button:hover,
+div.jqiGenericSelect button:hover,
+div.jqiStringArray button:hover,
+div.jqiParameterList button:hover{ 
 	background-color: #728A8C;
 }
-div.jqiStringList button.jqiStringListdefaultbutton, div.jqiStringArray button.jqiStringArraydefaultbutton, div.jqiParameterList button.jqiParameterListdefaultbutton{ 
+
+div.jqiStringList button.jqiStringListdefaultbutton,
+div.jqiGenericSelect .jqiGenericSelectdefaultbutton,
+div.jqiStringArray button.jqiStringArraydefaultbutton,
+div.jqiParameterList button.jqiParameterListdefaultbutton{ 
 	/*background-color: #8DC05B;*/
 	background-color: #BF5E26;
 }
-.jqiStringListwarning .jqiStringList .jqiStringListbuttons, .jqiStringArraywarning .jqiStringArray .jqiStringArraybuttons, .jqiParameterListwarning .jqiParameterList .jqiParameterListbuttons{ 
+
+.jqiStringListwarning .jqiStringList .jqiStringListbuttons,
+.jqiGenericSelectwarning .jqiGenericSelect .jqiGenericSelectbuttons,
+.jqiStringArraywarning .jqiStringArray .jqiStringArraybuttons,
+.jqiParameterListwarning .jqiParameterList .jqiParameterListbuttons{ 
 	background-color: #BF5E26;
 }
 
-ul.StringListParameter, ul.ParameterListParameter {
+ul.StringListParameter,
+ul.GenericSelectParameter,
+ul.ParameterListParameter {
 	list-style-type: none;
 	cursor: default;  
 	border:1px solid;
@@ -224,35 +260,47 @@ ul.StringListParameter, ul.ParameterListParameter {
 	padding-left:0;
 }
 
-.StringListParameterContainer p, .ParameterListParameterContainer p,  {
+.StringListParameterContainer p,
+.GenericSelectParameterContainer p,
+.ParameterListParameterContainer p,  {
 	text-align: left;
 	position:relative;
 	left:5px;
 	top:5px;
 }
 
-ul.StringListParameter li, ul.ParameterListParameter li {
+ul.StringListParameter li,
+ul.GenericSelectParameter li,
+ul.ParameterListParameter li {
  list-style-type: none; 
  position:relative;
  left:5px;
  width:239px;
 }
 
-ul.StringListParameter li  div:hover, ul.ParameterListParameter li  div:hover {
+ul.StringListParameter li  div:hover,
+ul.GenericSelectParameter li div:hover,
+ul.ParameterListParameter li  div:hover {
 	background-color: #DBDBDB;
 }
 
 
-.jqiStringListParametersfade, .jqiParameterListParametersfade {
+.jqiStringListParametersfade,
+.jqiGenericSelectParametersfade,
+.jqiParameterListParametersfade {
 	position: absolute; 
 	background-color: #aaaaaa; 
 }
 
-.jqiStringListParametersbox, .jqiParameterListParametersbox {
+.jqiStringListParametersbox,
+.jqiGenericSelectParametersbox,
+.jqiParameterListParametersbox {
 	padding-top:50px;
 }
 
-div.jqiStringListParameters, div.jqiParameterListParameters { 
+div.jqiStringListParameters,
+div.jqiGenericSelectParameters,
+div.jqiParameterListParameters { 
 	width: 280px; 
 	height: 275px; 
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
@@ -264,10 +312,16 @@ div.jqiStringListParameters, div.jqiParameterListParameters {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-div.jqiStringListParameters .jqiStringListParameterscontainer, div.jqiParameterListParameters .jqiParameterListParameterscontainer { 
+
+div.jqiStringListParameters .jqiStringListParameterscontainer,
+div.jqiGenericSelectParameters .jqiGenericSelectParameterscontainer,
+div.jqiParameterListParameters .jqiParameterListParameterscontainer { 
 	font-weight: bold; 
 }
-div.jqiStringListParameters .jqiStringListParametersclose, div.jqiParameterListParameters .jqiParameterListParametersclose{ 
+
+div.jqiStringListParameters .jqiStringListParametersclose,
+div.jqiGenericSelectParameters .jqiGenericSelectParametersclose,
+div.jqiParameterListParameters .jqiParameterListParametersclose{ 
 	position: absolute;
 	top: 4px; right: -2px; 
 	width: 18px; 
@@ -275,17 +329,25 @@ div.jqiStringListParameters .jqiStringListParametersclose, div.jqiParameterListP
 	color: #bbbbbb; 
 	font-weight: bold; 
 }
-div.jqiStringListParameters .jqiStringListParametersmessage, div.jqiParameterListParameters .jqiParameterListParametersmessage{ 
+
+div.jqiStringListParameters .jqiStringListParametersmessage,
+div.jqiGenericSelectParameters .jqiGenericSelectParametersmessage,
+div.jqiParameterListParameters .jqiParameterListParametersmessage{ 
 	
 	color: #444444; 
 }
-div.jqiStringListParameters .jqiStringListParametersbuttons, div.jqiParameterListParameters .jqiParameterListParametersbuttons{ 
+
+div.jqiStringListParameters .jqiStringListParametersbuttons,
+div.jqiGenericSelectParameters .jqiGenericSelectParametersbuttons,
+div.jqiParameterListParameters .jqiParameterListParametersbuttons{ 
 	text-align: right; 
 	width:267px;
 	top:-10px;
 }
 
-.jqiStringListParametersbuttons button, .jqiParameterListParametersbuttons button {
+.jqiStringListParametersbuttons button,
+.jqiGenericSelectParametersbuttons button,
+.jqiParameterListParametersbuttons button {
 	font-size:11px;
 }
 
