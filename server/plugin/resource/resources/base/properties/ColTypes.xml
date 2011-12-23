@@ -5,9 +5,10 @@
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Column Types</Description>
 	<Tooltip>The table column types</Tooltip>
-	<InputType>Array</InputType>
+	<InputType type='valueList' base='ArraySelectRenderer'/>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>
 	<Version>1.0</Version>
 </Header>
+<Values source='Dashboards.listAddIns("Table","colType")' />
 </DesignerProperty>
