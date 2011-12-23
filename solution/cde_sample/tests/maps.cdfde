@@ -43,7 +43,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "/* typemap */ \n\nvar API_KEY = '<GOOGLE_API_KEY>'; ",
+      "value": "var API_KEY = '<GOOGLE_API_KEY>'; ",
       "type": "Resource"
      }
     ]

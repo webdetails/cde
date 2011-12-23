@@ -39,7 +39,7 @@
         </Model>
         <Implementation>
             <Code src="NewMapComponent.js" />
-		      <Dependencies>
+		      <Dependencies>		    
           <Dependency src="MapComponentAsyncLoader.js" version="1.0">MapComponentAsyncLoader</Dependency>
         </Dependencies>
             <Styles>
