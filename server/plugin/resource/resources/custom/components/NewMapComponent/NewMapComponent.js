@@ -627,6 +627,7 @@ var OpenStreetMapEngine = Base.extend({
         if (clickFunction != undefined)
 		    marker.events.register('mousedown', feature, function (evt) {clickFunction(data, feature);});
 
+/*
         if (description) {
             var ttips = new OpenLayers.Control.ToolTips({bgColor:"black",textColor:"white", bold : true, opacity : 0.50});            
     		this.map.addControl(ttips);
@@ -641,7 +642,7 @@ var OpenStreetMapEngine = Base.extend({
     	    marker.events.register('mouseover', feature, funcOnMouseOver);
 			marker.events.register('mouseout', feature, funcOnMouseOut);
         }
-                        
+  */                      
         this.markers.addMarker(marker);
         
         if (!this.centered)
