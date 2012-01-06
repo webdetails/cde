@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccTimeSeriesFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>%Y-%m-%d</DefaultValue>
+      <Description>Timeseries format</Description>
+      <Tooltip>Timeseries format</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Advanced>false</Advanced>
+      <Order>46</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

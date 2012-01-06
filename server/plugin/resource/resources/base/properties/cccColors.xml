@@ -1,0 +1,16 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccColors</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Colors</Description>
+      <Tooltip>Colorschema for the chart</Tooltip>
+      <Description>Column Headers</Description>
+      <Tooltip>The table column header</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>67</Order>
+      <Version>1.0</Version>
+      <Advanced>true</Advanced>
+    </Header>
+  </DesignerProperty>

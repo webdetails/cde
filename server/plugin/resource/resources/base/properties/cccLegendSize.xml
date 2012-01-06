@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccLegendSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Legend size</Description>
+      <Tooltip>Legend area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>73</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

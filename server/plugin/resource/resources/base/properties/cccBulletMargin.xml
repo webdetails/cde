@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBulletMargin</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>100</DefaultValue>
+      <Description>Bullet margin</Description>
+      <Tooltip>Bullet chart margin</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>72</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

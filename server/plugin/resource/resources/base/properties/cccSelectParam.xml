@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccSelectParam</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>select parameter</Description>
+      <Tooltip>Name of variable used for selection.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>50</Order>
+      <Advanced>false</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

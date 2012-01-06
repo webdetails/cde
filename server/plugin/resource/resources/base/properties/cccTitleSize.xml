@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccTitleSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>25</DefaultValue>
+      <Description>Title size</Description>
+      <Tooltip>Title area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>41</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

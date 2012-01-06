@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBulletSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>Bullet size</Description>
+      <Tooltip>Bullet chart size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>70</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

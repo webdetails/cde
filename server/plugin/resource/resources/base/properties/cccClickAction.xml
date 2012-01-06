@@ -1,0 +1,15 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccClickAction</Name>
+      <Parent>BaseProperty</Parent>
+<!--      <DefaultValue>function(serie,category,value){}</DefaultValue>-->
+      <DefaultValue/>
+      <Description>Click action</Description>
+      <Tooltip>Action to be called on click</Tooltip>
+      <Advanced>false</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>90</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
