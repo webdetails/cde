@@ -1114,7 +1114,7 @@
      },
      {
       "name": "html",
-      "value": "<i>dataBar</i> turn a numeric cell into a bar. Maximum is the column's absolute max.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a numeric value, eg: 42.5\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      widthRatio:1,\n      height: 10,\n      startColor: \"#55A4D6\",\n      endColor: \"#448FC8\",\n      stroke: null,\n      max: undefined,\n      includeValue: false,\n      valueFormat: function(v, format, st) {\n        return \"<span class='value'>\" + sprintf(format,v) + \"</span>\";\n      }\n    }\n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: \n {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\"} \n </p>\n \n </p> ",
+      "value": "<i>dataBar</i> turn a numeric cell into a bar. By default, maximum is the column's absolute max and minimum is 0.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a numeric value, eg: 42.5\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      widthRatio:1,\n      height: 10,\n      startColor: \"#55A4D6\",\n      endColor: \"#448FC8\",\n      stroke: null,\n      max: undefined,\n      min: undefined,\n      absValue: true,\n      includeValue: false,\n      valueFormat: function(v, format, st) {\n        return \"<span class='value'>\" + sprintf(format,v) + \"</span>\";\n      }\n    }\n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: \n {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\", absValue:false} \n </p>\n \n </p> ",
       "type": "Html"
      },
      {
@@ -3029,7 +3029,7 @@
      },
      {
       "name": "preExecution",
-      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"dataBar\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\"};\n        }\n    });\n}",
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"dataBar\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\", absValue: false};\n        }\n    });\n}",
       "type": "JavaScript"
      },
      {
@@ -4372,7 +4372,7 @@
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default barData\",\n\"Custom barData\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"65\")\n});\n\n\nreturn model;\n\n",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default barData\",\n\"Custom barData\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"-65\")\n});\n\n\nreturn model;\n\n",
       "type": "SqlQuery"
      },
      {
