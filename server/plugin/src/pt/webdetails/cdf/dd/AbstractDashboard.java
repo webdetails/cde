@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -26,8 +28,8 @@ import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
-import net.sf.ehcache.CacheManager;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import pt.webdetails.cpf.PluginUtils;
 
 /**
  *
@@ -43,33 +45,36 @@ abstract class AbstractDashboard implements Serializable, Dashboard
   private static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
   private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
   private static Log logger = LogFactory.getLog(Dashboard.class);
-  // Cache
-  private static final String CACHE_CFG_FILE = "ehcache.xml";
-  private static final String CACHE_NAME = "pentaho-cde";
   /* FIELDS */
-  protected String template, header, content, footer;
+  protected boolean absolute, debug;
+  protected String template, header, content, footer, absRoot, scheme;
   protected String templateFile, dashboardLocation;
   protected Date loaded;
   private WcdfDescriptor wcdf;
-  protected DashboardDesignerContentGenerator generator;
-  private static CacheManager cacheManager;
 
-  public AbstractDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
+  public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
   {
-    this.generator = generator;
+    absRoot = requestParams.hasParameter("root") ? requestParams.getParameter("root").toString() : "";
+    absolute = (!absRoot.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true");
+    debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
+    scheme = DashboardDesignerContentGenerator.getScheme(pathParams);
+    construct(DashboardDesignerContentGenerator.getWcdfRelativePath(requestParams));
+  }
+
+  private void construct(String wcdfPath)
+  {
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    this.dashboardLocation = generator.getStructureRelativePath(pathParams);
+    this.dashboardLocation = DashboardDesignerContentGenerator.getStructureRelativePath(wcdfPath);
     XmlStructure structure = new XmlStructure(userSession);
 
     wcdf = null;
     try
     {
 
-      String fileName = pathParams.getStringParameter("file", "");
-      if (fileName != null && fileName.endsWith(".wcdf"))
+      if (wcdfPath != null && wcdfPath.endsWith(".wcdf"))
       {
-        wcdf = structure.loadWcdfDescriptor(generator.getWcdfRelativePath(pathParams));
+        wcdf = structure.loadWcdfDescriptor(wcdfPath);
       }
       else
       {//we may just be receiving a .cde file (preview)
@@ -79,8 +84,6 @@ abstract class AbstractDashboard implements Serializable, Dashboard
 
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
-      final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? generator.getScheme() + "://" +  pathParams.getParameter("root").toString() : "" : "";
-      final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
 
       final RenderLayout layoutRenderer = new RenderLayout();
       final RenderComponents componentsRenderer = new RenderComponents();
@@ -98,6 +101,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
 
       // set all dashboard members
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
+      this.header = replaceTokens(renderHeaders(this.content.toString()), absolute, absRoot);
 
       try
       {//attempt to read template file
@@ -110,7 +114,6 @@ abstract class AbstractDashboard implements Serializable, Dashboard
         String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
         this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
       }
-      this.header = replaceTokens(renderHeaders(pathParams, this.content.toString()), absolute, absRoot);
       this.loaded = new Date();
     }
     catch (Exception e)
@@ -121,7 +124,12 @@ abstract class AbstractDashboard implements Serializable, Dashboard
 
   public String render()
   {
-    return this.template.replaceAll(DASHBOARD_HEADER_TAG, Matcher.quoteReplacement(this.header + generator.getCdfContext())) // Replace the Header
+    return render(null);
+  }
+
+  public String render(IParameterProvider params)
+  {
+    return this.template.replaceAll(DASHBOARD_HEADER_TAG, Matcher.quoteReplacement(this.header + DashboardDesignerContentGenerator.getCdfContext(params))) // Replace the Header
             .replaceAll(DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement(this.footer)) // And the Footer
             .replaceAll(DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement(this.content)); // And even the content!
   }
@@ -151,22 +159,19 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     return fixedContent;
   }
 
-  protected String renderHeaders(final IParameterProvider pathParams)
+  protected String renderHeaders()
   {
-    return renderHeaders(pathParams, "");
+    return renderHeaders("");
   }
 
-  protected String renderHeaders(final IParameterProvider pathParams, String contents)
+  protected String renderHeaders(String contents)
   {
     String dependencies, styles, cdfDependencies;
-    final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? pathParams.getParameter("root").toString() : "" : "";
-    final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-    final String title = "<title>"+getWcdf().getTitle()+"</title>";
+    final String title = "<title>" + getWcdf().getTitle() + "</title>";
     // Acquire CDF headers
     try
     {
-      cdfDependencies = generator.getCdfIncludes(contents, getType(), debug, absRoot);
+      cdfDependencies = DashboardDesignerContentGenerator.getCdfIncludes(contents, getType(), debug, absRoot, scheme);
     }
     catch (Exception e)
     {

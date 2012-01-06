@@ -34,9 +34,9 @@ public class MobileDashboard extends AbstractDashboard
   protected final static String TYPE = "mobile";
   protected final static String MOBILE_TEMPLATE = "resources/mobile/index.html";
 
-  public MobileDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
+  public MobileDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
   {
-    super(pathParams, generator);
+    super(pathParams, requestParams);
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
@@ -62,7 +62,7 @@ public class MobileDashboard extends AbstractDashboard
       // set all dashboard members
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
-      this.header = renderHeaders(pathParams, this.content.toString());
+      this.header = renderHeaders(this.content.toString());
       this.templateFile = MOBILE_TEMPLATE;
       this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
       this.loaded = new Date();
@@ -72,19 +72,6 @@ public class MobileDashboard extends AbstractDashboard
     {
       logger.error(e);
     }
-  }
-
-  public String renderToJson()
-  {
-    JSONObject json = new JSONObject();
-    JSONObject meta = new JSONObject();
-    meta.put("title", getWcdf().getTitle());
-    meta.put("filters", "#filters");
-    json.put("metadata", meta);
-    json.put("content", this.content);
-    json.put("headers", this.header + generator.getCdfContext());
-
-    return json.toString(2);
   }
 
   public String getType()

@@ -43,16 +43,11 @@ public class BlueprintDashboard extends AbstractDashboard
   /* FIELDS */
   protected final static String TYPE = "blueprint";
 
-  public BlueprintDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator generator)
+  public BlueprintDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
   {
-    super(pathParams, generator);
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
+    super(pathParams,requestParams);
+    /*IPentahoSession userSession = PentahoSessionHolder.getSession();
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
-
-
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? generator.getScheme() + "://" + pathParams.getParameter("root").toString() : "" : "";
-    final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
 
     final RenderLayout layoutRenderer = new RenderLayout();
     final RenderComponents componentsRenderer = new RenderComponents();
@@ -73,27 +68,23 @@ public class BlueprintDashboard extends AbstractDashboard
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
 
-      this.header = replaceTokens(renderHeaders(pathParams, this.content.toString()), absolute, absRoot);
+      this.header = replaceTokens(renderHeaders(this.content.toString()), absolute, absRoot);
       this.loaded = new Date();
     }
     catch (Exception e)
     {
       logger.error(e);
-    }
+    }*/
   }
 
-  protected String renderHeaders(final IParameterProvider pathParams, String contents)
+  protected String renderHeaders(String contents)
   {
-    String dependencies, styles, cdfDependencies;
-    final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().equals("") ? pathParams.getParameter("root").toString() : "" : "";
-    final boolean absolute = (!absRoot.equals("")) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
-    
+    String dependencies, styles, cdfDependencies;  
     final String title = "<title>"+getWcdf().getTitle()+"</title>";
     // Acquire CDF headers
     try
     {
-      cdfDependencies = generator.getCdfIncludes(contents, getType(), debug, absRoot);
+      cdfDependencies = DashboardDesignerContentGenerator.getCdfIncludes(contents, getType(), debug, absRoot, scheme);
     }
     catch (Exception e)
     {
@@ -103,7 +94,7 @@ public class BlueprintDashboard extends AbstractDashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
-      final String adornedRoot = generator.getScheme() + "://" + absRoot; 
+      final String adornedRoot = scheme + "://" + absRoot; 
       StringFilter css = new StringFilter()
       {
 

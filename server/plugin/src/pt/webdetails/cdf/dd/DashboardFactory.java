@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Map;
 import mondrian.olap.InvalidArgumentException;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -30,7 +31,6 @@ public class DashboardFactory
 
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
-  
   private static CacheManager cacheManager;
   private static DashboardFactory instance;
   private static Log logger = LogFactory.getLog(DashboardFactory.class);
@@ -59,15 +59,23 @@ public class DashboardFactory
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  public Dashboard loadDashboard(IParameterProvider pathParams, DashboardDesignerContentGenerator gen)
+  public Dashboard loadDashboard(Map<String, IParameterProvider> params, DashboardDesignerContentGenerator gen)
   {
+    IParameterProvider pathParams = params.get("path"),
+            requestParams = params.get("request");
     Dashboard dashboard = null;
-    boolean bypassCache = pathParams.hasParameter("bypassCache") && pathParams.getParameter("bypassCache").equals("true");
-    final boolean debug = pathParams.hasParameter("debug") && pathParams.getParameter("debug").equals("true");
+    String root = requestParams.hasParameter("root")
+            ? !requestParams.getParameter("root").toString().equals("")
+            ? DashboardDesignerContentGenerator.getScheme(pathParams) + "://" + requestParams.getParameter("root").toString()
+            : ""
+            : "";
+    boolean absolute = (!root.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true"),
+            bypassCache = requestParams.hasParameter("bypassCache") && requestParams.getParameter("bypassCache").equals("true");
+    final boolean debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     XmlStructure structure = new XmlStructure(userSession);
-    String wcdfPath = getWcdfPath(pathParams);
-    String dashboardPath = getDashboardPath(pathParams);
+    String wcdfPath = getWcdfPath(requestParams);
+    String dashboardPath = getDashboardPath(requestParams);
     WcdfDescriptor wcdf = null;
     DashboardCacheKey key;
     /*
@@ -102,6 +110,8 @@ public class DashboardFactory
      * the dashboard in there.
      */
     key = new DashboardCacheKey(dashboardPath, CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()), debug);
+    key.setAbs(absolute);
+    key.setRoot(root);
     if (!bypassCache)
     {
       dashboard = getDashboardFromCache(key);
@@ -118,7 +128,7 @@ public class DashboardFactory
         switch (Renderers.valueOf(wcdf.getRendererType().toUpperCase()))
         {
           case MOBILE:
-            dashboard = new MobileDashboard(pathParams, gen);
+            dashboard = new MobileDashboard(pathParams, requestParams);
             break;
 
           /* Until we consider it safe to assume that all dashboards have
@@ -127,7 +137,7 @@ public class DashboardFactory
            */
           case BLUEPRINT:
           default:
-            dashboard = new BlueprintDashboard(pathParams, gen);
+            dashboard = new BlueprintDashboard(pathParams, requestParams);
             break;
         }
       }
@@ -261,7 +271,7 @@ public class DashboardFactory
 class DashboardCacheKey
 {
 
-  private String cdfde, template;
+  private String cdfde, template, root;
   private boolean debug, abs;
 
   public boolean isAbs()
@@ -298,6 +308,7 @@ class DashboardCacheKey
   {
     this.cdfde = cdfde;
     this.template = template;
+    this.root = "";
     this.abs = false;
     this.debug = false;
   }
@@ -306,6 +317,7 @@ class DashboardCacheKey
   {
     this.cdfde = cdfde;
     this.template = template;
+    this.root = "";
     this.abs = false;
     this.debug = debug;
   }
@@ -338,6 +350,10 @@ class DashboardCacheKey
     {
       return false;
     }
+    if ((this.root == null) ? (other.root != null) : !this.root.equals(other.root))
+    {
+      return false;
+    }
     return true;
   }
 
@@ -350,5 +366,21 @@ class DashboardCacheKey
     hash = 79 * hash + (this.debug ? 1 : 0);
     hash = 79 * hash + (this.abs ? 1 : 0);
     return hash;
+  }
+
+  /**
+   * @return the root
+   */
+  public String getRoot()
+  {
+    return root;
+  }
+
+  /**
+   * @param root the root to set
+   */
+  public void setRoot(String root)
+  {
+    this.root = root;
   }
 }
