@@ -55,6 +55,16 @@ public class CggChart
     chartScript.append("render_").append(this.chartName).append(".chartDefinition.width = w; render_").append(this.chartName).append(".chartDefinition.height = h;\n");
 
     chartScript.append("print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');\n");
+    
+    /* Chart Background */
+    chartScript.append("bg = document.createElementNS('http://www.w3.org/2000/svg','rect');");
+    chartScript.append("bg.setAttribute('id','foo');");
+    chartScript.append("bg.setAttribute('x','0');");
+    chartScript.append("bg.setAttribute('y','0');");
+    chartScript.append("bg.setAttribute('width', w);");
+    chartScript.append("bg.setAttribute('height',h);");
+    chartScript.append("bg.setAttribute('style', 'fill:white');");
+    chartScript.append("document.lastChild.appendChild(bg);");
 
     chartScript.append("renderCccFromComponent(render_").append(this.chartName).append(", data);\n");
     chartScript.append("document.lastChild.setAttribute('width', render_").append(this.chartName).append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_").append(this.chartName).append(
@@ -129,7 +139,7 @@ public class CggChart
       String paramName = param.get(0).toString();
       String defaultValue = param.get(1).toString();
       chartScript.append("var param" + paramName + " = params.get('" + paramName + "');\n");
-      chartScript.append("param" + paramName + " = (param" + paramName + " !== null && param" + paramName + " !== '')? param" + paramName + " : '"+ defaultValue+ "';\n");
+      chartScript.append("param" + paramName + " = (param" + paramName + " !== null && param" + paramName + " !== '')? param" + paramName + " : '" + defaultValue + "';\n");
       chartScript.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
       parameters.put(param.get(0).toString(), param.get(2).toString());
     }
