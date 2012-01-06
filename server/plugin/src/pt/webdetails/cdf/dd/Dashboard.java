@@ -5,6 +5,7 @@
 package pt.webdetails.cdf.dd;
 
 import java.util.Date;
+import org.pentaho.platform.api.engine.IParameterProvider;
 
 /**
  *
@@ -14,7 +15,7 @@ public interface Dashboard
 {
 
   public String render();
-
+  public String render(IParameterProvider params);
   public String getHeader();
 
   public String getContent();
