@@ -86,6 +86,20 @@
   </DesignerProperty>
   <DesignerProperty>
     <Header>
+      <Name>cccPercentage</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Percentage</Description>
+      <Tooltip>Stacked Chart Displays by Percentage?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>42</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+  <DesignerProperty>
+    <Header>
       <Name>cccMaxBarSize</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>100</DefaultValue>
