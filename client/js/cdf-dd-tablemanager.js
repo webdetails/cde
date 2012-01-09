@@ -849,7 +849,10 @@ var FloatRenderer = StringRenderer.extend({
 
 var SelectRenderer = CellRenderer.extend({
 
+  //if has autocomplete behavior, i.e. filter selectable values by what's being typed
+  isAutoComplete: true,
 
+  //selectable values to display
   selectData: {
   },
 
@@ -912,11 +915,14 @@ var SelectRenderer = CellRenderer.extend({
   },
 
   autoCompleteRequest: function(req,add){
-
-add(jQuery.grep(this.autocompleteArray, function(elt, i){
-  		return elt.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
-	}));
-    
+    if(this.isAutoComplete){
+      add(jQuery.grep(this.autocompleteArray, function(elt, i){
+          return elt.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
+      }));
+    }
+    else {
+      add(this.autocompleteArray);
+    }
   },
 
   getDelay: function(){
@@ -962,6 +968,8 @@ add(jQuery.grep(this.autocompleteArray, function(elt, i){
 
 
 var BooleanRenderer = SelectRenderer.extend({
+
+  isAutoComplete: false,
 
   selectData: {
     'true':'True',

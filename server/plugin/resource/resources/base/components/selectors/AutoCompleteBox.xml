@@ -23,6 +23,7 @@
 			<Property>minTextLenght</Property>
 			<Property>scrollHeight</Property>
 			<Property>selectMulti</Property>
+			<Property>addTextElements</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>

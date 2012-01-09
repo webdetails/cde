@@ -6,6 +6,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
+import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.structure.StructureException;
@@ -80,7 +81,7 @@ public class CdfTemplates {
 
   }
 
-  public void save(final HashMap parameters) throws Exception {
+  public void save(final HashMap parameters) throws StructureException, PentahoAccessControlException, IOException {
 
     final String fileName = (String) parameters.get("file");
     System.out.println("Saving File:" + fileName);

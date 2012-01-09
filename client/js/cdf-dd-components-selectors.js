@@ -89,6 +89,8 @@ var HtmlObjectRenderer = SelectRenderer.extend({
 	
 var MatchTypeRenderer = SelectRenderer.extend({
 
+	isAutoComplete: false,
+
   selectData: {
     'fromStart':'From Start',
     'all':'All'
