@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccTimeSeries</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Timeseries</Description>
+      <Tooltip>Timeseries chart?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>false</Advanced>
+      <Order>45</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBulletSpacing</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>Bullet spacing</Description>
+      <Tooltip>Space between multiple bullet charts</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>71</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

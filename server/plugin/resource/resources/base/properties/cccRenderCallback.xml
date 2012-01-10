@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccRenderCallback</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Render callback</Description>
+      <Tooltip>Callback executed before rendering</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>91</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

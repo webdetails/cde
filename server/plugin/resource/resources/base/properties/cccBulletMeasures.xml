@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBulletMeasures</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Bullet Measures</Description>
+      <Tooltip>Measures on the bullet chart</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>60</Order>
+      <Version>1.0</Version>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>

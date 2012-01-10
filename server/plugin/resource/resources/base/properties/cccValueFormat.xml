@@ -1,0 +1,15 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccValueFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+<!--      <DefaultValue>'function(d){return pv.Format.number().fractionDigits(0, 2).format(d)}'</DefaultValue>-->
+      <Description>Value format</Description>
+      <Tooltip>Function to format how the values appears</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>91</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

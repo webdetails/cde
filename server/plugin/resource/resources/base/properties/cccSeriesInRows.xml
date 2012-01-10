@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccSeriesInRows</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Series in rows</Description>
+      <Tooltip>Datasource series are in rows?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>88</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

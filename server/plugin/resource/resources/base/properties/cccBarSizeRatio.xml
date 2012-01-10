@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBarSizeRatio</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.9</DefaultValue>
+      <Description>Bar Size Ratio</Description>
+      <Tooltip>Bar size ratio</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>45</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

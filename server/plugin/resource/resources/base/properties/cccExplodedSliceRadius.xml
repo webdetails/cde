@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccExplodedSliceRadius</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0</DefaultValue>
+      <Description>Exploded slice radius</Description>
+      <Tooltip>Exploded slice radius</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>44</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

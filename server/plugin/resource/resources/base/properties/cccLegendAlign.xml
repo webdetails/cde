@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccLegendAlign</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>center</DefaultValue>
+      <Description>Legend align</Description>
+      <Tooltip>Legend alignsize</Tooltip>
+      <InputType>SquareAlign</InputType>
+      <OutputType>String</OutputType>
+      <Order>74</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

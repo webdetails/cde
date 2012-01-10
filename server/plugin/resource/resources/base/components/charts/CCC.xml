@@ -32,37 +32,6 @@
         <Property type="number">tooltip</Property>
         <Property type="number">listeners</Property>
       </Model>
-      <Implementation>
-        <Code src="protovis-implementation.js" />
-        <Dependencies>
-          <Dependency src="protovis.js" version="3.3">Protovis</Dependency>
-        </Dependencies>
-        <Raw>
-          <Fragment name='svgweb' version='1.0'><![CDATA[
-               <!--[if lt IE 9]><script
-    type="text/javascript" src="${res:/system/pentaho-cdf-dd/resources/custom/components/CCC/svg.js}"
-    data-path="${res:/system/pentaho-cdf-dd/resources/custom/components/CCC/}">
-</script><![endif]--> 
-    <meta name="svg.render.forceflash" content="true"> 
-            ]]>
-          </Fragment>
-        </Raw>
-        <CustomProperties>
-          <DesignerProperty>
-            <Header>
-              <Name>customfunction</Name>
-              <Parent>BaseProperty</Parent>
-              <DefaultValue></DefaultValue>
-              <Description>Custom Chart Script</Description>
-              <Tooltip>Custom Chart Script</Tooltip>
-              <InputType>JavaScript</InputType>
-              <OutputType>Function</OutputType>
-              <Order>40</Order>
-              <Version>1.0</Version>
-            </Header>
-          </DesignerProperty>
-        </CustomProperties>
-      </Implementation>
     </Contents>
   </DesignerComponent>
 
@@ -132,18 +101,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation>
-        <Code src="ccc-implementation.js" />
-        <Dependencies>
-          <Dependency src="jquery.tipsy.js" version="1.0">Jquery tipsy</Dependency>
-          <Dependency src="protovis.js" version="3.3">Protovis</Dependency>
-          <Dependency src="tipsy.js" version="1.0">Tipsy</Dependency>
-          <Dependency src="pvc-d1.0.js" version="1.0">pvc</Dependency>
-        </Dependencies>
-        <Styles>
-          <Style src="tipsy.css" version="1.0">Tipsy</Style>
-        </Styles>
-      </Implementation>
     </Contents>
   </DesignerComponent>
   <DesignerComponent>
@@ -212,7 +169,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -282,18 +238,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation>
-        <Code src="ccc-implementation.js" />
-        <Dependencies>
-          <Dependency src="jquery.tipsy.js" version="1.0">Jquery tipsy</Dependency>
-          <Dependency src="protovis.js" version="3.3">Protovis</Dependency>
-          <Dependency src="tipsy.js" version="1.0">Tipsy</Dependency>
-          <Dependency src="pvc-d1.0.js" version="1.0">pvc</Dependency>
-        </Dependencies>
-        <Styles>
-          <Style src="tipsy.css" version="1.0">Tipsy</Style>
-        </Styles>
-      </Implementation>
     </Contents>
   </DesignerComponent>
   <DesignerComponent>
@@ -362,7 +306,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -432,7 +375,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
   <DesignerComponent>
@@ -501,7 +443,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
   <DesignerComponent>
@@ -581,7 +522,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -662,7 +602,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -744,7 +683,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -817,7 +755,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -895,7 +832,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -948,7 +884,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -1000,7 +935,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 
@@ -1060,7 +994,6 @@
         <Property>tooltip</Property>
         <Property>listeners</Property>
       </Model>
-      <Implementation/>
     </Contents>
   </DesignerComponent>
 

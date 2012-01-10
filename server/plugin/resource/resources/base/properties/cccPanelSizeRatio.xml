@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccPanelSizeRatio</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.8</DefaultValue>
+      <Description>Panel Size Ratio</Description>
+      <Tooltip>Panel size ratio</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>44</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

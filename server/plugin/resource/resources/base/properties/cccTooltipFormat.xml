@@ -1,0 +1,15 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccTooltipFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+<!--      <DefaultValue>function(s,c,v){return s+", "+c+":  " + myself.options.valueFormat(v) }</DefaultValue>-->
+      <Description>Tooltip format</Description>
+      <Tooltip>Function to format how the tooltip appears</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>92</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

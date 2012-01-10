@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBulletSubtitle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>Subtitle</DefaultValue>
+      <Description>Bullet subtitle</Description>
+      <Tooltip>Bullet chart subtitle</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>66</Order>
+      <Advanced>false</Advanced>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccTitlePosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>top</DefaultValue>
+      <Description>Title position</Description>
+      <Tooltip>Title position</Tooltip>
+      <InputType>Anchor</InputType>
+      <OutputType>String</OutputType>
+      <Order>40</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

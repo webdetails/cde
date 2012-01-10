@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccLegendPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>bottom</DefaultValue>
+      <Description>Legend position</Description>
+      <Tooltip>Legend position</Tooltip>
+      <InputType>Anchor</InputType>
+      <OutputType>String</OutputType>
+      <Order>72</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
