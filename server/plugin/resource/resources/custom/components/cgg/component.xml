@@ -30,16 +30,6 @@
         <Styles>
         </Styles>
         <Dependencies/>
-        <Raw>
-          <Fragment name='svgweb' version='1.0'><![CDATA[
-               <!--[if lt IE 9]><script
-                    type="text/javascript" src="getJsResource/resources/custom/components/CCC/svg.js"
-                    data-path="getUntypedResource/resources/custom/components/CCC/">
-                </script><![endif]--> 
-    <meta name="svg.render.forceflash" content="true"> 
-            ]]>
-          </Fragment>
-        </Raw>
         <CustomProperties>
           <DesignerProperty>
             <Header>
@@ -89,16 +79,6 @@
         <Styles>
         </Styles>
         <Dependencies/>
-        <Raw>
-          <Fragment name='svgweb' version='1.0'><![CDATA[
-               <!--[if lt IE 9]><script
-                    type="text/javascript" src="getJsResource/resources/custom/components/CCC/svg.js"
-                    data-path="getUntypedResource/resources/custom/components/CCC/">
-                </script><![endif]--> 
-    <meta name="svg.render.forceflash" content="true"> 
-            ]]>
-          </Fragment>
-        </Raw>
         <CustomProperties>
         </CustomProperties>
       </Implementation>
