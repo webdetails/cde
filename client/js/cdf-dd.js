@@ -820,33 +820,6 @@ var Panel = Base.extend({
     }
   }
 		
-//		//TODO: temp
-//		initHoverPics: function(){
-//      var END = ".png";
-//      var HEND = "_hover.png";
-//      var endLen = END.length;
-//      var hendLen = HEND.length;
-//
-//      var me = $("#" + this.id);
-//
-//
-//
-//      var hoverIn = function(){
-//        var src = $(this).attr("src");
-//        $(this).attr("src", src.slice(0, src.len - endLen) + "_hover.png");
-//      }
-//      var hoverOut = function(){
-//        var src = $(this).attr("src");
-//        $(this).attr("src", src.slice(0, src.len - hendLen) + ".png");
-//      }
-//      me.find("img").each(function(idx, comp){
-//        //TODO: check if exists or something
-//        //hover( handlerIn(eventObject), handlerOut(eventObject) )
-//        if($(comp).attr("src").search(ENABLED_STR) == -1) {//not enabled
-//                $(comp).hover
-//        }
-//      })
-//		}
 });
 
 
