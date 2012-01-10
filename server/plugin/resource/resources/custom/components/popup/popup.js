@@ -10,20 +10,35 @@ var PopupComponent = BaseComponent.extend({
 
   update: function(){
     var myself = this;
-    if (this.ph) {this.ph.remove();}
-    this.ph = $('<div>');
-    this.content = $("#" + this.htmlObject).appendTo(this.ph);
-    this.ph.hide().appendTo($('body'));
+    this.content = $("#" + this.htmlObject).detach();
+    this.ph = this.ph ? this.ph.empty() : $('<div>').appendTo($('body'));
+    this.content.appendTo(this.ph);
+    this.ph.hide();
     this.ph.addClass('popupComponent');
     this.cancel = $("<a>&nbsp;</a>");
     this.cancel.addClass("close").click(function(){
-        myself.hide();
+      myself.hide();
     });
     this.cancel.appendTo(this.ph);
     this.arrow = $("<div class='arrow'>").appendTo(this.ph);
     this.content.removeClass('hidePopup');
   },
-
+  clone: function(params,comps,html) {
+    var that = this.base(params,comps,html);
+    that.ph = this.ph.clone();
+    that.ph.insertAfter(this.ph);
+    that.ph.hide();
+    that.ph.find("[id]").each(function(i,e){
+      $e = $(e);
+      var id = $e.attr("id");
+      if(id && id in html) {
+        $e.attr("id", html[id]);
+      } else {
+        $e.attr("id",id + '_' + Dashboards.duplicateIndex);
+      }
+    });
+    return that;
+  },
   popup: function(target,gravity) {
     var pos = target.offset(),
       css = {
@@ -473,5 +488,4 @@ var ExportPopupComponent = PopupComponent.extend({
 
   }
   
-  });
-
+});
