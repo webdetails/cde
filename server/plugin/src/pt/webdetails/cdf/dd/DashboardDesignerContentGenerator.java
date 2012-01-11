@@ -84,7 +84,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final int RESOURCE_CACHE_DURATION = 3600 * 24 * 8; //1 week cache
   private static final int NO_CACHE_DURATION = 0;
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
-  private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";  
+  private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
 //  private static final String[] ALLOWED_SOLUTION_DIRS = {SOLUTION_DIR, Utils.joinPath("system", PLUGIN_NAME, "resource")};
   private Packager packager;
 
@@ -295,7 +295,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
 
     // Response
-    setResponseHeaders(MIME_TYPE, 0, null);
+    try
+    {
+      setResponseHeaders(MIME_TYPE, 0, null);
+    }
+    catch (Exception e)
+    {
+      logger.warn(e.toString());
+    }
     out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
   }
 
@@ -510,13 +517,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
   }
 
-  public void edit(final IParameterProvider requestParams , final OutputStream out) throws Exception
+  public void edit(final IParameterProvider requestParams, final OutputStream out) throws Exception
   {
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
-    
+
     IParameterProvider pathParams = parameterProviders.get("path");
-    boolean debugMode = requestParams .hasParameter("debug") && requestParams .getParameter("debug").toString().equals("true");
-    if (requestParams .hasParameter("path") && !hasAccess(out, getWcdfRelativePath(requestParams ), ISolutionRepository.ACTION_UPDATE))
+    boolean debugMode = requestParams.hasParameter("debug") && requestParams.getParameter("debug").toString().equals("true");
+    if (requestParams.hasParameter("path") && !hasAccess(out, getWcdfRelativePath(requestParams), ISolutionRepository.ACTION_UPDATE))
     {
       out.write("Access Denied".getBytes(ENCODING));
 
@@ -544,8 +551,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       tokens.put(DESIGNER_STYLES_TAG, "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />");
       tokens.put(DESIGNER_SCRIPTS_TAG, "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>");
     }
-    tokens.put(DESIGNER_CDF_TAG, DashboardDesignerContentGenerator.getCdfIncludes("", "desktop", debugMode, null,DashboardDesignerContentGenerator.getScheme(pathParams )));
-    tokens.put(FILE_NAME_TAG, getStructureRelativePath(requestParams ));
+    tokens.put(DESIGNER_CDF_TAG, DashboardDesignerContentGenerator.getCdfIncludes("", "desktop", debugMode, null, DashboardDesignerContentGenerator.getScheme(pathParams)));
+    tokens.put(FILE_NAME_TAG, getStructureRelativePath(requestParams));
     tokens.put(SERVER_URL_TAG, SERVER_URL_VALUE);
     tokens.put(DATA_URL_TAG, DATA_URL_VALUE);
 
@@ -621,11 +628,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String path = getWcdfRelativePath(pathParams);
     return path.replace(".wcdf", ".cdfde");
   }
+
   static String getStructureRelativePath(String wcdfPath)
   {
     return wcdfPath.replace(".wcdf", ".cdfde");
   }
-  
+
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
     String[] roots = new String[2];
@@ -796,21 +804,24 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(contents, out);
   }
 
-  
-  public void createfolder(IParameterProvider pathParams, OutputStream out) throws Exception {
-    
+  public void createfolder(IParameterProvider pathParams, OutputStream out) throws Exception
+  {
+
     String path = pathParams.getStringParameter(PathParams.PATH, null);
     String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
-    
-    if (ExternalFileEditorBackend.createFolder(path, userSession)) {
-      IOUtils.write("Path " + path + " created ok", out);      
-    } else {
-      
+
+    if (ExternalFileEditorBackend.createFolder(path, userSession))
+    {
+      IOUtils.write("Path " + path + " created ok", out);
+    }
+    else
+    {
+
       IOUtils.write("error creating folder " + path, out);//TODO:...
     }
-    
+
   }
-  
+
   public void writefile(IParameterProvider pathParams, OutputStream out) throws Exception
   {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
@@ -846,9 +857,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
   }
-  
-  
-  
+
 //  External Editor ^ 
   private void init() throws IOException
   {
@@ -876,7 +885,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   static String getCdfIncludes(String dashboard, IParameterProvider pathParams) throws Exception
   {
-    return getCdfIncludes(dashboard, null, false, "",getScheme(pathParams));
+    return getCdfIncludes(dashboard, null, false, "", getScheme(pathParams));
   }
 
   static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception
@@ -885,7 +894,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("dashboardContent", dashboard);
     params.put("debug", debug);
-    params.put("scheme",scheme);
+    params.put("scheme", scheme);
     if (type != null)
     {
       params.put("dashboardType", type);
@@ -926,7 +935,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   static public String getScheme(IParameterProvider pathParams)
   {
-    ServletRequest req = (ServletRequest)(pathParams.getParameter("httprequest"));
-    return req.getScheme();
+    try { 
+    ServletRequest req = (ServletRequest) (pathParams.getParameter("httprequest"));
+    return req.getScheme();} catch (Exception e) {return "html";}
   }
 }
