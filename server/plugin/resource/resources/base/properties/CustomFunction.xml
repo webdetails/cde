@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>customfunction</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue></DefaultValue>
+        <Description>Custom Chart Script</Description>
+        <Tooltip>Custom Chart Script</Tooltip>
+        <InputType>JavaScript</InputType>
+        <OutputType>Function</OutputType>
+        <Order>40</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>
