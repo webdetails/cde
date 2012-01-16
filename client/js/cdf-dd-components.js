@@ -104,11 +104,11 @@ var ComponentsPanel = Panel.extend({
 
   getContent: function(){
 		
-    return ' \
-			<div id="'+ ComponentsPanel.PALLETE +'" class="span-6 accordion"></div>\
-			<div id="'+ ComponentsPanel.COMPONENTS +'" class="span-8">Components</div>\
-			<div id="'+ ComponentsPanel.PROPERTIES + '" class="span-10 last">Properties</div>\
-			';			
+    return ' \n' +
+'			<div id="'+ ComponentsPanel.PALLETE +'" class="span-6 accordion"></div>\n' +
+'			<div id="'+ ComponentsPanel.COMPONENTS +'" class="span-8">Components</div>\n' +
+'			<div id="'+ ComponentsPanel.PROPERTIES + '" class="span-10 last">Properties</div>\n' +
+'			';
 		
   },
 

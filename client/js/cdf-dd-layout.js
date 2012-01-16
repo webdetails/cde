@@ -94,10 +94,10 @@ var LayoutPanel = Panel.extend({
 
 		getContent: function(){
 		
-			return ' \
-			<div id="'+ LayoutPanel.TREE +'" class="span-12">Tree</div>\
-			<div id="'+ LayoutPanel.PROPERTIES + '" class="span-12 last">Properties</div>\
-			';			
+			return ' \n' +
+'			<div id="'+ LayoutPanel.TREE +'" class="span-12">Tree</div>\n' +
+'			<div id="'+ LayoutPanel.PROPERTIES + '" class="span-12 last">Properties</div>\n' +
+'			';			
 		
 		}, 
 
@@ -653,8 +653,8 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 
 			// Add a row. This special type goes always to the beginning;
 			
-			$.prompt('Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>\
-							 <select id="resourceSource"><option value="file">External File</option><option value="code">Code Snippet</option></select>',
+			$.prompt('Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>\n' +
+'							 <select id="resourceSource"><option value="file">External File</option><option value="code">Code Snippet</option></select>',
 			{buttons: { Ok: true, Cancel: false },
 			submit: function(v){
 				if(v){
@@ -839,12 +839,12 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 			var includeComponents = true;
 			var includeDataSources = true;
 			var myself = this;
-			var content = '\
-				<span><b>Template:</b></span><br/><hr/>\
-				<span id="fileLabel" >File Name:</span><br/><input class="cdf_settings_input" id="fileInput" type="text" value=""></input><br/>\
-				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value=""></input>\
-				<span>Include Components:</span><input type="checkbox" checked="yes" id="includeComponentsInput" value="true" />\
-				&nbsp&nbsp<span>Include Datasources:</span><input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true" />';
+			var content = '\n' +
+'				<span><b>Template:</b></span><br/><hr/>\n' +
+'				<span id="fileLabel" >File Name:</span><br/><input class="cdf_settings_input" id="fileInput" type="text" value=""></input><br/>\n' +
+'				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value=""></input>\n' +
+'				<span>Include Components:</span><input type="checkbox" checked="yes" id="includeComponentsInput" value="true" />\n' +
+'				&nbsp&nbsp<span>Include Datasources:</span><input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true" />';
 				
 			$.prompt(content,{buttons: { Save: true, Cancel: false },
 			submit: function(v){

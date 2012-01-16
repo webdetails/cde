@@ -346,14 +346,14 @@ var CDFDD = Base.extend({
     var selectedTitle = this.getDashboardWcdf().title;
     var selectedDescription = this.getDashboardWcdf().description;
     var myself = this;
-    var content = '<div class="saveaslabel">Save as:</div>\
-								<div id="container_id" class="folderexplorer" width="400px"></div>\
-									<span class="folderexplorerfilelabel">File Name:</span>\
-									<span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\
-								<hr class="filexplorerhr"/>\
-								<span class="folderexplorerextralabel" >Extra Information:</span><br/>\
-									<span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\
-									<br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
+    var content = '<div class="saveaslabel">Save as:</div>\n' +
+'								<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+'									<span class="folderexplorerfilelabel">File Name:</span>\n' +
+'									<span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
+'								<hr class="filexplorerhr"/>\n' +
+'								<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+'									<span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\n' +
+'									<br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
 							
     $.prompt(content,{
       loaded: function(){
@@ -547,12 +547,12 @@ var CDFDD = Base.extend({
     var style = this.getDashboardWcdf().style;
     var rendererType = this.getDashboardWcdf().rendererType;
     var myself = this;
-    var content = '\
-				<span><b>Settings:</b></span><br/><hr/>\
-				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="' + title +'"></input><br/>\
-				<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="' + author +'"></input>\
-				<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">' + description + '</textarea>\
-				<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">';
+    var content = '\n' +
+'				<span><b>Settings:</b></span><br/><hr/>\n' +
+'				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="' + title +'"></input><br/>\n' +
+'				<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="' + author +'"></input>\n' +
+'				<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">' + description + '</textarea>\n' +
+'				<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">';
 
     $.each(this.styles,function(i,obj){
       content += ('<option value="'+ obj +'" ' + (style==obj?'selected':'') +' >'+ obj+'</option>');
@@ -719,11 +719,11 @@ var Panel = Base.extend({
 
   getHtml: function(){
 
-    return '\
-			<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\
-			<div class="panel-content">' + this.getContent() + '</div> \
-			</div>';
-  //<h2 class="panel-title">'+this.name+'</h2> \
+    return '\n' +
+'			<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
+'			<div class="panel-content">' + this.getContent() + '</div> \n' +
+'			</div>';
+  //'<h2 class="panel-title">'+this.name+'</h2> '
   },
 
   getContent: function(){

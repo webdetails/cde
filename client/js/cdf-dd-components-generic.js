@@ -187,11 +187,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
     _editArea.click(function(){
 					
       var arrayValue = value;
-      var content = $('\
-            <div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\
-              <div class="' + myself.cssPrefix +'"></div>\
-              <input class="' + myself.cssPrefix +'AddButton" type="button" value="Add"></input>\
-            </div>');
+      var content = $('\n' +
+'            <div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\n' +
+'              <div class="' + myself.cssPrefix +'"></div>\n' +
+'              <input class="' + myself.cssPrefix +'AddButton" type="button" value="Add"></input>\n' +
+'            </div>');
       
       vals = JSON.parse(arrayValue);
       

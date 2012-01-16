@@ -52,34 +52,34 @@ var PromptWizard = WizardManager.extend({
 		
 			$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 		
-			var leftSectionContent = $('\
-				<div class="cdfdd-wizard-prompt-left-section span-5 last round">\
-				</div>');
+			var leftSectionContent = $('\n' +
+'				<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
+'				</div>');
 				
 			if(this.hasFunctions)
-				leftSectionContent.append('\
-					<table id="prompt-wizard-functions" class="prompt-wizard-functions">\
-							<tbody class="ui-widget-content">\
-							</tbody>\
-							</table>');
+				leftSectionContent.append('\n' +
+'					<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
+'							<tbody class="ui-widget-content">\n' +
+'							</tbody>\n' +
+'							</table>');
 							
 			if(this.hasParameters)
-				leftSectionContent.append('\
-					<table id="prompt-wizard-parameters" class="">\
-							<tbody class="ui-widget-content">\
-							</tbody>\
-							</table>');
+				leftSectionContent.append('\n' +
+'					<table id="prompt-wizard-parameters" class="">\n' +
+'							<tbody class="ui-widget-content">\n' +
+'							</tbody>\n' +
+'							</table>');
 				
-			var centerSectionContent = '\
-				<div class="cdfdd-wizard-prompt-center-section span-19 last round">\
-					<div class="span-18">\
-						<textarea  class="prompt-wizard-textarea" >' + this.invoker.getValue() + '</textarea>\
-					</div>\
-				</div>';
+			var centerSectionContent = '\n' +
+'				<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
+'					<div class="span-18">\n' +
+'						<textarea  class="prompt-wizard-textarea" >' + this.invoker.getValue() + '</textarea>\n' +
+'					</div>\n' +
+'				</div>';
 				
-			/*var rightSectionContent = $('\
-				<div class="cdfdd-wizard-prompt-right-section span-6 last round">\
-				</div>');*/
+			/*var rightSectionContent = $('\n' +
+'				<div class="cdfdd-wizard-prompt-right-section span-6 last round">\n' +
+'				</div>');*/
 
 			$("#" + WizardManager.WIZARD_LEFT_SECTION).append( leftSectionContent );
 			$("#" + WizardManager.WIZARD_CENTER_SECTION).append( centerSectionContent );
@@ -187,30 +187,30 @@ var AcePromptWizard = PromptWizard.extend({
 	
 		$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 	
-		var leftSectionContent = $('\
-			<div class="cdfdd-wizard-prompt-left-section span-5 last round">\
-			</div>');
+		var leftSectionContent = $('\n' +
+'			<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
+'			</div>');
 			
 		if(this.hasFunctions)
-			leftSectionContent.append('\
-				<table id="prompt-wizard-functions" class="prompt-wizard-functions">\
-						<tbody class="ui-widget-content">\
-						</tbody>\
-						</table>');
+			leftSectionContent.append('\n' +
+'				<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
+'						<tbody class="ui-widget-content">\n' +
+'						</tbody>\n' +
+'						</table>');
 						
 		if(this.hasParameters)
-			leftSectionContent.append('\
-				<table id="prompt-wizard-parameters" class="">\
-						<tbody class="ui-widget-content">\
-						</tbody>\
-						</table>');
+			leftSectionContent.append('\n' +
+'				<table id="prompt-wizard-parameters" class="">\n' +
+'						<tbody class="ui-widget-content">\n' +
+'						</tbody>\n' +
+'						</table>');
 			
-		var centerSectionContent = '\
-			<div class="cdfdd-wizard-prompt-center-section span-19 last round">\
-				<div class="span-18">\
-					<pre id="'+ this.EDITOR_ID +'" style="position: relative;width: 750px;height: 400px;"> </pre>\
-				</div>\
-			</div>';
+		var centerSectionContent = '\n' +
+'			<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
+'				<div class="span-18">\n' +
+'					<pre id="'+ this.EDITOR_ID +'" style="position: relative;width: 750px;height: 400px;"> </pre>\n' +
+'				</div>\n' +
+'			</div>';
 
 		$("#" + WizardManager.WIZARD_LEFT_SECTION).append( leftSectionContent );
 		$("#" + WizardManager.WIZARD_CENTER_SECTION).append( centerSectionContent );
@@ -368,13 +368,13 @@ var MdxWizard = PromptWizard.extend({
 			
 			this.base();
 			
-			$("." + PromptWizard.WIZARD_LEFT_SECTION).append('\
-				<table id="prompt-wizard-olap" class="prompt-wizard-olap">\
-					<thead>\
-					</thead>\
-					<tbody class="ui-widget-content">\
-					</tbody>\
-					</table>');
+			$("." + PromptWizard.WIZARD_LEFT_SECTION).append('\n' +
+'				<table id="prompt-wizard-olap" class="prompt-wizard-olap">\n' +
+'					<thead>\n' +
+'					</thead>\n' +
+'					<tbody class="ui-widget-content">\n' +
+'					</tbody>\n' +
+'					</table>');
 			
 			$(".cdfdd-wizard-buttons form").prepend('<input id="cdfdd-wizard-button-preview" type="button" onclick="PromptWizardManager.getWizard(\''+ this.wizardId +'\').buttonPreview()" value="Preview"></input>');
 			

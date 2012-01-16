@@ -67,12 +67,12 @@ var PalleteManager = Base.extend({
 
 			var _placeholder = $(".pallete-" + _cat +" > ul ", $("#"+this.getPalleteId()) );
 //TODO: this hover ain't pretty, change this...
-//			<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\
-			var code = '\
-							<li><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\
-			'+ palleteEntry.getName() +'\
-			</a>\
-			';
+//			<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">
+			var code = '\n' +
+'							<li><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\n' +
+'			'+ palleteEntry.getName() +'\n' +
+'			</a>\n' +
+'			';
 
 			_placeholder.append(code)
 		
