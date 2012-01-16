@@ -84,6 +84,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -152,6 +154,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -221,6 +225,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -289,6 +295,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -358,6 +366,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -426,6 +436,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -500,6 +512,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMax">cccOrthoFixedMax</Property>
@@ -580,6 +594,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMax">cccOrthoFixedMax</Property>
@@ -661,6 +677,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMax">cccOrthoFixedMax</Property>
@@ -740,6 +758,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -809,6 +829,8 @@
           <Property name="yAxisSize">cccYAxisSize</Property>
           <Property name="xAxisFullGrid">cccXAxisFullGrid</Property>
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
+          <Property name="xAxisEndLine">cccXAxisEndLine</Property>
+          <Property name="yAxisEndLine">cccYAxisEndLine</Property>
 <!--          <Property name="axisOffset">cccAxisOffset</Property> -->
 <!--          <Property name="originIsZero">cccOriginIsZero</Property> -->
           <Property name="orthoAxisOrdinal">cccOrthoAxisOrdinal</Property>
