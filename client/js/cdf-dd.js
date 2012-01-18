@@ -945,27 +945,36 @@ $(function() {
     multiSelectOptionsShow: function(){
       // Hide any open option boxes
       $('.multiSelect').multiSelectOptionsHide();
-      $(this).next('.multiSelectOptions').find('LABEL').removeClass('hover');
-      $(this).addClass('active').next('.multiSelectOptions').show();
+      
+      var t = $(this);
+      var ph = t.next('.multiSelectOptions');
+      
+      ph.find('LABEL').removeClass('hover');
+      t.addClass('active').next('.multiSelectOptions').show();
 
       // Position it
       // The following line overrides the default
       //var offset = $(this).closes("td").position();
       var offset = []
-      $(this).next('.multiSelectOptions').css({
-        top:  offset.top + $(this).outerHeight() + 'px'
-      });
-      $(this).next('.multiSelectOptions').css({
+      ph.css({
+        top:  offset.top + t.outerHeight() + 'px'
+      })
+      .css({
         left: offset.left + 'px'
       });
 
       // Disappear on hover out
-      multiSelectCurrent = $(this);
       var timer = '';
-      $(this).next('.multiSelectOptions').hover( function() {
+      ph.unbind("mouseenter mouseleave").mouseenter( function() {
+        Dashboards.log("enter");
         clearTimeout(timer);
-      }, function() {
-        timer = setTimeout('jQuery(multiSelectCurrent).multiSelectOptionsHide(); $(multiSelectCurrent).unbind("hover");', 250);
+      }).mouseleave(function() {
+        Dashboards.log("leave");
+        timer = setTimeout(function(){
+          t.multiSelectOptionsHide();
+          ph.unbind("mouseenter mouseleave");
+         //'jQuery(multiSelectCurrent).multiSelectOptionsHide(); $(multiSelectCurrent).unbind("mouseenter");' 
+        }, 250);
       });
 
     }
