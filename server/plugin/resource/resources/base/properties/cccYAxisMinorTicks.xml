@@ -1,13 +1,13 @@
 <DesignerProperty>
     <Header>
-      <Name>cccYAxisEndLine</Name>
+      <Name>cccYAxisMinorTicks</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>"false"</DefaultValue>
-      <Description>Show yy end line</Description>
-      <Tooltip>Show yy axis end line?</Tooltip>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>Show yy minor ticks</Description>
+      <Tooltip>Show yy axis minor ticks?</Tooltip>
       <InputType>Boolean</InputType>
       <OutputType>Boolean</OutputType>
-      <Order>87</Order>
+      <Order>94</Order>
       <Advanced>true</Advanced>
       <Version>1.0</Version>
     </Header>
