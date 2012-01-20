@@ -135,7 +135,7 @@ div.ui-widget-content > ul {
 }
 
 div.ui-widget-content > ul li {/*TODO...*/
-                               padding-left:30px;
+   /* padding-left:30px;  After the integration with cdf, this stopped making sense */
 }
 
 .multiSelectOptions label {
