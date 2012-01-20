@@ -77,17 +77,17 @@ var TableManager = Base.extend({
     isLayoutTable=false;
     var table = ''+
     //	(isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
-    '<table id="'+ this.tableId +'" class="myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\
-			<caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
+    '<table id="'+ this.tableId +'" class="myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+'			<caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
     (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
     (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
-    '</caption>\
-			<thead>\
-			</thead>\
-			<tbody class="ui-widget-content">\
-			</tbody>\
-			</table>\
-			';
+    '</caption>\n' +
+'			<thead>\n' +
+'			</thead>\n' +
+'			<tbody class="ui-widget-content">\n' +
+'			</tbody>\n' +
+'			</table>\n' +
+'			';
 
     return table;
   },

@@ -60,26 +60,26 @@ var WizardManager = Base.extend({
 
 		initWizard: function(){
 		
-			var wizard = '\
-			<div class="container">  \
-			<div class="span-24 last round cdfdd-wizard-title"><h1>' + this.getTitle() + '</h1></div>\
-			<div id="wizardDialogBody">\
-			  <form onsubmit="return false">\
-				<div id="wizardDialogLeftSection" class="cdfdd-wizard-left span-5 round">\
-				</div>\
-				<div id="wizardDialogCenterSection" class="cdfdd-wizard-center span-19 last round ">\
-				</div>\
-			  </form>\
-			</div>\
-			<!-- buttons -->\
-			<div class="clear span-15" >&nbsp;</div>\
-			<div class="cdfdd-wizard-buttons span-9 last round">\
-			<form onsubmit="return false;">\
-			<input id="cdfdd-wizard-button-ok" type="button" disabled onclick="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').buttonOk()" value="Ok"></input> \
-			<input id="cdfdd-wizard-button-cancel" type="button" onclick="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').buttonCancel()" value="Cancel"></input>\
-			</form>\
-			</div>\
-			';
+			var wizard = '\n' +
+'			<div class="container">  \n' +
+'			<div class="span-24 last round cdfdd-wizard-title"><h1>' + this.getTitle() + '</h1></div>\n' +
+'			<div id="wizardDialogBody">\n' +
+'			  <form onsubmit="return false">\n' +
+'				<div id="wizardDialogLeftSection" class="cdfdd-wizard-left span-5 round">\n' +
+'				</div>\n' +
+'				<div id="wizardDialogCenterSection" class="cdfdd-wizard-center span-19 last round ">\n' +
+'				</div>\n' +
+'			  </form>\n' +
+'			</div>\n' +
+'			<!-- buttons -->\n' +
+'			<div class="clear span-15" >&nbsp;</div>\n' +
+'			<div class="cdfdd-wizard-buttons span-9 last round">\n' +
+'			<form onsubmit="return false;">\n' +
+'			<input id="cdfdd-wizard-button-ok" type="button" disabled onclick="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').buttonOk()" value="Ok"></input> \n' +
+'			<input id="cdfdd-wizard-button-cancel" type="button" onclick="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').buttonCancel()" value="Cancel"></input>\n' +
+'			</form>\n' +
+'			</div>\n' +
+'			';
 
 			$("#" + WizardManager.MAIN_DIALOG).append( wizard );
 			
@@ -171,50 +171,50 @@ var OlapWizard = WizardManager.extend({
 		renderWizard: function(){
 		
 			
-			var leftSectionContent = '\
-				<div class="cdfdd-wizard-olap-cubes span-5 round last">\
-					<h3>Cube:</h3>\
-					    <div id="cdfddOlapCubeSelector" class="centeredText"></div>\
-					</div>\
-					<div class="cdfdd-wizard-olap-dimensions span-5 round last">\
-					    <div id="cdfddOlapDimensionDiv" class="centeredText">\
-							<table id="cdfddOlapDimensionSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\
-							<caption class="ui-state-hover">Dimensions</caption>\
-							<thead>\
-							</thead>\
-							<tbody class="ui-widget-content">\
-							</tbody>\
-							</table>\
-							<table id="cdfddOlapMeasureSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\
-							<caption class="ui-state-hover">Measures</caption>\
-							<thead>\
-							</thead>\
-							<tbody class="ui-widget-content">\
-							</tbody>\
-							</table>\
-							<table id="cdfddOlapFilterSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\
-							<caption class="ui-state-hover">Filters</caption>\
-							<thead>\
-							</thead>\
-							<tbody class="ui-widget-content">\
-							</tbody>\
-							</table>\
-						</div>\
-					</div>';
+			var leftSectionContent = '\n' +
+'				<div class="cdfdd-wizard-olap-cubes span-5 round last">\n' +
+'					<h3>Cube:</h3>\n' +
+'					    <div id="cdfddOlapCubeSelector" class="centeredText"></div>\n' +
+'					</div>\n' +
+'					<div class="cdfdd-wizard-olap-dimensions span-5 round last">\n' +
+'					    <div id="cdfddOlapDimensionDiv" class="centeredText">\n' +
+'							<table id="cdfddOlapDimensionSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+'							<caption class="ui-state-hover">Dimensions</caption>\n' +
+'							<thead>\n' +
+'							</thead>\n' +
+'							<tbody class="ui-widget-content">\n' +
+'							</tbody>\n' +
+'							</table>\n' +
+'							<table id="cdfddOlapMeasureSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+'							<caption class="ui-state-hover">Measures</caption>\n' +
+'							<thead>\n' +
+'							</thead>\n' +
+'							<tbody class="ui-widget-content">\n' +
+'							</tbody>\n' +
+'							</table>\n' +
+'							<table id="cdfddOlapFilterSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+'							<caption class="ui-state-hover">Filters</caption>\n' +
+'							<thead>\n' +
+'							</thead>\n' +
+'							<tbody class="ui-widget-content">\n' +
+'							</tbody>\n' +
+'							</table>\n' +
+'						</div>\n' +
+'					</div>';
 					
-			var centerSectionContent = '\
-				<div class="span-19 round last">\
-					<div class="span-13">\
-						<div id="cdfdd-olap-preview" >\
-							<i>Preview Area:</i><input id="cdfdd-olap-enable-preview" type="checkbox" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() + '\').processChange()" value="true" checked="checked"></input>\
-							<div id="cdfdd-olap-preview-area"></div>\
-						</div>\
-						<div id="cdfdd-olap-rows" class="cdfdd-olap-droppable round"><i>Rows: </i><br/><span class="options"></span></div>\
-						<div id="cdfdd-olap-columns" class="cdfdd-olap-droppable round"><i>Columns: </i><br/><span class="options"></span></div>\
-						<div id="cdfdd-olap-filters" class="cdfdd-olap-droppable round"><i>Filters: </i><br/><span class="options"></span></div>\
-					</div>\
-					<div id="cdfdd-component-options" class="span-6 cdfdd-wizard-components-options last round"></div>\
-				</div>';
+			var centerSectionContent = '\n' +
+'				<div class="span-19 round last">\n' +
+'					<div class="span-13">\n' +
+'						<div id="cdfdd-olap-preview" >\n' +
+'							<i>Preview Area:</i><input id="cdfdd-olap-enable-preview" type="checkbox" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() + '\').processChange()" value="true" checked="checked"></input>\n' +
+'							<div id="cdfdd-olap-preview-area"></div>\n' +
+'						</div>\n' +
+'						<div id="cdfdd-olap-rows" class="cdfdd-olap-droppable round"><i>Rows: </i><br/><span class="options"></span></div>\n' +
+'						<div id="cdfdd-olap-columns" class="cdfdd-olap-droppable round"><i>Columns: </i><br/><span class="options"></span></div>\n' +
+'						<div id="cdfdd-olap-filters" class="cdfdd-olap-droppable round"><i>Filters: </i><br/><span class="options"></span></div>\n' +
+'					</div>\n' +
+'					<div id="cdfdd-component-options" class="span-6 cdfdd-wizard-components-options last round"></div>\n' +
+'				</div>';
 				
 			$("#" + WizardManager.WIZARD_LEFT_SECTION).append( leftSectionContent );
 			$("#" + WizardManager.WIZARD_CENTER_SECTION).append( centerSectionContent );
@@ -650,13 +650,13 @@ var OlapParameterWizard = OlapWizard.extend({
 
 		renderMainOlapArea: function(){
 			
-			var content = $('\
-			<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" ></input></div>\
-			<hr/>\
-			<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\
-			<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\
-			<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\
-			');
+			var content = $('\n' +
+'			<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" ></input></div>\n' +
+'			<hr/>\n' +
+'			<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\n' +
+'			<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\n' +
+'			<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\n' +
+'			');
 
 			var olapMain = $("#cdfdd-component-options");
 			var selector = $("#cdfdd-olap-parameter-type",content);
@@ -894,15 +894,15 @@ var OlapChartWizard = OlapWizard.extend({
 
 		renderMainOlapArea: function(){
 			
-			var content = $('\
-			<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" ></input></div>\
-			<hr/>\
-			<div class="cdfdd-component-options-label">Title: <input id="cdfdd-olap-parameter-title" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-title" name="cdfdd-olap-parameter-title"></input></div>\
-			<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\
-			<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\
-			<div class="cdfdd-component-options-label">Orientation:<select class="cdfdd-component-options-orientation" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-orientation" name="cdfdd-olap-parameter-orientation"></select></div>\
-			<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\
-			');
+			var content = $('\n' +
+'			<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" ></input></div>\n' +
+'			<hr/>\n' +
+'			<div class="cdfdd-component-options-label">Title: <input id="cdfdd-olap-parameter-title" type="text" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-title" name="cdfdd-olap-parameter-title"></input></div>\n' +
+'			<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\n' +
+'			<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\n' +
+'			<div class="cdfdd-component-options-label">Orientation:<select class="cdfdd-component-options-orientation" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-orientation" name="cdfdd-olap-parameter-orientation"></select></div>\n' +
+'			<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\''+ this.getWizardId() +'\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\n' +
+'			');
 			
 			var appendOption = function(obj, options){
 				for(v in options)

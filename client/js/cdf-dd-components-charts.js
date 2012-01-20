@@ -108,10 +108,10 @@ var UrlTemplateRenderer = CellRenderer.extend({
 			
 			var urlTemplateWizard = {
 				chooseClickBehaviour: {
-							html:'Choose Click Behaviour:&nbsp;&nbsp;<select id="clickBehaviour">\
-					<option value="linkToAnotherDashboard">Link to Another Dashboard</option>\
-					<option value="fireChange">Fire Change</option>\
-					<option value="jumpToUrl">Jump to Url</option></select>',
+							html:'Choose Click Behaviour:&nbsp;&nbsp;<select id="clickBehaviour">\n' +
+'					<option value="linkToAnotherDashboard">Link to Another Dashboard</option>\n' +
+'					<option value="fireChange">Fire Change</option>\n' +
+'					<option value="jumpToUrl">Jump to Url</option></select>',
 							buttons: { Cancel: 0, Next: 1, Skip: 2 },
 							focus: 1,
 							submit:function(v,m,f){
@@ -133,11 +133,11 @@ var UrlTemplateRenderer = CellRenderer.extend({
 							}
 				},
 				linkToAnotherDashboard: {
-					html:'Link to Another Dashaboard<hr/>\
-						Choose Dashboard:\
-						<div id="container_id" class="urltargetfolderexplorer">&nbsp;</div>\
-						<span class="linkToAnotherDashboardlabel">Store parameters at var:&nbsp;</span><input class="linkToAnotherDashboardinput1" type="text" id="parameterName" value=""/><br/>\
-						<span class="linkToAnotherDashboardlabel">Store series at var:&nbsp;</span><input class="linkToAnotherDashboardinput2" type="text" id="seriesName" value="" />',
+					html:'Link to Another Dashaboard<hr/>\n' +
+'						Choose Dashboard:\n' +
+'						<div id="container_id" class="urltargetfolderexplorer">&nbsp;</div>\n' +
+'						<span class="linkToAnotherDashboardlabel">Store parameters at var:&nbsp;</span><input class="linkToAnotherDashboardinput1" type="text" id="parameterName" value=""/><br/>\n' +
+'						<span class="linkToAnotherDashboardlabel">Store series at var:&nbsp;</span><input class="linkToAnotherDashboardinput2" type="text" id="seriesName" value="" />',
 					buttons: { Back: -1, Ok:1, Cancel: 0 },
 					focus: 1,
 					submit:function(v,m,f){
@@ -171,8 +171,8 @@ var UrlTemplateRenderer = CellRenderer.extend({
 					}
 					},
 				jumpToUrl: {
-								html:'Jump to Url:<hr/>\
-					<span>Url:&nbsp;&nbsp;</span><input class="utlTemplateTargetInput" type="text" id="urlTarget" value="' + value + '"/>',
+								html:'Jump to Url:<hr/>\n' +
+'					<span>Url:&nbsp;&nbsp;</span><input class="utlTemplateTargetInput" type="text" id="urlTarget" value="' + value + '"/>',
 								buttons: { Back: -1, Ok:1, Cancel: 0 },
 								focus: 1,
 								 submit:function(v,m,f){
@@ -187,8 +187,8 @@ var UrlTemplateRenderer = CellRenderer.extend({
 					}
 					},
 				skip: {
-								html:'Url Template:<hr/>\
-					<textarea class="urlTemplateInput" type="text" id="urlTemplate" >' + value + '</textarea>',
+								html:'Url Template:<hr/>\n' +
+'					<textarea class="urlTemplateInput" type="text" id="urlTemplate" >' + value + '</textarea>',
 								buttons: { Back: -1, Ok:1, Cancel: 0 },
 								focus: 1,
 								 submit:function(v,m,f){

@@ -102,18 +102,18 @@ var BaseOperation = Base.extend({
 					mouseClickCmd = 'onmousedown="$(this).attr(\'src\',\'' + this.clickIcon + '\')" onmouseup="$(this).attr(\'src\',\'' + this.getIcon() + '\')"';
 				}
 				
-				code = '\
-				<a class="tooltip" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\
-				<img border="0" src="'+ this.getIcon() +'" class="cdfdd"' + mouseHoverCmd + ' ' + mouseClickCmd + ' ></img>\
-				</a>\
-				';
+				code = '\n' +
+'				<a class="tooltip" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\n' +
+'				<img border="0" src="'+ this.getIcon() +'" class="cdfdd"' + mouseHoverCmd + ' ' + mouseClickCmd + ' ></img>\n' +
+'				</a>\n' +
+'				';
 			}
 			else if (this.showInactiveIcon) {
 				var _icon = this.getIcon().replace(/(.*)\//,"$1/X");// "../iconName.png -> ../XiconName.png
 					
-				code = '\
-				<img border="0" alt="' + this.getName() + '" src="'+ _icon +'" class="cdfdd"></img>\
-				';
+				code = '\n' +
+'				<img border="0" alt="' + this.getName() + '" src="'+ _icon +'" class="cdfdd"></img>\n' +
+'				';
 			}
 
 			return code;
