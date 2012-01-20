@@ -937,6 +937,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     try { 
     ServletRequest req = (ServletRequest) (pathParams.getParameter("httprequest"));
-    return req.getScheme();} catch (Exception e) {return "html";}
+    return req.getScheme();} catch (Exception e) {return "http";}
   }
 }
