@@ -345,8 +345,8 @@ var ExportPopupComponent = PopupComponent.extend({
     var myself = this;
    var masterDiv = $('<div class="exportChartMasterDiv">');
    //Style later
-
-   var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" +this.chartComponent.chartDefinition.width * 2 + "px'>");
+	var totalWidth = Math.max(700, this.chartComponent.chartDefinition.width);
+   var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" +totalWidth + "px'>");
    masterDiv.append(popupButtonsDiv);
    
    var titleDiv = $("<div class='exportChartTitle'>Export Options</div>");
@@ -471,7 +471,7 @@ var ExportPopupComponent = PopupComponent.extend({
 
    var img = $(
 "<img src='" + url +
-"&paramwidth="+ (this.chartComponent.chartDefinition.width*2) +"&paramheight="+ (this.chartComponent.chartDefinition.height*2) +
+"&paramwidth="+ this.chartComponent.chartDefinition.width +"&paramheight="+ this.chartComponent.chartDefinition.height +
      "'/>");
    
      var imgDiv = $("<div class='exportChartImageDiv'>");
@@ -482,8 +482,8 @@ var ExportPopupComponent = PopupComponent.extend({
     $.fancybox({
       type:"html",
       content: masterDiv,
-      width: this.chartComponent.chartDefinition.width * 2,
-      height: this.chartComponent.chartDefinition.height * 2 + 60
+      width:totalWidth ,
+      height: this.chartComponent.chartDefinition.height  + 60
     });
 
   }
