@@ -48,6 +48,32 @@ var OlapChartWizardEntry = PalleteWizardEntry.extend({
 
 CDFDDDatasourcesArray.push(new OlapChartWizardEntry());
 
+var SaikuOlapWizardEntry = PalleteWizardEntry.extend({
+     
+                    id: "SAIKU_OLAP_WIZARD_ENTRY",
+                    name: "Saiku OLAP Wizard",
+                    description: "Use Saiku to generate an OLAP Query",
+                    category: "Wizards",
+                    categoryDesc: "Wizards",
+     
+                    renderWizard: function(){
+     
+                            return WizardManager.getWizardManager('SAIKU_OLAP_WIZARD').render();
+     
+                    },
+     
+                    apply: function(){
+                   
+                            WizardManager.getWizardManager('SAIKU_OLAP_WIZARD').apply();
+                   
+                    }
+     
+     
+            });
+     
+CDFDDDatasourcesArray.push(new SaikuOlapWizardEntry());
+
+
 /*
 var DatasourcesMdxMembersWizardModel = BaseModel.extend({
 	},{

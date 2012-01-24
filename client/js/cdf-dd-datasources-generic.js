@@ -375,3 +375,16 @@ var KtrPathRenderer = ResourceFileRenderer.extend({
 
 
 })
+
+var SaikuPathRenderer = ResourceFileRenderer.extend({
+
+  getFileExtensions: function(){
+    return ".saiku";
+  },
+
+  formatSelection: function(file){
+    return file;
+  }
+
+
+})
