@@ -145,6 +145,93 @@ var WizardManager = Base.extend({
 
 	});
 
+var SaikuOlapWizard = WizardManager.extend({
+
+		wizardId: "SAIKU_OLAP_WIZARD",
+		title: "Saiku OLAP Wizard",
+
+		constructor: function(){
+			this.base();
+			this.logger = new Logger("SaikuOlapWizard" );
+			WizardManager.register(this);
+		},
+
+		init: function(){
+			this.base();
+		},
+
+		renderWizard: function(){
+		
+			
+			var saikuContent = '\n' +			
+				'    <div id="SaikuOlapWizardContent"> <br/>\n' +
+				'    <table><tr id="fileChooser" >\n' +
+				'    <td><input id="newSaikuQuery" type="button" value="New Saiku Query"/></td></tr></table><br/>\n' +
+				'    <div id="SaikuWindow" /> <br/>\n' +
+				'    </div>\n' ;
+			
+    		var saikuCallback = function(filename) {
+    			var splitFile = filename.split("/");
+    			var solution = splitFile[1];
+    			var action = splitFile[splitFile.length -1];
+    			var path = "";
+    			if (splitFile.length > 3) {
+    				for (var i= 1; i < splitFile.length -1; i++) {
+    					path += "/" + splitFile[i];
+    				}
+    			}
+    			var iframe = '<iframe id="saikuIframe" src="../saiku-ui/index.html?biplugin=true&solution=' + solution + '&path=' + path + '&action=' + action + '&dimension_prefetch=false#query/open/' + action + '" width="100%" height="400px" />';
+				$('#SaikuWindow').html(iframe);
+				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
+
+    			// alert("solution: " + solution + " path:" + path + " action:" + action);
+    		};
+  
+			$("#" + WizardManager.WIZARD_BODY).html( saikuContent );
+			$("#newSaikuQuery").click(function() {
+				var iframe = '<iframe id="saikuIframe" src="../saiku-ui/index.html?biplugin=true" width="100%" height="400px" />';
+				$('#SaikuWindow').html(iframe);
+				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
+
+			});
+
+			var spr = new SaikuPathRenderer();
+  			spr.render($('#fileChooser'), "Choose existing Saiku Query", saikuCallback);
+			
+			
+			$(".round","#" + WizardManager.WIZARD_BODY).corner();
+		
+		},
+		
+		buttonOk: function(){
+			var myself = this;
+			// callback method for getSaikuMdx()
+			window.saveSaiku = function(saikuStub) {
+				var saikuMondrianStub = BaseModel.getModel('Componentsmdx_mondrianJndi').getStub();
+				CDFDDUtils.getProperty(saikuMondrianStub,"name").value = "olapQuery";
+
+				CDFDDUtils.getProperty(saikuMondrianStub,"jndi").value = saikuStub.jndi;
+				saikuStub.catalog = saikuStub.catalog.replace('solution:','/');
+				CDFDDUtils.getProperty(saikuMondrianStub,"catalog").value = saikuStub.catalog;
+				CDFDDUtils.getProperty(saikuMondrianStub,"query").value = saikuStub.mdx;
+
+				
+				var componentsPalleteManager = PalleteManager.getPalleteManager(DatasourcesPanel.PALLETE_ID);
+				var entry = componentsPalleteManager.getEntries()['MDX_MONDRIANJNDI_ENTRY'];
+				var componentsTableManager = componentsPalleteManager.getLinkedTableManager();
+
+				insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
+				saikuMondrianStub.parent = entry.getCategory();
+				componentsTableManager.insertAtIdx(saikuMondrianStub,insertAtIdx);
+				$('#'+ WizardManager.MAIN_DIALOG).jqmHide();
+			}
+			// call the get mdx method within saiku
+			window.getSaikuMdx();
+		}
+	});
+
+var wizard = new SaikuOlapWizard();
+
 
 var OlapWizard = WizardManager.extend({
 
