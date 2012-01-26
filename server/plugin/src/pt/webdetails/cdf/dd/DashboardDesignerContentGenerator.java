@@ -551,7 +551,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       tokens.put(DESIGNER_STYLES_TAG, "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />");
       tokens.put(DESIGNER_SCRIPTS_TAG, "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>");
     }
-    tokens.put(DESIGNER_CDF_TAG, DashboardDesignerContentGenerator.getCdfIncludes("", "desktop", debugMode, null, DashboardDesignerContentGenerator.getScheme(pathParams)));
+    tokens.put(DESIGNER_CDF_TAG, DashboardDesignerContentGenerator.getCdfIncludes("empty", "desktop", debugMode, null, DashboardDesignerContentGenerator.getScheme(pathParams)));
     tokens.put(FILE_NAME_TAG, getStructureRelativePath(requestParams));
     tokens.put(SERVER_URL_TAG, SERVER_URL_VALUE);
     tokens.put(DATA_URL_TAG, DATA_URL_VALUE);
