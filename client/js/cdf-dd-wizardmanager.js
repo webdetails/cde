@@ -1158,11 +1158,11 @@ var OlapChartWizard = OlapWizard.extend({
 					htmlObject: "cdfdd-olap-preview-area",
 					executeAtStart: true,
 					postFetch: function (values){
-						values.map(function(row){//parse numeric values, otherwise sum will concatenate them
+						values.resultset.map(function(row){//parse numeric values, otherwise sum will concatenate them
 							row.splice(1,1, parseFloat(row[1]));
 						});
 						
-						return {resultset : values,
+						return {resultset : values.resultset,
 						metadata : [
 							{colIndex:0, colName:'Name', colType : 'String'},
 							{colIndex:1, colName:'Value', colType : 'Numeric'}] };
