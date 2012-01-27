@@ -8,6 +8,7 @@ var AjaxRequestComponent = BaseComponent.extend({
     var url = object.url;
     var ajaxRequestType = object.ajaxRequestType;
     var params = object.parameters;
+    var asyncCall = object.asyncCall;
     
     if(url == undefined){
       Dashboards.log("Fatal - No url passed","error");
@@ -26,13 +27,14 @@ var AjaxRequestComponent = BaseComponent.extend({
       params = {};
     }
     
+    if(asyncCall == undefined) asyncCall = true;
     
     
     $.ajax({
       url: url,
       type: "POST",
       dataType: ajaxRequestType,
-      async: true,
+      async: asyncCall,
       data: params,
       complete: function (XMLHttpRequest, textStatus) {
           var values = XMLHttpRequest.responseText;
