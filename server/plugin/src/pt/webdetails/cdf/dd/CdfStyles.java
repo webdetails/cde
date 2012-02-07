@@ -129,8 +129,9 @@ public class CdfStyles {
   }
 
   public String getResourceLocation(String style) {
-    File styleFile = new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR + "/" + style + ".html");
-    if(styleFile.exists()) return RESOURCE_STYLES_DIR + "/" + style + ".html";
-    else return RESOURCE_STYLES_DIR_SOLUTION + "/" + style + ".html";
+    String customStylePath = RESOURCE_STYLES_DIR_SOLUTION + "/" + style + ".html";
+    File styleFile = new File(ResourceManager.SOLUTION_DIR + customStylePath);
+    if(styleFile.exists()) return customStylePath;
+    else return RESOURCE_STYLES_DIR + "/" + style + ".html";
   }
 }
