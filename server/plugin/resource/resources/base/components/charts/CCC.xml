@@ -162,6 +162,10 @@
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
           <Property name="xAxisEndLine">cccXAxisEndLine</Property>
           <Property name="yAxisEndLine">cccYAxisEndLine</Property>
+          <Property name="xAxisDomainRoundMode">cccXAxisDomainRoundMode</Property>
+          <Property name="yAxisDomainRoundMode">cccYAxisDomainRoundMode</Property>
+          <Property name="xAxisDesiredTickCount">cccXAxisDesiredTickCount</Property>
+          <Property name="yAxisDesiredTickCount">cccYAxisDesiredTickCount</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -309,6 +313,10 @@
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
           <Property name="xAxisEndLine">cccXAxisEndLine</Property>
           <Property name="yAxisEndLine">cccYAxisEndLine</Property>
+          <Property name="xAxisDomainRoundMode">cccXAxisDomainRoundMode</Property>
+          <Property name="yAxisDomainRoundMode">cccYAxisDomainRoundMode</Property>
+          <Property name="xAxisDesiredTickCount">cccXAxisDesiredTickCount</Property>
+          <Property name="yAxisDesiredTickCount">cccYAxisDesiredTickCount</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
