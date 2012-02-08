@@ -3,6 +3,29 @@ var AjaxRequestComponent = BaseComponent.extend({
   update : function() {
     this.executeRequest(this);
   },
+  
+  parseXML : function(sText) {
+    if( !sText ) {
+        return null;
+    }
+    var xmlDoc;
+    try { //Firefox, Mozilla, Opera, etc.
+        parser=new DOMParser();
+        xmlDoc=parser.parseFromString(sText,"text/xml");
+        return xmlDoc;
+    } catch(e){
+        try { //Internet Explorer
+            xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc.async="false";
+            xmlDoc.loadXML(sText);
+            return xmlDoc;
+        } catch(e) {
+        }
+    }
+    alert('XML is invalid or no XML parser found');
+    return null;
+  },
+  
   executeRequest: function(object){
     var myself = this;
     var url = object.url;
@@ -18,11 +41,19 @@ var AjaxRequestComponent = BaseComponent.extend({
       ajaxRequestType = "json";
     }
     if(params != undefined){
+      var containsTime = false;
       for(var i = 0; i < params.length; i++){
-	var value = Dashboards.getParameterValue(params[i][0]);
-	params[i][1] = value;
+        var value;
+        if(params[i][0] == 'time'){
+          value = new Date().getTime();
+          containsTime = true;
+        } 
+        else value = Dashboards.getParameterValue(params[i][0]);
+        params[i][1] = value;
       }
+      containsTime? params.push(['time',new Date().getTime()]) : 0;
       params = Dashboards.propertiesArrayToObject(params);
+
     } else {
       params = {};
     }
@@ -32,7 +63,7 @@ var AjaxRequestComponent = BaseComponent.extend({
     
     $.ajax({
       url: url,
-      type: "POST",
+      type: "GET",
       dataType: ajaxRequestType,
       async: asyncCall,
       data: params,
@@ -42,18 +73,40 @@ var AjaxRequestComponent = BaseComponent.extend({
           
           if(values == undefined) {
             Dashboards.log("Found error: Empty Data");
-	    return;
+            return;
           }
  
           if(this.dataType == "xml" || this.dataType == "html"){
-	    Dashboards.log("Found error: xml and html formats unsuppoted"); //set parameter needs to be changed
-            return;
-	  } else if(this.dataType == "json") {
+            var xmlDoc;
+            try { //Firefox, Mozilla, Opera, etc.
+                parser=new DOMParser();
+                xmlDoc=parser.parseFromString(values,"text/xml");
+
+            } catch(e){
+                try { //Internet Explorer
+                    xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+                    xmlDoc.async="false";
+                    xmlDoc.loadXML(values);
+                    values = xmlDoc;
+                } catch(e) {
+                    Dashboards.log('XML is invalid or no XML parser found');
+                }
+            }
+            values=xmlDoc;
+
+            var nodeList = values.getElementsByTagName('return');
+            if( nodeList.length > 0 && nodeList[0].firstChild ) {
+              values = nodeList[0].firstChild.nodeValue;
+            }
+            else return;
+            
             values = $.parseJSON(values);
-	  } else if(this.dataType != "script" && this.dataType != "text"){
-            Dashboards.log("Found error: Unknown returned format");
-	    return;
-	  }
+          } else if(this.dataType == "json") {
+                  values = $.parseJSON(values);
+          } else if(this.dataType != "script" && this.dataType != "text"){
+                  Dashboards.log("Found error: Unknown returned format");
+            return;
+          }
           
           if((typeof(object.postFetch)=='function')){
             changedValues = object.postFetch(values);
