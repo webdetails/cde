@@ -162,6 +162,10 @@
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
           <Property name="xAxisEndLine">cccXAxisEndLine</Property>
           <Property name="yAxisEndLine">cccYAxisEndLine</Property>
+          <Property name="xAxisDomainRoundMode">cccXAxisDomainRoundMode</Property>
+          <Property name="yAxisDomainRoundMode">cccYAxisDomainRoundMode</Property>
+          <Property name="xAxisDesiredTickCount">cccXAxisDesiredTickCount</Property>
+          <Property name="yAxisDesiredTickCount">cccYAxisDesiredTickCount</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -309,6 +313,10 @@
           <Property name="yAxisFullGrid">cccYAxisFullGrid</Property>
           <Property name="xAxisEndLine">cccXAxisEndLine</Property>
           <Property name="yAxisEndLine">cccYAxisEndLine</Property>
+          <Property name="xAxisDomainRoundMode">cccXAxisDomainRoundMode</Property>
+          <Property name="yAxisDomainRoundMode">cccYAxisDomainRoundMode</Property>
+          <Property name="xAxisDesiredTickCount">cccXAxisDesiredTickCount</Property>
+          <Property name="yAxisDesiredTickCount">cccYAxisDesiredTickCount</Property>
           <Property name="axisOffset">cccAxisOffset</Property>
           <Property name="originIsZero">cccOriginIsZero</Property>
           <Property name="orthoFixedMin">cccOrthoFixedMin</Property>
@@ -506,6 +514,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
 
@@ -689,6 +699,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
 
@@ -852,6 +864,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>

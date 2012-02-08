@@ -1,0 +1,15 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccSelectionChangedAction</Name>
+      <Parent>BaseProperty</Parent>
+<!--      <DefaultValue>function(selections, ev){}</DefaultValue>-->
+      <DefaultValue/>
+      <Description>Selection changed action</Description>
+      <Tooltip>Action to be called when the chart selection changes</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>92</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
