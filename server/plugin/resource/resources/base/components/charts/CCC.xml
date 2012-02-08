@@ -514,6 +514,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
 
@@ -697,6 +699,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
 
@@ -860,6 +864,8 @@
           <Property name="animate">cccAnimate</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccSelectable</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>Selectable</Description>
+      <Tooltip>Chart is selectable?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>88</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
