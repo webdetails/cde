@@ -145,7 +145,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
-    String root = absolute ? absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
+    String root = absolute ? scheme + "://" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
