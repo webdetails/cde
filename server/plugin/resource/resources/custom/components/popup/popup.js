@@ -325,7 +325,7 @@ var ExportPopupComponent = PopupComponent.extend({
   
   
   
-  exportChart: function(){
+  exportChart: function(cet){
 
     var effectiveExportType = cet == undefined ? this.chartExportType : cet ;   
 
