@@ -58,7 +58,7 @@
       <Property>dataExportType</Property>
       <Property>dataExportLabel</Property>
       <Property>dataExportAttachmentName</Property>
-      <Property name="contentLinks">xActionArrayParameter</Property>
+      <Property>contentLinks</Property>
 	  <Property>preExecution</Property>
 	  <Property>postExecution</Property>
 	  <Property>tooltip</Property>
@@ -73,6 +73,20 @@
       </Styles>
       <Dependencies/>
       <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>contentLinks</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"[]"</DefaultValue>
+            <Description>Content Links</Description>
+            <Tooltip>Content Links</Tooltip>
+            <InputType>ValuesArray</InputType>
+            <OutputType>Array</OutputType>
+            <Order>99</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
         <DesignerProperty>
           <Header>
             <Name>dataExportComponent</Name>

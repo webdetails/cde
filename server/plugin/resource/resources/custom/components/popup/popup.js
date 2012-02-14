@@ -299,15 +299,19 @@ var ExportPopupComponent = PopupComponent.extend({
    },
   
   
-  exportData: function(){
+  exportData: function(det){
+
+    var effectiveExportType = det == undefined ? this.dataExportType : det ;   
 
     // Get query
-    Dashboards.log("Exporting to " + this.dataExportType);
+    Dashboards.log("Exporting to " + effectiveExportType);
 
     var parameters = this.dataComponent.parameters;
-    var dataAccess = this.dataComponent.chartDefinition.dataAccessId;
-    var path = this.dataComponent.chartDefinition.path;
-    var url = "../cda/doQuery?path="+path+"&dataAccessId="+dataAccess+"&outputType=" + this.dataExportType + "&settingattachmentName="+this.dataExportAttachmentName+"." + this.dataExportType;
+    var cd = ( this.dataComponent.chartDefinition ) ? this.dataComponent.chartDefinition : this.dataComponent.queryDefinition;
+    var dataAccess = cd.dataAccessId;
+    var path = cd.path;
+
+    var url = "../cda/doQuery?path="+path+"&dataAccessId="+dataAccess+"&outputType=" + effectiveExportType + "&settingattachmentName="+this.dataExportAttachmentName+"." + effectiveExportType;
     // Get parameter values; metadata is a special parameter, carries important
     // info for dashboard operation but has no data so isn't exported
     for(var i=0; i<parameters.length; i++){
@@ -323,7 +327,10 @@ var ExportPopupComponent = PopupComponent.extend({
   
   exportChart: function(){
 
-    Dashboards.log("Exporting to " + this.chartExportType);
+    var effectiveExportType = cet == undefined ? this.chartExportType : cet ;   
+
+    // Get query
+    Dashboards.log("Exporting to " + effectiveExportType);
 
     var parameters = this.chartComponent.parameters;
     var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
@@ -331,7 +338,7 @@ var ExportPopupComponent = PopupComponent.extend({
 
     var loc = (Dashboards.getQueryParameter("solution") + "/" + Dashboards.getQueryParameter("path") + "/").replace(/\/\//g,"/");
 
-    var url = "../cgg/draw?script="+ loc +  this.chartExportComponent + ".js&outputType=" + this.chartExportType;
+    var url = "../cgg/draw?script="+ loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
     var param;
     // Get parameter values; metadata is a special parameter, carries important
     // info for dashboard operation but has no data so isn't exported
@@ -460,7 +467,7 @@ var ExportPopupComponent = PopupComponent.extend({
     
       var _exportIframe =  $('<iframe style="display:none">');
       _exportIframe.detach();
-      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
+      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + effectiveExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
       _exportIframe.appendTo($('body'));     
     
     
