@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccPercentValueFormat</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Percentage Value format</Description>
+      <Tooltip>Function to format how the percentage values appear</Tooltip>
+      <Advanced>true</Advanced>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>92</Order>
+      <Version>1.0</Version>
+    </Header>
+</DesignerProperty>
