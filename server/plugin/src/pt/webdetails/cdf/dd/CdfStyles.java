@@ -51,7 +51,7 @@ public class CdfStyles {
     //Call sync method
     try {
 
-      Class[] params = new Class[1];
+      Class<?>[] params = new Class[1];
       params[0] = HashMap.class;
       Method mthd = this.getClass().getMethod(operation, params);
       Object result = mthd.invoke(this, parameters);
@@ -69,7 +69,7 @@ public class CdfStyles {
   }
 
 
-  public Object liststyles(HashMap parameters) throws DashboardDesignerException {
+  public Object liststyles(HashMap<String,String> parameters) throws DashboardDesignerException {
 
     JSONArray result = new JSONArray();
 

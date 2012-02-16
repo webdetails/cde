@@ -28,6 +28,7 @@ public class MobileDashboard extends AbstractDashboard
 {
   /* CONSTANTS */
 
+  private static final long serialVersionUID = 1L;
   // Dashboard rendering
   private static Log logger = LogFactory.getLog(Dashboard.class);
   /* FIELDS */
@@ -49,7 +50,7 @@ public class MobileDashboard extends AbstractDashboard
 
     try
     {
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true));
+      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
 
       json.put("settings", getWcdf().toJSON());
       final JXPathContext doc = JXPathContext.newContext(json);

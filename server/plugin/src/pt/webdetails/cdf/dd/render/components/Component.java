@@ -20,7 +20,7 @@ public abstract class Component {
 
     public static final String newLine = System.getProperty("line.separator");
     protected static final Log logger = LogFactory.getLog(Component.class);
-    private Hashtable properties = new Hashtable();
+    private Hashtable<String, Object> properties = new Hashtable<String, Object>();
     private JXPathContext node;
     protected String id = "";
 

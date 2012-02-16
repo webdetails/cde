@@ -11,7 +11,7 @@ public abstract class Renderer {
 
     protected JXPathContext doc;
     protected static Log logger;
-    Class[] rendererConstructorArgs = new Class[]{JXPathContext.class};
+    Class<JXPathContext>[] rendererConstructorArgs = new Class[]{JXPathContext.class};
 
     public Renderer() {
         logger = LogFactory.getLog(Renderer.class);
@@ -30,9 +30,9 @@ public abstract class Renderer {
             renderType = (String) context.getValue("type");
 
             if (!renderType.equals("Label")) {
-                Class rendererClass = Class.forName(getRenderClassName(renderType));
+                Class<?> rendererClass = Class.forName(getRenderClassName(renderType));
 
-                Constructor constructor = rendererClass.getConstructor(rendererConstructorArgs);
+                Constructor<?> constructor = rendererClass.getConstructor(rendererConstructorArgs);
                 renderer = constructor.newInstance(new Object[]{context});
             }
 

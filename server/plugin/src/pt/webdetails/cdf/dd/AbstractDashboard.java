@@ -4,12 +4,11 @@
  */
 package pt.webdetails.cdf.dd;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -29,15 +28,16 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import pt.webdetails.cpf.PluginUtils;
 
 /**
  *
  * @author pdpi
  */
-abstract class AbstractDashboard implements Serializable, Dashboard
+public abstract class AbstractDashboard implements Serializable, Dashboard
 {
   /* CONSTANTS */
+
+  private static final long serialVersionUID = 1L;
 
   // Dashboard rendering
   private static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
@@ -89,10 +89,7 @@ abstract class AbstractDashboard implements Serializable, Dashboard
       final RenderComponents componentsRenderer = new RenderComponents();
 
 
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true));
-
-      json.put("settings", wcdf.toJSON());
-      final JXPathContext doc = JXPathContext.newContext(json);
+      final JXPathContext doc = openDashboardAsJXPathContext(solutionRepository, dashboardLocation, wcdf);
 
       final StringBuilder dashboardBody = new StringBuilder();
 
@@ -120,6 +117,24 @@ abstract class AbstractDashboard implements Serializable, Dashboard
     {
       this.templateFile = null;
     }
+  }
+
+//  private JXPathContext openDashboardAsJXPathContext(final ISolutionRepository solutionRepository) throws IOException, FileNotFoundException {
+//    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
+//
+//    json.put("settings", wcdf.toJSON());
+//    final JXPathContext doc = JXPathContext.newContext(json);
+//    return doc;
+//  }
+  
+  public static JXPathContext openDashboardAsJXPathContext(ISolutionRepository solutionRepository, String dashboardLocation, WcdfDescriptor wcdf) 
+      throws IOException, FileNotFoundException 
+  {
+    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
+
+    if(wcdf != null) json.put("settings", wcdf.toJSON());
+    final JXPathContext doc = JXPathContext.newContext(json);
+    return doc;
   }
 
   public String render()

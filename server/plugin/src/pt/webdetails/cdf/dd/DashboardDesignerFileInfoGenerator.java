@@ -29,6 +29,7 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
   public DashboardDesignerFileInfoGenerator() {
   }
 
+  //FIXME: use ISolutionFileMetaProvider
   public ContentType getContentType() {
     return ContentType.DOM4JDOC;
   }
@@ -45,7 +46,7 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
       return getFileInfo(solution, path, fileName, doc);
       
     } catch (DocumentException e) {
-      logger.error("Error parsing document",e);
+      if(logger!=null) logger.error("Error parsing document",e);
       return null;
     }
   }

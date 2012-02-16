@@ -1,15 +1,12 @@
 package pt.webdetails.cdf.dd;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 

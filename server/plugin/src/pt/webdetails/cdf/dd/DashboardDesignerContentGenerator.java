@@ -24,6 +24,7 @@ import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -32,6 +33,7 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
+import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -40,6 +42,7 @@ import org.pentaho.platform.engine.services.solution.BaseContentGenerator;
 import org.pentaho.platform.engine.services.solution.SolutionReposHelper;
 
 
+import pt.webdetails.cdf.dd.datasources.DataSourceReader;
 import pt.webdetails.cdf.dd.olap.OlapUtils;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
@@ -61,6 +64,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
    */
   public static final String SOLUTION_DIR = "cde";
   public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
+  public static final String ENCODING = "UTF-8";
+  
   private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
@@ -77,7 +82,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   private static final String DATA_URL_TAG = "cdf-structure.js";
   private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
-  private static final String ENCODING = "UTF-8";
+  
   /**
    * 1 week cache
    */
@@ -171,21 +176,21 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     try
     {
 
-      final Class[] params =
+      final Class<?>[] params =
       {
         IParameterProvider.class, OutputStream.class
       };
 
-      final String method = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
+      final String methodName = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
 
       try
       {
-        final Method mthd = this.getClass().getMethod(method, params);
-        mthd.invoke(this, requestParams, out);
+        final Method method = this.getClass().getMethod(methodName, params);
+        method.invoke(this, requestParams, out);
       }
       catch (NoSuchMethodException e)
       {
-        logger.error(Messages.getErrorString("DashboardDesignerContentGenerator.ERROR_001_INVALID_METHOD_EXCEPTION") + " : " + method);
+        logger.error(Messages.getErrorString("DashboardDesignerContentGenerator.ERROR_001_INVALID_METHOD_EXCEPTION") + " : " + methodName);
       }
       catch (InvocationTargetException e)
       {
@@ -748,18 +753,22 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     cda.setOutputHandler(outputHandler);
     ArrayList<Object> output = new ArrayList<Object>();
     HashMap<String, Object> channel = new HashMap<String, Object>();
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-    channel.put("output",
-            outputStream);
-    output.add(channel);
-    channel.put(
-            "method", "listDataAccessTypes");
-    cda.setCallbacks(output);
-    cda.createContent();
-    out.write(outputStream.toString().getBytes(ENCODING));
-    //JSON json = JSONSerializer.toJSON(outputStream.toString());
-
+    
+    ByteArrayOutputStream outputStream = null;
+    try{
+      outputStream = new ByteArrayOutputStream();
+      channel.put("output",
+              outputStream);
+      output.add(channel);
+      channel.put(
+              "method", "listDataAccessTypes");
+      cda.setCallbacks(output);
+      cda.createContent();
+      out.write(outputStream.toString().getBytes(ENCODING));
+      //JSON json = JSONSerializer.toJSON(outputStream.toString());
+    } finally{
+      IOUtils.closeQuietly(outputStream);
+    }
   }
 
   public JSON getCdaDefs() throws Exception
@@ -775,26 +784,44 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       // We need to arrange for a callback object that will serve as a communications channel
       ArrayList<Object> output = new ArrayList<Object>();
       HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      // The outputstream provides CDA with a sink we can later retrieve data from
-      channel.put("output", outputStream);
-      // Setup the desired function to call on CDA's side of things.
-      channel.put("method", "listDataAccessTypes");
-      // Call CDA
-      output.add(channel);
-      cda.setCallbacks(output);
-      cda.createContent();
-      // pass the output to the ComponentManager
-      return JSONSerializer.toJSON(outputStream.toString());
+      ByteArrayOutputStream outputStream = null;
+      try{
+        outputStream = new ByteArrayOutputStream();
+        // The outputstream provides CDA with a sink we can later retrieve data from
+        channel.put("output", outputStream);
+        // Setup the desired function to call on CDA's side of things.
+        channel.put("method", "listDataAccessTypes");
+        // Call CDA
+        output.add(channel);
+        cda.setCallbacks(output);
+        cda.createContent();
+        // pass the output to the ComponentManager
+        return JSONSerializer.toJSON(outputStream.toString());
+      }
+      finally{
+        IOUtils.closeQuietly(outputStream);
+      }
     }
     else
     {
       return null;
     }
   }
+  
+  /**
+   * List CDA datasources for given dashboard.
+   */
+  public void listcdasources(final IParameterProvider pathParams, final OutputStream out) throws IOException {
+    String dashboard = pathParams.getStringParameter("dashboard", null);
+    dashboard = StringUtils.replace(dashboard, ".wcdf", ".cdfde");
+    List<DataSourceReader.CdaDataSource> dataSourcesList = DataSourceReader.getCdaDataSources(dashboard);
+    DataSourceReader.CdaDataSource[] dataSources = dataSourcesList.toArray(new DataSourceReader.CdaDataSource[dataSourcesList.size()]);
+    String result = "[" + StringUtils.join(dataSources,",")+"]";
+    IOUtils.write(result, out);
+  }
 
 // External Editor v
-  public void getfile(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  public void getfile(final IParameterProvider pathParams, final OutputStream out) throws IOException 
   {
     String path = pathParams.getStringParameter(PathParams.PATH, "");
 
@@ -804,7 +831,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(contents, out);
   }
 
-  public void createfolder(IParameterProvider pathParams, OutputStream out) throws Exception
+  public void createfolder(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException 
   {
 
     String path = pathParams.getStringParameter(PathParams.PATH, null);
@@ -822,7 +849,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   }
 
-  public void writefile(IParameterProvider pathParams, OutputStream out) throws Exception
+  public void writefile(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException 
   {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
     String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
@@ -846,13 +873,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(result.toString(), out);
   }
 
-  public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException 
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
   }
 
-  public void componenteditor(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  public void componenteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException 
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
@@ -911,6 +938,12 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     // Make sure we have the correct mime type
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    
+    if(response == null){
+      logger.error("Parameter 'httpresponse' not found!");
+      return;
+    }
+    
     response.setHeader("Content-Type", mimeType);
 
     if (attachmentName != null)

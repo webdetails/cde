@@ -15,6 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+
+import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
 
@@ -112,7 +114,9 @@ public class CggChart
     try
     {
       ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, this.chartName + CGG_EXTENSION, chartScript.toString().getBytes("UTF-8"), true);
+      String fileName = this.chartName + CGG_EXTENSION;
+      byte[] content = chartScript.toString().getBytes(DashboardDesignerContentGenerator.ENCODING);
+      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, fileName, content, true);
     }
     catch (Exception e)
     {

@@ -12,7 +12,7 @@ import pt.webdetails.cdf.dd.render.components.BaseComponent;
 public class RenderComponents extends Renderer {
 
   public static final String newLine = System.getProperty("line.separator");
-  Class[] rendererConstructorArgs = new Class[]{JXPathContext.class};
+  Class<JXPathContext>[] rendererConstructorArgs = new Class[]{JXPathContext.class};
 
   public RenderComponents() {
     super();
@@ -26,13 +26,13 @@ public class RenderComponents extends Renderer {
     result.append("wcdfSettings = ");
     result.append(settings.toString(2));
     result.append(';');
-    Iterator components = doc.iteratePointers("/components/rows");
+    Iterator<Pointer> components = doc.iteratePointers("/components/rows");
 
     String componentsIds = "";
     ComponentManager engine = ComponentManager.getInstance();
     while (components.hasNext()) {
 
-      Pointer pointer = (Pointer) components.next();
+      Pointer pointer = components.next();
       JXPathContext context = doc.getRelativeContext(pointer);
 
       BaseComponent renderer = engine.getRenderer(context);
