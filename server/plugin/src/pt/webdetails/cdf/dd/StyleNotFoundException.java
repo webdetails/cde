@@ -11,4 +11,6 @@ package pt.webdetails.cdf.dd;
  */
 public class StyleNotFoundException extends RuntimeException {
 
+  private static final long serialVersionUID = 1L;
+
 }

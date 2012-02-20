@@ -64,7 +64,7 @@ public class CdfTemplates {
     //Call sync method
     try {
 
-      final Class[] params = new Class[1];
+      final Class<?>[] params = new Class[1];
       params[0] = HashMap.class;
       final Method mthd = this.getClass().getMethod(operation, params);
       final Object result = mthd.invoke(this, parameters);
@@ -81,7 +81,7 @@ public class CdfTemplates {
 
   }
 
-  public void save(final HashMap parameters) throws StructureException, PentahoAccessControlException, IOException {
+  public void save(final HashMap<String,String> parameters) throws StructureException, PentahoAccessControlException, IOException {
 
     final String fileName = (String) parameters.get("file");
     System.out.println("Saving File:" + fileName);
@@ -103,7 +103,7 @@ public class CdfTemplates {
     }
   }
 
-  public Object load(final HashMap parameters) {
+  public Object load(final HashMap<String,String> parameters) {
 
     Object result = new JSONArray();
 

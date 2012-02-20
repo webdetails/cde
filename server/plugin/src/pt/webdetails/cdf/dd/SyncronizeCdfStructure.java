@@ -52,7 +52,7 @@ public class SyncronizeCdfStructure
     {
 
       final XmlStructure dashboardStucture = new XmlStructure(userSession);
-      final Class[] params = new Class[1];
+      final Class<?>[] params = new Class[1];
       params[0] = HashMap.class;
       final Method mthd = dashboardStucture.getClass().getMethod(operation, params);
       final Object result = mthd.invoke(dashboardStucture, parameters);
@@ -101,13 +101,13 @@ public class SyncronizeCdfStructure
       }
       else
       {
-        parameters.put("file", (String) ((HashMap) previousFile).get("file"));
+        parameters.put("file", (String) ((HashMap<String,String>) previousFile).get("file"));
       }
     }
     else
     {
       previousFile = new HashMap<String, String>();
-      ((HashMap) previousFile).put("file", (String) parameters.get("file"));
+      ((HashMap<String,String>) previousFile).put("file", (String) parameters.get("file"));
       cacheManager.putInSessionCache(userSession, "previous_dashboard_file", previousFile);
     }
 
