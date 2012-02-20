@@ -1,0 +1,56 @@
+.cacheCleanerComponent {
+    margin-top: 5px;
+    font-size: 12pt;
+    color: #222
+}
+
+.cacheCleanerComponent .button, .cacheCleanerComponent .fauxButton {
+    min-width: 50px;
+    text-align: center;
+    border: 1px solid #848f95;
+    display: inline-block;
+    margin: 3px 4px 3px 0px;
+    float: right;
+    font-size: 85%;
+    padding: 0px 3px;
+}
+
+.cacheCleanerComponent div.button {
+    color: #222;
+}
+
+.cacheCleanerComponent div.fauxButton {
+    color: #A6B0B5;
+    border-color: #A6B0B5;
+}
+.cacheCleanerComponent .title {
+    height:26px;
+    border: 1px solid #848f95;
+    padding: 0px;
+    padding-left: 5px;
+    z-index:1000;
+    margin-bottom: 2px;
+}
+
+.cacheCleanerComponent ul {
+    padding: 0;
+    margin: 0px;
+}
+
+.cacheCleanerComponent .cacheItem {
+    height: 26px;
+    border: 1px solid #848f95;
+    margin: 4px 0px;
+    list-style: none;
+    padding: 0px;
+    padding-left: 15px;
+    font-size: 12pt;
+    width: 933px;
+    background-color: white;
+}
+
+.cacheCleanerComponent .cacheItem.inactive {
+    color: #A6B0B5;
+    border-color: #A6B0B5;
+}
+
