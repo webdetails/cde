@@ -30,7 +30,7 @@
         <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
 
 		<!-- olap -->
-		<dependency org="pentaho" name="mondrian" rev="3.3-SNAPSHOT">
+		<dependency org="pentaho" name="mondrian" rev="3.3.0.14703">
 			<exclude org="commons-dbcp" name="commons-dbcp"/>
 			<exclude org="javax.servlet" name="jsp-api"/>
 			<exclude org="javax.servlet" name="servlet-api"/>
