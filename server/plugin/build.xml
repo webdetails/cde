@@ -172,7 +172,7 @@
 	  <!-- copy over all the xactions within the cdf folder -->
 	  <copy todir="${solution.stage.dir}" overwrite="true" >
 		  <fileset dir="../../solution">
-			  <include name="cde_sample/**/*"/>
+			  <include name="cde/**/*"/>
 		  </fileset>
 	  </copy>
 
