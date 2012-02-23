@@ -1,7 +1,14 @@
 .cacheCleanerComponent {
     margin-top: 5px;
     font-size: 12pt;
-    color: #222
+    color: #222;
+    -webkit-transition: opacity .1s linear 0s;
+    -moz-transition: opacity .1s linear 0s;
+    transition: opacity .1s linear 0s;
+    /* Opacity starts out at 0, we then set
+     * it to 1 at runtime for the fade in.
+     */
+    opacity: 1;
 }
 
 .cacheCleanerComponent .button, .cacheCleanerComponent .fauxButton {
@@ -13,10 +20,18 @@
     float: right;
     font-size: 85%;
     padding: 0px 3px;
-}
+    -webkit-transition: background-color .2s linear 0s;
+    -moz-transition: background-color .2s linear 0s;
+    transition: background-color .2s linear 0s;}
 
 .cacheCleanerComponent div.button {
     color: #222;
+}
+
+.cacheCleanerComponent div.button.success {
+    color: white;
+    background-color: green;
+    border-color: green;
 }
 
 .cacheCleanerComponent div.fauxButton {
@@ -29,7 +44,7 @@
     padding: 0px;
     padding-left: 5px;
     z-index:1000;
-    margin-bottom: 2px;
+    margin: 4px 0;
 }
 
 .cacheCleanerComponent ul {
@@ -37,8 +52,20 @@
     margin: 0px;
 }
 
+.cacheCleanerComponent li {
+    list-style: none;
+}
+.cacheCleanerComponent .cacheItem textarea {
+    border: none;
+    resize: none;
+    font-family: courier;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin-bottom: 0;
+}
 .cacheCleanerComponent .cacheItem {
-    height: 26px;
+    min-height: 26px;
     border: 1px solid #848f95;
     margin: 4px 0px;
     list-style: none;
@@ -47,6 +74,12 @@
     font-size: 12pt;
     width: 933px;
     background-color: white;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: top .2s linear 0s, min-height .2s;
+    -moz-transition: top .2s linear 0s, min-height .2s;
+    -o-transition: top .2s linear 0s, min-height .2s;
+    transition: top .2s linear 0s, min-height .2s;
 }
 
 .cacheCleanerComponent .cacheItem.inactive {
