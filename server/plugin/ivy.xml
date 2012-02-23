@@ -14,7 +14,7 @@
         <dependency org="commons-logging"     name="commons-logging"     rev="1.1"   transitive="false"/>
         <dependency org="dom4j"               name="dom4j"               rev="1.6.1" transitive="false"/>
         <dependency org="net.sf.ehcache"      name="ehcache"             rev="1.4.1" transitive="false"/>
-        <dependency org="commons-lang"        name="commons-lang"        rev="2.2" />
+        <dependency org="commons-lang"        name="commons-lang"        rev="2.4" />
         <dependency org="org.json"            name="json"                rev="${dependency.json.revision}" transitive="false"/>        
         <dependency org="javax.servlet"       name="servlet-api"         rev="2.4" />
         <!--  pentaho dependencies -->
@@ -30,12 +30,12 @@
         <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
 
 		<!-- olap -->
-		<dependency org="pentaho" name="mondrian" rev="3.2-SNAPSHOT">
+		<dependency org="pentaho" name="mondrian" rev="3.3.0.14703">
 			<exclude org="commons-dbcp" name="commons-dbcp"/>
 			<exclude org="javax.servlet" name="jsp-api"/>
 			<exclude org="javax.servlet" name="servlet-api"/>
 		</dependency>
-
+	
 
     </dependencies>
     

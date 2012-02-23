@@ -11,7 +11,7 @@ var render_salesGraphForMarker = {
 		width: 75,
 		height: 75,
 		dataAccessId: "salesGraphQuery",
-path: "/plugin-samples/cde_sample/tests/FullMapTest.cda",
+path: "/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cda",
 		crosstabMode: false,
 		seriesInRows: false,
 		animate: false,

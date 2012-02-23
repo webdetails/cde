@@ -637,7 +637,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "plugin-samples/cde_sample/tests/FullMapTest.cdw",
+      "value": "plugin-samples/cde/tests/FullMapTest.cdw",
       "type": "String"
      },
      {
@@ -1455,5 +1455,5 @@
    }
   ]
  },
- "filename": "/plugin-samples/cde_sample/tests/FullMapTest.cdfde"
+ "filename": "/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
 }
