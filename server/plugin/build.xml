@@ -7,7 +7,7 @@
 
   See common_build.xml for more details
 ============================================================================-->
-<project name="Community Dashboard Editor" basedir="." default="dist" 
+<project name="Community Dashboard Editor Release" basedir="." default="dist" 
 	xmlns:ivy="antlib:org.apache.ivy.ant" >
 
 	<description>
@@ -120,7 +120,7 @@
     <property name="sonar.sources" value="${src.dir}" />
     <!-- list of optional Sonar properties -->
     <property name="sonar.binaries" value="${classes.dir}" />
-    <sonar:sonar key="pt.webdetails:CDE" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>
+    <sonar:sonar key="pt.webdetails:CDE-Release" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>
 
 
 
@@ -133,7 +133,7 @@
   	<property name="sonar.language" value="js"/>
     <property name="sonar.dynamicAnalysis" value="false"/>
     <property name="sonar.sources" value="${resource.dir}/js" />
-    <sonar:sonar key="pt.webdetails:CDE-js" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>    
+    <sonar:sonar key="pt.webdetails:CDE-js-Release" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>    
 
 </target>
 
