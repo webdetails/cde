@@ -7,13 +7,19 @@
 
   See common_build.xml for more details
 ============================================================================-->
-<project name="Dashboard Designer Framework" basedir="." default="dist" 
+<project name="Community Dashboard Editor" basedir="." default="dist" 
 	xmlns:ivy="antlib:org.apache.ivy.ant" >
 
 	<description>
 		This build file is used to create the Dashboard Designer project
 		and works with the common_build.xml file.
 	</description>
+
+
+  <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
+    <classpath path="sonar-ant-task-1.3.jar" />
+  </taskdef>
+
 
 
 	<!--Include the ant-contrib tasks-->
@@ -89,6 +95,48 @@
 		  <property name="plugin.artifact.id" value="${plugin.name}"/>
 		  <property name="plugin.zipfile" value="${plugin.artifact.id}-${distribution.version}.zip"/>
 		  <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${distribution.version}.zip"/>
+
+
+
+<target name="check-sonar-props">
+      <available file="/home/tomcat/sonar.properties" property="sonar.props"/>    
+      <echo>${sonar.props}</echo>
+ </target>
+
+
+<target name="read-sonar-props" depends="check-sonar-props" if="sonar.props">
+<echo>Prop file exists</echo>
+<loadproperties srcFile="/home/tomcat/sonar.properties"/>
+</target>
+ 
+  <target name="sonar" depends='read-sonar-props'>
+  
+ <!-- Build the project.revision property -->
+  <condition property="distribution.version" value="${project.stage}-${DSTAMP}" else="${project.stage}-${project.version}">
+    <equals arg1="${project.version}" arg2="SNAPSHOT"/>
+  </condition>  
+  
+    <!-- list of mandatories Sonar properties -->
+    <property name="sonar.sources" value="${src.dir}" />
+    <!-- list of optional Sonar properties -->
+    <property name="sonar.binaries" value="${classes.dir}" />
+    <sonar:sonar key="pt.webdetails:CDE" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>
+
+
+
+ 
+    
+  </target>
+
+<target name="sonar-js" depends="read-sonar-props">
+
+  	<property name="sonar.language" value="js"/>
+    <property name="sonar.dynamicAnalysis" value="false"/>
+    <property name="sonar.sources" value="${resource.dir}/js" />
+    <sonar:sonar key="pt.webdetails:CDE-js" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>    
+
+</target>
+
 
 
 
