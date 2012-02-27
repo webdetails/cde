@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "0c161c28-7118-15a8-b495-840c5525b04f",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "template",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../template.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "bbe15273-4bcc-7290-77bf-3a2e9205064a",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
@@ -122,7 +145,7 @@
      },
      {
       "name": "html",
-      "value": "Map Component Test Case ",
+      "value": "Map Component Reference ",
       "type": "Html"
      },
      {
@@ -133,6 +156,77 @@
      {
       "name": "fontSize",
       "value": "18",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "a05b739c-8186-4b41-eacc-790980a35213",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "        <p>\n\t\t\tThis component allow the user to navigate through the map and see information about marked locations. \n\t\t\tThis locations are obtained with a Data Source that returns a result set where certain column names have associated semantics:\n\t\t</p>\n\n\t\t<h3>Locations Result Set</h3>\t\t\t\n\t\t<dl class=\"documentation\">\n\t\t\t<dd><b>Longitude:</b> Location Longitude</dd>\n\t\t\t<dd><b>Latitude:</b> Location Latitude</dd>\n\t\t\t<dd><b>Address:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> City: </b>Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> County:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b>State:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b>Region:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> Country:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n\t\t\t<dd><b>Description:</b> Optional. If existent, its value will be used to populate an hover popup for each location</dd>\n\t\t\t<dd><b>marker:</b> Optional. If exists, this will be used as the url for the marker image to be used</dd>\n\t\t\t<dd><b>markerWidth:</b> Optional. Width of the marker image</dd>\n\t\t\t<dd><b>markerHeight:</b> Optional. Height of the marker image</dd>\n\t\t\t<dd><b>popupContents:</b> Optional. If exists, the value will be used as the html to populate a popup window that will appear when user clicks on the marker.</dd>\n\t\t\t<dd><b>popupWidth:</b> Optional. Width for the popup window</dd>\n\t\t\t<dd><b>popupHeight:</b> Optional. Height for the popup window.</dd>\n\t\t</dl>\n\n\t\t<h3>Options</h3>\n\n\t\t<dl class=\"documentation\">\n\t\t\t<dd><b>listeners: </b><i>Array - </i> Parameters who this component will react to</dd>\n\n\t\t\t<dd><b>parameters:</b> <i>Array of Arrays - </i> Parameters</dd>\n\n\t\t\t<dd><b>htmlObject:</b> map. Not optional for now</dd>\n\n\t\t\t<dd><b>executeAtStart: </b>True to execute the component at start, false otherwise</dd>\n\t\t\t\n\t\t\t<dd><b>preExecution:</b> <i>Function - </i> Function to be called before the component is executed</dd>\n\n\t\t\t<dd><b>postExecution: </b><i>Function - </i> Function to be called after the component is executed</dd>\n\t\t\t\n\t\t\t\n\t\t\t<dd><b>Center Longitude: </b>Initial longitude position</dd>\n\t\t\t\n\t\t\t<dd><b>Center Latitude: </b>Initial latitude position</dd>\n\t\t\t\n\t\t\t<dd><b>Default zoom Level:</b> Initial map zoom</dd>\n\n\t\t\t<dd><b>Datasource:</b> Name for the cda data source where the location data is read from</dd>\n\n\t\t\t<dd><b>Map Engine:</b> Map engine to use to render the map. Can be either google (Google Maps) or open (OpenStreetMaps). If using Google Maps, please define a global javascript variable with the name API_KEY containing the string with your API key.</dd>\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t<dd><b>Marker image:</b> URL-string for the marker image. This will be override either by markers defined in the resultset or when using cgg graphs to render markers.</dd>\n\n\t\t\t<dd><b>Marker Width:</b> Width for the marker image.</dd>\n\n\t\t\t<dd><b>Marker Height:</b> Height for the marker image.</dd>\n\t\t\t\t\t\t\n\t\t\t<dd><b>Marker Click Parameters:</b> Parameters to be changed when a marker is clicked - arg is column Name, value is parameter name to change with column value</dd>\n\n\n<dd><b>Marker click Function:</b> Javascript function to be executed when marker is clicked</dd>\n\n<dd><b>Cgg Graph for Marker:</b> Name of the cgg graph to use as marker renderer. This will usually be in the form /solution/GraphName.cdw </dd>\n\n<dd><b>Cgg Graph Parameters:</b> Mapping between resultset columns and parameters for cgg graph - arg is column Name, value is the parameter name that will be passed to CGG having as value the column value</dd>\n\n\n<dd><b>Div for popup window:</b> Div id to use as the source for the popup window contents</dd>\n\n\t\t\t<dd><b>Popup Width:</b> Width for the popup window.</dd>\n\n\t\t\t<dd><b>Popup Height:</b> Height for the popup window.</dd>\n\t\t</dl>\n ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -807,7 +901,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "footer",
+      "value": "dfooter",
       "type": "Id"
      },
      {
@@ -827,7 +921,7 @@
      },
      {
       "name": "cssClass",
-      "value": "footer",
+      "value": "",
       "type": "String"
      },
      {

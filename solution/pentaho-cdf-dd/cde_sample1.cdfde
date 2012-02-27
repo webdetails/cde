@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "270982f5-ce2d-1a21-718b-e002cc8806fe",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:template.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "96e9b1da-04b0-3d22-b429-c30640aedaa2",
     "type": "LayoutResource",
     "typeDesc": "Resource",
@@ -25,364 +48,8 @@
      },
      {
       "name": "resourceCode",
-      "value": ".title {\n  font-style: italic;\n  font-size: 20px;\n  margin-top: 10px;\n} \n\n.heading {\n  font-weight: bold;\n  font-size: 12px;\n  font: \"Helvetica,Arial,Sans Serif\"\n  margin-top: 10px;\n  margin-bottom: 5px;\n} \n\ntable tr.even, table tr.odd{\n background-color: white;\n} \n\ntable thead th {\n border-bottom: 1px solid #CCC\n} \n\n\ntable tbody td.number {\n text-align: right;\n} \n\n.legend{\n font-style: italic;\n} ",
+      "value": ".title {\n  font-style: italic;\n  font-size: 20px;\n  margin-top: 10px;\n} \n\n.heading {\n  font-weight: bold;\n  font-size: 12px;\n  font: \"Helvetica,Arial,Sans Serif\"\n  margin-top: 10px;\n  margin-bottom: 5px;\n} \n\ntable tr.even, table tr.odd{\n background-color: white;\n} \n\ntable thead th {\n border-bottom: 1px solid #CCC\n} \n\n\ntable tbody td.number {\n text-align: right;\n} \n\n.legend{\n font-style: italic;\n} \n\n\n.webdetailsFooter{\n\n    text-align: center;\n\n}\n\n\n\n\n\n\n\n ",
       "type": "Resource"
-     }
-    ]
-   },
-   {
-    "id": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "header",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "30",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "3c459745-f70c-429d-a11c-5ece5761bcbf",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
-    "properties": [
-     {
-      "name": "name",
-      "value": "cdeLogo",
-      "type": "Id"
-     },
-     {
-      "name": "columnSpan",
-      "value": "6",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrepend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnAppend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrependTop",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnAppendBottom",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBigBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "center",
-      "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "eaadb4d7-47b2-306e-e199-b720a2d67a06",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "3c459745-f70c-429d-a11c-5ece5761bcbf",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "<img src=\"${img:images/cde.png}\" /> ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "f7f149e9-b398-e8b8-7d14-c2e626469678",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
-    "properties": [
-     {
-      "name": "name",
-      "value": "title",
-      "type": "Id"
-     },
-     {
-      "name": "columnSpan",
-      "value": "12",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrepend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnAppend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrependTop",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnAppendBottom",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBigBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "center",
-      "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "3a3119a3-18b2-70e5-03aa-012f5de09aa6",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "f7f149e9-b398-e8b8-7d14-c2e626469678",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "&nbsp; ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "title",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "6eac8043-7097-919a-82aa-903152dc9413",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "10e648f8-cae0-e401-b088-2dda96fa3ba7",
-    "properties": [
-     {
-      "name": "name",
-      "value": "logo",
-      "type": "Id"
-     },
-     {
-      "name": "columnSpan",
-      "value": "6",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrepend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnAppend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrependTop",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnAppendBottom",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBigBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "center",
-      "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "fd8b48fd-6409-b35b-03b4-8762a96c7142",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "6eac8043-7097-919a-82aa-903152dc9413",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "<a href=\"http://www.webdetails.pt\"><img src=\"${img:images/wd.png}\" /></a> ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
      }
     ]
    },
@@ -505,7 +172,7 @@
     "properties": [
      {
       "name": "height",
-      "value": "15",
+      "value": "5",
       "type": "Integer"
      },
      {
@@ -637,7 +304,7 @@
     "properties": [
      {
       "name": "height",
-      "value": "15",
+      "value": "5",
       "type": "Integer"
      },
      {
@@ -1140,7 +807,7 @@
      },
      {
       "name": "width",
-      "value": "470",
+      "value": "460",
       "type": "Integer"
      },
      {

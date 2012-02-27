@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "1a88c3a6-ab7f-7d81-12f1-4c600f4fcbac",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "template",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../template.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "a53a1ae4-7952-bf44-ab7c-fe971e942a44",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
@@ -332,7 +355,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "footer",
+      "value": "dfooter",
       "type": "Id"
      },
      {
@@ -352,7 +375,7 @@
      },
      {
       "name": "cssClass",
-      "value": "footer",
+      "value": "",
       "type": "String"
      },
      {
@@ -637,7 +660,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "plugin-samples/cde/tests/FullMapTest.cdw",
+      "value": "plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdw",
       "type": "String"
      },
      {
@@ -944,6 +967,11 @@
       "name": "listeners",
       "value": "['CustomerNameParameter']",
       "type": "Listeners"
+     },
+     {
+      "name": "cccPercentValueFormat",
+      "value": "",
+      "type": "JavaScript"
      }
     ],
     "meta_cdwRender": "false"
@@ -1199,6 +1227,11 @@
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
+     },
+     {
+      "name": "cccPercentValueFormat",
+      "value": "",
+      "type": "JavaScript"
      }
     ],
     "meta_cdwRender": "true"

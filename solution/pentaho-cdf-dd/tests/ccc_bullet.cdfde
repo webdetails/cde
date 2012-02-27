@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "51944728-4c57-50e1-3751-6608a0d49fb9",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "template",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../template.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "75b523c0-e8b9-4276-ec90-5792eb5f306d",
     "type": "LayoutRow",
     "typeDesc": "Row",
@@ -787,6 +810,11 @@
       "name": "cccBulletMargin",
       "value": "100",
       "type": "Integer"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    },
@@ -936,6 +964,11 @@
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    },
@@ -1085,6 +1118,11 @@
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    },
@@ -1234,6 +1272,11 @@
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    },
@@ -1383,6 +1426,11 @@
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
+     },
+     {
+      "name": "cccRenderCallback",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    }

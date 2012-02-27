@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cdf>
-	<title>Map Component Reference</title>
-	<author>Webdetails</author>
-	<description>Map Component Reference</description>
-	<icon></icon>
-	<template>template.html</template>
-</cdf>

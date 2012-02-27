@@ -4,5 +4,5 @@
         <author>Pedro Alves - Webdetails</author>
         <description>Sample dashboard that acts as a "Start here" for CDE dashboard development</description>
         <icon/>
-		<style>Clean</style>
-</cdf>
+		<style>WDDocs</style>
+<rendererType>blueprint</rendererType></cdf>

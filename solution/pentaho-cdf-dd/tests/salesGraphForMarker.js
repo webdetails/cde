@@ -59,6 +59,6 @@ var w = parseInt(params.get('width')) || render_salesGraphForMarker.chartDefinit
 var h = parseInt(params.get('height')) || render_salesGraphForMarker.chartDefinition.height;
 render_salesGraphForMarker.chartDefinition.width = w; render_salesGraphForMarker.chartDefinition.height = h;
 print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');
-renderCccFromComponent(render_salesGraphForMarker, data);
+bg = document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('id','foo');bg.setAttribute('x','0');bg.setAttribute('y','0');bg.setAttribute('width', w);bg.setAttribute('height',h);bg.setAttribute('style', 'fill:white');document.lastChild.appendChild(bg);renderCccFromComponent(render_salesGraphForMarker, data);
 document.lastChild.setAttribute('width', render_salesGraphForMarker.chartDefinition.width);
 document.lastChild.setAttribute('height', render_salesGraphForMarker.chartDefinition.height);

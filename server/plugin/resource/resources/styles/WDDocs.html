@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Community Dashboard Editor</title>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <!--link href="/pentaho-style/dashboard.css" rel="stylesheet" type="text/css" media="screen" /-->
+        
+@HEADER@        
+    </head>
+    <body>
+        <script language="javascript" type="text/javascript">
+
+            //            navigatorComponent =
+            //{
+            //name: "navigatorComponent",
+            //      type: "navigator",
+            //      listeners:[],
+            //      parameters: [],
+            //      htmlObject: "navObject",
+            //      executeAtStart: true,
+            //      mode: "horizontal",
+            //      includeSolutions: true
+            //};
+
+            // To use with mantle there's no need for a navigate component
+            //var templateComponents = [navigatorComponent];
+            //Dashboards.addComponents(templateComponents);
+            
+            var enumerateAndBoxHeader = function(){
+    
+                var i = 1;
+    
+                var zPad = function(s,n){
+                    return (new Array(n+1).join('0')+s).substr(-Math.max(n,s.toString().length));
+                }
+
+                $("#content h2").each(function(i,e){
+        
+                    var h = $(this);
+                    h.find("span.h2Num").remove();
+
+                    $("<span/>").text(h.text()).appendTo(h.empty());
+                    $("<span/>").addClass("h2Num h2Num"+(i%2==0?"Even":"Odd")).text(zPad(i+1,2)).prependTo(h);
+        
+                    h.css("vertical-align",i%2==0?"top":"bottom");
+                    h.add(h.nextUntil("h2")).wrapAll($("<div/>").addClass("webdetailsBoxShadow"))
+        
+                })
+    
+    
+            }
+
+
+            $(enumerateAndBoxHeader); // execute when ready
+
+            
+            
+        </script>
+        <script language="javascript">
+
+            isAdmin = "{isAdmin}";
+            isLoggedIn = "{isLoggedIn}";
+
+            // Init jQuery i18n plugin
+            loadMessageBundles = function(lang) {
+                jQuery.i18n.properties({
+                    name:'#{GLOBAL_MESSAGE_SET_NAME}',
+                    path:'#{GLOBAL_MESSAGE_SET_PATH}',
+                    mode:'both',
+                    language:(lang == 'browser' ? jQuery.i18n.browserLang() : lang),
+                    callback: function() {
+                        #{GLOBAL_MESSAGE_SET}
+                    }
+                });
+                Dashboards.setI18nSupport('#{LANGUAGE_CODE}', jQuery.i18n);
+            }
+
+            $(document).ready(function(){
+                // Initialize jquery.i18n plugin - load message files
+                var userLocale = '#{LANGUAGE_CODE}';
+                loadMessageBundles(userLocale);
+            });
+
+        </script>
+
+
+        <div class="webdetailsWrapper">
+            <div class="webdetailsHead">
+                <div class="webdetailsLogo"><a href="http://www.webdetails.pt"></a></div>
+                <!--div class="webdetailsTitle">webdetails</div>
+                <div class="webdetailsActions">
+                    <div class="cdeAction cdeLinks">New</div>
+                </div>
+                <div class="webdetailsPanels">
+                    <div class="cdePanel cdeLinks cdePanelSelected">About</div><div class="cdePanel cdeLinks ">Layout</div>
+                    <div class="cdePanel cdeLinks ">Components</div><div class="cdePanel cdeLinks ">Datasources</div>
+                </div-->
+                <div class="webdetailsHShadow"></div>
+            </div>
+            <div class="webdetailsPanelsContainerWrapper">
+                <div class="webdetailsPanelsContainer">
+                    <div class="panelContainer selectedPanel">
+                        <div class="webdetailsPanelContainerLeft"></div>
+                        <div class="webdetailsPanelContainerCenter">
+                            <div class="panelTitle">
+                                <div class="container">
+                                    <div class="span-16 panelTitleText">Community Dashboard Editor</div>
+                                    <div class="span-8 last panelTitleImages"></div>
+
+                                    <div class="span-12">&nbsp;</div>
+                                    <div class="span-3"><a class="ctoolsLogo" href="http://ctools.webdetails.org"></a></div>
+                                    <div class="span-3 last"><a class="pentahoLogo" href="http://www.pentaho.com"></a></div>
+
+
+                                </div>
+
+
+                            </div>
+
+                            <div id="content" class="webdetailsMainContent">
+                                @CONTENT@
+                            </div>
+
+                        </div>
+                        <div class="webdetailsPanelContainerRight">
+                            <ul class="webdetailsSocial">
+                                <li class="webdetailsSocialMail"><a target="_blank" href="mailto:imagine@webdetails.pt"></a></li>
+                                <li class="webdetailsSocialBlog"><a target="_blank" href="http://pedroalves-bi.blogspot.com/"></a></li>
+                                <li class="webdetailsSocialTwitter"><a target="_blank" href="https://twitter.com/#!/webdetails"></a></li>
+                                <li class="webdetailsSocialFacebook"><a target="_blank" href="https://www.facebook.com/webdetails"></a></li>
+
+                            </ul>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="webdetailsFooter">
+            
+<div class="webdetailsFooterWebdetails">
+<a href="http://www.webdetails.pt"></a>
+</div>
+<div class="webdetailsFooterCtools">
+<a href="http://ctools.webdetails.org"></a>
+</div>            
+            </div>
+@FOOTER@
+        </div>
+
+    </body>
+</html>
