@@ -196,7 +196,7 @@
 
 	  <!-- create the version file -->
 	  <echo file="${stage.dir}/${plugin.name}/VERSION.txt">${distribution.version}</echo>
-	  <echo file="${stage.dir}/${plugin.name}/version.xml" message="&lt;version>${distribution.version}&lt;/version>"/>		   	  
+	  <echo file="${stage.dir}/${plugin.name}/version.xml" message="&lt;version branch='STABLE'>${distribution.version}&lt;/version>"/>		   	  
 
 
 	  <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
