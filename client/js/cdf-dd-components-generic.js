@@ -30,6 +30,7 @@ var ComponentsParameterModel = BaseModel.extend({
 
       _stub.properties.push(PropertiesManager.getProperty("name"));
       _stub.properties.push(PropertiesManager.getProperty("propertyValue"));
+      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
 
       return _stub;
     }
@@ -531,6 +532,7 @@ var ComponentsJavascriptParameterModel = BaseModel.extend({
 
       _stub.properties.push(PropertiesManager.getProperty("name"));
       _stub.properties.push(PropertiesManager.getProperty("javaScript"));
+      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
 
       return _stub;
     }
@@ -569,6 +571,7 @@ var ComponentsDateParameterModel = BaseModel.extend({
 
       _stub.properties.push(PropertiesManager.getProperty("name"));
       _stub.properties.push(PropertiesManager.getProperty("propertyDateValue"));
+      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
       //_stub.properties.push(PropertiesManager.getProperty("propertyDateDim")); <- what's this for?'
 
       return _stub;

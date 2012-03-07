@@ -45,45 +45,63 @@ public class DateParameterComponent extends ParameterComponent
   @Override
   public String render(JXPathContext context)
   {
-    String name = XPathUtils.getStringValue(context, "properties/value[../name='name']");
-    String value = XPathUtils.getStringValue(context, "properties/value[../name='propertyDateValue']");
-    return "var " + name + " = \"" + parseValue(value) + "\";" + newLine;
+    String result;
+    boolean bookmarkable = XPathUtils.getBooleanValue(getNode(), "properties/value[../name='bookmarkable']");
+    String name = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']");
+    String value = XPathUtils.getStringValue(getNode(), "properties/value[../name='propertyDateValue']");
+    if (bookmarkable)
+    {
+      result = "Dashboards.setBookmarkable('" + name + "');" + newLine;
+    }
+    else
+    {
+      result = "";
+    }
+    return "var " + name + " = \"" + parseValue(value) + "\";" + newLine + result;
   }
 
-  private String parseValue(String value){
+  private String parseValue(String value)
+  {
 
 
-    if(value.equals("today")){
+    if (value.equals("today"))
+    {
       Calendar cal = Calendar.getInstance();
       return format.format(cal.getTime());
     }
-    else if(value.equals("yesterday")){
+    else if (value.equals("yesterday"))
+    {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -1);
       return format.format(cal.getTime());
     }
-    else if(value.equals("lastWeek")){
+    else if (value.equals("lastWeek"))
+    {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -7);
       return format.format(cal.getTime());
     }
-    else if(value.equals("lastMonth")){
+    else if (value.equals("lastMonth"))
+    {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.MONTH, -1);
       return format.format(cal.getTime());
     }
-    else if(value.equals("monthStart")){
+    else if (value.equals("monthStart"))
+    {
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.DATE, 1);
       return format.format(cal.getTime());
     }
-    else if(value.equals("yearStart")){
+    else if (value.equals("yearStart"))
+    {
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.MONTH, 0);
       cal.set(Calendar.DATE, 1);
       return format.format(cal.getTime());
     }
-    else{
+    else
+    {
       return value;
     }
 
