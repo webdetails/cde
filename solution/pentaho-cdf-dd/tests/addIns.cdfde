@@ -2649,6 +2649,297 @@
       "type": "TextAlign"
      }
     ]
+   },
+   {
+    "id": "6036f2b0-3a92-ed4d-04ad-19c10df99839",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersTitle",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "bd5301e0-7920-539d-fbe0-24d205cef3d9",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "6036f2b0-3a92-ed4d-04ad-19c10df99839",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "groupHeaders ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "75469fe1-7eaf-dbf1-bfee-bb53807c2493",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersBody",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "2a033455-2517-5bcc-f698-06b704da24bd",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "75469fe1-7eaf-dbf1-bfee-bb53807c2493",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "22",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "1",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "8a7be4f6-fb48-92f5-5480-5cf68a2a4bdc",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "2a033455-2517-5bcc-f698-06b704da24bd",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersDesc",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "22aa2f9c-586b-ce63-4a82-b484ee9ad1e7",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "8a7be4f6-fb48-92f5-5480-5cf68a2a4bdc",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<i>groupHeaders</i> Groups rows using the value of the addIn column and creates a header row over the group. The addIn column is hidden by default.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n Does not expect a particular format but strings are usually prefered.\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n    defaults: {\n      hide: true\n    }\n </pre></blockquote>\n </p>\n\n <div class=\"WDh2\">Fixed Sorting</div>\n <p> By itself the addIn does not sort the data. The dataTables extra option <em>aoSortingFixed</em> can be used to ensure the rows will always be sorted by groups.\nThe following code snipet, when used in the table pre-execution, will set the sorting to be fixed for all columns corresponding to a groupHeader addIn. </p>\n\n <p>\n <blockquote><pre>\n var arr = [], cd = this.chartDefinition;\n      for (var i=0; i < cd.colTypes.length; i++){ \n          if (cd.colTypes[i] === \"groupHeaders\"){\n            arr.push([i, \"asc\"]);\n          }\n      }\nthis.extraOptions.push( [ 'aaSortingFixed' , arr ] ); \n\n </pre></blockquote>\n </p>\n\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 4 columns, 2 with grouping values and 2 more with data. The grouping columns are both hidden.\n </p>\n \n </p> ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b1f05fba-22cd-b446-0bb5-eabf04ba0257",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "2a033455-2517-5bcc-f698-06b704da24bd",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersObj",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
    }
   ]
  },
@@ -2862,7 +3153,7 @@
     ]
    },
    {
-    "id": "60d065ed-c39f-e906-e133-3f4f845d8759",
+    "id": "631dcc13-c33e-88e4-413b-51860c31c32e",
     "type": "ComponentsTable",
     "typeDesc": "table Component",
     "parent": "OTHERCOMPONENTS",
@@ -3015,6 +3306,199 @@
      {
       "name": "preExecution",
       "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"dataBar\",function(state){\n\n        // Let's turn the second sparkline into a bar\n        if(state.colIdx == \"2\"){\n            return {includeValue:true, widthRatio: 0.8, startColor: \"green\",endColor: \"red\", absValue: false};\n        }\n    });\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "60d065ed-c39f-e906-e133-3f4f845d8759",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeaders",
+      "type": "Id"
+     },
+     {
+      "name": "htmlObject",
+      "value": "groupHeadersObj",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "xActionArrayParameter",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "groupHeadersQuery"
+     },
+     {
+      "name": "cccClickAction",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"groupHeaders\",\"groupHeaders\"]",
+      "type": "Array"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "paginate",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n   \n    var arr = [], cd = this.chartDefinition;\n      for (var i=0; i < cd.colTypes.length; i++){ \n          if (cd.colTypes[i] === \"groupHeaders\"){\n            arr.push([i, \"asc\"]);\n          }\n      }\n    this.extraOptions.push( [ 'aaSortingFixed' , arr ] ); \n\n\n}",
       "type": "JavaScript"
      },
      {
@@ -4302,7 +4786,7 @@
     ]
    },
    {
-    "id": "a4bca940-80a0-7286-2b65-08a976ff06f6",
+    "id": "9cb0f1d7-4bce-e447-fc9c-0672e15c6ad6",
     "type": "Componentsscriptable_scripting",
     "typeDesc": "scriptable over scripting",
     "meta": "CDA",
@@ -4358,6 +4842,77 @@
      {
       "name": "query",
       "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Name\",\n\"Default barData\",\n\"Custom barData\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"Row 1\")\n,new Float(\"26\") ,new Float(\"50\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 2\")\n,new Float(\"30\") ,new Float(\"77\")\n});\n\n\nmodel.addRow(new Object[]{ new String(\"Row 3\")\n,new Float(\"14.5\") ,new Float(\"-65\")\n});\n\n\nreturn model;\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     }
+    ]
+   },
+   {
+    "id": "a4bca940-80a0-7286-2b65-08a976ff06f6",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "groupHeadersQuery",
+      "type": "Id"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Group1\",\n\"Group2\",\n\"Data Column 1\",\n\"Data Column 2\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n,Float.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"-26\") ,new Float(\"50\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"ccc\")\n,new Float(\"6\") ,new Float(\"-32\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"aaa\")\n,new Float(\"2\") ,new Float(\"23\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"bbb\")\n,new Float(\"34\") ,new Float(\"91\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"14\") ,new Float(\"14\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"aaa\")\n,new Float(\"90\") ,new Float(\"-50\")\n});\nmodel.addRow(new Object[]{ new String(\"AAA\"), new String(\"bbb\")\n,new Float(\"5\") ,new Float(\"50\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"ccc\")\n,new Float(\"-46\") ,new Float(\"10\")\n});\nmodel.addRow(new Object[]{ new String(\"BBB\"), new String(\"aaa\")\n,new Float(\"26\") ,new Float(\"5\")\n});\n\n\n\n\nreturn model;\n",
       "type": "SqlQuery"
      },
      {
