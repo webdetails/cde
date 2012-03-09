@@ -205,6 +205,17 @@
 		  basedir="${stage.dir}"
 		  includes="${plugin.artifact.id}/**/*"
 		  excludes="**/Thumbs.db" />
+		  
+<echo file="${dist.dir}/marketplace.xml">&lt;version branch="TRUNK">
+		&lt;version>${distribution.version}&lt;/version>
+		&lt;name>Trunk&lt;/name>
+		&lt;downloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip&lt;/downloadUrl>
+		&lt;samplesDownloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip&lt;/samplesDownloadUrl>
+		&lt;description>Trunk Snapshot. Install at your own risk....&lt;/description>
+		&lt;buildId>${sequential.build.id}&lt;/buildId>
+		&lt;/version>	</echo>       		  
+		  
+		  
   </target>
 
 
@@ -224,6 +235,10 @@
 		  includes="**/*"
 		  excludes="**/Thumbs.db" 
 		  />
+		  
+		  
+		  
+		  
   </target>
 
 
