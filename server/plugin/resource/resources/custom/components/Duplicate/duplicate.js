@@ -7,20 +7,22 @@ var DuplicateComponent = BaseComponent.extend({
     link.click(function(){myself.duplicate();});
     link.appendTo(ph);
   },
-  duplicate: function() {
+  duplicate: function(parameterValues) {
     var cdePrefix = "render_";
+    parameterValues = parameterValues || {};
     if (!Dashboards.duplicateIndex) {
       Dashboards.duplicateIndex = 0;
     }
     Dashboards.duplicateIndex += 1;
     var dIdx = Dashboards.duplicateIndex,
-      suffix = "_" + dIdx;
+      suffix = "$" + dIdx;
     
     var params = {}
       $.each(this.parameters,function(i,p){
         
       var param =  p + suffix; 
-      Dashboards.setParameter(param,Dashboards.getParameterValue(p));
+      Dashboards.setBookmarkable(param,Dashboards.isBookmarkable(p));
+      Dashboards.setParameter(param,parameterValues[p] || Dashboards.getParameterValue(p));
       params[p] = param;
     });
     var comps = {}
@@ -42,7 +44,7 @@ var DuplicateComponent = BaseComponent.extend({
       var cName = this.components[c];
       cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
       var component = Dashboards.getComponent(cName);
-      htmlRemap[component.htmlObject] = component.htmlObject + suffix;
+      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/\$/g,'\\$');
       var clone = component.clone(params,comps, htmlRemap);
       clone.name = clone.name + suffix;
       window[clone.name] = clone;
