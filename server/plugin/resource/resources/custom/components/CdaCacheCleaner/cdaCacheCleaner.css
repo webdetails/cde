@@ -12,17 +12,21 @@
 }
 
 .cacheCleanerComponent .button, .cacheCleanerComponent .fauxButton {
-    min-width: 50px;
-    text-align: center;
-    border: 1px solid #848f95;
-    display: inline-block;
-    margin: 3px 4px 3px 0px;
-    float: right;
-    font-size: 85%;
-    padding: 0px 3px;
+	border: 1px solid #848F95;
+	display: inline-block;
+	float: right;
+	font-size: 13px;
+	height: 18px;
+	margin: 3px 4px 3px 0;
+	min-width: 50px;
+	padding-top: 2px;
+	text-align: center;
+	width: 86px;
     -webkit-transition: background-color .2s linear 0s;
     -moz-transition: background-color .2s linear 0s;
-    transition: background-color .2s linear 0s;}
+    transition: background-color .2s linear 0s;
+    
+}
 
 .cacheCleanerComponent div.button {
     color: #222;
@@ -40,17 +44,21 @@
     border-color: #A6B0B5;
 }
 .cacheCleanerComponent .title {
-    height:26px;
-    border: 1px solid #848f95;
-    padding: 0px;
+    border: 1px solid #848F95;
+    font-weight: bold;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 10px;
+    padding-bottom: 0;
     padding-left: 5px;
-    z-index:1000;
-    margin: 4px 0;
+    padding-right: 0;
+    text-align: center;
+    z-index: 1000;
 }
 
 .cacheCleanerComponent ul {
     padding: 0;
-    margin: 0px;
+    margin: 15px;
 }
 
 .cacheCleanerComponent li {
@@ -61,22 +69,20 @@
     resize: none;
     font-family: courier;
     width: 100%;
-    height: auto;
     padding: 0;
     margin-bottom: 0;
 }
 .cacheCleanerComponent .cacheItem {
-    min-height: 26px;
-    border: 1px solid #848f95;
-    margin: 4px 0px;
-    list-style: none;
-    padding: 0px;
-    padding-left: 15px;
-    font-size: 12pt;
-    width: 933px;
     background-color: white;
-    position: relative;
+    border: 1px solid #848F95;
+    font-size: 20px;
+    list-style: none outside none;
+    margin: 4px 0;
+    min-height: 26px;
     overflow: hidden;
+    padding: 1px 0 1px 15px;
+    position: relative;
+    width: 900px;
     -webkit-transition: top .2s linear 0s, min-height .2s;
     -moz-transition: top .2s linear 0s, min-height .2s;
     -o-transition: top .2s linear 0s, min-height .2s;
@@ -88,3 +94,71 @@
     border-color: #A6B0B5;
 }
 
+.cacheCleanerComponent .breadcrumb {
+	min-height: 50px;
+}
+
+.cacheCleanerComponent .breadcrumb .breadcrumbHolder{
+	color: grey;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 20px;
+    min-height: 30px;
+    width: 700px;
+}
+
+.cacheCleanerComponent .breadcrumb .button{
+	margin: 10px 20px;
+	position: relative;
+}
+
+.cacheCleanerComponent .WDdataCell .headerTitle{
+	display: inline-block;
+    font-weight: bold;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    width: 100%;
+}
+
+.cacheCleanerComponent .WDdataCell .headerSelection {
+	bottom: 28px;
+	font-size: 12px;
+	font-weight: normal;
+	height: 28px;
+	line-height: 28px;
+	margin-right: 10px;
+	position: relative;
+	text-align: right;
+}
+
+.cacheCleanerComponent .WDdataCell2 textarea {
+	border: 1px solid #A6B0B5;
+    height: auto;
+    margin: 15px;
+    resize: none;
+    width: 905px;
+    color: #8B9DA5;
+    font-family: Gudea;
+    font-size: 15px;
+}
+
+div.button:hover {
+	border: 1px solid transparent;
+	background-color: #cad3d6;
+	color:  #0f1414;
+	
+}
+
+div.button:active {
+	border: 1px solid #0f1414;
+	background-color: #cad3d6;
+	color: #0f1414;
+}
+
+div.fauxButton:hover,
+div.fauxButton:active {
+	background: white;
+	border-color: #A6B0B5;
+	color: #A6B0B5;
+}
