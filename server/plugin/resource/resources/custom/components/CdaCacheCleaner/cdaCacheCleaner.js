@@ -76,14 +76,24 @@ CdaCacheCleanerComponent = BaseComponent.extend({
   displayList: function(items) {
     var myself = this,
         $ph = $("<div class='cacheCleanerComponent'>").appendTo($("#" + this.htmlObject).empty()),
-        $title = $("<li class='cacheItem title WDdataCell'>Your Selection</li>"),
-        $list = $("<ul class='cacheItemList'>").appendTo($ph),
+        $title = $("<div class='breadcrumb'></div>"),
+        $breadcrumbHolder = $("<div class='breadcrumbHolder'></div>").text('Your Selection').appendTo($title);
+        $list = $("<ul class='cacheItemList'>"),
         title,
-        levelLabel = "Dashboard";
+        levelLabel = "Dashboard",
+        $header = $("<div class='WDdataCell'></div>"),
+        $container = $("<div class=WDdataCell2></div>");
 
+	/* Add external container */
+	$list.appendTo($container);
+	$container.appendTo($ph);
+	
     /* Add a label indicating what level we're working at */
     if (!this.maxDepth || this.breadcrumb.length < this.maxDepth) {
-      $list.append("<li class='cacheItem WDdataCell'>Choose a "+levelLabel+ "</li>");
+    	var header = $('<div class="headerTitle">'+levelLabel +'</div>');
+    	header.append('<div class="headerSelection">(select a '+levelLabel.toLowerCase() + ')</div>');
+    	$header.append(header);
+      	$ph.prepend($header);
     }
     /* Now add the actual items for our current level */
     $.each(items, function(i,e){
@@ -94,19 +104,21 @@ CdaCacheCleanerComponent = BaseComponent.extend({
      * there's an actual selection, but we still need it
      * to exist for the animations.
      */
-    $title.appendTo($list);
-    if (!myself.breadcrumb.length) {
-      $title.css('visibility','hidden');
-    }
+    $title.prependTo($container);
     this.title = $title;
     $("<div class='button'>Reset</div>").click(function(){
       myself.breadcrumb = [];
       myself.update();
     }).appendTo($title);
+    
+    if (!myself.breadcrumb.length) {
+      $title.find('.button').addClass('fauxButton');
+    }
+    
 
     /* Add inactive breadcrumb items */
-    $.each(this.breadcrumb.slice().reverse(), function(i,e){
-        myself.drawBreadCrumbItem($list,e,i);
+    $.each(this.breadcrumb.slice(), function(i,e){
+        myself.drawBreadCrumbItem($breadcrumbHolder,e,i);
     });
 
     /* Show the contents */
@@ -115,24 +127,14 @@ CdaCacheCleanerComponent = BaseComponent.extend({
     /* please, sir, can we have a reference
      * to the list from outside this method?
      */
-     this.list = $list;
+     this.list = $ph;
   },
 
   drawBreadCrumbItem: function($ph,item,index) {
-    var myself = this,
-        $item = $("<li class='cacheItem inactive'>"),
-        $refine;
-    
-    $item.text(item.label);
-    $("<div>Unselect</div>").addClass('button').click(
-      function(){
-        myself.breadcrumb = myself.breadcrumb.slice(0,myself.breadcrumb.length - index - 1);
-        $item.css('top',myself.title.position().top - $item.position().top);
-        setTimeout(function(){myself.update();},myself.updateDelay);
-      }).appendTo($item);
-    $item.append("<div class='fauxButton'>URL</div>");
-    $item.append("<div class='fauxButton'>Clean</div>");
-    $item.appendTo($ph);
+  	if($ph.text() == "Your Selection") 
+  		$ph.text(item.label);
+  	else 
+   		$ph.text($ph.text() + ' > '+item.label);
   },
 
   drawActiveItem: function($ph,item,index) {
@@ -156,7 +158,6 @@ CdaCacheCleanerComponent = BaseComponent.extend({
       $refine.click(function(){
         if(!this.maxDepth || myself.breadcrumb.length < myself.maxDepth - 1) {
           myself.breadcrumb.push(item);
-          $item.css('top',myself.title.position().top - $item.position().top);
           setTimeout(function(){myself.update();},myself.updateDelay);
         }
       });
@@ -184,8 +185,8 @@ CdaCacheCleanerComponent = BaseComponent.extend({
       url: this.getURL(item),
       success: function(response){
         var text = $target.text();
-        $target.text('Done').addClass('success');
-        setTimeout(function(){$target.text(text).removeClass('success')},1100);
+        $target.text('Done').addClass('done');
+        setTimeout(function(){$target.text(text).removeClass('done')},1100);
       },
       error: function(response, xhr, err) {
         application.popupEngine.getPopup('close').show({
@@ -201,8 +202,9 @@ CdaCacheCleanerComponent = BaseComponent.extend({
   displayURL: function(item) {
     var myself = this,
         url = window.location.host + this.getURL(item),
-        $title = $("<li class='cacheItem title WDdataCell'>Clear the cache with this URL:</li>"),
-        $url = $("<li class='cacheItem'><textarea rows='2' cols='100'>"+this.getURL(item)+"</textarea></li>"),
+        $title = $("<div class='title WDdataCell'>URL</div>"),
+        $url = $("<div class='WDdataCell2'><textarea readonly='readonly'r>"+this.getURL(item)+"</textarea></div>"),
+        $breadcrumbHolder = $("<div class='breadcrumbHolder'>Your Selection</div>").prependTo($("<div class='breadcrumb'> </div>").prependTo($url)),
         ta = $url.find('textarea').get(0);
 
  
@@ -217,16 +219,22 @@ CdaCacheCleanerComponent = BaseComponent.extend({
         $url.remove();
         $title.remove();
       },myself.updateDelay);
-    }).appendTo($title);
+    }).appendTo($breadcrumbHolder.parent());
+    
+    $.each(this.breadcrumb.slice(), function(i,e){
+        myself.drawBreadCrumbItem($breadcrumbHolder,e,i);
+    });
+    
+    $breadcrumbHolder.text($breadcrumbHolder.text()+' > '+item.label);
 
     if(this.$url){
-      this.$url.remove()
-      this.$urltitle.remove()
+      this.$url.remove();
+      this.$urltitle.remove();
     }
     this.$url = $url;
     this.$urltitle = $title;
-    this.list.prepend($url);
-    this.list.prepend($title);
+    this.list.append($title);
+    this.list.append($url);
     ta.focus();
     ta.select();
   },
