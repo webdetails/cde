@@ -32,7 +32,7 @@ var DuplicateComponent = BaseComponent.extend({
       comps[c] = comp;
     });
     var htmlRemap = {};
-    htmlRemap[this.targetHtmlObject] = this.targetHtmlObject + suffix;
+    htmlRemap[this.targetHtmlObject] = (this.targetHtmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
     var newPh = $("#" + this.targetHtmlObject).clone();
     newPh.attr("id",newPh.attr("id") + suffix);  
     newPh.find("[id]").each(function(i,e){
@@ -44,7 +44,7 @@ var DuplicateComponent = BaseComponent.extend({
       var cName = this.components[c];
       cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
       var component = Dashboards.getComponent(cName);
-      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/\$/g,'\\$');
+      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
       var clone = component.clone(params,comps, htmlRemap);
       clone.name = clone.name + suffix;
       window[clone.name] = clone;

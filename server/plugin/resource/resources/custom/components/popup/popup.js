@@ -32,9 +32,9 @@ var PopupComponent = BaseComponent.extend({
       $e = $(e);
       var id = $e.attr("id");
       if(id && id in html) {
-        $e.attr("id", html[id]);
+        $e.attr("id", html[id].replace(/\\\$/g, '$'));
       } else {
-        $e.attr("id",id + '_' + Dashboards.duplicateIndex);
+        $e.attr("id",id + '$' + Dashboards.duplicateIndex);
       }
     });
     return that;
