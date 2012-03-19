@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>bookmarkable</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Bookmarkable</Description>
+	<Tooltip>Is this parameter persisted with bookmarks/links?</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>91</Order>
+	<Advanced>false</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

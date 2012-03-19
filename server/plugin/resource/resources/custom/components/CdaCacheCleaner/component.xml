@@ -1,0 +1,32 @@
+<DesignerComponent>
+  <Header>
+    <Name>CDA Cache Cleaner</Name>
+    <IName>cdaCacheCleaner</IName>
+    <Description>Cache Cleaner</Description>
+    <Category>CDCCOMPONENTS</Category>
+    <CatDescription>CDC Components</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>listeners</Property>
+      <Property>refreshPeriod</Property>
+    </Model>
+    <Implementation>
+      <Code src="cdaCacheCleaner.js" />
+      <Dependencies>
+				<!--<Dependency src="jquery.ceebox.js" version="2.1.5.1">Ceebox</Dependency>-->
+      </Dependencies>
+      <Styles>
+        <Style src="cdaCacheCleaner.css" version="1.0">CdaCacheCleaner</Style>
+      </Styles>
+      <CustomProperties>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>
