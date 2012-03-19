@@ -1,5 +1,6 @@
 12.03.19
 
+[REDMINE 411] - Typo under Addin definition
 Add CDA Cache Cleaner component
 Add support for persistent parameters 
 Updated addIn reference to include groupHeaders addIn.
