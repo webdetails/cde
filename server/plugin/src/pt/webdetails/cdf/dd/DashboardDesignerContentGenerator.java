@@ -59,6 +59,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public static final String PLUGIN_NAME = "pentaho-cdf-dd";
   public static final String SYSTEM_PATH = "system";
   public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
+  public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
   /**
    * solution folder for custom components, styles and templates
    */
@@ -641,9 +642,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException
   {
-    String[] roots = new String[2];
+    String[] roots = new String[3];
     roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
     roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
+    roots[2] = PentahoSystem.getApplicationContext().getSolutionPath(MOLAP_PLUGIN_PATH);
     getSolutionResource(out, resource, roots);
   }
 
