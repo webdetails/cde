@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,6 +51,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
+import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.PluginUtils;
 
 @SuppressWarnings("unchecked")
@@ -174,6 +176,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final OutputStream out = contentItem.getOutputStream(null);
 
+    
+    
+    final String action = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
+
+    
     try
     {
 
@@ -182,8 +189,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         IParameterProvider.class, OutputStream.class
       };
 
-      final String methodName = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
 
+      final String methodName = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
+      
+      
       try
       {
         final Method method = this.getClass().getMethod(methodName, params);
@@ -219,8 +228,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       final String message = e.getCause() != null ? e.getCause().getClass().getName() + " - " + e.getCause().getMessage() : e.getClass().getName() + " - " + e.getMessage();
       logger.error(message, e);
-    }
-
+    } 
   }
 
   public void syncronize(final IParameterProvider pathParams, final OutputStream out) throws Exception
@@ -297,6 +305,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       return;
     }
 
+    final long start = System.currentTimeMillis();        
+    UUID uuid = CpfAuditHelper.startAudit("render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
+    
     // Build pieces: render dashboard, footers and headers
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
 
@@ -310,6 +321,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       logger.warn(e.toString());
     }
     out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
+    CpfAuditHelper.endAudit("render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
+    
   }
 
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
@@ -527,6 +540,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 
+    final long start = System.currentTimeMillis();        
+    UUID uuid = CpfAuditHelper.startAudit("edit", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
+    
+    
     IParameterProvider pathParams = parameterProviders.get("path");
     boolean debugMode = requestParams.hasParameter("debug") && requestParams.getParameter("debug").toString().equals("true");
     if (requestParams.hasParameter("path") && !hasAccess(out, getWcdfRelativePath(requestParams), ISolutionRepository.ACTION_UPDATE))
@@ -568,6 +585,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     // setCacheControl();
 
     out.write(resource.getBytes());
+    CpfAuditHelper.endAudit("render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());    
   }
 
   public void synctemplates(final IParameterProvider pathParams, final OutputStream out) throws Exception
