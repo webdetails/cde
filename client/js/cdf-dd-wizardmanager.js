@@ -176,7 +176,7 @@ var SaikuOlapWizard = WizardManager.extend({
     			var action = splitFile[splitFile.length -1];
     			var path = "";
     			if (splitFile.length > 3) {
-    				for (var i= 1; i < splitFile.length -1; i++) {
+    				for (var i= 2; i < splitFile.length -1; i++) {
     					path += "/" + splitFile[i];
     				}
     			}
