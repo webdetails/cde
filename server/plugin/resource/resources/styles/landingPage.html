@@ -14,6 +14,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+<script type="text/javascript">
+  window.enabledRotation = false;
+</script>
+
 @HEADER@
 
 <link rel='stylesheet' href='/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/lib/jquery.mobile.css'>
@@ -28,30 +32,39 @@
 </head>
 <body>
 <div data-role="page" id="dashboardView" data-theme='b'>
+
     <div data-theme='b' data-role="header" id='header' data-position="fixed">
-      <h1 id='title'>CDF Mobile</h1>
-      <span class='ui-btn-right navigate-button'><select id='navSelector' placeholder="Navigate"></select></span>
+      
+<div class='backButton' ></div>      
+      
+      <h1 id='title'>Dashboard List</h1>
+      
     </div>
     <div data-role="content" data-theme='b' id='mainContent'>
         <div id=cmdContent>
             <div id='dashboard'></div>
         </div>
     </div>
+   
     <div id='placeholder' style='display:none'>
       @CONTENT@
     </div>
-  
+  <!--
     <div data-position="fixed" id='toolbar' data-role="footer" data-theme='b'></div>
+  -->
 </div>
-<div id='filtersPanel' data-role='page' data-theme='b'>
+
+  <!--
+  <div id='filtersPanel' data-role='page' data-theme='b'>
     <div data-role="header" data-theme='b' data-backbtn="false" id='filtersHeader' data-position="fixed"><h1 id='title'>Select your filters</h1></div>
     <div data-role="content" data-theme='b' id='filtersContent'>
             <div id='innerFilters'></div>
     </div>
     <div id='filtersActions' data-role="footer" data-position="fixed"></div>
 </div>
+  -->
 <script type="text/javascript">
-
+  
 </script>
 </body>
 </html>

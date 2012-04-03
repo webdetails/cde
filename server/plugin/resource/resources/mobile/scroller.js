@@ -94,14 +94,26 @@ function Scroller(element,options,$_){
     for (var i = 0; i < _count; i++){
       $bulletList.append("<div class='statusBullet" + (i === _currentPage ? " active" : "") + "'>&nbsp</li>");
     }
-    $("<div class='nav prev'>&nbsp;</div>").prependTo($status).click(function(){
-      myself.scrollRight();
-      return false;
-    });
-    $("<div class='nav next'>&nbsp;</div>").appendTo($status).click(function(){
-      myself.scrollLeft();
-      return false;
-    });
+    
+    
+    var isBlackberry = navigator.userAgent.match(/(BlackBerry)/i);
+    
+    if (isBlackberry) {
+      $("<div class='nav prev'>&nbsp;</div>").prependTo($status).click(function(){
+        $(this).addClass('prev-selected');
+        myself.scrollRight();
+        setTimeout('$(".prev").removeClass("prev-selected")', 500);
+        return false;
+      });
+      $("<div class='nav next'>&nbsp;</div>").appendTo($status).click(function(){
+        $(this).addClass('next-selected');
+        myself.scrollLeft();
+        var x = this;
+        setTimeout('$(".next").removeClass("next-selected")', 500);
+        return false;
+      });
+    }
+    
   };
 
   function refreshStatus() {
@@ -123,7 +135,7 @@ function Scroller(element,options,$_){
    */
   this.scrollLeft = function() {
     var cloneLeft = $.extend({},scrollLeft);
-    var $next;
+    var $next;    
     if (_currentPage < _count - 1) {
       _currentPage += 1;
       cloneLeft['-webkit-transform'] = "translate3d(" + (- _width * _currentPage) + "px,0,0)";
@@ -131,6 +143,7 @@ function Scroller(element,options,$_){
       $holder.css(cloneLeft);
       refreshStatus();
       fitMaskHeight();
+      if (_options.onScroll) _options.onScroll(_currentPage);      
     } else {
       $holder.removeClass('bounce-last');
       $holder.addClass('bounce-last');
@@ -138,7 +151,8 @@ function Scroller(element,options,$_){
   };
 
   this.scrollRight = function() {
-    var cloneLeft = $.extend({},scrollLeft);
+    var cloneLeft = $.extend({},scrollLeft);    
+    $holder.click();
     if (_currentPage > 0) {
       _currentPage -= 1;
       cloneLeft['-webkit-transform'] = "translate3d(" + (- _width * _currentPage) + "px,0,0)";
@@ -146,6 +160,7 @@ function Scroller(element,options,$_){
       $holder.css(cloneLeft);
       refreshStatus();
       fitMaskHeight();
+      if (_options.onScroll) _options.onScroll(_currentPage);
     } else {
       $holder.removeClass('bounce-first');
       $holder.addClass('bounce-first');

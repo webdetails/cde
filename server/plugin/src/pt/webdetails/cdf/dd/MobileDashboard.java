@@ -42,8 +42,12 @@ public class MobileDashboard extends AbstractDashboard
     final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
 
-    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
-    final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
+//    final String absRoot = requestParams.hasParameter("root") ? requestParams.getParameter("root").toString() : "";
+//    final boolean absolute = (!absRoot.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true");
+    
+    
+//    final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
+//    final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
 
     final RenderMobileLayout layoutRenderer = new RenderMobileLayout();
     final RenderComponents componentsRenderer = new RenderComponents();
@@ -64,7 +68,17 @@ public class MobileDashboard extends AbstractDashboard
       this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
 
       this.header = renderHeaders(this.content.toString());
-      this.templateFile = MOBILE_TEMPLATE;
+      
+      
+      this.templateFile = CdfStyles.getInstance().getResourceLocation(getWcdf().getStyle());
+      
+      
+      //If it is clean.html, change to default mobile template
+      if (templateFile.equals("resources/styles/Clean.html")) 
+        this.templateFile = MOBILE_TEMPLATE;
+      
+      
+      
       this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
       this.loaded = new Date();
 
