@@ -308,7 +308,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
     // Build pieces: render dashboard, footers and headers
-    logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
 
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
 
