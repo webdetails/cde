@@ -305,7 +305,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
 
     final long start = System.currentTimeMillis();        
-    UUID uuid = CpfAuditHelper.startAudit("render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
+    UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
     // Build pieces: render dashboard, footers and headers
     logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
@@ -323,7 +323,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
     logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
-    CpfAuditHelper.endAudit("render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
+    CpfAuditHelper.endAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
   }
 
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
@@ -542,7 +542,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 
     final long start = System.currentTimeMillis();        
-    UUID uuid = CpfAuditHelper.startAudit("edit", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
+    UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "edit", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
     
     IParameterProvider pathParams = parameterProviders.get("path");
@@ -586,7 +586,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     // setCacheControl();
 
     out.write(resource.getBytes());
-    CpfAuditHelper.endAudit("render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());    
+    CpfAuditHelper.endAudit(PLUGIN_NAME, "edit", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());    
   }
 
   public void synctemplates(final IParameterProvider pathParams, final OutputStream out) throws Exception
