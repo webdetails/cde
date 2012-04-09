@@ -1,9 +1,16 @@
+12.04.09
+
+	* Implemented [REDMINE 514] - Added auditing support for cde render and edit methods
+	* Small change to allow MOLA plugin to work
+	* Changed dependency to 3.10.0-stable
+	* fix path construction in saiku olap wizard
+
 12.03.19
 
-[REDMINE 411] - Typo under Addin definition
-Add CDA Cache Cleaner component
-Add support for persistent parameters 
-Updated addIn reference to include groupHeaders addIn.
-Added marketplace snippet generation to build process
-Add Bookmarkable support to DuplicateComponent	
-Fix interaction between duplicate and popup components 
+	* [REDMINE 411] - Typo under Addin definition
+	* Add CDA Cache Cleaner component
+	* Add support for persistent parameters 
+	* Updated addIn reference to include groupHeaders addIn.
+	* Added marketplace snippet generation to build process
+	* Add Bookmarkable support to DuplicateComponent	
+	* Fix interaction between duplicate and popup components 
