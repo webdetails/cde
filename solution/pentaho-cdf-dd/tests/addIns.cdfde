@@ -555,7 +555,7 @@
      },
      {
       "name": "html",
-      "value": "<i>sparkline</i> is an implementation of the \n<a href=\"http://www.omnipotent.net/jquery.sparkline/\" target=\"_blank\">JQuery Sparkline plugin</a>.\nCheck this page for full reference.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a CVS column with numbers, eg: 12,34.2,23,45\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n     defaults: {\n      type: 'line'\n    }     \n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: {type:'bar'}\n \n </p>\n \n </p> ",
+      "value": "<i>sparkline</i> is an implementation of the \n<a href=\"http://www.omnipotent.net/jquery.sparkline/\" target=\"_blank\">JQuery Sparkline plugin</a>.\nCheck this page for full reference.\n\n <div class=\"WDh2\">Data Structure</div>\n \n <p>\n    It expects a CSV column with numbers, eg: 12,34.2,23,45\n </p>\n \n <div class=\"WDh2\">Defaults</div>\n \n <p>\n <blockquote><pre>\n     defaults: {\n      type: 'line'\n    }     \n </pre></blockquote>\n </p>\n\n  <div class=\"WDh2\">Sample</div>\n  \n <p>\n This sample contains 2 columns, a default one and one with specific options: {type:'bar'}\n \n </p>\n \n </p> ",
       "type": "Html"
      },
      {
