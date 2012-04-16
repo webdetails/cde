@@ -15,11 +15,12 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 import java.util.Properties;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
@@ -68,7 +69,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public static final String SOLUTION_DIR = "cde";
   public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
   public static final String ENCODING = "UTF-8";
-  
   private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
@@ -85,7 +85,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   private static final String DATA_URL_TAG = "cdf-structure.js";
   private static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
-  
   /**
    * 1 week cache
    */
@@ -309,6 +308,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
     // Build pieces: render dashboard, footers and headers
+    logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
+
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
 
     // Response
@@ -321,8 +322,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       logger.warn(e.toString());
     }
     out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
+    logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     CpfAuditHelper.endAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
-    
   }
 
   private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
@@ -773,9 +774,10 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     cda.setOutputHandler(outputHandler);
     ArrayList<Object> output = new ArrayList<Object>();
     HashMap<String, Object> channel = new HashMap<String, Object>();
-    
+
     ByteArrayOutputStream outputStream = null;
-    try{
+    try
+    {
       outputStream = new ByteArrayOutputStream();
       channel.put("output",
               outputStream);
@@ -786,7 +788,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       cda.createContent();
       out.write(outputStream.toString().getBytes(ENCODING));
       //JSON json = JSONSerializer.toJSON(outputStream.toString());
-    } finally{
+    }
+    finally
+    {
       IOUtils.closeQuietly(outputStream);
     }
   }
@@ -805,7 +809,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       ArrayList<Object> output = new ArrayList<Object>();
       HashMap<String, Object> channel = new HashMap<String, Object>();
       ByteArrayOutputStream outputStream = null;
-      try{
+      try
+      {
         outputStream = new ByteArrayOutputStream();
         // The outputstream provides CDA with a sink we can later retrieve data from
         channel.put("output", outputStream);
@@ -818,7 +823,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         // pass the output to the ComponentManager
         return JSONSerializer.toJSON(outputStream.toString());
       }
-      finally{
+      finally
+      {
         IOUtils.closeQuietly(outputStream);
       }
     }
@@ -827,21 +833,22 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       return null;
     }
   }
-  
+
   /**
    * List CDA datasources for given dashboard.
    */
-  public void listcdasources(final IParameterProvider pathParams, final OutputStream out) throws IOException {
+  public void listcdasources(final IParameterProvider pathParams, final OutputStream out) throws IOException
+  {
     String dashboard = pathParams.getStringParameter("dashboard", null);
     dashboard = StringUtils.replace(dashboard, ".wcdf", ".cdfde");
     List<DataSourceReader.CdaDataSource> dataSourcesList = DataSourceReader.getCdaDataSources(dashboard);
     DataSourceReader.CdaDataSource[] dataSources = dataSourcesList.toArray(new DataSourceReader.CdaDataSource[dataSourcesList.size()]);
-    String result = "[" + StringUtils.join(dataSources,",")+"]";
+    String result = "[" + StringUtils.join(dataSources, ",") + "]";
     IOUtils.write(result, out);
   }
 
 // External Editor v
-  public void getfile(final IParameterProvider pathParams, final OutputStream out) throws IOException 
+  public void getfile(final IParameterProvider pathParams, final OutputStream out) throws IOException
   {
     String path = pathParams.getStringParameter(PathParams.PATH, "");
 
@@ -851,7 +858,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(contents, out);
   }
 
-  public void createfolder(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException 
+  public void createfolder(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException
   {
 
     String path = pathParams.getStringParameter(PathParams.PATH, null);
@@ -869,7 +876,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   }
 
-  public void writefile(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException 
+  public void writefile(IParameterProvider pathParams, OutputStream out) throws PentahoAccessControlException, IOException
   {
     String path = pathParams.getStringParameter(PathParams.PATH, null);
     String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
@@ -893,13 +900,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     IOUtils.write(result.toString(), out);
   }
 
-  public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException 
+  public void exteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
   }
 
-  public void componenteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException 
+  public void componenteditor(final IParameterProvider pathParams, final OutputStream out) throws IOException
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
     IOUtils.write(ExternalFileEditorBackend.getFileContents(editorPath, userSession), out);
@@ -958,12 +965,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     // Make sure we have the correct mime type
     final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
-    
-    if(response == null){
+
+    if (response == null)
+    {
       logger.error("Parameter 'httpresponse' not found!");
       return;
     }
-    
+
     response.setHeader("Content-Type", mimeType);
 
     if (attachmentName != null)
@@ -988,8 +996,14 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   static public String getScheme(IParameterProvider pathParams)
   {
-    try { 
-    ServletRequest req = (ServletRequest) (pathParams.getParameter("httprequest"));
-    return req.getScheme();} catch (Exception e) {return "http";}
+    try
+    {
+      ServletRequest req = (ServletRequest) (pathParams.getParameter("httprequest"));
+      return req.getScheme();
+    }
+    catch (Exception e)
+    {
+      return "http";
+    }
   }
 }
