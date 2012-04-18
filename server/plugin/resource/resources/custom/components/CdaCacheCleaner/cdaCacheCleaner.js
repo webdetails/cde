@@ -62,15 +62,35 @@ CdaCacheCleanerComponent = BaseComponent.extend({
         /* Object.keys already guarantees that
          * we're filtering through hasOwnProperty()
          */
-        opts = Object.keys(resp).map(function(e,i) {
+        var self = this;
+        var opts = Object.keys(resp).map(function(e,i) {
+          var val = typeof resp[e] == "string"? resp[e] : e;
           return {
             index: i,
-            value: typeof resp[e] == "string"? resp[e] : e,
-            label: e,
+            value: val,
+            label: self.getLabel(val),
             type: typeof resp[e] == "string" ? "leaf" : "branch"
           };
         });
         this.displayList(opts);
+  },
+  
+  getLabel: function(path) {
+      //find('repository file[name=cdc-presentation]').attr('description');
+      var selector = 'repository';
+      var pathElements = path.split('/');
+      for(var i=0; i<pathElements.length;i++){
+        var fileName = pathElements[i];
+        if( fileName != ''){
+          if(fileName.endsWith('.cdfde')){//won't be in repository
+            fileName = fileName.slice(0,-5) + 'wcdf'; //cdfde.len
+          }
+          selector += ' file[name="' + fileName + '"]';
+        }
+      }
+      var result = this.repository.find(selector).attr('description');
+      if(result) return result;
+      else return pathElements[pathElements.length - 1];
   },
 
   displayList: function(items) {
@@ -84,20 +104,20 @@ CdaCacheCleanerComponent = BaseComponent.extend({
         $header = $("<div class='WDdataCell'></div>"),
         $container = $("<div class=WDdataCell2></div>");
 
-	/* Add external container */
-	$list.appendTo($container);
-	$container.appendTo($ph);
-	
+    /* Add external container */
+    $list.appendTo($container);
+    $container.appendTo($ph);
+
     /* Add a label indicating what level we're working at */
     if (!this.maxDepth || this.breadcrumb.length < this.maxDepth) {
-    	var header = $('<div class="headerTitle">'+levelLabel +'</div>');
-    	header.append('<div class="headerSelection">(select a '+levelLabel.toLowerCase() + ')</div>');
-    	$header.append(header);
-      	$ph.prepend($header);
+      var header = $('<div class="headerTitle">'+levelLabel +'</div>');
+      header.append('<div class="headerSelection">(select a '+levelLabel.toLowerCase() + ')</div>');
+      $header.append(header);
+        $ph.prepend($header);
     }
     /* Now add the actual items for our current level */
-    $.each(items, function(i,e){
-      myself.drawActiveItem($list,e,i);
+    $.each(items, function(i, e){
+      myself.drawActiveItem($list, e, i);
     });
 
     /* We only show the label for the selection only if
@@ -131,10 +151,12 @@ CdaCacheCleanerComponent = BaseComponent.extend({
   },
 
   drawBreadCrumbItem: function($ph,item,index) {
-  	if($ph.text() == "Your Selection") 
-  		$ph.text(item.label);
-  	else 
-   		$ph.text($ph.text() + ' > '+item.label);
+    if($ph.text() == "Your Selection") {
+      $ph.text(item.label);
+    }
+    else {
+      $ph.text($ph.text() + ' > '+item.label);
+    }
   },
 
   drawActiveItem: function($ph,item,index) {
@@ -268,21 +290,30 @@ CdaCacheCleanerComponent = BaseComponent.extend({
             map = map[entry[i]];
           }
           map[entry[i]] = path;
-        }
+        },
+        getDashboardsList = function(){
+          $.get("/pentaho/content/ws-run/DashboardCacheCleanService/getDashboardsList",
+            function(resp){
+              var results  = JSON.parse($("return",resp).text()).result,
+                  resultMap = {},
+                  i;
+              for (i = 0; i < results.length; i ++) {
+                addEntry(results[i],resultMap);
+              }
+      
+              myself.filelist = results;
+              
+              myself.filemap = resultMap[""];
+              handler(resultMap[""]);
+            });
+        };
     
-    $.get("/pentaho/content/ws-run/DashboardCacheCleanService/getDashboardsList",
-      function(resp){
-        var results  = JSON.parse($("return",resp).text()).result,
-            resultMap = {},
-            i;
-        for (i = 0; i < results.length; i ++) {
-          addEntry(results[i],resultMap);
-        }
+    $.get("/pentaho/SolutionRepositoryService?component=getSolutionRepositoryDoc",
+      function(resXml){
+        myself.repository = $(resXml);        
+        getDashboardsList();
+      },"xml");
 
-        myself.filelist = results;
-        myself.filemap = resultMap[""];
-        handler(resultMap[""]);
-      });
   }
 });
 
