@@ -160,13 +160,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   @Override
   public void createContent() throws Exception
   {
-
     // Make sure we have the env. correctly inited
     if (SolutionReposHelper.getSolutionRepositoryThreadVariable() == null && PentahoSystem.getObjectFactory().objectDefined(ISolutionRepository.class.getSimpleName()))
     {
       SolutionReposHelper.setSolutionRepositoryThreadVariable(PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession()));
     }
-
 
     final IParameterProvider pathParams = parameterProviders.get("path");
     final IParameterProvider requestParams = parameterProviders.get("request");
@@ -175,10 +173,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final OutputStream out = contentItem.getOutputStream(null);
 
-    
-    
-    final String action = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
-
+    //final String action = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
     
     try
     {
@@ -188,10 +183,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         IParameterProvider.class, OutputStream.class
       };
 
-
       final String methodName = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
-      
-      
+            
       try
       {
         final Method method = this.getClass().getMethod(methodName, params);
@@ -236,7 +229,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final String path = ((String) pathParams.getParameter(PathParams.FILE)).replaceAll("cdfde", "wcdf");
     if (pathParams.hasParameter(PathParams.PATH) && !hasAccess(out, path, ISolutionRepository.ACTION_UPDATE))
     {
-      final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+      final HttpServletResponse response = getResponse();
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       logger.warn("Access denied for the syncronize method: " + path + " by user " + userSession.getName());
       return;
@@ -337,27 +330,13 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     return true;
   }
+  
+  private HttpServletResponse getResponse(){
+    return (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+  }
 
-//  private String getDashboardStyle(final IParameterProvider pathParams) throws IOException
-//  {
-//    // If we have the style available as a parameter, use it. Else, load wcdf
-//    if (pathParams.hasParameter("style"))
-//    {
-//      return pathParams.getStringParameter("style", CdfStyles.DEFAULTSTYLE);
-//
-//    }
-//
-//    String wcdfRelativePath = getWcdfRelativePath(pathParams);
-//
-//    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-//    final Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfRelativePath);
-//
-//    return XmlDom4JHelper.getNodeText(
-//            "/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE);
-//  }
   public void getcssresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    // final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
 
     getresource(pathParams, out);
@@ -367,7 +346,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public void getjsresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null);
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     try
@@ -386,7 +365,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void getuntypedresource(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     response.setHeader("Content-Type", "text/plain");
     response.setHeader("content-disposition", "inline");
 
@@ -430,7 +409,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
         mimeType = "";
     }
     setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     try
@@ -482,7 +461,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
 
     setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     try
@@ -519,7 +498,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
 
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     String[] roots = new String[2];
     roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
     roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
@@ -757,7 +736,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
     final String maxAge = resLoader.getPluginSetting(this.getClass(), "max-age");
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
     if (maxAge != null && response != null)
     {
       response.setHeader("Cache-Control", "max-age=" + maxAge);
@@ -964,7 +943,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   private void setResponseHeaders(final String mimeType, final int cacheDuration, final String attachmentName)
   {
     // Make sure we have the correct mime type
-    final HttpServletResponse response = (HttpServletResponse) parameterProviders.get("path").getParameter("httpresponse");
+    final HttpServletResponse response = getResponse();
 
     if (response == null)
     {
