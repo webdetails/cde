@@ -54,7 +54,6 @@ import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.PluginUtils;
 
-@SuppressWarnings("unchecked")
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
 {
 
@@ -532,7 +531,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       return;
     }
 
-    final String header = DependenciesManager.getInstance().getEngine("CDFDD").getDependencies();
+    final String header = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDFDD).getDependencies();
     final HashMap<String, String> tokens = new HashMap<String, String>();
     tokens.put(DESIGNER_HEADER_TAG, header);
 
@@ -834,7 +833,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
 
     String path = pathParams.getStringParameter(PathParams.PATH, null);
-    String solution = pathParams.getStringParameter(PathParams.SOLUTION, null);
 
     if (ExternalFileEditorBackend.createFolder(path, userSession))
     {
@@ -842,8 +840,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     else
     {
-
-      IOUtils.write("error creating folder " + path, out);//TODO:...
+      IOUtils.write("error creating folder " + path, out);
     }
 
   }

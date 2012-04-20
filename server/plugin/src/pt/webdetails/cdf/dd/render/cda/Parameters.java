@@ -26,12 +26,13 @@ public class Parameters implements CdaElementRenderer {
                        ELEMENT_NAME = "Parameter";
 
   public void renderInto(Element dataAccess) {
-    JXPathContext context = JXPathContext.newContext(definition);
+    JXPathContext.newContext(definition);
     Document doc = dataAccess.getOwnerDocument();
     Element parameters = doc.createElement("Parameters");
     dataAccess.appendChild(parameters);
     JSONArray params = JSONArray.fromObject(definition.getString("value"));
-    Iterator paramIterator = params.iterator();
+    @SuppressWarnings("unchecked")
+    Iterator<JSONArray> paramIterator = params.iterator();
     while (paramIterator.hasNext()) {
       JSONArray param = (JSONArray) paramIterator.next();
       Element parameter = doc.createElement(ELEMENT_NAME);

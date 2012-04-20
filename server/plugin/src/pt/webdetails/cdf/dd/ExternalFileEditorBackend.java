@@ -62,14 +62,10 @@ public class ExternalFileEditorBackend {
     String folderName = folder[folder.length - 1];
     String folderPath = path.substring(0, path.indexOf(folderName));
 
-
-
     ISolutionRepositoryService service = PentahoSystem.get(ISolutionRepositoryService.class, userSession);
 
-
     boolean status = service.createFolder(userSession, "", folderPath, folderName, "");
-
-
+    
     if (status)
     {
       return true;

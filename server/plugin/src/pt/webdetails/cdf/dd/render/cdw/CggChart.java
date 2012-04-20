@@ -136,6 +136,7 @@ public class CggChart
   private void renderParameters(StringBuilder chartScript, JSONArray params)
   {
     parameters = new HashMap<String, String>();
+    @SuppressWarnings("unchecked")
     Iterator<JSONArray> it = params.iterator();
     while (it.hasNext())
     {

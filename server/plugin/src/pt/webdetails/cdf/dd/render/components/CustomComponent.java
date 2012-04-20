@@ -33,14 +33,15 @@ public class CustomComponent extends GenericComponent
   @Override
   public void setDefinition(Node definition)
   {
-    DependenciesEngine cdfDeps = DependenciesManager.getInstance().getEngine("CDF");
-    DependenciesEngine rawDeps = DependenciesManager.getInstance().getEngine("CDF-RAW");
-    DependenciesEngine styleDeps = DependenciesManager.getInstance().getEngine("CDF-CSS");
-    DependenciesEngine ddDeps = DependenciesManager.getInstance().getEngine("CDFDD");
+    DependenciesEngine cdfDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF);
+    DependenciesEngine rawDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_RAW);
+    DependenciesEngine styleDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS);
+    DependenciesEngine ddDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDFDD);
     this.componentName = XmlDom4JHelper.getNodeText("Header/IName", definition);
     String src;
     String ver = XmlDom4JHelper.getNodeText("Header/Version", definition);
 
+    @SuppressWarnings("unchecked")
     List<Node> deps = definition.selectNodes("Contents/Implementation/Dependencies/*");
 
     for (Node node : deps)
@@ -53,7 +54,7 @@ public class CustomComponent extends GenericComponent
       
       String app = XmlDom4JHelper.getNodeText("@app", node);
       // by default, dependencies are for CDF
-      if (app == null || app.equals("CDF"))
+      if (app == null || app.equals(cdfDeps.getName()))
       {
         try
         {
@@ -64,7 +65,7 @@ public class CustomComponent extends GenericComponent
           logger.error("failed to register " + srcPath);
         }
       }
-      else if (app.equals("CDFDD"))
+      else if (app.equals(ddDeps.getName()))
       {
         try
         {
@@ -76,6 +77,7 @@ public class CustomComponent extends GenericComponent
         }
       }
     }
+    @SuppressWarnings("unchecked")
     List<Node> styles = definition.selectNodes("Contents/Implementation/Styles/*");
 
     for (Node node : styles)
@@ -95,6 +97,7 @@ public class CustomComponent extends GenericComponent
 
     }
 
+    @SuppressWarnings("unchecked")
     List<Node> rawCode = definition.selectNodes("Contents/Implementation/Raw/*");
 
     for (Node node : rawCode)
@@ -126,6 +129,7 @@ public class CustomComponent extends GenericComponent
         logger.error("failed to register " + srcPath);
       }
     }
+    @SuppressWarnings("unchecked")
     List<Node> props = definition.selectNodes("Contents/Implementation/CustomProperties/*");
 
     for (Node node : props)

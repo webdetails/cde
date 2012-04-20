@@ -6,7 +6,7 @@ package pt.webdetails.cdf.dd.render;
 
 import java.util.HashMap;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
+import pt.webdetails.cdf.dd.packager.Packager;
 
 /**
  *
@@ -63,14 +63,21 @@ public class DependenciesManager
       };
       _engine = new DependenciesManager();
 
-      //String basePath = PentahoSystem.getApplicationContext().getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH);
       String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
-      _engine.registerEngine("CDF-CSS", new DependenciesEngine("CDF-CSS", cssFilter, basePath, "CSS"));
-      _engine.registerEngine("CDF", new DependenciesEngine("CDF", jsFilter, basePath, "JS"));
-      _engine.registerEngine("CDF-RAW", new DependenciesEngine("CDF-RAW", rawFilter, basePath, "JS"));
-      _engine.registerEngine("CDFDD", new DependenciesEngine("CDFDD", jsFilter, basePath, "JS"));
+      _engine.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, basePath, Packager.Filetype.CSS));
+      _engine.registerEngine(Engines.CDF, new DependenciesEngine(Engines.CDF, jsFilter, basePath, Packager.Filetype.JS));
+      _engine.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, basePath, Packager.Filetype.JS));
+      _engine.registerEngine(Engines.CDFDD, new DependenciesEngine(Engines.CDFDD, jsFilter, basePath, Packager.Filetype.JS));
     }
     return _engine;
+  }
+  
+  
+  public static final class Engines {
+    public final static String CDF = "CDF";
+    public final static String CDF_CSS = "CDF-CSS";
+    public final static String CDF_RAW = "CDF-RAW";
+    public final static String CDFDD = "CDF-RAW";
   }
 
   public DependenciesEngine getEngine(String id)
