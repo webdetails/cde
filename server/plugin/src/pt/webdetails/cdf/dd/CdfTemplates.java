@@ -7,7 +7,6 @@ import org.apache.commons.io.IOUtils;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.structure.StructureException;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -20,13 +19,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
 
   private IPentahoSession userSession = null;
   
-  private static String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
   private static String CDF_DD_TEMPLATES = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates";
   private static String CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
   
@@ -85,21 +84,22 @@ public class CdfTemplates {
 
     final String fileName = (String) parameters.get("file");
     System.out.println("Saving File:" + fileName);
-
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
+    
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    
     if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
     {
-      File templatesFolder = new File(SOLUTION_PATH + CDF_DD_TEMPLATES_CUSTOM);
-      solutionRepository.createFolder(templatesFolder);
+      solutionRepository.createFolder(CDF_DD_TEMPLATES_CUSTOM);
     }
     
     String cdfStructure = (String) parameters.get(DashboardDesignerContentGenerator.PathParams.CDF_STRUCTURE);
     byte[] fileData = cdfStructure.getBytes("UTF-8");
-    final int status = solutionRepository.publish(SOLUTION_PATH, CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true);
-    
-    if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL) {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+    switch( solutionRepository.publishFile(CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true)){
+      case OK:
+        break;
+      case FAIL:
+        default:
+          throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION")); 
     }
   }
 

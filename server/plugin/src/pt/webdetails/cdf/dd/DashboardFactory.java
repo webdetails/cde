@@ -14,12 +14,13 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
-import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator.PathParams;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
+import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 
 /**
  *
@@ -154,9 +155,9 @@ public class DashboardFactory
   protected Dashboard getDashboardFromCache(DashboardCacheKey key)
   {
     Dashboard dashboard;
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
+    RepositoryAccess repository = RepositoryAccess.getRepository();
+    
     try
     {
       Cache cache = getCache();
@@ -170,9 +171,9 @@ public class DashboardFactory
         dashboard = (Dashboard) cacheElement.getValue();
       }
       logger.info("Got dashboard from cache");
-      ISolutionFile dash = solutionRepository.getSolutionFile(key.getCdfde(), 0);
+      ISolutionFile dash = repository.getSolutionFile(key.getCdfde(), FileAccess.READ) ;// was NO_PERM=0;
       ISolutionFile templ = key.getTemplate() == null ? null
-              : solutionRepository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + key.getTemplate(), 0);
+              : repository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + key.getTemplate(), FileAccess.READ);
 
       /* Cache is invalidated if dashboard or template have changed since the
        * the cache was loaded, or at midnight every day, because of dynamic

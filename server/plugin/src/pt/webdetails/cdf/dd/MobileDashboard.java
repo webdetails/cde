@@ -10,15 +10,12 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
-import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.render.RenderComponents;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import pt.webdetails.cdf.dd.render.RenderMobileLayout;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
  *
@@ -38,9 +35,7 @@ public class MobileDashboard extends AbstractDashboard
   public MobileDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
   {
     super(pathParams, requestParams);
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository();
 
     final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
     final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
@@ -50,7 +45,7 @@ public class MobileDashboard extends AbstractDashboard
 
     try
     {
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
+      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation));
 
       json.put("settings", getWcdf().toJSON());
       final JXPathContext doc = JXPathContext.newContext(json);

@@ -12,9 +12,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -23,6 +20,7 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
  *
@@ -87,7 +85,7 @@ public class CdwFile
     setParams(chart, chartDefinition.getParameters());
   }
 
-  public void writeFile(String path, String name)
+  public boolean writeFile(String path, String name)
   {
     try
     {
@@ -101,14 +99,23 @@ public class CdwFile
       LSSerializer writer = impl.createLSSerializer();
       writer.write(root, output);
       outputWriter.flush();
-
-      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, name.replaceAll("cdfde$", "cdw"), outputWriter.toString().getBytes(ENCODING), true);
+      
+      byte[] fileContents = outputWriter.toString().getBytes(ENCODING);
+      name = name.replaceAll("cdfde$", "cdw");
+      
+      switch(RepositoryAccess.getRepository().publishFile(path, name, fileContents, true)){
+        case FAIL:
+          logger.error("Could not save " + name);
+          return false;
+        case OK:
+          return true;
+      }
     }
     catch (Exception e)
     {
       logger.error("Failed to export cdw file: " + e.getCause().getMessage());
     }
+    return false;
   }
 
   private void setParams(Element chart, Map<String, String> parameters)

@@ -16,8 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.RenderComponents;
 import pt.webdetails.cdf.dd.render.RenderLayout;
@@ -25,6 +23,7 @@ import pt.webdetails.cdf.dd.render.StringFilter;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 // Imports for the cache
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -64,7 +63,8 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   private void construct(String wcdfPath)
   {
     IPentahoSession userSession = PentahoSessionHolder.getSession();
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
     this.dashboardLocation = DashboardDesignerContentGenerator.getStructureRelativePath(wcdfPath);
     XmlStructure structure = new XmlStructure(userSession);
 
@@ -118,21 +118,17 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
       this.templateFile = null;
     }
   }
-
-//  private JXPathContext openDashboardAsJXPathContext(final ISolutionRepository solutionRepository) throws IOException, FileNotFoundException {
-//    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
-//
-//    json.put("settings", wcdf.toJSON());
-//    final JXPathContext doc = JXPathContext.newContext(json);
-//    return doc;
-//  }
   
-  public static JXPathContext openDashboardAsJXPathContext(ISolutionRepository solutionRepository, String dashboardLocation, WcdfDescriptor wcdf) 
-      throws IOException, FileNotFoundException 
+  public static JXPathContext openDashboardAsJXPathContext(RepositoryAccess solutionRepository, String dashboardLocation, WcdfDescriptor wcdf)
+      throws IOException, FileNotFoundException
   {
-    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation, true, ISolutionRepository.ACTION_EXECUTE));
+    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation));
+    
+    if (wcdf != null)
+    {
+      json.put("settings", wcdf.toJSON());
+    }
 
-    if(wcdf != null) json.put("settings", wcdf.toJSON());
     final JXPathContext doc = JXPathContext.newContext(json);
     return doc;
   }

@@ -11,12 +11,12 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.io.IOUtils;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.core.system.StandaloneSession;
 import org.pentaho.platform.util.logging.Logger;
 import org.pentaho.platform.util.messages.LocaleHelper;
 import org.pentaho.platform.util.messages.MessageUtil;
+
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
  * Utility class for internationalization
@@ -35,7 +35,7 @@ public class Messages {
       InputStream in = null;
         try {
           String messagesPath = "system/"+DashboardDesignerContentGenerator.PLUGIN_NAME+"/lang/messages.properties";//$NON-NLS-1$ //$NON-NLS-2$
-          in = PentahoSystem.get(ISolutionRepository.class, session).getResourceInputStream(messagesPath, true, ISolutionRepository.ACTION_EXECUTE); 
+          in = RepositoryAccess.getRepository(session).getResourceInputStream(messagesPath) ; 
           bundle = new PropertyResourceBundle( in );
           Messages.locales.put(locale, bundle);
         } catch (Exception e) {
