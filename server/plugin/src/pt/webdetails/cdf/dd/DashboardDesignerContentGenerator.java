@@ -53,6 +53,8 @@ import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
+import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 import pt.webdetails.cpf.PluginUtils;
 
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
@@ -172,7 +174,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
     final OutputStream out = contentItem.getOutputStream(null);
 
-    //final String action = pathParams.getStringParameter(PathParams.PATH, null).split("/")[1].toLowerCase();
     
     try
     {
@@ -226,7 +227,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
     final String path = ((String) pathParams.getParameter(PathParams.FILE)).replaceAll("cdfde", "wcdf");
-    if (pathParams.hasParameter(PathParams.PATH) && !hasAccess(out, path, ISolutionRepository.ACTION_UPDATE))
+    if (pathParams.hasParameter(PathParams.PATH) && !RepositoryAccess.getRepository(userSession).hasAccess(path, FileAccess.EXECUTE))
     {
       final HttpServletResponse response = getResponse();
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -290,7 +291,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   public void render(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
     // Check security
-    if (!hasAccess(out, getWcdfRelativePath(pathParams), ISolutionRepository.ACTION_EXECUTE))
+    if ( !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(pathParams), FileAccess.EXECUTE))
     {
       out.write("Access Denied".getBytes(ENCODING));
       return;
@@ -316,18 +317,6 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
     logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     CpfAuditHelper.endAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
-  }
-
-  private boolean hasAccess(final OutputStream out, final String path, final int actionUpdate)
-          throws IOException
-  {
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    if (solutionRepository.getSolutionFile(path, actionUpdate) == null)
-    {
-      return false;
-    }
-    return true;
   }
   
   private HttpServletResponse getResponse(){
@@ -522,10 +511,8 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final long start = System.currentTimeMillis();        
     UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "edit", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
-    
-    IParameterProvider pathParams = parameterProviders.get("path");
     boolean debugMode = requestParams.hasParameter("debug") && requestParams.getParameter("debug").toString().equals("true");
-    if (requestParams.hasParameter("path") && !hasAccess(out, getWcdfRelativePath(requestParams), ISolutionRepository.ACTION_UPDATE))
+    if (requestParams.hasParameter("path") && !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(requestParams), FileAccess.EDIT))
     {
       out.write("Access Denied".getBytes(ENCODING));
 
@@ -553,6 +540,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
       tokens.put(DESIGNER_STYLES_TAG, "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />");
       tokens.put(DESIGNER_SCRIPTS_TAG, "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>");
     }
+    IParameterProvider pathParams = parameterProviders.get("path");
     tokens.put(DESIGNER_CDF_TAG, DashboardDesignerContentGenerator.getCdfIncludes("empty", "desktop", debugMode, null, DashboardDesignerContentGenerator.getScheme(pathParams)));
     tokens.put(FILE_NAME_TAG, getStructureRelativePath(requestParams));
     tokens.put(SERVER_URL_TAG, SERVER_URL_VALUE);
@@ -864,7 +852,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
     else
     {//error
-      IOUtils.write("error saving file " + path, out);//TODO:...
+      IOUtils.write("error saving file " + path, out);
     }
   }
 

@@ -11,8 +11,6 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import pt.webdetails.cdf.dd.CdfStyles;
 import pt.webdetails.cdf.dd.Messages;
@@ -23,13 +21,15 @@ import java.io.*;
 import java.util.HashMap;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
 import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
+import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.RepositoryAccess.SaveFileStatus;
 
 @SuppressWarnings("unchecked")
 public class XmlStructure implements IStructure
 {
 
   private IPentahoSession userSession = null;
-  public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
+//  public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
   private static final String ENCODING = "UTF-8";
 
   public XmlStructure(IPentahoSession userSession)
@@ -38,15 +38,15 @@ public class XmlStructure implements IStructure
 
   }
 
-  public void delete(HashMap parameters) throws Exception
+  public void delete(@SuppressWarnings("rawtypes") HashMap parameters) throws Exception
   {
 
     System.out.println("deleting File:" + (String) parameters.get("file"));
 
     //1. Delete File
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    if (!solutionRepository.removeSolutionFile((String) parameters.get("file")))
-    {
+    
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    if(!solutionRepository.removeFile((String) parameters.get("file"))){
       throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
 
@@ -65,10 +65,10 @@ public class XmlStructure implements IStructure
     try
     {
       //1. Get file
-      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+      RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
       if (solutionRepository.resourceExists(filePath))
       {
-        file = solutionRepository.getResourceInputStream(filePath, true);
+        file = solutionRepository.getResourceInputStream(filePath);
       }
       else
       {
@@ -106,7 +106,7 @@ public class XmlStructure implements IStructure
 
   public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
   {
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
     WcdfDescriptor wcdf = new WcdfDescriptor();
 
     if (solutionRepository.resourceExists(wcdfFilePath))
@@ -132,39 +132,39 @@ public class XmlStructure implements IStructure
     {
 
       //1. Build file parameters
-      String[] file = buildFileParameters(filePath);
-      String path = file[0];
-      String cdeFileName = file[1];
+      
+      String path = FilenameUtils.getFullPath(filePath);
+      String cdeFileName = FilenameUtils.getName(filePath);
 
       //2. Publish file to pentaho repository
-      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+      
+      RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
 
-      if (filePath.indexOf("_tmp.cdfde") == -1 && solutionRepository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
+      if (filePath.indexOf("_tmp.cdfde") == -1 && repository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
       {
         parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
         delete(parameters);
       }
 
-      //int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], json.toString(2).getBytes("UTF-8"), true);
-      int status = solutionRepository.publish(SOLUTION_PATH, path, cdeFileName, ((String) parameters.get("cdfstructure")).getBytes(ENCODING), true);
-
-      //3. Check publish result
-      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
-      {
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+      byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
+      switch( repository.publishFile(path, cdeFileName, fileContents, true)){
+        //3. Check publish result
+        case FAIL:
+          throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
 
+      RepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
       //4. Write CDA File
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
       String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
       if (cdaRenderer.isEmpty())
       {
-        deleteFileIfExists(solutionRepository, path, cdaFileName);
+        deleteFileIfExists(repository, path, cdaFileName);
       }
       else
       {
-        status = solutionRepository.publish(SOLUTION_PATH, path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
+        status = repository.publishFile(path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
       }
 
 
@@ -175,14 +175,15 @@ public class XmlStructure implements IStructure
       String cdwFileName = cdeFileName.replace(".cdfde", ".cdw");
       if (cdwRenderer.isEmpty())
       {
-        deleteFileIfExists(solutionRepository, path, cdwFileName);
+        deleteFileIfExists(repository, path, cdwFileName);
       }
       else
       {
         cdwRenderer.render(path, cdeFileName);
       }
+      
       //5. Check publish result again.
-      if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
+      if (status != SaveFileStatus.OK)
       {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
@@ -194,21 +195,18 @@ public class XmlStructure implements IStructure
 
   }
 
-  private void deleteFileIfExists(ISolutionRepository solutionRepository, String path, String fileName)
+  private void deleteFileIfExists(RepositoryAccess solutionRepository, String path, String fileName)
   {
     String fullName = path + fileName;
     fullName = fullName.replaceAll("//+", "/");
-    if (solutionRepository.resourceExists(fullName))
-    {
-      solutionRepository.removeSolutionFile(fullName);
-    }
+    solutionRepository.removeFileIfExists(fullName);
   }
 
   public void saveas(HashMap parameters) throws Exception
   {
 
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
+    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+    
     //1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
     String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
@@ -221,19 +219,15 @@ public class XmlStructure implements IStructure
 
     //final String filePath = URLDecoder.decode((String) parameters.get("file"), "ISO-8859-1"); // jquery takes care of the encoding for us
     final String filePath = (String) parameters.get("file");
-    final String[] file = buildFileParameters(filePath);
 
     //3. Publish new wcdf file
-    int status = solutionRepository.publish(SOLUTION_PATH, file[0], file[1], wcdfContentAsString.getBytes(ENCODING), true);
-    if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL)
-    {
-      //4. Save cdf structure
-      parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
-      save(parameters);
-    }
-    else
-    {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+    switch(repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true)){
+      case OK:
+        //4. Save cdf structure
+        parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
+        save(parameters);
+      case FAIL:
+        throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
   }
 
@@ -273,17 +267,12 @@ public class XmlStructure implements IStructure
     try
     {
 
-      //1. Build file parameters
-      String[] file = buildFileParameters(filePath);
-      String path = file[0];
-      String fileName = file[1];
-
-      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
-      if (solutionRepository.resourceExists(filePath))
+      RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+      
+      if (repository.resourceExists(filePath))
       {
 
-        Document wcdfDoc = solutionRepository.getResourceAsDocument(filePath);
+        Document wcdfDoc = repository.getResourceAsDocument(filePath);
         Node cdfNode = wcdfDoc.selectSingleNode("/cdf");
 
         //only override explicitly set elements, leave others as they are (initStyles will only set style)
@@ -308,18 +297,17 @@ public class XmlStructure implements IStructure
           setNodeValue(cdfNode, "rendererType", rendererType);
         }
 
-        int status = solutionRepository.publish(SOLUTION_PATH, path, fileName, wcdfDoc.asXML().getBytes(ENCODING), true);
-
-        if (status != ISolutionRepository.FILE_ADD_SUCCESSFUL)
-        {
-          throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
+        //Save
+        switch(repository.publishFile(filePath, wcdfDoc.asXML().getBytes(ENCODING), true)){
+          case FAIL:
+            throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
         }
+        
       }
       else
       {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
       }
-
 
     }
     catch (Exception e)
@@ -343,25 +331,4 @@ public class XmlStructure implements IStructure
 
   }
 
-  private String[] buildFileParameters(String filePath)
-  {
-    String path = FilenameUtils.getFullPath(filePath);
-    String fileName = FilenameUtils.getName(filePath);
-
-    return new String[]
-            {
-              path, fileName
-            };
-
-//    String[] result =
-//    {
-//      "", ""
-//    };
-//    String[] file = filePath.split("/");
-//    String fileName = file[file.length - 1];
-//    String path = filePath.substring(0, filePath.indexOf(fileName));
-//    result[0] = path;
-//    result[1] = fileName;
-//    return result;
-  }
 }
