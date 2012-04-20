@@ -15,19 +15,18 @@ var SiteMapComponent = BaseComponent.extend({
     update : function() {
 
         if(typeof this.siteMapSelectedParameter !== "undefined" && this.siteMapSelectedParameter != ""){
-            this.selected = Dashboards.ev(window[this.siteMapSelectedParameter])
+            this.selected = Dashboards.getParameterValue( this.siteMapSelectedParameter )
         }
 
-        this.siteMapParameter = Dashboards.ev(window[this.siteMapParameter]); // Evaluate the parameter
+        var paramVal = Dashboards.getParameterValue( this.siteMapParameter ); // Evaluate the parameter
 
         // Dashboards.log("Sitemap structure length: " + siteMapParameter.length + "; Selected: " + this.selected);
-        this.ph = $("#" + this.htmlObject);
+        this.ph = $("#" + this.htmlObject).empty();
 
-        this.generateUl(this.ph, this.siteMapParameter, 0);
+        this.generateUl(this.ph, paramVal , 0);
 
         // mark as selected all ancestors
         this.ph.find("li.siteMapSelected").parents("li").addClass("siteMapSelected");
-
 
     },
 
