@@ -77,7 +77,7 @@ public class DependenciesManager
     public final static String CDF = "CDF";
     public final static String CDF_CSS = "CDF-CSS";
     public final static String CDF_RAW = "CDF-RAW";
-    public final static String CDFDD = "CDF-RAW";
+    public final static String CDFDD = "CDFDD";
   }
 
   public DependenciesEngine getEngine(String id)
