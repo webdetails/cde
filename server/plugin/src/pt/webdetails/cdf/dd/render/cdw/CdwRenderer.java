@@ -53,6 +53,7 @@ public class CdwRenderer
     CdwFile cdw = new CdwFile();
     cdw.populateHeaders(descriptor);
 
+    @SuppressWarnings("unchecked")
     Iterator<Pointer> charts = document.iteratePointers(CDW_ELEMENTS_JXPATH);
     while (charts.hasNext())
     {

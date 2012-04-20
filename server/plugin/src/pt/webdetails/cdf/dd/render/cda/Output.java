@@ -42,11 +42,12 @@ public class Output implements CdaElementRenderer
     Element output = doc.createElement("Output");
     output.setAttribute("mode", mode.toLowerCase());
     dataAccess.appendChild(output);
-    Iterator paramIterator = columns.iterator();
+    @SuppressWarnings("unchecked")
+    Iterator<String> paramIterator = columns.iterator();
     StringBuilder indexes = new StringBuilder();
     while (paramIterator.hasNext())
     {
-      String col = (String) paramIterator.next();
+      String col = paramIterator.next();
       indexes.append(col);
       if (paramIterator.hasNext())
       {

@@ -228,30 +228,30 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
       };
       if (debug)
       {
-        dependencies = DependenciesManager.getInstance().getEngine("CDF").getDependencies(js);
-        styles = DependenciesManager.getInstance().getEngine("CDF-CSS").getDependencies(css);
+        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getDependencies(js);
+        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getDependencies(css);
       }
       else
       {
-        dependencies = DependenciesManager.getInstance().getEngine("CDF").getPackagedDependencies(js);
-        styles = DependenciesManager.getInstance().getEngine("CDF-CSS").getPackagedDependencies(css);
+        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getPackagedDependencies(js);
+        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getPackagedDependencies(css);
       }
     }
     else
     {
       if (debug)
       {
-        dependencies = DependenciesManager.getInstance().getEngine("CDF").getDependencies();
-        styles = DependenciesManager.getInstance().getEngine("CDF-CSS").getDependencies();
+        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getDependencies();
+        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getDependencies();
       }
       else
       {
-        dependencies = DependenciesManager.getInstance().getEngine("CDF").getPackagedDependencies();
-        styles = DependenciesManager.getInstance().getEngine("CDF-CSS").getPackagedDependencies();
+        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getPackagedDependencies();
+        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getPackagedDependencies();
       }
     }
 
-    String raw = DependenciesManager.getInstance().getEngine("CDF-RAW").getDependencies();
+    String raw = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_RAW).getDependencies();
     return title + cdfDependencies + raw + dependencies + styles;
   }
 
