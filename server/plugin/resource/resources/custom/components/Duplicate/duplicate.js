@@ -48,12 +48,14 @@ var DuplicateComponent = BaseComponent.extend({
       var cName = this.components[c];
       cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
       var component = Dashboards.getComponent(cName);
-      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
-      var clone = component.clone(params,comps, htmlRemap);
-      clone.name = clone.name + suffix;
-      window[clone.name] = clone;
-      Dashboards.addComponents([clone]);
-      Dashboards.update(clone);
+      if (component) {
+	      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
+    	  var clone = component.clone(params,comps, htmlRemap);
+	      clone.name = clone.name + suffix;
+    	  window[clone.name] = clone;
+	      Dashboards.addComponents([clone]);
+    	  Dashboards.update(clone);
+      }
     }
   },
 
