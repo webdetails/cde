@@ -12,13 +12,11 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
  *
@@ -113,10 +111,14 @@ public class CggChart
   {
     try
     {
-      ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession());
       String fileName = this.chartName + CGG_EXTENSION;
       byte[] content = chartScript.toString().getBytes(DashboardDesignerContentGenerator.ENCODING);
-      solutionRepository.publish(PentahoSystem.getApplicationContext().getSolutionPath(""), path, fileName, content, true);
+      
+      switch( RepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
+        case FAIL:
+          logger.error("failed to write script file for " + chartName);
+      }
+
     }
     catch (Exception e)
     {
@@ -136,6 +138,7 @@ public class CggChart
   private void renderParameters(StringBuilder chartScript, JSONArray params)
   {
     parameters = new HashMap<String, String>();
+    @SuppressWarnings("unchecked")
     Iterator<JSONArray> it = params.iterator();
     while (it.hasNext())
     {

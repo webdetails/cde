@@ -7,8 +7,6 @@ package pt.webdetails.cdf.dd.render.cda;
 import java.util.Iterator;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.jxpath.JXPathContext;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -21,10 +19,11 @@ public class Keys implements CdaElementRenderer {
 
   public void renderInto(Element dataAccess) {
     JSONArray columns = JSONArray.fromObject(definition.getString("value"));
-    Iterator paramIterator = columns.iterator();
+    @SuppressWarnings("unchecked")
+    Iterator<String> paramIterator = columns.iterator();
     StringBuilder indexes = new StringBuilder();
     while (paramIterator.hasNext()) {
-      String col = (String) paramIterator.next();
+      String col = paramIterator.next();
       indexes.append(col);
       if (paramIterator.hasNext()) {
         indexes.append(",");

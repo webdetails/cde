@@ -15,6 +15,7 @@
 			<Property name='parameters'>parameterList</Property>
 			<Property>htmlObject</Property>
 			<Property>targetHtmlObject</Property>
+      <Property>targetContainer</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
 			<Property>listeners</Property>
@@ -59,6 +60,20 @@
             <DefaultValue></DefaultValue>
             <Description>Target HTML Object</Description>
             <Tooltip>HTML Object to duplicate</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>51</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>targetContainer</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Target Container HTML Object</Description>
+            <Tooltip>HTML Object where the duplicates will be inserted.</Tooltip>
             <InputType>String</InputType>
             <OutputType>String</OutputType>
             <Order>51</Order>

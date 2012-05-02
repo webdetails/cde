@@ -37,16 +37,20 @@ public class DependenciesEngine
   private String packagedPath;
   private String name;
 
-  public DependenciesEngine(String name, StringFilter format, String sourcePath, String type)
+  public DependenciesEngine(String name, StringFilter format, String sourcePath, Packager.Filetype type)
   {
     this.name = name;
-    packagedPath = type.toLowerCase() + "/" + name + "." + type.toLowerCase();
-    packager.registerPackage(name, Packager.Filetype.valueOf(type), rootdir, rootdir + "/" + packagedPath, (String[]) null);
+    packagedPath = type.toString().toLowerCase() + "/" + name + "." + type.toString().toLowerCase();
+    packager.registerPackage(name, type, rootdir, rootdir + "/" + packagedPath, (String[]) null);
     dependencyPool = new LinkedHashMap<String, Dependency>();
     this.format = format;
     this.sourcePath = sourcePath;
   }
 
+  public String getName(){
+    return name;
+  }
+  
   public String getPackagedDependencies()
   {
     return getPackagedDependencies(format);

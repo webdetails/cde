@@ -15,7 +15,7 @@ var DuplicateComponent = BaseComponent.extend({
     }
     Dashboards.duplicateIndex += 1;
     var dIdx = Dashboards.duplicateIndex,
-      suffix = "$" + dIdx;
+      suffix = "_" + dIdx;
     
     var params = {}
       $.each(this.parameters,function(i,p){
@@ -39,17 +39,23 @@ var DuplicateComponent = BaseComponent.extend({
       $e = $(e);
       $e.attr("id",$e.attr("id") + suffix);  
     });
-    newPh.insertAfter("#" + this.targetHtmlObject);
+    if (this.targetContainer){
+      newPh.appendTo( '#' + this.targetContainer);  
+    } else {
+      newPh.insertAfter("#" + this.targetHtmlObject);
+    }
     for(c in this.components) {
       var cName = this.components[c];
       cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
       var component = Dashboards.getComponent(cName);
-      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
-      var clone = component.clone(params,comps, htmlRemap);
-      clone.name = clone.name + suffix;
-      window[clone.name] = clone;
-      Dashboards.addComponents([clone]);
-      Dashboards.update(clone);
+      if (component) {
+	      htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
+    	  var clone = component.clone(params,comps, htmlRemap);
+	      clone.name = clone.name + suffix;
+    	  window[clone.name] = clone;
+	      Dashboards.addComponents([clone]);
+    	  Dashboards.update(clone);
+      }
     }
   },
 

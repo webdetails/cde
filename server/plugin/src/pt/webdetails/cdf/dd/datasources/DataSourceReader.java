@@ -10,13 +10,10 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
-import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.AbstractDashboard;
 import pt.webdetails.cdf.dd.util.XPathUtils;
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 public class DataSourceReader {
 
@@ -60,12 +57,10 @@ public class DataSourceReader {
   }
   
   public static List<CdaDataSource> getCdaDataSources(String dashboard){
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
-    final ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
 
     JXPathContext context;
     try {
-      context = AbstractDashboard.openDashboardAsJXPathContext(solutionRepository, dashboard, null);
+      context = AbstractDashboard.openDashboardAsJXPathContext(RepositoryAccess.getRepository(), dashboard, null);
     } catch (FileNotFoundException e) {
       return null;
     } catch (IOException e) {

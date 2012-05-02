@@ -4,11 +4,8 @@
  */
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -28,10 +25,4 @@ public class CompoundComponent implements CdaElementRenderer {
     this.definition = definition;
   }
 
-  private static String capitalize(String s) {
-    if (s.length() == 0) {
-      return s;
-    }
-    return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-  }
 }

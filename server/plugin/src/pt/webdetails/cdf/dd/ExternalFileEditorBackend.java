@@ -6,11 +6,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.api.repository.ISolutionRepositoryService;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
+
+import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
  * External Editor (stub)
@@ -28,11 +26,11 @@ public class ExternalFileEditorBackend {
       return null;
     }
     
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
+    RepositoryAccess repository = RepositoryAccess.getRepository(userSession); 
     
-    if(solutionRepository.resourceExists(filePath))
+    if(repository.resourceExists(filePath))
     {
-      return solutionRepository.getResourceAsString(filePath, ISolutionRepository.ACTION_EXECUTE);
+      return repository.getResourceAsString(filePath);
     }
     else 
     {//TODO: better treatment needed here
@@ -41,35 +39,15 @@ public class ExternalFileEditorBackend {
   }
   
   protected static boolean canEdit(final String filePath, IPentahoSession userSession){
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-    
-    //first check read permission
-    ISolutionFile file = solutionRepository.getSolutionFile(filePath, ISolutionRepository.ACTION_EXECUTE);
-    
-    if(solutionRepository.resourceExists(filePath))
-    {
-      return solutionRepository.hasAccess(file,ISolutionRepository.ACTION_UPDATE);
-    }
-    else 
-    {
-      return solutionRepository.hasAccess(file,ISolutionRepository.ACTION_CREATE);
-    }
+    return RepositoryAccess.getRepository(userSession).canWrite(filePath);
   }
   
   protected static boolean createFolder(String path, IPentahoSession userSession) throws IOException, PentahoAccessControlException
   {
-    String[] folder = StringUtils.split(path, "/");
-    String folderName = folder[folder.length - 1];
-    String folderPath = path.substring(0, path.indexOf(folderName));
 
-
-
-    ISolutionRepositoryService service = PentahoSystem.get(ISolutionRepositoryService.class, userSession);
-
-
-    boolean status = service.createFolder(userSession, "", folderPath, folderName, "");
-
-
+    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);    
+    boolean status = repository.createFolder(path);
+    
     if (status)
     {
       return true;
@@ -84,32 +62,22 @@ public class ExternalFileEditorBackend {
   
   protected static boolean writeFile(String path, String solution, IPentahoSession userSession, String contents) throws IOException, PentahoAccessControlException //TODO:
   {    
-    String[] file = StringUtils.split(path, "/");
-    String fileName = file[file.length - 1];
-    String filePath = path.substring(0, path.indexOf(fileName));
-        
-    String rootDir = PentahoSystem.getApplicationContext().getSolutionPath("");
-
-    ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, userSession);
-
-    final boolean resourceExists = solutionRepository.resourceExists(path);
-    // ok if either new file or has update permissions
-    if (!resourceExists || solutionRepository.getSolutionFile(path, ISolutionRepository.ACTION_CREATE) != null)
-    {            
-      int status = solutionRepository.publish(rootDir, filePath, fileName, contents.getBytes(ENCODING), true);
-      if (status == ISolutionRepository.FILE_ADD_SUCCESSFUL)
-      {
-        return true;
-      }
-      else
-      {
-        logger.error("writeFile: saving " + file + " returned " + new Integer(status).toString());//TODO: proper status?
-        return false;
+    
+    RepositoryAccess repository = RepositoryAccess.getRepository(userSession); 
+    
+    if(repository.canWrite(path)){
+      switch(repository.publishFile(path, contents.getBytes(ENCODING), true)){
+        case OK:
+          return true;
+        case FAIL:
+          default:
+          logger.error("writeFile: failed saving " + path);
+          return false;
       }
     }
     else
     {
-      logger.error("writeFile: no permissions to write file " + file );
+      logger.error("writeFile: no permissions to write file " + path );
       return false;
     }
   }
