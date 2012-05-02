@@ -226,6 +226,7 @@ public class XmlStructure implements IStructure
         //4. Save cdf structure
         parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
         save(parameters);
+        break;
       case FAIL:
         throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
