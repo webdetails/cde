@@ -21,6 +21,7 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 /**
  * Attempt to centralize CTools repository access
  */
+@SuppressWarnings("deprecation")
 public class RepositoryAccess {
   
   private static Log logger = LogFactory.getLog(RepositoryAccess.class);
@@ -68,7 +69,6 @@ public class RepositoryAccess {
     return publishFile(PentahoSystem.getApplicationContext().getSolutionPath(""), solutionPath, fileName, data, overwrite);
   }
   
-  @SuppressWarnings("deprecation")
   public SaveFileStatus publishFile(String baseUrl, String path, String fileName, byte[] data, boolean overwrite) {
     try {
       int status = getSolutionRepository().publish(baseUrl, path, fileName, data, overwrite);
@@ -88,7 +88,6 @@ public class RepositoryAccess {
     }
   }
   
-  @SuppressWarnings("deprecation")
   public boolean removeFile(String solutionPath){
      return getSolutionRepository().removeSolutionFile(solutionPath);
   }
@@ -97,12 +96,10 @@ public class RepositoryAccess {
     return !resourceExists(solutionPath) || removeFile(solutionPath);
   }
   
-  @SuppressWarnings("deprecation")
   public boolean resourceExists(String solutionPath){
     return getSolutionRepository().resourceExists(solutionPath, ISolutionRepository.ACTION_EXECUTE);
   }
   
-  @SuppressWarnings("deprecation")
   public boolean createFolder(String solutionFolderPath) throws IOException {
     solutionFolderPath = FilenameUtils.getFullPathNoEndSeparator(solutionFolderPath);//strip trailing / if there
     String folderName = FilenameUtils.getBaseName(solutionFolderPath);
@@ -110,7 +107,6 @@ public class RepositoryAccess {
     return getSolutionRepositoryService().createFolder(userSession, "", folderPath, folderName, "");
   }
   
-  @SuppressWarnings("deprecation")
   public boolean canWrite(String filePath){
     ISolutionRepository solutionRepository = getSolutionRepository();
     //first check read permission
@@ -126,17 +122,14 @@ public class RepositoryAccess {
     }
   }
   
-  @SuppressWarnings("deprecation")
   public boolean hasAccess(String filePath, FileAccess access){
     return getSolutionRepository().getSolutionFile(filePath, access.toResourceAction()) != null;
   }
   
-  @SuppressWarnings("deprecation")
   private ISolutionRepository getSolutionRepository() {
     return PentahoSystem.get(ISolutionRepository.class, userSession);
   }
   
-  @SuppressWarnings("deprecation")
   private ISolutionRepositoryService getSolutionRepositoryService(){
     return PentahoSystem.get(ISolutionRepositoryService.class, userSession);
   }
@@ -157,7 +150,6 @@ public class RepositoryAccess {
     return getResourceInputStream(filePath, fileAccess, true);
   }
   
-  @SuppressWarnings("deprecation")
   public InputStream getResourceInputStream(String filePath, FileAccess fileAccess, boolean getLocalizedResource) throws FileNotFoundException{
     return getSolutionRepository().getResourceInputStream(filePath,getLocalizedResource, fileAccess.toResourceAction());
   }
@@ -166,17 +158,14 @@ public class RepositoryAccess {
     return getResourceAsDocument(solutionPath, FileAccess.READ);
   }
   
-  @SuppressWarnings("deprecation")
   public Document getResourceAsDocument(String solutionPath, FileAccess fileAccess) throws IOException {
     return getSolutionRepository().getResourceAsDocument(solutionPath, fileAccess.toResourceAction());
   }
 
-  @SuppressWarnings("deprecation")
   public String getResourceAsString(String solutionPath) throws IOException {
    return getSolutionRepository().getResourceAsString(solutionPath, FileAccess.READ.toResourceAction());
   }
 
-  @SuppressWarnings("deprecation")
   public ISolutionFile getSolutionFile(String solutionPath, FileAccess access) {
     return getSolutionRepository().getSolutionFile(solutionPath, access.toResourceAction());
   }
