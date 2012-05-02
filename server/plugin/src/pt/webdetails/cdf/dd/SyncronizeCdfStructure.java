@@ -4,6 +4,7 @@ import org.pentaho.platform.api.engine.ICacheManager;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+
 import pt.webdetails.cdf.dd.structure.StructureException;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -74,14 +75,12 @@ public class SyncronizeCdfStructure
     {
       if (e.getCause() != null)
       {
-        if (e.getCause().getClass().equals(StructureException.class))
+        if (e.getCause() instanceof StructureException)
         {
           JsonUtils.buildJsonResult(out, false, e.getCause().getMessage());
         }
-
-        throw new Exception(e.getCause().getMessage());
       }
-      throw new Exception(e.getMessage());
+      throw e;
     }
 
 
