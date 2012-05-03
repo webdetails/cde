@@ -33,6 +33,10 @@
         var params = {};
         var fileName = null;
         var isDirty = false;
+        var listeners = {
+          onStatusUpdate: null,
+          onSave: null,
+        };
         
         var getUrlParams = function() {
           
@@ -68,19 +72,27 @@
         
         var updateStatus = function(){
            var info = fileName + (editor.isReadOnly()? ' (readonly)' : '') + (isDirty? '*' : '');
+           //if(!params.editorOnly){
             $('#infoArea').text(info);
+           //}
+           if(typeof(listeners.onStatusUpdate) == 'function'){
+            listeners.onStatusUpdate(isDirty);
+           }
         };
         
         var setDirty = function(dirty){
             var wasDirty = isDirty;
             isDirty = dirty;
-            if(!wasDirty && isDirty){
-              setExitNotification(true);
+            
+            if(isDirty != wasDirty){
+                if(!wasDirty && isDirty){
+                  setExitNotification(true);
+                }
+                else if (wasDirty && !isDirty){
+                  setExitNotification(false);
+                }
+                updateStatus();
             }
-            else if (wasDirty && !isDirty){
-              setExitNotification(false);
-            }
-            updateStatus();
         };
         
         var setExitNotification= function(enable){
@@ -102,7 +114,7 @@
   </head>
   <body>
 
-    <div id="btnArea"> <button id="saveBtn" onclick ="save()"> Save </button> <span id="infoArea"/> </div>
+    <div id="btnArea"> <button id="saveBtn" onclick ="save()"> Save </button></div> <span id="infoArea"/> 
     <pre style="position:relative;height:600px;width:800px;" id="editArea">
     </pre>
 
@@ -110,6 +122,10 @@
         window.onload = function() {
             params = getUrlParams();
             fileName = params.path;
+            
+            if(params.editorOnly){
+                $('#btnArea').css('display','none');
+            }
             
             if(params.height){
                 $('#editArea').height(params.height);
