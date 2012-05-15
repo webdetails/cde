@@ -12,6 +12,7 @@ import org.dom4j.Document;
 import org.pentaho.platform.api.engine.IPentahoAclEntry;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
+import org.pentaho.platform.api.engine.ISolutionFilter;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.ISolutionRepository;
 import org.pentaho.platform.api.repository.ISolutionRepositoryService;
@@ -33,10 +34,13 @@ public class RepositoryAccess {
     EDIT,
     EXECUTE,
     DELETE,
-    CREATE;
+    CREATE, 
+    NONE;
     
     public int toResourceAction(){
       switch(this){
+        case NONE:
+          return IPentahoAclEntry.PERM_NOTHING;
         case CREATE:
           return IPentahoAclEntry.PERM_CREATE;
         case DELETE:
@@ -160,6 +164,10 @@ public class RepositoryAccess {
   
   public Document getResourceAsDocument(String solutionPath, FileAccess fileAccess) throws IOException {
     return getSolutionRepository().getResourceAsDocument(solutionPath, fileAccess.toResourceAction());
+  }
+  
+  public Document getFullSolutionTree(FileAccess access, ISolutionFilter filter ){
+    return getSolutionRepository().getFullSolutionTree(access.toResourceAction(), filter);
   }
 
   public String getResourceAsString(String solutionPath) throws IOException {

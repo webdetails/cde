@@ -33,7 +33,8 @@ public class CpfAuditHelper {
 
     StringBuilder sb = new StringBuilder();
     if (requestParams != null) {
-      Iterator iter = requestParams.getParameterNames();
+      @SuppressWarnings("unchecked")
+      Iterator<String> iter = requestParams.getParameterNames();
       while (iter.hasNext()) {
         String paramName = iter.next().toString();
         sb.append(paramName).append("=").append(requestParams.getStringParameter(paramName, "novalue")).append(";");

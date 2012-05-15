@@ -1,6 +1,5 @@
 package pt.webdetails.cdf.dd;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -30,10 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.pentaho.platform.api.engine.IContentGenerator;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.api.repository.IContentItem;
@@ -55,7 +51,7 @@ import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
-import pt.webdetails.cpf.PluginUtils;
+import pt.webdetails.cpf.InterPluginCall;
 
 public class DashboardDesignerContentGenerator extends BaseContentGenerator
 {
@@ -251,18 +247,19 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     if (engine.getCdaDefinitions() == null)
     {
       // We want to acquire a handle for the CDA plugin.
-      JSON json = getCdaDefs();
+      JSON json = getCdaDefs(false);
       engine.parseCdaDefinitions(json);
     }
     // Get and output the definitions
     out.write(engine.getDefinitions().getBytes());
   }
-
-  public void getcomponentimplementations(IParameterProvider pathParams, OutputStream out) throws Exception
-  {
-    ComponentManager engine = ComponentManager.getInstance();
-    out.write(engine.getImplementations().getBytes());
-  }
+  
+//  //TODO: not used?
+//  public void getcomponentimplementations(IParameterProvider pathParams, OutputStream out) throws Exception
+//  {
+//    ComponentManager engine = ComponentManager.getInstance();
+//    out.write(engine.getImplementations().getBytes());
+//  }
 
   /**
    * Re-initializes the designer back-end.
@@ -273,7 +270,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
   {
     DependenciesManager.refresh();
     ComponentManager.getInstance().refresh();
-    ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs());
+    ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs(true));
   }
 
   public void getcontent(IParameterProvider pathParams, OutputStream out) throws Exception
@@ -732,72 +729,23 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
 
   public void listdataaccesstypes(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cda = pluginManager.getContentGenerator("cda", userSession);
-
-    cda.setParameterProviders(parameterProviders);
-
-    cda.setOutputHandler(outputHandler);
-    ArrayList<Object> output = new ArrayList<Object>();
-    HashMap<String, Object> channel = new HashMap<String, Object>();
-
-    ByteArrayOutputStream outputStream = null;
-    try
-    {
-      outputStream = new ByteArrayOutputStream();
-      channel.put("output",
-              outputStream);
-      output.add(channel);
-      channel.put(
-              "method", "listDataAccessTypes");
-      cda.setCallbacks(output);
-      cda.createContent();
-      out.write(outputStream.toString().getBytes(ENCODING));
-      //JSON json = JSONSerializer.toJSON(outputStream.toString());
-    }
-    finally
-    {
-      IOUtils.closeQuietly(outputStream);
-    }
+    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(false);
+    cdaListDataAccessTypes.setOutputStream(out);
+    cdaListDataAccessTypes.run();
   }
 
-  public JSON getCdaDefs() throws Exception
+
+  private JSON getCdaDefs(boolean refresh) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cda = pluginManager.getContentGenerator("cda", userSession);
-    // If CDA is present, we're going to produce components from the output of its discovery service
-    if (cda != null)
-    {
-      // Basic setup
-      cda.setParameterProviders(parameterProviders);
-      cda.setOutputHandler(outputHandler);
-      // We need to arrange for a callback object that will serve as a communications channel
-      ArrayList<Object> output = new ArrayList<Object>();
-      HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = null;
-      try
-      {
-        outputStream = new ByteArrayOutputStream();
-        // The outputstream provides CDA with a sink we can later retrieve data from
-        channel.put("output", outputStream);
-        // Setup the desired function to call on CDA's side of things.
-        channel.put("method", "listDataAccessTypes");
-        // Call CDA
-        output.add(channel);
-        cda.setCallbacks(output);
-        cda.createContent();
-        // pass the output to the ComponentManager
-        return JSONSerializer.toJSON(outputStream.toString());
-      }
-      finally
-      {
-        IOUtils.closeQuietly(outputStream);
-      }
-    }
-    else
-    {
-      return null;
-    }
+    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
+    return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
+  }
+  
+  private InterPluginCall getCdaListDataAccessTypesCall(boolean refresh){
+    InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
+    cdaListDataAccessTypes.setSession(userSession);
+    cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
+    return cdaListDataAccessTypes;
   }
 
   /**
@@ -896,9 +844,11 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
   }
 
-  static String getCdfContext(IParameterProvider params)
+  static String getCdfContext(IParameterProvider requestParameterProvider)
   {
-    return PluginUtils.callPlugin("pentaho-cdf", "Context", params);
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF,"Context");
+    cdfContext.setRequestParameters(requestParameterProvider);
+    return cdfContext.call();
   }
 
   static String getCdfIncludes(String dashboard, IParameterProvider pathParams) throws Exception
@@ -921,8 +871,9 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       params.put("root", absRoot);
     }
-
-    return PluginUtils.callPlugin("pentaho-cdf", "GetHeaders", params);
+    
+    InterPluginCall cdfGetHeaders = new InterPluginCall(InterPluginCall.CDF, "GetHeaders", params); 
+    return cdfGetHeaders.call();
   }
 
   private void setResponseHeaders(final String mimeType, final int cacheDuration, final String attachmentName)
