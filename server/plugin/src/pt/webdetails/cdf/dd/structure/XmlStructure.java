@@ -24,13 +24,13 @@ import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.SaveFileStatus;
 
-@SuppressWarnings("unchecked")
 public class XmlStructure implements IStructure
 {
 
-  private IPentahoSession userSession = null;
-//  public static final String SOLUTION_PATH = PentahoSystem.getApplicationContext().getSolutionPath("");
   private static final String ENCODING = "UTF-8";
+  
+  private IPentahoSession userSession = null;
+
 
   public XmlStructure(IPentahoSession userSession)
   {
@@ -38,7 +38,7 @@ public class XmlStructure implements IStructure
 
   }
 
-  public void delete(@SuppressWarnings("rawtypes") HashMap parameters) throws Exception
+  public void delete(HashMap<String, Object> parameters) throws StructureException
   {
 
     System.out.println("deleting File:" + (String) parameters.get("file"));
@@ -52,7 +52,7 @@ public class XmlStructure implements IStructure
 
   }
 
-  public JSON load(HashMap parameters) throws Exception
+  public JSON load(HashMap<String, Object> parameters) throws Exception
   {
 
     String filePath = (String) parameters.get("file");
@@ -122,7 +122,7 @@ public class XmlStructure implements IStructure
     return wcdf;
   }
 
-  public void save(HashMap parameters) throws Exception
+  public void save(HashMap<String, Object> parameters) throws Exception
   {
 
     String filePath = (String) parameters.get("file");
@@ -202,7 +202,7 @@ public class XmlStructure implements IStructure
     solutionRepository.removeFileIfExists(fullName);
   }
 
-  public void saveas(HashMap parameters) throws Exception
+  public void saveas(HashMap<String, Object> parameters) throws Exception
   {
 
     RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
@@ -232,7 +232,7 @@ public class XmlStructure implements IStructure
     }
   }
 
-  public void newfile(HashMap parameters) throws Exception
+  public void newfile(HashMap<String, Object> parameters) throws Exception
   {
 
     //1. Read Empty Structure
@@ -253,7 +253,7 @@ public class XmlStructure implements IStructure
 
   }
 
-  public void savesettings(HashMap parameters) throws Exception
+  public void savesettings(HashMap<String, Object> parameters) throws Exception
   {
 
     String filePath = (String) parameters.get("file");

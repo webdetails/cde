@@ -88,7 +88,7 @@ CdaCacheCleanerComponent = BaseComponent.extend({
           selector += ' file[name="' + fileName + '"]';
         }
       }
-      var result = this.repository.find(selector).attr('description');
+      var result = this.repository.find(selector).attr('localized-name');
       if(result) return result;
       else return pathElements[pathElements.length - 1];
   },

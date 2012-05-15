@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -37,7 +38,6 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   /* CONSTANTS */
 
   private static final long serialVersionUID = 1L;
-
   // Dashboard rendering
   private static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
   private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
@@ -128,7 +128,6 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     {
       json.put("settings", wcdf.toJSON());
     }
-
     final JXPathContext doc = JXPathContext.newContext(json);
     return doc;
   }
@@ -140,9 +139,18 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
 
   public String render(IParameterProvider params)
   {
-    return this.template.replaceAll(DASHBOARD_HEADER_TAG, Matcher.quoteReplacement(this.header + DashboardDesignerContentGenerator.getCdfContext(params))) // Replace the Header
-            .replaceAll(DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement(this.footer)) // And the Footer
-            .replaceAll(DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement(this.content)); // And even the content!
+    String context = DashboardDesignerContentGenerator.getCdfContext(params);
+    logger.info("[Timing] Starting render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    String quotedFooter = Matcher.quoteReplacement(this.footer),
+            quotedHeader = Matcher.quoteReplacement(this.header + context),
+            quotedContent = Matcher.quoteReplacement(this.content);
+    logger.info("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+
+    String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header
+            .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
+            .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
+    logger.info("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    return result;
   }
 
   protected String replaceTokens(String content, boolean absolute, String absRoot)

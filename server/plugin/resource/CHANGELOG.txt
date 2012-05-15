@@ -1,17 +1,16 @@
 12.05.15
 	* Added SiteMap component
-	* Changed duplicate component prefix. Added target container property to duplicate component.
+	* NewMapComponent was using cdw files for rendering cgg markers. Switched to direct js support since CGG no longer supports CDW	
+	* Added target container property to duplicate component.
 	* CDA cache clean folders and dashboards show the names they have in PUC
-	* +getResponse() 
-	* cdaCacheCleaner: use localized-name
+	* Added getResponse() to ContentGenerator
 	* cleanup: unused imports, warnings, some frequent strings
 	* first step at centralization/normalization of repository access
 	* Solved bug in ie8
 	* SyncronizedCdfStructure was hiding stack trace; XmlStructure warnings 
-	* Revert popup component to using _ for duplicates
 	* ext-editor: +listener, optional button
 	* SiteMap passes li to action function.
-	* NewMapComponent was using cdw files for rendering cgg markers. Switched to direct js support since CGG no longer supports CDW
+
 
 12.04.09
 
