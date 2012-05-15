@@ -292,7 +292,7 @@ var CdaPathRenderer = ResourceFileRenderer.extend({
     return file;
   }
 
-})
+});
 
 var CdaEditorRenderer = StringRenderer.extend({
 
@@ -303,9 +303,6 @@ var CdaEditorRenderer = StringRenderer.extend({
   },
 
   render: function(placeholder, value, callback){
-
-     
-    var myself = this;
 
     var _editArea = $("<td></td>");
     var path = value;
@@ -324,10 +321,9 @@ var CdaEditorRenderer = StringRenderer.extend({
   popup: function(path)  {
 
     $("#wizardDialog").empty();
-    $("#wizardDialog").append("<iframe src='../cda/editFile?path="+path+"&initialState=exEdit' width='100%' height='95%' ></iframe>");//TODO:testing...
-		//$("#wizardDialog").append("<iframe src='extEditor?path="+path+"&mode=xml' width='100%' height='95%' ></iframe>"); //http://localhost:8080/pentaho/content/pentaho-cdf-dd/exteditor?path=steel-wheels%2F00_dbgChart.cda&mode=xml
+    $("#wizardDialog").append("<iframe src='../cda/editFile?path="+path+"&initialState=exEdit' width='100%' height='95%' ></iframe>");
     $("#wizardDialog").append("<button onclick='$(\"#wizardDialog\").jqmHide()'class='cdfddInput' style='float:right;width: auto'>Close</button>");
-    $("#wizardDialog").jqmShow()
+    $("#wizardDialog").jqmShow();
   }
 });
 
@@ -345,7 +341,7 @@ var CggPathRenderer = ResourceFileRenderer.extend({
     return file;
   }
 
-})
+});
 
 var KtrPathRenderer = ResourceFileRenderer.extend({
 
@@ -368,16 +364,22 @@ var KtrPathRenderer = ResourceFileRenderer.extend({
 
     $.each(splitPath.slice(i),function(i,j){
       finalPath+="../";
-    })
+    });
     finalPath += splitFile.slice(i - 1).join('/');
     return finalPath.replace(/\/+/g, "/");
   }
 
 
-})
+});
 
 var SaikuPathRenderer = ResourceFileRenderer.extend({
 
+  //disallow selecting a folder for new file creation
+  createNew: false,
+	
+  //omit edit button
+  renderEditorButton: function(){ return '';},
+	
   getFileExtensions: function(){
     return ".saiku";
   },
@@ -387,4 +389,4 @@ var SaikuPathRenderer = ResourceFileRenderer.extend({
   }
 
 
-})
+});
