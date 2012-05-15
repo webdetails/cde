@@ -1564,7 +1564,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     var fileExtensions = this.getFileExtensions();
     _fileExplorer.bind('click',function(){
 
-      var fileExplorercontent = 'Choose Resource:<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var fileExplorercontent = 'Choose existing file, or select a folder for a new one:<div id="container_id" class="urltargetfolderexplorer"></div>';
       var selectedFile = "";
       var selectedFolder = "";
       
