@@ -109,7 +109,7 @@
   	defaults: {
   	},
   	implementation: function (tgt, st, opt) {
-  		var url = '../cgg/drawCdw?path=' + st.cggGraphName;
+  		var url = '../cgg/draw?script=' + st.cggGraphName;
   	
   		var width = st.width;
   		var height = st.height;

@@ -660,7 +660,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdw",
+      "value": "plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
       "type": "String"
      },
      {
@@ -699,6 +699,11 @@
       "name": "propertyValue",
       "value": "None",
       "type": "String"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
      }
     ]
    },
