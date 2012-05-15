@@ -54,7 +54,7 @@ var TableManager = Base.extend({
         _header.attr('width',myself.getTableModel().getColumnSizes()[i]);
       }
       _header.appendTo(headerRows);
-    })
+    });
     headerRows.appendTo("#"+this.getTableId() + " > thead");
 
     // Create rows
@@ -380,59 +380,59 @@ var TableManager = Base.extend({
 
   // Accessors
   setId: function(id){
-    this.id = id
+    this.id = id;
   },
   getId: function(){
-    return this.id
+    return this.id;
   },
   setTitle: function(title){
-    this.title = title
+    this.title = title;
   },
   getTitle: function(){
-    return this.title
+    return this.title;
   },
   setTableId: function(tableId){
-    this.tableId = tableId
+    this.tableId = tableId;
   },
   getTableId: function(){
-    return this.tableId
+    return this.tableId;
   },
   setTableModel: function(tableModel){
-    this.tableModel = tableModel
+    this.tableModel = tableModel;
   },
   getTableModel: function(){
-    return this.tableModel
+    return this.tableModel;
   },
   setInitialOperations: function(initialOperations){
-    this.initialOperations = initialOperations
+    this.initialOperations = initialOperations;
   },
   getInitialOperations: function(){
-    return this.initialOperations
+    return this.initialOperations;
   },
   setOperations: function(operations){
-    this.operations = operations
+    this.operations = operations;
   },
   getOperations: function(){
-    return this.operations
+    return this.operations;
   },
   setSelectedCell: function(selectedCell){
-    this.selectedCell = selectedCell
+    this.selectedCell = selectedCell;
   },
   getSelectedCell: function(){
-    return this.selectedCell
+    return this.selectedCell;
   },
   setLinkedTableManager: function(linkedTableManager){
     this.linkedTableManager = linkedTableManager;
     linkedTableManager.parentTableManager = this;
   },
   getLinkedTableManager: function(){
-    return this.linkedTableManager
+    return this.linkedTableManager;
   },
   setLinkedTableManagerOperation: function(linkedTableManagerOperation){
-    this.linkedTableManagerOperation = linkedTableManagerOperation
+    this.linkedTableManagerOperation = linkedTableManagerOperation;
   },
   getLinkedTableManagerOperation: function(){
-    return this.linkedTableManagerOperation
+    return this.linkedTableManagerOperation;
   }
 
 },{
@@ -462,7 +462,7 @@ var TableManager = Base.extend({
       var row = myself.parent().prevAll().length;
       var col = myself.prevAll().length;
 
-      var wasSelected = myself.hasClass("selected")
+      var wasSelected = myself.hasClass("selected");
       var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
 
       if (!wasSelected){
@@ -497,7 +497,7 @@ var TableManager = Base.extend({
       var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
       tbody.fadeOut(300);
       setTimeout(function(){
-        var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td")
+        var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
         if(myself.length > 0){
           var row = myself.parent().prevAll().length;
           var col = myself.prevAll().length;
@@ -604,77 +604,77 @@ var TableModel = Base.extend({
   },
 
   setId: function(id){
-    this.id = id
+    this.id = id;
   },
   getId: function(){
-    return this.id
+    return this.id;
   },
   setData: function(data){
     this.data = data;
-    this.getIndexManager().updateIndex()
+    this.getIndexManager().updateIndex();
   },
   getData: function(){
-    return this.data
+    return this.data;
   },
   setIndexManager: function(indexManager){
-    this.indexManager = indexManager
+    this.indexManager = indexManager;
   },
   getIndexManager: function(){
-    return this.indexManager
+    return this.indexManager;
   },
   setColumnNames: function(columnNames){
-    this.columnNames = columnNames
+    this.columnNames = columnNames;
   },
   getColumnNames: function(){
-    return this.columnNames
+    return this.columnNames;
   },
   setColumnGetExpressions: function(columnGetExpressions){
-    this.columnGetExpressions = columnGetExpressions
+    this.columnGetExpressions = columnGetExpressions;
   },
   getColumnGetExpressions: function(){
-    return this.columnGetExpressions
+    return this.columnGetExpressions;
   },
   setColumnSetExpressions: function(columnSetExpressions){
-    this.columnSetExpressions = columnSetExpressions
+    this.columnSetExpressions = columnSetExpressions;
   },
   getColumnSetExpressions: function(){
-    return this.columnSetExpressions
+    return this.columnSetExpressions;
   },
   setColumnTypes: function(columnTypes){
-    this.columnTypes = columnTypes
+    this.columnTypes = columnTypes;
   },
   getColumnTypes: function(){
-    return this.columnTypes
+    return this.columnTypes;
   },
   setColumnSizes: function(columnSizes){
-    this.columnSizes = columnSizes
+    this.columnSizes = columnSizes;
   },
   getColumnSizes: function(){
-    return this.columnSizes
+    return this.columnSizes;
   },
   setEditable: function(editable){
-    this.editable = editable
+    this.editable = editable;
   },
   getEditable: function(){
-    return this.editable
+    return this.editable;
   },
   setRowId: function(rowId){
-    this.rowId = rowId
+    this.rowId = rowId;
   },
   getRowId: function(){
-    return this.rowId
+    return this.rowId;
   },
   setRowType: function(rowType){
-    this.rowType = rowType
+    this.rowType = rowType;
   },
   getRowType: function(){
-    return this.rowType
+    return this.rowType;
   },
   setParentId: function(parentId){
-    this.parentId = parentId
+    this.parentId = parentId;
   },
   getParentId: function(){
-    return this.parentId
+    return this.parentId;
   }
 
 });
@@ -691,23 +691,23 @@ var PropertiesTableModel = TableModel.extend({
 
     this.setColumnNames(['Property','Value']);
     this.setColumnGetExpressions([function(row){
-      return row.description
+      return row.description;
     },function(row){
-      return row.value
+      return row.value;
     }]);
     this.setColumnSetExpressions([undefined,function(row,value){
-      row.value = value
+      row.value = value;
     }]);
     this.setColumnTypes(['String', function(row){
-      return row.type
+      return row.type;
     }]);
     this.setColumnSizes(['40%','60%']);
     this.setEditable([false, true]);
     this.setRowId(function(row){
-      return TableManager.generateGUID()
+      return TableManager.generateGUID();
     });
     this.setRowType(function(row){
-      return row.type
+      return row.type;
     });
 
     this.init();
@@ -879,8 +879,8 @@ var SelectRenderer = CellRenderer.extend({
 
       var valueId;
       if (!$.isArray(myself.getData()) && typeof myself.revertedSelectData[value]!= "undefined"){
-        valueId = myself.revertedSelectData[value]
-              }
+        valueId = myself.revertedSelectData[value];
+      }
       else{
         valueId = value;
       }
@@ -1452,6 +1452,8 @@ var ResourceFileRenderer = CellRenderer.extend({
   
   editor: null,
   fileName : null,
+  //if allows folder selection to create a new file
+  createNew: true,
   
   renderEditorButton: function(){
     var myself = this;
@@ -1549,7 +1551,7 @@ var ResourceFileRenderer = CellRenderer.extend({
 
     _editArea.editable(function(value,settings){
       myself.logger.debug("Saving new value: " + value );
-      callback(value)
+      callback(value);
       return value;
     } , {
       cssclass: "cdfddInput",
@@ -1564,7 +1566,8 @@ var ResourceFileRenderer = CellRenderer.extend({
     var fileExtensions = this.getFileExtensions();
     _fileExplorer.bind('click',function(){
 
-      var fileExplorercontent = 'Choose existing file, or select a folder for a new one:<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var fileExplorercontent = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one:' : ':'); 
+	  fileExplorercontent += '<div id="container_id" class="urltargetfolderexplorer"></div>';
       var selectedFile = "";
       var selectedFolder = "";
       
@@ -1588,7 +1591,9 @@ var ResourceFileRenderer = CellRenderer.extend({
                 return true;
               }
               else if(selectedFolder.length > 0){
-                $.prompt.goToState('newFile');
+                if(myself.createNew){
+                	$.prompt.goToState('newFile');
+                }
                 return false;
               }
             }
@@ -1627,7 +1632,7 @@ var ResourceFileRenderer = CellRenderer.extend({
             }
           }
         }
-      }
+      };
       
       $.prompt(openOrNew,{
         opacity: '0.2',
@@ -1693,7 +1698,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         
     $.each(splitPath.slice(i),function(i,j){
       finalPath+="../";
-    })
+    });
     finalPath += splitFile.slice(i - 1).join('/');
     return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
   },
