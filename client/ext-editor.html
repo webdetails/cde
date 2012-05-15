@@ -33,6 +33,11 @@
         var params = {};
         var fileName = null;
         var isDirty = false;
+        var listeners = {
+          onStatusUpdate: null,
+          onSave: null,
+          notify:null
+        };
         
         var getUrlParams = function() {
           
@@ -53,34 +58,54 @@
           }
         };
         
+
         var save = function(){
           editor.saveFile(params.path, editor.getContents(),
             function(result){
               if(result.indexOf('saved ok') > -1){
                 setDirty(false);
+                notify(result);
               }
               else {
-                alert(result);
+                notify(result,'error');
               }
             }
           );
         };
-        
+
+        var notifyType = {
+          ERROR : 'error',
+          INFO : 'info',
+          WARN : 'warn'
+        };
+        var notify = function(msg, type){
+            if(type == null) type = notifyType.INFO;
+            if(typeof(listeners.notify) == 'function'){
+                listeners.notify(msg,type);
+            }
+        };
+
         var updateStatus = function(){
            var info = fileName + (editor.isReadOnly()? ' (readonly)' : '') + (isDirty? '*' : '');
             $('#infoArea').text(info);
+           if(typeof(listeners.onStatusUpdate) == 'function'){
+            listeners.onStatusUpdate(isDirty);
+           }
         };
         
         var setDirty = function(dirty){
             var wasDirty = isDirty;
             isDirty = dirty;
-            if(!wasDirty && isDirty){
-              setExitNotification(true);
+            
+            if(isDirty != wasDirty){
+                if(!wasDirty && isDirty){
+                  setExitNotification(true);
+                }
+                else if (wasDirty && !isDirty){
+                  setExitNotification(false);
+                }
+                updateStatus();
             }
-            else if (wasDirty && !isDirty){
-              setExitNotification(false);
-            }
-            updateStatus();
         };
         
         var setExitNotification= function(enable){
@@ -102,7 +127,7 @@
   </head>
   <body>
 
-    <div id="btnArea"> <button id="saveBtn" onclick ="save()"> Save </button> <span id="infoArea"/> </div>
+    <div id="btnArea"> <button id="saveBtn" onclick ="save()"> Save </button><span id="infoArea"/></div>
     <pre style="position:relative;height:600px;width:800px;" id="editArea">
     </pre>
 
@@ -111,11 +136,17 @@
             params = getUrlParams();
             fileName = params.path;
             
+            if(params.editorOnly){
+                $('#btnArea').css('display','none');
+                $('#editArea').css('margin-top',0);
+                $('#editArea').css('margin-bottom',0);
+            }
+            
             if(params.height){
                 $('#editArea').height(params.height);
             }
             else {
-                $('#editArea').height(window.innerHeight - 60);
+                $('#editArea').height(window.innerHeight - ( params.editorOnly? 0 : 60));
             }
             
             if(params.width){
@@ -127,6 +158,10 @@
             
             if(fileName == null) {
                 return;
+            }
+            
+            if(params.theme){
+                editor.setTheme(params.theme);
             }
             
             editor.initEditor('editArea');
