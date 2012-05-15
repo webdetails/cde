@@ -46,7 +46,7 @@ var SiteMapComponent = BaseComponent.extend({
                 // Add a click action to this
                 a.click(function(){
              
-                    l.action();
+                    l.action(li);
                     // Now: Remove all previous selected classes and add this
                     myself.ph.find("li.siteMapSelected").removeClass("siteMapSelected");
                     $(this).parents("li").addClass("siteMapSelected");
