@@ -103,10 +103,10 @@ var WizardManager = Base.extend({
 		},
 		
 		// Accessors
-		setWizardId: function(wizardId){this.wizardId = wizardId},
-		getWizardId: function(){return this.wizardId},
-		setTitle: function(title){this.title = title},
-		getTitle: function(){return this.title}
+		setWizardId: function(wizardId){this.wizardId = wizardId;},
+		getWizardId: function(){return this.wizardId;},
+		setTitle: function(title){this.title = title;},
+		getTitle: function(){return this.title;}
 
 	},{
 		MAIN_DIALOG: "wizardDialog",
@@ -204,14 +204,13 @@ var SaikuOlapWizard = WizardManager.extend({
 		},
 		
 		buttonOk: function(){
-			var myself = this;
 			// callback method for getSaikuMdx()
 			window.saveSaiku = function(saikuStub) {
 				var saikuMondrianStub = BaseModel.getModel('Componentsmdx_mondrianJndi').getStub();
 				CDFDDUtils.getProperty(saikuMondrianStub,"name").value = "olapQuery";
 
 				CDFDDUtils.getProperty(saikuMondrianStub,"jndi").value = saikuStub.jndi;
-				saikuStub.catalog = saikuStub.catalog.replace('solution:','/');
+				saikuStub.catalog = saikuStub.catalog.replace('solution:','');
 				CDFDDUtils.getProperty(saikuMondrianStub,"catalog").value = saikuStub.catalog;
 				CDFDDUtils.getProperty(saikuMondrianStub,"query").value = saikuStub.mdx;
 
@@ -224,7 +223,7 @@ var SaikuOlapWizard = WizardManager.extend({
 				saikuMondrianStub.parent = entry.getCategory();
 				componentsTableManager.insertAtIdx(saikuMondrianStub,insertAtIdx);
 				$('#'+ WizardManager.MAIN_DIALOG).jqmHide();
-			}
+			};
 			// call the get mdx method within saiku
 			window.getSaikuMdx();
 		}
@@ -383,7 +382,7 @@ var OlapWizard = WizardManager.extend({
 
 					}
 					else {
-						alert(json.result)
+						alert(json.result);
 					}
 				});
 
@@ -473,7 +472,7 @@ var OlapWizard = WizardManager.extend({
 						myself.getAvailableFilters();
 					}
 					else {
-						alert(json.result)
+						alert(json.result);
 					}
 				});
 
@@ -511,7 +510,10 @@ var OlapWizard = WizardManager.extend({
 			var clearButtonContainer = $('<div class="cdfdd-olap-clearButton"></div>');
 			var clearButton = $('<a border="0"><img src="getResource?resource=/images/clear.gif">&nbsp;</a>');
 			$(clearButton).bind('click',function(){
-				myself.removeSelectdWizardObject(type,wizardObject);clearButtonContainer.remove();myself.processChange()});
+				myself.removeSelectdWizardObject(type,wizardObject);
+				clearButtonContainer.remove();
+				myself.processChange();
+			});
 			container.append(clearButtonContainer.append(clearButton));
 			
 			this.processChange();
@@ -529,7 +531,7 @@ var OlapWizard = WizardManager.extend({
 
 		getCatalog: function(){
 		
-			var catalog;
+			var catalog=null;
 			var selectedCatalog = $("#cdfddOlapCatalogSelect").val();
 			$.each(this.getCatalogs(),function(i,cat){
 			
@@ -547,27 +549,27 @@ var OlapWizard = WizardManager.extend({
 		},
 
 		// Accessors
-		setCatalogs: function(catalogs){this.catalogs = catalogs},
-		getCatalogs: function(){return this.catalogs},
+		setCatalogs: function(catalogs){this.catalogs = catalogs;},
+		getCatalogs: function(){return this.catalogs;},
 		
-		setSelectedOptions: function(selectedOptions){this.selectedOptions = selectedOptions},
-		getSelectedOptions: function(){return this.selectedOptions},
+		setSelectedOptions: function(selectedOptions){this.selectedOptions = selectedOptions;},
+		getSelectedOptions: function(){return this.selectedOptions;},
 		
 		addOlapObject: function(type,object){
 			this.olapObjects[type + "TableData"].push(object);
 		},
 		
-		getOlapObject: function(type,index){return this.olapObjects[type + "TableData"][index]},
+		getOlapObject: function(type,index){return this.olapObjects[type + "TableData"][index];},
 		
 		addSelectedWizardObject: function(type,olapType,object){
 			var selectedWizarObject = WizardOlapObjectManager.getOlapObject(olapType,object);
 			var myself = this;
-			selectedWizarObject.setProcessChange(function(){myself.processChange()});
+			selectedWizarObject.setProcessChange(function(){myself.processChange();});
 			this.selectedWizardObjects[type].push(selectedWizarObject);
 			return selectedWizarObject;
 		},
 		
-		getSelectedWizardObject: function(type,index){return this.selectedWizardObjects[type][index]},
+		getSelectedWizardObject: function(type,index){return this.selectedWizardObjects[type][index];},
 		
 		getSelectedRowsValue: function(preview){
 			var rows = [];
@@ -604,7 +606,6 @@ var OlapWizard = WizardManager.extend({
 			}
 			
 			return params + ']';
-			
 		},
 		
 		// Resets
@@ -629,7 +630,7 @@ var OlapWizard = WizardManager.extend({
 
 			CDFDDUtils.getProperty(datasourceStub,"name").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(datasourceStub,"jndi").value = this.getSelectedOptions().jndi;
-			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema.replace('solution:','/');
+			CDFDDUtils.getProperty(datasourceStub,"catalog").value = this.getSelectedOptions().schema.replace('solution:','');
 			CDFDDUtils.getProperty(datasourceStub,"query").value = this.buildQuery(false, topCount);
 			if(this.includeUniqueName) { CDFDDUtils.getProperty(datasourceStub,"output").value = '["1","0"]'; }
 			
@@ -657,6 +658,9 @@ var OlapWizard = WizardManager.extend({
 			else { return '${' + filter.olapObject.properties[0].value + '}'; }
 		},
 
+		/**
+		 * Create the mdx query from elements
+		 */
 		buildQuery: function(preview,topCount){
 			
 			var isSelector = this.includeUniqueName == true;
@@ -672,15 +676,6 @@ var OlapWizard = WizardManager.extend({
 			
 			for(o in this.selectedWizardObjects.filters){
 				conditions.push(this.getFilterValue(this.selectedWizardObjects.filters[o], preview));
-				//~ var filterValue = this.selectedWizardObjects.filters[o].getFilterValue(preview);
-				//~ if(typeof filterValue == 'object'){ 
-					//~ if(filterValue.set != undefined) sets.push(filterValue.set);
-					//~ if(filterValue.member != undefined) members.push(filterValue.member);
-					//~ if(filterValue.condition != undefined) conditions.push(filterValue.condition);
-				//~ }
-				//~ else{
-					//~ conditions.push(filterValue);
-				//~ }
 			}
 			//ini
 			var rootDim = this.getSelectedWizardObject('rows',0).member;
@@ -751,7 +746,6 @@ var OlapParameterWizard = OlapWizard.extend({
 			//~ selector.append('<option value="selectMultiComponent">Select Multiple</option>');
 			//~ selector.append('<option value="checkComponent">Check Box</option>');
 			selector.append('<option value="radioComponent">Radio Box</option>');
-			//~ selector.append('<option value="autocompleteBoxComponent">Autocomplete</option>');
 			selector.append('<option value="multiButtonComponent">Multiple Buttons</option>');
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			var topCounts = ["",5,10,15,20,25,50,100];
@@ -802,7 +796,7 @@ var OlapParameterWizard = OlapWizard.extend({
 				this.getSelectedOptions().jndi = catalog.jndi;
 				this.getSelectedOptions().schema = catalog.schema;
 				this.getSelectedOptions().cube = this.getCube();
-				this.getSelectedOptions().topCount = $("#cdfdd-olap-parameter-topcount").val();
+				this.getSelectedOptions().topCount = topCount;
 				
 				var topCount = this.getSelectedOptions().topCount;
 				this.getSelectedOptions().query = this.buildQuery(true,topCount.length > 0 ? topCount : undefined);
@@ -853,8 +847,7 @@ var OlapParameterWizard = OlapWizard.extend({
 						query: this.getSelectedOptions().query,
 						cube: this.getSelectedOptions().cube
 					},
-		//			parameter: 'CDFDDPreviewParam',
-		//			postChange: function(){alert("value:" + CDFDDPreviewParam);},
+
 					htmlObject: "cdfdd-olap-preview-area",
 					executeAtStart: true
 				};
@@ -889,7 +882,7 @@ var OlapParameterWizard = OlapWizard.extend({
 
 			var parameterModel = BaseModel.getModel(ComponentsOlapParameterModel.MODEL);
 			var parameterStub = parameterModel.getStub();
-			var parameterId = this.getSelectedOptions().name + "Parameter"
+			var parameterId = this.getSelectedOptions().name + "Parameter";
 			var dimension = this.selectedWizardObjects.rows[0].member;
 			var type =  this.getSelectedOptions().type;
 			
@@ -961,12 +954,10 @@ var OlapParameterWizard = OlapWizard.extend({
 			selectorStub.parent = entry.getCategory();
 			componentsTableManager.insertAtIdx(selectorStub,insertAtIdx);
 
-		},
+		}
+	},{	}
+);//end OlapParameterWizard 
 
-
-	},{
-	
-	});
 var wizard = new OlapParameterWizard();
 
 
@@ -1148,7 +1139,6 @@ var OlapChartWizard = OlapWizard.extend({
 					secondAxisColor: "blue",
 					extensionPoints: [] 
 				};
-				var self = this;
 				
 			CDFDDPreviewComponent = 
 				{
