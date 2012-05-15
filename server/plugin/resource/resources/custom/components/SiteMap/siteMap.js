@@ -36,7 +36,7 @@ var SiteMapComponent = BaseComponent.extend({
         var ul = $('<ul class="siteMap siteMapLevel'+level+'" ></ul>');
 
         $.each(arr,function(n,l){
-            var li = $("<li></li>").appendTo(ul);
+            var li = $("<li></li>").addClass(l.classes || "").appendTo(ul);
             var a = $('<a>'+l.name+'</a>').appendTo(li);
             if(l.link){
                 a.attr("href",l.link);
@@ -62,7 +62,7 @@ var SiteMapComponent = BaseComponent.extend({
             }
 
             if(l.sublinks && l.sublinks.length > 0)
-                myself.generateUl(li, l.sublinks, level++);
+                myself.generateUl(li, l.sublinks, level + 1);
         });
 
         ul.appendTo(ph);
