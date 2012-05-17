@@ -21,12 +21,18 @@ import org.apache.commons.jxpath.Pointer;
 
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import org.dom4j.Document;
+import org.dom4j.Element;
 import org.dom4j.Node;
+import org.pentaho.platform.api.engine.IFileFilter;
+import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.PluginSettings;
+import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 
 /**
  *
@@ -163,8 +169,92 @@ public class ComponentManager
     indexCustomComponents(USER_COMPONENTS_DIR);
   }
   
-  private void indexCustomComponents(){
-    indexCustomComponents(CUSTOM_COMPONENTS_DIR);
+  private void indexCustomComponents(){    
+   for(String componentsDir : CdeSettings.getComponentLocations()){
+     indexCustomComponents(componentsDir);
+   } 
+   
+   for(String componentsDir : getExternalComponentLocations()){
+     indexCustomComponents(componentsDir);
+   }
+    
+  }
+  
+  private String[] getExternalComponentLocations(){
+    
+    final ISolutionFile systemDir = RepositoryAccess.getRepository().getSolutionFile("system", FileAccess.NONE);
+    
+    ISolutionFile[] systemFolders = systemDir.listFiles(new IFileFilter()
+    {
+      public boolean accept(ISolutionFile file) {
+        return file.isDirectory();
+//        return file.isDirectory() && file.retrieveParent().getFileName().equals("system") ||
+//               file.getFileName().equals("settings.xml");
+      }
+    });
+    
+    ArrayList<ISolutionFile> settingsFiles = new ArrayList<ISolutionFile>();
+    
+    for(ISolutionFile sysFolder : systemFolders){
+      ISolutionFile[] sett = sysFolder.listFiles(new IFileFilter(){
+
+        public boolean accept(ISolutionFile file) {
+          return file.getFileName().equals("settings.xml");
+        }
+        
+      });
+      for(ISolutionFile s : sett) settingsFiles.add(s);
+    }
+    
+    SettingsReader settingsReader = new SettingsReader();
+    
+    
+    ArrayList<String> componentLocations = new ArrayList<String>();
+    for(ISolutionFile file : settingsFiles){
+//      if(!file.isDirectory()) {//then is settings.xml
+        String pluginName = file.retrieveParent().getFileName();
+        settingsReader.setPlugin(pluginName);
+        List<String> locations = settingsReader.getComponentLocations();
+        if(locations.size() > 0){
+          logger.debug("found CDE component declaration in " + pluginName + " [" + locations.size() + "]");
+          componentLocations.addAll(locations);
+        }
+   //  }
+    }
+    
+    return componentLocations.toArray(new String[componentLocations.size()]);
+  }
+  
+  private class SettingsReader extends PluginSettings {
+
+    private String pluginName;
+    
+    public void setPlugin(String sysFolderName){
+      this.pluginName = sysFolderName;
+    }
+    
+    @Override
+    public String getPluginSystemDir() {
+      return pluginName + "/";
+    }
+
+    @Override
+    public String getPluginName() {
+      return pluginName;
+    }
+    
+    public List<String> getComponentLocations(){
+      List<Element> pathElements = getSettingsXmlSection("cde-components/path");
+      if(pathElements != null){
+        ArrayList<String> solutionPaths = new ArrayList<String>(pathElements.size());
+        for(Element pathElement : pathElements){
+          solutionPaths.add(pathElement.getText());
+        }
+        return solutionPaths;//.toArray(new String[solutionPaths.size()]);
+      }
+      return new ArrayList<String>(0);
+    }
+    
   }
 
   private void indexCustomComponents(String dirPath)
