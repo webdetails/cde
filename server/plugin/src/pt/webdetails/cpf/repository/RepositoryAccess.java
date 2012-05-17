@@ -177,6 +177,12 @@ public class RepositoryAccess {
   public ISolutionFile getSolutionFile(String solutionPath, FileAccess access) {
     return getSolutionRepository().getSolutionFile(solutionPath, access.toResourceAction());
   }
-  
 
+  public static String getSystemDir(){
+    return PentahoSystem.getApplicationContext().getSolutionPath("system");
+  }
+  
+  public static String getSoluitonPath(String path){
+    return PentahoSystem.getApplicationContext().getSolutionPath(path);
+  }
 }

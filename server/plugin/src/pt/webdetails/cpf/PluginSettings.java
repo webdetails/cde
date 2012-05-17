@@ -23,8 +23,11 @@ public abstract class PluginSettings {
   protected static Log logger = LogFactory.getLog(PluginSettings.class);
   private static IPluginManager pluginManager;
   
-  public abstract String getPluginSystemDir();
   public abstract String getPluginName();
+  
+  public String getPluginSystemDir(){
+    return getPluginName() + "/";
+  }
   
   protected static final String SETTINGS_FILE = "settings.xml"; 
   

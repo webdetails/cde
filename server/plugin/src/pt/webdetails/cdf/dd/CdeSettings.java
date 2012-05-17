@@ -44,10 +44,7 @@ public class CdeSettings{
   }
   
   private static class CdfDDSettings  extends PluginSettings {
-    @Override
-    public String getPluginSystemDir() {
-      return "pentaho-cdf-dd/";
-    }
+
     @Override
     public String getPluginName() {
       return "pentaho-cdf-dd";
