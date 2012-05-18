@@ -12,5 +12,5 @@ server/plugin/resource/resources/scripts.html
 server/plugin/resource/resources/styles.html
 nbproject/private/
 .DS_Store
-
+*~
 /server/plugin/resource/resources/base/export
