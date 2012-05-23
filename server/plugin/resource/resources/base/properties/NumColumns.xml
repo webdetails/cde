@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>numColumns</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Columns</Description>
+	<Tooltip>Number of Columns</Tooltip>
+	<Advanced>false</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
