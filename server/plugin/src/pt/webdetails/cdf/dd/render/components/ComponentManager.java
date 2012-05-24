@@ -1,7 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.render.components;
 
 import java.io.File;
@@ -58,6 +58,8 @@ public class ComponentManager
   protected Hashtable<String, BaseComponent> componentPool;
   private static final String PACKAGEHEADER = "pt.webdetails.cdf.dd.render.components.";
   private JSON cdaSettings = null;
+  
+  private String[] resourceLocations;
 
   protected ComponentManager()
   {
@@ -160,16 +162,37 @@ public class ComponentManager
     }
   }
   
-  private void indexCustomComponents(){
+  private synchronized void indexCustomComponents(){
+    
+   ArrayList<String> locations = new ArrayList<String>(); 
+   
+   //add base locations;
+   locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
+   locations.add(RepositoryAccess.getSolutionPath(""));
     
    for(String componentsDir : CdeSettings.getComponentLocations()){
      indexCustomComponents(componentsDir);
+     locations.add(RepositoryAccess.getSolutionPath(componentsDir));
    } 
    
    for(String componentsDir : getExternalComponentLocations()){
      indexCustomComponents(componentsDir);
+     locations.add(RepositoryAccess.getSolutionPath(componentsDir));
    }
     
+   resourceLocations = locations.toArray(new String[locations.size()]);
+  }
+  
+  /**
+   * Get a list of locations from which resource loading is allowed. This will include
+   * the solution repository, CDE's location and any folders declared as containing CDE components 
+   * @return Full paths to allowed locations
+   */
+  public String[] getAllowedLocations(){
+    if(resourceLocations == null){
+      indexCustomComponents();
+    }
+    return resourceLocations;
   }
   
   private String[] getExternalComponentLocations(){
@@ -180,8 +203,6 @@ public class ComponentManager
     {
       public boolean accept(ISolutionFile file) {
         return file.isDirectory();
-//        return file.isDirectory() && file.retrieveParent().getFileName().equals("system") ||
-//               file.getFileName().equals("settings.xml");
       }
     });
     
@@ -203,15 +224,13 @@ public class ComponentManager
     
     ArrayList<String> componentLocations = new ArrayList<String>();
     for(ISolutionFile file : settingsFiles){
-//      if(!file.isDirectory()) {//then is settings.xml
         String pluginName = file.retrieveParent().getFileName();
         settingsReader.setPlugin(pluginName);
         List<String> locations = settingsReader.getComponentLocations();
         if(locations.size() > 0){
-          logger.debug("found CDE component declaration in " + pluginName + " [" + locations.size() + "]");
+          logger.debug("found CDE components location declared in " + pluginName + " [" + locations.size() + "]");
           componentLocations.addAll(locations);
         }
-   //  }
     }
     
     return componentLocations.toArray(new String[componentLocations.size()]);
@@ -242,7 +261,7 @@ public class ComponentManager
         for(Element pathElement : pathElements){
           solutionPaths.add(pathElement.getText());
         }
-        return solutionPaths;//.toArray(new String[solutionPaths.size()]);
+        return solutionPaths;
       }
       return new ArrayList<String>(0);
     }
@@ -283,7 +302,7 @@ public class ComponentManager
           List<Node> components = doc.selectNodes("//DesignerComponent");
           
           if(logger.isDebugEnabled() && components.size() > 0){
-            logger.debug(components.size() + " components in " + file);
+            logger.debug("\t" + file + " [" + components.size() + "]");
           }
 
           for (Node component : components) {

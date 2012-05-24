@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd;
 
 import java.io.File;
@@ -478,15 +482,15 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     }
 
     if (!Utils.pathStartsWith(resource, SOLUTION_DIR)
-            && !Utils.pathStartsWith(resource, PLUGIN_PATH))
+            && !Utils.pathStartsWith(resource, PLUGIN_PATH)
+            && !Utils.pathStartsWith(resource, "system"))//added for other plugins' components
     {
       resource = Utils.joinPath(PLUGIN_PATH, resource);//default path
     }
 
     final HttpServletResponse response = getResponse();
-    String[] roots = new String[2];
-    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
-    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
+    String[] roots = ComponentManager.getInstance().getAllowedLocations(); 
+    
     try
     {
       getSolutionResource(out, resource, roots);

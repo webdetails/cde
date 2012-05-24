@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cpf.repository;
 
 import java.io.FileNotFoundException;
@@ -182,7 +186,7 @@ public class RepositoryAccess {
     return PentahoSystem.getApplicationContext().getSolutionPath("system");
   }
   
-  public static String getSoluitonPath(String path){
+  public static String getSolutionPath(String path){
     return PentahoSystem.getApplicationContext().getSolutionPath(path);
   }
 }

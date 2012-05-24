@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd;
 
 import java.io.File;
@@ -25,7 +29,6 @@ public class CdeSettings{
   
   public static String[] getComponentLocations(){
 
-    ArrayList<File> files = new ArrayList<File>();
     ArrayList<String> paths = new ArrayList<String>();
     
     for(Element element : getSettings().getComponentLocations()){
