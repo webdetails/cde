@@ -1156,7 +1156,8 @@
           <!--Property name="colors">cccColors</Property-->
 
           <Property name="valueFormat">cccValueFormat</Property>
-
+          <Property name="tooltipFormat">cccTooltipFormat</Property>
+          
           <Property name="title">title</Property>
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
