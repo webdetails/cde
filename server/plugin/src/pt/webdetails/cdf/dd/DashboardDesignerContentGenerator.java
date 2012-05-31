@@ -292,7 +292,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     out.write(dashboard.getHeader().getBytes());
   }
 
-  public void render(final IParameterProvider pathParams, final OutputStream out) throws Exception
+  public void render(final IParameterProvider pathParams, final OutputStream out) throws IOException // Exception
   {
     // Check security
     if ( !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(pathParams), FileAccess.EXECUTE))
@@ -304,11 +304,7 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     final long start = System.currentTimeMillis();        
     UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, parameterProviders.get("request"));       
     
-    // Build pieces: render dashboard, footers and headers
-    logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
-
-    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
-
+    
     // Response
     try
     {
@@ -318,8 +314,20 @@ public class DashboardDesignerContentGenerator extends BaseContentGenerator
     {
       logger.warn(e.toString());
     }
-    out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
-    logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    
+    try {
+      // Build pieces: render dashboard, footers and headers
+      logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
+      Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
+      out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
+      logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    }
+    catch (FileNotFoundException e){
+      //could not open cdfde
+      String msg = "File not found: " + e.getLocalizedMessage();
+      logger.error(msg);
+      out.write(msg.getBytes(ENCODING));
+    }
     CpfAuditHelper.endAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
   }
   

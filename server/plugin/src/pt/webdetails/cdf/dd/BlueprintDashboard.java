@@ -4,6 +4,8 @@
  */
 package pt.webdetails.cdf.dd;
 
+import java.io.FileNotFoundException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -18,20 +20,13 @@ public class BlueprintDashboard extends AbstractDashboard
 {
   /* CONSTANTS */
 
-//  // Dashboard rendering
-//  private static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
-//  private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
-//  private static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
-//  private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
-//  private static final String I18N_BOILERPLATE = "resources/i18n-boilerplate.js";
+  private static final long serialVersionUID = 1L;
+
   private static Log logger = LogFactory.getLog(Dashboard.class);
-  // Cache
-//  private static final String CACHE_CFG_FILE = "ehcache.xml";
-//  private static final String CACHE_NAME = "pentaho-cde";
-  /* FIELDS */
+
   protected final static String TYPE = "blueprint";
 
-  public BlueprintDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
+  public BlueprintDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
     super(pathParams,requestParams);
   }

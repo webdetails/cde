@@ -51,7 +51,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   protected Date loaded;
   private WcdfDescriptor wcdf;
 
-  public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
+  public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
     absRoot = requestParams.hasParameter("root") ? requestParams.getParameter("root").toString() : "";
     absolute = (!absRoot.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true");
@@ -60,7 +60,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     construct(DashboardDesignerContentGenerator.getWcdfRelativePath(requestParams));
   }
 
-  private void construct(String wcdfPath)
+  private void construct(String wcdfPath) throws FileNotFoundException
   {
     IPentahoSession userSession = PentahoSessionHolder.getSession();
 
@@ -112,6 +112,9 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
         this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
       }
       this.loaded = new Date();
+    }
+    catch(FileNotFoundException e){
+      throw e;
     }
     catch (Exception e)
     {
