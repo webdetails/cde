@@ -3,7 +3,6 @@ package pt.webdetails.cdf.dd.packager;
 import java.util.*;
 import java.util.regex.*;
 import java.io.*;
-import java.lang.*;
 
 public class CSSMin
 {

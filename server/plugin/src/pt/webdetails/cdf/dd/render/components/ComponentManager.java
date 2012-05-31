@@ -167,13 +167,6 @@ public class ComponentManager
     }
   }
   
-<<<<<<< HEAD
-  private void indexUserComponents(){
-    indexCustomComponents(USER_COMPONENTS_DIR);
-  }
-  
-  private void indexCustomComponents(){    
-=======
   private synchronized void indexCustomComponents(){
     
    ArrayList<String> locations = new ArrayList<String>(); 
@@ -182,7 +175,7 @@ public class ComponentManager
    locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
    locations.add(RepositoryAccess.getSolutionPath(""));
     
->>>>>>> 3795e60...  load components from other plugins' settings.xml/cde-components: resource locations
+
    for(String componentsDir : CdeSettings.getComponentLocations()){
      indexCustomComponents(componentsDir);
      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
@@ -285,6 +278,9 @@ public class ComponentManager
   {
     String dirAbsPath = Utils.joinPath(path, dirPath);
     File dir = new File(dirAbsPath);
+
+    logger.info("Loading custom components from: " + dir.toString());
+    
     FilenameFilter subFolders = new FilenameFilter()
     {
 

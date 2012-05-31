@@ -4,6 +4,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
@@ -34,7 +36,7 @@ public class CdfTemplates {
   public static String RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
   public static String UNKNOWN_IMAGE = RESOURCE_TEMPLATE_DIR + "unknown.png";
 
-
+  private static Log logger = LogFactory.getLog(CdfTemplates.class);
 
   public CdfTemplates(IPentahoSession userSession) {
 
@@ -83,7 +85,7 @@ public class CdfTemplates {
   public void save(final HashMap<String,String> parameters) throws StructureException, PentahoAccessControlException, IOException {
 
     final String fileName = (String) parameters.get("file");
-    System.out.println("Saving File:" + fileName);
+    logger.info("Saving File:" + fileName);
     
     RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
     
