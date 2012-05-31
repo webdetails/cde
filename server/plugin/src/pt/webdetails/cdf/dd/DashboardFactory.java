@@ -1,5 +1,6 @@
 package pt.webdetails.cdf.dd;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class DashboardFactory
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  public Dashboard loadDashboard(Map<String, IParameterProvider> params, DashboardDesignerContentGenerator gen)
+  public Dashboard loadDashboard(Map<String, IParameterProvider> params, DashboardDesignerContentGenerator gen) throws FileNotFoundException
   {
     IParameterProvider pathParams = params.get("path"),
             requestParams = params.get("request");
@@ -146,7 +147,7 @@ public class DashboardFactory
       {
         logger.error("Bad renderer type: " + wcdf.getRendererType());
         return null;
-      }
+      } 
       cache.put(new Element(key, dashboard));
     }
     return dashboard;
@@ -172,6 +173,10 @@ public class DashboardFactory
       }
       logger.info("Got dashboard from cache");
       ISolutionFile dash = repository.getSolutionFile(key.getCdfde(), FileAccess.READ) ;// was NO_PERM=0;
+      if(dash == null){
+        logger.error(key.getCdfde() + " not found.");
+        return null;
+      }
       ISolutionFile templ = key.getTemplate() == null ? null
               : repository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + key.getTemplate(), FileAccess.READ);
 
