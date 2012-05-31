@@ -4,6 +4,7 @@
  */
 package pt.webdetails.cdf.dd;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
@@ -32,7 +33,7 @@ public class MobileDashboard extends AbstractDashboard
   protected final static String TYPE = "mobile";
   protected final static String MOBILE_TEMPLATE = "resources/mobile/index.html";
 
-  public MobileDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
+  public MobileDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
     super(pathParams, requestParams);
     RepositoryAccess solutionRepository = RepositoryAccess.getRepository();
