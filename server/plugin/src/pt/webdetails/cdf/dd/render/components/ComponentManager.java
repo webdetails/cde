@@ -273,7 +273,7 @@ public class ComponentManager
     String dirAbsPath = Utils.joinPath(basePath, dirPath);
     File dir = new File(dirAbsPath);
 
-    logger.debug("Loading custom components from: " + dir.toString());
+    logger.info("Loading custom components from: " + dir.toString());
     
     FilenameFilter subFolders = new FilenameFilter()
     {

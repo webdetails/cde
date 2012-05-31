@@ -6,6 +6,8 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -30,6 +32,8 @@ public class XmlStructure implements IStructure
   private static final String ENCODING = "UTF-8";
   
   private IPentahoSession userSession = null;
+  
+  private static Log logger = LogFactory.getLog(XmlStructure.class);
 
 
   public XmlStructure(IPentahoSession userSession)
@@ -41,7 +45,7 @@ public class XmlStructure implements IStructure
   public void delete(HashMap<String, Object> parameters) throws StructureException
   {
 
-    System.out.println("deleting File:" + (String) parameters.get("file"));
+    logger.info("Deleting File:" + (String) parameters.get("file"));
 
     //1. Delete File
     
@@ -56,7 +60,7 @@ public class XmlStructure implements IStructure
   {
 
     String filePath = (String) parameters.get("file");
-    System.out.println("Loading File:" + filePath);
+    logger.info("Loading File:" + filePath);
 
     JSONObject result = null;
 
@@ -126,7 +130,7 @@ public class XmlStructure implements IStructure
   {
 
     String filePath = (String) parameters.get("file");
-    System.out.println("Saving File:" + filePath);
+    logger.info("Saving File:" + filePath);
 
     try
     {
@@ -263,7 +267,7 @@ public class XmlStructure implements IStructure
     String styleStr = (String) parameters.get("style");
     String rendererType = (String) parameters.get("rendererType");
 
-    System.out.println("Saving settings file:" + filePath);
+    logger.info("Saving settings file:" + filePath);
 
     try
     {
