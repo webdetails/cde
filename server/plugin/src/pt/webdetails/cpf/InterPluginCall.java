@@ -118,14 +118,20 @@ public class InterPluginCall implements Runnable, Callable<String> {
   public void run() {
     IOutputHandler outputHandler = new SimpleOutputHandler(getOutputStream(), false);
     IContentGenerator contentGenerator = getContentGenerator();
-    try {
-      contentGenerator.setSession(getSession());
-      contentGenerator.setOutputHandler(outputHandler);
-      contentGenerator.setParameterProviders(getParameterProviders());
-      contentGenerator.createContent();
-      
-    } catch (Exception e) {
-      logger.error("Failed to execute call to plugin: " + e.toString(), e);
+
+    if(contentGenerator != null){
+      try {
+        contentGenerator.setSession(getSession());
+        contentGenerator.setOutputHandler(outputHandler);
+        contentGenerator.setParameterProviders(getParameterProviders());
+        contentGenerator.createContent();
+        
+      } catch (Exception e) {
+        logger.error("Failed to execute call to plugin: " + e.toString(), e);
+      }
+    }
+    else {
+      logger.error("No ContentGenerator.");
     }
     
   }
@@ -216,7 +222,11 @@ public class InterPluginCall implements Runnable, Callable<String> {
 
   protected IContentGenerator getContentGenerator(){
     try {
-      return getPluginManager().getContentGenerator(plugin.getName(), getSession());
+      IContentGenerator contentGenerator = getPluginManager().getContentGenerator(plugin.getName(), getSession());
+      if(contentGenerator == null){
+        logger.error("ContentGenerator for " + plugin.getName() + " could not be fetched.");
+      }
+      return contentGenerator;
     } catch (Exception e) {
       logger.error("Failed to acquire " + plugin.getName() + " plugin: " + e.toString(), e);
       return null;

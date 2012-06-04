@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cpf;
 
 import java.io.File;
@@ -6,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
@@ -19,6 +24,8 @@ import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 
 public abstract class PluginSettings {
+  
+  public static final String ENCODING = "utf-8";
 
   protected static Log logger = LogFactory.getLog(PluginSettings.class);
   private static IPluginManager pluginManager;
@@ -50,12 +57,17 @@ public abstract class PluginSettings {
     return (String) getPluginManager().getPluginSetting(getPluginName(), section, defaultValue);
   }
 
+  protected static String getSolutionPath(String path){
+    return PentahoSystem.getApplicationContext().getSolutionPath(path);
+  }
+  
+  
   
   /**
-   * Writes a setting directly to .xml. Does not refresh global config.
+   * Writes a setting directly to .xml and refresh global config.
    * @param section
    * @param value
-   * @return
+   * @return whether value was written
    */
   protected boolean writeSetting(String section, String value){
     Document settings = null;
@@ -64,7 +76,7 @@ public abstract class PluginSettings {
     String nodePath = "settings/" + section;
     
     try {
-      settings = XmlDom4JHelper.getDocFromFile(settingsFile, null);// getDocFromFile(settingsFilePath, null);
+      settings = XmlDom4JHelper.getDocFromFile(settingsFile, null);
     } catch (DocumentException e) {
       logger.error(e);
     } catch (IOException e) {
@@ -73,19 +85,23 @@ public abstract class PluginSettings {
     if(settings != null){
       Node node = settings.selectSingleNode(nodePath);
       if(node != null){
-        node.setText(value);
-        FileWriter writer = null;
-        try {
-          writer = new FileWriter(settingsFile);
-          settings.write(writer);
-          writer.flush();
-          return true;
-        } catch (IOException e) {
-          logger.error(e);
-        }
-        finally {
-          IOUtils.closeQuietly(writer);
-        }
+        String oldValue = node.getText();
+          node.setText(value);
+          FileWriter writer = null;
+          try {
+            writer = new FileWriter(settingsFile);
+            settings.write(writer);
+            writer.flush();
+            //TODO: in future should only refresh relevant cache, not the whole thing
+            logger.debug("changed '" + section + "' from '" + oldValue + "' to '" + value +"'");
+            PentahoSystem.refreshSettings();
+            return true;
+          } catch (IOException e) {
+            logger.error(e);
+          }
+          finally {
+            IOUtils.closeQuietly(writer);
+          }
       }
       else {
         logger.error("Couldn't find node");

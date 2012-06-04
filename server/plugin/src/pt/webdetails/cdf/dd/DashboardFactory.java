@@ -17,7 +17,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator.PathParams;
+import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator.MethodParams;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cpf.repository.RepositoryAccess;
@@ -266,9 +266,9 @@ public class DashboardFactory
 
   private String getWcdfPath(final IParameterProvider pathParams)
   {
-    final String path = "/" + pathParams.getStringParameter(PathParams.SOLUTION, null)
-            + "/" + pathParams.getStringParameter(PathParams.PATH, null)
-            + "/" + pathParams.getStringParameter(PathParams.FILE, null);
+    final String path = "/" + pathParams.getStringParameter(MethodParams.SOLUTION, null)
+            + "/" + pathParams.getStringParameter(MethodParams.PATH, null)
+            + "/" + pathParams.getStringParameter(MethodParams.FILE, null);
 
     return path.replaceAll("//+", "/");
   }

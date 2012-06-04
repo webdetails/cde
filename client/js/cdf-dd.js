@@ -133,7 +133,7 @@ var CDFDD = Base.extend({
             if (e.shiftKey){
               cdfdd.cggDialog();
             }
-            break
+            break;
           case 191:
             if (e.shiftKey){
               cdfdd.toggleHelp();
@@ -145,8 +145,8 @@ var CDFDD = Base.extend({
             }
             break;
         }
-      })
-    })
+      });
+    });
 
 
     // Activate tooltips - Note: Disabled since last style change
@@ -205,7 +205,7 @@ var CDFDD = Base.extend({
     var loadParams = {
       operation: "load",
       file: CDFDDFileName
-    }
+    };
 			
     $.post(CDFDDDataUrl, loadParams, function(result) {
       var json = eval("(" + result + ")");
@@ -215,7 +215,7 @@ var CDFDD = Base.extend({
         myself.init();
       }
       else {
-        alert(json.result)
+        alert(json.result);
       }
     });
   },
@@ -264,7 +264,6 @@ var CDFDD = Base.extend({
     };
 
     // Removes extra information and saves space
-    var myself = this;
     var o = Util.clone(original);
     $.each(o,function(i,t){
       if(typeof t !== "object"){
@@ -276,8 +275,8 @@ var CDFDD = Base.extend({
             if(!strip[p])
               delete properties[p];
           });
-        })
-      })
+        });
+      });
     });
     return o;
 
@@ -369,7 +368,7 @@ var CDFDD = Base.extend({
         $('#container_id').fileTree(
         {
           root: '/',
-          script: CDFDDDataUrl.replace("Syncronize","ExploreFolder?fileExtensions=.wcdf"),
+          script: CDFDDDataUrl.replace("Syncronize","ExploreFolder?fileExtensions=.wcdf&access=create"),
           expandSpeed: 1000,
           collapseSpeed: 1000,
           multiFolder: false,
@@ -378,7 +377,7 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");
             $(obj).attr("class","selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("")
+            $("#fileInput").val("");
           }
         },
         function(file) {
@@ -617,16 +616,16 @@ var CDFDD = Base.extend({
   },
 
   setDashboardData: function(dashboardData){
-    this.dashboardData = dashboardData
+    this.dashboardData = dashboardData;
   },
   getDashboardData: function(){
-    return this.dashboardData
+    return this.dashboardData;
   },
   setDashboardWcdf: function(dashboardWcdf){
-    this.dashboardWcdf = dashboardWcdf
+    this.dashboardWcdf = dashboardWcdf;
   },
   getDashboardWcdf: function(){
-    return this.dashboardWcdf
+    return this.dashboardWcdf;
   },
   
   //setExitNotification: function(enable){
@@ -678,10 +677,10 @@ var CDFDD = Base.extend({
 },
 {
   LAYOUT: function(){
-    return $("table#layout-div tbody")
+    return $("table#layout-div tbody");
   },
   PANELS: function(){
-    return $("#cdfdd-panels")
+    return $("#cdfdd-panels");
   }
 });
 
@@ -732,10 +731,10 @@ var Panel = Base.extend({
   },
 
   setId: function(id){
-    this.id = id
+    this.id = id;
   },
   getId: function(){
-    return this.id
+    return this.id;
   }
 
 
@@ -772,11 +771,11 @@ var Panel = Base.extend({
       if (i==myIdx){
         //may be hovered
         Panel.unsetHover(x);
-        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/$2"))
+        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/$2"));
       //enable
       //$(x).attr("src", $(x).attr("src").replace(DISABLED_STR,ENABLED_STR));
       }else{
-        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"))
+        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"));
       //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
       //disable
 						
@@ -845,16 +844,16 @@ var Logger = Base.extend({
     }
   },
   error : function(str){
-    this.log(this.ERROR,str)
+    this.log(this.ERROR,str);
   },
   warn : function(str){
-    this.log(this.WARN,str)
+    this.log(this.WARN,str);
   },
   info : function(str){
-    this.log(this.INFO,str)
+    this.log(this.INFO,str);
   },
   debug : function(str){
-    this.log(this.DEBUG,str)
+    this.log(this.DEBUG,str);
   }
 
 });

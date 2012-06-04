@@ -7,12 +7,14 @@ package pt.webdetails.cpf.repository;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.pentaho.platform.api.engine.IFileFilter;
 import org.pentaho.platform.api.engine.IPentahoAclEntry;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
@@ -41,6 +43,8 @@ public class RepositoryAccess {
     CREATE, 
     NONE;
     
+//    private static 
+    
     public int toResourceAction(){
       switch(this){
         case NONE:
@@ -57,6 +61,15 @@ public class RepositoryAccess {
           return IPentahoAclEntry.PERM_EXECUTE;
       }
     }
+    
+    public static FileAccess parse(String fileAccess){
+      try{
+        return FileAccess.valueOf(StringUtils.upperCase(fileAccess));
+      }
+      catch(Exception e){
+        return null;
+      }
+    }
   }
   
   public enum SaveFileStatus {
@@ -67,6 +80,14 @@ public class RepositoryAccess {
 
   protected RepositoryAccess(IPentahoSession userSession) {
     this.userSession = userSession == null ? PentahoSessionHolder.getSession() : userSession;
+  }
+  
+  public static RepositoryAccess getRepository() {
+    return new RepositoryAccess(null);
+  }
+
+  public static RepositoryAccess getRepository(IPentahoSession userSession) {
+    return new RepositoryAccess(userSession);
   }
   
   public SaveFileStatus publishFile(String fileAndPath, byte[] data, boolean overwrite){
@@ -141,14 +162,6 @@ public class RepositoryAccess {
   private ISolutionRepositoryService getSolutionRepositoryService(){
     return PentahoSystem.get(ISolutionRepositoryService.class, userSession);
   }
-
-  public static RepositoryAccess getRepository() {
-    return new RepositoryAccess(null);
-  }
-
-  public static RepositoryAccess getRepository(IPentahoSession userSession) {
-    return new RepositoryAccess(userSession);
-  }
   
   public InputStream getResourceInputStream(String filePath) throws FileNotFoundException {
     return getResourceInputStream(filePath, FileAccess.READ);
@@ -175,11 +188,24 @@ public class RepositoryAccess {
   }
 
   public String getResourceAsString(String solutionPath) throws IOException {
-   return getSolutionRepository().getResourceAsString(solutionPath, FileAccess.READ.toResourceAction());
+   return getResourceAsString(solutionPath, FileAccess.READ);
+  }
+  
+  public String getResourceAsString(String solutionPath, FileAccess fileAccess) throws IOException {
+    return getSolutionRepository().getResourceAsString(solutionPath, fileAccess.toResourceAction());
   }
 
   public ISolutionFile getSolutionFile(String solutionPath, FileAccess access) {
     return getSolutionRepository().getSolutionFile(solutionPath, access.toResourceAction());
+  }
+  
+  public ISolutionFile[] listSolutionFiles(String solutionPath, FileAccess access, boolean includeDirs, List<String> extensions){
+    return listSolutionFiles(solutionPath, new ExtensionFilter(extensions, includeDirs, this, access));
+  }
+  
+  public ISolutionFile[] listSolutionFiles(String solutionPath, IFileFilter fileFilter){
+    ISolutionFile baseDir = getSolutionFile(solutionPath, FileAccess.READ);
+    return baseDir.listFiles(fileFilter);
   }
 
   public static String getSystemDir(){
@@ -189,4 +215,34 @@ public class RepositoryAccess {
   public static String getSolutionPath(String path){
     return PentahoSystem.getApplicationContext().getSolutionPath(path);
   }
+  
+  public static class ExtensionFilter implements IFileFilter {
+
+    private List<String> extensions;
+    private boolean includeDirs = true;
+    private ISolutionRepository solutionRepository;
+    FileAccess access = FileAccess.READ;
+    
+    public ExtensionFilter(List<String> extensions, boolean includeDirs, RepositoryAccess repository, FileAccess fileAccess){
+      
+      this.includeDirs = includeDirs;
+      if(extensions != null && extensions.size() > 0){
+        this.extensions = extensions;
+      }
+      solutionRepository = repository.getSolutionRepository();
+      access = fileAccess;
+    }
+
+    @Override
+    public boolean accept(ISolutionFile file) {
+      
+      boolean include = file.isDirectory()? 
+                        includeDirs && Boolean.parseBoolean(solutionRepository.getLocalizedFileProperty(file, "visible", access.toResourceAction())):
+                        extensions == null || extensions.contains(file.getExtension());
+      
+      return include && solutionRepository.hasAccess(file, access.toResourceAction());
+    }
+    
+  }
+  
 }
