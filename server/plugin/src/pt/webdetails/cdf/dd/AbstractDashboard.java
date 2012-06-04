@@ -143,16 +143,16 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   public String render(IParameterProvider params)
   {
     String context = DashboardDesignerContentGenerator.getCdfContext(params);
-    logger.info("[Timing] Starting render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    logger.debug("[Timing] Starting render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     String quotedFooter = Matcher.quoteReplacement(this.footer),
             quotedHeader = Matcher.quoteReplacement(this.header + context),
             quotedContent = Matcher.quoteReplacement(this.content);
-    logger.info("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    logger.debug("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
 
     String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header
             .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
             .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
-    logger.info("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
+    logger.debug("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     return result;
   }
 

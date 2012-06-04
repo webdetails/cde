@@ -1,7 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.datasources;
 
 import net.sf.json.JSONObject;
@@ -46,9 +46,7 @@ public class CdaManager {
 
 
       JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonString);
-      JXPathContext.newContext(json);//TODO:needed?
-//      Document doc = DocumentFactory.getInstance().createDocument();
-//      Iterator<Pointer> it = context.iteratePointers("/components/rows");
+      JXPathContext.newContext(json);
       
       switch(RepositoryAccess.getRepository(userSession).publishFile(file[0], file[1], json.toString().getBytes("UTF-8"), true)){
         case FAIL:
