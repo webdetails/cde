@@ -11,15 +11,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.util.Properties;
 import java.text.SimpleDateFormat;
-import java.util.UUID;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,10 +34,7 @@ import org.json.JSONException;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.api.repository.ISolutionRepository;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import org.pentaho.platform.engine.services.solution.SolutionReposHelper;
 
 
 import pt.webdetails.cdf.dd.datasources.DataSourceReader;
@@ -50,8 +46,8 @@ import pt.webdetails.cdf.dd.util.Utils;
 
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cpf.annotations.AccessLevel;
+import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 import pt.webdetails.cpf.InterPluginCall;
@@ -98,19 +94,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
   private Packager packager;
 
-  public enum FileTypes
-  {
-
-    JPG, JPEG, PNG, GIF, BMP, JS, CSS, HTML, HTM, XML
-  }
-  public static final EnumMap<FileTypes, String> mimeTypes = new EnumMap<FileTypes, String>(FileTypes.class);
-
   /**
    * Parameters received by content generator
    */
   protected static class MethodParams
   {
-
     /**
      * Debug flag
      */
@@ -126,26 +114,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     public static final String DATA = "data";
   }
 
-  static
-  {
-    /*
-     * Image types
-     */
-    mimeTypes.put(FileTypes.JPG, "image/jpeg");
-    mimeTypes.put(FileTypes.JPEG, "image/jpeg");
-    mimeTypes.put(FileTypes.PNG, "image/png");
-    mimeTypes.put(FileTypes.GIF, "image/gif");
-    mimeTypes.put(FileTypes.BMP, "image/bmp");
-
-    /*
-     * HTML (and related) types
-     */
-    // Deprecated, should be application/javascript, but IE doesn't like that
-    mimeTypes.put(FileTypes.JS, "text/javascript");
-    mimeTypes.put(FileTypes.HTM, "text/html");
-    mimeTypes.put(FileTypes.HTML, "text/html");
-    mimeTypes.put(FileTypes.CSS, "text/css");
-    mimeTypes.put(FileTypes.XML, "text/xml");
+  
+  private static Map<String, Method> exposedMethods = new HashMap<String, Method>();
+  static{
+    //to keep case-insensitive methods
+    logger.info("loading exposed methods");
+    exposedMethods = getExposedMethods(DashboardDesignerContentGenerator.class, true);
+  }
+  
+  @Override
+  protected Method getMethod(String methodName) throws NoSuchMethodException {
+    Method method = exposedMethods.get(StringUtils.lowerCase(methodName) );
+    if(method == null) {
+      throw new NoSuchMethodException();
+    }
+    return method;
   }
 
   public DashboardDesignerContentGenerator()
@@ -159,34 +142,24 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       logger.error("Failed to initialize!");
     }
   }
-
+  
 //  @Override
-//  protected boolean invokeMethod(OutputStream out, String methodName, Method method) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
-//    if(canAccessMethod(method)){
-//      method.invoke(this, getRequestParameters(), out);
-//      return true;
+//  public void createContent()
+//  {
+//    //TODO: document what's happening here
+//    // Make sure we have the env. correctly inited
+//    if (SolutionReposHelper.getSolutionRepositoryThreadVariable() == null && PentahoSystem.getObjectFactory().objectDefined(ISolutionRepository.class.getSimpleName()))
+//    {
+//      SolutionReposHelper.setSolutionRepositoryThreadVariable(PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession()));
 //    }
-//    logger.error("Method " + methodName + " not exposed or user does not have required permissions.");
-//    getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
-//    return false;
+//    
+//    super.createContent();
 //  }
   
   @Override
-  public void createContent()
-  {
-    // Make sure we have the env. correctly inited
-    if (SolutionReposHelper.getSolutionRepositoryThreadVariable() == null && PentahoSystem.getObjectFactory().objectDefined(ISolutionRepository.class.getSimpleName()))
-    {
-      SolutionReposHelper.setSolutionRepositoryThreadVariable(PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession()));
-    }
-    
-    super.createContent();
+  public String getPluginName() {
+    return PLUGIN_NAME; 
   }
-
-//  @Override
-//  protected Class<?>[] getCGMethodParams() {
-//    return new Class<?>[]{IParameterProvider.class, OutputStream.class};
-//  }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void syncronize(final OutputStream out) throws Exception
@@ -207,13 +180,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void newdashboard(final OutputStream out) throws Exception
+  @Audited(action="edit")
+  public void newDashboard(final OutputStream out) throws Exception
   {
     this.edit(out);
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getcomponentdefinitions(OutputStream out) throws Exception
+  public void getComponentDefinitions(OutputStream out) throws Exception
   {
     // The ComponentManager is responsible for producing the component definitions
     ComponentManager engine = ComponentManager.getInstance();
@@ -226,13 +200,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // Get and output the definitions
     out.write(engine.getDefinitions().getBytes());
   }
-
-  public void getcomponentimplementations(IParameterProvider pathParams, OutputStream out) throws Exception
-  {
-    ComponentManager engine = ComponentManager.getInstance();
-    out.write(engine.getImplementations().getBytes());
-  }
-
   /**
    * Re-initializes the designer back-end.
    *
@@ -247,20 +214,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getcontent(OutputStream out) throws Exception
+  public void getContent(OutputStream out) throws Exception
   {
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
     writeOut(out, dashboard.getContent());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getheaders(final OutputStream out) throws Exception
+  public void getHeaders(final OutputStream out) throws Exception
   {
     Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
     writeOut(out, dashboard.getHeader());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Audited(action = "render")
   public void render(final OutputStream out) throws IOException // Exception
   {
     // Check security
@@ -269,10 +237,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       writeOut(out, "Access Denied or File Not Found.");
       return;
     }
-
-    final long start = System.currentTimeMillis();        
-    UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, getRequestParameters());       
-    
     
     // Response
     try
@@ -289,7 +253,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
       Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
       writeOut(out, dashboard.render(getRequestParameters()));
-      //out.write(dashboard.render(parameterProviders.get("request")).getBytes(ENCODING));
       logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     }
     catch (FileNotFoundException e){
@@ -298,18 +261,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       logger.error(msg);
       writeOut(out, msg);
     }
-    CpfAuditHelper.endAudit(PLUGIN_NAME, "render", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getcssresource(final OutputStream out) throws Exception
+  public void getCssResource(final OutputStream out) throws Exception
   {
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
-    getresource(out);
+    getResource(out);
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getjsresource(final OutputStream out) throws Exception
+  public void getJsResource(final OutputStream out) throws Exception
   {
     setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = getResponse();
@@ -317,7 +279,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     try
     {
-      getresource(out);
+      getResource(out);
     }
     catch (SecurityException e)
     {
@@ -330,17 +292,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getuntypedresource(final OutputStream out) throws IOException
+  public void getUntypedResource(final OutputStream out) throws IOException
   {
     final HttpServletResponse response = getResponse();
     response.setHeader("Content-Type", "text/plain");
     response.setHeader("content-disposition", "inline");
 
-    getresource(out);
+    getResource(out);
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getimg(final OutputStream out) throws Exception
+  public void getImg(final OutputStream out) throws Exception
   {
     String pathString = getPathParameters().getStringParameter(MethodParams.PATH, "");
     String resource;
@@ -355,34 +317,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     resource = resource.startsWith("/") ? resource : "/" + resource;
 
     String[] path = resource.split("/");
-    String[] fileName = path[path.length - 1].split("\\.");
-
-    final String mimeType;
-    switch (FileTypes.valueOf(fileName[fileName.length - 1].toUpperCase()))
-    {
-      case PNG:
-        mimeType = "image/png";
-        break;
-      case JPG:
-      case JPEG:
-        mimeType = "image/jpeg";
-        break;
-      case GIF:
-        mimeType = "image/gif";
-        break;
-      case BMP:
-        mimeType = "image/bmp";
-        break;
-      default:
-        mimeType = "";
-    }
-    setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
+    String fileName = path[path.length - 1];
+    setResponseHeaders(getMimeType(fileName), RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
     try
     {
-      getresource(out);
+      getResource(out);
     }
     catch (SecurityException e)
     {
@@ -417,7 +359,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     String mimeType;
     try
     {
-      final FileTypes fileType = FileTypes.valueOf(fileName[fileName.length - 1].toUpperCase());
+      final FileType fileType = FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
       mimeType = mimeTypes.get(fileType);
     }
     catch (java.lang.IllegalArgumentException ex)
@@ -449,7 +391,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getresource(final OutputStream out) throws IOException
+  public void getResource(final OutputStream out) throws IOException
   {
     String pathString = getPathParameters().getStringParameter(MethodParams.PATH, null);
     String resource;
@@ -487,12 +429,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Audited(action="edit")
   public void edit(final OutputStream out) throws IOException
   {
-    // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
-
-    final long start = System.currentTimeMillis();        
-    UUID uuid = CpfAuditHelper.startAudit(PLUGIN_NAME, "edit", getObjectName(), this.userSession, this, getRequestParameters());       
+    // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter      
     IParameterProvider requestParams = getRequestParameters();
     boolean debugMode = requestParams.hasParameter("debug") && requestParams.getParameter("debug").toString().equals("true");
     if (requestParams.hasParameter(MethodParams.PATH) && !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(requestParams), FileAccess.EDIT))
@@ -533,12 +473,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // Cache the output - Disabled for security check reasons
     // setCacheControl();
 
-    writeOut(out, resource);
-    CpfAuditHelper.endAudit(PLUGIN_NAME, "edit", getObjectName(), this.userSession, this, start, uuid, System.currentTimeMillis());    
+    writeOut(out, resource);    
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void synctemplates(final OutputStream out) throws Exception
+  public void syncTemplates(final OutputStream out) throws Exception
   {
     final CdfTemplates cdfTemplates = new CdfTemplates(userSession);
 
@@ -546,19 +485,19 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void listrenderers(final OutputStream out) throws Exception
+  public void listRenderers(final OutputStream out) throws Exception
   {
-    out.write("{\"result\": [\"mobile\",\"blueprint\"]}".getBytes("utf-8"));
+    writeOut(out, "{\"result\": [\"mobile\",\"blueprint\"]}");
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void syncstyles(final OutputStream out) throws Exception
+  public void syncStyles(final OutputStream out) throws Exception
   {
     CdfStyles.getInstance().syncronize(userSession, out, getRequestParameters());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void olaputils(final OutputStream out)
+  public void olapUtils(final OutputStream out)
   {
 
     final OlapUtils olapUtils = new OlapUtils(userSession);
@@ -579,7 +518,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void explorefolder(final OutputStream out) throws IOException
+  public void exploreFolder(final OutputStream out) throws IOException
   {
     IParameterProvider requestParams = getRequestParameters();
     final String folder = requestParams.getStringParameter("dir", null);
@@ -593,7 +532,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    * List CDA datasources for given dashboard.
    */
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void listcdasources(final OutputStream out) throws IOException
+  public void listCdaSources(final OutputStream out) throws IOException
   {
     String dashboard = getRequestParameters().getStringParameter("dashboard", null);
     dashboard = StringUtils.replace(dashboard, ".wcdf", ".cdfde");
@@ -605,7 +544,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
 // External Editor v
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getfile(final OutputStream out) throws IOException
+  public void getFile(final OutputStream out) throws IOException
   {
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, "");
 
@@ -616,24 +555,24 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void createfolder(OutputStream out) throws PentahoAccessControlException, IOException
+  public void createFolder(OutputStream out) throws PentahoAccessControlException, IOException
   {
 
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
 
     if (ExternalFileEditorBackend.createFolder(path, userSession))
     {
-      IOUtils.write("Path " + path + " created ok", out);
+      writeOut(out, "Path " + path + " created ok");
     }
     else
     {
-      IOUtils.write("error creating folder " + path, out);
+      writeOut(out,"error creating folder " + path);
     }
 
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void writefile(OutputStream out) throws PentahoAccessControlException, IOException
+  public void writeFile(OutputStream out) throws PentahoAccessControlException, IOException
   {
     IParameterProvider requestParams = getRequestParameters();
     String path = requestParams.getStringParameter(MethodParams.PATH, null);
@@ -642,16 +581,16 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
     if (ExternalFileEditorBackend.writeFile(path, solution, userSession, contents))
     {//saved ok
-      IOUtils.write("file '" + path + "' saved ok", out);
+      writeOut(out, "file '" + path + "' saved ok");
     }
     else
     {//error
-      IOUtils.write("error saving file " + path, out);
+      writeOut(out, "error saving file " + path);
     }
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void canedit(OutputStream out) throws IOException
+  public void canEdit(OutputStream out) throws IOException
   {
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
 
@@ -660,7 +599,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void exteditor(final OutputStream out) throws IOException
+  public void extEditor(final OutputStream out) throws IOException
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
     writeOut(out, ExternalFileEditorBackend.getFileContents(editorPath, userSession));
@@ -669,7 +608,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   //External Editor ^ 
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void componenteditor(final OutputStream out) throws IOException
+  public void componentEditor(final OutputStream out) throws IOException
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
     writeOut(out,ExternalFileEditorBackend.getFileContents(editorPath, userSession));
@@ -970,7 +909,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     writeOut(out, getVersionChecker().getVersion());
   }
 
-  public VersionChecker getVersionChecker() {
+  private VersionChecker getVersionChecker() {
     return new VersionChecker(CdeSettings.getSettings()){
 
       @Override
