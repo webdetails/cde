@@ -112,7 +112,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     public static final String DATA = "data";
   }
 
-  
+  /*
+   * This block initializes exposed methods
+   */
   private static Map<String, Method> exposedMethods = new HashMap<String, Method>();
   static{
     //to keep case-insensitive methods
@@ -746,8 +748,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     cdaListDataAccessTypes.run();
   }
 
-
-  private JSON getCdaDefs(boolean refresh) throws Exception
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public JSON getCdaDefs(boolean refresh) throws Exception
   {
     InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
     return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
@@ -757,6 +759,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
     cdaListDataAccessTypes.setSession(userSession);
     cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
+    cdaListDataAccessTypes.setResponse(getResponse());
     return cdaListDataAccessTypes;
   }
 
