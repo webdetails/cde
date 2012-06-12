@@ -114,7 +114,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     public static final String DATA = "data";
   }
 
-  
+  /*
+   * This block initializes exposed methods
+   */
   private static Map<String, Method> exposedMethods = new HashMap<String, Method>();
   static{
     //to keep case-insensitive methods
@@ -771,43 +773,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
   }
 
-  public JSON getCdaDefs() throws Exception
+
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public JSON getCdaDefs(boolean refresh) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cda = pluginManager.getContentGenerator("cda", userSession);
-    // If CDA is present, we're going to produce components from the output of its discovery service
-    if (cda != null)
-    {
-      // Basic setup
-      cda.setParameterProviders(parameterProviders);
-      cda.setOutputHandler(outputHandler);
-      // We need to arrange for a callback object that will serve as a communications channel
-      ArrayList<Object> output = new ArrayList<Object>();
-      HashMap<String, Object> channel = new HashMap<String, Object>();
-      ByteArrayOutputStream outputStream = null;
-      try
-      {
-        outputStream = new ByteArrayOutputStream();
-        // The outputstream provides CDA with a sink we can later retrieve data from
-        channel.put("output", outputStream);
-        // Setup the desired function to call on CDA's side of things.
-        channel.put("method", "listDataAccessTypes");
-        // Call CDA
-        output.add(channel);
-        cda.setCallbacks(output);
-        cda.createContent();
-        // pass the output to the ComponentManager
-        return JSONSerializer.toJSON(outputStream.toString());
-      }
-      finally
-      {
-        IOUtils.closeQuietly(outputStream);
-      }
-    }
-    else
-    {
-      return null;
-    }
+    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
+    return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
+  }
+  
+  private InterPluginCall getCdaListDataAccessTypesCall(boolean refresh){
+    InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
+    cdaListDataAccessTypes.setSession(userSession);
+    cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
+    cdaListDataAccessTypes.setResponse(getResponse());
+    return cdaListDataAccessTypes;
   }
 
   private void init() throws IOException
