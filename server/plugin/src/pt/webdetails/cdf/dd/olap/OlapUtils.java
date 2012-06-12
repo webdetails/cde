@@ -85,9 +85,23 @@ public class OlapUtils {
             String catalog = pathParams.getStringParameter("catalog", null);
             String cube = pathParams.getStringParameter("cube", null);
             String member = pathParams.getStringParameter("member", null);
+            String[] members = pathParams.getStringArrayParameter("member",null);
             String direction = pathParams.getStringParameter("direction", null);
+            
+            if(members.length > 1){
+                return getLevelMembersStructure(catalog, cube, members, direction);
+            } else {
+                return getLevelMembersStructure(catalog, cube, member, direction); 
+            }
 
-            return getLevelMembersStructure(catalog, cube, member, direction);
+            
+        } else if (operation.equals("GetLevelMembers")) {
+
+            String catalog = pathParams.getStringParameter("catalog", null);
+            String cube = pathParams.getStringParameter("cube", null);
+            String member = pathParams.getStringParameter("member", null);
+
+            return getLevelMembers(catalog, cube, member);
 
         } else if (operation.equals("test")) {
 
@@ -343,6 +357,93 @@ public class OlapUtils {
 
 
     }
+    
+    private JSONObject getLevelMembersStructure(String catalog, String cube, String[] memberString, String direction) {
+
+        Connection connection = getMdxConnection(catalog);
+
+        String query = "";
+        query+="select {";
+        for(int i = 0; i < memberString.length; i++){
+          if(direction.equals(DIRECTION_DOWN)){
+            query+=memberString[i]+".children";
+            
+          } else {
+            query+=memberString[i]+".parent.parent.children";
+          }
+          
+          if(i < memberString.length-1){
+            query+=",";
+          }
+        }
+        
+        query += "} on Rows, {} ON Columns from [" + cube + "]";
+        
+
+        Query mdxQuery = connection.parseQuery(query);
+        RolapResult result = (RolapResult) connection.execute(mdxQuery);
+        List<Position> positions = result.getAxes()[1].getPositions();
+
+        JSONArray membersArray = new JSONArray();
+
+        for (Position position : positions) {
+
+            Member member = position.get(0);
+            
+            JSONObject jsonMeasure = new JSONObject();
+            jsonMeasure.put("type", "member");
+            jsonMeasure.put("name", member.getName());
+            jsonMeasure.put("qualifiedName", member.getQualifiedName().substring(8, member.getQualifiedName().length() - 1));
+            jsonMeasure.put("memberType", member.getMemberType().toString());
+
+            membersArray.add(jsonMeasure);
+
+        }
+
+        JSONObject output = new JSONObject();
+        output.put("members", membersArray);
+        return output;
+
+
+    }
+    
+    
+    
+    private JSONObject getLevelMembers(String catalog, String cube, String levelString) {
+
+        Connection connection = getMdxConnection(catalog);
+
+        String query  = "select distinct(" + levelString + ".members) on Rows, {} ON Columns from [" + cube + "]";
+
+        Query mdxQuery = connection.parseQuery(query);
+        RolapResult result = (RolapResult) connection.execute(mdxQuery);
+        List<Position> positions = result.getAxes()[1].getPositions();
+        
+        System.out.println();
+
+        JSONArray membersArray = new JSONArray();
+
+        for (Position position : positions) {
+
+            Member member = position.get(0);
+            
+            JSONObject jsonMeasure = new JSONObject();
+            jsonMeasure.put("type", "member");
+            jsonMeasure.put("name", member.getName());
+            jsonMeasure.put("qualifiedName", member.getQualifiedName().substring(8, member.getQualifiedName().length() - 1));
+            jsonMeasure.put("memberType", member.getMemberType().toString());
+
+            membersArray.add(jsonMeasure);
+
+        }
+
+        JSONObject output = new JSONObject();
+        output.put("members", membersArray);
+        return output;
+
+
+    }
+    
 
     private void makeTest() {
 
