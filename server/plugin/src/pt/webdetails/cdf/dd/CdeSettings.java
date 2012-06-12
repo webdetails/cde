@@ -46,6 +46,10 @@ public class CdeSettings{
     return paths.toArray(new String[paths.size()]);
   }
   
+  public static String getEncoding(){
+    return CdfDDSettings.ENCODING;
+  }
+  
   private static class CdfDDSettings  extends PluginSettings {
 
     @Override
