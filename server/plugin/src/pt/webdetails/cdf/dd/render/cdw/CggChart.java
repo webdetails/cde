@@ -13,6 +13,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
@@ -112,7 +113,7 @@ public class CggChart
     try
     {
       String fileName = this.chartName + CGG_EXTENSION;
-      byte[] content = chartScript.toString().getBytes(DashboardDesignerContentGenerator.ENCODING);
+      byte[] content = chartScript.toString().getBytes(CdeSettings.getEncoding());
       
       switch( RepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
         case FAIL:
