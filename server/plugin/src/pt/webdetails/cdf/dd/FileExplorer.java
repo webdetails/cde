@@ -28,7 +28,10 @@ public class FileExplorer {
       String[] extensions = StringUtils.split(fileExtensions, ".");
       if(extensions != null){
         for(String extension : extensions){
+          // For some reason, in 4.5 filebased rep started to report a leading dot in extensions
+          // Adding both just to be sure we don't break stuff
           extensionsList.add("." + extension);
+          extensionsList.add(extension);
         }
       }
       FileAccess fileAccess = FileAccess.parse(access);
