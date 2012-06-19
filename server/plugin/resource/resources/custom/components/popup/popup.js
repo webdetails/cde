@@ -7,6 +7,13 @@ var PopupComponent = BaseComponent.extend({
   arrow: undefined,
   content: undefined,
   cancel: undefined,
+  $overlay: undefined,
+  
+  /* // Default settings
+  gravity: undefined,
+  draggable: true,
+  closeOnClickOutside: false,
+  */ 
 
   update: function(){
     var myself = this;
@@ -61,6 +68,14 @@ var PopupComponent = BaseComponent.extend({
  
     /* Allow overriding this.gravity */
     gravity = gravity || this.gravity;
+    
+    /* Draggable/ */
+    var draggable = typeof this.draggable === "undefined"?true:this.draggable;
+    
+    /* Close on click outside */
+    var closeOnClickOutside = typeof this.closeOnClickOutside === "undefined"?false:this.closeOnClickOutside;
+    
+    
     /* Clear positioning for the arrow */
     this.arrow.css({top: "", left: "", bottom: "", right: ""});
     this.arrow.show();
@@ -162,7 +177,10 @@ var PopupComponent = BaseComponent.extend({
       myself.arrow.hide();
     }
     this.ph.bind('drag',dragHandler);
-    this.ph.draggable();
+    
+    if(draggable){
+        this.ph.draggable();    
+    }
     var basePos,dragPos;
     this.ph.bind('touchstart',function(e){
       basePos = myself.ph.offset();
@@ -177,6 +195,22 @@ var PopupComponent = BaseComponent.extend({
         myself.arrow.hide();
         e.preventDefault();
     });
+    
+
+    if(closeOnClickOutside){
+        
+        // Define an overlay so that we can click
+        if(!this.$overlay){
+            this.$overlay = $('<div id="popupComponentOverlay"></div>');
+        }
+        this.$overlay.appendTo("body").click(function(event){
+            event.stopPropagation();
+            myself.hide();
+            myself.$overlay.unbind('click');
+            myself.$overlay.detach()
+        })
+    }
+    
   },
 
   hide: function() {
@@ -271,6 +305,7 @@ var ExportPopupComponent = PopupComponent.extend({
     this.cancel.addClass("close").click(function(){
         myself.hide();
     });
+    
     
     this.cancel.appendTo(this.ph);
     this.arrow = $("<div class='arrow'>").appendTo(this.ph);
