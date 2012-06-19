@@ -13,7 +13,9 @@
 		<Model>
 			<Property>executeAtStart</Property>
 			<Property>htmlObject</Property>
-                        <Property>gravity</Property>
+			<Property>gravity</Property>
+			<Property>draggable</Property>
+			<Property>closeOnClickOutside</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
@@ -28,6 +30,36 @@
 				</Style>
 			</Styles>
 			<Dependencies/>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>draggable</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Draggable</Description>
+            <Tooltip>Allow dragging element?</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>81</Order>
+            <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>closeOnClickOutside</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>Close on click outside</Description>
+            <Tooltip>Close on click outside?</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>82</Order>
+            <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
 
     </Implementation>
 	</Contents>
