@@ -16,6 +16,7 @@ var CodeEditor = Base.extend({
 		'js' : 'javascript',
 		'xml' : 'xml',
 		'cda' : 'xml',
+		'cdv' : 'javascript',
 		'html': 'html',
 		'sql' : null,
 		'mdx' : null,
