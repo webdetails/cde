@@ -48,23 +48,23 @@ var PopupComponent = BaseComponent.extend({
   },
   popup: function(target,gravity) {
     var pos = target.offset(),
-      css = {
-        'top': 'auto',
-        'bottom': 'auto',
-        'left': 'auto',
-        'right': 'auto'
-      },
-      /* Minimum distance from the edges */
-      minimumDistance = 20,
-      /* How much clearance we need to display the vertex, 
+    css = {
+      'top': 'auto',
+      'bottom': 'auto',
+      'left': 'auto',
+      'right': 'auto'
+    },
+    /* Minimum distance from the edges */
+    minimumDistance = 20,
+    /* How much clearance we need to display the vertex, 
        * should be (vertex depth - border depth)
        */
-      vertexOffset = 18 - 6,
-      /* Size of the vertex along the tooltip edge */
-      vertexSize = 45, 
-      targetOffset,
-      phHeight = this.ph.outerHeight(),
-      phWidth = this.ph.outerWidth();
+    vertexOffset = 18 - 6,
+    /* Size of the vertex along the tooltip edge */
+    vertexSize = 45, 
+    targetOffset,
+    phHeight = this.ph.outerHeight(),
+    phWidth = this.ph.outerWidth();
  
     /* Allow overriding this.gravity */
     gravity = gravity || this.gravity;
@@ -77,7 +77,12 @@ var PopupComponent = BaseComponent.extend({
     
     
     /* Clear positioning for the arrow */
-    this.arrow.css({top: "", left: "", bottom: "", right: ""});
+    this.arrow.css({
+      top: "", 
+      left: "", 
+      bottom: "", 
+      right: ""
+    });
     this.arrow.show();
     this.ph.removeClass('north south east west');
     /* The gravity parameter is what decides where the tooltip
@@ -100,11 +105,11 @@ var PopupComponent = BaseComponent.extend({
      * axes.
      */
     var minWidth = minimumDistance,
-      maxWidth = $(document).width() - minimumDistance,
-      minHeight = minimumDistance,
-      maxHeight = $(document).height() - minimumDistance,
-      targetWidth, targetHeight,
-      paddingNear, paddingFar;
+    maxWidth = $(document).width() - minimumDistance,
+    minHeight = minimumDistance,
+    maxHeight = $(document).height() - minimumDistance,
+    targetWidth, targetHeight,
+    paddingNear, paddingFar;
 
     switch(gravity) {
       /*************** NORTH ***************/
@@ -112,8 +117,8 @@ var PopupComponent = BaseComponent.extend({
         paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
         targetHeight = "ownerSVGElement" in target[0] ?
-            (target.attr("height") ? target.attr("height") - 0 : 0):
-            target.height();
+        (target.attr("height") ? target.attr("height") - 0 : 0):
+        target.height();
         targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
         css.top = this.offset(targetHeight,phHeight,pos.top+paddingNear,vertexOffset,minHeight,maxHeight,'near');
         this.arrow.css('left',this.center(target.outerWidth(),vertexSize,targetOffset,0,phWidth));
@@ -124,8 +129,8 @@ var PopupComponent = BaseComponent.extend({
       case 'S':
         paddingNear = parseInt(target.css('padding-top').replace(/(.*)px/,"$1"),10);
         targetHeight = "ownerSVGElement" in target[0] ?
-            (target.attr("height") ? target.attr("height") - 0 : 0):
-            target.height();
+        (target.attr("height") ? target.attr("height") - 0 : 0):
+        target.height();
         css.left = this.center(target.outerWidth(),phWidth,pos.left,minWidth,maxWidth);
         css.top = this.offset(targetHeight,phHeight,pos.top+paddingNear,vertexOffset,minHeight,maxHeight,'far');
         targetOffset = pos.left - css.left - this.ph.css('border-top-width').replace(/(.*)px/,"$1"); 
@@ -139,8 +144,8 @@ var PopupComponent = BaseComponent.extend({
 
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
         targetWidth = "ownerSVGElement" in target[0] ?
-            (target.attr("width") ? target.attr("width") - 0 : 0):
-            target.width();
+        (target.attr("width") ? target.attr("width") - 0 : 0):
+        target.width();
         css.left = this.offset(target.width(),phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'near');
         targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
@@ -152,8 +157,8 @@ var PopupComponent = BaseComponent.extend({
         paddingNear = parseInt(target.css('padding-left').replace(/(.*)px/,"$1"),10);
         css.top = this.center(target.outerHeight(),phHeight,pos.top,minHeight,maxHeight);
         targetWidth = "ownerSVGElement" in target[0] ?
-            (target.attr("width") ? target.attr("width") - 0 : 0):
-            target.width();
+        (target.attr("width") ? target.attr("width") - 0 : 0):
+        target.width();
         css.left = this.offset(targetWidth,phWidth,pos.left+paddingNear,vertexOffset,minWidth,maxWidth,'far');
         targetOffset = pos.top - css.top - this.ph.css('border-left-width').replace(/(.*)px/,"$1");  
         this.arrow.css('top',this.center(target.outerHeight(),vertexSize,targetOffset,0,phHeight));
@@ -179,42 +184,49 @@ var PopupComponent = BaseComponent.extend({
     this.ph.bind('drag',dragHandler);
     
     if(draggable){
-        this.ph.draggable();    
+      this.ph.draggable();    
     }
     var basePos,dragPos;
     this.ph.bind('touchstart',function(e){
       basePos = myself.ph.offset();
-      dragPos = {left: e.originalEvent.touches[0].pageX, top: e.originalEvent.touches[0].pageY};
+      dragPos = {
+        left: e.originalEvent.touches[0].pageX, 
+        top: e.originalEvent.touches[0].pageY
+        };
     });
     this.ph.bind('touchmove',function(e){
-        var finalPos = {
-          top: basePos.top + e.originalEvent.touches[0].pageY - dragPos.top,
-          left: basePos.left + e.originalEvent.touches[0].pageX - dragPos.left
-        };
-        myself.ph.offset(finalPos);
-        myself.arrow.hide();
-        e.preventDefault();
+      var finalPos = {
+        top: basePos.top + e.originalEvent.touches[0].pageY - dragPos.top,
+        left: basePos.left + e.originalEvent.touches[0].pageX - dragPos.left
+      };
+      myself.ph.offset(finalPos);
+      myself.arrow.hide();
+      e.preventDefault();
     });
     
 
     if(closeOnClickOutside){
         
-        // Define an overlay so that we can click
-        if(!this.$overlay){
-            this.$overlay = $('<div id="popupComponentOverlay"></div>');
-        }
-        this.$overlay.appendTo("body").click(function(event){
-            event.stopPropagation();
-            myself.hide();
-            myself.$overlay.unbind('click');
-            myself.$overlay.detach()
-        })
+      // Define an overlay so that we can click
+      if(!this.$overlay){
+        this.$overlay = $('<div id="popupComponentOverlay"></div>');
+      }
+      this.$overlay.appendTo("body").click(function(event){
+        event.stopPropagation();
+        myself.hide();
+      })
     }
     
   },
 
   hide: function() {
+    
     this.ph.hide();
+    if(this.$overlay){
+      this.$overlay.unbind('click');
+      this.$overlay.detach();
+      
+    }
   },
 
   /* Given the size (width/height) for a target and a placeholder element,
@@ -230,13 +242,13 @@ var PopupComponent = BaseComponent.extend({
 
   offset: function(targetSize,phSize,offset,gap,min,max,range) {
     var near = offset - phSize - gap,
-      far = offset + targetSize + gap,
-      nearAdmissible = near > min,
-      farAdmissible = far + phSize < max;
+    far = offset + targetSize + gap,
+    nearAdmissible = near > min,
+    farAdmissible = far + phSize < max;
 
-      return range == 'near' ? (nearAdmissible || !farAdmissible ? near : far) :
-             range == 'far' ? (farAdmissible || !nearAdmissible ? far : near) :
-             near;
+    return range == 'near' ? (nearAdmissible || !farAdmissible ? near : far) :
+    range == 'far' ? (farAdmissible || !nearAdmissible ? far : near) :
+    near;
   }
 });
 
@@ -252,7 +264,9 @@ var ExportPopupComponent = PopupComponent.extend({
 
   update: function(){
     var myself = this;
-    if (this.ph) {this.ph.remove();}
+    if (this.ph) {
+      this.ph.remove();
+    }
     
     this.chartComponent = window["render_"+this.chartExportComponent];
     this.dataComponent = window["render_"+this.dataExportComponent];
@@ -262,76 +276,80 @@ var ExportPopupComponent = PopupComponent.extend({
     var link = $('<div class="popupTitle">');
     link.text(this.title || 'Export');
     link.click(function(e) {
-        myself.popup(link);
-        e.stopPropagation();
+      myself.popup(link);
+      e.stopPropagation();
     })
     $("#" + this.htmlObject).append(link);
     
     
     if (this.chartComponent) {
-        var realChartExportLabel = "Export Chart";
-        if (this.chartExportLabel && this.chartExportLabel.length > 0)
-            realChartExportLabel = this.chartExportLabel;
-        var chartExportElt = $('<div class="exportElement">');
-        chartExportElt.text(realChartExportLabel);
-        chartExportElt.click(function() {myself.exportChart();});
-        chartExportElt.appendTo(myself.ph);
+      var realChartExportLabel = "Export Chart";
+      if (this.chartExportLabel && this.chartExportLabel.length > 0)
+        realChartExportLabel = this.chartExportLabel;
+      var chartExportElt = $('<div class="exportElement">');
+      chartExportElt.text(realChartExportLabel);
+      chartExportElt.click(function() {
+        myself.exportChart();
+      });
+      chartExportElt.appendTo(myself.ph);
     }
     
     if (this.dataComponent) {
-        var realTableExportLabel = "Export Data";
-        if (this.dataExportLabel && this.dataExportLabel.length > 0)
-            realTableExportLabel = this.dataExportLabel;
-        var dataExportElt = $('<div class="exportElement">');
-        dataExportElt.text(realTableExportLabel);
-        dataExportElt.click(function() {myself.exportData();});
-        dataExportElt.appendTo(myself.ph);
+      var realTableExportLabel = "Export Data";
+      if (this.dataExportLabel && this.dataExportLabel.length > 0)
+        realTableExportLabel = this.dataExportLabel;
+      var dataExportElt = $('<div class="exportElement">');
+      dataExportElt.text(realTableExportLabel);
+      dataExportElt.click(function() {
+        myself.exportData();
+      });
+      dataExportElt.appendTo(myself.ph);
     }
     
     
     
     $(this.contentLinks).each(function (i, elt) {
-        var popupElt = $('<div class="exportElement">');
-        popupElt.text(elt[0]);
-        popupElt.click(elt[1]);
-        popupElt.appendTo(myself.ph);
+      var popupElt = $('<div class="exportElement">');
+      popupElt.text(elt[0]);
+      popupElt.click(elt[1]);
+      popupElt.appendTo(myself.ph);
     });
     
-//    this.content = .appendTo(this.ph);
+    //    this.content = .appendTo(this.ph);
     this.ph.hide().appendTo($('body'));
     this.ph.addClass('popupComponent');
     this.ph.addClass('exportOptions');
     this.cancel = $("<a>&nbsp;</a>");
     this.cancel.addClass("close").click(function(){
-        myself.hide();
+      myself.hide();
     });
     
     
     this.cancel.appendTo(this.ph);
     this.arrow = $("<div class='arrow'>").appendTo(this.ph);
-//    this.content.removeClass('hidePopup');
+  //    this.content.removeClass('hidePopup');
     
   },
   
-   popup: function(target,gravity) {
-   	this.base(target, gravity);
+  popup: function(target,gravity) {
+    this.base(target, gravity);
    	
-     var myself = this;
+    var myself = this;
       
-      var docClick = function (e) {
-          var x = e.pageX;
-          var y = e.pageY;
-          var linkPos = $("#" + myself.htmlObject).position();
+    var docClick = function (e) {
+      var x = e.pageX;
+      var y = e.pageY;
+      var linkPos = $("#" + myself.htmlObject).position();
 
-          if ((x < linkPos.left || x > linkPos.left + $("#" + myself.htmlObject).width()) ||
-                (y < linkPos.top || y > linkPos.top + $("#" + myself.htmlObject).height())) {
-                myself.hide();            
-                $(document).unbind('click', docClick);
-          }
-      };            
-      $(document).click(docClick);
+      if ((x < linkPos.left || x > linkPos.left + $("#" + myself.htmlObject).width()) ||
+        (y < linkPos.top || y > linkPos.top + $("#" + myself.htmlObject).height())) {
+        myself.hide();            
+        $(document).unbind('click', docClick);
+      }
+    };            
+    $(document).click(docClick);
   
-   },
+  },
   
   
   exportData: function(det){
@@ -385,20 +403,20 @@ var ExportPopupComponent = PopupComponent.extend({
     }
 
     var myself = this;
-   var masterDiv = $('<div class="exportChartMasterDiv">');
-   //Style later
-	var totalWidth = Math.max(700, this.chartComponent.chartDefinition.width);
-   var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" +totalWidth + "px'>");
-   masterDiv.append(popupButtonsDiv);
+    var masterDiv = $('<div class="exportChartMasterDiv">');
+    //Style later
+    var totalWidth = Math.max(700, this.chartComponent.chartDefinition.width);
+    var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" +totalWidth + "px'>");
+    masterDiv.append(popupButtonsDiv);
    
-   var titleDiv = $("<div class='exportChartTitle'>Export Options</div>");
-   popupButtonsDiv.append(titleDiv);
+    var titleDiv = $("<div class='exportChartTitle'>Export Options</div>");
+    popupButtonsDiv.append(titleDiv);
    
-   var smallButton = $("<div class='exportChartPopupButton exportChartButtonNotLast'>Small</div>");
-   smallButton.click(function () {
-     $('.exportChartPopupButtonClicked').each(function (i, elt) {
-       $(elt).removeClass('exportChartPopupButtonClicked')
-     })
+    var smallButton = $("<div class='exportChartPopupButton exportChartButtonNotLast'>Small</div>");
+    smallButton.click(function () {
+      $('.exportChartPopupButtonClicked').each(function (i, elt) {
+        $(elt).removeClass('exportChartPopupButtonClicked')
+      })
       $(this).addClass('exportChartPopupButtonClicked');      
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true); 
@@ -407,42 +425,42 @@ var ExportPopupComponent = PopupComponent.extend({
       $('#height').val(200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
       
       
-//             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
+    //             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
 
    
-   });
+    });
     popupButtonsDiv.append(smallButton);
 
-   var mediumButton = $("<div class='exportChartPopupButton exportChartButtonNotLast exportChartButtonMiddle'>Medium</div>");
-   mediumButton.click(function () {
+    var mediumButton = $("<div class='exportChartPopupButton exportChartButtonNotLast exportChartButtonMiddle'>Medium</div>");
+    mediumButton.click(function () {
      
-     $('.exportChartPopupButtonClicked').each(function (i, elt) {
-       $(elt).removeClass('exportChartPopupButtonClicked')
-     })
-    $(this).addClass('exportChartPopupButtonClicked'); 
+      $('.exportChartPopupButtonClicked').each(function (i, elt) {
+        $(elt).removeClass('exportChartPopupButtonClicked')
+      })
+      $(this).addClass('exportChartPopupButtonClicked'); 
     
-    $('#width').attr('disabled', true); 
-    $('#height').attr('disabled', true); 
+      $('#width').attr('disabled', true); 
+      $('#height').attr('disabled', true); 
     
       $('#width').val(400);
       $('#height').val(400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
     
     
-   });
+    });
    
-   mediumButton.getComponentData = function () {
-     return [(myself.chartComponent.chartDefinition.width), (myself.chartComponent.chartDefinition.height)];
-   }
+    mediumButton.getComponentData = function () {
+      return [(myself.chartComponent.chartDefinition.width), (myself.chartComponent.chartDefinition.height)];
+    }
    
    
-   popupButtonsDiv.append(mediumButton);
+    popupButtonsDiv.append(mediumButton);
 
    
-   var largeButton = $("<div class='exportChartPopupButton exportChartButtonNotLast exportChartButtonMiddle'>Large</div>");
-   largeButton.click(function () {
-     $('.exportChartPopupButtonClicked').each(function (i, elt) {
-       $(elt).removeClass('exportChartPopupButtonClicked')
-     })
+    var largeButton = $("<div class='exportChartPopupButton exportChartButtonNotLast exportChartButtonMiddle'>Large</div>");
+    largeButton.click(function () {
+      $('.exportChartPopupButtonClicked').each(function (i, elt) {
+        $(elt).removeClass('exportChartPopupButtonClicked')
+      })
       $(this).addClass('exportChartPopupButtonClicked');      
     
       $('#width').attr('disabled', true); 
@@ -451,37 +469,37 @@ var ExportPopupComponent = PopupComponent.extend({
       $('#width').val(800);
       $('#height').val(800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
       
-//       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');    
+    //       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');    
 
-   });
+    });
 
-   popupButtonsDiv.append(largeButton);
+    popupButtonsDiv.append(largeButton);
    
-   var customButton = $("<div class='exportChartPopupButton exportChartButtonMiddle'>Custom</div>");
-   customButton.click(function () {
-     $('.exportChartPopupButtonClicked').each(function (i, elt) {
-       $(elt).removeClass('exportChartPopupButtonClicked')
-     })
-    $(this).addClass('exportChartPopupButtonClicked'); 
-    $('#width').removeAttr('disabled'); 
-    $('#height').removeAttr('disabled'); 
+    var customButton = $("<div class='exportChartPopupButton exportChartButtonMiddle'>Custom</div>");
+    customButton.click(function () {
+      $('.exportChartPopupButtonClicked').each(function (i, elt) {
+        $(elt).removeClass('exportChartPopupButtonClicked')
+      })
+      $(this).addClass('exportChartPopupButtonClicked'); 
+      $('#width').removeAttr('disabled'); 
+      $('#height').removeAttr('disabled'); 
     
       $('#width').val(myself.chartComponent.chartDefinition.width);
       $('#height').val(myself.chartComponent.chartDefinition.height);      
     
     
-//    $('.exportChartOkButton').removeClass('exportChartOkButtonDisabled');
+    //    $('.exportChartOkButton').removeClass('exportChartOkButtonDisabled');
           
-   });
+    });
    
-   popupButtonsDiv.append(customButton);
+    popupButtonsDiv.append(customButton);
 
-   var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width'  disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
-   popupButtonsDiv.append(inputsWidthDiv);   
-   var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
-   popupButtonsDiv.append(inputsHeightDiv);   
-   var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
-   okButton.click(function() {    
+    var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width'  disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
+    popupButtonsDiv.append(inputsWidthDiv);   
+    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
+    popupButtonsDiv.append(inputsHeightDiv);   
+    var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
+    okButton.click(function() {    
       var dimensions;
       
       switch ($('.exportChartPopupButtonClicked').text()) {
@@ -506,19 +524,19 @@ var ExportPopupComponent = PopupComponent.extend({
       _exportIframe.appendTo($('body'));     
     
     
-   });
-   popupButtonsDiv.append(okButton);   
+    });
+    popupButtonsDiv.append(okButton);   
     
    
 
-   var img = $(
-"<img src='" + url +
-"&paramwidth="+ this.chartComponent.chartDefinition.width +"&paramheight="+ this.chartComponent.chartDefinition.height +
-     "'/>");
+    var img = $(
+      "<img src='" + url +
+      "&paramwidth="+ this.chartComponent.chartDefinition.width +"&paramheight="+ this.chartComponent.chartDefinition.height +
+      "'/>");
    
-     var imgDiv = $("<div class='exportChartImageDiv'>");
-     imgDiv.append(img);
-     imgDiv.append("&nbsp;");
+    var imgDiv = $("<div class='exportChartImageDiv'>");
+    imgDiv.append(img);
+    imgDiv.append("&nbsp;");
     masterDiv.append(imgDiv);
     
     $.fancybox({
