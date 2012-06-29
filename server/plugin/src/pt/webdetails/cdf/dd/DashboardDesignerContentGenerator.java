@@ -814,33 +814,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     return cdfGetHeaders.call();
   }
 
-  private void setResponseHeaders(final String mimeType, final int cacheDuration, final String attachmentName)
-  {
-    // Make sure we have the correct mime type
-    final HttpServletResponse response = getResponse();
-
-    if (response == null)
-    {
-      logger.error("Parameter 'httpresponse' not found!");
-      return;
-    }
-
-    response.setHeader("Content-Type", mimeType);
-
-    if (attachmentName != null)
-    {
-      response.setHeader("content-disposition", "attachment; filename=" + attachmentName);
-    } // Cache?
-
-    if (cacheDuration > 0)
-    {
-      response.setHeader("Cache-Control", "max-age=" + cacheDuration);
-    }
-    else
-    {
-      response.setHeader("Cache-Control", "max-age=0, no-store");
-    }
-  }
 
   static public String getScheme(IParameterProvider pathParams)
   {
