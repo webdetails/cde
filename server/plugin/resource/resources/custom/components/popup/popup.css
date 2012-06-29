@@ -4,7 +4,7 @@
 
 .popupComponent {
   position: absolute;
-  z-index: 100;
+  z-index: 10000;
   border: 6px solid #361b0a;
   border-radius: 5px;
   -webkit-box-shadow: 0 0 10px 5px rgba(0,0,0,0.3);
