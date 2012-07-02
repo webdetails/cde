@@ -7,7 +7,7 @@ var CodeEditor = Base.extend({
     XML: 'xml'
   },
   MODE_BASE : 'ace/mode/',
-	DEFAULT_MODE: 'none',
+	DEFAULT_MODE: 'text',
 	
 	modeMap :
 	{ //highlight modes
@@ -18,9 +18,8 @@ var CodeEditor = Base.extend({
 		'cda' : 'xml',
 		'cdv' : 'javascript',
 		'html': 'html',
-		'sql' : null,
-		'mdx' : null,
-		'none': null
+		'sql' : 'text',
+		'mdx' : 'text'
 	},
   
   mode: 'javascript',
@@ -78,19 +77,17 @@ var CodeEditor = Base.extend({
 	
 	setMode: function(mode)
 	{
-		if(mode == null){
-			mode = this.DEFAULT_MODE;
-		}
 		this.mode = this.modeMap[mode];
-		
+
+    if(this.mode == null){
+      this.mode = this.DEFAULT_MODE;
+    }
+    
 		if(this.editor != null)
 		{
 			if(this.mode != null){
 				var HLMode = require(this.MODE_BASE + this.mode).Mode;
 				this.editor.getSession().setMode(new HLMode());
-			}
-			else {
-				this.editor.getSession().setMode(null);
 			}
 		}
 		
