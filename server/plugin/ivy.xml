@@ -5,6 +5,7 @@
     
     <configurations>
       <conf name="default"/>
+            <conf name="runtime"/>
       <conf name="test" visibility="private"/>
       <conf name="sources"/>
     </configurations>
@@ -40,7 +41,7 @@
 			<dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${dependency.bi-platform.revision}" transitive="true"  changing="true"/>
 
 	<dependency org="pentaho" name="cpf"
-			rev="TRUNK-SNAPSHOT" transitive="false" changing="true"/>   
+			rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>   
 
       <!-- olap -->
       <dependency org="pentaho" name="mondrian" rev="3.3.0.14703">
