@@ -84,7 +84,12 @@ public class DatasourceProperty extends GenericProperty
 
         JXPathContext query = node.getRelativeContext(pointer);
         output.append("dataAccessId: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='dataAccessId']")).append("\",").append(newLine);
-
+        
+        if (XPathUtils.exists(query, "properties/value[../name='outputIndexId']"))
+        {       
+        	output.append("outputIndexId: \"").append(XPathUtils.getStringValue(query, "properties/value[../name='outputIndexId']")).append("\",").append(newLine);
+        }
+        
         // Check if we have a cdaFile
         if (XPathUtils.exists(query, "properties/value[../name='cdaPath']"))
         {
