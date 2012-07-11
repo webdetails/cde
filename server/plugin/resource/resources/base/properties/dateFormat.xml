@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>dateFormat</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Date Format</Description>
+	<Tooltip>Date Format e.g.: yy-mm-dd is 2012-01-31 </Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>49</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
