@@ -271,7 +271,7 @@ var CDADataSourceModel = BaseModel.extend({
       _stub.properties.push(PropertiesManager.getProperty("cdaPath"));
      // _stub.properties.push(PropertiesManager.getProperty("cdaEditor")); //TODO:remove?
       _stub.properties.push(PropertiesManager.getProperty("dataAccessId"));
-
+	  _stub.properties.push(PropertiesManager.getProperty("outputIndexId"));
       return _stub;
     }
   });
