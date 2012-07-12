@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>outputIndexId</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>OutputIndex ID</Description>
+	<Tooltip>OutputIndex ID</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>5</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
