@@ -27,6 +27,7 @@ var SiteMapComponent = BaseComponent.extend({
 
         // mark as selected all ancestors
         this.ph.find("li.siteMapSelected").parents("li").addClass("siteMapSelected");
+        this.ph.find("li.siteMapInitial").parents("li").addClass("siteMapInitial");
 
     },
 
@@ -58,7 +59,7 @@ var SiteMapComponent = BaseComponent.extend({
         
             // Is this one selected? Later we'll also need to mark all ancestor with a class
             if(typeof(l.id) !== "undefined"? l.id == myself.selected: l.name == myself.selected){
-                li.addClass("siteMapSelected");
+                li.addClass("siteMapSelected siteMapInitial");
             }
 
             if(l.sublinks && l.sublinks.length > 0)
