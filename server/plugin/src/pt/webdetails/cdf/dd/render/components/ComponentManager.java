@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import net.sf.json.JSON;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import org.dom4j.Document;
@@ -26,6 +28,8 @@ import org.dom4j.Node;
 import org.pentaho.platform.api.engine.IFileFilter;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+
+import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
@@ -41,35 +45,26 @@ import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 public class ComponentManager
 {
 
+  protected static Log logger = LogFactory.getLog(ComponentManager.class);
+  
   private static final String PLUGIN_DIR = Utils.joinPath("system",DashboardDesignerContentGenerator.PLUGIN_NAME);
 
-    //PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/");
+  private static final String BASE_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR,"resources","base","components");
 
-  private static final String BASE_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR,"resources","base","components");// "base/components/";
-  private static final String CUSTOM_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR,"resources","custom","components"); // "custom/components/";
-  
-  private static final String USER_COMPONENTS_DIR = Utils.joinPath(DashboardDesignerContentGenerator.SOLUTION_DIR, "components");
   private static final String COMPONENT_FILE = "component.xml";
   
   private static ComponentManager _engine;
-  private String path;
-  private Hashtable<String, BaseComponent> componentPool;
+  private String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
+  protected Hashtable<String, BaseComponent> componentPool;
   private static final String PACKAGEHEADER = "pt.webdetails.cdf.dd.render.components.";
   private JSON cdaSettings = null;
   
   private String[] resourceLocations;
 
-  public ComponentManager()
+  protected ComponentManager()
   {
-   // String resourcePath = Utils.joinPath(PLUGIN_DIR,"resources");
-    init( PentahoSystem.getApplicationContext().getSolutionPath("") );
+    init(  );
   }
-
-//  public ComponentManager(String path)
-//  {
-//    cdaSettings = null;
-//    init(path);
-//  }
 
   public static synchronized ComponentManager getInstance()
   {
@@ -84,7 +79,7 @@ public class ComponentManager
   {
     // Start by refreshing the dependencies
     PropertyManager.getInstance().refresh();
-    init(this.path);
+    init();
   }
   
   private List<File> listAllFiles(File dir, FilenameFilter filter){
@@ -103,9 +98,9 @@ public class ComponentManager
     return results;
   }
 
-  private void indexBaseComponents()
+  protected void indexBaseComponents()
   {
-    File dir = new File(Utils.joinPath(this.path, BASE_COMPONENTS_DIR));
+    File dir = new File(Utils.joinPath(this.basePath, BASE_COMPONENTS_DIR));
     FilenameFilter xmlFiles = new FilenameFilter()
     {
 
@@ -175,7 +170,6 @@ public class ComponentManager
    locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
    locations.add(RepositoryAccess.getSolutionPath(""));
     
-
    for(String componentsDir : CdeSettings.getComponentLocations()){
      indexCustomComponents(componentsDir);
      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
@@ -276,7 +270,7 @@ public class ComponentManager
 
   private void indexCustomComponents(String dirPath)
   {
-    String dirAbsPath = Utils.joinPath(path, dirPath);
+    String dirAbsPath = Utils.joinPath(basePath, dirPath);
     File dir = new File(dirAbsPath);
 
     logger.info("Loading custom components from: " + dir.toString());
@@ -292,6 +286,8 @@ public class ComponentManager
       }
     };
     String[] files = dir.list(subFolders);
+    
+    logger.debug(files.length + " sub-folders found");
     
     if (files != null) {
       
@@ -336,15 +332,13 @@ public class ComponentManager
     }
   }
 
-  private void init(String path)
+  private void init()
   {
-    this.path = path;
     this.componentPool = new Hashtable<String, BaseComponent>();
     // we need the properties to be initialized. Calling getInstance() is enough.
     PropertyManager.getInstance();
     indexBaseComponents();
     indexCustomComponents();
-    indexUserComponents();
   }
 
   private BaseComponent rendererFromClass(String className)

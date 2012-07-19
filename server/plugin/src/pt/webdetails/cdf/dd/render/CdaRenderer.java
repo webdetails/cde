@@ -210,7 +210,7 @@ public class CdaRenderer
       dataAccess.setAttribute("connection", connectionId);
     }
 
-
+    @SuppressWarnings("unchecked")
     Iterator<Pointer> params = conn.iteratePointers("*");
     while (params.hasNext())
     {

@@ -4,7 +4,6 @@
 
 package pt.webdetails.cdf.dd;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,7 +52,6 @@ import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
-
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 {
@@ -196,12 +194,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     if (engine.getCdaDefinitions() == null)
     {
       // We want to acquire a handle for the CDA plugin.
-      JSON json = getCdaDefs();
+      JSON json = getCdaDefs(false);
       engine.parseCdaDefinitions(json);
     }
     // Get and output the definitions
     out.write(engine.getDefinitions().getBytes());
   }
+  
   /**
    * Re-initializes the designer back-end.
    *
@@ -212,7 +211,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     DependenciesManager.refresh();
     ComponentManager.getInstance().refresh();
-    ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs());
+    ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs(true));
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -744,35 +743,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void listdataaccesstypes(final IParameterProvider pathParams, final OutputStream out) throws Exception
   {
-    IPluginManager pluginManager = PentahoSystem.get(IPluginManager.class, userSession);
-    IContentGenerator cda = pluginManager.getContentGenerator("cda", userSession);
-
-    cda.setParameterProviders(parameterProviders);
-
-    cda.setOutputHandler(outputHandler);
-    ArrayList<Object> output = new ArrayList<Object>();
-    HashMap<String, Object> channel = new HashMap<String, Object>();
-
-    ByteArrayOutputStream outputStream = null;
-    try
-    {
-      outputStream = new ByteArrayOutputStream();
-      channel.put("output",
-              outputStream);
-      output.add(channel);
-      channel.put(
-              "method", "listDataAccessTypes");
-      cda.setCallbacks(output);
-      cda.createContent();
-      out.write(outputStream.toString().getBytes(ENCODING));
-      //JSON json = JSONSerializer.toJSON(outputStream.toString());
-    }
-    finally
-    {
-      IOUtils.closeQuietly(outputStream);
-    }
+    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(false);
+    cdaListDataAccessTypes.setOutputStream(out);
+    cdaListDataAccessTypes.run();
   }
-
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public JSON getCdaDefs(boolean refresh) throws Exception
@@ -808,9 +782,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
   }
 
-  static String getCdfContext(IParameterProvider params)
+  static String getCdfContext(IParameterProvider requestParameterProvider)
   {
-    return PluginUtils.callPlugin("pentaho-cdf", "Context", params);
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF,"Context");
+    cdfContext.setRequestParameters(requestParameterProvider);
+    return cdfContext.call();
   }
 
   static String getCdfIncludes(String dashboard, IParameterProvider pathParams) throws Exception
@@ -833,8 +809,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     {
       params.put("root", absRoot);
     }
-
-    return PluginUtils.callPlugin("pentaho-cdf", "GetHeaders", params);
+    
+    InterPluginCall cdfGetHeaders = new InterPluginCall(InterPluginCall.CDF, "GetHeaders", params); 
+    return cdfGetHeaders.call();
   }
 
 

@@ -93,6 +93,10 @@ var CodeEditor = Base.extend({
 		
 	},
 	
+	setTheme: function(themePath){
+		this.theme = themePath;
+	},
+	
 	setReadOnly: function(readOnly){
 		if(readOnly == this.editor.getReadOnly()){ return; }
 		else{ this.editor.setReadOnly(readOnly); }
