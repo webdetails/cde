@@ -118,6 +118,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     }
     catch (Exception e)
     {
+      logger.error(e);
       this.templateFile = null;
     }
   }
