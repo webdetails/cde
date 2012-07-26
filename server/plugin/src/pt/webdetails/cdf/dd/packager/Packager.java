@@ -114,7 +114,7 @@ public class Packager
     return minifyPackage(pkg, Mode.MINIFY);
   }
 
-  public String minifyPackage(String pkg, Mode mode)
+  public synchronized String minifyPackage(String pkg, Mode mode)
   {
     try
     {
