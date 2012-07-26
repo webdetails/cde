@@ -261,6 +261,8 @@ var ExportPopupComponent = PopupComponent.extend({
   cancel: undefined,
   dataComponent: undefined,
   chartComponent: undefined,
+  baseSize: 200,
+  scalingFactor: 1.5,
 
   update: function(){
     var myself = this;
@@ -421,8 +423,8 @@ var ExportPopupComponent = PopupComponent.extend({
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true); 
       
-      $('#width').val(200);
-      $('#height').val(200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+      $('#width').val(myself.baseSize);
+      $('#height').val(myself.baseSize*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
       
       
     //             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
@@ -441,9 +443,9 @@ var ExportPopupComponent = PopupComponent.extend({
     
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true); 
-    
-      $('#width').val(400);
-      $('#height').val(400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+      var size = myself.baseSize * myself.scalingFactor;
+      $('#width').val(size);
+      $('#height').val(size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
     
     
     });
@@ -466,8 +468,9 @@ var ExportPopupComponent = PopupComponent.extend({
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true);
       
-      $('#width').val(800);
-      $('#height').val(800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
+      var size = myself.baseSize * myself.scalingFactor * myself.scalingFactor;
+      $('#width').val(size);
+      $('#height').val(size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
       
     //       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');    
 
@@ -500,17 +503,19 @@ var ExportPopupComponent = PopupComponent.extend({
     popupButtonsDiv.append(inputsHeightDiv);   
     var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
     okButton.click(function() {    
-      var dimensions;
+      var dimensions, size;
       
       switch ($('.exportChartPopupButtonClicked').text()) {
         case "Small":
-          dimensions = [200, 200*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          dimensions = [myself.baseSize, myself.BaseSize*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
           break;
         case "Medium":
-          dimensions = [400, 400*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          size = myself.baseSize * myself.scalingFactor;
+          dimensions = [size, size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
           break;
         case "Large":
-          dimensions = [800, 800*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
+          size = myself.baseSize * myself.scalingFactor * myself.scalingFactor;
+          dimensions = [size, size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
           break;        
         case "Custom":
           dimensions = [$('#width').val(), $('#height').val()];
