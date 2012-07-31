@@ -56,7 +56,8 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     absRoot = requestParams.hasParameter("root") ? requestParams.getParameter("root").toString() : "";
     absolute = (!absRoot.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true");
     debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
-    scheme = DashboardDesignerContentGenerator.getScheme(pathParams);
+    boolean inferScheme = requestParams.hasParameter("inferScheme") ? requestParams.getParameter("inferScheme").equals("true") : true;
+    scheme = inferScheme ? DashboardDesignerContentGenerator.getScheme(pathParams) : "";
     construct(DashboardDesignerContentGenerator.getWcdfRelativePath(requestParams));
   }
 
@@ -168,7 +169,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
-    String root = absolute ? scheme + "://" + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
+    String root = absolute ? (scheme.equals("")? "" : scheme + "://") + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
@@ -204,7 +205,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
-      final String adornedRoot = "http://" + absRoot;
+      final String adornedRoot = (scheme.equals("")? "" : (scheme + "://")) + absRoot;
       StringFilter css = new StringFilter()
       {
 
