@@ -21,20 +21,18 @@ public class BlueprintDashboard extends AbstractDashboard
   /* CONSTANTS */
 
   private static final long serialVersionUID = 1L;
-
   private static Log logger = LogFactory.getLog(Dashboard.class);
-
   protected final static String TYPE = "blueprint";
 
   public BlueprintDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
-    super(pathParams,requestParams);
+    super(pathParams, requestParams);
   }
 
   protected String renderHeaders(String contents)
   {
-    String dependencies, styles, cdfDependencies;  
-    final String title = "<title>"+getWcdf().getTitle()+"</title>";
+    String dependencies, styles, cdfDependencies;
+    final String title = "<title>" + getWcdf().getTitle() + "</title>";
     // Acquire CDF headers
     try
     {
@@ -48,7 +46,7 @@ public class BlueprintDashboard extends AbstractDashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
-      final String adornedRoot = scheme + "://" + absRoot; 
+      final String adornedRoot = (scheme.equals("") ? "" : (scheme + "://")) + absRoot;
       StringFilter css = new StringFilter()
       {
 
