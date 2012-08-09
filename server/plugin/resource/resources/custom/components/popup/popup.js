@@ -518,6 +518,7 @@ var ExportPopupComponent = PopupComponent.extend({
           dimensions = [size, size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width)];            
           break;        
         case "Custom":
+        default:
           dimensions = [$('#width').val(), $('#height').val()];
           break;
       }
