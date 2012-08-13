@@ -696,7 +696,7 @@ var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL],
+                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -711,7 +711,7 @@ var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL],
+                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
