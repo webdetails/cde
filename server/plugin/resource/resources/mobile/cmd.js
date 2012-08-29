@@ -282,7 +282,8 @@ function CDFMobile() {
             function(e) {
                 var keys = {};
                 var args = $.each($('select#navSelector').val().split('&'),function(i,e) {
-                    keys[e[0]] = e[1];
+                    var t = e.split('=');
+                    keys[t[0]] = t[1]; 
                 });
                 myself.loadDashboard.call(myself, keys);
             });
