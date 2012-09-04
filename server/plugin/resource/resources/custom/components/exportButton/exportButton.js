@@ -5,7 +5,7 @@ var ExportButtonComponent = BaseComponent.extend({
 
   ph: undefined,
   tc: undefined,
-  names: { queryState:null, query:null };
+  queryObjectNames: { queryState:null, query:null },
   
 /* BUILD THE COMPONENT */
 
@@ -14,17 +14,22 @@ var ExportButtonComponent = BaseComponent.extend({
     var myself = this;
     $.extend(this.options,this);
 
-    this.ph = $("#" + this.htmlObject);
-    this.ph.empty();
-    var bar = $('<span class="exportButton"></span>').appendTo(this.ph);
-    var comp = Dashboards.getComponentByName( "render_" + this.componentName );
+    myself.ph = $("#" + myself.htmlObject);
+    myself.ph.empty();
+    var bar = $('<span class="exportButton"></span>').appendTo(myself.ph);
+    var comp = Dashboards.getComponentByName( "render_" + myself.componentName );
     var overrideParameters = Dashboards.propertiesArrayToObject(myself.parameters);    
-    bar.text( this.label ).click( function(){
-      for (n in this.names) {
+    bar.text( myself.label ).click( function(){
+      var foundQuery = false;
+      for (n in myself.queryObjectNames) {
         if(comp[n] && comp[n] instanceof Query){
             comp[n].exportData(myself.outputType, overrideParameters);
+            foundQuery = true;
             break;
         }
+      }
+      if (!foundQuery) { 
+        Dashboards.log( myself.name + ": could not find a query object on " + myself.componentName ); 
       }
     });
   }
