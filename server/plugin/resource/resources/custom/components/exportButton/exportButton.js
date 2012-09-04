@@ -5,6 +5,7 @@ var ExportButtonComponent = BaseComponent.extend({
 
   ph: undefined,
   tc: undefined,
+  names: { queryState:null, query:null };
   
 /* BUILD THE COMPONENT */
 
@@ -16,11 +17,16 @@ var ExportButtonComponent = BaseComponent.extend({
     this.ph = $("#" + this.htmlObject);
     this.ph.empty();
     var bar = $('<span class="exportButton"></span>').appendTo(this.ph);
-    var component = Dashboards.getComponentByName( "render_" + this.componentName );
+    var comp = Dashboards.getComponentByName( "render_" + this.componentName );
     var overrideParameters = Dashboards.propertiesArrayToObject(myself.parameters);    
     bar.text( this.label ).click( function(){
-      component.query.exportData(myself.outputType, overrideParameters);
-    } );
+      for (n in this.names) {
+        if(comp[n] && comp[n] instanceof Query){
+            comp[n].exportData(myself.outputType, overrideParameters);
+            break;
+        }
+      }
+    });
   }
 
 });
