@@ -23,13 +23,13 @@ var ExportButtonComponent = BaseComponent.extend({
       var foundQuery = false;
       for (n in myself.queryObjectNames) {
         if(comp[n] && comp[n] instanceof Query){
-            comp[n].exportData(myself.outputType, overrideParameters , myself.getFilterSettings(component) );
+            comp[n].exportData(myself.outputType, overrideParameters , myself.getFilterSettings(comp) );
             foundQuery = true;
             break;
         }
       }
       if (!foundQuery) { 
-        Dashboards.log( myself.name + ": could not find a query object on " + myself.componentName ); 
+        Dashboards.log( myself.name + ": could not find a query object on " + myself.compName ); 
       }
     });
   },
