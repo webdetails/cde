@@ -1,13 +1,16 @@
 12.07.19
-    *  Added start and end Date parameters to DatePicker Component, which can be controlled by the dateFormat parameter.
+    * Implemented [REDMINE 281] - Allow plugins to register extra cde components
     * Support for output index in external CDAs
     * CPF usage as component basis
-    * New Popup Component and Reference
+    * New Popup Component and Reference    
+    * Added new component based on textarea html object. Added properties of max length and size to text input component edition    
+    * Fixed [REDMINE 856] - CDE allows non-privileged users access to edit dashboards.
+    * Fixed [REDMINE 721] - SelectMulti Isn't populated, feeded by another SelectMulti Component
+    * Fixed [REDMINE 424] - CDA creation sometimes adds a prefix / to catalog that disables Mondrian role mapping 
+    *  Added start and end Date parameters to DatePicker Component, which can be controlled by the dateFormat parameter.
     * FileExplorer returns different info from getExtension in fileBased and db rep. Adding both
     * Allow Icons (.ico) to be downloaded
     * [PATCH] BulletChart support for the tooltipFormat option
-    * load components from other plugins' settings.xml/cde-components
-    * Added new component based on textarea html object. Added properties of max length and size to text input component edition
     * disable edit option in olap wizard file open; prompts a bit less green
     * SiteMap Component update
 
