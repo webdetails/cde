@@ -1,7 +1,8 @@
 12.09.05
+    * Fix [REDMINE 512] - Export to png with size small
+    * Fix [REDMINE 511] - Export to png 
     * fix to mobile navigation component. Was not getting query string correctly
     * Add editor support for resource reordering. Yay!
-    * Add a default case to image export size, so it doesn't break when no selection is made.
     * Add support for removing url scheme detection when rendering dashboard headers
     * Add some more error logging to dashboard rendering
     * Make sure only one minifyPackage routine is runnning at any given time
