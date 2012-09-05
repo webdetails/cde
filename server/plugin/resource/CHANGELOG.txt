@@ -1,3 +1,14 @@
+12.09.05
+    * fix to mobile navigation component. Was not getting query string correctly
+    * Add editor support for resource reordering. Yay!
+    * Add a default case to image export size, so it doesn't break when no selection is made.
+    * Add support for removing url scheme detection when rendering dashboard headers
+    * Add some more error logging to dashboard rendering
+    * Make sure only one minifyPackage routine is runnning at any given time
+    * Make export popup's export size configurable
+    * Add missing pre/postChange properties to AutoCompleteBox
+    * SiteMap now keeps track of the original entry point with a css class.
+
 12.07.19
     * Implemented [REDMINE 281] - Allow plugins to register extra cde components
     * Support for output index in external CDAs
