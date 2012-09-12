@@ -646,14 +646,23 @@ var CDFDD = Base.extend({
     var cggCandidates = components.filter(function(e){
       return e.meta_cdwSupport == 'true';
     });
-    
+        
     var ph = $('#cggDialog');
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
     
+    
+    // cgg url:
+    var cggUrl = window.location.href.substring(0,window.location.href.indexOf("content")) + "content/cgg/Draw?script=" +
+      CDFDDFileName.substring(0,CDFDDFileName.lastIndexOf("/")) + "/";
+    
     ph.empty(); 
     
-    ph.append("<h3>Choose what charts to render as CGG");
+    ph.append("<h3>Choose what charts to render as CGG</h3>"+
+      "<p>CDE can generate CGG scripts to allow charts to be exported. Choose the ones you want, and files will be generated when you save the dashboard</p>");
     cggCandidates.map(function(e){
+      
+      var section = $("<div/>");
+      
       var checkbox = $("<input type='checkbox'>");
       checkbox[0].checked = (e.meta_cdwRender  == 'true' || false);
       checkbox.change(function(){
@@ -668,11 +677,34 @@ var CDFDD = Base.extend({
           name = p.value;
         }
       });
-      var label = "<span>" + (title !== '' ? title : name) + "</span>";
-      ph.append(checkbox);
-      ph.append(label +"<br>");
-      ph.jqmShow();
+      var label = "<span class='label'>" + (title !== '' ? title : name) + "</span>";
+      section.append(checkbox);
+      section.append(label);
+      
+      var showUrlButton = $("<button class='showUrl'>Url</button>").click(function(evt){
+        
+        Dashboards.log("Toggle Url show");
+        var $t = $(this).toggleClass("active");
+        $t.parent().find(".urlPreviewer").toggleClass("collapsed").find("input").select();
+        
+        
+        
+      });
+      section.append(showUrlButton).append("<br />");
+
+      $("<div class='urlPreviewer collapsed'><input type='text' value = '"+cggUrl+name+".js&outputType=png"+"'></input></div>").appendTo(section);
+
+      section.appendTo(ph);
+
     });
+    
+    var $close = $("<div class='cggDialogClose'><button>Close</button></div>");
+    $close.find("button").click(function(evt){
+      ph.jqmHide();
+    });
+    ph.append($close);
+    ph.jqmShow();
+
   }
 },
 {
