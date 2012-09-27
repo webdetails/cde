@@ -31,6 +31,7 @@ var ComponentsParameterModel = BaseModel.extend({
       _stub.properties.push(PropertiesManager.getProperty("name"));
       _stub.properties.push(PropertiesManager.getProperty("propertyValue"));
       _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
+      _stub.properties.push(PropertiesManager.getProperty("parameterViewRole"));
 
       return _stub;
     }
