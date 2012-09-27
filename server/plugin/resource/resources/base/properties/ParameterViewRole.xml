@@ -1,0 +1,20 @@
+<DesignerProperty>
+    <Header>
+        <Name>parameterViewRole</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>unused</DefaultValue>
+        <Description>Role in View</Description>
+        <Tooltip>How should this parameter be handled when saving a view?</Tooltip>
+        <InputType type="valuelist" />
+        <OutputType>String</OutputType>
+        <Order>88</Order>
+        <Advanced>true</Advanced>
+        <Version>1.0</Version>
+    </Header>
+    <Values>
+        <Value display="Unused">unused</Value>
+        <Value display="Unbound">unbound</Value>
+        <Value display="Saved">view</Value>
+    </Values>
+</DesignerProperty>
+
