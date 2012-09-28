@@ -747,4 +747,46 @@ table.cdfdd caption {
     top: 15%;
     height: auto;
     background: #ddd;
+    padding: 10px;
+}
+
+#cggDialog .cggDialogClose{
+    margin-top: 10px;
+}
+
+#cggDialog button{
+    background: white;
+    border: 1px solid black;
+    float: right;
+    padding: 0px;
+}
+
+#cggDialog button.active{
+    background: #bbb;
+}
+
+
+#cggDialog input[type=text]{
+    width: 90%;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 20px;
+    font-size: 9px;
+    
+}
+
+#cggDialog .urlPreviewer{
+  
+  -webkit-transition: all 500ms ease-in;
+  -moz-transition: all 500ms ease-in;
+  -ms-transition: all 500ms ease-in;
+  -o-transition: all 500ms ease-in;
+  transition: all 500ms ease-in;
+  max-height: 40px;
+  overflow: hidden;
+  clear: both;
+}
+
+#cggDialog .urlPreviewer.collapsed{
+  max-height: 0px;
 }

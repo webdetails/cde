@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Role</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Role</Description>
+	<Tooltip>Role for the connection</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>11</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

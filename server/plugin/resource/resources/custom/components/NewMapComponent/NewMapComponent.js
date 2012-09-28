@@ -32,7 +32,7 @@
         	} else if (st.state) {
         		name=st.state;
         		featureClass = 'A';
-        	} else if (st.contry) {
+        	} else if (st.country) {
         		name = st.country;
         		featureClass = 'A';
         	}        	        	        		
