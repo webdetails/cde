@@ -8,6 +8,7 @@ div.view-manager-component {
   position: relative;
 }
 
+.no-svg div.view-manager-component *,
 div.view-manager-component * {
   box-sizing: content-box;
   -webkit-box-sizing: content-box;
