@@ -193,14 +193,16 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   save: function() {
     var name = this.$(".save-properties .name").val(),
         desc = this.$(".save-properties .description").val(),
-        view = wd.cdf.views.newDashboardView(name, desc),
+        view = wd.cdf.views.newDashboardView(name, desc).toJSON(),
+        args;
+        view.params = Base64.encode(JSON.stringify(view.params));
         args = {
           method: "saveView",
           view: JSON.stringify(view)
         };
     var myself = this;
     $.post(webAppPath + "/content/pentaho-cdf/Views",$.param(args),function(){
-      Dashboards.view = view.toJSON();
+      Dashboards.view = view;
       myself.model.set("currentView",name);
       myself.model.trigger("update");
     });

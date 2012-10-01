@@ -3,6 +3,7 @@ div.view-manager-component {
   padding: 3px;
   color: #3e3938;
   box-sizing: content-box;
+  position: relative;
 }
 
 div.view-manager-component * {
@@ -19,9 +20,20 @@ div.view-manager-component * {
 }
 
 .view-manager {
-  -webkit-transition-property: height;
-  -webkit-transition-duration: 0.3s;
-  -webkit-transition-delay: 0s;
+  display: block;
+  position: absolute;
+  top: 29px;
+  left: 185px;
+  width: 180px;
+  z-index: 100;
+  background-color: rgb(232, 241, 243);
+  padding: 4px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 2px solid rgb(230, 122, 44);
+  box-shadow: rgba(0, 0, 0, 0.292969) 0px 0px 10px 5px;
 }
 
 /***************
@@ -64,20 +76,23 @@ div.view-manager-component * {
   display: inline-block;
   /* TODO: re-enable when the subscription panel is activated */
   /* width: 58px; */
-  width: 89px;
+  width: 88px;
   margin: 0;
   padding: 8px 0px;
   background: #cbe0e5;
   text-align: center;
   font-size: 95%;
   cursor: pointer;
+  border-top: 1px solid rgba(0,0,0,0.03);
 }
 
 .view-manager .tab:first-child {
   border-radius: 2px 0 0 0;
+  border-left: 1px solid rgba(0,0,0,0.03);
 }
 .view-manager .tab:last-child {
   border-radius: 0 2px 0 0;
+  border-right: 1px solid rgba(0,0,0,0.03);
 }
 .view-manager .tab:not(:last-child):not(:first-child) {
   width:62px;
@@ -238,5 +253,3 @@ div.view-manager-component * {
   width: 78px;
   display:inline-block;
 }
-
-
