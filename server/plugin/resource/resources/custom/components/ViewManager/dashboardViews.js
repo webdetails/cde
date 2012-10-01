@@ -5,12 +5,15 @@ var templates = templates || {};
 templates.dashboardViews = templates.dashboardViews || {}; 
 
 wd.cdf.views.getUrl = function() {
+  /* $.params uses + to encode spaces, we need
+   * to use uri encoding-style "%20" instead
+   */
   var params = $.param({
     file: this.file,
     path: this.path,
     solution: this.solution,
     view: this.name
-  });
+  }).replace(/\+/g,"%20");
   if(/\.(wcdf|cdfde)$/.test(this.file)) {
     /* CDE mode*/
     return webAppPath + "/content/pentaho-cdf-dd/Render?" + params 
