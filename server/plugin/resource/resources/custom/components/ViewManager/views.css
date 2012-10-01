@@ -3,12 +3,17 @@ div.view-manager-component {
   padding: 3px;
   color: #3e3938;
   box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
   position: relative;
 }
 
 div.view-manager-component * {
-      -webkit-box-sizing: content-box;    
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
 }
+
 .view-manager-component > .current-view {
   font-size: 90%;
   text-align: center;
