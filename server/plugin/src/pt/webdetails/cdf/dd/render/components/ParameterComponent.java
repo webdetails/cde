@@ -43,6 +43,7 @@ public class ParameterComponent extends BaseComponent
         String result;
     boolean bookmarkable = XPathUtils.getBooleanValue(context, "properties/value[../name='bookmarkable']");
     String name = XPathUtils.getStringValue(context, "properties/value[../name='name']");
+    String viewRole = XPathUtils.getStringValue(context, "properties/value[../name='parameterViewRole']");
     String value = XPathUtils.getStringValue(context, "properties/value[../name='propertyValue']");
     if (bookmarkable)
     {
@@ -52,6 +53,10 @@ public class ParameterComponent extends BaseComponent
     {
       result = "";
     }
+    if(viewRole == "") {
+       viewRole="unused";
+    }
+    result += "Dashboards.setParameterViewMode('" + name + "','"+ viewRole+"');" + newLine;
     return "var " + name + " = \"" + value + "\";" + newLine + result;
   }
 }
