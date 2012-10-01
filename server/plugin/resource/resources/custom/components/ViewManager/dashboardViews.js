@@ -125,7 +125,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   events: {
     'click .tab': "clickTab",
     'click .manage-views, .save-panel .cancel': "toggleViewManager",
-    'click .view-item .delete': "delete",
+    'click .view-item .delete': "deleteView",
     'click .save-panel .save': "save"
   },
 
@@ -148,10 +148,6 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     /* Make it so only the selected tab has its contents showing*/
     this.$('.panel').hide();
     this.$(selector).show();
-  },
-
-  deleteView: function(evt) {
-    var view = $(evt.target).data("model");
   },
 
   configureListeners: function() {
@@ -216,7 +212,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     });
   },
 
-  delete: function(evt) {
+  deleteView: function(evt) {
     var view = $(evt.target).parent().data("model"),
         args = {
           method: "deleteView",
