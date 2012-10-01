@@ -1,0 +1,762 @@
+<html>
+<head>
+<link rel="stylesheet" href="../css/buyTutorial.fancybox.css" type="text/css"/>
+</head>
+<body>
+<div class='wrapper'>
+	<div class="tabButtons">
+		<!--
+		<div class="tabButton documentationTabButton active" onclick="$('.tabWrapper').removeClass('active'); $('.documentationWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.documentationTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+			<div class='tabButtonWrapper'>
+				 Documentation
+			</div>
+		</div> 
+		-->
+		<div class="tabButton buyTutorialCDETabButton active" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDEWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDETabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+			<div class='tabButtonWrapper'>
+				 CDE Tutorial
+			</div>
+		</div>
+		<div class="tabButton buyTutorialCDFTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDFWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDFTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+			<div class='tabButtonWrapper'>
+				 CDF Tutorial
+			</div>
+		</div>
+		<div class="tabButton buySamplesTabButton" onclick="$('.tabWrapper').removeClass('active'); $('.buySamplesWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buySamplesTabButton').addClass('active'); $('#fancybox-content > div').scrollTop(0);">
+			<div class='tabButtonWrapper'>
+				 CDE Samples
+			</div>
+		</div>
+	</div>
+	
+	<div class="tabWrapper documentationWrapper">
+		<!--  CDE TUTORIAL -->
+		<!--
+		<div class="heading" id="destakcolor">
+			<h30> BUY THE CDE TUTORIAL . <span style="font-weight:normal"> UNLEASH THE POWER</span></h30>
+		</div>
+		-->
+		<div class="content">
+			<div class="bodycopydiv">
+
+				<div class="headerbodycopydivdoc">
+					<div class="downloadstutdoc"> <img src="images/cdeimg.png"> </div>
+					<!--
+					<div class="downloadstutdoc" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDEWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDETabButton').addClass('active');">
+									<a>CDE Tutorial</a>
+								</div>
+					<div class="downloadstutdoc" onclick="$('.tabWrapper').removeClass('active'); $('.buyTutorialCDFWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buyTutorialCDFTabButton').addClass('active');">
+									<a>CDF Tutorial</a>
+					</div>
+					<div class="downloadstutdoc" onclick="$('.tabWrapper').removeClass('active'); $('.buySamplesWrapper').addClass('active'); $('.tabButton').removeClass('active'); $('.buySamplesTabButton').addClass('active');">
+						<a>CDE Samples</a>
+					</div>
+					-->
+				</div>			
+
+				<div class="contentbodycopydivdoc">
+
+					<p class="title"> 
+						OVERVIEW
+					</p>
+					<p>
+						 The Community Dashboard Editor (CDE), which is integrated in the Pentaho User Console (PUC), is a graphical tool for creating, editing and previewing Pentaho dashboards.
+					</p>
+					<h2>
+						Creating dashboards
+					</h2>
+					<p>
+						The <strong>Files and settings</strong> menu allows you to create, save and rename dashboards.
+					</p>
+					<h2>
+						Designing a dashboard
+					</h2>
+					<p>	
+						For designing your dashboard CDE offers three perspectives: 
+					</p>
+					<ul>
+						<li> Layout: For designing the layout of your dashboard, from scratch or from a template. While defining the layout you can apply styles and add HTML elements as text or images. </li> 
+						<li> Components: For adding and configuring the different components that make up your dashboard: Visual components (textboxes, tables, charts, etc.), Parameters and Scripts. </li>
+						<li> Data Sources: For defining the data sources used by the components </li>
+					</ul>	
+					<h2>
+						Previewing a dashboard
+					</h2>
+					<p>
+						The <strong>Preview</strong> option is the shortcut for testing the L&amp;F and behavior of your dashboard as you are working.<br/>
+					</p>
+
+				</div>
+				
+				<div class="contentbodycopydivdoc">
+
+					<p class="title"> 
+						LAYOUT
+					</p>
+					<h2> 
+						The layout of dashboards relies on several standard well known technologies: 
+					</h2>
+					<p> 
+						Besides, CDF incorporates Blueprint, a CSS framework which aims to cut down on your development time. Blueprints offers: 
+					</p>
+					<ul>
+						<li> A rich set of classes which allows flexible layouts </li> 
+						<li> A predefined 24-column layout which allows an easy way for building the dashboard layout </li>
+						<li> Cross browser compatibility </li>
+						<li> Good mobile rendering </li>
+					</ul>	
+					<h2>
+						Designing the Layout:
+					</h2>
+					<p>	A dashboard layout can be created by a simple combination of rows and columns along with some HTML blocks and possibly some images. </p>
+					<p>	You do all this in the Layout perspective. On the top left area you have a main toolbar that allows you to add, move or delete the different building blocks: rows, columns, spaces, HTML blocks and images. </p>
+					<p>	As you build the layout you will see the structure of nested rows and columns below the toolbar. </p>
+					<p>	If you select one of the elements on that structure, the properties area on the right is refreshed. There you can configure the element as you wish. </p>
+					<p>	For designing your dashboard CDE offers three perspectives: </p>
+					
+					<h2> 
+						Dimensions:
+					</h2>
+					<p>
+						You can assign the width of a column with the following properties:
+					</p>
+					<ul>
+						<li> Span size, where you will draw the components. </li> 
+						<li> Prepend size and Append size for making some space between columns. </li>
+					</ul>	
+					<p>
+						While these properties are specified in Blueprint units, the height for the rows has to be supplied in pixels. Because of Blueprint, in every row the sum of Prepend size, Append size and Span size must be 24!
+					</p>
+
+					<h2> 
+						Look and Feel:
+					</h2>
+
+					<p>
+						In the Layout perspective you may also provide some L&F properties as for example a background color, and style for the corners of rows and columns.
+					</p>
+					<p>
+						Besides, if you add a CSS resource, you can apply any of the styles defined there to any of the elements in your layout by typing it in the Css Class property.
+					</p>
+					
+					<ul>
+						<li> HTML for describing web pages </li>
+						<li> CSS for controlling the style and layout </li>
+						<li> JavaScript for adding interactivity </li>
+						<li> jQuery for simplifying all those tasks </li>
+					</ul>
+				
+				</div>
+				
+				<div class="contentbodycopydivdoc">
+
+					<p class="title"> 
+						DATASOURCES
+					</p>
+					
+					<h2> 
+						Dashboards can be populated with data coming from a variety of sources, namely:
+					</h2>
+					
+					<ul>
+						<li> Databases. </li>
+						<li> Mondrian Cubes. </li>
+						<li> Pentaho Metadata. </li>
+						<li> XML files. </li>
+						<li> Scripting: You can define an ad-hoc data source (for example a small table) just by typing a piece of code. </li>
+						<li> Kettle transformations: Kettle allows you to get data from other sources as for example Excel sheets or web services. </li>
+					</ul>
+					
+					<p> 
+						The data sources can be parametrized, which makes your data totally versatile.
+					</p> 
+					
+					<h2> 
+						Adding datasources to a dashboard:
+					</h2>
+					
+					<p> 
+						In the Datasources perspective you to define the origin of the data that will be used for populating your dashboard. Basically, you have to specify where the data comes from and how it looks like. 
+					</p>
+					<p> 
+						This is how you do it: 
+					</p>
+
+					<ul>
+						<li> From the left menu expand the category where your data belongs. For example if you have to query a Mondrian cube, expand the category MDX Queries. </li> 
+						<li> From the list of data source types, click the one that fits your needs, for example mdx over mondrianJndi. A new data source will be added in the pane located in the middle of the screen. </li>
+					</ul>	
+
+					<p> 
+						When you select a data source the right pane displays its properties. It's in that pane where you define the data source.					
+					</p>
+
+					<p> 
+						Depending on the kind of data source selected, the list of properties may vary. In general, most of the data sources share the following properties:				
+					</p>
+
+					<ul>
+						<li> Name of the data source. The name must be representative because you will need it when defining a component that uses it. </li> 
+						<li> JNDI name or JDBC parameters (host, user, etc.) </li>
+						<li> Query: This property is where you type the query (SQL, MDX, etc. depending on the kind of data source) </li>
+						<li> Column configuration: This property allows you to rename columns returned by the query, or create new calculated columns. </li>
+						<li> Output options: This property allows you to reorder or keep a subset of the columns returned by the query. </li>
+					</ul>	
+			
+				</div>
+				
+
+				<div class="contentbodycopydivdoc">
+
+					<p class="title"> 
+						COMPONENTS
+					</p>
+					
+					<h2> 
+						The Components are the central elements of a dashboard. There are three kinds of them:
+					</h2>
+					
+					<ul>
+						<li> Visual components: The components that are displayed in your dashboard. Examples of visual components are textboxes, tables, charts (pies, bars, timelines, etc.), selectors (radio buttons, date pickers), OLAP views, reports, etc. </li>
+						<li> Parameters: Represent values that are shared by the components. The parameters are essential for the interaction. </li>
+						<li> Scripts: Pieces of JavaScript code that let you customize the look and feel or behavior of other components. </li>
+						<li> XML files. </li>
+					</ul>
+					
+					<h2> 
+						Adding and configuring components:
+					</h2>
+		
+					<p> 
+						Whether you need to add a visual component, a parameter or a script, you need to access to the Component perspective.
+					</p>
+					<ul>
+						<li> From the left menu expand the category where your component belongs. </li> 
+						<li> For example if you want to add a Date input component, expand the category Selects. </li>  </li> 
+						<li> From the list click the one that interest you. A new component will be added in the pane located in the middle of the screen. </li> 
+						<li> When you select a component the right pane displays its properties. It's in that pane where you define the component. </li> 
+					</ul>	
+					<p> 
+						The default Properties pane will display the main properties. Click on the Advanced Properties button for the full list (which depends on the kind of the selected component).					
+					</p>
+
+					<p> 
+						In general most components share the following properties:
+					</p>
+					
+					<ul>
+						<li> executeAtStart. Flag to indicate if the component is to be rendered or not when the dashboard is loaded. </li> 
+						<li> HtmlObject. Where in the layout the component is going to be displayed. </li> 
+						<li> Datasource property: Which data source will be used (only for the components that display data, e.g. a pie chart). If the datasource expects parameters, you may/should configure the Parameters property as well. </li> 
+						<li> preExecution. Function that prepares the data before the update of the component. </li> 
+						<li> postExecution. Function that is executed after the update of the component. </li> 
+						<li> listeners. List of variables that fire the update of this component. </li> 
+					</ul>	
+
+					<p> 
+						In the case of selectors you also have these options:				
+					</p>
+
+					<ul>
+						<li> preChange (opt.). Function to be applied after the user clicks or select an option. It can be used to validate the input. </li> 
+						<li> postChange (opt.). Function to be applied after the parameter has changed its value. </li> 
+						<li> Parameter: the name of the parameter that the selector will affect. </li> 					
+					</ul>	
+			
+				</div>
+
+				<div class="contentbodycopydivdoc">
+					<p class="title"> 
+						QUICKSTART
+					</p>
+					<h2> 
+						Can't wait for creating your first dashboard? Follow these simple steps:
+					</h2>
+					<p> <b> 
+						Imagine
+					</b> </p>
+						
+					<p>  
+						Think of how your dashboard will look like and how it will behave. Draw a sketch on paper for future reference.
+					</p>
+					<p> <b> 
+						Log into the PUC, and launch the CDE
+					</b> </p>
+					<p>  
+						You can launch the editor from the PUC home page, from the PUC menu (File --> New --> CDE Dashboard), or by clicking on the CDE icon in the PUC toolbar.
+					</p>
+					<p> <b> 
+						Save the dashboard
+					</b> </p>
+					<p>  
+						Give the dashboard a name and save it in the solution folder of your choice. Close the dashboard.
+					</p>
+					<p> <b> 
+						Edit the dashboard
+					</b> </p>
+					<p>  
+						Refresh the console by clicking F5, look for the dashboard, right-click it and select Edit. The dashboard editor will appear.
+					</p>
+					<p> <b> 
+						Design the Layout
+					</b> </p>
+					<p>  
+						Select the Layout perspective and define the dashboard layout according to your sketch.
+					</p>
+					<p> <b> 
+						Add the datasources
+					</b> </p>
+					<p>  
+						Select the Datasource perspective and define the datasources that will feed your dashboard.
+					</p>
+					<p> <b> 
+						Add and configure the components
+					</b> </p>
+					<p>  
+						Select the Component perspective and add the components that make up your dashboard: the visual elements, the parameters, and eventually some scripts.
+					</p>
+					<p> <b> 
+						Preview your work
+					</b> </p>
+					<p>  
+						Click on Preview regularly to see hoy your work is progressing. Repeat steps 5-8 until you are satisfied with your final dashboard! Don't forget to save your work from time to time.
+					</p>
+				</div>
+			</div>
+			<!-- FECHA BODYCOPYDIV -->
+			<div class="cfooter">
+				<ul class="cfooterlist">
+					<li class="linkto"><a href="http://forums.pentaho.com/forumdisplay.php?80-Community-Tools-CTools">CDE on Pentaho Forum <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="https://github.com/webdetails/cde">CDE on Github <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="http://cde.webdetails.org/">CDE Microsite <img src="images/link.png"></a></li>
+				</ul>
+			</div>
+		</div>
+		<!--  CLOSE CDE TUTORIAL  -->
+	</div>
+	
+	<div class="tabWrapper buyTutorialCDEWrapper active">
+		<!--  CDE TUTORIAL -->
+		<!--
+		<div class="heading" id="destakcolor">
+			<h30> BUY THE CDE TUTORIAL . <span style="font-weight:normal"> UNLEASH THE POWER</span></h30>
+		</div>
+		-->
+		<div class="content">
+			<div class="bodycopydiv">
+				<ul class="bodycopy">
+					<li>
+						<ul class="bodycopylist"> <img src="images/cdetutimg.png"> </ul>
+					</li>
+					<li>
+					</li>
+					<li>
+						<div class="downloadstut">
+							<a href="#">Buy CDE Tutorial</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="bodycopy" style="margin-top:10px;">
+					<div class="bodycopytitle">
+						<h29>OVERVIEW </29>
+					</div>
+					<!-- COLUNA 1 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>CDE is the Dashboard editor created and used everyday by the Webdetails team.<br>
+						<br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 2-->
+					<li>
+					<ul class="bodycopylist">
+						<li>This Tutorial provides the essential knowledge for you to take full advantage of CDE and start building your own CTools Dashboards. <br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 3 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>The content has been carefully selected by the CDE dev team itself, guiding you cleanly through the key aspects of CDE. <br>
+						</li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA Abaixo 1 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>TUTORIAL CONTENT </h29>
+					</div>
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">Introduction</li>
+						<li>The CDE Interface.</li>
+						<li class="bodysubtitle">First Dashboard</li>
+						<li>A simple one-chart dashboard.</li>
+						<li>Adding more charts. </li>
+						<li>Reacting to parameters. </li>
+						<li>Making the charts talk to each other. </li>
+					</ul>
+					</li>
+					<!-- COLUNA Abaixo 2 -->
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">Core Concepts</li>
+						<li>Understanding layout engine. </li>
+						<li>Adding external resources. </li>
+						<li>CCC Grand Tour - Configuring data sets. </li>
+						<li>CCC Grand Tour - Enhancing charts. </li>
+						<li>CCC Grand Tour - Extensions points. </li>
+						<li>Using calculated columns. </li>
+						<li>Understand CDA editor. </li>
+						<li>Creating tables. </li>
+						<li>Using table add-in. </li>
+					</ul>
+					</li>
+					<!-- COLUNA Abaixo 3 -->
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">Advanced Topics</li>
+						<li>Creating components. </li>
+						<li>Creating Add-Ins. </li>
+						<li>Getting the most out of CDA. </li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA 4 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>PURCHASE TERMS <h29>
+					</div>
+					<li>
+					<ul class="bodycopylist">
+						<li>Receive the installer by email within 24 hours.</li>
+						<li>Have the source, so that you can see how everything is built. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Get free updates made to the tutorial for the period of 1 year from the date of purchase.</li>
+						<li>Contribute to open-source development effort. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Full refund guarantee if you're not happy with the purchased item.</li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA 5 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>SCREENSHOTS <h29>
+					</div>
+					<li style="padding-top:10px;">
+					<img src="images/cdesample1.png">
+					</li>
+					<li style="padding-top:10px;">
+					<img src="images/cdesample2.png">
+					</li>
+					<li style="padding-top:10px;">
+					<img src="images/cdesample3.png">
+					</li>
+				</ul>
+			</div>
+			<!-- FECHA BODYCOPYDIV -->
+			<div class="cfooter">
+				<ul class="cfooterlist">
+					<li class="linkto"><a href="http://forums.pentaho.com/forumdisplay.php?80-Community-Tools-CTools">CDE on Pentaho Forum <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="https://github.com/webdetails/cde">CDE on Github <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="http://cde.webdetails.org/">CDE Microsite <img src="images/link.png"></a></li>
+				</ul>
+			</div>
+		</div>
+		<!--  CLOSE CDE TUTORIAL  -->
+	</div>
+	
+	<div class="tabWrapper buyTutorialCDFWrapper">
+		<!-- CDF TUTORIAL    -->
+		<!--
+		<div class="heading" id="destakcolor">
+			<h30> BUY THE CDF TUTORIAL . <span style="font-weight:normal"> MASTER THE COMMUNITY DASHBOARD FRAMEWORK</span></h30>
+		</div>
+		-->
+		<div class="content">
+			<div class="bodycopydiv">
+				<ul class="bodycopy">
+					<li>
+						<ul class="bodycopylist"> <img src="images/CdfTutorialImg.png">	</ul>
+					</li>
+					<li>
+					</li>
+					<li>
+						<div class="downloadstut" style="font-size:20px;">
+							<a href="#">Buy CDF Tutorial</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="bodycopy" style="margin-top:-10px;">
+					<div class="bodycopytitle">
+						<h29>OVERVIEW </29>
+					</div>
+					<!-- COLUNA 1 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>The Community Dashboard Framework (CDF) is a project that provides an easy to use and powerful dashboard framework on top of the Pentaho BI server. <br>
+						<br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 2-->
+					<li>
+					<ul class="bodycopylist">
+						<li>As the main developers of this community project, we understand that sometimes is not easy to achieve exactly what we want. <br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 3 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>To allow users to get the full benefit of CDF we've prepared a set of documentation - a step by step tutorial from "how to start" to the hidden features of this framework. <br>
+						</li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA Abaixo 1 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>TUTORIAL CONTENT </h29>
+					</div>
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">How to Start</li>
+						<li>What files to create and what their contents should be.</li>
+						<li class="bodysubtitle">First Dashboard</li>
+						<li>How to select values and how to return them - use them as parameters. </li>
+						<li class="bodysubtitle">Parametrization</li>
+						<li>Make your reports look good.</li>
+					</ul>
+					</li>
+					<!-- COLUNA Abaixo 2 -->
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">Permissions</li>
+						<li>How to segregate the data being viewed by collaborators with different profiles. </li>
+						<li class="bodysubtitle">Charts</li>
+						<li>Present your data in several formats.</li>
+						<li class="bodysubtitle">Templates</li>
+						<li>Change the way your dashboards look.</li>
+						<li class="bodysubtitle">Time Series</li>
+						<li>Interact with time based charts. </li>
+					</ul>
+					</li>
+					<!-- COLUNA Abaixo 3 -->
+					<li>
+					<ul class="bodycopylist">
+						<li class="bodysubtitle">
+						Geo-based Dashboards</li>
+						<li>How to use maps to make your information richer. </li>
+						<li class="bodysubtitle">Gauges and traffic lights</li>
+						<li>Real time view over your business. </li>
+						<li class="bodysubtitle">Tables and Sparklines</li>
+						<li>Build visually pleasing tables. </li>
+						<li class="bodysubtitle">Interactive dashboards</li>
+						<li>Freely explore your data. </li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA 4 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>PURCHASE TERMS <h29>
+					</div>
+					<li>
+					<ul class="bodycopylist">
+						<li>Receive the installer by email within 24 hours.</li>
+						<li>Have the source, so that you can see how everything is built. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Get free updates made to the tutorial for the period of 1 year from the date of purchase.</li>
+						<li>Contribute to open-source development effort. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Full refund guarantee if you're not happy with the purchased item.</li>
+					</ul>
+					</li>
+				</ul>
+				<!-- COLUNA 5 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>SCREENSHOTS <h29>
+					</div>
+					<li style="padding-top:10px;">
+					<img src="images/cdfsample1.png">
+					</li>
+					<li style="padding-top:10px;">
+					<img src="images/cdfsample2.png">
+					</li>
+					<li style="padding-top:10px;">
+					<img src="images/cdfsample3.png">
+					</li>
+				</ul>
+			</div>
+			<!-- FECHA BODYCOPYDIV -->
+			<div class="cfooter">
+				<ul class="cfooterlist">
+					<li class="linkto"><a href="http://forums.pentaho.com/forumdisplay.php?80-Community-Tools-CTools" target="_blank">CDF on Pentaho Forum <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="https://github.com/webdetails/cdf" target="_blank">CDF on Github <img src="images/link.png"></a></li>
+					<li class="linkto"><a href="http://cde.webdetails.org/" target="_blank">CDE Microsite <img src="images/link.png"></a></li>
+				</ul>
+			</div>
+		</div>
+		<!--  CLOSE CDF TUTORIAL   -->
+	</div>	
+
+	<div class="tabWrapper buySamplesWrapper">
+		<div class="content">
+			<div class="bodycopydiv">
+				<ul class="bodycopy">
+					<li>
+						<ul class="bodycopylist"> <img src="images/cdesampleimg.png">	</ul>
+					</li>
+					<li>
+					</li>
+					<li>
+						<div class="downloadstut" style="font-size:20px;">
+							<a href="#">Buy CDE Samples</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="bodycopy" style="margin-top:-10px;">
+					<div class="bodycopytitle">
+						<h29>OVERVIEW </29>
+					</div>
+					<!-- COLUNA 1 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>The Community Dashboard Editor Samples are a set of dashboards created by the team at Webdetails using CDE Editor. <br>
+						<br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 2-->
+					<li>
+					<ul class="bodycopylist">
+						<li>As the main developers of this community project, we understand that sometimes is not easy to achieve exactly what we want. <br>
+						</li>
+					</ul>
+					</li>
+					<!-- COLUNA 3 -->
+					<li>
+					<ul class="bodycopylist">
+						<li>So we allow you to edit the dashboards and thus discover and learn the tricks and best practices that are behind each of these dashboards. <br>
+						</li>
+					</ul>
+					</li>
+				</ul>
+				
+				<ul class="bodycopysamples">
+				
+					<div class="bodycopytitle">
+						<h29> WORK SAMPLES & FEATURES </h29>
+					</div>
+					
+					<li>
+						<ul class="bodycopysampleslist">
+							<li class="bodysubtitle">S.Paulo, Brazil</li>
+							<li class="bodysubimg"> <img src="images/demo_spaulo.png"></img></li>
+							<li>Bar chats, line charts and table.</li>
+							<li>Selection allowing some interaction to change result visualization.</li>
+						</ul>
+					</li>
+
+					<li>
+						<ul class="bodycopysampleslist">
+							<li class="bodysubtitle">Orlando, USA</li>
+							<li class="bodysubimg"> <img src="images/demo_orlando.png"></img></li>
+							<li>A complete dashboard with a lot of features. </li>
+							<li>Table interacting for best use. </li>
+						</ul>
+					</li>
+					
+					<li>
+						<ul class="bodycopysampleslist">
+							<li class="bodysubtitle">Welcome to the geek side</li>
+							<li class="bodysubimg"> <img src="images/demo_geek.png"></img></li>
+							<li>Advanced charts use with lots os customizations. </li>
+						</ul>
+					</li>
+
+					<li>
+						<ul class="bodycopysampleslist">
+							<li class="bodysubtitle">Product Sales</li>
+							<li class="bodysubimg"> <img src="images/demo_productsale.png"></img></li>
+							<li>Line charts and advanced features on tables.</li>
+							<li>Using addins in tables. </li>
+						</ul>
+					</li>
+
+					<li>
+						<ul class="bodycopysampleslist">
+							<li class="bodysubtitle">Utrecht, Netherlands</li>
+							<li class="bodysubimg"> <img src="images/demo_netherlands.png"></img></li>
+							<li>A lot of charts and a simple table.</li>
+							<li>For the beginner user .</li>
+						</ul>
+					</li>
+
+
+				</ul>
+				<!-- COLUNA 4 -->
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>PURCHASE TERMS <h29>
+					</div>
+					<li>
+					<ul class="bodycopylist">
+						<li>Receive the installer by email within 24 hours.</li>
+						<li>Have the source, so that you can see how everything is built. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Get free updates made to the samples for the period of 1 year from the date of purchase.</li>
+						<li>Contribute to open-source development effort. </li>
+					</ul>
+					</li>
+					<li>
+					<ul class="bodycopylist">
+						<li>Full refund guarantee if you're not happy with the purchased item.</li>
+					</ul>
+					</li>
+				</ul>
+				<ul class="bodycopy">
+					<div class="bodycopytitle">
+						<h29>SCREENSHOTS</29>
+					</div>
+
+					<li>
+						<ul class="bodycopylist"> <img src="images/cdedemo01.png">	</ul>
+					</li>
+					<li>
+						<ul class="bodycopylist"> <img src="images/cdedemo02.png">	</ul>
+					</li>
+					<li>
+						<ul class="bodycopylist"> <img src="images/cdedemo03.png">	</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="cfooter">
+			</div>
+		</div>
+	</div>
+	
+</div>
+</div>
+</body>
+</html>
