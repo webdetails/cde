@@ -435,7 +435,98 @@ var CDFDD = Base.extend({
     });
   },
 		
-  previewMode: function(){
+  footerMode: function (mode) {
+
+	  var version = {
+	      
+	      versionGetInfo: null,
+	      versionCheckInfo: null,
+	
+	      getInfo: function(url) {
+	      	 var versionInfo = '';
+		      $.get(url, function (result) {
+		          if (!result) {
+		              Dashboards.log('CDFF-DD: ' + url + ' error');
+		              return;
+		          }
+		          versionInfo = result;
+		      });
+		      return versionInfo;
+	      },
+	      
+	      getVersion:  function () {
+	      
+	          var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/getVersion';
+		      versionGetInfo = this.getInfo(versionCheckUrl);
+		      return versionGetInfo;
+		  },
+	      	      
+	      checkVersion:  function () {
+	      
+	      	  var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/checkVersion';
+		      var versionCheckInfo = this.getInfo(versionCheckUrl);
+		      var msg = '';
+		      
+	          versionCheckInfo = JSON.parse(versionCheckInfo);
+	
+	          switch (versionCheckInfo.result) {
+		          case 'update':
+		              msg = 'You are currently running an outdated version. Please update to the new version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
+		              break;
+		          case 'latest':
+		              msg = 'Your version is up to date.';
+		              break;
+		          case 'inconclusive':
+		              msg = 'Only ctools branches support version checking. You can download lastest version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
+		              break;
+		          case 'error':
+		              msg = 'There was an error checking for newer versions: ' + versionCheckInfo.msg;
+		              break;
+	          }
+	          return msg;
+          }
+   	  };
+	   
+	   
+	   
+	  var addCSS = function(fileRef) {
+		  var fileref=document.createElement("link");
+		  fileref.setAttribute("rel", "stylesheet");
+		  fileref.setAttribute("type", "text/css");
+		  fileref.setAttribute("href", fileRef);
+		  document.getElementsByTagName("head")[0].appendChild(fileref);
+	  }
+	   
+	  var removeCSS = function(fileRef) {
+		  var allCtrl = document.getElementsByTagName('link');
+		  for (var i=allCtrl.length; i>=0; i--)  {
+			  if (allCtrl[i] && allCtrl[i].getAttribute('href')!=null && allCtrl[i].getAttribute('href').indexOf(fileRef)!=-1)
+			  	allCtrl[i].parentNode.removeChild(allCtrl[i]);
+		  }
+	  } 	
+	  
+      var htmlHref = "/pentaho/content/pentaho-cdf-dd/static/" + mode + ".html" ;
+	  var cssFileRef = "/pentaho/content/pentaho-cdf-dd/css/" + mode + ".css"  ;
+
+      $.fancybox({
+          href: htmlHref,
+          autoDimensions: false,
+          width: 950,
+          height: 600,
+          padding: 0,
+          margin: 0,
+          onStart: function() {addCSS(cssFileRef);}, 
+          onClosed: function() {removeCSS(cssFileRef);}       
+      });
+      
+      if (mode == 'about.fancybox') {
+	      $('#fancybox-content .version').html(version.getVersion());
+	      $('#fancybox-content .message').html(version.checkVersion());
+      }
+   
+   },
+  
+   previewMode: function(){
     
     if (CDFDDFileName == "/null/null/null") {
       $.notifyBar({
@@ -486,6 +577,7 @@ var CDFDD = Base.extend({
       }
     });
   },
+
 
   reload: function(){
     this.logger.warn("Reloading dashboard... ");

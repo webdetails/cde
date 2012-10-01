@@ -115,7 +115,7 @@ div#cdfdd-panels {
 }
 
 tbody.ui-widget-content {
-  background: #2a2f31;
+  /*background: #2a2f31;*/
   border: 1px solid #1999D1;
 }
 
@@ -789,4 +789,46 @@ table.cdfdd caption {
 
 #cggDialog .urlPreviewer.collapsed{
   max-height: 0px;
+}
+
+
+/* Changes made for adding About Button */
+
+.footer {
+	background-image: url('../images/footerCde.png');
+	line-height: 41px;
+	vertical-align: middle;
+}
+
+
+.webdetailsLogo {
+	float: right;
+	margin-right: 20px;
+	vertical-align: middle;
+}
+
+.webdetailsLogo img {
+	vertical-align: middle;
+}
+
+
+.footer .button {
+    -moz-transition: all 0.5s ease 0s;
+    color: #8A8A8A;
+    cursor: pointer;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 100;
+    letter-spacing: 0.07em;
+    line-height: 20px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 0 3px #111111, 0 0 3px #111111;
+    vertical-align: middle;
+    font-family: arial;
+}
+.footer .button:hover {
+    color: #0098C4;
+    text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
 }
