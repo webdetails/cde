@@ -25,7 +25,7 @@ div.view-manager-component * {
   top: 29px;
   left: 185px;
   width: 180px;
-  z-index: 100;
+  z-index: 10000;
   background-color: rgb(232, 241, 243);
   padding: 4px;
   border-top-left-radius: 5px;
