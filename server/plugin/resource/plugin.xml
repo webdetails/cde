@@ -5,6 +5,7 @@
 		<static-path url="/pentaho-cdf-dd/css" localFolder="css"/>
 		<static-path url="/pentaho-cdf-dd/images" localFolder="images"/>
 		<static-path url="/pentaho-cdf-dd/lang" localFolder="lang"/>
+		<static-path url="/pentaho-cdf-dd/static" localFolder="static"/>
 	</static-paths>
 	<content-types>
 		<content-type type="wcdf" mime-type="text/html">

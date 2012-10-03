@@ -188,6 +188,7 @@
 			  <include name="css/**/*" />
 			  <include name="js/**/*" />
 			  <include name="images/**/*" />
+			  <include name="static/**/*" />
 		  </fileset>
 	  </copy>
 	  <copy todir="${resource.dir}/resources" overwrite="true">
