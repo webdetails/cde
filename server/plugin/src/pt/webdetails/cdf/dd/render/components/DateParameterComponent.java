@@ -20,7 +20,12 @@ public class DateParameterComponent extends ParameterComponent
 
   public DateParameterComponent(JXPathContext context)
   {
-    super(context);
+    this(context, "");
+  }
+
+  public DateParameterComponent(JXPathContext context, String alias)
+  {
+    super(context, alias);
   }
 
   public DateParameterComponent()
@@ -37,7 +42,7 @@ public class DateParameterComponent extends ParameterComponent
   @Override
   public String render()
   {
-    String name = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']");
+    String name = getId();
     String value = XPathUtils.getStringValue(getNode(), "properties/value[../name='propertyValue']");
     return "var " + name + " = \"" + parseValue(value) + "\";" + newLine;
   }

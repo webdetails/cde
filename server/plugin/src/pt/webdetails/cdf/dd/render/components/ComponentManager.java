@@ -348,23 +348,7 @@ public class ComponentManager
     {
       renderer = (BaseComponent) Class.forName(PACKAGEHEADER + className).newInstance();
     }
-    catch (ClassNotFoundException ex)
-    {
-      Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (SecurityException ex)
-    {
-      Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (InstantiationException ex)
-    {
-      Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (IllegalAccessException ex)
-    {
-      Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    catch (IllegalArgumentException ex)
+    catch (Exception ex)
     {
       Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
     }

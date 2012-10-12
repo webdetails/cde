@@ -40,6 +40,7 @@ import org.pentaho.platform.plugin.action.mondrian.catalog.MondrianCatalogHelper
  *
  * @author pedro
  */
+@SuppressWarnings("deprecation")
 public class OlapUtils {
 
     private static Log logger = LogFactory.getLog(OlapUtils.class);

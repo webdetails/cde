@@ -45,10 +45,11 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   private static Log logger = LogFactory.getLog(Dashboard.class);
   /* FIELDS */
   protected boolean absolute, debug;
-  protected String template, header, content, footer, absRoot, scheme;
+  protected String template, header, layout, components, footer, absRoot, scheme;
   protected String templateFile, dashboardLocation;
   protected Date loaded;
   private WcdfDescriptor wcdf;
+  protected final String alias;
 
   public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
@@ -57,21 +58,43 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
     boolean inferScheme = requestParams.hasParameter("inferScheme") ? requestParams.getParameter("inferScheme").equals("true") : true;
     scheme = inferScheme ? DashboardDesignerContentGenerator.getScheme(pathParams) : "";
+    alias = "";
     construct(DashboardDesignerContentGenerator.getWcdfRelativePath(requestParams));
   }
 
-  private void construct(String wcdfPath) throws FileNotFoundException
+  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
   {
-    IPentahoSession userSession = PentahoSessionHolder.getSession();
+    this(wcdf, absolute, absRoot, debug, scheme, "");
+  }
 
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
-    this.dashboardLocation = DashboardDesignerContentGenerator.getStructureRelativePath(wcdfPath);
-    XmlStructure structure = new XmlStructure(userSession);
+  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme, String alias) throws FileNotFoundException
+  {
+    this.absolute = absolute;
+    this.absRoot = absRoot;
+    this.debug = debug;
+    this.scheme = scheme;
+    this.wcdf = wcdf;
+    this.alias = alias;
+    construct();
+  }
 
-    wcdf = null;
+  public AbstractDashboard(String wcdfPath, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
+  {
+    this.alias = "";
+    this.absolute = absolute;
+    this.absRoot = absRoot;
+    this.debug = debug;
+    this.scheme = scheme;
+    construct(wcdfPath);
+  }
+
+  protected WcdfDescriptor fetchWcdf(String wcdfPath) throws IOException
+  {
+    WcdfDescriptor wcdf = null;
     try
     {
-
+      IPentahoSession userSession = PentahoSessionHolder.getSession();
+      XmlStructure structure = new XmlStructure(userSession);
       if (wcdfPath != null && wcdfPath.endsWith(".wcdf"))
       {
         wcdf = structure.loadWcdfDescriptor(wcdfPath);
@@ -81,25 +104,51 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
         wcdf = new WcdfDescriptor();
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
       }
+    }
+    finally
+    {
+    };
+
+    return wcdf;
+  }
+
+  private void construct(String wcdfPath) throws FileNotFoundException
+  {
+    try
+    {
+      wcdf = fetchWcdf(wcdfPath);
+      construct();
+    }
+    catch (IOException e)
+    {
+      logger.error(e);
+    }
+  }
+
+  protected void renderContent() throws Exception
+  {
+    IPentahoSession userSession = PentahoSessionHolder.getSession();
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    final JXPathContext doc = openDashboardAsJXPathContext(solutionRepository, dashboardLocation, wcdf);
+
+    final RenderLayout layoutRenderer = new RenderLayout();
+    final RenderComponents componentsRenderer = new RenderComponents();
+    this.layout = replaceTokens(layoutRenderer.render(doc,alias), absolute, absRoot);
+    this.components = replaceTokens(componentsRenderer.render(doc,alias), absolute, absRoot);
+    this.header = replaceTokens(renderHeaders(getContent()), absolute, absRoot);
+  }
+
+  private void construct() throws FileNotFoundException
+  {
+
+    this.dashboardLocation = wcdf.getStructurePath();
+    try
+    {
 
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
 
-      final RenderLayout layoutRenderer = new RenderLayout();
-      final RenderComponents componentsRenderer = new RenderComponents();
-
-
-      final JXPathContext doc = openDashboardAsJXPathContext(solutionRepository, dashboardLocation, wcdf);
-
-      final StringBuilder dashboardBody = new StringBuilder();
-
-      dashboardBody.append(layoutRenderer.render(doc));
-      dashboardBody.append(componentsRenderer.render(doc));
-
-      // set all dashboard members
-      this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
-      this.header = replaceTokens(renderHeaders(this.content.toString()), absolute, absRoot);
-
+      renderContent();
       try
       {//attempt to read template file
         this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
@@ -113,7 +162,9 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
       }
       this.loaded = new Date();
     }
-    catch(FileNotFoundException e){
+    catch (FileNotFoundException e)
+    {
+      logger.error(e);
       throw e;
     }
     catch (Exception e)
@@ -122,12 +173,12 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
       this.templateFile = null;
     }
   }
-  
+
   public static JXPathContext openDashboardAsJXPathContext(RepositoryAccess solutionRepository, String dashboardLocation, WcdfDescriptor wcdf)
-      throws IOException, FileNotFoundException
+          throws IOException, FileNotFoundException
   {
     final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation));
-    
+
     if (wcdf != null)
     {
       json.put("settings", wcdf.toJSON());
@@ -147,7 +198,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     logger.debug("[Timing] Starting render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     String quotedFooter = Matcher.quoteReplacement(this.footer),
             quotedHeader = Matcher.quoteReplacement(this.header + context),
-            quotedContent = Matcher.quoteReplacement(this.content);
+            quotedContent = Matcher.quoteReplacement(getContent());
     logger.debug("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
 
     String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header
@@ -168,7 +219,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
             REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
-    String root = absolute ? (scheme.equals("")? "" : scheme + "://") + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
+    String root = absolute ? (scheme.equals("") ? "" : scheme + "://") + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
             .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
@@ -204,10 +255,9 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     // Acquire CDE-specific headers
     if (absolute)
     {
-      final String adornedRoot = (scheme.equals("")? "" : (scheme + "://")) + absRoot;
+      final String adornedRoot = (scheme.equals("") ? "" : (scheme + "://")) + absRoot;
       StringFilter css = new StringFilter()
       {
-
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
@@ -216,7 +266,6 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
       };
       StringFilter js = new StringFilter()
       {
-
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
@@ -254,7 +303,10 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
 
   public String getContent()
   {
-    return content;
+    String epilogue = "<script language=\"javascript\" type=\"text/javascript\">\n"
+            + "Dashboards.init();\n"
+            + "</script>";
+    return getLayout() + getComponents() + epilogue;
   }
 
   public String getFooter()
@@ -291,5 +343,33 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   protected void setWcdf(WcdfDescriptor wcdf)
   {
     this.wcdf = wcdf;
+  }
+
+  public String getLayout()
+  {
+    return replaceAlias(this.layout,this.alias);
+  }
+
+  public String getComponents()
+  {
+    return replaceAlias(this.components,this.alias);
+  }
+
+  String replaceAlias(String content, String alias)
+  {
+    final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}",
+            SHORT_C_TAG = "\\$\\{c:(.+?)\\}",
+            SHORT_P_TAG = "\\$\\{p:(.+?)\\}",
+            LONG_H_TAG = "\\$\\{htmlObject:(.+?)\\}",
+            LONG_C_TAG = "\\$\\{component:(.+?)\\}",
+            LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
+    alias = alias != null && alias.length() > 0 ? alias + "_" : "";
+    String modified = content.replaceAll(SHORT_H_TAG, alias + "$1")
+            .replaceAll(SHORT_C_TAG, "render_" + alias + "$1")
+            .replaceAll(SHORT_P_TAG, alias + "$1")
+            .replaceAll(LONG_H_TAG, alias + "$1")
+            .replaceAll(LONG_C_TAG, "render_" + alias + "$1")
+            .replaceAll(LONG_P_TAG, alias + "$1");
+    return modified;
   }
 }

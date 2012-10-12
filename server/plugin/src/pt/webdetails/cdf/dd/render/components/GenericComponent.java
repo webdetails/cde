@@ -27,8 +27,14 @@ public class GenericComponent extends BaseComponent implements IComponent
 
   public GenericComponent(JXPathContext context)
   {
+    this(context, "");
+  }
+
+  public GenericComponent(JXPathContext context, String alias)
+  {
     super(context);
-    this.id = "render_" + XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    setId("render", alias, baseId);
     this.properties = new HashMap<String, GenericProperty>();
   }
 
@@ -339,7 +345,7 @@ public class GenericComponent extends BaseComponent implements IComponent
       }
       catch (Exception e)
       {
-        log.error("ERROR: Component " + this.getName() + " failed to render property " + propertyName,e);
+        log.error("ERROR: Component " + this.getName() + " failed to render property " + propertyName, e);
       }
     }
     String output = !values.toString().equals("")

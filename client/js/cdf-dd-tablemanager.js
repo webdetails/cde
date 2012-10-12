@@ -871,7 +871,7 @@ var SelectRenderer = CellRenderer.extend({
   render: function(placeholder, value, callback){
 
     this.processData();
-    var _editArea = $("<td>"+ ((!$.isArray(this.getData()) && typeof this.getData()[value] != undefined)? this.getData()[value]: value) + "</td>");
+    var _editArea = $("<td>"+ ((!$.isArray(this.getData()) && typeof this.getData()[value] != "undefined")? this.getData()[value]: value) + "</td>");
     var myself = this;
 
     
@@ -917,7 +917,8 @@ var SelectRenderer = CellRenderer.extend({
   autoCompleteRequest: function(req,add){
     if(this.isAutoComplete){
       add(jQuery.grep(this.autocompleteArray, function(elt, i){
-          return elt.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
+          var target = $.isArray(elt) ? elt[1] : elt;
+          return target.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
       }));
     }
     else {
@@ -996,7 +997,11 @@ var SelectMultiRenderer = CellRenderer.extend({
     _editArea.editable(function(value,settings){
 
       var selector = $(this);
-      var value = "['"+selector.find("input").val().replace(/, /g,"','") + "']";
+      var val =selector.find("input").val(); 
+      if (typeof myself.postProcessValue == "function") {
+        val = myself.postProcessValue(val);
+      }
+      var value = "['"+ val.replace(/, /g,"','") + "']";
       if (value=="['Select options']"){
         value = "[]";
       }

@@ -38,6 +38,18 @@ public class PropertyBag
     }
   }
 
+  public String getId()
+  {
+    if (properties.containsKey(ID_KEY))
+    {
+      return properties.get(ID_KEY).toString();
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   public void addClass(String _class)
   {
     if (_class.length() > 0)
