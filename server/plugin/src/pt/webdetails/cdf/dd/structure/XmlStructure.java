@@ -116,9 +116,10 @@ public class XmlStructure implements IStructure
     if (solutionRepository.resourceExists(wcdfFilePath))
     {
       Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfFilePath);
-
+      wcdf.setWcdfPath(wcdfFilePath);
       wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
       wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
+      wcdf.setWidget(XmlDom4JHelper.getNodeText("/cdf/widget", wcdfDoc, "false").equals("true"));
       wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
       wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
       wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));

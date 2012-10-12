@@ -1,64 +1,86 @@
 package pt.webdetails.cdf.dd.render;
 
 import java.util.Iterator;
+import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import pt.webdetails.cdf.dd.Widget;
 import pt.webdetails.cdf.dd.render.layout.Render;
 
-public class RenderLayout extends Renderer{
+public class RenderLayout extends Renderer
+{
 
-    Class<?>[] rendererConstructorArgs = new Class[]{JXPathContext.class};
+  Class<?>[] rendererConstructorArgs = new Class[]
+  {
+    JXPathContext.class
+  };
 
-    public RenderLayout() {
-    	super();
-    }
+  public RenderLayout()
+  {
+    super();
+  }
 
-    public String render(final JXPathContext doc) throws Exception {
+  public String render(final JXPathContext doc) throws Exception
+  {
+    return render(doc, "");
+  }
 
-        StringBuffer layout = new StringBuffer("");
+  public String render(final JXPathContext doc, String alias) throws Exception
+  {
+    setDoc(doc);
+    StringBuffer layout = new StringBuffer("");
+    Map<String, Widget> widgets = getWidgets(alias);
+    try
+    {
+      @SuppressWarnings("unchecked")
+      final Iterator<Pointer> rootRows = doc.iteratePointers("/layout/rows[parent='UnIqEiD']");
 
-        try {
-            @SuppressWarnings("unchecked")
-            final Iterator<Pointer> rootRows = doc.iteratePointers("/layout/rows[parent='UnIqEiD']");
-
-            layout.append(System.getProperty("line.separator") + getIdent(2) + "<div class='container'>");
-            renderRows(doc, rootRows, layout, 4);
-            layout.append(System.getProperty("line.separator") + getIdent(2) + "</div>");
-
-        } catch (RenderException e) {
-            layout = new StringBuffer(e.getMessage());
-        }
-
-        return layout.toString();
-    }
-
-    private void renderRows(final JXPathContext doc, final Iterator<Pointer> nodeIterator, final StringBuffer layout, final int ident) throws Exception {
-
-        while (nodeIterator.hasNext()) {
-
-            final Pointer pointer = (Pointer) nodeIterator.next();
-            final JXPathContext context = doc.getRelativeContext(pointer);
-
-            final String rowId = (String) context.getValue("id");
-            
-            @SuppressWarnings("unchecked")
-            final Iterator<Pointer> childrenIterator = context.iteratePointers("/layout/rows[parent='" + rowId + "']");
-            
-            final Render renderer = (Render) getRender(context);
-            renderer.processProperties();
-
-            layout.append(System.getProperty("line.separator") + getIdent(ident));
-            layout.append(renderer.renderStart());
-            renderRows(context, childrenIterator, layout, ident + 2);
-            layout.append(System.getProperty("line.separator") + getIdent(ident));
-            layout.append(renderer.renderClose());
-
-        }
+      layout.append(System.getProperty("line.separator") + getIndent(2) + "<div class='container'>");
+      renderRows(doc, rootRows, widgets, alias, layout, 4);
+      layout.append(System.getProperty("line.separator") + getIndent(2) + "</div>");
 
     }
+    catch (RenderException e)
+    {
+      layout = new StringBuffer(e.getMessage());
+    }
 
-	@Override
-	public String getRenderClassName(final String type) {
-		return "pt.webdetails.cdf.dd.render.layout." + type.replace("Layout", "") + "Render";
-	}
+    return layout.toString();
+  }
+
+  private void renderRows(final JXPathContext doc, final Iterator<Pointer> nodeIterator, final Map<String, Widget> widgets, final String alias, final StringBuffer layout, final int indent) throws Exception
+  {
+    while (nodeIterator.hasNext())
+    {
+      final Pointer pointer = (Pointer) nodeIterator.next();
+      final JXPathContext context = doc.getRelativeContext(pointer);
+
+      final String rowId = (String) context.getValue("id"),
+              rowName = (String) context.getValue("properties[name='name']/value");
+
+      @SuppressWarnings("unchecked")
+      final Iterator<Pointer> childrenIterator = context.iteratePointers("/layout/rows[parent='" + rowId + "']");
+      final Render renderer = (Render) getRender(context);
+      renderer.processProperties();
+      renderer.aliasId(alias);
+      layout.append(System.getProperty("line.separator") + getIndent(indent));
+      layout.append(renderer.renderStart());
+      if (widgets.containsKey(rowName))
+      {
+        layout.append(widgets.get(rowName).getLayout());
+      }
+      else
+      {
+        renderRows(context, childrenIterator, widgets, alias, layout, indent + 2);
+      }
+      layout.append(System.getProperty("line.separator") + getIndent(indent));
+      layout.append(renderer.renderClose());
+    }
+  }
+
+  @Override
+  public String getRenderClassName(final String type)
+  {
+    return "pt.webdetails.cdf.dd.render.layout." + type.replace("Layout", "") + "Render";
+  }
 }
