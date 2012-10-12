@@ -3,6 +3,7 @@ package pt.webdetails.cdf.dd.render.layout;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
@@ -68,7 +69,7 @@ public abstract class Render
     String id = propertyBag.getId();
     if (id != null)
     {
-      propertyBag.addId(alias + "_" + id);
+      propertyBag.addId(Renderer.aliasName(alias, id));
     }
   }
 
