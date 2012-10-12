@@ -101,6 +101,19 @@ public class OlapUtils {
 
             return getLevelMembers(catalog, cube, member);
 
+        } else if (operation.equals("GetPaginatedLevelMembers")) {
+
+            String catalog = pathParams.getStringParameter("catalog", null);
+            String cube = pathParams.getStringParameter("cube", null);
+            String level = pathParams.getStringParameter("level", null);
+            String startMember = pathParams.getStringParameter("startMember", "");
+            String searchTerm = pathParams.getStringParameter("searchTerm", "");
+            String context = pathParams.getStringParameter("context", null);
+            long pageSize = pathParams.getLongParameter("pageSize", 100);
+            long pageStart = pathParams.getLongParameter("pageStart", 0);
+
+            return getPaginatedLevelMembers(catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart);
+
         } else if (operation.equals("test")) {
 
             // Test method
@@ -183,6 +196,7 @@ public class OlapUtils {
                 JSONObject jsonHierarchy = new JSONObject();
                 jsonHierarchy.put("type", "hierarchy");
                 jsonHierarchy.put("name", hierarchy.getName());
+                jsonHierarchy.put("hasAll", hierarchy.hasAll());
                 jsonHierarchy.put("qualifiedName", hierarchy.getQualifiedName().substring(11, hierarchy.getQualifiedName().length() - 1));
                 jsonHierarchy.put("defaultMember", hierarchy.getAllMember().getName());
                 jsonHierarchy.put("defaultMemberQualifiedName", hierarchy.getAllMember().getQualifiedName().substring(8, hierarchy.getAllMember().getQualifiedName().length() - 1));
@@ -441,7 +455,63 @@ public class OlapUtils {
 
 
     }
+
+
+  private JSONObject getPaginatedLevelMembers(String catalog, String cube, String level, String startMember, String context, String searchTerm, long pageSize, long pageStart)
+  {
+
+    Connection connection = getMdxConnection(catalog);
+
+    boolean hasStartMember = true;
+    boolean hasFilter = !(searchTerm.equals(""));
     
+    if(startMember == null || startMember.equals("")){
+      
+      hasStartMember = false;
+      startMember = level+".Hierarchy.defaultMember";
+      
+    }
+
+    String query = "with "
+            + "set descendantsSet as Descendants("+ startMember +" , "+ level +") "
+            + "set membersSet as " + level +  ".Members "
+            + "set resultSet as " + (hasStartMember?"descendantsSet":"membersSet")  +  " "
+            + "set filteredSet as filter(resultSet, " + level + ".hierarchy.currentMember.name MATCHES '(?i).*"+ searchTerm +".*' ) "
+            + "select {} ON COLUMNS,  "
+            + "Tail(Head(Order( "
+            + ( hasFilter?"filteredSet ":"resultSet ")
+            + ",[Product].currentMember.Name,BASC), "+ (pageSize + pageStart) +"), "+ pageSize +" ) ON ROWS "
+            + "from [" +cube+ "] where {" + context + "}" ;
+
+    Query mdxQuery = connection.parseQuery(query);
+    RolapResult result = (RolapResult) connection.execute(mdxQuery);
+    List<Position> positions = result.getAxes()[1].getPositions();
+
+    JSONArray membersArray = new JSONArray();
+
+    for (Position position : positions)
+    {
+
+      Member member = position.get(0);
+
+      JSONObject jsonMeasure = new JSONObject();
+      jsonMeasure.put("type", "member");
+      jsonMeasure.put("name", member.getName());
+      jsonMeasure.put("qualifiedName", member.getQualifiedName().substring(8, member.getQualifiedName().length() - 1));
+      jsonMeasure.put("memberType", member.getMemberType().toString());
+
+      membersArray.add(jsonMeasure);
+
+    }
+
+    JSONObject output = new JSONObject();
+    output.put("members", membersArray);
+    return output;
+
+
+  }
+
+
 
     private void makeTest() {
 

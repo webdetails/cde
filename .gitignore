@@ -14,3 +14,4 @@ nbproject/private/
 .DS_Store
 *~
 /server/plugin/resource/resources/base/export
+/server/plugin/runtime-lib/
