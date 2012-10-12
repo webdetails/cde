@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.StringFilter;
+import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 
 /**
  *
@@ -26,6 +27,21 @@ public class BlueprintDashboard extends AbstractDashboard
   public BlueprintDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
     super(pathParams, requestParams);
+  }
+
+  public BlueprintDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme, String alias) throws FileNotFoundException
+  {
+    super(wcdf, absolute, absRoot, debug, scheme, alias);
+  }
+
+  public BlueprintDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
+  {
+    super(wcdf, absolute, absRoot, debug, scheme);
+  }
+
+  public BlueprintDashboard(String wcdfPath, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
+  {
+    super(wcdfPath, absolute, absRoot, debug, scheme);
   }
 
   protected String renderHeaders(String contents)
@@ -48,7 +64,6 @@ public class BlueprintDashboard extends AbstractDashboard
       final String adornedRoot = (scheme.equals("") ? "" : (scheme + "://")) + absRoot;
       StringFilter css = new StringFilter()
       {
-
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");
@@ -57,7 +72,6 @@ public class BlueprintDashboard extends AbstractDashboard
       };
       StringFilter js = new StringFilter()
       {
-
         public String filter(String input)
         {
           //input = input.replaceAll("\\?", "&");

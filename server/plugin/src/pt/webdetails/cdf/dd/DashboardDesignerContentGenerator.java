@@ -217,14 +217,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void getContent(OutputStream out) throws Exception
   {
-    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders);
     writeOut(out, dashboard.getContent());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void getHeaders(final OutputStream out) throws Exception
   {
-    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
+    Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders);
     writeOut(out, dashboard.getHeader());
   }
 
@@ -252,7 +252,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     try {
       // Build pieces: render dashboard, footers and headers
       logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
-      Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders, this);
+      Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders);
       writeOut(out, dashboard.render(getRequestParameters()));
       logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     }
@@ -627,7 +627,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   static String getStructureRelativePath(final IParameterProvider pathParams)
   {
     String path = getWcdfRelativePath(pathParams);
-    return path.replace(".wcdf", ".cdfde");
+    return getStructureRelativePath(path);
   }
 
   static String getStructureRelativePath(String wcdfPath)

@@ -175,8 +175,8 @@ var CDFDD = Base.extend({
       // Default to Clean or the first available style if Clean isn't available
       var cleanStyle = myself.styles.indexOf('Clean');
       if(!wcdf.style) {
-				wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
-			}
+        wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+      }
       //only set style setting
       var saveSettingsParams = {
         operation: "saveSettings",
@@ -206,7 +206,7 @@ var CDFDD = Base.extend({
       operation: "load",
       file: CDFDDFileName
     };
-			
+      
     $.post(CDFDDDataUrl, loadParams, function(result) {
       var json = eval("(" + result + ")");
       if(json.status == "true"){
@@ -337,23 +337,23 @@ var CDFDD = Base.extend({
       }
     });
   },
-		
+    
   saveAs: function(fromScratch){
-		
+    
     var selectedFolder = "";
     var selectedFile = "";
     var selectedTitle = this.getDashboardWcdf().title;
     var selectedDescription = this.getDashboardWcdf().description;
     var myself = this;
     var content = '<div class="saveaslabel">Save as:</div>\n' +
-'								<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-'									<span class="folderexplorerfilelabel">File Name:</span>\n' +
-'									<span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
-'								<hr class="filexplorerhr"/>\n' +
-'								<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-'									<span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\n' +
-'									<br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
-							
+'               <div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+'                 <span class="folderexplorerfilelabel">File Name:</span>\n' +
+'                 <span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
+'               <hr class="filexplorerhr"/>\n' +
+'               <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+'                 <span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\n' +
+'                 <br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
+              
     $.prompt(content,{
       loaded: function(){
         $('#fileInput').change(function(){
@@ -393,14 +393,14 @@ var CDFDD = Base.extend({
       prefix: 'treeTableNewJqi',
       callback: function(v,m,f){
         if(v){
-					
+          
           if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length-5))
             $.prompt('Invalid file extension. Must be .wcdf');
           else if(selectedFolder.length == 0)
             $.prompt('Please choose destination folder.');
           else if(selectedFile.length == 0)
             $.prompt('Please enter the file name.');
-							
+              
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
 
@@ -434,79 +434,79 @@ var CDFDD = Base.extend({
       }
     });
   },
-		
+    
   footerMode: function (mode) {
 
-	  var version = {
-	      
-	      versionGetInfo: null,
-	      versionCheckInfo: null,
-	
-	      getInfo: function(url) {
-	      	 var versionInfo = '';
-		      $.get(url, function (result) {
-		          if (!result) {
-		              Dashboards.log('CDFF-DD: ' + url + ' error');
-		              return;
-		          }
-		          versionInfo = result;
-		      });
-		      return versionInfo;
-	      },
-	      
-	      getVersion:  function () {
-	      
-	          var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/getVersion';
-		      versionGetInfo = this.getInfo(versionCheckUrl);
-		      return versionGetInfo;
-		  },
-	      	      
-	      checkVersion:  function () {
-	      
-	      	  var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/checkVersion';
-		      var versionCheckInfo = this.getInfo(versionCheckUrl);
-		      var msg = '';
-		      
-	          versionCheckInfo = JSON.parse(versionCheckInfo);
-	
-	          switch (versionCheckInfo.result) {
-		          case 'update':
-		              msg = 'You are currently running an outdated version. Please update to the new version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
-		              break;
-		          case 'latest':
-		              msg = 'Your version is up to date.';
-		              break;
-		          case 'inconclusive':
-		              msg = 'Only ctools branches support version checking. You can download lastest version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
-		              break;
-		          case 'error':
-		              msg = 'There was an error checking for newer versions: ' + versionCheckInfo.msg;
-		              break;
-	          }
-	          return msg;
+    var version = {
+        
+        versionGetInfo: null,
+        versionCheckInfo: null,
+  
+        getInfo: function(url) {
+           var versionInfo = '';
+          $.get(url, function (result) {
+              if (!result) {
+                  Dashboards.log('CDFF-DD: ' + url + ' error');
+                  return;
+              }
+              versionInfo = result;
+          });
+          return versionInfo;
+        },
+        
+        getVersion:  function () {
+        
+            var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/getVersion';
+          versionGetInfo = this.getInfo(versionCheckUrl);
+          return versionGetInfo;
+      },
+                
+        checkVersion:  function () {
+        
+            var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/checkVersion';
+          var versionCheckInfo = this.getInfo(versionCheckUrl);
+          var msg = '';
+          
+            versionCheckInfo = JSON.parse(versionCheckInfo);
+  
+            switch (versionCheckInfo.result) {
+              case 'update':
+                  msg = 'You are currently running an outdated version. Please update to the new version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
+                  break;
+              case 'latest':
+                  msg = 'Your version is up to date.';
+                  break;
+              case 'inconclusive':
+                  msg = 'Only ctools branches support version checking. You can download lastest version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
+                  break;
+              case 'error':
+                  msg = 'There was an error checking for newer versions: ' + versionCheckInfo.msg;
+                  break;
+            }
+            return msg;
           }
-   	  };
-	   
-	   
-	   
-	  var addCSS = function(fileRef) {
-		  var fileref=document.createElement("link");
-		  fileref.setAttribute("rel", "stylesheet");
-		  fileref.setAttribute("type", "text/css");
-		  fileref.setAttribute("href", fileRef);
-		  document.getElementsByTagName("head")[0].appendChild(fileref);
-	  }
-	   
-	  var removeCSS = function(fileRef) {
-		  var allCtrl = document.getElementsByTagName('link');
-		  for (var i=allCtrl.length; i>=0; i--)  {
-			  if (allCtrl[i] && allCtrl[i].getAttribute('href')!=null && allCtrl[i].getAttribute('href').indexOf(fileRef)!=-1)
-			  	allCtrl[i].parentNode.removeChild(allCtrl[i]);
-		  }
-	  } 	
-	  
+      };
+     
+     
+     
+    var addCSS = function(fileRef) {
+      var fileref=document.createElement("link");
+      fileref.setAttribute("rel", "stylesheet");
+      fileref.setAttribute("type", "text/css");
+      fileref.setAttribute("href", fileRef);
+      document.getElementsByTagName("head")[0].appendChild(fileref);
+    }
+     
+    var removeCSS = function(fileRef) {
+      var allCtrl = document.getElementsByTagName('link');
+      for (var i=allCtrl.length; i>=0; i--)  {
+        if (allCtrl[i] && allCtrl[i].getAttribute('href')!=null && allCtrl[i].getAttribute('href').indexOf(fileRef)!=-1)
+          allCtrl[i].parentNode.removeChild(allCtrl[i]);
+      }
+    }   
+    
       var htmlHref = "/pentaho/content/pentaho-cdf-dd/static/" + mode + ".html" ;
-	  var cssFileRef = "/pentaho/content/pentaho-cdf-dd/css/" + mode + ".css"  ;
+    var cssFileRef = "/pentaho/content/pentaho-cdf-dd/css/" + mode + ".css"  ;
 
       $.fancybox({
           href: htmlHref,
@@ -520,8 +520,8 @@ var CDFDD = Base.extend({
       });
       
       if (mode == 'about.fancybox') {
-	      $('#fancybox-content .version').html(version.getVersion());
-	      $('#fancybox-content .message').html(version.checkVersion());
+        $('#fancybox-content .version').html(version.getVersion());
+        $('#fancybox-content .message').html(version.checkVersion());
       }
    
    },
@@ -581,7 +581,7 @@ var CDFDD = Base.extend({
 
   reload: function(){
     this.logger.warn("Reloading dashboard... ");
-			
+      
     $.prompt('Are you sure you want to reload? Unsaved changes will be lost.',{
       buttons: {
         Ok: true,
@@ -598,7 +598,7 @@ var CDFDD = Base.extend({
     this.logger.info("Resetting dashboad");
     CDFDD.PANELS().empty();
   },
-		
+    
   saveSettings: function(){
     var myself = this;
     var ready = true;
@@ -627,69 +627,66 @@ var CDFDD = Base.extend({
     if(ready){
       this.saveSettingsCallback();
     }
-		
+    
   },
 
   saveSettingsCallback: function(){
-			
-    var title = this.getDashboardWcdf().title;
-    var description = this.getDashboardWcdf().description;
-    var author = this.getDashboardWcdf().author;
-    var style = this.getDashboardWcdf().style;
-    var rendererType = this.getDashboardWcdf().rendererType;
-    var myself = this;
-    var content = '\n' +
-'				<span><b>Settings:</b></span><br/><hr/>\n' +
-'				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="' + title +'"></input><br/>\n' +
-'				<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="' + author +'"></input>\n' +
-'				<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">' + description + '</textarea>\n' +
-'				<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">';
-
+    var wcdf = $.extend({},this.getDashboardWcdf()),
+        settingsData = $.extend({},wcdf),
+        myself = this,
+        content;
+    
+    settingsData.styles = [];
     $.each(this.styles,function(i,obj){
-      content += ('<option value="'+ obj +'" ' + (style==obj?'selected':'') +' >'+ obj+'</option>');
+      settingsData.styles.push({style: obj, selected: wcdf.style==obj});
     });
-    content += '</select><span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">';
+    settingsData.renderers = [];
     $.each(this.renderers,function(i,obj){
-      content += ('<option value="'+ obj +'" ' + (rendererType==obj?'selected':'') +' >'+ obj+'</option>');
+      settingsData.renderers.push({renderer: obj, selected: wcdf.rendererType==obj});
     });
-    content += '</select>';
-	
+    
+    content = '\n' +
+      '<span><b>Settings:</b></span><br/><hr/>\n' +
+      '<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
+      '<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>\n' +
+      '<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
+      '<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">\n' +
+      '{{#styles}}' +
+      '   <option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
+      '{{/styles}}' +
+      '</select>'+
+      '<span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
+      '{{#renderers}}' +
+      '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
+      '{{/renderers}}' +
+      '</select>';
+  
+    content = Mustache.render(content, settingsData);
     $.prompt(content,{
       buttons: {
         Save: true,
         Cancel: false
       },
       submit: function(){
-        title = $("#titleInput").val();
-        author = $("#authorInput").val();
-        description = $("#descriptionInput").val();
-        style = $("#styleInput").val();
-        rendererType = $("#rendererInput").val(); 
+        wcdf.title = $("#titleInput").val();
+        wcdf.author = $("#authorInput").val();
+        wcdf.description = $("#descriptionInput").val();
+        wcdf.style = $("#styleInput").val();
+        wcdf.rendererType = $("#rendererInput").val(); 
       },
       callback: function(v,m,f){
         if(v){
           myself.logger.info("Saving dashboard settings...");
 
-          var saveSettingsParams = {
+          var saveSettingsParams = $.extend({
             operation: "saveSettings",
-            file: CDFDDFileName.replace(".cdfde",".wcdf"),
-            title: title,
-            author: author,
-            description: description,
-            style: style,
-            rendererType: rendererType
-          };
-						
+            file: CDFDDFileName.replace(".cdfde",".wcdf")
+          }, wcdf);
+            
           $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
             var json = eval("(" + result + ")");
             if(json.status == "true"){
-              myself.setDashboardWcdf({
-                title: title,
-                author: author,
-                description: description,
-                style: style,
-                rendererType: rendererType
-              });
+              myself.setDashboardWcdf(wcdf);
               // We need to reload the layout engine in case the rendererType changed
               cdfdd.layout.init();
               $.notifyBar({
@@ -843,9 +840,9 @@ var Panel = Base.extend({
   getHtml: function(){
 
     return '\n' +
-'			<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
-'			<div class="panel-content">' + this.getContent() + '</div> \n' +
-'			</div>';
+'     <div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
+'     <div class="panel-content">' + this.getContent() + '</div> \n' +
+'     </div>';
   //'<h2 class="panel-title">'+this.name+'</h2> '
   },
 
@@ -902,9 +899,9 @@ var Panel = Base.extend({
         $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"));
       //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
       //disable
-						
+            
       }
-					
+          
     });
   },
     
@@ -942,7 +939,7 @@ var Panel = Base.extend({
       el.attr("src", src.slice(0, src.length - "_mouseover.png".length) + ".png" );
     }
   }
-		
+    
 });
 
 

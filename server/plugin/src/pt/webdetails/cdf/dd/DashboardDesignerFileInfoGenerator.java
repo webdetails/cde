@@ -25,7 +25,7 @@ import java.io.InputStream;
  * @author Will Gorman (wgorman@pentaho.com)
  */
 
-
+@SuppressWarnings("deprecation")
 public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProvider {
 
   private ILogger logger;
@@ -34,6 +34,7 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
   }
 
   //FIXME: use ISolutionFileMetaProvider
+  @SuppressWarnings("deprecation")
   public ContentType getContentType() {
     return ContentType.DOM4JDOC;
   }

@@ -6,57 +6,75 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-public abstract class Render {
+public abstract class Render
+{
 
-    private JXPathContext node;
-    protected static final Log logger = LogFactory.getLog(Render.class);
-    private PropertyBag propertyBag;
+  private JXPathContext node;
+  protected static final Log logger = LogFactory.getLog(Render.class);
+  private PropertyBag propertyBag;
 
-    public Render(JXPathContext node) {
-        this.propertyBag = new PropertyBag();
-        this.node = node;
+  public Render(JXPathContext node)
+  {
+    this.propertyBag = new PropertyBag();
+    this.node = node;
+  }
+
+  public JXPathContext getNode()
+  {
+    return node;
+  }
+
+  public void setNode(JXPathContext node)
+  {
+    this.node = node;
+  }
+
+  public String getPropertyBagString()
+  {
+
+    return propertyBag.getPropertiesString();
+
+  }
+
+  protected boolean hasProperty(String property)
+  {
+
+    return XPathUtils.exists(getNode(), "properties/value[../name='" + property + "']");
+
+  }
+
+  protected String getPropertyString(String property)
+  {
+
+    return XPathUtils.getStringValue(getNode(), "properties/value[../name='" + property + "']");
+
+  }
+
+  protected Boolean getPropertyBoolean(String property)
+  {
+
+    return XPathUtils.getBooleanValue(getNode(), "properties/value[../name='" + property + "']");
+
+  }
+
+  public PropertyBag getPropertyBag()
+  {
+
+    return propertyBag;
+  }
+
+  public void aliasId(String alias)
+  {
+    String id = propertyBag.getId();
+    if (id != null)
+    {
+      propertyBag.addId(alias + "_" + id);
     }
+  }
 
-    public JXPathContext getNode() {
-        return node;
-    }
+  public abstract void processProperties();
 
-    public void setNode(JXPathContext node) {
-        this.node = node;
-    }
+  public abstract String renderStart();
 
-    public String getPropertyBagString() {
-
-        return propertyBag.getPropertiesString();
-
-    }
-
-    protected boolean hasProperty(String property) {
-
-        return XPathUtils.exists(getNode(), "properties/value[../name='" + property + "']");
-
-    }
-
-    protected String getPropertyString(String property) {
-
-        return XPathUtils.getStringValue(getNode(), "properties/value[../name='" + property + "']");
-
-    }
-
-    protected Boolean getPropertyBoolean(String property) {
-
-        return XPathUtils.getBooleanValue(getNode(), "properties/value[../name='" + property + "']");
-
-    }
-
-    public PropertyBag getPropertyBag() {
-
-        return propertyBag;
-    }
-
-    public abstract void processProperties();
-
-    public abstract String renderStart();
-
-    public abstract String renderClose();
+  public abstract String renderClose();
 }

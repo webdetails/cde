@@ -4,46 +4,63 @@ import org.apache.commons.jxpath.JXPathContext;
 
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-public class BaseComponent extends Component implements IComponent {
+public class BaseComponent extends Component implements IComponent
+{
 
-  public BaseComponent(JXPathContext context) {
-    super(context);
-    this.id = "render_" + XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+  public BaseComponent(JXPathContext context)
+  {
+    this(context, "");
   }
 
-  public BaseComponent() {
+  public BaseComponent(JXPathContext context, String alias)
+  {
+    super(context, alias);
+    String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    setId("render", alias, baseId);
+  }
+
+  public BaseComponent()
+  {
   }
 
   @Override
-  public String getProperties() {
+  public String getProperties()
+  {
     addProperty("name", this.id, true);
     return super.getProperties();
   }
 
-  public String render() {
+  public String render()
+  {
     return "";
   }
 
-  public String render(JXPathContext context) {
+  public String render(JXPathContext context)
+  {
     return "";
   }
 
   @Override
-  public void setNode(JXPathContext node) {
+  public void setNode(JXPathContext node)
+  {
     clearProperties();
     super.setNode(node);
-    this.id = "render_" + XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    setId("render", alias, baseId);
   }
 
-  public String getEntry() {
+  public String getEntry()
+  {
     return "";
   }
 
-  public String getModel() {
+  public String getModel()
+  {
     return "";
   }
 
-  public String getName() {
+  public String getName()
+  {
     return "";
   }
 }

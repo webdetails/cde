@@ -9,7 +9,12 @@ public class JavascriptParameterComponent extends BaseComponent
 
   public JavascriptParameterComponent(JXPathContext context)
   {
-    super(context);
+    this(context, "");
+  }
+
+  public JavascriptParameterComponent(JXPathContext context, String alias)
+  {
+    super(context, alias);
   }
 
   public JavascriptParameterComponent()
@@ -29,7 +34,7 @@ public class JavascriptParameterComponent extends BaseComponent
   {
     String result;
     boolean bookmarkable = XPathUtils.getBooleanValue(context, "properties/value[../name='bookmarkable']");
-    String name = XPathUtils.getStringValue(context, "properties/value[../name='name']");
+    String name = getId();
     String value = XPathUtils.getStringValue(context, "properties/value[../name='javaScript']");
     if (bookmarkable)
     {
@@ -47,7 +52,8 @@ public class JavascriptParameterComponent extends BaseComponent
   {
     clearProperties();
     super.setNode(node);
-    this.id = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    setId(baseId);
   }
 
   @Override
