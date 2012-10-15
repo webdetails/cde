@@ -3,6 +3,7 @@ package pt.webdetails.cdf.dd.render;
 import java.util.Iterator;
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 import pt.webdetails.cdf.dd.Widget;
 import pt.webdetails.cdf.dd.render.layout.Render;
@@ -55,8 +56,16 @@ public class RenderLayout extends Renderer
       final Pointer pointer = (Pointer) nodeIterator.next();
       final JXPathContext context = doc.getRelativeContext(pointer);
 
-      final String rowId = (String) context.getValue("id"),
-              rowName = (String) context.getValue("properties[name='name']/value");
+      String rowId = (String) context.getValue("id"),
+              rowName;
+      try
+      {
+        rowName = (String) context.getValue("properties[name='name']/value");
+      }
+      catch (JXPathException e)
+      {
+        rowName = "";
+      }
 
       @SuppressWarnings("unchecked")
       final Iterator<Pointer> childrenIterator = context.iteratePointers("/layout/rows[parent='" + rowId + "']");
