@@ -28,12 +28,24 @@ div.padder {
   padding: 5px;
 }
 
+
+div.cdfdd-toolbar-logo {
+ background-image: url('../images/NAV/CDE_Header_Logo.png');
+ background-repeat: no-repeat;
+ height:106px;
+ width:147px;
+ position:absolute;
+ top:10px;
+ left:10px;
+}
+
 div.cdfdd-toolbar {
   text-align: center;
   height: 106px;
   /*	padding-top:5px;*/
   /*padding-bottom: 5px;*/
-  background-image: url('../images/NAV/CDE_Header.png');
+  background-image: url('../images/NAV/CDE_Header_Background.png');
+
 }
 
 #cde-header.source-image {
@@ -56,6 +68,11 @@ div.cdfdd-preview, div.cdfdd-main, div.cdfdd-modes, div.cdfdd-logo {
   /*	top:0;*/
   /*  position: absolute;*/
   top:31px;
+}
+
+
+div.cdfdd-preview {
+    float:right;
 }
 
 div.cdfdd-modes {

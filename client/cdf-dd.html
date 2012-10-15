@@ -17,8 +17,9 @@
 <body>
 <div class="outside">
 	<div class="container">
+	    <div class='cdfdd-toolbar-logo'></div>
 		<div class="cdfdd-toolbar span-24 last">
-			<div class="span-11 prepend-2 cdfdd-main">
+			<div class="span-11 cdfdd-main prepend-2">
 				<a onclick="cdfdd.newDashboard()" class="tooltip"><img src="images/NAV/Xnew.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 				<a onclick="cdfdd.save()" class="tooltip"><img src="images/NAV/Xsave.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 				<a onclick="cdfdd.saveAs()" class="tooltip"><img src="images/NAV/Xsave_as.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
@@ -31,7 +32,7 @@
 				<a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip"><img src="images/NAV/Xcomponents.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 				<a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip"><img src="images/NAV/Xdatasources.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 			</div>
-			<div class="span-2 last cdfdd-preview last">
+			<div class="span-2 cdfdd-preview last last">
 				<a onclick="cdfdd.previewMode()" class="tooltip"><img src="images/NAV/Xpreview.png" onmouseover="Panel.setHover(this)" onmouseout="Panel.unsetHover(this)"/></a>
 			</div>
 		</div>
@@ -110,9 +111,26 @@
 <script language="javascript" type="text/javascript" src="getJsResource/js/cdf-dd-aceWrapper.js"></script>
 <script type="text/javascript">
       <!-- Layout formats -->
-      $( function(){
-        $(".round").corner();
-      } ) ;
+      function refitEditor() {
+     for (i=1; i <25; i++) {
+        if ($('.span-' + i).css) {
+            $('.span-' + i).css({
+            	"min-width": 40 * i -10 + "px",
+                width: ((4 * i - 1) * 100 / 95) + "%" 
+            })
+        }
+      };
+      $('.container').css({width:"100%"});              
+    };
+
+
+    <!-- Layout formats -->
+    $( function(){
+        $(".round").corner();                    
+        $(window).resize(function() {refitEditor();});      
+        refitEditor();
+                
+    }) ;
     </script>
 </body>
 </html>
