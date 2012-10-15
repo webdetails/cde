@@ -80,6 +80,7 @@ public class RenderComponents extends Renderer
           widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
           widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('${p:" + dashboardParam + "}',value)});\n");
           widgetContent.append("Dashboards.parameterModel.on('change:${p:" + dashboardParam + "}',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
+          widgetContent.append("Dashboards.setParameter('"+widgetParam+"',Dashboards.getParameterValue('${p:"+dashboardParam+"}'));");
           widgetContent.append("</script>\n");
         }
       }
