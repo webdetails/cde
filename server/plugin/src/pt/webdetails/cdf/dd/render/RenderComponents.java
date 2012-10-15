@@ -64,7 +64,7 @@ public class RenderComponents extends Renderer
         htmlObject = null;
       }
       boolean isWidget = metaWidget != null && metaWidget.toString().equals("true");
-      String id = htmlObject != null ? htmlObject.toString() : "";
+      String id = htmlObject != null ? htmlObject.toString().replaceAll("\\$\\{.*:(.*)\\}","$1") : "";
       if (isWidget && widgets.containsKey(id))
       {
         widgetContent.append(newLine);

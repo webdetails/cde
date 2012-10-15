@@ -44,7 +44,7 @@ public abstract class Renderer
       pointer = widgets.next();
       final JXPathContext context = doc.getRelativeContext(pointer);
       String widgetPath = context.getValue("properties[name='path']/value").toString(),
-              widgetContainer = context.getValue("properties[name='htmlObject']/value").toString(),
+              widgetContainer = context.getValue("properties[name='htmlObject']/value").toString().replaceAll("\\$\\{.*:(.*)\\}","$1"),
               newAlias = getWidgetAlias(context, alias);
       try
       {
