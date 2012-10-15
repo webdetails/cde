@@ -3,9 +3,12 @@ var ParameterRenderer = SelectRenderer.extend({
 
   getData: function(){
 
-    return Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters().map(function(o){
-      return o.properties[0].value;
+    var r = {};
+    _.each(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(),function(o){
+      var p = o.properties[0].value;
+      r["${p:" + p + "}"] = p
     });
+   return r;
   }
 });
 
@@ -20,13 +23,18 @@ var ListenersRenderer = SelectMultiRenderer.extend({
       _str += "'" + val.properties[0].value + "': '" + val.properties[0].value + "',"  ;
     });
 
-    _str+=" 'selected':" + (this.value) + "}";
+    _str+=" 'selected':" + (this.value.replace(/\$\{p:(.+?)\}/g,'$1')) + "}";
     return _str;
   },
 
+  postProcessValue: function(val) {
+    var processed = val.split(", ").map(function(v){return "${p:"+v+"}";}).join(", ");
+    return processed;
+  },
+
   getFormattedValue: function(value){
-  	var v = value.replace(/','/g,"', '");
-	if(v.length > 20 ) v = v.substring(0,20) + " (...)";
+    var v = value.replace(/','/g,"', '").replace(/\$\{p:(.+?)\}/g,'$1');
+    if(v.length > 20 ) v = v.substring(0,20) + " (...)";
     return v;
   }
 });
@@ -77,14 +85,13 @@ var DatasourceRenderer = SelectRenderer.extend({
 var HtmlObjectRenderer = SelectRenderer.extend({
 
   getData: function(){
-
-    return Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects().map(function(o){
-      return o.properties[0].value;
+    var r = {};
+    _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(),function(o){
+      var p = o.properties[0].value;
+      r["${p:" + p + "}"] = p
     });
-
+   return r;
   }
-
-
 });
 	
 var MatchTypeRenderer = SelectRenderer.extend({

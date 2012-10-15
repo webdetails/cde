@@ -3,71 +3,80 @@ package pt.webdetails.cdf.dd.structure;
 import net.sf.json.JSONObject;
 
 /**
- * Class to hold the descriptors for a .wcdf file
- * Date: Dec 23, 2009
- * Time: 3:45:53 PM
- * To change this template use File | Settings | File Templates.
+ * Class to hold the descriptors for a .wcdf file Date: Dec 23, 2009 Time:
+ * 3:45:53 PM To change this template use File | Settings | File Templates.
  */
-public class WcdfDescriptor {
-
+public class WcdfDescriptor
+{
 
   private String title = "";
   private String author;
   private String description = "";
   private String style;
   private String rendererType;
+  private String wcdfFilePath;
+  private boolean isWidget;
 
-  public WcdfDescriptor() {
+  public WcdfDescriptor()
+  {
   }
-
 
   /**
    * Generates a JSONObject representing this descriptor
+   *
    * @return
    */
-  public JSONObject toJSON(){
+  public JSONObject toJSON()
+  {
 
     JSONObject json = new JSONObject();
-    json.put("title",getTitle());
-    json.put("author",getAuthor());
-    json.put("description",getDescription());
-    json.put("style",getStyle());
-    json.put("rendererType",getRendererType());
+    json.put("title", getTitle());
+    json.put("author", getAuthor());
+    json.put("description", getDescription());
+    json.put("style", getStyle());
+    json.put("rendererType", getRendererType());
 
     return json;
 
   }
 
-
-  public String getTitle() {
+  public String getTitle()
+  {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(String title)
+  {
     this.title = title;
   }
 
-  public String getAuthor() {
+  public String getAuthor()
+  {
     return author;
   }
 
-  public void setAuthor(String author) {
+  public void setAuthor(String author)
+  {
     this.author = author;
   }
 
-  public String getDescription() {
+  public String getDescription()
+  {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void setDescription(String description)
+  {
     this.description = description;
   }
 
-  public String getStyle() {
+  public String getStyle()
+  {
     return style;
   }
 
-  public void setStyle(String style) {
+  public void setStyle(String style)
+  {
     this.style = style;
   }
 
@@ -87,4 +96,28 @@ public class WcdfDescriptor {
     this.rendererType = rendererType;
   }
 
+  public void setWcdfPath(String wcdfFilePath)
+  {
+    this.wcdfFilePath = wcdfFilePath;
+  }
+
+  public String getWcdfPath()
+  {
+    return wcdfFilePath;
+  }
+
+  public String getStructurePath()
+  {
+    return wcdfFilePath.replace(".wcdf", ".cdfde");
+  }
+
+  public void setWidget(boolean isWidget)
+  {
+    this.isWidget = isWidget;
+  }
+
+  public boolean isWidget()
+  {
+    return isWidget;
+  }
 }

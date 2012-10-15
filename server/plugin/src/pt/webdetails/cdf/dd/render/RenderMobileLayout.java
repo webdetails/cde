@@ -13,8 +13,10 @@ public class RenderMobileLayout extends Renderer{
     public RenderMobileLayout() {
     	super();
     }
-
     public String render(final JXPathContext doc) throws Exception {
+      return render(doc,null);
+    }
+    public String render(final JXPathContext doc, String alias) throws Exception {
 
         StringBuffer layout = new StringBuffer("");
 
@@ -22,9 +24,9 @@ public class RenderMobileLayout extends Renderer{
             @SuppressWarnings("unchecked")
             final Iterator<Pointer> rootRows = doc.iteratePointers("/layout/rows[parent='UnIqEiD']");
 
-            layout.append(System.getProperty("line.separator") + getIdent(2) + "<div class='container'>");
+            layout.append(System.getProperty("line.separator") + getIndent(2) + "<div class='container'>");
             renderRows(doc, rootRows, layout, 4);
-            layout.append(System.getProperty("line.separator") + getIdent(2) + "</div>");
+            layout.append(System.getProperty("line.separator") + getIndent(2) + "</div>");
 
         } catch (RenderException e) {
             layout = new StringBuffer(e.getMessage());
@@ -48,10 +50,10 @@ public class RenderMobileLayout extends Renderer{
             final Render renderer = (Render) getRender(context);
             renderer.processProperties();
 
-            layout.append(System.getProperty("line.separator") + getIdent(ident));
+            layout.append(System.getProperty("line.separator") + getIndent(ident));
             layout.append(renderer.renderStart());
             renderRows(context, childrenIterator, layout, ident + 2);
-            layout.append(System.getProperty("line.separator") + getIdent(ident));
+            layout.append(System.getProperty("line.separator") + getIndent(ident));
             layout.append(renderer.renderClose());
 
         }

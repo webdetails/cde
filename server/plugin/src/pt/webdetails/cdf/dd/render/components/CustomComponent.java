@@ -18,7 +18,12 @@ public class CustomComponent extends GenericComponent
 
   public CustomComponent(JXPathContext context)
   {
-    super(context);
+    this(context, "");
+  }
+  
+  public CustomComponent(JXPathContext context, String alias)
+  {
+    super(context,alias);
   }
 
   public CustomComponent()

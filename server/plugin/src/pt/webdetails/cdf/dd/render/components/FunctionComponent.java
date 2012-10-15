@@ -4,28 +4,47 @@ import org.apache.commons.jxpath.JXPathContext;
 
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-public class FunctionComponent extends BaseComponent {
+public class FunctionComponent extends BaseComponent
+{
 
-    public FunctionComponent(JXPathContext context) {
-        super(context);
-    }
+  public FunctionComponent(JXPathContext context, String alias)
+  {
+    super(context, alias);
+  }
+  public FunctionComponent(JXPathContext context)
+  {
+    this(context, "");
+  }
+  public void setNode(JXPathContext node)
+  {
+    setNode(node,"");
+  }
 
-    public void setNode(JXPathContext node) {
-        clearProperties();
-        super.setNode(node);
-        this.id = XPathUtils.getStringValue(getNode(),"properties/value[../name='name']").replace(" ","_");
-    }
-    public FunctionComponent() {
-        super();
-    }
+  public void setNode(JXPathContext node, String alias)
+  {
+    clearProperties();
+    super.setNode(node);
+    String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    setId(baseId);
+  }
 
-    public String render() {
-    	return  XPathUtils.getStringValue(getNode(),"properties/value[../name='javaScript']") + newLine;
-     }
-  public String render(JXPathContext context) {
-return  XPathUtils.getStringValue(context,"properties/value[../name='javaScript']") + newLine;
-     }
-    public String getName() {
-        return "Function";
-    }
+  public FunctionComponent()
+  {
+    super();
+  }
+
+  public String render()
+  {
+    return XPathUtils.getStringValue(getNode(), "properties/value[../name='javaScript']") + newLine;
+  }
+
+  public String render(JXPathContext context)
+  {
+    return XPathUtils.getStringValue(context, "properties/value[../name='javaScript']") + newLine;
+  }
+
+  public String getName()
+  {
+    return "Function";
+  }
 }

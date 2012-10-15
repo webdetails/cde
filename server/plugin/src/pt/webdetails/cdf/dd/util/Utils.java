@@ -20,6 +20,7 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
  *
  * @author pedro
  */
+@SuppressWarnings("deprecation")
 public class Utils {
 
   private static Log logger = LogFactory.getLog(Utils.class);

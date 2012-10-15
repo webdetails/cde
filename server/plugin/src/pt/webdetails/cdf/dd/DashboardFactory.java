@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package pt.webdetails.cdf.dd;
 
 import java.io.FileNotFoundException;
@@ -63,25 +62,42 @@ public class DashboardFactory
   public Dashboard newDashboard()
   {
     throw new UnsupportedOperationException("Not supported yet.");
+
   }
 
-  public Dashboard loadDashboard(Map<String, IParameterProvider> params, DashboardDesignerContentGenerator gen) throws FileNotFoundException
+  public Dashboard loadDashboard(Map<String, IParameterProvider> params) throws FileNotFoundException
   {
     IParameterProvider pathParams = params.get("path"),
             requestParams = params.get("request");
-    Dashboard dashboard = null;
-    String root = requestParams.hasParameter("root")
-            ? !requestParams.getParameter("root").toString().equals("")
-            ? DashboardDesignerContentGenerator.getScheme(pathParams) + "://" + requestParams.getParameter("root").toString()
-            : ""
-            : "";
+    String scheme = DashboardDesignerContentGenerator.getScheme(pathParams);
+    String root = requestParams.getStringParameter("root", "");
     boolean absolute = (!root.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true"),
             bypassCache = requestParams.hasParameter("bypassCache") && requestParams.getParameter("bypassCache").equals("true");
     final boolean debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
+
+    String wcdfPath = getWcdfPath(requestParams);
+    return loadDashboard(wcdfPath, debug, absolute, scheme, root, bypassCache, "");
+  }
+
+  public Widget loadWidget(String wcdfPath, String alias) throws FileNotFoundException
+  {
+    Dashboard d = loadDashboard(wcdfPath, false, false, "", "", true, alias);
+    if (d instanceof Widget) {
+    return (Widget) d;
+    } else {
+      throw new ClassCastException("Dashboard isn't a valid Widget");
+    }
+    
+    
+  }
+
+  public Dashboard loadDashboard(String wcdfPath, boolean debug, boolean absolute, String scheme, String absRoot, boolean bypassCache, String alias) throws FileNotFoundException
+  {
+
+    String dashboardPath = getDashboardPath(wcdfPath);
     IPentahoSession userSession = PentahoSessionHolder.getSession();
     XmlStructure structure = new XmlStructure(userSession);
-    String wcdfPath = getWcdfPath(requestParams);
-    String dashboardPath = getDashboardPath(requestParams);
+    Dashboard dashboard = null;
     WcdfDescriptor wcdf = null;
     DashboardCacheKey key;
     /*
@@ -117,7 +133,7 @@ public class DashboardFactory
      */
     key = new DashboardCacheKey(dashboardPath, CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()), debug);
     key.setAbs(absolute);
-    key.setRoot(root);
+    key.setRoot(scheme, absRoot);
     if (!bypassCache)
     {
       dashboard = getDashboardFromCache(key);
@@ -134,7 +150,7 @@ public class DashboardFactory
         switch (Renderers.valueOf(wcdf.getRendererType().toUpperCase()))
         {
           case MOBILE:
-            dashboard = new MobileDashboard(pathParams, requestParams);
+            dashboard = new MobileDashboard(wcdf, absolute, absRoot, debug, scheme);
             break;
 
           /* Until we consider it safe to assume that all dashboards have
@@ -143,7 +159,14 @@ public class DashboardFactory
            */
           case BLUEPRINT:
           default:
-            dashboard = new BlueprintDashboard(pathParams, requestParams);
+            if (wcdf.isWidget())
+            {
+              dashboard = new BlueprintWidget(wcdf, absolute, absRoot, debug, scheme, alias);
+            }
+            else
+            {
+              dashboard = new BlueprintDashboard(wcdf, absolute, absRoot, debug, scheme);
+            }
             break;
         }
       }
@@ -151,7 +174,7 @@ public class DashboardFactory
       {
         logger.error("Bad renderer type: " + wcdf.getRendererType());
         return null;
-      } 
+      }
       cache.put(new Element(key, dashboard));
     }
     return dashboard;
@@ -162,7 +185,7 @@ public class DashboardFactory
     Dashboard dashboard;
 
     RepositoryAccess repository = RepositoryAccess.getRepository();
-    
+
     try
     {
       Cache cache = getCache();
@@ -176,15 +199,16 @@ public class DashboardFactory
         dashboard = (Dashboard) cacheElement.getValue();
       }
       logger.info("Got dashboard from cache");
-      ISolutionFile dash = repository.getSolutionFile(key.getCdfde(), FileAccess.READ) ;// was NO_PERM=0;
-      if(dash == null){
+      ISolutionFile dash = repository.getSolutionFile(key.getCdfde(), FileAccess.READ);// was NO_PERM=0;
+      if (dash == null)
+      {
         logger.error(key.getCdfde() + " not found.");
         return null;
       }
       ISolutionFile templ = key.getTemplate() == null ? null
               : repository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + key.getTemplate(), FileAccess.READ);
 
-      /* Cache is invalidated if dashboard or template have changed since the
+      /* Cache is invalidated if the dashboard or template have changed since
        * the cache was loaded, or at midnight every day, because of dynamic
        * generation of date parameters.
        */
@@ -265,7 +289,12 @@ public class DashboardFactory
   private String getDashboardPath(final IParameterProvider pathParams)
   {
     String path = getWcdfPath(pathParams);
-    return path.replace(".wcdf", ".cdfde");
+    return getDashboardPath(path);
+  }
+
+  private String getDashboardPath(String wcdfPath)
+  {
+    return wcdfPath.replace(".wcdf", ".cdfde");
   }
 
   private String getWcdfPath(final IParameterProvider pathParams)
@@ -392,5 +421,10 @@ class DashboardCacheKey
   public void setRoot(String root)
   {
     this.root = root;
+  }
+
+  public void setRoot(String scheme, String root)
+  {
+    this.root = root.length() == 0 ? "" : scheme + "://" + root;
   }
 }

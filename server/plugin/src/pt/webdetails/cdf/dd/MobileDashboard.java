@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package pt.webdetails.cdf.dd;
 
 import java.io.FileNotFoundException;
@@ -16,6 +15,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 
 // Imports for the cache
 import pt.webdetails.cdf.dd.render.RenderMobileLayout;
+import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 
 /**
@@ -36,10 +36,16 @@ public class MobileDashboard extends AbstractDashboard
   public MobileDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
   {
     super(pathParams, requestParams);
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository();
-
     final String absRoot = pathParams.hasParameter("root") ? !pathParams.getParameter("root").toString().isEmpty() ? "http://" + pathParams.getParameter("root").toString() : "" : "";
     final boolean absolute = (!absRoot.isEmpty()) || pathParams.hasParameter("absolute") && pathParams.getParameter("absolute").equals("true");
+    construct(absolute, absRoot);
+  }
+
+  private void construct(boolean absolute, String absRoot){
+  
+    RepositoryAccess solutionRepository = RepositoryAccess.getRepository();
+
+
 
     final RenderMobileLayout layoutRenderer = new RenderMobileLayout();
     final RenderComponents componentsRenderer = new RenderComponents();
@@ -51,15 +57,10 @@ public class MobileDashboard extends AbstractDashboard
       json.put("settings", getWcdf().toJSON());
       final JXPathContext doc = JXPathContext.newContext(json);
 
-      final StringBuilder dashboardBody = new StringBuilder();
-
-      dashboardBody.append(layoutRenderer.render(doc));
-      dashboardBody.append(componentsRenderer.render(doc));
-
       // set all dashboard members
-      this.content = replaceTokens(dashboardBody.toString(), absolute, absRoot);
-
-      this.header = renderHeaders(this.content.toString());
+      this.layout = replaceTokens(layoutRenderer.render(doc), absolute, absRoot);
+      this.components = replaceTokens(componentsRenderer.render(doc), absolute, absRoot);
+      this.header = renderHeaders(this.layout + this.components);
       this.templateFile = MOBILE_TEMPLATE;
       this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
       this.loaded = new Date();
@@ -69,6 +70,17 @@ public class MobileDashboard extends AbstractDashboard
     {
       logger.error(e);
     }
+  }
+
+    public MobileDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
+  {
+    super(wcdf, absolute, absRoot, debug, scheme);
+    construct(absolute, absRoot);
+  }
+  public MobileDashboard(String wcdfPath, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
+  {
+    super(wcdfPath, absolute, absRoot, debug, scheme);
+    construct(absolute, absRoot);
   }
 
   public String getType()
