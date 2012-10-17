@@ -1,3 +1,10 @@
+12.10.17
+
+    * Added google analytics componente developed by Sinn Tecnologia
+    * Added about & documentation buttons to CDE. 
+    * Added new features to CGG export window
+    * General image update
+
 12.09.05
     * Fix [REDMINE 512] - Export to png with size small
     * Fix [REDMINE 511] - Export to png 
