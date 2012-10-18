@@ -480,7 +480,7 @@ public class OlapUtils {
             + "select {} ON COLUMNS,  "
             + "Tail(Head(Order( "
             + ( hasFilter?"filteredSet ":"resultSet ")
-            + ",[Product].currentMember.Name,BASC), "+ (pageSize + pageStart) +"), "+ pageSize +" ) ON ROWS "
+            + ", " + level + ".hierarchy.currentMember.Name,BASC), "+ (pageSize + pageStart) +"), "+ pageSize +" ) ON ROWS "
             + "from [" +cube+ "] where {" + context + "}" ;
 
     Query mdxQuery = connection.parseQuery(query);
