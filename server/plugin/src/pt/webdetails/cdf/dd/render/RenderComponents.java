@@ -78,9 +78,10 @@ public class RenderComponents extends Renderer
                   dashboardParam = line.getString(1);
           widgetParam = aliasName(widgetAlias,widgetParam);
           widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
+          widgetContent.append("Dashboards.setParameter('"+widgetParam+"',Dashboards.getParameterValue('${p:"+dashboardParam+"}'));\n");
+          widgetContent.append("Dashboards.parameterModel.change();\n");
           widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('${p:" + dashboardParam + "}',value)});\n");
           widgetContent.append("Dashboards.parameterModel.on('change:${p:" + dashboardParam + "}',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
-          widgetContent.append("Dashboards.fireChange('"+widgetParam+"',Dashboards.getParameterValue('${p:"+dashboardParam+"}'));");
           widgetContent.append("</script>\n");
         }
       }
