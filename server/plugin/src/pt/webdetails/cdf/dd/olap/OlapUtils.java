@@ -539,7 +539,7 @@ public class OlapUtils
             /* Try to fetch pageSize + 1 results -- the extra element allows us 
              * to know whether there are any more members for the next page
              */
-            + ",[Product].currentMember.Name,BASC), " + pageStart + ", " + (pageSize + 1) + ") ON ROWS "
+            + ", " + level + ".hierarchy.currentMember.Name,BASC), " + pageStart + ", " + (pageSize + 1) + ") ON ROWS "
             + "from [" + cube + "] where {" + context + "}";
 
     Query mdxQuery = connection.parseQuery(query);
