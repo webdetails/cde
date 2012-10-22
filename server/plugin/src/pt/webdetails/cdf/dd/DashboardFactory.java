@@ -69,7 +69,10 @@ public class DashboardFactory
   {
     IParameterProvider pathParams = params.get("path"),
             requestParams = params.get("request");
-    String scheme = DashboardDesignerContentGenerator.getScheme(pathParams);
+    String scheme = requestParams.hasParameter("inferScheme") && 
+                    requestParams.getParameter("inferScheme").equals("false") ? 
+            "" : 
+            DashboardDesignerContentGenerator.getScheme(pathParams);
     String root = requestParams.getStringParameter("root", "");
     boolean absolute = (!root.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true"),
             bypassCache = requestParams.hasParameter("bypassCache") && requestParams.getParameter("bypassCache").equals("true");
