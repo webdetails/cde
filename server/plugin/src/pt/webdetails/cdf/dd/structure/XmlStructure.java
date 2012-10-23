@@ -173,20 +173,12 @@ public class XmlStructure implements IStructure
       }
 
 
-      //4. Write CDW File
+      //4. Write only JS file, because CDW is no longer used by CGG
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
+      cdwRenderer.render(path, cdeFileName);
 
-      String cdwFileName = cdeFileName.replace(".cdfde", ".cdw");
-      if (cdwRenderer.isEmpty())
-      {
-        deleteFileIfExists(repository, path, cdwFileName);
-      }
-      else
-      {
-        cdwRenderer.render(path, cdeFileName);
-      }
-      
+     
       //5. Check publish result again.
       if (status != SaveFileStatus.OK)
       {

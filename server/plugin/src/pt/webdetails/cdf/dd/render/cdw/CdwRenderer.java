@@ -50,9 +50,6 @@ public class CdwRenderer
 
   protected void render(JXPathContext document, String path, String name)
   {
-    CdwFile cdw = new CdwFile();
-    cdw.populateHeaders(descriptor);
-
     @SuppressWarnings("unchecked")
     Iterator<Pointer> charts = document.iteratePointers(CDW_ELEMENTS_JXPATH);
     while (charts.hasNext())
@@ -61,10 +58,7 @@ public class CdwRenderer
       CggChart chart = new CggChart(chartSource);
       chart.setPath(path);
       chart.renderToFile();
-      cdw.addChart(chart);
     }
-
-    cdw.writeFile(path, name);
-
   }
+  
 }
