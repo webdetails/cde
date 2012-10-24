@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin title="pentaho-cdf-dd">
+	<lifecycle-listener class="pt.webdetails.cdf.dd.CdeLifeCycleListener"/>
 	<static-paths>
 		<static-path url="/pentaho-cdf-dd/js" localFolder="js"/>
 		<static-path url="/pentaho-cdf-dd/css" localFolder="css"/>
