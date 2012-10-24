@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Test</title>
+        <script src='lib/jquery.js' type='text/javascript'></script>
+        <script src='lib/underscore.js' type='text/javascript'></script>
+        <script src='lib/backbone.js' type='text/javascript'></script>
+        <script src='lib/mustache.js' type='text/javascript'></script>
+        <script src='../OlapSelector.js' type='text/javascript'></script>
+        <script src='../lib/OlapUtils.js' type='text/javascript'></script>
+        <script src='../lib/wd.js' type='text/javascript'></script>
+        <link rel='stylesheet' type='text/css' href='../OlapSelector.css' />
+    </head>
+    <body>
+
+        <h1>Test OlapUtils</h1>
+
+        <p>In order to be able to test this, you need to link the component from within tomcat's webapp.
+            In order to do that, also change pentaho/META-INF/context.xml to add allowLinking=true</p>
+
+
+        <div id='olapUtils'></div>
+
+
+        <h1>Test OlapSelector</h1>
+        <div id='olapSelector'></div>
+
+        <h1>Test Level Selector</h1>
+        <div id='levelSelector' class="olapSelectorComponent"></div>
+
+        <script type='text/javascript'>
+      
+      
+            /* OlapUtils engine */
+            var olapUtils = new wd.utils.OlapUtils({
+                url: "http://127.0.0.1:8080/pentaho/content/pentaho-cdf-dd/OlapUtils",
+                extraParams: {userid: "joe","password": "password"},
+                catalog: "FoodMart/FoodMart.xml",
+                cube: "Sales",
+                dimension: "Product"
+            });
+            
+            
+      
+            
+            /* OlapSelector */ 
+            var olapSelectorModel = new OlapSelectorModel({
+                title: "foo selector",
+                advancedSearch: true,
+                multiselect: true,
+                olapUtils: olapUtils
+            });
+            
+            var olapSelectorView = new OlapSelectorView({
+                model: olapSelectorModel,
+                el: $("#olapSelector").get(0)
+            });
+            olapSelectorView.render();
+            
+            
+            /* LevelSelector */             
+            
+            var levelSelectorModel = new LevelSelectorModel({
+                olapUtils: olapUtils,
+                multiselect: false
+            });
+            
+            var levelSelectorView = new LevelSelectorView({
+                model: levelSelectorModel,
+                el: $("#levelSelector").get(0)
+            });
+            levelSelectorView.render();
+            
+            
+        </script>
+    </body>
+</html>
