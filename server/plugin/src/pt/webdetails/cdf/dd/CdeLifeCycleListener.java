@@ -19,7 +19,6 @@ import org.pentaho.platform.engine.security.SecurityHelper;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
-//import pt.webdetails.cpf.persistence.PersistenceEngine;
 
 public class CdeLifeCycleListener implements IPluginLifecycleListener {
 
