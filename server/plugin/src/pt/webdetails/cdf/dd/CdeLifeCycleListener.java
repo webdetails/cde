@@ -69,7 +69,7 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener {
 			}      
 		}
 
-		if (!solutionRepository.resourceExists("cde/components")) {
+		if (!solutionRepository.resourceExists("cde/templates")) {
 			try {
 				repService.createFolder(adminSession, "", "cde", "templates", "templates");       
 			} catch (IOException ioe) {

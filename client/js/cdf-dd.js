@@ -741,8 +741,7 @@ var CDFDD = Base.extend({
     
     
     // cgg url:
-    var cggUrl = window.location.href.substring(0,window.location.href.indexOf("content")) + "content/cgg/Draw?script=" +
-      CDFDDFileName.substring(0,CDFDDFileName.lastIndexOf("/")) + "/";
+    var cggUrl = window.location.href.substring(0,window.location.href.indexOf("content")) + "content/cgg/Draw?script=" + CDFDDFileName.substring(0,CDFDDFileName.lastIndexOf("/")) + "/";
     
     ph.empty(); 
     
@@ -757,16 +756,17 @@ var CDFDD = Base.extend({
       checkbox.change(function(){
         e.meta_cdwRender = "" + this.checked;
       });
-      var name = '',
+
+      var componentName = '',
       title = '';
       e.properties.map(function(p){
         if (p.name == 'title') {
           title = p.value;
         } else if (p.name == 'name') {
-          name = p.value;
+          componentName = p.value;
         }
       });
-      var label = "<span class='label'>" + (title !== '' ? title : name) + "</span>";
+      var label = "<span class='label'>" + (title !== '' ? title : componentName) + "</span>";
       section.append(checkbox);
       section.append(label);
       
@@ -775,13 +775,14 @@ var CDFDD = Base.extend({
         Dashboards.log("Toggle Url show");
         var $t = $(this).toggleClass("active");
         $t.parent().find(".urlPreviewer").toggleClass("collapsed").find("input").select();
-        
-        
-        
+
       });
       section.append(showUrlButton).append("<br />");
-
-      $("<div class='urlPreviewer collapsed'><input type='text' value = '"+cggUrl+name+".js&outputType=png"+"'></input></div>").appendTo(section);
+      
+      // append dashboard name with component name and extension (.js)
+      var scriptFileName = CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] +'_'+componentName+".js";
+      
+      $("<div class='urlPreviewer collapsed'><input type='text' value = '"+cggUrl+scriptFileName+"&outputType=png"+"'></input></div>").appendTo(section);
 
       section.appendTo(ph);
 

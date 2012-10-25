@@ -42,7 +42,7 @@ public class CggChart
     this.chartTitle = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='title']/value").getValue().toString();
   }
 
-  public void renderToFile()
+  public void renderToFile(String dashboardName)
   {
     StringBuilder chartScript = new StringBuilder();
     renderPreamble(chartScript);
@@ -71,7 +71,7 @@ public class CggChart
     chartScript.append("document.lastChild.setAttribute('width', render_").append(this.chartName).append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_").append(this.chartName).append(
             ".chartDefinition.height);");
 
-    writeFile(chartScript);
+    writeFile(chartScript, dashboardName);
   }
 
   private void renderDatasource(StringBuilder chartScript)
@@ -108,11 +108,11 @@ public class CggChart
 
   }
 
-  private void writeFile(StringBuilder chartScript)
+  private void writeFile(StringBuilder chartScript, String dashboadFileName)
   {
     try
     {
-      String fileName = this.chartName + CGG_EXTENSION;
+      String fileName = dashboadFileName.substring(0, dashboadFileName.lastIndexOf('.')) + '_' + this.chartName + CGG_EXTENSION;
       byte[] content = chartScript.toString().getBytes(CdeSettings.getEncoding());
       
       switch( RepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
