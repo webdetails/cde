@@ -37,9 +37,9 @@ public class CdwRenderer
     this(JXPathContext.newContext(JSONSerializer.toJSON(document.replaceAll("^\n*", ""))), descriptor);
   }
 
-  public void render(String path, String name)
+  public void render(String path, String dashboadFileName)
   {
-    render(this.document, path, name);
+    render(this.document, path, dashboadFileName);
   }
   
   public boolean isEmpty(){
@@ -48,7 +48,7 @@ public class CdwRenderer
     return pointer == null || pointer instanceof NullPointer;
   }
 
-  protected void render(JXPathContext document, String path, String name)
+  protected void render(JXPathContext document, String path, String dashboadFileName)
   {
     @SuppressWarnings("unchecked")
     Iterator<Pointer> charts = document.iteratePointers(CDW_ELEMENTS_JXPATH);
@@ -57,7 +57,7 @@ public class CdwRenderer
       Pointer chartSource = charts.next();
       CggChart chart = new CggChart(chartSource);
       chart.setPath(path);
-      chart.renderToFile();
+      chart.renderToFile(dashboadFileName);
     }
   }
   
