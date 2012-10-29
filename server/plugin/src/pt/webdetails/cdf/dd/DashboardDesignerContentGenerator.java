@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package pt.webdetails.cdf.dd;
 
 import java.io.File;
@@ -65,8 +64,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    */
   public static final String SOLUTION_DIR = "cde";
   public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/";
-  
-  
   private static Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
   private static final long serialVersionUID = 1L;
   private static final String MIME_TYPE = "text/html";
@@ -97,6 +94,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    */
   protected static class MethodParams
   {
+
     /**
      * Debug flag
      */
@@ -116,16 +114,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    * This block initializes exposed methods
    */
   private static Map<String, Method> exposedMethods = new HashMap<String, Method>();
-  static{
+
+  static
+  {
     //to keep case-insensitive methods
     logger.info("loading exposed methods");
     exposedMethods = getExposedMethods(DashboardDesignerContentGenerator.class, true);
   }
-  
+
   @Override
-  protected Method getMethod(String methodName) throws NoSuchMethodException {
-    Method method = exposedMethods.get(StringUtils.lowerCase(methodName) );
-    if(method == null) {
+  protected Method getMethod(String methodName) throws NoSuchMethodException
+  {
+    Method method = exposedMethods.get(StringUtils.lowerCase(methodName));
+    if (method == null)
+    {
       throw new NoSuchMethodException();
     }
     return method;
@@ -142,7 +144,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       logger.error("Failed to initialize!");
     }
   }
-  
+
 //  @Override
 //  public void createContent()
 //  {
@@ -155,10 +157,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 //    
 //    super.createContent();
 //  }
-  
   @Override
-  public String getPluginName() {
-    return PLUGIN_NAME; 
+  public String getPluginName()
+  {
+    return PLUGIN_NAME;
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -180,7 +182,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  @Audited(action="edit")
+  @Audited(action = "edit")
   public void newDashboard(final OutputStream out) throws Exception
   {
     this.edit(out);
@@ -200,7 +202,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // Get and output the definitions
     out.write(engine.getDefinitions().getBytes());
   }
-  
+
   /**
    * Re-initializes the designer back-end.
    *
@@ -233,12 +235,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   public void render(final OutputStream out) throws IOException // Exception
   {
     // Check security
-    if ( !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(getRequestParameters()), FileAccess.EXECUTE))
+    if (!RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(getRequestParameters()), FileAccess.EXECUTE))
     {
       writeOut(out, "Access Denied or File Not Found.");
       return;
     }
-    
+
     // Response
     try
     {
@@ -248,15 +250,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     {
       logger.warn(e.toString());
     }
-    
-    try {
+
+    try
+    {
       // Build pieces: render dashboard, footers and headers
       logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
       Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders);
       writeOut(out, dashboard.render(getRequestParameters()));
       logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     }
-    catch (FileNotFoundException e){
+    catch (FileNotFoundException e)
+    {
       //could not open cdfde
       String msg = "File not found: " + e.getLocalizedMessage();
       logger.error(msg);
@@ -376,6 +380,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
+    response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
     try
     {
       getSolutionResource(out, resource);
@@ -413,8 +418,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
 
     final HttpServletResponse response = getResponse();
-    String[] roots = ComponentManager.getInstance().getAllowedLocations(); 
-    
+    String[] roots = ComponentManager.getInstance().getAllowedLocations();
+
     try
     {
       getSolutionResource(out, resource, roots);
@@ -430,7 +435,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  @Audited(action="edit")
+  @Audited(action = "edit")
   public void edit(final OutputStream out) throws IOException
   {
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter      
@@ -474,7 +479,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // Cache the output - Disabled for security check reasons
     // setCacheControl();
 
-    writeOut(out, resource);    
+    writeOut(out, resource);
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -527,7 +532,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     final String permission = requestParams.getStringParameter("access", null);
     writeOut(out, FileExplorer.getInstance().getJqueryFileTree(folder, fileExtensions, permission, userSession));
   }
-  
 
   /**
    * List CDA datasources for given dashboard.
@@ -567,7 +571,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
     else
     {
-      writeOut(out,"error creating folder " + path);
+      writeOut(out, "error creating folder " + path);
     }
 
   }
@@ -607,12 +611,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   //External Editor ^ 
-
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void componentEditor(final OutputStream out) throws IOException
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
-    writeOut(out,ExternalFileEditorBackend.getFileContents(editorPath, userSession));
+    writeOut(out, ExternalFileEditorBackend.getFileContents(editorPath, userSession));
   }
 
   static String getWcdfRelativePath(final IParameterProvider pathParams)
@@ -754,8 +757,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
     return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
   }
-  
-  private InterPluginCall getCdaListDataAccessTypesCall(boolean refresh){
+
+  private InterPluginCall getCdaListDataAccessTypesCall(boolean refresh)
+  {
     InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
     cdaListDataAccessTypes.setSession(userSession);
     cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
@@ -784,7 +788,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
   static String getCdfContext(IParameterProvider requestParameterProvider)
   {
-    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF,"Context");
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
     cdfContext.setRequestParameters(requestParameterProvider);
     return cdfContext.call();
   }
@@ -809,11 +813,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     {
       params.put("root", absRoot);
     }
-    
-    InterPluginCall cdfGetHeaders = new InterPluginCall(InterPluginCall.CDF, "GetHeaders", params); 
+
+    InterPluginCall cdfGetHeaders = new InterPluginCall(InterPluginCall.CDF, "GetHeaders", params);
     return cdfGetHeaders.call();
   }
-
 
   static public String getScheme(IParameterProvider pathParams)
   {
@@ -829,21 +832,27 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void checkversion(OutputStream out) throws IOException, JSONException {
+  public void checkversion(OutputStream out) throws IOException, JSONException
+  {
     writeOut(out, getVersionChecker().checkVersion());
   }
-  
+
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getversion(OutputStream out) throws IOException, JSONException {
+  public void getversion(OutputStream out) throws IOException, JSONException
+  {
     writeOut(out, getVersionChecker().getVersion());
   }
 
-  private VersionChecker getVersionChecker() {
-    return new VersionChecker(CdeSettings.getSettings()){
+  private VersionChecker getVersionChecker()
+  {
+    return new VersionChecker(CdeSettings.getSettings())
+    {
 
       @Override
-      protected String getVersionCheckUrl(VersionChecker.Branch branch) {
-        switch(branch){
+      protected String getVersionCheckUrl(VersionChecker.Branch branch)
+      {
+        switch (branch)
+        {
           case TRUNK:
             return "http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/marketplace.xml";
           case STABLE:
@@ -854,6 +863,4 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       }
     };
   }
-  
-  
 }
