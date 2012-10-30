@@ -292,8 +292,18 @@ public class GenericProperty
 	  return stringValue;
 	}
 	*/
-	
-	Pattern pattern = Pattern.compile("(((\\s*function\\s*\\u0028.*\\u0029){1}|(\\s*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029){1})\\s*\\u007b((.|\\s)*)\\u007d\\s*)");
+	  
+	// REGEX COMPLETE (STACKOVERFLOW): (((((\"|\s)*)function\s*\u0028.*\u0029){1}|(((\"|\s)*)function\s*[a-zA-Z0-9\u002d\u005f]+\u0028.*\u0029){1})(\s*\u007b((.|\s)*)\u007d((\"|\s)*)))
+	// JAVA REGEX COMPLETE (STACKOVERFLOW): "(((((\\\"|\\s)*)function\\s*\\u0028.*\\u0029){1}|(((\\\"|\\s)*)function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029){1})(\\s*\\u007b((.|\\s)*)\\u007d((\\\"|\\s)*)))" 
+	//	Pattern pattern = Pattern.compile("(\\\"|\\s)*function\\s*\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?|(\\\"|\\s)*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?");
+	//	Matcher matcher = pattern.matcher(stringValue);
+	//	Boolean verify = matcher.find(); 
+
+	  
+	// REGEX: (\"|\s)*function\s*\u0028.*\u0029{1}\s*\u007b.*(\u007d(\"|\s)*)?|(\"|\s)*function\s*[a-zA-Z0-9\u002d\u005f]+\u0028.*\u0029{1}\s*\u007b.*(\u007d(\"|\s)*)?
+	// JAVA REGEX: "(\\\"|\\s)*function\\s*\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?|(\\\"|\\s)*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?" 
+	  
+	Pattern pattern = Pattern.compile("(\\\"|\\s)*function\\s*\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?|(\\\"|\\s)*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?");
 	Matcher matcher = pattern.matcher(stringValue);
 	if (matcher.find()) 
 	{
