@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd.render;
 
 import java.util.Iterator;
 import java.util.Map;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
@@ -64,25 +65,20 @@ public class RenderComponents extends Renderer
         htmlObject = null;
       }
       boolean isWidget = metaWidget != null && metaWidget.toString().equals("true");
-      String id = htmlObject != null ? htmlObject.toString().replaceAll("\\$\\{.*:(.*)\\}","$1") : "";
+      String id = htmlObject != null ? htmlObject.toString().replaceAll("\\$\\{.*:(.*)\\}", "$1") : "";
       if (isWidget && widgets.containsKey(id))
       {
-        widgetContent.append(newLine);
-        widgetContent.append(widgets.get(id).getComponents());
-        JSONArray params = new JSONArray(context.getValue("properties[name='xActionArrayParameter']/value").toString());
-        for (int i = 0; i < params.length(); i++)
+        /* Detect whether we're handling a Widget Component (which has a
+         * single-property parameter blob) or a generated component, which
+         * will have a separate property per parameter
+         */
+        if (context.getValue("meta_wcdf") != null)
         {
-          JSONArray line = params.getJSONArray(i);
-          String widgetAlias = getWidgetAlias(context, alias),
-                  widgetParam = line.getString(0),
-                  dashboardParam = line.getString(1);
-          widgetParam = aliasName(widgetAlias,widgetParam);
-          widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
-          widgetContent.append("Dashboards.setParameter('"+widgetParam+"',Dashboards.getParameterValue('${p:"+dashboardParam+"}'));\n");
-          widgetContent.append("Dashboards.parameterModel.change();\n");
-          widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('${p:" + dashboardParam + "}',value)});\n");
-          widgetContent.append("Dashboards.parameterModel.on('change:${p:" + dashboardParam + "}',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
-          widgetContent.append("</script>\n");
+          widgetContent = getDiscreteParameters(widgets, context, id, alias);
+        }
+        else
+        {
+          widgetContent = getParameterBlob(widgets, context, id, alias);
         }
       }
       else
@@ -102,7 +98,6 @@ public class RenderComponents extends Renderer
         }
       }
     }
-
     if (componentsIds.length() > 0)
     {
       result.append(newLine + "Dashboards.addComponents([" + componentsIds.replaceAll(",$", "]") + ");");
@@ -119,5 +114,53 @@ public class RenderComponents extends Renderer
   public String getRenderClassName(String type)
   {
     return "pt.webdetails.cdf.dd.render.components." + type.replace("Components", "") + "Render";
+  }
+
+  private StringBuffer getParameterBlob(Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  {
+    StringBuffer widgetContent = new StringBuffer();
+    widgetContent.append(newLine);
+    widgetContent.append(widgets.get(id).getComponents());
+    JSONArray params = new JSONArray(context.getValue("properties[name='xActionArrayParameter']/value").toString());
+    for (int i = 0; i < params.length(); i++)
+    {
+      JSONArray line = params.getJSONArray(i);
+      String widgetAlias = getWidgetAlias(context, alias),
+              widgetParam = line.getString(0),
+              dashboardParam = line.getString(1);
+      widgetParam = aliasName(widgetAlias, widgetParam);
+      widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
+      widgetContent.append("Dashboards.setParameter('" + widgetParam + "',Dashboards.getParameterValue('${p:" + dashboardParam + "}'));\n");
+      widgetContent.append("Dashboards.parameterModel.change();\n");
+      widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('${p:" + dashboardParam + "}',value)});\n");
+      widgetContent.append("Dashboards.parameterModel.on('change:${p:" + dashboardParam + "}',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
+      widgetContent.append("</script>\n");
+    }
+    return widgetContent;
+  }
+
+  private StringBuffer getDiscreteParameters(Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  {
+    StringBuffer widgetContent = new StringBuffer();
+    widgetContent.append(newLine);
+    widgetContent.append(widgets.get(id).getComponents());
+    Iterator<Pointer> it = context.iteratePointers("properties[type='Parameter']");
+    String widgetAlias = getWidgetAlias(context, alias);
+    while (it.hasNext())
+    {
+      Pointer pointer = it.next();
+      JXPathContext ctx = doc.getRelativeContext(pointer);
+      String dashboardParam = ctx.getValue("value").toString(),
+              widgetParam = ctx.getValue("name").toString();
+      widgetParam = aliasName(widgetAlias, widgetParam);
+      widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
+      widgetContent.append("Dashboards.setParameter('" + widgetParam + "',Dashboards.getParameterValue('" + dashboardParam + "'));\n");
+      widgetContent.append("Dashboards.parameterModel.change();\n");
+      widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('" + dashboardParam + "',value)});\n");
+      widgetContent.append("Dashboards.parameterModel.on('change:" + dashboardParam + "',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
+      widgetContent.append("</script>\n");
+    }
+
+    return widgetContent;
   }
 }
