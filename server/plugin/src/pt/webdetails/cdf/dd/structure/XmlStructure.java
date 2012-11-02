@@ -61,7 +61,8 @@ public class XmlStructure implements IStructure
 
   public JSON load(HashMap<String, Object> parameters) throws Exception
   {
-
+	  
+	
     String filePath = (String) parameters.get("file");
     logger.info("Loading File:" + filePath);
 
@@ -143,10 +144,17 @@ public class XmlStructure implements IStructure
     return wcdf;
   }
 
-  public void save(HashMap<String, Object> parameters) throws Exception
+  public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception
   {
+	
+	boolean cdfdeResult = true;
+	boolean cdaResult = true;
+	boolean cggResult = true;
+ 	  
+	final HashMap<String, String> result = new HashMap<String, String>();
+    RepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
 
-    String filePath = (String) parameters.get("file");
+	String filePath = (String) parameters.get("file");
     logger.info("Saving File:" + filePath);
 
     try
@@ -160,23 +168,24 @@ public class XmlStructure implements IStructure
       //2. Publish file to pentaho repository
 
       RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
-
       if (filePath.indexOf("_tmp.cdfde") == -1 && repository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
       {
         parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
         delete(parameters);
       }
-
       byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
-      switch (repository.publishFile(path, cdeFileName, fileContents, true))
-      {
-        //3. Check publish result
-        case FAIL:
-          throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
-      }
 
-      RepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
-      //4. Write CDA File
+      status = repository.publishFile(path, cdeFileName, fileContents, true);
+      // check result
+      if (status != SaveFileStatus.OK)
+      {
+    	cdfdeResult = false;
+        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+      }
+    	  
+      status = SaveFileStatus.OK;
+      
+      //3. Write CDA File
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
       String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
@@ -188,25 +197,35 @@ public class XmlStructure implements IStructure
       {
         status = repository.publishFile(path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
       }
-
+      
+      if (status != SaveFileStatus.OK)
+      {
+    	cdaResult = false;
+        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+      }
 
       //4. Write only JS file, because CDW is no longer used by CGG
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
       cdwRenderer.render(path, cdeFileName);
 
-
-      //5. Check publish result again.
       if (status != SaveFileStatus.OK)
       {
+    	cggResult = false;
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
+
     }
     catch (PentahoAccessControlException e)
     {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
-
+    
+    result.put("cdfde", new Boolean(cdfdeResult).toString());
+    result.put("cda", new Boolean(cdaResult).toString());
+    result.put("cgg", new Boolean(cggResult).toString());
+    
+    return result;
   }
 
   private void deleteFileIfExists(RepositoryAccess solutionRepository, String path, String fileName)

@@ -286,22 +286,33 @@ public class GenericProperty
 
   protected String getFunctionParameter(String stringValue, Boolean placeReturnString)
   {
+	// REGEX: (\"|\s)*function\s*\u0028.*\u0029{1}\s*\u007b.*(\u007d(\"|\s)*)?|(\"|\s)*function\s*[a-zA-Z0-9\u002d\u005f]+\u0028.*\u0029{1}\s*\u007b.*(\u007d(\"|\s)*)?
+	// JAVA STRING REGEX: "(\\\"|\\s)*function\\s*\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?|(\\\"|\\s)*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?" 
+	Pattern pattern = Pattern.compile("(\\\"|\\s)*function\\s*\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?|(\\\"|\\s)*function\\s*[a-zA-Z0-9\\u002d\\u005f]+\\u0028.*\\u0029{1}\\s*\\u007b.*(\\u007d(\\\"|\\s)*)?");
+	Matcher matcher = pattern.matcher(stringValue);
 
-    if (stringValue.matches("(?is)^ *function.*"))
-    {
-      return stringValue;
-    }
+	if (matcher.find()) 
+	{
+	  return stringValue;
+	}
 
+	// if (stringValue.matches("(?is)^ *function.*")) {return stringValue; } 
+	  
     // It's a string; We need to encapsulate it:
-    // 1 -> append/prepend function(){ return " / ";}
-    // 2 -> remove all newlines
-    // 3 -> change " with \"
-    // 4 -> change ${} with " + ${} + "
-
-    stringValue = stringValue.replace("\n", " ");
+    // 1 -> remove all newlines
+    // 2 -> change " with \"
+    // 3 -> change ${} with " + ${} + "
+    // 4 -> append/prepend function(){ return " / ";}
+	stringValue = stringValue.replace("\n", " ");
     stringValue = stringValue.replace("\r", " ");
     stringValue = stringValue.replace("\"", "\\\"");
     stringValue = stringValue.replaceAll("(\\$\\{[^}]*\\})", "\"+ $1 + \"");
     return "function(){" + (placeReturnString ? " return \"" + stringValue + "\"" : stringValue) + ";}";
+    
   }
+
+private void matcher(Pattern regex) {
+	// TODO Auto-generated method stub
+}
+
 }
