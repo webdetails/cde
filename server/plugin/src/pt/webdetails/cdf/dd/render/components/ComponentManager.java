@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 package pt.webdetails.cdf.dd.render.components;
 
 import java.io.File;
@@ -46,24 +45,19 @@ public class ComponentManager
 {
 
   protected static Log logger = LogFactory.getLog(ComponentManager.class);
-  
-  private static final String PLUGIN_DIR = Utils.joinPath("system",DashboardDesignerContentGenerator.PLUGIN_NAME);
-
-  private static final String BASE_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR,"resources","base","components");
-
+  private static final String PLUGIN_DIR = Utils.joinPath("system", DashboardDesignerContentGenerator.PLUGIN_NAME);
+  private static final String BASE_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR, "resources", "base", "components");
   private static final String COMPONENT_FILE = "component.xml";
-  
   private static ComponentManager _engine;
   private String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
   protected Hashtable<String, BaseComponent> componentPool;
   private static final String PACKAGEHEADER = "pt.webdetails.cdf.dd.render.components.";
   private JSON cdaSettings = null;
-  
   private String[] resourceLocations;
 
   protected ComponentManager()
   {
-    init(  );
+    init();
   }
 
   public static synchronized ComponentManager getInstance()
@@ -81,16 +75,22 @@ public class ComponentManager
     PropertyManager.getInstance().refresh();
     init();
   }
-  
-  private List<File> listAllFiles(File dir, FilenameFilter filter){
+
+  private List<File> listAllFiles(File dir, FilenameFilter filter)
+  {
     ArrayList<File> results = new ArrayList<File>();
 
     File[] files = dir.listFiles();
-    if (files != null) {
-      for (File file : files) {
-        if (file.isDirectory()) {
+    if (files != null)
+    {
+      for (File file : files)
+      {
+        if (file.isDirectory())
+        {
           results.addAll(listAllFiles(file, filter));
-        } else if (filter.accept(dir, file.getName())) {
+        }
+        else if (filter.accept(dir, file.getName()))
+        {
           results.add(file);
         }
       }
@@ -103,15 +103,14 @@ public class ComponentManager
     File dir = new File(Utils.joinPath(this.basePath, BASE_COMPONENTS_DIR));
     FilenameFilter xmlFiles = new FilenameFilter()
     {
-
       public boolean accept(File dir, String name)
       {
         return !name.startsWith(".") && name.endsWith(".xml");
       }
     };
-   // String[] files = dir.list(xmlFiles);
+    // String[] files = dir.list(xmlFiles);
     List<File> files = listAllFiles(dir, xmlFiles);
-    
+
     for (File file : files)
     {
       try
@@ -161,111 +160,132 @@ public class ComponentManager
       }
     }
   }
-  
-  private synchronized void indexCustomComponents(){
-    
-   ArrayList<String> locations = new ArrayList<String>(); 
-   
-   //add base locations;
-   locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
-   locations.add(RepositoryAccess.getSolutionPath(""));
-    
-   for(String componentsDir : CdeSettings.getComponentLocations()){
-     indexCustomComponents(componentsDir);
-     locations.add(RepositoryAccess.getSolutionPath(componentsDir));
-   } 
-   
-   for(String componentsDir : getExternalComponentLocations()){
-     indexCustomComponents(componentsDir);
-     locations.add(RepositoryAccess.getSolutionPath(componentsDir));
-   }
-    
-   resourceLocations = locations.toArray(new String[locations.size()]);
+
+  private synchronized void indexCustomComponents()
+  {
+
+    ArrayList<String> locations = new ArrayList<String>();
+
+    //add base locations;
+    locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
+    locations.add(RepositoryAccess.getSolutionPath(""));
+
+    for (String componentsDir : CdeSettings.getComponentLocations())
+    {
+      indexCustomComponents(componentsDir);
+      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
+    }
+
+    for (String componentsDir : getExternalComponentLocations())
+    {
+      indexCustomComponents(componentsDir);
+      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
+    }
+
+    resourceLocations = locations.toArray(new String[locations.size()]);
   }
-  
+
   /**
-   * Get a list of locations from which resource loading is allowed. This will include
-   * the solution repository, CDE's location and any folders declared as containing CDE components 
+   * Get a list of locations from which resource loading is allowed. This will
+   * include the solution repository, CDE's location and any folders declared as
+   * containing CDE components
+   *
    * @return Full paths to allowed locations
    */
-  public String[] getAllowedLocations(){
-    if(resourceLocations == null){
+  public String[] getAllowedLocations()
+  {
+    if (resourceLocations == null)
+    {
       indexCustomComponents();
     }
     return resourceLocations;
   }
-  
-  private String[] getExternalComponentLocations(){
-    
+
+  private String[] getExternalComponentLocations()
+  {
+
     final ISolutionFile systemDir = RepositoryAccess.getRepository().getSolutionFile("system", FileAccess.NONE);
-    
+
     ISolutionFile[] systemFolders = systemDir.listFiles(new IFileFilter()
     {
-      public boolean accept(ISolutionFile file) {
+      public boolean accept(ISolutionFile file)
+      {
         return file.isDirectory();
       }
     });
-    
-    ArrayList<ISolutionFile> settingsFiles = new ArrayList<ISolutionFile>();
-    
-    for(ISolutionFile sysFolder : systemFolders){
-      ISolutionFile[] sett = sysFolder.listFiles(new IFileFilter(){
 
-        public boolean accept(ISolutionFile file) {
+    ArrayList<ISolutionFile> settingsFiles = new ArrayList<ISolutionFile>();
+
+    for (ISolutionFile sysFolder : systemFolders)
+    {
+      ISolutionFile[] sett = sysFolder.listFiles(new IFileFilter()
+      {
+        public boolean accept(ISolutionFile file)
+        {
           return file.getFileName().equals("settings.xml");
         }
-        
       });
-      for(ISolutionFile s : sett) settingsFiles.add(s);
+      for (ISolutionFile s : sett)
+      {
+        settingsFiles.add(s);
+      }
     }
-    
+
     SettingsReader settingsReader = new SettingsReader();
-    
-    
+
+
     ArrayList<String> componentLocations = new ArrayList<String>();
-    for(ISolutionFile file : settingsFiles){
-        String pluginName = file.retrieveParent().getFileName();
-        settingsReader.setPlugin(pluginName);
-        List<String> locations = settingsReader.getComponentLocations();
-        if(locations.size() > 0){
-          logger.debug("found CDE components location declared in " + pluginName + " [" + locations.size() + "]");
-          componentLocations.addAll(locations);
-        }
+    for (ISolutionFile file : settingsFiles)
+    {
+      String pluginName = file.retrieveParent().getFileName();
+      settingsReader.setPlugin(pluginName);
+      List<String> locations = settingsReader.getComponentLocations();
+      if (locations.size() > 0)
+      {
+        logger.debug("found CDE components location declared in " + pluginName + " [" + locations.size() + "]");
+        componentLocations.addAll(locations);
+      }
     }
-    
+
     return componentLocations.toArray(new String[componentLocations.size()]);
   }
-  
-  private class SettingsReader extends PluginSettings {
+
+  private class SettingsReader extends PluginSettings
+  {
 
     private String pluginName;
-    
-    public void setPlugin(String sysFolderName){
+
+    public void setPlugin(String sysFolderName)
+    {
       this.pluginName = sysFolderName;
     }
-    
+
     @Override
-    public String getPluginSystemDir() {
+    public String getPluginSystemDir()
+    {
       return pluginName + "/";
     }
 
     @Override
-    public String getPluginName() {
+    public String getPluginName()
+    {
       return pluginName;
     }
-    
-    public List<String> getComponentLocations(){
+
+    public List<String> getComponentLocations()
+    {
       List<Element> pathElements = getSettingsXmlSection("cde-components/path");
-      if(pathElements != null){
+      if (pathElements != null)
+      {
         ArrayList<String> solutionPaths = new ArrayList<String>(pathElements.size());
-        for(Element pathElement : pathElements){
+        for (Element pathElement : pathElements)
+        {
           solutionPaths.add(pathElement.getText());
         }
         return solutionPaths;
       }
       return new ArrayList<String>(0);
     }
-    
   }
 
   private void indexCustomComponents(String dirPath)
@@ -274,50 +294,94 @@ public class ComponentManager
     File dir = new File(dirAbsPath);
 
     logger.info("Loading custom components from: " + dir.toString());
-    
+
     FilenameFilter subFolders = new FilenameFilter()
     {
-
       public boolean accept(File systemFolder, String name)
       {
-        File plugin = new File( Utils.joinPath(systemFolder.getPath(), name, COMPONENT_FILE));
+        File plugin = new File(Utils.joinPath(systemFolder.getPath(), name, COMPONENT_FILE));
         return plugin.exists() && plugin.canRead();
 
       }
     };
     String[] files = dir.list(subFolders);
-    
-    logger.debug(files.length + " sub-folders found");
-    
-    if (files != null) {
-      
-      Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
-      for (String file : files) {
-        try {
-          String xmlPath = Utils.joinPath(dir.getPath(), file, COMPONENT_FILE);
-          Document doc = XmlDom4JHelper.getDocFromFile(xmlPath, null);
 
+    logger.debug(files.length + " sub-folders found");
+    processFiles(dirPath, dir, files);
+
+  }
+
+  private void indexWidgetComponents()
+  {
+    String dirPath = "/cde/widgets/";
+    String dirAbsPath = Utils.joinPath(basePath, dirPath);
+    File dir = new File(dirAbsPath);
+
+    logger.info("Loading custom components from: " + dir.toString());
+
+    FilenameFilter widgetComponents = new FilenameFilter()
+    {
+      public boolean accept(File systemFolder, String name)
+      {
+        return !name.startsWith(".") && name.endsWith(".component.xml");
+      }
+    };
+    String[] files = dir.list(widgetComponents);
+
+    logger.debug(files.length + " widget components found");
+    processFiles(dirPath, dir, files);
+  }
+
+  private void processFiles(String dirPath, File dir, String[] files)
+  {
+    if (files != null)
+    {
+
+      Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
+      for (String file : files)
+      {
+        try
+        {
+          String basePath = Utils.joinPath(dir.getPath(), file);
+          String xmlPath = Utils.joinPath(basePath, COMPONENT_FILE);
+
+          Document doc;
+          try
+          {
+            doc = XmlDom4JHelper.getDocFromFile(basePath, null);
+          }
+          catch (Exception e)
+          {
+            doc = XmlDom4JHelper.getDocFromFile(xmlPath, null);
+          }
           // To support multiple definitions on the same file, we'll iterate
           // through all the DesignerComponent nodes
           List<Node> components = doc.selectNodes("//DesignerComponent");
-          
-          if(logger.isDebugEnabled() && components.size() > 0){
+
+          if (logger.isDebugEnabled() && components.size() > 0)
+          {
             logger.debug("\t" + file + " [" + components.size() + "]");
           }
 
-          for (Node component : components) {
+          for (Node component : components)
+          {
 
             // To figure out whether the component is generic or has a special
             // implementation, we directly look for the class override in the definition
             String className = XmlDom4JHelper.getNodeText("Override", component);
-            if (className != null) {
+            if (className != null)
+            {
               BaseComponent renderer = rendererFromClass(className);
-              if (renderer != null) {
+              if (renderer != null)
+              {
                 componentPool.put(renderer.getName(), renderer);
               }
-            } else {
-              CustomComponent renderer = new CustomComponent( Utils.joinPath(dirPath,file) );
-              if (renderer != null) {
+            }
+            else
+            {
+              CustomComponent renderer = new CustomComponent(Utils.joinPath(dirPath, file));
+              if (renderer != null)
+              {
                 renderer.setDefinition(component);
                 componentPool.put(renderer.getName(), renderer);
               }
@@ -325,7 +389,9 @@ public class ComponentManager
 
           }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
           Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, e);
         }
       }
@@ -339,6 +405,7 @@ public class ComponentManager
     PropertyManager.getInstance();
     indexBaseComponents();
     indexCustomComponents();
+    indexWidgetComponents();
   }
 
   private BaseComponent rendererFromClass(String className)

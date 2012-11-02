@@ -41,11 +41,19 @@ public class SyncronizeCdfStructure
 
     //Read parameters
     final Iterator<String> keys = requestParams.getParameterNames();
-    final HashMap<String, String> parameters = new HashMap<String, String>();
+    final HashMap<String, Object> parameters = new HashMap<String, Object>();
     while (keys.hasNext())
     {
       final String key = keys.next();
-      parameters.put(key, requestParams.getStringParameter(key, null));
+      String[] param = requestParams.getStringArrayParameter(key, null);
+      if(param == null) {
+        continue;
+      }
+      else if(param.length > 1) {
+        parameters.put(key, param);
+      } else {
+        parameters.put(key, param[0]);
+      }
     }
 
     final String operation = requestParams.getStringParameter("operation", "").toLowerCase();
@@ -94,7 +102,7 @@ public class SyncronizeCdfStructure
 
   }
 
-  private void setFilePath(final IPentahoSession userSession, final HashMap<String, String> parameters) throws Exception
+  private void setFilePath(final IPentahoSession userSession, final HashMap<String, Object> parameters) throws Exception
   {
 
     final ICacheManager cacheManager = PentahoSystem.getCacheManager(userSession);

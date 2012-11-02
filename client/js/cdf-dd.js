@@ -578,6 +578,21 @@ var CDFDD = Base.extend({
     });
   },
 
+  savePulldown: function(target,evt){
+    var myself = this,
+        $pulldown = $(target);
+    $pulldown.append(templates.savePulldown());
+    $("body").one("click",function(){
+      $pulldown.find("ul").remove();
+    });
+    $pulldown.find(".save-as-dashboard").click(function(){
+      myself.saveAs();
+    });
+    $pulldown.find(".save-as-widget").click(function(){
+      myself.saveAsWidget();
+    });
+    evt.stopPropagation();
+  },
 
   reload: function(){
     this.logger.warn("Reloading dashboard... ");
@@ -598,6 +613,8 @@ var CDFDD = Base.extend({
     this.logger.info("Resetting dashboad");
     CDFDD.PANELS().empty();
   },
+
+  
     
   saveSettings: function(){
     var myself = this;
@@ -632,19 +649,27 @@ var CDFDD = Base.extend({
 
   saveSettingsCallback: function(){
     var wcdf = $.extend({},this.getDashboardWcdf()),
-        settingsData = $.extend({},wcdf),
+        settingsData = $.extend({widgetParameters:[]},wcdf),
         myself = this,
         content;
     
     settingsData.styles = [];
-    $.each(this.styles,function(i,obj){
+    _.each(this.styles,function(obj){
       settingsData.styles.push({style: obj, selected: wcdf.style==obj});
     });
     settingsData.renderers = [];
-    $.each(this.renderers,function(i,obj){
+    _.each(this.renderers,function(obj){
       settingsData.renderers.push({renderer: obj, selected: wcdf.rendererType==obj});
     });
-    
+    /* Generate a list of the parameter names */
+    var currentParams = cdfdd.getDashboardWcdf().widgetParameters;
+    settingsData.parameters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters()
+        .map(function(e){
+          var val = e.properties.filter(function(i){
+                return i.description == "Name";
+              })[0].value;
+          return {parameter: val, selected: _.contains(currentParams, val)}; 
+        });
     content = '\n' +
       '<span><b>Settings:</b></span><br/><hr/>\n' +
       '<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
@@ -658,8 +683,15 @@ var CDFDD = Base.extend({
       '<span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
       '{{#renderers}}' +
       '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
-      '{{/renderers}}' +
-      '</select>';
+      '{{/renderers}}' +  
+      '</select>' +
+      '{{#widget}}' + 
+      '<span><b>Widget Parameters:</b></span><br><span id="widgetParameters">' +
+      '{{#parameters}}' +
+      '   <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}}><span>{{parameter}}</span><br>\n' +
+      '{{/parameters}}' +
+      '</span>' +
+      '{{/widget}}';
   
     content = Mustache.render(content, settingsData);
     $.prompt(content,{
@@ -672,34 +704,123 @@ var CDFDD = Base.extend({
         wcdf.author = $("#authorInput").val();
         wcdf.description = $("#descriptionInput").val();
         wcdf.style = $("#styleInput").val();
-        wcdf.rendererType = $("#rendererInput").val(); 
+        wcdf.rendererType = $("#rendererInput").val();
+        wcdf.widgetParameters = [];
+        $("#widgetParameters input[type='checkbox']:checked")
+            .each(function(i,e){
+              wcdf.widgetParameters.push(e.value);
+            });
       },
       callback: function(v,m,f){
         if(v){
-          myself.logger.info("Saving dashboard settings...");
-
-          var saveSettingsParams = $.extend({
-            operation: "saveSettings",
-            file: CDFDDFileName.replace(".cdfde",".wcdf")
-          }, wcdf);
-            
-          $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
-            var json = eval("(" + result + ")");
-            if(json.status == "true"){
-              myself.setDashboardWcdf(wcdf);
-              // We need to reload the layout engine in case the rendererType changed
-              cdfdd.layout.init();
-              $.notifyBar({
-                html: "Dashboard Settings saved successfully",
-                delay: 1000
-              });
-            }
-            else
-              $.notifyBar({
-                html: "Errors saving settings: " + json.result
-              });
-          });
+          myself.saveSettingsRequest(wcdf);
         }
+      }
+    });
+  },
+
+  saveAsWidget: function(fromScratch){
+    
+    var selectedFolder = "cde/widgets/",
+        selectedFile = "",
+        selectedTitle = this.getDashboardWcdf().title
+        selectedDescription = this.getDashboardWcdf().description
+        options = {
+          title: selectedTitle,
+          description: selectedDescription
+        },
+        myself = this,
+        content = templates.saveAsWidget(options);
+
+    $.prompt(content,{
+      loaded: function(){
+        $(this).addClass('save-as-widget');
+        $('#fileInput').change(function(){
+          selectedFile = this.value;
+        });
+        $('#titleInput').change(function(){
+          selectedTitle = this.value;
+        });
+        $('#descriptionInput').change(function(){
+          selectedDescription = this.value;
+        });
+      },
+      buttons: {
+        Ok: true,
+        Cancel: false
+      },
+      opacity: 0.2,
+      prefix: 'treeTableNewJqi',
+      classes: 'save-as-widget',
+      callback: function(v,m,f){
+        if(v){
+
+          /* Reject file names where an extension is provided, which is different from .wcdf */
+          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile))
+            $.prompt('Invalid file extension. Must be .wcdf');
+          else if(selectedFile.length > 0){
+            if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
+
+            CDFDDFileName = selectedFolder + selectedFile;
+            myself.dashboardData.filename = CDFDDFileName;
+
+            var saveAsParams = {
+              operation: fromScratch  ? "newFile" : "saveas",
+              file: selectedFolder + selectedFile,
+              title: selectedTitle,
+              description: selectedDescription,
+              cdfstructure: JSON.stringify(myself.dashboardData,"",2)
+            };
+
+            $.post(CDFDDDataUrl, saveAsParams, function(result) {
+              var json = JSON.parse(result);
+              if(json.status == "true") {
+                if(selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1,selectedFolder.length);
+                var solutionPath = selectedFolder.split("/");
+                var wcdf = myself.getDashboardWcdf();
+                wcdf.widget = true;
+                myself.saveSettingsRequest(wcdf);
+                myself.initStyles(function(){
+                  window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                });
+              }
+              else
+                $.notifyBar({
+                  html: "Errors saving file: " + json.result
+                });
+            });
+          }
+        }
+      }
+    });
+  },
+
+  saveSettingsRequest: function(wcdf) {
+    var myself = this;
+    this.logger.info("Saving dashboard settings...");
+    var saveSettingsParams = $.extend({
+      operation: "saveSettings",
+      file: CDFDDFileName.replace(".cdfde",".wcdf")
+    }, wcdf);
+      
+    $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
+      try {
+        var json = eval("(" + result + ")");
+        if(json.status == "true"){
+          myself.setDashboardWcdf(wcdf);
+          // We need to reload the layout engine in case the rendererType changed
+          cdfdd.layout.init();
+          $.notifyBar({
+            html: "Dashboard Settings saved successfully",
+            delay: 1000
+          });
+        } else {
+          throw json.result;
+        }
+      } catch (e) {
+        $.notifyBar({
+          html: "Errors saving settings: " + e
+        });
       }
     });
   },
@@ -1103,3 +1224,23 @@ $(function() {
 
 });
 
+
+templates = {};
+templates.savePulldown = Mustache.compile(
+  "<ul class='pulldown'>" +
+  " <li class='item save-as-dashboard'>Save As Dashboard</li>" +
+  " <li class='item save-as-widget'>Save As Widget</li>" +
+  "</ul>"
+);
+
+templates.saveAsWidget = Mustache.compile(
+  '<div class="saveaslabel">Save as Widget:</div>\n' +
+  ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
+  ' <input id="fileInput" class="folderexplorerfileinput" type="text"></input>\n' +
+  ' <hr class="filexplorerhr"/>\n' +
+  ' <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+  ' <span class="folderexplorerextralabels" >Title:</span>' + 
+  ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"></input><br/>\n' +
+  ' <span class="folderexplorerextralabels" >Description:</span>'+
+  ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"></input>'
+);

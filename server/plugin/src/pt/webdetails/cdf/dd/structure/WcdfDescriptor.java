@@ -1,5 +1,9 @@
 package pt.webdetails.cdf.dd.structure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -15,10 +19,12 @@ public class WcdfDescriptor
   private String style;
   private String rendererType;
   private String wcdfFilePath;
+  private List<String> widgetParameters;
   private boolean isWidget;
 
   public WcdfDescriptor()
   {
+    widgetParameters = new ArrayList<String>();
   }
 
   /**
@@ -34,8 +40,15 @@ public class WcdfDescriptor
     json.put("author", getAuthor());
     json.put("description", getDescription());
     json.put("style", getStyle());
+    json.put("widget", isWidget());
     json.put("rendererType", getRendererType());
-
+    JSONArray arr = new JSONArray();
+    StringBuilder sb = new StringBuilder();
+    for (String s : widgetParameters)
+    {
+      arr.add(s);
+    }
+    json.put("widgetParameters", arr);
     return json;
 
   }
@@ -119,5 +132,20 @@ public class WcdfDescriptor
   public boolean isWidget()
   {
     return isWidget;
+  }
+
+  void setWidgetParameters(String[] params)
+  {
+    setWidgetParameters(Arrays.asList(params));
+  }
+
+  void setWidgetParameters(List params)
+  {
+    widgetParameters = params;
+  }
+
+  public String[] getWidgetParameters()
+  {
+    return widgetParameters.toArray(new String[0]);
   }
 }

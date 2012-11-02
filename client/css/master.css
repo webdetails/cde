@@ -19,9 +19,41 @@ div.outside {
 
   padding:10px;
   background:#2D2D2D;
-
 }
-div.container {
+
+.save-pulldown {
+  display: inline-block;
+  width:19px;
+  height:19px;
+  position: relative;
+  top: -10px;
+  background-image: url("../images/NAV/down.png");
+}
+.save-pulldown:hover {
+  background-image: url("../images/NAV/down_mouseover.png");
+}
+.save-pulldown:active {
+  background-image: url("../images/NAV/down_onclick.png");
+}
+
+.save-pulldown .pulldown {
+  position: absolute;
+  top: 19px;
+  left: 0;
+  padding: 2px 5px;
+  list-style: none;
+  width: 110px;
+  text-align: left;
+  background: #253545;
+  border: 2px solid #152530;
+}
+
+.save-pulldown .pulldown .item {
+  color: white;
+}
+
+.save-pulldown .pulldown .item:hover {
+  color: #0098c8;
 }
 
 div.padder {
@@ -117,7 +149,7 @@ div.cdfdd-main {
 
 
 
-#cdfdd-main-Reload {
+#cdfdd-main-Reload img {
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -848,4 +880,25 @@ table.cdfdd caption {
 .footer .button:hover {
     color: #0098C4;
     text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
+}
+
+
+/* Save As Widget dialogue */
+
+div.treeTableNewJqi.save-as-widget .treeTableNewJqibuttons {
+  height: 40px;
+}
+
+div.treeTableNewJqi.save-as-widget .treeTableNewJqimessage {
+  height: 160px;
+}
+
+div.treeTableNewJqi.save-as-widget input.folderexplorerfileinput {
+  position: relative;
+  width:380px;
+  left:33px;
+}
+
+div.treeTableNewJqi.save-as-widget button {
+  width: 65px;
 }

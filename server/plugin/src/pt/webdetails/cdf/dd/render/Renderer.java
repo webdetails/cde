@@ -43,9 +43,19 @@ public abstract class Renderer
     {
       pointer = widgets.next();
       final JXPathContext context = doc.getRelativeContext(pointer);
-      String widgetPath = context.getValue("properties[name='path']/value").toString(),
-              widgetContainer = context.getValue("properties[name='htmlObject']/value").toString().replaceAll("\\$\\{.*:(.*)\\}","$1"),
+      String widgetPath,
+              widgetContainer = context.getValue("properties[name='htmlObject']/value").toString().replaceAll("\\$\\{.*:(.*)\\}", "$1"),
               newAlias = getWidgetAlias(context, alias);
+
+      try
+      {
+        widgetPath = context.getValue("properties[name='path']/value").toString();
+      }
+      catch (Exception e)
+      {
+        widgetPath = context.getValue("meta_wcdf").toString();
+      }
+      
       try
       {
         Widget widget = DashboardFactory.getInstance().loadWidget(widgetPath, newAlias);

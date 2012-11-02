@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.pentaho.platform.api.engine.IPentahoSession;
@@ -22,7 +23,11 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import java.io.*;
 import java.util.HashMap;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
+import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
+import pt.webdetails.cdf.dd.render.components.ComponentDefinition;
+import pt.webdetails.cdf.dd.render.components.ComponentManager;
+import pt.webdetails.cdf.dd.render.properties.PropertyDefinition;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.SaveFileStatus;
 
@@ -30,11 +35,8 @@ public class XmlStructure implements IStructure
 {
 
   private static final String ENCODING = "UTF-8";
-  
   private IPentahoSession userSession = null;
-  
   private static Log logger = LogFactory.getLog(XmlStructure.class);
-
 
   public XmlStructure(IPentahoSession userSession)
   {
@@ -48,9 +50,10 @@ public class XmlStructure implements IStructure
     logger.info("Deleting File:" + (String) parameters.get("file"));
 
     //1. Delete File
-    
+
     RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
-    if(!solutionRepository.removeFile((String) parameters.get("file"))){
+    if (!solutionRepository.removeFile((String) parameters.get("file")))
+    {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
 
@@ -111,19 +114,32 @@ public class XmlStructure implements IStructure
   public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
   {
     RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
-    WcdfDescriptor wcdf = new WcdfDescriptor();
 
     if (solutionRepository.resourceExists(wcdfFilePath))
     {
       Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfFilePath);
+      WcdfDescriptor wcdf = loadWcdfDescriptor(wcdfDoc);
       wcdf.setWcdfPath(wcdfFilePath);
-      wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
-      wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
-      wcdf.setWidget(XmlDom4JHelper.getNodeText("/cdf/widget", wcdfDoc, "false").equals("true"));
-      wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
-      wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
-      wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
+      return wcdf;
+
     }
+    else
+    {
+      return new WcdfDescriptor();
+    }
+
+  }
+
+  public WcdfDescriptor loadWcdfDescriptor(final Document wcdfDoc) throws IOException
+  {
+    WcdfDescriptor wcdf = new WcdfDescriptor();
+    wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
+    wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
+    wcdf.setWidget(XmlDom4JHelper.getNodeText("/cdf/widget", wcdfDoc, "false").equals("true"));
+    wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
+    wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
+    wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
+    wcdf.setWidgetParameters(XmlDom4JHelper.getNodeText("/cdf/widgetParameters", wcdfDoc, "").split(","));
     return wcdf;
   }
 
@@ -137,12 +153,12 @@ public class XmlStructure implements IStructure
     {
 
       //1. Build file parameters
-      
+
       String path = FilenameUtils.getFullPath(filePath);
       String cdeFileName = FilenameUtils.getName(filePath);
 
       //2. Publish file to pentaho repository
-      
+
       RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
 
       if (filePath.indexOf("_tmp.cdfde") == -1 && repository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
@@ -152,7 +168,8 @@ public class XmlStructure implements IStructure
       }
 
       byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
-      switch( repository.publishFile(path, cdeFileName, fileContents, true)){
+      switch (repository.publishFile(path, cdeFileName, fileContents, true))
+      {
         //3. Check publish result
         case FAIL:
           throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
@@ -178,7 +195,7 @@ public class XmlStructure implements IStructure
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
       cdwRenderer.render(path, cdeFileName);
 
-     
+
       //5. Check publish result again.
       if (status != SaveFileStatus.OK)
       {
@@ -203,7 +220,7 @@ public class XmlStructure implements IStructure
   {
 
     RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
-    
+
     //1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
     String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
@@ -218,7 +235,8 @@ public class XmlStructure implements IStructure
     final String filePath = (String) parameters.get("file");
 
     //3. Publish new wcdf file
-    switch(repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true)){
+    switch (repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true))
+    {
       case OK:
         //4. Save cdf structure
         parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
@@ -258,7 +276,9 @@ public class XmlStructure implements IStructure
     String authorStr = (String) parameters.get("author");
     String descriptionStr = (String) parameters.get("description");
     String styleStr = (String) parameters.get("style");
+    Boolean isWidget = "true".equals(parameters.get("widget"));
     String rendererType = (String) parameters.get("rendererType");
+    String widgetParameters[] = ((String[]) parameters.get("widgetParameters"));
 
     logger.info("Saving settings file:" + filePath);
 
@@ -266,7 +286,7 @@ public class XmlStructure implements IStructure
     {
 
       RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
-      
+
       if (repository.resourceExists(filePath))
       {
 
@@ -294,13 +314,35 @@ public class XmlStructure implements IStructure
         {
           setNodeValue(cdfNode, "rendererType", rendererType);
         }
+        if (parameters.containsKey("widget"))
+        {
+          setNodeValue(cdfNode, "widget", isWidget ? "true" : "false");
+        }
+        if (parameters.containsKey("widgetParameters"))
+        {
+          StringBuilder sb = new StringBuilder();
+          for (String s : widgetParameters)
+          {
+            sb.append(s);
+            sb.append(",");
+          }
+          setNodeValue(cdfNode, "widgetParameters", sb.toString().replaceAll(",$", ""));
+        }
 
+
+        if (isWidget)
+        {
+          WcdfDescriptor wcdf = loadWcdfDescriptor(wcdfDoc);
+          wcdf.setWcdfPath(filePath);
+          generateComponentXml(wcdf);
+        }
         //Save
-        switch(repository.publishFile(filePath, wcdfDoc.asXML().getBytes(ENCODING), true)){
+        switch (repository.publishFile(filePath, wcdfDoc.asXML().getBytes(ENCODING), true))
+        {
           case FAIL:
             throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
         }
-        
+
       }
       else
       {
@@ -329,4 +371,45 @@ public class XmlStructure implements IStructure
 
   }
 
+  private void generateComponentXml(WcdfDescriptor wcdf)
+  {
+    if (!wcdf.isWidget())
+    {
+      return;
+    }
+    ComponentDefinition cd = new ComponentDefinition();
+    cd.setName("widget" + wcdf.getTitle());
+    cd.setDescription(wcdf.getTitle() + " Widget");
+    cd.setCatDescription("Widgets");
+    cd.setCategory("WIDGETS");
+    cd.addMetadata("widget", "true");
+    cd.addMetadata("wcdf", wcdf.getWcdfPath());
+    cd.addProperty("htmlObject");
+    for (String s : wcdf.getWidgetParameters())
+    {
+      cd.addProperty(s, generateParameterProperty(s));
+    }
+    Document doc = DocumentHelper.createDocument();
+    cd.toXML(doc);
+    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+    String path = wcdf.getWcdfPath().replaceAll(".wcdf$", ".component.xml");
+    try
+    {
+      repository.publishFile(path, doc.asXML().getBytes(ENCODING), true);
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+    }
+  }
+
+  private PropertyDefinition generateParameterProperty(String name)
+  {
+    PropertyDefinition pd = new PropertyDefinition();
+    pd.setName(name);
+    pd.setDescription("Parameter " + name);
+    pd.setTooltip("What dashboard parameter should map to widget parameter " + name + "?");
+    pd.setInputType("Parameter");
+    return pd;
+  }
 }
