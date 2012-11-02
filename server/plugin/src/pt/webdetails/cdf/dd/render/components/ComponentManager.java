@@ -305,7 +305,10 @@ public class ComponentManager
       }
     };
     String[] files = dir.list(subFolders);
-
+    if (files == null)
+    {
+      return;
+    }
     logger.debug(files.length + " sub-folders found");
     processFiles(dirPath, dir, files);
 
@@ -327,14 +330,12 @@ public class ComponentManager
       }
     };
     String[] files = dir.list(widgetComponents);
-
-    if (files != null) {
-      logger.debug(files.length + " widget components found");
-      processFiles(dirPath, dir, files);
+    if (files == null)
+    {
+      return;
     }
-    else {
-      logger.error("Widget components not found");
-    }
+    logger.debug(files.length + " widget components found");
+    processFiles(dirPath, dir, files);
   }
 
   private void processFiles(String dirPath, File dir, String[] files)
