@@ -328,8 +328,13 @@ public class ComponentManager
     };
     String[] files = dir.list(widgetComponents);
 
-    logger.debug(files.length + " widget components found");
-    processFiles(dirPath, dir, files);
+    if (files != null) {
+      logger.debug(files.length + " widget components found");
+      processFiles(dirPath, dir, files);
+    }
+    else {
+      logger.error("Widget components not found");
+    }
   }
 
   private void processFiles(String dirPath, File dir, String[] files)
