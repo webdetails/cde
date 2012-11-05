@@ -375,7 +375,16 @@ var ExportPopupComponent = PopupComponent.extend({
         Dashboards.ev(Dashboards.getParameterValue(parameters[i][1])) :
         'false');
     }
-    document.location.href = url;
+
+    var theDoQuery = url + '&wrapItUp=wrapit';
+    $.post(theDoQuery, function(uuid) {
+        _exportIframe = _exportIframe || $('<iframe style="display:none">');
+        _exportIframe.detach();
+        _exportIframe[0].src = webAppPath + '/content/cda/unwrapQuery?' + $.param( {"path": queryDefinition.path, "uuid": uuid});
+        _exportIframe.appendTo($('body'));
+    });
+
+
   },  
   
   
