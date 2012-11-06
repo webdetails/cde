@@ -1,6 +1,8 @@
 build/
 dist/
 server/plugin/lib/
+server/plugin/runtime-lib/
+server/plugin/test-lib/
 server/plugin/bin/
 server/plugin/override.properties
 server/plugin/resource/resources/cdf-dd.html
