@@ -42,6 +42,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
   private static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
   private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
+  private static final String COMPONENT_PREFIX = "render_";
   private static Log logger = LogFactory.getLog(Dashboard.class);
   /* FIELDS */
   protected boolean absolute, debug;
@@ -133,8 +134,8 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
 
     final RenderLayout layoutRenderer = new RenderLayout();
     final RenderComponents componentsRenderer = new RenderComponents();
-    this.layout = replaceTokens(layoutRenderer.render(doc,alias), absolute, absRoot);
-    this.components = replaceTokens(componentsRenderer.render(doc,alias), absolute, absRoot);
+    this.layout = replaceTokens(layoutRenderer.render(doc, alias), absolute, absRoot);
+    this.components = replaceTokens(componentsRenderer.render(doc, alias), absolute, absRoot);
     this.header = replaceTokens(renderHeaders(getContent()), absolute, absRoot);
   }
 
@@ -347,16 +348,21 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
 
   public String getLayout()
   {
-    return replaceAlias(this.layout,this.alias);
+    return replaceAlias(this.layout, this.alias);
   }
 
   public String getComponents()
   {
-    return replaceAlias(this.components,this.alias);
+    return replaceAlias(this.components, this.alias);
   }
 
   String replaceAlias(String content, String alias)
   {
+    if (content == null) {
+      logger.warn("replaceAlias: null content.");
+      return content;
+    }
+    
     final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}",
             SHORT_C_TAG = "\\$\\{c:(.+?)\\}",
             SHORT_P_TAG = "\\$\\{p:(.+?)\\}",
@@ -364,11 +370,12 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
             LONG_C_TAG = "\\$\\{component:(.+?)\\}",
             LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
     alias = alias != null && alias.length() > 0 ? alias + "_" : "";
+    
     String modified = content.replaceAll(SHORT_H_TAG, alias + "$1")
-            .replaceAll(SHORT_C_TAG, "render_" + alias + "$1")
+            .replaceAll(SHORT_C_TAG, COMPONENT_PREFIX + alias + "$1")
             .replaceAll(SHORT_P_TAG, alias + "$1")
             .replaceAll(LONG_H_TAG, alias + "$1")
-            .replaceAll(LONG_C_TAG, "render_" + alias + "$1")
+            .replaceAll(LONG_C_TAG, COMPONENT_PREFIX + alias + "$1")
             .replaceAll(LONG_P_TAG, alias + "$1");
     return modified;
   }

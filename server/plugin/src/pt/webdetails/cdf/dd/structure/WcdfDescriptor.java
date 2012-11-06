@@ -121,7 +121,7 @@ public class WcdfDescriptor
 
   public String getStructurePath()
   {
-    return wcdfFilePath.replace(".wcdf", ".cdfde");
+    return wcdfFilePath == null? null : wcdfFilePath.replace(".wcdf", ".cdfde");
   }
 
   public void setWidget(boolean isWidget)
