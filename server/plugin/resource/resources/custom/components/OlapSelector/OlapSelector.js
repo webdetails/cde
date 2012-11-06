@@ -369,7 +369,7 @@ var OptionModel = Backbone.Model.extend({
         "value": null,
         "level": null,
         "drill": false,
-        "selected": false,
+        "selected": false
     },
 
     toggleSelected: function(){
@@ -413,7 +413,7 @@ var OlapSelectorView = Backbone.View.extend({
       "change .search input": "updateSearch",
       "click .validate" : "apply",
       "click .cancel" : "cancel",
-      "click .breadcrumb .name" : "drillUp",
+      "click .breadcrumb .name" : "drillUp"
     },
 
     levelViews: [],
