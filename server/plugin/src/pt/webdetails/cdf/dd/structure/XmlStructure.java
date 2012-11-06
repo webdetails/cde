@@ -301,13 +301,22 @@ public class XmlStructure implements IStructure
     String styleStr = (String) parameters.get("style");
     Boolean isWidget = "true".equals(parameters.get("widget"));
     String rendererType = (String) parameters.get("rendererType");
-    String widgetParameters[] = ((String[]) parameters.get("widgetParameters"));
+    Object widgetParams = parameters.get("widgetParameters");
+    String widgetParameters[] = null;
+    if (widgetParams instanceof String[])
+    {
+      widgetParameters = (String[]) widgetParams;
+    }
+    else if (widgetParams != null)
+    {
+      widgetParameters = new String[1];
+      widgetParameters[0] = widgetParams.toString();
+    }
 
     logger.info("Saving settings file:" + filePath);
 
     try
     {
-
       RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
 
       if (repository.resourceExists(filePath))
