@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 
@@ -209,7 +210,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    * @author pdpi
    */
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void refresh(OutputStream out) throws Exception
+  public static void refresh(OutputStream out) throws Exception
   {
     DependenciesManager.refresh();
     ComponentManager.getInstance().refresh();
@@ -752,18 +753,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public JSON getCdaDefs(boolean refresh) throws Exception
+  public static JSON getCdaDefs(boolean refresh) throws Exception
   {
     InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
     return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
   }
 
-  private InterPluginCall getCdaListDataAccessTypesCall(boolean refresh)
+  private static InterPluginCall getCdaListDataAccessTypesCall(boolean refresh)
   {
     InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
-    cdaListDataAccessTypes.setSession(userSession);
+    cdaListDataAccessTypes.setSession(PentahoSessionHolder.getSession());
     cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
-    cdaListDataAccessTypes.setResponse(getResponse());
     return cdaListDataAccessTypes;
   }
 
