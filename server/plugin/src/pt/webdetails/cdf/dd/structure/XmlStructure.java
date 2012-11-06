@@ -22,6 +22,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.io.*;
 import java.util.HashMap;
+import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
@@ -61,8 +62,8 @@ public class XmlStructure implements IStructure
 
   public JSON load(HashMap<String, Object> parameters) throws Exception
   {
-	  
-	
+
+
     String filePath = (String) parameters.get("file");
     logger.info("Loading File:" + filePath);
 
@@ -146,15 +147,15 @@ public class XmlStructure implements IStructure
 
   public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception
   {
-	
-	boolean cdfdeResult = true;
-	boolean cdaResult = true;
-	boolean cggResult = true;
- 	  
-	final HashMap<String, String> result = new HashMap<String, String>();
+
+    boolean cdfdeResult = true;
+    boolean cdaResult = true;
+    boolean cggResult = true;
+
+    final HashMap<String, String> result = new HashMap<String, String>();
     RepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
 
-	String filePath = (String) parameters.get("file");
+    String filePath = (String) parameters.get("file");
     logger.info("Saving File:" + filePath);
 
     try
@@ -176,13 +177,12 @@ public class XmlStructure implements IStructure
       byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
       switch (repository.publishFile(path, cdeFileName, fileContents, true))
       {
-        //3. Check publish result
-        case FAIL:
-          throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+        cdfdeResult = false;
+        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
-    	  
+
       status = SaveFileStatus.OK;
-      
+
       //3. Write CDA File
       CdaRenderer cdaRenderer = CdaRenderer.getInstance();
       cdaRenderer.setContext((String) parameters.get("cdfstructure"));
@@ -195,10 +195,10 @@ public class XmlStructure implements IStructure
       {
         status = repository.publishFile(path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
       }
-      
+
       if (status != SaveFileStatus.OK)
       {
-    	cdaResult = false;
+        cdaResult = false;
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
 
@@ -215,7 +215,7 @@ public class XmlStructure implements IStructure
 >>>>>>> 84bb6d0... Add Generated Widget Components
       if (status != SaveFileStatus.OK)
       {
-    	cggResult = false;
+        cggResult = false;
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
 
@@ -224,11 +224,11 @@ public class XmlStructure implements IStructure
     {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
-    
+
     result.put("cdfde", new Boolean(cdfdeResult).toString());
     result.put("cda", new Boolean(cdaResult).toString());
     result.put("cgg", new Boolean(cggResult).toString());
-    
+
     return result;
   }
 
@@ -428,6 +428,7 @@ public class XmlStructure implements IStructure
     try
     {
       repository.publishFile(path, doc.asXML().getBytes(ENCODING), true);
+      DashboardDesignerContentGenerator.refresh(null);
     }
     catch (Exception e)
     {
