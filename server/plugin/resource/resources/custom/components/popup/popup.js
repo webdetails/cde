@@ -369,18 +369,20 @@ var ExportPopupComponent = PopupComponent.extend({
     var url = "../cda/doQuery?path="+path+"&dataAccessId="+dataAccess+"&outputType=" + effectiveExportType + "&settingattachmentName="+this.dataExportAttachmentName+"." + effectiveExportType;
     // Get parameter values; metadata is a special parameter, carries important
     // info for dashboard operation but has no data so isn't exported
+    
+    var doQueryParameters = {};
     for(var i=0; i<parameters.length; i++){
-      url += "&param" + parameters[i][0] + "="
-      + (parameters[i][0] != 'metadata' ?
-        Dashboards.ev(Dashboards.getParameterValue(parameters[i][1])) :
-        'false');
+        var paramName = 'param' + parameters[i][0];
+        doQueryParameters[paramName] = parameters[i][0] != 'metadata' ?
+          Dashboards.ev(Dashboards.getParameterValue(parameters[i][1])) :
+          'false';
     }
 
     var theDoQuery = url + '&wrapItUp=wrapit';
-    $.post(theDoQuery, function(uuid) {
-        _exportIframe = _exportIframe || $('<iframe style="display:none">');
+    $.post(theDoQuery, doQueryParameters, function(uuid) {
+        var _exportIframe = _exportIframe || $('<iframe style="display:none">');
         _exportIframe.detach();
-        _exportIframe[0].src = webAppPath + '/content/cda/unwrapQuery?' + $.param( {"path": queryDefinition.path, "uuid": uuid});
+        _exportIframe[0].src = webAppPath + '/content/cda/unwrapQuery?' + $.param( {"path": cd.path, "uuid": uuid});
         _exportIframe.appendTo($('body'));
     });
 
