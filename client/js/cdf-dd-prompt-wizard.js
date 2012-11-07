@@ -1,3 +1,9 @@
+// for getting id value from components 
+getIdName = function(obj) {obj.properties.filter(function(v) {
+	var idPropertiesNames =  /customParameterName|name/;
+    return (idPropertiesNames.test(v.name)  ); 
+})[0].value;}
+
 var PromptWizardManager = Base.extend({
 	},{
 		WizardsArray: {},
@@ -128,7 +134,9 @@ var PromptWizard = WizardManager.extend({
 				var myself = this;
 				var parameterIdx = 0;
 				$.each(parameters,function(i,param){
-					if(myself.getPropertyValue("name") != param.properties[0].value){
+					//if(myself.getPropertyValue("name") != param.properties[0].value){
+					var me = this;
+					if(getIdName(me) != param.properties[0].value){
 						var parameterId = "parmeter-"+(++parameterIdx);
 						var parentId = "parameter-" + param.properties[1].type.replace(/ /g,"_").toLowerCase();
 						if($("#" + parentId).length == 0)
@@ -267,7 +275,8 @@ var AcePromptWizard = PromptWizard.extend({
 		var myself = this;
 		var parameterIdx = 0;
 		$.each(parameters,function(i,param){
-			if(myself.getPropertyValue("name") != param.properties[0].value){
+			var me = this;
+			if(getIdName(me) != param.properties[0].value){
 				var parameterId = "parmeter-"+(++parameterIdx);
 				var parentId = "parameter-" + param.properties[1].type.replace(/ /g,"_").toLowerCase();
 				if($("#" + parentId).length == 0)

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>CustomParameterName</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Name</Description>
+	<Tooltip>Name</Tooltip>
+	<InputType type="valueList" base="IdRenderer">Id</InputType>
+	<OutputType>String</OutputType>
+	<Order>5</Order>
+	<Version>1.0</Version>
+	<Validation>function(value){ return (/^[a-zA-Z0-9_.]*$/).test(value); }</Validation>
+</Header>
+</DesignerProperty>

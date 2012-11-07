@@ -799,12 +799,20 @@ var IdRenderer = StringRenderer.extend({
   },
 
   validate: function(value){
-
-    if(!value.match(/^[a-zA-Z0-9_.]*$/)){
-      $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
-      return false;
-    }
-    return true;
+	if (this.validation === undefined) {
+	    if(!value.match(/^[a-zA-Z0-9_]*$/)){
+		    $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ character');
+		  	return false;
+		} else {
+			return true;
+		}
+	} else {
+		if (!this.validation(value)) {
+			$.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
+			return false;
+		}
+	}
+	return true;
   }
 
 });

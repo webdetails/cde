@@ -22,6 +22,7 @@ public class GenericRenderer
   private Map<String, String> values;
   private String source;
   private String baseType;
+  private String validation = "";
   
   public GenericRenderer(Node definition)
   {
@@ -39,13 +40,18 @@ public class GenericRenderer
     this.type = typeString.equals("") ? RendererType.CUSTOM : RendererType.valueOf(typeString);
     source = XmlDom4JHelper.getNodeText("Values/@source", definition);
     type = source != null ? RendererType.DYNAMICLIST : type;
-    List<Node> vals = definition.selectNodes("Values/Value");
-    for (Node val : vals)
-    {
-      String value = XmlDom4JHelper.getNodeText("@display", val),
-              key = XmlDom4JHelper.getNodeText(".", val);
-      values.put(key, value);
-    }
+    
+    validation = XmlDom4JHelper.getNodeText("Header/Validation", definition);
+    
+    if (validation == "") {
+		List<Node> vals = definition.selectNodes("Values/Value");
+		for (Node val : vals)
+		{
+		  String value = XmlDom4JHelper.getNodeText("@display", val),
+		          key = XmlDom4JHelper.getNodeText(".", val);
+		  values.put(key, value);
+		}
+  	}
   }
   
   public String getName()
@@ -59,20 +65,25 @@ public class GenericRenderer
     str.append("var ");
     str.append(name);
     str.append("Renderer = " + baseType + ".extend({\n\n");
-    str.append("selectData: ");
     switch (this.type)
     {
       case VALUELIST:
-        str.append("{");
-        for (String key : values.keySet())
-        {
-          str.append("'" + key + "': ");
-          str.append("'" + values.get(key) + "',\n");
-        }
-        str.deleteCharAt(str.length() - 2); // Delete the extra comma
-        str.append("}");
+    	  
+  		if (validation == "") {
+  			str.append("selectData: ");
+			str.append("{");
+		    for (String key : values.keySet()) {
+		      str.append("'" + key + "': ");
+		      str.append("'" + values.get(key) + "',\n");
+		    }
+		    str.deleteCharAt(str.length() - 2); // Delete the extra comma
+		    str.append("}");
+		} else {
+		  	str.append("validation: " + validation);
+		}    
         break;
       case DYNAMICLIST:
+    	str.append("selectData: ");
         str.append(source);
         str.append("\n");
         break;

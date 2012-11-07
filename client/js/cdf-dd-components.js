@@ -75,7 +75,7 @@ var ComponentsPanel = Panel.extend({
     propertiesTableModel.setColumnSetExpressions([undefined,
       function(row,value){
         row.value = value
-        if (row.name == 'name'){
+        if ((row.name == 'name')||(row.name == 'customParameterName')){
           var _tableManager = TableManager.getTableManager("table-" + ComponentsPanel.COMPONENTS);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();

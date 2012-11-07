@@ -531,12 +531,14 @@ var ComponentsJavascriptParameterModel = BaseModel.extend({
         properties: []
       };
 
-      _stub.properties.push(PropertiesManager.getProperty("name"));
+      //_stub.properties.push(PropertiesManager.getProperty("name"));
+      _stub.properties.push(PropertiesManager.getProperty("customParameterName"));
       _stub.properties.push(PropertiesManager.getProperty("javaScript"));
       _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
 
       return _stub;
-    }
+    },
+ 
   });
 BaseModel.registerModel(ComponentsJavascriptParameterModel);
 CDFDDComponentsArray.push(new JavascriptParameterEntry());
