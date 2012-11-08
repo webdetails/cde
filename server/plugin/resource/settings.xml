@@ -3,7 +3,7 @@
   <cache>false</cache>
   <max-age>2628000</max-age>
   <resources>
-      <downloadable-formats>css,js,html,htm,png,jpg,jpeg,gif,swf,htc,otf,woff,ico,doc,docx,xls,xlsx,pdf</downloadable-formats>
+      <downloadable-formats>css,js,html,htm,png,jpg,jpeg,gif,swf,htc,otf,woff,ico,doc,docx,xls,xlsx,pdf,ppt,pptx</downloadable-formats>
   </resources>
   <packager>
     <minification>MINIFY</minification>
