@@ -120,6 +120,9 @@ public class DashboardFactory
          * TODO: Support mobile preview mode (must remove dependency on setStyle())
          */
         wcdf = new WcdfDescriptor();
+        if(wcdfPath != null && wcdfPath.endsWith(".cdfde")) {
+          wcdf.setWcdfPath(wcdfPath);
+        }
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
         wcdf.setRendererType(Renderers.BLUEPRINT.toString());
         bypassCache = true;//no cache for preview
