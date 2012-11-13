@@ -28,7 +28,6 @@
 			<Property type="number">listeners</Property>
 		</Model>
 		<Implementation>
-			<Code src="freeform-implementation.js" />
 			<CustomProperties>
 				<DesignerProperty>
 					<Header>
