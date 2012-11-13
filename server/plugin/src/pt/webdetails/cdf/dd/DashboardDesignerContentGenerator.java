@@ -790,7 +790,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
     cdfContext.setRequestParameters(requestParameterProvider);
-    return cdfContext.call();
+    return cdfContext.callInPluginClassLoader();
   }
 
   static String getCdfIncludes(String dashboard, IParameterProvider pathParams) throws Exception
