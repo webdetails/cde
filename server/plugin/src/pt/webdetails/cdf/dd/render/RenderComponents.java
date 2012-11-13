@@ -130,10 +130,7 @@ public class RenderComponents extends Renderer
               dashboardParam = line.getString(1);
       widgetParam = aliasName(widgetAlias, widgetParam);
       widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
-      widgetContent.append("Dashboards.setParameter('" + widgetParam + "',Dashboards.getParameterValue('${p:" + dashboardParam + "}'));\n");
-      widgetContent.append("Dashboards.parameterModel.change();\n");
-      widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('${p:" + dashboardParam + "}',value)});\n");
-      widgetContent.append("Dashboards.parameterModel.on('change:${p:" + dashboardParam + "}',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
+      widgetContent.append("Dashboards.syncParametersOnInit('${p:" + dashboardParam + "}','" + widgetParam + "');\n");
       widgetContent.append("</script>\n");
     }
     return widgetContent;
@@ -154,13 +151,10 @@ public class RenderComponents extends Renderer
               widgetParam = ctx.getValue("name").toString();
       widgetParam = aliasName(widgetAlias, widgetParam);
       widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
-      widgetContent.append("Dashboards.setParameter('" + widgetParam + "',Dashboards.getParameterValue('" + dashboardParam + "'));\n");
-      widgetContent.append("Dashboards.parameterModel.change();\n");
-      widgetContent.append("Dashboards.parameterModel.on('change:" + widgetParam + "',function(model,value){Dashboards.fireChange('" + dashboardParam + "',value)});\n");
-      widgetContent.append("Dashboards.parameterModel.on('change:" + dashboardParam + "',function(model,value){Dashboards.fireChange('" + widgetParam + "',value)});\n");
+      widgetContent.append("Dashboards.syncParametersOnInit('" + dashboardParam + "','" + widgetParam + ");\n");
       widgetContent.append("</script>\n");
     }
 
     return widgetContent;
   }
-}
+} 
