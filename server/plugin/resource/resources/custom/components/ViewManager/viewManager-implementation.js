@@ -1,9 +1,15 @@
 var viewManagerComponent = BaseComponent.extend({
   update: function() {
     function fetchData() {
-      $.getJSON(webAppPath + "/content/pentaho-cdf/Views", {method: "listViews"},function(response){
-        myself.model.initViews(response.views);
-        myself.view.render();
+      $.ajax({
+        url: webAppPath + "/content/pentaho-cdf/Views",
+        data: {method: "listViews"},
+        dataType: 'json',
+        success: function(response){
+          myself.model.initViews(response.views);
+          myself.view.render();
+        },
+        cache: false
       });
     };
     this.ph = $("#" + this.htmlObject);
