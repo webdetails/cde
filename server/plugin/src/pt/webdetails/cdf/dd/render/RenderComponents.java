@@ -151,7 +151,7 @@ public class RenderComponents extends Renderer
               widgetParam = ctx.getValue("name").toString();
       widgetParam = aliasName(widgetAlias, widgetParam);
       widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
-      widgetContent.append("Dashboards.syncParametersOnInit('" + dashboardParam + "','" + widgetParam + ");\n");
+      widgetContent.append("Dashboards.syncParametersOnInit('" + dashboardParam + "','" + widgetParam + "');\n");
       widgetContent.append("</script>\n");
     }
 
