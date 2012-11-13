@@ -28,6 +28,7 @@ Dashboards.blockUIwithDrag = function() {
   });
 };
 
+var orientationChangeThreshold = 700;
 
 function CDFMobile() {
 
@@ -44,13 +45,22 @@ function CDFMobile() {
     _content = $('#cmdContent'),
     _dashboard = $("#dashboard"),
     _toolbar = $("#toolbar"),
-    _filters = $("#filtersPanel"),
+    _filters = $("#filtersPanel"),    
     _filtersContent = $("#filtersContent"),
     _innerFilters = $("#innerFilters"),
     _filterToolbar = $("#filtersActions");
 
     var _jqmTheme = 'a';
 
+    var _magicalHeightOffset = 25;
+    var _enabledRotation = true;
+    if (typeof window.enabledRotation == "boolean")
+        _enabledRotation = false;
+
+
+    this.enabledRotation = function (value) {
+      _enabledRotation = value;
+    }
 
     this.redrawDashboard = function() {
        // _title.text(_dashboard.meta.title);
@@ -98,15 +108,76 @@ function CDFMobile() {
             resizeCarousel(car.getHolder());
             car.fitToContainer();
         }
+                       
     }
 
-    function resizeCharts() {
 
-        var headerFooterPadding = $.mobile.activePage.find('[data-role=header]').height() +
-        $.mobile.activePage.find('[data-role=footer]').height();
+     this.checkOrientation = function(){
+
+      var filtersPanel = $('#filtersPanel');
+      var filtersHeader = $('#filtersHeader');
+
+      //If we are on filter panel do nothing		
+      if (filtersPanel.hasClass('ui-page-active') && filtersHeader.css('display') != 'none') 
+        return;
+
+      if (this.shouldSwitchToHorizontal()) {                
+        $('#toolbar').css('display', 'none');
+        filtersPanel.addClass('ui-body-b ui-page-active');
+        filtersPanel.css('width', '200px');
+
+        var mainContentDiv = $('#mainContent');
+
+        mainContentDiv.css('margin-left', '200px');
+        mainContentDiv.width(mainContentDiv.parent().width() - 200);
+
+        filtersHeader.css('display', 'none');
+        $('#filtersActions').css('display', 'none');
+        $('#filters span.label').css('width','100%');
+        $('#filters span.label').css('position','static');
+        $('#filters span.selector').css('width', '100%');
+        $('#filters span.filter span.selector div.ui-select').css('width', '80%');
+      } else {
+        $('#toolbar').css('display', 'block');          
+        filtersPanel.removeClass('ui-body-b ui-page-active');
+        filtersPanel.css('width', '100%');
+
+        $('#mainContent').css('margin-left', '0px');          
+        $('#mainContent').width('100%');
+
+        filtersHeader.css('display', '');
+        $('#filtersActions').css('display', '');
+        $('#filters span.label').css('width','30%');          
+        $('#filters span.label').css('position','absolute');
+        $('#filters span.selector').css('width', '70%');
+        $('#filters span.filter span.selector div.ui-select').css('width', '60%');          
+      }
+    };
+
+
+    this.shouldSwitchToHorizontal = function() {
+      if (!_enabledRotation)
+        return false;
+      return (window.innerWidth / window.innerHeight >= 1) && window.innerWidth > orientationChangeThreshold;
+    };
+
+    function resizeCharts() {
+        var headerHeight = 0;
+        var $header = $.mobile.activePage.find('[data-role=header]');
+        if ($header) headerHeight = $header.height();
+        var footerHeight = 0;
+        var $footer = $.mobile.activePage.find('[data-role=footer]');
+        if ($footer) footerHeight = $footer.height();
+
+
+        var headerFooterPadding = headerHeight + footerHeight;
         var widthMult,
         heightMult;
 
+
+        var horizontal = myself.shouldSwitchToHorizontal();
+            
+//        var myself = this;
         var charts = Dashboards.components.filter(function(comp) {
             return /^ccc/.test(comp.type);
         });
@@ -115,10 +186,11 @@ function CDFMobile() {
             /* First thing first: don't even try to resize charts that haven't
              * been initialized!
              */
-            if (!comp.chart) {
+            if (!comp.chart || !comp.htmlObject) {
                 return;
             }
 
+                               
             var $e = $("#" + comp.htmlObject + " svg"),
             e = $e[0],
             /* Next step is measuring the available space for our charts. We always
@@ -127,14 +199,19 @@ function CDFMobile() {
              */
             windowWidth = window.innerWidth,
             windowHeight = window.innerHeight,
-            availableWidth = windowWidth - 20,
-            availableHeight = windowHeight - headerFooterPadding - 150,
+            availableWidth = windowWidth - 20 - (horizontal?200:0),
+            availableHeight = windowHeight - headerFooterPadding - _magicalHeightOffset,
             /* In the name of sanity, we'd rather calculate everything relative
              * to the original sizes, rather than the last calculated size, so
              * we'll store/retrieve the original values in a data attribute.
-             */
+             */                  
             originalHeight = $e.attr('data-originalHeight') || $e.parent().height(),
             originalWidth = $e.attr('data-originalWidth') || $e.parent().width();
+
+           
+            if (e == undefined) return;
+           
+
             $e.attr('data-originalHeight', originalHeight);
             $e.attr('data-originalWidth', originalWidth);
 
@@ -149,9 +226,10 @@ function CDFMobile() {
              */
             var heightRatio = availableHeight / originalHeight,
             widthRatio = availableWidth / originalWidth,
-            availableRatio = windowHeight > windowWidth ? heightRatio : widthRatio,
+            availableRatio = horizontal?heightRatio: (windowHeight > windowWidth ? heightRatio : widthRatio),
             targetWidth = originalWidth * availableRatio,
             targetHeight = originalHeight * availableRatio;
+
 
             /* Finally, set the width and height to our desired values for the chart
              * object, the component and the svg. We also need to give the svg a
@@ -247,6 +325,17 @@ function CDFMobile() {
     };
 
     function resizeCarousel(element) {
+      
+        var headerHeight = 0;
+        var $header = $.mobile.activePage.find('[data-role=header]');
+        if ($header) headerHeight = $header.height();
+        var footerHeight = 0;
+        var $footer = $.mobile.activePage.find('[data-role=footer]');
+        if ($footer) footerHeight = $footer.height();
+
+        var headerFooterPadding = headerHeight + footerHeight;
+        var horizontal = myself.shouldSwitchToHorizontal();
+        if (horizontal) headerFooterPadding -= footerHeight;      
         var $element = (element instanceof $ ? element: $(element)),
         contentWidth = _content.innerWidth();
         totalWidth = 0,
@@ -256,18 +345,29 @@ function CDFMobile() {
             count += 1;
             var $e = $(e);
             $e.width(contentWidth);
+            $e.height(window.innerHeight - headerFooterPadding - _magicalHeightOffset);
+//            if (window.innerWidth > window.innerHeight && !horizontal) {
+              $e.css('overflow-y', 'auto');
+              $e.css('overflow-x', 'hidden');
+  //          } else {
+    //          $e.css('overflow-y', 'hidden');
+      //        $e.css('overflow-x', 'hidden');              
+        //    }
             totalWidth += $e.outerWidth(true);
-            //contentHeight =  $e.height() > contentHeight ? $e.height() : contentHeight;
+//            contentHeight =  $e.height() > contentHeight ? $e.height() : contentHeight;
         });
         $element.width(totalWidth);
-
+  
         return count;
     };
 
     function createCarousel(element) {
         var $element = $(element);
         resizeCarousel($element.find('ul.cdfCarouself'));
-        var scroller = new Scroller($element.find('.cdfCarousel'), {},
+        var scroller = new Scroller($element.find('.cdfCarousel'), {onScroll: function (i) { 
+        	if (window.titleChange) {
+        		$("#title").html($('li.cdfCarouselItem:nth-child('+(i + 1)+') > .cdfCarouselItemTitle').html());
+        	}}},
         $);
         scroller.fitToContainer();
         return scroller;
@@ -275,15 +375,14 @@ function CDFMobile() {
 
     function refreshNav() {
         var $nav = $('select#navSelector');
-        if (render_navigation) {
+        if (typeof render_navigation != 'undefined') {
             $nav.empty();
             $nav.unbind('change');
             $nav.bind('change',
             function(e) {
                 var keys = {};
                 var args = $.each($('select#navSelector').val().split('&'),function(i,e) {
-                    var t = e.split('=');
-                    keys[t[0]] = t[1]; 
+                    keys[e[0]] = e[1];
                 });
                 myself.loadDashboard.call(myself, keys);
             });
@@ -296,6 +395,7 @@ function CDFMobile() {
             $nav.selectmenu('refresh');
         } else {
             $nav.hide();
+            $('span.navigate-button').hide();
         };
     };
     this.refresh = function() {
@@ -320,6 +420,10 @@ function CDFMobile() {
 
     this.filtersOk = function() {
         Dashboards.log("Accepting Filters");
+        setTimeout(function() {
+            cdfmobile.resizeAll();
+          },
+        1);        
     };
 
     this.filtersCancel = function() {
@@ -331,6 +435,7 @@ function CDFMobile() {
     };
     this.refreshSelector = function(component) {
         $("#" + component.htmlObject + " select").attr('data-theme', _jqmTheme).selectmenu();
+		if (this.shouldSwitchToHorizontal()) $('#filters span.filter span.selector div.ui-select').css('width', '80%');
     }
 
     this.cdfLoaded = function() {
@@ -341,6 +446,9 @@ function CDFMobile() {
 }
 $(function() {
     var parameters = {};
+    
+    
+    
     $.each(location.search.slice(1).split('&').map(function(e) {
         return e.split('=')
     }),
@@ -350,30 +458,30 @@ $(function() {
     window.cdfmobile = new CDFMobile();
 
     cdfmobile.parameters = parameters;
-    cdfmobile.redrawToolbar([
-    //    {
-    //      label: "Favorites",
-    //      icon: "star",
-    //      callback: cdfmobile.favorites
-    //    },
-    //    {
-    //      label: "Settings",
-    //      icon: "gear",
-    //      callback: cdfmobile.settings
-    //    },
-    {
-        label: "Filters",
-        icon: "search",
-        location: "#filtersPanel",
-        transition: "flip",
-        callback: cdfmobile.filters
-    },
-    {
-        label: "Refresh",
-        icon: "refresh",
-        callback: cdfmobile.refresh
+    
+    
+    //If we want to specify a different arrangement for the toolbar buttons, 
+    //we create a javascript global variable called toolbarButtons that
+    //contains the array with the buttons to create   
+    if (typeof toolbarButtons == 'undefined') {
+      var toolbarButtons = [
+        {
+          label: "Filters",
+          icon: "gear",
+          location: "#filtersPanel",
+          transition: "flip",
+          callback: cdfmobile.filters
+      },
+      {
+          label: "Refresh",
+          icon: "refresh",
+          callback: cdfmobile.refresh
+      }
+      ];      
     }
-    ]);
+    
+    
+    cdfmobile.redrawToolbar(toolbarButtons);
     cdfmobile.redrawFiltersToolbar([
     //    {
     //      label: "Cancel",
@@ -386,15 +494,20 @@ $(function() {
         icon: "check",
         location: "#dashboardView",
         transition: "flip",
-        callback: cdfmobile.filtersOk,
+        callback: cdfmobile.filtersOk
     }
     ]);
     setTimeout(function() {
         cdfmobile.redrawDashboard();
     },
     20);
+    
+    
+
+
+    $(window).bind("orientationchange", function() {cdfmobile.checkOrientation()});               
     $(window).bind('cdfLoaded', function(){
       cdfmobile.cdfLoaded();
     });
-    $(window).bind('resize', cdfmobile.resizeAll);
+    $(window).bind('resize', function() {cdfmobile.checkOrientation();cdfmobile.resizeAll();});
 });

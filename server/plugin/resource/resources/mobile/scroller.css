@@ -4,7 +4,7 @@ body {
 .mask{
     width:320px;
     height:auto;
-    overflow: hidden;
+    overflow:hidden;
 }
 
 .mask > div {
@@ -106,10 +106,14 @@ li.cdfCarouselItem.hidden {
 }
 
 div.status {
-  margin-top: 20px;
-  width:100%;
-  text-align: center;
+    border-top: 1px solid #474747;
+    margin-top: 16px;
+    padding-top: 4px;
+    text-align: center;
+    width: 100%;
 }
+
+
 div.statusBullets {
   display: inline-block;
   -webkit-padding-start: 0;
@@ -136,6 +140,15 @@ div.status div.next {
   margin-right: 15px;
   background-image: url('img/buttons/right_enabled.png');
 }
+
+div.status div.prev-selected {
+  background-image: url('img/buttons/left_ontouch.png');
+}
+
+div.status div.next-selected {
+  background-image: url('img/buttons/right_ontouch.png');
+}
+
 
 div.status div.prev.disabled {
   background-image: url('img/buttons/left_disabled.png');

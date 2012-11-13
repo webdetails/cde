@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+  
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
 <link name="apple-touch-icon" media="screen and (resolution: 132dpi)" href="img/touch-icon-ipad.png">
@@ -14,44 +16,71 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+
 @HEADER@
 
 <link rel='stylesheet' href='/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/lib/jquery.mobile.css'>
 <link rel='stylesheet' href='/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/cmd.css'> 
 <link rel='stylesheet' href='/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/scroller.css'>
+
+<script type="text/javascript">
+	var titleChange = true;
+</script>
+
 <script type="text/javascript" src="/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/scroller.js"></script>
 <script type="text/javascript" src="/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/cmd.js"></script>
 <script type="text/javascript" src="/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/lib/jquery.mobile.js"></script>
 <script type="text/javascript" src="/pentaho/content/pentaho-cdf-dd/res/system/pentaho-cdf-dd/resources/mobile/lib/componentOverrides.js"></script>
-<head>
-<meta id='scriptHolder'>
+
+ <head>
+  <meta id='scriptHolder'>
+
 </head>
+
 <body>
-<div data-role="page" id="dashboardView" data-theme='b'>
+
+  <div data-role="page" id="dashboardView" data-theme='b'>
+
     <div data-theme='b' data-role="header" id='header' data-position="fixed">
-      <h1 id='title'>CDF Mobile</h1>
-      <span class='ui-btn-right navigate-button'><select id='navSelector' placeholder="Navigate"></select></span>
+      <div class='backButton' onclick="javascript:window.location.href = '/pentaho/content/MOLA/landingpage';"></div>
+
+  <h1 id='title'>&nbsp;</h1>
+  <div class='toolbarButton filterButton' onclick="javascript: window.location.href='#filtersPanel'; $('#filtersContent .selector').css('width', '100%'); $('#filtersContent .ui-select').css('width', '90%');"></div>
+
     </div>
+    
+    
     <div data-role="content" data-theme='b' id='mainContent'>
         <div id=cmdContent>
             <div id='dashboard'></div>
         </div>
     </div>
+   
     <div id='placeholder' style='display:none'>
       @CONTENT@
     </div>
-  
+  <!--
     <div data-position="fixed" id='toolbar' data-role="footer" data-theme='b'></div>
+  -->
 </div>
 <div id='filtersPanel' data-role='page' data-theme='b'>
-    <div data-role="header" data-theme='b' data-backbtn="false" id='filtersHeader' data-position="fixed"><h1 id='title'>Select your filters</h1></div>
+    <div data-role="header" data-theme='b' data-backbtn="false" id='filtersHeader' data-position="fixed">
+          <div class='backButton' onclick="javascript:window.location.href = '/pentaho/content/MOLA/landingpage';"></div>
+	    <h1 id='title'>Select your filters</h1>
+	    
+	      <div class='toolbarButton applyButton' onclick="javascript:window.location.href='#dashboardView';"></div>
+	    </div>
     <div data-role="content" data-theme='b' id='filtersContent'>
             <div id='innerFilters'></div>
     </div>
-    <div id='filtersActions' data-role="footer" data-position="fixed"></div>
-</div>
-<script type="text/javascript">
 
+<!--
+<div id='filtersActions' data-role="footer" data-position="fixed"></div>
+-->
+</div>
+
+<script type="text/javascript">
+  
 </script>
 </body>
 </html>
