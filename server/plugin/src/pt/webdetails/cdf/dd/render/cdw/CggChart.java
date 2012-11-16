@@ -72,6 +72,7 @@ public class CggChart
             ".chartDefinition.height);");
 
     writeFile(chartScript, dashboardName);
+    writeFile(chartScript, null);
   }
 
   private void renderDatasource(StringBuilder chartScript)
@@ -112,7 +113,9 @@ public class CggChart
   {
     try
     {
-      String fileName = dashboadFileName.substring(0, dashboadFileName.lastIndexOf('.')) + '_' + this.chartName + CGG_EXTENSION;
+      String prefix = dashboadFileName == null ? "" : 
+              dashboadFileName.substring(0, dashboadFileName.lastIndexOf('.')) + '_'; 
+      String fileName = prefix + this.chartName + CGG_EXTENSION;
       byte[] content = chartScript.toString().getBytes(CdeSettings.getEncoding());
       
       switch( RepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
