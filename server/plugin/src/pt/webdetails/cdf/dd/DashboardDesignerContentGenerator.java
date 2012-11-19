@@ -533,7 +533,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     final String permission = requestParams.getStringParameter("access", null);
     final String outputType = requestParams.getStringParameter("outputType" , null);
     
-    if ( outputType.equals( "json") ){
+    if ( outputType != null && outputType.equals( "json") ){
       writeOut(out, FileExplorer.getInstance().getJSON(folder, fileExtensions, permission, userSession));
     } else {
       writeOut(out, FileExplorer.getInstance().getJqueryFileTree(folder, fileExtensions, permission, userSession));
