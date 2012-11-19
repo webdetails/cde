@@ -13,6 +13,9 @@ import org.pentaho.platform.api.engine.ISolutionFile;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 
 public class FileExplorer {
 	
@@ -51,6 +54,35 @@ public class FileExplorer {
 	public String getJqueryFileTree(final String dir, final String fileExtensions, final String access,  IPentahoSession userSession){
 	  ISolutionFile[] files = RepositoryAccess.getRepository(userSession).getFileList(dir, fileExtensions, access, userSession);
 	  return toJQueryFileTree(dir, files);
+	}
+  
+  public String toJSON(String baseDir, ISolutionFile[] files) {
+    
+      JSONArray arr = new JSONArray();
+    
+      for (ISolutionFile file : files) {
+          JSONObject json = new JSONObject();
+          json.put("path" , baseDir);
+          json.put("name" , file.getFileName() );
+          json.put("label", file.getFileName() );
+          
+          if (file.isDirectory()) {
+              json.put("type", "dir");
+          } else{
+              int dotIndex = file.getFileName().lastIndexOf('.');
+              String ext = dotIndex > 0 ? file.getFileName().substring(dotIndex + 1) : "";
+              json.put("ext" , ext);
+              json.put("type" , "file");
+          }
+          arr.add(json);
+      }
+
+      return arr.toString();
+	}
+	
+	public String getJSON(final String dir, final String fileExtensions, final String access,  IPentahoSession userSession){
+	  ISolutionFile[] files = RepositoryAccess.getRepository(userSession).getFileList(dir, fileExtensions, access, userSession);
+	  return toJSON(dir, files);
 	}
 
 
