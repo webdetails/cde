@@ -106,7 +106,7 @@ var componentTemplateForComponent = '<DesignerComponent>\n' +
 '            <Property>refreshPeriod</Property>\n' + 
 '            <Property>htmlObject</Property>\n' + 
 '            <Property>tooltip</Property>\n' + 
-'            <Property>parameters</Property>\n' + 
+'            <Property name="parameters">xActionArrayParameter</Property>\n' + 
 '            <Property>listeners</Property>\n' + 
 '        </Model>\n' + 
 '        <Implementation>\n' + 
