@@ -74,11 +74,11 @@ public class RenderComponents extends Renderer
          */
         if (context.getValue("meta_wcdf") != null)
         {
-          widgetContent = getDiscreteParameters(widgets, context, id, alias);
+          getDiscreteParameters(widgetContent, widgets, context, id, alias);
         }
         else
         {
-          widgetContent = getParameterBlob(widgets, context, id, alias);
+          getParameterBlob(widgetContent, widgets, context, id, alias);
         }
       }
       else
@@ -116,9 +116,8 @@ public class RenderComponents extends Renderer
     return "pt.webdetails.cdf.dd.render.components." + type.replace("Components", "") + "Render";
   }
 
-  private StringBuffer getParameterBlob(Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  private StringBuffer getParameterBlob(StringBuffer widgetContent, Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
   {
-    StringBuffer widgetContent = new StringBuffer();
     widgetContent.append(newLine);
     widgetContent.append(widgets.get(id).getComponents());
     JSONArray params = new JSONArray(context.getValue("properties[name='xActionArrayParameter']/value").toString());
@@ -136,9 +135,8 @@ public class RenderComponents extends Renderer
     return widgetContent;
   }
 
-  private StringBuffer getDiscreteParameters(Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  private StringBuffer getDiscreteParameters(StringBuffer widgetContent, Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
   {
-    StringBuffer widgetContent = new StringBuffer();
     widgetContent.append(newLine);
     widgetContent.append(widgets.get(id).getComponents());
     Iterator<Pointer> it = context.iteratePointers("properties[type='Parameter']");
