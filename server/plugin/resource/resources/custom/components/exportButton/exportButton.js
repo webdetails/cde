@@ -13,10 +13,11 @@ var ExportButtonComponent = BaseComponent.extend({
     var myself = this;
     $.extend(this.options,this);
 
-    this.ph = $("#" + this.htmlObject);
-    this.ph.empty();
-    var bar = $('<span class="exportButton"></span>').appendTo(this.ph);
-    var component = Dashboards.getComponentByName( "render_" + this.componentName );
+    myself.ph = $("#" + myself.htmlObject);
+    myself.ph.empty();
+    var bar = $('<span class="exportButton"></span>').appendTo(myself.ph);
+	var componentName = (myself.componentName.indexOf("render_")==0?"":"render_") + myself.componentName;
+    var comp = Dashboards.getComponentByName( componentName );
     var overrideParameters = Dashboards.propertiesArrayToObject(myself.parameters);    
     bar.text( this.label ).click( function(){
       component.query.exportData(myself.outputType, overrideParameters);
