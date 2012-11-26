@@ -121,6 +121,67 @@ describe("Unmanaged Base Component", function() {
         expect(freeformQuery.customfunction.callCount).toEqual(1);
       });
     });
+
+    it("overwrites data from postFetch", function() {
+      spyOn(freeformQuery,"preExecution");
+      spyOn(freeformQuery,"customfunction").andCallThrough();
+      spyOn(freeformQuery,"postExecution");
+      spyOn(freeformQuery,"postFetch").andReturn({test:true});
+      spyOn(freeformQuery,"redraw");
+      spyOn(freeformQuery,"block").andCallThrough();
+      spyOn(freeformQuery,"unblock").andCallThrough();
+      spyOn(jQuery,"ajax").andCallFake(function(options){
+        setTimeout(function(){
+          options.success({resultset:[],metadata:[]});
+        },100);
+      });
+      myDashboard.update(freeformQuery);
+      myDashboard.update(freeformQuery);
+      waits(200);
+      runs(function(){
+        var blockCount = freeformQuery.block.callCount;
+        expect(blockCount).toEqual(2);
+        expect(freeformQuery.preExecution.callCount).toEqual(2);
+        expect(freeformQuery.customfunction.callCount).toEqual(2);
+        expect(freeformQuery.postFetch.callCount).toEqual(1);
+        expect(freeformQuery.redraw.callCount).toEqual(1);
+        expect(freeformQuery.redraw.argsForCall[0][0].test).toBeTruthy();
+        expect(freeformQuery.postExecution.callCount).toEqual(1);
+        expect(freeformQuery.unblock.callCount).toEqual(blockCount);
+
+      });
+    });
+
+       it("doesn't overwrite data if postFetch returns undefined", function() {
+      spyOn(freeformQuery,"preExecution");
+      spyOn(freeformQuery,"customfunction").andCallThrough();
+      spyOn(freeformQuery,"postExecution");
+      spyOn(freeformQuery,"postFetch").andReturn(undefined);
+      spyOn(freeformQuery,"redraw");
+      spyOn(freeformQuery,"block").andCallThrough();
+      spyOn(freeformQuery,"unblock").andCallThrough();
+      spyOn(jQuery,"ajax").andCallFake(function(options){
+        setTimeout(function(){
+          options.success({resultset:[],metadata:[]});
+        },100);
+      });
+      myDashboard.update(freeformQuery);
+      myDashboard.update(freeformQuery);
+      waits(200);
+      runs(function(){
+        var blockCount = freeformQuery.block.callCount;
+        expect(blockCount).toEqual(2);
+        expect(freeformQuery.preExecution.callCount).toEqual(2);
+        expect(freeformQuery.customfunction.callCount).toEqual(2);
+        expect(freeformQuery.postFetch.callCount).toEqual(1);
+        expect(freeformQuery.redraw.callCount).toEqual(1);
+        expect(freeformQuery.redraw.argsForCall[0][0].resultset).not.toBeUndefined();
+        expect(freeformQuery.postExecution.callCount).toEqual(1);
+        expect(freeformQuery.unblock.callCount).toEqual(blockCount);
+
+      });
+    });
+
     it("only updates once if called concurrently", function() {
       spyOn(freeformQuery,"preExecution");
       spyOn(freeformQuery,"customfunction").andCallThrough();
