@@ -16,6 +16,7 @@
 			<Property name="width" type="number">width</Property>
 			<Property name="height" type="number">height</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>manageCallee</Property>
 			<Property type="boolean">executeAtStart</Property>
 			<Property type="function">preChange</Property>
 			<Property type="function">postChange</Property>
