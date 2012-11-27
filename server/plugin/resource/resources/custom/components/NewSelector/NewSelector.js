@@ -15,37 +15,6 @@ var NewSelectorComponent = BaseComponent.extend({
         pageSize: this.pageSize
       });
     }
-  }
-  xupdate: function(){
-    var myself = this;
-    $.extend(this.options,this);
-    myself.ph = $("#" + myself.htmlObject).empty();
-      
-    if (typeof this.valuesArray != "undefined" && myself.valuesArray.length > 0 ) {
-      myself.redraw(myself.valuesArray);
-    } else {
-      var croppedCd = $.extend({}, myself.chartDefinition),params;
-      delete croppedCd.drawCallback;
-      myself.queryState = new Query(croppedCd); 
-      params = this.parameters.slice();
-      if(this.selectorModel){
-        this.selectorModel.set({pageStart:0, pageSize:this.pageSize, pageStep: this.pageStep, multiselect: this.multiselect},{silent:true});
-        if(this.selectorModel.get("searchterm")) {
-          params.push([this.searchParam, "'" + this.selectorModel.get("searchterm") +"'"]);
-        }
-      }
-      myself.queryState.setPageSize(this.pageSize);
-      myself.queryState.fetchData(params, function(data){
-        var changedValues = undefined;
-        if((typeof(myself.postFetch) == 'function')){
-          changedValues = myself.postFetch(data);
-        }
-        if (changedValues != undefined) {
-          data = changedValues;
-        }
-        myself.redraw(data);
-      });
-    } 
   },
 
   values: function(results) {
