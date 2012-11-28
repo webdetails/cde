@@ -1,15 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccTooltipFormat</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-<!--      <DefaultValue>function(s,c,v){return s+", "+c+":  " + myself.options.valueFormat(v) }</DefaultValue>-->
-      <Description>Tooltip format</Description>
-      <Tooltip>Function to format how the tooltip appears</Tooltip>
-      <Advanced>true</Advanced>
-      <InputType>JavaScript</InputType>
-      <OutputType>Function</OutputType>
-      <Order>92</Order>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccTooltipFormat</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>tooltipFormat</Description>
+    <Tooltip>A callback function that is called, to build the tooltip of a visual element.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>434</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

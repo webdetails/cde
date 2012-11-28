@@ -1,0 +1,23 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLegendAlignTo</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>legendAlignTo</Description>
+    <Tooltip>The alignment side or position of the parent panel (the target) that will align with the alignment side of this panel, the source.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>288</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Bottom">bottom</Value>
+    <Value display="Center">center</Value>
+    <Value display="Left">left</Value>
+    <Value display="Middle">middle</Value>
+    <Value display="PageMiddle">page-middle</Value>
+    <Value display="Right">right</Value>
+    <Value display="Top">top</Value>
+  </Values>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSmallTitleSize</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>smallTitleSize</Description>
+    <Tooltip>The fixed size of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>411</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

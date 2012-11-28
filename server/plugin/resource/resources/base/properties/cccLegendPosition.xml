@@ -1,14 +1,20 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccLegendPosition</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>bottom</DefaultValue>
-      <Description>Legend position</Description>
-      <Tooltip>Legend position</Tooltip>
-      <InputType>Anchor</InputType>
-      <OutputType>String</OutputType>
-      <Order>72</Order>
-      <Advanced>true</Advanced>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccLegendPosition</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>legendPosition</Description>
+    <Tooltip>The docking position of the panel.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>289</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Bottom">bottom</Value>
+    <Value display="Left">left</Value>
+    <Value display="Right">right</Value>
+    <Value display="Top">top</Value>
+  </Values>
+</DesignerProperty>

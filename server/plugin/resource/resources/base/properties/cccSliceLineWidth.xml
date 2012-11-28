@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceLineWidth</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sliceLineWidth</Description>
+    <Tooltip>The line width.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>392</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

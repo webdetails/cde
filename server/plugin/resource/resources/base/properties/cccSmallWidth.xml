@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSmallWidth</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>smallWidth</Description>
+    <Tooltip>Fixates the width of each small chart.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>413</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
