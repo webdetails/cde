@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSmallTitleMargins</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>smallTitleMargins</Description>
+    <Tooltip>The margins of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>408</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

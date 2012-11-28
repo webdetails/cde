@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTotalValuesVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>totalValuesVisible</Description>
+    <Tooltip>Indicates if value labels are shown above or below the water line showing the accumulated value.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>441</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

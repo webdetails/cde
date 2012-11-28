@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceOuterRadius</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sliceOuterRadius</Description>
+    <Tooltip>The outer radius of each slice, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>393</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

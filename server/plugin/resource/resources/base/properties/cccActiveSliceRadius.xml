@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccActiveSliceRadius</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>5%</DefaultValue>
+    <Description>activeSliceRadius</Description>
+    <Tooltip>Increment radius of an active slice, in pixel units or as a percentage.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>200</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

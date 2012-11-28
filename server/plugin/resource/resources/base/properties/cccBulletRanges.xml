@@ -1,14 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccBulletRanges</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>"[30,60,90]"</DefaultValue>
-      <Description>Bullet Ranges</Description>
-      <Tooltip>Ranges on the bullet chart</Tooltip>
-      <InputType>Array</InputType>
-      <OutputType>Array</OutputType>
-      <Order>62</Order>
-      <Version>1.0</Version>
-      <Advanced>false</Advanced>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccBulletRanges</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>bulletRanges</Description>
+    <Tooltip>The default bullet ranges.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>246</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

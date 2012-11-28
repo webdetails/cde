@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOverflowMarkersVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>overflowMarkersVisible</Description>
+    <Tooltip>Indicates if overflow and underflow markers are shown when the bars are drawn off the plot area.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>350</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
