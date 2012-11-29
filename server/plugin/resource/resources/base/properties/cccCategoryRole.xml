@@ -7,7 +7,7 @@
     <Tooltip>The category visual role of the bar family charts is restricted to be discrete.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>253</Order>
+    <Order>252</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

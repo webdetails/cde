@@ -7,7 +7,7 @@
     <Tooltip>Fixates the width of each small chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>413</Order>
+    <Order>409</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

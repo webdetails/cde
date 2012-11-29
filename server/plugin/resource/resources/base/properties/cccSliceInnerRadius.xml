@@ -7,7 +7,7 @@
     <Tooltip>The inner radius of each slice, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>388</Order>
+    <Order>384</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

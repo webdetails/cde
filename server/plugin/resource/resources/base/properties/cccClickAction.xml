@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when the user clicks on a bullet.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>256</Order>
+    <Order>255</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
