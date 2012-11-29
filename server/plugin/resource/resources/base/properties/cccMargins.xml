@@ -7,7 +7,7 @@
     <Tooltip>The margins of the root chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>302</Order>
+    <Order>301</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

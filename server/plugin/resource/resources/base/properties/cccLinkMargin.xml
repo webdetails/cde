@@ -7,7 +7,7 @@
     <Tooltip>The width of the space that separates the label from the end of the line segment that starts in the link elbow, in pixel units, or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>299</Order>
+    <Order>298</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

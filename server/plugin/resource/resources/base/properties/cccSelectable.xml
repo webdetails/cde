@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the charts visual elements can be selected by the user, by clicking on them or using the rubber-band.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>372</Order>
+    <Order>368</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

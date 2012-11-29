@@ -7,7 +7,7 @@
     <Tooltip>The color visual role controls the color of pie slices.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>259</Order>
+    <Order>258</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>What happens when the user clicks a legend item (applies to discrete domain axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>280</Order>
+    <Order>279</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
