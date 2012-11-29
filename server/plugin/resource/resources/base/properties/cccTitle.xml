@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTitle</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>title</Description>
+    <Tooltip>The title panel of the root chart.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>418</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

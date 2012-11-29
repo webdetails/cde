@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccMeasuresIndexes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>measuresIndexes</Description>
+    <Tooltip>The indexes of the data sources virtual item columns that are to feed the default dimensions value, value2, etc.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>306</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

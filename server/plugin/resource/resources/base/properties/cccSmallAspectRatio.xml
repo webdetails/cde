@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSmallAspectRatio</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>smallAspectRatio</Description>
+    <Tooltip>The ratio of the width over the height of a small chart.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>399</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

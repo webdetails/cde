@@ -1,0 +1,25 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPlot2ValuesAnchor</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>right</DefaultValue>
+    <Description>plot2ValuesAnchor</Description>
+    <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>366</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Bottom">bottom</Value>
+    <Value display="Center">center</Value>
+    <Value display="End">end</Value>
+    <Value display="Inner">inner</Value>
+    <Value display="Left">left</Value>
+    <Value display="Outer">outer</Value>
+    <Value display="Right">right</Value>
+    <Value display="Start">start</Value>
+    <Value display="Top">top</Value>
+  </Values>
+</DesignerProperty>

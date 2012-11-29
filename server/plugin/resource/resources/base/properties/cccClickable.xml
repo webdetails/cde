@@ -1,14 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccClickable</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>"false"</DefaultValue>
-      <Description>Clickable</Description>
-      <Tooltip>Chart is clickable?</Tooltip>
-      <InputType>Boolean</InputType>
-      <OutputType>Boolean</OutputType>
-      <Order>87</Order>
-      <Advanced>false</Advanced>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccClickable</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>clickable</Description>
+    <Tooltip>Indicates if the chart is clickable by the user.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>255</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLegendSizeMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>legendSizeMax</Description>
+    <Tooltip>The maximum size of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>292</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
