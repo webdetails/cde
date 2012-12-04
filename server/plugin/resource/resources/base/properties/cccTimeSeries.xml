@@ -8,7 +8,7 @@
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>412</Order>
-    <Advanced>true</Advanced>
+    <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>
 </DesignerProperty>

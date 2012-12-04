@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="querySalesCountry" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="querySalesQuantityCountryMonths" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="querySalesQuantityCountry" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="queryQuantityMonths" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="queryQuantityTerritoryMonths" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="querySalesYears" type="mondrian.jndi">
+         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="querySalesCountry"
+               id="querySalesCountry"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT
+NON EMPTY {Hierarchize({[Measures].[Sales]})} ON COLUMNS,
+NON EMPTY {Hierarchize({[Markets].[Country].Members})} ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="querySalesQuantityCountryMonths"
+               id="querySalesQuantityCountryMonths"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT
+NON EMPTY Hierarchize(Union(CrossJoin([Markets].[Territory].Members, {[Measures].[Quantity]}), CrossJoin([Markets].[Territory].Members, {[Measures].[Sales]}))) ON COLUMNS,
+NON EMPTY {Hierarchize({{[Time].[2004]}, Filter({{[Time].[Months].Members}}, (Exists(Ancestor([Time].CurrentMember, [Time].[Years]), {[Time].[2004]}).Count  &gt; 0))})} ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="querySalesQuantityCountry"
+               id="querySalesQuantityCountry"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT
+NON EMPTY {Hierarchize({[Measures].[Sales], [Measures].[Quantity]})} ON COLUMNS,
+NON EMPTY {Hierarchize({[Markets].[Country].Members})} ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="queryQuantityMonths"
+               id="queryQuantityMonths"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT
+NON EMPTY {{{[Time].[Months].Members}}} ON COLUMNS,
+NON EMPTY {{[Measures].[Quantity]}} ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="queryQuantityTerritoryMonths"
+               id="queryQuantityTerritoryMonths"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Output indexes="0" mode="exclude"/>
+      <Parameters/>
+      <Query>SELECT
+NON EMPTY {Hierarchize({{[Time].[Years].Members}, {[Time].[Months].Members}})} ON COLUMNS,
+NON EMPTY CrossJoin({[Measures].[Quantity]}, [Markets].[Country].Members) ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="querySalesYears"
+               id="querySalesYears"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT NON EMPTY {Hierarchize({[Measures].[Sales]})} ON COLUMNS, NON EMPTY {Hierarchize({[Time].[Years].Members})} ON ROWS FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+</CDADescriptor>
