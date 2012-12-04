@@ -228,13 +228,14 @@
 		  includes="${plugin.artifact.id}/**/*"
 		  excludes="**/Thumbs.db" />
 		  
-<echo file="${dist.dir}/marketplace.xml">&lt;version branch="STABLE">
+<echo file="${dist.dir}/marketplace.xml">&lt;version>
+        &lt;branch>STABLE&lt;/branch>
 		&lt;version>${distribution.version}&lt;/version>
 		&lt;name>Stable&lt;/name>
-		&lt;downloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE-Release/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-${distribution.version}.zip&lt;/downloadUrl>
-		&lt;samplesDownloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-solution-${distribution.version}.zip&lt;/samplesDownloadUrl>
+		&lt;package_url>http://ci.analytical-labs.com/job/Webdetails-CDE-Release/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-${distribution.version}.zip&lt;/package_url>
+		&lt;samples_url>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-solution-${distribution.version}.zip&lt;/samples_url>
 		&lt;description>Release ${distribution.version}&lt;/description>
-		&lt;buildId>&lt;/buildId>
+		&lt;build_id>&lt;/build_id>
 		&lt;/version>	</echo>       		  
 		  
 		  
