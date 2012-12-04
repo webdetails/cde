@@ -3,6 +3,52 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "4e8c291a-ad3c-2b54-bd89-037d8f5c811c",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "templateCss",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../template.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
+    "id": "d76a9921-29ac-162d-ad00-8c7e22622d9c",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "referenceCSS",
+      "type": "Id"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${res:../cdeReference.css}",
+      "type": "ResourceFile"
+     }
+    ]
+   },
+   {
     "id": "2b0dd1c7-8e57-5f63-4bac-9a2da504d099",
     "type": "LayoutResourceCode",
     "typeDesc": "Resource",
@@ -76,7 +122,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDheader",
       "type": "String"
      },
      {
@@ -172,7 +218,7 @@
      },
      {
       "name": "html",
-      "value": "<h1>CCC v2 :: Show Case </h1> ",
+      "value": "CCC v2 - Show Case ",
       "type": "Html"
      },
      {
@@ -184,62 +230,6 @@
       "name": "fontSize",
       "value": "",
       "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "0547a103-46c4-bfef-a823-b4b65a76cf6b",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "02d4a26e-ffb7-83e0-2cbc-77b89099f260",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "WEBDETAILS ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "27bb76b7-0a84-ad73-b570-14bda310e28a",
-    "type": "LayoutSpace",
-    "typeDesc": "Space",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "height",
-      "value": "20",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -506,37 +496,14 @@
     ]
    },
    {
-    "id": "800735b1-ce7b-c098-41f3-5df69af0e551",
-    "type": "LayoutSpace",
-    "typeDesc": "Space",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "height",
-      "value": "20",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "53882878-49b0-7523-03d3-189e62a5b4db",
+    "id": "c2c697f8-1cb4-5e1d-8db2-ac165c8656cf",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "Charts",
+      "value": "BarChartTitleRow",
       "type": "Id"
      },
      {
@@ -556,7 +523,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellHeader",
       "type": "String"
      },
      {
@@ -567,10 +534,10 @@
     ]
    },
    {
-    "id": "7a3d5fb9-8e34-59a1-967f-c64765bbf513",
-    "type": "LayoutColumn",
-    "typeDesc": "Column",
-    "parent": "53882878-49b0-7523-03d3-189e62a5b4db",
+    "id": "73ffe16f-6a6e-8818-d7e9-12e68df1d082",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "c2c697f8-1cb4-5e1d-8db2-ac165c8656cf",
     "properties": [
      {
       "name": "name",
@@ -578,52 +545,17 @@
       "type": "Id"
      },
      {
-      "name": "columnSpan",
-      "value": "24",
-      "type": "Integer"
+      "name": "html",
+      "value": "Bar Chart ",
+      "type": "Html"
      },
      {
-      "name": "columnPrepend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnAppend",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "columnPrependTop",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnAppendBottom",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "columnBigBorder",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "backgroundColor",
+      "name": "color",
       "value": "",
       "type": "Color"
      },
      {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "height",
+      "name": "fontSize",
       "value": "",
       "type": "Integer"
      },
@@ -631,23 +563,18 @@
       "name": "cssClass",
       "value": "",
       "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
      }
     ]
    },
    {
-    "id": "a1effd97-a012-59ae-05e1-2b810efc6815",
+    "id": "05dac576-f3c6-e79b-f91b-00b08e035344",
     "type": "LayoutRow",
     "typeDesc": "Row",
-    "parent": "7a3d5fb9-8e34-59a1-967f-c64765bbf513",
+    "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "BarChartBodyRow",
       "type": "Id"
      },
      {
@@ -667,7 +594,7 @@
      },
      {
       "name": "cssClass",
-      "value": "",
+      "value": "WDdataCellBody",
       "type": "String"
      },
      {
@@ -678,10 +605,10 @@
     ]
    },
    {
-    "id": "2305a0d5-108f-9f1e-c7c2-d90a6ed4a956",
+    "id": "9da6d003-4db5-5273-62dd-61eca654aa39",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "a1effd97-a012-59ae-05e1-2b810efc6815",
+    "parent": "05dac576-f3c6-e79b-f91b-00b08e035344",
     "properties": [
      {
       "name": "name",
@@ -690,17 +617,17 @@
      },
      {
       "name": "columnSpan",
-      "value": "8",
+      "value": 5,
       "type": "Integer"
      },
      {
       "name": "columnPrepend",
-      "value": "",
+      "value": "8",
       "type": "Integer"
      },
      {
       "name": "columnAppend",
-      "value": "",
+      "value": "8",
       "type": "Integer"
      },
      {
@@ -751,10 +678,119 @@
     ]
    },
    {
-    "id": "dd13826c-ff0b-02b0-9ee6-a9c4ccd24f15",
+    "id": "097bc83b-3d90-888e-ad95-dc72249e8d57",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "LineChartTitleRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "e3d656be-eef9-c7b2-4bac-04202a606724",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "097bc83b-3d90-888e-ad95-dc72249e8d57",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Line Chart ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "825e750a-3f03-194a-d96e-f79bfb506267",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "LineChartBodyRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "827fc74e-6cbf-35e9-0625-3b141eff1a70",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "a1effd97-a012-59ae-05e1-2b810efc6815",
+    "parent": "825e750a-3f03-194a-d96e-f79bfb506267",
     "properties": [
      {
       "name": "name",
@@ -763,17 +799,17 @@
      },
      {
       "name": "columnSpan",
-      "value": "8",
+      "value": 5,
       "type": "Integer"
      },
      {
       "name": "columnPrepend",
-      "value": "",
+      "value": "8",
       "type": "Integer"
      },
      {
       "name": "columnAppend",
-      "value": "",
+      "value": "8",
       "type": "Integer"
      },
      {
@@ -824,10 +860,119 @@
     ]
    },
    {
-    "id": "009c8059-fac3-edec-2686-f973de2ee839",
+    "id": "e261b7f9-d35e-7a64-c339-84a5b192dd06",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "PieChartTitleRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "0afc03d0-5581-f66b-d450-35906a34c04e",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "e261b7f9-d35e-7a64-c339-84a5b192dd06",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Pie Chart ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "db9b3716-3434-37e5-04b5-dc7e87be984e",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "PieChartBodyRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "fbcf2d06-93e8-1775-960c-ff846d735d73",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "a1effd97-a012-59ae-05e1-2b810efc6815",
+    "parent": "db9b3716-3434-37e5-04b5-dc7e87be984e",
     "properties": [
      {
       "name": "name",
@@ -836,17 +981,199 @@
      },
      {
       "name": "columnSpan",
-      "value": "8",
+      "value": 5,
       "type": "Integer"
      },
      {
       "name": "columnPrepend",
-      "value": "",
+      "value": "8",
       "type": "Integer"
      },
      {
       "name": "columnAppend",
+      "value": "8",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "backgroundColor",
       "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "f8ab28d5-5697-d6a4-dbbd-b800ed6806a1",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "BulletChartTitleRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "e3b14f34-c564-a0a3-86c0-ad6c939dbeda",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f8ab28d5-5697-d6a4-dbbd-b800ed6806a1",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Bullet Chart ",
+      "type": "Html"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f7035485-590d-5154-a8e6-16f10028de2c",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "BulletChartBodyRow",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     }
+    ]
+   },
+   {
+    "id": "12ee6c4f-f7a7-76cb-c487-6de0baa56b17",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "f7035485-590d-5154-a8e6-16f10028de2c",
+    "properties": [
+     {
+      "name": "name",
+      "value": "bulletChart",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "8",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "8",
       "type": "Integer"
      },
      {
@@ -12213,7 +12540,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "multiSelectProduct",
+      "value": "",
       "type": "HtmlObject"
      },
      {
