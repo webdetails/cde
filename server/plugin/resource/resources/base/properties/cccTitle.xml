@@ -8,7 +8,7 @@
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>414</Order>
-    <Advanced>true</Advanced>
+    <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>
 </DesignerProperty>
