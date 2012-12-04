@@ -227,13 +227,14 @@
 		  includes="${plugin.artifact.id}/**/*"
 		  excludes="**/Thumbs.db" />
 		  
-<echo file="${dist.dir}/marketplace.xml">&lt;version branch="TRUNK">
+<echo file="${dist.dir}/marketplace.xml">&lt;version>
+        &lt;branch>TRUNK&lt;/branch>
 		&lt;version>${distribution.version}&lt;/version>
 		&lt;name>Trunk&lt;/name>
-		&lt;downloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip&lt;/downloadUrl>
-		&lt;samplesDownloadUrl>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip&lt;/samplesDownloadUrl>
-		&lt;description>Trunk Snapshot. Install at your own risk....&lt;/description>
-		&lt;buildId>${sequential.build.id}&lt;/buildId>
+		&lt;package_url> http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip &lt;/package_url>
+		&lt;samples_url>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip &lt;/samples_url>
+		&lt;description>Trunk Snapshot. Get the latest, edgy, still work in progress features here....&lt;/description>
+		&lt;build_id>${sequential.build.id}&lt;/build_id>
 		&lt;/version>	</echo>       		  
 		  
 		  
