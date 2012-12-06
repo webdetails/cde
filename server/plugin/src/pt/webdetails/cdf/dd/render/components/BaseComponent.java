@@ -16,6 +16,8 @@ public class BaseComponent extends Component implements IComponent
   {
     super(context, alias);
     String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    this.priority = XPathUtils.getStringValue(getNode(), "properties/value[../name='priority']");
+    
     setId("render", alias, baseId);
   }
 
@@ -27,6 +29,7 @@ public class BaseComponent extends Component implements IComponent
   public String getProperties()
   {
     addProperty("name", this.id, true);
+    addProperty("priority", this.priority, true);
     return super.getProperties();
   }
 
@@ -46,6 +49,7 @@ public class BaseComponent extends Component implements IComponent
     clearProperties();
     super.setNode(node);
     String baseId = XPathUtils.getStringValue(getNode(), "properties/value[../name='name']").replace(" ", "_");
+    this.priority = XPathUtils.getStringValue(getNode(), "properties/value[../name='priority']");
     setId("render", alias, baseId);
   }
 
