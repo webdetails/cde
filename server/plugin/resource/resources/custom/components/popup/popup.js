@@ -270,8 +270,10 @@ var ExportPopupComponent = PopupComponent.extend({
     delete this.dataComponent;
     delete this.chartComponent;
     var that = this.base(parameterRemap,componentRemap,htmlRemap);
-    this.dataComponent = that.dataComponent = dataComponent;
-    this.chartComponent = that.chartComponent = chartComponent;
+    this.dataComponent = dataComponent;
+    that.dataComponent = componentRemap[dataComponent.name] || dataComponent;
+    this.chartComponent = chartComponent;
+    that.chartComponent = componentRemap[chartComponent.name] || chartComponent;
     return that;
   },
 
