@@ -264,6 +264,17 @@ var ExportPopupComponent = PopupComponent.extend({
   baseSize: 200,
   scalingFactor: 1.5,
 
+  clone: function(parameterRemap,componentRemap,htmlRemap) {
+    var dataComponent = this.dataComponent,
+        chartComponent = this.chartComponent;
+    delete this.dataComponent;
+    delete this.chartComponent;
+    var that = this.base(parameterRemap,componentRemap,htmlRemap);
+    this.dataComponent = that.dataComponent = dataComponent;
+    this.chartComponent = that.chartComponent = chartComponent;
+    return that;
+  },
+
   update: function(){
     var myself = this;
     if (this.ph) {
