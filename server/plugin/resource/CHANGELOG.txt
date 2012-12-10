@@ -1,3 +1,18 @@
+12.12.10
+
+    * Added View Manager component
+    * Added Widget support   
+    * Add OlapSelector Component    
+    * Implemented [REDMINE-479] - Stop publishing CDW files, no longer used by CGG    
+    * Implemented [REDMINE-1210] - Lifecycle for CDE added (class CdeLifeCycleListener). When plugin is loaded check if folder and subfolders exist? If not create them.     
+    * Fixed [REDMINE-112] - Issues in textComponent expressions
+    * Fixed box model in IE8
+    * CDE editor now stretches to full extent of window/frame
+    * Bug fixes in Olap Utils
+
+    
+    
+    
 12.10.17
 
     * Added google analytics componente developed by Sinn Tecnologia

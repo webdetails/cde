@@ -177,8 +177,9 @@ public class XmlStructure implements IStructure
       byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
       switch (repository.publishFile(path, cdeFileName, fileContents, true))
       {
-        cdfdeResult = false;
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+        case FAIL:
+            cdfdeResult = false;
+            throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
 
       status = SaveFileStatus.OK;
@@ -206,13 +207,8 @@ public class XmlStructure implements IStructure
       String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
       CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
       cdwRenderer.render(path, cdeFileName);
-<<<<<<< HEAD
-     
-=======
-
 
       //5. Check publish result again.
->>>>>>> 84bb6d0... Add Generated Widget Components
       if (status != SaveFileStatus.OK)
       {
         cggResult = false;
