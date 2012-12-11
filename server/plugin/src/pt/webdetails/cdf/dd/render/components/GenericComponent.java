@@ -4,13 +4,17 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
@@ -160,6 +164,9 @@ public class GenericComponent extends BaseComponent implements IComponent
         values.append(renderDefinition(XmlDom4JHelper.getNodeText("@name", property), property.selectNodes("*")));
       }
     }
+    
+    
+    
     return values.toString().replaceAll(",$", "");
   }
 
@@ -324,6 +331,8 @@ public class GenericComponent extends BaseComponent implements IComponent
   private String renderDefinition(String node, List<Node> contents)
   {
     StringBuilder values = new StringBuilder();
+    
+    Set<String> usedProperties = new HashSet<String>();
     for (Node property : contents)
     {
       String outputName = XmlDom4JHelper.getNodeText("@name", property);
@@ -334,6 +343,8 @@ public class GenericComponent extends BaseComponent implements IComponent
       {
         outputName = propertyName;
       }
+      
+      usedProperties.add(outputName);
       GenericProperty prop = properties.get(propertyName);
       try
       {
@@ -348,6 +359,37 @@ public class GenericComponent extends BaseComponent implements IComponent
         log.error("ERROR: Component " + this.getName() + " failed to render property " + propertyName, e);
       }
     }
+    
+    
+    List<net.sf.json.JSONObject> nodesInComponent = getNode().selectNodes("properties");
+    for (net.sf.json.JSONObject prop : nodesInComponent) {
+      try {
+        String propName = prop.getString("name");
+        
+          if (!usedProperties.contains(propName) && propName.startsWith("ccc")) {
+            GenericProperty genProp = PropertyManager.getInstance().getProperty(propName);;
+        
+            propName = propName.substring(3);
+            propName = propName.substring(0,1).toLowerCase() + 
+                    propName.substring(1);
+                    
+              
+            if (genProp != null) {
+              //Output name ? 
+              String renderedProperty = genProp.render(propName, getNode());
+              if (!renderedProperty.equals(""))
+              {
+                values.append("\t" + renderedProperty);
+              }        
+            }
+        }
+      } catch (net.sf.json.JSONException jsone) {
+        logger.error("Property  did not define a name", jsone);
+      }
+    }
+    
+    
+    
     String output = !values.toString().equals("")
             ? "\t" + node + ": {" + newLine + values.toString().replaceAll(",$", "") + "\t}," + newLine
             : "";
