@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>manageCallee</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Manage Lifecycle</Description>
+  <Tooltip>Should CDF control the component's lifecycle?</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Advanced>true</Advanced>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

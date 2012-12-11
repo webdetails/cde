@@ -131,6 +131,7 @@ public class GenericComponent extends BaseComponent implements IComponent
     StringBuilder values = new StringBuilder();
     values.append("\ttype: \"" + XmlDom4JHelper.getNodeText("Header/IName", definition) + "\"," + newLine);
     values.append("\tname: \"" + this.id + "\"," + newLine);
+    values.append("\tpriority: \"" + this.priority + "\"," + newLine);
     List<Node> nodes = definition.selectNodes("Contents/Model/*");
     for (Node property : nodes)
     {
@@ -247,7 +248,8 @@ public class GenericComponent extends BaseComponent implements IComponent
             + "				typeDesc: \"" + desc + "\"," + newLine
             + metaTags.toString()
             + "				parent: IndexManager.ROOTID, properties: [] };" + newLine
-            + "			_stub.properties.push(PropertiesManager.getProperty(\"name\"));" + newLine);
+            + "			_stub.properties.push(PropertiesManager.getProperty(\"name\"));" + newLine
+            + "			_stub.properties.push(PropertiesManager.getProperty(\"priority\"));" + newLine);
 
     Iterator<Node> props = definition.selectNodes("Contents/Model//Property").iterator();
     while (props.hasNext())

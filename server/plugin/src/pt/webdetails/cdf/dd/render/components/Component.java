@@ -24,7 +24,7 @@ public abstract class Component
   protected static final Log logger = LogFactory.getLog(Component.class);
   private Hashtable<String, Object> properties = new Hashtable<String, Object>();
   private JXPathContext node;
-  protected String id = "", alias = "";
+  protected String id = "", alias = "", priority = "";
 
   public Component(JXPathContext node)
   {
