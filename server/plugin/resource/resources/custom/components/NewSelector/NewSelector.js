@@ -1,5 +1,5 @@
 
-var NewSelectorComponent = BaseComponent.extend({
+var NewSelectorComponent = UnmanagedComponent.extend({
   
   pageStart: 0,
   pageSize: 54,    
@@ -60,13 +60,13 @@ var NewSelectorComponent = BaseComponent.extend({
     Dashboards.setParameter(this.parameter, p);
     /* Initialize model and view, if needed */
     if(!this.selectorModel) {
-      this.selectorModel = new SelectorModel(modelOptions);
+      this.selectorModel = new models.pagingSelector.SelectorModel(modelOptions);
     } else {
       this.selectorModel.set(modelOptions);
     }
     this.selectorModel.updateValues(values);
     if(!this.selectorView) {
-      this.selectorView = new SelectorView({
+      this.selectorView = new views.pagingSelector.SelectorView({
         model: this.selectorModel,
         el: this.ph.get(0)
       });
