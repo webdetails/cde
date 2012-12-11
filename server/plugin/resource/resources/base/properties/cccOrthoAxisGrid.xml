@@ -7,7 +7,7 @@
     <Tooltip>Indicates if grid rules are drawn separating discrete values or at each major continuous tick.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>323</Order>
+    <Order>322</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

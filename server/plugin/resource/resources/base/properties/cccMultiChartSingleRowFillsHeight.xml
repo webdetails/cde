@@ -7,7 +7,7 @@
     <Tooltip>Indicates that, when the layout results in a single row and the value of is still to be determined, it should be set to all the initially available content height, instead of determining the height from the and the .</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>312</Order>
+    <Order>311</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

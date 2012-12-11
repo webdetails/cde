@@ -7,7 +7,7 @@
     <Tooltip>Increment radius of an exploded slice, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>272</Order>
+    <Order>271</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

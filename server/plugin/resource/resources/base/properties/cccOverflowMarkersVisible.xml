@@ -7,7 +7,7 @@
     <Tooltip>Indicates if overflow and underflow markers are shown when the bars are drawn off the plot area.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>347</Order>
+    <Order>346</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

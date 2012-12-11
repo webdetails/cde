@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the visual elements are connected with lines.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>355</Order>
+    <Order>354</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

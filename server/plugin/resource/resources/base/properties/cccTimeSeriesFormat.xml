@@ -7,7 +7,7 @@
     <Tooltip>The format string used by default to parse dimensions of the Date value type.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>413</Order>
+    <Order>412</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

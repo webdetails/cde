@@ -7,7 +7,7 @@
     <Tooltip>Indicates if, in the data source, the series data is in the rows, instead of, as is more usual, in the columns.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>370</Order>
+    <Order>369</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

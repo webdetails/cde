@@ -7,7 +7,7 @@
     <Tooltip>The mouse cursor to show when the mouse is over.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>381</Order>
+    <Order>380</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

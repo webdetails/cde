@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when, after selection has changed, the chart is updated to reflect the change.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>369</Order>
+    <Order>368</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

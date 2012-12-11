@@ -7,7 +7,7 @@
     <Tooltip>The subTitle visual role represents a the sub-title of each bullet.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>411</Order>
+    <Order>410</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
