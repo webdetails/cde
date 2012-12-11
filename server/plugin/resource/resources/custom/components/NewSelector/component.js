@@ -2,7 +2,13 @@
  * Selector Model describes the behaviour for the selector
  * as a whole. 
  */
-var SelectorModel = Backbone.Model.extend({
+
+var views = views || {};
+views.pagingSelector = {};
+var models = models || {};
+models.pagingSelector = {};
+
+models.pagingSelector.SelectorModel = Backbone.Model.extend({
   defaults: {
     "title": "",
     "search": true,
@@ -20,7 +26,7 @@ var SelectorModel = Backbone.Model.extend({
     this.set("values",new Backbone.Collection());
     var values = this.get("values");
     values.comparator = function(val) {return val.get("idx");};
-    values.model = OptionModel;
+    values.model = models.pagingSelector.OptionModel;
     values.on("change:selected",this.updateSelection,this);
     this.on("change:searchterm",this.updateSearch,this);
     this.updateValues(values);
@@ -118,7 +124,7 @@ var SelectorModel = Backbone.Model.extend({
  * Option Model describes the behaviour for each individual
  * option within the selector.  
  */
-var OptionModel = Backbone.Model.extend({
+models.pagingSelector.OptionModel = Backbone.Model.extend({
   defaults: {
     "idx": 0,
     "label": "",
@@ -137,7 +143,8 @@ var OptionModel = Backbone.Model.extend({
  * Selector View displays the selector model
  */
 
-var SelectorView = Backbone.View.extend({
+views.pagingSelector.SelectorView = Backbone.View.extend({
+
 
   events: {
     "click .title": "toggleCollapsed",
@@ -169,7 +176,7 @@ var SelectorView = Backbone.View.extend({
     this._selectedViews = [];
     this._optionViews = [];
     this.model.get("values").each(function(m){
-      this._optionViews.push(new OptionView({model:m}));
+      this._optionViews.push(new views.pagingSelector.OptionView({model:m}));
       if (m.get("selected")) {
         this._selectedViews.push(new SelectionView({model:m}));
       } 
@@ -307,7 +314,7 @@ var SelectorView = Backbone.View.extend({
  * in the option listing
  */
 
-var OptionView = Backbone.View.extend({
+views.pagingSelector.OptionView = Backbone.View.extend({
 
   tagName: "span",
   events: {
