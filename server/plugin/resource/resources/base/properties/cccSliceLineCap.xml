@@ -7,7 +7,7 @@
     <Tooltip>The possible ways to draw the ends of a line or line pattern.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>387</Order>
+    <Order>386</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

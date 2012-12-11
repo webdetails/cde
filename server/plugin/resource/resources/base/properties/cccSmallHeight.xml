@@ -7,7 +7,7 @@
     <Tooltip>Fixates the height of each small chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>398</Order>
+    <Order>397</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
