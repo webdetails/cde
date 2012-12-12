@@ -39,7 +39,10 @@ public class CggChart
     this.document = JXPathContext.newContext(chart.getRootNode());
     this.path = "";
     this.chartName = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='name']/value").getValue().toString();
-    this.chartTitle = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='title']/value").getValue().toString();
+    Pointer pointer = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='title']/value");
+    if (pointer == null || pointer.getValue() == null)
+      pointer = JXPathContext.newContext(chart.getNode()).getPointer("properties/.[name='cccTitle']/value");
+    this.chartTitle = pointer.getValue().toString();
   }
 
   public void renderToFile(String dashboardName)
