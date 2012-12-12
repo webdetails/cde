@@ -251,7 +251,7 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
   toggleSelected: function(m, selected) {
     var v;
     if (selected) {
-      v = new SelectionView({model:m});
+      v = new views.pagingSelector.SelectionView({model:m});
       this.$el.find(".selection").append(v.render().el);
       this._selectedViews.push(v);
     } else {
@@ -361,7 +361,7 @@ views.pagingSelector.OptionView = Backbone.View.extend({
  */
 
 
-var SelectionView = Backbone.View.extend({
+views.pagingSelector.SelectionView = Backbone.View.extend({
   tagName: "li",
   events: {
     "click .remove": "unselect"
