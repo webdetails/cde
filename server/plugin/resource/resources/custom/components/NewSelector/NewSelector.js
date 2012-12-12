@@ -11,6 +11,10 @@ var NewSelectorComponent = UnmanagedComponent.extend({
     if (typeof this.valuesArray != "undefined" && this.valuesArray.length > 0) {  
       this.synchronous(redraw,this.valuesArray);
     } else {
+      var params = Dashboards.propertiesArrayToObject( this.parameters );
+      var pattern = (this.selectorModel) ? this.selectorModel.get("searchterm") : "";
+      params[this.searchParam] = "'" + pattern + "'";
+      this.parameters = Dashboards.objectToPropertiesArray(params);
       this.triggerQuery(this.chartDefinition,redraw,{
         pageSize: this.pageSize
       });
@@ -101,9 +105,9 @@ var NewSelectorComponent = UnmanagedComponent.extend({
   pagingHandler: function() {
     var redraw = this.getSuccessHandler(_.bind(function(data){
       var values = this.values(data);
-      this.model.addPage(values);
+      this.selectorModel.addPage(values);
     },this));
-    this.queryState.pageStartingAt(this.model.get("pageStart"), redraw);
+    this.queryState.pageStartingAt(this.selectorModel.get("pageStart"), redraw);
   },
 
   getValue: function() {
