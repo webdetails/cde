@@ -54,12 +54,12 @@ models.pagingSelector.SelectorModel = Backbone.Model.extend({
         total = this.get("totalRecords"),
         requestedPage = start + size,
         lastPage = total - total % size;
-    this.model.set("pageStart", Math.min(requestedPage, lastPage));
+    this.set("pageStart", Math.min(requestedPage, lastPage));
   },
   prevPage: function(){
     var start = this.get("pageStart"),
         size = this.get("pageSize");
-    this.model.set("pageStart", Math.max(0,start - size));
+    this.set("pageStart", Math.max(0,start - size));
   },
   firstPage: function(){
     this.set("pageStart", 0);
@@ -67,14 +67,14 @@ models.pagingSelector.SelectorModel = Backbone.Model.extend({
   lastPage: function() {
     var total = this.get("totalRecords"),
         size = this.get("pageSize");
-    this.model.set("pageStart", total - total % size);   
+    this.set("pageStart", total - total % size);   
   },
   goToPage: function(page) {
     var total = this.get("totalRecords"),
         size = this.get("pageSize"),
         requestedPage = page * size,
         lastPage = total - total % size;
-    this.model.set("pageStart", Math.min(requestedPage, lastPage));
+    this.set("pageStart", Math.min(requestedPage, lastPage));
   
   },
 
