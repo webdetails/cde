@@ -8,13 +8,16 @@ var NewSelectorComponent = UnmanagedComponent.extend({
     $.extend(this.options,this);
     this.ph = $("#" + this.htmlObject).empty();
     var redraw = _.bind(this.redraw,this);
-    if (typeof this.valuesArray != "undefined" && this.valuesArray.length > 0) {  
+    if (typeof this.valuesArray != "undefined" && this.valuesArray.length > 0) {
       this.synchronous(redraw,this.valuesArray);
     } else {
       var params = Dashboards.propertiesArrayToObject( this.parameters );
-      var pattern = (this.selectorModel) ? this.selectorModel.get("searchterm") : "";
+      var pattern = (this.selectorModel) ?
+          this.selectorModel.get("searchterm"):
+          "";
       params[this.searchParam] = "'" + pattern + "'";
       this.parameters = Dashboards.objectToPropertiesArray(params);
+
       this.triggerQuery(this.chartDefinition,redraw,{
         pageSize: this.pageSize
       });
@@ -76,30 +79,42 @@ var NewSelectorComponent = UnmanagedComponent.extend({
       });
     }
     this.selectorView.render();
-    /* Listen to all the stuff we need to */
+    /* Listen to all the stuff we need to. We first need to make sure to clear
+     * out the old bindings, so as not to leak memory.
+     */
+    this.selectorModel.off('change:searchterm', this.update);
     this.selectorModel.on('change:searchterm', this.update, this);
+    this.selectorModel.off('change:pageSize', this.pagingHandler);
     this.selectorModel.on('change:pageSize', this.pagingHandler, this);
+    this.selectorModel.off('change:pageStart', this.pagingHandler);
     this.selectorModel.on('change:pageStart', this.pagingHandler, this);
     /* We trigger a change on the parameter if the user just collapsed the
      * selector, or if unselecting values whlie the selector's collapsed*/
-    this.selectorModel.on("change:collapsed",function(evt){
-      if(evt.changed.collapsed) Dashboards.processChange(this.name);
-    },this);
+    this.selectorModel.off("change:collapsed", this.handleCollapse);
+    this.selectorModel.on("change:collapsed", this.handleCollapse, this);
 
     var timeout = 0;
-    this.selectorModel.get("values").on("change:selected",function(evt){
-      if(!evt.changed.selected && this.selectorModel.get("collapsed")) {
-        /* Wrap the processChange in a setTimeout so that consecutive
-         * selection removals only trigger a single parameter change
-         */
-        if(timeout !== 0) clearTimeout(timeout);
-        var myself = this;
-        timeout = setTimeout(function(){
-          Dashboards.processChange(myself.name);
-          timeout = 0;
-        }, 1500);
-      }
-    },this);
+    var values = this.selectorModel.get("values");
+    values.off("change:selected", this.handleSelectionChange);
+    values.on("change:selected", this.handleSelectionChange,this);
+  },
+
+  handleCollapse: function(evt){
+    if(evt.changed.collapsed) Dashboards.processChange(this.name);
+  },
+
+  handleSelectionChange: function(evt){
+    if(!evt.changed.selected && this.selectorModel.get("collapsed")) {
+      /* Wrap the processChange in a setTimeout so that consecutive
+       * selection removals only trigger a single parameter change
+       */
+      if(timeout !== 0) clearTimeout(timeout);
+      var myself = this;
+      timeout = setTimeout(function(){
+        Dashboards.processChange(myself.name);
+        timeout = 0;
+      }, 1500);
+    }
   },
 
   pagingHandler: function() {
