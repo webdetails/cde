@@ -178,7 +178,7 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
     this.model.get("values").each(function(m){
       this._optionViews.push(new views.pagingSelector.OptionView({model:m}));
       if (m.get("selected")) {
-        this._selectedViews.push(new views.pagingSelector.SelectionView({model:m}));
+        this._selectedViews.push(new SelectionView({model:m}));
       } 
    }, this);
 
