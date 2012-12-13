@@ -93,7 +93,7 @@ var NewSelectorComponent = UnmanagedComponent.extend({
     this.selectorModel.off("change:collapsed", this.handleCollapse);
     this.selectorModel.on("change:collapsed", this.handleCollapse, this);
 
-    var timeout = 0;
+    this.timeout = 0;
     var values = this.selectorModel.get("values");
     values.off("change:selected", this.handleSelectionChange);
     values.on("change:selected", this.handleSelectionChange,this);
@@ -108,9 +108,11 @@ var NewSelectorComponent = UnmanagedComponent.extend({
       /* Wrap the processChange in a setTimeout so that consecutive
        * selection removals only trigger a single parameter change
        */
-      if(timeout !== 0) clearTimeout(timeout);
+      if(this.timeout !== 0) {
+        clearTimeout(this.timetimeout);
+      };
       var myself = this;
-      timeout = setTimeout(function(){
+      this.timeout = setTimeout(function(){
         Dashboards.processChange(myself.name);
         timeout = 0;
       }, 1500);
