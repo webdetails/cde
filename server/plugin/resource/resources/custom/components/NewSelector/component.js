@@ -272,8 +272,9 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
     } else {
 
         // TODO: SAPATADA
-        $(".datepicker-title").removeClass("datepicker-title-visible");        
-        $(".datepicker-outerbox").hide(); 
+        $(".datepicker-title").removeClass("datepicker-title-visible");
+        $(".datepicker-outerbox").hide();
+        $(".manage-views.active").click();
 
 
       this.$el.find('.selectorComponent').removeClass('collapsed').addClass('expanded');
