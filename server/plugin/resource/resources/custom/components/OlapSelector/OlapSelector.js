@@ -693,7 +693,7 @@ var LevelView = OptionView.extend({
     
     setTemplate: function(){
         this.template = templates.olapSelector.level;
-    },
+    }
 
 });
 
