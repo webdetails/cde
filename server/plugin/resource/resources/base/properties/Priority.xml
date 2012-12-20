@@ -3,9 +3,9 @@
   <Name>priority</Name>
   <Advanced>true</Advanced>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue></DefaultValue>
+	<DefaultValue>5</DefaultValue>
 	<Description>Priority</Description>
-	<Tooltip>How high a priority the component has in execution order.</Tooltip>
+	<Tooltip>Priority for component execution component. Lower values have higher priority</Tooltip>
 	<InputType>Integer</InputType>
 	<OutputType>Number</OutputType>
 	<Order>50</Order>
