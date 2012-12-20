@@ -17,8 +17,9 @@ import java.io.Reader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,14 +132,14 @@ public class Packager
     return "";
   }
 
-  public void addFileToPackage(String pkg, String file)
+  public void addFileToPackage(String pkg, String name, String path)
   {
-    this.fileSets.get(pkg).addFile(file);
+    this.fileSets.get(pkg).addFile(name, path);
   }
 
-  public void addFileToPackage(String pkg, File file)
+  public void addFileToPackage(String pkg, String name, File file)
   {
-    this.fileSets.get(pkg).addFile(file);
+    this.fileSets.get(pkg).addFile(name, file);
   }
 }
 
@@ -147,30 +148,41 @@ class FileSet
 
   private boolean dirty;
   private String latestVersion;
-  private ArrayList<File> files;
-  private File location;
+  private Map<String, String> files;
+  private String location;
   private Packager.Filetype filetype;
   private String rootdir;
 
-  public void addFile(String file)
+  public void addFile(String name, String path)
   {
-    addFile(new File(file));
-  }
-
-  public void addFile(File file)
-  {
-    if (files.indexOf(file) == -1)
+    if (!files.containsKey(name) || !files.get(name).equals(path))
     {
       this.dirty = true;
-      this.files.add(file);
+      this.files.put(name, path);
+    }
+  }
+
+  public void addFile(String name, File file)
+  {
+    try
+    {
+      addFile(name, file.getCanonicalPath());
+    }
+    catch (IOException e)
+    {
+      Packager.logger.error("Couldn' add resource '" + name + "': ", e);
     }
   }
 
   public FileSet(String location, Packager.Filetype type, File[] fileSet, String rootdir) throws IOException, NoSuchAlgorithmException
   {
-    this.files = new ArrayList<File>();
-    this.files.addAll(Arrays.asList(fileSet));
-    this.location = new File(location);
+    this.files = new HashMap<String, String>();
+    for (File file : fileSet)
+    {
+      String path = file.getCanonicalPath();
+      this.files.put(path, path);
+    }
+    this.location = location;
     this.filetype = type;
     this.latestVersion = "";
     this.dirty = true;
@@ -180,7 +192,7 @@ class FileSet
   public FileSet() throws IOException, NoSuchAlgorithmException
   {
     dirty = true;
-    files = new ArrayList<File>();
+    files = new HashMap<String, String>();
     latestVersion = null;
     location = null;
   }
@@ -194,11 +206,21 @@ class FileSet
     try
     {
       //output = new FileWriter(location);
+      File[] filesArray = new File[this.files.size()];
+
+      int i = 0;
+      Set<String> keys = files.keySet();
+      for (String key : keys)
+      {
+        filesArray[i++] = new File(this.files.get(key));
+      }
+      File location = new File(this.location);
       switch (this.filetype)
       {
         case JS:
-          concatenatedStream = Concatenate.concat(this.files.toArray(new File[this.files.size()]));
+          concatenatedStream = Concatenate.concat(filesArray);
           freader = new InputStreamReader(concatenatedStream, "UTF8");
+
 
           switch (mode)
           {
@@ -217,7 +239,7 @@ class FileSet
           }
           break;
         case CSS:
-          concatenatedStream = Concatenate.concat(this.files.toArray(new File[this.files.size()]), rootdir);
+          concatenatedStream = Concatenate.concat(filesArray, rootdir);
           freader = new InputStreamReader(concatenatedStream, "UTF8");
 
           //FileWriter 
@@ -281,8 +303,10 @@ class FileSet
     //minified file is older than any file in the set.
     if (!dirty && !force)
     {
-      for (File file : files)
+      File location = new File(this.location);
+      for (String filePath : files.values())
       {
+        File file = new File(filePath);
         if (!location.exists() || file.lastModified() > location.lastModified())
         {
           this.dirty = true;
