@@ -18,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -48,7 +49,7 @@ public class Packager
   };
   static Log logger = LogFactory.getLog(Packager.class);
   private static Packager _instance;
-  private HashMap<String, FileSet> fileSets;
+  private Map<String, FileSet> fileSets;
 
   private Packager()
   {
@@ -176,7 +177,7 @@ class FileSet
 
   public FileSet(String location, Packager.Filetype type, File[] fileSet, String rootdir) throws IOException, NoSuchAlgorithmException
   {
-    this.files = new HashMap<String, String>();
+    this.files = new LinkedHashMap<String, String>();
     for (File file : fileSet)
     {
       String path = file.getCanonicalPath();
