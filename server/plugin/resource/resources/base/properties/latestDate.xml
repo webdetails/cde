@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>latestDate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>+1years</DefaultValue>
+	<Description>Latest Date</Description>
+	<Tooltip>DateRangeInput latest date</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>31</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
