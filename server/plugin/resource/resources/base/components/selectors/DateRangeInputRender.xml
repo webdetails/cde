@@ -14,6 +14,10 @@
 			<Property>listeners</Property>
 			<Property>singleInput</Property>
 			<Property>inputSeparator</Property>
+			<Property>earliestDate</Property>
+			<Property>latestDate</Property>
+			<Property>leftOffset</Property>
+			<Property>topOffset</Property>
 			<Property>executeAtStart</Property>
 			<Property>preChange</Property>
 			<Property>postChange</Property>

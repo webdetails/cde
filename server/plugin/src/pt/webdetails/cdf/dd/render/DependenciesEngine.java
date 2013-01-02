@@ -47,10 +47,11 @@ public class DependenciesEngine
     this.sourcePath = sourcePath;
   }
 
-  public String getName(){
+  public String getName()
+  {
     return name;
   }
-  
+
   public String getPackagedDependencies()
   {
     return getPackagedDependencies(format);
@@ -83,6 +84,7 @@ public class DependenciesEngine
   public void register(String name, String version, String path) throws Exception
   {
     Dependency dep;
+    File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
     try
     {
       dep = dependencyPool.get(name);
@@ -94,10 +96,11 @@ public class DependenciesEngine
     if (dep != null)
     {
       dep.update(version, path);
+      packager.addFileToPackage(this.name, name, f.getCanonicalPath());
     }
     else
     {
-      File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
+
       FileInputStream fis = null;
       try
       {
@@ -107,15 +110,13 @@ public class DependenciesEngine
         String hash = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
         dep = new Dependency(version, path, hash);
         dependencyPool.put(name, dep);
-        packager.addFileToPackage(this.name, f);
+        packager.addFileToPackage(this.name, name, f.getCanonicalPath());
       }
       finally
       {
         IOUtils.closeQuietly(fis);
       }
     }
-
-
   }
 
   public void registerRaw(String name, String version, String contents) throws Exception

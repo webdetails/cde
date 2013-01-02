@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>topOffset</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>15</DefaultValue>
+	<Description>Top Offset</Description>
+	<Tooltip>DateRangeInput top offset</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>33</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
