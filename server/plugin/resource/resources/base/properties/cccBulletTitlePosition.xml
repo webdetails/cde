@@ -1,0 +1,20 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBulletTitlePosition</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>left</DefaultValue>
+    <Description>bulletTitlePosition</Description>
+    <Tooltip>The side of the bullet where the title and sub-title are placed.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>250</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Bottom">bottom</Value>
+    <Value display="Left">left</Value>
+    <Value display="Right">right</Value>
+    <Value display="Top">top</Value>
+  </Values>
+</DesignerProperty>

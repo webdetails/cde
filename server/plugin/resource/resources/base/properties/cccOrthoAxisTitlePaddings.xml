@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrthoAxisTitlePaddings</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>orthoAxisTitlePaddings</Description>
+    <Tooltip>The paddings of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>340</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

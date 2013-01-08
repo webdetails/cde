@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrthoAxisSizeMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>orthoAxisSizeMax</Description>
+    <Tooltip>The maximum size of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>330</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

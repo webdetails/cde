@@ -1,0 +1,18 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccValuesLabelStyle</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>linked</DefaultValue>
+    <Description>valuesLabelStyle</Description>
+    <Tooltip>The style used to place value labels.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>458</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Inside">inside</Value>
+    <Value display="Linked">linked</Value>
+  </Values>
+</DesignerProperty>

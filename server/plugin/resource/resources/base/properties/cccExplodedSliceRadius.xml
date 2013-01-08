@@ -1,14 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccExplodedSliceRadius</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>0</DefaultValue>
-      <Description>Exploded slice radius</Description>
-      <Tooltip>Exploded slice radius</Tooltip>
-      <InputType>Integer</InputType>
-      <OutputType>Number</OutputType>
-      <Order>44</Order>
-      <Advanced>true</Advanced>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccExplodedSliceRadius</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>explodedSliceRadius</Description>
+    <Tooltip>Increment radius of an exploded slice, in pixel units or as a percentage.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>271</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

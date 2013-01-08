@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSizeRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sizeRole</Description>
+    <Tooltip>The size visual role controls the size of the dot visual elements, when in shapes mode.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>376</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

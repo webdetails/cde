@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPaddings</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>paddings</Description>
+    <Tooltip>The paddings of the root chart.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>347</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

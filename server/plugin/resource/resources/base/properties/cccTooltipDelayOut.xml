@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTooltipDelayOut</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>80</DefaultValue>
+    <Description>tooltipDelayOut</Description>
+    <Tooltip>The delay for the tooltip to hide, in milliseconds.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>425</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccValuesMask</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>valuesMask</Description>
+    <Tooltip>The values mask used to build the text of value labels.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>459</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

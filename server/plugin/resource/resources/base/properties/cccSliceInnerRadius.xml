@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceInnerRadius</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sliceInnerRadius</Description>
+    <Tooltip>The inner radius of each slice, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>383</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

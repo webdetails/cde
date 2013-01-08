@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisMinorTicks</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>baseAxisMinorTicks</Description>
+    <Tooltip>Indicates if minor ticks are shown between major ticks (applies to continuous axes).</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>218</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

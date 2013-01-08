@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSizeAxisFixedMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sizeAxisFixedMax</Description>
+    <Tooltip>The fixed maximum domain value that the axis will show (applies to numeric axes).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>372</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

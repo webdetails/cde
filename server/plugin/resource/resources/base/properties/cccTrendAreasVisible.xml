@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTrendAreasVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>trendAreasVisible</Description>
+    <Tooltip>Indicates if the visual elements are connected with shaded areas extending from the visual elements to the zero line.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>437</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

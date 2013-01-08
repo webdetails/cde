@@ -1,14 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccTitleSize</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>25</DefaultValue>
-      <Description>Title size</Description>
-      <Tooltip>Title area size</Tooltip>
-      <InputType>Integer</InputType>
-      <OutputType>Number</OutputType>
-      <Order>41</Order>
-      <Advanced>true</Advanced>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccTitleSize</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>titleSize</Description>
+    <Tooltip>The fixed size of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>421</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

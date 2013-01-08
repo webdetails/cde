@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrthoAxisTitle</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>orthoAxisTitle</Description>
+    <Tooltip>The axis title and title options.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>335</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

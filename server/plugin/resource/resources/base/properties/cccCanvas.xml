@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccCanvas</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>canvas</Description>
+    <Tooltip>The identifier of the HTML element, or the element itself, where the chart is to be created in.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>251</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

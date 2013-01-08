@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTooltipUseCorners</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>tooltipUseCorners</Description>
+    <Tooltip>Indicates if the tooltip gravities should be aligned with corners.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>434</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

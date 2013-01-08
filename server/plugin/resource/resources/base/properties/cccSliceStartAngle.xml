@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceStartAngle</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>sliceStartAngle</Description>
+    <Tooltip>The start angle of each slice, in radian units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>390</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

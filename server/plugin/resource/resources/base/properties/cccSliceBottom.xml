@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceBottom</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sliceBottom</Description>
+    <Tooltip>Indicates the distance between this marks bottom side and its parents bottom side.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>379</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

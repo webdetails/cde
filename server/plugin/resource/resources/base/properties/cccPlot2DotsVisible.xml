@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPlot2DotsVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>plot2DotsVisible</Description>
+    <Tooltip>Indicates if the visual elements show dots/markers in each points position.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>353</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

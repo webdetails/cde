@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSizeAxisUseAbs</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>sizeAxisUseAbs</Description>
+    <Tooltip>Indicates if the axis scale is applied over the absolute value of the domain values (applies to numeric domain axes).</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>375</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

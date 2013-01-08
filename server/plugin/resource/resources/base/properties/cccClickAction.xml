@@ -1,15 +1,14 @@
 <DesignerProperty>
-    <Header>
-      <Name>cccClickAction</Name>
-      <Parent>BaseProperty</Parent>
-<!--      <DefaultValue>function(serie,category,value){}</DefaultValue>-->
-      <DefaultValue/>
-      <Description>Click action</Description>
-      <Tooltip>Action to be called on click</Tooltip>
-      <Advanced>false</Advanced>
-      <InputType>JavaScript</InputType>
-      <OutputType>Function</OutputType>
-      <Order>90</Order>
-      <Version>1.0</Version>
-    </Header>
-  </DesignerProperty>
+  <Header>
+    <Name>cccClickAction</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>clickAction</Description>
+    <Tooltip>A callback function that is called when the user clicks on a bullet.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>255</Order>
+    <Advanced>false</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

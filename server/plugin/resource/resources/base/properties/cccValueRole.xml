@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccValueRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>valueRole</Description>
+    <Tooltip>The value visual role controls the height of bars.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>455</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

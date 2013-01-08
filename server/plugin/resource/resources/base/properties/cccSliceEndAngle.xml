@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceEndAngle</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>sliceEndAngle</Description>
+    <Tooltip>The end angle of each slice, in radian units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>381</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

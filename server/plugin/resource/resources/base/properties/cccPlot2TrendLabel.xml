@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPlot2TrendLabel</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>plot2TrendLabel</Description>
+    <Tooltip>A description to show next to the trended data.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>359</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

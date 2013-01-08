@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceCursor</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>sliceCursor</Description>
+    <Tooltip>The mouse cursor to show when the mouse is over.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>380</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

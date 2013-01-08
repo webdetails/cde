@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTrendLinesVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>trendLinesVisible</Description>
+    <Tooltip>Indicates if the visual elements are connected with lines.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>441</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

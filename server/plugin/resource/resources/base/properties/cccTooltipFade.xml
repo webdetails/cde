@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTooltipFade</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>tooltipFade</Description>
+    <Tooltip>Indicates if the tooltip fades in and out, after the corresponding delay has expired.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>427</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
