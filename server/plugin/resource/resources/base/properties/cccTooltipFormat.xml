@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>tooltipFormat</Description>
-    <Tooltip>A callback function that is called, to build the tooltip of a visual element.</Tooltip>
+    <Tooltip>A callback function that is called to build the tooltip of a visual element.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>429</Order>
+    <Order>463</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

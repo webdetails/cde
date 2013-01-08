@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>2</DefaultValue>
     <Description>tooltipOffset</Description>
-    <Tooltip>The distance of the closest tooltip edge or corner to the visual elements tooltip anchor point.</Tooltip>
+    <Tooltip>The distance of the closest tooltip edge or corner to the visual elements tooltip anchor point, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>432</Order>
+    <Order>466</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The title panel of the root chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>413</Order>
+    <Order>448</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

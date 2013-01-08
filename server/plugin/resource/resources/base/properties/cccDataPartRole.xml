@@ -7,7 +7,7 @@
     <Tooltip>The dataPart visual role allows fine grained partitioning of the data that shows in the main plot and in the second plot.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>267</Order>
+    <Order>275</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

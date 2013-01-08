@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>%Y-%m-%d</DefaultValue>
     <Description>timeSeriesFormat</Description>
-    <Tooltip>The format string used by default to parse dimensions of the Date value type.</Tooltip>
+    <Tooltip>The format string used to parse dimensions of the Date value type, by default.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>412</Order>
+    <Order>447</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

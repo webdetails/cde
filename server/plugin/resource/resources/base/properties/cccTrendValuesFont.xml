@@ -2,12 +2,12 @@
   <Header>
     <Name>cccTrendValuesFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue>10px sans-serif</DefaultValue>
     <Description>trendValuesFont</Description>
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>449</Order>
+    <Order>483</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

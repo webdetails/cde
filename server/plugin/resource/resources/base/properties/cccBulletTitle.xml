@@ -2,12 +2,12 @@
   <Header>
     <Name>cccBulletTitle</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>Bullet</DefaultValue>
+    <DefaultValue>Title</DefaultValue>
     <Description>bulletTitle</Description>
     <Tooltip>The default bullet title.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>249</Order>
+    <Order>248</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

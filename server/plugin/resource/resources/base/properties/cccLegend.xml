@@ -2,12 +2,12 @@
   <Header>
     <Name>cccLegend</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue>false</DefaultValue>
     <Description>legend</Description>
     <Tooltip>The legend panel of the root chart.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>276</Order>
+    <Order>284</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The space between the marker and the associated label, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>291</Order>
+    <Order>298</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

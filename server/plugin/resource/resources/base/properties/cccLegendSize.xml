@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>legendSize</Description>
-    <Tooltip>The fixed size of the panel.</Tooltip>
+    <Tooltip>The fixed size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>289</Order>
+    <Order>296</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

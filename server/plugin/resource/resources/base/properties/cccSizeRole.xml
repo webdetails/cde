@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>sizeRole</Description>
-    <Tooltip>The size visual role controls the size of the dot visual elements, when in shapes mode.</Tooltip>
+    <Tooltip>The size visual role controls the size of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>376</Order>
+    <Order>412</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

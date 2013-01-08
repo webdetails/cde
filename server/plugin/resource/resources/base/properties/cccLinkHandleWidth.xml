@@ -7,7 +7,7 @@
     <Tooltip>The width of the link line handle width, in em units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>293</Order>
+    <Order>300</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

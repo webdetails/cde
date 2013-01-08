@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>valueRole</Description>
-    <Tooltip>The value visual role controls the height of bars.</Tooltip>
+    <Tooltip>The value visual role represents the main measure.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>455</Order>
+    <Order>489</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

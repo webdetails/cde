@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrtho2AxisLabelSpacingMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue/>
+    <Description>ortho2AxisLabelSpacingMin</Description>
+    <Tooltip>The minimum spacing between tick labels, in em units (does not apply to discrete-hierarchical axes).</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>328</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

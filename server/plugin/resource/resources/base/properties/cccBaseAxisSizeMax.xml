@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>baseAxisSizeMax</Description>
-    <Tooltip>The maximum size of the panel.</Tooltip>
+    <Tooltip>The maximum size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>224</Order>

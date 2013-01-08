@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>colorRole</Description>
-    <Tooltip>The color visual role controls the color of pie slices.</Tooltip>
+    <Tooltip>The color visual role controls the color of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>258</Order>
+    <Order>264</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
