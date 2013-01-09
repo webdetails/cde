@@ -1,4 +1,3 @@
-
 // Entry base model
 
 var BaseModel = Base.extend({
@@ -66,7 +65,7 @@ var BaseOperation = Base.extend({
     types: ["TYPE"],
     name: "Base operation",
     description: "Base Operation description",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/toolbar-folder-add-48x48.png",
+    icon: "getResource?resource=/images/toolbar-folder-add-48x48.png",
     order: 20,
     logger: {},
     hoverIcon: null, //icon to display on hover
@@ -138,7 +137,7 @@ var AddRowOperation = BaseOperation.extend({
     types: ["GenericRow"],
     name: "New Row",
     description: "Adds a new row to the layout on the specific position",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/addrow.png",
+    icon: "getResource?resource=/images/NAV/addrow.png",
 
     constructor: function(){
       this.logger = new Logger("AddRowOperation");
@@ -154,9 +153,9 @@ var MoveUpOperation = BaseOperation.extend({
     types: ["GenericMoveUp"],
     name: "Move Up",
     description: "Move up",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up.png",
-    hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up_mouseover.png",
-    clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/up_onclick.png",
+    icon: "getResource?resource=/images/NAV/up.png",
+    hoverIcon: "getResource?resource=/images/NAV/up_mouseover.png",
+    clickIcon: "getResource?resource=/images/NAV/up_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("MoveUpOperation");
@@ -240,9 +239,9 @@ var MoveDownOperation = BaseOperation.extend({
     types: ["GenericMoveDown"],
     name: "Move Down",
     description: "Move down",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down.png",
-    hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down_mouseover.png",
-    clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/down_onclick.png",
+    icon: "getResource?resource=/images/NAV/down.png",
+    hoverIcon: "getResource?resource=/images/NAV/down_mouseover.png",
+    clickIcon: "getResource?resource=/images/NAV/down_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("MoveDownOperation");
@@ -326,9 +325,9 @@ var DeleteOperation = BaseOperation.extend({
     types: ["GenericDelete"],
     name: "Delete",
     description: "Delete",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove.png",
-    hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove_mouseover.png",
-    clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/remove_onclick.png",
+    icon: "getResource?resource=/images/NAV/remove.png",
+    hoverIcon: "getResource?resource=/images/NAV/remove_mouseover.png",
+    clickIcon: "getResource?resource=/images/NAV/remove_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("DeleteOperation");
@@ -415,9 +414,9 @@ var ApplyTemplateOperation = BaseOperation.extend({
     types: ["GenericApplyTemplate"],
     name: "Apply Template",
     description: "Applys a template.",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp.png",
-    hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp_mouseover.png",
-    clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/loadtemp_onclick.png",
+    icon: "getResource?resource=/images/NAV/loadtemp.png",
+    hoverIcon: "getResource?resource=/images/NAV/loadtemp_mouseover.png",
+    clickIcon: "getResource?resource=/images/NAV/loadtemp_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("ApplyTemplateOperation");
@@ -433,9 +432,9 @@ var SaveAsTemplateOperation = BaseOperation.extend({
     types: ["GenericSaveAsTemplate"],
     name: "Save as Template",
     description: "Save sa template.",
-    icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp.png",
-    hoverIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp_mouseover.png",
-    clickIcon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/NAV/savetemp_onclick.png",
+    icon: "getResource?resource=/images/NAV/savetemp.png",
+    hoverIcon: "getResource?resource=/images/NAV/savetemp_mouseover.png",
+    clickIcon: "getResource?resource=/images/NAV/savetemp_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("SaveAsTemplateOperation");
