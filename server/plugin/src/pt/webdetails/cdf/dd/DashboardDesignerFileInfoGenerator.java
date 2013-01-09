@@ -11,7 +11,6 @@ import org.dom4j.io.SAXReader;
 import org.pentaho.platform.api.engine.IFileInfo;
 //import org.pentaho.platform.api.engine.IFileInfoGenerator;
 import org.pentaho.platform.api.engine.ILogger;
-import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.ISolutionFileMetaProvider;
 import org.pentaho.platform.engine.core.solution.FileInfo;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.engine.ISolutionFile;
 
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;

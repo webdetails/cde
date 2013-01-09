@@ -141,7 +141,7 @@ TYPICAL TARGET SEQUENCE
 
   <!-- Build Cache properties -->
   <property name="build.cache.dir"
-            value="${user.home}/.pentaho_build_cache"
+            value="${user.home}/.subfloor"
             description="Base dir for runtime jars that are required exclusively by the build process" />
   <property name="tmp.build.cache.dir"
             value="${build.cache.dir}/tmp"
