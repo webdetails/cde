@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccHoverable</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
-    <Description>hoverable</Description>
-    <Tooltip>Indicates if the charts visual elements are automatically highlighted when the user hovers over them with the mouse.</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>273</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccHoverable</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>false</DefaultValue>
+      <Description>hoverable</Description>
+      <Tooltip>Indicates if the chart's visual elements are automatically highlighted when the user hovers over them with the mouse.</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>283</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccSmallHeight</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>smallHeight</Description>
-    <Tooltip>Fixates the height of each small chart.</Tooltip>
-    <InputType>String</InputType>
-    <OutputType>String</OutputType>
-    <Order>397</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccSmallHeight</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>smallHeight</Description>
+      <Tooltip>Fixates the height of each small chart, in pixel units or as a percentage.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>414</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

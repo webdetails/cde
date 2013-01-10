@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrthoAxisTicks</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>true</DefaultValue>
-    <Description>orthoAxisTicks</Description>
-    <Tooltip>Indicates if ticks are shown for each tick value (does not apply to discrete-hierarchical axes).</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>334</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccOrthoAxisTicks</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>true</DefaultValue>
+      <Description>orthoAxisTicks</Description>
+      <Tooltip>Indicates if ticks are shown for each tick value (does not apply to discrete-hierarchical axes).</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>371</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

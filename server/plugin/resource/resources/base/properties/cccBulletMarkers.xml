@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccBulletMarkers</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>bulletMarkers</Description>
-    <Tooltip>The default bullet markers.</Tooltip>
-    <InputType>String</InputType>
-    <OutputType>String</OutputType>
-    <Order>243</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccBulletMarkers</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>bulletMarkers</Description>
+      <Tooltip>The default bullet markers.</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>240</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

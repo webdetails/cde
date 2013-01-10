@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrthoAxisVisible</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>true</DefaultValue>
-    <Description>orthoAxisVisible</Description>
-    <Tooltip>Indicates if the axis panel is shown.</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>344</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccOrthoAxisVisible</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>true</DefaultValue>
+      <Description>orthoAxisVisible</Description>
+      <Tooltip>Indicates if the axis panel is shown.</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>378</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

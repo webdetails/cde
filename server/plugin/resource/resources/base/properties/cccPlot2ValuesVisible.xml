@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccPlot2ValuesVisible</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
-    <Description>plot2ValuesVisible</Description>
-    <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>363</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccPlot2ValuesVisible</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>false</DefaultValue>
+      <Description>plot2ValuesVisible</Description>
+      <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>397</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccRangeRole</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>rangeRole</Description>
-    <Tooltip>The range visual role represents a classification of the values of the value visual role.</Tooltip>
-    <InputType>String</InputType>
-    <OutputType>String</OutputType>
-    <Order>365</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccRangeRole</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>rangeRole</Description>
+      <Tooltip>The range visual role represents a classification of the values of the value visual role.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>399</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

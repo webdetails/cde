@@ -1,21 +1,21 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrthoAxisDomainScope</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>orthoAxisDomainScope</Description>
-    <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
-    <InputType type="valuelist"/>
-    <OutputType>String</OutputType>
-    <Order>319</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
-  <Values>
-    <Value display="Cell">cell</Value>
-    <Value display="Column">column</Value>
-    <Value display="Global">global</Value>
-    <Value display="Row">row</Value>
-    <Value display="Section">section</Value>
-  </Values>
+   <Header>
+      <Name>cccOrthoAxisDomainScope</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>global</DefaultValue>
+      <Description>orthoAxisDomainScope</Description>
+      <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>355</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
+   <Values>
+      <Value display="Cell">cell</Value>
+      <Value display="Column">column</Value>
+      <Value display="Global">global</Value>
+      <Value display="Row">row</Value>
+      <Value display="Section">section</Value>
+   </Values>
 </DesignerProperty>
