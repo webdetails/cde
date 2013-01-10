@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccPlot2LinesVisible</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
-    <Description>plot2LinesVisible</Description>
-    <Tooltip>Indicates if the visual elements are connected with lines.</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>354</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccPlot2LinesVisible</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>true</DefaultValue>
+      <Description>plot2LinesVisible</Description>
+      <Tooltip>Indicates if the visual elements are connected with lines.</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>388</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

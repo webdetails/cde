@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccSeriesRole</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>seriesRole</Description>
-    <Tooltip>The series visual role of the heat grid chart organizes visual elements along the discrete orthogonal axis.</Tooltip>
-    <InputType>String</InputType>
-    <OutputType>String</OutputType>
-    <Order>370</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccSeriesRole</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>seriesRole</Description>
+      <Tooltip>The series visual role represents a series of connected data points.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>404</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

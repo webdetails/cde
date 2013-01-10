@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrthoAxisFixedMin</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>orthoAxisFixedMin</Description>
-    <Tooltip>The fixed minimum domain value that the axis will show (applies to continuous axes).</Tooltip>
-    <InputType>String</InputType>
-    <OutputType>String</OutputType>
-    <Order>321</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccOrthoAxisFixedMin</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>orthoAxisFixedMin</Description>
+      <Tooltip>The fixed minimum domain value that the axis will show (applies to continuous axes).</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>358</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

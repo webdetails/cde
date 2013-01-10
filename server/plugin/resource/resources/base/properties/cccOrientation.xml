@@ -1,18 +1,18 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrientation</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>vertical</DefaultValue>
-    <Description>orientation</Description>
-    <Tooltip>The chart orientation indicates if its main direction is vertical or horizontal.</Tooltip>
-    <InputType type="valuelist"/>
-    <OutputType>String</OutputType>
-    <Order>314</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
-  <Values>
-    <Value display="Horizontal">horizontal</Value>
-    <Value display="Vertical">vertical</Value>
-  </Values>
+   <Header>
+      <Name>cccOrientation</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>vertical</DefaultValue>
+      <Description>orientation</Description>
+      <Tooltip>The chart orientation indicates if its main direction is vertical or horizontal.</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>324</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
+   <Values>
+      <Value display="Horizontal">horizontal</Value>
+      <Value display="Vertical">vertical</Value>
+   </Values>
 </DesignerProperty>

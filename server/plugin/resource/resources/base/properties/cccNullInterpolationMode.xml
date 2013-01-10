@@ -1,19 +1,19 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccNullInterpolationMode</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>none</DefaultValue>
-    <Description>nullInterpolationMode</Description>
-    <Tooltip>The interpolation mode used to fill-in null or missing values.</Tooltip>
-    <InputType type="valuelist"/>
-    <OutputType>String</OutputType>
-    <Order>312</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
-  <Values>
-    <Value display="Linear">linear</Value>
-    <Value display="None">none</Value>
-    <Value display="Zero">zero</Value>
-  </Values>
+   <Header>
+      <Name>cccNullInterpolationMode</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>none</DefaultValue>
+      <Description>nullInterpolationMode</Description>
+      <Tooltip>The interpolation mode used to fill-in null or missing values.</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>322</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
+   <Values>
+      <Value display="Linear">linear</Value>
+      <Value display="None">none</Value>
+      <Value display="Zero">zero</Value>
+   </Values>
 </DesignerProperty>

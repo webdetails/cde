@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccOrthoAxisDesiredTickCount</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue/>
-    <Description>orthoAxisDesiredTickCount</Description>
-    <Tooltip>The desired number of major ticks (applies to continuous-numeric axes).</Tooltip>
-    <InputType>Float</InputType>
-    <OutputType>Number</OutputType>
-    <Order>317</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccOrthoAxisDesiredTickCount</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>orthoAxisDesiredTickCount</Description>
+      <Tooltip>The desired number of major ticks (applies to continuous-numeric axes).</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>353</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>

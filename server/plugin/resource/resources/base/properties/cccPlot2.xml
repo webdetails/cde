@@ -1,14 +1,14 @@
 <DesignerProperty>
-  <Header>
-    <Name>cccPlot2</Name>
-    <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
-    <Description>plot2</Description>
-    <Tooltip>Activates the second plot.</Tooltip>
-    <InputType>Boolean</InputType>
-    <OutputType>Boolean</OutputType>
-    <Order>350</Order>
-    <Advanced>true</Advanced>
-    <Version>2.0</Version>
-  </Header>
+   <Header>
+      <Name>cccPlot2</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>false</DefaultValue>
+      <Description>plot2</Description>
+      <Tooltip>Activates the second plot.</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>384</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
 </DesignerProperty>
