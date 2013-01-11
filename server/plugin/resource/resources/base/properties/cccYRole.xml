@@ -4,7 +4,7 @@
       <Parent>BaseProperty</Parent>
       <DefaultValue/>
       <Description>yRole</Description>
-      <Tooltip>The y visual role controls the orthogonal position of the "point" visual element.</Tooltip>
+      <Tooltip>The y visual role controls the orthogonal position of the point visual element.</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>
       <Order>473</Order>
