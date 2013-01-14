@@ -2,7 +2,7 @@
    <Header>
       <Name>cccShape</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>square</DefaultValue>
+      <DefaultValue></DefaultValue>
       <Description>shape</Description>
       <Tooltip>The shape to use in the dot mark (applies when using shapes).</Tooltip>
       <InputType type="valuelist"/>
