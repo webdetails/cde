@@ -75,7 +75,7 @@ public class XPathUtils {
         try {
             value = node.getValue(xPath).toString();
         } catch (JXPathException e) {
-            logger.error(e.getMessage());
+            // Property not found; Should not be an error
         }
 
         return value;
