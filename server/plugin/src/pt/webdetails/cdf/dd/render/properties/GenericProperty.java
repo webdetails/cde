@@ -187,7 +187,6 @@ public class GenericProperty
       while (m.find())
       {
         m.appendReplacement(sb, m.group(1).replaceAll("\\\"", "\"").replaceAll("\\$", "\\\\\\$"));
-
       }
       m.appendTail(sb);
       value = sb.toString();
@@ -216,18 +215,18 @@ public class GenericProperty
     this.type = OutputType.valueOf(XmlDom4JHelper.getNodeText("Header/OutputType", definition).toUpperCase());
     this.path = path;
     attributes = new HashMap<String, String>();
-    attributes.put("description", "\"" + XmlDom4JHelper.getNodeText("Header/Description", definition) + "\"");
-    attributes.put("tooltip", "\"" + XmlDom4JHelper.getNodeText("Header/Tooltip", definition) + "\"");
+    attributes.put("description", writeJsString(XmlDom4JHelper.getNodeText("Header/Description", definition)));
+    attributes.put("tooltip",     writeJsString(XmlDom4JHelper.getNodeText("Header/Tooltip",     definition)));
     switch (rendererType)
     {
       case CUSTOM:
-        attributes.put("type", "\"" + XmlDom4JHelper.getNodeText("Header/InputType", definition) + "\"");
+        attributes.put("type", writeJsString(XmlDom4JHelper.getNodeText("Header/InputType", definition)));
         break;
       case VALUELIST:
         GenericRenderer renderer = new GenericRenderer(this.definition);
         RendererManager rmanager = RendererManager.getInstance();
         rmanager.registerRenderer(renderer);
-        attributes.put("type", "\"" + renderer.getName() + "\"");
+        attributes.put("type", writeJsString(renderer.getName()));
         break;
       case DYNAMICLIST:
         break;
@@ -271,7 +270,24 @@ public class GenericProperty
     String innerName = this.name.substring(0, 1).toLowerCase() + this.name.substring(1);
     attributes.put("name", "\"" + innerName + "\"");
   }
-
+  
+  private String writeJsString(String text)
+  {
+	  String content;
+	  if(text != null && text.length() > 0)
+	  {
+		  content = "";
+	  } 
+	  else 
+	  {
+		  content = text.replaceAll("\"", "\\\"")
+                    .replaceAll("\n", "\\n" )
+                    .replaceAll("\r", "\\r" );
+	  }
+	  
+	  return "\"" + content + "\"";
+  }
+  
   protected String replaceParameters(String value)
   {
     Pattern pattern = Pattern.compile("\\$\\{[^}]*\\}");
@@ -311,8 +327,7 @@ public class GenericProperty
     
   }
 
-private void matcher(Pattern regex) {
-	// TODO Auto-generated method stub
-}
-
+  private void matcher(Pattern regex) {
+    // TODO Auto-generated method stub
+  }
 }
