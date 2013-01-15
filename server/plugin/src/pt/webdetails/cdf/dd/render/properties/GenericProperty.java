@@ -274,7 +274,7 @@ public class GenericProperty
   private String writeJsString(String text)
   {
 	  String content;
-	  if(text != null && text.length() > 0)
+	  if(text == null)
 	  {
 		  content = "";
 	  } 
