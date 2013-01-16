@@ -287,7 +287,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
 
     var row =
-      '<did id="parameters_' + i +'" >\n' +
+      '<div id="parameters_' + i +'" >\n' +
       argInput +
       (this.multiDimensionArray ? 
         ('<div class="' + this.cssPrefix +'Values">' + valInput + parameterButton + removeButton + '</div><br />') :  
