@@ -8,7 +8,7 @@
 }
 
 .StringListContainer{
-	width:420px;
+	width:620px;
 }
 .StringArrayContainer {
 	width:240px;
@@ -26,8 +26,12 @@
 	overflow:auto;
 }
 
-.StringList, .GenericSelect {
+.GenericSelect {
 	width:400px;
+}
+
+.StringList {
+	width:600px;
 }
 
 .StringArray{
@@ -56,8 +60,11 @@ div.jqiStringList, div.jqiStringArray, div.jqiParameterList, div.jqiGenericSelec
 	padding: 7px;
 }
 
-div.jqiStringList, div.jqiGenericSelect {
+div.jqiGenericSelect {
 	width: 440px;
+}
+div.jqiStringList {
+	width: 640px;
 }
 
 div.jqiStringArray{ 
@@ -83,27 +90,46 @@ div.jqiParameterList {
 }
 
 /* StringList: names */
-.StringListArgs, .GenericSelectArgs {
+.GenericSelectArgs {
 	float:left;
 	width: 100px;
 }
-.StringListArgs .StringListText, .GenericSelectArgs .GenericSelectText {
+.StringListArgs {
+	float:left;
+	width: 200px;
+}
+.GenericSelectArgs .GenericSelectText {
 	width: 60px;
 }
+.StringListArgs .StringListText {
+	width: 160px;
+}
 /* rest */
-.StringListValues, .GenericSelectValues {
+.GenericSelectValues {
 	width: 270px;
 	display:block;
 	float:left;
 }
+.StringListValues {
+	width: 370px;
+	display:block;
+	float:left;
+}
+
 /* StringList: values */
-.StringListVal, .GenericSelectVal {
+.GenericSelectVal {
 	float: left;
 	width: 190px;
 }
+
+.StringListVal {
+	float: left;
+	width: 290px;
+}
+
 .StringListVal .StringListText{
-	float:left;
-	width: 150px;
+	float: left;
+	width: 250px;
 }
 
 .StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove,
