@@ -541,6 +541,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     
   }
 
+  
+  
+  
   /**
    * List CDA datasources for given dashboard.
    */
@@ -583,6 +586,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
 
   }
+  
+  
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void deleteFile(OutputStream out) throws PentahoAccessControlException, IOException
+  {
+    IParameterProvider requestParams = getRequestParameters();
+    String path = requestParams.getStringParameter(MethodParams.PATH, null);
+    RepositoryAccess access = RepositoryAccess.getRepository(userSession);
+    if (access.hasAccess(path, FileAccess.DELETE) && access.removeFileIfExists(path))
+      writeOut(out, "file  " +  path + " removed ok");
+    else
+      writeOut(out, "Error removing " + path);
+  }
+  
+  
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void writeFile(OutputStream out) throws PentahoAccessControlException, IOException
