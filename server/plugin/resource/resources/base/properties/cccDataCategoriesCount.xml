@@ -2,7 +2,7 @@
    <Header>
       <Name>cccDataCategoriesCount</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>1</DefaultValue>
+      <DefaultValue></DefaultValue>
       <Description>dataCategoriesCount</Description>
       <Tooltip>The number of category-like columns that are present in a data source.</Tooltip>
       <InputType>Float</InputType>
