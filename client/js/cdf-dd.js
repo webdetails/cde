@@ -82,7 +82,7 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
-    
+
     //// Enable alert when leaving page
     //this.setExitNotification(true);
 
@@ -158,13 +158,13 @@ var CDFDD = Base.extend({
       operation: "listStyles"
     }, function(json) {
       myself.styles = json.result;
-                                        
+
     });
     $.getJSON("listRenderers", {
       operation: "listStyles"
     }, function(json) {
       myself.renderers = json.result;
-                                        
+
     });
   },
 
@@ -206,7 +206,7 @@ var CDFDD = Base.extend({
       operation: "load",
       file: CDFDDFileName
     };
-      
+
     $.post(CDFDDDataUrl, loadParams, function(result) {
       var json = eval("(" + result + ")");
       if(json.status == "true"){
@@ -263,19 +263,48 @@ var CDFDD = Base.extend({
       url: true
     };
 
+    // Holds the user's response to keeping properties with no defintion.
+    var keepUndefineds;
+
     // Removes extra information and saves space
-    var o = Util.clone(original);
+    var o = Util.clone(original); // deep clone
     $.each(o,function(i,t){
       if(typeof t !== "object"){
         return;
       }
       $.each(t.rows,function(j,c){
-        $.each(c.properties,function(k,properties){
-          $.each(properties,function(p){
-            if(!strip[p])
-              delete properties[p];
-          });
-        });
+        var k  = 0;
+        var ps = c.properties;
+        if(ps){
+          var L = ps.length;
+          while(k < L){
+            var p = ps[k];
+            var name = p.name;
+
+            // Had already answered NO to remove undefineds?
+            var keep = (keepUndefineds === true);
+            if(!keep){
+              keep = name === 'Group' || // Special property; has no definition, but is saved anyway
+                     !!PropertiesManager.getPropertyType(name);
+
+              if(!keep && keepUndefineds == null){
+                keep = keepUndefineds = !confirm("The dashboard contains properties that have no definition.\nWould you like to REMOVE this properties?");
+              }
+            }
+
+            if(keep){
+              $.each(p, function(a){
+                if(!strip[a]){
+                  delete p[a];
+                }
+              });
+              k++;
+           } else {
+             ps.splice(k, 1);
+             L--;
+           }
+          }
+        }
       });
     });
     return o;
@@ -284,15 +313,7 @@ var CDFDD = Base.extend({
 
   unstrip: function(original){
 
-    // accepted values
-    var strip = {
-      type: true,
-      name: true,
-      value: true,
-      url: true
-    };
-
-    // Removes extra information and saves space
+    // Adds extra information, previously removed to save space
     var myself = this;
     var o = Util.clone(original);
     $.each(o,function(i,t){
@@ -300,16 +321,37 @@ var CDFDD = Base.extend({
         return true;
       }
       myself.logger.debug("  unstrip: " + i + ", " + t);
-      $.each(t.rows,function(j,c){
+      $.each(t.rows,function(j, c){
         myself.logger.debug("  unstrip component "+ c.type +" property count: " + c.properties.length );
         $.each(c.properties,function(idx,p){
           try {
-            var property = PropertiesManager.getPropertyType(p.name).stub;
-            for (var attr in property) if (property.hasOwnProperty(attr)) {
-              if (!p.hasOwnProperty(attr)){
-                p[attr] = property[attr];
+            var propType = PropertiesManager.getPropertyType(p.name);
+            var property;
+            if(!propType){
+              var isSpecial = p.name === 'Group'; // Group is special
+              if(!isSpecial){
+                Dashboards.log("Property '" + p.name + "' is not defined");
+                property = {
+                  description: "? " + p.name,
+                  tooltip: "Property '" + p.name + "' is not defined."
+                };
+              } else {
+                property = {
+                  description: p.name,
+                  tooltip: p.name
+                };
               }
+            } else {
+              property = propType.stub;
             }
+
+            for (var attr in property) {
+              if (property.hasOwnProperty(attr)) {
+                if (!p.hasOwnProperty(attr)){
+                  p[attr] = property[attr];
+                }
+              }
+           }
           } catch (e) {
             Dashboards.log(p.name + ": " + e);
           }
@@ -324,7 +366,7 @@ var CDFDD = Base.extend({
   toggleHelp: function(){
     $("#keyboard_shortcuts_help").toggle();
   },
-  
+
   newDashboard: function(){
     var myself = this;
     $.prompt('Are you sure you want to start a new dashboard?<br/>Unsaved changes will be lost.',{
@@ -337,9 +379,9 @@ var CDFDD = Base.extend({
       }
     });
   },
-    
+
   saveAs: function(fromScratch){
-    
+
     var selectedFolder = "";
     var selectedFile = "";
     var selectedTitle = this.getDashboardWcdf().title;
@@ -353,7 +395,7 @@ var CDFDD = Base.extend({
 '               <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
 '                 <span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\n' +
 '                 <br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
-              
+
     $.prompt(content,{
       loaded: function(){
         $('#fileInput').change(function(){
@@ -393,14 +435,14 @@ var CDFDD = Base.extend({
       prefix: 'treeTableNewJqi',
       callback: function(v,m,f){
         if(v){
-          
+
           if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length-5))
             $.prompt('Invalid file extension. Must be .wcdf');
           else if(selectedFolder.length == 0)
             $.prompt('Please choose destination folder.');
           else if(selectedFile.length == 0)
             $.prompt('Please enter the file name.');
-              
+
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
 
@@ -412,7 +454,7 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData,"",2)
+              cdfstructure: JSON.stringify(myself.dashboardData,"",2) // TODO: shouldn't it strip, like save does?
             };
             $.post(CDFDDDataUrl, saveAsParams, function(result) {
               var json = eval("(" + result + ")");
@@ -434,14 +476,14 @@ var CDFDD = Base.extend({
       }
     });
   },
-    
+
   footerMode: function (mode) {
 
     var version = {
-        
+
         versionGetInfo: null,
         versionCheckInfo: null,
-  
+
         getInfo: function(url) {
            var versionInfo = '';
           $.get(url, function (result) {
@@ -453,22 +495,22 @@ var CDFDD = Base.extend({
           });
           return versionInfo;
         },
-        
+
         getVersion:  function () {
-        
+
             var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/getVersion';
           versionGetInfo = this.getInfo(versionCheckUrl);
           return versionGetInfo;
       },
-                
+
         checkVersion:  function () {
-        
+
             var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/checkVersion';
           var versionCheckInfo = this.getInfo(versionCheckUrl);
           var msg = '';
-          
+
             versionCheckInfo = JSON.parse(versionCheckInfo);
-  
+
             switch (versionCheckInfo.result) {
               case 'update':
                   msg = 'You are currently running an outdated version. Please update to the new version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
@@ -486,9 +528,9 @@ var CDFDD = Base.extend({
             return msg;
           }
       };
-     
-     
-     
+
+
+
     var addCSS = function(fileRef) {
       var fileref=document.createElement("link");
       fileref.setAttribute("rel", "stylesheet");
@@ -496,15 +538,15 @@ var CDFDD = Base.extend({
       fileref.setAttribute("href", fileRef);
       document.getElementsByTagName("head")[0].appendChild(fileref);
     }
-     
+
     var removeCSS = function(fileRef) {
       var allCtrl = document.getElementsByTagName('link');
       for (var i=allCtrl.length; i>=0; i--)  {
         if (allCtrl[i] && allCtrl[i].getAttribute('href')!=null && allCtrl[i].getAttribute('href').indexOf(fileRef)!=-1)
           allCtrl[i].parentNode.removeChild(allCtrl[i]);
       }
-    }   
-    
+    }
+
       var htmlHref = "/pentaho/content/pentaho-cdf-dd/static/" + mode + ".html" ;
     var cssFileRef = "/pentaho/content/pentaho-cdf-dd/css/" + mode + ".css"  ;
 
@@ -515,26 +557,26 @@ var CDFDD = Base.extend({
           height: 600,
           padding: 0,
           margin: 0,
-          onStart: function() {addCSS(cssFileRef);}, 
-          onClosed: function() {removeCSS(cssFileRef);}       
+          onStart: function() {addCSS(cssFileRef);},
+          onClosed: function() {removeCSS(cssFileRef);}
       });
-      
+
       if (mode == 'about.fancybox') {
         $('#fancybox-content .version').html(version.getVersion());
         $('#fancybox-content .message').html(version.checkVersion());
       }
-   
+
    },
-  
+
    previewMode: function(){
-    
+
     if (CDFDDFileName == "/null/null/null") {
       $.notifyBar({
         html: "Need to save an initial dashboard before previews are available."
       });
       return;
     }
-    
+
     var fullPath =  CDFDDFileName.split("/");
     var solution = fullPath[1];
     var path = fullPath.slice(2,fullPath.length-1).join("/");
@@ -596,7 +638,7 @@ var CDFDD = Base.extend({
 
   reload: function(){
     this.logger.warn("Reloading dashboard... ");
-      
+
     $.prompt('Are you sure you want to reload? Unsaved changes will be lost.',{
       buttons: {
         Ok: true,
@@ -614,8 +656,8 @@ var CDFDD = Base.extend({
     CDFDD.PANELS().empty();
   },
 
-  
-    
+
+
   saveSettings: function(){
     var myself = this;
     var ready = true;
@@ -644,7 +686,7 @@ var CDFDD = Base.extend({
     if(ready){
       this.saveSettingsCallback();
     }
-    
+
   },
 
   saveSettingsCallback: function(){
@@ -652,7 +694,7 @@ var CDFDD = Base.extend({
         settingsData = $.extend({widgetParameters:[]},wcdf),
         myself = this,
         content;
-    
+
     settingsData.styles = [];
     _.each(this.styles,function(obj){
       settingsData.styles.push({style: obj, selected: wcdf.style==obj});
@@ -668,7 +710,7 @@ var CDFDD = Base.extend({
           var val = e.properties.filter(function(i){
                 return i.description == "Name";
               })[0].value;
-          return {parameter: val, selected: _.contains(currentParams, val)}; 
+          return {parameter: val, selected: _.contains(currentParams, val)};
         });
     content = '\n' +
       '<span><b>Settings:</b></span><br/><hr/>\n' +
@@ -683,16 +725,16 @@ var CDFDD = Base.extend({
       '<span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
       '{{#renderers}}' +
       '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
-      '{{/renderers}}' +  
+      '{{/renderers}}' +
       '</select>' +
-      '{{#widget}}' + 
+      '{{#widget}}' +
       '<span><b>Widget Parameters:</b></span><br><span id="widgetParameters">' +
       '{{#parameters}}' +
       '   <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}}><span>{{parameter}}</span><br>\n' +
       '{{/parameters}}' +
       '</span>' +
       '{{/widget}}';
-  
+
     content = Mustache.render(content, settingsData);
     $.prompt(content,{
       buttons: {
@@ -720,7 +762,7 @@ var CDFDD = Base.extend({
   },
 
   saveAsWidget: function(fromScratch){
-    
+
     var selectedFolder = "cde/widgets/",
         selectedFile = "",
         selectedTitle = this.getDashboardWcdf().title
@@ -802,7 +844,7 @@ var CDFDD = Base.extend({
       operation: "saveSettings",
       file: CDFDDFileName.replace(".cdfde",".wcdf")
     }, wcdf);
-      
+
     $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
       try {
         var json = eval("(" + result + ")");
@@ -837,12 +879,12 @@ var CDFDD = Base.extend({
   getDashboardWcdf: function(){
     return this.dashboardWcdf;
   },
-  
+
   //setExitNotification: function(enable){
   //  if(window.parent && window.parent != window){//only do this outside of puc (puc's close tab won't trigger this, only closing puc)
   //    return;
   //  }
-  //  
+  //
   //  if(enable){
   //    window.onbeforeunload = function(e) { return 'Any unsaved changes will be lost.'; }
   //  }
@@ -856,22 +898,22 @@ var CDFDD = Base.extend({
     var cggCandidates = components.filter(function(e){
       return e.meta_cdwSupport == 'true';
     });
-        
+
     var ph = $('#cggDialog');
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
-    
-    
+
+
     // cgg url:
     var cggUrl = window.location.href.substring(0,window.location.href.indexOf("content")) + "content/cgg/Draw?script=" + CDFDDFileName.substring(0,CDFDDFileName.lastIndexOf("/")) + "/";
-    
-    ph.empty(); 
-    
+
+    ph.empty();
+
     ph.append("<h3>Choose what charts to render as CGG</h3>"+
       "<p>CDE can generate CGG scripts to allow charts to be exported. Choose the ones you want, and files will be generated when you save the dashboard</p>");
     cggCandidates.map(function(e){
-      
+
       var section = $("<div/>");
-      
+
       var checkbox = $("<input type='checkbox'>");
       checkbox[0].checked = (e.meta_cdwRender  == 'true' || false);
       checkbox.change(function(){
@@ -890,25 +932,25 @@ var CDFDD = Base.extend({
       var label = "<span class='label'>" + (title !== '' ? title : componentName) + "</span>";
       section.append(checkbox);
       section.append(label);
-      
+
       var showUrlButton = $("<button class='showUrl'>Url</button>").click(function(evt){
-        
+
         Dashboards.log("Toggle Url show");
         var $t = $(this).toggleClass("active");
         $t.parent().find(".urlPreviewer").toggleClass("collapsed").find("input").select();
 
       });
       section.append(showUrlButton).append("<br />");
-      
+
       // append dashboard name with component name and extension (.js)
       var scriptFileName = CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] +'_'+componentName+".js";
-      
+
       $("<div class='urlPreviewer collapsed'><input type='text' value = '"+cggUrl+scriptFileName+"&outputType=png"+"'></input></div>").appendTo(section);
 
       section.appendTo(ph);
 
     });
-    
+
     var $close = $("<div class='cggDialogClose'><button>Close</button></div>");
     $close.find("button").click(function(evt){
       ph.jqmHide();
@@ -1021,12 +1063,12 @@ var Panel = Base.extend({
         $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"));
       //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
       //disable
-            
+
       }
-          
+
     });
   },
-    
+
   disableThisButton: function(doc) {
     var a = $(doc);
     var myIdx = a.prevAll("a").length;
@@ -1036,7 +1078,7 @@ var Panel = Base.extend({
       }
     });
   },
-    
+
 
   setHover : function(comp){
     var el = $(comp);
@@ -1048,7 +1090,7 @@ var Panel = Base.extend({
       el.attr("src", src.slice(0, src.length - ".png".length) + "_mouseover.png" );
     }
   },
-    
+
   unsetHover : function(comp){
     var el = $(comp);
     var src = el.attr("src");
@@ -1061,7 +1103,7 @@ var Panel = Base.extend({
       el.attr("src", src.slice(0, src.length - "_mouseover.png".length) + ".png" );
     }
   }
-    
+
 });
 
 
@@ -1187,10 +1229,10 @@ $(function() {
     multiSelectOptionsShow: function(){
       // Hide any open option boxes
       $('.multiSelect').multiSelectOptionsHide();
-      
+
       var t = $(this);
       var ph = t.next('.multiSelectOptions');
-      
+
       ph.find('LABEL').removeClass('hover');
       t.addClass('active').next('.multiSelectOptions').show();
 
@@ -1215,7 +1257,7 @@ $(function() {
         timer = setTimeout(function(){
           t.multiSelectOptionsHide();
           ph.unbind("mouseenter mouseleave");
-         //'jQuery(multiSelectCurrent).multiSelectOptionsHide(); $(multiSelectCurrent).unbind("mouseenter");' 
+         //'jQuery(multiSelectCurrent).multiSelectOptionsHide(); $(multiSelectCurrent).unbind("mouseenter");'
         }, 250);
       });
 
@@ -1239,7 +1281,7 @@ templates.saveAsWidget = Mustache.compile(
   ' <input id="fileInput" class="folderexplorerfileinput" type="text"></input>\n' +
   ' <hr class="filexplorerhr"/>\n' +
   ' <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-  ' <span class="folderexplorerextralabels" >Title:</span>' + 
+  ' <span class="folderexplorerextralabels" >Title:</span>' +
   ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"></input><br/>\n' +
   ' <span class="folderexplorerextralabels" >Description:</span>'+
   ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"></input>'
