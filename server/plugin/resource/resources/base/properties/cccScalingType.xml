@@ -3,7 +3,7 @@
       <Name>cccScalingType</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>linear</DefaultValue>
-      <Description>Scaling-type</Description>
+      <Description>V1 - Scaling-type</Description>
       <Tooltip>The scaling of data is either linear of normal (distribution)</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>

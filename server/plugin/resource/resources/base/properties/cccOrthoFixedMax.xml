@@ -3,7 +3,7 @@
       <Name>cccOrthoFixedMax</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue/>
-      <Description>upBound Ortho</Description>
+      <Description>V1 - upBound Ortho</Description>
       <Tooltip>Upper bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
       <InputType>Float</InputType>
       <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
         <Name>cccYAxisDesiredTickCount</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue/>
-        <Description>Y axis desired tick count</Description>
+        <Description>V1 - Y axis desired tick count</Description>
         <Tooltip>The desired number of (major) ticks of the Y axis</Tooltip>
         <InputType>Integer</InputType>
         <OutputType>Number</OutputType>

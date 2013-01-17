@@ -3,7 +3,7 @@
       <Name>cccYAxisSize</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>50</DefaultValue>
-      <Description>YY axis size</Description>
+      <Description>V1 - YY axis size</Description>
       <Tooltip>YY axis area size</Tooltip>
       <InputType>Integer</InputType>
       <OutputType>Number</OutputType>

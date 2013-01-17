@@ -3,7 +3,7 @@
       <Name>cccYAxisPosition</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>left</DefaultValue>
-      <Description>Y axis position</Description>
+      <Description>V1 - Y axis position</Description>
       <Tooltip>Y axis position</Tooltip>
       <InputType>LeftRight</InputType>
       <OutputType>String</OutputType>

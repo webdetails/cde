@@ -224,36 +224,43 @@ var CDFDD = Base.extend({
 
     this.logger.info("Saving dashboard...");
     this.dashboardData.filename = CDFDDFileName;
+
+    var stripArgs = {
+      needsReload: false
+    };
+
     var saveParams = {
       operation: "save",
       file: CDFDDFileName,
       // cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: JSON.stringify(this.strip(this.dashboardData),"",1)
+      cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), "", 1)
     };
+    
     if (CDFDDFileName != "/null/null/null") {
       $.post(CDFDDDataUrl, saveParams, function(result) {
         //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
         var json = eval("(" + result + ")");
         if(json.status == "true"){
-          $.notifyBar({
-            html: "Dashboard saved successfully",
-            delay: 1000
-          });
-        }
-        else{
+          if(stripArgs.needsReload){
+            window.location.reload();
+          } else {
+            $.notifyBar({
+              html: "Dashboard saved successfully",
+              delay: 1000
+            });
+          }
+        } else {
           $.notifyBar({
             html: "Errors saving file: " + json.result
           });
         }
       });
-    }
-    else {
+    } else {
       this.saveAs(false);
     }
-
   },
 
-  strip: function(original){
+  strip: function(original, keyArgs){
 
     // accepted values
     var strip = {
@@ -288,7 +295,14 @@ var CDFDD = Base.extend({
                      !!PropertiesManager.getPropertyType(name);
 
               if(!keep && keepUndefineds == null){
-                keep = keepUndefineds = !confirm("The dashboard contains properties that have no definition.\nWould you like to REMOVE this properties?");
+                keep = 
+                keepUndefineds =
+                !confirm("The dashboard contains properties that have no definition.\n" + 
+                         "Would you like to REMOVE these properties and RELOAD the dashboard?");
+                
+                if(!keep && keyArgs){
+                  keyArgs.needsReload = true;
+                }
               }
             }
 
@@ -307,8 +321,8 @@ var CDFDD = Base.extend({
         }
       });
     });
-    return o;
 
+    return o;
   },
 
   unstrip: function(original){
@@ -581,7 +595,7 @@ var CDFDD = Base.extend({
     var solution = fullPath[1];
     var path = fullPath.slice(2,fullPath.length-1).join("/");
     var file = fullPath[fullPath.length-1].replace(".cdfde","_tmp.cdfde");
-    ;
+    
     var style = this.getDashboardWcdf().style;
 
     this.logger.info("Saving temporary dashboard...");

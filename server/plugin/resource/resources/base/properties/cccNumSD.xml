@@ -3,7 +3,7 @@
       <Name>cccNumSD</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>2.0</DefaultValue>
-      <Description>multiplier SD</Description>
+      <Description>V1 - multiplier SD</Description>
       <Tooltip>Multiplier for the Standard Deviation (only used for scaling with a normal distribution). The default value of 2.0 means: minimum = mean - 2*SD)</Tooltip>
       <InputType>Float</InputType>
       <OutputType>Number</OutputType>
