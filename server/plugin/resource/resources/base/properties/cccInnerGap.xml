@@ -3,7 +3,7 @@
       <Name>cccInnerGap</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>0.9</DefaultValue>
-      <Description>Inner gap</Description>
+      <Description>V1 - Inner gap</Description>
       <Tooltip>Pie inner gap</Tooltip>
       <InputType>Float</InputType>
       <OutputType>Number</OutputType>

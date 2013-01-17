@@ -3,7 +3,7 @@
       <Name>cccAxisOffset</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"0"</DefaultValue>
-      <Description>Axis offset</Description>
+      <Description>V1 - Axis offset</Description>
       <Tooltip>YY axis area size</Tooltip>
       <InputType>Float</InputType>
       <OutputType>Number</OutputType>

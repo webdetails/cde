@@ -3,7 +3,7 @@
         <Name>cccBarLineDomainRoundMode</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue>none</DefaultValue>
-        <Description>2nd axis domain rounding mode</Description>
+        <Description>V1 - 2nd axis domain rounding mode</Description>
         <Tooltip>Rounding mode for domain values of the 2nd axis</Tooltip>
         <InputType type="valuelist" />
         <OutputType>String</OutputType>

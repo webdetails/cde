@@ -3,7 +3,7 @@
       <Name>cccOrthoFixedMin</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue/>
-      <Description>loBound Ortho</Description>
+      <Description>V1 - loBound Ortho</Description>
       <Tooltip>Lower bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
       <InputType>Float</InputType>
       <OutputType>Number</OutputType>

@@ -3,7 +3,7 @@
       <Name>cccMinColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>white</DefaultValue>
-      <Description>color (min)</Description>
+      <Description>V1 - color (min)</Description>
       <Tooltip>Color used for the minimal value of the scale</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>

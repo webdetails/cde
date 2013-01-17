@@ -3,7 +3,7 @@
         <Name>cccXAxisDomainRoundMode</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue>none</DefaultValue>
-        <Description>X axis domain rounding mode</Description>
+        <Description>V1 - X axis domain rounding mode</Description>
         <Tooltip>Rounding mode for domain values of the X axis</Tooltip>
         <InputType type="valuelist" />
         <OutputType>String</OutputType>

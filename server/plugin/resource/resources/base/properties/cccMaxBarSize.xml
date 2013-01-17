@@ -3,7 +3,7 @@
       <Name>cccMaxBarSize</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>100</DefaultValue>
-      <Description>Max bar size</Description>
+      <Description>V1 - Max bar size</Description>
       <Tooltip>Max bar size</Tooltip>
       <InputType>Integer</InputType>
       <OutputType>Number</OutputType>

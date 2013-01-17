@@ -3,7 +3,7 @@
       <Name>cccXAxisSize</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>30</DefaultValue>
-      <Description>XX axis size</Description>
+      <Description>V1 - XX axis size</Description>
       <Tooltip>XX axis area size</Tooltip>
       <InputType>Integer</InputType>
       <OutputType>Number</OutputType>

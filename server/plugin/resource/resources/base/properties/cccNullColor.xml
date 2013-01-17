@@ -3,7 +3,7 @@
       <Name>cccNullColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>#efc5ad</DefaultValue>
-      <Description>color (missing-value)</Description>
+      <Description>V1 - color (missing-value)</Description>
       <Tooltip>Color used for missing values (value = null).</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>

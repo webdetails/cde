@@ -3,7 +3,7 @@
       <Name>cccXAxisPosition</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>bottom</DefaultValue>
-      <Description>X axis position</Description>
+      <Description>V1 - X axis position</Description>
       <Tooltip>X axis position</Tooltip>
       <InputType>TopBottom</InputType>
       <OutputType>String</OutputType>

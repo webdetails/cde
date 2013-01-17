@@ -3,7 +3,7 @@
       <Name>cccMaxColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>darkgreen</DefaultValue>
-      <Description>color (max)</Description>
+      <Description>V1 - color (max)</Description>
       <Tooltip>Color used for the maximal value of the scale</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>

@@ -3,7 +3,7 @@
       <Name>cccBarLineTickColor</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>blue</DefaultValue>
-      <Description>Line color</Description>
+      <Description>V1 - Line color</Description>
       <Tooltip>Independent line and scale color</Tooltip>
       <InputType>String</InputType>
       <OutputType>String</OutputType>

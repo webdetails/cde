@@ -3,7 +3,7 @@
       <Name>cccShowYScale</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"true"</DefaultValue>
-      <Description>Show yy scale</Description>
+      <Description>V1 - Show yy scale</Description>
       <Tooltip>Show yy scale?</Tooltip>
       <InputType>Boolean</InputType>
       <OutputType>Boolean</OutputType>

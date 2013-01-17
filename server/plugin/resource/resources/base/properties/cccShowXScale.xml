@@ -3,7 +3,7 @@
       <Name>cccShowXScale</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"true"</DefaultValue>
-      <Description>Show xx scale</Description>
+      <Description>V1 - Show xx scale</Description>
       <Tooltip>Show xx scale?</Tooltip>
       <InputType>Boolean</InputType>
       <OutputType>Boolean</OutputType>

@@ -3,7 +3,7 @@
       <Name>cccXAxisFullGrid</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"false"</DefaultValue>
-      <Description>Show xx grid</Description>
+      <Description>V1 - Show xx grid</Description>
       <Tooltip>Show xx axis full grid?</Tooltip>
       <InputType>Boolean</InputType>
       <OutputType>Boolean</OutputType>
