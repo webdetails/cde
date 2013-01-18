@@ -54,13 +54,13 @@ public class GenericComponent extends BaseComponent implements IComponent
     Collection<Node> nodes = definition.selectNodes("Contents/Model//Property");
     for (Node property : nodes)
     {
-      String internalName = XmlDom4JHelper.getNodeText("@name", property);
+      //String internalName = XmlDom4JHelper.getNodeText("@name", property);
       String propertyName = XmlDom4JHelper.getNodeText(".", property);
       // if the property isn't given a specific internal name, we default to its usual name
-      if (internalName == null || internalName.equals(""))
-      {
-        internalName = propertyName;
-      }
+//      if (internalName == null || internalName.equals(""))
+//      {
+//        internalName = propertyName;
+//      }
       GenericProperty prop = PropertyManager.getInstance().getPrivateProperty(this, propertyName);
       if (prop == null)
       {
@@ -145,7 +145,7 @@ public class GenericComponent extends BaseComponent implements IComponent
         {
           outputName = propertyName;
         }
-        String value = XPathUtils.getStringValue(getNode(), "properties/value[../name='" + property + "']");
+        //String value = XPathUtils.getStringValue(getNode(), "properties/value[../name='" + property + "']");
         GenericProperty prop = properties.get(propertyName);
         try
         {
@@ -165,8 +165,6 @@ public class GenericComponent extends BaseComponent implements IComponent
         values.append(renderDefinition(XmlDom4JHelper.getNodeText("@name", property), property.selectNodes("*")));
       }
     }
-    
-    
     
     return values.toString().replaceAll(",$", "");
   }
@@ -333,11 +331,14 @@ public class GenericComponent extends BaseComponent implements IComponent
   private String renderDefinition(String node, List<Node> contents)
   {
     StringBuilder values = new StringBuilder();
+    String outputName;
+
+    Boolean checkUndefinedProps = XmlDom4JHelper.getNodeText("Header/IName", definition).startsWith("ccc");
+    Set<String> usedProperties = checkUndefinedProps ? new HashSet<String>() : null;
     
-    Set<String> usedProperties = new HashSet<String>();
     for (Node property : contents)
     {
-      String outputName = XmlDom4JHelper.getNodeText("@name", property);
+      outputName = XmlDom4JHelper.getNodeText("@name", property);
       String propertyName = XmlDom4JHelper.getNodeText(".", property);
       // if the property isn't given a specific name to use for output,
       // we default to its standard name
@@ -345,8 +346,11 @@ public class GenericComponent extends BaseComponent implements IComponent
       {
         outputName = propertyName;
       }
+
+      if(checkUndefinedProps){
+        usedProperties.add(propertyName);
+      }
       
-      usedProperties.add(outputName);
       GenericProperty prop = properties.get(propertyName);
       try
       {
@@ -362,35 +366,33 @@ public class GenericComponent extends BaseComponent implements IComponent
       }
     }
     
-    
-    List<net.sf.json.JSONObject> nodesInComponent = getNode().selectNodes("properties");
-    for (net.sf.json.JSONObject prop : nodesInComponent) {
-      try {
-        String propName = prop.getString("name");
-        
-          if (!usedProperties.contains(propName) && propName.startsWith("ccc")) {
-            GenericProperty genProp = PropertyManager.getInstance().getProperty(propName);;
-        
-            propName = propName.substring(3);
-            propName = propName.substring(0,1).toLowerCase() + 
-                    propName.substring(1);
-                    
-              
-            if (genProp != null) {
-              //Output name ? 
-              String renderedProperty = genProp.render(propName, getNode());
-              if (!renderedProperty.equals(""))
-              {
-                values.append("\t" + renderedProperty);
-              }        
-            }
+    if(checkUndefinedProps){
+      List<net.sf.json.JSONObject> nodesInComponent = getNode().selectNodes("properties");
+      for (net.sf.json.JSONObject prop : nodesInComponent) {
+        try {
+            String propName = prop.getString("name");
+
+            if (!usedProperties.contains(propName) && propName.startsWith("ccc")) {
+              GenericProperty genProp = PropertyManager.getInstance().getProperty(propName);
+
+              // As the component definition does not reference the property,
+              // the output name is unknown
+              outputName = propName.substring(3);
+              outputName = outputName.substring(0,1).toLowerCase() + outputName.substring(1);
+
+              if (genProp != null) {
+                String renderedProperty = genProp.render(outputName, getNode());
+                if (!renderedProperty.equals(""))
+                {
+                  values.append("\t\t" + renderedProperty);
+                }
+              }
+          }
+        } catch (net.sf.json.JSONException jsone) {
+          logger.error("Property did not define a name", jsone);
         }
-      } catch (net.sf.json.JSONException jsone) {
-        logger.error("Property  did not define a name", jsone);
       }
     }
-    
-    
     
     String output = !values.toString().equals("")
             ? "\t" + node + ": {" + newLine + values.toString().replaceAll(",$", "") + "\t}," + newLine
