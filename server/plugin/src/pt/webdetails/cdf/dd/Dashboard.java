@@ -12,6 +12,8 @@ public interface Dashboard
 
   public String render();
   public String render(IParameterProvider params);
+  public String render(IParameterProvider params, String dashboardContext);
+
   public String getHeader();
 
   public String getContent();

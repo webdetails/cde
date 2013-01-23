@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.text.SimpleDateFormat;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
@@ -257,7 +258,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       // Build pieces: render dashboard, footers and headers
       logger.info("[Timing] CDE Starting Dashboard Rendering: " + (new SimpleDateFormat("HH:mm:ss.SSS")).format(new Date()));
       Dashboard dashboard = DashboardFactory.getInstance().loadDashboard(parameterProviders);
-      writeOut(out, dashboard.render(getRequestParameters()));
+      writeOut(out, dashboard.render(getRequestParameters(), getCdfContext()));
       logger.info("[Timing] CDE Finished Dashboard Rendering: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     }
     catch (FileNotFoundException e)
@@ -809,6 +810,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
       String[] files = props.get("styles").toString().split(",");
       packager.registerPackage("styles", Packager.Filetype.CSS, rootdir, rootdir + "/css/styles.css", files);
     }
+  }
+
+  
+  private String getCdfContext()
+  {
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
+    cdfContext.setRequest(getRequest());
+    cdfContext.setRequestParameters(getRequestParameters());
+    return cdfContext.callInPluginClassLoader();
   }
 
   static String getCdfContext(IParameterProvider requestParameterProvider)
