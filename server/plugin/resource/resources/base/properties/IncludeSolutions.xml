@@ -2,7 +2,7 @@
 <Header>
 	<Name>includeSolutions</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue></DefaultValue>
+	<DefaultValue>true</DefaultValue>
 	<Description>Include Solutions</Description>
 	<Tooltip>Include Solutions</Tooltip>
 	<InputType>Boolean</InputType>

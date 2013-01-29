@@ -42,4 +42,21 @@ public class JsonUtils {
       IOUtils.closeQuietly(pw);
     }
   }
+
+  public static String toJsString(String text)
+  {
+	  String content;
+	  if(text == null)
+	  {
+		  content = "";
+	  }
+	  else
+	  {
+		  content = text.replaceAll("\"", "\\\"")
+                    .replaceAll("\n", "\\n" )
+                    .replaceAll("\r", "\\r" );
+	  }
+
+	  return "\"" + content + "\"";
+  }
 }
