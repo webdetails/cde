@@ -14,6 +14,7 @@ import org.dom4j.Node;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import pt.webdetails.cdf.dd.render.renderer.GenericRenderer;
 import pt.webdetails.cdf.dd.render.renderer.RendererManager;
+import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 /**
@@ -215,18 +216,18 @@ public class GenericProperty
     this.type = OutputType.valueOf(XmlDom4JHelper.getNodeText("Header/OutputType", definition).toUpperCase());
     this.path = path;
     attributes = new HashMap<String, String>();
-    attributes.put("description", writeJsString(XmlDom4JHelper.getNodeText("Header/Description", definition)));
-    attributes.put("tooltip",     writeJsString(XmlDom4JHelper.getNodeText("Header/Tooltip",     definition)));
+    attributes.put("description", JsonUtils.toJsString(XmlDom4JHelper.getNodeText("Header/Description", definition)));
+    attributes.put("tooltip",     JsonUtils.toJsString(XmlDom4JHelper.getNodeText("Header/Tooltip",     definition)));
     switch (rendererType)
     {
       case CUSTOM:
-        attributes.put("type", writeJsString(XmlDom4JHelper.getNodeText("Header/InputType", definition)));
+        attributes.put("type", JsonUtils.toJsString(XmlDom4JHelper.getNodeText("Header/InputType", definition)));
         break;
       case VALUELIST:
         GenericRenderer renderer = new GenericRenderer(this.definition);
         RendererManager rmanager = RendererManager.getInstance();
         rmanager.registerRenderer(renderer);
-        attributes.put("type", writeJsString(renderer.getName()));
+        attributes.put("type", JsonUtils.toJsString(renderer.getName()));
         break;
       case DYNAMICLIST:
         break;
@@ -250,7 +251,7 @@ public class GenericProperty
           value = "\"\"";
           break;
         case BOOLEAN:
-          value = "true";
+          value = "\"\"";
           break;
         case FUNCTION:
           value = "\"\"";
@@ -262,30 +263,13 @@ public class GenericProperty
           value = "";
       }
     }
-    else if (this.type == this.type.STRING)
+    else if (this.type == OutputType.STRING)
     {
       value = "\"" + value + "\"";
     }
     attributes.put("value", value);
     String innerName = this.name.substring(0, 1).toLowerCase() + this.name.substring(1);
     attributes.put("name", "\"" + innerName + "\"");
-  }
-  
-  private String writeJsString(String text)
-  {
-	  String content;
-	  if(text == null)
-	  {
-		  content = "";
-	  } 
-	  else 
-	  {
-		  content = text.replaceAll("\"", "\\\"")
-                    .replaceAll("\n", "\\n" )
-                    .replaceAll("\r", "\\r" );
-	  }
-	  
-	  return "\"" + content + "\"";
   }
   
   protected String replaceParameters(String value)

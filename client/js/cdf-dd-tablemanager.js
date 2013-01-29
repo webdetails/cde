@@ -154,34 +154,35 @@ var TableManager = Base.extend({
   },
 
   renderColumn: function(tr,row,colIdx){
-
-    var renderer;
-
     var tm = this.getTableModel();
     var ct = tm.getColumnTypes()[colIdx];
-    var _type = typeof ct == 'function'?ct(row):ct;
+    var _type = typeof ct == 'function'? ct(row) : ct;
     
-    if( !(typeof tm.getEditable() == 'undefined'? false:tm.getEditable()[colIdx]) ){
+    if( !(typeof tm.getEditable() == 'undefined' ? false : tm.getEditable()[colIdx]) ){
       _type = "Label";
     }
 
     var _setExpression = tm.getColumnSetExpressions()[colIdx];
 
-    if(typeof this.cellRendererPool[_type] == 'undefined'){
+    var renderer = this.cellRendererPool[_type];
+    if(!renderer){
+      var RendererClass = window[_type + "Renderer"];
       try {
-        eval('renderer = new ' + _type+"Renderer(this)");
+        if(!RendererClass){
+          throw new Error("Undefined renderer class '" + _type + "Renderer" + "'");
+        }
+        
+        renderer = new RendererClass(this);
+
         this.cellRendererPool[_type] = renderer;
+
       } catch (e) {
         this.logger.warn("Error creating renderer: " + e);
         renderer = new CellRenderer(this);
       }
-
-    }
-    else{
-      renderer = this.cellRendererPool[_type];
     }
 
-    var myself=this;
+    var myself = this;
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row),function(value){
       _setExpression.apply(myself,[row, value]);
 
@@ -189,7 +190,6 @@ var TableManager = Base.extend({
       tr.find("td:eq("+colIdx+")").remove();
       myself.renderColumn(tr,row,colIdx);
     });
-
   },
 
   renderColumnByRow: function(row,colIdx){
@@ -853,11 +853,9 @@ var SelectRenderer = CellRenderer.extend({
   isAutoComplete: true,
 
   //selectable values to display
-  selectData: {
-  },
-
+  selectData: {},
   revertedSelectData: {},
-  autocompleteArray: [],
+  autocompleteArray:  [],
 
   constructor: function(tableManager){
     this.base(tableManager);
@@ -865,63 +863,67 @@ var SelectRenderer = CellRenderer.extend({
     this.logger.debug("Creating new SelectRenderer");
 
     this.getDataInit();
-
   },
 
   render: function(placeholder, value, callback){
 
-    this.processData();
-    var _editArea = $("<td>"+ ((!$.isArray(this.getData()) && typeof this.getData()[value] != "undefined")? this.getData()[value]: value) + "</td>");
+    var data = this.processData() || this.getData();
+    var label;
+    if(value == null){
+      label = "";
+    } else {
+      label = (!this.isArray && typeof data[value] !== "undefined") ?
+              data[value] :
+              value;
+    }
+    
+    var _editArea = $("<td>" + label + "</td>");
+    data = null;
+    
     var myself = this;
 
-    
-    _editArea.editable(function(value,settings){
-
+    _editArea.editable(function(value /*,settings*/){
       var valueId;
-      if (!$.isArray(myself.getData()) && typeof myself.revertedSelectData[value]!= "undefined"){
+      if(!myself.isArray && Object.prototype.hasOwnProperty.call(myself.revertedSelectData, value)){
         valueId = myself.revertedSelectData[value];
-      }
-      else{
+      } else{
         valueId = value;
       }
       
-      myself.logger.debug("Saving new value: " + valueId  );
+      myself.logger.debug("Saving new value: " + valueId);
       callback(valueId);
       myself.postChange(valueId);
       return value;
     }, {
-      type      : "autocomplete",
-      tooltip   : "Click to edit...",
-      onblur    : "submit",
-      autocomplete : {
-        source : function(req, add){
-          myself.autoCompleteRequest(req,add);
+      type:    "autocomplete",
+      tooltip: "Click to edit...",
+      onblur:  "submit",
+      autocomplete: {
+        source: function(req, add){
+          myself.autoCompleteRequest(req, add);
         },
         minLength: 0,
-        focus:  function (event, data) {
-    		if (data != undefined) $('input', _editArea).val(data.item.value);
-	    },
-        delay:this.getDelay()
+        focus: function (event, data2) {
+          if (data2 != undefined) $('input', _editArea).val(data2.item.value);
+        },
+        delay: this.getDelay()
       },
-      onsubmit: function(settings,original){
-        return myself.validate($('input',this).val());
+      onsubmit: function(/*settings, original*/){
+        return myself.validate($('input', this).val());
       },
       height: 12
     });
      
     _editArea.appendTo(placeholder);
-
-
   },
 
-  autoCompleteRequest: function(req,add){
+  autoCompleteRequest: function(req, add){
     if(this.isAutoComplete){
-      add(jQuery.grep(this.autocompleteArray, function(elt, i){
+      add(jQuery.grep(this.autocompleteArray, function(elt/*, i*/){
           var target = $.isArray(elt) ? elt[1] : elt;
           return target.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
       }));
-    }
-    else {
+    } else {
       add(this.autocompleteArray);
     }
   },
@@ -931,24 +933,25 @@ var SelectRenderer = CellRenderer.extend({
   },
 
   processData: function(){
-    if ($.isArray(this.getData())){
-      this.isArray= true;
-      this.autocompleteArray = this.getData();
-    }
-    else{
-      this.isArray = false;
+    var data = this.getData();
+    this.isArray = $.isArray(data);
+    if (this.isArray){
+      this.autocompleteArray = data;
+    } else {
       // Get the correct values and inverting the selectData
-      this.autocompleteArray = [];
-      for (i in this.getData()){
-        this.autocompleteArray.push(this.getData()[i]);
-        this.revertedSelectData[this.getData()[i]] = i;
+      this.autocompleteArray  = [];
+      this.revertedSelectData = {};
+      for(var id in data){
+        var label = data[id];
+        this.autocompleteArray.push(label);
+        this.revertedSelectData[label] = id;
       }
-
     }
+    
+    return data;
   },
 
-
-  validate: function(settings, original){
+  validate: function(/*settings, original*/){
     return true;
   },
 
