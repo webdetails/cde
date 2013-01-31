@@ -58,7 +58,6 @@ var TableManager = Base.extend({
     headerRows.appendTo("#"+this.getTableId() + " > thead");
 
     // Create rows
-    var myself=this;
     var data = this.getTableModel().getData() || [];
     $.each(data,function(i,row){
       myself.addRow(row);
@@ -142,7 +141,7 @@ var TableManager = Base.extend({
     var selector = "table.#" + this.getTableId() + " tbody";
     if(pos < 0){
       rowObj.appendTo($(selector));
-      $(selector).append(html);
+      $(selector).append(html); // TODO <<-- undefined variable !!
     }
     else{
       var _selector = $(selector + " > tr:eq(" + pos + ")");
@@ -362,20 +361,60 @@ var TableManager = Base.extend({
     }
   },
 
-  extendProperties: function(row,stub){
+  extendProperties: function(row, stub){
     // 1 - get names on original
     // 2 - get names on stub
     // 3 - add to the original the ones not on the second
     var pRow = {};
+    var rowProps = row.properties;
 
-    $.each(row.properties,function(i,p){
-      pRow[p.name]=p;
+    // Index names of property already on the row
+    $.each(rowProps, function(i,p){
+      pRow[p.name] = p;
     });
-    $.each(stub.properties,function(i,s){
-      if(typeof pRow[s.name] == 'undefined')
-        row.properties.push(s);
+
+    $.each(stub.properties, function(i,s){
+      if(!pRow[s.name]){
+        rowProps.push(s);
+      }
     });
-		
+
+    // Sort properties again, by #order
+    // With the exceptions:
+    // * the "name" property which is forced to take the first place, when present
+    // * V1 - properties are all placed alphabetically between
+    //        standard component props and V2 props
+    rowProps.sort(function(p1, p2){
+      if(p1.name === 'name'){
+        return -1;
+      }
+      if(p2.name === 'name'){
+        return 1;
+      }
+
+      var p1Desc = p1.description;
+      var p2Desc = p2.description;
+      var p1V1 = p1Desc.indexOf('V1') === 0;
+      var p2V1 = p2Desc.indexOf('V1') === 0;
+      if(p1V1 && p2V1){
+        return p1Desc < p2Desc ? -1 :
+               p1Desc > p2Desc ?  1 : 0;
+      }
+
+      if(p1V1) {
+        // All standard properties (that are maintained)
+        return p2.order < 100 ? 1 : -1;
+      }
+
+      if(p2V1) {
+        // All standard properties (that are maintained)
+        return p1.order < 100 ? -1 : 1;
+      }
+
+      // Order
+      return p1.order < p2.order ? -1 : 
+             p1.order > p2.order ?  1 : 0;
+    });
   },
 
   // Accessors

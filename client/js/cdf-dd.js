@@ -361,8 +361,10 @@ var CDFDD = Base.extend({
 
             for (var attr in property) {
               if (property.hasOwnProperty(attr)) {
-                if (!p.hasOwnProperty(attr)){
+                if(!p.hasOwnProperty(attr)){
                   p[attr] = property[attr];
+                } else if(attr === 'type' && p[attr] !== property[attr]){
+                    myself._upgradePropertyType(p, property);
                 }
               }
            }
@@ -376,6 +378,38 @@ var CDFDD = Base.extend({
 
   },
 
+  _upgradePropertyType: function(p, stub){
+    var oldType = p.type;
+    var newType = stub.type;
+
+    // In principle, any type could be upgraded to an array,
+    // but its safer to treat only known types.
+    if(newType === 'Array' &&
+       ['String', 'Float', 'Integer', 'Boolean']
+       .indexOf(oldType) === 0){
+      var value = p.value;
+      if(value == null || value === ''){
+        value = '[]';
+      } else {
+        // Ensure string
+        value = '' + value;
+
+        // Ensure within brackets
+        if(value.indexOf('[') !== 0){
+
+          // Ensure we have a string
+          if(value.indexOf('"') !== 0 && value.indexOf("'") !== 0){
+            value = '"' + value + '"';
+          }
+
+          value = '[' + value + ']';
+        }
+      }
+
+      p.type = newType;
+      p.value = value;
+    }
+  },
 
   toggleHelp: function(){
     $("#keyboard_shortcuts_help").toggle();

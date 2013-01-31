@@ -92,9 +92,11 @@ var ComponentsPanel = Panel.extend({
     this.componentsTable.setLinkedTableManager(this.propertiesTable);
     this.componentsTable.setLinkedTableManagerOperation(function(row, classType){
       var arr = [];
-      for (p in row.properties){
-        if(row.properties[p].classType == undefined || row.properties[p].classType == classType)
-          arr.push(row.properties[p]);
+      var props = row.properties;
+      for (var p in props){
+        var prop = props[p];
+        if(prop.classType == undefined || prop.classType == classType)
+          arr.push(prop);
       }
       return arr;
     });
