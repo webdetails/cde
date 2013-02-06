@@ -743,9 +743,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     try
     {
-      final String filePath = normalizePathSeparators(file.getCanonicalPath());
+      String filePath = normalizePathSeparators(file.getAbsolutePath());
       final String basePath = normalizePathSeparators(absPathBase);
       File base = new File(basePath);
+      
+      //relative path - must use canonical path - this will break with symlinks
+      if (filePath.contains("..")) 
+        filePath = file.getCanonicalPath();
       return filePath.startsWith(normalizePathSeparators(base.getCanonicalPath()));
     }
     catch (Exception e)
