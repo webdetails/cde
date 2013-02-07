@@ -1,3 +1,13 @@
+13.02.07
+    * Async behavior for components
+    * Add NewSelector component 
+    * Added javascript unit tests
+    * Exposing 4 properties (2 for setting date, 2 for setting offsets) under the date range input component. Removed the "getParameterValue" call for setting up the date, as it looked unpractical.
+    * Added method that allows file/folder deletion
+    * Added support for css url transformation for components from other plugins
+    * Allowed res to work with symlinks
+
+    
 12.12.10
 
     * Added View Manager component
