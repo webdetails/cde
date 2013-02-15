@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccBaseAxisFullGrid</Name>
+    <Name>cccOrtho2AxisVisible</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
-    <Description>baseAxisFullGrid</Description>
-    <Tooltip>Use instead.</Tooltip>
+    <DefaultValue>true</DefaultValue>
+    <Description>ortho2AxisVisible</Description>
+    <Tooltip>Indicates if the axis panel is shown.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>216</Order>
+    <Order>348</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The maximum number of small charts that should be displayed in a row.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>306</Order>
+    <Order>313</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

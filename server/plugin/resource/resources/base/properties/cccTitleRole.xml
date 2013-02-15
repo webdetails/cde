@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>titleRole</Description>
-    <Tooltip>The title visual role represents a the title of each bullet.</Tooltip>
+    <Tooltip>The title visual role represents the title of each bullet.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>420</Order>
+    <Order>454</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

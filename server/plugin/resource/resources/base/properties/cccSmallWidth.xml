@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>smallWidth</Description>
-    <Tooltip>Fixates the width of each small chart.</Tooltip>
+    <Tooltip>Fixates the width of each small chart, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>408</Order>
+    <Order>443</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

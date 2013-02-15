@@ -2,12 +2,12 @@
   <Header>
     <Name>cccOrthoAxisDomainScope</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue>global</DefaultValue>
     <Description>orthoAxisDomainScope</Description>
     <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>319</Order>
+    <Order>355</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

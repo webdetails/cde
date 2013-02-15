@@ -2,12 +2,12 @@
   <Header>
     <Name>cccTrendColorAxis</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue>2</DefaultValue>
     <Description>trendColorAxis</Description>
     <Tooltip>The index of the color axis to use for the plot.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>438</Order>
+    <Order>472</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

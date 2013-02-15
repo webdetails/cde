@@ -2,12 +2,12 @@
   <Header>
     <Name>cccTooltipGravity</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>s</DefaultValue>
+    <DefaultValue/>
     <Description>tooltipGravity</Description>
     <Tooltip>The preferred tooltip gravity.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>430</Order>
+    <Order>464</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

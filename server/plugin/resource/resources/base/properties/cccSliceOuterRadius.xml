@@ -7,7 +7,7 @@
     <Tooltip>The outer radius of each slice, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>388</Order>
+    <Order>424</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

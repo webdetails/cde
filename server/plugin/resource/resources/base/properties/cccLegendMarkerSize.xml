@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>15</DefaultValue>
     <Description>legendMarkerSize</Description>
-    <Tooltip>The width and height of the marker panel.</Tooltip>
+    <Tooltip>The width and height of the marker panel, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>285</Order>
+    <Order>292</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

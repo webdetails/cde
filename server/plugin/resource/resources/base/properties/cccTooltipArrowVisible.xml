@@ -2,12 +2,12 @@
   <Header>
     <Name>cccTooltipArrowVisible</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>true</DefaultValue>
+    <DefaultValue/>
     <Description>tooltipArrowVisible</Description>
     <Tooltip>Indicates if the tooltip shows an arrow pointing to the visual elements anchor point.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>423</Order>
+    <Order>457</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

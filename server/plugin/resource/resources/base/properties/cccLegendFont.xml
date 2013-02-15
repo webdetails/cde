@@ -2,12 +2,12 @@
   <Header>
     <Name>cccLegendFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>9px sans-serif</DefaultValue>
+    <DefaultValue>10px sans-serif</DefaultValue>
     <Description>legendFont</Description>
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>281</Order>
+    <Order>289</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

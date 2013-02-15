@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue/>
     <Description>categoryRole</Description>
-    <Tooltip>The category visual role of the bar family charts is restricted to be discrete.</Tooltip>
+    <Tooltip>The category visual role.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>252</Order>
+    <Order>251</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
