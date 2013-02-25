@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Date;
 import java.util.Properties;
 import java.text.SimpleDateFormat;
+import org.apache.commons.io.FilenameUtils;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -743,24 +744,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     try
     {
-      String filePath = normalizePathSeparators(file.getAbsolutePath());
-      final String basePath = normalizePathSeparators(absPathBase);
-      File base = new File(basePath);
       
-      //relative path - must use canonical path - this will break with symlinks
-      if (filePath.contains("..")) 
-        filePath = file.getCanonicalPath();
-      return filePath.startsWith(normalizePathSeparators(base.getCanonicalPath()));
+      // Using commons.io.FilenameUtils normalize method to make sure we can 
+      // support symlinks here
+      return FilenameUtils.normalize(file.getAbsolutePath()).startsWith(FilenameUtils.normalize(absPathBase));
     }
     catch (Exception e)
     {
       return false;
     }
-  }
-
-  private String normalizePathSeparators(String path)
-  {
-    return path.replaceAll("\\\\", "/").replaceAll("/+", "/");
   }
 
   private void setCacheControl()
