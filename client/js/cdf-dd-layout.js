@@ -787,8 +787,10 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 							$.prompt('Are you sure you want to load the template? ',{ buttons: { Ok: true, Cancel: false} ,
 									callback: function(v,m,f){
 										if(v){
-											cdfdd.dashboardData.layout = selectTemplate.structure.layout;
+											cdfdd.dashboardData = selectTemplate.structure;
 											cdfdd.layout.init();
+											cdfdd.components.init();
+											cdfdd.datasources.init();
 										}}});
 						}};
 					
@@ -875,10 +877,15 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 				if(v){
 					myself.logger.info("Saving template...");
 			
-					var template = Util.clone(cdfdd.getDashboardData());
+					var template = cdfdd.getDashboardData();
 					template.layout.title = title;
-					if(!includeComponents) template.components.rows = [];
-					if(!includeDataSources) template.datasources.rows = [];
+					if(!includeComponents) {
+						template.components.rows = [];
+
+					}
+					if(!includeDataSources) {
+						template.datasources.rows = [];
+					}
 					
 					//var templateParams = {operation:"save", file:file, cdfstructure: JSON.toJSONString(template,true)} ;
 					var templateParams = {operation:"save", file:file, cdfstructure: JSON.stringify(template)} ;
