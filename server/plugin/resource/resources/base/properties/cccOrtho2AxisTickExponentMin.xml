@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccOrtho2AxisTickExponentMin</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>ortho2AxisTickExponentMin</Description>
-      <Tooltip>The minimum exponent of 10 that is used to generate ticks (applies to continuous-numeric axes).</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>340</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccOrtho2AxisTickExponentMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>ortho2AxisTickExponentMin</Description>
+    <Tooltip>The minimum exponent of 10 that is used to generate ticks (applies to continuous-numeric axes).</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>342</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

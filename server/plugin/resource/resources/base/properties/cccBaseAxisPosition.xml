@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisPosition</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisPosition</Description>
     <Tooltip>The position of the axis panel.</Tooltip>
     <InputType type="valuelist"/>

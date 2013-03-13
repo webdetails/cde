@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisTitle</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisTitle</Description>
     <Tooltip>The axis title and title options.</Tooltip>
     <InputType>String</InputType>

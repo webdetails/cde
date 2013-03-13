@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccTooltipFollowMouse</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>false</DefaultValue>
-      <Description>tooltipFollowMouse</Description>
-      <Tooltip>Indicates if the visual element's anchor point should be the current mouse position.</Tooltip>
-      <InputType>Boolean</InputType>
-      <OutputType>Boolean</OutputType>
-      <Order>441</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccTooltipFollowMouse</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>tooltipFollowMouse</Description>
+    <Tooltip>Indicates if the visual element's anchor point should be the current mouse position.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>444</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

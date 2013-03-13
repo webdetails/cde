@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccSmallContentMargins</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>0</DefaultValue>
-      <Description>smallContentMargins</Description>
-      <Tooltip>The margins of the content panel of a small chart.</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>412</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccSmallContentMargins</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>smallContentMargins</Description>
+    <Tooltip>The margins of the content panel of a small chart.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>416</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

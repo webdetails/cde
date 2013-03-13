@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccRootCategoryLabel</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>All</DefaultValue>
+    <Description>rootCategoryLabel</Description>
+    <Tooltip>The label that is used for the root node.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>404</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

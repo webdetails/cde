@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisLabelSpacingMin</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisLabelSpacingMin</Description>
     <Tooltip>The minimum spacing between tick labels, in em units (does not apply to discrete-hierarchical axes).</Tooltip>
     <InputType>Float</InputType>

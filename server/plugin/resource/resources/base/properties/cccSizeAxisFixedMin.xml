@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccSizeAxisFixedMin</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>sizeAxisFixedMin</Description>
-      <Tooltip>The fixed minimum domain value that the axis will show (applies to numeric axes).</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>407</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccSizeAxisFixedMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>sizeAxisFixedMin</Description>
+    <Tooltip>The fixed minimum domain value that the axis will show (applies to numeric axes).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>411</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisTitleAlign</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisTitleAlign</Description>
     <Tooltip>The alignment side of the panel (the source) that will align to a side of the parent panel (the target).</Tooltip>
     <InputType type="valuelist"/>

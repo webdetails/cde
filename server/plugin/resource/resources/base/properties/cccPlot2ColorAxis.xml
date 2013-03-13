@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccPlot2ColorAxis</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>2</DefaultValue>
-      <Description>plot2ColorAxis</Description>
-      <Tooltip>The index of the color axis to use for the plot.</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>386</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccPlot2ColorAxis</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>2</DefaultValue>
+    <Description>plot2ColorAxis</Description>
+    <Tooltip>The index of the color axis to use for the plot.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>388</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>
