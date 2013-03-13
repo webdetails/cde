@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisFixedMax</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisFixedMax</Description>
     <Tooltip>The fixed maximum domain value that the axis will show (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>

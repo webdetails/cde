@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccPlot2OrthoAxis</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>1</DefaultValue>
-      <Description>plot2OrthoAxis</Description>
-      <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>390</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccPlot2OrthoAxis</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>1</DefaultValue>
+    <Description>plot2OrthoAxis</Description>
+    <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>392</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

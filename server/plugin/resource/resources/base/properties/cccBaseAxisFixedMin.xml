@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisFixedMin</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisFixedMin</Description>
     <Tooltip>The fixed minimum domain value that the axis will show (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>

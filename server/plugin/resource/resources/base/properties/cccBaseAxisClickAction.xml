@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisClickAction</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisClickAction</Description>
     <Tooltip>A callback function that is called when the user clicks on a tick label (applies to discrete axes).</Tooltip>
     <InputType>JavaScript</InputType>

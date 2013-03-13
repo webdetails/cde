@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisOriginIsZero</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisOriginIsZero</Description>
     <Tooltip>Indicates if it should be ensured that zero domain value is shown (applies to continuous axes).</Tooltip>
     <InputType>Boolean</InputType>

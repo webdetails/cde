@@ -2,12 +2,12 @@
   <Header>
     <Name>cccValuesAnchor</Name>
     <Parent>BaseProperty</Parent>
-      <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>valuesAnchor</Description>
-      <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
+    <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-      <Order>467</Order>
+    <Order>471</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

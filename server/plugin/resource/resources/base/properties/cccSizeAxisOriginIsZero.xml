@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccSizeAxisOriginIsZero</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>sizeAxisOriginIsZero</Description>
-      <Tooltip>Indicates if it should be ensured that zero domain value is shown (applies to continuous axes).</Tooltip>
-      <InputType>Boolean</InputType>
-      <OutputType>Boolean</OutputType>
-      <Order>408</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccSizeAxisOriginIsZero</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>sizeAxisOriginIsZero</Description>
+    <Tooltip>Indicates if it should be ensured that zero domain value is shown (applies to continuous axes).</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>412</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccSizeRole</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>sizeRole</Description>
-      <Tooltip>The size visual role controls the size of visual elements.</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>410</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccSizeRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>sizeRole</Description>
+    <Tooltip>The size visual role controls the size of visual elements.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>414</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

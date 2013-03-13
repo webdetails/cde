@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccUseShapes</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>false</DefaultValue>
-      <Description>useShapes</Description>
-      <Tooltip>Indicates if the heat-grid uses as visual elements dot-shapes, within each grid cell.</Tooltip>
-      <InputType>Boolean</InputType>
-      <OutputType>Boolean</OutputType>
-      <Order>464</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccUseShapes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>useShapes</Description>
+    <Tooltip>Indicates if the heat-grid uses as visual elements dot-shapes, within each grid cell.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>468</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

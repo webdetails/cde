@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccColorMax</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>colorMax</Description>
-      <Tooltip>The maximum color (applies to numeric domain axes).</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>260</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccColorMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>colorMax</Description>
+    <Tooltip>The maximum color (applies to numeric domain axes).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>260</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

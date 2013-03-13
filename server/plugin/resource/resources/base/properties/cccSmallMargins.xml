@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccSmallMargins</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>2%</DefaultValue>
-      <Description>smallMargins</Description>
-      <Tooltip>The margins of a small chart.</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>415</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccSmallMargins</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>2%</DefaultValue>
+    <Description>smallMargins</Description>
+    <Tooltip>The margins of a small chart.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>419</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

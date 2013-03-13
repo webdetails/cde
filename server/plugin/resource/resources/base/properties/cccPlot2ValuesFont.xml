@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccPlot2ValuesFont</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>10px sans-serif</DefaultValue>
-      <Description>plot2ValuesFont</Description>
-      <Tooltip>The font of a value label.</Tooltip>
-      <InputType>String</InputType>
-      <OutputType>String</OutputType>
-      <Order>396</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccPlot2ValuesFont</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>10px sans-serif</DefaultValue>
+    <Description>plot2ValuesFont</Description>
+    <Tooltip>The font of a value label.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>398</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

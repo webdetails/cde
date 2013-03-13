@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccTooltipOffset</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>2</DefaultValue>
-      <Description>tooltipOffset</Description>
-      <Tooltip>The distance of the closest tooltip edge or corner to the visual element's tooltip anchor point, in pixel units.</Tooltip>
-      <InputType>Float</InputType>
-      <OutputType>Number</OutputType>
-      <Order>445</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccTooltipOffset</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>tooltipOffset</Description>
+    <Tooltip>The distance of the closest tooltip edge or corner to the visual element's tooltip anchor point, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>448</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

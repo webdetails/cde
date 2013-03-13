@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccOrthoAxisDoubleClickAction</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue/>
-      <Description>orthoAxisDoubleClickAction</Description>
-      <Tooltip>A callback function that is called when the user double-clicks on a tick label (applies to discrete axes).</Tooltip>
-      <InputType>JavaScript</InputType>
-      <OutputType>Function</OutputType>
-      <Order>356</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccOrthoAxisDoubleClickAction</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>orthoAxisDoubleClickAction</Description>
+    <Tooltip>A callback function that is called when the user double-clicks on a tick label (applies to discrete axes).</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>358</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>

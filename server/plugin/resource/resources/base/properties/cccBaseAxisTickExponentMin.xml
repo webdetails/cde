@@ -2,7 +2,7 @@
   <Header>
     <Name>cccBaseAxisTickExponentMin</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue/>
+    <DefaultValue></DefaultValue>
     <Description>baseAxisTickExponentMin</Description>
     <Tooltip>The minimum exponent of 10 that is used to generate ticks (applies to continuous-numeric axes).</Tooltip>
     <InputType>Float</InputType>

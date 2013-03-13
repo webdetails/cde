@@ -1,14 +1,14 @@
 <DesignerProperty>
-   <Header>
-      <Name>cccPlot2AreasVisible</Name>
-      <Parent>BaseProperty</Parent>
-      <DefaultValue>false</DefaultValue>
-      <Description>plot2AreasVisible</Description>
-      <Tooltip>Indicates if shaded areas are shown in the plot.</Tooltip>
-      <InputType>Boolean</InputType>
-      <OutputType>Boolean</OutputType>
-      <Order>385</Order>
-      <Advanced>true</Advanced>
-      <Version>2.0</Version>
-   </Header>
+  <Header>
+    <Name>cccPlot2AreasVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>plot2AreasVisible</Description>
+    <Tooltip>Indicates if shaded areas are shown in the plot.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>387</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
 </DesignerProperty>
