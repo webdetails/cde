@@ -71,6 +71,19 @@ var PopupComponent = BaseComponent.extend({
     
     /* Draggable/ */
     var draggable = typeof this.draggable === "undefined"?true:this.draggable;
+
+    /* Horizontal Scrollbar */
+    if(this.horizontalScroll){
+      $("#"+this.htmlObject).css("overflow-x","scroll");
+    }
+
+    /* Vertical Scrollbar */
+    if(this.verticalScroll){
+      $("#"+this.htmlObject).css("overflow-y","scroll");  
+    }
+    
+    /* Prevent scrollbars from dragging popup */
+    $("#"+this.htmlObject).parent().draggable({cancel:"#"+this.htmlObject});
     
     /* Close on click outside */
     var closeOnClickOutside = typeof this.closeOnClickOutside === "undefined"?false:this.closeOnClickOutside;
