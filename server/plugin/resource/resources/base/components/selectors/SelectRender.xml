@@ -27,6 +27,7 @@
 			<Property>postChange</Property>
 			<Property>refreshPeriod</Property>
 			<Property>tooltip</Property>
+			<Property>extraOptions</Property>
 		</Model>
 	</Contents>
 </DesignerComponent>
