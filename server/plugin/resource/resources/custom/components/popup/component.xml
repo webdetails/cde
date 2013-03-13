@@ -21,6 +21,8 @@
 			<Property>postExecution</Property>
 			<Property>tooltip</Property>
 			<Property>listeners</Property>
+      <Property>horizontalScroll</Property>
+      <Property>verticalScroll</Property>
 		</Model>
 		<Implementation>
 			<Code src="popup.js" />
@@ -42,6 +44,34 @@
             <OutputType>Boolean</OutputType>
             <Order>81</Order>
             <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>horizontalScroll</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>Horizontal scrollbar</Description>
+            <Tooltip>Allows horizontal scrolling?</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>83</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>verticalScroll</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>Vertical scrollbar</Description>
+            <Tooltip>Allows vertical scrolling?</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>83</Order>
+            <Advanced>true</Advanced>
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
