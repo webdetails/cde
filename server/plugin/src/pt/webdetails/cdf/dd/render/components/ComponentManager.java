@@ -458,8 +458,8 @@ public class ComponentManager
     defs.append(PropertyManager.getInstance().getDefinitions());
     defs.append(getEntry());
     defs.append(getModel());
-    return defs.toString().replaceAll(",\n(\t*)}", "\n$1}");
-
+    
+    return defs.toString().replaceAll(",([\\r\\n]+\\s*})", "$1"); // pattern: |,([\r\n]+\s*})| // replaceBy: |$1| 
   }
 
   public String getImplementations()

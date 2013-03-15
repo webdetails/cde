@@ -52,9 +52,9 @@ public class JsonUtils {
 	  }
 	  else
 	  {
-		  content = text.replaceAll("\"", "\\\"")
-                    .replaceAll("\n", "\\n" )
-                    .replaceAll("\r", "\\r" );
+		  content = text.replaceAll("\"", "\\\\\"")  // replaceBy: |\\"|
+                        .replaceAll("\n", "\\\\n" )  // replaceBy: |\\n|
+                        .replaceAll("\r", "\\\\r" ); // replaceBy: |\\r|
 	  }
 
 	  return "\"" + content + "\"";
