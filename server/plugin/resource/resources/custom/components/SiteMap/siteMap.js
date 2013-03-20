@@ -12,61 +12,97 @@ var SiteMapComponent = BaseComponent.extend({
     ph: undefined,
     selected: "UNUSEDPARAM!@#$",
 
+    templates: {
+      list: Mustache.compile(
+        "<ul class='siteMap siteMapLevel{{level}}' ></ul>"
+      ),
+      item: Mustache.compile(
+        "<li class='siteMapItem {{classes}}''>" +
+        "  <a {{#link}}href='{{link}}'{{/link}}>{{name}}</a>" +
+        "</li>"
+      ),
+
+    },
+
     update : function() {
+        var items = [],
+            myself = this;
 
         if(typeof this.siteMapSelectedParameter !== "undefined" && this.siteMapSelectedParameter != ""){
             this.selected = Dashboards.getParameterValue( this.siteMapSelectedParameter )
         }
 
-        var paramVal = Dashboards.getParameterValue( this.siteMapParameter ); // Evaluate the parameter
-
         // Dashboards.log("Sitemap structure length: " + siteMapParameter.length + "; Selected: " + this.selected);
         this.ph = $("#" + this.htmlObject).empty();
 
-        this.generateUl(this.ph, paramVal , 0);
+        if (this.ajaxUrl){
+          var opts = { 
+            url: this.ajaxUrl
+          }
+          if ( _.isEmpty( this.parameters) ){
+            opts.data = Dashboards.propertiesArrayToObject(this.ajaxData);
+          }
+          myself.fetchItems( opts, function (items){
+            myself.renderList( myself.ph, items, 0);
+          });
+        } else if (this.siteMapParameter){
+          this.renderList( this.ph, Dashboards.getParameterValue( this.siteMapParameter ) , 0 );
+        }
 
         // mark as selected all ancestors
-        this.ph.find("li.siteMapSelected").parents("li").addClass("siteMapSelected");
-        this.ph.find("li.siteMapInitial").parents("li").addClass("siteMapInitial");
+        this.ph.find(".siteMapItem.siteMapSelected").parents(".siteMapItem").addClass("siteMapSelected");
+        this.ph.find(".siteMapItem.siteMapInitial").parents(".siteMapItem").addClass("siteMapInitial");
 
     },
 
-    generateUl: function(ph,arr, level){
+    fetchItems: function (overrides, callback){
+      var myself = this;
+      overrides = overrides || {};
+      var ajaxOpts = {
+        type: 'GET',
+        success: function(json) {
+          callback(json);
+        }, 
+        dataType: 'json',
+        async: true
+      };
+      ajaxOpts = _.extend( {}, ajaxOpts, overrides);
+      $.ajax( ajaxOpts );
+    },
+
+    renderList: function(ph, arr, level){
 
         var myself=this;
-        var ul = $('<ul class="siteMap siteMapLevel'+level+'" ></ul>');
+        var list = $( myself.templates.list({level: level}) );
 
-        $.each(arr,function(n,l){
-            var li = $("<li></li>").addClass(l.classes || "").appendTo(ul);
-            var a = $('<a>'+l.name+'</a>').appendTo(li);
-            if(l.link){
-                a.attr("href",l.link);
-            }
-            else if(typeof l.action === "function"){
-                
+        $.each( arr, function(n,l){
+            var item = $( myself.templates.item({
+              name: l.name || l.id || "",
+              link: l.link,
+              classes: l.classes || ""    
+            }));
+            if(!l.link && typeof l.action === "function"){ 
                 // Add a click action to this
-                a.click(function(){
-             
-                    l.action(li);
+                item.find('a').click(function(){
+                    l.action(item);
                     // Now: Remove all previous selected classes and add this
-                    myself.ph.find("li.siteMapSelected").removeClass("siteMapSelected");
-                    $(this).parents("li").addClass("siteMapSelected");
+                    myself.ph.find(".siteMapItem.siteMapSelected").removeClass("siteMapSelected");
+                    $(this).parents(".siteMapItem").addClass("siteMapSelected");
                     Dashboards.fireChange(myself.siteMapSelectedParameter,typeof l.id !== "undefined"?l.id:l.name);
-
                 });
             }
                 
-        
             // Is this one selected? Later we'll also need to mark all ancestor with a class
             if(typeof(l.id) !== "undefined"? l.id == myself.selected: l.name == myself.selected){
-                li.addClass("siteMapSelected siteMapInitial");
+                item.addClass("siteMapSelected siteMapInitial");
             }
 
             if(l.sublinks && l.sublinks.length > 0)
-                myself.generateUl(li, l.sublinks, level + 1);
-        });
+                myself.renderList(item, l.sublinks, level + 1);
 
-        ul.appendTo(ph);
+            item.appendTo(list);
+        });
+        list.appendTo(ph);
 
     }
 
