@@ -129,7 +129,7 @@ public class CggChart
     	.append("    if(!isNaN(debugLevel) && isFinite(debugLevel)) { level = debugLevel; }\n")
     	.append("  }\n")
     	
-    	.append("  function _callLog() {\n")
+    	.append("  function _callLog(mask) {\n")
     	.append("    try {\n")
     	.append("      var args = Array.prototype.slice.call(arguments);\n")
     	
