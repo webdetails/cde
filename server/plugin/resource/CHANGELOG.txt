@@ -1,3 +1,12 @@
+13.03.25
+    * Support for CCC V2
+    * Update siteMap component to accept an url from where to fetch the siteMap json using an ajax call.
+    * Implemented [Redmine-93] -  Close the Popup Component
+    * Fixed [Redmine-1840] - External resource editing is failing
+    * Fixed [Redmine-345] - Scrollbars in PopupComponent
+    * Fixed [Redmine-1874] -  Remplate import should now work as intended 
+
+…ails/cde/issues/10
 13.02.07
     * Async behavior for components
     * Add NewSelector component 
