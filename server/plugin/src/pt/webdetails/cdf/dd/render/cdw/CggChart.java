@@ -52,23 +52,25 @@ public class CggChart
 
     renderChart(chartScript);
     renderDatasource(chartScript);
-
+    
+    renderDebugHooks(chartScript);
+    
     // Adding abbility to process external height and width
     chartScript.append("var w = parseInt(params.get('width')) || render_").append(this.chartName).append(".chartDefinition.width;\n");
     chartScript.append("var h = parseInt(params.get('height')) || render_").append(this.chartName).append(".chartDefinition.height;\n");
-    chartScript.append("render_").append(this.chartName).append(".chartDefinition.width = w; render_").append(this.chartName).append(".chartDefinition.height = h;\n");
+    chartScript.append("render_").append(this.chartName).append(".chartDefinition.width = w;\n render_").append(this.chartName).append(".chartDefinition.height = h;\n");
 
     chartScript.append("print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');\n");
     
     /* Chart Background */
-    chartScript.append("bg = document.createElementNS('http://www.w3.org/2000/svg','rect');");
-    chartScript.append("bg.setAttribute('id','foo');");
-    chartScript.append("bg.setAttribute('x','0');");
-    chartScript.append("bg.setAttribute('y','0');");
-    chartScript.append("bg.setAttribute('width', w);");
-    chartScript.append("bg.setAttribute('height',h);");
-    chartScript.append("bg.setAttribute('style', 'fill:white');");
-    chartScript.append("document.lastChild.appendChild(bg);");
+    chartScript.append("bg = document.createElementNS('http://www.w3.org/2000/svg','rect');\n");
+    chartScript.append("bg.setAttribute('id','foo');\n");
+    chartScript.append("bg.setAttribute('x','0');\n");
+    chartScript.append("bg.setAttribute('y','0');\n");
+    chartScript.append("bg.setAttribute('width', w);\n");
+    chartScript.append("bg.setAttribute('height',h);\n");
+    chartScript.append("bg.setAttribute('style', 'fill:white');\n");
+    chartScript.append("document.lastChild.appendChild(bg);\n");
 
     chartScript.append("renderCccFromComponent(render_").append(this.chartName).append(", data);\n");
     chartScript.append("document.lastChild.setAttribute('width', render_").append(this.chartName).append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_").append(this.chartName).append(
@@ -108,8 +110,50 @@ public class CggChart
     BaseComponent renderer = engine.getRenderer(context);
     renderer.setNode(context);
     chartScript.append(renderer.render(context));
-
-
+  }
+  
+  // TODO: would be great if this could be placed in CGG core, 
+  // so that debugging would be directly available for any consumer.
+  private void renderDebugHooks(StringBuilder chartScript)
+  {
+	// Read debug level
+    // And Hook console.log methods to "print"
+    chartScript
+    	// Private scope
+    	.append("(function() {\n")
+    	.append("  var level = 1;\n")
+    	
+    	 // Must be ==
+    	.append("  if(params.get('debug') == 'true') {\n")
+    	.append("    var debugLevel = parseFloat(params.get('debugLevel'));\n")
+    	.append("    if(!isNaN(debugLevel) && isFinite(debugLevel)) { level = debugLevel; }\n")
+    	.append("  }\n")
+    	
+    	.append("  function _callLog() {\n")
+    	.append("    try {\n")
+    	.append("      var args = Array.prototype.slice.call(arguments);\n")
+    	
+    	.append("      if(mask) { args[0] = mask.replace('%s', ''); }\n")
+    	
+    	.append("      var text = args.map(function(s){ \n")
+    	.append("        return !s || typeof s !== 'object' ?  (''+s) : pvc.stringify(s, {ownOnly: false});\n")
+    	.append("      }).join(' ');\n")
+    	
+    	.append("      print(text);\n")
+    	.append("    } catch(ex) {\n")
+    	.append("      print('Error writting to log: ' + ex);\n")
+    	.append("    }\n")
+    	.append("  }\n")
+    	
+    	// Replace console object's methods
+    	.append("  ['log', 'debug', 'info', 'warn', 'group', 'groupCollapsed', 'groupEnd', 'error']\n")
+        .append("  .forEach(function(p) { console[p] = _callLog; });\n")
+        
+        // Must be called _after_ console methods replacement
+        .append("  pvc.setDebug(level);\n")
+        
+        // Execute immediately
+    	.append("}());\n");
   }
 
   private void writeFile(StringBuilder chartScript, String dashboadFileName)
