@@ -15,6 +15,7 @@
       <Property>executeAtStart</Property>
       <Property>siteMapParameter</Property>
       <Property>siteMapSelectedParameter</Property>
+      <Property>ajaxUrl</Property>
       <Property>htmlObject</Property>
       <Property>preExecution</Property>
       <Property>postExecution</Property>
@@ -57,7 +58,20 @@
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
-
+          <DesignerProperty>
+          <Header>
+            <Name>ajaxUrl</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Ajax URL</Description>
+            <Tooltip>URL from where to get the siteMap structure using an ajax call.</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>52</Order>
+            <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
       </CustomProperties>
     </Implementation>
   </Contents>
