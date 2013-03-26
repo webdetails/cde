@@ -53,8 +53,6 @@ public class CggChart
     renderChart(chartScript);
     renderDatasource(chartScript);
     
-    renderDebugHooks(chartScript);
-    
     // Adding abbility to process external height and width
     chartScript.append("var w = parseInt(params.get('width')) || render_").append(this.chartName).append(".chartDefinition.width;\n");
     chartScript.append("var h = parseInt(params.get('height')) || render_").append(this.chartName).append(".chartDefinition.height;\n");
@@ -110,50 +108,6 @@ public class CggChart
     BaseComponent renderer = engine.getRenderer(context);
     renderer.setNode(context);
     chartScript.append(renderer.render(context));
-  }
-  
-  // TODO: would be great if this could be placed in CGG core, 
-  // so that debugging would be directly available for any consumer.
-  private void renderDebugHooks(StringBuilder chartScript)
-  {
-	// Read debug level
-    // And Hook console.log methods to "print"
-    chartScript
-    	// Private scope
-    	.append("(function() {\n")
-    	.append("  var level = 1;\n")
-    	
-    	 // Must be ==
-    	.append("  if(params.get('debug') == 'true') {\n")
-    	.append("    var debugLevel = parseFloat(params.get('debugLevel'));\n")
-    	.append("    if(!isNaN(debugLevel) && isFinite(debugLevel)) { level = debugLevel; }\n")
-    	.append("  }\n")
-    	
-    	.append("  function _callLog(mask) {\n")
-    	.append("    try {\n")
-    	.append("      var args = Array.prototype.slice.call(arguments);\n")
-    	
-    	.append("      if(mask) { args[0] = mask.replace('%s', ''); }\n")
-    	
-    	.append("      var text = args.map(function(s){ \n")
-    	.append("        return !s || typeof s !== 'object' ?  (''+s) : pvc.stringify(s, {ownOnly: false});\n")
-    	.append("      }).join(' ');\n")
-    	
-    	.append("      print(text);\n")
-    	.append("    } catch(ex) {\n")
-    	.append("      print('Error writting to log: ' + ex);\n")
-    	.append("    }\n")
-    	.append("  }\n")
-    	
-    	// Replace console object's methods
-    	.append("  ['log', 'debug', 'info', 'warn', 'group', 'groupCollapsed', 'groupEnd', 'error']\n")
-        .append("  .forEach(function(p) { console[p] = _callLog; });\n")
-        
-        // Must be called _after_ console methods replacement
-        .append("  pvc.setDebug(level);\n")
-        
-        // Execute immediately
-    	.append("}());\n");
   }
 
   private void writeFile(StringBuilder chartScript, String dashboadFileName)
