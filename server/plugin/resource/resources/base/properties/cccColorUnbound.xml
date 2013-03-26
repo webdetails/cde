@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccColorUnbound</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>colorUnbound</Description>
+    <Tooltip>The color to use when an optional color role is unbound.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>272</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

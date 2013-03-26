@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccInteractive</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>interactive</Description>
+    <Tooltip>Indicates if a chart interaction is enabled.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>292</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
