@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrthoAxisTooltipFormat</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>orthoAxisTooltipFormat</Description>
+    <Tooltip>A callback function that is called to build the tooltip of an axis' labels.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>390</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
