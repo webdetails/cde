@@ -6,6 +6,7 @@ server/plugin/test-lib/
 server/plugin/bin/
 server/plugin/override.properties
 server/plugin/resource/resources/cdf-dd.html
+server/plugin/resource/resources/ext-editor.html
 server/plugin/resource/images/
 server/plugin/resource/js/
 server/plugin/resource/css/
