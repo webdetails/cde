@@ -261,7 +261,6 @@ var CDFDD = Base.extend({
   },
 
   strip: function(original, keyArgs){
-
     // accepted values
     var strip = {
       type: true,
@@ -269,9 +268,38 @@ var CDFDD = Base.extend({
       value: true,
       url: true
     };
-
     // Holds the user's response to keeping properties with no defintion.
     var keepUndefineds;
+    var questionV1=false;
+    var deleteV1=false;
+    var compatVersion;
+    var V1 = "V1 -";
+
+    //Searches for the version
+    var cl = Util.clone(original);
+    var continueLoop=true;
+    $.each(cl,function(i,t){
+      if (typeof t !== "object")
+        {return;}
+      $.each(t.rows,function(j,c){
+        var k=0;
+        var ps =c.properties;
+        if(ps){
+          var L = ps.length
+          while(k<L){
+            var p = ps[k];
+            var name = p.name;
+            if(name=="cccCompatVersion"){
+              compatVersion = p.value;
+              continueLoop=false;
+              break;
+            }
+            k++;
+          }
+          return continueLoop;
+        }
+      });
+    });
 
     // Removes extra information and saves space
     var o = Util.clone(original); // deep clone
@@ -287,6 +315,7 @@ var CDFDD = Base.extend({
           while(k < L){
             var p = ps[k];
             var name = p.name;
+            var descript =(p.description).substring(0,4);
 
             // Had already answered NO to remove undefineds?
             var keep = (keepUndefineds === true);
@@ -306,11 +335,25 @@ var CDFDD = Base.extend({
               }
             }
 
+            if(!questionV1&&compatVersion>1&&descript==V1)
+            {
+              deleteV1=confirm("The dashboard contains V1 properties that are deprecated.\n" +
+                               "Would you like to REMOVE these properties and RELOAD the dashboard?");
+              questionV1=true;
+              if(deleteV1)
+                keyArgs.needsReload=true;
+            }
+            if(deleteV1&&descript==V1)
+            {
+              keep = false;
+            }
+              
             if(keep){
               $.each(p, function(a){
                 if(!strip[a]){
                   delete p[a];
                 }
+                
               });
               k++;
            } else {
