@@ -54,6 +54,8 @@ import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
+import pt.webdetails.cpf.utils.MimeTypes;
+import pt.webdetails.cpf.utils.MimeTypes.FileType;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 {
@@ -326,7 +328,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
     String[] path = resource.split("/");
     String fileName = path[path.length - 1];
-    setResponseHeaders(getMimeType(fileName), RESOURCE_CACHE_DURATION, null);
+    setResponseHeaders(MimeTypes.getMimeType(fileName), RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
@@ -368,7 +370,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     try
     {
       final FileType fileType = FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
-      mimeType = mimeTypes.get(fileType);
+      mimeType = MimeTypes.getMimeType(fileType);
     }
     catch (java.lang.IllegalArgumentException ex)
     {

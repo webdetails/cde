@@ -34,6 +34,7 @@ import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PluginSettings;
+import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.repository.RepositoryAccess;
 import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
 
@@ -204,88 +205,20 @@ public class ComponentManager
   private String[] getExternalComponentLocations()
   {
 
-    final ISolutionFile systemDir = RepositoryAccess.getRepository().getSolutionFile("system", FileAccess.NONE);
-
-    ISolutionFile[] systemFolders = systemDir.listFiles(new IFileFilter()
-    {
-      public boolean accept(ISolutionFile file)
-      {
-        return file.isDirectory();
-      }
-    });
-
-    ArrayList<ISolutionFile> settingsFiles = new ArrayList<ISolutionFile>();
-
-    for (ISolutionFile sysFolder : systemFolders)
-    {
-      ISolutionFile[] sett = sysFolder.listFiles(new IFileFilter()
-      {
-        public boolean accept(ISolutionFile file)
-        {
-          return file.getFileName().equals("settings.xml");
-        }
-      });
-      for (ISolutionFile s : sett)
-      {
-        settingsFiles.add(s);
-      }
-    }
-
-    SettingsReader settingsReader = new SettingsReader();
-
-
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    
+    List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = null;
+    
+    pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities("/cde-components");
+    
     ArrayList<String> componentLocations = new ArrayList<String>();
-    for (ISolutionFile file : settingsFiles)
-    {
-      String pluginName = file.retrieveParent().getFileName();
-      settingsReader.setPlugin(pluginName);
-      List<String> locations = settingsReader.getComponentLocations();
-      if (locations.size() > 0)
-      {
-        logger.debug("found CDE components location declared in " + pluginName + " [" + locations.size() + "]");
-        componentLocations.addAll(locations);
-      }
+    for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity){
+      String location = entity.getRegisteredEntity().valueOf("path");
+      componentLocations.add(location);
+      logger.debug("found CDE components location declared in " + entity.getPlugin().getId() + " [" + location + "]");
     }
 
     return componentLocations.toArray(new String[componentLocations.size()]);
-  }
-
-  private class SettingsReader extends PluginSettings
-  {
-
-    private String pluginName;
-
-    public void setPlugin(String sysFolderName)
-    {
-      this.pluginName = sysFolderName;
-    }
-
-    @Override
-    public String getPluginSystemDir()
-    {
-      return pluginName + "/";
-    }
-
-    @Override
-    public String getPluginName()
-    {
-      return pluginName;
-    }
-
-    public List<String> getComponentLocations()
-    {
-      List<Element> pathElements = getSettingsXmlSection("cde-components/path");
-      if (pathElements != null)
-      {
-        ArrayList<String> solutionPaths = new ArrayList<String>(pathElements.size());
-        for (Element pathElement : pathElements)
-        {
-          solutionPaths.add(pathElement.getText());
-        }
-        return solutionPaths;
-      }
-      return new ArrayList<String>(0);
-    }
   }
 
   private void indexCustomComponents(String dirPath)

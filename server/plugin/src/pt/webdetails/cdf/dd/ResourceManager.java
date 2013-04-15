@@ -24,7 +24,7 @@ public class ResourceManager {
 
   public static ResourceManager instance;
 
-  public static final String PLUGIN_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/");
+  public static final String PLUGIN_DIR = PentahoSystem.getApplicationContext().getSolutionPath("system/pentaho-cdf-dd/");
   public static final String SOLUTION_DIR = PentahoSystem.getApplicationContext().getSolutionPath(DashboardDesignerContentGenerator.SOLUTION_DIR + "/");
   
   private static final HashSet<String> CACHEABLE_EXTENSIONS = new HashSet<String>();
@@ -70,7 +70,13 @@ public class ResourceManager {
     if(!file.exists())
     {
       file = new File(SOLUTION_DIR + path);
+      
+      //if not under plugin dir nor plugins solution dir try the custom dirs
+      if(!file.exists()){
+        file = new File(PentahoSystem.getApplicationContext().getSolutionPath("")+path);
+      }
     }
+
     
     String resourceContents = FileUtils.readFileToString(file);
 

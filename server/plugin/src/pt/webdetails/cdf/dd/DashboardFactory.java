@@ -211,8 +211,13 @@ public class DashboardFactory
         logger.error(key.getCdfde() + " not found.");
         return null;
       }
-      ISolutionFile templ = key.getTemplate() == null ? null
-              : repository.getSolutionFile("/system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/" + key.getTemplate(), FileAccess.READ);
+      
+      ISolutionFile templ;
+      if(key.getTemplate() == null){
+        templ = null;
+      }else{
+        templ = repository.getSolutionFile(key.getTemplate(), FileAccess.READ);
+      }
 
       /* Cache is invalidated if the dashboard or template have changed since
        * the cache was loaded, or at midnight every day, because of dynamic
