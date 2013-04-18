@@ -268,7 +268,12 @@ public class GenericProperty
       value = "\"" + value + "\"";
     }
     attributes.put("value", value);
-    String innerName = this.name.substring(0, 1).toLowerCase() + this.name.substring(1);
+    String innerName = null;
+    if(this.name != null && this.name.length() > 1){
+      innerName = this.name.substring(0, 1).toLowerCase() + this.name.substring(1);
+    }else{
+      innerName = this.name.toLowerCase();
+    }
     attributes.put("name", "\"" + innerName + "\"");
   }
   
