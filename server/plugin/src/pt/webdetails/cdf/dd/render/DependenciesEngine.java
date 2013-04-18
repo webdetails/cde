@@ -85,6 +85,11 @@ public class DependenciesEngine
   {
     Dependency dep;
     File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
+    
+    if(f.isDirectory()){
+      f = new File ((sourcePath + "/" + path+"component.xml").replaceAll("\\\\", "/").replaceAll("/+", "/"));
+    }
+    
     try
     {
       dep = dependencyPool.get(name);

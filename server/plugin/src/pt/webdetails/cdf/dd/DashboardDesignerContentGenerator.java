@@ -19,7 +19,6 @@ import java.util.Properties;
 import java.text.SimpleDateFormat;
 import org.apache.commons.io.FilenameUtils;
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
