@@ -544,6 +544,7 @@ var CDFDD = Base.extend({
               operation: fromScratch  ? "newFile" : "saveas",
               file: selectedFolder + selectedFile,
               title: selectedTitle,
+              widgetName: selectedWidgetName,
               description: selectedDescription,
               cdfstructure: JSON.stringify(myself.dashboardData,"",2) // TODO: shouldn't it strip, like save does?
             };
@@ -806,6 +807,7 @@ var CDFDD = Base.extend({
     content = '\n' +
       '<span><b>Settings:</b></span><br/><hr/>\n' +
       '<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
+      '<span>Widget Name:</span><br/><input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input><br/>\n' +
       '<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>\n' +
       '<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
       '<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">\n' +
@@ -837,6 +839,7 @@ var CDFDD = Base.extend({
         wcdf.author = $("#authorInput").val();
         wcdf.description = $("#descriptionInput").val();
         wcdf.style = $("#styleInput").val();
+        wcdf.widgetName = $("#widgetNameInput").val();
         wcdf.rendererType = $("#rendererInput").val();
         wcdf.widgetParameters = [];
         $("#widgetParameters input[type='checkbox']:checked")
@@ -856,8 +859,9 @@ var CDFDD = Base.extend({
 
     var selectedFolder = "cde/widgets/",
         selectedFile = "",
-        selectedTitle = this.getDashboardWcdf().title
-        selectedDescription = this.getDashboardWcdf().description
+        selectedTitle = this.getDashboardWcdf().title,
+        selectedDescription = this.getDashboardWcdf().description,
+        selectedWidgetName = "",
         options = {
           title: selectedTitle,
           description: selectedDescription
@@ -877,6 +881,9 @@ var CDFDD = Base.extend({
         $('#descriptionInput').change(function(){
           selectedDescription = this.value;
         });
+        $('#componentInput').change(function(){
+          selectedWidgetName = this.value;
+        });
       },
       buttons: {
         Ok: true,
@@ -891,6 +898,8 @@ var CDFDD = Base.extend({
           /* Reject file names where an extension is provided, which is different from .wcdf */
           if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile))
             $.prompt('Invalid file extension. Must be .wcdf');
+          else if(selectedWidgetName.length == 0 || !/^[a-zA-Z0-9_]*$/.test(selectedWidgetName) )
+            $.prompt('Invalid characters in component name. Only alphanumeric characters and \'_\' are allowed.');
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
 
@@ -902,7 +911,8 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData,"",2)
+              cdfstructure: JSON.stringify(myself.dashboardData,"",2),
+              widgetName: selectedWidgetName
             };
 
             $.post(CDFDDDataUrl, saveAsParams, function(result) {
@@ -911,6 +921,10 @@ var CDFDD = Base.extend({
                 if(selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1,selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 var wcdf = myself.getDashboardWcdf();
+                // TODO: dashboard is being saved twice. This also needs to be fixed..
+                wcdf.title = saveAsParams.title;
+                wcdf.description = saveAsParams.description;
+                wcdf.widgetName = saveAsParams.widgetName;
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function(){
@@ -1370,6 +1384,8 @@ templates.saveAsWidget = Mustache.compile(
   '<div class="saveaslabel">Save as Widget:</div>\n' +
   ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
   ' <input id="fileInput" class="folderexplorerfileinput" type="text"></input>\n' +
+  ' <span class="folderexplorerextralabels">Widget Name:</span>\n' +
+  ' <input id="componentInput" class="folderexplorerextralabels" type="text"></input>\n' +
   ' <hr class="filexplorerhr"/>\n' +
   ' <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
   ' <span class="folderexplorerextralabels" >Title:</span>' +
