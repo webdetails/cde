@@ -807,7 +807,9 @@ var CDFDD = Base.extend({
     content = '\n' +
       '<span><b>Settings:</b></span><br/><hr/>\n' +
       '<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
+      '{{#widget}}' + 
       '<span>Widget Name:</span><br/><input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input><br/>\n' +
+      '{{/widget}}' + 
       '<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>\n' +
       '<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
       '<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">\n' +
@@ -849,7 +851,12 @@ var CDFDD = Base.extend({
       },
       callback: function(v,m,f){
         if(v){
-          myself.saveSettingsRequest(wcdf);
+          if(wcdf.widget && ( wcdf.widgetName == 0 || !/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName) ) ) {
+            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
+          }
+          else {
+            myself.saveSettingsRequest(wcdf);
+          }
         }
       }
     });
@@ -899,7 +906,7 @@ var CDFDD = Base.extend({
           if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile))
             $.prompt('Invalid file extension. Must be .wcdf');
           else if(selectedWidgetName.length == 0 || !/^[a-zA-Z0-9_]*$/.test(selectedWidgetName) )
-            $.prompt('Invalid characters in component name. Only alphanumeric characters and \'_\' are allowed.');
+            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
 
