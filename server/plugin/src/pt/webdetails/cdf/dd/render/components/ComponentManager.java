@@ -254,7 +254,7 @@ public class ComponentManager
     String dirAbsPath = Utils.joinPath(basePath, dirPath);
     File dir = new File(dirAbsPath);
 
-    logger.info("Loading custom components from: " + dir.toString());
+    logger.info("Loading widget components from: " + dir.toString());
 
     FilenameFilter widgetComponents = new FilenameFilter()
     {

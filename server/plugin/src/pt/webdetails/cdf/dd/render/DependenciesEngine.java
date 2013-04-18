@@ -84,11 +84,8 @@ public class DependenciesEngine
   public void register(String name, String version, String path) throws Exception
   {
     Dependency dep;
-    File f = new File((sourcePath + "/" + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
-    
-    if(f.isDirectory()){
-      f = new File ((sourcePath + "/" + path+"component.xml").replaceAll("\\\\", "/").replaceAll("/+", "/"));
-    }
+    File f = new File((sourcePath + File.separator + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
+
     
     try
     {
