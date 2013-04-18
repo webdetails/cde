@@ -1381,15 +1381,24 @@ templates.savePulldown = Mustache.compile(
 );
 
 templates.saveAsWidget = Mustache.compile(
-  '<div class="saveaslabel">Save as Widget:</div>\n' +
-  ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
-  ' <input id="fileInput" class="folderexplorerfileinput" type="text"></input>\n' +
-  ' <span class="folderexplorerextralabels">Widget Name:</span>\n' +
-  ' <input id="componentInput" class="folderexplorerextralabels" type="text"></input>\n' +
-  ' <hr class="filexplorerhr"/>\n' +
-  ' <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-  ' <span class="folderexplorerextralabels" >Title:</span>' +
-  ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"></input><br/>\n' +
-  ' <span class="folderexplorerextralabels" >Description:</span>'+
-  ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"></input>'
+  '<div class="saveaslabel">Save as Widget:</div>' +
+  '<div class="inputContainer">' + 
+  '  <span class="inputLabel">File Name:</span>' +
+  '  <input id="fileInput" type="text"></input>' +
+  '</div>' +
+  '<div class="inputContainer">' + 
+  ' <span class="inputLabel">Widget Name:</span>' +
+  ' <input id="componentInput"  type="text"></input>\n' +
+  '</div>' +
+  '<hr class="filexplorerhr"/>\n' +
+  '<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+  '<div class="inputContainer">' + 
+  ' <span class="inputLabel" >Title:</span>' +
+  ' <input id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
+  '</div>' +
+  '<div class="inputContainer">' + 
+  ' <span class="inputLabel" >Description:</span>'+
+  ' <input id="descriptionInput"  type="text" value="{{description}}"></input>' +
+  '</div>'
+
 );
