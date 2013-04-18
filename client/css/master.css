@@ -890,14 +890,26 @@ div.treeTableNewJqi.save-as-widget .treeTableNewJqibuttons {
 }
 
 div.treeTableNewJqi.save-as-widget .treeTableNewJqimessage {
-  height: 160px;
+  height: 180px;
 }
 
-div.treeTableNewJqi.save-as-widget input.folderexplorerfileinput {
-  position: relative;
-  width:380px;
-  left:33px;
+div.treeTableNewJqi.save-as-widget .inputContainer {
+  display:block;
+  height:30px;
+  line-height:30px;
+  padding-left:20px;
 }
+div.treeTableNewJqi.save-as-widget .inputContainer span.inputLabel {
+  display:inline-block;
+  float:left;
+  width:80px;
+}
+div.treeTableNewJqi.save-as-widget .inputContainer input {
+  display:inline-block;
+  float:left;
+  width:385px;
+}
+
 
 div.treeTableNewJqi.save-as-widget button {
   width: 65px;
