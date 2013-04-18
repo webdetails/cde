@@ -138,6 +138,7 @@ public class XmlStructure implements IStructure
     wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
     wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
     wcdf.setWidget(XmlDom4JHelper.getNodeText("/cdf/widget", wcdfDoc, "false").equals("true"));
+    wcdf.setWidgetName(XmlDom4JHelper.getNodeText("/cdf/widgetName", wcdfDoc, ""));
     wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
     wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
     wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
@@ -295,6 +296,7 @@ public class XmlStructure implements IStructure
     String authorStr = (String) parameters.get("author");
     String descriptionStr = (String) parameters.get("description");
     String styleStr = (String) parameters.get("style");
+    String widgetNameStr = (String) parameters.get("widgetName");
     Boolean isWidget = "true".equals(parameters.get("widget"));
     String rendererType = (String) parameters.get("rendererType");
     Object widgetParams = parameters.get("widgetParameters");
@@ -345,6 +347,10 @@ public class XmlStructure implements IStructure
         if (parameters.containsKey("widget"))
         {
           setNodeValue(cdfNode, "widget", isWidget ? "true" : "false");
+        }
+        if (parameters.containsKey("widgetName"))
+        {
+          setNodeValue(cdfNode, "widgetName", widgetNameStr);
         }
         if (parameters.containsKey("widgetParameters"))
         {
@@ -406,8 +412,8 @@ public class XmlStructure implements IStructure
       return;
     }
     ComponentDefinition cd = new ComponentDefinition();
-    cd.setName("widget" + wcdf.getTitle());
-    cd.setDescription(wcdf.getTitle() + " Widget");
+    cd.setName(wcdf.getWidgetName());
+    cd.setDescription(wcdf.getDescription());
     cd.setCatDescription("Widgets");
     cd.setCategory("WIDGETS");
     cd.addMetadata("widget", "true");

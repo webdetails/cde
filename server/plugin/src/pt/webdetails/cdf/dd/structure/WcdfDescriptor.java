@@ -20,6 +20,7 @@ public class WcdfDescriptor
   private String rendererType;
   private String wcdfFilePath;
   private List<String> widgetParameters;
+  private String widgetName;
   private boolean isWidget;
 
   public WcdfDescriptor()
@@ -40,6 +41,7 @@ public class WcdfDescriptor
     json.put("author", getAuthor());
     json.put("description", getDescription());
     json.put("style", getStyle());
+    json.put("widgetName", getWidgetName());
     json.put("widget", isWidget());
     json.put("rendererType", getRendererType());
     JSONArray arr = new JSONArray();
@@ -122,6 +124,16 @@ public class WcdfDescriptor
   public String getStructurePath()
   {
     return wcdfFilePath == null? null : wcdfFilePath.replace(".wcdf", ".cdfde");
+  }
+  
+  public String getWidgetName()
+  {
+    return widgetName;
+  }
+
+  public void setWidgetName(String widgetName)
+  {
+    this.widgetName = widgetName;
   }
 
   public void setWidget(boolean isWidget)
