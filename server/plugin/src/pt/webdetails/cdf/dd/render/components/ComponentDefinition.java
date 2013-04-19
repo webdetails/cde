@@ -21,9 +21,20 @@ public class ComponentDefinition
 
   private String implementation,
           name = "",
+          iName = null,
           description = "",
           category  = "OTHERCOMPONENTS",
           catDescription = "Others";
+
+  public String getIName()
+  {
+    return iName;
+  }
+
+  public void setIName(String iName)
+  {
+    this.iName = iName;
+  }
 
   public String getName()
   {
@@ -116,7 +127,7 @@ public class ComponentDefinition
   {
     Element header = el.addElement("Header");
     header.addElement("Name").setText(name);
-    header.addElement("IName").setText(name);
+    header.addElement("IName").setText( ( iName == null ) ? name  : iName );
     header.addElement("Description").setText(description);
     header.addElement("Category").setText(category);
     header.addElement("CatDescription").setText(catDescription);
