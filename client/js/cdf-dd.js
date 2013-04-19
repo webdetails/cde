@@ -544,7 +544,6 @@ var CDFDD = Base.extend({
               operation: fromScratch  ? "newFile" : "saveas",
               file: selectedFolder + selectedFile,
               title: selectedTitle,
-              widgetName: selectedWidgetName,
               description: selectedDescription,
               cdfstructure: JSON.stringify(myself.dashboardData,"",2) // TODO: shouldn't it strip, like save does?
             };
