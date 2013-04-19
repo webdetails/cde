@@ -413,7 +413,7 @@ public class XmlStructure implements IStructure
     }
     ComponentDefinition cd = new ComponentDefinition();
     cd.setName(wcdf.getWidgetName());
-    cd.setDescription(wcdf.getDescription());
+    cd.setDescription(wcdf.getWidgetName() + " Widget");
     cd.setCatDescription("Widgets");
     cd.setCategory("WIDGETS");
     cd.addMetadata("widget", "true");
