@@ -850,10 +850,24 @@ var CDFDD = Base.extend({
       },
       callback: function(v,m,f){
         if(v){
-          if(wcdf.widget && ( wcdf.widgetName == 0 || !/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName) ) ) {
-            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
+
+          /* Validations */
+          var validInputs = true;
+          if (wcdf.widget){
+            if(!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName) ) {
+              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
+              validInputs = false;
+            } else if (wcdf.widgetName.length == 0){
+              if (wcdf.title.length == 0) {
+                $.prompt('No widget name provided. Tried to use title instead but title is empty.');
+                validInputs = false;
+              } else {
+                wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
+              }
+            } 
           }
-          else {
+
+          if (validInputs){
             myself.saveSettingsRequest(wcdf);
           }
         }
@@ -901,13 +915,29 @@ var CDFDD = Base.extend({
       callback: function(v,m,f){
         if(v){
 
-          /* Reject file names where an extension is provided, which is different from .wcdf */
-          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile))
+          /* Validations */
+          var validInputs = true;
+          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)){
             $.prompt('Invalid file extension. Must be .wcdf');
-          else if(selectedWidgetName.length == 0 || !/^[a-zA-Z0-9_]*$/.test(selectedWidgetName) )
+            validInputs = false;
+          } else if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName) ) {
             $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
-          else if(selectedFile.length > 0){
-            if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
+            validInputs = false;
+          } else if (selectedWidgetName.length == 0){
+            if (selectedTitle.length == 0) {
+              $.prompt('No widget name provided. Tried to use title instead but title is empty.');
+              validInputs = false;
+            } else {
+              selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+            }
+          } else if(selectedFile.length <= 0){
+            validInputs = false;
+          }
+
+          if (validInputs){
+            if(selectedFile.indexOf(".wcdf") == -1){
+              selectedFile += ".wcdf";
+            }
 
             CDFDDFileName = selectedFolder + selectedFile;
             myself.dashboardData.filename = CDFDDFileName;
@@ -924,7 +954,9 @@ var CDFDD = Base.extend({
             $.post(CDFDDDataUrl, saveAsParams, function(result) {
               var json = JSON.parse(result);
               if(json.status == "true") {
-                if(selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1,selectedFolder.length);
+                if(selectedFolder[0] == "/") {
+                  selectedFolder = selectedFolder.substring(1,selectedFolder.length);
+                }
                 var solutionPath = selectedFolder.split("/");
                 var wcdf = myself.getDashboardWcdf();
                 // TODO: dashboard is being saved twice. This also needs to be fixed..
@@ -936,11 +968,11 @@ var CDFDD = Base.extend({
                 myself.initStyles(function(){
                   window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
-              }
-              else
+              } else {
                 $.notifyBar({
                   html: "Errors saving file: " + json.result
                 });
+              }
             });
           }
         }
