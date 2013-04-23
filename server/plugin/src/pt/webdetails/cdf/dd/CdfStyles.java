@@ -150,6 +150,7 @@ public class CdfStyles {
     styles.add(style);
     
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    pluginsAnalyzer.refresh();
     
     
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities("/cde-styles");

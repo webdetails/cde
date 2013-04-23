@@ -206,6 +206,7 @@ public class ComponentManager
   {
 
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    pluginsAnalyzer.refresh();
     
     List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = null;
     
