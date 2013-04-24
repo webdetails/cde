@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPlot2SeriesIndexes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>-1</DefaultValue>
+    <Description>plot2SeriesIndexes</Description>
+    <Tooltip>The 0-based indexes of the series visual role values that are to be shown in the second plot.</Tooltip>
+    <InputType>Array</InputType>
+    <OutputType>Array</OutputType>
+    <Order>405</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
