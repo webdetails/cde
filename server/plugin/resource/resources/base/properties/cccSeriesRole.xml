@@ -7,7 +7,7 @@
     <Tooltip>The series visual role represents a series of connected data points.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>408</Order>
+    <Order>420</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The distance of the closest tooltip edge or corner to the visual element's tooltip anchor point, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>448</Order>
+    <Order>460</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

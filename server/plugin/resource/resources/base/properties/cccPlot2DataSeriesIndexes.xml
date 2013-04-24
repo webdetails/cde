@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPlot2DataSeriesIndexes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>-1</DefaultValue>
+    <Description>plot2DataSeriesIndexes</Description>
+    <Tooltip>The 0-based index or indexes of the series, in the order of appearance in the data source, that are to be shown in the second plot.</Tooltip>
+    <InputType>Array</InputType>
+    <OutputType>Array</OutputType>
+    <Order>400</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

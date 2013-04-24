@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when the user performs a selection, but before the corresponding datums' selected state are actually changed.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>467</Order>
+    <Order>479</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
