@@ -7,7 +7,7 @@
     <Tooltip>The preferred tooltip gravity.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>446</Order>
+    <Order>458</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

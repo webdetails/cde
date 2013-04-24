@@ -201,6 +201,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -449,6 +450,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -993,6 +995,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -1400,6 +1403,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -2415,6 +2419,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -2668,6 +2673,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
@@ -2921,6 +2927,7 @@
           <Property name="plot2">cccPlot2</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
+          <Property name="plot2DataSeriesIndexes">cccPlot2DataSeriesIndexes</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
           <Property name="plot2LinesVisible">cccPlot2LinesVisible</Property>
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>

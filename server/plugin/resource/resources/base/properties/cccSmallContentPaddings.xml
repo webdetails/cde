@@ -7,7 +7,7 @@
     <Tooltip>The paddings of the content panel of a small chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>417</Order>
+    <Order>429</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

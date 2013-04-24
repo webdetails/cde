@@ -7,7 +7,7 @@
     <Tooltip>The rectangle layout algorithm.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>286</Order>
+    <Order>294</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

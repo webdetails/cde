@@ -7,7 +7,7 @@
     <Tooltip>Indicates if shaded areas are shown in the plot.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>453</Order>
+    <Order>465</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

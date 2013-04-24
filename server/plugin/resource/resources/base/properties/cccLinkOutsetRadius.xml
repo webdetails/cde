@@ -7,7 +7,7 @@
     <Tooltip>The length of the link line segment that extends outwards from the slice, until it reaches the link line "elbow", in pixel units, or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>310</Order>
+    <Order>318</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

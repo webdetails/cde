@@ -7,7 +7,7 @@
     <Tooltip>Indicates whether the plot frame is drawn in leaf charts.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>401</Order>
+    <Order>413</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
