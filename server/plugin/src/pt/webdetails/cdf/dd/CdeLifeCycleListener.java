@@ -61,6 +61,20 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
       }
     }
 
+    if (!solutionRepository.resourceExists("cde/styles"))
+    {
+      try
+      {
+        repService.createFolder(adminSession, "", "cde", "styles", "styles");
+      }
+      catch (IOException ioe)
+      {
+        logger.error("Error while creating folder cde/styles for cde plugin. CDE may not work as expected", ioe);
+      }
+    }
+    
+    
+    
     if (!solutionRepository.resourceExists("cde/components"))
     {
       try
@@ -73,17 +87,6 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
       }
     }
 
-    if (!solutionRepository.resourceExists("cde/styles"))
-    {
-      try
-      {
-        repService.createFolder(adminSession, "", "cde", "styles", "styles");
-      }
-      catch (IOException ioe)
-      {
-        logger.error("Error while creating folder cde/styles for cde plugin. CDE may not work as expected", ioe);
-      }
-    }
 
     if (!solutionRepository.resourceExists("cde/templates"))
     {
