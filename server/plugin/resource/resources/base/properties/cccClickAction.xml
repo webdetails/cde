@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when the user clicks on a visual element.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>251</Order>
+    <Order>254</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

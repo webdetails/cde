@@ -206,6 +206,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -454,6 +455,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -998,6 +1000,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -1405,6 +1408,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -2420,6 +2424,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -2673,6 +2678,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>
@@ -2926,6 +2932,7 @@
           <Property name="plot2NullInterpolationMode">cccPlot2NullInterpolationMode</Property>
           <Property name="plot2OrthoAxis">cccPlot2OrthoAxis</Property>
           <Property name="plot2Series">cccPlot2Series</Property>
+          <Property name="plot2SeriesIndexes">cccPlot2SeriesIndexes</Property>
           <Property name="plot2Stacked">cccPlot2Stacked</Property>
           <Property name="plot2TrendLabel">cccPlot2TrendLabel</Property>
           <Property name="plot2TrendType">cccPlot2TrendType</Property>

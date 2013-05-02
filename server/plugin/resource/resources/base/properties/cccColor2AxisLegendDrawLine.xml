@@ -7,7 +7,7 @@
     <Tooltip>Forces a rule to be shown or not in the marker zone (applies to discrete domain axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>254</Order>
+    <Order>257</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
