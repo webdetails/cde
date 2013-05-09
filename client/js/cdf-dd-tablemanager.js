@@ -132,9 +132,11 @@ var TableManager = Base.extend({
 
 
     // Add columns
-
-    for (var i in this.getTableModel().getColumnGetExpressions()){
-      this.renderColumn(rowObj,row,i);
+    var columnExpressions = this.getTableModel().getColumnGetExpressions();
+    for (var i in columnExpressions){
+      if(columnExpressions.hasOwnProperty(i)){
+        this.renderColumn(rowObj,row,i);
+      }
     }
 
 

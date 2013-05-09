@@ -37,25 +37,29 @@ var LayoutPanel = Panel.extend({
 
 			// Tree
 
-			this.treeTable = new TableManager(LayoutPanel.TREE);
-			this.treeTable.setTitle("Layout Structure");
+            this.treeTable = new TableManager(LayoutPanel.TREE);
+            this.treeTable.setTitle("Layout Structure");
 
-                        var dashboardType = cdfdd.dashboardWcdf.rendererType || "blueprint";
-			this.treeTable.setInitialOperations(operationSets[dashboardType]);
+            var dashboardType = cdfdd.dashboardWcdf.rendererType || "blueprint";
+            this.treeTable.setInitialOperations(operationSets[dashboardType]);
 
-			var treeTableModel = new TableModel('layoutTreeTableModel');
-			treeTableModel.setColumnNames(['Type','Name']);
-			treeTableModel.setColumnGetExpressions([
-				function(row){return row.typeDesc},
-				function(row){return row.properties[0].value}
-				]);
-			treeTableModel.setColumnTypes(['String','String']);
-			treeTableModel.setRowId(function(row){return row.id});
-			treeTableModel.setRowType(function(row){return row.type});
-			treeTableModel.setParentId(function(row){return row.parent});
-			treeTableModel.setData(cdfdd.getDashboardData().layout.rows);
-			this.treeTable.setTableModel(treeTableModel);
-			this.treeTable.init();
+            var treeTableModel = new TableModel('layoutTreeTableModel');
+            treeTableModel.setColumnNames(['Type','Name']);
+            treeTableModel.setColumnGetExpressions([
+                function(row){return row.typeDesc},
+                function(row){return row.properties[0].value}
+                ]);
+            treeTableModel.setColumnTypes(['String','String']);
+            var rowId = function(row){return row.id};
+            treeTableModel.setRowId(rowId);
+            var rowType = function(row){return row.type};
+            treeTableModel.setRowType(rowType);
+            var parentId = function(row){return row.parent};
+            treeTableModel.setParentId(parentId);
+            var layoutRows = cdfdd.getDashboardData().layout.rows;
+            treeTableModel.setData(layoutRows);
+            this.treeTable.setTableModel(treeTableModel);
+            this.treeTable.init();
 
 
 			// Properties

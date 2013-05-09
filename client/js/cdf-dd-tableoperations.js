@@ -49,8 +49,10 @@ var CellOperations = Base.extend({
       $.each(CellOperations.operations,function(i,value){
       
           for(var i in value.types){
-            if(type.match("^"+value.types[i])){
-              _operations.push(value);
+            if(value.types.hasOwnProperty(i)){
+              if(type.match("^"+value.types[i])){
+                _operations.push(value);
+              }
             }
           }
         });
