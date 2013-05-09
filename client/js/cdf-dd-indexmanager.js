@@ -31,32 +31,34 @@ var IndexManager = Base.extend({
 			idx[IndexManager.ROOTID] = root; 
 
 			for ( var rowIndex in data){
-				var row = data[rowIndex];
-				var _id = this.getTableModel().getEvaluatedId(rowIndex);
-				var _parent;
-				if (typeof this.getTableModel().getParentId() == 'undefined'){
-					// Parent folder
-					_parent = IndexManager.ROOTID;
-				}
-				else{
-					// Child folder
-					_parent = this.getTableModel().getParentId()(row);
-					if (typeof _parent == 'undefined'){
+				if(data.hasOwnProperty(rowIndex)){
+					var row = data[rowIndex];
+					var _id = this.getTableModel().getEvaluatedId(rowIndex);
+					var _parent;
+					if (typeof this.getTableModel().getParentId() == 'undefined'){
+						// Parent folder
 						_parent = IndexManager.ROOTID;
 					}
+					else{
+						// Child folder
+						_parent = this.getTableModel().getParentId()(row);
+						if (typeof _parent == 'undefined'){
+							_parent = IndexManager.ROOTID;
+						}
+					}
+					var _type = this.getTableModel().getRowType()(row) ;
+
+					var entry = {};
+					entry.id = _id;
+					entry.parent = _parent;
+					entry.children = [];
+					entry.type = _type;
+					entry.index = index;
+					idx[_id] = entry; 
+					idx[_parent].children.push(entry);
+
+					index++;
 				}
-				var _type = this.getTableModel().getRowType()(row) ;
-
-				var entry = {};
-				entry.id = _id;
-				entry.parent = _parent;
-				entry.children = [];
-				entry.type = _type;
-				entry.index = index;
-				idx[_id] = entry; 
-				idx[_parent].children.push(entry);
-
-				index++;
 			};
 
 			this.setIndex(idx);

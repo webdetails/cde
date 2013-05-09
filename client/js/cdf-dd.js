@@ -233,7 +233,7 @@ var CDFDD = Base.extend({
       operation: "save",
       file: CDFDDFileName,
       // cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), "", 1)
+      cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1)
     };
     
     if (CDFDDFileName != "/null/null/null") {
@@ -680,7 +680,7 @@ var CDFDD = Base.extend({
     //temporarily set the filename to tmp
     var tmpFileName = CDFDDFileName.replace(".cdfde","_tmp.cdfde");
     this.dashboardData.filename = tmpFileName;
-    var serializedDashboard = JSON.stringify(this.dashboardData,"",2);
+    var serializedDashboard = JSON.stringify(this.dashboardData,null,2);
     this.dashboardData.filename = CDFDDFileName;
 
     var saveParams = {
