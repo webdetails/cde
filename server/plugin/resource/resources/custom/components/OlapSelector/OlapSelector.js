@@ -132,6 +132,7 @@ var OlapSelectorModel = Backbone.Model.extend({
           .where({selected:true})
           .map(function(e){return e.get("qualifiedName");});
       this.set("oldValues",oldValues);
+
     },
 
     apply: function() {
@@ -339,8 +340,8 @@ var OlapSelectorModel = Backbone.Model.extend({
         })
     },
 
-    toggleCollapsed: function(){
-        this.set("collapsed",!this.get("collapsed"));
+    toggleCollapsed: function(predicate){
+        this.set("collapsed", ( _.isBoolean(predicate) ) ? predicate : !this.get("collapsed") );
     },
 
     selectedValues: function() {
@@ -355,6 +356,10 @@ var OlapSelectorModel = Backbone.Model.extend({
       var term = this.get("searchterm");
       this.set("pageStart",0,{silent:true});
       this.fetchValues();
+    },
+
+    notifyUpdate: function (){
+      this.trigger('notify', this);
     }
 });
 
@@ -425,8 +430,6 @@ var OlapSelectorView = Backbone.View.extend({
         });
     },
 
-
-
     initialize: function() {
     
         this.initializeOptions();
@@ -446,10 +449,12 @@ var OlapSelectorView = Backbone.View.extend({
         var values = this.model.get("values");
         values.on("add remove reset",this.updateOptions, this)
         values.on("select", this.updateOptions, this);
+        values.on("notify", this.notifyUpdate, this);
     },
 
     initializeOptions: function() {
         this._selectedViews = [];
+        this._selectedViewsOut = [];
         this._optionViews = [];
         this.model.get("values").each(function(m){
             this._optionViews.push(new OptionView({
@@ -457,6 +462,9 @@ var OlapSelectorView = Backbone.View.extend({
             }));
             if (m.get("selected")) {
                 this._selectedViews.push(new SelectionView({
+                    model:m
+                }));
+                this._selectedViewsOut.push(new SelectionViewOut({
                     model:m
                 }));
             } 
@@ -505,12 +513,16 @@ var OlapSelectorView = Backbone.View.extend({
     renderOptions: function() {
         var optionContainer = this.$el.find(".rightArea .options").empty(),
             selectionContainer = this.$el.find(".leftArea .selection").empty(),
+            selectionContainerOut = this.$el.find(".outsideArea .selection").empty(),
             myself = this,
             minIdx = this.model.get('pageStart'),
             maxIdx = this.model.get('pageStart') + this.model.get('pageSize');
         _(this._optionViews).chain().filter(this.isVisible,this).slice(minIdx,maxIdx).each(function(v){
           optionContainer.append(v.render().el);
         },this);
+        _(this._selectedViewsOut).each(function(v){
+            selectionContainerOut.append(v.render().el);
+        });
         _(this._selectedViews).each(function(v){
             selectionContainer.append(v.render().el);
         });
@@ -520,6 +532,13 @@ var OlapSelectorView = Backbone.View.extend({
         this.initializeOptions();
         this.renderOptions();
         this.highlightParents();
+    },
+
+    notifyUpdate: function (){
+      // TODO
+      this.model.toggleCollapsed(false);
+      this.model.toggleCollapsed(true);
+
     },
 
     isVisible: function(view) {
@@ -563,12 +582,13 @@ var OlapSelectorView = Backbone.View.extend({
             });
             this.$el.find(".leftArea .selection").append(vInner.render().el);
             this._selectedViews.push(vInner);
-         /*   vOuter = new SelectionView({
+         
+            vOuter = new SelectionViewOut({
                 model:m
             });
-            this.$el.find(".leftArea .selection").append(vOuter.render().el);
+            this.$el.find(".outsideArea .selection").append(vOuter.render().el);
             this._selectedViews.push(vOuter);
-       */ } else {
+          } else {
             v = _(this._selectedViews).filter(function(v) {
                 return v.model === m
             });
@@ -576,6 +596,15 @@ var OlapSelectorView = Backbone.View.extend({
             _.each(v,function(e){
               e.remove();
               myself._selectedViews = _(myself._selectedViews).without(e);
+            });
+
+            v = _(this._selectedViewsOut).filter(function(v) {
+                return v.model === m
+            });
+            var myself = this;
+            _.each(v,function(e){
+              e.remove();
+              myself._selectedViewsOut = _(myself._selectedViewsOut).without(e);
             });
         }
     },
@@ -723,6 +752,15 @@ var SelectionView = Backbone.View.extend({
     }
 });
 
+var SelectionViewOut = SelectionView.extend({
+
+    unselect: function() {
+      this.model.set("selected", false);
+      this.model.trigger("select");
+      this.model.trigger("notify");
+    }
+});
+
 /* 
  * TEMPLATES
  */
@@ -767,7 +805,9 @@ templates.olapSelector.main = Mustache.compile(
     "       </div>"+
     "     </div>" +
     " </div>" +
-    " <div class='selection'></div>"+
+    " <div class='outsideArea'>"+
+    "   <ul class='selection'></ul>"+
+    " </div>"+
     "</div>"
 );
 templates.olapSelector.option = Mustache.compile(

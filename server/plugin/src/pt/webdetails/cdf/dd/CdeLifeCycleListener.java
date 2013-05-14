@@ -15,6 +15,7 @@ import org.pentaho.platform.api.repository.ISolutionRepositoryService;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.core.system.UserSession;
 import org.pentaho.platform.engine.security.SecurityHelper;
+import org.pentaho.platform.repository.hibernate.HibernateUtil;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
@@ -45,7 +46,9 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
   @Override
   public void loaded() throws PluginLifecycleException
   {
-    //Check if folder and subfolders exist? If not create them.
+	boolean success = false;
+	
+	//Check if folder and subfolders exist? If not create them.
     IPentahoSession adminSession = getAdminSession();
     ISolutionRepository solutionRepository = PentahoSystem.get(ISolutionRepository.class, adminSession);
     ISolutionRepositoryService repService = PentahoSystem.get(ISolutionRepositoryService.class, adminSession);
@@ -53,7 +56,10 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
     {
       try
       {
-        repService.createFolder(adminSession, "", "", "cde", "CDE");
+        success = repService.createFolder(adminSession, "", "", "cde", "CDE");
+        if(success){
+        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
+        }
       }
       catch (IOException ioe)
       {
@@ -65,7 +71,10 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
     {
       try
       {
-        repService.createFolder(adminSession, "", "cde", "styles", "styles");
+        success = repService.createFolder(adminSession, "", "cde", "styles", "styles");
+        if(success){
+        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
+        }
       }
       catch (IOException ioe)
       {
@@ -79,7 +88,10 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
     {
       try
       {
-        repService.createFolder(adminSession, "", "cde", "components", "components");
+        success = repService.createFolder(adminSession, "", "cde", "components", "components");
+        if(success){
+        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
+        }
       }
       catch (IOException ioe)
       {
@@ -92,7 +104,10 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
     {
       try
       {
-        repService.createFolder(adminSession, "", "cde", "templates", "templates");
+        success = repService.createFolder(adminSession, "", "cde", "templates", "templates");
+        if(success){
+        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
+        }
       }
       catch (IOException ioe)
       {
@@ -104,7 +119,10 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
     {
       try
       {
-        repService.createFolder(adminSession, "", "cde", "widgets", "widgets");
+        success = repService.createFolder(adminSession, "", "cde", "widgets", "widgets");
+        if(success){
+        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
+        }
         RepositoryAccess repo = RepositoryAccess.getRepository();
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.cdfde", "cde/widgets/sample.cdfde");
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.wcdf", "cde/widgets/sample.wcdf");

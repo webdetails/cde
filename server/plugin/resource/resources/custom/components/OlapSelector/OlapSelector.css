@@ -15,7 +15,7 @@
 .olapSelectorComponent.collapsed .optionList .search {
   visibility: hidden;
 }
-.olapSelectorComponent.expanded .selection {
+.olapSelectorComponent.expanded .outsideArea .selection {
   height: 0px;
   overflow-y: hidden;
 }
@@ -118,7 +118,8 @@
   border-bottom: 2px solid #047eca;
   text-align: center;
 }
-.olapSelectorComponent .pulldown .optionList .leftArea .selectionPanel .selection {
+.olapSelectorComponent .pulldown .optionList .leftArea .selectionPanel .selection,
+.olapSelectorComponent .outsideArea .selection {
   height: auto;
   font-size: 80%;
 }
@@ -272,14 +273,17 @@
 .olapSelectorComponent .optionList .rightArea .item:hover .drill-down .label {
   display: none;
 }
-.olapSelectorComponent .leftArea li {
+.olapSelectorComponent .leftArea li,
+.olapSelectorComponent .outsideArea li {
   list-style: none;
   position: relative;
 }
-.olapSelectorComponent .leftArea li .remove {
+.olapSelectorComponent .leftArea li .remove,
+.olapSelectorComponent .outsideArea li .remove {
   background-image: url("img/cross.png");
 }
-.olapSelectorComponent .leftArea li .target {
+.olapSelectorComponent .leftArea li .target,
+.olapSelectorComponent .outsideArea li .target {
   height: 30px;
   padding-left: 8px;
   position: relative;
