@@ -53,7 +53,7 @@ var IndexManager = Base.extend({
 					entry.parent = _parent;
 					entry.children = [];
 					entry.type = _type;
-					entry.index = index;
+					entry.index = rowIndex;
 					idx[_id] = entry; 
 					idx[_parent].children.push(entry);
 

@@ -25,15 +25,23 @@ var CodeEditor = Base.extend({
   mode: 'javascript',
   theme: 'ace/theme/twilight',
   editor: null,
+  editorId: null,
 	
 	initEditor: function(editorId){
+			this.editor = ace.edit(editorId); 
+			this.editorId = editorId;
+
+
+
+
+		/*
 		this.editor = ace.edit(editorId);
     this.editor.setTheme(this.theme);
     
 		if(this.mode != null){
 			this.setMode(this.mode);
 		}
-    this.editor.setShowPrintMargin(false);
+    this.editor.setShowPrintMargin(false);*/
 	},
 	
 	loadFile: function(fileName){
@@ -58,7 +66,11 @@ var CodeEditor = Base.extend({
 	
 	setContents: function(contents){
 		this.editor.getSession().setValue(contents);
-		this.editor.navigateFileStart();
+		$(this.editorId).css("font-size","12px");
+		//this.editor.gotoLine(2);
+		//document.getElementById('codeArea').style.fontSize='12px';
+
+		//this.editor.navigateFileStart();
 	},
 	
 	saveFile: function(fileName, contents, callback){
@@ -79,9 +91,9 @@ var CodeEditor = Base.extend({
 	{
 		this.mode = this.modeMap[mode];
 
-    if(this.mode == null){
-      this.mode = this.DEFAULT_MODE;
-    }
+	    if(this.mode == null){
+	      this.mode = this.DEFAULT_MODE;
+	    }
     
 		if(this.editor != null)
 		{
@@ -94,7 +106,12 @@ var CodeEditor = Base.extend({
 	},
 	
 	setTheme: function(themePath){
-		this.theme = themePath;
+		if(themePath == null || themePath == undefined){
+			this.editor.setTheme(this.theme);
+		}else{
+			this.theme = themePath;	
+		}
+		
 	},
 	
 	setReadOnly: function(readOnly){

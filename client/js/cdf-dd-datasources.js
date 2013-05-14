@@ -90,7 +90,9 @@ var DatasourcesPanel = Panel.extend({
 			this.datasourcesTable.setLinkedTableManagerOperation(function(row){
 					var arr = []; 
 					for (p in row.properties){
-						arr.push(row.properties[p]);
+						if(row.properties.hasOwnProperty(p)){
+							arr.push(row.properties[p]);
+						}
 					}
 					return arr;
 				});
