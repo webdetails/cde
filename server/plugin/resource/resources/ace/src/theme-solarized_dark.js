@@ -1,1 +1,128 @@
-define("ace/theme/solarized_dark",["require","exports","module"],function(a,b,c){var d=a("pilot/dom"),e=".ace-solarized-dark .ace_editor {\n  border: 2px solid rgb(159, 159, 159);\n}\n\n.ace-solarized-dark .ace_editor.ace_focus {\n  border: 2px solid #327fbd;\n}\n\n.ace-solarized-dark .ace_gutter {\n  width: 50px;\n  background: #e8e8e8;\n  color: #333;\n  overflow : hidden;\n}\n\n.ace-solarized-dark .ace_gutter-layer {\n  width: 100%;\n  text-align: right;\n}\n\n.ace-solarized-dark .ace_gutter-layer .ace_gutter-cell {\n  padding-right: 6px;\n}\n\n.ace-solarized-dark .ace_print_margin {\n  width: 1px;\n  background: #e8e8e8;\n}\n\n.ace-solarized-dark .ace_scroller {\n  background-color: #002B36;\n}\n\n.ace-solarized-dark .ace_text-layer {\n  cursor: text;\n  color: #93A1A1;\n}\n\n.ace-solarized-dark .ace_cursor {\n  border-left: 2px solid #D30102;\n}\n\n.ace-solarized-dark .ace_cursor.ace_overwrite {\n  border-left: 0px;\n  border-bottom: 1px solid #D30102;\n}\n \n.ace-solarized-dark .ace_marker-layer .ace_selection {\n  background: #073642;\n}\n\n.ace-solarized-dark .ace_marker-layer .ace_step {\n  background: rgb(198, 219, 174);\n}\n\n.ace-solarized-dark .ace_marker-layer .ace_bracket {\n  margin: -1px 0 0 -1px;\n  border: 1px solid rgba(147, 161, 161, 0.50);\n}\n\n.ace-solarized-dark .ace_marker-layer .ace_active_line {\n  background: #073642;\n}\n\n       \n.ace-solarized-dark .ace_invisible {\n  color: rgba(147, 161, 161, 0.50);\n}\n\n.ace-solarized-dark .ace_keyword {\n  color:#859900;\n}\n\n.ace-solarized-dark .ace_keyword.ace_operator {\n  \n}\n\n.ace-solarized-dark .ace_constant {\n  \n}\n\n.ace-solarized-dark .ace_constant.ace_language {\n  color:#B58900;\n}\n\n.ace-solarized-dark .ace_constant.ace_library {\n  \n}\n\n.ace-solarized-dark .ace_constant.ace_numeric {\n  color:#D33682;\n}\n\n.ace-solarized-dark .ace_invalid {\n  \n}\n\n.ace-solarized-dark .ace_invalid.ace_illegal {\n  \n}\n\n.ace-solarized-dark .ace_invalid.ace_deprecated {\n  \n}\n\n.ace-solarized-dark .ace_support {\n  \n}\n\n.ace-solarized-dark .ace_support.ace_function {\n  color:#268BD2;\n}\n\n.ace-solarized-dark .ace_function.ace_buildin {\n  \n}\n\n.ace-solarized-dark .ace_string {\n  color:#2AA198;\n}\n\n.ace-solarized-dark .ace_string.ace_regexp {\n  color:#D30102;\n}\n\n.ace-solarized-dark .ace_comment {\n  font-style:italic;\ncolor:#657B83;\n}\n\n.ace-solarized-dark .ace_comment.ace_doc {\n  \n}\n\n.ace-solarized-dark .ace_comment.ace_doc.ace_tag {\n  \n}\n\n.ace-solarized-dark .ace_variable {\n  \n}\n\n.ace-solarized-dark .ace_variable.ace_language {\n  color:#268BD2;\n}\n\n.ace-solarized-dark .ace_xml_pe {\n  \n}\n\n.ace-solarized-dark .ace_meta {\n  \n}\n\n.ace-solarized-dark .ace_meta.ace_tag {\n  \n}\n\n.ace-solarized-dark .ace_meta.ace_tag.ace_input {\n  \n}\n\n.ace-solarized-dark .ace_entity.ace_other.ace_attribute-name {\n  color:#93A1A1;\n}\n\n.ace-solarized-dark .ace_markup.ace_underline {\n    text-decoration:underline;\n}\n\n.ace-solarized-dark .ace_markup.ace_heading {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_1 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_2 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_3 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_4 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_5 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_heading.ace_6 {\n  \n}\n\n.ace-solarized-dark .ace_markup.ace_list {\n  \n}\n\n.ace-solarized-dark .ace_collab.ace_user1 {\n     \n}";d.importCssString(e),b.cssClass="ace-solarized-dark"})
+/* ***** BEGIN LICENSE BLOCK *****
+ * Distributed under the BSD license:
+ *
+ * Copyright (c) 2010, Ajax.org B.V.
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Ajax.org B.V. nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+define('ace/theme/solarized_dark', ['require', 'exports', 'module' , 'ace/lib/dom'], function(require, exports, module) {
+
+exports.isDark = true;
+exports.cssClass = "ace-solarized-dark";
+exports.cssText = ".ace-solarized-dark .ace_gutter {\
+background: #01313f;\
+color: #d0edf7\
+}\
+.ace-solarized-dark .ace_print-margin {\
+width: 1px;\
+background: #33555E\
+}\
+.ace-solarized-dark .ace_scroller {\
+background-color: #002B36\
+}\
+.ace-solarized-dark .ace_entity.ace_other.ace_attribute-name,\
+.ace-solarized-dark .ace_storage,\
+.ace-solarized-dark .ace_text-layer {\
+color: #93A1A1\
+}\
+.ace-solarized-dark .ace_cursor {\
+border-left: 2px solid #D30102\
+}\
+.ace-solarized-dark .ace_overwrite-cursors .ace_cursor {\
+border-left: 0px;\
+border-bottom: 1px solid #D30102\
+}\
+.ace-solarized-dark .ace_marker-layer .ace_active-line,\
+.ace-solarized-dark .ace_marker-layer .ace_selection {\
+background: rgba(255, 255, 255, 0.1)\
+}\
+.ace-solarized-dark.ace_multiselect .ace_selection.ace_start {\
+box-shadow: 0 0 3px 0px #002B36;\
+border-radius: 2px\
+}\
+.ace-solarized-dark .ace_marker-layer .ace_step {\
+background: rgb(102, 82, 0)\
+}\
+.ace-solarized-dark .ace_marker-layer .ace_bracket {\
+margin: -1px 0 0 -1px;\
+border: 1px solid rgba(147, 161, 161, 0.50)\
+}\
+.ace-solarized-dark .ace_gutter-active-line {\
+background-color: #0d3440\
+}\
+.ace-solarized-dark .ace_marker-layer .ace_selected-word {\
+border: 1px solid #073642\
+}\
+.ace-solarized-dark .ace_invisible {\
+color: rgba(147, 161, 161, 0.50)\
+}\
+.ace-solarized-dark .ace_keyword,\
+.ace-solarized-dark .ace_meta,\
+.ace-solarized-dark .ace_support.ace_class,\
+.ace-solarized-dark .ace_support.ace_type {\
+color: #859900\
+}\
+.ace-solarized-dark .ace_constant.ace_character,\
+.ace-solarized-dark .ace_constant.ace_other {\
+color: #CB4B16\
+}\
+.ace-solarized-dark .ace_constant.ace_language {\
+color: #B58900\
+}\
+.ace-solarized-dark .ace_constant.ace_numeric {\
+color: #D33682\
+}\
+.ace-solarized-dark .ace_fold {\
+background-color: #268BD2;\
+border-color: #93A1A1\
+}\
+.ace-solarized-dark .ace_entity.ace_name.ace_function,\
+.ace-solarized-dark .ace_entity.ace_name.ace_tag,\
+.ace-solarized-dark .ace_support.ace_function,\
+.ace-solarized-dark .ace_variable,\
+.ace-solarized-dark .ace_variable.ace_language {\
+color: #268BD2\
+}\
+.ace-solarized-dark .ace_string {\
+color: #2AA198\
+}\
+.ace-solarized-dark .ace_string.ace_regexp {\
+color: #D30102\
+}\
+.ace-solarized-dark .ace_comment {\
+font-style: italic;\
+color: #657B83\
+}\
+.ace-solarized-dark .ace_markup.ace_underline {\
+text-decoration: underline\
+}\
+.ace-solarized-dark .ace_indent-guide {\
+background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNg0Db7zzBz5sz/AA82BCv7wOIDAAAAAElFTkSuQmCC) right repeat-y\
+}";
+
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
+});
