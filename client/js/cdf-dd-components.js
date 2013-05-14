@@ -328,28 +328,30 @@ ComponentValidations.validateHtmlObjects = function(components){
     var compName = comp.properties[this.NAME_PROP_IDX].value;
     
     if(compName != '') for(p in comp.properties){
-      if(comp.properties[p].name == 'htmlObject'){
-        var htmlObj = comp.properties[p].value;
-        
-        if( htmlObj == '' || htmlObj == null ){
-          var msg = 'Component "' + compName + '" has no html object';
-          validations.push( [statusNoHtmlObjRef, msg] );
-          status = this.aggregateStatus(status, statusNoHtmlObjRef);
-        }
-        else {
-          var objRefs = htmlObjRefs[ htmlObj ];
-          if(objRefs == null){
-            var msg = 'Component "' + compName + '" references inexistent html object "' + htmlObj + '"';
-            validations.push( [statusNoSuchHtmlObj, msg] );
-            status = this.aggregateStatus(status, statusNoSuchHtmlObj);
+      if(comp.properties.hasOwnProperty(p)){
+        if(comp.properties[p].name == 'htmlObject'){
+          var htmlObj = comp.properties[p].value;
+          
+          if( htmlObj == '' || htmlObj == null ){
+            var msg = 'Component "' + compName + '" has no html object';
+            validations.push( [statusNoHtmlObjRef, msg] );
+            status = this.aggregateStatus(status, statusNoHtmlObjRef);
           }
-          else {          
-            if(objRefs.length > 0){
-              var msg = 'Components "' + compName + '" and "' + objRefs[0] + '" have the same html object "' + htmlObj + '"';
-              validations.push([statusMultipleHtmlObjRef, msg]);
-              status = this.aggregateStatus(status, statusMultipleHtmlObjRef);
+          else {
+            var objRefs = htmlObjRefs[ htmlObj ];
+            if(objRefs == null){
+              var msg = 'Component "' + compName + '" references inexistent html object "' + htmlObj + '"';
+              validations.push( [statusNoSuchHtmlObj, msg] );
+              status = this.aggregateStatus(status, statusNoSuchHtmlObj);
             }
-            objRefs.push(compName);
+            else {          
+              if(objRefs.length > 0){
+                var msg = 'Components "' + compName + '" and "' + objRefs[0] + '" have the same html object "' + htmlObj + '"';
+                validations.push([statusMultipleHtmlObjRef, msg]);
+                status = this.aggregateStatus(status, statusMultipleHtmlObjRef);
+              }
+              objRefs.push(compName);
+            }
           }
         }
       }

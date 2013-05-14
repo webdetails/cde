@@ -88,7 +88,9 @@ var LayoutPanel = Panel.extend({
 			this.treeTable.setLinkedTableManagerOperation(function(row){
 					var arr = []; 
 					for (p in row.properties){
-						arr.push(row.properties[p]);
+						if(row.properties.hasOwnProperty(p)){
+							arr.push(row.properties[p]);
+						}
 					}
 					return arr;
 				});
@@ -767,11 +769,13 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 					var _templates = '<div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
 					var _myTemplates = '<div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
 					for(v in templates){
-						if(templates[v].type =="default")
-							_templates +='<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-						else if(templates[v].type =="custom"){
-							_myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-							myTemplatesCount ++;
+						if(templates.hasOwnProperty(v)){
+							if(templates[v].type =="default")
+								_templates +='<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+							else if(templates[v].type =="custom"){
+								_myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+								myTemplatesCount ++;
+							}
 						}
 					}
 					_templates += '</div></div><a class="next"></a></div>';
