@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd.render.components;
 
 import org.apache.commons.jxpath.JXPathContext;
 
+import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public class JavascriptParameterComponent extends BaseComponent
@@ -22,6 +23,21 @@ public class JavascriptParameterComponent extends BaseComponent
     super();
   }
 
+  
+ @Override
+  protected void setId(String prefix, String alias, String baseId)
+  {
+    String parsedAlias = alias != null && alias.length() > 0 ? alias : "",
+           parsedPrefix = prefix != null && prefix.length() > 0 ? prefix + "_"  : "";
+    
+    //Do not alias Dashboard.storage ids
+    if (baseId.startsWith("Dashboards.storage"))
+      parsedAlias = "";
+    this.id = parsedPrefix + Renderer.aliasName(parsedAlias, baseId);
+  }
+    
+  
+  
   @Override
   public String render()
   {
