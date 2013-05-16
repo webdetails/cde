@@ -839,7 +839,14 @@ var IdRenderer = StringRenderer.extend({
 
   validate: function(value){
 
-    if(!value.match(/^[a-zA-Z0-9_.]*$/)){
+
+    if (cdfdd.dashboardWcdf.widget) {
+      if (!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
+        $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
+        return false;
+      }
+    }
+    else if(!value.match(/^[a-zA-Z0-9_.]*$/)){
       $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
       return false;
     }
