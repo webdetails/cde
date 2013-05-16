@@ -28,7 +28,7 @@ var ListenersRenderer = SelectMultiRenderer.extend({
   },
 
   postProcessValue: function(val) {
-    var processed = val.split(", ").map(function(v){return "${p:"+v+"}";}).join(", ");
+    var processed = val.split(", ").map(function(v){if (v.indexOf('Dashboards.storage') == 0) return v; else return "${p:"+v+"}";}).join(", ");
     return processed;
   },
 
