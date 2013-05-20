@@ -1289,7 +1289,7 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:95%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:100%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself,placeholder, myself.value, callback];
       $.prompt(_inner,{
