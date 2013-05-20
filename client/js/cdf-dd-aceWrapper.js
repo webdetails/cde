@@ -30,7 +30,8 @@ var CodeEditor = Base.extend({
 	initEditor: function(editorId){
 			this.editor = ace.edit(editorId); 
 			this.editorId = editorId;
-
+			this.setMode(null);
+			this.setTheme(null);
 
 
 
@@ -98,7 +99,7 @@ var CodeEditor = Base.extend({
 		if(this.editor != null)
 		{
 			if(this.mode != null){
-				var HLMode = require(this.MODE_BASE + this.mode).Mode;
+				var HLMode = ace.require(this.MODE_BASE + this.mode).Mode;
 				this.editor.getSession().setMode(new HLMode());
 			}
 		}
