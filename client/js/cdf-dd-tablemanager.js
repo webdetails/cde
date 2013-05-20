@@ -29,7 +29,7 @@ var TableManager = Base.extend({
   },
 
   init : function(){
-			
+      
     this.reset();
     $("#"+this.id).append(this.newTable());
     this.render();
@@ -66,27 +66,27 @@ var TableManager = Base.extend({
     $("#"+this.getTableId()).treeTable();
     this.updateOperations();
 
-		
+    
   },
 
   newTable: function(args){
     var isLayoutTable = this.tableId == 'table-cdfdd-layout-tree';
-    //	var operationsDiv = ;
+    //  var operationsDiv = ;
 
     isLayoutTable=false;
     var table = ''+
-    //	(isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
+    //  (isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
     '<table id="'+ this.tableId +'" class="myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
-'			<caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
+'     <caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
     (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
     (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
     '</caption>\n' +
-'			<thead>\n' +
-'			</thead>\n' +
-'			<tbody class="ui-widget-content">\n' +
-'			</tbody>\n' +
-'			</table>\n' +
-'			';
+'     <thead>\n' +
+'     </thead>\n' +
+'     <tbody class="ui-widget-content">\n' +
+'     </tbody>\n' +
+'     </table>\n' +
+'     ';
 
     return table;
   },
@@ -220,7 +220,7 @@ var TableManager = Base.extend({
   },
 
   insertAtIdx: function(_stub,insertAtIdx){
-		
+    
     // Insert it on the dataModel
     this.getTableModel().getData().splice(insertAtIdx,0,_stub);
     this.getTableModel().getIndexManager().updateIndex();
@@ -264,7 +264,7 @@ var TableManager = Base.extend({
 
     }
 
-		
+    
   },
 
   updateOperations: function(){
@@ -512,7 +512,7 @@ var TableManager = Base.extend({
       else{
         _tableManager.cellUnselected();
       }
-							
+              
     });
 
 
@@ -533,7 +533,7 @@ var TableManager = Base.extend({
         }
       },500);
     });
-		
+    
     $(".simpleProperties").live('click',function() {
       var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
       tbody.fadeOut(300);
@@ -551,7 +551,7 @@ var TableManager = Base.extend({
       },500);
 
     });
-			
+      
 
   },
   S4: function() {
@@ -869,7 +869,7 @@ var IntegerRenderer = StringRenderer.extend({
   }
 
 });
-		
+    
 var FloatRenderer = StringRenderer.extend({
 
   constructor: function(tableManager){
@@ -983,11 +983,9 @@ var SelectRenderer = CellRenderer.extend({
       this.autocompleteArray  = [];
       this.revertedSelectData = {};
       for(var id in data){
-        if(data.hasOwnProperty(id)){
-          var label = data[id];
-          this.autocompleteArray.push(label);
-          this.revertedSelectData[label] = id;
-        }
+        var label = data[id];
+        this.autocompleteArray.push(label);
+        this.revertedSelectData[label] = id;
       }
     }
     
@@ -1111,7 +1109,7 @@ var TextAlignRenderer = SelectRenderer.extend({
 });
 
 
-	
+  
 
 var ColorRenderer = CellRenderer.extend({
 
@@ -1121,7 +1119,7 @@ var ColorRenderer = CellRenderer.extend({
     this.logger.debug("Creating new ColorRenderer");
     this.id = 0;
   },
-			
+      
   getId: function(){
     return this.id++;
   },
@@ -1130,7 +1128,7 @@ var ColorRenderer = CellRenderer.extend({
     
      
     this.placeholder = placeholder;
-					
+          
     var id = this.getId();
     var inputId = "#colorpicker_input_" + id;
     var checkId = "#colorpicker_check_" + id;
@@ -1268,16 +1266,13 @@ var CodeRenderer = CellRenderer.extend({
     this.value = value;
 
 
-    var _editArea = $('<td style="display:inline-block;"><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
+    var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
       var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:95%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself,placeholder, myself.value, callback];
-
-
-
       $.prompt(_inner,{
         buttons: {
           Ok: true,
@@ -1291,13 +1286,9 @@ var CodeRenderer = CellRenderer.extend({
             myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
             myself.editor.setMode(myself.getCodeType());
             myself.editor.setContents(myself.value);
-       //   var editor = ace.edit("codeArea");
-       //   editor.getSession().setValue(myself.value);
         },
 
-        callback: function(){
-          myself.callback();
-        }, 
+        callback: myself.callback, 
         opacity: 0.2,
         prefix:'brownJqi'
       });
@@ -1362,7 +1353,7 @@ var ResourceRenderer = CodeRenderer.extend({ //TextAreaRenderer.extend({
   }
 });
 
-	
+  
 var DateRenderer = CellRenderer.extend({
 
   callback: undefined,
@@ -1372,7 +1363,7 @@ var DateRenderer = CellRenderer.extend({
     this.logger = new Logger("DateRenderer");
     this.logger.debug("Creating new DateRenderer");
   },
-			
+      
   render: function(placeholder, value, callback){
 
     this.callback = callback;
@@ -1406,7 +1397,7 @@ var DateRenderer = CellRenderer.extend({
     
 
   },
-			
+      
   pickDate: function(input){
     var myself=this;
     this.datePicker = $("<input/>").css("width","80px");
@@ -1421,11 +1412,11 @@ var DateRenderer = CellRenderer.extend({
     });
     this.datePicker.datepicker('show');
   },
-			
+      
   validate: function(settings, original){
     return true;
   },
-			
+      
   getData: function(value){
     var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
     var _str = "{'today':'Today','yesterday':'Yesterday','lastWeek':'One week ago','lastMonth':'One month ago','monthStart':'First day of month','yearStart':'First day of year','pickDate':'Pick Date', 'selected':'" + value + "'}";
@@ -1447,13 +1438,13 @@ var DateRenderer = CellRenderer.extend({
 
       if(selectedValue == 'pickDate')
         return this.toDateString(this.datePicker.datepicker('getDate'));
-				
+        
       return selectedValue;
     }
 
 
   },
-			
+      
   toDateString: function(d){
     var currentMonth = "0" + (d.getMonth() + 1);
     var currentDay = "0" + (d.getDate());
@@ -1462,16 +1453,16 @@ var DateRenderer = CellRenderer.extend({
 
 
 });
-		
+    
 var DateRangeRenderer = DateRenderer.extend({
-		
+    
   pickDate: function(input){
     this.datePicker = $("<input/>").css("width","80px");
     $(input).replaceWith(this.datePicker);
-				
+        
     var offset = this.datePicker.offset();
     var myself = this;
-				
+        
     var a = this.datePicker.daterangepicker({
       posX: offset.left-400,
       posY: offset.top-100,
@@ -1481,23 +1472,23 @@ var DateRangeRenderer = DateRenderer.extend({
         myself.rangeB = rangeB;
       }
     });
-				
+        
     this.datePicker.click();
   },
-			
+      
   getData: function(value){
     var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
     var _str = "{'monthToDay':'Month to day','yearToDay':'Year to day','pickDate':'Pick Dates', 'selected':'" + (value) + "'}";
-				
+        
     return _str;
   },
-			
+      
   getFormattedValue: function(value){
     var selectedValue = value;
     if(selectedValue == 'pickDate'){
       return  this.rangeA + " - " + this.rangeB;
     }
-				
+        
     var date = new Date()
     if(selectedValue == "monthToDay" )
       date.setDate(1);
@@ -1505,10 +1496,10 @@ var DateRangeRenderer = DateRenderer.extend({
       date.setMonth(0);
       date.setDate(1);
     }
-				
+        
     return  this.toDateString(date) + " " + this.toDateString(new Date());
   }
-	
+  
 });
 
 
@@ -1633,7 +1624,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     _fileExplorer.bind('click',function(){
 
       var fileExplorercontent = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one:' : ':'); 
-	  fileExplorercontent += '<div id="container_id" class="urltargetfolderexplorer"></div>';
+    fileExplorercontent += '<div id="container_id" class="urltargetfolderexplorer"></div>';
       var selectedFile = "";
       var selectedFolder = "";
       
@@ -1658,7 +1649,7 @@ var ResourceFileRenderer = CellRenderer.extend({
               }
               else if(selectedFolder.length > 0){
                 if(myself.createNew){
-                	$.prompt.goToState('newFile');
+                  $.prompt.goToState('newFile');
                 }
                 return false;
               }

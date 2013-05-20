@@ -33,7 +33,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/mode/velocity', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/velocity_highlight_rules', 'ace/mode/folding/velocity'], function(require, exports, module) {
+ace.define('ace/mode/velocity', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/velocity_highlight_rules', 'ace/mode/folding/velocity'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -55,7 +55,7 @@ oop.inherits(Mode, TextMode);
 }).call(Mode.prototype);
 
 exports.Mode = Mode;
-});define('ace/mode/velocity_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/xml_util', 'ace/mode/text_highlight_rules', 'ace/mode/css_highlight_rules', 'ace/mode/javascript_highlight_rules'], function(require, exports, module) {
+});ace.define('ace/mode/velocity_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/xml_util', 'ace/mode/text_highlight_rules', 'ace/mode/css_highlight_rules', 'ace/mode/javascript_highlight_rules'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -281,7 +281,7 @@ oop.inherits(VelocityHighlightRules, TextHighlightRules);
 exports.VelocityHighlightRules = VelocityHighlightRules;
 });
 
-define('ace/mode/xml_util', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/mode/xml_util', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 
 function string(state) {
@@ -351,7 +351,7 @@ exports.tag = function(states, name, nextState, tagMap) {
 
 });
 
-define('ace/mode/css_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
+ace.define('ace/mode/css_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -530,7 +530,7 @@ exports.CssHighlightRules = CssHighlightRules;
 
 });
 
-define('ace/mode/javascript_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/doc_comment_highlight_rules', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
+ace.define('ace/mode/javascript_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/doc_comment_highlight_rules', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -830,7 +830,7 @@ oop.inherits(JavaScriptHighlightRules, TextHighlightRules);
 exports.JavaScriptHighlightRules = JavaScriptHighlightRules;
 });
 
-define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
+ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -874,7 +874,7 @@ exports.DocCommentHighlightRules = DocCommentHighlightRules;
 
 });
 
-define('ace/mode/folding/velocity', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/folding/fold_mode', 'ace/range'], function(require, exports, module) {
+ace.define('ace/mode/folding/velocity', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/folding/fold_mode', 'ace/range'], function(require, exports, module) {
 
 
 var oop = require("../../lib/oop");
