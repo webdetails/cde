@@ -1002,11 +1002,9 @@ var SelectRenderer = CellRenderer.extend({
       this.autocompleteArray  = [];
       this.revertedSelectData = {};
       for(var id in data){
-        if(data.hasOwnProperty(id)){
-          var label = data[id];
-          this.autocompleteArray.push(label);
-          this.revertedSelectData[label] = id;
-        }
+        var label = data[id];
+        this.autocompleteArray.push(label);
+        this.revertedSelectData[label] = id;
       }
     }
     
@@ -1287,16 +1285,13 @@ var CodeRenderer = CellRenderer.extend({
     this.value = value;
 
 
-    var _editArea = $('<td style="display:inline-block;"><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
+    var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
       var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:95%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself,placeholder, myself.value, callback];
-
-
-
       $.prompt(_inner,{
         buttons: {
           Ok: true,
@@ -1310,13 +1305,9 @@ var CodeRenderer = CellRenderer.extend({
             myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
             myself.editor.setMode(myself.getCodeType());
             myself.editor.setContents(myself.value);
-       //   var editor = ace.edit("codeArea");
-       //   editor.getSession().setValue(myself.value);
         },
 
-        callback: function(){
-          myself.callback();
-        }, 
+        callback: myself.callback, 
         opacity: 0.2,
         prefix:'brownJqi'
       });

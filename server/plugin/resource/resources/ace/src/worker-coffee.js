@@ -156,7 +156,7 @@ window.onmessage = function(e) {
 };
 })(this);// vim:set ts=4 sts=4 sw=4 st:
 
-define('ace/lib/fixoldbrowsers', ['require', 'exports', 'module' , 'ace/lib/regexp', 'ace/lib/es5-shim'], function(require, exports, module) {
+ace.define('ace/lib/fixoldbrowsers', ['require', 'exports', 'module' , 'ace/lib/regexp', 'ace/lib/es5-shim'], function(require, exports, module) {
 
 
 require("./regexp");
@@ -164,7 +164,7 @@ require("./es5-shim");
 
 });
  
-define('ace/lib/regexp', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/lib/regexp', ['require', 'exports', 'module' ], function(require, exports, module) {
 
     var real = {
             exec: RegExp.prototype.exec,
@@ -236,7 +236,7 @@ define('ace/lib/regexp', ['require', 'exports', 'module' ], function(require, ex
 
 });
 
-define('ace/lib/es5-shim', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/lib/es5-shim', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 function Empty() {}
 
@@ -933,7 +933,7 @@ var toObject = function (o) {
 
 });
 
-define('ace/lib/event_emitter', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/lib/event_emitter', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 
 var EventEmitter = {};
@@ -1033,7 +1033,7 @@ exports.EventEmitter = EventEmitter;
 
 });
 
-define('ace/lib/oop', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/lib/oop', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 
 exports.inherits = (function() {
@@ -1059,7 +1059,7 @@ exports.implement = function(proto, mixin) {
 
 });
 
-define('ace/mode/coffee_worker', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/worker/mirror', 'ace/mode/coffee/coffee-script'], function(require, exports, module) {
+ace.define('ace/mode/coffee_worker', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/worker/mirror', 'ace/mode/coffee/coffee-script'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
@@ -1114,7 +1114,7 @@ oop.inherits(Worker, Mirror);
 }).call(Worker.prototype);
 
 });
-define('ace/worker/mirror', ['require', 'exports', 'module' , 'ace/document', 'ace/lib/lang'], function(require, exports, module) {
+ace.define('ace/worker/mirror', ['require', 'exports', 'module' , 'ace/document', 'ace/lib/lang'], function(require, exports, module) {
 
 
 var Document = require("../document").Document;
@@ -1157,7 +1157,7 @@ var Mirror = exports.Mirror = function(sender) {
 
 });
 
-define('ace/document', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/event_emitter', 'ace/range', 'ace/anchor'], function(require, exports, module) {
+ace.define('ace/document', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/event_emitter', 'ace/range', 'ace/anchor'], function(require, exports, module) {
 
 
 var oop = require("./lib/oop");
@@ -1505,7 +1505,7 @@ var Document = function(text) {
 exports.Document = Document;
 });
 
-define('ace/range', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/range', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 var comparePoints = function(p1, p2) {
     return p1.row - p2.row || p1.column - p2.column;
@@ -1744,7 +1744,7 @@ Range.comparePoints = function(p1, p2) {
 exports.Range = Range;
 });
 
-define('ace/anchor', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/event_emitter'], function(require, exports, module) {
+ace.define('ace/anchor', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/event_emitter'], function(require, exports, module) {
 
 
 var oop = require("./lib/oop");
@@ -1892,7 +1892,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
 
 });
 
-define('ace/lib/lang', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/lib/lang', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 
 exports.stringReverse = function(string) {
@@ -2069,7 +2069,7 @@ exports.delayedCall = function(fcn, defaultTimeout) {
 };
 });
  
-define('ace/mode/coffee/coffee-script', ['require', 'exports', 'module' , 'ace/mode/coffee/lexer', 'ace/mode/coffee/parser', 'ace/mode/coffee/nodes'], function(require, exports, module) {
+ace.define('ace/mode/coffee/coffee-script', ['require', 'exports', 'module' , 'ace/mode/coffee/lexer', 'ace/mode/coffee/parser', 'ace/mode/coffee/nodes'], function(require, exports, module) {
     
     var Lexer = require("./lexer").Lexer;
     var parser = require("./parser");
@@ -2096,7 +2096,7 @@ define('ace/mode/coffee/coffee-script', ['require', 'exports', 'module' , 'ace/m
     };
 });
 
-define('ace/mode/coffee/lexer', ['require', 'exports', 'module' , 'ace/mode/coffee/rewriter', 'ace/mode/coffee/helpers'], function(require, exports, module) {
+ace.define('ace/mode/coffee/lexer', ['require', 'exports', 'module' , 'ace/mode/coffee/rewriter', 'ace/mode/coffee/helpers'], function(require, exports, module) {
 
   var BOOL, CALLABLE, CODE, COFFEE_ALIASES, COFFEE_ALIAS_MAP, COFFEE_KEYWORDS, COMMENT, COMPARE, COMPOUND_ASSIGN, HEREDOC, HEREDOC_ILLEGAL, HEREDOC_INDENT, HEREGEX, HEREGEX_OMIT, IDENTIFIER, INDEXABLE, INVERSES, JSTOKEN, JS_FORBIDDEN, JS_KEYWORDS, LINE_BREAK, LINE_CONTINUER, LOGIC, Lexer, MATH, MULTILINER, MULTI_DENT, NOT_REGEX, NOT_SPACED_REGEX, NUMBER, OPERATOR, REGEX, RELATION, RESERVED, Rewriter, SHIFT, SIMPLESTR, STRICT_PROSCRIBED, TRAILING_SPACES, UNARY, WHITESPACE, compact, count, key, last, starts, _ref, _ref1,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -2886,7 +2886,7 @@ define('ace/mode/coffee/lexer', ['require', 'exports', 'module' , 'ace/mode/coff
 
 });
 
-define('ace/mode/coffee/rewriter', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/mode/coffee/rewriter', ['require', 'exports', 'module' ], function(require, exports, module) {
 
   var BALANCED_PAIRS, EXPRESSION_CLOSE, EXPRESSION_END, EXPRESSION_START, IMPLICIT_BLOCK, IMPLICIT_CALL, IMPLICIT_END, IMPLICIT_FUNC, IMPLICIT_UNSPACED_CALL, INVERSES, LINEBREAKS, SINGLE_CLOSERS, SINGLE_LINERS, left, rite, _i, _len, _ref,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
@@ -3237,7 +3237,7 @@ define('ace/mode/coffee/rewriter', ['require', 'exports', 'module' ], function(r
 
 });
 
-define('ace/mode/coffee/helpers', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/mode/coffee/helpers', ['require', 'exports', 'module' ], function(require, exports, module) {
 
   var extend, flatten, _ref;
 
@@ -3327,7 +3327,7 @@ define('ace/mode/coffee/helpers', ['require', 'exports', 'module' ], function(re
 
 });
 
-define('ace/mode/coffee/parser', ['require', 'exports', 'module' ], function(require, exports, module) {
+ace.define('ace/mode/coffee/parser', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 var parser = {trace: function trace() { },
 yy: {},
@@ -3969,7 +3969,7 @@ module.exports = parser;
 
 });
 
-define('ace/mode/coffee/nodes', ['require', 'exports', 'module' , 'ace/mode/coffee/scope', 'ace/mode/coffee/lexer', 'ace/mode/coffee/helpers'], function(require, exports, module) {
+ace.define('ace/mode/coffee/nodes', ['require', 'exports', 'module' , 'ace/mode/coffee/scope', 'ace/mode/coffee/lexer', 'ace/mode/coffee/helpers'], function(require, exports, module) {
 
   var Access, Arr, Assign, Base, Block, Call, Class, Closure, Code, Comment, Existence, Extends, For, IDENTIFIER, IDENTIFIER_STR, IS_STRING, If, In, Index, LEVEL_ACCESS, LEVEL_COND, LEVEL_LIST, LEVEL_OP, LEVEL_PAREN, LEVEL_TOP, Literal, METHOD_DEF, NEGATE, NO, Obj, Op, Param, Parens, RESERVED, Range, Return, SIMPLENUM, STRICT_PROSCRIBED, Scope, Slice, Splat, Switch, TAB, THIS, Throw, Try, UTILITIES, Value, While, YES, compact, del, ends, extend, flatten, last, merge, multident, some, starts, unfoldSoak, utility, _ref, _ref1,
     __hasProp = {}.hasOwnProperty,
@@ -6942,7 +6942,7 @@ define('ace/mode/coffee/nodes', ['require', 'exports', 'module' , 'ace/mode/coff
 
 });
 
-define('ace/mode/coffee/scope', ['require', 'exports', 'module' , 'ace/mode/coffee/helpers'], function(require, exports, module) {
+ace.define('ace/mode/coffee/scope', ['require', 'exports', 'module' , 'ace/mode/coffee/helpers'], function(require, exports, module) {
 
   var Scope, extend, last, _ref;
 
