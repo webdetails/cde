@@ -59,9 +59,23 @@ var TableManager = Base.extend({
 
     // Create rows
     var data = this.getTableModel().getData() || [];
-    $.each(data,function(i,row){
-      myself.addRow(row);
-    });
+
+    for(var i = 0; i < data.length ; i++){
+      //Lets first check if the row is valid
+      var validRow = true;
+      for(var prop in data[i]){
+        if(data[i].hasOwnProperty(prop)){
+          validRow = true;
+        }else{
+          validRow = false;
+        }
+      }
+      //If the row is valid -> add it!
+      if(validRow){
+        myself.addRow(data[i]);
+      }
+
+    }
 
     $("#"+this.getTableId()).treeTable();
     this.updateOperations();
@@ -188,18 +202,10 @@ var TableManager = Base.extend({
       tooltip : ""
     };
 
-    if(_type === "Label"){
-      options.tooltip = row.tooltip;
-    }
-
-      return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value){
-        _setExpression.apply(myself,[row, value]);
-
-        // Rerender this column
-        tr.find("td:eq("+colIdx+")").remove();
-        myself.renderColumn(tr,row,colIdx);
-      }, options);
-    
+      // Rerender this column
+      tr.find("td:eq("+colIdx+")").remove();
+      myself.renderColumn(tr,row,colIdx);
+    }, row.tooltip);
   },
 
   renderColumnByRow: function(row,colIdx){
@@ -799,10 +805,22 @@ var LabelRenderer = CellRenderer.extend({
     this.base(tableManager);
     this.logger = new Logger("LabelRenderer");
     this.logger.debug("Creating new LabelRenderer");
+<<<<<<< HEAD
   },
   render: function(placeholder, value, callback, options) {
       this.base.apply(this, arguments);
   }
+=======
+
+  },
+
+  render: function(placeholder, value, callback, tooltip){
+     if(tooltip!=undefined)
+       $('<td title="'+Dashboards.escapeHtml(tooltip)+'">'+ value +'</td>').appendTo(placeholder);
+     else
+       $("<td>"+ value +"</td>").appendTo(placeholder);
+   }
+>>>>>>> 8f185bb... Move rows up and down freezes or returns an error - FIXED | Components Panel – Properties of components with abnormal list of “undefined” added after the property - FIXED
 
 
 });
@@ -1002,9 +1020,11 @@ var SelectRenderer = CellRenderer.extend({
       this.autocompleteArray  = [];
       this.revertedSelectData = {};
       for(var id in data){
-        var label = data[id];
-        this.autocompleteArray.push(label);
-        this.revertedSelectData[label] = id;
+        if(data.hasOwnProperty(id)){
+          var label = data[id];
+          this.autocompleteArray.push(label);
+          this.revertedSelectData[label] = id;
+        }
       }
     }
     

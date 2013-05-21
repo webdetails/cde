@@ -177,8 +177,8 @@ var MoveUpOperation = BaseOperation.extend({
       // Move up: move the selected node and all children
       // up to the previous item
 
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var colIdx = tableManager.getSelectedCell()[1];
+      var rowIdx = Number(tableManager.getSelectedCell()[0]);
+      var colIdx = Number(tableManager.getSelectedCell()[1]);
       var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
       var fromIdx = rowIdx;
@@ -186,12 +186,12 @@ var MoveUpOperation = BaseOperation.extend({
 
       var nextSibling = tableManager.getTableModel().getIndexManager().getNextSibling(rowId);
       if (typeof nextSibling == 'undefined'){
-        toIdx = tableManager.getTableModel().getIndexManager().getLastChild(rowId).index;
+        toIdx = Number(tableManager.getTableModel().getIndexManager().getLastChild(rowId).index);
       }
       else{
-        toIdx = nextSibling.index - 1;
+        toIdx = Number(nextSibling.index) - 1;
       }
-      var targetIdx = tableManager.getTableModel().getIndexManager().getPreviousSibling(rowId).index;
+      var targetIdx = Number(tableManager.getTableModel().getIndexManager().getPreviousSibling(rowId).index);
 
       this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
 
@@ -199,7 +199,7 @@ var MoveUpOperation = BaseOperation.extend({
       var _data = tableManager.getTableModel().getData();
       var _tmp = _data.splice(fromIdx, toIdx-fromIdx + 1);
 
-      _data.splice(targetIdx,0)
+      //_data.splice(targetIdx,0)
       Array().splice.apply(_data,[targetIdx,0].concat(_tmp));
       //_data = _data.slice(0,targetIdx).concat(_tmp).concat(_data.slice(targetIdx));
       tableManager.getTableModel().setData(_data);
@@ -264,8 +264,8 @@ var MoveDownOperation = BaseOperation.extend({
       // Move up: move the selected node and all children
       // up to the previous item
 
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var colIdx = tableManager.getSelectedCell()[1];
+      var rowIdx = Number(tableManager.getSelectedCell()[0]);
+      var colIdx = Number(tableManager.getSelectedCell()[1]);
       var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
       var fromIdx = rowIdx;
@@ -274,12 +274,12 @@ var MoveDownOperation = BaseOperation.extend({
       var indexManager = tableManager.getTableModel().getIndexManager();
       var nextSibling = indexManager.getNextSibling(rowId);
       if (typeof nextSibling == 'undefined'){
-        toIdx = indexManager.getLastChild(rowId).index;
+        toIdx = Number(indexManager.getLastChild(rowId).index);
       }
       else{
-        toIdx = nextSibling.index - 1;
+        toIdx = Number(nextSibling.index) - 1;
       }
-      var targetIdx = indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index;
+      var targetIdx = Number(indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index);
 
       this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
 
