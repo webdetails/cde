@@ -204,7 +204,7 @@ var TableManager = Base.extend({
       // Rerender this column
       tr.find("td:eq("+colIdx+")").remove();
       myself.renderColumn(tr,row,colIdx);
-    }, row.tooltip);
+    });
   },
 
   renderColumnByRow: function(row,colIdx){
@@ -307,7 +307,6 @@ var TableManager = Base.extend({
 
   cellClick: function(row,col,classType){
     // Update operations
-
     if(typeof this.getLinkedTableManager() != 'undefined')
       this.getLinkedTableManager().cellUnselected();
 
@@ -805,15 +804,7 @@ var LabelRenderer = CellRenderer.extend({
     this.logger = new Logger("LabelRenderer");
     this.logger.debug("Creating new LabelRenderer");
 
-  },
-
-  render: function(placeholder, value, callback, tooltip){
-     if(tooltip!=undefined)
-       $('<td title="'+Dashboards.escapeHtml(tooltip)+'">'+ value +'</td>').appendTo(placeholder);
-     else
-       $("<td>"+ value +"</td>").appendTo(placeholder);
-   }
-
+  }
 
 });
 

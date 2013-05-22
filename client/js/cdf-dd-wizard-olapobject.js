@@ -127,9 +127,13 @@ var WizardDimensionObject = WizardOlapObject.extend({
 	buildSelector: function(){
 		var myself = this;
 		var selector = $('<select class="cdfdd-olap-dimensions-input" ></select>');
-		for(m in this.membersArray)
-			selector.append($('<option value="'+ this.membersArray[m].qualifiedName +'">'+ this.membersArray[m].name + '</option>'));
-			
+		for(m in this.membersArray){
+			if(this.membersArray.hasOwnProperty(m)){
+				if(m != undefined && m != null){
+					selector.append($('<option value="'+ this.membersArray[m].qualifiedName +'">'+ this.membersArray[m].name + '</option>'));
+				}
+			}
+		}
 		selector.change(function () {
 			myself.member = $(this).val();
 			myself.processChange();
