@@ -182,19 +182,21 @@ var TableManager = Base.extend({
     }
 
     var myself = this;
-    var options={
+    var options = {
       tooltip : ""
     };
-    if(_type==="Label"){
+
+    if(_type === "Label"){
       options.tooltip = row.tooltip;
     }
-      return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), options, function(value){
+
+      return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value){
         _setExpression.apply(myself,[row, value]);
 
         // Rerender this column
         tr.find("td:eq("+colIdx+")").remove();
         myself.renderColumn(tr,row,colIdx);
-      });
+      }, options);
     
   },
 
@@ -778,8 +780,8 @@ var CellRenderer = Base.extend({
   // Defaults to a common string type
   //  render: function(row,placeholder, getExpression,setExpression,editable){
 
-  render: function(placeholder, value, options, callback){
-    $("<td>"+ value +"</td>").appendTo(placeholder);
+  render: function(placeholder, value, callback, options){
+    $("<td>" + value + "</td>").appendTo(placeholder);
   },
 
   getTableManager: function(){
@@ -796,7 +798,7 @@ var LabelRenderer = CellRenderer.extend({
     this.logger = new Logger("LabelRenderer");
     this.logger.debug("Creating new LabelRenderer");
   },
-  render: function(placeholder, value, options, callback) {
+  render: function(placeholder, value, callback, options) {
     var tooltip = options && options.tooltip;
     if(tooltip) {
       $('<td title="' + Dashboards.escapeHtml(tooltip) + '">' + value + '</td>').appendTo(placeholder);
@@ -817,7 +819,7 @@ var StringRenderer = CellRenderer.extend({
     this.logger.debug("Creating new StringRenderer");
   },
 
-  render: function(placeholder, value, options,callback){
+  render: function(placeholder, value, callback){
 
     var _editArea = $("<td>"+ value +"</td>");
     var myself = this;
@@ -926,7 +928,7 @@ var SelectRenderer = CellRenderer.extend({
     this.getDataInit();
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
 
     var data = this.processData() || this.getData();
     var label;
@@ -1053,7 +1055,7 @@ var SelectMultiRenderer = CellRenderer.extend({
     this.logger.debug("Creating new SelectMultiRenderer");
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
 
     this.value = value;
     var myself = this;
@@ -1144,7 +1146,7 @@ var ColorRenderer = CellRenderer.extend({
     return this.id++;
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
     
      
     this.placeholder = placeholder;
@@ -1212,7 +1214,7 @@ var TextAreaRenderer = CellRenderer.extend({
     this.logger.debug("Creating new TextAreaRenderer");
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
 
     // Storing the var for later use when render() is not called again
     this.value = value;
@@ -1280,7 +1282,7 @@ var CodeRenderer = CellRenderer.extend({
     this.logger.debug("Creating new CodeRenderer");
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
 
     // Storing the var for later use when render() is not called again
     this.value = value;
@@ -1376,7 +1378,7 @@ var DateRenderer = CellRenderer.extend({
     this.logger.debug("Creating new DateRenderer");
   },
       
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
 
     this.callback = callback;
 
@@ -1599,7 +1601,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     this.logger.debug("Creating new ResourceFileRenderer");
   },
 
-  render: function(placeholder, value, options, callback){
+  render: function(placeholder, value, callback){
     
     this.callback = callback;
 
