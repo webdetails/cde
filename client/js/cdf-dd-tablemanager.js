@@ -205,7 +205,7 @@ var TableManager = Base.extend({
       // Rerender this column
       tr.find("td:eq("+colIdx+")").remove();
       myself.renderColumn(tr,row,colIdx);
-    }, row.tooltip);
+    });
   },
 
   renderColumnByRow: function(row,colIdx){
@@ -308,7 +308,6 @@ var TableManager = Base.extend({
 
   cellClick: function(row,col,classType){
     // Update operations
-
     if(typeof this.getLinkedTableManager() != 'undefined')
       this.getLinkedTableManager().cellUnselected();
 
@@ -805,13 +804,6 @@ var LabelRenderer = CellRenderer.extend({
     this.base(tableManager);
     this.logger = new Logger("LabelRenderer");
     this.logger.debug("Creating new LabelRenderer");
-<<<<<<< HEAD
-  },
-  render: function(placeholder, value, callback, options) {
-      this.base.apply(this, arguments);
-  }
-=======
-
   },
 
   render: function(placeholder, value, callback, tooltip){
@@ -820,8 +812,7 @@ var LabelRenderer = CellRenderer.extend({
      else
        $("<td>"+ value +"</td>").appendTo(placeholder);
    }
->>>>>>> 8f185bb... Move rows up and down freezes or returns an error - FIXED | Components Panel – Properties of components with abnormal list of “undefined” added after the property - FIXED
-
+  }
 
 });
 
