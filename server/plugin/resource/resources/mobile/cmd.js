@@ -275,7 +275,7 @@ function CDFMobile() {
 
     function refreshNav() {
         var $nav = $('select#navSelector');
-        if (render_navigation) {
+        if ( typeof render_navigation != 'undefined') {
             $nav.empty();
             $nav.unbind('change');
             $nav.bind('change',
