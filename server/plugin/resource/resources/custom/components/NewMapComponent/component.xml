@@ -208,7 +208,7 @@
             			<Parent>BaseProperty</Parent>
 			            <DefaultValue>5</DefaultValue>
             			<Description>Default zoom Level</Description>
-			            <Tooltip></Tooltip>
+			            <Tooltip>Default zoom Level</Tooltip>
             			<InputType>Integer</InputType>
 			            <OutputType>Number</OutputType>
             			<Order>40</Order>
