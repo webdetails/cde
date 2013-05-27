@@ -266,8 +266,8 @@ var NewMapComponent = BaseComponent.extend({
                     Dashboards.fireChange(eltA[1], data[ mapping[ eltA[0].toLowerCase() ] ]);                             
                 });
                 
-                if (myself.markerClickFunction)
-                    myself.markerClickFunction(data);
+                /*if (myself.markerClickFunction)
+                    myself.markerClickFunction(data);*/
                     
                 if (myself.popupContentsDiv || mapping.popupContents) {
                 	var contents;
