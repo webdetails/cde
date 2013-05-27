@@ -215,6 +215,7 @@ public class CdfStyles {
       styleFilename = split[0] + ".html";
       
       PluginsAnalyzer pluginsAnalizer = new PluginsAnalyzer();
+      pluginsAnalizer.refresh();
       
       List<Plugin> plugins = pluginsAnalizer.getInstalledPlugins();
       
