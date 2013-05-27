@@ -55,27 +55,47 @@ var PalleteManager = Base.extend({
 
 		},
 
+		exists: function(object, array){
+			var exists = new Boolean(false);
+			
+			for(var index in array){
+				if(array.hasOwnProperty(index)){
+					if(array[index] == object){
+						exists = new Boolean(true);
+						break;
+					}
+				}
+			}
+			return exists;
+		},
+
 		addEntry: function(palleteEntry){
 
-			this.getEntries()[palleteEntry.getId()] = palleteEntry;
+			var object = palleteEntry;
+			var array = this.getEntries();
+			
 
-			var _cat = palleteEntry.getCategory();
-			if(typeof this.getCategories()[_cat] == 'undefined' ){
-				this.createCategory(palleteEntry);
+
+			if(this.exists(object, array) == false){
+				this.getEntries()[palleteEntry.getId()] = palleteEntry;
+
+				var _cat = palleteEntry.getCategory();
+				if(typeof this.getCategories()[_cat] == 'undefined' ){
+					this.createCategory(palleteEntry);
+				}
+				this.getCategories()[_cat].push(palleteEntry);
+
+				var _placeholder = $(".pallete-" + _cat +" > ul ", $("#"+this.getPalleteId()) );
+				//TODO: this hover ain't pretty, change this...
+				//			<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">
+				var code = '\n' +
+	'							<li><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\n' +
+	'			'+ palleteEntry.getName() +'\n' +
+	'			</a>\n' +
+	'			';
+
+				_placeholder.append(code)
 			}
-			this.getCategories()[_cat].push(palleteEntry);
-
-			var _placeholder = $(".pallete-" + _cat +" > ul ", $("#"+this.getPalleteId()) );
-//TODO: this hover ain't pretty, change this...
-//			<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">
-			var code = '\n' +
-'							<li><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\n' +
-'			'+ palleteEntry.getName() +'\n' +
-'			</a>\n' +
-'			';
-
-			_placeholder.append(code)
-		
 		
 		},
 
