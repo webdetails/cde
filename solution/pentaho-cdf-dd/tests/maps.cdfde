@@ -1336,7 +1336,7 @@
      },
      {
       "name": "popupContentsDiv",
-      "value": "",
+      "value": "HiddenContentCol",
       "type": "String"
      },
      {
