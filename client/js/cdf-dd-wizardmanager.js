@@ -1110,6 +1110,8 @@ var OlapChartWizard = OlapWizard.extend({
 					title : "Preview",
 					titlePosition: "top",
 					titleSize: 40,
+					showDots: this.getSelectedOptions().type == "cccDotChart" ? true : false,
+					showLines: this.getSelectedOptions().type == "cccLineChart" ? true : false,
 					
 				//	stacked: false,
 					legend: false,
