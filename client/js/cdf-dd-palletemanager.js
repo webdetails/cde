@@ -226,4 +226,3 @@ var PalleteWizardEntry = PalleteEntry.extend({
 
 	},{
 	});
-
