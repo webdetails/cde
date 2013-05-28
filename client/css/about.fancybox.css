@@ -38,6 +38,9 @@ p, h1, h2, h3, div, a {
 	cursor: pointer;
 }
 
+b {
+	font-weight: bold;
+}
 
 .contentTabWrapper {
 	padding: 30px;
@@ -188,7 +191,22 @@ p, h1, h2, h3, div, a {
 	background-repeat:no-repeat;
 	background-position: 915px 20px;
 	color: #4b4b4b;
+	text-align: left;
+	vertical-align: middle;
 
+}
+
+.header30 {
+
+	color: #4b4b4b;
+	font-size: 20px;
+	font-family:'Gudea',sans-serif;
+	text-decoration:none;
+	text-align: left;
+	font-weight:bold;
+	font-style:normal;
+	padding: 14px 0px;
+	vertical-align: middle;
 }
 
 h30 {
@@ -197,10 +215,10 @@ h30 {
 	font-size: 20px;
 	font-family:'Gudea',sans-serif;
 	text-decoration:none;
+	text-align: left;
 	font-weight:bold;
 	font-style:normal;
-
-	line-height: 55px;
+	padding: 14px 0px;
 	vertical-align: middle;
 }
 
@@ -349,6 +367,7 @@ h29 {
 	font-weight:100;
 	font-style:normal;
 	color:#4b4b4b;
+	text-align: left;
 }
 .bodycopy li {
 	list-style:none;
