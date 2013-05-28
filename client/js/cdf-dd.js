@@ -545,7 +545,7 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData,"",2) // TODO: shouldn't it strip, like save does?
+              cdfstructure: JSON.stringify(myself.dashboardData,null,2) // TODO: shouldn't it strip, like save does?
             };
             $.post(CDFDDDataUrl, saveAsParams, function(result) {
               var json = eval("(" + result + ")");
@@ -687,7 +687,7 @@ var CDFDD = Base.extend({
       operation: "save",
       file: tmpFileName,
       //cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: serializedDashboard//JSON.stringify(this.dashboardData,"",2)
+      cdfstructure: serializedDashboard//JSON.stringify(this.dashboardData,null,2)
     };
 
 
@@ -947,7 +947,7 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData,"",2),
+              cdfstructure: JSON.stringify(myself.dashboardData,null,2),
               widgetName: selectedWidgetName
             };
 
