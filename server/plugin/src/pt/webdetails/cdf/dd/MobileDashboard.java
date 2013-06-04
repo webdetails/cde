@@ -16,7 +16,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 // Imports for the cache
 import pt.webdetails.cdf.dd.render.RenderMobileLayout;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  *
@@ -43,7 +43,7 @@ public class MobileDashboard extends AbstractDashboard
 
   private void construct(boolean absolute, String absRoot){
   
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository();
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
 
 
 

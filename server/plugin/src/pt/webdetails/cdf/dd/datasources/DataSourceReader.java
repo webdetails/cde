@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 
 import pt.webdetails.cdf.dd.AbstractDashboard;
 import pt.webdetails.cdf.dd.util.XPathUtils;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 public class DataSourceReader {
 
@@ -64,7 +64,7 @@ public class DataSourceReader {
 
     JXPathContext context;
     try {
-      context = AbstractDashboard.openDashboardAsJXPathContext(RepositoryAccess.getRepository(), dashboard, null);
+      context = AbstractDashboard.openDashboardAsJXPathContext((PentahoRepositoryAccess)PentahoRepositoryAccess.getRepository(), dashboard, null);
     } catch (FileNotFoundException e) {
       return null;
     } catch (IOException e) {

@@ -23,7 +23,7 @@ import pt.webdetails.cdf.dd.render.StringFilter;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 // Imports for the cache
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -129,7 +129,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   protected void renderContent() throws Exception
   {
     IPentahoSession userSession = PentahoSessionHolder.getSession();
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
     final JXPathContext doc = openDashboardAsJXPathContext(solutionRepository, dashboardLocation, wcdf);
 
     final RenderLayout layoutRenderer = new RenderLayout();
@@ -175,7 +175,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     }
   }
 
-  public static JXPathContext openDashboardAsJXPathContext(RepositoryAccess solutionRepository, String dashboardLocation, WcdfDescriptor wcdf)
+  public static JXPathContext openDashboardAsJXPathContext(PentahoRepositoryAccess solutionRepository, String dashboardLocation, WcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
     final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation));
@@ -208,7 +208,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
             quotedContent = Matcher.quoteReplacement(getContent());
     logger.debug("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
 
-    String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header
+    String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header //XXX explodes here with nullpointer
             .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
             .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
     logger.debug("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));

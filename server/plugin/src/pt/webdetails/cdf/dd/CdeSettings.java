@@ -14,6 +14,7 @@ import org.dom4j.Element;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cpf.PluginSettings;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 public class CdeSettings{
   
@@ -30,8 +31,9 @@ public class CdeSettings{
   public static String[] getComponentLocations(){
 
     ArrayList<String> paths = new ArrayList<String>();
-    
-    for(Element element : getSettings().getComponentLocations()){
+    CdfDDSettings settings = getSettings();
+    settings.setRepository(PentahoRepositoryAccess.getRepository());
+    for(Element element : settings.getComponentLocations()){
       String path = element.getText();
       String solutionPath = PentahoSystem.getApplicationContext().getSolutionPath(path);
       File file = new File(solutionPath);
@@ -52,6 +54,8 @@ public class CdeSettings{
   
   private static class CdfDDSettings  extends PluginSettings {
 
+
+    
     @Override
     public String getPluginName() {
       return "pentaho-cdf-dd";

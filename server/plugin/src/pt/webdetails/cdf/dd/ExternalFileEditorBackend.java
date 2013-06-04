@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  * External Editor (stub)
@@ -30,7 +30,7 @@ public class ExternalFileEditorBackend {
       return null;
     }
     
-    RepositoryAccess repository = RepositoryAccess.getRepository(userSession); 
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession); 
     
     if(repository.resourceExists(filePath))
     {
@@ -43,13 +43,13 @@ public class ExternalFileEditorBackend {
   }
   
   protected static boolean canEdit(final String filePath, IPentahoSession userSession){
-    return RepositoryAccess.getRepository(userSession).canWrite(filePath);
+    return PentahoRepositoryAccess.getRepository(userSession).canWrite(filePath);
   }
   
   protected static boolean createFolder(String path, IPentahoSession userSession) throws IOException, PentahoAccessControlException
   {
 
-    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);    
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);    
     boolean status = repository.createFolder(path);
     
     if (status)
@@ -67,7 +67,7 @@ public class ExternalFileEditorBackend {
   protected static boolean writeFile(String path, String solution, IPentahoSession userSession, String contents) throws IOException, PentahoAccessControlException //TODO:
   {    
     
-    RepositoryAccess repository = RepositoryAccess.getRepository(userSession); 
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession); 
     
     if(repository.canWrite(path)){
       switch(repository.publishFile(path, contents.getBytes(ENCODING), true)){

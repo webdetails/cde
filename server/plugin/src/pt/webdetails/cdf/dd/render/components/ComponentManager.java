@@ -22,10 +22,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.Node;
-import org.pentaho.platform.api.engine.IFileFilter;
-import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.CdeSettings;
@@ -33,10 +30,8 @@ import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.PluginSettings;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
-import pt.webdetails.cpf.repository.RepositoryAccess;
-import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  *
@@ -168,19 +163,19 @@ public class ComponentManager
     ArrayList<String> locations = new ArrayList<String>();
 
     //add base locations;
-    locations.add(RepositoryAccess.getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
-    locations.add(RepositoryAccess.getSolutionPath(""));
+    locations.add(PentahoRepositoryAccess.getPentahoSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
+    locations.add(PentahoRepositoryAccess.getPentahoSolutionPath(""));
 
     for (String componentsDir : CdeSettings.getComponentLocations())
     {
       indexCustomComponents(componentsDir);
-      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
+      locations.add(PentahoRepositoryAccess.getPentahoSolutionPath(componentsDir));
     }
 
     for (String componentsDir : getExternalComponentLocations())
     {
       indexCustomComponents(componentsDir);
-      locations.add(RepositoryAccess.getSolutionPath(componentsDir));
+      locations.add(PentahoRepositoryAccess.getPentahoSolutionPath(componentsDir));
     }
 
     resourceLocations = locations.toArray(new String[locations.size()]);
@@ -207,13 +202,14 @@ public class ComponentManager
 
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
     pluginsAnalyzer.refresh();
-    
+
     List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = null;
-    
+
     pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities("/cde-components");
-    
+
     ArrayList<String> componentLocations = new ArrayList<String>();
-    for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity){
+    for (PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity)
+    {
       String location = entity.getRegisteredEntity().valueOf("path");
       componentLocations.add(location);
       logger.debug("found CDE components location declared in " + entity.getPlugin().getId() + " [" + location + "]");
@@ -390,7 +386,7 @@ public class ComponentManager
     defs.append(PropertyManager.getInstance().getDefinitions());
     defs.append(getEntry());
     defs.append(getModel());
-    
+
     return defs.toString().replaceAll(",([\\r\\n]+\\s*})", "$1"); // pattern: |,([\r\n]+\s*})| // replaceBy: |$1| 
   }
 
