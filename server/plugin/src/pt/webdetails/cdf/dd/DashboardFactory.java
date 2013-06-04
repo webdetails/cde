@@ -23,8 +23,8 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator.MethodParams;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
-import pt.webdetails.cpf.repository.RepositoryAccess;
-import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
 
 /**
  *
@@ -190,7 +190,7 @@ public class DashboardFactory
   {
     Dashboard dashboard;
 
-    RepositoryAccess repository = RepositoryAccess.getRepository();
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
 
     try
     {

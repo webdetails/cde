@@ -20,7 +20,7 @@ import org.pentaho.platform.util.logging.Logger;
 import org.pentaho.platform.util.messages.LocaleHelper;
 import org.pentaho.platform.util.messages.MessageUtil;
 
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  * Utility class for internationalization
@@ -39,7 +39,7 @@ public class Messages {
       InputStream in = null;
         try {
           String messagesPath = "system/"+DashboardDesignerContentGenerator.PLUGIN_NAME+"/lang/messages.properties";//$NON-NLS-1$ //$NON-NLS-2$
-          in = RepositoryAccess.getRepository(session).getResourceInputStream(messagesPath) ; 
+          in = PentahoRepositoryAccess.getRepository(session).getResourceInputStream(messagesPath) ; 
           bundle = new PropertyResourceBundle( in );
           Messages.locales.put(locale, bundle);
         } catch (Exception e) {

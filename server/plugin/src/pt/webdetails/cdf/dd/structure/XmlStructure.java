@@ -29,8 +29,8 @@ import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
 import pt.webdetails.cdf.dd.render.components.ComponentDefinition;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
 import pt.webdetails.cdf.dd.render.properties.PropertyDefinition;
-import pt.webdetails.cpf.repository.RepositoryAccess;
-import pt.webdetails.cpf.repository.RepositoryAccess.SaveFileStatus;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.SaveFileStatus;
 
 public class XmlStructure implements IStructure
 {
@@ -52,7 +52,7 @@ public class XmlStructure implements IStructure
 
     //1. Delete File
 
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
     if (!solutionRepository.removeFile((String) parameters.get("file")))
     {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
@@ -74,7 +74,7 @@ public class XmlStructure implements IStructure
     try
     {
       //1. Get file
-      RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+      PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
       if (solutionRepository.resourceExists(filePath))
       {
         file = solutionRepository.getResourceInputStream(filePath);
@@ -115,7 +115,7 @@ public class XmlStructure implements IStructure
 
   public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
   {
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
 
     if (solutionRepository.resourceExists(wcdfFilePath))
     {
@@ -154,7 +154,7 @@ public class XmlStructure implements IStructure
     boolean cggResult = true;
 
     final HashMap<String, String> result = new HashMap<String, String>();
-    RepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
+    PentahoRepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
 
     String filePath = (String) parameters.get("file");
     logger.info("Saving File:" + filePath);
@@ -169,7 +169,7 @@ public class XmlStructure implements IStructure
 
       //2. Publish file to pentaho repository
 
-      RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+      PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
       if (filePath.indexOf("_tmp.cdfde") == -1 && repository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
       {
         parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
@@ -229,7 +229,7 @@ public class XmlStructure implements IStructure
     return result;
   }
 
-  private void deleteFileIfExists(RepositoryAccess solutionRepository, String path, String fileName)
+  private void deleteFileIfExists(PentahoRepositoryAccess solutionRepository, String path, String fileName)
   {
     String fullName = path + fileName;
     fullName = fullName.replaceAll("//+", "/");
@@ -239,7 +239,7 @@ public class XmlStructure implements IStructure
   public void saveas(HashMap<String, Object> parameters) throws Exception
   {
 
-    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
 
     //1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
@@ -315,7 +315,7 @@ public class XmlStructure implements IStructure
 
     try
     {
-      RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+      PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
 
       if (repository.resourceExists(filePath))
       {
@@ -426,7 +426,7 @@ public class XmlStructure implements IStructure
     }
     Document doc = DocumentHelper.createDocument();
     cd.toXML(doc);
-    RepositoryAccess repository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
     String path = wcdf.getWcdfPath().replaceAll(".wcdf$", ".component.xml");
     try
     {

@@ -48,13 +48,12 @@ import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.repository.RepositoryAccess;
-import pt.webdetails.cpf.repository.RepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
 import pt.webdetails.cpf.utils.MimeTypes;
-import pt.webdetails.cpf.utils.MimeTypes.FileType;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 {
@@ -173,7 +172,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
     IParameterProvider requestParams = getRequestParameters();
     final String path = ((String) requestParams.getParameter(MethodParams.FILE)).replaceAll("cdfde", "wcdf");
-    if (requestParams.hasParameter(MethodParams.PATH) && !RepositoryAccess.getRepository(userSession).hasAccess(path, FileAccess.EXECUTE))
+    if (requestParams.hasParameter(MethodParams.PATH) && !PentahoRepositoryAccess.getRepository(userSession).hasAccess(path, FileAccess.EXECUTE))
     {
       final HttpServletResponse response = getResponse();
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -239,7 +238,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   public void render(final OutputStream out) throws IOException // Exception
   {
     // Check security
-    if (!RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(getRequestParameters()), FileAccess.EXECUTE))
+    if (!PentahoRepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(getRequestParameters()), FileAccess.EXECUTE))
     {
       writeOut(out, "Access Denied or File Not Found.");
       return;
@@ -368,7 +367,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     String mimeType;
     try
     {
-      final FileType fileType = FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
+      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
       mimeType = MimeTypes.getMimeType(fileType);
     }
     catch (java.lang.IllegalArgumentException ex)
@@ -445,7 +444,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter      
     IParameterProvider requestParams = getRequestParameters();
     boolean debugMode = requestParams.hasParameter("debug") && requestParams.getParameter("debug").toString().equals("true");
-    if (requestParams.hasParameter(MethodParams.PATH) && !RepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(requestParams), FileAccess.EDIT))
+    if (requestParams.hasParameter(MethodParams.PATH) && !PentahoRepositoryAccess.getRepository(userSession).hasAccess(getWcdfRelativePath(requestParams), FileAccess.EDIT))
     {
       writeOut(out, "Access Denied");
       return;
@@ -596,7 +595,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     IParameterProvider requestParams = getRequestParameters();
     String path = requestParams.getStringParameter(MethodParams.PATH, null);
-    RepositoryAccess access = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess access = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
     if (access.hasAccess(path, FileAccess.DELETE) && access.removeFileIfExists(path))
       writeOut(out, "file  " +  path + " removed ok");
     else

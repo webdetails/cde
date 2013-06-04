@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
@@ -91,7 +91,7 @@ public class CdfTemplates {
     final String fileName = (String) parameters.get("file");
     logger.info("Saving File:" + fileName);
     
-    RepositoryAccess solutionRepository = RepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
     
     if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
     {

@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  *
@@ -48,7 +48,7 @@ public class CdaManager {
       JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonString);
       JXPathContext.newContext(json);
       
-      switch(RepositoryAccess.getRepository(userSession).publishFile(file[0], file[1], json.toString().getBytes("UTF-8"), true)){
+      switch(PentahoRepositoryAccess.getRepository(userSession).publishFile(file[0], file[1], json.toString().getBytes("UTF-8"), true)){
         case FAIL:
           logger.error("Could not save definition " + StringUtils.join(file, "/"));
       }

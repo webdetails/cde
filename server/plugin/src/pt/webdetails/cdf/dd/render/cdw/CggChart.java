@@ -17,7 +17,7 @@ import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.components.BaseComponent;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  *
@@ -119,7 +119,7 @@ public class CggChart
       String fileName = prefix + this.chartName + CGG_EXTENSION;
       byte[] content = chartScript.toString().getBytes(CdeSettings.getEncoding());
       
-      switch( RepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
+      switch( PentahoRepositoryAccess.getRepository().publishFile(path, fileName, content, true) ){
         case FAIL:
           logger.error("failed to write script file for " + chartName);
       }

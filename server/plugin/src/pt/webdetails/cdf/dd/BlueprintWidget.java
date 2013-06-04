@@ -5,14 +5,8 @@
 package pt.webdetails.cdf.dd;
 
 import java.io.FileNotFoundException;
-import org.apache.commons.jxpath.JXPathContext;
-import org.pentaho.platform.api.engine.IParameterProvider;
-import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import pt.webdetails.cdf.dd.render.RenderComponents;
-import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
-import pt.webdetails.cpf.repository.RepositoryAccess;
+
 
 /**
  *
