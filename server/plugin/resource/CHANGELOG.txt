@@ -1,3 +1,19 @@
+13.06.05
+    * Update OlapSelector to show selected options when the pulldown is closed.
+    *  [CHG] (CCC plot2SeriesIndexes) On third thought, renamed the option plot2DataSeriesIndexes to plot2SeriesIndexes, although the current implementation stilll works like the deprecated v1 secondAxisIdx. The meaning of "series" should already be taken as the value of the "series" visual role.    
+    * [FEAT](CCC plot2DataSeriesIndexes) Restored the functionality exposed by the deprecated option "secondAxisIdx". Added the CDE property "plot2DataSeriesIndexes".    
+    * Implemented [REDMINE-1984] - Option to clean v1 Properties when saving v2 charts
+    * Add TextEditor component (uses the same editor as CDE file editing).
+    * [FEAT](CCC Properties) Added recent new properties to the chart components' properties panel.
+    * CDE can now read styles from other sources
+    * New layout for samples
+    * Fixed [REDMINE-2083] - refreshPeriod not working after component lifecycle changes
+    * Fixed [REDMINE-2094] - On startup, CDE creates the cde folder and 4 subfolders. These folders are not visible in PUC
+    * Fixed [REDMINE-2011] -Save as Widget fails using the Extra information fields
+    * Fixed [REDMINE-2111] - Third sample on the MapComponent Reference doesn't work properly
+    * Fixed [REDMINE-1768] - Maps Popup integration is broken
+    * Fixed bug with existence test for navigation component in CDF mobile.
+
 13.03.25
     * Support for CCC V2
     * Update siteMap component to accept an url from where to fetch the siteMap json using an ajax call.
@@ -6,7 +22,7 @@
     * Fixed [Redmine-345] - Scrollbars in PopupComponent
     * Fixed [Redmine-1874] -  Remplate import should now work as intended 
 
-…ails/cde/issues/10
+
 13.02.07
     * Async behavior for components
     * Add NewSelector component 
