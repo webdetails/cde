@@ -93,10 +93,6 @@ public class FileExplorer
 
   public String getJSON(final String dir, final String fileExtensions, final String access, IPentahoSession userSession)
   {
-    List<String> extensions = new ArrayList<String>();
-    String[] split = fileExtensions.split(",");//XXX will they come split by '.' ?   DEFAULT ACCESS WILL BE -> READ
-    extensions.addAll(Arrays.asList(split));
-    
     IRepositoryFile[] files = ( (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession)).getFileList(dir, fileExtensions, access, userSession);
     return toJSON(dir, files);
   }
