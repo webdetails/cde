@@ -23,7 +23,7 @@ var CodeEditor = Base.extend({
 	},
   
   mode: 'javascript',
-  theme: 'ace/theme/twilight',
+  theme: 'ace/theme/monokai',
   editor: null,
   editorId: null,
 	
