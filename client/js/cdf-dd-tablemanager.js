@@ -805,13 +805,13 @@ var LabelRenderer = CellRenderer.extend({
     this.logger = new Logger("LabelRenderer");
     this.logger.debug("Creating new LabelRenderer");
   },
-
-  render: function(placeholder, value, callback, tooltip){
-     if(tooltip!=undefined)
-       $('<td title="'+Dashboards.escapeHtml(tooltip)+'">'+ value +'</td>').appendTo(placeholder);
-     else
-       $("<td>"+ value +"</td>").appendTo(placeholder);
-   }
+  render: function(placeholder, value, callback, options) {
+    var tooltip = options && options.tooltip;
+    if(tooltip) {
+      $('<td title="' + Dashboards.escapeHtml(tooltip) + '">' + value + '</td>').appendTo(placeholder);
+    } else {
+      this.base.apply(this, arguments);
+    }
   }
 
 });
