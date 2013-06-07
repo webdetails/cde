@@ -95,7 +95,7 @@ if(jQuery) (function($){
 				
 				// Handle Select All
 				$(select).next('.multiSelect').next('.multiSelectOptions').find('INPUT.selectAll').click( function() {
-					if( $(this).attr('checked') == true ) $(this).parent().parent().find('INPUT:checkbox').attr('checked', true).parent().addClass('checked'); else $(this).parent().parent().find('INPUT:checkbox').attr('checked', false).parent().removeClass('checked');
+					if( $(this).attr('checked')) $(this).parent().parent().find('INPUT:checkbox').attr('checked', true).parent().addClass('checked'); else $(this).parent().parent().find('INPUT:checkbox').attr('checked', false).parent().removeClass('checked');
 				});
 				
 				// Handle checkboxes
