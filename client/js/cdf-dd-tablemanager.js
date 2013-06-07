@@ -814,7 +814,12 @@ var LabelRenderer = CellRenderer.extend({
     this.logger.debug("Creating new LabelRenderer");
   },
   render: function(placeholder, value, callback, options) {
+    var tooltip = options && options.tooltip;
+    if(tooltip) {
+      $('<td title="' + Dashboards.escapeHtml(tooltip) + '">' + value + '</td>').appendTo(placeholder);
+    } else {
       this.base.apply(this, arguments);
+    }
   }
 
 });
