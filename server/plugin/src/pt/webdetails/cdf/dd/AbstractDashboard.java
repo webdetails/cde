@@ -208,7 +208,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
             quotedContent = Matcher.quoteReplacement(getContent());
     logger.debug("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
 
-    String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header //XXX explodes here with nullpointer
+    String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header 
             .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
             .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
     logger.debug("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
