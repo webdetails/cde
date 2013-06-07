@@ -59,9 +59,23 @@ var TableManager = Base.extend({
 
     // Create rows
     var data = this.getTableModel().getData() || [];
-    $.each(data,function(i,row){
-      myself.addRow(row);
-    });
+
+    for(var i = 0; i < data.length ; i++){
+      //Lets first check if the row is valid
+      var validRow = true;
+      for(var prop in data[i]){
+        if(data[i].hasOwnProperty(prop)){
+          validRow = true;
+        }else{
+          validRow = false;
+        }
+      }
+      //If the row is valid -> add it!
+      if(validRow){
+        myself.addRow(data[i]);
+      }
+
+    }
 
     $("#"+this.getTableId()).treeTable();
     this.updateOperations();
@@ -132,9 +146,11 @@ var TableManager = Base.extend({
 
 
     // Add columns
-
-    for (var i in this.getTableModel().getColumnGetExpressions()){
-      this.renderColumn(rowObj,row,i);
+    var columnExpressions = this.getTableModel().getColumnGetExpressions();
+    for (var i in columnExpressions){
+      if(columnExpressions.hasOwnProperty(i)){
+        this.renderColumn(rowObj,row,i);
+      }
     }
 
 
@@ -300,7 +316,6 @@ var TableManager = Base.extend({
 
   cellClick: function(row,col,classType){
     // Update operations
-
     if(typeof this.getLinkedTableManager() != 'undefined')
       this.getLinkedTableManager().cellUnselected();
 
@@ -802,7 +817,6 @@ var LabelRenderer = CellRenderer.extend({
       this.base.apply(this, arguments);
   }
 
-
 });
 
 
@@ -1000,9 +1014,11 @@ var SelectRenderer = CellRenderer.extend({
       this.autocompleteArray  = [];
       this.revertedSelectData = {};
       for(var id in data){
-        var label = data[id];
-        this.autocompleteArray.push(label);
-        this.revertedSelectData[label] = id;
+        if(data.hasOwnProperty(id)){
+          var label = data[id];
+          this.autocompleteArray.push(label);
+          this.revertedSelectData[label] = id;
+        }
       }
     }
     
@@ -1287,7 +1303,7 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:95%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:100%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself,placeholder, myself.value, callback];
       $.prompt(_inner,{
@@ -1295,16 +1311,24 @@ var CodeRenderer = CellRenderer.extend({
           Ok: true,
           Cancel: false
         },
-        callback: myself.callback,
+        loaded: function(){
+
+            //editor
+            myself.editor = new CodeEditor();
+            myself.editor.initEditor("codeArea");
+            myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
+            myself.editor.setMode(myself.getCodeType());
+            myself.editor.setContents(myself.value);
+        },
+
+        callback: myself.callback, 
         opacity: 0.2,
         prefix:'brownJqi'
       });
-      //editor
-      myself.editor = new CodeEditor();
-      myself.editor.initEditor('codeArea');
-      myself.editor.setMode(myself.getCodeType());
-      myself.editor.setContents(myself.value);
-      //
+
+
+      
+
     }).appendTo($("div.edit",_editArea));
 
     _editArea.appendTo(placeholder);

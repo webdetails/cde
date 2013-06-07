@@ -351,6 +351,10 @@ h30 {
 	
 }
 
+b {
+	font-weight: bold;
+}
+
 
 
 h29 {
@@ -389,7 +393,7 @@ h29 {
 
 .bodycopytitle {
 	font-weight:bold;
-	font-size:20px;
+	font-size:14px;
 	width:880px;
 	height:20px;
 	border-bottom:1px #ccc dotted;
@@ -397,6 +401,7 @@ h29 {
 	display:block;
 	overflow:hidden;
 	margin-bottom:10px;
+	text-align: left;
 }
 .bodycopy {
 	width:935px;
@@ -435,6 +440,7 @@ h29 {
 	font-weight:100;
 	font-style:normal;
 	color:#4b4b4b;
+	text-align: left;
 }
 
 .bodycopysampleslist {

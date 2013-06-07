@@ -44,15 +44,18 @@ var DatasourcesPanel = Panel.extend({
 
 			var datasourcesTableModel = new TableModel('datasourcesTreeTableModel');
 			datasourcesTableModel.setColumnNames(['Type','Name']);
-			datasourcesTableModel.setColumnGetExpressions([
-				function(row){return row.typeDesc},
-				function(row){return CDFDDUtils.ev(row.properties[0].value)}
-				]);
+			var typeDescription = function(row){return row.typeDesc};
+			var rowProperties = function(row){return CDFDDUtils.ev(row.properties[0].value)};
+			datasourcesTableModel.setColumnGetExpressions([typeDescription,rowProperties]);
 			datasourcesTableModel.setColumnTypes(['String','String']);
-			datasourcesTableModel.setRowId(function(row){return row.id});
-			datasourcesTableModel.setRowType(function(row){return row.type});
-			datasourcesTableModel.setParentId(function(row){return row.parent});
-			datasourcesTableModel.setData(cdfdd.getDashboardData().datasources.rows);
+			var rowId = function(row){return row.id};
+			datasourcesTableModel.setRowId(rowId);
+			var rowType = function(row){return row.type};
+			datasourcesTableModel.setRowType(rowType);
+			var rowParent = function(row){return row.parent};
+			datasourcesTableModel.setParentId(rowParent);
+			var dataSources = cdfdd.getDashboardData().datasources.rows;
+			datasourcesTableModel.setData(dataSources);
 			this.datasourcesTable.setTableModel(datasourcesTableModel);
 			this.datasourcesTable.init();
 
@@ -87,7 +90,9 @@ var DatasourcesPanel = Panel.extend({
 			this.datasourcesTable.setLinkedTableManagerOperation(function(row){
 					var arr = []; 
 					for (p in row.properties){
-						arr.push(row.properties[p]);
+						if(row.properties.hasOwnProperty(p)){
+							arr.push(row.properties[p]);
+						}
 					}
 					return arr;
 				});

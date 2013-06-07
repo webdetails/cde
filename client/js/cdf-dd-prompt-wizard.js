@@ -287,8 +287,8 @@ var AcePromptWizard = PromptWizard.extend({
 	
 	postRenderWizard: function(){
 		this.editor = new CodeEditor();
-		this.editor.setMode(this.mode);
 		this.editor.initEditor(this.EDITOR_ID);
+		this.editor.setMode(this.mode);
 		this.editor.setContents(this.invoker.getValue());
 	},
 	

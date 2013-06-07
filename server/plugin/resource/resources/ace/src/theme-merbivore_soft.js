@@ -1,1 +1,136 @@
-define("ace/theme/merbivore_soft",["require","exports","module"],function(a,b,c){var d=a("pilot/dom"),e=".ace-merbivore-soft .ace_editor {\n  border: 2px solid rgb(159, 159, 159);\n}\n\n.ace-merbivore-soft .ace_editor.ace_focus {\n  border: 2px solid #327fbd;\n}\n\n.ace-merbivore-soft .ace_gutter {\n  width: 50px;\n  background: #e8e8e8;\n  color: #333;\n  overflow : hidden;\n}\n\n.ace-merbivore-soft .ace_gutter-layer {\n  width: 100%;\n  text-align: right;\n}\n\n.ace-merbivore-soft .ace_gutter-layer .ace_gutter-cell {\n  padding-right: 6px;\n}\n\n.ace-merbivore-soft .ace_print_margin {\n  width: 1px;\n  background: #e8e8e8;\n}\n\n.ace-merbivore-soft .ace_scroller {\n  background-color: #1C1C1C;\n}\n\n.ace-merbivore-soft .ace_text-layer {\n  cursor: text;\n  color: #E6E1DC;\n}\n\n.ace-merbivore-soft .ace_cursor {\n  border-left: 2px solid #FFFFFF;\n}\n\n.ace-merbivore-soft .ace_cursor.ace_overwrite {\n  border-left: 0px;\n  border-bottom: 1px solid #FFFFFF;\n}\n \n.ace-merbivore-soft .ace_marker-layer .ace_selection {\n  background: #494949;\n}\n\n.ace-merbivore-soft .ace_marker-layer .ace_step {\n  background: rgb(198, 219, 174);\n}\n\n.ace-merbivore-soft .ace_marker-layer .ace_bracket {\n  margin: -1px 0 0 -1px;\n  border: 1px solid #FCE94F;\n}\n\n.ace-merbivore-soft .ace_marker-layer .ace_active_line {\n  background: #333435;\n}\n\n       \n.ace-merbivore-soft .ace_invisible {\n  color: #404040;\n}\n\n.ace-merbivore-soft .ace_keyword {\n  color:#FC803A;\n}\n\n.ace-merbivore-soft .ace_keyword.ace_operator {\n  \n}\n\n.ace-merbivore-soft .ace_constant {\n  color:#68C1D8;\n}\n\n.ace-merbivore-soft .ace_constant.ace_language {\n  color:#E1C582;\n}\n\n.ace-merbivore-soft .ace_constant.ace_library {\n  color:#8EC65F;\n}\n\n.ace-merbivore-soft .ace_constant.ace_numeric {\n  color:#7FC578;\n}\n\n.ace-merbivore-soft .ace_invalid {\n  color:#FFFFFF;\nbackground-color:#FE3838;\n}\n\n.ace-merbivore-soft .ace_invalid.ace_illegal {\n  \n}\n\n.ace-merbivore-soft .ace_invalid.ace_deprecated {\n  color:#FFFFFF;\n  background-color:#FE3838;\n}\n\n.ace-merbivore-soft .ace_support {\n  \n}\n\n.ace-merbivore-soft .ace_support.ace_function {\n  color:#FC803A;\n}\n\n.ace-merbivore-soft .ace_function.ace_buildin {\n  \n}\n\n.ace-merbivore-soft .ace_string {\n  color:#8EC65F;\n}\n\n.ace-merbivore-soft .ace_string.ace_regexp {\n  \n}\n\n.ace-merbivore-soft .ace_comment {\n  color:#AC4BB8;\n}\n\n.ace-merbivore-soft .ace_comment.ace_doc {\n  \n}\n\n.ace-merbivore-soft .ace_comment.ace_doc.ace_tag {\n  \n}\n\n.ace-merbivore-soft .ace_variable {\n  \n}\n\n.ace-merbivore-soft .ace_variable.ace_language {\n  \n}\n\n.ace-merbivore-soft .ace_xml_pe {\n  \n}\n\n.ace-merbivore-soft .ace_meta {\n  \n}\n\n.ace-merbivore-soft .ace_meta.ace_tag {\n  color:#FC803A;\n}\n\n.ace-merbivore-soft .ace_meta.ace_tag.ace_input {\n  \n}\n\n.ace-merbivore-soft .ace_entity.ace_other.ace_attribute-name {\n  color:#EAF1A3;\n}\n\n.ace-merbivore-soft .ace_markup.ace_underline {\n    text-decoration:underline;\n}\n\n.ace-merbivore-soft .ace_markup.ace_heading {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_1 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_2 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_3 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_4 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_5 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_heading.ace_6 {\n  \n}\n\n.ace-merbivore-soft .ace_markup.ace_list {\n  \n}\n\n.ace-merbivore-soft .ace_collab.ace_user1 {\n     \n}";d.importCssString(e),b.cssClass="ace-merbivore-soft"})
+/* ***** BEGIN LICENSE BLOCK *****
+ * Distributed under the BSD license:
+ *
+ * Copyright (c) 2010, Ajax.org B.V.
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Ajax.org B.V. nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+ace.define('ace/theme/merbivore_soft', ['require', 'exports', 'module' , 'ace/lib/dom'], function(require, exports, module) {
+
+exports.isDark = true;
+exports.cssClass = "ace-merbivore-soft";
+exports.cssText = ".ace-merbivore-soft .ace_gutter {\
+background: #262424;\
+color: #E6E1DC\
+}\
+.ace-merbivore-soft .ace_print-margin {\
+width: 1px;\
+background: #262424\
+}\
+.ace-merbivore-soft .ace_scroller {\
+background-color: #1C1C1C\
+}\
+.ace-merbivore-soft .ace_text-layer {\
+color: #E6E1DC\
+}\
+.ace-merbivore-soft .ace_cursor {\
+border-left: 2px solid #FFFFFF\
+}\
+.ace-merbivore-soft .ace_overwrite-cursors .ace_cursor {\
+border-left: 0px;\
+border-bottom: 1px solid #FFFFFF\
+}\
+.ace-merbivore-soft .ace_marker-layer .ace_selection {\
+background: #494949\
+}\
+.ace-merbivore-soft.ace_multiselect .ace_selection.ace_start {\
+box-shadow: 0 0 3px 0px #1C1C1C;\
+border-radius: 2px\
+}\
+.ace-merbivore-soft .ace_marker-layer .ace_step {\
+background: rgb(102, 82, 0)\
+}\
+.ace-merbivore-soft .ace_marker-layer .ace_bracket {\
+margin: -1px 0 0 -1px;\
+border: 1px solid #404040\
+}\
+.ace-merbivore-soft .ace_marker-layer .ace_active-line {\
+background: #333435\
+}\
+.ace-merbivore-soft .ace_gutter-active-line {\
+background-color: #333435\
+}\
+.ace-merbivore-soft .ace_marker-layer .ace_selected-word {\
+border: 1px solid #494949\
+}\
+.ace-merbivore-soft .ace_invisible {\
+color: #404040\
+}\
+.ace-merbivore-soft .ace_entity.ace_name.ace_tag,\
+.ace-merbivore-soft .ace_keyword,\
+.ace-merbivore-soft .ace_meta,\
+.ace-merbivore-soft .ace_meta.ace_tag,\
+.ace-merbivore-soft .ace_storage {\
+color: #FC803A\
+}\
+.ace-merbivore-soft .ace_constant,\
+.ace-merbivore-soft .ace_constant.ace_character,\
+.ace-merbivore-soft .ace_constant.ace_character.ace_escape,\
+.ace-merbivore-soft .ace_constant.ace_other,\
+.ace-merbivore-soft .ace_support.ace_type {\
+color: #68C1D8\
+}\
+.ace-merbivore-soft .ace_constant.ace_character.ace_escape {\
+color: #B3E5B4\
+}\
+.ace-merbivore-soft .ace_constant.ace_language {\
+color: #E1C582\
+}\
+.ace-merbivore-soft .ace_constant.ace_library,\
+.ace-merbivore-soft .ace_string,\
+.ace-merbivore-soft .ace_support.ace_constant {\
+color: #8EC65F\
+}\
+.ace-merbivore-soft .ace_constant.ace_numeric {\
+color: #7FC578\
+}\
+.ace-merbivore-soft .ace_invalid,\
+.ace-merbivore-soft .ace_invalid.ace_deprecated {\
+color: #FFFFFF;\
+background-color: #FE3838\
+}\
+.ace-merbivore-soft .ace_fold {\
+background-color: #FC803A;\
+border-color: #E6E1DC\
+}\
+.ace-merbivore-soft .ace_comment,\
+.ace-merbivore-soft .ace_meta {\
+font-style: italic;\
+color: #AC4BB8\
+}\
+.ace-merbivore-soft .ace_entity.ace_other.ace_attribute-name {\
+color: #EAF1A3\
+}\
+.ace-merbivore-soft .ace_markup.ace_underline {\
+text-decoration: underline\
+}\
+.ace-merbivore-soft .ace_indent-guide {\
+background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWOQkZH5zzBz5sz/AA8EBB6crd1rAAAAAElFTkSuQmCC) right repeat-y\
+}";
+
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
+});

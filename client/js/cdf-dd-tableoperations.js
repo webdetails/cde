@@ -49,8 +49,10 @@ var CellOperations = Base.extend({
       $.each(CellOperations.operations,function(i,value){
       
           for(var i in value.types){
-            if(type.match("^"+value.types[i])){
-              _operations.push(value);
+            if(value.types.hasOwnProperty(i)){
+              if(type.match("^"+value.types[i])){
+                _operations.push(value);
+              }
             }
           }
         });
@@ -277,7 +279,7 @@ var MoveDownOperation = BaseOperation.extend({
       else{
         toIdx = nextSibling.index - 1;
       }
-      var targetIdx = indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index;
+      var targetIdx = parseFloat(indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index);
 
       this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
 

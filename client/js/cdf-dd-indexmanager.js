@@ -31,32 +31,36 @@ var IndexManager = Base.extend({
 			idx[IndexManager.ROOTID] = root; 
 
 			for ( var rowIndex in data){
-				var row = data[rowIndex];
-				var _id = this.getTableModel().getEvaluatedId(rowIndex);
-				var _parent;
-				if (typeof this.getTableModel().getParentId() == 'undefined'){
-					// Parent folder
-					_parent = IndexManager.ROOTID;
-				}
-				else{
-					// Child folder
-					_parent = this.getTableModel().getParentId()(row);
-					if (typeof _parent == 'undefined'){
-						_parent = IndexManager.ROOTID;
+				if(data.hasOwnProperty(rowIndex)){
+					rowIndex = parseFloat(rowIndex);
+					if(rowIndex != NaN){
+						var row = data[rowIndex];
+						var _id = this.getTableModel().getEvaluatedId(rowIndex);
+						var _parent;
+						if (typeof this.getTableModel().getParentId() == 'undefined'){
+							// Parent folder
+							_parent = IndexManager.ROOTID;
+						}
+						else{
+							// Child folder
+							_parent = this.getTableModel().getParentId()(row);
+							if (typeof _parent == 'undefined'){
+								_parent = IndexManager.ROOTID;
+							}
+						}
+						var _type = this.getTableModel().getRowType()(row) ;
+
+						var entry = {};
+						entry.id = _id;
+						entry.parent = _parent;
+						entry.children = [];
+						entry.type = _type;
+						entry.index = rowIndex;
+						idx[_id] = entry; 
+						idx[_parent].children.push(entry);
 					}
+					index++;
 				}
-				var _type = this.getTableModel().getRowType()(row) ;
-
-				var entry = {};
-				entry.id = _id;
-				entry.parent = _parent;
-				entry.children = [];
-				entry.type = _type;
-				entry.index = index;
-				idx[_id] = entry; 
-				idx[_parent].children.push(entry);
-
-				index++;
 			};
 
 			this.setIndex(idx);
@@ -115,10 +119,10 @@ var IndexManager = Base.extend({
 			return this.getBrothers(rowId)[this.getChildIndex(rowId) + 1];
 		},
 
-		setIndex: function(index){this.index = index},
-		getIndex: function(){return this.index},
-		setTableModel: function(tableModel){this.tableModel = tableModel; this.updateIndex()},
-		getTableModel: function(){return this.tableModel}
+		setIndex: function(index){this.index = index;}, //XXX - index is an object!
+		getIndex: function(){return this.index;},
+		setTableModel: function(tableModel){this.tableModel = tableModel; this.updateIndex();},
+		getTableModel: function(){return this.tableModel;}
 
 	},{
 		ROOTID: "UnIqEiD"

@@ -574,7 +574,9 @@ var OlapWizard = WizardManager.extend({
 		getSelectedRowsValue: function(preview){
 			var rows = [];
 			for(o in this.selectedWizardObjects.rows){
-				rows.push(this.selectedWizardObjects.rows[o].getValue(preview));
+				if(this.selectedWizardObjects.rows.hasOwnProperty(o)){
+					rows.push(this.selectedWizardObjects.rows[o].getValue(preview));
+				}
 			}
 			return rows;
 		},
@@ -582,17 +584,26 @@ var OlapWizard = WizardManager.extend({
 		getSelectedColumnsValue: function(preview){
 			var columns = [];
 			for(o in this.selectedWizardObjects.columns){
-				columns.push(this.selectedWizardObjects.columns[o].getValue(preview));
+				if(this.selectedWizardObjects.columns.hasOwnProperty(o)){
+					columns.push(this.selectedWizardObjects.columns[o].getValue(preview));
+				}
 			}
 			return columns;
 		},
 		
 		getListenners: function(){
 			var listeners = "[";
-			for(objs in this.selectedWizardObjects)
-				for(o in this.selectedWizardObjects[objs]){
-					if(this.selectedWizardObjects[objs][o].getId != undefined) listeners+= "\"" + this.selectedWizardObjects[objs][o].getId() + "\",";
+			for(objs in this.selectedWizardObjects){
+				if(this.selectedWizardObjects.hasOwnProperty(objs)){
+					for(o in this.selectedWizardObjects[objs]){
+						if(this.selectedWizardObjects[objs].hasOwnProperty(o)){
+							if(this.selectedWizardObjects[objs][o].getId != undefined){
+								listeners+= "\"" + this.selectedWizardObjects[objs][o].getId() + "\",";
+							}
+						}
+					}
 				}
+			}
 			return listeners.length > 1 ? listeners.replace(/,$/,"]") : "";
 		},
 		
@@ -675,7 +686,9 @@ var OlapWizard = WizardManager.extend({
 			var isFirstColumnMeasure = columnsArr.length > 0 && this.getSelectedWizardObject("columns",0).olapObject.type == 'measure';
 			
 			for(o in this.selectedWizardObjects.filters){
-				conditions.push(this.getFilterValue(this.selectedWizardObjects.filters[o], preview));
+				if(this.selectedWizardObjects.filters.hasOwnProperty(o)){
+					conditions.push(this.getFilterValue(this.selectedWizardObjects.filters[o], preview));
+				}
 			}
 			//ini
 			var rootDim = this.getSelectedWizardObject('rows',0).member;
@@ -750,7 +763,10 @@ var OlapParameterWizard = OlapWizard.extend({
 			var topCountSelector = $("#cdfdd-olap-parameter-topcount",content);
 			var topCounts = ["",5,10,15,20,25,50,100];
 			for(t in topCounts)
-				topCountSelector.append('<option value="' + topCounts[t] +'">' + topCounts[t] +'</option>');
+				if(topCounts.hasOwnProperty(t)){
+					topCountSelector.append('<option value="' + topCounts[t] +'">' + topCounts[t] +'</option>');	
+				}
+				
 			topCountSelector.val(50);
 			
 			var data = Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects();
@@ -983,8 +999,11 @@ var OlapChartWizard = OlapWizard.extend({
 '			');
 			
 			var appendOption = function(obj, options){
-				for(v in options)
-					obj.append('<option value="' + options[v][0] + '">' + options[v][1] + '</option>');
+				for(v in options){
+					if(options.hasOwnProperty(v) && v != undefined && v != null){
+						obj.append('<option value="' + options[v][0] + '">' + options[v][1] + '</option>');
+					}
+				}
 			};
 
 			var componentOptions = $("#cdfdd-component-options");
@@ -1091,6 +1110,8 @@ var OlapChartWizard = OlapWizard.extend({
 					title : "Preview",
 					titlePosition: "top",
 					titleSize: 40,
+					showDots: this.getSelectedOptions().type == "cccDotChart",
+					showLines: this.getSelectedOptions().type == "cccLineChart",
 					
 				//	stacked: false,
 					legend: false,
