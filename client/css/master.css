@@ -146,12 +146,19 @@ div.cdfdd-main {
   display:block;
 }
 
-
+div.treeTableNewJqi button{
+  width:auto!important;
+  text-align: center;
+}
 
 
 #cdfdd-main-Reload img {
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.ui-autocomplete, .ui-menu, .ui-widget, .ui-widget-content, .ui-corner-all{
+  text-align: left;
 }
 
 
@@ -487,23 +494,22 @@ ul.autobox-list{
 
 table.cdfdd{
   border-collapse:separate;
+  height: 12px!important;
 }
-
-table tbody tr td {
-  cursor: default;
-  padding: .3em 1.5em;
-}
-
 
 form.cdfddInput input, form.cdfddInput button, form.cdfddInput select, button.cdfddInput {
   background-color:#FFFFFF;
   border:1px solid #999999;
   color:#000000;
+  height: 12px!important;
+}
+td.cdfddInput{
+  height: 12px!important;
 }
 
 form.cdfddInput input {
   font-size: 13px;
-  height: 15px;
+  height: 12px!important;
 }
 
 button.cdfddInput {
