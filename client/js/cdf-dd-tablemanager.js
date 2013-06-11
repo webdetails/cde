@@ -61,17 +61,7 @@ var TableManager = Base.extend({
     var data = this.getTableModel().getData() || [];
 
     for(var i = 0; i < data.length ; i++){
-      //Lets first check if the row is valid
-      var validRow = true;
-      for(var prop in data[i]){
-        if(data[i].hasOwnProperty(prop)){
-          validRow = true;
-        }else{
-          validRow = false;
-        }
-      }
-      //If the row is valid -> add it!
-      if(validRow){
+      if(typeof(data[i]) === "object") {
         myself.addRow(data[i]);
       }
 
