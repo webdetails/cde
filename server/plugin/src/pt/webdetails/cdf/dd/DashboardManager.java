@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
@@ -30,7 +33,9 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsReadContext;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsThingReaderFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
@@ -63,7 +68,7 @@ public final class DashboardManager
   private final Cache  _ehCache;
   private final Object _ehCacheLock;
   
-  private final Map<String, Dashboard> _dashboardsByCdfdeFullPath;
+  private final Map<String, Dashboard> _dashboardsByCdfdeFilePath;
           
   private DashboardManager()
   {
@@ -94,7 +99,7 @@ public final class DashboardManager
     _ehCacheLock = new Object();
     
     // In memory Dashboard objects cache
-    _dashboardsByCdfdeFullPath = new HashMap<String, Dashboard>();
+    _dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>();
   }
   
   public static DashboardManager getInstance()
@@ -207,7 +212,7 @@ public final class DashboardManager
     Dashboard dash;
     try
     {
-      dash = this.getDashboard(wcdf, repository, cdeFile, bypassCacheRead);
+      dash = this.getDashboard(wcdf, repository, cdeFile, cdeFilePath, bypassCacheRead);
     }
     catch(ThingReadException ex)
     {
@@ -257,22 +262,122 @@ public final class DashboardManager
     }
     
     // 2. Get the Dashboard object
-    return this.getDashboard(wcdf, repository, cdeFile, bypassCacheRead);
+    return this.getDashboard(wcdf, repository, cdeFile, cdeFilePath, bypassCacheRead);
+  }
+  
+  /**
+   * DashboardWriteResult cache already checks the modified dates
+   * of the CDFDE and the style-template files, 
+   * upon access to the cache.
+   * 
+   * When a dashboard contains widgets and those widgets' 
+   * structure (internal content/CDFDE) is modified,
+   * the dashboard write result is no longer valid.
+   * 
+   * This method is proactively called whenever the CDFDE file of 
+   * a dashboard, that is a widget, is saved by the editor.
+   * If a widget's file is edited by hand, 
+   * there's nothing implemented in access-time that detects
+   * that a dashboard's contained widget has changed...
+   */
+  public void invalidateDashboard(String wcdfPath)
+  {
+    // Look for cached Dashboard objects that contain the widget.
+    
+    String cdeFilePath = WcdfDescriptor.toStructurePath(wcdfPath);
+    
+    Map<String, Dashboard> dashboardsByCdfdeFilePath;
+    synchronized(this._dashboardsByCdfdeFilePath)
+    {
+      dashboardsByCdfdeFilePath = new HashMap<String, Dashboard>(this._dashboardsByCdfdeFilePath);
+    }
+    
+    Set<String> invalidateDashboards = new HashSet<String>();
+    invalidateDashboards.add(cdeFilePath);
+    
+    Dashboard dash = dashboardsByCdfdeFilePath.get(cdeFilePath);
+    if(dash != null && dash.getWcdf().isWidget()) 
+    {
+      collectWidgetsToInvalidate(invalidateDashboards, dashboardsByCdfdeFilePath, cdeFilePath);
+    }
+    
+    for(String invalidCdeFilePath : invalidateDashboards)
+    {
+      _logger.info("Invalidating cache of '" + invalidCdeFilePath + "'");
+    }
+    
+    synchronized(this._dashboardsByCdfdeFilePath)
+    {
+      for(String invalidCdeFilePath : invalidateDashboards)
+      {
+        this._dashboardsByCdfdeFilePath.remove(invalidCdeFilePath);
+      }
+    }
+    
+    // Clear the DashboardWriteResult eh-cache
+    synchronized(this._ehCacheLock)
+    {
+      List<DashboardCacheKey> ehKeys = this._ehCache.getKeys();
+      for(DashboardCacheKey ehKey : ehKeys)
+      {
+        if(invalidateDashboards.contains(ehKey.getCdfde()))
+        {
+          this._ehCache.remove(ehKey);
+        }
+      }
+    }
+  }
+  
+  private void collectWidgetsToInvalidate(
+          Set<String> invalidateDashboards,
+          Map<String, Dashboard> dashboardsByCdfdeFilePath,
+          String cdeWidgetFilePath)
+  {
+    // Find not-invalidated dashboards containing widget cdeWidgetFilePath
+    
+    for(Dashboard dash : dashboardsByCdfdeFilePath.values())
+    {
+      String cdeDashFilePath = dash.getSourcePath();
+      if(!invalidateDashboards.contains(cdeDashFilePath))
+      {
+        Iterable<Component> comps = dash.getRegulars();
+        for(Component comp : comps)
+        {
+          if(comp instanceof WidgetComponent)
+          {
+            WidgetComponent widgetComp = (WidgetComponent)comp;
+            if(WcdfDescriptor.toStructurePath(widgetComp.getWcdfPath()).equals(cdeWidgetFilePath))
+            {
+              // This dashboard uses this widget
+              invalidateDashboards.add(cdeDashFilePath);
+              if(dash.getWcdf().isWidget())
+              {
+                // If the dashboard is also a widget, recurse
+                collectWidgetsToInvalidate(
+                        invalidateDashboards, 
+                        dashboardsByCdfdeFilePath,
+                        cdeDashFilePath);
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
   }
   
   private Dashboard getDashboard(
           WcdfDescriptor wcdf, 
           IRepositoryAccess repository,
           IRepositoryFile cdeFile,
+          String cdeFilePath,
           boolean bypassCacheRead)
           throws ThingReadException
   {
-    String cdeFullPath = cdeFile.getFullPath();
-    
     Dashboard cachedDash = null;
     if(!bypassCacheRead) 
     {
-      cachedDash = this.getDashboardFromCache(cdeFullPath);
+      cachedDash = this.getDashboardFromCache(cdeFilePath);
     }
     
     // Read cache, cache item existed and it is valid?
@@ -301,7 +406,7 @@ public final class DashboardManager
     
     Dashboard newDash = this.readDashboardFromCdfdeJs(wcdf, repository);
     
-    return this.replaceDashboardInCache(cdeFullPath, newDash, cachedDash);
+    return this.replaceDashboardInCache(cdeFilePath, newDash, cachedDash);
   }
   
   private Dashboard readDashboardFromCdfdeJs(
@@ -511,9 +616,9 @@ public final class DashboardManager
   
   private Dashboard getDashboardFromCache(String cdeFullPath)
   {
-    synchronized(this._dashboardsByCdfdeFullPath)
+    synchronized(this._dashboardsByCdfdeFilePath)
     {
-      return this._dashboardsByCdfdeFullPath.get(cdeFullPath);
+      return this._dashboardsByCdfdeFilePath.get(cdeFullPath);
     }
   }
   
@@ -524,11 +629,11 @@ public final class DashboardManager
   {
     assert newDash != null;
     
-    synchronized(this._dashboardsByCdfdeFullPath)
+    synchronized(this._dashboardsByCdfdeFilePath)
     {
       if(oldDash != null) // otherwise ignore
       {
-        Dashboard currDash = this._dashboardsByCdfdeFullPath.get(cdeFullPath);
+        Dashboard currDash = this._dashboardsByCdfdeFilePath.get(cdeFullPath);
         if(currDash != null && currDash != oldDash)
         {
           // Do not set.
@@ -537,7 +642,7 @@ public final class DashboardManager
         }
       }
       
-      this._dashboardsByCdfdeFullPath.put(cdeFullPath, newDash);
+      this._dashboardsByCdfdeFilePath.put(cdeFullPath, newDash);
       return newDash;
     }
   }

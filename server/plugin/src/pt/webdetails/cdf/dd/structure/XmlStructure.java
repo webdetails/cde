@@ -22,7 +22,6 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.MetaModelManager;
@@ -185,16 +184,24 @@ public class XmlStructure implements IStructure
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
     }
-
-    // 4. CGG
+    
     String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+    
+    // 4. When the component is a widget,
+    //    and its internal "structure" has changed,
+    //    Then any dashboard where it is used and 
+    //    whose render result is cached 
+    //    must be invalidated.
+    DashboardManager.getInstance().invalidateDashboard(wcdfFilePath);
+    
+    // 5. CGG (requires an updated Dashboard instance)
     this.saveCgg(repository, wcdfFilePath);
     
     // TODO: Is this used?
     result.put("cdfde", "true");
     result.put("cda",   "true");
     result.put("cgg",   "true");
-
+    
     return result;
   }
   
@@ -203,7 +210,7 @@ public class XmlStructure implements IStructure
   {
     String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
     
-    // Ontain an UPDATED dashboard object
+    // Obtain an UPDATED dashboard object
     DashboardManager dashMgr = DashboardManager.getInstance();
     Dashboard dash = dashMgr.getDashboard(wcdfFilePath, userSession, /*bypassCacheRead*/false);
     
@@ -323,9 +330,14 @@ public class XmlStructure implements IStructure
        (PentahoRepositoryAccess)PentahoRepositoryAccess.getRepository(userSession);
 
     repository.publishFile(widgetPath, safeGetEncodedBytes(doc.asXML()), true);
+    
+    // This will allow the metadata model to receive the 
+    // new/updated widget-component definition (name and parameters).
+    // The CDE Editor will show new/updated widgets.
+    // No need to refresh data source definitions.
     try
     {
-      DashboardDesignerContentGenerator.refresh(null);
+      MetaModelManager.getInstance().refresh(/*refreshDatasources*/false);
     }
     catch(Exception ex)
     {
@@ -386,9 +398,10 @@ public class XmlStructure implements IStructure
 
     for(String paramName : wcdf.getWidgetParameters())
     {
-      // Create an own property
+      // Create an *own* property
       PropertyType.Builder prop = new PropertyType.Builder();
 
+      // valueType is String
       prop
         .setName(paramName)
         .setLabel("Parameter " + paramName)
@@ -402,7 +415,7 @@ public class XmlStructure implements IStructure
       builder.useProperty(null, paramName);
     }
 
-    // Use the global model to build the component in.
+    // Use the current global meta-model to build the component in.
     MetaModel model = MetaModelManager.getInstance().getModel();
     IPropertyTypeSource propSource = model.getPropertyTypeSource();
     try
