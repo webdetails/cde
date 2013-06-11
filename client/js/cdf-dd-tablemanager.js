@@ -145,13 +145,14 @@ var TableManager = Base.extend({
 
 
     var selector = "table.#" + this.getTableId() + " tbody";
-    if(pos < 0){
-      rowObj.appendTo($(selector));
-      $(selector).append(html); // TODO <<-- undefined variable !!
+    if(pos < 0 || pos == undefined){
+      $(selector).append(rowObj);
+      //rowObj.appendTo($(selector));
+      //$(selector).append(html); // TODO <<-- undefined variable !!
     }
     else{
       var _selector = $(selector + " > tr:eq(" + pos + ")");
-      _selector.length == 1?_selector.before(rowObj):rowObj.appendTo($(selector));
+      _selector.length == 1?_selector.before(rowObj):$(selector).append(rowObj);
     }
 
     return _id;
