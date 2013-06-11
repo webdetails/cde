@@ -100,10 +100,23 @@ public final class MetaModelManager
 
   public void refresh()
   {
+   this.refresh(true);
+  }
+  
+  public void refresh(boolean refreshDatasources)
+  {
     Date dtStart = new Date();
     _logger.info("CDE Starting Reload MetaModelManager");
     
-    JSON cdaDefs = this.getCdaDefs(/*isRefresh*/true); // TODO: No errors? How to know when it fails?
+    JSON cdaDefs;
+    if(refreshDatasources) 
+    {
+      cdaDefs = this.getCdaDefs(/*isRefresh*/true); // TODO: No errors? How to know when it fails?
+    }
+    else
+    {
+      cdaDefs = this.getCdaDefinitions();
+    }
     
     MetaModel model = this.readModel(cdaDefs);
     if(model != null)
@@ -114,7 +127,9 @@ public final class MetaModelManager
       synchronized(_lock)
       {
         this._model  = model;
-        this._cdaDefs = cdaDefs;
+        if(refreshDatasources) {
+          this._cdaDefs = cdaDefs;
+        }
         this._jsDefinition = null;
       }
       
