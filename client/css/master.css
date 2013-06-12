@@ -65,6 +65,15 @@ ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
   text-align: left;
 }
 
+form input.ui-autocomplete-input{
+  border: none;
+  font-size: 13px;
+  height: 14px;
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-bottom: -2px;
+  width: 150px;
+}
 
 div.cdfdd-toolbar-logo {
  background-image: url('../images/NAV/CDE_Header_Logo.png');
@@ -496,7 +505,7 @@ table.cdfdd{
 
 table tbody tr td {
   cursor: default;
-  padding: .3em 1.5em;
+  padding: 0.3em 1.5em;
 }
 
 
@@ -507,13 +516,29 @@ form.cdfddInput input, form.cdfddInput button, form.cdfddInput select, button.cd
 }
 
 form.cdfddInput input {
-  font-size: 13px;
-  height: 15px;
+  font-size: 100%;
+  height: 13px;
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-bottom: -2px;
+  width: 150px;
+}
+
+form.cdfddInput input.multiSelect {
+  width: 126px!important;
 }
 
 button.cdfddInput {
   width: 18px;
   height: 16px;
+}
+
+td form.cdfddInput button{
+  position: relative;
+  vertical-align: middle;
+  height: 20px;
+  margin-bottom: -2px;
+  margin-top: -6px
 }
 
 textarea.cdfddEdit{
@@ -923,4 +948,12 @@ div.treeTableNewJqi.save-as-widget button {
 div.treeTableNewJqi button {
   width: auto;
   text-align: center;
+}
+
+form.cdfddInput input[type="checkbox"]
+{
+  width:15px;
+  height:21px;
+  background: transparent!important;
+  border: 0!important;
 }
