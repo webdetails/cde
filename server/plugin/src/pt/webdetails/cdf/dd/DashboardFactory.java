@@ -254,7 +254,7 @@ public class DashboardFactory
     }
   }
 
-  private static synchronized Cache getCache() throws CacheException
+  public static synchronized Cache getCache() throws CacheException
   {
     if (cacheManager == null)
     {// 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
