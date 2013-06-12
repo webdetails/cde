@@ -87,14 +87,16 @@ public class RenderComponents extends Renderer
         if (renderer != null)
         {
           // Discard everything that's not an actual renderable component
-          renderer.setAlias(alias);
-          renderer.setNode(context);
-          if (renderer.getId().startsWith("render_"))
-          {
-            componentsIds += renderer.getId().length() > 0 ? renderer.getId() + "," : "";
+          synchronized (renderer) {
+            renderer.setAlias(alias);
+            renderer.setNode(context);
+            if (renderer.getId().startsWith("render_"))
+            {
+              componentsIds += renderer.getId().length() > 0 ? renderer.getId() + "," : "";
+            }
+            result.append(newLine);
+            result.append(renderer.render(context));
           }
-          result.append(newLine);
-          result.append(renderer.render(context));
         }
       }
     }
