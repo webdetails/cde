@@ -4,36 +4,7 @@ body {
 
 a {
   outline: none;
-  text-decoration: none;
-}
-
-.headerButton{
-  -moz-transition: all 0.5s ease 0s;
-  color: #8A8A8A;
-  cursor: pointer;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 100;
-  letter-spacing: 0.07em;
-  line-height: 20px;
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 0 0 3px #111111, 0 0 3px #111111;
-  vertical-align: middle;
-  font-family: arial;
-  position: relative;
-  padding-left: 10px;
-}
-
-
-
-.headerButton:hover {
-  outline: none;
   text-decoration:  none;
-  position:relative;
-  color: #0098C4;
-  text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
 }
 
 li {
@@ -51,23 +22,18 @@ div.outside {
 }
 
 .save-pulldown {
-  z-index: 1;
   display: inline-block;
   width:19px;
   height:19px;
   position: relative;
-  top: -1px;
-  background: url("../images/NAV/down.png") no-repeat;
+  top: -10px;
+  background-image: url("../images/NAV/down.png");
 }
 .save-pulldown:hover {
   background-image: url("../images/NAV/down_mouseover.png");
 }
 .save-pulldown:active {
   background-image: url("../images/NAV/down_onclick.png");
-}
-
-ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
-  text-align: left;
 }
 
 .save-pulldown .pulldown {
@@ -82,23 +48,6 @@ ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
   border: 2px solid #152530;
 }
 
-form input.ui-autocomplete-input{
-  border: none;
-  font-size: 13px;
-  height: 14px;
-  vertical-align: middle;
-  margin-top: -5px;
-  margin-bottom: -2px;
-  width: 150px;
-}
-
-.item{
-  font-size: 12px;
-  text-shadow: none;
-  list-style: none;
-  color: #12a2d8;
-}
-
 .save-pulldown .pulldown .item {
   color: white;
   cursor: default;
@@ -108,42 +57,23 @@ form input.ui-autocomplete-input{
   color: #0098c8;
 }
 
-.headerButton{
-  -moz-transition: all 0.5s ease 0s;
-  color: #8A8A8A;
-  cursor: pointer;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 100;
-  letter-spacing: 0.07em;
-  line-height: 20px;
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 0 0 3px #111111, 0 0 3px #111111;
-  vertical-align: middle;
-  font-family: arial;
-  position: relative;
-  padding-left: 10px;
-  display: inline-block;
-}
-
-.headerButton:hover {
-  outline: none;
-  text-decoration:  none;
-  position:relative;
-  color: #0098C4;
-  text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
-}
-
-.headerButton:active{
-  color:#FFFFFF;
-}
-
 div.padder {
   padding: 5px;
 }
 
+ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
+  text-align: left;
+}
+
+form input.ui-autocomplete-input{
+  border: none;
+  font-size: 13px;
+  height: 14px;
+  vertical-align: middle;
+  margin-top: -5px;
+  margin-bottom: -2px;
+  width: 150px;
+}
 
 div.cdfdd-toolbar-logo {
  background-image: url('../images/NAV/CDE_Header_Logo.png');
@@ -158,7 +88,7 @@ div.cdfdd-toolbar-logo {
 div.cdfdd-toolbar {
   text-align: center;
   height: 106px;
-  /*  padding-top:5px;*/
+  /*	padding-top:5px;*/
   /*padding-bottom: 5px;*/
   background-image: url('../images/NAV/CDE_Header_Background.png');
 
@@ -168,8 +98,8 @@ div.cdfdd-toolbar {
   width: 100%;
   height: 100%;
   /*position: absolute;*/
-  /*  top: 0;
-  left: 0;*/
+  /*	top: 0;
+	left: 0;*/
 }
 
 #cde-header {
@@ -178,10 +108,10 @@ div.cdfdd-toolbar {
 
 div.cdfdd-preview, div.cdfdd-main, div.cdfdd-modes, div.cdfdd-logo {
   /*background:#E2F0B7;*/
-  /*  padding-top:5px;*/
+  /*	padding-top:5px;*/
   /*padding-bottom: 5px;*/
   /* margin-top:31px;*/
-  /*  top:0;*/
+  /*	top:0;*/
   /*  position: absolute;*/
   top:31px;
 }
@@ -198,7 +128,6 @@ div.cdfdd-modes {
 div.cdfdd-main {
   margin-top:35px;
 }
-
 
 #keyboard_shortcuts_help{
 
@@ -272,45 +201,8 @@ div.ui-widget-content > ul li {/*TODO...*/
    /* padding-left:30px;  After the integration with cdf, this stopped making sense */
 }
 
-.multiSelectOptions{
-  width: 150px;
-  max-height: 150px;
-  margin-top: -1px;
-  overflow: auto;
-  border: solid 2px #12a2d8;
-  background: #222;
-  color: #12a2d8;
-  margin-top: 3px;
-}
-
-.multiSelect.active {
-  color: #fff;
-  background: url(../images/NAV/down.png) right center no-repeat;
-}
-
-.multiSelect.hover {
-  background: url(../images/NAV/down_mouseover.png) right center no-repeat;
-  color: #12a2d8;
-}
-
-.multiSelectOptions label.checked {
-  background: #333;
-}
-
-.multiSelectOptions label:hover {
-  background-color: #12a2d8;
-  color: #222;
-}
-
 .multiSelectOptions label {
-  color: #12a2d8;
-  padding: 5px 10px;
-}
-
-.multiSelectOptions label input{
-  float: left;
-  position: relative;
-  top: 3px;
+  color: #2a2f31;
 }
 
 li.ui-state-hover {
@@ -335,10 +227,6 @@ hr.hr-hidden{
   background:#2D2D2D;
 }
 
-hr {
-  background: none!important;
-}
-
 div.spacer {
   height: 5px;
 }
@@ -355,14 +243,6 @@ div.cdfdd-operations{
 #wizardDialog {
   display: none;
 
-  width: auto;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-  position: absolute; 
-  background-color: #222; 
-  font-size: 11px; 
-  text-align: left; 
-  border: solid 2px #12a2d8!important;
-
   top: 10px;
   left: 50%;
 
@@ -370,61 +250,11 @@ div.cdfdd-operations{
   width: 960px;
 
   background:#2D2D2D;
-  color: #999;
+  color: #e1e1e1;
   border: 1px solid black;
 
   height:550px;
 
-  max-width: 75%;
-  max-height: 75%;
-  min-width: 5%;
-
-}
-#cdfdd-wizard-button-ok {
- padding: 3px 10px;
-  background-color: #222;
-  border: solid 2px #12a2d8;
-  color: #999;
-  font-size: 12px;
-  float: right;
-  height: 25px;
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  width: auto;
-}
-
-#cdfdd-wizard-button-cancel {
-  padding: 3px 10px;
-  background-color: #222;
-  border: solid 2px #12a2d8;
-  color: #999;
-  font-size: 12px;
-  height: 25px;
-  position: absolute;
-  bottom: 8px
-;  right: 60px;
-  width: auto;
-}
-
-#cdfdd-wizard-button-cancel:hover, #cdfdd-wizard-button-ok:hover{
-  background-color: #12a2d8;
-  color: #333;
-}
-
-#wizardDialog button{
-  padding: 3px 10px; 
-  background-color: #222; 
-  border: solid 2px #12a2d8; 
-  color: #999; 
-  font-size: 12px; 
-  float: right;
-  height: 20px;
-}
-
-#wizardDialog button:hover{
-  color:#333;
-  background-color: #12a2d8;
 }
 
 #wizardDialog caption {
@@ -435,36 +265,18 @@ div.cdfdd-operations{
   margin-bottom: 0px;
 }
 
-#wizardDialog h1 {
-  float: left;
-  color: #12a2d8;
-  line-height: 20px;
-  font-weight: bold;
-  position: relative;
-  top: -10px;
+#wizardDialog h1, #wizardDialog h2, #wizardDialog h3 {
+  color: #e1e1e1;
 }
-
- #wizardDialog h2, #wizardDialog h3{
-  color: #999;
-  font-weight: bold;
-  padding-bottom: 10px;
- }
 
 #wizardDialog select {
-  width: 100%;
+  width: 180px;
   margin-bottom: 0px;
-  font-size: 12px;
-}
-
-#cdfdd-component-options div input, #cdfdd-component-options div select{
-  width: 100%;
 }
 
 #cdfdd-component-options .cdfdd-component-options-label {
   position:relative;
   left:10px;
-  font-weight: bold;
-  padding-bottom: 10px;
 }
 #cdfdd-component-options .cdfdd-component-options-chartType{
   width: 130px;
@@ -474,31 +286,31 @@ div.cdfdd-operations{
 }
 
 #cdfdd-component-options .cdfdd-component-options-type{
-  width: 100%;
-  position: static;
-  left: 42px;
-  margin-bottom: 10px
+  width: 130px;
+  position:relative;
+  left:42px;
+  margin-bottom: 0px;
 }
 
 #cdfdd-component-options .cdfdd-component-options-htmlobject{
-  width: 100%;
-  position: static;
-  left: 42px;
-  margin-bottom: 10px
+  width: 130px;
+  position:relative;
+  left:4px;
+  margin-bottom: 0px;
 }
 
 #cdfdd-component-options .cdfdd-component-options-topCount{
-  width: 100%;
-  position: static;
-  left: 42px;
-  margin-bottom: 10px
+  width: 130px;
+  position:relative;
+  left:11px;
+  margin-bottom: 0px;
 }
 
 #cdfdd-component-options .cdfdd-component-options-orientation{
-  width: 100%;
-  position: static;
-  left: 42px;
-  margin-bottom: 10px
+  width: 130px;
+  position:relative;
+  left:09px;
+  margin-bottom: 0px;
 }
 
 #cdfdd-component-options hr {
@@ -565,7 +377,6 @@ div.cdfdd-wizard-left, div.cdfdd-wizard-buttons {
 
 div.cdfdd-wizard-buttons {
   text-align: right;
-  background: transparent;
 }
 
 .cdfdd-wizard-filter-label {
@@ -677,7 +488,6 @@ div.cdfdd-wizard-buttons input[disabled] {
 
 .jqmWindow {
   z-index: 100;
-  display: inline-table;
 }
 
 ul.autobox-list{
@@ -714,29 +524,21 @@ form.cdfddInput input {
   width: 150px;
 }
 
+form.cdfddInput input.multiSelect {
+  width: 126px!important;
+}
+
+button.cdfddInput {
+  width: 18px;
+  height: 16px;
+}
+
 td form.cdfddInput button{
   position: relative;
   vertical-align: middle;
   height: 20px;
   margin-bottom: -2px;
   margin-top: -6px
-}
-
-form.cdfddInput input.multiSelect {
-  width: 126px!important;
- }
-
-form.cdfddInput input[type="checkbox"]
-{
-  width:15px;
-  height:21px;
-  background: transparent!important;
-  border: 0!important;
-}
-
-button.cdfddInput {
-  width: 18px;
-  height: 16px;
 }
 
 textarea.cdfddEdit{
@@ -1069,25 +871,23 @@ table.cdfdd caption {
 }
 
 
-
-
 /* Changes made for adding About Button */
 
 .footer {
-  background-image: url('../images/footerCde.png');
-  line-height: 41px;
-  vertical-align: middle;
+	background-image: url('../images/footerCde.png');
+	line-height: 41px;
+	vertical-align: middle;
 }
 
 
 .webdetailsLogo {
-  float: right;
-  margin-right: 20px;
-  vertical-align: middle;
+	float: right;
+	margin-right: 20px;
+	vertical-align: middle;
 }
 
 .webdetailsLogo img {
-  vertical-align: middle;
+	vertical-align: middle;
 }
 
 
@@ -1120,42 +920,29 @@ div.treeTableNewJqi.save-as-widget .treeTableNewJqibuttons {
 }
 
 div.treeTableNewJqi.save-as-widget .treeTableNewJqimessage {
-  height: 160px;
+  height: 180px;
 }
 
-div.treeTableNewJqi.save-as-widget input.folderexplorerfileinput {
-  position: relative;
-  width:380px;
-  left:33px;
+div.treeTableNewJqi.save-as-widget .inputContainer {
+  display:block;
+  height:30px;
+  line-height:30px;
+  padding-left:20px;
 }
+div.treeTableNewJqi.save-as-widget .inputContainer span.inputLabel {
+  display:inline-block;
+  float:left;
+  width:80px;
+}
+div.treeTableNewJqi.save-as-widget .inputContainer input {
+  display:inline-block;
+  float:left;
+  width:385px;
+}
+
 
 div.treeTableNewJqi.save-as-widget button {
   width: 65px;
-}
-
-div.folderexplorer{
-  overflow: auto!important;
-  height: 170px!important;
-}
-
-
-.ui-dialog-title{
-  float: left;
-  color: #12a2d8;
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: bold;
-
-}
-
-
-
-.ui-widget-content li:hover {
-  background: none;
-}
-
-.ui-widget-content {
-  border: none!important;
 }
 
 div.treeTableNewJqi button {
@@ -1163,400 +950,10 @@ div.treeTableNewJqi button {
   text-align: center;
 }
 
-
-
-html {margin:0;padding:0;border:0;}
-body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:middle;}
-article, aside, dialog, figure, footer, header, hgroup, nav, section {display:block;}
-body {background:white;}
-table {border-collapse:separate;border-spacing:0;}
-caption, th, td {text-align:left;font-weight:normal;float:none !important;}
-table, th, td {vertical-align:middle;}
-blockquote:before, blockquote:after, q:before, q:after {content:'';}
-blockquote, q {quotes:"" "";}
-a img {border:none;}
-:focus {outline:0;}
-
-html {font-size:100.01%; background-color: #2D2D2D;}
-body {font-size:75%;color:#222;background:#2D2D2D;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
-h1, h2, h3, h4, h5, h6 {font-weight:normal;}
-h1 {font-size:2em;line-height:1;margin-bottom:0.5em;}
-h2 {font-size:1.6em;margin-bottom:0.75em;}
-h3 {font-size:1.4em;line-height:1;margin-bottom:1em;}
-h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
-h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
-h6 {font-size:1em;font-weight:bold;}
-
-.container {
-  
-}
-
-/*.header {
-  background: url(../images/CDE_Header_Background.png);
-  width: 100%;
-  height: 106px;
-  font: Helvetica, Arial, sans-serif;
-}*/
-
-.headerLogo {
-  float: left;  
-  height: 106px;
-  overflow: hidden;
-}
-
-.headerLinks {
-  
-}
-
-.headerLinks .buttonImage {
-  height: 15px;
-  width: 15px;
-  vertical-align: middle;
-  background-image: url(../images/down.png);
-  background-size: cover;
-  display: inline-block;
-  position: relative;
-}
-
-.clear {
-  clear: both;  
-}
-
-a {
-  text-decoration: none;
-}
-
-a:link, a:visited {
-  color: #999;
-}
-
-a:hover, a.linkActive {
-  color: #12a2d8; 
-  text-shadow: 0px 0px 3px #12a2d8, -1px 0 #111111, 0 1px #111111, 1px 0 #111111, 0 -1px #111111;;
-        filter: dropshadow(color=#12a2d8, offx=0, offy=0);
-}
-
-a:hover > .buttonImage,
-.linkActive > .buttonImage {
-  background-image: url(../images/down_mouseover.png);
-}
-
-a:active {
-  color: #fff;  
-  text-shadow: 0px 0px 3px #fff,  -1px 0 #111111, 0 1px #111111, 1px 0 #111111, 0 -1px #111111;;
-        filter: dropshadow(color=#fff, offx=0, offy=0);
-}
-
-a:active > .buttonImage {
-  background-image: url(../images/down_onclick.png);
-}
-
-/*ul*/
-ul.controlOptions {
-  list-style: none;
-  color: #999;
-  position: absolute;
-  top: 20px;
-  background: #222;
-  border: 2px #12a2d8 solid;
-  top: 25px;
-  display: none;
-  z-index: 10;
-}
-
-ul.controlOptions li {
-  padding: 5px 10px;  
-}
-
-ul.controlOptions li.popupIcon {
-  background-image: url(../images/popup.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:hover {
-  background-image: url(../images/popup_mouseover.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:active {
-  background-image: url(../images/popup_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.separator {
-  border-top: 1px #12a2d8 solid;
-}
-
-/*ul.controlOptions li:nth-last-child(2) {
-  background: #111;
-  border-top: 1px #12a2d8 solid;
-}*/
-
-ul.controlOptions li:hover {
-  background-color: #12a2d8;
-  color: #222;
-  cursor: pointer;
-}
-
-ul.controlOptions li:active {
-  color: #fff;
-}
-
-/* impromptu starts here*/
-div.popup {
-  width: auto;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-  position: fixed!important; 
-  background-color: #222; 
-  font-size: 11px; 
-  text-align: left; 
-  border: solid 2px #12a2d8;
-  padding: 7px;
-  max-width: 75%;
-  max-height: 80%;
-  min-width: 20%;
-  overflow-x: auto;
-}
-
-div.popup-ie9{
-  width: 515px;
-}
-
-div.popup input[type="text"]{
-  width: 100%;
-}
-
-div.popup .cdf_settings_input{
-  width: 100%;
-}
-
-div.popup h2 {
-  float: left;
-  color: #12a2d8;
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: bold;
-  position: relative;
-  top: -10px;
-  background-color: transparent!important;
-}
-
-div.popup .popupcontainer{ 
-  font-weight: bold;
-  background: #222; 
-}
-div.popup .popupclose{
-  font-weight: bold;
-  border: 2px solid #12a2d8;
-  height: 20px;
-  width: 20px;
-  text-align: center; 
-  background: url(../images/close.png);
-  z-index: 100;
-  color: #222;
-  font-size: 0px;
-  position: absolute;
-  right: 8px;
-}
-div.popup .popupclose:hover{ 
-  color: transparent;
-  cursor: pointer;
-  background-image: url(../images/close_mouseover.png);
-  background-color: #12a2d8;
-}
-div.popup .popupclose:active{ 
-  background: url(../images/close_onclick.png);
-  background-color: #12a2d8;
-  color: transparent;
-}
-div.popup .popupmessage{ 
-  padding: 10px; 
-  line-height: 20px; 
-  color: #999;
-  background: #222; 
-
-}
-div.popup .popupbuttons{ 
-  text-align: right; 
-  padding: 5px 0 5px 0;  
-  background-color: #222;
-}
-div.popup button{ 
-  padding: 3px 10px; 
-  background-color: #222; 
-  border: solid 2px #12a2d8; 
-  color: #999; 
-  font-size: 12px; 
-  margin-left: 5px;
-  position: relative;
-  right: 0;
-  margin-bottom: 0;
-  float: right;
-}
-div.popup button:hover{ 
-  background-color: #12a2d8!important;
-  color: #222!important;
-}
-div.popup button.popupdefaultbutton{ 
-  /*background-color: #8DC05B;*/
-  background-color: #222;
-}
-
-/* impromptu ends here*/
-
-.closePopup {
-  float: right;
-  font-weight: bold;
-  border: 2px solid #12a2d8;
-  height: 20px;
-  width: 20px;
-  text-align: center; 
-  background: url(../images/close.png);
-}
-
-.closePopup:hover {
-  color: #222;
-  cursor: pointer;
-  background-image: url(../images/close_mouseover.png);
-  background-color: #12a2d8;
-}
-
-.closePopup:active {
-  background: url(../images/close_onclick.png);
-  background-color: #12a2d8;
-}
-
-div.popup .title {
-  font-weight: bold;
-  display: block;
-  width: 100%; 
-  margin-top: 10px;
-  list-style: none;
-  font-size: 13px;
-}
-
-div.popup img {
-  margin-left: 10px;  
-}
-
-.popup .description {
-  font-size:20px;
-  line-height:1;
-  margin-bottom:0.5em;
-  list-style: none;
-  font-weight: 100;
-
-}
-
-div.popup textarea {
-  width: 100%;  
-  height: 75px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  resize: none;
-}
-
-div.popup .button {
-  width: 75px;
-  border: 2px #12a2d8 solid;
-  float: right;
-  text-align: center;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-
-div.popup .button:hover {
-  background: #12a2d8;
-  color: #222;
-  cursor: pointer;
-}
-
-div.popup .button:active {
-  color: #fff;
-
-}
-#popupSave {
-  width: 600px;
-  margin-left: -300px;
-  height: 483px;
-  margin-top: -241.5px; 
-}
-
-#popupSave ul {
-  list-style: url(../images/directory.png);
-  list-style-position: inside;
-  background: #f5f5f5;
-  overflow: scroll;
-  color: #666;
-}
-
-#popupSave ul li {
-  padding: 3px;
-  height: 20px;
-  font-size: 12px;
-}
-
-#popupSave ul li:hover {
-  background: #666;
-  color: #222;
-}
-
-#popupSave label {
-  margin-right: 5px;  
-  width: 65px;
-  display: inline-block;
-}
-
-#popupSave input[type="text"] {
-  margin-top: 10px;
-  width: 338px;
-  margin-bottom: 5px;
-}
-
-#popupSave input[type="button"] {
-  width: 75px;
-  border: 2px #12a2d8 solid;
-  text-align: center;
-}
-
-#popupSave input[type="button"] {
-  margin-left: 5px;
-}
-
-#popupSave input[type="button"]:hover {
-  background: #12a2d8;
-  color: #222;
-  cursor: pointer;
-}
-
-#popupSave input[type="button"]:active {
-  color: #fff;
-}
-
-#popupSave input[type="radio"] {
-  margin-left: 12px;
-  width: 15px;
-}
-
-#popupSave #titleInfo, 
-#popupSave #descriptionInfo {
-  width:500px;  
-}
-
-#popupSave hr {
-  border: none;
-  border-top: 1px #12a2d8 solid;
-}
-
-.preload {
-  position: absolute;
-  left: -999px;
-  top: -999px;
-  max-height: 0;
-  max-width: 0; 
+form.cdfddInput input[type="checkbox"]
+{
+  width:15px;
+  height:21px;
+  background: transparent!important;
+  border: 0!important;
 }
