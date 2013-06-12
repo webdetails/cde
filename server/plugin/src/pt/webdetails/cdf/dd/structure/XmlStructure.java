@@ -16,6 +16,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import pt.webdetails.cdf.dd.CdfStyles;
+import pt.webdetails.cdf.dd.DashboardFactory;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -227,6 +228,13 @@ public class XmlStructure implements IStructure
     result.put("cda", new Boolean(cdaResult).toString());
     result.put("cgg", new Boolean(cggResult).toString());
 
+    //[Bug #2262] CDE Widgets not showing in Pentaho PUC
+    // whenever we save a widget, we need to clear cached dashboards, so that 
+    // they may be re-rendered, contemplating the new changes made 
+    if(cdfdeResult && cdaResult && cggResult){
+    	DashboardFactory.getCache().removeAll();
+    }
+    
     return result;
   }
 
