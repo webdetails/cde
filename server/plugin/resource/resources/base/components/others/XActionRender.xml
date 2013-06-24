@@ -22,6 +22,7 @@
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
 			<Property>tooltip</Property>
+			<Property>iframe</Property>
 		</Model>
 	</Contents>
 </DesignerComponent>
