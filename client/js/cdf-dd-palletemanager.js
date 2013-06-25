@@ -42,7 +42,7 @@ var PalleteManager = Base.extend({
 			var _placeholder = $("#"+this.getPalleteId());
 
 			// Accordion
-			if($.browser.msie && parseInt($.browser.version)<9){
+			if($.browser.msie && parseInt($.browser.version)<10){
 				_placeholder.accordion({
 					header: "h3",
 					active: false,
