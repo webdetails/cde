@@ -24,26 +24,24 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 public class Utils {
 
   private static Log logger = LogFactory.getLog(Utils.class);
+
   private static String baseUrl = null;
 
-  public static String getBaseUrl(){
+  public static String getBaseUrl() {
 
-    if(baseUrl == null){
-      try
-      {
+    if (baseUrl == null) {
+      try {
         // Note - this method is deprecated and returns different values in 3.6
         // and 3.7. Change this in future versions -- but not yet
-// getFullyQualifiedServerUeRL only available from 3.7
-//      URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
+        // getFullyQualifiedServerURL only available from 3.7
+        //      URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
         URI uri = new URI(PentahoSystem.getApplicationContext().getBaseUrl());
         baseUrl = uri.getPath();
-        if(!baseUrl.endsWith("/")){
-          baseUrl+="/";
-        } 
-      }
-      catch (URISyntaxException ex)
-      {
-        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(),ex);
+        if (!baseUrl.endsWith("/")) {
+          baseUrl += "/";
+        }
+      } catch (URISyntaxException ex) {
+        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(), ex);
       }
 
     }
@@ -52,10 +50,8 @@ public class Utils {
 
   }
 
-  public static void main(String[] args)
-  {
-    try
-    {
+  public static void main(String[] args) {
+    try {
       URI uri = new URI("http://127.0.0.1:8080/pentaho/");
       System.out.println(uri.getPath());
       uri = new URI("/pentaho/");
@@ -64,29 +60,30 @@ public class Utils {
       System.out.println(uri.getPath());
       uri = new URI("/pentaho");
       System.out.println(uri.getPath());
-    }
-    catch (URISyntaxException ex)
-    {
+    } catch (URISyntaxException ex) {
       Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-  
-  public static String getSolutionPath(){
-    return StringUtils.replace(PentahoSystem.getApplicationContext().getSolutionPath("") , "\\", "/");
+
+  public static String getSolutionPath() {
+    return StringUtils.replace(PentahoSystem.getApplicationContext().getSolutionPath(""), "\\", "/");
   }
-  public static String getSolutionPath(String path){
+
+  public static String getSolutionPath(String path) {
     return joinPath(getSolutionPath(), path);
   }
-  
-  public static String joinPath(String...paths){
+
+  public static String joinPath(String... paths) {
     return StringUtils.defaultString(StringUtils.join(paths, "/")).replaceAll("/+", "/");
   }
 
-  public static boolean pathStartsWith(String fileName, String pathStart){
-    if(pathStart == null) return true;
-    else if(fileName == null) return false; 
-    
+  public static boolean pathStartsWith(String fileName, String pathStart) {
+    if (pathStart == null)
+      return true;
+    else if (fileName == null)
+      return false;
+
     return FilenameUtils.getPath(fileName).startsWith(pathStart);
   }
-  
+
 }

@@ -30,72 +30,71 @@ import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
  *
  * @author pdpi
  */
-public class DashboardFactory
-{
+public class DashboardFactory {
   // Cache
 
   private static final String CACHE_CFG_FILE = "ehcache.xml";
+
   private static final String CACHE_NAME = "pentaho-cde";
+
   private static CacheManager cacheManager;
+
   private static DashboardFactory instance;
+
   private static Log logger = LogFactory.getLog(DashboardFactory.class);
 
-  private enum Renderers
-  {
-
+  private enum Renderers {
     MOBILE, BLUEPRINT
   }
 
-  public static synchronized DashboardFactory getInstance()
-  {
-    if (instance == null)
-    {
+  public static synchronized DashboardFactory getInstance() {
+    if (instance == null) {
       instance = new DashboardFactory();
     }
     return instance;
   }
 
-  private DashboardFactory()
-  {
+  private DashboardFactory() {
   }
 
-  public Dashboard newDashboard()
-  {
+  public Dashboard newDashboard() {
     throw new UnsupportedOperationException("Not supported yet.");
-
   }
 
-  public Dashboard loadDashboard(Map<String, IParameterProvider> params) throws FileNotFoundException
-  {
-    IParameterProvider pathParams = params.get("path"),
-            requestParams = params.get("request");
-    String scheme = requestParams.hasParameter("inferScheme") && 
-                    requestParams.getParameter("inferScheme").equals("false") ? 
-            "" : 
-            DashboardDesignerContentGenerator.getScheme(pathParams);
-    String root = requestParams.getStringParameter("root", "");
-    boolean absolute = (!root.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true"),
-            bypassCache = requestParams.hasParameter("bypassCache") && requestParams.getParameter("bypassCache").equals("true");
+  public Dashboard loadDashboard(Map<String, IParameterProvider> params) throws FileNotFoundException {
+    IParameterProvider pathParams = params.get("path"), requestParams = params.get("request");
+
+    final String scheme = requestParams.hasParameter("inferScheme")
+        && requestParams.getParameter("inferScheme").equals("false") ? "" : DashboardDesignerContentGenerator
+        .getScheme(pathParams);
+
+    final String root = requestParams.getStringParameter("root", "");
+
+    final boolean absolute = (!root.equals("")) || requestParams.hasParameter("absolute")
+        && requestParams.getParameter("absolute").equals("true");
+
+    final boolean bypassCache = requestParams.hasParameter("bypassCache")
+        && requestParams.getParameter("bypassCache").equals("true");
+
     final boolean debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
 
-    String wcdfPath = getWcdfPath(requestParams);
+    final String wcdfPath = getWcdfPath(requestParams);
+
     return loadDashboard(wcdfPath, debug, absolute, scheme, root, bypassCache, "");
   }
 
-  public Widget loadWidget(String wcdfPath, String alias) throws FileNotFoundException
-  {
+  public Widget loadWidget(String wcdfPath, String alias) throws FileNotFoundException {
     Dashboard d = loadDashboard(wcdfPath, false, false, "", "", true, alias);
     if (d instanceof Widget) {
-    return (Widget) d;
+      return (Widget) d;
     } else {
       throw new ClassCastException("Dashboard isn't a valid Widget");
     }
-    
-    
+
   }
 
-  public Dashboard loadDashboard(String wcdfPath, boolean debug, boolean absolute, String scheme, String absRoot, boolean bypassCache, String alias) throws FileNotFoundException
-  {
+  public Dashboard loadDashboard(String wcdfPath, boolean debug, boolean absolute, String scheme, String absRoot,
+      boolean bypassCache, String alias) throws FileNotFoundException {
 
     String dashboardPath = getDashboardPath(wcdfPath);
     IPentahoSession userSession = PentahoSessionHolder.getSession();
@@ -108,28 +107,22 @@ public class DashboardFactory
      * be handling. We do this by loading up its wcdf
      * descriptor.
      */
-    try
-    {
-      if (!wcdfPath.isEmpty() && wcdfPath.endsWith(".wcdf"))
-      {
+    try {
+      if (!wcdfPath.isEmpty() && wcdfPath.endsWith(".wcdf")) {
         wcdf = structure.loadWcdfDescriptor(wcdfPath);
-      }
-      else
-      {
+      } else {
         /* We didn't receive a valid path. We're in preview mode.
          * TODO: Support mobile preview mode (must remove dependency on setStyle())
          */
         wcdf = new WcdfDescriptor();
-        if(wcdfPath != null && wcdfPath.endsWith(".cdfde")) {
+        if (wcdfPath != null && wcdfPath.endsWith(".cdfde")) {
           wcdf.setWcdfPath(wcdfPath);
         }
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
         wcdf.setRendererType(Renderers.BLUEPRINT.toString());
-        bypassCache = true;//no cache for preview
+        bypassCache = true; //no cache for preview
       }
-    }
-    catch (IOException ioe)
-    {
+    } catch (IOException ioe) {
       logger.error(ioe);
       return null;
     }
@@ -140,21 +133,16 @@ public class DashboardFactory
     key = new DashboardCacheKey(dashboardPath, CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()), debug);
     key.setAbs(absolute);
     key.setRoot(scheme, absRoot);
-    if (!bypassCache)
-    {
+    if (!bypassCache) {
       dashboard = getDashboardFromCache(key);
     }
 
     /* If it's not there, or we're bypassing the cache,
      * we load it up, and cache the newly loaded dashboard.
      */
-    if (dashboard == null)
-    {
-      Cache cache = getCache();
-      try
-      {
-        switch (Renderers.valueOf(wcdf.getRendererType().toUpperCase()))
-        {
+    if (dashboard == null) {
+      try {
+        switch (Renderers.valueOf(wcdf.getRendererType().toUpperCase())) {
           case MOBILE:
             dashboard = new MobileDashboard(wcdf, absolute, absRoot, debug, scheme);
             break;
@@ -165,57 +153,47 @@ public class DashboardFactory
            */
           case BLUEPRINT:
           default:
-            if (wcdf.isWidget())
-            {
+            if (wcdf.isWidget()) {
               dashboard = new BlueprintWidget(wcdf, absolute, absRoot, debug, scheme, alias);
-            }
-            else
-            {
+            } else {
               dashboard = new BlueprintDashboard(wcdf, absolute, absRoot, debug, scheme);
             }
             break;
         }
-      }
-      catch (IllegalArgumentException e)
-      {
+      } catch (IllegalArgumentException e) {
         logger.error("Bad renderer type: " + wcdf.getRendererType());
         return null;
       }
-      cache.put(new Element(key, dashboard));
+      getCache().put(new Element(key, dashboard));
     }
+
     return dashboard;
   }
 
-  protected Dashboard getDashboardFromCache(DashboardCacheKey key)
-  {
+  protected Dashboard getDashboardFromCache(DashboardCacheKey key) {
     Dashboard dashboard;
 
     PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
 
-    try
-    {
+    try {
       Cache cache = getCache();
       Element cacheElement = cache.get(key);
-      if (cacheElement == null)
-      {
+      if (cacheElement == null) {
         return null;
-      }
-      else
-      {
+      } else {
         dashboard = (Dashboard) cacheElement.getValue();
       }
       logger.info("Got dashboard from cache");
       ISolutionFile dash = repository.getSolutionFile(key.getCdfde(), FileAccess.READ);// was NO_PERM=0;
-      if (dash == null)
-      {
+      if (dash == null) {
         logger.error(key.getCdfde() + " not found.");
         return null;
       }
-      
+
       ISolutionFile templ;
-      if(key.getTemplate() == null){
+      if (key.getTemplate() == null) {
         templ = null;
-      }else{
+      } else {
         templ = repository.getSolutionFile(key.getTemplate(), FileAccess.READ);
       }
 
@@ -228,134 +206,107 @@ public class DashboardFactory
       cal.set(Calendar.MINUTE, 00);
       cal.set(Calendar.SECOND, 1);
       boolean cacheInvalid = dash.getLastModified() > dashboard.getLoaded().getTime()
-              || (templ != null && templ.getLastModified() > dashboard.getLoaded().getTime()),
-              cacheExpired = cal.getTime().after(dashboard.getLoaded());
+          || (templ != null && templ.getLastModified() > dashboard.getLoaded().getTime()), cacheExpired = cal.getTime()
+          .after(dashboard.getLoaded());
 
-
-      if (cacheExpired)
-      {
+      if (cacheExpired) {
         logger.info("Dashboard expired, re-rendering");
         return null;
-      }
-      else if (cacheInvalid)
-      {
+      } else if (cacheInvalid) {
         logger.info("Dashboard cache invalidated, re-rendering");
         return null;
-      }
-      else
-      {
+      } else {
         return dashboard;
       }
-    }
-    catch (CacheException ce)
-    {
+    } catch (CacheException ce) {
       logger.info("Dashboard cache invalidated, re-rendering");
       return null;
     }
   }
 
-  public static synchronized Cache getCache() throws CacheException
-  {
-    if (cacheManager == null)
-    {// 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
+  public static synchronized Cache getCache() throws CacheException {
+    if (cacheManager == null) {// 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
       String cacheConfigFile = CACHE_CFG_FILE;
 
-      String cfgFile = PentahoSystem.getApplicationContext().getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH + cacheConfigFile);
+      String cfgFile = PentahoSystem.getApplicationContext().getSolutionPath(
+          DashboardDesignerContentGenerator.PLUGIN_PATH + cacheConfigFile);
       cacheManager = new CacheManager(cfgFile);//CacheManager.create(cfgFile);
     }
 
     enableCacheProperShutdown(true);
 
-    if (!cacheManager.cacheExists(CACHE_NAME))
-    {
+    if (!cacheManager.cacheExists(CACHE_NAME)) {
       cacheManager.addCache(CACHE_NAME);
     }
 
     return cacheManager.getCache(CACHE_NAME);
   }
 
-  private static void enableCacheProperShutdown(final boolean force)
-  {
-    if (!force)
-    {
-      try
-      {
+  private static void enableCacheProperShutdown(final boolean force) {
+    if (!force) {
+      try {
         System.getProperty(CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY);
         return;//unless force, ignore if already set
-      }
-      catch (NullPointerException npe)
-      {
+      } catch (NullPointerException npe) {
       } // key null, continue
-      catch (InvalidArgumentException iae)
-      {
+      catch (InvalidArgumentException iae) {
       }// key not there, continue
-      catch (SecurityException se)
-      {
+      catch (SecurityException se) {
         return;//no permissions to set
       }
     }
     System.setProperty(CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true");
   }
 
-  private String getDashboardPath(final IParameterProvider pathParams)
-  {
+  private String getDashboardPath(final IParameterProvider pathParams) {
     String path = getWcdfPath(pathParams);
     return getDashboardPath(path);
   }
 
-  private String getDashboardPath(String wcdfPath)
-  {
+  private String getDashboardPath(String wcdfPath) {
     return wcdfPath.replace(".wcdf", ".cdfde");
   }
 
-  private String getWcdfPath(final IParameterProvider pathParams)
-  {
-    final String path = "/" + pathParams.getStringParameter(MethodParams.SOLUTION, null)
-            + "/" + pathParams.getStringParameter(MethodParams.PATH, null)
-            + "/" + pathParams.getStringParameter(MethodParams.FILE, null);
+  private String getWcdfPath(final IParameterProvider pathParams) {
+    final String path = "/" + pathParams.getStringParameter(MethodParams.SOLUTION, null) + "/"
+        + pathParams.getStringParameter(MethodParams.PATH, null) + "/"
+        + pathParams.getStringParameter(MethodParams.FILE, null);
 
     return path.replaceAll("//+", "/");
   }
 }
 
-class DashboardCacheKey
-{
+class DashboardCacheKey {
 
   private String cdfde, template, root;
+
   private boolean debug, abs;
 
-  public boolean isAbs()
-  {
+  public boolean isAbs() {
     return abs;
   }
 
-  public void setAbs(boolean abs)
-  {
+  public void setAbs(boolean abs) {
     this.abs = abs;
   }
 
-  public boolean isDebug()
-  {
+  public boolean isDebug() {
     return debug;
   }
 
-  public void setDebug(boolean debug)
-  {
+  public void setDebug(boolean debug) {
     this.debug = debug;
   }
 
-  public String getCdfde()
-  {
+  public String getCdfde() {
     return cdfde;
   }
 
-  public String getTemplate()
-  {
+  public String getTemplate() {
     return template;
   }
 
-  public DashboardCacheKey(String cdfde, String template)
-  {
+  public DashboardCacheKey(String cdfde, String template) {
     this.cdfde = cdfde;
     this.template = template;
     this.root = "";
@@ -363,8 +314,7 @@ class DashboardCacheKey
     this.debug = false;
   }
 
-  public DashboardCacheKey(String cdfde, String template, boolean debug)
-  {
+  public DashboardCacheKey(String cdfde, String template, boolean debug) {
     this.cdfde = cdfde;
     this.template = template;
     this.root = "";
@@ -373,43 +323,34 @@ class DashboardCacheKey
   }
 
   @Override
-  public boolean equals(Object obj)
-  {
-    if (obj == null)
-    {
+  public boolean equals(Object obj) {
+    if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass())
-    {
+    if (getClass() != obj.getClass()) {
       return false;
     }
     final DashboardCacheKey other = (DashboardCacheKey) obj;
-    if ((this.cdfde == null) ? (other.cdfde != null) : !this.cdfde.equals(other.cdfde))
-    {
+    if ((this.cdfde == null) ? (other.cdfde != null) : !this.cdfde.equals(other.cdfde)) {
       return false;
     }
-    if ((this.template == null) ? (other.template != null) : !this.template.equals(other.template))
-    {
+    if ((this.template == null) ? (other.template != null) : !this.template.equals(other.template)) {
       return false;
     }
-    if (this.debug != other.debug)
-    {
+    if (this.debug != other.debug) {
       return false;
     }
-    if (this.abs != other.abs)
-    {
+    if (this.abs != other.abs) {
       return false;
     }
-    if ((this.root == null) ? (other.root != null) : !this.root.equals(other.root))
-    {
+    if ((this.root == null) ? (other.root != null) : !this.root.equals(other.root)) {
       return false;
     }
     return true;
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     int hash = 5;
     hash = 79 * hash + (this.cdfde != null ? this.cdfde.hashCode() : 0);
     hash = 79 * hash + (this.template != null ? this.template.hashCode() : 0);
@@ -421,21 +362,18 @@ class DashboardCacheKey
   /**
    * @return the root
    */
-  public String getRoot()
-  {
+  public String getRoot() {
     return root;
   }
 
   /**
    * @param root the root to set
    */
-  public void setRoot(String root)
-  {
+  public void setRoot(String root) {
     this.root = root;
   }
 
-  public void setRoot(String scheme, String root)
-  {
+  public void setRoot(String scheme, String root) {
     this.root = root.length() == 0 ? "" : scheme + "://" + root;
   }
 }
