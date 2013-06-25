@@ -18,3 +18,9 @@ nbproject/private/
 *~
 /server/plugin/resource/resources/base/export
 /server/plugin/runtime-lib/
+/bin
+
+#Eclipe project files
+.classpath
+.project
+.settings
