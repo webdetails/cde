@@ -527,7 +527,7 @@ var TableManager = Base.extend({
       }
               
     });
-
+    
 
     $(".advancedProperties").live('click',function() {
 
@@ -544,7 +544,7 @@ var TableManager = Base.extend({
           $(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesUnSelected");
 
         }
-      },500);
+      }, 500);
     });
     
     $(".simpleProperties").live('click',function() {
@@ -561,7 +561,7 @@ var TableManager = Base.extend({
           $(".advancedProperties").parent().find(".simpleProperties").attr("class","simpleProperties propertiesSelected");
         }
 
-      },500);
+      }, 500);
 
     });
       
