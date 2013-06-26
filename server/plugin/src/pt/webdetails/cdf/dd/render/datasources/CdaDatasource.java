@@ -89,6 +89,10 @@ public class CdaDatasource extends BaseComponent {
       } else if (prop.equals("right")) {
         output.append("			_stub.properties.push(PropertiesManager.getProperty(\"right\"));" + newLine);
         output.append("			_stub.properties.push(PropertiesManager.getProperty(\"rightkeys\"));" + newLine);
+      } else if(name.equalsIgnoreCase("kettle over kettleTransFromFile") && prop.equalsIgnoreCase("query")){
+          output.append("			var customQueryProp = PropertiesManager.getProperty(\"kettleQuery\");"+newLine);
+          output.append("			customQueryProp.name = \""+prop+"\";"+newLine);
+          output.append("			_stub.properties.push(customQueryProp);"+newLine);
       } else {
         output.append("			_stub.properties.push(PropertiesManager.getProperty(\"" + prop + "\"));" + newLine);
       }
