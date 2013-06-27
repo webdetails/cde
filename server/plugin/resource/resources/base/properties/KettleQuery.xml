@@ -1,9 +1,9 @@
 <DesignerProperty>
 <Header>
 	<Name>kettleQuery</Name>
-	<Parent>query</Parent>
+	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
-	<Description>Kettle Query</Description>
+	<Description>Kettle Step name</Description>
 	<Tooltip>Transformation Step Name</Tooltip>
 	<InputType>String</InputType>
 	<OutputType>String</OutputType>
