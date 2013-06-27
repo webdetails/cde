@@ -223,7 +223,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
       myself.model.get("views").remove(view);
       myself.model.trigger("update");
     });
-  },
+  }
 
 });
 
