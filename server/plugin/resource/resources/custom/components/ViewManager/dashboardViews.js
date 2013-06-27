@@ -104,7 +104,7 @@ wd.cdf.views.ViewManager = Backbone.Model.extend({
   defaults: {
     "currentView": "Unsaved View",
     "views": null,
-    "viewCount": 0,
+    "viewCount": 0
   },
 
   initViews: function(views) {
