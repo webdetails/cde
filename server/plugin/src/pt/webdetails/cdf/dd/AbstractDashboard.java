@@ -32,44 +32,59 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
  *
  * @author pdpi
  */
-public abstract class AbstractDashboard implements Serializable, Dashboard
-{
+public abstract class AbstractDashboard implements Serializable, Dashboard {
   /* CONSTANTS */
 
   private static final long serialVersionUID = 1L;
+
   // Dashboard rendering
   private static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
+
   private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
+
   private static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
+
   private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
+
   private static final String COMPONENT_PREFIX = "render_";
+
   private static Log logger = LogFactory.getLog(Dashboard.class);
+
   /* FIELDS */
   protected boolean absolute, debug;
+
   protected String template, header, layout, components, footer, absRoot, scheme;
+
   protected String templateFile, dashboardLocation;
+
   protected Date loaded;
+
   private WcdfDescriptor wcdf;
+
   protected final String alias;
 
-  public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams) throws FileNotFoundException
-  {
+  public AbstractDashboard(IParameterProvider pathParams, IParameterProvider requestParams)
+      throws FileNotFoundException {
     absRoot = requestParams.hasParameter("root") ? requestParams.getParameter("root").toString() : "";
-    absolute = (!absRoot.equals("")) || requestParams.hasParameter("absolute") && requestParams.getParameter("absolute").equals("true");
+    absolute = (!absRoot.equals("")) && requestParams.hasParameter("absolute")
+        && requestParams.getParameter("absolute").equals("true");
     debug = requestParams.hasParameter("debug") && requestParams.getParameter("debug").equals("true");
-    boolean inferScheme = requestParams.hasParameter("inferScheme") ? requestParams.getParameter("inferScheme").equals("true") : true;
+
+    // TODO by default (if not specified) it must be true? assuming true for now
+    boolean inferScheme = requestParams.hasParameter("inferScheme") ? requestParams.getParameter("inferScheme").equals(
+        "true") : true;
     scheme = inferScheme ? DashboardDesignerContentGenerator.getScheme(pathParams) : "";
     alias = "";
     construct(DashboardDesignerContentGenerator.getWcdfRelativePath(requestParams));
   }
 
-  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
-  {
+  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme)
+      throws FileNotFoundException {
     this(wcdf, absolute, absRoot, debug, scheme, "");
   }
 
-  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme, String alias) throws FileNotFoundException
-  {
+  public AbstractDashboard(WcdfDescriptor wcdf, boolean absolute, String absRoot, boolean debug, String scheme,
+      String alias) throws FileNotFoundException {
     this.absolute = absolute;
     this.absRoot = absRoot;
     this.debug = debug;
@@ -79,8 +94,8 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     construct();
   }
 
-  public AbstractDashboard(String wcdfPath, boolean absolute, String absRoot, boolean debug, String scheme) throws FileNotFoundException
-  {
+  public AbstractDashboard(String wcdfPath, boolean absolute, String absRoot, boolean debug, String scheme)
+      throws FileNotFoundException {
     this.alias = "";
     this.absolute = absolute;
     this.absRoot = absRoot;
@@ -89,47 +104,37 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     construct(wcdfPath);
   }
 
-  protected WcdfDescriptor fetchWcdf(String wcdfPath) throws IOException
-  {
+  protected WcdfDescriptor fetchWcdf(String wcdfPath) throws IOException {
     WcdfDescriptor wcdf = null;
-    try
-    {
+    try {
       IPentahoSession userSession = PentahoSessionHolder.getSession();
       XmlStructure structure = new XmlStructure(userSession);
-      if (wcdfPath != null && wcdfPath.endsWith(".wcdf"))
-      {
+      if (wcdfPath != null && wcdfPath.endsWith(".wcdf")) {
         wcdf = structure.loadWcdfDescriptor(wcdfPath);
-      }
-      else
-      {//we may just be receiving a .cde file (preview)
+      } else {//we may just be receiving a .cde file (preview)
         wcdf = new WcdfDescriptor();
         wcdf.setStyle(CdfStyles.DEFAULTSTYLE);
       }
+    } finally {
     }
-    finally
-    {
-    };
+    ;
 
     return wcdf;
   }
 
-  private void construct(String wcdfPath) throws FileNotFoundException
-  {
-    try
-    {
+  private void construct(String wcdfPath) throws FileNotFoundException {
+    try {
       wcdf = fetchWcdf(wcdfPath);
       construct();
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
       logger.error(e);
     }
   }
 
-  protected void renderContent() throws Exception
-  {
+  protected void renderContent() throws Exception {
     IPentahoSession userSession = PentahoSessionHolder.getSession();
-    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess
+        .getRepository(userSession);
     final JXPathContext doc = openDashboardAsJXPathContext(solutionRepository, dashboardLocation, wcdf);
 
     final RenderLayout layoutRenderer = new RenderLayout();
@@ -139,49 +144,41 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
     this.header = replaceTokens(renderHeaders(getContent()), absolute, absRoot);
   }
 
-  private void construct() throws FileNotFoundException
-  {
+  private void construct() throws FileNotFoundException {
 
     this.dashboardLocation = wcdf.getStructurePath();
-    try
-    {
+    try {
 
       this.footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
       this.templateFile = CdfStyles.getInstance().getResourceLocation(wcdf.getStyle());
 
       renderContent();
-      try
-      {//attempt to read template file
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute, absRoot);
-      }
-      catch (IOException e)
-      {
+      try {//attempt to read template file
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(this.templateFile), absolute,
+            absRoot);
+      } catch (IOException e) {
         //couldn't open template file, attempt to use default
         logger.error(MessageFormat.format("Couldn''t open template file {0}.", this.templateFile), e);
         String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
-        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute, absRoot);
+        this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute,
+            absRoot);
       }
       this.loaded = new Date();
-    }
-    catch (FileNotFoundException e)
-    {
+    } catch (FileNotFoundException e) {
       logger.error(e);
       throw e;
-    }
-    catch (Exception e)
-    {
+    } catch (Exception e) {
       logger.error(e);
       this.templateFile = null;
     }
   }
 
-  public static JXPathContext openDashboardAsJXPathContext(PentahoRepositoryAccess solutionRepository, String dashboardLocation, WcdfDescriptor wcdf)
-          throws IOException, FileNotFoundException
-  {
-    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository.getResourceInputStream(dashboardLocation));
+  public static JXPathContext openDashboardAsJXPathContext(PentahoRepositoryAccess solutionRepository,
+      String dashboardLocation, WcdfDescriptor wcdf) throws IOException, FileNotFoundException {
+    final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream(solutionRepository
+        .getResourceInputStream(dashboardLocation));
 
-    if (wcdf != null)
-    {
+    if (wcdf != null) {
       json.put("settings", wcdf.toJSON());
     }
     final JXPathContext doc = JXPathContext.newContext(json);
@@ -189,200 +186,158 @@ public abstract class AbstractDashboard implements Serializable, Dashboard
   }
 
   //TODO: needed? remove
-  public String render()
-  {
+  public String render() {
     return render(null);
   }
 
   //TODO: remove
-  public String render(IParameterProvider params)
-  {
+  public String render(IParameterProvider params) {
     return render(params, DashboardDesignerContentGenerator.getCdfContext(params));
   }
 
-  public String render(IParameterProvider params, String dashboardContext)
-  {
+  public String render(IParameterProvider params, String dashboardContext) {
     logger.debug("[Timing] Starting render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
-    String quotedFooter = Matcher.quoteReplacement(this.footer),
-            quotedHeader = Matcher.quoteReplacement(this.header + dashboardContext),
-            quotedContent = Matcher.quoteReplacement(getContent());
+    String quotedFooter = Matcher.quoteReplacement(this.footer), quotedHeader = Matcher.quoteReplacement(this.header
+        + dashboardContext), quotedContent = Matcher.quoteReplacement(getContent());
     logger.debug("[Timing] Replacing tokens: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
 
     String result = this.template.replaceAll(DASHBOARD_HEADER_TAG, quotedHeader) // Replace the Header 
-            .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
-            .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
+        .replaceAll(DASHBOARD_FOOTER_TAG, quotedFooter) // And the Footer
+        .replaceAll(DASHBOARD_CONTENT_TAG, quotedContent); // And even the content!
     logger.debug("[Timing] Finished render proper: " + (new SimpleDateFormat("H:m:s.S")).format(new Date()));
     return result;
   }
 
-  protected String replaceTokens(String content, boolean absolute, String absRoot)
-  {
-    final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}",
-            ABS_DIR_RES_TAG_REGEXP = "\\$\\{res:(/.+/)\\}",
-            ABS_IMG_TAG_REGEXP = "\\$\\{img:(/.+)\\}",
-            ABS_RES_TAG_REGEXP = "\\$\\{res:(/.+)\\}",
-            REL_DIR_RES_TAG_REGEXP = "\\$\\{res:(.+/)\\}",
-            REL_IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}",
-            REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
+  protected String replaceTokens(String content, boolean absolute, String absRoot) {
+    final String DASHBOARD_PATH_REGEXP = "\\$\\{dashboardPath\\}", ABS_DIR_RES_TAG_REGEXP = "\\$\\{res:(/.+/)\\}", ABS_IMG_TAG_REGEXP = "\\$\\{img:(/.+)\\}", ABS_RES_TAG_REGEXP = "\\$\\{res:(/.+)\\}", REL_DIR_RES_TAG_REGEXP = "\\$\\{res:(.+/)\\}", REL_IMG_TAG_REGEXP = "\\$\\{img:(.+)\\}", REL_RES_TAG_REGEXP = "\\$\\{res:(.+)\\}";
 
     final long timestamp = new Date().getTime();
-    String root = absolute ? (scheme.equals("") ? "" : scheme + "://") + absRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
+    String root = absolute ? (scheme.equals("") ? "" : scheme + "://") + absRoot
+        + DashboardDesignerContentGenerator.SERVER_URL_VALUE : "";
     String path = dashboardLocation.replaceAll("(.+/).*", "$1");
     String fixedContent = content // Start with the same content
-            .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
-            .replaceAll(ABS_IMG_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(REL_IMG_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(ABS_DIR_RES_TAG_REGEXP, root + "res$1")// Directories don't need the caching timestamp
-            .replaceAll(REL_DIR_RES_TAG_REGEXP, root + "res" + path + "$1")// Directories don't need the caching timestamp
-            .replaceAll(ABS_RES_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-            .replaceAll(REL_RES_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
+        .replaceAll(DASHBOARD_PATH_REGEXP, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
+        .replaceAll(ABS_IMG_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+        .replaceAll(REL_IMG_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+        .replaceAll(ABS_DIR_RES_TAG_REGEXP, root + "res$1")// Directories don't need the caching timestamp
+        .replaceAll(REL_DIR_RES_TAG_REGEXP, root + "res" + path + "$1")// Directories don't need the caching timestamp
+        .replaceAll(ABS_RES_TAG_REGEXP, root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
+        .replaceAll(REL_RES_TAG_REGEXP, root + "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
 
     return fixedContent;
   }
 
-  protected String renderHeaders()
-  {
+  protected String renderHeaders() {
     return renderHeaders("");
   }
 
-  protected String renderHeaders(String contents)
-  {
+  protected String renderHeaders(String contents) {
     String dependencies, styles, cdfDependencies;
+    
     final String title = "<title>" + getWcdf().getTitle() + "</title>";
+    
     // Acquire CDF headers
-    try
-    {
+    try {
       cdfDependencies = DashboardDesignerContentGenerator.getCdfIncludes(contents, getType(), debug, absRoot, scheme);
-    }
-    catch (Exception e)
-    {
+    } catch (Exception e) {
       logger.error("Failed to get cdf includes");
       cdfDependencies = "";
     }
-    // Acquire CDE-specific headers
-    if (absolute)
-    {
-      final String adornedRoot = (scheme.equals("") ? "" : (scheme + "://")) + absRoot;
-      StringFilter css = new StringFilter()
-      {
-        public String filter(String input)
-        {
-          //input = input.replaceAll("\\?", "&");
-          return "\t\t<link href='" + adornedRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getCssResource/" + input + "' rel='stylesheet' type='text/css' />\n";
-        }
-      };
-      StringFilter js = new StringFilter()
-      {
-        public String filter(String input)
-        {
-          //input = input.replaceAll("\\?", "&");
-          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + adornedRoot + DashboardDesignerContentGenerator.SERVER_URL_VALUE + "getJsResource/" + input + "\"></script>\n";
-        }
-      };
-      if (debug)
-      {
-        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getDependencies(js);
-        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getDependencies(css);
+    
+    final String adornedRoot = absolute ? ((scheme.equals("") ? "" : (scheme + "://")) + absRoot) : "";
+
+    StringFilter js = new StringFilter() {
+
+      @Override
+      public String filter(String input) {
+        return String.format(
+            "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s%s%s\"></script>\n", adornedRoot,
+            DashboardDesignerContentGenerator.SERVER_URL_VALUE, "getJsResource/", input);
       }
-      else
-      {
-        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getPackagedDependencies(js);
-        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getPackagedDependencies(css);
+
+    };
+
+    StringFilter css = new StringFilter() {
+      @Override
+      public String filter(String input) {
+        return String.format(
+            "\t\t<link rel=\"stylesheet\" href=\"%s%s%s%s\" />\n", adornedRoot,
+            DashboardDesignerContentGenerator.SERVER_URL_VALUE, "getCssResource/", input);
       }
-    }
-    else
-    {
-      if (debug)
-      {
-        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getDependencies();
-        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getDependencies();
-      }
-      else
-      {
-        dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getPackagedDependencies();
-        styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getPackagedDependencies();
-      }
+
+    };
+
+    if (debug) {
+      dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF).getDependencies(js);
+      styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS).getDependencies(css);
+    } else {
+      dependencies = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF)
+          .getPackagedDependencies(js);
+      styles = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_CSS)
+          .getPackagedDependencies(css);
     }
 
     String raw = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDF_RAW).getDependencies();
     return title + cdfDependencies + raw + dependencies + styles;
   }
 
-  public String getContent()
-  {
-    String epilogue = "<script language=\"javascript\" type=\"text/javascript\">\n"
-            + "Dashboards.init();\n"
-            + "</script>";
+  public String getContent() {
+    String epilogue = "<script language=\"javascript\" type=\"text/javascript\">\n" + "Dashboards.init();\n"
+        + "</script>";
     return getLayout() + getComponents() + epilogue;
   }
 
-  public String getFooter()
-  {
+  public String getFooter() {
     return footer;
   }
 
-  public String getHeader()
-  {
+  public String getHeader() {
     return header;
   }
 
-  public Date getLoaded()
-  {
+  public Date getLoaded() {
     return loaded;
   }
 
-  public String getTemplate()
-  {
+  public String getTemplate() {
     return templateFile;
   }
 
   /**
    * @return the wcdf
    */
-  protected WcdfDescriptor getWcdf()
-  {
+  protected WcdfDescriptor getWcdf() {
     return wcdf;
   }
 
   /**
    * @param wcdf the wcdf to set
    */
-  protected void setWcdf(WcdfDescriptor wcdf)
-  {
+  protected void setWcdf(WcdfDescriptor wcdf) {
     this.wcdf = wcdf;
   }
 
-  public String getLayout()
-  {
+  public String getLayout() {
     return replaceAlias(this.layout, this.alias);
   }
 
-  public String getComponents()
-  {
+  public String getComponents() {
     return replaceAlias(this.components, this.alias);
   }
 
-  String replaceAlias(String content, String alias)
-  {
+  String replaceAlias(String content, String alias) {
     if (content == null) {
       logger.warn("replaceAlias: null content.");
       return content;
     }
-    
-    final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}",
-            SHORT_C_TAG = "\\$\\{c:(.+?)\\}",
-            SHORT_P_TAG = "\\$\\{p:(.+?)\\}",
-            LONG_H_TAG = "\\$\\{htmlObject:(.+?)\\}",
-            LONG_C_TAG = "\\$\\{component:(.+?)\\}",
-            LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
+
+    final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}", SHORT_C_TAG = "\\$\\{c:(.+?)\\}", SHORT_P_TAG = "\\$\\{p:(.+?)\\}", LONG_H_TAG = "\\$\\{htmlObject:(.+?)\\}", LONG_C_TAG = "\\$\\{component:(.+?)\\}", LONG_P_TAG = "\\$\\{parameter:(.+?)\\}";
     alias = alias != null && alias.length() > 0 ? alias + "_" : "";
-    
+
     String modified = content.replaceAll(SHORT_H_TAG, alias + "$1")
-            .replaceAll(SHORT_C_TAG, COMPONENT_PREFIX + alias + "$1")
-            .replaceAll(SHORT_P_TAG, alias + "$1")
-            .replaceAll(LONG_H_TAG, alias + "$1")
-            .replaceAll(LONG_C_TAG, COMPONENT_PREFIX + alias + "$1")
-            .replaceAll(LONG_P_TAG, alias + "$1");
+        .replaceAll(SHORT_C_TAG, COMPONENT_PREFIX + alias + "$1").replaceAll(SHORT_P_TAG, alias + "$1")
+        .replaceAll(LONG_H_TAG, alias + "$1").replaceAll(LONG_C_TAG, COMPONENT_PREFIX + alias + "$1")
+        .replaceAll(LONG_P_TAG, alias + "$1");
     return modified;
   }
 }
