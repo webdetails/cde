@@ -211,7 +211,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
           Cancel: false
         } ,
         
-        prefix: 'jqi' + myself.cssPrefix,
+        prefix: "popup",
         
         callback: function(v,m,f){
           if(v){
@@ -394,7 +394,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       buttons: {
         Cancel: false
       },
-      prefix:'jqiStringListParameters',
+      prefix:'popup',
       focus:1
     });
   }
