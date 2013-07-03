@@ -203,6 +203,7 @@ div.popupTemplate button{
 	float: right;
 	position: relative;
 	bottom: -90px;
+	margin-left: 5px;
 }
 div.popupTemplate button:hover{ 
   background-color: #12a2d8!important;

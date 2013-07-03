@@ -565,6 +565,7 @@ div.cdfdd-wizard-left, div.cdfdd-wizard-buttons {
 
 div.cdfdd-wizard-buttons {
   text-align: right;
+  background: transparent;
 }
 
 .cdfdd-wizard-filter-label {
@@ -1315,7 +1316,7 @@ ul.controlOptions li:active {
   border: solid 2px #12a2d8;
   padding: 7px;
   max-width: 75%;
-  max-height: 75%;
+  max-height: 80%;
   min-width: 10%;
   overflow-x:auto;
 }
@@ -1376,6 +1377,7 @@ div.popup button{
   color: #999; 
   font-size: 12px; 
   float: right;
+  margin-left: 5px; 
 }
 div.popup button:hover{ 
   background-color: #12a2d8!important;
