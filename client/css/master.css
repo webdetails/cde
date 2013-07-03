@@ -284,8 +284,13 @@ div.ui-widget-content > ul li {/*TODO...*/
 }
 
 .multiSelect.active {
-  color: #12a2d8;
+  color: #fff;
   background: url(../images/NAV/down.png) right center no-repeat;
+}
+
+.multiSelect.hover {
+  background: url(../images/NAV/down_mouseover.png) right center no-repeat;
+  color: #12a2d8;
 }
 
 .multiSelectOptions label.checked {
