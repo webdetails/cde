@@ -143,7 +143,7 @@ var UrlTemplateRenderer = CellRenderer.extend({
 					submit:function(v,m,f){
 						if(v == 0) return true;
 						if(v == 1 && selectedFile.length == 0)
-							$.prompt("Please select a dashboard file!"); 
+							$.prompt("Please select a dashboard file!",{prefix:"popup"}); 
 						else if(v==-1)
 							$.prompt.goToState('chooseClickBehaviour');
 						else{
@@ -205,7 +205,7 @@ var UrlTemplateRenderer = CellRenderer.extend({
 				}
 			};
 
-			$.prompt(urlTemplateWizard); 
+			$.prompt(urlTemplateWizard,{prefix:"popup"}); 
 		
 		}).appendTo($("div.edit",_editArea));
 

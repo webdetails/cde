@@ -856,12 +856,12 @@ var IdRenderer = StringRenderer.extend({
 
     if (cdfdd.dashboardWcdf.widget) {
       if (!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
-        $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
+        $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.',{prefix:"popup"});
         return false;
       }
     }
     else if(!value.match(/^[a-zA-Z0-9_.]*$/)){
-      $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
+      $.prompt('Argument '+ value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters',{prefix:"popup"});
       return false;
     }
     return true;
@@ -881,7 +881,7 @@ var IntegerRenderer = StringRenderer.extend({
   validate: function(value){
 
     if(!value.match(/^[-]?\d*$/)){
-      $.prompt('Argument '+ value + ' must be numeric');
+      $.prompt('Argument '+ value + ' must be numeric',{prefix:"popup"});
       return false;
     }
     return true;
@@ -900,7 +900,7 @@ var FloatRenderer = StringRenderer.extend({
   validate: function(value){
 
     if(!value.match(/^[-]?\d*\.?\d*$/)){
-      $.prompt('Argument '+ value + ' must be numeric');
+      $.prompt('Argument '+ value + ' must be numeric',{prefix:"popup"});
       return false;
     }
     return true;
@@ -1234,7 +1234,7 @@ var TextAreaRenderer = CellRenderer.extend({
         },
         callback: myself.callback,
         opacity: 0.2,
-        prefix:'brownJqi'
+        prefix:'popup'
       });
     }).appendTo($("div.edit",_editArea));
 
@@ -1291,7 +1291,7 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself=this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-      var _inner = '<div style="height:450px;"> Edit<br /><pre id="codeArea" style="width:100%; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself,placeholder, myself.value, callback];
       $.prompt(_inner,{
@@ -1311,7 +1311,7 @@ var CodeRenderer = CellRenderer.extend({
 
         callback: myself.callback, 
         opacity: 0.2,
-        prefix:'brownJqi'
+        prefix:'popup'
       });
 
 
@@ -1538,7 +1538,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     return $('<button class="cdfddInput">...</button>').click(function(){
       if(myself.fileName == null) return;
       var url = "extEditor?path=" + myself.fileName + "&mode=" + myself.getResourceType();
-      var _inner = "<iframe id=externalEditor src='" + url + "' width='100%' height='400px' ></iframe>";
+      var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
       // Store what we need in a global var
       var action;
@@ -1594,7 +1594,7 @@ var ResourceFileRenderer = CellRenderer.extend({
       
       $.prompt(extEditor,{
         //opacity: 0.2,
-        prefix:'brownJqi',
+        prefix:'popup',
         top: '5%'
         
       });
@@ -1714,6 +1714,7 @@ var ResourceFileRenderer = CellRenderer.extend({
       
       $.prompt(openOrNew,{
         opacity: '0.2',
+        prefix:"popup",
         loaded: function(){
           selectedFile = "";
           $('#container_id').fileTree(

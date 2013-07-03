@@ -34,7 +34,15 @@ div.greyJqi .greyJqimessage{
 	border-bottom: solid 1px #C6B8AE;
 	height:350px;
 }
-div.greyJqi .greyJqimessage h3{
+div.greyJqi .greyJqimessage h3{.popup h2 {
+  float: left;
+  color: #12a2d8;
+  line-height: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+}
 	margin: 0;
 	padding: 7px 0 7px 15px;
 	color: #4D4A47;
@@ -70,16 +78,17 @@ div.scrollable {
 a.prev, a.next, a.prevPage, a.nextPage {
 	display:block;
 	width:18px;
-	height:18px;
-	background:url(../images/left.png) no-repeat;
+	height:24px;
+	background:url(../images/arrow_left.png) no-repeat;
 	float:left;
 	margin:43px 10px;
 	cursor:pointer;
+	background-position: -72px 0px;
 }
 
 /* mouseover state */
 a.prev:hover, a.next:hover, a.prevPage:hover, a.nextPage:hover {
-	background-position:0px -18px;		
+	background-position: -24px 0px;		
 }
 
 /* disabled navigational button */
@@ -89,7 +98,7 @@ a.disabled {
 
 /* next button uses another background image */
 a.next, a.nextPage {
-	background-image:url(../images/right.png);
+	background-image:url(../images/arrow_right.png);
 	clear:right;	
 }
 
@@ -145,9 +154,63 @@ div.scrollable {
 	border:1px solid #222;
 }
 
+#thumbs img{
+	margin: 0;
+}
+
 /* custom positioning for navigational links */
 a.prev, a.next {
 	margin-top:118px;	
+}
+
+.popupTemplate{
+  width: 730px;
+  height:500px;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+  position: absolute; 
+  background-color: #222; 
+  font-size: 11px; 
+  text-align: left; 
+  border: solid 2px #12a2d8;
+  padding: 7px;
+  max-width: 75%;
+  max-height: 75%;
+  min-width: 27%;
+  overflow-x:auto;
+}
+
+.popupTemplate h2 {
+  float: left;
+  color: #12a2d8;
+  line-height: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+}
+
+div.popupTemplate .popupTemplatebuttons{ 
+  text-align: right; 
+  padding: 5px 0 5px 0;  
+  background-color: #222;
+}
+div.popupTemplate button{ 
+	padding: 3px 10px;
+	background-color: #222;
+	border: solid 2px #12a2d8;
+	color: #999;
+	font-size: 12px;
+	float: right;
+	position: relative;
+	bottom: -90px;
+}
+div.popupTemplate button:hover{ 
+  background-color: #12a2d8!important;
+  color: #222!important;
+}
+div.popupTemplate button.popupTemplatedefaultbutton{ 
+  /*background-color: #8DC05B;*/
+  background-color: #222;
 }
 
 
