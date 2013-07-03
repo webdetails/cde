@@ -23,11 +23,10 @@
 	position:relative;
 	top:10px;
 	left:10px;
-	overflow:auto;
 }
 
 .GenericSelect {
-	width:400px;
+	width:415px;
 }
 
 .StringList {
