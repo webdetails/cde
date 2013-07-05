@@ -23,11 +23,11 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import pt.webdetails.cdf.dd.render.components.ComponentManager;
+import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.render.cda.*;
 
 /**
- *
+ * TODO: this should be changed to a ThingWriter of DataSourceComponents?
  * @author pdpi
  */
 public class CdaRenderer
@@ -41,7 +41,7 @@ public class CdaRenderer
 
   private CdaRenderer()
   {
-    this.cdaDefinitions = ComponentManager.getInstance().getCdaDefinitions();
+    this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
   }
 
   public static synchronized CdaRenderer getInstance()
@@ -74,8 +74,9 @@ public class CdaRenderer
   {
     if (cdaDefinitions == null)
     {
-      this.cdaDefinitions = ComponentManager.getInstance().getCdaDefinitions();
+      this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
     }
+    
     ByteArrayOutputStream result = new ByteArrayOutputStream();
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();

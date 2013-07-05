@@ -1,0 +1,18 @@
+<DesignerComponent>
+	<Header>
+		<Name>CDA Datasource</Name>
+		<IName>CDA</IName>
+		<Description>CDA Data Source</Description>
+		<Category>CDA</Category>
+		<CatDescription>Community Data Access</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model prefix="Datasources">
+			<Property>cdaPath</Property>
+            <!-- <Property>cdaEditor</Property> TODO:remove? -->
+			<Property>dataAccessId</Property>
+            <Property>outputIndexId</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

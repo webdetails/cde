@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+    <Header>
+        <Override>ParameterComponentType</Override>        
+        <Name>JavascriptParameter</Name>
+        <IName>JavascriptParameter</IName>
+        <Description>Custom parameter that evaluates a javascript expression</Description>
+		<Category>GENERIC</Category>
+		<CatDescription>Generic</CatDescription>
+		<Type>PalleteEntry</Type>
+    </Header>
+    <Contents>
+		<Model>
+			<Property>javaScript</Property>
+			<Property>parameterViewRole</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

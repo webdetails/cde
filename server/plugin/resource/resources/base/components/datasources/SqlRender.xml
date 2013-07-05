@@ -1,0 +1,16 @@
+<DesignerComponent>
+	<Header>
+		<Name>SQL query</Name>
+		<IName>Sql</IName>
+		<Description>SQL query against a datasource</Description>
+		<Category>LEGACY</Category>
+		<CatDescription>Legacy Datasources</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model prefix="Datasources">
+			<Property>jndi</Property>
+			<Property>sqlquery</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

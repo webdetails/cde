@@ -15,7 +15,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
 
-import pt.webdetails.cdf.dd.AbstractDashboard;
+import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
@@ -60,11 +60,16 @@ public class DataSourceReader {
     
   }
   
+  // TODO: The instance model 
+  // already has a DataSourceComponent list in the Dashboar object...
   public static List<CdaDataSource> getCdaDataSources(String dashboard){
 
     JXPathContext context;
     try {
-      context = AbstractDashboard.openDashboardAsJXPathContext((PentahoRepositoryAccess)PentahoRepositoryAccess.getRepository(), dashboard, null);
+      context = DashboardManager.openDashboardAsJXPathContext(
+              PentahoRepositoryAccess.getRepository(), 
+              dashboard, 
+              /*wcdf*/null);
     } catch (FileNotFoundException e) {
       return null;
     } catch (IOException e) {

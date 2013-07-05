@@ -16,8 +16,8 @@ import org.apache.commons.lang.StringUtils;
 /**
  * @author pedro
  */
-public class JsonUtils {
-
+public class JsonUtils
+{
   public static JSON readJsonFromInputStream(final InputStream input) throws IOException {
     
     String contents = StringUtils.trim(IOUtils.toString(input, "UTF-8"));

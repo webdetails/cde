@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+    <Header>
+        <Override>ParameterComponentType</Override>
+        <Name>Olap Parameter</Name>
+        <IName>OlapParameter</IName>
+        <Description>OLAP parameter</Description>
+		<Category>GENERIC</Category>
+		<CatDescription>Generic</CatDescription>
+        <Visible>false</Visible>
+    </Header>
+    <Contents>
+		<Model>
+			<Property>propertyValue</Property>
+			<Property>bookmarkable</Property>
+			<Property>parameterViewRole</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

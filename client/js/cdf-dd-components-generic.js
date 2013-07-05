@@ -1,71 +1,3 @@
-// Basic Parameter
-
-var ParameterEntry = PalleteEntry.extend({
-
-  id: "PARAMETER_ENTRY",
-  name: "Simple parameter",
-  description: "Simple parameter",
-  category: "GENERIC",
-  categoryDesc: "Generic",
-
-  getStub: function(){
-    return ComponentsParameterModel.getStub();
-  }
-
-});
-
-var ComponentsParameterModel = BaseModel.extend({
-  },{
-    MODEL: 'ComponentsParameter',
-
-    getStub: function(){
-
-      var _stub = {
-        id: TableManager.generateGUID(),
-        type: ComponentsParameterModel.MODEL,
-        typeDesc: "Parameter",
-        parent: IndexManager.ROOTID,
-        properties: []
-      };
-
-      _stub.properties.push(PropertiesManager.getProperty("name"));
-      _stub.properties.push(PropertiesManager.getProperty("propertyValue"));
-      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
-      _stub.properties.push(PropertiesManager.getProperty("parameterViewRole"));
-
-      return _stub;
-    }
-  });
-BaseModel.registerModel(ComponentsParameterModel);
-CDFDDComponentsArray.push(new ParameterEntry());
-
-var ComponentsOlapParameterModel = ComponentsParameterModel.extend({
-  },{
-    MODEL: 'ComponentsOlapParameter',
-
-    getStub: function(){
-      var _stub = ComponentsParameterModel.getStub();
-      _stub.dimension = "";
-      return _stub;
-    }
-  });
-BaseModel.registerModel(ComponentsOlapParameterModel);
-
-
-// Javascript Paramenter
-var JavascriptParameterEntry = PalleteEntry.extend({
-
-  id: "JAVASCRIPT_PARAMETER_ENTRY",
-  name: "Custom parameter",
-  description: "Custom parameter with javascript code",
-  category: "GENERIC",
-  categoryDesc: "Generic",
-  getStub: function(){
-    return ComponentsJavascriptParameterModel.getStub();
-  }
-
-});
-	
 	
 var PromptRenderer = CellRenderer.extend({
 
@@ -124,7 +56,7 @@ var PromptRenderer = CellRenderer.extend({
   },
 
   promptCallback: function(value){
-    this.callback(value)
+    this.callback(value);
     this.value = value;
     this.editArea.find("code").text(value.length > 30 ? value.substring(0,20) + " (...)" : value);
   }
@@ -324,7 +256,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       return   $('#arg_' + i).val() ;
     } else {  
     
-      var result = []
+      var result = [];
       
       result.push( $('#arg_' + i).val() );//name
       result.push( $('#val_' + i).val() );//value
@@ -494,11 +426,11 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     if(i==0){//add table and header
       container.find('.' + this.cssPrefix).append('<table> </table>');
       var hdr = '<tr>';
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Type</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Private?</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Type</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">Private?</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>';
       hdr += '</tr>';
       row = hdr + row;
     }
@@ -516,106 +448,6 @@ var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
 	argTitle: 'Name',
 	valTitle: 'Form.' 
 });
-
-var ComponentsJavascriptParameterModel = BaseModel.extend({
-  },{
-    MODEL: 'ComponentsJavascriptParameter',
-
-    getStub: function(){
-
-      var _stub = {
-        id: TableManager.generateGUID(),
-        type: ComponentsJavascriptParameterModel.MODEL,
-        typeDesc: "Custom Parameter",
-        parent: IndexManager.ROOTID,
-        properties: []
-      };
-
-      _stub.properties.push(PropertiesManager.getProperty("name"));
-      _stub.properties.push(PropertiesManager.getProperty("javaScript"));
-      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
-
-      return _stub;
-    }
-  });
-BaseModel.registerModel(ComponentsJavascriptParameterModel);
-CDFDDComponentsArray.push(new JavascriptParameterEntry());
-
-
-
-var DateParameterEntry = PalleteEntry.extend({
-
-  id: "DATE_PARAMETER_ENTRY",
-  name: "Date parameter",
-  description: "Date parameter",
-  category: "GENERIC",
-  categoryDesc: "Generic",
-  getStub: function(){
-    return ComponentsDateParameterModel.getStub();
-  }
-
-});
-
-var ComponentsDateParameterModel = BaseModel.extend({
-  },{
-    MODEL: 'ComponentsDateParameter',
-
-    getStub: function(){
-
-      var _stub = {
-        id: TableManager.generateGUID(),
-        type: ComponentsDateParameterModel.MODEL,
-        typeDesc: "DateParameter",
-        parent: IndexManager.ROOTID,
-        properties: []
-      };
-
-      _stub.properties.push(PropertiesManager.getProperty("name"));
-      _stub.properties.push(PropertiesManager.getProperty("propertyDateValue"));
-      _stub.properties.push(PropertiesManager.getProperty("bookmarkable"));
-      //_stub.properties.push(PropertiesManager.getProperty("propertyDateDim")); <- what's this for?'
-
-      return _stub;
-    }
-  });
-BaseModel.registerModel(ComponentsDateParameterModel);
-CDFDDComponentsArray.push(new DateParameterEntry());
-
-
-// Function Entry
-var FunctionEntry = PalleteEntry.extend({
-  id: "FUNCTION_ENTRY",
-  name: "JavaScript Function",
-  description: "JavaScript function",
-  category: "SCRIPT",
-  categoryDesc: "Scripts",
-  getStub: function(){
-    return ComponentsFunctionModel.getStub();
-  }
-});
-
-var ComponentsFunctionModel = BaseModel.extend({
-  },{
-    MODEL: 'ComponentsFunction',
-
-    getStub: function(){
-
-      var _stub = {
-        id: TableManager.generateGUID(),
-        type: ComponentsFunctionModel.MODEL,
-        typeDesc: "Function",
-        parent: IndexManager.ROOTID,
-        properties: []
-      };
-
-      _stub.properties.push(PropertiesManager.getProperty("name"));
-      _stub.properties.push(PropertiesManager.getProperty("javaScript"));
-
-      return _stub;
-    }
-  });
-BaseModel.registerModel(ComponentsFunctionModel);
-CDFDDComponentsArray.push(new FunctionEntry());
 
 var CdaQueryRenderer = PromptRenderer.extend({
 
@@ -722,13 +554,13 @@ var ArraySelectRenderer = ValuesArrayRenderer.extend({
     if(i==0){//add table and header
       table = $('<table> </table>').appendTo(container.find('.' + this.cssPrefix));
       var hdr = '<tr>';
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>'
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>'
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>';
+      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>';
       hdr += '</tr>';
       $(hdr).appendTo(table);
     } else {
-      table = container.find('.' + this.cssPrefix + ' table') 
+      table = container.find('.' + this.cssPrefix + ' table');
     }
 
     if(val ===  undefined) { val = "" ; }
@@ -767,7 +599,7 @@ var ArraySelectRenderer = ValuesArrayRenderer.extend({
     },10);
   },
   autoCompleteRequest: function(req,add) {
-    var results = this.selectData.map(function(e){return {label: e[1], value: e[0]};}) 
+    var results = this.selectData.map(function(e){return {label: e[1], value: e[0]};});
     add(jQuery.grep(results, function(elt, i){
       return elt.value.indexOf(req.term) >= 0;
     }));

@@ -15,7 +15,7 @@
         <Value display="json">json</Value>
         <Value display="xml">xml</Value>
         <Value display="html">html</Value>
-	<Value display="script">script</Value>
-	<Value display="text">text</Value>
+        <Value display="script">script</Value>
+        <Value display="text">text</Value>
     </Values>
 </DesignerProperty>
