@@ -251,7 +251,7 @@ var CDFDD = Base.extend({
         }
       });
     } else {
-      this.saveAs(false);
+      this.combinedSaveAs();
     }
   },
 
@@ -729,7 +729,7 @@ var CDFDD = Base.extend({
   reload: function() {
     this.logger.warn("Reloading dashboard... ");
 
-    $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload? Unsaved changes will be lost.', {
+    $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
         Ok: true,
         Cancel: false
