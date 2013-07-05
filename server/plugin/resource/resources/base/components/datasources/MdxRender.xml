@@ -1,0 +1,18 @@
+<DesignerComponent>
+	<Header>
+		<Name>OLAP MDX query</Name>
+		<IName>Mdx</IName>
+		<Description>MDX query against a OLAP cube</Description>
+		<Category>LEGACY</Category>
+		<CatDescription>Legacy Datasources</CatDescription>
+		<Type>MdxEntryBase</Type>
+	</Header>
+	<Contents>
+		<Model prefix="Datasources">
+			<Property>jndi</Property>
+			<Property>catalog</Property>
+			<Property>cube</Property>
+			<Property>mdxquery</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

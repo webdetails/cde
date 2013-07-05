@@ -14,68 +14,79 @@ import pt.webdetails.cdf.dd.packager.Packager;
  *
  * @author pdpi
  */
-public class DependenciesManager {
+public final class DependenciesManager
+{
+  private static DependenciesManager _manager;
+  
+  private final HashMap<String, DependenciesEngine> _engines;
 
-  private static DependenciesManager _engine;
-
-  private static Object syncObj = new Object();
-
-  private Map<String, DependenciesEngine> engines;
-
-  public DependenciesManager() {
-    engines = new HashMap<String, DependenciesEngine>();
+  public DependenciesManager()
+  {
+    _engines = new HashMap<String, DependenciesEngine>();
   }
 
-  public static void refresh() {
-    synchronized (syncObj) {
-      _engine = null;
-    }
+  public static void refresh()
+  {
+    _manager = null;
   }
-
-  public static DependenciesManager getInstance() {
-
-    synchronized (syncObj) {
-
-      if (_engine == null) {
-
-        // Raw Filter is really just an identity function for when we want the dependency contents to be included as-is.
-        StringFilter rawFilter = new StringFilter() {
-
-          public String filter(String input) {
-            return input;
-          }
-        };
-        StringFilter jsFilter = new StringFilter() {
-
-          public String filter(String input) {
-            return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource/" + input
-                + "\"></script>";
-          }
-        };
-        StringFilter cssFilter = new StringFilter() {
-
-          public String filter(String input) {
-            return "\t\t<link href='getCssResource/" + input + "' rel='stylesheet' type='text/css' />";
-          }
-        };
-
-        _engine = new DependenciesManager();
-
-        String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
-        _engine.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, basePath,
-            Packager.Filetype.CSS));
-        _engine.registerEngine(Engines.CDF, new DependenciesEngine(Engines.CDF, jsFilter, basePath,
-            Packager.Filetype.JS));
-        _engine.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, basePath,
-            Packager.Filetype.JS));
-        _engine.registerEngine(Engines.CDFDD, new DependenciesEngine(Engines.CDFDD, jsFilter, basePath,
-            Packager.Filetype.JS));
+  
+  public static DependenciesManager createInstance()
+  {
+    // Raw Filter is really just an identity function for when we want the dependency contents to be included as-is.
+    StringFilter rawFilter = new StringFilter()
+    {
+      public String filter(String input)
+      {
+        return input;
       }
+    };
+    
+    StringFilter jsFilter = new StringFilter()
+    {
+
+      public String filter(String input)
+      {
+        //input = input.replaceAll("\\?", "&");
+        return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource/" + input + "\"></script>";
+      }
+    };
+    
+    StringFilter cssFilter = new StringFilter()
+    {
+
+      public String filter(String input)
+      {
+        //input = input.replaceAll("\\?", "&");
+        return "\t\t<link href='getCssResource/" + input + "' rel='stylesheet' type='text/css' />";
+      }
+    };
+    
+    DependenciesManager manager = new DependenciesManager();
+
+    String basePath = PentahoSystem.getApplicationContext().getSolutionPath("");
+    
+    manager.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, basePath, Packager.Filetype.CSS));
+    manager.registerEngine(Engines.CDF,     new DependenciesEngine(Engines.CDF,     jsFilter,  basePath, Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, basePath, Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDFDD,   new DependenciesEngine(Engines.CDFDD,   jsFilter,  basePath, Packager.Filetype.JS));
+    
+    return manager;
+  }          
+  
+  public static synchronized DependenciesManager getInstance()
+  {
+    if(_manager == null)
+    {
+      _manager = createInstance();
     }
-
-    return _engine;
+    return _manager;
   }
-
+  
+  public static synchronized void setInstance(DependenciesManager manager)
+  {
+    _manager = manager;
+  }
+  
   public static final class Engines {
     public final static String CDF = "CDF";
 
@@ -86,15 +97,18 @@ public class DependenciesManager {
     public final static String CDFDD = "CDFDD";
   }
 
-  public DependenciesEngine getEngine(String id) {
-    return engines.get(id);
+  public DependenciesEngine getEngine(String id)
+  {
+    return this._engines.get(id);
   }
 
-  public boolean hasEngine(String id) {
-    return engines.containsKey(id);
+  public boolean hasEngine(String id)
+  {
+    return this._engines.containsKey(id);
   }
 
-  public void registerEngine(String id, DependenciesEngine engine) {
-    engines.put(id, engine);
+  public void registerEngine(String id, DependenciesEngine engine)
+  {
+    this._engines.put(id, engine);
   }
 }

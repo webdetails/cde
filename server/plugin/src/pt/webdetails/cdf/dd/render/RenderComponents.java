@@ -1,160 +1,159 @@
 package pt.webdetails.cdf.dd.render;
 
 import java.util.Iterator;
-import java.util.Map;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.json.JSONArray;
-import pt.webdetails.cdf.dd.Widget;
-import pt.webdetails.cdf.dd.render.components.ComponentManager;
-import pt.webdetails.cdf.dd.render.components.BaseComponent;
+import org.pentaho.platform.api.engine.IPentahoSession;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 
 @SuppressWarnings("unchecked")
 public class RenderComponents extends Renderer
 {
-
-  public static final String newLine = System.getProperty("line.separator");
-  Class<JXPathContext>[] rendererConstructorArgs = new Class[]
+  public RenderComponents(JXPathContext doc, CdfRunJsDashboardWriteContext context, IPentahoSession userSession)
   {
-    JXPathContext.class
-  };
-
-  public RenderComponents()
-  {
-    super();
+    super(doc, context, userSession);
   }
-
-  public String render(JXPathContext doc) throws Exception
+  
+  public String render(String alias) throws Exception
   {
-    return render(doc, null);
-  }
-
-  public String render(JXPathContext doc, String alias) throws Exception
-  {
-    setDoc(doc);
-    Map<String, Widget> widgets = getWidgets(alias);
-    StringBuffer widgetContent = new StringBuffer(),
-            result = new StringBuffer(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
-
-    final JSONObject settings = (JSONObject) doc.getValue("/settings");
-    result.append("wcdfSettings = ");
-    result.append(settings.toString(2));
-    result.append(';');
-    Iterator<Pointer> components = doc.iteratePointers("/components/rows");
-
-    String componentsIds = "";
-    ComponentManager engine = ComponentManager.getInstance();
-    while (components.hasNext())
-    {
-
-      Pointer pointer = components.next();
-      JXPathContext context = doc.getRelativeContext(pointer);
-      Object metaWidget = context.getValue("meta_widget"),
-              htmlObject;
-
-      /* If the htmlObject doesn't exist, looking for it will throw an exception. */
-      try
-      {
-        htmlObject = context.getValue("properties[name='htmlObject']/value");
-
-      }
-      catch (Exception e)
-      {
-        htmlObject = null;
-      }
-      boolean isWidget = metaWidget != null && metaWidget.toString().equals("true");
-      String id = htmlObject != null ? htmlObject.toString().replaceAll("\\$\\{.*:(.*)\\}", "$1") : "";
-      if (isWidget && widgets.containsKey(id))
-      {
-        /* Detect whether we're handling a Widget Component (which has a
-         * single-property parameter blob) or a generated component, which
-         * will have a separate property per parameter
-         */
-        if (context.getValue("meta_wcdf") != null)
-        {
-          getDiscreteParameters(widgetContent, widgets, context, id, alias);
-        }
-        else
-        {
-          getParameterBlob(widgetContent, widgets, context, id, alias);
-        }
-      }
-      else
-      {
-        BaseComponent renderer = engine.getRenderer(context);
-        if (renderer != null)
-        {
-          // Discard everything that's not an actual renderable component
-          synchronized (renderer) {
-            renderer.setAlias(alias);
-            renderer.setNode(context);
-            if (renderer.getId().startsWith("render_"))
-            {
-              componentsIds += renderer.getId().length() > 0 ? renderer.getId() + "," : "";
-            }
-            result.append(newLine);
-            result.append(renderer.render(context));
-          }
-        }
-      }
-    }
-    if (componentsIds.length() > 0)
-    {
-      result.append(newLine + "Dashboards.addComponents([" + componentsIds.replaceAll(",$", "]") + ");");
-    }
-
-    result.append(newLine);
-    result.append("</script>");
-    result.append(newLine);
-    result.append(widgetContent);
-    return result.toString();
+    //Map<String, Widget> widgetsByContainerId = getWidgets(alias);
+    
+//    StringBuffer widgetContent = new StringBuffer(),
+//                 result = new StringBuffer(
+//            NEWLINE + "<script language=\"javascript\" type=\"text/javascript\">" + NEWLINE);
+//
+//    final JSONObject settings = (JSONObject)doc.getValue("/settings");
+//    result.append("wcdfSettings = ");
+//    result.append(settings.toString(2));
+//    result.append(';');
+//    
+//    String componentsIds = "";
+//    
+//    ComponentManager engine = ComponentManager.getInstance();
+//    
+//    Iterator<Pointer> components = doc.iteratePointers("/components/rows");
+//    while(components.hasNext())
+//    {
+//      Pointer pointer = components.next();
+//      JXPathContext context = doc.getRelativeContext(pointer);
+//      Object metaWidget = context.getValue("meta_widget"),
+//             htmlObject;
+//      
+//      /* If the htmlObject doesn't exist, looking for it will throw an exception. */
+//      try
+//      {
+//        htmlObject = context.getValue("properties[name='htmlObject']/value");
+//      }
+//      catch (Exception e)
+//      {
+//        htmlObject = null;
+//      }
+//      
+//      boolean isWidget = metaWidget != null && metaWidget.toString().equals("true");
+//      
+//      String id = htmlObject != null ? 
+//                  htmlObject.toString().replaceAll("\\$\\{.*:(.*)\\}", "$1") : 
+//                  "";
+//      
+//      if (isWidget && widgetsByContainerId.containsKey(id))
+//      {
+//        // Detect whether we're handling a Widget Component,
+//        // which has a single-property parameter blob, 
+//        // or a generated component,
+//        // which has a separate property per parameter.
+//        
+//        // TODO: How can an «isWidget=true» component have a parameter blob?
+//        // Is this to support components created in the component editor?
+//        // WidgetComponent components, "generated" by "Save As Widget",
+//        // are created in XmlStructure#savesettings,
+//        // and these have separate Parameter properties.
+//        widgetContent.append(NEWLINE);
+//        
+//        Widget widget = widgetsByContainerId.get(id);
+//        
+//        widgetContent.append(widget.getComponents());
+//        
+//        String widgetAlias = getWidgetAlias(context, alias);
+//        if(context.getValue("meta_wcdf") != null)
+//        {
+//          renderDiscreteParameters(widgetContent, context, id, widgetAlias);
+//        }
+//        else
+//        {
+//          renderParameterBlob(widgetContent, context, id, widgetAlias);
+//        }
+//      }
+//      else
+//      {
+//        BaseComponent renderer = engine.getRenderer(context);
+//        if (renderer != null)
+//        {
+//          // Discard everything that's not an actual renderable component
+//          synchronized (renderer) {
+//            renderer.setAlias(alias);
+//            renderer.setNode(context);
+//            if(renderer.getId().startsWith("render_"))
+//            {
+//              componentsIds += renderer.getId() + ",";
+//            }
+//            
+//            result.append(NEWLINE);
+//            result.append(renderer.render());
+//          }
+//        }
+//      }
+//    } // while
+//    
+//    if (componentsIds.length() > 0)
+//    {
+//      result.append(NEWLINE + "Dashboards.addComponents([" + componentsIds.replaceAll(",$", "]") + ");");
+//    }
+//
+//    result.append(NEWLINE);
+//    result.append("</script>");
+//    result.append(NEWLINE);
+//    result.append(widgetContent);
+//    return result.toString();
+    return null;
   }
 
   @Override
-  public String getRenderClassName(String type)
+  protected String getRenderClassName(String type)
   {
     return "pt.webdetails.cdf.dd.render.components." + type.replace("Components", "") + "Render";
   }
 
-  private StringBuffer getParameterBlob(StringBuffer widgetContent, Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  private void renderParameterBlob(StringBuffer widgetContent, JXPathContext context, String id, String widgetAlias) throws org.json.JSONException
   {
-    widgetContent.append(newLine);
-    widgetContent.append(widgets.get(id).getComponents());
     JSONArray params = new JSONArray(context.getValue("properties[name='xActionArrayParameter']/value").toString());
-    for (int i = 0; i < params.length(); i++)
+    for (int i = 0 ; i < params.length() ; i++)
     {
       JSONArray line = params.getJSONArray(i);
-      String widgetAlias = getWidgetAlias(context, alias),
-              widgetParam = line.getString(0),
-              dashboardParam = line.getString(1);
-      widgetParam = aliasName(widgetAlias, widgetParam);
-      widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
+      
+      String widgetParam    = aliasName(widgetAlias, line.getString(0));
+      String dashboardParam = line.getString(1);
+      
+      widgetContent.append(NEWLINE + "<script language=\"javascript\" type=\"text/javascript\">" + NEWLINE);
       widgetContent.append("Dashboards.syncParametersOnInit('${p:" + dashboardParam + "}','" + widgetParam + "');\n");
       widgetContent.append("</script>\n");
     }
-    return widgetContent;
   }
 
-  private StringBuffer getDiscreteParameters(StringBuffer widgetContent, Map<String, Widget> widgets, JXPathContext context, String id, String alias) throws org.json.JSONException
+  private void renderDiscreteParameters(StringBuffer widgetContent, JXPathContext context, String id, String widgetAlias) throws org.json.JSONException
   {
-    widgetContent.append(newLine);
-    widgetContent.append(widgets.get(id).getComponents());
     Iterator<Pointer> it = context.iteratePointers("properties[type='Parameter']");
-    String widgetAlias = getWidgetAlias(context, alias);
-    while (it.hasNext())
+    while(it.hasNext())
     {
       Pointer pointer = it.next();
+      
       JXPathContext ctx = doc.getRelativeContext(pointer);
-      String dashboardParam = ctx.getValue("value").toString(),
-              widgetParam = ctx.getValue("name").toString();
-      widgetParam = aliasName(widgetAlias, widgetParam);
-      widgetContent.append(newLine + "<script language=\"javascript\" type=\"text/javascript\">" + newLine);
+      String dashboardParam = ctx.getValue("value").toString();
+      String widgetParam    = aliasName(widgetAlias, ctx.getValue("name").toString());
+      
+      widgetContent.append(NEWLINE + "<script language=\"javascript\" type=\"text/javascript\">" + NEWLINE);
       widgetContent.append("Dashboards.syncParametersOnInit('" + dashboardParam + "','" + widgetParam + "');\n");
       widgetContent.append("</script>\n");
     }
-
-    return widgetContent;
   }
 } 

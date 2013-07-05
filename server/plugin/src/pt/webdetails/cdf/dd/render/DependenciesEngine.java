@@ -63,7 +63,7 @@ public class DependenciesEngine
     final String minification = resLoader.getPluginSetting(this.getClass(), "packager/minification").toUpperCase();
     Mode mode = Mode.valueOf(minification != null ? minification : "MINIFY");
     String hash = packager.minifyPackage(name, mode);
-    return filter.filter(packagedPath + "?v=" + hash);
+    return (filter == null ? format : filter).filter(packagedPath + "?v=" + hash);
   }
 
   public String getDependencies()
@@ -76,9 +76,14 @@ public class DependenciesEngine
     StringBuilder output = new StringBuilder();
     for (Dependency dep : dependencyPool.values())
     {
-      output.append(filter.filter(dep.getDeps()) + newLine);
+      output.append((filter == null ? format : filter).filter(dep.getDeps()) + newLine);
     }
     return output.toString();
+  }
+
+  public String getDependencies(StringFilter filter, boolean isPackaged)
+  {
+    return isPackaged ? getPackagedDependencies(filter) : getDependencies(filter);
   }
 
   public void register(String name, String version, String path) throws Exception
@@ -141,8 +146,6 @@ public class DependenciesEngine
       dep = new RawDependency(version, contents);
       dependencyPool.put(name, dep);
     }
-
-
   }
 
   private String byteToHex(byte[] bytes)

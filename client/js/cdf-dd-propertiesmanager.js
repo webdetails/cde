@@ -41,7 +41,7 @@ var BasePropertyType = Base.extend({
     },
 
     // Accessors
-    setType: function(type){this.type = type},
-    getType: function(){return this.type}
+    setType: function(type){this.type = type;},
+    getType: function(){return this.type;}
 
   });
