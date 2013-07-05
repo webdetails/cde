@@ -163,11 +163,18 @@ $(".save-pulldown").click(function(evt){
   cdfdd.savePulldown(this,evt);
 });
 $( function(){
-    $(".round").corner();                    
-    $(window).resize(function() {refitEditor();});      
+    $(".round").corner();
+    if(!($.browser.msie && parseInt($.browser.version) < 9)){
+     $(window).resize(function() {refitEditor();});      
+    }
     refitEditor();
-            
-}) ;
+            }) ;
+//Fix the logo for IE<9
+      if($.browser.msie && parseInt($.browser.version) < 9){
+        $('.cdfdd-toolbar-logo').css('position','relative');
+        $('.cdfdd-toolbar-logo').css('position','absolute');
+        $('.hr-hidden').css('display','none');
+      }
 </script>
 </body>
 </html>
