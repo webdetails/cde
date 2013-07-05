@@ -185,12 +185,22 @@ $( function(){
     }
     refitEditor();
             }) ;
-//Fix the logo for IE<9
+//Fix the logo for IE<9 & Popup strech problems
       if($.browser.msie && parseInt($.browser.version) < 9){
         $('.cdfdd-toolbar-logo').css('position','relative');
         $('.cdfdd-toolbar-logo').css('position','absolute');
         $('.hr-hidden').css('display','none');
+      }else if($.browser.msie && parseInt($.browser.version) == 9){
+        $(document).bind('DOMNodeInserted', function(event){ 
+          if(event.srcElement.lastChild != null){
+            var childClassName = event.srcElement.lastChild.className;
+            if(childClassName == "popup"){
+              $(".popup").addClass("popup-ie9");
+            }
+          }
+        });
       }
+
 $(document).ready(function(){
   var initPlugins = function (result) {
     result.map(function(plugin){
