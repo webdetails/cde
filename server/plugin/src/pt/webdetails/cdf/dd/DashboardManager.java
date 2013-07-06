@@ -276,9 +276,16 @@ public final class DashboardManager
     
     // Read cache, cache item existed and it is valid?
     if(cachedDash != null && 
-       cachedDash.getSourceDate().getTime() < cdeFile.getLastModified())
+       cachedDash.getSourceDate().getTime() >= cdeFile.getLastModified())
     {
+      _logger.info("Have cached dashboard instance - valid.");
+      
       return cachedDash;
+    }
+    
+    if(cachedDash != null) 
+    {
+      _logger.info("Have cached dashboard instance - invalid. Reloading.");
     }
     
     Dashboard newDash = this.readDashboardFromCdfdeJs(wcdf, repository);
