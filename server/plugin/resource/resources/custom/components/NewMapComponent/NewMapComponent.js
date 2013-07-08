@@ -156,7 +156,7 @@ var NewMapComponent = BaseComponent.extend({
 			myself.render({});
 			return
 		}
-       var query = new Query(myself.queryDefinition);
+       var query = Dashboards.getQuery(myself.queryDefinition);
         query.fetchData(myself.parameters, function(values) {
             var changedValues = undefined;
             if((typeof(myself.postFetch)=='function')){
