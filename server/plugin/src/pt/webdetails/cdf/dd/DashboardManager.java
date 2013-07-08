@@ -275,12 +275,22 @@ public final class DashboardManager
     }
     
     // Read cache, cache item existed and it is valid?
-    if(cachedDash != null && 
+    if(cachedDash != null &&
        cachedDash.getSourceDate().getTime() >= cdeFile.getLastModified())
     {
-      _logger.info("Have cached dashboard instance - valid.");
-      
-      return cachedDash;
+      // Check WCDF file date as well
+      IRepositoryFile wcdfFile = repository.getRepositoryFile(wcdf.getPath(), FileAccess.READ); // was NO_PERM=0;
+      if(wcdfFile == null)
+      {
+        throw new ThingReadException(new FileNotFoundException(wcdf.getPath()));
+      }
+
+      if(cachedDash.getSourceDate().getTime() >= wcdfFile.getLastModified()) 
+      {
+        _logger.info("Have cached dashboard instance - valid.");
+
+        return cachedDash;
+      }
     }
     
     if(cachedDash != null) 

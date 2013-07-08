@@ -45,12 +45,12 @@ public class CdfdeJsDashboardReader implements IThingReader
   {
     builder.setMeta(DashboardType.getInstance());
     
-    // 0. File path (instead of sourcePath variable...)
-    builder.setSourcePath(XPathUtils.getStringValue(source, "/filename"));
-            
+    // 0. File path (sourcePath and filename should be the same - they may differ on non-canonicalization or solution relative vs system absolute?)
+    builder.setSourcePath(sourcePath);//XPathUtils.getStringValue(source, "/filename"));
+
     // 1. WCDF
     builder.setWcdf(context.getWcdf());
-    
+
     // 2. REGULAR
     readKind(
         builder,

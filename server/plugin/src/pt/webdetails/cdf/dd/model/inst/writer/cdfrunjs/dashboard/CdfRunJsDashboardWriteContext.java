@@ -151,7 +151,7 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
                   (this._options.getSchemedRoot() + DashboardDesignerContentGenerator.SERVER_URL_VALUE) :
                   "";
     
-    final String path = this._dash.getWcdf().getStructurePath().replaceAll("(.+/).*", "$1");
+    final String path = this._dash.getSourcePath().replaceAll("(.+/).*", "$1");
     
     return content
       .replaceAll(DASHBOARD_PATH_TAG, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token

@@ -26,7 +26,7 @@ public class CggRunJsThingWriterFactory implements IThingWriterFactory
       if((t instanceof GenericComponent) && !(t instanceof WidgetComponent))
       {
         GenericComponent comp = (GenericComponent)t;
-        if(comp.tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true"))
+        if(comp.getMeta().tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true"))
         {
           return new CggRunJsGenericComponentWriter();
         }

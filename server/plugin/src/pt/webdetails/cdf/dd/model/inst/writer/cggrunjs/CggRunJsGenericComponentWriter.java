@@ -90,7 +90,7 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
        .append(".chartDefinition.height);");
     
     
-    String dashboardFilePath = context.getDashboard().getWcdf().getStructurePath();
+    String dashboardFilePath = context.getDashboard().getSourcePath();
     String dashboardFileDir  = FilenameUtils.getFullPath(dashboardFilePath);
     String dashboardFileName = FilenameUtils.getName(dashboardFilePath);
     

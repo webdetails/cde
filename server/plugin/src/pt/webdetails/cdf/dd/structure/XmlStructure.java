@@ -164,7 +164,6 @@ public class XmlStructure implements IStructure
     CdaRenderer cdaRenderer = CdaRenderer.getInstance();
     cdaRenderer.setContext(cdfdeJsText);
     
-    // TODO: replace these with a proper extension-replacing func
     String cdaFileName = cdeFileName.replace(".cdfde", ".cda");
     
     // Any data sources?
