@@ -203,15 +203,16 @@ $( function(){
 
 $(document).ready(function(){
   var initPlugins = function (result) {
+    console.log(result.length+" CDE-Plugin(s) found...");
     result.map(function(plugin){
-      var couldLoad = $.getScript("../"+plugin.pluginId+plugin.jsPath);
-      couldLoad = couldLoad.responseText.indexOf("ERROR") == -1;
-
-      if(couldLoad == false){
+      //Verify if there are space characters on the plugin ID if there are the plugin title will be used as if it is the ID
+      if(plugin.pluginId.indexOf(" ") == -1){
+        $.getScript("../"+plugin.pluginId+plugin.jsPath);
+      }else{
         $.getScript("../"+plugin.title+plugin.jsPath);
       }
     });
-
+    console.log("Plugins loaded!");
   }
 
 
