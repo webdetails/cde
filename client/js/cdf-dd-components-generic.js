@@ -155,6 +155,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
         },
         
         loaded: function(){ //button bindings
+          if(myself.cssPrefix == "StringList") {
+            $('.popup').css("width","630px");//Since some objects extend from this one this is just to confirm we're resizing the right popup.
+          }
           $('.' + myself.cssPrefix + 'AddButton').bind('click',function(){
             if(myself.multiDimensionArray){
               myself.addParameter(index, ["","",""], $("#" + myself.cssPrefix));

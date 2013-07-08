@@ -1307,6 +1307,7 @@ var CodeRenderer = CellRenderer.extend({
             myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
             myself.editor.setMode(myself.getCodeType());
             myself.editor.setContents(myself.value);
+            $('.popup').css("width","820px");
         },
 
         callback: myself.callback, 
@@ -1595,6 +1596,9 @@ var ResourceFileRenderer = CellRenderer.extend({
       $.prompt(extEditor,{
         //opacity: 0.2,
         prefix:'popup',
+        loaded: function(){
+          $('.popup').css("width","810px");
+        },
         top: '5%'
         
       });

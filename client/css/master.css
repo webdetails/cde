@@ -1177,7 +1177,7 @@ blockquote, q {quotes:"" "";}
 a img {border:none;}
 :focus {outline:0;}
 
-html {font-size:100.01%;}
+html {font-size:100.01%; background-color: #2D2D2D;}
 body {font-size:75%;color:#222;background:#2D2D2D;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;}
 h1 {font-size:2em;line-height:1;margin-bottom:0.5em;}
@@ -1317,7 +1317,8 @@ div.popup {
   padding: 7px;
   max-width: 75%;
   max-height: 80%;
-  min-width: 15%;
+  min-width: 20%;
+  overflow-x: auto;
 }
 
 div.popup-ie9{
@@ -1340,6 +1341,7 @@ div.popup h2 {
   font-weight: bold;
   position: relative;
   top: -10px;
+  background-color: transparent!important;
 }
 
 div.popup .popupcontainer{ 
@@ -1354,7 +1356,8 @@ div.popup .popupclose{
   text-align: center; 
   background: url(../images/close.png);
   z-index: 100;
-  color: transparent;
+  color: #222;
+  font-size: 0px;
   position: absolute;
   right: 8px;
 }
