@@ -192,7 +192,7 @@ $( function(){
         $('.hr-hidden').css('display','none');
       }else if($.browser.msie && parseInt($.browser.version) == 9){
         $(document).bind('DOMNodeInserted', function(event){ 
-          if(event.srcElement.lastChild != null){
+          if(event != null && event.srcElement != null && event.srcElement.lastChild != null){
             var childClassName = event.srcElement.lastChild.className;
             if(childClassName == "popup"){
               $(".popup").addClass("popup-ie9");
@@ -204,7 +204,12 @@ $( function(){
 $(document).ready(function(){
   var initPlugins = function (result) {
     result.map(function(plugin){
-      $.getScript("../"+plugin.pluginId+plugin.jsPath)
+      var couldLoad = $.getScript("../"+plugin.pluginId+plugin.jsPath);
+      couldLoad = couldLoad.responseText.indexOf("ERROR") == -1;
+
+      if(couldLoad == false){
+        $.getScript("../"+plugin.title+plugin.jsPath);
+      }
     });
 
   }
