@@ -4,6 +4,7 @@ package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 import java.util.Iterator;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.Pointer;
 
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
@@ -49,6 +50,20 @@ public abstract class CdfdeJsComponentReader<TM extends Component.Builder> imple
           .setAlias(jsProp.optString("name")) // matches prop/name
           .setInputType(jsProp.optString("type"))
           .setValue(jsProp.optString("value")));
+    }
+    
+    // Attributes
+    JSONObject jsComp = (JSONObject)source.getContextBean();
+    Iterator<String> keys = jsComp.keys();
+    while(keys.hasNext())
+    {
+      String key = keys.next();
+      
+      if(key.startsWith("meta_"))
+      {
+        String name = key.substring("meta_".length());
+        builder.addAttribute(name, jsComp.getString(key));
+      }
     }
   }
 }

@@ -53,7 +53,6 @@ public class WcdfDescriptor
    */
   public JSONObject toJSON()
   {
-
     JSONObject json = new JSONObject();
     json.put("title",        getTitle());
     json.put("author",       getAuthor());
@@ -84,7 +83,12 @@ public class WcdfDescriptor
     wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
     wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
     wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
-    wcdf.setWidgetParameters(XmlDom4JHelper.getNodeText("/cdf/widgetParameters", wcdfDoc, "").split(","));
+    
+    String widgetParams = XmlDom4JHelper.getNodeText("/cdf/widgetParameters", wcdfDoc, "");
+    if(StringUtils.isNotEmpty(widgetParams))
+    {
+      wcdf.setWidgetParameters(widgetParams.split(","));
+    }
     
     return wcdf;
   }
@@ -117,19 +121,19 @@ public class WcdfDescriptor
     }
     if(parameters.containsKey("description"))
     {
-      setAuthor((String)parameters.get("description"));
+      setDescription((String)parameters.get("description"));
     }
     if(parameters.containsKey("style"))
     {
-      setAuthor((String)parameters.get("style"));
+      setStyle((String)parameters.get("style"));
     }
     if(parameters.containsKey("rendererType"))
     {
-      setAuthor((String)parameters.get("rendererType"));
+      setRendererType((String)parameters.get("rendererType"));
     }
     if(parameters.containsKey("widgetName"))
     {
-      setAuthor((String)parameters.get("widgetName"));
+      setWidgetName((String)parameters.get("widgetName"));
     }
     if(parameters.containsKey("widget"))
     {

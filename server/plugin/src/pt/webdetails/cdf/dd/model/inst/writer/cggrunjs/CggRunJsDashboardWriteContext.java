@@ -22,6 +22,7 @@ public class CggRunJsDashboardWriteContext extends DefaultThingWriteContext
     super(factory, true);
     
     if(dash == null) { throw new IllegalArgumentException("dash"); }
+    if(userSession == null) { throw new IllegalArgumentException("userSession"); }
     this._dash  = dash;
     this._userSession = userSession;
   }

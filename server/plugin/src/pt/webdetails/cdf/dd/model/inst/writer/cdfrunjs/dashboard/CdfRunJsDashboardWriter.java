@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
@@ -48,12 +49,12 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   public void write(
           CdfRunJsDashboardWriteResult.Builder builder,
           CdfRunJsDashboardWriteContext ctx,
-          Dashboard comp)
+          Dashboard dash)
           throws ThingWriteException
   {
-    assert comp == ctx.getDashboard();
+    assert dash == ctx.getDashboard();
     
-    WcdfDescriptor wcdf = comp.getWcdf();
+    WcdfDescriptor wcdf = dash.getWcdf();
     
     // ------------
     
@@ -83,8 +84,8 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     
     // ------------
     
-    String layout     = ctx.replaceTokensAndAlias(this.writeLayout    (ctx, comp));
-    String components = ctx.replaceTokensAndAlias(this.writeComponents(ctx, comp));
+    String layout     = ctx.replaceTokensAndAlias(this.writeLayout    (ctx, dash));
+    String components = ctx.replaceTokensAndAlias(this.writeComponents(ctx, dash));
     String content    = writeContent(layout, components);
     String header     = ctx.replaceTokens(writeHeaders(content, ctx));
     
@@ -280,7 +281,10 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   
   protected static String readStyleTemplateOrDefault(String styleName) throws IOException
   {
-    try { return readStyleTemplate(styleName); } catch(IOException ex) { }
+    if(StringUtils.isNotEmpty(styleName)) 
+    {
+      try { return readStyleTemplate(styleName); } catch(IOException ex) { }
+    }
     
     // Couldn't open template file, attempt to use default
     return readStyleTemplate(CdfStyles.DEFAULTSTYLE);

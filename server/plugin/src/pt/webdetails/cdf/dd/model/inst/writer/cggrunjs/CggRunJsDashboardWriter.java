@@ -36,7 +36,8 @@ public class CggRunJsDashboardWriter implements IThingWriter
       if((comp instanceof GenericComponent) && !(comp instanceof WidgetComponent))
       {
         GenericComponent genComp = (GenericComponent)comp;
-        if(genComp.tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true"))
+        if(genComp.getMeta().tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true") &&
+           genComp.tryGetAttributeValue("cdwRender", "false").equalsIgnoreCase("true"))
         {
           IThingWriter writer;
           try
