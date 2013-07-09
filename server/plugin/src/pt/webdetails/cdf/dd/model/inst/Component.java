@@ -29,7 +29,9 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
   
   private final Map<String, PropertyBinding> _propertyBindingsByLowerAlias;
   private final Map<String, PropertyBinding> _propertyBindingsByLowerName;
-
+  
+  private final List<ExtensionPropertyBinding> _extensionPropertyBindings;
+  
   @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
   protected Component(Builder builder, final MetaModel metaModel) throws ValidationException
   {
@@ -43,6 +45,7 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
     {
       this._propertyBindingsByLowerAlias = new LinkedHashMap<String, PropertyBinding>();
       this._propertyBindingsByLowerName  = new LinkedHashMap<String, PropertyBinding>();
+      this._extensionPropertyBindings    = new ArrayList<ExtensionPropertyBinding>();
       
       // Create PropertyBinding.s
       for(PropertyBinding.Builder bindBuilder : builder.getPropertyBindings())
@@ -76,6 +79,11 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         this._propertyBindingsByLowerAlias.put(propAlias, bind);
         this._propertyBindingsByLowerName .put(propName,  bind);
         
+        if(bind instanceof ExtensionPropertyBinding)
+        {
+          this._extensionPropertyBindings.add((ExtensionPropertyBinding)bind);
+        }
+        
         if(name == null && "name".equals(propAlias))
         {
           name = bind.getValue();
@@ -86,6 +94,7 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
     {
       this._propertyBindingsByLowerAlias = null;
       this._propertyBindingsByLowerName  = null;
+      this._extensionPropertyBindings    = null;
     }
 
     if(StringUtils.isEmpty(name))
@@ -214,12 +223,24 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
            this._propertyBindingsByLowerAlias.values() :
            Collections.<PropertyBinding> emptyList();
   }
-
+  
   public int getPropertyBindingCount()
   {
     return this._propertyBindingsByLowerAlias != null ? this._propertyBindingsByLowerAlias.size() : 0;
   }
   
+  public final Iterable<ExtensionPropertyBinding> getExtensionPropertyBindings()
+  {
+    return this._extensionPropertyBindings != null ?
+           this._extensionPropertyBindings :
+           Collections.<ExtensionPropertyBinding> emptyList();
+  }
+  
+  public int getExtensionPropertyBindingCount()
+  {
+    return this._extensionPropertyBindings != null ? this._extensionPropertyBindings.size() : 0;
+  }
+          
   /**
    * Class to create and modify Component instances.
    */

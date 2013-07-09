@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.pentaho.platform.api.engine.IPentahoSession;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.layout.Render;
