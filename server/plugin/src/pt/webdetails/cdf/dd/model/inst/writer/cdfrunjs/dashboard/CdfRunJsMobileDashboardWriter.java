@@ -4,7 +4,6 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 import java.io.IOException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.render.RenderMobileLayout;
 import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
@@ -31,6 +30,6 @@ public final class CdfRunJsMobileDashboardWriter extends CdfRunJsDashboardWriter
   @Override
   protected Renderer getLayoutRenderer(JXPathContext docXP, CdfRunJsDashboardWriteContext context)
   {
-    return new RenderMobileLayout(docXP, context, PentahoSessionHolder.getSession()); // TODO:
+    return new RenderMobileLayout(docXP, context);
   }
 }

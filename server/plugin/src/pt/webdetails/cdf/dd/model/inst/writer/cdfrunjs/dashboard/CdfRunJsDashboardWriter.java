@@ -135,7 +135,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   
   protected Renderer getLayoutRenderer(JXPathContext docXP, CdfRunJsDashboardWriteContext context)
   {
-    return new RenderLayout(docXP, context, PentahoSessionHolder.getSession()); // TODO:
+    return new RenderLayout(docXP, context);
   }
   
   // -----------------
@@ -179,7 +179,9 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       StringBuilder out2 = isWidget ? widgetsOut : out;
       if(!isFirstComp) { out2.append(NEWLINE); }
       
-      if(comp instanceof VisualComponent)
+      // NOTE: Widgets don't really exist at runtime, 
+      // only their (leaf-)content does.
+      if(comp instanceof VisualComponent && !(comp instanceof WidgetComponent))
       {
         if(isFirstAddComp) { isFirstAddComp = false; }
         else { addCompIds.append(", "); }
@@ -234,39 +236,29 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
     
     // Get CDE headers
-    StringFilter cssFilter = null;
-    StringFilter jsFilter  = null;
-    if(options.isAbsolute())
+    final String baseUrl = (options.isAbsolute() ? options.getSchemedRoot() : "") +
+                           DashboardDesignerContentGenerator.SERVER_URL_VALUE;
+    final String newLine = NEWLINE;
+    
+    StringFilter cssFilter = new StringFilter()
     {
-      final String root = options.getSchemedRoot() +
-                          DashboardDesignerContentGenerator.SERVER_URL_VALUE;
-      
-      cssFilter = new StringFilter()
+      public String filter(String input)
       {
-        public String filter(String input)
-        {
-          //input = input.replaceAll("\\?", "&");
-          return "\t\t<link href='" + 
-                 root  + 
-                 "getCssResource/" + 
-                 input + 
-                 "' rel='stylesheet' type='text/css' />\n";
-        }
-      };
-      
-      jsFilter = new StringFilter()
+        return String.format(
+          "\t\t<link href=\"%sgetCssResource/%s\" rel=\"stylesheet\" type=\"text/css\" />%s",
+          baseUrl, input, newLine);
+      }
+    };
+
+    StringFilter jsFilter = new StringFilter()
+    {
+      public String filter(String input)
       {
-        public String filter(String input)
-        {
-          //input = input.replaceAll("\\?", "&");
-          return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"" + 
-                 root + 
-                 "getJsResource/" + 
-                 input + 
-                 "\"></script>\n";
-        }
-      };
-    }
+        return String.format(
+          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%sgetJsResource/%s\"></script>%s",
+          baseUrl, input, newLine);
+      }
+    };
     
     DependenciesManager depMgr = DependenciesManager.getInstance();
     boolean isPackaged = !options.isDebug();
