@@ -54,7 +54,10 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
     this.writeParameters(out, comp, newAliasPrefix);
   }
   
-  private void writeParameters(StringBuilder out, WidgetComponent comp, String aliasPrefix)
+  private void writeParameters(
+          StringBuilder out, 
+          WidgetComponent comp, 
+          String aliasPrefix)
   {
     if(comp.getPropertyBindingCount() > 0)
     {
@@ -78,7 +81,10 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
     }
   }
   
-  private void writeParametersAssocList(StringBuilder out, String paramsAssocList, String aliasPrefix)
+  private void writeParametersAssocList(
+          StringBuilder out,
+          String paramsAssocList, 
+          String aliasPrefix)
   {
     try
     {
@@ -87,7 +93,12 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
       {
         JSONArray line = params.getJSONArray(i);
         // [ widgetProp, outerDashParamName ]
-        writeJsSyncParameter(out, line.getString(0), line.getString(1), aliasPrefix);
+        
+        // TODO: FIXME:  Don't know why but in the old code,
+        // only association lists wrapped the value in a parameter tag.
+        // This might be a problem, if the value is already wrapped...
+        String dashParam = "${p:" + line.getString(1) + "}";
+        writeJsSyncParameter(out, line.getString(0), dashParam, aliasPrefix);
       }
     }
     catch (JSONException ex)
@@ -99,12 +110,11 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
   private void writeJsSyncParameter(
           StringBuilder out, 
           String widgetLocalProp,
-          String dashLocalParam,
+          String dashParam,
           String aliasPrefix)
   {
     String widgetProp = Component.composeIds(aliasPrefix, widgetLocalProp);
-    String dashParam = "${p:" + dashLocalParam + "}";
-    
+
     out.append("Dashboards.syncParametersOnInit(");
     out.append(JsonUtils.toJsString(dashParam));
     out.append(", ");

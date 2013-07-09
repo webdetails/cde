@@ -12,9 +12,9 @@ import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public class RenderLayout extends Renderer
 {
-  public RenderLayout(JXPathContext doc, CdfRunJsDashboardWriteContext context, IPentahoSession userSession)
+  public RenderLayout(JXPathContext doc, CdfRunJsDashboardWriteContext context)
   {
-    super(doc, context, userSession);
+    super(doc, context);
   }
   
   public String render(String alias) throws Exception

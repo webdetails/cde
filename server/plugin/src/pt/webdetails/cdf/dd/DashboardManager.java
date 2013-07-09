@@ -162,9 +162,10 @@ public final class DashboardManager
     DashboardCacheKey cacheKey = new DashboardCacheKey(
             cdeFilePath, 
             CdfStyles.getInstance().getResourceLocation(wcdf.getStyle()), 
-            options.isDebug());
-    cacheKey.setAbs(options.isAbsolute());
-    cacheKey.setRoot(options.getScheme(), options.getAbsRoot());
+            options.isDebug(),
+            options.isAbsolute(),
+            options.getSchemedRoot(), 
+            options.getAliasPrefix());
     
     // 2. Check existence and permissions to the original CDFDE file
     // NOTE: the cache is shared by all users.

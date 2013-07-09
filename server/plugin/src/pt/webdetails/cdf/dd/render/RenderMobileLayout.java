@@ -10,9 +10,9 @@ import pt.webdetails.cdf.dd.render.layout.Render;
 
 public class RenderMobileLayout extends Renderer
 {
-  public RenderMobileLayout(JXPathContext doc, CdfRunJsDashboardWriteContext context, IPentahoSession userSession)
+  public RenderMobileLayout(JXPathContext doc, CdfRunJsDashboardWriteContext context)
   {
-    super(doc, context, userSession);
+    super(doc, context);
   }
 
   public String render(String alias) throws Exception 

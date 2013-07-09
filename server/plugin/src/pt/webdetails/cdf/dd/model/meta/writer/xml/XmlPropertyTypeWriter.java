@@ -24,9 +24,15 @@ public class XmlPropertyTypeWriter implements IThingWriter
     Element propElem = parent.addElement("DesignerProperty");
     Element headerElem = propElem.addElement("Header");
 
+    String defValue = prop.getDefaultValue();
+    if("\"\"".equals(defValue))
+    {
+      defValue = "";
+    }
+    
     headerElem.addElement("Name").setText(prop.getName());
     headerElem.addElement("Parent").setText(prop.getBase());
-    headerElem.addElement("DefaultValue").setText(prop.getDefaultValue()); // TODO
+    headerElem.addElement("DefaultValue").setText(defValue);
     headerElem.addElement("Description").setText(prop.getLabel());
     headerElem.addElement("Tooltip").setText(prop.getTooltip());
     headerElem.addElement("Advanced").setText(isAdvanced ? "true" : "false");

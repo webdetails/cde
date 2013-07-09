@@ -112,6 +112,7 @@ public final class MetaModelManager
       {
         this._model  = model;
         this._cdaDefs = cdaDefs;
+        this._jsDefinition = null;
       }
       
       // Switch the current dependencies manager

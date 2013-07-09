@@ -10,12 +10,10 @@ import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
-import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.LayoutComponent;
 import pt.webdetails.cdf.dd.model.meta.DashboardType;
-import pt.webdetails.cdf.dd.util.XPathUtils;
 
 /**
  * @author dcleao

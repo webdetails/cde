@@ -7,7 +7,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.api.engine.IPentahoSession;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
@@ -24,13 +23,11 @@ public abstract class Renderer
   
   protected final JXPathContext doc;
   protected final CdfRunJsDashboardWriteContext _context;
-  protected final IPentahoSession _userSession;
   
-  public Renderer(JXPathContext doc, CdfRunJsDashboardWriteContext context, IPentahoSession userSession)
+  public Renderer(JXPathContext doc, CdfRunJsDashboardWriteContext context)
   {
     this.doc = doc;
     this._context = context;
-    this._userSession = userSession;
   }
   
   protected static Log logger = LogFactory.getLog(Renderer.class);
@@ -66,14 +63,17 @@ public abstract class Renderer
         if(comp instanceof WidgetComponent)
         {
           WidgetComponent widgetComp = (WidgetComponent)comp;
-
+          
+          CdfRunJsDashboardWriteOptions childOptions = options
+                  .addAliasPrefix(comp.getName()); // <-- NOTE:!
+          
           CdfRunJsDashboardWriteResult dashResult = null;
           try
           {
             dashResult = dashMgr.getDashboardCdfRunJs(
                     widgetComp.getWcdfPath(), 
-                    options, 
-                    this._userSession,
+                    childOptions,
+                    this._context.getUserSession(),
                     this._context.isBypassCacheRead());
           }
           catch (ThingWriteException ex)
@@ -91,40 +91,7 @@ public abstract class Renderer
     
     return widgetsByContainerId;
   }
-  /*
-  private Widget getWidget(JXPathContext widgetContext, String aliasPrefix)
-  {
-    String widgetPath;
-    try
-    {
-      widgetPath = widgetContext.getValue("properties[name='path']/value").toString();
-    }
-    catch(Exception ex)
-    {
-      widgetPath = widgetContext.getValue("meta_wcdf").toString();
-    }
-
-    String alias = getWidgetAlias(widgetContext, aliasPrefix);
-    try
-    {
-      return DashboardFactory.getInstance().loadWidget(widgetPath, alias);
-    }
-    catch(FileNotFoundException ex)
-    {
-      logger.error("Couldn't find widget " + widgetPath);
-    }
-    catch (IOException ex)
-    {
-      logger.error("Couldn't load widget " + widgetPath, ex);
-    }
-    catch (Exception ex)
-    {
-      logger.error("Couldn't load widget " + widgetPath, ex);
-    }
-    
-    return null;
-  }
-  */
+  
   protected final Object getRender(JXPathContext context) throws Exception
   {
     String renderType = null;
@@ -180,11 +147,5 @@ public abstract class Renderer
     aliasPrefix = StringUtils.isEmpty(aliasPrefix) ? "" : (aliasPrefix + "_");
     
     return aliasPrefix + name;
-  }
-  
-  protected static String getWidgetAlias(JXPathContext context, String aliasPrefix)
-  {
-    String widgetName = context.getValue("properties[name='name']/value").toString();
-    return aliasName(aliasPrefix, widgetName);
   }
 }
