@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
@@ -33,7 +34,9 @@ public class CggRunJsDashboardWriter implements IThingWriter
     Iterable<Component> comps = dash.getRegulars();
     for(Component comp : comps)
     {
-      if((comp instanceof GenericComponent) && !(comp instanceof WidgetComponent))
+      if(StringUtils.isNotEmpty(comp.getName()) && 
+         (comp instanceof GenericComponent) && 
+         !(comp instanceof WidgetComponent))
       {
         GenericComponent genComp = (GenericComponent)comp;
         if(genComp.getMeta().tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true") &&

@@ -95,6 +95,8 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
             throw new ThingWriteException(ex);
           }
           
+          // TODO: empty properties are not output
+          // and the NEWLINE is already output...
           if(!isDefaultDefinition && childContext.isFirstInList())
           {
             out.append(NEWLINE);

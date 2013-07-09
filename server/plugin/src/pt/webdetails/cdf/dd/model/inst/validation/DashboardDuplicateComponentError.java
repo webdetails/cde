@@ -4,8 +4,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.validation;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author dcleao
  */
@@ -20,7 +18,7 @@ public final class DashboardDuplicateComponentError extends ComponentError
   {
     super(dashboardName, "Dashboard");
     
-    if(StringUtils.isEmpty(componentName)) { throw new IllegalArgumentException("componentName"); }
+    if(componentName == null) { throw new IllegalArgumentException("componentName"); }
 
     this._componentName = componentName;
   }

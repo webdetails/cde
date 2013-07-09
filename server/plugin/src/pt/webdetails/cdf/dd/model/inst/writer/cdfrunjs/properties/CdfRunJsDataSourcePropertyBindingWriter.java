@@ -53,7 +53,9 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
   protected DataSourceComponent getDataSourceComponent(CdfRunJsDashboardWriteContext context, PropertyBinding propBind)
   {
     String dataSourceName = propBind.getValue();
-    return context.getDashboard().tryGetDataSource(dataSourceName);
+    return StringUtils.isEmpty(dataSourceName) ? 
+           null : 
+           context.getDashboard().tryGetDataSource(dataSourceName);
   }
   
   protected void renderCdaDatasource(

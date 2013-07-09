@@ -6,6 +6,8 @@ package pt.webdetails.cdf.dd.model.inst;
 
 import java.util.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
@@ -19,13 +21,19 @@ import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
  */
 public class Dashboard<TM extends DashboardType> extends Instance<TM>
 {
+  private static final Log _logger = LogFactory.getLog(Dashboard.class);
+  
   private final WcdfDescriptor _wcdf;
   private final String _sourcePath;
   private final Date   _sourceDate;
   
-  private final Map<String, DataSourceComponent> _dataSourceComponents;
-  private final Map<String, LayoutComponent>     _layoutComponents;
-  private final Map<String, Component>           _regularComponents;
+  private final Map<String, DataSourceComponent> _dataSourceComponentsByLowerName;
+  private final Map<String, LayoutComponent>     _layoutComponentsByLowerName;
+  private final Map<String, Component>           _regularComponentsByLowerName;
+  
+  private final List<DataSourceComponent> _dataSourceComponents;
+  private final List<LayoutComponent>     _layoutComponents;
+  private final List<Component>           _regularComponents;
   
   protected Dashboard(Builder builder, MetaModel metaModel) throws ValidationException
   {
@@ -42,50 +50,61 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     this._sourcePath = StringUtils.defaultIfEmpty(builder._sourcePath, "");
     this._sourceDate = builder._sourceDate == null ? new Date() : builder._sourceDate;
     
-    this._dataSourceComponents = new LinkedHashMap<String, DataSourceComponent>();
+    // NOTE: During editing, components may have no name and even duplicate names...
+    
+    this._dataSourceComponentsByLowerName = new LinkedHashMap<String, DataSourceComponent>();
+    this._dataSourceComponents = new ArrayList<DataSourceComponent>();
     
     for(DataSourceComponent.Builder compBuilder : builder._dataSourceComponents)
     {
       DataSourceComponent comp = compBuilder.build(metaModel);
+      this._dataSourceComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
-      if(this._dataSourceComponents.containsKey(key))
+      if(!this._dataSourceComponentsByLowerName.containsKey(key))
       {
-        throw new ValidationException(
-              new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+        this._dataSourceComponentsByLowerName.put(key, comp);
       }
-      
-      this._dataSourceComponents.put(key, comp);
+      else
+      {
+        _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+      }
     }
     
-    this._layoutComponents = new LinkedHashMap<String, LayoutComponent>();
+    this._layoutComponentsByLowerName = new LinkedHashMap<String, LayoutComponent>();
+    this._layoutComponents = new ArrayList<LayoutComponent>();
     for(LayoutComponent.Builder compBuilder : builder._layoutComponents)
     {
       LayoutComponent comp = compBuilder.build(metaModel);
+      this._layoutComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
-      if(this._layoutComponents.containsKey(key))
+      if(!this._layoutComponentsByLowerName.containsKey(key))
       {
-        throw new ValidationException(
-              new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+        this._layoutComponentsByLowerName.put(key, comp);
       }
-      
-      this._layoutComponents.put(key, comp);
+      else
+      {
+        _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+      }
     }
     
-    this._regularComponents = new LinkedHashMap<String, Component>();
+    this._regularComponentsByLowerName = new LinkedHashMap<String, Component>();
+    this._regularComponents = new ArrayList<Component>();
     for(Component.Builder compBuilder : builder._regularComponents)
     {
       Component comp = compBuilder.build(metaModel);
+      this._regularComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
-      if(this._regularComponents.containsKey(key))
+      if(!this._regularComponentsByLowerName.containsKey(key))
       {
-        throw new ValidationException(
-              new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+        this._regularComponentsByLowerName.put(key, comp);
       }
-      
-      this._regularComponents.put(key, comp);
+      else
+      {
+        _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
+      }
     }
   }
 
@@ -136,14 +155,14 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
 
   public DataSourceComponent tryGetDataSource(String name)
   {
-    if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
+    if(name == null) { throw new IllegalArgumentException("name"); }
 
-    return this._dataSourceComponents.get(name.toLowerCase());
+    return this._dataSourceComponentsByLowerName.get(name.toLowerCase());
   }
 
   public Iterable<DataSourceComponent> getDataSources()
   {
-    return this._dataSourceComponents.values();
+    return this._dataSourceComponents;
   }
 
   public int getDataSourceCount()
@@ -168,12 +187,12 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
   {
     if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
 
-    return this._layoutComponents.get(name.toLowerCase());
+    return this._layoutComponentsByLowerName.get(name.toLowerCase());
   }
 
   public Iterable<LayoutComponent> getLayouts()
   {
-    return this._layoutComponents.values();
+    return this._layoutComponents;
   }
 
   public int getLayoutCount()
@@ -198,12 +217,12 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
   {
     if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
 
-    return this._regularComponents.get(name.toLowerCase());
+    return this._regularComponentsByLowerName.get(name.toLowerCase());
   }
 
   public Iterable<Component> getRegulars()
   {
-    return this._regularComponents.values();
+    return this._regularComponents;
   }
 
   public int getRegularCount()
