@@ -166,34 +166,37 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     Iterable<Component> comps = dash.getRegulars();
     for(Component comp : comps)
     {
-      IThingWriter writer;
-      try
+      if(StringUtils.isNotEmpty(comp.getName()))
       {
-        writer = factory.getWriter(comp);
+        IThingWriter writer;
+        try
+        {
+          writer = factory.getWriter(comp);
+        }
+        catch(UnsupportedThingException ex)
+        {
+          throw new ThingWriteException(ex);
+        }
+
+        boolean isWidget = comp instanceof WidgetComponent;
+
+        StringBuilder out2 = isWidget ? widgetsOut : out;
+        if(!isFirstComp) { out2.append(NEWLINE); }
+
+        // NOTE: Widgets don't really exist at runtime, 
+        // only their (leaf-)content does.
+        if(comp instanceof VisualComponent && !(comp instanceof WidgetComponent))
+        {
+          if(isFirstAddComp) { isFirstAddComp = false; }
+          else { addCompIds.append(", "); }
+
+          addCompIds.append(context.getId(comp));
+        }
+
+        writer.write(out2, context, comp);
+      
+        isFirstComp = false;
       }
-      catch(UnsupportedThingException ex)
-      {
-        throw new ThingWriteException(ex);
-      }
-      
-      boolean isWidget = comp instanceof WidgetComponent;
-      
-      StringBuilder out2 = isWidget ? widgetsOut : out;
-      if(!isFirstComp) { out2.append(NEWLINE); }
-      
-      // NOTE: Widgets don't really exist at runtime, 
-      // only their (leaf-)content does.
-      if(comp instanceof VisualComponent && !(comp instanceof WidgetComponent))
-      {
-        if(isFirstAddComp) { isFirstAddComp = false; }
-        else { addCompIds.append(", "); }
-        
-        addCompIds.append(context.getId(comp));
-      }
-      
-      writer.write(out2, context, comp);
-      
-      isFirstComp = false;
     }
     
     if(!isFirstAddComp)
@@ -240,15 +243,14 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     // Get CDE headers
     final String baseUrl = (options.isAbsolute() ? options.getSchemedRoot() : "") +
                            DashboardDesignerContentGenerator.SERVER_URL_VALUE;
-    final String newLine = NEWLINE;
     
     StringFilter cssFilter = new StringFilter()
     {
       public String filter(String input)
       {
         return String.format(
-          "\t\t<link href=\"%sgetCssResource/%s\" rel=\"stylesheet\" type=\"text/css\" />%s",
-          baseUrl, input, newLine);
+          "\t\t<link href=\"%sgetCssResource/%s\" rel=\"stylesheet\" type=\"text/css\" />",
+          baseUrl, input);
       }
     };
 
@@ -257,8 +259,8 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       public String filter(String input)
       {
         return String.format(
-          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%sgetJsResource/%s\"></script>%s",
-          baseUrl, input, newLine);
+          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%sgetJsResource/%s\"></script>",
+          baseUrl, input);
       }
     };
     

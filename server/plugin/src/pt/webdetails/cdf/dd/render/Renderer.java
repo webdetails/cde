@@ -64,7 +64,7 @@ public abstract class Renderer
       Iterable<Component> components = dashboard.getRegulars();
       for(Component comp : components)
       {
-        if(comp instanceof WidgetComponent)
+        if(StringUtils.isNotEmpty(comp.getName()) && comp instanceof WidgetComponent)
         {
           WidgetComponent widgetComp = (WidgetComponent)comp;
           

@@ -286,7 +286,7 @@ public final class MetaModelManager
           if(resType == Resource.Type.SCRIPT)
           {
             String app = res.getApp();
-            if(app == null || app.equals(Engines.CDF))
+            if(StringUtils.isEmpty(app) || app.equals(Engines.CDF))
             {
               engine = cdfDeps;
             }

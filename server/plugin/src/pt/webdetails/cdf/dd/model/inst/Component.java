@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
-import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.validation.ComponentDuplicatePropertyBindingError;
 import pt.webdetails.cdf.dd.model.inst.validation.ComponentUnresolvedPropertyBindingError;
@@ -71,7 +70,7 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         }
 
         String propAlias = bind.getAlias().toLowerCase();
-        if(this._propertyBindingsByLowerAlias.containsKey(propAlias)) 
+        if(this._propertyBindingsByLowerAlias.containsKey(propAlias))
         {
           // Component still initializing, so don't have an id yet
           throw new ValidationException(
@@ -87,7 +86,7 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
           this._extensionPropertyBindings.add((ExtensionPropertyBinding)bind);
         }
         
-        if(name == null && "name".equals(propAlias))
+        if(name == null && "name".equalsIgnoreCase(propAlias))
         {
           name = bind.getValue();
         }
@@ -100,14 +99,16 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
       this._extensionPropertyBindings    = null;
     }
 
-    if(StringUtils.isEmpty(name))
-    {
-      throw new ValidationException(new RequiredAttributeError("Name"));
-    }
-
-    this._name = name;
+    // NOTE: name may be empty.
+    // During design time, components may not yet have a name.
+    this._name = StringUtils.defaultIfEmpty(name, "");
     
     this._idPrefix = builder._idPrefix == null ? this.initGetDefaultIdPrefix() : builder._idPrefix;
+    
+    if(this._name.isEmpty()) 
+    {
+      _logger.warn("A component of type '" + this.getMeta().getName() + "' has no name.");
+    }
   }
   
   /**
