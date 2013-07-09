@@ -165,8 +165,7 @@ public class XmlStructure implements IStructure
     }
 
     // 3. CDA
-    CdaRenderer cdaRenderer = CdaRenderer.getInstance();
-    cdaRenderer.setContext(cdfdeJsText);
+    CdaRenderer cdaRenderer = new CdaRenderer(cdfdeJsText);
     
     String cdaFileName = cdeFileName.replace(".cdfde", ".cda");
     

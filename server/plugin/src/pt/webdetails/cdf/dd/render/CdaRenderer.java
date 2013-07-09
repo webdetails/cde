@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.render.cda.*;
+import pt.webdetails.cdf.dd.util.Utils;
 
 /**
  * TODO: this should be changed to a ThingWriter of DataSourceComponents?
@@ -32,51 +33,31 @@ import pt.webdetails.cdf.dd.render.cda.*;
  */
 public class CdaRenderer
 {
-
-  private static CdaRenderer _instance;
-  private JXPathContext doc;
-  private JSON cdaDefinitions;
+  private final JSON cdaDefinitions;
+  private final JXPathContext doc;
   
   private static String CDA_ELEMENTS_JXPATH = "/datasources/rows[meta='CDA']"; 
 
-  private CdaRenderer()
+  public CdaRenderer(String docJson)
+  {
+    // JSONSerializer doesn't like newlines at the head of the file
+    this(JXPathContext.newContext(JSONSerializer.toJSON(docJson.replaceAll("^\n*", ""))));
+  }
+  public CdaRenderer(JXPathContext doc)
   {
     this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
-  }
-
-  public static synchronized CdaRenderer getInstance()
-  {
-    if (_instance == null)
-    {
-      _instance = new CdaRenderer();
-    }
-    return _instance;
-  }
-
-  public void setContext(JXPathContext doc)
-  {
-    this.doc = doc;
-  }
-
-  public String render(JXPathContext doc) throws Exception
-  {
-    this.setContext(doc);
-    return this.render();
+    this.doc = doc; // NOTE: may be null!
   }
   
   public boolean isEmpty(){
-    if(doc == null) return true;
+    if(doc == null) { return true; }
+    
     Pointer pointer = doc.getPointer(CDA_ELEMENTS_JXPATH); 
     return pointer == null || pointer instanceof NullPointer;
   }
 
   public String render() throws Exception
   {
-    if (cdaDefinitions == null)
-    {
-      this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
-    }
-    
     ByteArrayOutputStream result = new ByteArrayOutputStream();
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -91,7 +72,7 @@ public class CdaRenderer
       Pointer pointer = pointers.next();
       JXPathContext context = JXPathContext.newContext(pointer.getNode());
       String connectionId = (String) context.getValue("properties/.[name='name']/value", String.class);
-      Element conn = null;
+      Element conn;
       try
       {
         conn = exportConnection(cdaFile, context, connectionId);
@@ -103,6 +84,7 @@ public class CdaRenderer
         // we just need to make sure exportDataAccess doesn't try to generate a connection link
         connectionId = null;
       }
+      
       Element dataAccess = exportDataAccess(cdaFile, context, connectionId);
 
       root.appendChild(dataAccess);
@@ -136,7 +118,7 @@ public class CdaRenderer
     while (params.hasNext())
     {
       Pointer pointer = params.next();
-      JSONObject param = (JSONObject) pointer.getNode();
+      //JSONObject param = (JSONObject) pointer.getNode();
       String paramName = pointer.asPath().replaceAll(".*name='(.*?)'.*", "$1");
       String placement = ((String) conn.getValue(pointer.asPath() + "/placement", String.class)).toLowerCase();
 
@@ -176,7 +158,7 @@ public class CdaRenderer
       else
       {
         String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
-        Element child = doc.createElement(capitalize(paramName));
+        Element child = doc.createElement(Utils.toFirstUpperCase(paramName));
         child.appendChild(doc.createTextNode(value));
         connection.appendChild(child);
       }
@@ -262,7 +244,7 @@ public class CdaRenderer
       else if (paramName.equals("top") || paramName.equals("bottom")
               || paramName.equals("left") || paramName.equals("right"))
       {
-        Element compoundElem = dataAccess.getOwnerDocument().createElement(capitalize(paramName));
+        Element compoundElem = dataAccess.getOwnerDocument().createElement(Utils.toFirstUpperCase(paramName));
         
         renderProperty(new CompoundComponent(), context, paramName, compoundElem);
         
@@ -283,27 +265,11 @@ public class CdaRenderer
         {
           value = value.trim();
         }
-        Element child = doc.createElement(capitalize(paramName));
+        Element child = doc.createElement(Utils.toFirstUpperCase(paramName));
         child.appendChild(doc.createTextNode(value));
         dataAccess.appendChild(child);
       }
     }
     return dataAccess;
-  }
-
-  public void setContext(String string)
-  {
-    // JSONSerializer doesn't like newlines at the head of the file
-    JSON json = JSONSerializer.toJSON(string.replaceAll("^\n*", ""));
-    setContext(JXPathContext.newContext(json));
-  }
-
-  private static String capitalize(String s)
-  {
-    if (s.length() == 0)
-    {
-      return s;
-    }
-    return s.substring(0, 1).toUpperCase() + s.substring(1);
   }
 }
