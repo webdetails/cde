@@ -9,6 +9,7 @@ import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
+import pt.webdetails.cdf.dd.util.Utils;
 
 /**
  * A property binding that is not known to exist or not, as a property type usage, in the component type,
@@ -80,8 +81,15 @@ public abstract class UnresolvedPropertyBinding extends PropertyBinding
       if(prop != null)
       {
         ExtensionPropertyBinding.Builder builder = new ExtensionPropertyBinding.Builder();
+        
+        // HACK: CCC V1 properties must be made to look like when they were defined
+        boolean isCCC = this._alias.startsWith("ccc");
+        String alias = isCCC ?
+            Utils.toFirstLowerCase(this._alias.substring(3)) :
+            this._alias;
+        
         builder
-          .setAlias(this._alias)
+          .setAlias(alias)
           .setProperty(prop)
           .setValue(this.getValue());
 

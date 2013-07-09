@@ -1,6 +1,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
 
+import java.util.List;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Thing;
@@ -10,6 +11,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
+import pt.webdetails.cdf.dd.model.inst.ExtensionPropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
@@ -17,7 +19,7 @@ import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 /**
- * @author Duarte
+ * @author dcleao
  */
 public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter
 {
@@ -91,6 +93,35 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
             throw new ThingWriteException(ex);
           }
           
+          if(!isDefaultDefinition && childContext.isFirstInList())
+          {
+            out.append(NEWLINE);
+          }
+          
+          writer.write(out, childContext, propBind);
+        }
+      }
+    }
+    
+    if(comp.getExtensionPropertyBindingCount() > 0)
+    {
+      // HACK: CCC V1 properties have to go into the "chartDefinition" definition...
+      boolean isCCC = compType.getName().startsWith("ccc");
+      if(isCCC ? !isDefaultDefinition : isDefaultDefinition)
+      {
+        Iterable<ExtensionPropertyBinding> propBinds = comp.getExtensionPropertyBindings();
+        for(ExtensionPropertyBinding propBind : propBinds)
+        {
+          IThingWriter writer;
+          try
+          {
+            writer = factory.getWriter(propBind);
+          }
+          catch(UnsupportedThingException ex)
+          {
+            throw new ThingWriteException(ex);
+          }
+
           if(!isDefaultDefinition && childContext.isFirstInList())
           {
             out.append(NEWLINE);
