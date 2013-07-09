@@ -3,10 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.pentaho.platform.api.engine.IPentahoSession;
 
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;

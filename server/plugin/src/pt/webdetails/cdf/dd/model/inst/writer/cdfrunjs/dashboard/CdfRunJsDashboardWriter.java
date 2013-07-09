@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
@@ -8,7 +11,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import pt.webdetails.cdf.dd.CdfStyles;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.ResourceManager;
@@ -21,7 +23,7 @@ import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 
 /**
- * @author Duarte
+ * @author dcleao
  */
 public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter
 {

@@ -1,10 +1,12 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
 import java.util.Iterator;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Pointer;
 
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;

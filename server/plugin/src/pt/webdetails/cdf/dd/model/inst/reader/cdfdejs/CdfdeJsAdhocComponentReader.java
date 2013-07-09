@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
@@ -8,7 +11,7 @@ import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 
 /**
- * @author Duarte
+ * @author dcleao
  */
 public class CdfdeJsAdhocComponentReader<TM extends Component.Builder> extends CdfdeJsComponentReader<TM>
 {
