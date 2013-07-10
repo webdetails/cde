@@ -14,7 +14,7 @@ var jsTemplateForComponent = "/** \n" +
         
  "       /* USING QUERY\n" +
         
-  "      var query = new Query(myself.queryDefinition);\n" +
+  "      var query = Dashboards.getQuery(myself.queryDefinition);\n" +
 
 "        query.fetchData(myself.parameters, function(values) {\n" +
 "            var changedValues = undefined;\n" +
