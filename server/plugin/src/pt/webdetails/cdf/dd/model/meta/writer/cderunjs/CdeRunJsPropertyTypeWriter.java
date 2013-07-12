@@ -11,6 +11,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
+import pt.webdetails.cdf.dd.model.meta.ComponentType;
 
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
@@ -19,19 +20,76 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
  */
 public class CdeRunJsPropertyTypeWriter extends JsWriterAbstract implements IThingWriter
 {
-  public void write(java.lang.Object output, IThingWriteContext context, Thing t) throws ThingWriteException
+  public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
     PropertyType prop = (PropertyType)t;
     StringBuilder out = (StringBuilder)output;
     
-    String camelName = prop.getCamelName();
-    String jsStrCamelName = JsonUtils.toJsString(camelName);
+    // ------------
+    
+    writeValuesListInputTypeRenderer(out, prop);
+    
+    // ------------
     
     // NOTE: property type name cannot have spaces
     // or other special chars, but this is not enforced anywhere.
-    String propName = prop.getName() + "Property";
+    
+    String camelName = prop.getCamelName();
+    
+    // camelName is the name by which the property will be registered
+    // on the client, by means of PropertiesManager.register(...)
+    String fullName = camelName;
+    
+    ComponentType owner = prop.getOwner();
+    if(owner != null) 
+    {
+      String modelId = CdeRunJsHelper.getComponentTypeModelId(owner);
+      fullName = modelId + "_" + fullName;
+    }
+    
+    // PropVar still not garanteed unique...
+    String propVarName = prop.getName() + "Property";
+    
+    // TODO: Currently, the Property/Base property is not being taken
+    // into account in the generated JS...
+    out.append(NEWLINE);
+    out.append("var "); out.append(propVarName); out.append(" = BasePropertyType.extend({");
+    out.append(NEWLINE);
 
-    // Write Select renderer when it is a list
+    // This is the name used by PropertiesManager.register(...) to index the property
+    addJsProperty(out, "type", JsonUtils.toJsString(fullName), INDENT1, true);
+    addCommaAndLineSep(out);
+    
+    out.append(INDENT1); out.append("stub: {"); out.append(NEWLINE);
+    // The local property type name is the default name used by property instances
+    addJsProperty(out, "name",        JsonUtils.toJsString(camelName), INDENT2, true);
+    addJsProperty(out, "value",       prop.getDefaultValue(), INDENT2, false);
+    addJsProperty(out, "description", JsonUtils.toJsString(prop.getLabel()), INDENT2, false);
+    addJsProperty(out, "tooltip",     JsonUtils.toJsString(prop.getTooltip()), INDENT2, false);
+    
+    // Unfortunately, this «type» attribute is the InputType...
+    // This attribute is stored along with name and value attributes in the CDFDE JSON file.
+    addJsProperty(out, "type",        JsonUtils.toJsString(prop.getInputType()), INDENT2, false);
+    addJsProperty(out, "order",       String.valueOf(prop.getOrder()), INDENT2, false);
+    
+    // TODO: CDE editor only supports "simple" and "advanced" classTypes.
+    String cat = prop.getCategory();
+    if(!PropertyType.CAT_ADVANCED.equals(cat))
+    {
+      cat = "";
+    }
+    
+    addJsProperty(out, "classType", JsonUtils.toJsString(cat == null ? "" : cat), INDENT2, false);
+    out.append(NEWLINE);
+    out.append(INDENT1); out.append("}"); out.append(NEWLINE);
+    out.append("});"); out.append(NEWLINE);
+
+    out.append("PropertiesManager.register(new "); out.append(propVarName); out.append("());");
+    out.append(NEWLINE);
+  }
+  
+  private void writeValuesListInputTypeRenderer(StringBuilder out, PropertyType prop)
+  {
     String valuesSource = prop.getPossibleValuesSource();
     if(valuesSource != null || prop.getPossibleValueCount() > 0)
     {
@@ -71,41 +129,5 @@ public class CdeRunJsPropertyTypeWriter extends JsWriterAbstract implements IThi
       out.append("});");
       out.append(NEWLINE);
     }
-
-    // TODO: Currently, the Property/Base property is not being taken
-    // into account in the generated JS....
-    out.append(NEWLINE);
-    out.append("var ");
-    out.append(propName);
-    out.append(" = BasePropertyType.extend({");
-    out.append(NEWLINE);
-
-    addJsProperty(out, "type", jsStrCamelName, INDENT1, true);
-    addCommaAndLineSep(out);
-    out.append(INDENT1); out.append("stub: {"); out.append(NEWLINE);
-    addJsProperty(out, "name",        jsStrCamelName, INDENT2, true);
-    addJsProperty(out, "value",       prop.getDefaultValue(), INDENT2, false);
-    addJsProperty(out, "description", JsonUtils.toJsString(prop.getLabel()), INDENT2, false);
-    addJsProperty(out, "tooltip",     JsonUtils.toJsString(prop.getTooltip()), INDENT2, false);
-    addJsProperty(out, "type",        JsonUtils.toJsString(prop.getInputType()), INDENT2, false);
-    addJsProperty(out, "order",       String.valueOf(prop.getOrder()), INDENT2, false);
-    
-    // TODO: CDE editor only supports "simple" and "advanced" classTypes.
-    String cat = prop.getCategory();
-    if(!PropertyType.CAT_ADVANCED.equals(cat))
-    {
-      cat = "";
-    }
-    
-    addJsProperty(out, "classType", JsonUtils.toJsString(cat == null ? "" : cat), INDENT2, false);
-    out.append(NEWLINE);
-    out.append(INDENT1); out.append("}"); out.append(NEWLINE);
-    out.append("});"); out.append(NEWLINE);
-
-    // TODO: this registers properties in a way that private properties
-    // may shadow/replace global properties...
-    // It's not the full name that is being used.
-    out.append("PropertiesManager.register(new "); out.append(propName); out.append("());");
-    out.append(NEWLINE);
   }
 }

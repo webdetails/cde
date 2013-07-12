@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd.model.meta.reader.cda;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
@@ -82,7 +83,10 @@ public final class CdaModelReader implements IThingReader
     JXPathContext jctx = JXPathContext.newContext(def);
 
     String label = (String)jctx.getValue("metadata/name");
-
+    
+    // This specific Data Source has special treatment below
+    boolean isKettleOverX = "kettle over kettleTransFromFile".equalsIgnoreCase(label);
+    
     _logger.debug(String.format("\t%s", label));
 
     String connType = (String) jctx.getValue("metadata/conntype");
@@ -99,17 +103,36 @@ public final class CdaModelReader implements IThingReader
       .addAttribute("conntype", connType)
       .addAttribute("datype", (String)jctx.getValue("metadata/datype"));
 
-    for(String propName : this.getPropertyNames(def))
+    for(String cdaPropName : this.getPropertyNames(def))
     {
-      builder.useProperty(null, propName);
+      if (cdaPropName.equals("id") || cdaPropName.equals("connection")) {
+        continue;
+      } else if (cdaPropName.equals("columns")) {
+        builder.useProperty(null, "cdacolumns");
+        builder.useProperty(null, "cdacalculatedcolumns");
+      } else if (cdaPropName.equals("output")) {
+        builder.useProperty(null, "output");
+        builder.useProperty(null, "outputMode");
+      } else if (cdaPropName.equals("left")) {
+        builder.useProperty(null, "left");
+        builder.useProperty(null, "leftkeys");
+      } else if (cdaPropName.equals("right")) {
+        builder.useProperty(null, "right");
+        builder.useProperty(null, "rightkeys");
+      } else if(isKettleOverX && cdaPropName.equalsIgnoreCase("query")) {
+        builder.useProperty(cdaPropName, "kettleQuery");
+      } else {
+        builder.useProperty(null, cdaPropName);
+      }
+      
     }
 
     model.addComponent(builder);
   }
 
-  private String[] getPropertyNames(JSONObject def)
+  private List<String> getPropertyNames(JSONObject def)
   {
-    ArrayList<String> props1 = new ArrayList<String>();
+    ArrayList<String> props = new ArrayList<String>();
 
     JXPathContext context = JXPathContext.newContext(def);
 
@@ -117,40 +140,16 @@ public final class CdaModelReader implements IThingReader
     if (connection != null) {
       @SuppressWarnings("unchecked")
       Set<String> keys = connection.keySet();
-      props1.addAll(keys);
+      props.addAll(keys);
     }
 
     JSONObject dataaccess = (JSONObject)context.getValue("definition/dataaccess", JSONObject.class);
     if (dataaccess != null) {
       @SuppressWarnings("unchecked") 
       Set<String> keys = dataaccess.keySet();
-      props1.addAll(keys);
+      props.addAll(keys);
     }
     
-    // Process/Expand/Exclude
-
-    ArrayList<String> props2 = new ArrayList<String>();
-    for(String prop1 : props1)
-    {
-      if (prop1.equals("id") || prop1.equals("connection")) {
-        continue;
-      } else if (prop1.equals("columns")) {
-        props2.add("cdacolumns");
-        props2.add("cdacalculatedcolumns");
-      } else if (prop1.equals("output")) {
-        props2.add("output");
-        props2.add("outputMode");
-      } else if (prop1.equals("left")) {
-        props2.add("left");
-        props2.add("leftkeys");
-      } else if (prop1.equals("right")) {
-        props2.add("right");
-        props2.add("rightkeys");
-      } else {
-        props2.add(prop1);
-      }
-    }
-    
-    return props2.toArray(new String[props2.size()]);
+    return props;
   }
 }

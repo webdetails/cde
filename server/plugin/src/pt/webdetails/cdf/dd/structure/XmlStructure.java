@@ -149,10 +149,15 @@ public class XmlStructure implements IStructure
 
     // 2. If not the CDE temp file, delete the temp file, if one exists
     IRepositoryAccess repository = PentahoRepositoryAccess.getRepository(userSession);
-    if(cdeRelFilePath.indexOf("_tmp.cdfde") == -1)
+    
+    boolean isPreview = cdeRelFilePath.indexOf("_tmp.cdfde") >= 0;
+    if(!isPreview)
     {
       String cdeTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cdfde");
       repository.removeFileIfExists(cdeTempFilePath);
+      
+      String cdaTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cda");
+      repository.removeFileIfExists(cdaTempFilePath);
     }
     
     // 3. CDE
@@ -184,17 +189,20 @@ public class XmlStructure implements IStructure
       }
     }
     
-    String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+    if(!isPreview) 
+    {
+      String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
     
-    // 4. When the component is a widget,
-    //    and its internal "structure" has changed,
-    //    Then any dashboard where it is used and 
-    //    whose render result is cached 
-    //    must be invalidated.
-    DashboardManager.getInstance().invalidateDashboard(wcdfFilePath);
-    
-    // 5. CGG (requires an updated Dashboard instance)
-    this.saveCgg(repository, wcdfFilePath);
+      // 4. When the component is a widget,
+      //    and its internal "structure" has changed,
+      //    Then any dashboard where it is used and 
+      //    whose render result is cached 
+      //    must be invalidated.
+      DashboardManager.getInstance().invalidateDashboard(wcdfFilePath);
+
+      // 5. CGG (requires an updated Dashboard instance)
+      this.saveCgg(repository, wcdfFilePath);
+    }
     
     // TODO: Is this used?
     result.put("cdfde", "true");

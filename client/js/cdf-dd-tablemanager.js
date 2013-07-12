@@ -388,22 +388,29 @@ var TableManager = Base.extend({
 
     // Sort properties again, by #order
     // With the exceptions:
-    // * the "name" property which is forced to take the first place, when present
+    // * The "name" property, which is forced to take the first place.
     // * V1 - properties are all placed alphabetically between
     //        standard component props and V2 props
+    // * ?  - last ones
     rowProps.sort(function(p1, p2){
-      if(p1.name === 'name'){
-        return -1;
-      }
-      if(p2.name === 'name'){
-        return 1;
-      }
-
+      if(p1.name === 'name') { return -1; }
+      if(p2.name === 'name') { return  1; }
+      
       var p1Desc = p1.description;
       var p2Desc = p2.description;
-      var p1V1 = p1Desc.indexOf('V1') === 0;
-      var p2V1 = p2Desc.indexOf('V1') === 0;
-      if(p1V1 && p2V1){
+      
+      var p1Undef = p1Desc.charAt(0) === '?';
+      var p2Undef = p2Desc.charAt(0) === '?';
+      
+      if(p1Undef) {
+        if(!p2Undef) { return +1; }
+      } else if(p2Undef) {
+        if(!p1Undef) { return -1; }
+      }
+      
+      var p1V1 = !!CDFDD.DISCONTINUED_PROP_PATTERN.exec(p1Desc);
+      var p2V1 = !!CDFDD.DISCONTINUED_PROP_PATTERN.exec(p2Desc);
+      if(p1V1 && p2V1) {
         return p1Desc < p2Desc ? -1 :
                p1Desc > p2Desc ?  1 : 0;
       }

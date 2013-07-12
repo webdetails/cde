@@ -51,6 +51,11 @@ public final class PropertyTypeUsage
     return this._alias;
   }
   
+  public final boolean isAliased()
+  {
+    return !this._alias.equals(this.getName());
+  }
+  
   public final String getName()
   {
     return this._prop.getName();
