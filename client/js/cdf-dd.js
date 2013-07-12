@@ -826,7 +826,6 @@ var CDFDD = Base.extend({
       '<span class="title">Author:</span>'+
       '<br/>'+
       '<input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>'+
-      '<hr style="background:none;"/>\n' +
       '<span class="title">Description:</span>'+
       '<br/>'+
       '<textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
@@ -916,48 +915,72 @@ var CDFDD = Base.extend({
       selectedFile = "",
       selectedFolder = "";
     var myself = this;
-    var radioButtons = "<form>" + "<span class='title'>Select the format: </span><div><input type='radio' name='saveAsRadio' value='dashboard' id='dashRadio' checked><span class='folderexplorerfilelabel' style='top: -2px; left: 0px;'>Dashboard</span></div>" + "<div><input type='radio' name='saveAsRadio' value='widget' id='widgetRadio'><span class='folderexplorerfilelabel' style='top: -2px; left: 0px;'>Widget</span></div>" + "</form>";
-    var widgetFieldContent = '<div style="width:25%; float:left;position: relative;top: 2px;">' +
-      '                               <span class="folderexplorerfilelabel" style="width:100%;">Widget Name:</span>' +
+    var radioButtons = '<form>' + 
+    '                     <table>'+
+    '                       <tr  style="font-weight: normal;">'+
+    '                         <td style="width:50%;margin: 0;padding: 0;">'+
+    '                           <div style=" width: 15px; padding: 0; margin: 0; float: left; "><input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" style="width:100%;" checked></div>'+
+    '                           <div style="width:80%; float: right;padding: 0;margin: 0;"><span style="top: -2px; width: 20%;">Dashboard</span></div>'+
+    '                         </td>' + 
+    '                         <td style="width:50%;margin: 0;padding: 0;">'+
+    '                           <div style="width:15px; float:left;"><input type="radio" name="saveAsRadio" value="widget" id="widgetRadio" style="width:100%;"></div>'+
+    '                           <div style="width:80%; float: right;"><span style="top: -2px; width: 20%;">Widget</span></div>'+
+    '                         </td>'+
+    '                       </tr>' +
+    '                     </table>'+ 
+    '                   </form>';
+
+    var widgetFieldContent = '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">' +
+      '                               <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>' +
       '                             </div>\n' +
-      '                             <div style="width:75%;float:right;">' +
-      '                               <span class="folderexplorerfileinput" style="top:0; left: 0; "><input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
+      '                             <div style="width:80%;float:right;">' +
+      '                               <span style="top:0; left: 0; "><input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
       '                             </div>\n' +
       '                             <hr class="filexplorerhr"/>\n';
 
     var fileInfo = '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
       '                   <div style="height:25px;padding-top: 10px;">' +
-      '                       <div style="float: left; width:25%;position: relative;top: 2px;">' +
-      '                         <span class="folderexplorerfilelabel" style="float: left;width: 100%;">File Name:</span>' +
+      '                       <div style="float: left; width:20%;position: relative;top: 7px;">' +
+      '                         <span class="folderexplorerfilelabel" style="float: left;width: 100%; left:0;">File Name: *</span>' +
       '                       </div>\n' +
-      '                       <div style="float: right;width:75%;">' +
-      '                         <span class="folderexplorerfileinput" style=" top: 0px; left: 0; "><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
+      '                       <div style="float: right;width:80%;">' +
+      '                         <table>'+
+      '                           <tr>'+
+      '                             <td style="padding:0;">'+
+      '                               <span style=" top: 0px; left:0;"><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
+      '                             </td>'+
+      '                             <td style="width:200px;">'+
+                                      radioButtons+
+      '                             </td>'+
+      '                           </tr>'+
+      '                         </table>'+
       '                       </div>' +
       '                   </div>\n' +
       '                   <br>\n' +
       '                   <div class="widgetField">' +
       '                   </div>' +
-      '                   <span class="folderexplorerextralabel" >- Extra Information -</span><br/>\n' +
+      '                   <hr class="saveHr"'+
+      '                   <span class="folderexplorerextralabel" style="left:0px;">- Extra Information -</span><br/>\n' +
       '                   <div>' +
-      '                       <div style="float:left; width:25%;">' +
-      '                         <span class="folderexplorerextralabels" >Title:</span>' +
+      '                       <div style="float:left; width:20%;">' +
+      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Title:</span>' +
       '                       </div>' +
-      '                       <div style="float:right; width:75%;">' +
+      '                       <div style="float:right; width:80%;">' +
       '                         <input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
       '                       </div>' +
       '                   </div>\n' +
       '                   <hr>' +
       '                   <div>' +
-      '                       <div style="float:left; width:25%;">' +
-      '                         <span class="folderexplorerextralabels" >Description:</span>' +
+      '                       <div style="float:left; width:20%;">' +
+      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Description:</span>' +
       '                       </div>' +
-      '                       <div style="float:right; width:75%;">' +
+      '                       <div style="float:right; width:80%;">' +
       '                         <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
       '                       </div>' +
       '                       <br>' +
       '                   </div>';
 
-    var content = "<h2>Save as...</h2><hr/><div style=''>" + radioButtons + fileInfo + "</div>";
+    var content = "<h2>Save as...</h2><hr/><div style=''>" + fileInfo + "</div>";
 
     $.prompt(content, {
       prefix: "popup",
@@ -967,7 +990,7 @@ var CDFDD = Base.extend({
       },
       loaded: function() {
 
-        $("#popup").css("width", "auto");
+        $("#popup").css("width", "515px");
         $(".widgetField").hide();
         $(".widgetField").append(widgetFieldContent);
 
@@ -1449,22 +1472,8 @@ var Panel = Base.extend({
     //var DISABLED_STR = "_inactive";
     // Disable other buttons and enable this one
     var a = $(doc);
-    var myIdx = a.prevAll("a").length;
-    a.parent().find("img").each(function(i, x) {
-      if (i == myIdx) {
-        //may be hovered
-        Panel.unsetHover(x);
-        $(x).attr("src", $(x).attr("src").replace(/(.*)\/X?(.*)/, "$1/$2"));
-        //enable
-        //$(x).attr("src", $(x).attr("src").replace(DISABLED_STR,ENABLED_STR));
-      } else {
-        $(x).attr("src", $(x).attr("src").replace(/(.*)\/X?(.*)/, "$1/X$2"));
-        //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
-        //disable
-
-      }
-
-    });
+    $(".panelButton").removeClass("panelButton-active");
+    a.parent().addClass("panelButton-active");
   },
 
   disableThisButton: function(doc) {

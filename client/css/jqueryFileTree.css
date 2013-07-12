@@ -15,14 +15,16 @@ UL.jqueryFileTree LI {
 }
 
 UL.jqueryFileTree A {
-	color: #a3a3a3; !important
+	color: #666 !important;
 	text-decoration: none;
 	display: block;
 	padding: 0px 2px;
 }
 
 UL.jqueryFileTree A:hover {
-	background: #0B99D5;
+	background: #666;
+	color: #f5f5f5!important;
+	text-shadow:none;
 }
 
 /* Core Styles */

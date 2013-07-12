@@ -164,14 +164,14 @@ a.prev, a.next {
 }
 
 .popupTemplate{
-  width: 730px;
-  height:500px;
+  width: 735px;
+  height:510px;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
   position: absolute; 
-  background-color: #222; 
+  background-color: #eaedee; 
   font-size: 11px; 
   text-align: left; 
-  border: solid 2px #12a2d8;
+  border: solid 2px #bbb;
   padding: 7px;
   max-width: 75%;
   max-height: 75%;
@@ -179,9 +179,23 @@ a.prev, a.next {
   overflow-x:auto;
 }
 
+div.popupTemplate .popupTemplateclose{
+  font-weight: bold;
+  border: 2px solid #bbb;
+  height: 20px;
+  width: 20px;
+  text-align: center; 
+  background: url(../images/close.png);
+  z-index: 100;
+  color: #222;
+  font-size: 0px;
+  position: absolute;
+  right: 8px;
+}
+
 .popupTemplate h2 {
   float: left;
-  color: #12a2d8;
+  color: #555;
   line-height: 20px;
   font-size: 15px;
   font-weight: bold;
@@ -192,26 +206,26 @@ a.prev, a.next {
 div.popupTemplate .popupTemplatebuttons{ 
   text-align: right; 
   padding: 5px 0 5px 0;  
-  background-color: #222;
+  background-color: #eaedee;
 }
 div.popupTemplate button{ 
 	padding: 3px 10px;
-	background-color: #222;
-	border: solid 2px #12a2d8;
-	color: #999;
+	background-color: #eaedee;
+	border: solid 2px #bbb;
+	color: #444;
 	font-size: 12px;
 	float: right;
 	position: relative;
-	bottom: -90px;
+	bottom: -100px;
 	margin-left: 5px;
+	top: auto!important;
 }
 div.popupTemplate button:hover{ 
-  background-color: #12a2d8!important;
-  color: #222!important;
+  background-color: #bbb!important;
 }
 div.popupTemplate button.popupTemplatedefaultbutton{ 
   /*background-color: #8DC05B;*/
-  background-color: #222;
+  background-color: #eaedee;
 }
 
 
