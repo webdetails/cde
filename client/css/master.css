@@ -48,9 +48,7 @@ a {
 
     display: inline-block;
 
-    width: 100px;
-
-    transition: 0.3s;
+    width: 32px;
 
     float: right;
 
@@ -76,7 +74,7 @@ a {
 
     cursor: pointer;
 
-    transition: 0.3s;
+    top: 4px;
 
 }
 
@@ -418,6 +416,16 @@ div.cdfdd-toolbar {
 
   background: #eaedee;
 
+  width: 100%;
+
+  left: 0;
+
+  display: inline;
+
+  max-height: 40px;
+
+  min-width: 950px;
+
 }
 
 
@@ -472,13 +480,33 @@ div.cdfdd-preview {
 
     float:right;
 
+    width: 102px;
+
+    position: relative;
+
+    top: 0;
+
+    right: 0;
+
+    left: 0;
+
 }
 
 
 
 div.cdfdd-modes {
 
-  margin-right : 10px;
+  margin-right: 0;
+
+  position: relative;
+
+  top: 0;
+
+  right: 0;
+
+  min-width: 305px!important;
+
+  width: 305px;
 
 }
 
@@ -487,6 +515,10 @@ div.cdfdd-modes {
 div.cdfdd-main {
 
   margin-top:9px;
+
+  min-width: 440px;
+
+  width: 33%;
 
 }
 
@@ -586,6 +618,12 @@ div#cdfdd-panels {
 
   min-height: 400px;
 
+  width: 100%;
+
+  left: 0;
+
+  min-width: 975px;
+
 }
 
 
@@ -610,7 +648,11 @@ div.cdfdd-panel {
 
   -webkit-box-sizing: border-box;
 
-  padding: 40px 5px 40px 15px;
+  padding: 40px 5px 40px 5px;
+
+  width: 100%;
+
+  min-width: 960px;
 
 }
 
@@ -668,11 +710,7 @@ div.ui-widget-content > ul li {/*TODO...*/
 
   margin-top: 3px;
 
-  border-top-left-radius: 10px;
-
-  border: 2px solid #bbb;
-
-  border-bottom-left-radius: 10px;
+  border: 1px solid #bbb;
 
 }
 
@@ -710,7 +748,7 @@ div.ui-widget-content > ul li {/*TODO...*/
 
   background-color: #12a2d8;
 
-  color: #222;
+  color: #fff;
 
 }
 
@@ -719,12 +757,6 @@ div.ui-widget-content > ul li {/*TODO...*/
 .multiSelectOptions label {
 
   color: #555;
-
-  padding: 5px 10px;
-
-  border: 2px solid #bbb;
-
-  border-radius: 10px;
 
   margin: 2px;
 
@@ -1542,7 +1574,7 @@ div#cdfddOlapMeasureDiv{
 
   display: inline-block;
 
-  margin: 0px 6px;
+  margin: 0px 4px;
 
 }
 
@@ -1634,6 +1666,8 @@ table.cdfdd{
 
   border-collapse:separate;
 
+  left: 0;
+
 }
 
 
@@ -1657,8 +1691,6 @@ form.cdfddInput input, form.cdfddInput button, form.cdfddInput select, button.cd
   border:1px solid #ccc;
 
   color:#444;
-
-  border-radius: 5px;
 
 }
 
@@ -2276,6 +2308,12 @@ table.myTreeTable caption span{
 
   overflow:auto;
 
+  width: 49%;
+
+  padding-left: 7px;
+
+  min-width: 470px;
+
 }
 
 
@@ -2434,19 +2472,19 @@ th.ui-state-default{
 
 .footer {
 
-  line-height: 41px;
+ line-height: 41px;
 
-  position: fixed;
+ position: fixed;
 
-  height: 44px;
+ height: 35px;
 
-  bottom: 0;
+ bottom: 0;
 
-  background: #eaedee;
+ background: #eaedee;
+
+ width: 100%;
 
 }
-
-
 
 
 
@@ -2664,7 +2702,11 @@ h6 {font-size:1em;font-weight:bold;}
 
 .container {
 
+    width: 100%;
+
   
+
+    min-width: 960px;
 
 }
 
@@ -2733,6 +2775,14 @@ h6 {font-size:1em;font-weight:bold;}
   font-weight: 600;
 
   color: #222;
+
+  background-image: url("../images/NAV/menu-icons/preview.png");
+
+  height: 32px;
+
+  width: 32px;
+
+  left: 5px;
 
 }
 
@@ -3523,5 +3573,133 @@ div.popup .button:active {
 .jquery-corner {
 
   display: none;
+
+}
+
+
+
+.span-6.accordion {
+
+    width: 25%;
+
+}
+
+
+
+.span-6.accordion {
+
+    width: 24%;
+
+    min-width: 230px;
+
+    margin: 0;
+
+}
+
+
+
+#cdfdd-components-components.span-8 {
+
+    width: 32%;
+
+    min-width: 310px;
+
+    margin: 0;
+
+}
+
+
+
+#cdfdd-components-properties.span-10.last {
+
+    width: auto;
+
+    min-width: 390px;
+
+    width: 42%;
+
+}
+
+
+
+#cdfdd-datasources-datasources.span-8 {
+
+    width: 32%;
+
+    min-width: 310px;
+
+    margin: 0;
+
+}
+
+
+
+#cdfdd-datasources-properties.span-10.last {
+
+    width: 42%;
+
+    min-width: 390px;
+
+    margin: 0;
+
+}
+
+
+
+#cdfdd-layout-tree {
+
+    padding: 0;
+
+}
+
+
+
+#cdfdd-layout-properties {
+
+    padding: 0;
+
+}
+
+
+
+.layoutPanelButton {
+
+    background-image: url("../images/NAV/menu-icons/layout.png");
+
+    height: 32px!important;
+
+    width: 32px;
+
+}
+
+
+
+.componentsPanelButton {
+
+    background-image: url("../images/NAV/menu-icons/components.png");
+
+    height: 32px!important;
+
+    width: 32px;
+
+}
+
+
+
+.datasourcesPanelButton {
+
+    background-image: url("../images/NAV/menu-icons/data.png");
+
+    height: 32px!important;
+
+    width: 32px;
+
+}
+
+
+
+.panelButton.panelButton-active > * {
+
+    background-position-x: -32px;
 
 }

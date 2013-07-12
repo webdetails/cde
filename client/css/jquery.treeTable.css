@@ -52,7 +52,3 @@
   color: #000;
   z-index: 1;
 }
-
-.treeTable tr.collapsed.ui-state-active td .expander {
-   background-image: url(../images/toggle-expand-light.png);
-}
