@@ -1,4 +1,3 @@
-
 /**
  *
  * SiteMapComponent
@@ -20,7 +19,7 @@ var SiteMapComponent = BaseComponent.extend({
         "<li class='siteMapItem {{classes}}''>" +
         "  <a {{#link}}href='{{link}}'{{/link}}>{{name}}</a>" +
         "</li>"
-      ),
+      )
 
     },
 

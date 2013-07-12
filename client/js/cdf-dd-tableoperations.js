@@ -199,32 +199,11 @@ var BaseOperation = Base.extend({
 
     getHtml: function(tableManager,idx){
 
-      var code ='';
       var tableManagerId = tableManager.getTableId();
+      var code ='';
 
       if (this.canExecute(tableManager)){
-        
-        var mouseHoverCmd = '';
-        if(this.hoverIcon){
-          mouseHoverCmd = 'onmouseover="$(this).attr(\'src\',\'' + this.hoverIcon + '\')" onmouseout="$(this).attr(\'src\',\'' + this.getIcon() + '\')"';
-        }
-        var mouseClickCmd ='';
-        if(this.clickIcon){
-          mouseClickCmd = 'onmousedown="$(this).attr(\'src\',\'' + this.clickIcon + '\')" onmouseup="$(this).attr(\'src\',\'' + this.getIcon() + '\')"';
-        }
-        
-        code = '\n' +
-'       <a class="tooltip" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\n' +
-'       <img border="0" src="'+ this.getIcon() +'" class="cdfdd"' + mouseHoverCmd + ' ' + mouseClickCmd + ' ></img>\n' +
-'       </a>\n' +
-'       ';
-      }
-      else if (this.showInactiveIcon) {
-        var _icon = this.getIcon().replace(/(.*)\//,"$1/X");// "../iconName.png -> ../XiconName.png
-          
-        code = '\n' +
-'       <img border="0" alt="' + this.getName() + '" src="'+ _icon +'" class="cdfdd"></img>\n' +
-'       ';
+        code = '<a class="tooltip '+this.getId().toLowerCase()+' tableOperation" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\n</a>';
       }
 
       return code;

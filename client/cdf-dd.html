@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="../pentaho-cdf/js/blueprint/screen.css" type="text/css">
 <link rel="stylesheet" href="../pentaho-cdf/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css">
 <!--<link rel="stylesheet" href="css/about.css" type="text/css"/> --><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
 <meta http-equiv="X-UA-Compatible" content="IE=8">
 <title>Webdetails CDE</title>
 <!--@HEADER@-->
@@ -14,80 +15,65 @@
   <div class="container">
     <div class="cdfdd-toolbar-logo"></div>
     <div class="cdfdd-toolbar span-24 last">
-    <div class="span-11 cdfdd-main prepend-2">
-    <a onclick="cdfdd.newDashboard()" class="tooltip">
-      <img src="images/NAV/Xnew.png"
-          onmouseover="Panel.setHover(this)"
-          onmouseout="Panel.unsetHover(this)"
-      >
-    </a>
-    <a onclick="cdfdd.save()" class="tooltip">
-      <img src="images/NAV/Xsave.png"
-          onmouseover="Panel.setHover(this)"
-          onmouseout="Panel.unsetHover(this)"
-      >
-    </a>
-    <a onclick="cdfdd.saveAs()" class="tooltip">
-      <img src="images/NAV/Xsave_as.png"
-          onmouseover="Panel.setHover(this)"
-          onmouseout="Panel.unsetHover(this)"
-      >
-    </a>
-    <a class='save-pulldown'>&nbsp;</a>
-    <a id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()" class="tooltip">
-      <img src="images/NAV/Xreload.png"
-          onmouseover="Panel.setHover(this)"
-          onmouseout="Panel.unsetHover(this)"
-      >
-    </a>
-    <a onclick="cdfdd.saveSettings()" class="tooltip">
-      <img src="images/NAV/Xsettings.png"
-          onmouseover="Panel.setHover(this)"
-          onmouseout="Panel.unsetHover(this)"
-      >
-    </a>
-  </div>
-      <!-- Modes -->
-      <div class="span-9 cdfdd-modes">
-        <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip">
-          <img src="images/NAV/layout.png"
-              onmouseover="Panel.setHover(this)"
-              onmouseout="Panel.unsetHover(this)"
-          >
-        </a>
-        <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip">
-          <img src="images/NAV/Xcomponents.png"
-              onmouseover="Panel.setHover(this)"
-              onmouseout="Panel.unsetHover(this)"
-          >
-        </a>
-        <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip">
-          <img src="images/NAV/Xdatasources.png"
-              onmouseover="Panel.setHover(this)"
-              onmouseout="Panel.unsetHover(this)"
-          >
-      </a>
+    <div id = "header" class="span-11 cdfdd-main prepend-2">
+      <div id = "headerLinks" class="headerLinks">
+          
+          
+        <div class="headerButton">
+          <a onclick="cdfdd.newDashboard()" class="headerButton">
+            New
+          </a>
+        </div>
+        <div class="headerButton">
+          <a onclick="cdfdd.save()" class="headerButton">
+            Save
+          </a>
+        </div>
+        <div class="headerButton">
+          <a href="#" class="headerButton" id="SaveAs" onclick="cdfdd.combinedSaveAs()">Save as...</a>
+        </div>
+        <div class="headerButton">
+          <a id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()" class="headerButton">
+            Reload
+          </a>
+        </div>
+        <div class="headerButton">
+          <a onclick="cdfdd.saveSettings()" class="headerButton">
+            Settings
+          </a>
+        </div>
       </div>
-      <div class="span-2 cdfdd-preview last last">
-        <a onclick="cdfdd.previewMode()" class="tooltip">
-          <img src="images/NAV/Xpreview.png"
-              onmouseover="Panel.setHover(this)"
-              onmouseout="Panel.unsetHover(this)"
-          >
-        </a>
+    </div>
+      <!---->
+      <!-- Modes -->
+      <div style=" display: inline-block; position: absolute; right: 0; ">
+        <div class="span-9 cdfdd-modes" style="min-width:380px;">
+          <div class="panelButton panelButton-active" title="Layout Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip layoutPanelButton"></a>
+          </div>
+          <div class="panelButton" title="Components Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip componentsPanelButton"></a>
+          </div>
+          <div class="panelButton" title="Datasources Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip datasourcesPanelButton"></a>
+          </div>
+        </div>
+        <div class="span-2 cdfdd-preview last last">
+          <div class="panelButton" style="width: 40px;">
+            <a id="previewButton" onclick="cdfdd.previewMode()" class="tooltip"></a>
+          </div>
+        </div>
       </div>
     </div>
     <hr class="hr-hidden">
     <div id="cdfdd-panels" class="span-24 round last"></div>
-    <hr class="hr-hidden">
-    <div class="span-21">&nbsp;</div>
     
-    <div class="footer span-24">
+    <div id="footer" class="footer span-24">
     
       <div class="span-3 button cdfdd-about last" onclick="cdfdd.footerMode('about.fancybox')"> About </div>
       <div class="span-3 button cdfdd-documentation last" onclick="cdfdd.footerMode('documentation.fancybox')"> Documentation  </div>
       
-      <a class="webdetailsLogo" href="http://www.webdetails.pt" border="0"> <img src="images/NAV/logo_webdetails.png"></a>
+      <a class="webdetailsLogo" target="_blank" href="http://www.webdetails.pt" border="0"> <img src="images/NAV/logo_webdetails.png"></a>
 
     </div>
   </div>
@@ -147,27 +133,57 @@
 <script language="javascript" type="text/javascript" src="getJsResource/js/cdf-dd-aceWrapper.js"></script>
 <!-- Layout formats -->
 <script type="text/javascript">
-function refitEditor() {
-  for (i=1; i <25; i++) {
-    if ($('.span-' + i).css) {
-      $('.span-' + i).css({
-        "min-width": 40 * i -10 + "px",
-        width: ((4 * i - 1) * 100 / 95) + "%" 
-      });
-    }
-  }
-  $('.container').css({width:"100%"});
-};
 
-$(".save-pulldown").click(function(evt){
+
+
+$(".controlOptions").click(function(evt){
   cdfdd.savePulldown(this,evt);
 });
 $( function(){
-    $(".round").corner();                    
-    $(window).resize(function() {refitEditor();});      
-    refitEditor();
-            
-}) ;
+    $(".round").corner();
+    if(!($.browser.msie && parseInt($.browser.version) < 9)){
+        
+    }
+            }) ;
+//Fix the logo for IE<9 & Popup strech problems
+      if($.browser.msie && parseInt($.browser.version) < 9){
+        $('.cdfdd-toolbar-logo').css('position','relative');
+        $('.cdfdd-toolbar-logo').css('position','absolute');
+        $('.hr-hidden').css('display','none');
+      }else if($.browser.msie && parseInt($.browser.version) == 9){
+        $(document).bind('DOMNodeInserted', function(event){ 
+          if(event != null && event.srcElement != null && event.srcElement.lastChild != null){
+            var childClassName = event.srcElement.lastChild.className;
+            if(childClassName == "popup"){
+              $(".popup").addClass("popup-ie9");
+            }
+          }
+        });
+      }
+
+$(document).ready(function(){
+  var initPlugins = function (result) {
+    result.map(function(plugin){
+      //Verify if there are space characters on the plugin ID if there are the plugin title will be used as if it is the ID
+      if(plugin.pluginId.indexOf(" ") == -1){
+        $.getScript("../"+plugin.pluginId+plugin.jsPath);
+      }else{
+        $.getScript("../"+plugin.title+plugin.jsPath);
+      }
+    });
+  }
+
+
+  $.ajax({
+    url : "getCDEplugins",
+    dataType: 'json',
+    data: [],
+    success : initPlugins
+  });
+  
+});
+
+
 </script>
 </body>
 </html>

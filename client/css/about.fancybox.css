@@ -603,3 +603,7 @@ h33 {
 	padding-bottom: 5px;
 }
 
+#fancybox-overlay {
+   background-color: #fff !important;
+   opacity: 0.6 !important;
+}

@@ -1,4 +1,3 @@
-
 var OlapSelectorComponent = BaseComponent.extend({
 
   init: function() {
@@ -7,7 +6,7 @@ var OlapSelectorComponent = BaseComponent.extend({
           url: "/pentaho/content/pentaho-cdf-dd/OlapUtils",
           catalog: this.catalog,
           cube: this.cube,
-          dimension: this.dimensionName,
+          dimension: this.dimensionName
       }),
       title: this.title
     });

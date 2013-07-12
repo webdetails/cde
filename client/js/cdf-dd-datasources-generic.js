@@ -12,6 +12,7 @@ var MdxEntryBase = PalleteEntry.extend({
         Ok: true,
         Skip: false
       },
+      prefix:"popup",
       loaded: function(){
         $.getJSON(CDFDDServerUrl + "OlapUtils", {
           operation: "GetOlapCubes"

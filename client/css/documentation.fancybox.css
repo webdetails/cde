@@ -60,51 +60,51 @@ p, h1, h2, h3, div, a {
 
 
 .tabButtons {
-	height: 40px;
-	width: 935px;
-	background-color: white;
-	position: fixed;
-	z-index: 9999;
-	margin-top: 0px;
-	padding-top: 0px;	
-	border-bottom: 2px solid #098BF6	;
+  height: 40px;
+  width: 935px;
+  background-color: #eaedee;
+  position: fixed;
+  z-index: 9999;
+  margin-top: 0px;
+  padding-top: 0px; 
+  transition: .3s;
+  border-bottom: 2px solid #0098C4;
 }
 
 .tabButton.active {
-	color: white;
-	background-color: #4B8DF8;
+  color: white;
+  background-color: #0098C4;
 }
 
 .tabButton:hover {
-	color: white;
-	background-color: #4B8DF8;
+  color: white;
+  background-color: #0098C4;
 }
 
 
 
 .downloadstut a {
-    background-color: #4C8EF9;
-    box-shadow: 0 1px 2px 0 #999999;
-    color: white;
-    display: block;
-    float: left;
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom:30px;
-    overflow: hidden;
-    padding: 10px 40px;
-    text-decoration: none;
-    width: 200px;
-    text-shadow:  -1px -1px 0px #2762bf;
-    text-align: center;
-    font-size: 18px;
+     background-color: #0098C4;
+     box-shadow: 0 1px 2px 0 #999999;
+     color: #fff !important;
+     display: block;
+     float: left;
+     font-size: 20px;
+     font-weight: bold;
+     margin-top: 10px;
+     margin-bottom:30px;
+     overflow: hidden;
+     padding: 10px 40px;
+     text-decoration: none;
+     width: 200px;
+     text-align: center;
+     font-size: 18px;
 }
 
 
 .downloadstut a:hover {
-    background-color: #357ae8;
-    color: white;
+     background-color: #00acde;
+     color: white;
 }
 
 .downloadstutdoc img {
@@ -728,4 +728,9 @@ h33 {
 	text-decoration:none;
 	height:15px;
 	padding-bottom: 5px;
+}
+
+#fancybox-overlay {
+   background-color: #fff !important;
+   opacity: 0.6 !important;
 }

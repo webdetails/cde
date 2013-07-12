@@ -5,6 +5,8 @@
 package pt.webdetails.cdf.dd.render;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.packager.Packager;
 
@@ -41,20 +43,16 @@ public final class DependenciesManager
     
     StringFilter jsFilter = new StringFilter()
     {
-
       public String filter(String input)
       {
-        //input = input.replaceAll("\\?", "&");
         return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource/" + input + "\"></script>";
       }
     };
     
     StringFilter cssFilter = new StringFilter()
     {
-
       public String filter(String input)
       {
-        //input = input.replaceAll("\\?", "&");
         return "\t\t<link href='getCssResource/" + input + "' rel='stylesheet' type='text/css' />";
       }
     };
@@ -84,11 +82,14 @@ public final class DependenciesManager
   {
     _manager = manager;
   }
-  
+
   public static final class Engines {
     public final static String CDF = "CDF";
+
     public final static String CDF_CSS = "CDF-CSS";
+
     public final static String CDF_RAW = "CDF-RAW";
+
     public final static String CDFDD = "CDFDD";
   }
 

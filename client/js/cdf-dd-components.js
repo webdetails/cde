@@ -386,5 +386,5 @@ ComponentValidations.validateComponents = function(){
     }
   }
   
-  $.prompt(msg);
+  $.prompt(msg,{prefix:"popup"});
 };
