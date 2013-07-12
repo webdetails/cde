@@ -1,5 +1,6 @@
 body {
-  background:#2D2D2D;
+  background:#f2f2f2;
+  color: #222222;
 }
 
 a {
@@ -7,33 +8,100 @@ a {
   text-decoration: none;
 }
 
+.grayedOut {
+ background: #eaedee!important;
+ color: #bbb!important;
+ cursor: default!important;
+}
+
+.panelButton {
+    margin-left: -1px;
+    position: relative;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 40px;
+    display: inline-block;
+    width: 100px;
+    transition: 0.3s;
+    float: right;
+}
+
+.panelButton a {
+    color: #555;
+    position: relative;
+    font-size: 14px;
+    top: 0px;
+    line-height: 40px;
+    display: block;
+    height: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.panelButton:hover {
+    background: #ccc;
+}
+
+.panelButton-active, .panelButton-active:hover {
+  background: #0098c4;
+}
+
+.panelButton-active a {
+  color: #fff;
+}
+
+.panelButton:not(.panelButton-active):hover {
+     background: #dce1e3;
+}
+
+.panelButton-active:hover a {
+  color:#fff;
+}
+
+.panelButton:hover > * {
+    color: #555;
+}
+
 .headerButton{
   -moz-transition: all 0.5s ease 0s;
-  color: #8A8A8A;
+  color: #222222;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 100;
   letter-spacing: 0.07em;
   line-height: 20px;
-  margin-top: 10px;
+  margin-top: 9px;
   text-align: center;
   text-decoration: none;
-  text-shadow: 0 0 3px #111111, 0 0 3px #111111;
   vertical-align: middle;
-  font-family: arial;
+  font-family: 'Open Sans', sans-serif;
   position: relative;
   padding-left: 10px;
+  display: inline-block;
+  transition: 0.3s;
 }
 
+.headerButton a:link,.headerButton  a:visited{
+  color: #222;
+}
 
+.headerButton a:hover, .headerButton a:active{
+  color:#0098C4;
+  transition: 0.3s;
+}
 
 .headerButton:hover {
   outline: none;
   text-decoration:  none;
   position:relative;
   color: #0098C4;
-  text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
+}
+
+.headerButton:active{
+  color:#FFFFFF;
 }
 
 li {
@@ -46,8 +114,10 @@ li a {
 
 div.outside {
 
-  padding:10px;
-  background:#2D2D2D;
+  padding:0px;
+  
+
+  background: #f2f2f2;
 }
 
 .save-pulldown {
@@ -92,11 +162,14 @@ form input.ui-autocomplete-input{
   width: 150px;
 }
 
-.item{
+.item {
   font-size: 12px;
   text-shadow: none;
   list-style: none;
-  color: #12a2d8;
+  color: #222;
+  background: #eaedee;
+  transition: 0.3s;
+  text-align: left;
 }
 
 .save-pulldown .pulldown .item {
@@ -108,60 +181,33 @@ form input.ui-autocomplete-input{
   color: #0098c8;
 }
 
-.headerButton{
-  -moz-transition: all 0.5s ease 0s;
-  color: #8A8A8A;
-  cursor: pointer;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 100;
-  letter-spacing: 0.07em;
-  line-height: 20px;
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: 0 0 3px #111111, 0 0 3px #111111;
-  vertical-align: middle;
-  font-family: arial;
-  position: relative;
-  padding-left: 10px;
-  display: inline-block;
-}
-
-.headerButton:hover {
-  outline: none;
-  text-decoration:  none;
-  position:relative;
-  color: #0098C4;
-  text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
-}
-
-.headerButton:active{
-  color:#FFFFFF;
-}
-
 div.padder {
   padding: 5px;
 }
 
 
 div.cdfdd-toolbar-logo {
- background-image: url('../images/NAV/CDE_Header_Logo.png');
- background-repeat: no-repeat;
- height:106px;
- width:147px;
- position:absolute;
- top:10px;
- left:10px;
+   font-size: 30px;
+   font-weight: 300;
+   height: 40px;
+   width: 147px;
+   position: fixed;
+   top: 0px;
+   left: 15px;
+   background-image: url("../images/NAV/CDE_Header_Logo.png");
+   z-index: 2;
 }
 
 div.cdfdd-toolbar {
   text-align: center;
-  height: 106px;
+  height: 40px;
   /*  padding-top:5px;*/
   /*padding-bottom: 5px;*/
-  background-image: url('../images/NAV/CDE_Header_Background.png');
+  position: fixed;
+  top: 0;
+  z-index: 1;
 
+  background: #eaedee;
 }
 
 #cde-header.source-image {
@@ -196,7 +242,7 @@ div.cdfdd-modes {
 }
 
 div.cdfdd-main {
-  margin-top:35px;
+  margin-top:9px;
 }
 
 
@@ -204,7 +250,7 @@ div.cdfdd-main {
 
   background-color: black;
   color: white;
-  font-family: "monaco,courier new,monospaced";
+  font-family: 'Open Sans', sans-serif;
   padding: 0pt;
   font-size: 12px;
   position: absolute;
@@ -244,7 +290,7 @@ div#cdfdd-panels {
   margin: -10px;
   padding: 10px;
   /*background:#2A2F31;*/
-  background: url("sunny/images/ui-bg_flat_60_2d2d2d_40x100.png") repeat-x scroll 50% 50% #2D2D2D;
+  background: #F5F5F5;
   min-height: 400px;
 }
 
@@ -255,6 +301,10 @@ tbody.ui-widget-content {
 
 div.cdfdd-panel {
   display: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 40px 5px 40px 15px;
 }
 
 .panel-title {
@@ -268,6 +318,10 @@ div.ui-widget-content > ul {
   padding-left:0;
 }
 
+.ui-component tr:hover{
+  background: #eee;
+}
+
 div.ui-widget-content > ul li {/*TODO...*/
    /* padding-left:30px;  After the integration with cdf, this stopped making sense */
 }
@@ -277,10 +331,11 @@ div.ui-widget-content > ul li {/*TODO...*/
   max-height: 150px;
   margin-top: -1px;
   overflow: auto;
-  border: solid 2px #12a2d8;
-  background: #222;
-  color: #12a2d8;
+  color: #555;
   margin-top: 3px;
+  border-top-left-radius: 10px;
+  border: 2px solid #bbb;
+  border-bottom-left-radius: 10px;
 }
 
 .multiSelect.active {
@@ -290,7 +345,7 @@ div.ui-widget-content > ul li {/*TODO...*/
 
 .multiSelect.hover {
   background: url(../images/NAV/down_mouseover.png) right center no-repeat;
-  color: #12a2d8;
+  color: #ddd;
 }
 
 .multiSelectOptions label.checked {
@@ -303,8 +358,11 @@ div.ui-widget-content > ul li {/*TODO...*/
 }
 
 .multiSelectOptions label {
-  color: #12a2d8;
+  color: #555;
   padding: 5px 10px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  margin: 2px;
 }
 
 .multiSelectOptions label input{
@@ -315,11 +373,11 @@ div.ui-widget-content > ul li {/*TODO...*/
 
 li.ui-state-hover {
   border:medium none !important;
-
+  background: #999!important;
 }
 
 .ui-widget-content li:hover{
-  background: url("sunny/images/ui-bg_flat_100_203741_40x100.png") repeat-x scroll 50% 50% #203741;
+  background: #203741;
 }
 
 .ui-widget-content li:hover a
@@ -328,7 +386,7 @@ li.ui-state-hover {
 }
 
 .ui-widget-content tr.ui-state-active {
-  background: url("sunny/images/ui-bg_flat_100_203741_40x100.png") repeat-x scroll 50% 50% #203741;
+  color: #345;
 }
 
 hr.hr-hidden{
@@ -337,6 +395,13 @@ hr.hr-hidden{
 
 hr {
   background: none!important;
+}
+
+hr.saveHr {
+     margin: 10px 0px 20px;
+     border-top: 1px solid #ccc;
+     border-bottom: 1px solid #fff;
+     height: 0px;
 }
 
 div.spacer {
@@ -356,12 +421,12 @@ div.cdfdd-operations{
   display: none;
 
   width: auto;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+  font-family: 'Open Sans', sans-serif;
   position: absolute; 
-  background-color: #222; 
+  background-color: #eaedee; 
   font-size: 11px; 
   text-align: left; 
-  border: solid 2px #12a2d8!important;
+  border: solid 2px #bbb!important;
 
   top: 10px;
   left: 50%;
@@ -369,9 +434,8 @@ div.cdfdd-operations{
   margin-left: -475px;
   width: 960px;
 
-  background:#2D2D2D;
+  background: #eaedee;
   color: #999;
-  border: 1px solid black;
 
   height:550px;
 
@@ -382,9 +446,12 @@ div.cdfdd-operations{
 }
 #cdfdd-wizard-button-ok {
  padding: 3px 10px;
-  background-color: #222;
-  border: solid 2px #12a2d8;
-  color: #999;
+  
+ background-color: #eaedee;
+  
+ border: solid 2px #bbb;
+  
+ color: #555;
   font-size: 12px;
   float: right;
   height: 25px;
@@ -396,9 +463,9 @@ div.cdfdd-operations{
 
 #cdfdd-wizard-button-cancel {
   padding: 3px 10px;
-  background-color: #222;
-  border: solid 2px #12a2d8;
-  color: #999;
+  background-color: #eaedee;
+  border: solid 2px #bbb;
+  color: #555;
   font-size: 12px;
   height: 25px;
   position: absolute;
@@ -408,23 +475,23 @@ div.cdfdd-operations{
 }
 
 #cdfdd-wizard-button-cancel:hover, #cdfdd-wizard-button-ok:hover{
-  background-color: #12a2d8;
-  color: #333;
+  background-color: #bbb;
+  color: #555;
 }
 
 #wizardDialog button{
   padding: 3px 10px; 
-  background-color: #222; 
-  border: solid 2px #12a2d8; 
-  color: #999; 
+  background-color: #eaedee; 
+  border: solid 2px #bbb; 
+  color: #555; 
   font-size: 12px; 
   float: right;
   height: 20px;
 }
 
 #wizardDialog button:hover{
-  color:#333;
-  background-color: #12a2d8;
+  color: #555;
+  background-color: #bbb;
 }
 
 #wizardDialog caption {
@@ -437,11 +504,12 @@ div.cdfdd-operations{
 
 #wizardDialog h1 {
   float: left;
-  color: #12a2d8;
+  color: #999;
   line-height: 20px;
   font-weight: bold;
   position: relative;
   top: -10px;
+  padding-top: 10px;
 }
 
  #wizardDialog h2, #wizardDialog h3{
@@ -464,6 +532,7 @@ div.cdfdd-operations{
   position:relative;
   left:10px;
   font-weight: bold;
+  color: #555;
   padding-bottom: 10px;
 }
 #cdfdd-component-options .cdfdd-component-options-chartType{
@@ -535,7 +604,7 @@ div#cdfdd-olap-preview.disabled{
 }
 
 div.cdfdd-wizard-title {
-  background:#2A2F31;
+  background: #eaedee;
   padding-top:5px;
   padding-bottom: 5px;
   height: 30px;
@@ -543,7 +612,7 @@ div.cdfdd-wizard-title {
 }
 
 div.cdfdd-wizard-olap-cubes, div.cdfdd-wizard-olap-dimensions, div.cdfdd-wizard-olap-measures {
-  background:#2A2F31;
+  background: #eaedee;
   padding-top:5px;
   padding-bottom: 5px;
 }
@@ -558,7 +627,7 @@ div.cdfdd-wizard-olap-cubes {
 }
 
 div.cdfdd-wizard-left, div.cdfdd-wizard-buttons {
-  background:#2D2D2D;
+  background: #eaedee;
   padding-top:5px;
   padding-bottom: 5px;
 }
@@ -603,16 +672,17 @@ div#cdfdd-olap-main-filter{
 }
 
 div.cdfdd-olap-droppable{
-  background:#2A2F31;
+  background: #d9dcdd;
   height: 68px;
   margin-top: 5px;
   padding-top: 1px;
   overflow-y:auto;
   overflow-x:hidden;
+  color: #555;
 }
 
 div.cdfdd-wizard-components-options{
-  background:#2A2F31;
+  background: #eaedee;
   height: 455px;
   width: 220px;
   margin-left: 5px;
@@ -646,6 +716,61 @@ div#cdfddOlapDimensionDiv{
 div#cdfddOlapMeasureDiv{
   height:100px;
   overflow: auto;
+}
+
+.tooltip.layout_saveas_template {
+  background-image: url("../images/NAV/save_template.png");
+}
+
+.tooltip.layout_add_template {
+  background-image: url("../images/NAV/apply_template.png");
+}
+
+.tooltip.layout_add_resource {
+  background-image: url("../images/NAV/add.png");
+}
+
+.tooltip.layout_add_row {
+  background-image: url("../images/NAV/add_row.png");
+}
+
+.tooltip.layout_move_down {
+  background-image: url("../images/NAV/move_down.png");
+}
+
+.tooltip.layout_delete {
+  background-image: url("../images/NAV/delete.png");
+}
+
+.tooltip.layout_move_up {
+  background-image: url("../images/NAV/move_up.png");
+}
+
+.tooltip.layout_add_column {
+  background-image: url("../images/NAV/add_column.png");
+}
+
+.tooltip.layout_add_space {
+  background-image: url("../images/NAV/space.png");
+}
+
+.tooltip.layout_add_image {
+  background-image: url("../images/NAV/add_image.png");
+}
+
+.tooltip.layout_add_html {
+  background-image: url("../images/NAV/add_html.png");
+}
+
+.tableOperation:hover {
+  background-position-x: 22px;
+}
+
+.tableOperation {
+  height: 22px;
+  width: 22px;
+  display: inline-block;
+  margin: 0px 6px;
 }
 
 table#cdfddOlapMeasureSelector{
@@ -700,9 +825,10 @@ table tbody tr td {
 
 
 form.cdfddInput input, form.cdfddInput button, form.cdfddInput select, button.cdfddInput {
-  background-color:#FFFFFF;
-  border:1px solid #999999;
-  color:#000000;
+  background-color:#fcfcfc;
+  border:1px solid #ccc;
+  color:#444;
+  border-radius: 5px;
 }
 
 form.cdfddInput input {
@@ -757,14 +883,14 @@ textarea.cdfddEdit{
 }
 
 .cdfdd-wizard-prompt-left-section {
-  background:#2A2F31;
+  background: #eaedee;
   height: 435px;
   margin-bottom: 5px;
   overflow: auto;
 }
 
 .cdfdd-wizard-prompt-center-section, .cdfdd-wizard-prompt-right-section{ 
-  background:#2A2F31;
+  background: #eaedee;
   height: 435px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -790,7 +916,7 @@ textarea.cdfddEdit{
 
 div.prompt-wizard-preview{ 
   width: 600px;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   position: absolute;
   background-color: #ffffff;
   font-size: 11px;
@@ -876,6 +1002,9 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
   width: 200px;
 }
 
+table.myTreeTable caption span{
+    font-size:14px;
+}
 
 .urlTemplateInput {
   width:380px;
@@ -897,15 +1026,17 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
 }
 
 .propertiesSelected {
-  font-size:13px;
+  font-size:14px;
 }
 
 .propertiesUnSelected {
-  font-size:10px;
-  position:relative;
-  top:2px;
-  text-decoration: underline;
-  cursor:pointer ;
+  font-size:14px;
+  cursor:pointer; 
+  color:#999;
+}
+
+.propertiesUnSelected:hover {
+    color: #0098c4;
 }
 
 .cdfdd-olap-measures, .cdfdd-olap-filters  {
@@ -1009,8 +1140,19 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
 }
 
 table.cdfdd caption {
-  height: 30px;
-  /*padding-top: 0px;*/
+ height: 20px;
+ padding: 5px;
+ border-bottom: none;
+ font-weight: normal;
+ background: #eaedee;
+ color: #555;
+}
+
+th.ui-state-default{
+  padding: 5px;
+  background: #bbb;
+  color: #fff;
+  border: 1px solid #bbb;
 }
 
 
@@ -1074,9 +1216,11 @@ table.cdfdd caption {
 /* Changes made for adding About Button */
 
 .footer {
-  background-image: url('../images/footerCde.png');
   line-height: 41px;
-  vertical-align: middle;
+  position: fixed;
+  height: 44px;
+  bottom: 0;
+  background: #eaedee;
 }
 
 
@@ -1093,7 +1237,7 @@ table.cdfdd caption {
 
 .footer .button {
     -moz-transition: all 0.5s ease 0s;
-    color: #8A8A8A;
+    color: #222222;
     cursor: pointer;
     font-size: 13px;
     font-style: normal;
@@ -1103,13 +1247,12 @@ table.cdfdd caption {
     margin-top: 10px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 0 3px #111111, 0 0 3px #111111;
     vertical-align: middle;
-    font-family: arial;
+    font-family: 'Open Sans', sans-serif;
+    transition: 0.3s;
 }
 .footer .button:hover {
     color: #0098C4;
-    text-shadow: 0 0 12px #0AC5FB, 0 0 12px #0B99D5;
 }
 
 
@@ -1165,7 +1308,7 @@ div.treeTableNewJqi button {
 
 
 
-html {margin:0;padding:0;border:0;}
+html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: hidden;}
 body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:middle;}
 article, aside, dialog, figure, footer, header, hgroup, nav, section {display:block;}
 body {background:white;}
@@ -1174,11 +1317,11 @@ caption, th, td {text-align:left;font-weight:normal;float:none !important;}
 table, th, td {vertical-align:middle;}
 blockquote:before, blockquote:after, q:before, q:after {content:'';}
 blockquote, q {quotes:"" "";}
-a img {border:none;}
+a img {border:none; margin-top: -9px;}
 :focus {outline:0;}
 
-html {font-size:100.01%; background-color: #2D2D2D;}
-body {font-size:75%;color:#222;background:#2D2D2D;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
+html {font-size:100.01%; background-color: #f5f5f5;}
+body {font-size:75%;color:#222;background:#2D2D2D;font-family: 'Open Sans', sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;}
 h1 {font-size:2em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:1.6em;margin-bottom:0.75em;}
@@ -1205,17 +1348,24 @@ h6 {font-size:1em;font-weight:bold;}
 }
 
 .headerLinks {
-  
+  position: relative;
+  top: -17px;
 }
 
 .headerLinks .buttonImage {
-  height: 15px;
-  width: 15px;
-  vertical-align: middle;
-  background-image: url(../images/down.png);
-  background-size: cover;
-  display: inline-block;
-  position: relative;
+   height: 15px;
+   width: 15px;
+   vertical-align: middle;
+   background-image: url(../images/NAV/selector_arrow.png);
+   background-size: cover;
+   display: inline-block;
+   position: relative;
+   margin-left: 5px;
+}
+
+ #previewButton {
+  font-weight: 600;
+  color: #222;
 }
 
 .clear {
@@ -1227,41 +1377,34 @@ a {
 }
 
 a:link, a:visited {
-  color: #999;
+  color: #222;
 }
 
-a:hover, a.linkActive {
-  color: #12a2d8; 
-  text-shadow: 0px 0px 3px #12a2d8, -1px 0 #111111, 0 1px #111111, 1px 0 #111111, 0 -1px #111111;;
+a:hover, a.linkActive { ;
         filter: dropshadow(color=#12a2d8, offx=0, offy=0);
 }
 
 a:hover > .buttonImage,
 .linkActive > .buttonImage {
-  background-image: url(../images/down_mouseover.png);
+  background-position-x: 15px;
 }
 
 a:active {
-  color: #fff;  
-  text-shadow: 0px 0px 3px #fff,  -1px 0 #111111, 0 1px #111111, 1px 0 #111111, 0 -1px #111111;;
-        filter: dropshadow(color=#fff, offx=0, offy=0);
+  color: #fff;
 }
 
-a:active > .buttonImage {
-  background-image: url(../images/down_onclick.png);
-}
 
 /*ul*/
 ul.controlOptions {
   list-style: none;
   color: #999;
-  position: absolute;
-  top: 20px;
-  background: #222;
-  border: 2px #12a2d8 solid;
-  top: 25px;
+  background: #fff;
+  border: 1px #ccc solid;
+  top: 25px!important;
   display: none;
-  z-index: 10;
+  height: 0;
+  transition: 0.3s;
+  position: absolute;
 }
 
 ul.controlOptions li {
@@ -1275,7 +1418,7 @@ ul.controlOptions li.popupIcon {
 }
 
 ul.controlOptions li.popupIcon:hover {
-  background-image: url(../images/popup_mouseover.png);
+  background-image: url(../images/popup_onclick.png);
   background-position: 95%;
   background-repeat: no-repeat; 
 }
@@ -1287,7 +1430,7 @@ ul.controlOptions li.popupIcon:active {
 }
 
 ul.controlOptions li.separator {
-  border-top: 1px #12a2d8 solid;
+  border-top: 1px #ccc solid;
 }
 
 /*ul.controlOptions li:nth-last-child(2) {
@@ -1296,8 +1439,8 @@ ul.controlOptions li.separator {
 }*/
 
 ul.controlOptions li:hover {
-  background-color: #12a2d8;
-  color: #222;
+  background-color: #0098c4;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -1308,18 +1451,60 @@ ul.controlOptions li:active {
 /* impromptu starts here*/
 div.popup {
   width: auto;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-  position: fixed!important; 
-  background-color: #222; 
-  font-size: 11px; 
-  text-align: left; 
-  border: solid 2px #12a2d8;
+  font-family: 'Open Sans', sans-serif;
+  position: fixed!important;
+  background-color: #eaedee;
+  font-size: 11px;
+  text-align: left;
+  border: 1px #bbb solid;
   padding: 7px;
   max-width: 75%;
   max-height: 80%;
   min-width: 20%;
   overflow-x: auto;
+  transition: 0.3s;
 }
+
+.popupfade{
+  opacity: 0.6;
+  background: #fff;
+}
+
+div.popup .popupmessage H1 {
+   font-family: 'Open Sans', sans-serif;
+   color: #222;
+   background-color: #fff600;
+   font-size: 22px;
+   margin: 20px 0px 0px;
+   padding: 5px;
+   line-height: 27px;
+}
+
+div.popup .popupmessage p {
+   font-family: 'Open Sans', sans-serif;
+   background: #f5f5f5;
+   padding: 2px 5px;
+   color: #333;
+   font-size: 13px;
+   font-weight: 500;
+}
+
+div.popup .popupmessage b {
+   font-family: 'Open Sans', sans-serif;
+   color: #222;
+   background-color: #fff600;
+   padding: 2px;
+   font-weight: 700;
+}
+
+div.popup .popupmessage h3 {
+   font-family: 'Open Sans', sans-serif;
+   color: #fff600;
+   background-color: #222;
+   font-size: 14px;
+   padding: 5px;
+}
+
 
 div.popup-ie9{
   width: 515px;
@@ -1329,19 +1514,32 @@ div.popup input[type="text"]{
   width: 100%;
 }
 
+div.popup input {
+   margin: 5px 0px 10px;
+   padding: 3px;
+   box-sizing:border-box;
+   -moz-box-sizing: border-box;
+   -webkit-box-sizing: border-box;
+   border: 1px solid #ddd;
+   color: #555;
+}
+
 div.popup .cdf_settings_input{
-  width: 100%;
+   width: 100%;
+   border: 1px solid #ddd;
+   color: #555;
 }
 
 div.popup h2 {
   float: left;
-  color: #12a2d8;
+  color: #555;
   line-height: 20px;
   font-size: 15px;
   font-weight: bold;
   position: relative;
   top: -10px;
   background-color: transparent!important;
+  margin-bottom: 0px;
 }
 
 div.popup .popupcontainer{ 
@@ -1350,7 +1548,7 @@ div.popup .popupcontainer{
 }
 div.popup .popupclose{
   font-weight: bold;
-  border: 2px solid #12a2d8;
+  border: 1px solid #bbb;
   height: 20px;
   width: 20px;
   text-align: center; 
@@ -1365,30 +1563,26 @@ div.popup .popupclose:hover{
   color: transparent;
   cursor: pointer;
   background-image: url(../images/close_mouseover.png);
-  background-color: #12a2d8;
+  background-color: #bbb;
 }
-div.popup .popupclose:active{ 
-  background: url(../images/close_onclick.png);
-  background-color: #12a2d8;
-  color: transparent;
-}
+
 div.popup .popupmessage{ 
   padding: 10px; 
   line-height: 20px; 
-  color: #999;
-  background: #222; 
+  color: #555;
+  background: #eaedee; 
 
 }
 div.popup .popupbuttons{ 
   text-align: right; 
   padding: 5px 0 5px 0;  
-  background-color: #222;
+  background-color: #eaedee;
 }
 div.popup button{ 
   padding: 3px 10px; 
-  background-color: #222; 
-  border: solid 2px #12a2d8; 
-  color: #999; 
+  background-color: #eaedee; 
+  border: solid 1px #bbb; 
+  color: #444; 
   font-size: 12px; 
   margin-left: 5px;
   position: relative;
@@ -1397,12 +1591,13 @@ div.popup button{
   float: right;
 }
 div.popup button:hover{ 
-  background-color: #12a2d8!important;
+  background-color: #bbb!important;
   color: #222!important;
+  cursor: pointer;
 }
 div.popup button.popupdefaultbutton{ 
   /*background-color: #8DC05B;*/
-  background-color: #222;
+  background-color: #eaedee;
 }
 
 /* impromptu ends here*/
@@ -1430,12 +1625,12 @@ div.popup button.popupdefaultbutton{
 }
 
 div.popup .title {
-  font-weight: bold;
-  display: block;
-  width: 100%; 
-  margin-top: 10px;
-  list-style: none;
-  font-size: 13px;
+   font-weight: 600;
+   width: 100%; 
+   margin-top: 10px;
+   list-style: none;
+   font-size: 13px;
+   line-height: 13px;
 }
 
 div.popup img {
@@ -1452,12 +1647,15 @@ div.popup img {
 }
 
 div.popup textarea {
-  width: 100%;  
-  height: 75px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  resize: none;
+   width: 100%;  
+   height: 75px;
+   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   -webkit-box-sizing: border-box;
+   resize: none;
+   padding: 3px;
+   border: 1px solid #ddd;
+   color: #555;
 }
 
 div.popup .button {
@@ -1559,4 +1757,8 @@ div.popup .button:active {
   top: -999px;
   max-height: 0;
   max-width: 0; 
+}
+
+.jquery-corner {
+  display: none;
 }
