@@ -234,7 +234,13 @@ public final class DashboardManager
   {
     try
     {
-      return this.getDashboard(WcdfDescriptor.load(wcdfPath, userSession), userSession, bypassCacheRead);
+      WcdfDescriptor wcdf = WcdfDescriptor.load(wcdfPath, userSession);
+      if(wcdf == null)
+      {
+        throw new ThingReadException(new FileNotFoundException(wcdfPath));
+      }
+      
+      return this.getDashboard(wcdf, userSession, bypassCacheRead);
     }
     catch (IOException ex)
     {

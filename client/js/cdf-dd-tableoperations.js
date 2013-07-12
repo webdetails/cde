@@ -1,28 +1,138 @@
-// Entry base model
+// Base model
 
-var BaseModel = Base.extend({
+var PropertyTypeUsage = Base.extend({
+  constructor: function(pName, pAlias, isOwned, propType) {
+    this.alias = pAlias;
+    this.name  = pName; // local type name, when owned
+    this.owned = isOwned;
+    this.type  = propType;
+  },
+          
+  create: function() {
+     return this.type.getPropertyObject({
+       name: this.alias
+     });
+  }
+}, { // static
+  create: function(propSpec, Model) {
+    var pName, pAlias, isOwned = false;
+    switch(typeof propSpec) {
+      case 'string':
+        pName = pAlias = propSpec;
+        break;
 
-    
-
-
-  },{
-    MODEL: 'BaseModel',
-
-    getStub: function(){
-      return {}
-    },
-
-    models: {},
-
-    registerModel: function(_class){
-      this.models[_class.MODEL]=_class;
-    },
-
-    getModel: function(_model){
-      return this.models[_model];
+      case 'object':
+        // better be non-null...
+        pAlias = propSpec.alias;
+        pName  = propSpec.name;
+             if(!pAlias && pName ) { pAlias = pName ; }
+        else if(!pName  && pAlias) { pName  = pAlias; }
+        isOwned = propSpec.owned === true;
+        break;
     }
 
-  });
+    if(!pAlias) { return null; }
+    
+    var pFullName = isOwned ? (Model.MODEL + "_" + pName) : pName;
+    var propType = PropertiesManager.getPropertyType(pFullName);
+    
+    if(!propType) { return null; }
+    
+    return new PropertyTypeUsage(pName, pAlias, isOwned, propType);
+  }
+});
+
+var BaseModel = (function() {
+  
+  var LegacyModel = {
+    getPropertyUsage: function(name) {
+      return PropertyTypeUsage.create(name, this); // may be null
+    },
+    
+    createProperty: function(name) {
+      var propUsage = this.getPropertyUsage(name);
+      return propUsage && propUsage.create();
+    }
+  };
+  
+  var CommonModel = {
+    _getPropertyUsages: function() {
+      if(this._propertySpecs) {
+        var propertiesByAlias = this._propertiesByAlias = {};
+        var propertiesByName  = this._propertiesByName  = {};
+
+        this._properties = this._propertySpecs.map(function(propSpec) {
+          var propUsage = PropertyTypeUsage.create(propSpec, this);
+
+          propertiesByAlias[propUsage.alias] = propUsage;
+          propertiesByName [propUsage.name ] = propUsage;
+          return propUsage;
+        }, this);
+
+        delete this._propertySpecs;
+      }
+
+      return this._properties;
+    },
+
+    getPropertyUsage: function(name) {
+      if(this._propertySpecs) { this._getPropertyUsages(); }
+      return this._propertiesByAlias[name] || this._propertiesByName[name];
+    },
+    
+    createProperty: LegacyModel.createProperty
+  }; // End CommonModel
+  
+  // BaseModel
+  return Base.extend({}, {
+    MODEL:  'BaseModel',
+    getStub: function() { return {}; },
+    models:  {},
+
+    registerModel: function(_class) {
+      this.models[_class.MODEL] = _class;
+      
+      if(!_class.getPropertyUsage) {
+        $.extend(_class, LegacyModel);
+      }
+      
+      return _class;
+    },
+
+    getModel: function(modelId) {
+      return this.models[modelId];
+    },
+      
+    /**
+     * Creates a BaseModel sub-class with appropriate static properties and methods.
+     */
+    create: function(spec) {
+      var modelName   = spec.name;
+      var modelDesc   = spec.description;
+      var modelParent = spec.parent;
+      var modelMetas  = spec.metas;
+      
+      var CustomModel = this.extend({}, {
+        MODEL: modelName,
+        _propertySpecs: spec.properties || [], // Lazily compiled by _getPropertyUsages
+        
+        getStub: function() {
+          return $.extend({
+            id:         TableManager.generateGUID(),
+            type:       modelName,
+            typeDesc:   modelDesc,
+            parent:     modelParent != null ? modelParent : IndexManager.ROOTID,
+            properties: this._getPropertyUsages().map(function(pu) { return pu.create(); })
+          }, modelMetas);
+        }
+      }); // CustomModel
+      
+      $.extend(CustomModel, CommonModel);
+      
+      return this.registerModel(CustomModel);
+    }
+  }); // End BaseModel
+}());
 
 
 var CellOperations = Base.extend({

@@ -87,16 +87,13 @@ var CDFDD = Base.extend({
     //this.setExitNotification(true);
 
     // Keyboard shortcuts
-    $(function(){
-      $(document).keydown(function(e){
-        if ($(e.target).is('input, textarea')){
+    $(function() {
+      $(document).keydown(function(e) {
+        if ($(e.target).is('input, textarea')) {
           return;
         }
-        else{
-        //Dashboards.log("Target event:" + e.target)
-        }
-
-
+        
+        /*
         if ($(e.target).is('input, textarea')){
           switch(e.which){
             case 38:
@@ -106,9 +103,9 @@ var CDFDD = Base.extend({
               Dashboards.log("Go down");
               break;
           }
-
         }
-
+        */
+       
         switch(e.which){
           case 49:
             $(".cdfdd-modes").find("a:eq(0)").click();
@@ -209,18 +206,17 @@ var CDFDD = Base.extend({
 
     $.post(CDFDDDataUrl, loadParams, function(result) {
       var json = eval("(" + result + ")");
-      if(json.status == "true"){
+      if(json && json.status == "true"){
         myself.setDashboardData(myself.unstrip(json.result.data));
         myself.setDashboardWcdf(json.result.wcdf);
         myself.init();
-      }
-      else {
-        alert(json.result);
+      } else {
+        alert(json && json.result);
       }
     });
   },
 
-  save: function(){
+  save: function() {
 
     this.logger.info("Saving dashboard...");
     this.dashboardData.filename = CDFDDFileName;
@@ -259,102 +255,134 @@ var CDFDD = Base.extend({
       this.saveAs(false);
     }
   },
-
-  strip: function(original, keyArgs){
-    // accepted values
-    var strip = {
-      type: true,
-      name: true,
-      value: true,
-      url: true
+    
+  /*
+   * Sample CDFDE JSON structure:
+   * 
+   * cdeDef = { 
+   *   layout: {
+   *      rows: [
+   *        // One component
+   *        {
+   *          id:   "", 
+   *          name: "",
+   *          type: "",
+   *          typeDesc: "",
+   *          parent: "",
+   *          properties: [
+   *            // One property
+   *            {
+   *              name:  "foo",
+   *              value: "",
+   *              type:  "String"
+   *            }
+   *          ]
+   *        }
+   *      ]
+   *   }, 
+   *   components: {
+   *      rows: [...]
+   *   },
+   *   datasources: {
+   *      rows: [...]
+   *   },
+   *   filename: ""
+   * }
+   */
+  strip: function(original, keyArgs) {
+    var me = this;
+    
+    // These are the only components' properties' attributes that are kept
+    var KEEP_PROP_ATTRS = {
+      type:  true, // InputType
+      name:  true, // Alias
+      value: true, // Value...
+      url:   true  // TODO: What's this??
     };
+    
     // Holds the user's response to keeping properties with no defintion.
-    var keepUndefineds;
-    var questionV1=false;
-    var deleteV1=false;
-    var compatVersion;
-    var V1 = "V1 -";
-
-    //Searches for the version
-    var cl = Util.clone(original);
-    var continueLoop=true;
-    $.each(cl,function(i,t){
-      if (typeof t !== "object")
-        {return;}
-      $.each(t.rows,function(j,c){
-        var k=0;
-        var ps =c.properties;
-        if(ps){
-          var L = ps.length
-          while(k<L){
-            var p = ps[k];
-            var name = p.name;
-            if(name=="cccCompatVersion"){
-              compatVersion = p.value;
-              continueLoop=false;
-              break;
-            }
-            k++;
-          }
-          return continueLoop;
-        }
-      });
-    });
-
+    var userKeepUndefinedProps = null; // not asked yet
+    var userDeletePreviousVersionProps = null; // not asked yet
+    
     // Removes extra information and saves space
-    var o = Util.clone(original); // deep clone
-    $.each(o,function(i,t){
-      if(typeof t !== "object"){
-        return;
-      }
-      $.each(t.rows,function(j,c){
-        var k  = 0;
-        var ps = c.properties;
-        if(ps){
-          var L = ps.length;
-          while(k < L){
-            var p = ps[k];
-            var name = p.name;
-            var descript =(p.description).substring(0,4);
+    var stripped = Util.clone(original); // deep clone
+    
+    // Each SECTION
+    $.each(stripped, function(i, section) {
+      if(typeof section !== 'object') { return; }
+      
+      // Each COMPONENT
+      $.each(section.rows, function(j, comp) {
+        var compModel = BaseModel.getModel(comp.type);
+        if(!compModel) {
+          me.logger.warn("  strip undefined component type '" + comp.type + "'");
+        }
+        
+        var ps = comp.properties;
+        var L;
+        if(ps && (L = ps.length)) {
+          var compatVersion = me._getCompatVersion(ps); // null || >= 0
+          
+          // Each PROPERTY
+          var k  = 0;
+          while(k < L) {
+            var prop = ps[k];
+            var name = prop.name;
+            
+            // Had already said that he wants to keep undefineds?
+            var keepProp = (userKeepUndefinedProps === true);
+            if(!keepProp) {
+              keepProp = name === 'Group' || // Special property; has no definition, but is saved anyway
+                         !!(compModel && compModel.getPropertyUsage(name));
 
-            // Had already answered NO to remove undefineds?
-            var keep = (keepUndefineds === true);
-            if(!keep){
-              keep = name === 'Group' || // Special property; has no definition, but is saved anyway
-                     !!PropertiesManager.getPropertyType(name);
-
-              if(!keep && keepUndefineds == null){
-                keep = 
-                keepUndefineds =
-                !confirm("The dashboard contains properties that have no definition.\n" + 
-                         "Would you like to REMOVE these properties and RELOAD the dashboard?");
+              if(!keepProp && userKeepUndefinedProps == null) {
+                // Didn't ask the user yet.
+                keepProp = 
+                userKeepUndefinedProps =
+                !confirm("The dashboard contains components whose properties have no definition (those marked with a ?).\n" + 
+                         "Would you like to REMOVE those properties?\n" +
+                         "The dashboard will be RELOADED after the save operation.");
                 
-                if(!keep && keyArgs){
+                if(!keepProp && keyArgs) {
                   keyArgs.needsReload = true;
                 }
               }
             }
-
-            if(!questionV1&&compatVersion>1&&descript==V1)
-            {
-              deleteV1=confirm("The dashboard contains V1 properties that are deprecated.\n" +
-                               "Would you like to REMOVE these properties and RELOAD the dashboard?");
-              questionV1=true;
-              if(deleteV1)
-                keyArgs.needsReload=true;
-            }
-            if(deleteV1&&descript==V1)
-            {
-              keep = false;
-            }
-              
-            if(keep){
-              $.each(p, function(a){
-                if(!strip[a]){
-                  delete p[a];
-                }
+            
+            if(keepProp && 
+               compatVersion != null && 
+               userDeletePreviousVersionProps !== false) {
+         
+              var match = CDFDD.DISCONTINUED_PROP_PATTERN.exec(prop.description);
+              if(match) {
+                // Property has a last version.
+                // Check if it is lower than the current compatVersion.
+                var propLastVersion = +match[1];
+                var canDelete = propLastVersion < compatVersion;
                 
-              });
+                // Have asked the user if he wants to delete?
+                if(canDelete && userDeletePreviousVersionProps == null) {
+                  
+                  canDelete =
+                  userDeletePreviousVersionProps = confirm(
+                      "The dashboard contains components with deprecated properties.\n" +
+                      "Would you like to REMOVE all the deprecated properties?\n" + 
+                      "The dashboard will be RELOADED after the save operation.");
+
+                  if(userDeletePreviousVersionProps && keyArgs) {
+                    keyArgs.needsReload = true;
+                  }
+                }
+
+                if(canDelete) { keepProp = false; }
+              }
+            }
+            
+            // Do it - Keep or Delete
+            if(keepProp) {
+              // Keep property.
+              // Delete unnecessary attributes.
+              $.each(prop, function(a) { if(!KEEP_PROP_ATTRS[a]) { delete prop[a]; } });
               k++;
            } else {
              ps.splice(k, 1);
@@ -365,68 +393,108 @@ var CDFDD = Base.extend({
       });
     });
 
-    return o;
+    return stripped;
+  },
+  
+  _getCompatVersion: function(ps) {
+    var L;
+    if(ps && (L = ps.length)) {
+      var k = 0;
+      while(k < L) {
+        var p = ps[k];
+        var name = p.name;
+        if(name === "cccCompatVersion" || name === "compatVersion") {
+          var cv = +p.value;
+          if(!isNaN(cv) && cv >= 0) { return cv; }
+          break;
+        }
+        k++;
+      }
+    }
+    
+    return null;
   },
 
-  unstrip: function(original){
-
-    // Adds extra information, previously removed to save space
-    var myself = this;
-    var o = Util.clone(original);
-    $.each(o,function(i,t){
-      if(typeof t !== "object"){
-        return true;
-      }
-      myself.logger.debug("  unstrip: " + i + ", " + t);
-      $.each(t.rows,function(j, c){
-        myself.logger.debug("  unstrip component "+ c.type +" property count: " + c.properties.length );
-        $.each(c.properties,function(idx,p){
+  /** Adds extra information, previously removed to save space */
+  unstrip: function(original) {
+    var me = this;
+    var beefed = Util.clone(original);
+    
+    $.each(beefed, function(i, section) {
+      if(typeof section !== "object") { return; }
+      
+      me.logger.debug("  unstrip: " + i + ", " + section);
+      
+      $.each(section.rows, function(j, comp) {
+        
+        me.logger.debug("  unstrip component of type '" + comp.type + "' property count: " + comp.properties.length);
+        
+        var compModel = BaseModel.getModel(comp.type);
+        if(!compModel && comp.type !== 'Label') {
+          me.logger.warn("  unstrip undefined component type '" + comp.type + "'");
+        }
+        
+        $.each(comp.properties, function(idx, prop) {
           try {
-            var propType = PropertiesManager.getPropertyType(p.name);
-            var property;
-            if(!propType){
-              var isSpecial = p.name === 'Group'; // Group is special
-              if(!isSpecial){
-                Dashboards.log("Property '" + p.name + "' is not defined");
-                property = {
-                  description: "? " + p.name,
-                  tooltip: "Property '" + p.name + "' is not defined."
+            var propName  = prop.name;
+            var propUsage = compModel && compModel.getPropertyUsage(propName);
+            var propType  = propUsage && propUsage.type;
+            
+            var propStub;
+            if(!propType) {
+              var isSpecial = propName === 'Group'; // Group is special
+              if(!isSpecial) {
+                me.logger.warn("unstrip undefined property type '" + propName + "'");
+                
+                // Add a ? to the description, so that the user can 
+                // realize that something is wrong.
+                propStub = {
+                  description: "? " + propName,
+                  tooltip:     "Property '" + propName + "' is not defined.",
+                  classType:   'advanced'
                 };
               } else {
-                property = {
-                  description: p.name,
-                  tooltip: p.name
+                propStub = {
+                  description: propName,
+                  tooltip:     propName
                 };
               }
             } else {
-              property = propType.stub;
+              propStub = propType.stub;
             }
-
-            for (var attr in property) {
-              if (property.hasOwnProperty(attr)) {
-                if(!p.hasOwnProperty(attr)){
-                  p[attr] = property[attr];
-                } else if(attr === 'type' && p[attr] !== property[attr]){
-                    myself._upgradePropertyType(p, property);
+            
+            // Normalize name -> alias
+            if(propUsage) { prop.name = propUsage.alias; }
+            
+            // Add own attributes of Stub to property, 
+            // if it doesn't have them already.
+            for(var attr in propStub) {
+              if(propStub.hasOwnProperty(attr)) {
+                if(!prop.hasOwnProperty(attr)) {
+                  prop[attr] = propStub[attr];
+                } else if(attr === 'type' && prop[attr] !== propStub[attr]) {
+                  // The InputType of the property has changed.
+                  // Try to "upgrade" the property usage.
+                  me._upgradePropertyType(prop, propStub);
                 }
               }
-           }
+            }
           } catch (e) {
-            Dashboards.log(p.name + ": " + e);
+            Dashboards.log(prop.name + ": " + e);
           }
         });
       });
     });
-    return o;
-
+    
+    return beefed;
   },
 
-  _upgradePropertyType: function(p, stub){
+  _upgradePropertyType: function(p, stub) {
     var oldType = p.type;
     var newType = stub.type;
 
     // In principle, any type could be upgraded to an array,
-    // but its safer to treat only known types.
+    // but it's safer to treat only known types.
     if(newType === 'Array' &&
        ['String', 'Float', 'Integer', 'Boolean']
        .indexOf(oldType) === 0){
@@ -449,7 +517,7 @@ var CDFDD = Base.extend({
         }
       }
 
-      p.type = newType;
+      p.type  = newType;
       p.value = value;
     }
   },
@@ -659,7 +727,7 @@ var CDFDD = Base.extend({
 
    },
 
-   previewMode: function(){
+  previewMode: function(){
 
     if (CDFDDFileName == "/null/null/null") {
       $.notifyBar({
@@ -746,8 +814,6 @@ var CDFDD = Base.extend({
     this.logger.info("Resetting dashboad");
     CDFDD.PANELS().empty();
   },
-
-
 
   saveSettings: function(){
     var myself = this;
@@ -1109,7 +1175,10 @@ var CDFDD = Base.extend({
   },
   PANELS: function(){
     return $("#cdfdd-panels");
-  }
+  },
+  
+  // The captured number is the last version where the property was defined.
+  DISCONTINUED_PROP_PATTERN: /^V(\d+)\s*-/
 });
 
 
@@ -1289,27 +1358,25 @@ var Logger = Base.extend({
 
 // Utility functions
 
-var CDFDDUtils = Base.extend({
-  },{
-    ev: function(v){
-      return (typeof v=='function'?v():v);
+var CDFDDUtils = Base.extend({}, {
+    ev: function(v) {
+      return (typeof v === 'function' ? v() : v);
     },
-    getProperty: function(stub, name){
+            
+    getProperty: function(stub, name) {
       var result;
-      if(typeof stub.properties == 'undefined'){
-        return null;
-      }
+      if(!stub.properties) { return null; }
 
-      $.each(stub.properties,function(i,p){
-        if(p.name == name){
+      $.each(stub.properties,function(i, p) {
+        if(p.name === name){
           result = p;
           return false;
         }
       });
+      
       return result;
     }
-  });
-
+});
 
 var cdfdd;
 $(function() {

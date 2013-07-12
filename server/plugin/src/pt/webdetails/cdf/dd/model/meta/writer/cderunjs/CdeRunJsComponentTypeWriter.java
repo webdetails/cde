@@ -36,12 +36,9 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
     String name = comp.getName();
     
     // the name in cdefdejs/components/rows/type
-    Attribute cdeModelPrefixAttr = comp.tryGetAttribute("cdeModelPrefix");
-    String modelPrefix = cdeModelPrefixAttr != null ? cdeModelPrefixAttr.getValue() : null;
-    if(StringUtils.isEmpty(modelPrefix)) { modelPrefix = "Components"; }
-    
-    String modelName = modelPrefix + name + "Model";
-    String modelId   = modelPrefix + name;
+    String modelPrefix  = CdeRunJsHelper.getComponentTypeModelPrefix(comp);
+    String modelName    = CdeRunJsHelper.getComponentTypeModelId(comp, modelPrefix);
+    String modelVarName = modelName + "Model";
     
     String label = comp.getLabel();
     String jsTooltip = JsonUtils.toJsString(comp.getTooltip());
@@ -72,7 +69,7 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
       out.append(NEWLINE);
       out.append(INDENT2);
       out.append("return ");
-      out.append(modelName);
+      out.append(modelVarName);
       out.append(".getStub();");
       out.append(NEWLINE);
       out.append(INDENT1);
@@ -120,23 +117,30 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
     
     // --------------
     // MODEL
+    //
+    // Models aren't instantiated. 
+    // Their class is registered and only its static methods are used.
+    // It's a static factory:
+    //    AModelClass.getStub() --> creates a new model of given type
+    // Own properties
+    // Aliased properties
     out.append(NEWLINE);
-    out.append("var "); out.append(modelName); out.append(" = BaseModel.extend({}, {"); out.append(NEWLINE);
-    out.append(INDENT1);
-    out.append("MODEL: ");
-    out.append(JsonUtils.toJsString(modelId));
-    addCommaAndLineSep(out);
-    out.append(INDENT1); out.append("getStub: function() {"); out.append(NEWLINE);
-    out.append(INDENT2); out.append("return {"); out.append(NEWLINE);
+    out.append("var "); out.append(modelVarName); out.append(" = BaseModel.create({"); out.append(NEWLINE);
     
-    addJsProperty(out, "id", "TableManager.generateGUID()", INDENT3, true);
-    addJsProperty(out, "type", modelName + ".MODEL", INDENT3, false);
-    addJsProperty(out, "typeDesc", jsTooltip, INDENT3, false);
-
+    addJsProperty(out, "name",        JsonUtils.toJsString(modelName), INDENT1, true);
+    addJsProperty(out, "description", jsTooltip, INDENT1, false);
+    
+    boolean isFirstAttr = true;
     for(Attribute attribute : comp.getAttributes())
     {
       if(!"cdeModelIgnore".equals(attribute.getName()))
       {
+        if(isFirstAttr)
+        {
+          addJsProperty(out, "metas", "{", INDENT1, false);
+          out.append(NEWLINE);
+        }
+        
         String jsAttrName = attribute.getName();
         if(StringUtils.isEmpty(jsAttrName))
         {
@@ -151,37 +155,66 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
             out,
             JsonUtils.toJsString(jsAttrName),
             JsonUtils.toJsString(attribute.getValue()),
-            INDENT3,
-            false);
+            INDENT2,
+            isFirstAttr);
+        
+        if(isFirstAttr) { isFirstAttr = false; }
       }
     }
     
-    addJsProperty(out, "parent", "IndexManager.ROOTID", INDENT3, false);
-
-    // TODO: shouldn't components instead receive a list of aliased props?
-    addJsProperty(out, "properties", "[", INDENT3, false);
+    if(!isFirstAttr)
+    {
+      out.append(NEWLINE);
+      out.append(INDENT1);
+      out.append("}");
+    }
+    
+    addJsProperty(out, "properties", "[", INDENT1, false);
     if(comp.getPropertyUsageCount() > 0)
     {
-      boolean isFirst = true;
+      boolean isFirstProp = true;
       for(PropertyTypeUsage propUsage : comp.getPropertyUsages())
       {
-        if(isFirst) { isFirst = false; }
-        else        { out.append(","); }
+        if(isFirstProp) { isFirstProp = false; }
+        else            { out.append(","); }
         out.append(NEWLINE);
-        out.append(INDENT4);
-        out.append(JsonUtils.toJsString(propUsage.getProperty().getCamelName()));
+        out.append(INDENT2);
+        
+        // NOTE: the use of camelName to obtain the property in the client.
+        String camelName = propUsage.getProperty().getCamelName();
+        String alias     = propUsage.getAlias();
+        
+        boolean isAliased = !camelName.equals(alias);
+        boolean isOwned   = propUsage.isOwned();
+        
+        String jsName = JsonUtils.toJsString(camelName);
+        if(isAliased || isOwned) 
+        {
+          out.append("{name: "); out.append(jsName);
+          
+          if(isAliased) 
+          {
+            out.append(", alias: "); out.append(JsonUtils.toJsString(alias));
+          }
+          
+          if(isOwned)
+          {
+            out.append(", owned: true");
+          }
+          out.append("}");
+        }
+        else
+        {
+          out.append(jsName);
+        }
       }
       
       out.append(NEWLINE);
+      out.append(INDENT1);
+      out.append("]");
+      out.append(NEWLINE);
     }
     
-    out.append(INDENT3); out.append("].map(PropertiesManager.getProperty, PropertiesManager)");  out.append(NEWLINE);
-    out.append(INDENT2); out.append("};"); out.append(NEWLINE); // return {
-    out.append(INDENT1); out.append("}");  out.append(NEWLINE);  // getStub
-    out.append("});"); out.append(NEWLINE); // .extend({
-
-    out.append("BaseModel.registerModel(");
-    out.append(modelName);
-    out.append(");"); out.append(NEWLINE);
+    out.append("});"); out.append(NEWLINE); // .create({
   }
 }

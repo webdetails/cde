@@ -39,7 +39,7 @@ public class PropertyType extends MetaObject
 
   private final ComponentType _owner; // null for shared properties, otherwise, contains the owner component.
   private final String    _base;
-  private final ValueType _valueType;
+  private final ValueType _valueType; // also known as OutputType
   private final String    _defaultValue;
   private final String    _inputType;
   private final int       _order;
@@ -53,7 +53,7 @@ public class PropertyType extends MetaObject
 
     this._owner        = owner; // may be null
     this._base         = StringUtils.isEmpty(builder._base)   ? DEF_BASE_TYPE  : builder._base;
-    this._valueType    = builder._valueType == null            ? DEF_VALUE_TYPE : builder._valueType;
+    this._valueType    = builder._valueType == null           ? DEF_VALUE_TYPE : builder._valueType;
     this._defaultValue = processDefaultValue(this._valueType, builder._defaultValue);
     this._order        = builder._order;
 
@@ -61,9 +61,10 @@ public class PropertyType extends MetaObject
     {
       if(builder.getPossibleValueCount() > 0)
       {
-        _logger.warn(String.format("PropertyType ''%s" +
-          "'' has a possible values source specified. " +
-          "Ignoring provided static values list.", this.getName()));
+        _logger.warn(String.format(
+          "PropertyType '%s' has a possible values source specified. " +
+          "Ignoring provided static values list.", 
+          this.getName()));
       }
 
       this._possibleValuesSource = builder._possibleValuesSource;

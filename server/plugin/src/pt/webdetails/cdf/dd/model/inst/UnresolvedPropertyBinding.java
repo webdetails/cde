@@ -62,15 +62,21 @@ public abstract class UnresolvedPropertyBinding extends PropertyBinding
       if(owner == null) { throw new IllegalArgumentException("owner"); }
       if(metaModel == null) { throw new IllegalArgumentException("metaModel"); }
 
-      // TODO: Property binding is currently done by (lower case) name, not alias...
-
       if(StringUtils.isEmpty(this._alias))
       {
         throw new ValidationException(new RequiredAttributeError("Alias"));
       }
 
       ComponentType compType = owner.getMeta();
-      PropertyTypeUsage propUsage = compType.tryGetPropertyUsageByName(this._alias);
+      
+      // Bind by alias first
+      PropertyTypeUsage propUsage = compType.tryGetPropertyUsage(this._alias);
+      if(propUsage == null)
+      {
+        // Only then bind by name
+        propUsage = compType.tryGetPropertyUsageByName(this._alias);
+      }
+      
       if(propUsage != null)
       {
         ExpectedPropertyBinding.Builder builder = new ExpectedPropertyBinding.Builder();
@@ -80,7 +86,8 @@ public abstract class UnresolvedPropertyBinding extends PropertyBinding
 
         return builder.build(owner, metaModel);
       }
-
+      
+      // Then try to bind by name to a global property
       PropertyType prop = metaModel.tryGetPropertyType(this._alias);
       if(prop != null)
       {

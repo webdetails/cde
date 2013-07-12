@@ -67,7 +67,8 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
       Iterable<PropertyBinding> props = comp.getPropertyBindings();
       for(PropertyBinding prop : props)
       {
-        if("xActionArrayParameter".equalsIgnoreCase(prop.getName())) 
+        if("parameters".equalsIgnoreCase(prop.getAlias()) || 
+           "xActionArrayParameter".equalsIgnoreCase(prop.getName())) // legacy way
         {
           String paramsAssocList = prop.getValue();
           if(StringUtils.isNotEmpty(paramsAssocList))
@@ -75,7 +76,7 @@ public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements I
             this.writeParametersAssocList(out, paramsAssocList, aliasPrefix);
           }
         }
-        else if("Parameter".equalsIgnoreCase(prop.getInputType()))
+        else if("parameter".equalsIgnoreCase(prop.getInputType()))
         {
           // TODO: What a weak test... to detect a parameter property?
           writeJsSyncParameter(out, prop.getAlias(), prop.getValue(), aliasPrefix);
