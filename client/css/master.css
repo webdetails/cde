@@ -1371,6 +1371,8 @@ h6 {font-size:1em;font-weight:bold;}
 .headerLinks {
   position: relative;
   top: -17px;
+  text-align: left;
+  width: 500px;
 }
 
 .headerLinks .buttonImage {
