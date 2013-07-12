@@ -374,23 +374,23 @@ div.padder {
 
 div.cdfdd-toolbar-logo {
 
-   font-size: 30px;
+     background-image: url("../images/NAV/CDE_Header_Logo.png");
 
-   font-weight: 300;
+     font-size: 30px;
 
-   height: 40px;
+     font-weight: 300;
 
-   width: 147px;
+     height: 40px;
 
-   position: fixed;
+     left: 15px;
 
-   top: 0px;
+     position: fixed;
 
-   left: 15px;
+     top: 0;
 
-   background-image: url("../images/NAV/CDE_Header_Logo.png");
+     width: 80px;
 
-   z-index: 2;
+     z-index: 2;
 
 }
 
@@ -606,25 +606,23 @@ div.cdfdd-main {
 
 
 
-div#cdfdd-panels {
+ div#cdfdd-panels {
 
-  margin: -10px;
+   margin: 0px;
 
-  padding: 10px;
+   padding: 1%;
 
-  /*background:#2A2F31;*/
+   background: #F5F5F5;
 
-  background: #F5F5F5;
+   min-height: 400px;
 
-  min-height: 400px;
+   width: 98%;
 
-  width: 100%;
+   left: 0;
 
-  left: 0;
+   min-width: 975px;
 
-  min-width: 975px;
-
-}
+ }
 
 
 
@@ -638,23 +636,25 @@ tbody.ui-widget-content {
 
 
 
-div.cdfdd-panel {
+ div.cdfdd-panel {
 
-  display: none;
+   display: none;
 
-  box-sizing: border-box;
+   box-sizing: border-box;
 
-  -moz-box-sizing: border-box;
+   -moz-box-sizing: border-box;
 
-  -webkit-box-sizing: border-box;
+   -webkit-box-sizing: border-box;
 
-  padding: 40px 5px 40px 5px;
+   padding: 40px 0px;
 
-  width: 100%;
+   width: 100%;
 
-  min-width: 960px;
+   min-width: 960px;
 
-}
+ }
+
+
 
 
 
@@ -2300,21 +2300,15 @@ table.myTreeTable caption span{
 
 
 
-#cdfdd-layout-properties,#cdfdd-layout-tree, 
+#cdfdd-layout-properties, #cdfdd-layout-tree, #cdfdd-components-components, #cdfdd-components-properties, #cdfdd-datasources-properties, #cdfdd-datasources-datasources {
 
-#cdfdd-components-components,#cdfdd-components-properties,
+   overflow: auto;
 
-#cdfdd-datasources-properties,#cdfdd-datasources-datasources {
+   width: 49.7%;
 
-  overflow:auto;
+   min-width: 470px;
 
-  width: 49%;
-
-  padding-left: 7px;
-
-  min-width: 470px;
-
-}
+ }
 
 
 
@@ -3610,17 +3604,21 @@ div.popup .button:active {
 
     margin: 0;
 
+    position: relative;
+
+    padding: 0px 5px;
+
 }
 
 
 
 #cdfdd-components-properties.span-10.last {
 
-    width: auto;
-
     min-width: 390px;
 
     width: 42%;
+
+    right: 28px;
 
 }
 
@@ -3628,41 +3626,47 @@ div.popup .button:active {
 
 #cdfdd-datasources-datasources.span-8 {
 
-    width: 32%;
+  width: 32%;
 
-    min-width: 310px;
+  min-width: 310px;
 
-    margin: 0;
+  margin: 0;
 
-}
-
-
-
-#cdfdd-datasources-properties.span-10.last {
-
-    width: 42%;
-
-    min-width: 390px;
-
-    margin: 0;
+  padding: 0px 0px 0px 10px;
 
 }
 
 
 
-#cdfdd-layout-tree {
 
-    padding: 0;
 
-}
+ 
+
+ #cdfdd-layout-tree {
+
+   padding: 0;
+
+   margin: 0;
+
+   float: left;
+
+ }
+
+
 
 
 
 #cdfdd-layout-properties {
 
-    padding: 0;
+   padding: 0;
 
-}
+   margin: 0;
+
+   float: right;
+
+   margin-right: -1px;
+
+ }
 
 
 
@@ -3673,6 +3677,12 @@ div.popup .button:active {
     height: 32px!important;
 
     width: 32px;
+
+    position: absolute;
+
+    left: 9px;
+
+    top: 4px;
 
 }
 
@@ -3686,7 +3696,55 @@ div.popup .button:active {
 
     width: 32px;
 
+    position: absolute;
+
+    left: 9px;
+
+    top: 4px;
+
 }
+
+
+
+ #cdfdd-components-properties.span-10.last {
+
+   min-width: 390px;
+
+   width: 42%;
+
+   float: right;
+
+ }
+
+
+
+  #cdfdd-components-components.span-8 {
+
+   width: 32%;
+
+   min-width: 310px;
+
+   margin: 0;
+
+   position: relative;
+
+   padding: 0px 0px 0px 10px;
+
+ }
+
+
+
+  #cdfdd-datasources-properties.span-10.last {
+
+   width: 42%;
+
+   min-width: 390px;
+
+   margin: 0;
+
+   float: right;
+
+ }
 
 
 
@@ -3698,12 +3756,26 @@ div.popup .button:active {
 
     width: 32px;
 
+    position: absolute;
+
+    left: 9px;
+
+    top: 4px;
+
 }
 
 
 
 .panelButton.panelButton-active > * {
 
-    background-position-x: -32px;
+   background-position: -32px 0px;
+
+}
+
+
+
+.tableOperation:hover {
+
+   background-position: 22px 0px;
 
 }
