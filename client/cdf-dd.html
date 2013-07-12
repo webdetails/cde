@@ -46,20 +46,22 @@
     </div>
       <!---->
       <!-- Modes -->
-      <div class="span-9 cdfdd-modes">
-        <div class="panelButton panelButton-active">
-          <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip">Layout</a>
+      <div style=" display: inline-block; position: absolute; right: 0; ">
+        <div class="span-9 cdfdd-modes" style="min-width:380px;">
+          <div class="panelButton panelButton-active" title="Layout Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip layoutPanelButton"></a>
+          </div>
+          <div class="panelButton" title="Components Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip componentsPanelButton"></a>
+          </div>
+          <div class="panelButton" title="Datasources Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip datasourcesPanelButton"></a>
+          </div>
         </div>
-        <div class="panelButton">
-          <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip">Components</a>
-        </div>
-        <div class="panelButton">
-          <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip">Datasources</a>
-        </div>
-      </div>
-      <div class="span-2 cdfdd-preview last last">
-        <div class="panelButton">
-          <a id="previewButton" onclick="cdfdd.previewMode()" class="tooltip">Preview</a>
+        <div class="span-2 cdfdd-preview last last">
+          <div class="panelButton" style="width: 40px;">
+            <a id="previewButton" onclick="cdfdd.previewMode()" class="tooltip"></a>
+          </div>
         </div>
       </div>
     </div>
@@ -133,19 +135,6 @@
 <script type="text/javascript">
 
 
-function refitEditor() {
-  for (i=1; i <25; i++) {
-    if ($('.span-' + i).css) {
-      $('.span-' + i).css({
-        "min-width": 40 * i -10 + "px",
-        width: ((4 * i - 1) * 100 / 95) + "%" 
-      });
-    }
-  }
-  $('.container').css({width:"100%"});
-
-
-};
 
 $(".controlOptions").click(function(evt){
   cdfdd.savePulldown(this,evt);
@@ -153,9 +142,8 @@ $(".controlOptions").click(function(evt){
 $( function(){
     $(".round").corner();
     if(!($.browser.msie && parseInt($.browser.version) < 9)){
-     $(window).resize(function() {refitEditor();});      
+        
     }
-    refitEditor();
             }) ;
 //Fix the logo for IE<9 & Popup strech problems
       if($.browser.msie && parseInt($.browser.version) < 9){
