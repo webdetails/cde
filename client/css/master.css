@@ -1882,7 +1882,7 @@ div.popup .button:active {
     top: 4px;
 }
 
-.panelButton.panelButton-active > * {
+.panelButton.panelButton-active a div {
    background-position: -32px 0px;
 }
 
