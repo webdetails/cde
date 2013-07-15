@@ -3766,7 +3766,7 @@ div.popup .button:active {
 
 
 
-.panelButton.panelButton-active > * {
+.panelButton.panelButton-active a div {
 
    background-position: -32px 0px;
 
@@ -3789,6 +3789,5 @@ div.popup .button:active {
   height: 40px; 
 
   position: absolute;  
-
 
 }
