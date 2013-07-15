@@ -29,14 +29,12 @@ a {
 
 .panelButton a {
     color: #555;
-    position: relative;
     font-size: 14px;
-    top: 0px;
     line-height: 40px;
     display: block;
     height: 40px;
     cursor: pointer;
-    top: 4px;
+    left: 0;
 }
 
 .panelButton:hover {
@@ -1389,7 +1387,9 @@ h6 {font-size:1em;font-weight:bold;}
   background-image: url("../images/NAV/menu-icons/preview.png");
   height: 32px;
   width: 32px;
-  left: 5px;
+  left: 15px;
+  top: 4px;
+  position: relative;
 }
 
 .clear {
@@ -1888,4 +1888,10 @@ div.popup .button:active {
 
 .tableOperation:hover {
    background-position: 22px 0px;
+}
+
+.panelButtonClickableArea{
+  width: 50px;
+  height: 40px; 
+  position: absolute;  
 }
