@@ -740,23 +740,27 @@ div#cdfddOlapMeasureDiv{
   background-image: url("../images/NAV/apply_template.png");
 }
 
-.tooltip.layout_add_resource {
+.tooltip.layout_add_resource{
   background-image: url("../images/NAV/add.png");
+}
+
+.tooltip.components_duplicate {
+  background-image: url("../images/NAV/duplicate.png");
 }
 
 .tooltip.layout_add_row {
   background-image: url("../images/NAV/add_row.png");
 }
 
-.tooltip.layout_move_down {
+.tooltip.layout_move_down, .tooltip.components_move_down, .tooltip.datasources_move_down {
   background-image: url("../images/NAV/move_down.png");
 }
 
-.tooltip.layout_delete {
+.tooltip.layout_delete, .tooltip.components_delete, .tooltip.datasources_delete {
   background-image: url("../images/NAV/delete.png");
 }
 
-.tooltip.layout_move_up {
+.tooltip.layout_move_up, .tooltip.components_move_up, .tooltip.datasources_move_up {
   background-image: url("../images/NAV/move_up.png");
 }
 
