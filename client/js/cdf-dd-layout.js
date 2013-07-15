@@ -22,6 +22,12 @@ var LayoutPanel = Panel.extend({
 			    new LayoutAddResourceOperation(),
 			    new LayoutAddRowOperation()
 	                  ],
+	                  bootstrap: [
+	                    new LayoutSaveAsTemplateOperation(),
+			    new LayoutApplyTemplateOperation(),
+			    new LayoutAddResourceOperation(),
+			    new LayoutAddRowOperation()
+	                  ],
 	                  mobile: [
 	                    new LayoutSaveAsTemplateOperation(),
 			    new LayoutApplyTemplateOperation(),

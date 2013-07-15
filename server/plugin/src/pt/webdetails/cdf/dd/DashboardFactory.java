@@ -44,7 +44,7 @@ public class DashboardFactory {
   private static Log logger = LogFactory.getLog(DashboardFactory.class);
 
   private enum Renderers {
-    MOBILE, BLUEPRINT
+    MOBILE, BLUEPRINT, BOOTSTRAP
   }
 
   public static synchronized DashboardFactory getInstance() {
@@ -143,8 +143,12 @@ public class DashboardFactory {
     if (dashboard == null) {
       try {
         switch (Renderers.valueOf(wcdf.getRendererType().toUpperCase())) {
-          case MOBILE:
+        case MOBILE:
             dashboard = new MobileDashboard(wcdf, absolute, absRoot, debug, scheme);
+            break;
+
+        case BOOTSTRAP:
+            dashboard = new BootstrapDashboard(wcdf, absolute, absRoot, debug, scheme);
             break;
 
           /* Until we consider it safe to assume that all dashboards have
