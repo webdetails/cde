@@ -1151,7 +1151,7 @@ var CDFDD = Base.extend({
               the propper means will be used
             */
           else if ($('input[name=saveAsRadio]:checked').val() == "widget") {
-            selectedFolder = "cde/widgets/";
+            selectedFolder = "/cde/widgets/";
             selectedFile = $('#fileInput').val();
             selectedTitle = cdfdd.getDashboardWcdf().title;
             selectedDescription = cdfdd.getDashboardWcdf().description;
