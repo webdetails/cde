@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the tooltip text that the format function builds is in HTML format.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>459</Order>
+    <Order>460</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
