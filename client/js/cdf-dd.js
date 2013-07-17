@@ -941,7 +941,253 @@ var CDFDD = Base.extend({
     });
   },
 
-  saveAsWidget: function(fromScratch){
+  combinedSaveAs: function(fromScratch) {
+
+    var selectedTitle = "",
+      selectedDescription = "",
+      selectedFile = "",
+      selectedFolder = "";
+    var myself = this;
+    var radioButtons = '<form>' + 
+    '                     <table>'+
+    '                       <tr  style="font-weight: normal;">'+
+    '                         <td style="width:50%;margin: 0;padding: 0;">'+
+    '                           <div style=" width: 15px; padding: 0; margin: 0; float: left; "><input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" style="width:100%;" checked></div>'+
+    '                           <div style="width:80%; float: right;padding: 0;margin: 0;"><span style="top: -2px; width: 20%;">Dashboard</span></div>'+
+    '                         </td>' + 
+    '                         <td style="width:50%;margin: 0;padding: 0;">'+
+    '                           <div style="width:15px; float:left;"><input type="radio" name="saveAsRadio" value="widget" id="widgetRadio" style="width:100%;"></div>'+
+    '                           <div style="width:80%; float: right;"><span style="top: -2px; width: 20%;">Widget</span></div>'+
+    '                         </td>'+
+    '                       </tr>' +
+    '                     </table>'+ 
+    '                   </form>';
+
+    var widgetFieldContent = '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">' +
+      '                               <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>' +
+      '                             </div>\n' +
+      '                             <div style="width:80%;float:right;">' +
+      '                               <span style="top:0; left: 0; "><input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
+      '                             </div>\n' +
+      '                             <hr class="filexplorerhr"/>\n';
+
+    var fileInfo = '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+      '                   <div style="height:25px;padding-top: 10px;">' +
+      '                       <div style="float: left; width:20%;position: relative;top: 7px;">' +
+      '                         <span class="folderexplorerfilelabel" style="float: left;width: 100%; left:0;">File Name: *</span>' +
+      '                       </div>\n' +
+      '                       <div style="float: right;width:80%;">' +
+      '                         <table>'+
+      '                           <tr>'+
+      '                             <td style="padding:0;">'+
+      '                               <span style=" top: 0px; left:0;"><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
+      '                             </td>'+
+      '                             <td style="width:200px;">'+
+                                      radioButtons+
+      '                             </td>'+
+      '                           </tr>'+
+      '                         </table>'+
+      '                       </div>' +
+      '                   </div>\n' +
+      '                   <br>\n' +
+      '                   <div class="widgetField">' +
+      '                   </div>' +
+      '                   <hr class="saveHr"'+
+      '                   <span class="folderexplorerextralabel" style="left:0px;">- Extra Information -</span><br/>\n' +
+      '                   <div>' +
+      '                       <div style="float:left; width:20%;">' +
+      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Title:</span>' +
+      '                       </div>' +
+      '                       <div style="float:right; width:80%;">' +
+      '                         <input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
+      '                       </div>' +
+      '                   </div>\n' +
+      '                   <hr>' +
+      '                   <div>' +
+      '                       <div style="float:left; width:20%;">' +
+      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Description:</span>' +
+      '                       </div>' +
+      '                       <div style="float:right; width:80%;">' +
+      '                         <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
+      '                       </div>' +
+      '                       <br>' +
+      '                   </div>';
+
+    var content = "<h2>Save as...</h2><hr/><div style=''>" + fileInfo + "</div>";
+
+    $.prompt(content, {
+      prefix: "popup",
+      buttons: {
+        Ok: 1,
+        Cancel: 0
+      },
+      loaded: function() {
+
+        $("#popup").css("width", "515px");
+        $(".widgetField").hide();
+        $(".widgetField").append(widgetFieldContent);
+
+        $('#container_id').fileTree({
+          root: '/',
+          script: CDFDDDataUrl.replace("Syncronize", "ExploreFolder?fileExtensions=.wcdf&access=create"),
+          expandSpeed: 1000,
+          collapseSpeed: 1000,
+          multiFolder: false,
+          folderClick: function(obj, folder) {
+            if ($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
+            $(obj).attr("class", "selectedFolder");
+            selectedFolder = folder;
+            $("#fileInput").val("");
+          }
+        }, function(file) {
+          $("#fileInput").val(file.replace(selectedFolder, ""));
+          selectedFile = $("#fileInput").val();
+        });
+
+        $("#dashRadio").click(function(event) {
+          $("#container_id").show();
+          $(".widgetField").hide();
+        });
+
+        $("#widgetRadio").click(function(event) {
+          $("#container_id").hide();
+          $(".widgetField").show();
+        });
+      },
+      submit: function(v, m, f) {
+        if (v == 1) {
+
+          /*In case of Dashboards
+              the propper means will be used
+          */
+          if ($('input[name=saveAsRadio]:checked').val() == "dashboard") {
+            selectedFile = $('#fileInput').val();
+            selectedTitle = cdfdd.getDashboardWcdf().title;
+            selectedDescription = cdfdd.getDashboardWcdf().description;
+
+            if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
+              $.prompt('Invalid file extension. Must be .wcdf', {
+                prefix: "popup"
+              });
+            } else if (selectedFolder.length == 0) {
+              $.prompt('Please choose destination folder.', {
+                prefix: "popup"
+              });
+            } else if (selectedFile.length == 0) {
+              $.prompt('Please enter the file name.', {
+                prefix: "popup"
+              });
+            }
+
+            if (selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
+
+            CDFDDFileName = selectedFolder + selectedFile;
+            cdfdd.dashboardData.filename = CDFDDFileName;
+
+
+            var saveAsParams = {
+              operation: fromScratch ? "newFile" : "saveas",
+              file: selectedFolder + selectedFile,
+              title: selectedTitle,
+              description: selectedDescription,
+              cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 2) // TODO: shouldn't it strip, like save does?
+            };
+
+            $.post(CDFDDDataUrl, saveAsParams, function(result) {
+              var json = eval("(" + result + ")");
+              if (json.status == "true") {
+                if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+                var solutionPath = selectedFolder.split("/");
+                cdfdd.initStyles(function() {
+                  //cdfdd.setExitNotification(false);
+                  window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                });
+              } else
+                $.notifyBar({
+                  html: "Errors saving file: " + json.result
+                });
+            });
+
+
+          }
+          /*In case of Widgets
+              the propper means will be used
+            */
+          else if ($('input[name=saveAsRadio]:checked').val() == "widget") {
+            selectedFolder = "/cde/widgets/";
+            selectedFile = $('#fileInput').val();
+            selectedTitle = cdfdd.getDashboardWcdf().title;
+            selectedDescription = cdfdd.getDashboardWcdf().description;
+            var selectedWidgetName = $("#componentInput").val();
+            /* Validations */
+            if(selectedTitle == ""){
+              selectedTitle = $("#titleInput").val();
+            }
+
+            var validInputs = true;
+            if (!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
+              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.',{prefix:"popup"});
+              validInputs = false;
+            } else if (selectedWidgetName.length == 0) {
+              if (selectedTitle.length == 0) {
+                $.prompt('No widget name provided. Tried to use title instead but title is empty.',{prefix:"popup"});
+                validInputs = false;
+              } else {
+                selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+              }
+            }
+
+            if (validInputs) {
+              if (selectedFile.indexOf(".wcdf") == -1) {
+                selectedFile += ".wcdf";
+              }
+
+              CDFDDFileName = selectedFolder + selectedFile;
+              myself.dashboardData.filename = CDFDDFileName;
+
+              var saveAsParams = {
+                operation: fromScratch ? "newFile" : "saveas",
+                file: selectedFolder + selectedFile,
+                title: selectedTitle,
+                description: selectedDescription,
+                cdfstructure: JSON.stringify(myself.dashboardData, null, 2),
+                widgetName: selectedWidgetName
+              };
+
+              $.post(CDFDDDataUrl, saveAsParams, function(result) {
+                var json = JSON.parse(result);
+                if (json.status == "true") {
+                  if (selectedFolder[0] == "/") {
+                    selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+                  }
+                  var solutionPath = selectedFolder.split("/");
+                  var wcdf = myself.getDashboardWcdf();
+                  // TODO: dashboard is being saved twice. This also needs to be fixed..
+                  wcdf.title = saveAsParams.title;
+                  wcdf.description = saveAsParams.description;
+                  wcdf.widgetName = saveAsParams.widgetName;
+                  wcdf.widget = true;
+                  myself.saveSettingsRequest(wcdf);
+                  myself.initStyles(function() {
+                    window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                  });
+                } else {
+                  $.notifyBar({
+                    html: "Errors saving file: " + json.result
+                  });
+                }
+              });
+            }
+
+          }
+
+          return false;
+        }
+      }
+    });
+
+  },
+  saveAsWidget: function(fromScratch) {
 
     var selectedFolder = "cde/widgets/",
         selectedFile = "",
