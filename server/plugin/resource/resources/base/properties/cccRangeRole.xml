@@ -7,7 +7,7 @@
     <Tooltip>The range visual role represents a classification of the values of the value visual role.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>414</Order>
+    <Order>415</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
