@@ -46,6 +46,7 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor.DashboardRendererType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.repository.IRepositoryFile;
@@ -162,7 +163,7 @@ public final class DashboardManager
           throws ThingWriteException 
   {
     // 1. Build the cache key.
-    String cdeFilePath = wcdf.getStructurePath();
+    String cdeFilePath = Utils.normalizeSolutionRelativePath(wcdf.getStructurePath());
     
     DashboardCacheKey cacheKey = new DashboardCacheKey(
             cdeFilePath, 
@@ -254,7 +255,7 @@ public final class DashboardManager
           boolean bypassCacheRead)
           throws ThingReadException
   {
-    String cdeFilePath = wcdf.getStructurePath();
+    String cdeFilePath = Utils.normalizeSolutionRelativePath(wcdf.getStructurePath());
     
     // 1. Check existence and permissions to the original CDFDE file
     // NOTE: the cache is shared by all users.
@@ -290,7 +291,7 @@ public final class DashboardManager
   {
     // Look for cached Dashboard objects that contain the widget.
     
-    String cdeFilePath = WcdfDescriptor.toStructurePath(wcdfPath);
+    String cdeFilePath = Utils.normalizeSolutionRelativePath(WcdfDescriptor.toStructurePath(wcdfPath));
     
     Map<String, Dashboard> dashboardsByCdfdeFilePath;
     synchronized(this._dashboardsByCdfdeFilePath)

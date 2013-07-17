@@ -140,7 +140,17 @@ public class Utils {
   {
     return Math.round(10.0 * ((new Date().getTime() - dtStart.getTime()) / 1000.0)) / 10.0;
   }
-
+  
+  // Must start with a / and all \ are converted to / and has no duplicate /s.
+  // When empty, returns empty
+  public static String normalizeSolutionRelativePath(String path)
+  {
+    if(StringUtils.isEmpty(path)) { return ""; }
+    return ("/" + path)
+           .replaceAll("\\\\+", "/")
+           .replaceAll("/+",    "/");
+  }
+  
   public static String getRelativePath(String targetPath, String basePath) 
   {
     return getRelativePath(targetPath, basePath, File.separator);

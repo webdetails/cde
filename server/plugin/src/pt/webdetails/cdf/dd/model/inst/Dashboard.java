@@ -15,6 +15,7 @@ import pt.webdetails.cdf.dd.model.inst.validation.DashboardDuplicateComponentErr
 import pt.webdetails.cdf.dd.model.meta.DashboardType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cdf.dd.util.Utils;
 
 /**
  * @author dcleao
@@ -47,7 +48,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     }
     
     this._wcdf = builder._wcdf;
-    this._sourcePath = StringUtils.defaultIfEmpty(builder._sourcePath, "");
+    this._sourcePath = Utils.normalizeSolutionRelativePath(StringUtils.defaultIfEmpty(builder._sourcePath, ""));
     this._sourceDate = builder._sourceDate == null ? new Date() : builder._sourceDate;
     
     // NOTE: During editing, components may have no name and even duplicate names...
