@@ -36,6 +36,6 @@ public abstract class ComponentError extends ValidationError
   @Override
   public String toString()
   {
-    return "Component of id '" + this._componentId + " and type '" + this._componentTypeLabel + "' is invalid.";
+    return "Component of id '" + this._componentId + "' and type '" + this._componentTypeLabel + "' is invalid.";
   }
 }

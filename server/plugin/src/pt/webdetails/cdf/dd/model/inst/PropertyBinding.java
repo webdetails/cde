@@ -66,6 +66,8 @@ public abstract class PropertyBinding extends Atom
   {
     private String _value;
     
+    public abstract String getAlias();
+    
     public String getValue()
     {
       return this._value;

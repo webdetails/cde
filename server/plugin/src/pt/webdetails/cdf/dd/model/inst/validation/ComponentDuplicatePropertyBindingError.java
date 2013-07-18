@@ -34,6 +34,6 @@ public final class ComponentDuplicatePropertyBindingError extends ComponentError
   @Override
   public String toString()
   {
-    return "Component of id '" + this._componentId + " and type '" + this._componentTypeLabel + "' has a duplicate property binding for name/alias '" + this._propertyAlias + "'.";
+    return "Component of id '" + this._componentId + "' and type '" + this._componentTypeLabel + "' has a duplicate property binding for name/alias '" + this._propertyAlias + "'.";
   }
 }

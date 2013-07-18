@@ -68,6 +68,7 @@ public final class ExtensionPropertyBinding extends PropertyBinding
     private String _alias;
     private PropertyType _prop;
 
+    @Override
     public String getAlias()
     {
       return this._alias;

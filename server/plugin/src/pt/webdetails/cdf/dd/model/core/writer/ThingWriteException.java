@@ -4,6 +4,8 @@
 
 package pt.webdetails.cdf.dd.model.core.writer;
 
+import pt.webdetails.cdf.dd.util.Utils;
+
 /**
  * @author dcleao
  */
@@ -11,12 +13,12 @@ public final class ThingWriteException extends Exception
 {
   public ThingWriteException(String message, Exception cause)
   {
-    super(message, cause);
+    super(Utils.composeErrorMessage(message, cause), cause);
   }
 
   public ThingWriteException(Exception cause)
   {
-    super(cause);
+    super(Utils.composeErrorMessage(null, cause), cause);
   }
 
   public ThingWriteException(String message)

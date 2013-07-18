@@ -4,6 +4,8 @@
 
 package pt.webdetails.cdf.dd.model.core.reader;
 
+import pt.webdetails.cdf.dd.util.Utils;
+
 /**
  * @author dcleao
  */
@@ -11,12 +13,12 @@ public final class ThingReadException extends Exception
 {
   public ThingReadException(String message, Exception cause)
   {
-    super(message, cause);
+    super(Utils.composeErrorMessage(message, cause), cause);
   }
 
   public ThingReadException(Exception cause)
   {
-    super(cause);
+    super(Utils.composeErrorMessage(null, cause), cause);
   }
 
   public ThingReadException(String message)
