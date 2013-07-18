@@ -23,7 +23,7 @@ var CodeEditor = Base.extend({
 	},
   
   mode: 'javascript',
-  theme: 'ace/theme/monokai',
+  theme: 'ace/theme/textmate',
   editor: null,
   editorId: null,
 	
@@ -107,11 +107,7 @@ var CodeEditor = Base.extend({
 	},
 	
 	setTheme: function(themePath){
-		if(themePath == null || themePath == undefined){
-			this.editor.setTheme(this.theme);
-		}else{
-			this.theme = themePath;	
-		}
+		this.editor.setTheme((themePath == null || themePath == undefined) ? this.theme : themePath);
 		
 	},
 	

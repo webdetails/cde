@@ -48,19 +48,19 @@
       <!-- Modes -->
       <div style=" display: inline-block; position: absolute; right: 0; ">
         <div class="span-9 cdfdd-modes" style="min-width:380px;">
-          <div class="panelButton panelButton-active" title="Layout Panel">
-            <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip layoutPanelButton"></a>
+          <div class="panelButton" title="Datasources Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
           </div>
           <div class="panelButton" title="Components Panel">
-            <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip componentsPanelButton"></a>
+            <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
           </div>
-          <div class="panelButton" title="Datasources Panel">
-            <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip datasourcesPanelButton"></a>
+          <div class="panelButton panelButton-active" title="Layout Panel">
+            <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
           </div>
         </div>
         <div class="span-2 cdfdd-preview last last">
           <div class="panelButton" title="Preview your Dashboard" style="width: 40px;">
-            <a id="previewButton" onclick="cdfdd.previewMode()" class="tooltip"></a>
+            <a onclick="cdfdd.previewMode()" class="tooltip panelButtonClickableArea"><div id="previewButton"></div></a>
           </div>
         </div>
       </div>
@@ -128,8 +128,6 @@
 <script language="javascript" type="text/javascript" src="getJsResource/resources/ace/src/mode-css.js"></script>
 <script language="javascript" type="text/javascript" src="getJsResource/resources/ace/src/mode-xml.js"></script>
 <script language="javascript" type="text/javascript" src="getJsResource/resources/ace/src/mode-html.js"></script>
-<script language="javascript" type="text/javascript" src="getJsResource/resources/ace/src/theme-twilight.js"></script>
-<script language="javascript" type="text/javascript" src="getJsResource/resources/ace/src/theme-eclipse.js"></script>
 <script language="javascript" type="text/javascript" src="getJsResource/js/cdf-dd-aceWrapper.js"></script>
 <!-- Layout formats -->
 <script type="text/javascript">

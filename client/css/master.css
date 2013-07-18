@@ -29,14 +29,12 @@ a {
 
 .panelButton a {
     color: #555;
-    position: relative;
     font-size: 14px;
-    top: 0px;
     line-height: 40px;
     display: block;
     height: 40px;
     cursor: pointer;
-    top: 4px;
+    left: 0;
 }
 
 .panelButton:hover {
@@ -186,15 +184,15 @@ div.padder {
 
 
 div.cdfdd-toolbar-logo {
-   font-size: 30px;
-   font-weight: 300;
-   height: 40px;
-   width: 147px;
-   position: fixed;
-   top: 0px;
-   left: 15px;
-   background-image: url("../images/NAV/CDE_Header_Logo.png");
-   z-index: 2;
+     background-image: url("../images/NAV/CDE_Header_Logo.png");
+     font-size: 30px;
+     font-weight: 300;
+     height: 40px;
+     left: 15px;
+     position: fixed;
+     top: 0;
+     width: 80px;
+     z-index: 2;
 }
 
 div.cdfdd-toolbar {
@@ -302,31 +300,31 @@ div.cdfdd-main {
 }
 
 
-div#cdfdd-panels {
-  margin: -10px;
-  padding: 10px;
-  /*background:#2A2F31;*/
-  background: #F5F5F5;
-  min-height: 400px;
-  width: 100%;
-  left: 0;
-  min-width: 975px;
-}
+ div#cdfdd-panels {
+   margin: 0px;
+   padding: 1%;
+   background: #F5F5F5;
+   min-height: 400px;
+   width: 98%;
+   left: 0;
+   min-width: 975px;
+ }
 
 tbody.ui-widget-content {
   /*background: #2a2f31;*/
   border: 1px solid #1999D1;
 }
 
-div.cdfdd-panel {
-  display: none;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  padding: 40px 5px 40px 5px;
-  width: 100%;
-  min-width: 960px;
-}
+ div.cdfdd-panel {
+   display: none;
+   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   -webkit-box-sizing: border-box;
+   padding: 40px 0px;
+   width: 100%;
+   min-width: 960px;
+ }
+
 
 .panel-title {
   color: #9A9A9A; /*TODO: unspecified*/
@@ -742,23 +740,27 @@ div#cdfddOlapMeasureDiv{
   background-image: url("../images/NAV/apply_template.png");
 }
 
-.tooltip.layout_add_resource {
+.tooltip.layout_add_resource{
   background-image: url("../images/NAV/add.png");
+}
+
+.tooltip.components_duplicate {
+  background-image: url("../images/NAV/duplicate.png");
 }
 
 .tooltip.layout_add_row {
   background-image: url("../images/NAV/add_row.png");
 }
 
-.tooltip.layout_move_down {
+.tooltip.layout_move_down, .tooltip.components_move_down, .tooltip.datasources_move_down {
   background-image: url("../images/NAV/move_down.png");
 }
 
-.tooltip.layout_delete {
+.tooltip.layout_delete, .tooltip.components_delete, .tooltip.datasources_delete {
   background-image: url("../images/NAV/delete.png");
 }
 
-.tooltip.layout_move_up {
+.tooltip.layout_move_up, .tooltip.components_move_up, .tooltip.datasources_move_up {
   background-image: url("../images/NAV/move_up.png");
 }
 
@@ -1149,14 +1151,11 @@ table.myTreeTable caption span{
   height: 16px;
 }
 
-#cdfdd-layout-properties,#cdfdd-layout-tree, 
-#cdfdd-components-components,#cdfdd-components-properties,
-#cdfdd-datasources-properties,#cdfdd-datasources-datasources {
-  overflow:auto;
-  width: 49%;
-  padding-left: 7px;
-  min-width: 470px;
-}
+#cdfdd-layout-properties, #cdfdd-layout-tree, #cdfdd-components-components, #cdfdd-components-properties, #cdfdd-datasources-properties, #cdfdd-datasources-datasources {
+   overflow: auto;
+   width: 49.7%;
+   min-width: 470px;
+ }
 
 table.cdfdd caption {
  height: 20px;
@@ -1392,7 +1391,9 @@ h6 {font-size:1em;font-weight:bold;}
   background-image: url("../images/NAV/menu-icons/preview.png");
   height: 32px;
   width: 32px;
-  left: 5px;
+  left: 15px;
+  top: 4px;
+  position: relative;
 }
 
 .clear {
@@ -1804,52 +1805,97 @@ div.popup .button:active {
     width: 32%;
     min-width: 310px;
     margin: 0;
+    position: relative;
+    padding: 0px 5px;
 }
 
 #cdfdd-components-properties.span-10.last {
-    width: auto;
     min-width: 390px;
     width: 42%;
+    right: 28px;
 }
 
 #cdfdd-datasources-datasources.span-8 {
-    width: 32%;
-    min-width: 310px;
-    margin: 0;
+  width: 32%;
+  min-width: 310px;
+  margin: 0;
+  padding: 0px 0px 0px 10px;
 }
 
-#cdfdd-datasources-properties.span-10.last {
-    width: 42%;
-    min-width: 390px;
-    margin: 0;
-}
 
-#cdfdd-layout-tree {
-    padding: 0;
-}
+ 
+ #cdfdd-layout-tree {
+   padding: 0;
+   margin: 0;
+   float: left;
+ }
+
 
 #cdfdd-layout-properties {
-    padding: 0;
-}
+   padding: 0;
+   margin: 0;
+   float: right;
+   margin-right: -1px;
+ }
 
 .layoutPanelButton {
     background-image: url("../images/NAV/menu-icons/layout.png");
     height: 32px!important;
     width: 32px;
+    position: absolute;
+    left: 9px;
+    top: 4px;
 }
 
 .componentsPanelButton {
     background-image: url("../images/NAV/menu-icons/components.png");
     height: 32px!important;
     width: 32px;
+    position: absolute;
+    left: 9px;
+    top: 4px;
 }
+
+ #cdfdd-components-properties.span-10.last {
+   min-width: 390px;
+   width: 42%;
+   float: right;
+ }
+
+  #cdfdd-components-components.span-8 {
+   width: 32%;
+   min-width: 310px;
+   margin: 0;
+   position: relative;
+   padding: 0px 0px 0px 10px;
+ }
+
+  #cdfdd-datasources-properties.span-10.last {
+   width: 42%;
+   min-width: 390px;
+   margin: 0;
+   float: right;
+ }
 
 .datasourcesPanelButton {
     background-image: url("../images/NAV/menu-icons/data.png");
     height: 32px!important;
     width: 32px;
+    position: absolute;
+    left: 9px;
+    top: 4px;
 }
 
-.panelButton.panelButton-active > * {
-    background-position-x: -32px;
+.panelButton.panelButton-active a div {
+   background-position: -32px 0px;
+}
+
+.tableOperation:hover {
+   background-position: 22px 0px;
+}
+
+.panelButtonClickableArea{
+  width: 50px;
+  height: 40px; 
+  position: absolute;  
 }

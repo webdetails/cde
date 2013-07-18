@@ -7,7 +7,7 @@
     <Tooltip>The fixed maximum domain value that the axis will show (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>367</Order>
+    <Order>368</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
