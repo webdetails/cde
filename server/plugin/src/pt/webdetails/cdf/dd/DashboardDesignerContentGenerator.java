@@ -251,7 +251,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public static void refresh(OutputStream out) throws Exception 
   {
-    MetaModelManager.getInstance().refresh();
+    DashboardManager.getInstance().refreshAll();
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)

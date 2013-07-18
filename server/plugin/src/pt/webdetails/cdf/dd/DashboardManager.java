@@ -335,6 +335,27 @@ public final class DashboardManager
     }
   }
   
+  public void refreshAll()
+  {
+    this.refreshAll(true);
+  }
+  
+  public void refreshAll(boolean refreshDatasources)
+  {
+    MetaModelManager.getInstance().refresh(refreshDatasources);
+    
+    synchronized(this._dashboardsByCdfdeFilePath)
+    {
+      this._dashboardsByCdfdeFilePath.clear();
+    }
+    
+    // Clear the DashboardWriteResult eh-cache
+    synchronized(this._ehCacheLock)
+    {
+      this._ehCache.removeAll();
+    }
+  }
+  
   private void collectWidgetsToInvalidate(
           Set<String> invalidateDashboards,
           Map<String, Dashboard> dashboardsByCdfdeFilePath,

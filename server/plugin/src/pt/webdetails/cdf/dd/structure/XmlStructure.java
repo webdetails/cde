@@ -339,17 +339,17 @@ public class XmlStructure implements IStructure
 
     repository.publishFile(widgetPath, safeGetEncodedBytes(doc.asXML()), true);
     
-    // This will allow the metadata model to receive the 
+    // This will allow the metadata model to receive the
     // new/updated widget-component definition (name and parameters).
     // The CDE Editor will show new/updated widgets.
     // No need to refresh data source definitions.
     try
     {
-      MetaModelManager.getInstance().refresh(/*refreshDatasources*/false);
+      DashboardManager.getInstance().refreshAll(/*refreshDatasources*/false);
     }
     catch(Exception ex)
     {
-        logger.error("Error while refreshing the meta data cache", ex);
+      logger.error("Error while refreshing the meta data cache", ex);
     }
   }
 
