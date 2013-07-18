@@ -230,6 +230,9 @@ public class XmlStructure implements IStructure
   
   public void saveas(HashMap<String, Object> parameters) throws Exception
   {
+    // TODO: This method does not maintain the Widget status and parameters of a dashboard
+    // Is this intended?
+    
     // 1. Read empty wcdf file
     File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE_PATH);
     
