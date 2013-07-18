@@ -30,6 +30,8 @@ public class Utils {
 
   private static Log logger = LogFactory.getLog(Utils.class);
 
+  private static final String NEWLINE = System.getProperty("line.separator");
+  
   private static String baseUrl = null;
 
   public static String getBaseUrl() {
@@ -54,9 +56,28 @@ public class Utils {
     return baseUrl;
 
   }
-
-  public static void main(String[] args) {
-    try {
+  
+  public static String composeErrorMessage(String message, Exception cause)
+  {
+    String msg = "";
+    if(StringUtils.isNotEmpty(message)) 
+    {
+      msg += message;
+    }
+    
+    if(cause != null) 
+    {
+      if(msg.length() > 0) { msg += NEWLINE; }
+      msg += cause.getMessage();
+    }
+    
+    return msg;
+  }
+  
+  public static void main(String[] args)
+  {
+    try
+    {
       URI uri = new URI("http://127.0.0.1:8080/pentaho/");
       System.out.println(uri.getPath());
       uri = new URI("/pentaho/");

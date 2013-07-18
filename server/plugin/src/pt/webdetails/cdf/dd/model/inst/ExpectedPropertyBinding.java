@@ -62,6 +62,12 @@ public final class ExpectedPropertyBinding extends PropertyBinding
   {
     private PropertyTypeUsage _propUsage;
     
+    @Override
+    public String getAlias()
+    {
+      return this._propUsage != null ? this.getAlias() : null;
+    }
+    
     public PropertyTypeUsage getPropertyUsage()
     {
       return this._propUsage;

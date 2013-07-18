@@ -41,8 +41,17 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
 
     assert metaModel != null;
     
-    String name = null;
-
+    // NOTE: name may be empty.
+    // During design time, components may not yet have a name.
+    this._name = StringUtils.defaultIfEmpty(builder.tryGetComponentName(), "");
+    
+    this._idPrefix = builder._idPrefix == null ? this.initGetDefaultIdPrefix() : builder._idPrefix;
+    
+    if(this._name.isEmpty()) 
+    {
+      _logger.warn("A component of type '" + this.getMeta().getName() + "' has no name.");
+    }
+    
     if(builder.getPropertyBindingCount() > 0)
     {
       this._propertyBindingsByLowerAlias = new LinkedHashMap<String, PropertyBinding>();
@@ -74,7 +83,10 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         {
           // Component still initializing, so don't have an id yet
           throw new ValidationException(
-              new ComponentDuplicatePropertyBindingError(bind.getAlias(), /*id*/"", this.getMeta().getLabel()));
+              new ComponentDuplicatePropertyBindingError(
+                  bind.getAlias(),
+                  this.getId(),
+                  this.getMeta().getLabel()));
         }
         
         String propName = bind.getName().toLowerCase();
@@ -85,11 +97,6 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         {
           this._extensionPropertyBindings.add((ExtensionPropertyBinding)bind);
         }
-        
-        if(name == null && "name".equalsIgnoreCase(propAlias))
-        {
-          name = bind.getValue();
-        }
       }
     }
     else
@@ -97,17 +104,6 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
       this._propertyBindingsByLowerAlias = null;
       this._propertyBindingsByLowerName  = null;
       this._extensionPropertyBindings    = null;
-    }
-
-    // NOTE: name may be empty.
-    // During design time, components may not yet have a name.
-    this._name = StringUtils.defaultIfEmpty(name, "");
-    
-    this._idPrefix = builder._idPrefix == null ? this.initGetDefaultIdPrefix() : builder._idPrefix;
-    
-    if(this._name.isEmpty()) 
-    {
-      _logger.warn("A component of type '" + this.getMeta().getName() + "' has no name.");
     }
   }
   
@@ -253,7 +249,7 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
     private String _idPrefix;
     
     private List<PropertyBinding.Builder> _propBindings;
-
+    
     public String getIdPrefix()
     {
       return this._idPrefix;
@@ -289,6 +285,19 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
     public int getPropertyBindingCount()
     {
       return this._propBindings != null ? this._propBindings.size() : 0;
+    }
+    
+    public String tryGetComponentName()
+    {
+      for(PropertyBinding.Builder bindBuilder : this.getPropertyBindings())
+      {
+        if("name".equalsIgnoreCase(bindBuilder.getAlias()))
+        {
+          return bindBuilder.getValue();
+        }
+      }
+
+      return null;
     }
     
     public abstract Component build(MetaModel metaModel) throws ValidationException;

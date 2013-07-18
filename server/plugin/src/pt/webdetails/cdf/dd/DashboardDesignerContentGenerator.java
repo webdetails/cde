@@ -217,8 +217,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   public void getComponentDefinitions(OutputStream out) throws Exception
   {
     // Get and output the definitions
-    String definition = MetaModelManager.getInstance().getJsDefinition();
-    out.write(definition.getBytes());
+    try
+    {
+      String definition = MetaModelManager.getInstance().getJsDefinition();
+      out.write(definition.getBytes());
+    }
+    catch(Exception ex)
+    {
+      String msg = "Could not get component definitions: " + ex.getMessage();
+      logger.error(msg);
+      throw ex;
+    }
   }
 
   /**
@@ -283,7 +292,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
     catch(Exception ex)
     {
-      String msg = "Could not load dashboard: " + ex.getLocalizedMessage();
+      String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error(msg);
       writeOut(out, msg);
     }

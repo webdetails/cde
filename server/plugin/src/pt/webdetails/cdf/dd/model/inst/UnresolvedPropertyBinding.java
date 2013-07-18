@@ -108,8 +108,10 @@ public abstract class UnresolvedPropertyBinding extends PropertyBinding
       }
 
       throw new ValidationException(
-          // Component still initializing, so cannot call getId yet...
-          new ComponentUnresolvedPropertyBindingError(this._alias, "", owner.getMeta().getLabel()));
+          new ComponentUnresolvedPropertyBindingError(
+              this._alias, 
+              owner.getId(), 
+              owner.getMeta().getLabel()));
     }
   }
 }
