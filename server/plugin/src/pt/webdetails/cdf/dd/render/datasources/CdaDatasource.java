@@ -8,35 +8,29 @@ import java.util.ArrayList;
 import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import pt.webdetails.cdf.dd.render.components.BaseComponent;
 
 /**
  *
  * @author pdpi
  */
-public class CdaDatasource extends BaseComponent {
+public class CdaDatasource extends BaseDataSource {
 
-  private JSONObject def;
-  private String name;
   private String iname;
 
   public CdaDatasource(Pointer pointer) {
-    this.def = (JSONObject) pointer.getNode();
+    setDefinition((JSONObject) pointer.getNode());
     this.iname = pointer.asPath().replaceAll(".*name='(.*?)'.*", "$1");
-    JXPathContext context = JXPathContext.newContext(def);
-    this.name = ((String) context.getValue("metadata/name", String.class));
+    JXPathContext context = JXPathContext.newContext(this.definition);
+    setName((String) context.getValue("metadata/name", String.class));
 
   }
 
   @Override
   public String getEntry() {
-    JXPathContext context = JXPathContext.newContext(def);
+    JXPathContext context = JXPathContext.newContext(this.definition);
     String group = ((String) context.getValue("metadata/group", String.class));
     String groupDesc = ((String) context.getValue("metadata/groupdesc", String.class));
     String desc = name;
-
-    //String cat = XmlDom4JHelper.getNodeText("//DesignerComponent/Header/Category", definition);
-    //String catDesc = XmlDom4JHelper.getNodeText("//DesignerComponent/Header/CatDescription", definition);
 
     String entryString =
             "        var " + iname + "Entry = PalleteEntry.extend({" + newLine
@@ -54,9 +48,7 @@ public class CdaDatasource extends BaseComponent {
 
   @Override
   public String getModel() {
-
-    String desc = "";
-    JXPathContext context = JXPathContext.newContext(def);
+    JXPathContext context = JXPathContext.newContext(this.definition);
     String connType = (String) context.getValue("metadata/conntype");
     connType = connType != null ? connType : "";
     String daType = (String) context.getValue("metadata/datype");
@@ -111,9 +103,10 @@ public class CdaDatasource extends BaseComponent {
     throw new UnsupportedOperationException("Datasources can't be rendered.");
   }
 
+  @SuppressWarnings("unchecked")
   private String[] generateProperties() {
     ArrayList<String> props = new ArrayList<String>();
-    JXPathContext context = JXPathContext.newContext(def);
+    JXPathContext context = JXPathContext.newContext(this.definition);
     JSONObject connection = ((JSONObject) context.getValue("definition/connection", JSONObject.class));
     if (connection != null) {
       props.addAll(connection.keySet());
@@ -122,12 +115,8 @@ public class CdaDatasource extends BaseComponent {
     if (dataaccess != null) {
       props.addAll(dataaccess.keySet());
     }
-    //props.remove("connection");
+    
     return props.toArray(new String[props.size()]);
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
 }

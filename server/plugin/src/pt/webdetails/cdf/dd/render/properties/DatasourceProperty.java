@@ -10,6 +10,7 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Node;
 import org.pentaho.platform.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
@@ -19,6 +20,8 @@ import pt.webdetails.cdf.dd.util.XPathUtils;
  */
 public class DatasourceProperty extends GenericProperty
 {
+  public static final String META_TYPE_CPK = "CPK";
+  private org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
 
   public DatasourceProperty(String path, Node doc)
   {
@@ -48,20 +51,25 @@ public class DatasourceProperty extends GenericProperty
     if (!(pointer instanceof NullPointer))
     {
       JXPathContext query = node.getRelativeContext(pointer);
-      isBuiltIn = !StringUtils.isEmpty(XPathUtils.getStringValue(query, "meta"));
+      String metaType = XPathUtils.getStringValue(query, "meta");
+      isBuiltIn = !StringUtils.isEmpty(metaType) && !metaType.equalsIgnoreCase(META_TYPE_CPK);
       isCda = !StringUtils.isEmpty(XPathUtils.getStringValue(query, "properties/value[../name='dataAccessId']"));
     }
 
     if (isCda)
     {
+      logger.trace("rendering CDA Data Source");
       return renderCdaDatasource(name, node);
     }
     else if (isBuiltIn)
     {
+      logger.trace("rendering Built In CDA Data Source");
       return renderBuiltinCdaDatasource(name, node);
     }
     else
     {
+      // TODO(rafa): implementation to support generic datasources (add support to CPK Endpoints)
+      logger.trace("rendering Generic Data Source");
       return renderDatasource(name, node);
     }
   }
@@ -122,30 +130,49 @@ public class DatasourceProperty extends GenericProperty
       }
       Pointer pointer = node.getPointer("/datasources/rows[properties/name='name'][properties/value='" + queryName + "']");
 
-      if (!(pointer instanceof NullPointer))
-      {
-        JXPathContext query = node.getRelativeContext(pointer);
-        output.append("jndi: \"" + XPathUtils.getStringValue(query, "properties/value[../name='jndi']") + "\"," + newLine);
-        output.append("\t\tcatalog: \"" + XPathUtils.getStringValue(query, "properties/value[../name='catalog']") + "\"," + newLine);
-        output.append("\t\tcube: \"" + XPathUtils.getStringValue(query, "properties/value[../name='cube']") + "\"," + newLine);
-        
-        String mdxQuery = XPathUtils.getStringValue(query, "properties/value[../name='mdxquery']");
-        String processedQuery;
-        String queryType;
+      JXPathContext query = node.getRelativeContext(pointer);
+      
+      String metaType = XPathUtils.getStringValue(query, "meta");
+      String processedQuery = "";
+      String queryType = "unknown";
+      
+      if (metaType.equalsIgnoreCase(META_TYPE_CPK)) {
+        queryType = "cpk";
+        output.append("endpoint: \"").append(XPathUtils.getStringValue(query, "meta_endpoint")).append("\",").append(newLine);
+        output.append("\t\tpluginId: \"").append(XPathUtils.getStringValue(query, "meta_pluginId")).append("\",").append(newLine);
+      } else {
 
-        if (!mdxQuery.equals(""))
-        {
+        String jndiProp = XPathUtils.getStringValue(query, "properties/value[../name='jndi']");
+        if (!jndiProp.equals("")) {
+          output.append("\t\tjndi: \"" + jndiProp + "\"," + newLine);
+        }
+
+        String catalogProp = XPathUtils.getStringValue(query, "properties/value[../name='catalog']");
+        if (!catalogProp.equals("")) {
+          output.append("\t\tcatalog: \"" + catalogProp + "\"," + newLine);
+        }
+
+        String cubeProp = XPathUtils.getStringValue(query, "properties/value[../name='cube']");
+        if (!cubeProp.equals("")) {
+          output.append("\t\tcube: \"" + cubeProp + "\"," + newLine);
+        }
+
+        String mdxQuery = XPathUtils.getStringValue(query, "properties/value[../name='mdxquery']");
+
+        if (!mdxQuery.equals("")) {
           processedQuery = getFunctionParameter(mdxQuery, true);
-          queryType = "\"mdx\"";
+          queryType = "mdx";
+        } else {
+          processedQuery = getFunctionParameter(
+              XPathUtils.getStringValue(query, "properties/value[../name='sqlquery']"), true);
+          queryType = "sql";
         }
-        else
-        {
-          processedQuery = getFunctionParameter(XPathUtils.getStringValue(query, "properties/value[../name='sqlquery']"), true);
-          queryType = "\"sql\"";
-        }
-        output.append("\t\tquery: " + processedQuery + "," + newLine);
-        output.append("\t\tqueryType:" + queryType + "," + newLine);
       }
+
+      if (!processedQuery.equals("")) {
+        output.append("\t\tquery: " + processedQuery + "," + newLine);
+      }
+      output.append("\t\tqueryType: \"").append(queryType).append("\",").append(newLine);
     }
     return replaceParameters(output.toString());
   }

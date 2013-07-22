@@ -10,48 +10,49 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 import java.util.Properties;
-import java.text.SimpleDateFormat;
-import org.apache.commons.io.FilenameUtils;
+import java.util.Set;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
-import net.sf.json.JSONSerializer;
+import net.sf.json.JSONObject;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.json.JSONException;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import pt.webdetails.cdf.dd.datasources.DataSourceManager;
+import pt.webdetails.cdf.dd.datasources.DataSourceProvider;
 import pt.webdetails.cdf.dd.datasources.DataSourceReader;
 import pt.webdetails.cdf.dd.olap.OlapUtils;
+import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.components.ComponentManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-
-import pt.webdetails.cdf.dd.packager.Packager;
-import pt.webdetails.cpf.annotations.AccessLevel;
-import pt.webdetails.cpf.annotations.Audited;
-import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
+import pt.webdetails.cpf.annotations.AccessLevel;
+import pt.webdetails.cpf.annotations.Audited;
+import pt.webdetails.cpf.annotations.Exposed;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -210,15 +211,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     this.edit(out);
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JAVASCRIPT)
   public void getComponentDefinitions(OutputStream out) throws Exception {
     // The ComponentManager is responsible for producing the component definitions
     ComponentManager engine = ComponentManager.getInstance();
-    if (engine.getCdaDefinitions() == null) {
-      // We want to acquire a handle for the CDA plugin.
-      JSON json = getCdaDefs(false);
-      engine.parseCdaDefinitions(json);
-    }
+
+    engine.parseDataSourceDefinitions(DataSourceManager.getInstance().getDataSourcesJsonDefinition());
+    
     // Get and output the definitions
     out.write(engine.getDefinitions().getBytes());
   }
@@ -232,7 +231,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   public static void refresh(OutputStream out) throws Exception {
     DependenciesManager.refresh();
     ComponentManager.getInstance().refresh();
-    ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs(true));
+
+    DataSourceManager.getInstance().refresh();
+    // TODO(rafa): refactor to use generic definitions parser
+    // ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs(false));
+    ComponentManager.getInstance().parseDataSourceDefinitions(DataSourceManager.getInstance().getDataSourcesJsonDefinition());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -280,13 +283,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.CSS)
   public void getCssResource(final OutputStream out) throws Exception {
     setResponseHeaders(CSS_TYPE, RESOURCE_CACHE_DURATION, null);
     getResource(out);
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JAVASCRIPT)
   public void getJsResource(final OutputStream out) throws Exception {
     setResponseHeaders(JAVASCRIPT_TYPE, RESOURCE_CACHE_DURATION, null);
     final HttpServletResponse response = getResponse();
@@ -507,6 +510,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   /**
    * List CDA datasources for given dashboard.
    */
+  @Deprecated
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void listCdaSources(final OutputStream out) throws IOException {
     String dashboard = getRequestParameters().getStringParameter("dashboard", null);
@@ -689,24 +693,28 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void listdataaccesstypes(final IParameterProvider pathParams, final OutputStream out) throws Exception {
-    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(false);
-    cdaListDataAccessTypes.setOutputStream(out);
-    cdaListDataAccessTypes.run();
-  }
-
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  /**
+   * 
+   * @param refresh
+   * @return
+   * @throws Exception
+   */
+  @Deprecated
   public static JSON getCdaDefs(boolean refresh) throws Exception {
-    InterPluginCall cdaListDataAccessTypes = getCdaListDataAccessTypesCall(refresh);
-    return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
+    JSON result = null;
+
+    if (refresh) {
+      result = DataSourceManager.getInstance().getDefinition("cda");
+    } else {
+      result = DataSourceManager.getInstance().getDefinitionFromCache("cda");
+    }
+
+    return result;
   }
 
-  private static InterPluginCall getCdaListDataAccessTypesCall(boolean refresh) {
-    InterPluginCall cdaListDataAccessTypes = new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
-    cdaListDataAccessTypes.setSession(PentahoSessionHolder.getSession());
-    cdaListDataAccessTypes.putParameter("refreshCache", "" + refresh);
-    return cdaListDataAccessTypes;
+  @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JSON)
+  public void getAvailableDataSources(OutputStream out) throws Exception {
+    out.write(DataSourceManager.getInstance().getDataSourcesJsonDefinition().toString().getBytes());
   }
 
   private void init() throws IOException {

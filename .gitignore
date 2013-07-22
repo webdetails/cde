@@ -24,3 +24,9 @@ nbproject/private/
 .classpath
 .project
 .settings
+
+#Intellij IDEA project files
+*.iml
+.idea
+
+.ant-targets-build.xml

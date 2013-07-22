@@ -18,6 +18,7 @@ import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
@@ -103,8 +104,10 @@ public class CdaRenderer
         connectionId = null;
       }
       Element dataAccess = exportDataAccess(cdaFile, context, connectionId);
-
-      root.appendChild(dataAccess);
+      if (dataAccess != null)
+      {
+        root.appendChild(dataAccess);
+      }
     }
 
     TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -201,7 +204,13 @@ public class CdaRenderer
     //  compound = true;
     }
     String name = (String) context.getValue("properties/.[name='name']/value", String.class);
-    JXPathContext conn = JXPathContext.newContext((JSONObject) cda.getValue(type + "/definition/dataaccess", JSONObject.class));
+    JXPathContext conn;
+    try {
+      conn = JXPathContext.newContext((JSONObject) cda.getValue(type + "/definition/dataaccess", JSONObject.class));
+    } catch (JXPathException e) {
+      // hack
+      return null;  
+    }
     Element dataAccess = doc.createElement(tagName);
     dataAccess.setAttribute("id", name);
     dataAccess.setAttribute("type", daType);
