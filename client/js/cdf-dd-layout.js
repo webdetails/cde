@@ -659,9 +659,10 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 
 			// Add a row. This special type goes always to the beginning;
 			
-			$.prompt('Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>\n' +
+			$.prompt('<h2>Add Resource</h2><hr>Resource Type:&nbsp;&nbsp;<select id="resourceType"><option value="Css">Css</option><option value="Javascript">Javascript</option></select>\n' +
 '							 <select id="resourceSource"><option value="file">External File</option><option value="code">Code Snippet</option></select>',
 			{buttons: { Ok: true, Cancel: false },
+			prefix: "popup",
 			submit: function(v){
 				if(v){
 					
@@ -766,8 +767,8 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 					templates = json.result;
 					var selectTemplate = undefined;
 					var myTemplatesCount = 0;
-					var _templates = '<div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-					var _myTemplates = '<div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+					var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+					var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
 					for(v in templates){
 						if(templates.hasOwnProperty(v)){
 							if(templates[v].type =="default")
@@ -792,7 +793,7 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 					
 					var callback = function(v,m,f){
 						if(v == 1 && selectTemplate != undefined){
-							$.prompt('Are you sure you want to load the template? ',{ buttons: { Ok: true, Cancel: false} ,
+							$.prompt('Are you sure you want to load the template? ',{ buttons: { Ok: true, Cancel: false} , prefix:"popupTemplate",
 									callback: function(v,m,f){
 										if(v){
 											cdfdd.dashboardData = selectTemplate.structure;
@@ -806,27 +807,27 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 						loaded: loaded,
 						buttons: myTemplatesCount > 0 ? { MyTemplates: 2,  Ok: 1, Cancel: 0 } : {Ok: 1, Cancel: 0},
 						opacity: 0.2,
-						prefix:'greyJqi',
+						prefix:'popupTemplate',
 						callback: callback,
 						submit:function(v,m,f){
 							 if(v!=2) return true;
 							 $.prompt.close();
-							 $.prompt(_myTemplates,promptMyTemplates);
+							 $.prompt(_myTemplates,promptMyTemplates,{prefix:"popupTemplate"});
 						}};
 					
 					var promptMyTemplates = {
 						loaded: loaded,
 						buttons: { Back: 2,  Ok: 1, Cancel: 0 },
 						opacity: 0.2,
-						prefix:'greyJqi',
+						prefix:'popupTemplate',
 						callback: callback,
 						submit:function(v,m,f){
 							if(v!=2) return true;
 							$.prompt.close();
-							$.prompt(_templates,promptTemplates);
+							$.prompt(_templates,promptTemplates,{prefix:"popupTemplate"});
 						}};
 					
-					$.prompt(_templates,promptTemplates);
+					$.prompt(_templates,promptTemplates,{prefix:"popupTemplate"});
 			}
 			else 
 				$.notifyBar({ html: "Error loading templates: " + json.result });
@@ -850,13 +851,13 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 			var includeDataSources = true;
 			var myself = this;
 			var content = '\n' +
-'				<span><b>Template:</b></span><br/><hr/>\n' +
-'				<span id="fileLabel" >File Name:</span><br/><input class="cdf_settings_input" id="fileInput" type="text" value=""></input><br/>\n' +
-'				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value=""></input>\n' +
+'				<span><h2>Save as Template</h2></span><br/><hr/>\n' +
+'				<span id="fileLabel" >File Name:</span><br/><input class="cdf_settings_input" id="fileInput" type="text" value="" style="width:100%;"></input><br/>\n' +
+'				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value=""style="width:100%;"></input><br>\n' +
 '				<span>Include Components:</span><input type="checkbox" checked="yes" id="includeComponentsInput" value="true" />\n' +
 '				&nbsp&nbsp<span>Include Datasources:</span><input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true" />';
 				
-			$.prompt(content,{buttons: { Save: true, Cancel: false },
+			$.prompt(content,{buttons: { Save: true, Cancel: false }, prefix: "popup",
 			submit: function(v){
 				title = $("#titleInput").val();
 				file = $("#fileInput").val();

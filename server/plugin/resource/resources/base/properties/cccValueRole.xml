@@ -7,7 +7,7 @@
     <Tooltip>The value visual role represents the main measure.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>482</Order>
+    <Order>483</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

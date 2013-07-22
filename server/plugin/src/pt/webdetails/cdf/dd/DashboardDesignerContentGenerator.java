@@ -23,7 +23,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -53,6 +55,13 @@ import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
 import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
+import pt.webdetails.cpf.InterPluginCall;
+import pt.webdetails.cpf.SimpleContentGenerator;
+import pt.webdetails.cpf.VersionChecker;
+import pt.webdetails.cpf.plugins.IPluginFilter;
+import pt.webdetails.cpf.plugins.Plugin;
+import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -505,6 +514,50 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       writeOut(out, FileExplorer.getInstance().getJqueryFileTree(folder, fileExtensions, permission, userSession));
     }
 
+  }
+  
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void getCDEplugins(final OutputStream out) throws IOException
+  {
+    
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    pluginsAnalyzer.refresh();
+    
+    IPluginFilter pluginFilter = new IPluginFilter() {
+
+      public boolean include(Plugin plugin)
+      {
+        boolean include = false;
+        if(plugin.hasSettingsXML()){
+          include = (plugin.getXmlValue("/settings/cde-compatible", "settings.xml").equals("true")) ? true : false;
+        }
+        return include;
+      }
+    };
+    
+    List<Plugin> cdePlugins = pluginsAnalyzer.getPlugins(pluginFilter);
+    
+    JSONArray pluginsArray = new JSONArray();
+    
+    
+    for(Plugin plugin : cdePlugins){
+      try{
+        JSONObject pluginObject = new JSONObject();
+        String [] split = plugin.getPluginRelativePath().split("/");
+        pluginObject.put("title", split[split.length-1]);
+        pluginObject.put("description", plugin.getXmlValue("/settings/description", "settings.xml"));
+        pluginObject.put("url", plugin.getXmlValue("/settings/url", "settings.xml"));
+        pluginObject.put("jsPath", plugin.getXmlValue("/settings/jsPath", "settings.xml"));
+        pluginObject.put("pluginId", plugin.getId());
+
+        pluginsArray.add(pluginObject);
+      }catch(Exception e){}
+    }
+    
+    logger.info("Feeding client with CDE-Compatible plugin list");
+    
+    
+    writeOut(out, pluginsArray.toString());
   }
 
   /**

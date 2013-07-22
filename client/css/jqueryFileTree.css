@@ -15,14 +15,16 @@ UL.jqueryFileTree LI {
 }
 
 UL.jqueryFileTree A {
-	color: #333;
+	color: #666 !important;
 	text-decoration: none;
 	display: block;
 	padding: 0px 2px;
 }
 
 UL.jqueryFileTree A:hover {
-	background: #BDF;
+	background: #666;
+	color: #f5f5f5!important;
+	text-shadow:none;
 }
 
 /* Core Styles */
@@ -93,7 +95,7 @@ UL.jqueryFileTree A:hover {
 /*ADDED */
 
 .selectedFolder {
-	background: #FFFAB5;
+	background: #0EC9E5;
 }
 
 .selectedFile {

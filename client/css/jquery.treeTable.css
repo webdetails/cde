@@ -15,11 +15,13 @@
 }
 
 .treeTable tr.collapsed td .expander {
-  background-image: url(../images/toggle-expand-dark.png);
+   background-image: url(custom/images/ui-icons_9a9a9a_256x240.png);
+   background-position: -32px -16px;
 }
 
 .treeTable tr.expanded td .expander {
-  background-image: url(../images/toggle-collapse-dark.png);
+   background-image: url(custom/images/ui-icons_9a9a9a_256x240.png);
+   background-position: -64px -16px;
 }
 
 /* jquery.treeTable.sortable
@@ -27,6 +29,15 @@
 .treeTable tr.selected, .treeTable tr.accept {
   background-color: #3875d7;
   color: #fff;
+}
+
+.treeTable tr.collapsed.ui-state-active td .expander {
+    background-image: url(custom/images/ui-icons_ffffff_256x240.png);
+    background-position: -32px -16px;
+}
+.treeTable tr.expanded.ui-state-active td .expander {
+   background-image: url(custom/images/ui-icons_ffffff_256x240.png);
+   background-position: -64px -16px;
 }
 
 .treeTable tr.collapsed.selected td .expander, .treeTable tr.collapsed.accept td .expander {

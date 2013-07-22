@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      
+      #saveBtn{
+        width:auto;
+        border: solid 2px #bbb;
+        height: 25px;
+        font-size: 12px;
+        padding: 3px 10px;
+        background-color: #eaedee;
+        color: #444;
+      }
+
+      #saveBtn:hover{
+        background-color: #bbb;
+        color: #444;
+      }
+
+      #infoArea{
+        padding-left: 10px;
+        padding-right: 10px;
+        position: relative;
+        font-size: 13px;
+        font-weight: bold;
+        color: #444;
+        border: 1px solid #bbb;
+        left: 10px;
+      }
+
+      body{
+        color: #444;
+        background-color: #eaedee;
+      }
+    
+    </style>
     <meta charset="UTF-8">
     <title>Editor</title>
     <!--jquery -->
@@ -12,7 +46,7 @@
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.ext.js"></script>
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/autobox/jquery.ui.autobox.js"></script>
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/underscore.js"></script>  
-        <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/mustache.js"></script>  
+    <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/mustache.js"></script>  
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/backbone.js"></script>    
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/Base.js"></script>
     <script language="javascript" type="text/javascript" src="../pentaho-cdf/js/CoreComponents.js"></script>
@@ -132,7 +166,7 @@
   </head>
   <body>
 
-    <div id="btnArea"> <button id="saveBtn" onclick ="save()"> Save </button><span id="infoArea"/></div>
+    <div id="btnArea"> <button id="saveBtn" onclick ="save()" style=""> Save </button><span id="infoArea"/></div>
     <pre style="position:relative;height:310px;width:760px;" id="editArea">
     </pre>
 
