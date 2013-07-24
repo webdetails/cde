@@ -461,6 +461,8 @@ public class ComponentManager
   public ComponentManager parseDataSourceDefinitions(JSON definitions) {
     if (definitions != null && !definitions.isEmpty()) {
         
+        cdaSettings = definitions;
+        
         final JXPathContext doc = JXPathContext.newContext(definitions);
         @SuppressWarnings("unchecked")
         Iterator<Pointer> pointers = doc.iteratePointers("*");
