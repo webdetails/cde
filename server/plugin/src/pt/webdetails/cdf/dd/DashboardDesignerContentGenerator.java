@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -39,7 +37,6 @@ import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
-import pt.webdetails.cdf.dd.datasources.DataSourceProvider;
 import pt.webdetails.cdf.dd.datasources.DataSourceReader;
 import pt.webdetails.cdf.dd.olap.OlapUtils;
 import pt.webdetails.cdf.dd.packager.Packager;
@@ -53,15 +50,11 @@ import pt.webdetails.cpf.VersionChecker;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
-import pt.webdetails.cpf.InterPluginCall;
-import pt.webdetails.cpf.SimpleContentGenerator;
-import pt.webdetails.cpf.VersionChecker;
 import pt.webdetails.cpf.plugins.IPluginFilter;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
+import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -242,8 +235,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     ComponentManager.getInstance().refresh();
 
     DataSourceManager.getInstance().refresh();
-    // TODO(rafa): refactor to use generic definitions parser
-    // ComponentManager.getInstance().parseCdaDefinitions(getCdaDefs(false));
     ComponentManager.getInstance().parseDataSourceDefinitions(DataSourceManager.getInstance().getDataSourcesJsonDefinition());
   }
 
