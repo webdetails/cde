@@ -68,7 +68,6 @@ public class DatasourceProperty extends GenericProperty
     }
     else
     {
-      // TODO(rafa): implementation to support generic datasources (add support to CPK Endpoints)
       logger.trace("rendering Generic Data Source");
       return renderDatasource(name, node);
     }

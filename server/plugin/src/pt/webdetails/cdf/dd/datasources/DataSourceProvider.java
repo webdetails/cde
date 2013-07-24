@@ -5,7 +5,6 @@
  */
 package pt.webdetails.cdf.dd.datasources;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 
@@ -31,18 +30,17 @@ public class DataSourceProvider {
    * @throws InvalidDataSourceProviderException when passed provider is null
    */
   public DataSourceProvider(Plugin provider) throws InvalidDataSourceProviderException {
-    try {
-      checkNotNull(provider, "Null provider passed");
-    } catch (NullPointerException e) {
-      throw new InvalidDataSourceProviderException(e.getMessage());
+    
+    if (provider == null) {
+      throw new InvalidDataSourceProviderException("Null provider passed");
     }
 
     setProvider(provider);
   }
 
-  protected void checkIfIsValid() throws InvalidDataSourceProviderException {
+  protected void checkIfIsValid(InterPluginCall.Plugin plugin) throws InvalidDataSourceProviderException {
 
-    InterPluginCall ipc = new InterPluginCall(this.providerPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
+    InterPluginCall ipc = new InterPluginCall(plugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
     if (!ipc.pluginExists()) {
       throw new InvalidDataSourceProviderException(String.format("%s not found!", this));
     }
@@ -51,8 +49,7 @@ public class DataSourceProvider {
      * TODO(rafa) 
      * 
      * check if there is a better way to check if a given plugin has a method
-     * called DATA_SOURCE_DEFINITION_METHOD_NAME defined, since it seem to me
-     * that the current method is not the best way to do it
+     * called DATA_SOURCE_DEFINITION_METHOD_NAME defined
      */
     String result = null;
     try {
@@ -127,10 +124,13 @@ public class DataSourceProvider {
   }
 
   private void setProvider(Plugin provider) throws InvalidDataSourceProviderException {
-    this.provider = provider;
-    this.providerPlugin = new InterPluginCall.Plugin(provider.getId(), provider.getName());
 
-    checkIfIsValid();
+    InterPluginCall.Plugin interPluginCall = new InterPluginCall.Plugin(provider.getId(), provider.getName());
+    checkIfIsValid(interPluginCall);
+
+    this.provider = provider;
+    this.providerPlugin = interPluginCall;
+
   }
 
   @Override

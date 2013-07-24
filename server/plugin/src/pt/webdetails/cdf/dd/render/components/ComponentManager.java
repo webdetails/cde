@@ -3,8 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd.render.components;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
-import pt.webdetails.cdf.dd.render.datasources.BaseDataSource;
 import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
 import pt.webdetails.cdf.dd.render.datasources.CpkDataSource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
@@ -361,6 +358,44 @@ public class ComponentManager
     return renderer;
   }
 
+  private String getOrderedDefinitions()
+  {
+    StringBuilder generalEntries = new StringBuilder();
+    StringBuilder generalModels = new StringBuilder();
+    StringBuilder cdaDataSourceEntries = new StringBuilder();
+    StringBuilder cdaDataSourceModels = new StringBuilder();
+    StringBuilder cpkDataSourceEntries = new StringBuilder();
+    StringBuilder cpkDataSourceModels = new StringBuilder();
+    
+    Collection<BaseComponent> components = componentPool.values();
+    for (IComponent render : components)
+    {
+      if (render instanceof CpkDataSource) {
+        cpkDataSourceEntries.append(render.getEntry());
+        cpkDataSourceModels.append(render.getModel());
+      } else if (render instanceof CdaDatasource) {
+        cdaDataSourceEntries.append(render.getEntry());
+        cdaDataSourceModels.append(render.getModel());
+      } else {
+        generalEntries.append(render.getEntry());
+        generalModels.append(render.getModel());
+      }
+    }
+    
+    // makes "pseudo" sorting of Data Source Entries & Models
+    StringBuilder finalResult = new StringBuilder();
+    // Entries
+    finalResult.append(generalEntries.toString());
+    finalResult.append(cdaDataSourceEntries.toString());
+    finalResult.append(cpkDataSourceEntries.toString());
+    // Models
+    finalResult.append(generalModels.toString());
+    finalResult.append(cdaDataSourceModels.toString());
+    finalResult.append(cpkDataSourceModels.toString());
+    
+    return finalResult.toString();
+  }
+  
   public String getEntry()
   {
     StringBuilder entry = new StringBuilder();
@@ -387,8 +422,7 @@ public class ComponentManager
   {
     StringBuilder defs = new StringBuilder();
     defs.append(PropertyManager.getInstance().getDefinitions());
-    defs.append(getEntry());
-    defs.append(getModel());
+    defs.append(getOrderedDefinitions());
 
     return defs.toString().replaceAll(",([\\r\\n]+\\s*})", "$1"); // pattern: |,([\r\n]+\s*})| // replaceBy: |$1| 
   }
@@ -424,45 +458,32 @@ public class ComponentManager
     return cdaSettings;
   }
 
-  // TODO(rafa): generic implementation of the parseCdaDefinitions
   public ComponentManager parseDataSourceDefinitions(JSON definitions) {
-    try {
-      checkNotNull(definitions);
-
-      if (!definitions.isEmpty()) {
-
-        if (definitions instanceof net.sf.json.JSONObject) {
-          final JXPathContext doc = JXPathContext.newContext(definitions);
-          @SuppressWarnings("unchecked")
-          Iterator<Pointer> pointers = doc.iteratePointers("*");
-          while (pointers.hasNext()) {
-            Pointer pointer = pointers.next();
-            if (pointer.getNode() instanceof JSONObject) {
-              final JSONObject def = (JSONObject) pointer.getNode();
-              final String dataSourceType = ((JSONObject) def.get("metadata")).getString("datype");
+    if (definitions != null && !definitions.isEmpty()) {
+        
+        final JXPathContext doc = JXPathContext.newContext(definitions);
+        @SuppressWarnings("unchecked")
+        Iterator<Pointer> pointers = doc.iteratePointers("*");
+        
+        while (pointers.hasNext()) {
+          Pointer pointer = pointers.next();
+          if (pointer.getNode() instanceof JSONObject) {
+            final JSONObject def = (JSONObject) pointer.getNode();
+            final String dataSourceType = ((JSONObject) def.get("metadata")).getString("datype");
+            
+            if (dataSourceType.equalsIgnoreCase("cpk")) {
+              CpkDataSource cpkDs = new CpkDataSource(pointer);
+              componentPool.put(cpkDs.getName(), cpkDs);
               
-              if (dataSourceType.equalsIgnoreCase("cpk")) {
-                CpkDataSource cpkDs = new CpkDataSource(pointer);
-                componentPool.put(cpkDs.getName(), cpkDs);
-                
-                logger.debug("detected CPK Endpoint Data Source: {}", cpkDs);
-              } else {
-                CdaDatasource cdaDs = new CdaDatasource(pointer);
-                componentPool.put(cdaDs.getName(), cdaDs);
-                
-                logger.debug("detected CDA Data Source: {}", cdaDs);
-              }
+              logger.debug("detected CPK Endpoint Data Source: {}", cpkDs);
+            } else {
+              CdaDatasource cdaDs = new CdaDatasource(pointer);
+              componentPool.put(cdaDs.getName(), cdaDs);
+              
+              logger.debug("detected CDA Data Source: {}", cdaDs);
             }
           }
-
-        } else {
-          // TODO what now?
         }
-      }
-    } catch (NullPointerException e) {
-      logger.error("trying to parse a null data sources definitions");
-    } catch (Exception e) {
-      logger.error("trying to parse a null, empty or invalid data sources definitions", e);
     }
 
     return this;

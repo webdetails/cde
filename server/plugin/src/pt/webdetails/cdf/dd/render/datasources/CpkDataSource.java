@@ -59,7 +59,6 @@ public class CpkDataSource extends BaseDataSource {
     final String group = ((String) context.getValue("metadata/group", String.class));
     final String groupDesc = ((String) context.getValue("metadata/groupdesc", String.class));
     final String desc = name;
-    final String pluginId = (String) context.getValue("metadata/pluginId", String.class);
 
     //@formatter:off
     String entry = new StringBuilder("\nvar ")
@@ -85,14 +84,6 @@ public class CpkDataSource extends BaseDataSource {
         .append("\tcategoryDesc: \"")
         .append(groupDesc)
         .append("\",\n")
-//        // pluginId
-//        .append("\tpluginId: \"")
-//        .append(pluginId)
-//        .append("\",\n")
-//        // endpoint
-//        .append("\tendpoint: \"")
-//        .append(name)
-//        .append("\",\n")
         // stub
         .append("\tgetStub: function(){\n")
         .append("\t\treturn Components")

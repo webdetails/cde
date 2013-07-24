@@ -4,8 +4,9 @@
  */
 package pt.webdetails.cdf.dd.datasources;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * 
@@ -44,9 +40,11 @@ public class DataSourceManager {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
 
-  private Map<String, JSON> providerDefinitionCache = Maps.newHashMap();
+  // the map key is the data source provider id
+  private Map<String, JSON> providerDefinitionCache = new HashMap<String, JSON>();
 
-  private Map<String, DataSourceProvider> sources = Maps.newLinkedHashMap();
+  // the map key is the data source provider id
+  private Map<String, DataSourceProvider> sources = new LinkedHashMap<String, DataSourceProvider>();
 
   private DataSourceManager() {
     init();
@@ -65,7 +63,7 @@ public class DataSourceManager {
     List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities(String.format(
         "/%s", CDE_DATASOURCE_IDENTIFIER));
 
-    List<DataSourceProvider> dataSourceProviders = Lists.newArrayList();
+    List<DataSourceProvider> dataSourceProviders = new ArrayList<DataSourceProvider>();
 
     for (PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) {
       Plugin provider = entity.getPlugin();
@@ -129,10 +127,13 @@ public class DataSourceManager {
     return result;
   }
 
-  public Optional<DataSourceProvider> getProvider(String id) {
-
-    return Optional.fromNullable(sources.get(id));
-
+  /**
+   * 
+   * @param id Data Source Provider Id
+   * @return DataSourceProvider if found, null otherwise
+   */
+  public DataSourceProvider getProvider(String id) {
+    return sources.get(id);
   }
 
   /**
@@ -142,7 +143,7 @@ public class DataSourceManager {
    */
   public List<DataSourceProvider> getProviders() {
     synchronized (sources) {
-      return Lists.newArrayList(sources.values());
+      return new ArrayList(sources.values());
     }
   }
 
@@ -174,15 +175,20 @@ public class DataSourceManager {
     init();
   }
 
-  public DataSourceProvider registerProvider(DataSourceProvider provider) throws NullPointerException {
+  public DataSourceProvider registerProvider(DataSourceProvider provider) throws InvalidDataSourceProviderException {
 
-    checkNotNull(provider, "Can't register a null data source provider");
-
-    if (!sources.containsKey(provider.getId())) {
-      sources.put(provider.getId(), provider);
+    if (provider == null) {
+      throw new InvalidDataSourceProviderException("Can't register a null data source provider");
     }
 
-    return provider;
+    synchronized (sources) {
+
+      if (!sources.containsKey(provider.getId())) {
+        sources.put(provider.getId(), provider);
+      }
+
+      return provider;
+    }
   }
 
 }
