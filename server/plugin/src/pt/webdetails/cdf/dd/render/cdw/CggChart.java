@@ -53,27 +53,10 @@ public class CggChart
     renderChart(chartScript);
     renderDatasource(chartScript);
     
-    // Adding abbility to process external height and width
-    chartScript.append("var w = parseInt(params.get('width')) || render_").append(this.chartName).append(".chartDefinition.width;\n");
-    chartScript.append("var h = parseInt(params.get('height')) || render_").append(this.chartName).append(".chartDefinition.height;\n");
-    chartScript.append("render_").append(this.chartName).append(".chartDefinition.width = w;\n render_").append(this.chartName).append(".chartDefinition.height = h;\n");
-
-    chartScript.append("print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');\n");
+    String compVarName = "render_" + this.chartName;
     
-    /* Chart Background */
-    chartScript.append("bg = document.createElementNS('http://www.w3.org/2000/svg','rect');\n");
-    chartScript.append("bg.setAttribute('id','foo');\n");
-    chartScript.append("bg.setAttribute('x','0');\n");
-    chartScript.append("bg.setAttribute('y','0');\n");
-    chartScript.append("bg.setAttribute('width', w);\n");
-    chartScript.append("bg.setAttribute('height',h);\n");
-    chartScript.append("bg.setAttribute('style', 'fill:white');\n");
-    chartScript.append("document.lastChild.appendChild(bg);\n");
-
-    chartScript.append("renderCccFromComponent(render_").append(this.chartName).append(", data);\n");
-    chartScript.append("document.lastChild.setAttribute('width', render_").append(this.chartName).append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_").append(this.chartName).append(
-            ".chartDefinition.height);");
-
+    chartScript.append("\nrenderCccFromComponent(" + compVarName + ", data);\n");
+    
     writeFile(chartScript, dashboardName);
     writeFile(chartScript, null);
   }
@@ -95,10 +78,6 @@ public class CggChart
   private void renderPreamble(StringBuilder chartScript)
   {
     chartScript.append("lib('protovis-bundle.js');\n\n");
-
-    chartScript.append("elem = document.createElement('g');\n"
-            + "elem.setAttribute('id','canvas');\n"
-            + "document.lastChild.appendChild(elem);\n\n");
   }
 
   private void renderChart(StringBuilder chartScript)
@@ -149,11 +128,14 @@ public class CggChart
     {
       JSONArray param = it.next();
       String paramName = param.get(0).toString();
-      String defaultValue = param.get(1).toString();
-      chartScript.append("var param" + paramName + " = params.get('" + paramName + "');\n");
-      chartScript.append("param" + paramName + " = (param" + paramName + " !== null && param" + paramName + " !== '')? param" + paramName + " : '" + defaultValue + "';\n");
-      chartScript.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
-      parameters.put(param.get(0).toString(), param.get(2).toString());
+      if(!"multiChartOverflow".equals(paramName)) {
+	      String defaultValue = param.get(1).toString();
+	      chartScript.append("var param" + paramName + " = params.get('" + paramName + "');\n");
+	      chartScript.append("param" + paramName + " = (param" + paramName + " !== null && param" + paramName + " !== '')? param" + paramName + " : '" + defaultValue + "';\n");
+	      chartScript.append("datasource.setParameter('" + paramName + "', param" + paramName + ");\n");
+	      
+	      parameters.put(param.get(0).toString(), param.get(2).toString());
+      }
     }
   }
 

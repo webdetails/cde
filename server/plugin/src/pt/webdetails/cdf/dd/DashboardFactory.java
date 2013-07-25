@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
+
 import mondrian.olap.InvalidArgumentException;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -20,11 +21,12 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator.MethodParams;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.XmlStructure;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 /**
  *
@@ -209,9 +211,17 @@ public class DashboardFactory {
       cal.set(Calendar.HOUR_OF_DAY, 00);
       cal.set(Calendar.MINUTE, 00);
       cal.set(Calendar.SECOND, 1);
-      boolean cacheInvalid = dash.getLastModified() > dashboard.getLoaded().getTime()
-          || (templ != null && templ.getLastModified() > dashboard.getLoaded().getTime()), cacheExpired = cal.getTime()
-          .after(dashboard.getLoaded());
+      boolean cacheInvalid = true;
+      boolean cacheExpired = true;
+
+      try {
+        cacheInvalid = dash.getLastModified() > dashboard.getLoaded().getTime()
+            || (templ != null && templ.getLastModified() > dashboard.getLoaded().getTime());
+
+        cacheExpired = cal.getTime().after(dashboard.getLoaded());
+      } catch (Exception e) {
+        logger.error("unable to determine cache validity", e);
+      }
 
       if (cacheExpired) {
         logger.info("Dashboard expired, re-rendering");

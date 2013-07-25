@@ -158,7 +158,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard {
             absRoot);
       } catch (IOException e) {
         //couldn't open template file, attempt to use default
-        logger.error(MessageFormat.format("Couldn''t open template file {0}.", this.templateFile), e);
+        logger.error(MessageFormat.format("Couldn't open template file {0}.", this.templateFile), e);
         String templateFile = CdfStyles.getInstance().getResourceLocation(CdfStyles.DEFAULTSTYLE);
         this.template = replaceTokens(ResourceManager.getInstance().getResourceAsString(templateFile), absolute,
             absRoot);
@@ -233,9 +233,9 @@ public abstract class AbstractDashboard implements Serializable, Dashboard {
 
   protected String renderHeaders(String contents) {
     String dependencies, styles, cdfDependencies;
-    
+
     final String title = "<title>" + getWcdf().getTitle() + "</title>";
-    
+
     // Acquire CDF headers
     try {
       cdfDependencies = DashboardDesignerContentGenerator.getCdfIncludes(contents, getType(), debug, absRoot, scheme);
@@ -243,7 +243,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard {
       logger.error("Failed to get cdf includes");
       cdfDependencies = "";
     }
-    
+
     final String adornedRoot = absolute ? ((scheme.equals("") ? "" : (scheme + "://")) + absRoot) : "";
 
     StringFilter js = new StringFilter() {
@@ -260,8 +260,7 @@ public abstract class AbstractDashboard implements Serializable, Dashboard {
     StringFilter css = new StringFilter() {
       @Override
       public String filter(String input) {
-        return String.format(
-            "\t\t<link rel=\"stylesheet\" href=\"%s%s%s%s\" />\n", adornedRoot,
+        return String.format("\t\t<link rel=\"stylesheet\" href=\"%s%s%s%s\" />\n", adornedRoot,
             DashboardDesignerContentGenerator.SERVER_URL_VALUE, "getCssResource/", input);
       }
 

@@ -12,22 +12,22 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.render.datasources.CdaDatasource;
+import pt.webdetails.cdf.dd.render.datasources.CpkDataSource;
 import pt.webdetails.cdf.dd.render.properties.PropertyManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
@@ -40,7 +40,7 @@ import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 public class ComponentManager
 {
 
-  protected static Log logger = LogFactory.getLog(ComponentManager.class);
+  protected static Logger logger = LoggerFactory.getLogger(ComponentManager.class);
   private static final String PLUGIN_DIR = Utils.joinPath("system", DashboardDesignerContentGenerator.PLUGIN_NAME);
   private static final String BASE_COMPONENTS_DIR = Utils.joinPath(PLUGIN_DIR, "resources", "base", "components");
   private static final String COMPONENT_FILE = "component.xml";
@@ -142,7 +142,7 @@ public class ComponentManager
               }
               catch (Exception e)
               {
-                Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, e);
+                logger.error(e.getMessage(), e);
               }
             }
           }
@@ -152,7 +152,7 @@ public class ComponentManager
       }
       catch (Exception e)
       {
-        Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, e);
+        logger.error(e.getMessage(), e);
       }
     }
   }
@@ -223,7 +223,7 @@ public class ComponentManager
     String dirAbsPath = Utils.joinPath(basePath, dirPath);
     File dir = new File(dirAbsPath);
 
-    logger.info("Loading custom components from: " + dir.toString());
+    logger.info("loading CDE custom components from: {}", dir);
 
     FilenameFilter subFolders = new FilenameFilter()
     {
@@ -239,7 +239,7 @@ public class ComponentManager
     {
       return;
     }
-    logger.debug(files.length + " sub-folders found");
+    logger.debug("{} sub-folders found", files.length);
     processFiles(dirPath, dir, files);
 
   }
@@ -328,7 +328,7 @@ public class ComponentManager
         }
         catch (Exception e)
         {
-          Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, e);
+          logger.error(e.getMessage(), e);
         }
       }
     }
@@ -353,11 +353,49 @@ public class ComponentManager
     }
     catch (Exception ex)
     {
-      Logger.getLogger(ComponentManager.class.getName()).log(Level.SEVERE, null, ex);
+      logger.error(ex.getMessage(), ex);
     }
     return renderer;
   }
 
+  private String getOrderedDefinitions()
+  {
+    StringBuilder generalEntries = new StringBuilder();
+    StringBuilder generalModels = new StringBuilder();
+    StringBuilder cdaDataSourceEntries = new StringBuilder();
+    StringBuilder cdaDataSourceModels = new StringBuilder();
+    StringBuilder cpkDataSourceEntries = new StringBuilder();
+    StringBuilder cpkDataSourceModels = new StringBuilder();
+    
+    Collection<BaseComponent> components = componentPool.values();
+    for (IComponent render : components)
+    {
+      if (render instanceof CpkDataSource) {
+        cpkDataSourceEntries.append(render.getEntry());
+        cpkDataSourceModels.append(render.getModel());
+      } else if (render instanceof CdaDatasource) {
+        cdaDataSourceEntries.append(render.getEntry());
+        cdaDataSourceModels.append(render.getModel());
+      } else {
+        generalEntries.append(render.getEntry());
+        generalModels.append(render.getModel());
+      }
+    }
+    
+    // makes "pseudo" sorting of Data Source Entries & Models
+    StringBuilder finalResult = new StringBuilder();
+    // Entries
+    finalResult.append(generalEntries.toString());
+    finalResult.append(cdaDataSourceEntries.toString());
+    finalResult.append(cpkDataSourceEntries.toString());
+    // Models
+    finalResult.append(generalModels.toString());
+    finalResult.append(cdaDataSourceModels.toString());
+    finalResult.append(cpkDataSourceModels.toString());
+    
+    return finalResult.toString();
+  }
+  
   public String getEntry()
   {
     StringBuilder entry = new StringBuilder();
@@ -384,8 +422,7 @@ public class ComponentManager
   {
     StringBuilder defs = new StringBuilder();
     defs.append(PropertyManager.getInstance().getDefinitions());
-    defs.append(getEntry());
-    defs.append(getModel());
+    defs.append(getOrderedDefinitions());
 
     return defs.toString().replaceAll(",([\\r\\n]+\\s*})", "$1"); // pattern: |,([\r\n]+\s*})| // replaceBy: |$1| 
   }
@@ -401,6 +438,7 @@ public class ComponentManager
     return componentPool.get(renderType);
   }
 
+  @Deprecated
   public void parseCdaDefinitions(JSON json) throws Exception
   {
     cdaSettings = json;
@@ -414,8 +452,42 @@ public class ComponentManager
     }
   }
 
+  @Deprecated
   public JSON getCdaDefinitions()
   {
     return cdaSettings;
+  }
+
+  public ComponentManager parseDataSourceDefinitions(JSON definitions) {
+    if (definitions != null && !definitions.isEmpty()) {
+        
+        cdaSettings = definitions;
+        
+        final JXPathContext doc = JXPathContext.newContext(definitions);
+        @SuppressWarnings("unchecked")
+        Iterator<Pointer> pointers = doc.iteratePointers("*");
+        
+        while (pointers.hasNext()) {
+          Pointer pointer = pointers.next();
+          if (pointer.getNode() instanceof JSONObject) {
+            final JSONObject def = (JSONObject) pointer.getNode();
+            final String dataSourceType = ((JSONObject) def.get("metadata")).getString("datype");
+            
+            if (dataSourceType.equalsIgnoreCase("cpk")) {
+              CpkDataSource cpkDs = new CpkDataSource(pointer);
+              componentPool.put(cpkDs.getName(), cpkDs);
+              
+              logger.debug("detected CPK Endpoint Data Source: {}", cpkDs);
+            } else {
+              CdaDatasource cdaDs = new CdaDatasource(pointer);
+              componentPool.put(cdaDs.getName(), cdaDs);
+              
+              logger.debug("detected CDA Data Source: {}", cdaDs);
+            }
+          }
+        }
+    }
+
+    return this;
   }
 }
