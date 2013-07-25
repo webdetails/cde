@@ -30,3 +30,5 @@ nbproject/private/
 .idea
 
 .ant-targets-build.xml
+
+server/plugin/res/META-INF/MANIFEST.MF
