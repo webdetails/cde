@@ -511,11 +511,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   {
     final OlapUtils olapUtils = new OlapUtils(userSession);
 
-    olapUtils.executeOperation(getRequestParameters());
-
     try {
       final Object result = olapUtils.executeOperation(getRequestParameters());
-      JsonUtils.buildJsonResult(out, true, result);
+      JsonUtils.buildJsonResult(out, result != null, result);
     } catch (Exception ex) {
       logger.fatal(ex);
       JsonUtils.buildJsonResult(out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage());
