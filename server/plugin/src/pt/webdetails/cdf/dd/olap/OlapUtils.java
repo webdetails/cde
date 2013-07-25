@@ -334,7 +334,7 @@ public class OlapUtils
     }
     catch (Throwable t)
     {
-      logger.error("Invalid connection: " + connectStr + " - " + t.toString());
+      logger.error("Unable to get connection: " + connectStr, t);
     }
 
 
