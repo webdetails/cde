@@ -272,6 +272,20 @@ ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
 
   text-align: left;
 
+  border: 1px solid #bbb!important;
+
+  box-shadow: 3px 3px 10px -3px #bbb;
+
+}
+
+
+
+ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all:hover > *{
+
+    padding: 0;
+
+    margin: 0;
+
 }
 
 
@@ -716,7 +730,7 @@ div.ui-widget-content > ul li {/*TODO...*/
 
   color: #fff;
 
-  background: url(../images/NAV/down.png) right center no-repeat;
+  background: url(../images/NAV/selector_arrow_hover.png) right center no-repeat;
 
 }
 
@@ -724,9 +738,9 @@ div.ui-widget-content > ul li {/*TODO...*/
 
 .multiSelect.hover {
 
-  background: url(../images/NAV/down_mouseover.png) right center no-repeat;
+  background: url(../images/NAV/selector_arrow_hover.png) right center no-repeat;
 
-  color: #ddd;
+  color: #fff;
 
 }
 
@@ -734,7 +748,7 @@ div.ui-widget-content > ul li {/*TODO...*/
 
 .multiSelectOptions label.checked {
 
-  background: #333;
+    background: #d9dcdd;
 
 }
 
@@ -912,9 +926,11 @@ div.cdfdd-operations{
 
   max-height: 75%;
 
-  min-width: 5%;
+  min-width: 960px;
 
 
+
+  min-height: 550px;
 
 }
 
@@ -928,7 +944,7 @@ div.cdfdd-operations{
 
   
 
- border: solid 2px #bbb;
+ border: solid 1px #bbb;
 
   
 
@@ -958,7 +974,7 @@ div.cdfdd-operations{
 
   background-color: #eaedee;
 
-  border: solid 2px #bbb;
+  border: solid 1px #bbb;
 
   color: #555;
 
@@ -1760,9 +1776,11 @@ form.cdfddInput input[type="checkbox"]
 
 button.cdfddInput {
 
-  width: 18px;
+  width: 24px;
 
-  height: 16px;
+  height: 18px;
+
+  text-align: center;
 
 }
 
@@ -2494,6 +2512,10 @@ th.ui-state-default{
 
   vertical-align: middle;
 
+  position: fixed;
+
+  right: 0;
+
 }
 
 
@@ -2654,7 +2676,7 @@ div.treeTableNewJqi button {
 
 
 
-html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: hidden;}
+html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: auto;}
 
 body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:middle;}
 
@@ -3022,8 +3044,6 @@ div.popup .popupmessage p {
 
    font-family: 'Open Sans', sans-serif;
 
-   background: #f5f5f5;
-
    padding: 2px 5px;
 
    color: #333;
@@ -3098,7 +3118,7 @@ div.popup input {
 
    -webkit-box-sizing: border-box;
 
-   border: 1px solid #ddd;
+   border: 1px solid #bbb;
 
    color: #555;
 
@@ -3797,5 +3817,21 @@ div.popup .button:active {
   height: 40px; 
 
   position: absolute;  
+
+}
+
+
+
+div.popup input[type="button"]:hover {
+
+  background: #bbb;
+
+}
+
+
+
+.ace_editor{
+
+    border: 1px solid #d9dcdd;
 
 }

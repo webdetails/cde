@@ -1315,6 +1315,8 @@ var CodeRenderer = CellRenderer.extend({
             myself.editor.setMode(myself.getCodeType());
             myself.editor.setContents(myself.value);
             $('.popup').css("width","820px");
+            $('.popup').css('min-height','500px');
+            $('.popup').css('min-width','820px');
         },
 
         callback: myself.callback, 
