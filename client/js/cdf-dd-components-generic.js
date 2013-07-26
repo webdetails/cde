@@ -393,7 +393,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       content += '</ul>';
     }
 				
-    $.prompt(content + '</div>',{
+    cdfdd.impromptu = $.prompt(content + '</div>',{
       buttons: {
         Cancel: false
       },
@@ -404,7 +404,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 },{
   setParameterValue: function(id,value){
     $("#" + id.replace("parameter_button_","val_")).val(value);
-    $.prompt.close();
+    cdfdd.impromptu.hide();
   }
 });
 

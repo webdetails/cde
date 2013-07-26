@@ -4,7 +4,7 @@
 .StringArrayContainer,
 .ParameterListContainer {
 	height:300px;
-	background-color: #222;
+	background-color: #eaedee;
 }
 
 .StringListContainer{
@@ -75,7 +75,7 @@ div.jqiParameterList {
 
 .StringListAddButton, .StringArrayAddButton, .ParameterListAddButton, .GenericSelectAddButton {
 	padding: 3px 7px;
-	background-color: #222;
+	background-color: #eaedee;
 	border: solid 2px #12a2d8;
 	color: #999;
 	font-size: 12px;
@@ -145,14 +145,14 @@ div.jqiParameterList {
 .GenericSelectParameter, .GenericSelectRemove, .GenericSelectParameter, .GenericSelectRemove,
 .ParameterListParameter , .ParameterListRemove {
 	padding: 4px 10px;
-	background-color: #222;
-	border: solid 1px #12a2d8!important;
-	color: #999;
+	background-color: #eaedee;
+	color: #333;
 	font-size: 12px;
 }
 
 ul.StringListParameter li div, ul.GenericSelectParameter li div, ul.ParameterListParameter li div {
 	padding-left: 10px;
+	width: 100%;
 }
 
 .StringListTextLabel, .GenericArrayTextLabel, .StringArrayTextLabel {
@@ -289,13 +289,13 @@ ul.GenericSelectParameter,
 ul.ParameterListParameter {
 	list-style-type: none;
 	cursor: default;  
-	border:1px solid;
+	border: 1px solid #d9dcdd;
 	height:200px;
 	position:relative;
 	left:5px;
 	overflow:auto;
 	width:248px;
-	background-color:#222;
+	background-color: #fcfcfc;
 	margin: 10px;
 	padding-left:0;
 }
@@ -322,7 +322,7 @@ ul.StringListParameter li  div:hover,
 ul.GenericSelectParameter li div:hover,
 ul.ParameterListParameter li  div:hover {
 	background-color: #12a2d8;
-	color: #222;
+	color: #eee;
 }
 
 
