@@ -403,7 +403,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   }
 },{
   setParameterValue: function(id,value){
-    $("#" + id.replace("parameter_button_","val_")).val(value);
+    $("#" + id.replace("parameter_button_","arg_")).val(value);
     cdfdd.impromptu.hide();
   }
 });
