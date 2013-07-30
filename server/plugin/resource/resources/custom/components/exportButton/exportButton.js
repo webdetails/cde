@@ -23,7 +23,7 @@ var ExportButtonComponent = BaseComponent.extend({
     bar.text( myself.label ).click( function(){
       var foundQuery = false;
       for (n in myself.queryObjectNames) {
-        if(comp[n] && comp[n] instanceof Query){
+        if(comp[n]){
             comp[n].exportData(myself.outputType, overrideParameters , myself.getFilterSettings(comp) );
             foundQuery = true;
             break;

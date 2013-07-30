@@ -11,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import pt.webdetails.cdf.dd.datasources.DataSourceManager;
+import pt.webdetails.cdf.dd.datasources.DataSourceProvider;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.DefaultThingReadContext;
@@ -18,7 +20,7 @@ import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReaderFactory;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
-import pt.webdetails.cdf.dd.model.meta.reader.cda.CdaObjectReaderFactory;
+import pt.webdetails.cdf.dd.model.meta.reader.datasources.DataSourcesObjectReaderFactory;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
@@ -54,15 +56,13 @@ public final class MetaModelManager
   private final Object _lock = new Object();
   private MetaModel  _model;
   private String _jsDefinition;
-  private JSON   _cdaDefs;
   
   private MetaModelManager()
   {
     Date dtStart = new Date();
     _logger.info("CDE Starting Load MetaModelManager");
     
-    this._cdaDefs = this.getCdaDefs(/*isRefresh*/false); // TODO: No errors? How to know when it fails?
-    this._model   = readModel(this._cdaDefs);
+    this._model = readModel();
     
     DependenciesManager.setInstance(this.createDependencyManager(this._model));
     
@@ -89,15 +89,6 @@ public final class MetaModelManager
       }
   }
   
-  
-  public JSON getCdaDefinitions()
-  {
-    synchronized(_lock)
-    {
-      return this._cdaDefs;
-    }
-  }
-
   public void refresh()
   {
    this.refresh(true);
@@ -108,17 +99,9 @@ public final class MetaModelManager
     Date dtStart = new Date();
     _logger.info("CDE Starting Reload MetaModelManager");
     
-    JSON cdaDefs;
-    if(refreshDatasources) 
-    {
-      cdaDefs = this.getCdaDefs(/*isRefresh*/true); // TODO: No errors? How to know when it fails?
-    }
-    else
-    {
-      cdaDefs = this.getCdaDefinitions();
-    }
+    if(refreshDatasources) { DataSourceManager.getInstance().refresh(); }
     
-    MetaModel model = this.readModel(cdaDefs);
+    MetaModel model = this.readModel();
     if(model != null)
     {
       DependenciesManager depMgr = this.createDependencyManager(model);
@@ -127,9 +110,6 @@ public final class MetaModelManager
       synchronized(_lock)
       {
         this._model  = model;
-        if(refreshDatasources) {
-          this._cdaDefs = cdaDefs;
-        }
         this._jsDefinition = null;
       }
       
@@ -142,7 +122,7 @@ public final class MetaModelManager
     _logger.info("CDE Finished Reload MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
   }
 
-  private MetaModel readModel(JSON cdaDefs)
+  private MetaModel readModel()
   {
     // --------------------
     // Read Components from the FS
@@ -174,8 +154,8 @@ public final class MetaModelManager
     }
 
     // --------------------
-    // Read CDA Components from CDA
-    factory = new CdaObjectReaderFactory();
+    // Read DataSource Components from each DataSourceProvider
+    factory = new DataSourcesObjectReaderFactory();
     context = new DefaultThingReadContext(factory);
     
     // Obtain the root model reader from the factory
@@ -183,22 +163,28 @@ public final class MetaModelManager
     {
       modelReader = factory.getReader(KnownThingKind.MetaModel, null, null);
     }
-    catch (UnsupportedThingException ex)
+    catch(UnsupportedThingException ex)
     {
-      _logger.error("Error while obtaining the model reader from the CDA factory.", ex);
+      _logger.error("Error while obtaining the model reader from the factory.", ex);
       return null;
     }
-
-    try
+    
+    DataSourceManager dsMgr = DataSourceManager.getInstance();
+    for(DataSourceProvider dsProvider : dsMgr.getProviders())
     {
-      modelReader.read(builder, context, cdaDefs, "CDAPlugin");
+      String providerId = dsProvider.getId();
+      JSON jsDef = dsMgr.getProviderJsDefinition(providerId);
+      try
+      {
+        modelReader.read(builder, context, jsDef, providerId);
+      }
+      catch(ThingReadException ex)
+      {
+        _logger.error("Error while reading model from data source definitions in '" + providerId + "'.", ex);
+        return null;
+      }
     }
-    catch(ThingReadException ex)
-    {
-      _logger.error("Error while reading model from CDA definitions.", ex);
-      return null;
-    }
-
+    
     // ---------------
     // BUILD
     try
@@ -212,19 +198,6 @@ public final class MetaModelManager
     }
   }
   
-  private JSON getCdaDefs(boolean isRefresh)
-  {
-    InterPluginCall cdaListDataAccessTypes =
-            new InterPluginCall(InterPluginCall.CDA, "listDataAccessTypes");
-
-    // TODO: Current session should be irrelevant. Result is cached for all users...
-    // Consider using an admin session here
-    cdaListDataAccessTypes.setSession(PentahoSessionHolder.getSession());
-    cdaListDataAccessTypes.putParameter("refreshCache", "" + isRefresh);
-
-    return JSONSerializer.toJSON(cdaListDataAccessTypes.call());
-  }
-
   private String writeJsDefinition(MetaModel model)
   {
     IThingWriterFactory factory = new CdeRunJsThingWriterFactory();

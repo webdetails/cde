@@ -18,16 +18,18 @@ import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import pt.webdetails.cdf.dd.MetaModelManager;
+import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.render.cda.*;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
+ * Creates the .CDA file XML.
  * TODO: this should be changed to a ThingWriter of DataSourceComponents?
  * @author pdpi
  */
@@ -45,7 +47,7 @@ public class CdaRenderer
   }
   public CdaRenderer(JXPathContext doc)
   {
-    this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
+    this.cdaDefinitions = DataSourceManager.getInstance().getProviderJsDefinition("cda");
     this.doc = doc; // NOTE: may be null!
   }
   
@@ -86,8 +88,10 @@ public class CdaRenderer
       }
       
       Element dataAccess = exportDataAccess(cdaFile, context, connectionId);
-
-      root.appendChild(dataAccess);
+      if (dataAccess != null)
+      {
+        root.appendChild(dataAccess);
+      }
     }
 
     TransformerFactory tFactory = TransformerFactory.newInstance();

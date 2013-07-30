@@ -13,6 +13,8 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.meta.ComponentType;
+import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 /**
@@ -20,6 +22,9 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
  */
 public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBindingWriter
 {
+  private static final String META_TYPE_CDA = "CDA";
+  private static final String META_TYPE_CPK = "CPK";
+  
   public void write(StringBuilder out, CdfRunJsDashboardWriteContext context, PropertyBinding propBind) throws ThingWriteException
   {
     DataSourceComponent dataSourceComp = this.getDataSourceComponent(context, propBind);
@@ -35,17 +40,24 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     }
     else 
     {
-      // "meta" attribute has the value "CDA" ?
-      // See CdaModelReader#readCdaDataSourceComponent
-      Attribute metaAttr = dataSourceComp.getMeta().getAttribute("");
-      boolean isBuiltIn = metaAttr != null && !StringUtils.isEmpty(metaAttr.getValue());
-      if(isBuiltIn)
+      // "meta" attribute has the value "CDA", "CPK" ?
+      // See DataSourceModelReader#readDataSourceComponent
+      String metaType = dataSourceComp.getMeta().tryGetAttributeValue("", "");
+      if(StringUtils.isEmpty(metaType))
+      {
+        renderDatasource(out, context, dataSourceComp);
+      } 
+      else if(metaType.equals(META_TYPE_CDA)) 
       {
         renderBuiltinCdaDatasource(out, context, dataSourceComp);
       }
+      else if(metaType.equals(META_TYPE_CPK)) 
+      {
+        renderCpkDatasource(out, context, dataSourceComp);
+      }
       else
       {
-        renderDatasource(out, context, dataSourceComp);
+        throw new ThingWriteException("Cannot render a data source property of meta type '" + metaType + "'.");
       }
     }
   }
@@ -111,6 +123,26 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     String cdaFilePath = cdeFilePath.replaceAll(".cdfde", ".cda");
     
     addJsProperty(out, "path", JsonUtils.toJsString(cdaFilePath), indent, false);
+  }
+  
+  protected void renderCpkDatasource(
+          StringBuilder out, 
+          CdfRunJsDashboardWriteContext context,
+          DataSourceComponent dataSourceComp)
+  {
+    
+    String indent = context.getIndent();
+    
+    DataSourceComponentType compType= dataSourceComp.getMeta();
+    
+    addJsProperty(out, "endpoint", buildJsStringValue(compType.tryGetAttributeValue("endpoint", "")), indent, context.isFirstInList());
+    context.setIsFirstInList(false);
+    
+    addJsProperty(out, "pluginId", buildJsStringValue(compType.tryGetAttributeValue("pluginId", "")), indent, false);
+    
+    String queryType = "cpk";
+    
+    addJsProperty(out, "queryType", JsonUtils.toJsString(queryType), indent, false);
   }
   
   protected void renderDatasource(

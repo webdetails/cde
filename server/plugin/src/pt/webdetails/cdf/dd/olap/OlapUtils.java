@@ -62,31 +62,28 @@ public class OlapUtils
     cachingAvailable = cacheManager != null && cacheManager.cacheEnabled();
 
   }
-
+  
   public Object executeOperation(IParameterProvider pathParams)
   {
-
     String operation = pathParams.getStringParameter("operation", "-");
 
-    if (operation.equals("GetOlapCubes"))
+    if(operation.equals("GetOlapCubes"))
     {
-
       return getOlapCubes();
-
     }
-    else if (operation.equals("GetCubeStructure"))
+    
+    if(operation.equals("GetCubeStructure"))
     {
-
       String catalog = pathParams.getStringParameter("catalog", null);
       String cube = pathParams.getStringParameter("cube", null);
       String jndi = pathParams.getStringParameter("jndi", null);
-
+      
+      // Returns null is no connection can be obtained.
       return getCubeStructure(catalog, cube, jndi);
-
     }
-    else if (operation.equals("GetLevelMembersStructure"))
+    
+    if(operation.equals("GetLevelMembersStructure"))
     {
-
       String catalog = pathParams.getStringParameter("catalog", null);
       String cube = pathParams.getStringParameter("cube", null);
       String member = pathParams.getStringParameter("member", null);
@@ -97,26 +94,21 @@ public class OlapUtils
       {
         return getLevelMembersStructure(catalog, cube, members, direction);
       }
-      else
-      {
-        return getLevelMembersStructure(catalog, cube, member, direction);
-      }
-
-
+      
+      return getLevelMembersStructure(catalog, cube, member, direction);
     }
-    else if (operation.equals("GetLevelMembers"))
+    
+    if (operation.equals("GetLevelMembers"))
     {
-
       String catalog = pathParams.getStringParameter("catalog", null);
       String cube = pathParams.getStringParameter("cube", null);
       String member = pathParams.getStringParameter("member", null);
 
       return getLevelMembers(catalog, cube, member);
-
     }
-    else if (operation.equals("GetPaginatedLevelMembers"))
+    
+    if (operation.equals("GetPaginatedLevelMembers"))
     {
-
       String catalog = pathParams.getStringParameter("catalog", null);
       String cube = pathParams.getStringParameter("cube", null);
       String level = pathParams.getStringParameter("level", null);
@@ -127,17 +119,15 @@ public class OlapUtils
       long pageStart = pathParams.getLongParameter("pageStart", 0);
 
       return getPaginatedLevelMembers(catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart);
-
     }
-    else if (operation.equals("test"))
+    
+    if (operation.equals("test"))
     {
-
       // Test method
       makeTest();
     }
 
     return "ok";
-
   }
 
   private JSONObject getOlapCubes()
@@ -168,7 +158,6 @@ public class OlapUtils
 
   private JSONObject getCubeStructure(String catalog, String cube, String jndi)
   {
-
     logger.debug("Returning Olap structure for cube " + cube);
     JSONObject result = new JSONObject();
 
@@ -345,7 +334,7 @@ public class OlapUtils
     }
     catch (Throwable t)
     {
-      logger.error("Invalid connection: " + connectStr + " - " + t.toString());
+      logger.error("Unable to get connection: " + connectStr, t);
     }
 
 
@@ -421,7 +410,6 @@ public class OlapUtils
 
   private JSONObject getLevelMembersStructure(String catalog, String cube, String[] memberString, String direction)
   {
-
     Connection connection = getMdxConnection(catalog);
 
     String query = "";

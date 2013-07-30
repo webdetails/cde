@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd.model.meta.reader.cda;
+package pt.webdetails.cdf.dd.model.meta.reader.datasources;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,9 +30,9 @@ import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
  *
  * @author dcleao
  */
-public final class CdaModelReader implements IThingReader
+public final class DataSourcesModelReader implements IThingReader
 {
-  protected static final Log _logger = LogFactory.getLog(CdaModelReader.class);
+  protected static final Log _logger = LogFactory.getLog(DataSourcesModelReader.class);
 
   public void read(
           Thing.Builder builder,
@@ -62,7 +62,7 @@ public final class CdaModelReader implements IThingReader
   {
     assert model != null;
 
-    _logger.info("Loading CDA Plugin data source components");
+    _logger.info("Loading data source components of '" + sourcePath + "'");
 
     final JXPathContext doc = JXPathContext.newContext(cdaDefs);
 
@@ -71,12 +71,14 @@ public final class CdaModelReader implements IThingReader
     while (pointers.hasNext())
     {
       Pointer pointer = pointers.next();
-      this.readCdaDataSourceComponent(model, pointer, sourcePath);
+      this.readDataSourceComponent(model, pointer, sourcePath);
     }
   }
 
-  private void readCdaDataSourceComponent(MetaModel.Builder model, Pointer pointer, String sourcePath)
+  private void readDataSourceComponent(MetaModel.Builder model, Pointer pointer, String sourcePath)
   {
+    // TODO: What a generality...
+    
     DataSourceComponentType.Builder builder = new DataSourceComponentType.Builder();
 
     JSONObject def = (JSONObject) pointer.getNode();
@@ -84,8 +86,13 @@ public final class CdaModelReader implements IThingReader
 
     String label = (String)jctx.getValue("metadata/name");
     
+    String dataSourceType = (String)jctx.getValue("metadata/datype");
+    
+    boolean isCPK = dataSourceType.equalsIgnoreCase("cpk");
+    boolean isCDA = !isCPK;
+    
     // This specific Data Source has special treatment below
-    boolean isKettleOverX = "kettle over kettleTransFromFile".equalsIgnoreCase(label);
+    boolean isKettleOverX = isCDA && "kettle over kettleTransFromFile".equalsIgnoreCase(label);
     
     _logger.debug(String.format("\t%s", label));
 
@@ -99,38 +106,50 @@ public final class CdaModelReader implements IThingReader
       .setCategory((String) jctx.getValue("metadata/group"))
       .setCategoryLabel((String) jctx.getValue("metadata/groupdesc"))
       .setSourcePath(sourcePath)
-      .addAttribute("", "CDA") // meta: "CDA"
-      .addAttribute("conntype", connType)
-      .addAttribute("datype", (String)jctx.getValue("metadata/datype"));
-
-    for(String cdaPropName : this.getPropertyNames(def))
+      .addAttribute("", isCPK ? "CPK" : "CDA"); // meta: "CDA"
+    
+    if(isCDA)
     {
-      if (cdaPropName.equals("id") || cdaPropName.equals("connection")) {
-        continue;
-      } else if (cdaPropName.equals("columns")) {
-        builder.useProperty(null, "cdacolumns");
-        builder.useProperty(null, "cdacalculatedcolumns");
-      } else if (cdaPropName.equals("output")) {
-        builder.useProperty(null, "output");
-        builder.useProperty(null, "outputMode");
-      } else if (cdaPropName.equals("left")) {
-        builder.useProperty(null, "left");
-        builder.useProperty(null, "leftkeys");
-      } else if (cdaPropName.equals("right")) {
-        builder.useProperty(null, "right");
-        builder.useProperty(null, "rightkeys");
-      } else if(isKettleOverX && cdaPropName.equalsIgnoreCase("query")) {
-        builder.useProperty(cdaPropName, "kettleQuery");
-      } else {
-        builder.useProperty(null, cdaPropName);
-      }
-      
+      builder
+      .addAttribute("conntype", connType)
+      .addAttribute("datype",   dataSourceType);
     }
-
+    else if(isCPK)
+    {
+      builder
+      .addAttribute("pluginId", (String)jctx.getValue("metadata/pluginId"))
+      .addAttribute("endpoint", (String)jctx.getValue("metadata/endpoint"));
+    }
+    
+    if(isCDA) 
+    {
+      for(String cdaPropName : this.getCDAPropertyNames(def))
+      {
+        if (cdaPropName.equals("id") || cdaPropName.equals("connection")) {
+          continue;
+        } else if (cdaPropName.equals("columns")) {
+          builder.useProperty(null, "cdacolumns");
+          builder.useProperty(null, "cdacalculatedcolumns");
+        } else if (cdaPropName.equals("output")) {
+          builder.useProperty(null, "output");
+          builder.useProperty(null, "outputMode");
+        } else if (cdaPropName.equals("left")) {
+          builder.useProperty(null, "left");
+          builder.useProperty(null, "leftkeys");
+        } else if (cdaPropName.equals("right")) {
+          builder.useProperty(null, "right");
+          builder.useProperty(null, "rightkeys");
+        } else if(isKettleOverX && cdaPropName.equalsIgnoreCase("query")) {
+          builder.useProperty(cdaPropName, "kettleQuery");
+        } else {
+          builder.useProperty(null, cdaPropName);
+        }
+      }
+    }
     model.addComponent(builder);
   }
 
-  private List<String> getPropertyNames(JSONObject def)
+  private List<String> getCDAPropertyNames(JSONObject def)
   {
     ArrayList<String> props = new ArrayList<String>();
 

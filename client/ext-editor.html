@@ -199,11 +199,12 @@
                 return;
             }
             
+	    editor.initEditor('editArea');
+
             if(params.theme){
                 editor.setTheme(params.theme);
             }
             
-            editor.initEditor('editArea');
             if(params.mode){
                 editor.setMode(params.mode);
             }
