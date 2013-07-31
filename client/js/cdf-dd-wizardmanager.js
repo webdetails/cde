@@ -437,12 +437,12 @@ var OlapWizard = WizardManager.extend({
 								var hierarchies = dimension.hierarchies;
 								$.each(hierarchies,function(j,hierarchy){
 										var hierarchyId = "dimRow-"+(++dimensionIdx);
-										dimensionTBody.append("<tr id='"+ hierarchyId +"'><td>"+hierarchy.name+"</td></tr>");
+										dimensionTBody.append("<tr id='"+ hierarchyId +"'><td>"+hierarchy.caption+"</td></tr>");
 
 										var levels = hierarchy.levels;
 										$.each(levels,function(k,level){
 												var levelId = "dimRow-"+(++dimensionIdx);
-												dimensionTBody.append("<tr id='"+ levelId +"' class='olapObject child-of-"+hierarchyId+"'><td class='draggableDimension'>"+level.name+"</td></tr>");
+												dimensionTBody.append("<tr id='"+ levelId +"' class='olapObject child-of-"+hierarchyId+"'><td class='draggableDimension'>"+level.caption+"</td></tr>");
 												level.hierarchy = hierarchy;level.catalog = selectedCatalog;level.cube = selectedCube;
 												myself.addOlapObject(WizardOlapObjectManager.DIMENSION,level);
 											});
@@ -545,7 +545,7 @@ var OlapWizard = WizardManager.extend({
 		},
 
 		getCube: function(){
-			return $("#cdfddOlapCubeSelect").val();
+			return $("#cdfddOlapCubeSelect").children(":selected").attr("id");
 		},
 
 		// Accessors
