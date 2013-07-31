@@ -462,7 +462,7 @@ var OlapWizard = WizardManager.extend({
 						measureTBody.empty();
 						$.each(measures,function(i,measure){
 								var measureId = "levelRow-"+(++measureIdx);
-								measureTBody.append("<tr id='"+ measureId +"' class='olapObject'><td class='draggableMeasure'>"+measure.name+"</td></tr>");
+								measureTBody.append("<tr id='"+ measureId +"' class='olapObject'><td class='draggableMeasure'>"+measure.caption+"</td></tr>");
 								myself.addOlapObject(WizardOlapObjectManager.MEASURE,measure);
 
 							});
