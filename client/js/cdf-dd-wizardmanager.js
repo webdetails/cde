@@ -400,7 +400,7 @@ var OlapWizard = WizardManager.extend({
 			var cubes = selectedCatalog.cubes;
 			$("select#cdfddOlapCubeSelect",_selector).empty();
 			$.each(cubes,function(i,cube){
-					$("select#cdfddOlapCubeSelect",_selector).append("<option>"+cube.name+"</option>");
+					$("select#cdfddOlapCubeSelect",_selector).append("<option id=\""+cube.id+"\">"+cube.name+"</option>");
 				});
 			this.cubeSelected();
 
@@ -409,8 +409,8 @@ var OlapWizard = WizardManager.extend({
 		cubeSelected: function(){
 
 			var selectedCatalog = $("#cdfddOlapCatalogSelect").val();
-			var selectedCube = $("#cdfddOlapCubeSelect").val();
-			this.logger.debug("Cube Selected: " + selectedCube);
+			var selectedCube = $("#cdfddOlapCubeSelect").children(":selected").attr("id");
+			this.logger.debug("Cube Selected: " + selectedCube );
 			
 			this.resetOlapObjects();
 			this.resetSelectedWizardObjects();
