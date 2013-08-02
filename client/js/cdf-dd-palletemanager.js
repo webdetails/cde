@@ -191,6 +191,10 @@ var PalleteEntry = Base.extend({
 
 			this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
 			
+			if(_stub.typeDesc == "" || _stub.typeDesc == "" || _stub.typeDesc == ""){
+				_stub.typeDesc = _stub.type;
+			}
+
 			tableManager.insertAtIdx(_stub,insertAtIdx);
 
 			// focus the newly created line
