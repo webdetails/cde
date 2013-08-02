@@ -156,7 +156,7 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     addJsProperty(out, "jndi",    buildJsStringValue(dataSourceComp.tryGetPropertyValue("jndi", "")), indent, context.isFirstInList());
     context.setIsFirstInList(false);
     addJsProperty(out, "catalog", buildJsStringValue(dataSourceComp.tryGetPropertyValue("catalog", "")), indent, false);
-    addJsProperty(out, "tcube",   buildJsStringValue(dataSourceComp.tryGetPropertyValue("tcube", "")), indent, false);
+    addJsProperty(out, "cube",    buildJsStringValue(dataSourceComp.tryGetPropertyValue("cube", "")), indent, false);
     
     
     String query = dataSourceComp.tryGetPropertyValue("mdxquery", null);
