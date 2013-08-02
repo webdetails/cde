@@ -2,7 +2,7 @@
 <DesignerComponent>
     <Header>
         <Override>ParameterComponentType</Override>        
-        <Name>JavascriptParameter</Name>
+        <Name>Javascript Parameter</Name>
         <IName>JavascriptParameter</IName>
         <Description>Custom parameter that evaluates a javascript expression</Description>
 		<Category>GENERIC</Category>
@@ -13,6 +13,7 @@
 		<Model>
 			<Property>javaScript</Property>
 			<Property>parameterViewRole</Property>
+			<Property>bookmarkable</Property>
 		</Model>
 	</Contents>
 </DesignerComponent>
