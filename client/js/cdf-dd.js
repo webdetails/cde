@@ -1057,13 +1057,20 @@ var CDFDD = Base.extend({
       submit: function(v, m, f) {
         if (v == 1) {
 
+          function isValidField(field){
+            return (field != null && field != undefined && field != "");
+          }
+
           /*In case of Dashboards
               the propper means will be used
           */
           if ($('input[name=saveAsRadio]:checked').val() == "dashboard") {
+
+
+
             selectedFile = $('#fileInput').val();
-            selectedTitle = cdfdd.getDashboardWcdf().title;
-            selectedDescription = cdfdd.getDashboardWcdf().description;
+            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
+            selectedDescription = isValidField($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
 
             if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
               $.prompt('Invalid file extension. Must be .wcdf', {
@@ -1116,13 +1123,10 @@ var CDFDD = Base.extend({
           else if ($('input[name=saveAsRadio]:checked').val() == "widget") {
             selectedFolder = "/cde/widgets/";
             selectedFile = $('#fileInput').val();
-            selectedTitle = cdfdd.getDashboardWcdf().title;
-            selectedDescription = cdfdd.getDashboardWcdf().description;
+            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
+            selectedDescription = isValidField($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
             var selectedWidgetName = $("#componentInput").val();
             /* Validations */
-            if(selectedTitle == ""){
-              selectedTitle = $("#titleInput").val();
-            }
 
             var validInputs = true;
             if (!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
