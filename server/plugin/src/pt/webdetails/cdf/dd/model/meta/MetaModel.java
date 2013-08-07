@@ -57,7 +57,7 @@ public class MetaModel extends MetaObject
       String key = comp.getName();//.toLowerCase();
       if(this._componentTypesByName.containsKey(key))
       {
-        throw new ValidationException(new DuplicateComponentTypeError(comp));
+        // This is expected. By definition, we allow component overriding. 
       }
 
       this._componentTypesByName.put(key, comp);
