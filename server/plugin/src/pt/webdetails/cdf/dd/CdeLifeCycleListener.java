@@ -127,7 +127,7 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.cdfde", "cde/widgets/sample.cdfde");
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.wcdf", "cde/widgets/sample.wcdf");
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.cda", "cde/widgets/sample.cda");
-        repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.xml", "cdv/sample.component.xml");
+        repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.xml", "cde/widgets/sample.component.xml");
 
       }
       catch (IOException ioe)

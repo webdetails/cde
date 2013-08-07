@@ -2,9 +2,9 @@
 <DesignerComponent>
     <Header>
         <Override>ParameterComponentType</Override>
-        <Name>DateParameter</Name>
+        <Name>Date Parameter</Name>
         <IName>DateParameter</IName>
-        <Description>Date parameter</Description>
+        <Description>Date Parameter</Description>
 		<Category>GENERIC</Category>
 		<CatDescription>Generic</CatDescription>
 		<Type>PalleteEntry</Type>

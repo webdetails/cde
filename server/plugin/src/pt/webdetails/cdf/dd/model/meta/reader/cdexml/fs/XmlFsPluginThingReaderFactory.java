@@ -11,13 +11,7 @@ import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReaderFactory;
-import pt.webdetails.cdf.dd.model.meta.CodeComponentType;
-import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
-import pt.webdetails.cdf.dd.model.meta.DashboardType;
-import pt.webdetails.cdf.dd.model.meta.MetaObject;
-import pt.webdetails.cdf.dd.model.meta.ParameterComponentType;
-import pt.webdetails.cdf.dd.model.meta.PrimitiveComponentType;
-import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
+import pt.webdetails.cdf.dd.model.meta.*;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.XmlAdhocComponentTypeReader;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.XmlPropertyTypeReader;
 
@@ -38,6 +32,7 @@ public class XmlFsPluginThingReaderFactory implements IThingReaderFactory
     this.register(DashboardType.class,          DashboardType.Builder.class);
     this.register(CodeComponentType.class,      CodeComponentType.Builder.class);
     this.register(ParameterComponentType.class, ParameterComponentType.Builder.class);
+    this.register(DataSourceComponentType.class, DataSourceComponentType.Builder.class);
   }
   
   private <TR extends MetaObject, TB extends MetaObject.Builder> 

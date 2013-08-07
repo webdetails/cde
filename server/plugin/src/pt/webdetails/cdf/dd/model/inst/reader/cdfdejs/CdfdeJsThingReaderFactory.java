@@ -72,11 +72,15 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
           Logger.getLogger(CdfdeJsThingReaderFactory.class.getName()).log(Level.SEVERE, null, ex);
           return null;
         }
+      } else if(className.equalsIgnoreCase("CDADataSourceModel")){     //old dashboards contain this datasource type
+        className = "CDA";
       }
-      
+
       // 2. Extract comp.getName() from modelId.
       String compTypeName = className
               .replaceFirst("^Components", "")
+              .replaceFirst("^Datasources" , "")
+              .replaceFirst("Model$" , "")
               .replaceFirst("^Layout",     "");
       
       // 3. Lookup the ComponentType, by name, in the MetaModel.

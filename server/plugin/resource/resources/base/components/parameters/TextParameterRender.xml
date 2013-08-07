@@ -2,7 +2,7 @@
 <DesignerComponent>
     <Header>
         <Override>ParameterComponentType</Override>
-        <Name>Parameter</Name>
+        <Name>Simple Parameter</Name>
         <IName>Parameter</IName>
         <Description>Simple parameter</Description>
 		<Category>GENERIC</Category>
