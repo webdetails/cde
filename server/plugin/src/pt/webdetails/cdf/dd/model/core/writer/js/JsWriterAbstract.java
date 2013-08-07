@@ -33,6 +33,15 @@ public abstract class JsWriterAbstract
     out.append(";");
     out.append(NEWLINE);
   }
+
+  protected static void addJsVar(StringBuilder out, String name, String value)
+  {
+    out.append(name);
+    out.append(" = ");
+    out.append(value);
+    out.append(";");
+    out.append(NEWLINE);
+  }
   
   protected static void addJsProperty(StringBuilder out, String name, String jsValue, String indent)
   {

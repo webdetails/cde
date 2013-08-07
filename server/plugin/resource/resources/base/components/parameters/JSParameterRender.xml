@@ -4,7 +4,7 @@
         <Override>ParameterComponentType</Override>        
         <Name>Javascript Parameter</Name>
         <IName>JavascriptParameter</IName>
-        <Description>Custom parameter that evaluates a javascript expression</Description>
+        <Description>Custom parameter</Description>
 		<Category>GENERIC</Category>
 		<CatDescription>Generic</CatDescription>
 		<Type>PalleteEntry</Type>
