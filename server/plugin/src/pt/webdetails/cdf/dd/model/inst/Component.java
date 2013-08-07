@@ -81,12 +81,13 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         String propAlias = bind.getAlias().toLowerCase();
         if(this._propertyBindingsByLowerAlias.containsKey(propAlias))
         {
+          _logger.warn("Property " + propAlias + " was found on " + this.getMeta().getName() + " component declaration twice.");
           // Component still initializing, so don't have an id yet
-          throw new ValidationException(
+          /*throw new ValidationException(
               new ComponentDuplicatePropertyBindingError(
                   bind.getAlias(),
                   this.getId(),
-                  this.getMeta().getLabel()));
+                  this.getMeta().getLabel()));  */
         }
         
         String propName = bind.getName().toLowerCase();

@@ -157,7 +157,8 @@ public final class Resource
     {
       if(StringUtils.isEmpty(this._name))
       {
-        return new RequiredAttributeError("Name");
+        this._name = this._source;
+        //return new RequiredAttributeError("Name");
       }
 
       if(StringUtils.isEmpty(this._version))
