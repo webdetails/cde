@@ -2,7 +2,7 @@
 <DesignerComponent>
     <Header>
         <Override>ParameterComponentType</Override>        
-        <Name>Javascript Parameter</Name>
+        <Name>Custom Parameter</Name>
         <IName>JavascriptParameter</IName>
         <Description>Custom parameter</Description>
 		<Category>GENERIC</Category>

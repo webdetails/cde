@@ -393,11 +393,11 @@ public class XmlStructure implements IStructure
   private static WidgetComponentType createWidgetComponentType(WcdfDescriptor wcdf)
   {
     WidgetComponentType.Builder builder = new WidgetComponentType.Builder();
-
     String name = wcdf.getWidgetName();
     builder
-      .setName(name)
-      .setLabel(name + " Widget")
+      .setName("widget" + name)
+      .setLabel(name)
+      .setTooltip(wcdf.getDescription() + " Widget")
       .setCategory("WIDGETS")
       .setCategoryLabel("Widgets")
       .addAttribute("widget", "true")

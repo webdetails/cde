@@ -1,5 +1,6 @@
 <DesignerComponent>
 	<Header>
+        <Override>DataSourceComponentType</Override>
 		<Name>CDA Datasource</Name>
 		<IName>CDA</IName>
 		<Description>CDA Data Source</Description>
