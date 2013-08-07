@@ -18,8 +18,8 @@ public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParamete
   {
     String name  = context.getId(comp);
     String value = comp.tryGetPropertyValue("javaScript", "");
-    
-    addVar(out, name, value);
+
+    addJsVar(out, name, value);
     
     maybeAddBookmarkable(out, comp, name);
   }
