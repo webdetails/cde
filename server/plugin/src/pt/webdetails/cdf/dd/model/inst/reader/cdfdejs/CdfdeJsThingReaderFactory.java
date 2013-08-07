@@ -87,9 +87,16 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
         
         assert compType != null;
       }
-      catch(IllegalArgumentException ex)
+      catch(IllegalArgumentException ex1)
       {
-        throw new UnsupportedThingException(kind, className);
+        try
+        {
+          compType = this._metaModel.getComponentType(compTypeName.toLowerCase());
+        }
+        catch (IllegalArgumentException ex2)
+        {
+          throw new UnsupportedThingException(kind, className);
+        }
       }
       
       // 4. Find the corresponding appropriate base class,
