@@ -105,13 +105,13 @@ var CDFDD = Base.extend({
        
         switch (e.which) {
           case 49:
-            $(".cdfdd-modes").find("a:eq(0)").click();
+            $(".cdfdd-modes").find("a:eq(2)").click();
             break;
           case 50:
             $(".cdfdd-modes").find("a:eq(1)").click();
             break;
           case 51:
-            $(".cdfdd-modes").find("a:eq(2)").click();
+            $(".cdfdd-modes").find("a:eq(0)").click();
             break;
           case 83:
             if (e.shiftKey) {
