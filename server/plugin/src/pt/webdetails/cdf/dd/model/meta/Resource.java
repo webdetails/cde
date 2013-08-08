@@ -6,7 +6,6 @@ package pt.webdetails.cdf.dd.model.meta;
 
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
-import pt.webdetails.cdf.dd.model.core.validation.ValidationError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 
 /**
@@ -24,15 +23,22 @@ public final class Resource
   {
     assert builder != null;
 
+    if(StringUtils.isEmpty(builder._source))
+    {
+      throw new ValidationException(new RequiredAttributeError("Source"));
+    }
+
     if(builder._type == null)
     {
       throw new ValidationException(new RequiredAttributeError("Type"));
     }
-    
-    this._name    = builder._name;
+
+    this._name    = StringUtils.defaultIfEmpty(builder._name, builder._source);
     this._app     = StringUtils.defaultIfEmpty(builder._app, "");
     this._source  = builder._source;
-    this._version = builder._version;
+    this._version = StringUtils.defaultIfEmpty(builder._version, "1.0");
+    // TODO: validate version format
+    
     this._type    = builder._type;
   }
 
@@ -90,11 +96,6 @@ public final class Resource
     private Type   _type;
     private String _app;
 
-    public Builder()
-    {
-      this._version = "1.0";
-    }
-
     // ----------
     // Properties
 
@@ -116,7 +117,7 @@ public final class Resource
 
     public Builder setVersion(String version)
     {
-      this._version = StringUtils.isEmpty(version) ? "1.0" : version;
+      this._version = version;
       return this;
     }
 
@@ -153,39 +154,8 @@ public final class Resource
       return this;
     }
 
-    private ValidationError validate()
-    {
-      if(StringUtils.isEmpty(this._name))
-      {
-        this._name = this._source;
-        //return new RequiredAttributeError("Name");
-      }
-
-      if(StringUtils.isEmpty(this._version))
-      {
-        return new RequiredAttributeError("Version");
-      }
-
-      // TODO: validate version format
-
-      if(StringUtils.isEmpty(this._source))
-      {
-        return new RequiredAttributeError("Source");
-      }
-
-      if(this._type == null)
-      {
-        return new RequiredAttributeError("Type");
-      }
-
-      return null;
-    }
-
     public Resource build() throws ValidationException
     {
-      ValidationError error = this.validate();
-      if(error != null) { throw new ValidationException(error); }
-
       return new Resource(this);
     }
   }

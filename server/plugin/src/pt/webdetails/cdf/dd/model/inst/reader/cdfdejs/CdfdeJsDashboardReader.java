@@ -7,6 +7,8 @@ package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 import java.util.Iterator;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -23,6 +25,8 @@ import pt.webdetails.cdf.dd.model.meta.DashboardType;
  */
 public class CdfdeJsDashboardReader implements IThingReader
 {
+  private static final Logger logger = LoggerFactory.getLogger(CdfdeJsDashboardReader.class);
+  
   public Dashboard.Builder read(IThingReadContext context, Object source, String sourcePath) 
           throws ThingReadException
   {
@@ -72,23 +76,22 @@ public class CdfdeJsDashboardReader implements IThingReader
     
     // 4. LAYOUT
     //JXPathContext layoutXP = source.getRelativeContext(source.getPointer("/layout"));
+    // HACK: 'layout' key for getting the reader
+    IThingReader reader;
+    try
     {
-      // HACK: 'layout' key for getting the reader
-      IThingReader reader;
-      try
-      {
-        reader = context.getFactory().getReader(KnownThingKind.Component, "layout", null);
-      }
-      catch(UnsupportedThingException ex)
-      {
-        throw new ThingReadException(ex);
-      }
-      
-      LayoutComponent.Builder compBuilder = 
-              (LayoutComponent.Builder)reader.read(context, source, sourcePath);
-      
-      builder.addComponent(compBuilder);
+      reader = context.getFactory().getReader(KnownThingKind.Component, "layout", null);
     }
+    catch(UnsupportedThingException ex)
+    {
+      logger.error("While rendering dashboard. " + ex);
+      return;
+    }
+
+    LayoutComponent.Builder compBuilder = 
+            (LayoutComponent.Builder)reader.read(context, source, sourcePath);
+
+    builder.addComponent(compBuilder);
   }
   
   private void readKind(
@@ -116,7 +119,8 @@ public class CdfdeJsDashboardReader implements IThingReader
         }
         catch (UnsupportedThingException ex)
         {
-          throw new ThingReadException(ex);
+          logger.error("While rendering dashboard. " + ex);
+          continue;
         }
 
         Component.Builder compBuilder = 
