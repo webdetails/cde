@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -29,12 +30,8 @@ public class MetaModel extends MetaObject
   // whose name differs only by case...causes us to need to recognize the difference.
   // (See: base/components/datasources/XactionResultSetRender.xml and 
   //  base/components/others/XActionRender.xml)
-  // On the other hand, some components need to be detected independently of casing...
-  // So, we first lookup with normal case and, when not found,
-  //  lookup by lower case...
-  // Of course, this requires us to store the mapping twice... :-/
   private final Map<String, ComponentType> _componentTypesByName;
-  private final Map<String, ComponentType> _componentTypesByLowerName;
+  private final Map<String, ComponentType> _componentTypesByLegacyName;
   
   private final Map<String, PropertyType>  _propertyTypesByLowerName;
 
@@ -44,7 +41,7 @@ public class MetaModel extends MetaObject
 
     this._componentTypesByName = new LinkedHashMap<String, ComponentType>();
     // Don't need two «keep order» implementations.
-    this._componentTypesByLowerName = new HashMap<String, ComponentType>();
+    this._componentTypesByLegacyName = new HashMap<String, ComponentType>();
     
     this._propertyTypesByLowerName  = new LinkedHashMap<String, PropertyType>();
     
@@ -70,24 +67,44 @@ public class MetaModel extends MetaObject
     for(ComponentType.Builder compBuilder : builder._componentTypes)
     {
       ComponentType comp = compBuilder.build(propSource);
-      
-      // Overriding is detected by normal case.
       String key = comp.getName();
-      if(this._componentTypesByName.containsKey(key))
-      {
-        // This is expected. By definition, we allow component overriding.
-        logger.info("ComponentType '" + comp.getLabel() + "' was overriden.");
-      }
-
+      
+      // Detect Component Type Override.
+      ComponentType oldComp = this._componentTypesByName.get(key);
+      
+      // Add new component
       this._componentTypesByName.put(key, comp);
-      // The following may replace another component, 
-      // in case two != exist with different casing.
-      // So, access by lower case name to the other component is shadowed.
-      // This is highly non-linear and undesirable: legacy inheritage.
-      // Example of undesirable behavior:
-      // the addition of a component type may break
-      // previously working access to another different case one...
-      this._componentTypesByLowerName.put(key.toLowerCase(), comp);
+      for(String legacyName : comp.getLegacyNames())
+      {
+        this._componentTypesByLegacyName.put(legacyName, comp);
+      }
+      
+      // Check if oldComp was registered under additional legacy names.
+      // If a component is overriden more than once, we accumulate all legacyNames "so far".
+      // This thus overrides all mappings to the previous definition.
+      if(oldComp != null)
+      {
+        logger.info("ComponentType '" + oldComp.getLabel() + "' was overriden.");
+        
+        List<String> alternateNames = null;
+        for(Map.Entry<String, ComponentType> entry : this._componentTypesByLegacyName.entrySet())
+        {
+          if(entry.getValue() == oldComp) 
+          {
+            if(alternateNames == null) { alternateNames = new ArrayList<String>(); }
+            alternateNames.add(entry.getKey());
+          }
+        }
+        
+        if(alternateNames != null)
+        {
+          for(String altName : alternateNames)
+          {
+            // Replace oldComp by comp
+            this._componentTypesByLegacyName.put(altName, comp);
+          }
+        }
+      }
     }
   }
 
@@ -125,9 +142,7 @@ public class MetaModel extends MetaObject
     if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
 
     ComponentType compType = this._componentTypesByName.get(name);
-    return compType != null ?
-           compType :
-           this._componentTypesByLowerName.get(name.toLowerCase());
+    return compType != null ? compType : this._componentTypesByLegacyName.get(name);
   }
 
   public PropertyType getPropertyType(String name)

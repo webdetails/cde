@@ -63,11 +63,21 @@ public abstract class XmlComponentTypeReader implements IThingReader
       .setCategoryLabel(XmlDom4JHelper.getNodeText("Header/CatDescription", componentElem))
       .setSourcePath(sourcePath)
       .setVersion(XmlDom4JHelper.getNodeText("Header/Version", componentElem));
-
+    
     String visibleText = XmlDom4JHelper.getNodeText("Header/Visible", componentElem);
     if(StringUtils.isNotEmpty(visibleText))
     {
       builder.setVisible("true".equalsIgnoreCase(visibleText));
+    }
+    
+    @SuppressWarnings("unchecked")
+    List<Element> legacyNamesElems = componentElem.selectNodes("Header/LegacyIName");
+    for (Element legacyNameElem : legacyNamesElems)
+    {
+      String legacyName = legacyNameElem.getStringValue();
+      if(StringUtils.isNotBlank(legacyName)) {
+        builder.addLegacyName(legacyName);
+      }
     }
     
     String cdeModelIgnoreText = XmlDom4JHelper.getNodeText("Contents/Model/@ignore", componentElem);

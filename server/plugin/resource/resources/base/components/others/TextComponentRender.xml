@@ -2,6 +2,7 @@
 	<Header>
 		<Name>Text Component</Name>
 		<IName>Text</IName>
+		<LegacyIName>textComponent</LegacyIName>
 		<Description>Text Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Others</CatDescription>

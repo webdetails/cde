@@ -3,6 +3,7 @@
 		<Override>DataSourceComponentType</Override>
 		<Name>CDA Datasource</Name>
 		<IName>CDA</IName>
+		<LegacyIName>CDADataSourceModel</LegacyIName>
 		<Description>CDA Data Source</Description>
 		<Category>CDA</Category>
 		<CatDescription>Community Data Access</CatDescription>

@@ -2,6 +2,7 @@
 	<Header>
 		<Name>Comments component</Name>
 		<IName>comments</IName>
+		<LegacyIName>Comments</LegacyIName>
 		<Description>Comment Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Others</CatDescription>

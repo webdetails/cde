@@ -78,10 +78,6 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
           logger.error("Error building dashboard layout.", ex);
           return null;
         }
-      } else if(className.equalsIgnoreCase("CDADataSourceModel")) {
-        // Legacy dashboards contain this datasource type.
-        // This was most probably an old id of the current "DataSourcesCDAModel".
-        className = "CDA";
       }
 
       // 2. Extract comp.getName() from modelId.
