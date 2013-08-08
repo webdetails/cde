@@ -56,19 +56,24 @@ var BaseModel = (function() {
   };
   
   var CommonModel = {
+    _addPropertyUsage: function(propUsage) {
+      this._properties.push(propUsage);
+      this._propertiesByAlias[propUsage.alias] = propUsage;
+      this._propertiesByName [propUsage.name ] = propUsage;
+      return propUsage;
+    },
+    _addPropSpec: function(propSpec) {
+      var propUsage = PropertyTypeUsage.create(propSpec, this);
+      return propUsage && this._addPropertyUsage(propUsage);
+    },
     _getPropertyUsages: function() {
       if(this._propertySpecs) {
-        var propertiesByAlias = this._propertiesByAlias = {};
-        var propertiesByName  = this._propertiesByName  = {};
-
-        this._properties = this._propertySpecs.map(function(propSpec) {
-          var propUsage = PropertyTypeUsage.create(propSpec, this);
-
-          propertiesByAlias[propUsage.alias] = propUsage;
-          propertiesByName [propUsage.name ] = propUsage;
-          return propUsage;
-        }, this);
-
+        this._propertiesByAlias = {};
+        this._propertiesByName  = {};
+        this._properties = [];
+        
+        this._propertySpecs.forEach(this._addPropSpec, this);
+        
         delete this._propertySpecs;
       }
 
@@ -76,8 +81,17 @@ var BaseModel = (function() {
     },
 
     getPropertyUsage: function(name) {
+      // Lazy init
       if(this._propertySpecs) { this._getPropertyUsages(); }
-      return this._propertiesByAlias[name] || this._propertiesByName[name];
+      
+      return this._propertiesByAlias[name] || 
+             this._propertiesByName[name]  ||
+             // Some component properties are extension properties --
+             // are not defined in the component type, maybe because they are deprecated --
+             // try to find a global definition for them, anyway.
+             // If found, the property is dynamically registered in 
+             // the component type's properties.
+             this._addPropSpec(name);
     },
     
     createProperty: LegacyModel.createProperty
