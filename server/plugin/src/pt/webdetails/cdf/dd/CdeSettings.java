@@ -15,6 +15,7 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cpf.PluginSettings;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class CdeSettings{
   
@@ -49,7 +50,7 @@ public class CdeSettings{
   }
   
   public static String getEncoding(){
-    return CdfDDSettings.ENCODING;
+    return CharsetHelper.getEncoding();
   }
   
   private static class CdfDDSettings  extends PluginSettings {

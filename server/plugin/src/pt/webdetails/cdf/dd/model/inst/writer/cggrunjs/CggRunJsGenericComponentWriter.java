@@ -21,7 +21,7 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.SaveFileStatus;
+import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 
 /**

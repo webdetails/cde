@@ -43,8 +43,8 @@ import pt.webdetails.cdf.dd.model.meta.writer.xml.XmlThingWriterFactory;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.SaveFileStatus;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
 
 public class XmlStructure implements IStructure
 {

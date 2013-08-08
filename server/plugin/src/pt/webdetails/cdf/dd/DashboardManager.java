@@ -47,7 +47,7 @@ import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor.DashboardRendererType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.FileAccess;
+import pt.webdetails.cpf.repository.IRepositoryAccess.FileAccess;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.repository.IRepositoryFile;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
