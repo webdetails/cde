@@ -1,7 +1,7 @@
 <DesignerComponent>
 	<Header>
 		<Name>Text Component</Name>
-		<IName>textComponent</IName>
+		<IName>Text</IName>
 		<Description>Text Component</Description>
 		<Category>OTHERCOMPONENTS</Category>
 		<CatDescription>Others</CatDescription>
