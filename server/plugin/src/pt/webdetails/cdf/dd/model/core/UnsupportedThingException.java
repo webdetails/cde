@@ -37,6 +37,6 @@ public final class UnsupportedThingException extends Exception
     if(StringUtils.isEmpty(thingKind)) { throw new IllegalArgumentException("thingKind"); }
     if(StringUtils.isEmpty(thingId  )) { throw new IllegalArgumentException("thingId"); }
 
-    return "Thing of kind '" + thingKind + "' and id '" + thingId + "' is not supported.";
+    return thingKind + " of id '" + thingId + "' is not supported/defined.";
   }
 }

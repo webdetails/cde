@@ -4,9 +4,10 @@
 
 package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
@@ -21,6 +22,11 @@ import pt.webdetails.cdf.dd.model.meta.*;
  */
 public class CdfdeJsThingReaderFactory implements IThingReaderFactory
 {
+  private static final Logger logger = LoggerFactory.getLogger(CdfdeJsThingReaderFactory.class);
+  
+  private static final Pattern _modelIdToNamePattern = 
+          Pattern.compile("^(?:Components|Layout|DataSources)?(.*?)(?:Model)?$");
+  
   private final MetaModel _metaModel;
   
   public CdfdeJsThingReaderFactory(MetaModel metaModel)
@@ -69,19 +75,17 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
         }
         catch(ValidationException ex)
         {
-          Logger.getLogger(CdfdeJsThingReaderFactory.class.getName()).log(Level.SEVERE, null, ex);
+          logger.error("Error building dashboard layout.", ex);
           return null;
         }
-      } else if(className.equalsIgnoreCase("CDADataSourceModel")){     //old dashboards contain this datasource type
+      } else if(className.equalsIgnoreCase("CDADataSourceModel")) {
+        // Legacy dashboards contain this datasource type.
+        // This was most probably an old id of the current "DataSourcesCDAModel".
         className = "CDA";
       }
 
       // 2. Extract comp.getName() from modelId.
-      String compTypeName = className
-              .replaceFirst("^Components", "")
-              .replaceFirst("^Datasources" , "")
-              .replaceFirst("Model$" , "")
-              .replaceFirst("^Layout",     "");
+      String compTypeName = _modelIdToNamePattern.matcher(className).replaceFirst("$1");
       
       // 3. Lookup the ComponentType, by name, in the MetaModel.
       ComponentType compType;
@@ -91,16 +95,9 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
         
         assert compType != null;
       }
-      catch(IllegalArgumentException ex1)
+      catch(IllegalArgumentException ex)
       {
-        try
-        {
-          compType = this._metaModel.getComponentType(compTypeName.toLowerCase());
-        }
-        catch (IllegalArgumentException ex2)
-        {
-          throw new UnsupportedThingException(kind, className);
-        }
+        throw new UnsupportedThingException(kind, className);
       }
       
       // 4. Find the corresponding appropriate base class,

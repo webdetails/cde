@@ -5,12 +5,16 @@
 package pt.webdetails.cdf.dd.model.meta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
-import pt.webdetails.cdf.dd.model.meta.validation.DuplicateComponentTypeError;
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 
@@ -19,11 +23,18 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  */
 public class MetaModel extends MetaObject
 {
+  private static final Logger logger = LoggerFactory.getLogger(MetaModel.class);
+  
   // NOTE: The fact that there are some legacy components
-  // whose name differs only by case...causes us to recognize the difference.
+  // whose name differs only by case...causes us to need to recognize the difference.
   // (See: base/components/datasources/XactionResultSetRender.xml and 
   //  base/components/others/XActionRender.xml)
+  // On the other hand, some components need to be detected independently of casing...
+  // So, we first lookup with normal case and, when not found,
+  //  lookup by lower case...
+  // Of course, this requires us to store the mapping twice... :-/
   private final Map<String, ComponentType> _componentTypesByName;
+  private final Map<String, ComponentType> _componentTypesByLowerName;
   
   private final Map<String, PropertyType>  _propertyTypesByLowerName;
 
@@ -32,6 +43,9 @@ public class MetaModel extends MetaObject
     super(builder);
 
     this._componentTypesByName = new LinkedHashMap<String, ComponentType>();
+    // Don't need two «keep order» implementations.
+    this._componentTypesByLowerName = new HashMap<String, ComponentType>();
+    
     this._propertyTypesByLowerName  = new LinkedHashMap<String, PropertyType>();
     
     for(PropertyType.Builder propBuilder : builder._propertyTypes)
@@ -40,10 +54,12 @@ public class MetaModel extends MetaObject
       String key = prop.getName().toLowerCase();
       if(this._propertyTypesByLowerName.containsKey(key))
       {
-        throw new ValidationException(new DuplicatePropertyTypeError(prop));
+        logger.warn(
+            "While building the meta-model. Ignoring property type definition.",
+            new DuplicatePropertyTypeError(prop));
+      } else {
+        this._propertyTypesByLowerName.put(key, prop);
       }
-
-      this._propertyTypesByLowerName.put(key, prop);
     }
 
     // Create a PropertyType source to support building of ComponentType.s
@@ -54,13 +70,24 @@ public class MetaModel extends MetaObject
     for(ComponentType.Builder compBuilder : builder._componentTypes)
     {
       ComponentType comp = compBuilder.build(propSource);
-      String key = comp.getName();//.toLowerCase();
+      
+      // Overriding is detected by normal case.
+      String key = comp.getName();
       if(this._componentTypesByName.containsKey(key))
       {
-        // This is expected. By definition, we allow component overriding. 
+        // This is expected. By definition, we allow component overriding.
+        logger.info("ComponentType '" + comp.getLabel() + "' was overriden.");
       }
 
       this._componentTypesByName.put(key, comp);
+      // The following may replace another component, 
+      // in case two != exist with different casing.
+      // So, access by lower case name to the other component is shadowed.
+      // This is highly non-linear and undesirable: legacy inheritage.
+      // Example of undesirable behavior:
+      // the addition of a component type may break
+      // previously working access to another different case one...
+      this._componentTypesByLowerName.put(key.toLowerCase(), comp);
     }
   }
 
@@ -97,10 +124,13 @@ public class MetaModel extends MetaObject
   {
     if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
 
-    return this._componentTypesByName.get(name/*.toLowerCase()*/);
+    ComponentType compType = this._componentTypesByName.get(name);
+    return compType != null ?
+           compType :
+           this._componentTypesByLowerName.get(name.toLowerCase());
   }
 
-  public PropertyType  getPropertyType(String name)
+  public PropertyType getPropertyType(String name)
   {
     PropertyType prop = this.tryGetPropertyType(name);
     if(prop == null)
