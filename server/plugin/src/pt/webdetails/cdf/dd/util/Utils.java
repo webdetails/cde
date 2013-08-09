@@ -159,7 +159,7 @@ public class Utils {
   
   public static double ellapsedSeconds(Date dtStart)
   {
-    return Math.round(10.0 * ((new Date().getTime() - dtStart.getTime()) / 1000.0)) / 10.0;
+    return Math.round(100.0 * ((new Date().getTime() - dtStart.getTime()) / 1000.0)) / 100.0;
   }
   
   // Must start with a / and all \ are converted to / and has no duplicate /s.
