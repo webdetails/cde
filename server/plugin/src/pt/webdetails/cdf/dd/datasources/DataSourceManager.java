@@ -200,7 +200,7 @@ public class DataSourceManager
           providersById.put(ds.getId(), ds);
         }
 
-        logger.info("Successfully initialized.!");
+        logger.info("Successfully initialized.");
       } catch(Exception e) {
         logger.error("Error initializing: {}", e.getMessage(), e);
       }
