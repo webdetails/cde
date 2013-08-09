@@ -21,7 +21,7 @@ import java.util.Properties;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FilenameUtils;
@@ -35,8 +35,7 @@ import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
-import pt.webdetails.cdf.dd.datasources.DataSourceManager;
-import pt.webdetails.cdf.dd.datasources.DataSourceReader;
+import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
