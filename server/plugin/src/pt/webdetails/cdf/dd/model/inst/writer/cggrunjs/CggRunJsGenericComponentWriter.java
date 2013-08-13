@@ -189,6 +189,12 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       CggRunJsComponentWriteContext compContext = 
               new CggRunJsComponentWriteContext(factory, dash, comp, context.getUserSession());
       dsWriter.write(out, compContext, dsComp);
+    } 
+    else
+    {
+      // For when no datasource is specified, the variable data must be defined anyway.
+      out.append("var data;");
+      out.append(NEWLINE);
     }
   }
 }
