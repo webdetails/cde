@@ -1,6 +1,6 @@
 <DesignerComponent>
 	<Header>
-        <Override>DataSourceComponentType</Override>
+		<Override>DataSourceComponentType</Override>
 		<Name>OLAP MDX query</Name>
 		<IName>Mdx</IName>
 		<Description>MDX query against a OLAP cube</Description>

@@ -39,7 +39,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsDashboardWriteCon
 import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.meta.IPropertyTypeSource;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
-import pt.webdetails.cdf.dd.model.meta.writer.xml.XmlThingWriterFactory;
+import pt.webdetails.cdf.dd.model.meta.writer.cdexml.XmlThingWriterFactory;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
@@ -399,7 +399,8 @@ public class XmlStructure implements IStructure
     builder
       .setName("widget" + name)
       .setLabel(name)
-      .setTooltip(wcdf.getDescription() + " Widget")
+      // TODO: Consider using wcdf.getDescription() directly?
+      .setTooltip(name + " Widget")
       .setCategory("WIDGETS")
       .setCategoryLabel("Widgets")
       .addAttribute("widget", "true")

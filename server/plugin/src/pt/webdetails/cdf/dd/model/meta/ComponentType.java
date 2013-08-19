@@ -7,9 +7,11 @@ package pt.webdetails.cdf.dd.model.meta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicatePropertyError;
@@ -26,6 +28,8 @@ public abstract class ComponentType extends MetaObject
 {
   private final Map<String, PropertyTypeUsage> _propertyUsagesByLowerAlias;
   private final Map<String, PropertyTypeUsage> _propertyUsagesByLowerName;
+  
+  private final List<String> _legacyNames;
   
   private final List<String> _definitionNames;
   private final Map<String, List<PropertyTypeUsage>> _propertyDefinitionsByLowerName;
@@ -116,6 +120,28 @@ public abstract class ComponentType extends MetaObject
       this._propertyUsagesByLowerName = null;
       this._propertyDefinitionsByLowerName = null;
       this._definitionNames = null;
+    }
+    
+    if(builder.getLegacyNameCount() > 0)
+    {
+      // Don't add duplicates
+      Set<String> legacyNameSet = new HashSet<String>();
+      List<String> legacyNames = new ArrayList<String>();
+      for(String legacyName : builder.getLegacyNames())
+      {
+        // Not bothering to warn...
+        if(!legacyNameSet.contains(legacyName))
+        {
+          legacyNameSet.add(legacyName);
+          legacyNames.add(legacyName);
+        }
+      }
+      
+      this._legacyNames = legacyNames.size() > 0 ? legacyNames : null;
+    } 
+    else
+    {
+      this._legacyNames = null;
     }
     
     // IMPLEMENTATION
@@ -238,6 +264,20 @@ public abstract class ComponentType extends MetaObject
   }
   
   // --------
+  // Legacy Names
+  public Iterable<String> getLegacyNames()
+  {
+    return this._legacyNames != null ?
+           this._legacyNames :
+           Collections.<String> emptyList();
+  }
+
+  public int getLegacyNameCount()
+  {
+    return this._legacyNames != null ? this._legacyNames.size() : 0;
+  }
+    
+  // --------
   // Resources
 
   public Resource getResource(Resource.Type type, String name)
@@ -277,6 +317,8 @@ public abstract class ComponentType extends MetaObject
   {
     private List<PropertyTypeUsage.Builder> _propertyUsages;
     private List<PropertyType.Builder> _propertyTypes;
+    
+    private List<String> _legacyNames;
     
     private String _implementationPath;
     private List<Resource.Builder> _resources;
@@ -367,6 +409,34 @@ public abstract class ComponentType extends MetaObject
     public int getPropertyCount()
     {
       return this._propertyTypes != null ? this._propertyTypes.size() : 0;
+    }
+    
+    // --------
+    // Legacy Names
+    public Builder addLegacyName(String legacyName)
+    {
+      if(StringUtils.isEmpty(legacyName)) { throw new IllegalArgumentException("legacyName"); }
+
+      if(this._legacyNames == null)
+      {
+        this._legacyNames = new ArrayList<String>();
+      }
+
+      this._legacyNames.add(legacyName);
+
+      return this;
+    }
+
+    public Iterable<String> getLegacyNames()
+    {
+      return this._legacyNames != null ?
+             this._legacyNames :
+             Collections.<String> emptyList();
+    }
+
+    public int getLegacyNameCount()
+    {
+      return this._legacyNames != null ? this._legacyNames.size() : 0;
     }
 
     // --------

@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd.model.meta.writer.xml;
+package pt.webdetails.cdf.dd.model.meta.writer.cdexml;
 
 import org.dom4j.Branch;
 import org.dom4j.Element;

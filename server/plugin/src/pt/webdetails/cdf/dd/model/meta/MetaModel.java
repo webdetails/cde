@@ -5,12 +5,17 @@
 package pt.webdetails.cdf.dd.model.meta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
-import pt.webdetails.cdf.dd.model.meta.validation.DuplicateComponentTypeError;
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 
@@ -19,11 +24,14 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  */
 public class MetaModel extends MetaObject
 {
+  private static final Logger logger = LoggerFactory.getLogger(MetaModel.class);
+  
   // NOTE: The fact that there are some legacy components
-  // whose name differs only by case...causes us to recognize the difference.
+  // whose name differs only by case...causes us to need to recognize the difference.
   // (See: base/components/datasources/XactionResultSetRender.xml and 
   //  base/components/others/XActionRender.xml)
   private final Map<String, ComponentType> _componentTypesByName;
+  private final Map<String, ComponentType> _componentTypesByLegacyName;
   
   private final Map<String, PropertyType>  _propertyTypesByLowerName;
 
@@ -32,6 +40,9 @@ public class MetaModel extends MetaObject
     super(builder);
 
     this._componentTypesByName = new LinkedHashMap<String, ComponentType>();
+    // Don't need two «keep order» implementations.
+    this._componentTypesByLegacyName = new HashMap<String, ComponentType>();
+    
     this._propertyTypesByLowerName  = new LinkedHashMap<String, PropertyType>();
     
     for(PropertyType.Builder propBuilder : builder._propertyTypes)
@@ -40,10 +51,12 @@ public class MetaModel extends MetaObject
       String key = prop.getName().toLowerCase();
       if(this._propertyTypesByLowerName.containsKey(key))
       {
-        throw new ValidationException(new DuplicatePropertyTypeError(prop));
+        logger.warn(
+            "While building the meta-model. Ignoring property type definition.",
+            new DuplicatePropertyTypeError(prop));
+      } else {
+        this._propertyTypesByLowerName.put(key, prop);
       }
-
-      this._propertyTypesByLowerName.put(key, prop);
     }
 
     // Create a PropertyType source to support building of ComponentType.s
@@ -54,13 +67,44 @@ public class MetaModel extends MetaObject
     for(ComponentType.Builder compBuilder : builder._componentTypes)
     {
       ComponentType comp = compBuilder.build(propSource);
-      String key = comp.getName();//.toLowerCase();
-      if(this._componentTypesByName.containsKey(key))
-      {
-        // This is expected. By definition, we allow component overriding. 
-      }
-
+      String key = comp.getName();
+      
+      // Detect Component Type Override.
+      ComponentType oldComp = this._componentTypesByName.get(key);
+      
+      // Add new component
       this._componentTypesByName.put(key, comp);
+      for(String legacyName : comp.getLegacyNames())
+      {
+        this._componentTypesByLegacyName.put(legacyName, comp);
+      }
+      
+      // Check if oldComp was registered under additional legacy names.
+      // If a component is overriden more than once, we accumulate all legacyNames "so far".
+      // This thus overrides all mappings to the previous definition.
+      if(oldComp != null)
+      {
+        logger.info("ComponentType '" + oldComp.getLabel() + "' was overriden.");
+        
+        List<String> alternateNames = null;
+        for(Map.Entry<String, ComponentType> entry : this._componentTypesByLegacyName.entrySet())
+        {
+          if(entry.getValue() == oldComp) 
+          {
+            if(alternateNames == null) { alternateNames = new ArrayList<String>(); }
+            alternateNames.add(entry.getKey());
+          }
+        }
+        
+        if(alternateNames != null)
+        {
+          for(String altName : alternateNames)
+          {
+            // Replace oldComp by comp
+            this._componentTypesByLegacyName.put(altName, comp);
+          }
+        }
+      }
     }
   }
 
@@ -97,10 +141,11 @@ public class MetaModel extends MetaObject
   {
     if(StringUtils.isEmpty(name)) { throw new IllegalArgumentException("name"); }
 
-    return this._componentTypesByName.get(name/*.toLowerCase()*/);
+    ComponentType compType = this._componentTypesByName.get(name);
+    return compType != null ? compType : this._componentTypesByLegacyName.get(name);
   }
 
-  public PropertyType  getPropertyType(String name)
+  public PropertyType getPropertyType(String name)
   {
     PropertyType prop = this.tryGetPropertyType(name);
     if(prop == null)

@@ -39,9 +39,9 @@ import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsReadContext;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsThingReaderFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.WcdfDescriptor.DashboardRendererType;
@@ -89,7 +89,7 @@ public final class DashboardManager
     // INIT EH-CACHE for CdfRunJsDashboardWriteResult objects
     _ehCacheManager = createWriteResultCacheManager();
     
-    // Not sure we need to check existence of the cache, 
+    // TODO: Not sure we need to check existence of the cache, 
     // since the cache manager is newly created.
     if(!_ehCacheManager.cacheExists(CACHE_NAME))
     {
@@ -127,14 +127,14 @@ public final class DashboardManager
       }
       catch(IOException ex)
       {
-        //TODO: User has no permission to WCDF falls here?
-        throw new ThingWriteException("Error while accessing the WCDF file.", ex);
+        // TODO: User has no permission to WCDF falls here?
+        throw new ThingWriteException("While accessing the WCDF file.", ex);
       }
       
       if(wcdf == null) 
       {
         // Doesn't exist
-        // TODO: Explain: why create a (totally) empty one?
+        // TODO: Explain or fix, why create a (totally) empty one?
         wcdf = new WcdfDescriptor();
       }
     }
@@ -207,6 +207,10 @@ public final class DashboardManager
       }
       
       // Not in cache or cache item expired/invalidated
+    } 
+    else 
+    {
+      _logger.info("Bypassing dashboard render cache, rendering.");
     }
     
     // 4. Get the Dashboard object
@@ -245,7 +249,7 @@ public final class DashboardManager
     }
     catch (IOException ex)
     {
-      throw new ThingReadException("Error reading dashboard.", ex);
+      throw new ThingReadException("While reading dashboard.", ex);
     }
   }
   
@@ -310,7 +314,7 @@ public final class DashboardManager
     
     for(String invalidCdeFilePath : invalidateDashboards)
     {
-      _logger.info("Invalidating cache of '" + invalidCdeFilePath + "'");
+      _logger.info("Invalidating cache of dashboard '" + invalidCdeFilePath + "'.");
     }
     
     synchronized(this._dashboardsByCdfdeFilePath)
@@ -406,6 +410,14 @@ public final class DashboardManager
     if(!bypassCacheRead) 
     {
       cachedDash = this.getDashboardFromCache(cdeFilePath);
+      if(cachedDash == null)
+      {
+        _logger.info("Dashboard instance is not in cache, reading from repository.");
+      }
+    }
+    else
+    {
+      _logger.info("Bypassing Dashboard instance cache, reading from repository.");
     }
     
     // Read cache, cache item existed and it is valid?
@@ -421,15 +433,15 @@ public final class DashboardManager
 
       if(cachedDash.getSourceDate().getTime() >= wcdfFile.getLastModified()) 
       {
-        _logger.info("Have cached dashboard instance - valid.");
+        _logger.info("Cached Dashboard instance is valid, using it.");
 
         return cachedDash;
       }
     }
     
-    if(cachedDash != null) 
+    if(cachedDash != null)
     {
-      _logger.info("Have cached dashboard instance - invalid. Reloading.");
+      _logger.info("Cached Dashboard instance invalidated, reading from repository.");
     }
     
     Dashboard newDash = this.readDashboardFromCdfdeJs(wcdf, repository);
@@ -458,7 +470,7 @@ public final class DashboardManager
     }
     catch(IOException ex)
     {
-      throw new ThingReadException("Error while accessing the CDFDE dashboard file.", ex);
+      throw new ThingReadException("While accessing the CDFDE dashboard file.", ex);
     }
     
     // 2. Obtain a reader to read the dashboard file
@@ -471,7 +483,7 @@ public final class DashboardManager
     }
     catch(UnsupportedThingException ex)
     {
-      throw new ThingReadException("Error while obtaining a reader for reading the CDFDE dashboard file.", ex);
+      throw new ThingReadException("While obtaining a reader for a dashboard.", ex);
     }
     
     // 3. Read it
@@ -485,7 +497,7 @@ public final class DashboardManager
     }
     catch(ValidationException ex)
     {
-      throw new ThingReadException("Error while validating the CDFDE dashboard file.", ex);
+      throw new ThingReadException("While building the read dashboard.", ex);
     }
   }
   
@@ -505,7 +517,7 @@ public final class DashboardManager
     }
     catch(UnsupportedThingException ex)
     {
-      throw new ThingWriteException("Error while obtaining a writer for rendering the dashboard.", ex);
+      throw new ThingWriteException("While obtaining a writer for rendering the dashboard.", ex);
     }
     
     // 2. Write it
@@ -537,17 +549,19 @@ public final class DashboardManager
     }
     catch(CacheException ex)
     {
-      _logger.info("Dashboard cache invalidated, re-rendering");
+      _logger.info("Cached dashboard render invalidated, re-rendering.");
       return null;
     }
     
     // 2. In the cache?
-    if(cacheElement == null) { return null; }
+    if(cacheElement == null) 
+    {
+      _logger.info("Dashboard render is not in cache.");
+      return null; 
+    }
     
     CdfRunJsDashboardWriteResult dashWrite = 
             (CdfRunJsDashboardWriteResult)cacheElement.getValue();
-      
-    _logger.info("Got dashboard from cache");
     
     // 3. Get the template file
     IRepositoryFile templFile = null;
@@ -573,7 +587,7 @@ public final class DashboardManager
     boolean cacheExpired = cal.getTime().after(dashLoadedDate);
     if(cacheExpired)
     {
-      _logger.info("Dashboard expired, re-rendering");
+      _logger.info("Cached dashboard render expired, re-rendering.");
       return null;
     }
 
@@ -582,10 +596,12 @@ public final class DashboardManager
                             templFile.getLastModified() > dashLoadedDate.getTime());
     if(cacheInvalid)
     {
-      _logger.info("Dashboard cache invalidated, re-rendering");
+      _logger.info("Cached dashboard render invalidated, re-rendering.");
       return null;
     }
-
+    
+    _logger.info("Cached dashboard render is valid, using it.");
+    
     return dashWrite;
   }
   
