@@ -2838,16 +2838,6 @@ a:link, a:visited {
 
 }
 
-
-
-a:hover, a.linkActive { ;
-
-        filter: dropshadow(color=#12a2d8, offx=0, offy=0);
-
-}
-
-
-
 a:hover > .buttonImage,
 
 .linkActive > .buttonImage {
