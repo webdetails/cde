@@ -1,0 +1,30 @@
+<DesignerComponent>
+	<Header>
+		<Name>Traffic component</Name>
+		<IName>traffic</IName>
+		<Description>Traffic Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>parameter</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>cdaParams</Property>
+			<Definition name="trafficDefinition">
+				<Property>dataSource</Property>
+				<Property>showValue</Property>
+				<Property>intervals</Property>
+			</Definition>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

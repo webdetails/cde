@@ -46,7 +46,7 @@
     <dependency org="pt.webdetails" name="cpf-pentaho" rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
       <!-- olap -->
-      <dependency org="pentaho" name="mondrian" rev="3.3.0.14703">
+      <dependency org="pentaho" name="mondrian" rev="3.5.0">
         <exclude org="commons-dbcp" name="commons-dbcp"/>
         <exclude org="javax.servlet" name="jsp-api"/>
         <exclude org="javax.servlet" name="servlet-api"/>

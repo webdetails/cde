@@ -1,12 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.render;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.String;
 import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,7 +62,7 @@ public class DependenciesEngine
     final String minification = resLoader.getPluginSetting(this.getClass(), "packager/minification").toUpperCase();
     Mode mode = Mode.valueOf(minification != null ? minification : "MINIFY");
     String hash = packager.minifyPackage(name, mode);
-    return filter.filter(packagedPath + "?v=" + hash);
+    return (filter == null ? format : filter).filter(packagedPath + "?v=" + hash);
   }
 
   public String getDependencies()
@@ -76,9 +75,14 @@ public class DependenciesEngine
     StringBuilder output = new StringBuilder();
     for (Dependency dep : dependencyPool.values())
     {
-      output.append(filter.filter(dep.getDeps()) + newLine);
+      output.append((filter == null ? format : filter).filter(dep.getDeps()) + newLine);
     }
     return output.toString();
+  }
+
+  public String getDependencies(StringFilter filter, boolean isPackaged)
+  {
+    return isPackaged ? getPackagedDependencies(filter) : getDependencies(filter);
   }
 
   public void register(String name, String version, String path) throws Exception
@@ -141,8 +145,6 @@ public class DependenciesEngine
       dep = new RawDependency(version, contents);
       dependencyPool.put(name, dep);
     }
-
-
   }
 
   private String byteToHex(byte[] bytes)

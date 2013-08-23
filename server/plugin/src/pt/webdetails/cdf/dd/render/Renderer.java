@@ -1,107 +1,114 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.render;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import pt.webdetails.cdf.dd.DashboardFactory;
-import pt.webdetails.cdf.dd.Widget;
+import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Component;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 
 @SuppressWarnings("unchecked")
 public abstract class Renderer
 {
-
-  protected JXPathContext doc;
-  protected static Log logger;
-  Class<JXPathContext>[] rendererConstructorArgs = new Class[]
+  protected static final String NEWLINE = System.getProperty("line.separator");
+  
+  protected final JXPathContext doc;
+  protected final CdfRunJsDashboardWriteContext _context;
+  
+  public Renderer(JXPathContext doc, CdfRunJsDashboardWriteContext context)
   {
-    JXPathContext.class
-  };
-
-  public Renderer()
-  {
-    logger = LogFactory.getLog(Renderer.class);
+    this.doc = doc;
+    this._context = context;
   }
+  
+  protected static Log logger = LogFactory.getLog(Renderer.class);
+  
+  protected static final Class<JXPathContext>[] rendererConstructorArgs = new Class[] { JXPathContext.class };
+  
+  // ---------------
+  
+  public abstract String render(String alias) throws Exception;
 
-  public abstract String render(JXPathContext doc) throws Exception;
+  protected abstract String getRenderClassName(String Type);
 
-  public abstract String render(JXPathContext doc, String alias) throws Exception;
-
-  public abstract String getRenderClassName(String Type);
-
-  protected Map<String, Widget> getWidgets(String alias)
+  /**
+   * Obtains Widgets (renderers) for contained components (usages).
+   * 
+   * All returned widgets are loaded with an alias that 
+   * is prefixed by the specified aliasPrefix argument.
+   */
+  protected final Map<String, CdfRunJsDashboardWriteResult> getWidgets(String aliasPrefix)
   {
-    Map<String, Widget> locations = new HashMap<String, Widget>();
-    Iterator<Pointer> widgets = doc.iteratePointers("/components/rows[meta_widget='true']");
-    Pointer pointer;
-    while (widgets.hasNext())
+    Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId = 
+            new HashMap<String, CdfRunJsDashboardWriteResult>();
+    
+    Dashboard dashboard = this._context.getDashboard();
+    if(dashboard.getRegularCount() > 0)
     {
-      pointer = widgets.next();
-      final JXPathContext context = doc.getRelativeContext(pointer);
-      String widgetPath,
-              widgetContainer = context.getValue("properties[name='htmlObject']/value").toString().replaceAll("\\$\\{.*:(.*)\\}", "$1"),
-              newAlias = getWidgetAlias(context, alias);
-
-      try
-      {
-        widgetPath = context.getValue("properties[name='path']/value").toString();
-      }
-      catch (Exception e)
-      {
-        widgetPath = context.getValue("meta_wcdf").toString();
-      }
+      DashboardManager dashMgr = DashboardManager.getInstance();
+      CdfRunJsDashboardWriteOptions options = this._context.getOptions();
       
-      try
+      Iterable<Component> components = dashboard.getRegulars();
+      for(Component comp : components)
       {
-        Widget widget = DashboardFactory.getInstance().loadWidget(widgetPath, newAlias);
-        locations.put(widgetContainer, widget);
-      }
-      catch (FileNotFoundException e)
-      {
-        logger.error("Couldn't find widget " + widgetPath);
+        if(StringUtils.isNotEmpty(comp.getName()) && comp instanceof WidgetComponent)
+        {
+          WidgetComponent widgetComp = (WidgetComponent)comp;
+          
+          CdfRunJsDashboardWriteOptions childOptions = options
+                  .addAliasPrefix(comp.getName()); // <-- NOTE:!
+          
+          CdfRunJsDashboardWriteResult dashResult = null;
+          try
+          {
+            dashResult = dashMgr.getDashboardCdfRunJs(
+                    widgetComp.getWcdfPath(), 
+                    childOptions,
+                    this._context.getUserSession(),
+                    this._context.isBypassCacheRead());
+          }
+          catch (ThingWriteException ex)
+          {
+            logger.error("Could not render widget '" + widgetComp.getWcdfPath()  + "'", ex);
+          }
+
+          String containerId = widgetComp.tryGetPropertyValue("htmlObject", "")
+                  .replaceAll("\\$\\{.*:(.*)\\}", "$1");
+
+          widgetsByContainerId.put(containerId, dashResult);
+        }
       }
     }
-    return locations;
+    
+    return widgetsByContainerId;
   }
-
-  public String getWidgetAlias(Pointer pointer, String alias)
+  
+  protected final Object getRender(JXPathContext context) throws Exception
   {
-    return getWidgetAlias(doc.getRelativeContext(pointer), alias);
-  }
-
-  public String getWidgetAlias(JXPathContext context, String alias)
-  {
-    String widgetName = context.getValue("properties[name='name']/value").toString(),
-            newAlias = alias.length() == 0 ? widgetName : alias + "_" + widgetName;
-    return newAlias;
-  }
-
-  public Object getRender(JXPathContext context) throws Exception
-  {
-
-    Object renderer = null;
     String renderType = null;
     try
     {
-
       renderType = (String) context.getValue("type");
-
       if (!renderType.equals("Label"))
       {
         Class<?> rendererClass = Class.forName(getRenderClassName(renderType));
 
         Constructor<?> constructor = rendererClass.getConstructor(rendererConstructorArgs);
-        renderer = constructor.newInstance(new Object[]
-                {
-                  context
-                });
+        return constructor.newInstance(new Object[]{ context });
       }
-
     }
     catch (InstantiationException e)
     {
@@ -119,51 +126,30 @@ public abstract class Renderer
       //throw new RenderException("Render not found for: " + renderType);
     }
 
-    return renderer;
+    return null;
   }
 
-  public String getIndent(int ident)
+  protected final String getIndent(int indent)
   {
-
-    switch (ident)
+    switch(indent)
     {
-      case 0:
-        return "";
-      case 1:
-        return " ";
-      case 2:
-        return "  ";
-      case 3:
-        return "   ";
-      case 4:
-        return "    ";
-      case 8:
-        return "        ";
-
+      case 0: return "";
+      case 1: return " ";
+      case 2: return "  ";
+      case 3: return "   ";
+      case 4: return "    ";
+      case 8: return "        ";
     }
 
     StringBuilder identStr = new StringBuilder();
-    for (int i = 0; i < ident; i++)
-    {
-      identStr.append(" ");
-    }
+    for(int i = 0; i < indent; i++) { identStr.append(" "); }
     return identStr.toString();
-
   }
 
-  public JXPathContext getDoc()
+  public static String aliasName(String aliasPrefix, String name)
   {
-    return doc;
-  }
-
-  public void setDoc(JXPathContext doc)
-  {
-    this.doc = doc;
-  }
-
-  static public String aliasName(String alias, String name)
-  {
-    String parsedAlias = alias == null || alias.length() == 0 ? "" : alias + "_";
-    return parsedAlias + name;
+    aliasPrefix = StringUtils.isEmpty(aliasPrefix) ? "" : (aliasPrefix + "_");
+    
+    return aliasPrefix + name;
   }
 }

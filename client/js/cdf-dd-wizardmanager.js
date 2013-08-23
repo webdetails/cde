@@ -400,7 +400,7 @@ var OlapWizard = WizardManager.extend({
 			var cubes = selectedCatalog.cubes;
 			$("select#cdfddOlapCubeSelect",_selector).empty();
 			$.each(cubes,function(i,cube){
-					$("select#cdfddOlapCubeSelect",_selector).append("<option>"+cube.name+"</option>");
+					$("select#cdfddOlapCubeSelect",_selector).append("<option id=\""+cube.id+"\">"+cube.name+"</option>");
 				});
 			this.cubeSelected();
 
@@ -409,8 +409,8 @@ var OlapWizard = WizardManager.extend({
 		cubeSelected: function(){
 
 			var selectedCatalog = $("#cdfddOlapCatalogSelect").val();
-			var selectedCube = $("#cdfddOlapCubeSelect").val();
-			this.logger.debug("Cube Selected: " + selectedCube);
+			var selectedCube = $("#cdfddOlapCubeSelect").children(":selected").attr("id");
+			this.logger.debug("Cube Selected: " + selectedCube );
 			
 			this.resetOlapObjects();
 			this.resetSelectedWizardObjects();
@@ -437,12 +437,12 @@ var OlapWizard = WizardManager.extend({
 								var hierarchies = dimension.hierarchies;
 								$.each(hierarchies,function(j,hierarchy){
 										var hierarchyId = "dimRow-"+(++dimensionIdx);
-										dimensionTBody.append("<tr id='"+ hierarchyId +"'><td>"+hierarchy.name+"</td></tr>");
+										dimensionTBody.append("<tr id='"+ hierarchyId +"'><td>"+hierarchy.caption+"</td></tr>");
 
 										var levels = hierarchy.levels;
 										$.each(levels,function(k,level){
 												var levelId = "dimRow-"+(++dimensionIdx);
-												dimensionTBody.append("<tr id='"+ levelId +"' class='olapObject child-of-"+hierarchyId+"'><td class='draggableDimension'>"+level.name+"</td></tr>");
+												dimensionTBody.append("<tr id='"+ levelId +"' class='olapObject child-of-"+hierarchyId+"'><td class='draggableDimension'>"+level.caption+"</td></tr>");
 												level.hierarchy = hierarchy;level.catalog = selectedCatalog;level.cube = selectedCube;
 												myself.addOlapObject(WizardOlapObjectManager.DIMENSION,level);
 											});
@@ -462,7 +462,7 @@ var OlapWizard = WizardManager.extend({
 						measureTBody.empty();
 						$.each(measures,function(i,measure){
 								var measureId = "levelRow-"+(++measureIdx);
-								measureTBody.append("<tr id='"+ measureId +"' class='olapObject'><td class='draggableMeasure'>"+measure.name+"</td></tr>");
+								measureTBody.append("<tr id='"+ measureId +"' class='olapObject'><td class='draggableMeasure'>"+measure.caption+"</td></tr>");
 								myself.addOlapObject(WizardOlapObjectManager.MEASURE,measure);
 
 							});
@@ -545,7 +545,7 @@ var OlapWizard = WizardManager.extend({
 		},
 
 		getCube: function(){
-			return $("#cdfddOlapCubeSelect").val();
+			return $("#cdfddOlapCubeSelect").children(":selected").attr("id");
 		},
 
 		// Accessors
@@ -954,17 +954,18 @@ var OlapParameterWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(selectorStub,"parameter").value = this.getSelectedOptions().name+"Parameter";
 			CDFDDUtils.getProperty(selectorStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(selectorStub,"htmlObject").value =  $("#cdfdd-olap-parameter-htmlobject").val();
-			if(CDFDDUtils.getProperty(selectorStub,"valueAsId")){
-				CDFDDUtils.getProperty(selectorStub,"valueAsId").value = false;
+      var valueAsIdProp = CDFDDUtils.getProperty(selectorStub,"valueAsId")
+			if(valueAsIdProp) { valueAsIdProp.value = false; }
+			
+			var listeners = this.getListenners();
+			if(listeners.length > 0) {
+				CDFDDUtils.getProperty(selectorStub,"listeners").value = listeners;
 			}
 			
-			var listenners = this.getListenners();
-			if(listenners.length > 0){
-				CDFDDUtils.getProperty(selectorStub,"listeners").value = listenners;
-			}
-			
-			CDFDDUtils.getProperty(selectorStub, "xActionArrayParameter").value = this.getComponentParameters();
-
+      var paramsProp = CDFDDUtils.getProperty(selectorStub, "parameters") || // by alias
+                       CDFDDUtils.getProperty(selectorStub, "xActionArrayParameter"); // by name
+			paramsProp.value = this.getComponentParameters();
+      
 			//insert entry
 			insertAtIdx = componentsTableManager.createOrGetParent(entry.getCategory(), entry.getCategoryDesc());
 			selectorStub.parent = entry.getCategory();
@@ -1226,12 +1227,14 @@ var OlapChartWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(chartStub,"cccCrosstabMode").value = true;
 			CDFDDUtils.getProperty(chartStub,"cccOrientation").value = this.getSelectedOptions().orientation;
 			
-			var listenners = this.getListenners();
-			if(listenners.length > 0){
-				CDFDDUtils.getProperty(chartStub,"listeners").value = listenners;
+			var listeners = this.getListenners();
+			if(listeners.length > 0){
+				CDFDDUtils.getProperty(chartStub,"listeners").value = listeners;
 			}
 			
-			 CDFDDUtils.getProperty(chartStub, "xActionArrayParameter").value = this.getComponentParameters();
+      var paramsProp = CDFDDUtils.getProperty(chartStub, "parameters") || // by alias
+                       CDFDDUtils.getProperty(chartStub, "xActionArrayParameter"); // by name
+			paramsProp.value = this.getComponentParameters();
 			
 			var entryName = type.toUpperCase() + '_ENTRY';
 			

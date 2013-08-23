@@ -25,10 +25,9 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 
-
 @SuppressWarnings("unchecked")
-public class CdfStyles {
-
+public class CdfStyles 
+{
   private static Log logger = LogFactory.getLog(CdfStyles.class);
 
   private static CdfStyles instance;
@@ -38,11 +37,9 @@ public class CdfStyles {
   
   public static final String DEFAULTSTYLE = "Clean";
 
-
-  public CdfStyles() {
-
+  public CdfStyles() 
+  {
   }
-
 
   public void syncronize(IPentahoSession userSession, OutputStream out, IParameterProvider requestParams) throws Exception {
 
@@ -130,7 +127,6 @@ public class CdfStyles {
       return sufix;
     }
 
-
     public List<File> getStyleFiles()
     {
       return styleFiles;
@@ -204,14 +200,16 @@ public class CdfStyles {
 
   }
 
-  public String getResourceLocation(String style) {
-    
+  public String getResourceLocation(String style)
+  {
     String stylePath = null;
-    String styleFilename = null;
     
-    String [] split = style.split(" - ");
-    if(split.length > 1){
+    String styleFilename;
+    String[] split = style.split(" - ");
+    if(split.length > 1)
+    {
       String pluginId = split[1].replace("(", "").replace(")", "");
+      
       styleFilename = split[0] + ".html";
       
       PluginsAnalyzer pluginsAnalizer = new PluginsAnalyzer();
@@ -219,19 +217,27 @@ public class CdfStyles {
       
       List<Plugin> plugins = pluginsAnalizer.getInstalledPlugins();
       
-      for(Plugin plugin : plugins){
-        if(plugin.getId().equalsIgnoreCase(pluginId)){
+      for(Plugin plugin : plugins)
+      {
+        if(plugin.getId().equalsIgnoreCase(pluginId))
+        {
           stylePath = "/" + plugin.getRegisteredEntities("/cde-styles").valueOf("path")+ "/" + styleFilename;
           break;
         }
       }
-    }else{
-      styleFilename = style+".html";
+    }
+    else
+    {
+      styleFilename = style + ".html";
+      
       String customStylePath = RESOURCE_STYLES_DIR_SOLUTION + styleFilename;
       File styleFile = new File(ResourceManager.SOLUTION_DIR + customStylePath);
-      if(styleFile.exists()){ 
+      if(styleFile.exists())
+      {
         stylePath =  customStylePath;
-      }else if( new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR+"/"+styleFilename).exists()){ 
+      }
+      else if(new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR+"/"+styleFilename).exists())
+      {
         stylePath = RESOURCE_STYLES_DIR + styleFilename;
       }
     }

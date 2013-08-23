@@ -24,75 +24,87 @@ import pt.webdetails.cpf.plugins.PluginsAnalyzer;
  * @author Rafael P. Gomes<rafael.gomes@webdetails.pt>
  *
  */
-public class DataSourceManager {
-
+public class DataSourceManager
+{
   public static final String CDE_DATASOURCE_IDENTIFIER = "cde-datasources";
+  
+  private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
+  
+  private static final DataSourceManager instance = new DataSourceManager();
+  
+  // The map key is the data source provider id.
+  private final Map<String, DataSourceProvider> providersById;
+  
+  // The map key is the data source provider id.
+  private final Map<String, JSON> providerDefinitionsById;
 
-  private static DataSourceManager instance;
-
-  public static synchronized DataSourceManager getInstance() {
-    if (instance == null) {
-      instance = new DataSourceManager();
-    }
-
+  private boolean _isRefresh;
+  
+  public static DataSourceManager getInstance()
+  {
     return instance;
   }
-
-  private Logger logger = LoggerFactory.getLogger(getClass());
-
-  // the map key is the data source provider id
-  private Map<String, JSON> providerDefinitionCache = new HashMap<String, JSON>();
-
-  // the map key is the data source provider id
-  private Map<String, DataSourceProvider> sources = new LinkedHashMap<String, DataSourceProvider>();
-
-  private DataSourceManager() {
-    init();
+  
+  private DataSourceManager() 
+  {
+    this.providersById = new LinkedHashMap<String, DataSourceProvider>();
+    this.providerDefinitionsById = new HashMap<String, JSON>();
+    init(/*isRefresh*/false);
   }
-
+  
   /**
    * Searches the solution system components folders for declaration of data
    * sources for CDE Editor
    * 
    * @return List of file paths containing declaration of data sources for CDE Editor
    */
-  private List<DataSourceProvider> getDataSourceProviders() {
+  private List<DataSourceProvider> readProviders() 
+  {
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
     pluginsAnalyzer.refresh();
 
-    List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities(String.format(
-        "/%s", CDE_DATASOURCE_IDENTIFIER));
+    List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = 
+      pluginsAnalyzer.getRegisteredEntities("/" + CDE_DATASOURCE_IDENTIFIER);
 
     List<DataSourceProvider> dataSourceProviders = new ArrayList<DataSourceProvider>();
 
-    for (PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) {
+    for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) 
+    {
       Plugin provider = entity.getPlugin();
 
-      try {
+      try 
+      {
         DataSourceProvider ds = new DataSourceProvider(provider);
         dataSourceProviders.add(ds);
-        logger.info("found valid CDE Data Source(s) provider: {}", ds);
-      } catch (InvalidDataSourceProviderException e) {
-        logger
-            .info(
-                "found invalid CDE Data Source(s) provider in: {}. Please review plugin implementation and/or configuration.",
-                provider.getPath());
+        logger.info("Found valid CDE Data Source provider: {}", ds);
+      } 
+      catch(InvalidDataSourceProviderException e)
+      {
+        logger.info(
+            "Found invalid CDE Data Source provider in: {}. " + 
+            "Please review plugin implementation and/or configuration.",
+            provider.getPath());
       }
-
     }
 
     return dataSourceProviders;
   }
 
-  public JSON getDataSourcesJsonDefinition() {
+  public JSON getJsDefinition()
+  {
     JSONObject dsSpec = new JSONObject();
-
-    for (DataSourceProvider provider : getProviders()) {
-      JSON dsDefinition = getDefinitionFromCache(provider.getId());
-      if (dsDefinition != null && !dsDefinition.isEmpty()) {
-        if (dsDefinition instanceof JSONObject) {
+    
+    // TODO: this code seems to make more ifs than necessary...
+    for(DataSourceProvider provider : getProviders()) 
+    {
+      JSON dsDefinition = this.getProviderJsDefinition(provider.getId());
+      if(dsDefinition != null && !dsDefinition.isEmpty()) 
+      {
+        if(dsDefinition instanceof JSONObject)
+        {
           JSONObject obj = ((JSONObject) dsDefinition);
-          if (!obj.isNullObject()) {
+          if(!obj.isNullObject()) 
+          {
             dsSpec.putAll(obj);
           }
         }
@@ -102,93 +114,104 @@ public class DataSourceManager {
     return dsSpec;
   }
 
-  public JSON getDefinition(String providerId) {
-    DataSourceProvider provider = sources.get(providerId);
-    JSON result = null;
-    if (provider != null) {
-      result = provider.getDataSourceDefinitions();
-      providerDefinitionCache.put(providerId, result);
-    }
-
-    return result;
+  public JSON getProviderJsDefinition(String providerId) 
+  {
+    return this.getProviderJsDefinition(providerId, false);
   }
 
-  public JSON getDefinitionFromCache(String providerId) {
+  public JSON getProviderJsDefinition(String providerId, boolean bypassCacheRead)
+  {
     JSON result = null;
-
-    synchronized (providerDefinitionCache) {
-      if (providerDefinitionCache.containsKey(providerId)) {
-        result = providerDefinitionCache.get(providerId);
-      } else {
-        result = getDefinition(providerId);
+    
+    if(!bypassCacheRead)
+    {
+      synchronized(providerDefinitionsById) 
+      {
+        result = providerDefinitionsById.get(providerId);
       }
     }
-
+    
+    if(result == null) 
+    {
+      DataSourceProvider provider;
+      synchronized(providersById) 
+      {
+        provider = providersById.get(providerId);
+      }
+      
+      if(provider != null)
+      {
+        result = provider.getDataSourceDefinitions(this._isRefresh);
+        if(result != null) 
+        {
+          synchronized(providerDefinitionsById)
+          {
+            providerDefinitionsById.put(providerId, result);
+          }
+        }
+      }
+    }
+    
     return result;
   }
 
   /**
-   * 
+   * Obtains a DataSourceProvider given its id.
    * @param id Data Source Provider Id
    * @return DataSourceProvider if found, null otherwise
    */
-  public DataSourceProvider getProvider(String id) {
-    return sources.get(id);
-  }
-
-  /**
-   * Lists current loaded Data Source Providers that have its configuration in cache
-   * 
-   * @return List of current loaded Data Source Providers
-   */
-  public List<DataSourceProvider> getProviders() {
-    synchronized (sources) {
-      return new ArrayList(sources.values());
+  public DataSourceProvider getProvider(String id) 
+  {
+    synchronized(providersById) 
+    {
+      return providersById.get(id);
     }
   }
 
   /**
+   * Lists currently loaded DataSourceProvider instances.
    * 
+   * @return List of currently loaded DataSourceProvider
    */
-  private void init() {
-    synchronized (sources) {
-      try {
-        List<DataSourceProvider> providers = getDataSourceProviders();
+  public List<DataSourceProvider> getProviders() 
+  {
+    synchronized(providersById) 
+    {
+      return new ArrayList(providersById.values());
+    }
+  }
 
-        sources.clear();
-        for (DataSourceProvider ds : providers) {
-          logger.info("Data source cached: id={}, object={}", ds.getId(), ds);
-          sources.put(ds.getId(), ds);
+  private void init(boolean isRefresh) 
+  {
+    List<DataSourceProvider> providers = readProviders();
+    
+    synchronized(providersById)
+    {
+      this._isRefresh = isRefresh;
+    
+      try
+      {
+        providersById.clear();
+        providerDefinitionsById.clear();
+        
+        for(DataSourceProvider ds : providers)
+        {
+          logger.info("Loaded DataSourceProvider: id={}, object={}", ds.getId(), ds);
+          providersById.put(ds.getId(), ds);
         }
 
-        logger.info("Data Source Manager successfully initialized!");
-      } catch (Exception e) {
-        logger.error("error initializing Data Source Manager: {}", e.getMessage(), e);
+        logger.info("Successfully initialized.");
+      } catch(Exception e) {
+        logger.error("Error initializing: {}", e.getMessage(), e);
       }
     }
   }
 
   /**
-   * Refreshes the Data Source Providers cache
+   * Refreshes the Data Source Providers cache.
    */
-  public void refresh() {
-    init();
+  public void refresh() 
+  {
+    init(/*isRefresh*/true);
   }
-
-  public DataSourceProvider registerProvider(DataSourceProvider provider) throws InvalidDataSourceProviderException {
-
-    if (provider == null) {
-      throw new InvalidDataSourceProviderException("Can't register a null data source provider");
-    }
-
-    synchronized (sources) {
-
-      if (!sources.containsKey(provider.getId())) {
-        sources.put(provider.getId(), provider);
-      }
-
-      return provider;
-    }
-  }
-
 }

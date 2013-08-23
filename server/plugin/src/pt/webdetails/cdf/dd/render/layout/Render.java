@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -9,7 +13,6 @@ import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public abstract class Render
 {
-
   private JXPathContext node;
   protected static final Log logger = LogFactory.getLog(Render.class);
   private PropertyBag propertyBag;
@@ -32,35 +35,26 @@ public abstract class Render
 
   public String getPropertyBagString()
   {
-
     return propertyBag.getPropertiesString();
-
   }
 
   protected boolean hasProperty(String property)
   {
-
     return XPathUtils.exists(getNode(), "properties/value[../name='" + property + "']");
-
   }
 
   protected String getPropertyString(String property)
   {
-
     return XPathUtils.getStringValue(getNode(), "properties/value[../name='" + property + "']");
-
   }
 
   protected Boolean getPropertyBoolean(String property)
   {
-
     return XPathUtils.getBooleanValue(getNode(), "properties/value[../name='" + property + "']");
-
   }
 
   public PropertyBag getPropertyBag()
   {
-
     return propertyBag;
   }
 

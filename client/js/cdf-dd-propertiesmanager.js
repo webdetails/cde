@@ -16,10 +16,10 @@ var PropertiesManager = Base.extend({
       return PropertiesManager.propertyTypes[propertyType];
     },
     
+    // **Creates** an instance property of this property type.
     getProperty: function(type,options){
       return PropertiesManager.getPropertyType(type).getPropertyObject(options);
     }
-
   });
 
 
@@ -41,7 +41,7 @@ var BasePropertyType = Base.extend({
     },
 
     // Accessors
-    setType: function(type){this.type = type},
-    getType: function(){return this.type}
+    setType: function(type){this.type = type;},
+    getType: function(){return this.type;}
 
   });

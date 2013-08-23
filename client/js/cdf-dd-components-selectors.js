@@ -6,7 +6,7 @@ var ParameterRenderer = SelectRenderer.extend({
     var r = {};
     _.each(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(),function(o){
       var p = o.properties[0].value;
-      r["${p:" + p + "}"] = p
+      r["${p:" + p + "}"] = p;
     });
    return r;
   }
@@ -40,34 +40,6 @@ var ListenersRenderer = SelectMultiRenderer.extend({
 });
 
 var ArrayParameterRenderer = ListenersRenderer.extend({});
-	
-// dataSource
-var DataSourceProperty = BasePropertyType.extend({
-  type: "dataSource",
-  stub: {
-    name: "dataSource",
-    description: "Datasource",
-    tooltip: "DataSource to be used in this selector",
-    type: "Datasource",
-    value: "",
-    order: 43
-  }
-});
-PropertiesManager.register(new DataSourceProperty());
-
-// dataSource
-var JFreeChartDataSourceProperty = DataSourceProperty.extend({
-  type: "jFreeChartDataSource",
-  stub: {
-    name: "jFreeChartDataSource",
-    description: "Datasource",
-    tooltip: "DataSource to be used in this selector",
-    type: "Datasource",
-    value: "",
-    order: 43
-  }
-});
-PropertiesManager.register(new JFreeChartDataSourceProperty());
 
 var DatasourceRenderer = SelectRenderer.extend({
 

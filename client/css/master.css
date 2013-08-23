@@ -135,6 +135,13 @@ div.outside {
 
 ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all{
   text-align: left;
+  border: 1px solid #bbb!important;
+  box-shadow: 3px 3px 10px -3px #bbb;
+}
+
+ul.ui-autocomplete.ui-menu.ui-widget.ui-widget-content.ui-corner-all:hover > *{
+    padding: 0;
+    margin: 0;
 }
 
 .save-pulldown .pulldown {
@@ -357,16 +364,16 @@ div.ui-widget-content > ul li {/*TODO...*/
 
 .multiSelect.active {
   color: #fff;
-  background: url(../images/NAV/down.png) right center no-repeat;
+  background: url(../images/NAV/selector_arrow_hover.png) right center no-repeat;
 }
 
 .multiSelect.hover {
-  background: url(../images/NAV/down_mouseover.png) right center no-repeat;
-  color: #ddd;
+  background: url(../images/NAV/selector_arrow_hover.png) right center no-repeat;
+  color: #fff;
 }
 
 .multiSelectOptions label.checked {
-  background: #333;
+    background: #d9dcdd;
 }
 
 .multiSelectOptions label:hover {
@@ -455,15 +462,16 @@ div.cdfdd-operations{
 
   max-width: 75%;
   max-height: 75%;
-  min-width: 5%;
+  min-width: 960px;
 
+  min-height: 550px;
 }
 #cdfdd-wizard-button-ok {
  padding: 3px 10px;
   
  background-color: #eaedee;
   
- border: solid 2px #bbb;
+ border: solid 1px #bbb;
   
  color: #555;
   font-size: 12px;
@@ -478,7 +486,7 @@ div.cdfdd-operations{
 #cdfdd-wizard-button-cancel {
   padding: 3px 10px;
   background-color: #eaedee;
-  border: solid 2px #bbb;
+  border: solid 1px #bbb;
   color: #555;
   font-size: 12px;
   height: 25px;
@@ -879,8 +887,9 @@ form.cdfddInput input[type="checkbox"]
 }
 
 button.cdfddInput {
-  width: 18px;
-  height: 16px;
+  width: 24px;
+  height: 18px;
+  text-align: center;
 }
 
 textarea.cdfddEdit{
@@ -1246,6 +1255,8 @@ th.ui-state-default{
   float: right;
   margin-right: 20px;
   vertical-align: middle;
+  position: fixed;
+  right: 0;
 }
 
 .webdetailsLogo img {
@@ -1326,7 +1337,7 @@ div.treeTableNewJqi button {
 
 
 
-html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: hidden;}
+html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: auto;}
 body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:middle;}
 article, aside, dialog, figure, footer, header, hgroup, nav, section {display:block;}
 body {background:white;}
@@ -1406,10 +1417,6 @@ a {
 
 a:link, a:visited {
   color: #222;
-}
-
-a:hover, a.linkActive { ;
-        filter: dropshadow(color=#12a2d8, offx=0, offy=0);
 }
 
 a:hover > .buttonImage,
@@ -1510,7 +1517,6 @@ div.popup .popupmessage H1 {
 
 div.popup .popupmessage p {
    font-family: 'Open Sans', sans-serif;
-   background: #f5f5f5;
    padding: 2px 5px;
    color: #333;
    font-size: 13px;
@@ -1548,7 +1554,7 @@ div.popup input {
    box-sizing:border-box;
    -moz-box-sizing: border-box;
    -webkit-box-sizing: border-box;
-   border: 1px solid #ddd;
+   border: 1px solid #bbb;
    color: #555;
 }
 
@@ -1898,4 +1904,12 @@ div.popup .button:active {
   width: 50px;
   height: 40px; 
   position: absolute;  
+}
+
+div.popup input[type="button"]:hover {
+  background: #bbb;
+}
+
+.ace_editor{
+    border: 1px solid #d9dcdd;
 }

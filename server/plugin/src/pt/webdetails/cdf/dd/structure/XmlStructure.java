@@ -1,4 +1,11 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.structure;
+
+import java.io.*;
+import java.util.HashMap;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
@@ -6,96 +13,99 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.pentaho.platform.api.engine.IPentahoSession;
-import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.util.xml.dom4j.XmlDom4JHelper;
-import pt.webdetails.cdf.dd.CdfStyles;
-import pt.webdetails.cdf.dd.DashboardFactory;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-
-import java.io.*;
-import java.util.HashMap;
-import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
+import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.model.meta.MetaModel;
+import pt.webdetails.cdf.dd.MetaModelManager;
+import pt.webdetails.cdf.dd.model.meta.PropertyType;
+import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
+import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
+import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
+import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.meta.IPropertyTypeSource;
+import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
+import pt.webdetails.cdf.dd.model.meta.writer.cdexml.XmlThingWriterFactory;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
-import pt.webdetails.cdf.dd.render.DependenciesManager;
-import pt.webdetails.cdf.dd.render.cdw.CdwRenderer;
-import pt.webdetails.cdf.dd.render.components.ComponentDefinition;
-import pt.webdetails.cdf.dd.render.components.ComponentManager;
-import pt.webdetails.cdf.dd.render.properties.PropertyDefinition;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
-import pt.webdetails.cpf.repository.BaseRepositoryAccess.SaveFileStatus;
+import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
 
 public class XmlStructure implements IStructure
 {
-
   private static final String ENCODING = "UTF-8";
-  private IPentahoSession userSession = null;
+  
   private static Log logger = LogFactory.getLog(XmlStructure.class);
-
+  
+  private final IPentahoSession userSession;
+  
   public XmlStructure(IPentahoSession userSession)
   {
     this.userSession = userSession;
-
   }
 
   public void delete(HashMap<String, Object> parameters) throws StructureException
   {
-
-    logger.info("Deleting File:" + (String) parameters.get("file"));
-
-    //1. Delete File
-
-    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-    if (!solutionRepository.removeFile((String) parameters.get("file")))
+    // 1. Delete File
+    String filePath = (String)parameters.get("file");
+    
+    logger.info("Deleting File:" + filePath);
+    
+    IRepositoryAccess repository = PentahoRepositoryAccess.getRepository(userSession);
+    if(!repository.removeFile(filePath))
     {
       throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
-
   }
-
+  
   public JSON load(HashMap<String, Object> parameters) throws Exception
   {
-
-
-    String filePath = (String) parameters.get("file");
-    logger.info("Loading File:" + filePath);
-
     JSONObject result = null;
 
     InputStream file = null;
     InputStream wcdfFile = null;
     try
     {
-      //1. Get file
-      PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-      if (solutionRepository.resourceExists(filePath))
+      String cdeFilePath = (String)parameters.get("file");
+      
+      logger.info("Loading File:" + cdeFilePath);
+    
+      // 1. Read .CDFDE file
+      IRepositoryAccess solutionRepository = PentahoRepositoryAccess.getRepository(userSession);
+      if(solutionRepository.resourceExists(cdeFilePath))
       {
-        file = solutionRepository.getResourceInputStream(filePath);
+        file = solutionRepository.getResourceInputStream(cdeFilePath);
       }
       else
       {
-        file = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
+        file = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE_PATH));
       }
 
-      //2. Read cdfStructure
-      JSON data = JsonUtils.readJsonFromInputStream(file);
+      JSON cdeData = JsonUtils.readJsonFromInputStream(file);
+      
+      // 3. Read .WCDF
+      String wcdfFilePath = cdeFilePath.replace(".cdfde", ".wcdf");
+      
+      JSONObject wcdfData = loadWcdfDescriptor(wcdfFilePath).toJSON();
+      
       result = new JSONObject();
-
-      //3. Read wcdf file
-      String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
-
-      JSONObject wcdf = loadWcdfDescriptor(wcdfFilePath).toJSON();
-
-      result.put("data", data);
-      result.put("wcdf", wcdf);
+      result.put("wcdf", wcdfData);
+      result.put("data", cdeData);
     }
     catch (FileNotFoundException e)
     {
@@ -114,347 +124,333 @@ public class XmlStructure implements IStructure
     return result;
   }
 
-  public WcdfDescriptor loadWcdfDescriptor(final String wcdfFilePath) throws IOException
+  public WcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException
   {
-    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-
-    if (solutionRepository.resourceExists(wcdfFilePath))
-    {
-      Document wcdfDoc = solutionRepository.getResourceAsDocument(wcdfFilePath);
-      WcdfDescriptor wcdf = loadWcdfDescriptor(wcdfDoc);
-      wcdf.setWcdfPath(wcdfFilePath);
-      return wcdf;
-
-    }
-    else
-    {
-      return new WcdfDescriptor();
-    }
-
+    WcdfDescriptor wcdf  = WcdfDescriptor.load(wcdfFilePath, userSession);
+    
+    return wcdf != null ? wcdf : new WcdfDescriptor();
   }
-
-  public WcdfDescriptor loadWcdfDescriptor(final Document wcdfDoc) throws IOException
+  
+  public WcdfDescriptor loadWcdfDescriptor(Document wcdfDoc)
   {
-    WcdfDescriptor wcdf = new WcdfDescriptor();
-    wcdf.setTitle(XmlDom4JHelper.getNodeText("/cdf/title", wcdfDoc, ""));
-    wcdf.setDescription(XmlDom4JHelper.getNodeText("/cdf/description", wcdfDoc, ""));
-    wcdf.setWidget(XmlDom4JHelper.getNodeText("/cdf/widget", wcdfDoc, "false").equals("true"));
-    wcdf.setWidgetName(XmlDom4JHelper.getNodeText("/cdf/widgetName", wcdfDoc, ""));
-    wcdf.setAuthor(XmlDom4JHelper.getNodeText("/cdf/author", wcdfDoc, ""));
-    wcdf.setStyle(XmlDom4JHelper.getNodeText("/cdf/style", wcdfDoc, CdfStyles.DEFAULTSTYLE));
-    wcdf.setRendererType(XmlDom4JHelper.getNodeText("/cdf/rendererType", wcdfDoc, "blueprint"));
-    wcdf.setWidgetParameters(XmlDom4JHelper.getNodeText("/cdf/widgetParameters", wcdfDoc, "").split(","));
-    return wcdf;
+    return WcdfDescriptor.fromXml(wcdfDoc);
   }
 
   public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception
   {
-
-    boolean cdfdeResult = true;
-    boolean cdaResult = true;
-    boolean cggResult = true;
-
     final HashMap<String, String> result = new HashMap<String, String>();
-    PentahoRepositoryAccess.SaveFileStatus status = SaveFileStatus.OK;
+    
+    // 1. Get CDE file parameters
+    String cdeRelFilePath = (String)parameters.get("file");
+    String cdeFileDir  = FilenameUtils.getFullPath(cdeRelFilePath);
+    String cdeFileName = FilenameUtils.getName(cdeRelFilePath);
+    
+    logger.info("Saving File:" + cdeRelFilePath);
 
-    String filePath = (String) parameters.get("file");
-    logger.info("Saving File:" + filePath);
-
-    try
+    // 2. If not the CDE temp file, delete the temp file, if one exists
+    IRepositoryAccess repository = PentahoRepositoryAccess.getRepository(userSession);
+    
+    boolean isPreview = cdeRelFilePath.indexOf("_tmp.cdfde") >= 0;
+    if(!isPreview)
     {
-
-      //1. Build file parameters
-
-      String path = FilenameUtils.getFullPath(filePath);
-      String cdeFileName = FilenameUtils.getName(filePath);
-
-      //2. Publish file to pentaho repository
-
-      PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-      if (filePath.indexOf("_tmp.cdfde") == -1 && repository.resourceExists(path + cdeFileName.replace(".cdfde", "_tmp.cdfde")))
-      {
-        parameters.put("file", path + cdeFileName.replace(".cdfde", "_tmp.cdfde"));
-        delete(parameters);
-      }
-      byte[] fileContents = ((String) parameters.get("cdfstructure")).getBytes(ENCODING);
-
-      status = repository.publishFile(path, cdeFileName, fileContents, true);
-      // check result
-      if (status != SaveFileStatus.OK)
-      {
-        cdfdeResult = false;
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
-      }
-
-      status = SaveFileStatus.OK;
-
-      //3. Write CDA File
-      CdaRenderer cdaRenderer = CdaRenderer.getInstance();
-      cdaRenderer.setContext((String) parameters.get("cdfstructure"));
-      String cdaFileName = cdeFileName.replace(".cdfde", ".cda");//TODO: replace these with a proper extension-replacing func
-      if (cdaRenderer.isEmpty())
-      {
-        deleteFileIfExists(repository, path, cdaFileName);
-      }
-      else
-      {
-        status = repository.publishFile(path, cdaFileName, cdaRenderer.render().getBytes(ENCODING), true);
-      }
-
-      if (status != SaveFileStatus.OK)
-      {
-        cdaResult = false;
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
-      }
-
-      //4. Write only JS file, because CDW is no longer used by CGG
-      String wcdfFilePath = filePath.replace(".cdfde", ".wcdf");
-      CdwRenderer cdwRenderer = new CdwRenderer((String) parameters.get("cdfstructure"), loadWcdfDescriptor(wcdfFilePath));
-      cdwRenderer.render(path, cdeFileName);
-
-      if (status != SaveFileStatus.OK)
-      {
-        cggResult = false;
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
-      }
-
+      String cdeTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cdfde");
+      repository.removeFileIfExists(cdeTempFilePath);
+      
+      String cdaTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cda");
+      repository.removeFileIfExists(cdaTempFilePath);
     }
-    catch (PentahoAccessControlException e)
+    
+    // 3. CDE
+    String cdfdeJsText = (String)parameters.get("cdfstructure");
+    SaveFileStatus status = repository.publishFile(cdeFileDir, cdeFileName, safeGetEncodedBytes(cdfdeJsText), true);
+    if (status != SaveFileStatus.OK)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+      throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
 
-    result.put("cdfde", new Boolean(cdfdeResult).toString());
-    result.put("cda", new Boolean(cdaResult).toString());
-    result.put("cgg", new Boolean(cggResult).toString());
-
-    //[Bug #2262] CDE Widgets not showing in Pentaho PUC
-    // whenever we save a widget, we need to clear cached dashboards, so that 
-    // they may be re-rendered, contemplating the new changes made 
-    if(cdfdeResult && cdaResult && cggResult){
-    	DashboardFactory.getCache().removeAll();
+    // 3. CDA
+    CdaRenderer cdaRenderer = new CdaRenderer(cdfdeJsText);
+    
+    String cdaFileName = cdeFileName.replace(".cdfde", ".cda");
+    
+    // Any data sources?
+    if(cdaRenderer.isEmpty())
+    {
+      repository.removeFileIfExists(Utils.joinPath(cdeFileDir, cdaFileName));
     }
+    else
+    {
+      // throws Exception ????
+      String cdaText = cdaRenderer.render();
+
+      status = repository.publishFile(cdeFileDir, cdaFileName, safeGetEncodedBytes(cdaText), true);
+      if(status != SaveFileStatus.OK)
+      {
+        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+      }
+    }
+    
+    if(!isPreview) 
+    {
+      String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+    
+      // 4. When the component is a widget,
+      //    and its internal "structure" has changed,
+      //    Then any dashboard where it is used and 
+      //    whose render result is cached 
+      //    must be invalidated.
+      DashboardManager.getInstance().invalidateDashboard(wcdfFilePath);
+
+      // 5. CGG (requires an updated Dashboard instance)
+      this.saveCgg(repository, wcdfFilePath);
+    }
+    
+    // TODO: Is this used?
+    result.put("cdfde", "true");
+    result.put("cda",   "true");
+    result.put("cgg",   "true");
     
     return result;
   }
-
-  private void deleteFileIfExists(PentahoRepositoryAccess solutionRepository, String path, String fileName)
+  
+  private void saveCgg(IRepositoryAccess repository, String cdeRelFilePath) 
+          throws ThingReadException, UnsupportedThingException, ThingWriteException
   {
-    String fullName = path + fileName;
-    fullName = fullName.replaceAll("//+", "/");
-    solutionRepository.removeFileIfExists(fullName);
+    String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+    
+    // Obtain an UPDATED dashboard object
+    DashboardManager dashMgr = DashboardManager.getInstance();
+    Dashboard dash = dashMgr.getDashboard(wcdfFilePath, userSession, /*bypassCacheRead*/false);
+    
+    CggRunJsThingWriterFactory cggWriteFactory = new CggRunJsThingWriterFactory();
+    IThingWriter cggDashWriter = cggWriteFactory.getWriter(dash);
+    CggRunJsDashboardWriteContext cggDashContext = new CggRunJsDashboardWriteContext(cggWriteFactory, dash, userSession);
+    cggDashWriter.write(repository, cggDashContext, dash);
   }
-
+  
   public void saveas(HashMap<String, Object> parameters) throws Exception
   {
-
-    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-
-    //1. Read empty wcdf file
-    File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE);
+    // TODO: This method does not maintain the Widget status and parameters of a dashboard
+    // Is this intended?
+    
+    // 1. Read empty wcdf file
+    File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE_PATH);
+    
     String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
 
-    //2. Replace wcdf file title and description
-    String title = (String) parameters.get("title");
-    String description = (String) parameters.get("description");
-    wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_TITLE@", title.length() > 0 ? title : "Dashboard");
-    wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_DESCRIPTION@", description.length() > 0 ? description : "");
+    // 2. Fill-in wcdf file title and description
+    String title = StringUtils.defaultIfEmpty((String)parameters.get("title"), "Dashboard");
+    String description = StringUtils.defaultIfEmpty((String)parameters.get("description"), "");
 
-    //final String filePath = URLDecoder.decode((String) parameters.get("file"), "ISO-8859-1"); // jquery takes care of the encoding for us
-    final String filePath = (String) parameters.get("file");
+    wcdfContentAsString = wcdfContentAsString
+            .replaceFirst("@DASBOARD_TITLE@",       title)
+            .replaceFirst("@DASBOARD_DESCRIPTION@", description);
 
-    //3. Publish new wcdf file
-    switch (repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true))
+    String filePath = (String)parameters.get("file");
+
+    // 3. Publish new wcdf file
+    IRepositoryAccess repository = PentahoRepositoryAccess.getRepository(userSession);
+    
+    SaveFileStatus status = repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true);
+    if(status != SaveFileStatus.OK)
     {
-      case OK:
-        //4. Save cdf structure
-        parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
-        save(parameters);
-        break;
-      case FAIL:
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+      throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
+    
+    // 4. Save cdf structure
+    parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
+    
+    save(parameters);
   }
 
   public void newfile(HashMap<String, Object> parameters) throws Exception
   {
-
-    //1. Read Empty Structure
+    // 1. Read Empty Structure
     InputStream cdfstructure = null;
-
     try
     {
-      cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE));
+      cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE_PATH));
 
-      //2. Save file
+      // 2. Save file
       parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
+      
       saveas(parameters);
     }
     finally
     {
       IOUtils.closeQuietly(cdfstructure);
     }
-
   }
 
-  public void savesettings(HashMap<String, Object> parameters) throws Exception
+  // .WCDF file
+  // (called using reflection by SyncronizeCdfStructure)
+  public void savesettings(HashMap<String, Object> parameters) throws StructureException
   {
+    String wcdfFilePath = (String)parameters.get("file");
+    logger.info("Saving settings file:" + wcdfFilePath);
 
-    String filePath = (String) parameters.get("file");
-    String titleStr = (String) parameters.get("title");
-    String authorStr = (String) parameters.get("author");
-    String descriptionStr = (String) parameters.get("description");
-    String styleStr = (String) parameters.get("style");
-    String widgetNameStr = (String) parameters.get("widgetName");
-    Boolean isWidget = "true".equals(parameters.get("widget"));
-    String rendererType = (String) parameters.get("rendererType");
-    Object widgetParams = parameters.get("widgetParameters");
-    String widgetParameters[] = null;
-    if (widgetParams instanceof String[])
-    {
-      widgetParameters = (String[]) widgetParams;
-    }
-    else if (widgetParams != null)
-    {
-      widgetParameters = new String[1];
-      widgetParameters[0] = widgetParams.toString();
-    }
-
-    logger.info("Saving settings file:" + filePath);
-
+    WcdfDescriptor wcdf = null;
     try
     {
-      PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-
-      if (repository.resourceExists(filePath))
-      {
-
-        Document wcdfDoc = repository.getResourceAsDocument(filePath);
-        Node cdfNode = wcdfDoc.selectSingleNode("/cdf");
-
-        //only override explicitly set elements, leave others as they are (initStyles will only set style)
-        if (parameters.containsKey("title"))
-        {
-          setNodeValue(cdfNode, "title", titleStr);
-        }
-        if (parameters.containsKey("author"))
-        {
-          setNodeValue(cdfNode, "author", authorStr);
-        }
-        if (parameters.containsKey("description"))
-        {
-          setNodeValue(cdfNode, "description", descriptionStr);
-        }
-        if (parameters.containsKey("style"))
-        {
-          setNodeValue(cdfNode, "style", styleStr);
-        }
-        if (parameters.containsKey("rendererType"))
-        {
-          setNodeValue(cdfNode, "rendererType", rendererType);
-        }
-        if (parameters.containsKey("widget"))
-        {
-          setNodeValue(cdfNode, "widget", isWidget ? "true" : "false");
-        }
-        if (parameters.containsKey("widgetName"))
-        {
-          setNodeValue(cdfNode, "widgetName", widgetNameStr);
-        }
-        if (parameters.containsKey("widgetParameters"))
-        {
-          StringBuilder sb = new StringBuilder();
-          for (String s : widgetParameters)
-          {
-            sb.append(s);
-            sb.append(",");
-          }
-          setNodeValue(cdfNode, "widgetParameters", sb.toString().replaceAll(",$", ""));
-        }
-
-
-        if (isWidget)
-        {
-          WcdfDescriptor wcdf = loadWcdfDescriptor(wcdfDoc);
-          wcdf.setWcdfPath(filePath);
-          generateComponentXml(wcdf);
-        }
-        //Save
-        switch (repository.publishFile(filePath, wcdfDoc.asXML().getBytes(ENCODING), true))
-        {
-          case FAIL:
-            throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
-        }
-
-      }
-      else
-      {
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
-      }
-
+      wcdf = WcdfDescriptor.load(wcdfFilePath, userSession);
     }
-    catch (Exception e)
+    catch(IOException ex)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+      // Access?
+      throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
     }
 
+    if(wcdf == null)
+    {
+      throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
+    }
+
+    // Update with client info
+    wcdf.update(parameters);
+    
+    // Save to repository
+    IRepositoryAccess repository = PentahoRepositoryAccess.getRepository(userSession);
+    String wcdfText = wcdf.toXml().asXML();
+    SaveFileStatus status = repository.publishFile(wcdfFilePath, safeGetEncodedBytes(wcdfText), true);
+    if(status != SaveFileStatus.OK)
+    {
+      throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
+    }
+    
+    // Save widget component.xml file?
+    if(wcdf.isWidget())
+    {
+      publishWidgetComponentXml(wcdf);
+    }
   }
 
-  private void setNodeValue(Node cdfNode, String elementName, String value)
+  private void publishWidgetComponentXml(WcdfDescriptor wcdf)
   {
-
-    Node node = cdfNode.selectSingleNode(elementName);
-
-    if (node == null)
+    String widgetPath = wcdf.getPath().replaceAll(".wcdf$", ".component.xml");
+    
+    logger.info("Saving widget component file:" + widgetPath);
+    
+    Document doc = createAndWriteWidgetComponentTypeXml(wcdf);
+    if(doc == null)
     {
-      node = ((Element) cdfNode).addElement(elementName);
-    }
-
-    node.setText(value == null ? "" : value);
-
-  }
-
-  private void generateComponentXml(WcdfDescriptor wcdf)
-  {
-    if (!wcdf.isWidget())
-    {
+      // Failed
       return;
     }
-    ComponentDefinition cd = new ComponentDefinition();
-    cd.setName( wcdf.getWidgetName() );
-    cd.setIName("widget" + wcdf.getWidgetName());
-    cd.setDescription(wcdf.getWidgetName() + " Widget");
-    cd.setCatDescription("Widgets");
-    cd.setCategory("WIDGETS");
-    cd.addMetadata("widget", "true");
-    cd.addMetadata("wcdf", wcdf.getWcdfPath());
-    cd.addProperty("htmlObject");
-    for (String s : wcdf.getWidgetParameters())
-    {
-      cd.addProperty(s, generateParameterProperty(s));
-    }
-    Document doc = DocumentHelper.createDocument();
-    cd.toXML(doc);
-    PentahoRepositoryAccess repository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
-    String path = wcdf.getWcdfPath().replaceAll(".wcdf$", ".component.xml");
+
+    PentahoRepositoryAccess repository =
+       (PentahoRepositoryAccess)PentahoRepositoryAccess.getRepository(userSession);
+
+    repository.publishFile(widgetPath, safeGetEncodedBytes(doc.asXML()), true);
+    
+    // This will allow the metadata model to receive the
+    // new/updated widget-component definition (name and parameters).
+    // The CDE Editor will show new/updated widgets.
+    // No need to refresh data source definitions.
     try
     {
-      repository.publishFile(path, doc.asXML().getBytes(ENCODING), true);
-      DashboardDesignerContentGenerator.refresh(null);
+      DashboardManager.getInstance().refreshAll(/*refreshDatasources*/false);
     }
-    catch (Exception e)
+    catch(Exception ex)
     {
-      logger.error(e);
+      logger.error("Error while refreshing the meta data cache", ex);
     }
   }
 
-  private PropertyDefinition generateParameterProperty(String name)
+  private static Document createAndWriteWidgetComponentTypeXml(WcdfDescriptor wcdf)
   {
-    PropertyDefinition pd = new PropertyDefinition();
-    pd.setName(name);
-    pd.setDescription("Parameter " + name);
-    pd.setTooltip("What dashboard parameter should map to widget parameter " + name + "?");
-    pd.setInputType("Parameter");
-    return pd;
+    WidgetComponentType widget  = createWidgetComponentType(wcdf);
+    if(widget == null)
+    {
+      return null;
+    }
+    
+    IThingWriterFactory factory = new XmlThingWriterFactory();
+    IThingWriteContext context  = new DefaultThingWriteContext(factory, true);
+
+    IThingWriter writer;
+    try
+    {
+      writer = factory.getWriter(widget);
+    }
+    catch(UnsupportedThingException ex)
+    {
+      logger.error("No writer to write widget component type to XML", ex);
+      return null;
+    }
+
+    Document doc = DocumentHelper.createDocument();
+    try
+    {
+      writer.write(doc, context, widget);
+    }
+    catch (ThingWriteException ex)
+    {
+      logger.error("Failed writing widget component type to XML", ex);
+      return null;
+    }
+
+    return doc;
+  }
+  
+  private static WidgetComponentType createWidgetComponentType(WcdfDescriptor wcdf)
+  {
+    WidgetComponentType.Builder builder = new WidgetComponentType.Builder();
+    String name = wcdf.getWidgetName();
+    builder
+      .setName("widget" + name)
+      .setLabel(name)
+      // TODO: Consider using wcdf.getDescription() directly?
+      .setTooltip(name + " Widget")
+      .setCategory("WIDGETS")
+      .setCategoryLabel("Widgets")
+      .addAttribute("widget", "true")
+      .addAttribute("wcdf", wcdf.getPath());
+
+    builder.useProperty(null, "htmlObject");
+
+    for(String paramName : wcdf.getWidgetParameters())
+    {
+      // Create an *own* property
+      PropertyType.Builder prop = new PropertyType.Builder();
+
+      // valueType is String
+      prop
+        .setName(paramName)
+        .setLabel("Parameter " + paramName)
+        .setTooltip("What dashboard parameter should map to widget parameter '" + paramName + "'?");
+
+      prop.setInputType("Parameter");
+
+      builder.addProperty(prop);
+
+      // And use it
+      builder.useProperty(null, paramName);
+    }
+
+    // Use the current global meta-model to build the component in.
+    MetaModel model = MetaModelManager.getInstance().getModel();
+    IPropertyTypeSource propSource = model.getPropertyTypeSource();
+    try
+    {
+      return (WidgetComponentType)builder.build(propSource);
+    }
+    catch (ValidationException ex)
+    {
+      logger.error(ex);
+      return null;
+    }
+  }
+
+  private static byte[] safeGetEncodedBytes(String text)
+  {
+    try
+    {
+      return text.getBytes(ENCODING);
+    }
+    catch(UnsupportedEncodingException ex)
+    {
+      // Never happens
+      return null;
+    }
   }
 }

@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd.datasources;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
+import org.apache.commons.lang.StringUtils;
 
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.plugins.Plugin;
 
-public class DataSourceProvider {
-
+public class DataSourceProvider 
+{
   public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
 
   private Plugin provider;
@@ -29,19 +30,55 @@ public class DataSourceProvider {
    * @param provider PLugin that contains Data Source definitions
    * @throws InvalidDataSourceProviderException when passed provider is null
    */
-  public DataSourceProvider(Plugin provider) throws InvalidDataSourceProviderException {
-    
-    if (provider == null) {
-      throw new InvalidDataSourceProviderException("Null provider passed");
-    }
+  public DataSourceProvider(Plugin provider) throws InvalidDataSourceProviderException
+  {
+    if(provider == null) { throw new IllegalArgumentException("provider"); }
 
     setProvider(provider);
   }
+  
+  public JSON getDataSourceDefinitions(boolean refresh)
+  {
+    JSON result = null;
 
-  protected void checkIfIsValid(InterPluginCall.Plugin plugin) throws InvalidDataSourceProviderException {
+    InterPluginCall listDATypesCall = new InterPluginCall(this.providerPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
+    listDATypesCall.setSession(PentahoSessionHolder.getSession());
+    listDATypesCall.putParameter("refreshCache", "" + refresh);
 
-    InterPluginCall ipc = new InterPluginCall(plugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
-    if (!ipc.pluginExists()) {
+    try 
+    {
+      String dsDefinitions = listDATypesCall.call();
+      result = JSONSerializer.toJSON(dsDefinitions);
+    } 
+    catch(Exception ex)
+    {
+      logger.error(ex.getMessage(), ex);
+    }
+
+    return result;
+  }
+
+  public String getId()
+  {
+    return provider.getId();
+  }
+
+  private void setProvider(Plugin provider) throws InvalidDataSourceProviderException 
+  {
+    InterPluginCall.Plugin ipcPlugin = new InterPluginCall.Plugin(provider.getId(), provider.getName());
+    
+    checkValid(ipcPlugin);
+
+    this.provider = provider;
+    this.providerPlugin = ipcPlugin;
+  }
+  
+  
+  protected void checkValid(InterPluginCall.Plugin ipcPlugin) throws InvalidDataSourceProviderException 
+  {
+    InterPluginCall ipc = new InterPluginCall(ipcPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
+    if(!ipc.pluginExists()) 
+    {
       throw new InvalidDataSourceProviderException(String.format("%s not found!", this));
     }
 
@@ -52,97 +89,38 @@ public class DataSourceProvider {
      * called DATA_SOURCE_DEFINITION_METHOD_NAME defined
      */
     String result = null;
-    try {
+    try 
+    {
       result = ipc.call();
-    } catch (Exception e) {
+    } 
+    catch(Exception e) 
+    {
       throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
           DATA_SOURCE_DEFINITION_METHOD_NAME, this), e);
     }
 
-    if (result == null || result.equals("")) {
+    if(StringUtils.isEmpty(result)) 
+    {
       throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
           DATA_SOURCE_DEFINITION_METHOD_NAME, this));
     }
 
   }
-
-  /* (non-Javadoc)
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
+  
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof DataSourceProvider)) {
-      return false;
-    }
-    DataSourceProvider other = (DataSourceProvider) obj;
-    if (provider == null) {
-      if (other.provider != null) {
-        return false;
-      }
-    } else if (!provider.equals(other.provider)) {
-      return false;
-    }
-    return true;
-  }
-
-  public JSON getDataSourceDefinitions() {
-    JSON result = null;
-
-    InterPluginCall listDataAccessTypes = new InterPluginCall(this.providerPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
-    listDataAccessTypes.setSession(PentahoSessionHolder.getSession());
-    listDataAccessTypes.putParameter("refreshCache", "true");
-
-    try {
-      String dsDefinitions = listDataAccessTypes.call();
-      result = JSONSerializer.toJSON(dsDefinitions);
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-    }
-
-    return result;
-  }
-
-  public String getId() {
-    return provider.getId();
-  }
-
-  /* (non-Javadoc)
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((provider == null) ? 0 : provider.hashCode());
-    return result;
-  }
-
-  private void setProvider(Plugin provider) throws InvalidDataSourceProviderException {
-
-    InterPluginCall.Plugin interPluginCall = new InterPluginCall.Plugin(provider.getId(), provider.getName());
-    checkIfIsValid(interPluginCall);
-
-    this.provider = provider;
-    this.providerPlugin = interPluginCall;
-
-  }
-
-  @Override
-  public String toString() {
+  public String toString() 
+  {
     String result = "";
 
-    if (provider != null) {
-      result = String.format("DataSourceProvider [id=%s, name=%s, path=%s]", provider.getId(), provider.getName(),
-          provider.getPath());
+    if(provider != null) 
+    {
+      result = String.format(
+              "DataSourceProvider [id=%s, name=%s, path=%s]", 
+              provider.getId(), 
+              provider.getName(),
+              provider.getPath());
     }
 
     return result;
   }
-
 }

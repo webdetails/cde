@@ -1,0 +1,18 @@
+<DesignerComponent>
+	<Header>
+		<Override>DataSourceComponentType</Override>
+		<Name>Kettle transformation</Name>
+		<IName>Kettle</IName>
+		<Description>Executes a kettle transformation</Description>
+		<Category>LEGACY</Category>
+		<CatDescription>Legacy Datasources</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model prefix="Datasources">
+			<Property>directory</Property>
+			<Property>transformation</Property>
+            <Property>importStep</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>
