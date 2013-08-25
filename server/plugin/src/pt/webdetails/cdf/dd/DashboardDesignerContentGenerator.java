@@ -541,8 +541,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void listRenderers(final OutputStream out) throws Exception {
-    writeOut(out, "{\"result\": [\"mobile\",\"blueprint\",\"bootstrap\"]}");
+  public void listRenderers(final OutputStream out) throws Exception 
+  {
+    writeOut(out, "{\"result\": [\"mobile\",\"blueprint\"]}");
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
