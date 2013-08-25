@@ -26,11 +26,11 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
  */
 public class CdfRunJsThingWriterFactory implements IThingWriterFactory
 {
-  
+
   public CdfRunJsDashboardWriter getDashboardWriter(Dashboard dashboard) {
     DashboardWcdfDescriptor wcdf = dashboard.getWcdf();
     DashboardRendererType rendererType = wcdf.getParsedRendererType();
-      
+
     if(rendererType == DashboardRendererType.MOBILE)
     {
       return new CdfRunJsMobileDashboardWriter();
@@ -46,21 +46,21 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
     if(t == null) { throw new IllegalArgumentException("t"); }
 
     String kind = t.getKind();
-    
+
     if(KnownThingKind.Component.equals(kind))
     {
       Class compClass = t.getClass();
-      
+
       if(GenericComponent.class.isAssignableFrom(compClass))
       {
         if(WidgetComponent.class.isAssignableFrom(compClass))
         {
           return new CdfRunJsWidgetComponentWriter();
         }
-        
+
         return new CdfRunJsGenericComponentWriter();
       }
-      
+
       if(ParameterComponent.class.isAssignableFrom(compClass))
       {
         ParameterComponent paramComp = (ParameterComponent)t;
@@ -70,21 +70,21 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
         if(typeName.equals("dateparameter"      )) { return new CdfRunJsDateParameterComponentWriter();       }
         if(typeName.equals("javascriptparameter")) { return new CdfRunJsExpressionParameterComponentWriter(); }
       }
-      
+
       if(CodeComponent.class.isAssignableFrom(compClass))
       {
         return new CdfRunJsCodeComponentWriter();
       }
-    } 
-    else if(KnownThingKind.PropertyBinding.equals(kind)) 
+    }
+    else if(KnownThingKind.PropertyBinding.equals(kind))
     {
       PropertyBinding propBind = (PropertyBinding)t;
       String propName = propBind.getName().toLowerCase();
-      
+
       if(propName.equals("datasource"          )) { return new CdfRunJsDataSourcePropertyBindingWriter(); }
       if(propName.equals("cdadatasource"       )) { return new CdfRunJsCdaDataSourcePropertyBindingWriter(); }
       if(propName.equals("jfreechartdatasource")) { return new CdfRunJsJFreeChartDataSourcePropertyBindingWriter(); }
-      
+
       return new CdfRunJsGenericPropertyBindingWriter();
     }
     else if(KnownThingKind.Dashboard.equals(kind))
