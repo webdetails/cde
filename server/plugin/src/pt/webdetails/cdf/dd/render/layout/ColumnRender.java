@@ -18,7 +18,9 @@ public class ColumnRender extends DivRender {
 
         super.processProperties();
 
-        getPropertyBag().addColClass("span-", getPropertyString("columnSpan"));
+        final String spanPrefix = "span-";
+        
+        getPropertyBag().addColClass(spanPrefix, getPropertyString("columnSpan"));
         getPropertyBag().addColClass("append-", getPropertyString("columnAppend"));
         getPropertyBag().addColClass("prepend-", getPropertyString("columnPrepend"));
         getPropertyBag().addColClass(".prepend-top", getPropertyBoolean("columnPrependTop"));
