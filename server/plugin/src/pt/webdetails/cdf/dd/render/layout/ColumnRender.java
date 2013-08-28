@@ -5,12 +5,16 @@
 package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
+import pt.webdetails.cdf.dd.util.XPathUtils;
 
 @SuppressWarnings("unchecked")
 public class ColumnRender extends DivRender {
+	
+	private String renderType;
 
     public ColumnRender(JXPathContext context) {
         super(context);
+        renderType = XPathUtils.getStringValue(context, "//rendererType");
     }
 
     @Override
@@ -18,7 +22,7 @@ public class ColumnRender extends DivRender {
 
         super.processProperties();
 
-        final String spanPrefix = "span-";
+        final String spanPrefix = renderType.equals("bootstrap") ? "col-xs-" : "span-" ;
         
         getPropertyBag().addColClass(spanPrefix, getPropertyString("columnSpan"));
         getPropertyBag().addColClass("append-", getPropertyString("columnAppend"));

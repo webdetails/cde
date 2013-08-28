@@ -17,6 +17,7 @@ public class RowRender extends DivRender {
 
         super.processProperties();
 
+        getPropertyBag().addClass("row");
         getPropertyBag().addClass("clearfix");
 
     }
