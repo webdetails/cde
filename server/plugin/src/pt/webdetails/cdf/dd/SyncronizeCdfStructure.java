@@ -105,27 +105,8 @@ public class SyncronizeCdfStructure
   private void setFilePath(final IPentahoSession userSession, final HashMap<String, Object> parameters) throws Exception
   {
 
-    final ICacheManager cacheManager = PentahoSystem.getCacheManager(userSession);
-    Object previousFile = cacheManager.getFromSessionCache(userSession, "previous_dashboard_file");
-
-    if (parameters.get("file") == null)
-    {
-      if (previousFile == null)
-      {
-        throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
-      }
-      else
-      {
-        parameters.put("file", (String) ((HashMap<String,String>) previousFile).get("file"));
-      }
-    }
-    else
-    {
-      previousFile = new HashMap<String, String>();
-      ((HashMap<String,String>) previousFile).put("file", (String) parameters.get("file"));
-      cacheManager.putInSessionCache(userSession, "previous_dashboard_file", previousFile);
-    }
-
-
+	  if (parameters.get("file") == null){
+		  throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
+	  }
   }
 }
