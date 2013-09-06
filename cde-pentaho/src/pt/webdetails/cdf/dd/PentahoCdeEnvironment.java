@@ -2,11 +2,13 @@ package pt.webdetails.cdf.dd;
 
 import java.util.Locale;
 
+import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.util.messages.LocaleHelper;
 
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
+import pt.webdetails.cdf.dd.plugin.resource.ResourceLoader;
 import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
@@ -56,8 +58,7 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 
 	@Override
 	public IResourceLoader getResourceLoader() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ResourceLoader(PentahoSystem.get(IPluginResourceLoader.class, null));
 	}
 
 	@Override

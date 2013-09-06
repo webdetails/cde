@@ -10,6 +10,7 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.lang.StringUtils;
 
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cpf.InterPluginCall;
@@ -22,7 +23,7 @@ public class DataSourceProvider implements IDataSourceProvider {
 
   private InterPluginCall.Plugin providerPlugin;
 
-  protected org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+  protected Logger logger = LoggerFactory.getLogger(getClass());
 
   /**
    * 
