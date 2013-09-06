@@ -10,5 +10,5 @@ public interface IPluginResourceLocationManager {
 	
 	public String[] getAllCustomComponentsResourceLocations();
 	
-	public String getCustomComponentResourceLocation(String customComponentName);
+	//public String getCustomComponentResourceLocation(String customComponentName);
 }
