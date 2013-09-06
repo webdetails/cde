@@ -2,24 +2,21 @@ package pt.webdetails.cdf.dd;
 
 import java.util.Locale;
 
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.util.messages.LocaleHelper;
 
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cpf.IPluginCall;
-import pt.webdetails.cpf.InterPluginCall;
-import pt.webdetails.cpf.PentahoInterPluginCall;
-import pt.webdetails.cpf.plugin.CorePlugin;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.utils.IPluginUtils;
 
 public class PentahoCdeEnvironment implements ICdeEnvironment {
 	
 	private IPluginCall interPluginCall;
+	private IPluginUtils pluginUtils;
+    private IRepositoryAccess repositoryAccess;
 	
 	@Override
 	public String getApplicationBaseUrl() {
@@ -33,11 +30,6 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 
 	@Override
 	public IPluginCall getInterPluginCall() {
-		
-		if(interPluginCall == null){ 
-			interPluginCall = new PentahoInterPluginCall();
-		}
-		
 		return interPluginCall;
 	}
 
@@ -53,14 +45,13 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 	}
 
 	@Override
-	public IPluginUtils getPluginUtils() {
-		// TODO Auto-generated method stub
-		return null;
+	public IPluginUtils getPluginUtils() { 
+		return pluginUtils;
 	}
 
 	@Override
 	public IRepositoryAccess getRepositoryAccess() {
-		return (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(PentahoSessionHolder.getSession());
+		return repositoryAccess;
 	}
 
 	@Override
@@ -71,6 +62,10 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 
 	@Override
 	public void init() throws InitializationException {
+	}
+
+	@Override
+	public void refresh() {		
 	}
 
 }

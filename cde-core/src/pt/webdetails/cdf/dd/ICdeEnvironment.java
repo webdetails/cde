@@ -12,6 +12,8 @@ import pt.webdetails.cpf.utils.IPluginUtils;
 public interface ICdeEnvironment {
 	
 	public void init() throws InitializationException;
+	
+	public void refresh();
 		
 	public String getApplicationBaseUrl();
 	

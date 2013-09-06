@@ -1,27 +1,27 @@
 <!--===========================================================================
   This is the build file for the Community Dashboard Framework Plugin project.
 
-  This build file will use the common_build.xml file as the default build
+  This build file will use the subfloor.xml file as the default build
   process and should only override the tasks that need to differ from
   the common build file.
 
-  See common_build.xml for more details
+  See subfloor.xml for more details
 ============================================================================-->
 <project name="Community Dashboard Editor" basedir="." default="jar"
          xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <description>
     This build file is used to create the CDE project
-    and works with the common_build.xml file.
+    and works with the subfloor.xml file.
   </description>
 
-  <!-- Import the common_build.xml file which contains all the default tasks -->
-  <import file="common_build.xml"/>
+  <!-- Import the subfloor.xml file which contains all the default tasks -->
+  <import file="build-res/subfloor.xml"/>
 
   <!--
       AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
       THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
-      FOUND IN common_build.xml.
+      FOUND IN subfloor.xml.
     -->
 
 <!--
