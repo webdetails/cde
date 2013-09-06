@@ -25,13 +25,18 @@ import pt.webdetails.cpf.repository.IRepositoryAccess;
 /**
  * Class to hold the descriptors for a .wcdf file 
  */
-public class WcdfDescriptor
+public class DashboardWcdfDescriptor
 {
-  private static final Log _logger = LogFactory.getLog(WcdfDescriptor.class);
+  private static final Log _logger = LogFactory.getLog(DashboardWcdfDescriptor.class);
   
   public enum DashboardRendererType
   {
-    MOBILE, BLUEPRINT
+    MOBILE("mobile"), BLUEPRINT("blueprint");
+
+    String type;
+    DashboardRendererType(String t) {
+      type = t;
+    }
   }
   
   private String _title = "";
@@ -44,7 +49,7 @@ public class WcdfDescriptor
   private String  _widgetName;
   private boolean _isWidget;
 
-  public WcdfDescriptor()
+  public DashboardWcdfDescriptor()
   {
     _widgetParameters = new ArrayList<String>();
   }
@@ -75,9 +80,9 @@ public class WcdfDescriptor
     return json;
   }
 
-  public static WcdfDescriptor fromXml(Document wcdfDoc)
+  public static DashboardWcdfDescriptor fromXml(Document wcdfDoc)
   {
-    WcdfDescriptor wcdf = new WcdfDescriptor();
+    DashboardWcdfDescriptor wcdf = new DashboardWcdfDescriptor();
     
     wcdf.setTitle(Utils.getNodeText("/cdf/title", wcdfDoc, ""));
     wcdf.setDescription(Utils.getNodeText("/cdf/description", wcdfDoc, ""));
@@ -289,7 +294,7 @@ public class WcdfDescriptor
     return this._widgetParameters.toArray(new String[0]);
   }
   
-  public static WcdfDescriptor load(String wcdfFilePath) throws IOException
+  public static DashboardWcdfDescriptor load(String wcdfFilePath) throws IOException
   {
     IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
     if(!repository.resourceExists(wcdfFilePath))
@@ -298,7 +303,7 @@ public class WcdfDescriptor
     }
     
     Document wcdfDoc = repository.getResourceAsDocument(wcdfFilePath);
-    WcdfDescriptor wcdf = WcdfDescriptor.fromXml(wcdfDoc);
+    DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml(wcdfDoc);
     wcdf.setPath(wcdfFilePath);
     return wcdf;
   }

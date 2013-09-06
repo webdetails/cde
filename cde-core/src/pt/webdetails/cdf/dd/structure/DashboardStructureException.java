@@ -5,8 +5,8 @@
 package pt.webdetails.cdf.dd.structure;
 
 @SuppressWarnings("serial")
-public class StructureException extends Exception {
-    public StructureException(String message) {
+public class DashboardStructureException extends Exception {
+    public DashboardStructureException(String message) {
      super(message);
   }
 }

@@ -41,8 +41,8 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor.DashboardRendererType;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.IRepositoryAccess.FileAccess;
@@ -114,12 +114,12 @@ public final class DashboardManager
     if(wcdfFilePath == null) { throw new IllegalArgumentException("wcdfFilePath"); }
     
     // Figure out what dashboard we should be handling: load its wcdf descriptor.
-    WcdfDescriptor wcdf;
+    DashboardWcdfDescriptor wcdf;
     if(!wcdfFilePath.isEmpty() && wcdfFilePath.endsWith(".wcdf"))
     {
       try
       {
-        wcdf = WcdfDescriptor.load(wcdfFilePath);
+        wcdf = DashboardWcdfDescriptor.load(wcdfFilePath);
       }
       catch(IOException ex)
       {
@@ -131,14 +131,14 @@ public final class DashboardManager
       {
         // Doesn't exist
         // TODO: Explain or fix, why create a (totally) empty one?
-        wcdf = new WcdfDescriptor();
+        wcdf = new DashboardWcdfDescriptor();
       }
     }
     else
     {
       // We didn't receive a valid path. We're in preview mode.
       // TODO: Support mobile preview mode (must remove dependency on setStyle())
-      wcdf = new WcdfDescriptor();
+      wcdf = new DashboardWcdfDescriptor();
       if(!wcdfFilePath.isEmpty() && wcdfFilePath.endsWith(".cdfde")) {
         wcdf.setPath(wcdfFilePath);
       }
@@ -152,7 +152,7 @@ public final class DashboardManager
   }
   
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
-          WcdfDescriptor wcdf,
+          DashboardWcdfDescriptor wcdf,
           CdfRunJsDashboardWriteOptions options,
           boolean bypassCacheRead)
           throws ThingWriteException 
@@ -233,7 +233,7 @@ public final class DashboardManager
   {
     try
     {
-      WcdfDescriptor wcdf = WcdfDescriptor.load(wcdfPath);
+      DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load(wcdfPath);
       if(wcdf == null)
       {
         throw new ThingReadException(new FileNotFoundException(wcdfPath));
@@ -248,7 +248,7 @@ public final class DashboardManager
   }
   
   public Dashboard getDashboard(
-          WcdfDescriptor wcdf,
+          DashboardWcdfDescriptor wcdf,
           boolean bypassCacheRead)
           throws ThingReadException
   {
@@ -288,7 +288,7 @@ public final class DashboardManager
   {
     // Look for cached Dashboard objects that contain the widget.
     
-    String cdeFilePath = Utils.normalizeSolutionRelativePath(WcdfDescriptor.toStructurePath(wcdfPath));
+    String cdeFilePath = Utils.normalizeSolutionRelativePath(DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     
     Map<String, Dashboard> dashboardsByCdfdeFilePath;
     synchronized(this._dashboardsByCdfdeFilePath)
@@ -371,7 +371,7 @@ public final class DashboardManager
           if(comp instanceof WidgetComponent)
           {
             WidgetComponent widgetComp = (WidgetComponent)comp;
-            if(WcdfDescriptor.toStructurePath(widgetComp.getWcdfPath()).equals(cdeWidgetFilePath))
+            if(DashboardWcdfDescriptor.toStructurePath(widgetComp.getWcdfPath()).equals(cdeWidgetFilePath))
             {
               // This dashboard uses this widget
               invalidateDashboards.add(cdeDashFilePath);
@@ -392,7 +392,7 @@ public final class DashboardManager
   }
   
   private Dashboard getDashboard(
-          WcdfDescriptor wcdf, 
+          DashboardWcdfDescriptor wcdf,
           IRepositoryAccess repository,
           IRepositoryFile cdeFile,
           String cdeFilePath,
@@ -443,7 +443,7 @@ public final class DashboardManager
   }
   
   private Dashboard readDashboardFromCdfdeJs(
-          WcdfDescriptor wcdf, 
+          DashboardWcdfDescriptor wcdf,
           IRepositoryAccess repository)
           throws ThingReadException
   {
@@ -684,7 +684,7 @@ public final class DashboardManager
   
   public static JXPathContext openDashboardAsJXPathContext(
           IRepositoryAccess repository, 
-          WcdfDescriptor wcdf)
+          DashboardWcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
     return openDashboardAsJXPathContext(repository, wcdf.getStructurePath(), wcdf);
@@ -693,7 +693,7 @@ public final class DashboardManager
   public static JXPathContext openDashboardAsJXPathContext(
           IRepositoryAccess repository, 
           String dashboardLocation, 
-          WcdfDescriptor wcdf)
+          DashboardWcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
     final JSONObject json = (JSONObject)JsonUtils.readJsonFromInputStream(

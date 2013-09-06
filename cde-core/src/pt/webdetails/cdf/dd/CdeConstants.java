@@ -11,4 +11,6 @@ public class CdeConstants {
 	
 	public static final String DEFAULT_STYLE = "Clean";
 
+  public static final String CDF_STRUCTURE = "cdfstructure";
+
 }

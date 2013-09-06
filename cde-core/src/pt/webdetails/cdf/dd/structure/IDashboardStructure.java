@@ -6,7 +6,7 @@ package pt.webdetails.cdf.dd.structure;
 
 import java.util.HashMap;
 
-public interface IStructure {
+public interface IDashboardStructure {
 	
 	public abstract HashMap<String, String>  save(HashMap<String, Object> parameters) throws Exception;
 	

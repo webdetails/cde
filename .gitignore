@@ -30,3 +30,10 @@ nbproject/private/
 .idea
 
 .ant-targets-build.xml
+cde-core/bin
+cde-pentaho/bin
+cde-core/lib
+cde-pentaho/lib
+cde-core/runtime-lib
+cde-core/test-lib
+cde-pentaho/runtime-lib

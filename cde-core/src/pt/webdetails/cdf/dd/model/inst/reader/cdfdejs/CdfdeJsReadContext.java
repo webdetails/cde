@@ -6,17 +6,17 @@ package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
 import pt.webdetails.cdf.dd.model.core.reader.DefaultThingReadContext;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
 /**
  * @author dcleao
  */
 public class CdfdeJsReadContext extends DefaultThingReadContext
 {
-  private final WcdfDescriptor _wcdf;
+  private final DashboardWcdfDescriptor _wcdf;
   private final MetaModel _metaModel;
   
-  public CdfdeJsReadContext(CdfdeJsThingReaderFactory factory, WcdfDescriptor wcdf, MetaModel metaModel)
+  public CdfdeJsReadContext(CdfdeJsThingReaderFactory factory, DashboardWcdfDescriptor wcdf, MetaModel metaModel)
   {
     super(factory);
     
@@ -27,7 +27,7 @@ public class CdfdeJsReadContext extends DefaultThingReadContext
     this._metaModel = metaModel;
   }
   
-  public final WcdfDescriptor getWcdf()
+  public final DashboardWcdfDescriptor getWcdf()
   {
     return this._wcdf;
   }

@@ -4,8 +4,8 @@
 
 package pt.webdetails.cdf.dd;
 
-import pt.webdetails.cdf.dd.structure.StructureException;
-import pt.webdetails.cdf.dd.structure.XmlStructure;
+import pt.webdetails.cdf.dd.structure.DashboardStructureException;
+import pt.webdetails.cdf.dd.structure.DashboardStructure;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.http.ICommonParameterProvider;
 
@@ -64,7 +64,7 @@ public class SyncronizeCdfStructure
     // Call sync method
     try
     {
-      final XmlStructure dashboardStucture = new XmlStructure();
+      final DashboardStructure dashboardStucture = new DashboardStructure();
       
       final Class<?>[] params = new Class[1];
       params[0] = HashMap.class;
@@ -87,7 +87,7 @@ public class SyncronizeCdfStructure
     {
       if(e.getCause() != null)
       {
-        if (e.getCause() instanceof StructureException)
+        if (e.getCause() instanceof DashboardStructureException)
         {
           JsonUtils.buildJsonResult(out, false, e.getCause().getMessage());
         }

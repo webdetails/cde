@@ -46,17 +46,17 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
 
-public class XmlStructure implements IStructure
+public class DashboardStructure implements IDashboardStructure
 {
   private static final String ENCODING = "UTF-8";
   
-  private static Log logger = LogFactory.getLog(XmlStructure.class);
+  private static Log logger = LogFactory.getLog(DashboardStructure.class);
   
-  public XmlStructure()
+  public DashboardStructure()
   {
   }
 
-  public void delete(HashMap<String, Object> parameters) throws StructureException
+  public void delete(HashMap<String, Object> parameters) throws DashboardStructureException
   {
     // 1. Delete File
     String filePath = (String)parameters.get("file");
@@ -66,7 +66,7 @@ public class XmlStructure implements IStructure
     IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
     if(!repository.removeFile(filePath))
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
   }
   
@@ -106,11 +106,11 @@ public class XmlStructure implements IStructure
     }
     catch (FileNotFoundException e)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_001_LOAD_FILE_NOT_FOUND_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_001_LOAD_FILE_NOT_FOUND_EXCEPTION"));
     }
     catch (IOException e)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
     }
     finally
     {
@@ -121,16 +121,16 @@ public class XmlStructure implements IStructure
     return result;
   }
 
-  public WcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException
+  public DashboardWcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException
   {
-    WcdfDescriptor wcdf  = WcdfDescriptor.load(wcdfFilePath);
+    DashboardWcdfDescriptor wcdf  = DashboardWcdfDescriptor.load(wcdfFilePath);
     
-    return wcdf != null ? wcdf : new WcdfDescriptor();
+    return wcdf != null ? wcdf : new DashboardWcdfDescriptor();
   }
   
-  public WcdfDescriptor loadWcdfDescriptor(Document wcdfDoc)
+  public DashboardWcdfDescriptor loadWcdfDescriptor(Document wcdfDoc)
   {
-    return WcdfDescriptor.fromXml(wcdfDoc);
+    return DashboardWcdfDescriptor.fromXml(wcdfDoc);
   }
 
   public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception
@@ -162,7 +162,7 @@ public class XmlStructure implements IStructure
     SaveFileStatus status = repository.publishFile(cdeFileDir, cdeFileName, safeGetEncodedBytes(cdfdeJsText), true);
     if (status != SaveFileStatus.OK)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
 
     // 3. CDA
@@ -183,7 +183,7 @@ public class XmlStructure implements IStructure
       status = repository.publishFile(cdeFileDir, cdaFileName, safeGetEncodedBytes(cdaText), true);
       if(status != SaveFileStatus.OK)
       {
-        throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+        throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
     }
     
@@ -251,7 +251,7 @@ public class XmlStructure implements IStructure
     SaveFileStatus status = repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true);
     if(status != SaveFileStatus.OK)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
     
     // 4. Save cdf structure
@@ -281,25 +281,25 @@ public class XmlStructure implements IStructure
 
   // .WCDF file
   // (called using reflection by SyncronizeCdfStructure)
-  public void savesettings(HashMap<String, Object> parameters) throws StructureException
+  public void savesettings(HashMap<String, Object> parameters) throws DashboardStructureException
   {
     String wcdfFilePath = (String)parameters.get("file");
     logger.info("Saving settings file:" + wcdfFilePath);
 
-    WcdfDescriptor wcdf = null;
+    DashboardWcdfDescriptor wcdf = null;
     try
     {
-      wcdf = WcdfDescriptor.load(wcdfFilePath);
+      wcdf = DashboardWcdfDescriptor.load(wcdfFilePath);
     }
     catch(IOException ex)
     {
       // Access?
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
     }
 
     if(wcdf == null)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
     }
 
     // Update with client info
@@ -311,7 +311,7 @@ public class XmlStructure implements IStructure
     SaveFileStatus status = repository.publishFile(wcdfFilePath, safeGetEncodedBytes(wcdfText), true);
     if(status != SaveFileStatus.OK)
     {
-      throw new StructureException(Messages.getString("XmlStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
+      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
     }
     
     // Save widget component.xml file?
@@ -321,7 +321,7 @@ public class XmlStructure implements IStructure
     }
   }
 
-  private void publishWidgetComponentXml(WcdfDescriptor wcdf)
+  private void publishWidgetComponentXml(DashboardWcdfDescriptor wcdf)
   {
     String widgetPath = wcdf.getPath().replaceAll(".wcdf$", ".component.xml");
     
@@ -352,7 +352,7 @@ public class XmlStructure implements IStructure
     }
   }
 
-  private static Document createAndWriteWidgetComponentTypeXml(WcdfDescriptor wcdf)
+  private static Document createAndWriteWidgetComponentTypeXml(DashboardWcdfDescriptor wcdf)
   {
     WidgetComponentType widget  = createWidgetComponentType(wcdf);
     if(widget == null)
@@ -388,7 +388,7 @@ public class XmlStructure implements IStructure
     return doc;
   }
   
-  private static WidgetComponentType createWidgetComponentType(WcdfDescriptor wcdf)
+  private static WidgetComponentType createWidgetComponentType(DashboardWcdfDescriptor wcdf)
   {
     WidgetComponentType.Builder builder = new WidgetComponentType.Builder();
     String name = wcdf.getWidgetName();

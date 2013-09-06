@@ -14,7 +14,7 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.validation.DashboardDuplicateComponentError;
 import pt.webdetails.cdf.dd.model.meta.DashboardType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
@@ -24,7 +24,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
 {
   private static final Log _logger = LogFactory.getLog(Dashboard.class);
   
-  private final WcdfDescriptor _wcdf;
+  private final DashboardWcdfDescriptor _wcdf;
   private final String _sourcePath;
   private final Date   _sourceDate;
   
@@ -128,7 +128,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     return this.getMeta().getId();
   }
   
-  public final WcdfDescriptor getWcdf()
+  public final DashboardWcdfDescriptor getWcdf()
   {
     return this._wcdf;
   }
@@ -236,7 +236,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
    */
   public static class Builder extends Instance.Builder
   {
-    private WcdfDescriptor _wcdf;
+    private DashboardWcdfDescriptor _wcdf;
     private String _sourcePath;
     private Date   _sourceDate;
     
@@ -251,12 +251,12 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
       this._regularComponents      = new ArrayList<Component.Builder>();
     }
     
-    public WcdfDescriptor getWcdf()
+    public DashboardWcdfDescriptor getWcdf()
     {
       return this._wcdf;
     }
     
-    public Builder setWcdf(WcdfDescriptor wcdf)
+    public Builder setWcdf(DashboardWcdfDescriptor wcdf)
     {
       this._wcdf = wcdf;
       

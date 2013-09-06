@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.apache.commons.jxpath.JXPathContext;
 import pt.webdetails.cdf.dd.render.RenderMobileLayout;
 import pt.webdetails.cdf.dd.render.Renderer;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
 /**
  * @author dcleao
@@ -24,7 +24,7 @@ public final class CdfRunJsMobileDashboardWriter extends CdfRunJsDashboardWriter
   }
   
   @Override
-  protected String readTemplate(WcdfDescriptor wcdf) throws IOException
+  protected String readTemplate(DashboardWcdfDescriptor wcdf) throws IOException
   {
     return readTemplateFile(MOBILE_TEMPLATE);
   }

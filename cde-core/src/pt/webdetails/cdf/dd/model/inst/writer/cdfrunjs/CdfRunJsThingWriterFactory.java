@@ -18,8 +18,8 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor.DashboardRendererType;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 
 /**
  * @author dcleao
@@ -75,7 +75,7 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
     else if(KnownThingKind.Dashboard.equals(kind))
     {
       // Dashboard or Widget
-      WcdfDescriptor wcdf = ((Dashboard)t).getWcdf();
+      DashboardWcdfDescriptor wcdf = ((Dashboard)t).getWcdf();
       DashboardRendererType rendererType = wcdf.getParsedRendererType();
         
       if(rendererType == DashboardRendererType.MOBILE)

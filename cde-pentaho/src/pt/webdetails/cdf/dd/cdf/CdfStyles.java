@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd;
+package pt.webdetails.cdf.dd.cdf;
 
 import net.sf.json.JSONArray;
 
@@ -11,6 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 
+import pt.webdetails.cdf.dd.DashboardDesignerException;
+import pt.webdetails.cdf.dd.Messages;
+import pt.webdetails.cdf.dd.ResourceManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.io.File;
@@ -41,7 +44,7 @@ public class CdfStyles
   {
   }
 
-  public void syncronize(IPentahoSession userSession, OutputStream out, IParameterProvider requestParams) throws Exception {
+  public void handleCall(OutputStream out, IParameterProvider requestParams) throws Exception {
 
     //Read parameters
     Iterator<String> keys = requestParams.getParameterNames();

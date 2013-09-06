@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd;
+package pt.webdetails.cdf.dd.cdf;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,7 +14,10 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import pt.webdetails.cdf.dd.structure.StructureException;
+import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
+import pt.webdetails.cdf.dd.Messages;
+import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.io.*;
@@ -30,8 +33,6 @@ import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
 
-  private IPentahoSession userSession = null;
-  
   private static String CDF_DD_TEMPLATES = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates";
   private static String CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
   
@@ -42,11 +43,7 @@ public class CdfTemplates {
 
   private static Log logger = LogFactory.getLog(CdfTemplates.class);
 
-  public CdfTemplates(IPentahoSession userSession) {
-
-    this.userSession = userSession;
-
-  }
+  public CdfTemplates(){}
 
   /**
    * Invokes operation through reflection
@@ -54,7 +51,7 @@ public class CdfTemplates {
    * @param requestParams
    * @throws Exception
    */
-  public void syncronize(final OutputStream out, final IParameterProvider requestParams) throws Exception {
+  public void handleCall(final OutputStream out, final IParameterProvider requestParams) throws Exception {
 
     //Read parameters
     final Iterator<String> keys = requestParams.getParameterNames();
@@ -86,26 +83,26 @@ public class CdfTemplates {
 
   }
 
-  public void save(final HashMap<String,String> parameters) throws StructureException, PentahoAccessControlException, IOException {
+  public void save(final HashMap<String,String> parameters) throws DashboardStructureException, PentahoAccessControlException, IOException {
 
     final String fileName = (String) parameters.get("file");
     logger.info("Saving File:" + fileName);
     
-    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository(userSession);
+    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
     
     if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
     {
       solutionRepository.createFolder(CDF_DD_TEMPLATES_CUSTOM);
     }
     
-    String cdfStructure = (String) parameters.get(DashboardDesignerContentGenerator.MethodParams.CDF_STRUCTURE);
+    String cdfStructure = (String) parameters.get(CdeConstants.CDF_STRUCTURE);
     byte[] fileData = cdfStructure.getBytes("UTF-8");
     switch( solutionRepository.publishFile(CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true)){
       case OK:
         break;
       case FAIL:
         default:
-          throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION")); 
+          throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
   }
 

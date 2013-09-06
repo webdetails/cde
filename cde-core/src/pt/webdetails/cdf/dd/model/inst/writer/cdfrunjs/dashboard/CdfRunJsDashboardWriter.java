@@ -23,7 +23,7 @@ import pt.webdetails.cdf.dd.model.core.writer.js.*;
 import pt.webdetails.cdf.dd.model.inst.*;
 import pt.webdetails.cdf.dd.render.*;
 import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.plugin.CorePlugin;
 
@@ -61,7 +61,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   {
     assert dash == ctx.getDashboard();
     
-    WcdfDescriptor wcdf = dash.getWcdf();
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
     
     // ------------
     
@@ -113,7 +113,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       .setLoadedDate(ctx.getDashboard().getSourceDate());
   }
   
-  protected String readTemplate(WcdfDescriptor wcdf) throws IOException
+  protected String readTemplate(DashboardWcdfDescriptor wcdf) throws IOException
   {
     return readStyleTemplateOrDefault(wcdf.getStyle());
   }
@@ -149,7 +149,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   
   protected String writeComponents(CdfRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
   {
-    WcdfDescriptor wcdf = dash.getWcdf();
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
     
     StringBuilder out = new StringBuilder();
     StringBuilder widgetsOut = new StringBuilder();
@@ -224,7 +224,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   {
     CdfRunJsDashboardWriteOptions options = context.getOptions();
     
-    WcdfDescriptor wcdf = context.getDashboard().getWcdf();
+    DashboardWcdfDescriptor wcdf = context.getDashboard().getWcdf();
     
     final String title = "<title>" + wcdf.getTitle() + "</title>";
     
@@ -322,7 +322,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return out.toString();
   }
   
-  public String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws IOException {
+  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws IOException {
 	    Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("dashboardContent", dashboard);
 	    params.put("debug", debug);

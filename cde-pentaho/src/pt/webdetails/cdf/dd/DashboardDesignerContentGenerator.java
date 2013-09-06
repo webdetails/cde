@@ -33,16 +33,20 @@ import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import pt.webdetails.cdf.dd.cdf.CdfStyles;
+import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
+import pt.webdetails.cdf.dd.editor.ExternalFileEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cdf.dd.utils.CommonParameterProvider;
-import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
@@ -138,7 +142,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     /**
      * JSON structure
      */
-    public static final String CDF_STRUCTURE = "cdfstructure";
+
 
     public static final String DATA = "data";
   }
@@ -519,9 +523,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     
     IParameterProvider pathParams = getPathParameters();
     final String scheme  = DashboardDesignerContentGenerator.getScheme(pathParams);
-    final String cdfDeps = DashboardDesignerContentGenerator.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
+    final String cdfDeps = CdfRunJsDashboardWriter.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
     tokens.put(DESIGNER_CDF_TAG, cdfDeps);
-    tokens.put(FILE_NAME_TAG,    WcdfDescriptor.toStructurePath(wcdfPath));
+    tokens.put(FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     tokens.put(SERVER_URL_TAG,   SERVER_URL_VALUE);
     tokens.put(DATA_URL_TAG,     DATA_URL_VALUE);
 
@@ -534,24 +538,26 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void syncTemplates(final OutputStream out) throws Exception 
-  {
-    final CdfTemplates cdfTemplates = new CdfTemplates(userSession);
+  public void syncTemplates(final OutputStream out) throws Exception {
+    final CdfTemplates cdfTemplates = new CdfTemplates();
 
-    cdfTemplates.syncronize(out, getRequestParameters());
+    cdfTemplates.handleCall(out, getRequestParameters());
+  }
+
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void syncStyles(final OutputStream out) throws Exception {
+    final CdfStyles cdfStyles = new CdfStyles();
+
+    cdfStyles.handleCall(out, getRequestParameters());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void listRenderers(final OutputStream out) throws Exception 
   {
-    writeOut(out, "{\"result\": [\"mobile\",\"blueprint\"]}");
+    writeOut(out, "{\"result\": [\"" + "ola" +"\",\""+ "ola" +"\"]}");
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void syncStyles(final OutputStream out) throws Exception 
-  {
-    CdfStyles.getInstance().syncronize(userSession, out, getRequestParameters());
-  }
+
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void olapUtils(final OutputStream out) 
@@ -645,7 +651,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   public void listCdaSources(final OutputStream out) throws IOException 
   {
     String dashboard = getRequestParameters().getStringParameter("dashboard", null);
-    dashboard = WcdfDescriptor.toStructurePath(dashboard);
+    dashboard = DashboardWcdfDescriptor.toStructurePath(dashboard);
     
     List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources(dashboard);
     CdaDataSourceReader.CdaDataSource[] dataSources = dataSourcesList
@@ -654,13 +660,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     writeOut(out, result);
   }
 
+
+
   // External Editor v
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void getFile(final OutputStream out) throws IOException 
   {
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, "");
 
-    String contents = ExternalFileEditorBackend.getFileContents(path);
+    String contents = ExternalFileEditor.getFileContents(path);
 
     setResponseHeaders("text/plain", NO_CACHE_DURATION, null);
     writeOut(out, contents);
@@ -671,7 +679,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
 
-    if(ExternalFileEditorBackend.createFolder(path))
+    if(ExternalFileEditor.createFolder(path))
     {
       writeOut(out, "Path " + path + " created ok");
     }
@@ -698,10 +706,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     IParameterProvider requestParams = getRequestParameters();
     String path     = requestParams.getStringParameter(MethodParams.PATH,     null);
-    String solution = requestParams.getStringParameter(MethodParams.SOLUTION, null);
     String contents = requestParams.getStringParameter(MethodParams.DATA,     null);
 
-    if(ExternalFileEditorBackend.writeFile(path, solution, contents))
+    if(ExternalFileEditor.writeFile(path, contents))
     {//saved ok
       writeOut(out, "file '" + path + "' saved ok");
     }
@@ -716,7 +723,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   {
     String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
 
-    Boolean result = ExternalFileEditorBackend.canEdit(path);
+    Boolean result = ExternalFileEditor.canEdit(path);
     writeOut(out, result.toString());
   }
 
@@ -724,7 +731,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   public void extEditor(final OutputStream out) throws IOException 
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
-    writeOut(out, ExternalFileEditorBackend.getFileContents(editorPath));
+    writeOut(out, ExternalFileEditor.getFileContents(editorPath));
   }
 
   // External Editor ^ 
@@ -732,8 +739,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   public void componentEditor(final OutputStream out) throws IOException 
   {
     String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
-    writeOut(out, ExternalFileEditorBackend.getFileContents(editorPath));
+    writeOut(out, ExternalFileEditor.getFileContents(editorPath));
   }
+
+
+
+
+
+
 
   static String getWcdfRelativePath(final IParameterProvider pathParams) 
   {
@@ -748,7 +761,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   static String getStructureRelativePath(final IParameterProvider pathParams) 
   {
     String wcdfPath = getWcdfRelativePath(pathParams);
-    return WcdfDescriptor.toStructurePath(wcdfPath);
+    return DashboardWcdfDescriptor.toStructurePath(wcdfPath);
   }
 
   private void getSolutionResource(final OutputStream out, final String resource) throws IOException 
@@ -886,30 +899,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
     cdfContext.setRequestParameters(requestParameterProvider);
     return cdfContext.callInPluginClassLoader();
-  }
-
-  static String getCdfIncludes(String dashboard, IParameterProvider pathParams) throws Exception 
-  {
-    return getCdfIncludes(dashboard, null, false, "", getScheme(pathParams));
-  }
-
-  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws IOException
-  {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("dashboardContent", dashboard);
-    params.put("debug", debug);
-    params.put("scheme", scheme);
-    if (type != null) 
-    {
-      params.put("dashboardType", type);
-    }
-    if (!"".equals(absRoot) && absRoot != null) 
-    {
-      params.put("root", absRoot);
-    }
-
-    InterPluginCall cdfGetHeaders = new InterPluginCall(InterPluginCall.CDF, "GetHeaders", params);
-    return cdfGetHeaders.call();
   }
 
   public static String getScheme(IParameterProvider pathParams)
