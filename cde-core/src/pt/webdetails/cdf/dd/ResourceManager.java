@@ -5,14 +5,22 @@
 package pt.webdetails.cdf.dd;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
-import java.io.File;
-import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * User: pedro
@@ -31,6 +39,8 @@ public class ResourceManager {
   private static final HashMap<String, String> cacheContainer = new HashMap<String, String>();
 
   private boolean isCacheEnabled = true;
+
+  private static final Log logger = LogFactory.getLog(ResourceManager.class);
 
   public ResourceManager() {
 
@@ -126,6 +136,94 @@ public class ResourceManager {
   public void cleanCache() {
 
     cacheContainer.clear();
+  }
+
+
+  public void getSolutionResource(final OutputStream out, final String resource) throws IOException
+  {
+    String[] roots = new String[3];
+    roots[0] = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeConstants.PLUGIN_PATH);
+    roots[1] = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath("");
+    roots[2] = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeConstants.MOLAP_PLUGIN_PATH);
+    getSolutionResource(out, resource, roots);
+  }
+
+  public void getSolutionResource(final OutputStream out, final String resource, final String[] allowedRoots)
+          throws IOException
+  {
+    final String path = Utils.getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
+
+    final IResourceLoader resLoader =  CdeEngine.getInstance().getEnvironment().getResourceLoader();
+    String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
+
+    if (formats == null)
+    {
+      logger.error(
+              "Could not obtain resources/downloadable-formats settings entry, " +
+                      "please check plugin.xml and make sure settings are refreshed.");
+
+      formats = ""; //avoid NPE
+    }
+
+    List<String> allowedFormats = Arrays.asList(formats.split(","));
+    String extension = resource.replaceAll(".*\\.(.*)", "$1");
+    if (allowedFormats.indexOf(extension) < 0)
+    {
+      // We can't provide this type of file
+      throw new SecurityException("Not allowed");
+    }
+
+    final File file = new File(path);
+    final String system = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeConstants.SYSTEM_PATH);
+    File rootFile;
+    boolean allowed = false;
+    for (String root : allowedRoots)
+    {
+      if (isFileWithinPath(file, root))
+      {
+        /* If the file's within the specified root, it looks good. But if the
+         * file is within /system/, we need to check whether the root specifically
+         * allows for files in there as well.
+         */
+        rootFile = new File(root);
+        if (!isFileWithinPath(file, system) || isFileWithinPath(rootFile, system))
+        {
+          allowed = true;
+          break;
+        }
+      }
+    }
+
+    if (!allowed)
+    {
+      throw new SecurityException("Not allowed");
+    }
+
+    InputStream in = null;
+    try
+    {
+      in = new FileInputStream(file);
+      IOUtils.copy(in, out);
+    }
+    catch (FileNotFoundException e)
+    {
+      logger.warn("Couldn't find file " + file.getCanonicalPath());
+      throw e;
+    }
+    finally
+    {
+      IOUtils.closeQuietly(in);
+    }
+  }
+
+  private boolean isFileWithinPath(File file, String absPathBase){
+    try {
+      // Using commons.io.FilenameUtils normalize method to make sure we can
+      // support symlinks here
+      return FilenameUtils.normalize(file.getAbsolutePath()).startsWith(FilenameUtils.normalize(absPathBase));
+    } catch (Exception e){
+      return false;
+    }
   }
 
 }

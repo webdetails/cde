@@ -401,7 +401,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
     try 
     {
-      getSolutionResource(out, resource);
+      ResourceManager.getInstance().getSolutionResource(out, resource);
+      setCacheControl();
     } 
     catch (SecurityException e) 
     {
@@ -439,7 +440,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     String[] roots = FsPluginResourceLocations.getResourcesAbsDirs();
     try
     {
-      getSolutionResource(out, resource, roots);
+      ResourceManager.getInstance().getSolutionResource(out, resource, roots);
     }
     catch (SecurityException e)
     {
@@ -650,104 +651,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     return DashboardWcdfDescriptor.toStructurePath(wcdfPath);
   }
 
-  private void getSolutionResource(final OutputStream out, final String resource) throws IOException 
-  {
-    String[] roots = new String[3];
-    roots[0] = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);
-    roots[1] = PentahoSystem.getApplicationContext().getSolutionPath("");
-    roots[2] = PentahoSystem.getApplicationContext().getSolutionPath(MOLAP_PLUGIN_PATH);
-    getSolutionResource(out, resource, roots);
-  }
 
-  private void getSolutionResource(final OutputStream out, final String resource, final String[] allowedRoots)
-      throws IOException 
-  {
-    setCacheControl();
-    final String path = Utils.getSolutionPath(resource); //$NON-NLS-1$ //$NON-NLS-2$
 
-    final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
-    String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
-
-    if (formats == null) 
-    {
-      logger.error(
-              "Could not obtain resources/downloadable-formats settings entry, " + 
-              "please check plugin.xml and make sure settings are refreshed.");
-      
-      formats = ""; //avoid NPE
-    }
-
-    List<String> allowedFormats = Arrays.asList(formats.split(","));
-    String extension = resource.replaceAll(".*\\.(.*)", "$1");
-    if (allowedFormats.indexOf(extension) < 0) 
-    {
-      // We can't provide this type of file
-      throw new SecurityException("Not allowed");
-    }
-    
-    final File file = new File(path);
-    final String system = PentahoSystem.getApplicationContext().getSolutionPath(SYSTEM_PATH);
-    File rootFile;
-    boolean allowed = false;
-    for (String root : allowedRoots) 
-    {
-      if (isFileWithinPath(file, root)) 
-      {
-        /* If the file's within the specified root, it looks good. But if the
-         * file is within /system/, we need to check whether the root specifically
-         * allows for files in there as well.
-         */
-        rootFile = new File(root);
-        if (!isFileWithinPath(file, system) || isFileWithinPath(rootFile, system)) 
-        {
-          allowed = true;
-          break;
-        }
-      }
-    }
-
-    if (!allowed) 
-    {
-      throw new SecurityException("Not allowed");
-    }
-
-    InputStream in = null;
-    try 
-    {
-      in = new FileInputStream(file);
-      IOUtils.copy(in, out);
-    }
-    catch (FileNotFoundException e) 
-    {
-      logger.warn("Couldn't find file " + file.getCanonicalPath());
-      throw e;
-    } 
-    finally 
-    {
-      IOUtils.closeQuietly(in);
-    }
-  }
-
-  private boolean isFileWithinPath(File file, String absPathBase) 
-  {
-    try 
-    {
-      // Using commons.io.FilenameUtils normalize method to make sure we can 
-      // support symlinks here
-      return FilenameUtils.normalize(file.getAbsolutePath()).startsWith(FilenameUtils.normalize(absPathBase));
-    } 
-    catch (Exception e) 
-    {
-      return false;
-    }
-  }
-
-  private void setCacheControl() 
+  private void setCacheControl()
   {
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
     final String maxAge = resLoader.getPluginSetting(this.getClass(), "max-age");
     final HttpServletResponse response = getResponse();
-    if (maxAge != null && response != null) 
+    if (maxAge != null && response != null)
     {
       response.setHeader("Cache-Control", "max-age=" + maxAge);
     }
