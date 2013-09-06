@@ -36,6 +36,7 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
+import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.editor.ExternalFileEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
@@ -182,18 +183,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
   }
 
-  //  @Override
-  //  public void createContent()
-  //  {
-  //    //TODO: document what's happening here
-  //    // Make sure we have the env. correctly inited
-  //    if (SolutionReposHelper.getSolutionRepositoryThreadVariable() == null && PentahoSystem.getObjectFactory().objectDefined(ISolutionRepository.class.getSimpleName()))
-  //    {
-  //      SolutionReposHelper.setSolutionRepositoryThreadVariable(PentahoSystem.get(ISolutionRepository.class, PentahoSessionHolder.getSession()));
-  //    }
-  //    
-  //    super.createContent();
-  //  }
   @Override
   public String getPluginName() 
   {
@@ -227,16 +216,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JAVASCRIPT)
-  public void getComponentDefinitions(OutputStream out) throws Exception
-  {
+  public void getComponentDefinitions(OutputStream out) throws Exception {
     // Get and output the definitions
-    try
-    {
+    try {
       String definition = MetaModelManager.getInstance().getJsDefinition();
       out.write(definition.getBytes());
-    }
-    catch(Exception ex)
-    {
+    } catch(Exception ex) {
       String msg = "Could not get component definitions: " + ex.getMessage();
       logger.error(msg);
       throw ex;
@@ -249,7 +234,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
    * @author pdpi
    */
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public static void refresh(OutputStream out) throws Exception 
+  public static void refresh() throws Exception
   {
     DashboardManager.getInstance().refreshAll();
   }
@@ -270,42 +255,32 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   @Audited(action = "render")
-  public void render(final OutputStream out) throws IOException
-  {
+  public void render(final OutputStream out) throws IOException {
+    String relativePath = getWcdfRelativePath(getRequestParameters());
+
     // Check security
-    if (!PentahoRepositoryAccess.getRepository(userSession)
-          .hasAccess(getWcdfRelativePath(getRequestParameters()), FileAccess.EXECUTE))
-    {
+    if (!PentahoRepositoryAccess.getRepository().hasAccess(relativePath, FileAccess.EXECUTE)) {
       writeOut(out, "Access Denied or File Not Found.");
       return;
     }
 
     // Response
-    try
-    {
+    try {
       setResponseHeaders(MIME_TYPE, 0, null);
-    }
-    catch(Exception e)
-    {
+    } catch(Exception e){
       logger.warn(e.toString());
     }
 
-    try
-    {
+    try {
       Date dtStart = new Date();
       logger.info("[Timing] CDE Starting Dashboard Rendering");
       writeOut(out, this.loadDashboard().render(getCdfContext()));
       logger.info("[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds(dtStart) + "s");
-    }
-    catch(FileNotFoundException ex)
-    {
-      // could not open cdfde
+    } catch(FileNotFoundException ex){  // could not open cdfe
       String msg = "File not found: " + ex.getLocalizedMessage();
       logger.error(msg);
       writeOut(out, msg);
-    }
-    catch(Exception ex)
-    {
+    } catch(Exception ex){
       String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error(msg);
       writeOut(out, msg);
@@ -480,84 +455,41 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
   @Audited(action = "edit")
   public void edit(final OutputStream out) throws IOException
   {
-    // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter      
+    // 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
     IParameterProvider requestParams = getRequestParameters();
-    
-    boolean debugMode = requestParams.hasParameter(MethodParams.DEBUG) && 
-                        requestParams.getParameter(MethodParams.DEBUG).toString().equals("true");
-    
-    String wcdfPath = getWcdfRelativePath(requestParams);
-    
-    if(requestParams.hasParameter(MethodParams.PATH) && 
-       !PentahoRepositoryAccess.getRepository(userSession).hasAccess(wcdfPath, FileAccess.EDIT))
-    {
-      writeOut(out, "Access Denied");
-      return;
-    }
-
-    final ResourceManager resMgr = ResourceManager.getInstance();
-    
-    final HashMap<String, String> tokens = new HashMap<String, String>();
-    
-    final String cdeDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDFDD).getDependencies();
-    tokens.put(DESIGNER_HEADER_TAG, cdeDeps);
-
-    // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
-    final String scriptDeps, styleDeps;
-    if(debugMode)
-    {
-      scriptDeps = resMgr.getResourceAsString(DESIGNER_SCRIPTS_RESOURCE);
-      styleDeps  = resMgr.getResourceAsString(DESIGNER_STYLES_RESOURCE );
-    }
-    else
-    {
-      String stylesHash  = packager.minifyPackage("styles" );
-      String scriptsHash = packager.minifyPackage("scripts");
-      
-      styleDeps  = "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />";
-      scriptDeps = "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>";
-    }
-    
-    tokens.put(DESIGNER_STYLES_TAG,  styleDeps );
-    tokens.put(DESIGNER_SCRIPTS_TAG, scriptDeps);
-    
     IParameterProvider pathParams = getPathParameters();
-    final String scheme  = DashboardDesignerContentGenerator.getScheme(pathParams);
-    final String cdfDeps = CdfRunJsDashboardWriter.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
-    tokens.put(DESIGNER_CDF_TAG, cdfDeps);
-    tokens.put(FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
-    tokens.put(SERVER_URL_TAG,   SERVER_URL_VALUE);
-    tokens.put(DATA_URL_TAG,     DATA_URL_VALUE);
 
-    final String resource = resMgr.getResourceAsString(DESIGNER_RESOURCE, tokens);
+    boolean debugMode = requestParams.hasParameter(MethodParams.DEBUG) &&
+            requestParams.getParameter(MethodParams.DEBUG).toString().equals("true");
 
-    // Cache the output - Disabled for security check reasons
-    // setCacheControl();
+    String wcdfPath = getWcdfRelativePath(requestParams);
 
-    writeOut(out, resource);
+    if(requestParams.hasParameter(CdeConstants.MethodParams.PATH) &&
+            !PentahoRepositoryAccess.getRepository().hasAccess(wcdfPath, IRepositoryAccess.FileAccess.EDIT)) {
+      writeOut(out, "Access Denied");
+    }
+
+    //TODO: remove packager from content generator when no need to get solutionpath of plugin
+    writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams), packager));
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void syncTemplates(final OutputStream out) throws Exception {
     final CdfTemplates cdfTemplates = new CdfTemplates();
-
     cdfTemplates.handleCall(out, getRequestParameters());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void syncStyles(final OutputStream out) throws Exception {
     final CdfStyles cdfStyles = new CdfStyles();
-
     cdfStyles.handleCall(out, getRequestParameters());
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void listRenderers(final OutputStream out) throws Exception 
   {
-    writeOut(out, "{\"result\": [\"" + "ola" +"\",\""+ "ola" +"\"]}");
+    writeOut(out, "{\"result\": [\"" + DashboardWcdfDescriptor.DashboardRendererType.MOBILE +"\",\""+ DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT +"\"]}");
   }
-
-
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
   public void olapUtils(final OutputStream out) 
@@ -585,64 +517,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     final String permission     = requestParams.getStringParameter("access", null);
     final String outputType     = requestParams.getStringParameter("outputType" , null);
 
-    if(outputType != null && outputType.equals( "json")) 
-    {
+    if(outputType != null && outputType.equals( "json")) {
       writeOut(out, FileExplorer.getInstance().getJSON(folder, fileExtensions, permission));
-    } 
-    else 
-    {
+    } else {
       writeOut(out, FileExplorer.getInstance().getJqueryFileTree(folder, fileExtensions, permission));
     }
   }
   
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getCDEplugins(final OutputStream out) throws IOException
-  {
-    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
-    pluginsAnalyzer.refresh();
-    
-    IPluginFilter pluginFilter = new IPluginFilter() 
-    {
-      public boolean include(Plugin plugin)
-      {
-        boolean include = false;
-        if(plugin.hasSettingsXML())
-        {
-          include = (plugin.getXmlValue("/settings/cde-compatible", "settings.xml").equals("true")) ? true : false;
-        }
-        return include;
-      }
-    };
-    
-    List<Plugin> cdePlugins = pluginsAnalyzer.getPlugins(pluginFilter);
-    
-    JSONArray pluginsArray = new JSONArray();
-    
-    
-    for(Plugin plugin : cdePlugins)
-    {
-      try
-      {
-        JSONObject pluginObject = new JSONObject();
-        String [] split = plugin.getPluginRelativePath().split("/");
-        pluginObject.put("title", split[split.length-1]);
-        pluginObject.put("description", plugin.getXmlValue("/settings/description", "settings.xml"));
-        pluginObject.put("url", plugin.getXmlValue("/settings/url", "settings.xml"));
-        pluginObject.put("jsPath", plugin.getXmlValue("/settings/jsPath", "settings.xml"));
-        pluginObject.put("pluginId", plugin.getId());
-
-        pluginsArray.add(pluginObject);
-      }
-      catch(Exception e)
-      {
-      }
-    }
-    
-    logger.info("Feeding client with CDE-Compatible plugin list");
-    
-    
-    writeOut(out, pluginsArray.toString());
+  public void getCDEplugins(final OutputStream out) throws IOException {
+    CdePlugins plugins = new CdePlugins();
+    writeOut(out, plugins.getCdePlugins());
   }
+
+
   /**
    * List CDA datasources for given dashboard.
    */
@@ -748,8 +636,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
 
 
 
-  static String getWcdfRelativePath(final IParameterProvider pathParams) 
-  {
+  private String getWcdfRelativePath(final IParameterProvider pathParams) {
     final String path = 
               "/" + pathParams.getStringParameter(MethodParams.SOLUTION, null)
             + "/" + pathParams.getStringParameter(MethodParams.PATH, null)
@@ -758,8 +645,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     return path.replaceAll("//+", "/");
   }
 
-  static String getStructureRelativePath(final IParameterProvider pathParams) 
-  {
+  private String getStructureRelativePath(final IParameterProvider pathParams) {
     String wcdfPath = getWcdfRelativePath(pathParams);
     return DashboardWcdfDescriptor.toStructurePath(wcdfPath);
   }
@@ -886,22 +772,26 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
   }
 
-  private String getCdfContext()
+
+
+
+
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void checkVersion(OutputStream out) throws IOException, JSONException
   {
-    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
-    cdfContext.setRequest(getRequest());
-    cdfContext.setRequestParameters(getRequestParameters());
-    return cdfContext.callInPluginClassLoader();
+    VersionChecker versionChecker = new CdeVersionChecker(CdeSettings.getSettings());
+    writeOut(out, versionChecker.checkVersion());
   }
 
-  static String getCdfContext(IParameterProvider requestParameterProvider) 
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void getVersion(OutputStream out) throws IOException, JSONException
   {
-    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
-    cdfContext.setRequestParameters(requestParameterProvider);
-    return cdfContext.callInPluginClassLoader();
+    VersionChecker versionChecker = new CdeVersionChecker(CdeSettings.getSettings());
+    writeOut(out, versionChecker.getVersion());
   }
 
-  public static String getScheme(IParameterProvider pathParams)
+
+  private String getScheme(IParameterProvider pathParams)
   {
     try
     {
@@ -914,37 +804,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     }
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void checkversion(OutputStream out) throws IOException, JSONException 
-  {
-    writeOut(out, getVersionChecker().checkVersion());
-  }
-
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public void getversion(OutputStream out) throws IOException, JSONException 
-  {
-    writeOut(out, getVersionChecker().getVersion());
-  }
-
-  private VersionChecker getVersionChecker() 
-  {
-    return new VersionChecker(CdeSettings.getSettings()) 
-    {
-      @Override
-      protected String getVersionCheckUrl(VersionChecker.Branch branch) 
-      {
-        switch (branch) 
-        {
-          case TRUNK:
-            return "http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/marketplace.xml";
-          case STABLE:
-            return "http://ci.analytical-labs.com/job/Webdetails-CDE-Release/lastSuccessfulBuild/artifact/server/plugin/dist/marketplace.xml";
-          default:
-            return null;
-        }
-      }
-    };
-  }
   
   private CdfRunJsDashboardWriteResult loadDashboard()
           throws ThingWriteException
@@ -974,5 +833,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator
     CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions(absolute, debug, absRoot, scheme);
     
     return DashboardManager.getInstance().getDashboardCdfRunJs(wcdfFilePath, options, bypassCacheRead);
+  }
+
+  private String getCdfContext()
+  {
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
+    cdfContext.setRequest(getRequest());
+    cdfContext.setRequestParameters(getRequestParameters());
+    return cdfContext.callInPluginClassLoader();
+  }
+
+  private String getCdfContext(IParameterProvider requestParameterProvider)
+  {
+    InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF, "Context");
+    cdfContext.setRequestParameters(requestParameterProvider);
+    return cdfContext.callInPluginClassLoader();
   }
 }

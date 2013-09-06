@@ -29,6 +29,8 @@ import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 
 @SuppressWarnings("unchecked")
+
+//TODO: move to core once pluginsAnalizer gets no pentaho-dependencies
 public class CdfStyles 
 {
   private static Log logger = LogFactory.getLog(CdfStyles.class);

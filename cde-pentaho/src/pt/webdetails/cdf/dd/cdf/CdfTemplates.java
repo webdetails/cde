@@ -95,7 +95,7 @@ public class CdfTemplates {
       solutionRepository.createFolder(CDF_DD_TEMPLATES_CUSTOM);
     }
     
-    String cdfStructure = (String) parameters.get(CdeConstants.CDF_STRUCTURE);
+    String cdfStructure = (String) parameters.get(CdeConstants.MethodParams.CDF_STRUCTURE);
     byte[] fileData = cdfStructure.getBytes("UTF-8");
     switch( solutionRepository.publishFile(CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true)){
       case OK:
