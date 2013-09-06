@@ -13,7 +13,6 @@ http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/serv
 
 	<context:annotation-config />
 
-  <bean id="ICdeEnvironment" class="pt.webdetails.cdf.dd.PentahoCdeEnvironment" scope="prototype"/>
   <bean id="IPluginCall" class="pt.webdetails.cpf.PentahoInterPluginCall" scope="prototype"/>
   <bean id="IRepositoryAccess" class="pt.webdetails.cpf.repository.PentahoRepositoryAccess" scope="prototype"/>
 
