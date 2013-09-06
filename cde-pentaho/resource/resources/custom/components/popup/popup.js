@@ -82,9 +82,6 @@ var PopupComponent = BaseComponent.extend({
       $("#"+this.htmlObject).css("overflow-y","scroll");  
     }
     
-    /* Prevent scrollbars from dragging popup */
-    $("#"+this.htmlObject).parent().draggable({cancel:"#"+this.htmlObject});
-    
     /* Close on click outside */
     var closeOnClickOutside = typeof this.closeOnClickOutside === "undefined"?false:this.closeOnClickOutside;
     
@@ -197,7 +194,7 @@ var PopupComponent = BaseComponent.extend({
     this.ph.bind('drag',dragHandler);
     
     if(draggable){
-      this.ph.draggable();    
+      this.ph.draggable({cancel:"#"+this.htmlObject});    
     }
     var basePos,dragPos;
     this.ph.bind('touchstart',function(e){
