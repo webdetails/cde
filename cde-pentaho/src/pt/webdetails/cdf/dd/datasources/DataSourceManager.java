@@ -24,8 +24,7 @@ import pt.webdetails.cpf.plugins.PluginsAnalyzer;
  * @author Rafael P. Gomes<rafael.gomes@webdetails.pt>
  *
  */
-public class DataSourceManager
-{
+public class DataSourceManager implements IDataSourceManager {
   public static final String CDE_DATASOURCE_IDENTIFIER = "cde-datasources";
   
   private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
@@ -95,16 +94,12 @@ public class DataSourceManager
     JSONObject dsSpec = new JSONObject();
     
     // TODO: this code seems to make more ifs than necessary...
-    for(DataSourceProvider provider : getProviders()) 
-    {
+    for(IDataSourceProvider provider : getProviders()) {
       JSON dsDefinition = this.getProviderJsDefinition(provider.getId());
-      if(dsDefinition != null && !dsDefinition.isEmpty()) 
-      {
-        if(dsDefinition instanceof JSONObject)
-        {
+      if(dsDefinition != null && !dsDefinition.isEmpty()) {
+        if(dsDefinition instanceof JSONObject) {
           JSONObject obj = ((JSONObject) dsDefinition);
-          if(!obj.isNullObject()) 
-          {
+          if(!obj.isNullObject()) {
             dsSpec.putAll(obj);
           }
         }
@@ -173,10 +168,8 @@ public class DataSourceManager
    * 
    * @return List of currently loaded DataSourceProvider
    */
-  public List<DataSourceProvider> getProviders() 
-  {
-    synchronized(providersById) 
-    {
+  public List<IDataSourceProvider> getProviders() {
+    synchronized(providersById) {
       return new ArrayList(providersById.values());
     }
   }

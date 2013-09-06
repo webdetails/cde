@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.plugins.Plugin;
 
-public class DataSourceProvider 
-{
+public class DataSourceProvider implements IDataSourceProvider {
   public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
 
   private Plugin provider;

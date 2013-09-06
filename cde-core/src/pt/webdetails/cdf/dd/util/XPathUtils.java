@@ -10,7 +10,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import pt.webdetails.cdf.dd.render.layout.Render;
 
 /**
  *
@@ -18,7 +17,7 @@ import pt.webdetails.cdf.dd.render.layout.Render;
  */
 public class XPathUtils {
 
-    protected static final Log logger = LogFactory.getLog(Render.class);
+    protected static final Log logger = LogFactory.getLog(XPathUtils.class);
 
     public static String getStringValue(JXPathContext node, String xPath) {
 
