@@ -870,14 +870,29 @@ var CDFDD = Base.extend({
           return {parameter: val, selected: _.contains(currentParams, val)};
         });
     content = '\n' +
-      '<span><b>Settings:</b></span><br/><hr/>\n' +
-      '<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
-      '{{#widget}}' + 
-      '<span>Widget Name:</span><br/><input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input><br/>\n' +
-      '{{/widget}}' + 
-      '<span>Author:</span><br/><input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>\n' +
-      '<span>Description:</span><br/><textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
-      '<span>Style:</span><br/><select class="cdf_settings_input" id="styleInput">\n' +
+      '<span>'+
+      ' <h2>Settings:</h2>'+
+      '</span>'+
+      '<hr style="background: none;"/>\n' +
+      '<span class="title">Title:</span>'+
+      '<br/>'+
+      '<input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input>'+
+      '<br/>\n' +
+      '{{#widget}}' +
+          '<span class="title">Component Name:</span>'+
+          '<br/>'+
+          '<input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input>'+
+          '<br/>\n' +
+      '{{/widget}}' +
+      '<span class="title">Author:</span>'+
+      '<br/>'+
+      '<input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>'+
+      '<span class="title">Description:</span>'+
+      '<br/>'+
+      '<textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
+      '<span class="title">Style:</span>'+
+      '<br/>'+
+      '<select class="cdf_settings_input" id="styleInput">\n' +
       '{{#styles}}' +
       '   <option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
       '{{/styles}}' +
