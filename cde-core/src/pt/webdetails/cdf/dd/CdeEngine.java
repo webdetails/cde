@@ -3,12 +3,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd;
 
-import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.DocumentException;
 
+import pt.webdetails.cdf.dd.bean.factory.CoreBeanFactory;
+import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cpf.Util;
 
 public class CdeEngine {
@@ -27,40 +26,50 @@ public class CdeEngine {
         this.cdeEnv = environment;
     }
 
-
-    public static CdeEngine getInstanceWithEnv(ICdeEnvironment environment) {
-        if (instance == null) {
-            instance = new CdeEngine(environment);
-            try {
-              instance.initialize();
-            } catch (Exception ex) {
-              logger.fatal("Error initializing CdeEngine: " + Util.getExceptionDescription(ex));
-            }                                    
-            
-        }
-        return instance;
-    }
-
     public static CdeEngine getInstance() {
 
         if (instance == null) {
             instance = new CdeEngine();
             try {
-              instance.initialize();
+            	initialize();
             } catch (Exception ex) {
               logger.fatal("Error initializing CdeEngine: " + Util.getExceptionDescription(ex));
             }                                    
         }
 
         return instance;
-
-    }
-
-    protected synchronized void initialize() throws DocumentException, IOException {
-        logger.info("Initializing CDE Plugin " + cdeEnv.getPluginUtils().getPluginName().toUpperCase());
     }
     
     public ICdeEnvironment getEnvironment() {
-      return this.cdeEnv;
+    	return getInstance().cdeEnv;
+    }
+    
+    public static void initialize() throws InitializationException {
+  	  if (instance.cdeEnv == null) {
+  		  
+  		  ICdeBeanFactory factory = new CoreBeanFactory();
+  		  
+  		  // try to get the environment from the configuration
+  		  // will return the DefaultCdaEnvironment by default
+  		  ICdeEnvironment env = instance.getConfiguredEnvironment(factory);
+  		  
+  		  if(env != null){
+  			  env.init(factory);
+  		  }
+  		  
+  		  instance.cdeEnv = env;
+  	  }
+    }
+
+    protected synchronized ICdeEnvironment getConfiguredEnvironment(ICdeBeanFactory factory) throws InitializationException {
+    	
+    	Object obj = new CoreBeanFactory().getBean(ICdeEnvironment.class.getSimpleName()); 
+    	
+    	if(obj != null && obj instanceof ICdeEnvironment){
+    		return (ICdeEnvironment) obj;
+    	}else{
+    		logger.warn("No bean found for ICdeEnvironment, assuming DefaultCdeEnvironment");
+    		return new DefaultCdeEnvironment();
+    	}
     }
 }

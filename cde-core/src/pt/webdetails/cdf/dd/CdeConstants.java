@@ -12,12 +12,7 @@ public class CdeConstants {
 
   public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
 	
-	/**
-	 * solution folder for custom components, styles and templates
-	 */
-	public static final String SOLUTION_DIR = "cde";
-	
-	public static final String DEFAULT_STYLE = "Clean";
+  public static final String DEFAULT_STYLE = "Clean";
 
   public static final String DESIGNER_HEADER_TAG = "@HEADER@";
 

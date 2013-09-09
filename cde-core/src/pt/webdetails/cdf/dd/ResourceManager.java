@@ -32,8 +32,10 @@ public class ResourceManager {
 
   public static ResourceManager instance;
 
-  public static final String PLUGIN_DIR = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeEngine.getInstance().getEnvironment().getPluginUtils().getPluginDirectory().getPath());
-  public static final String SOLUTION_DIR = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeConstants.SOLUTION_DIR + "/");
+  public static final String PLUGIN_DIR = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(
+		  CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getPluginLocation());
+  public static final String SOLUTION_DIR = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(
+		  CdeEngine.getInstance().getEnvironment().getSolutionBaseDir() + "/");
   
   private static final HashSet<String> CACHEABLE_EXTENSIONS = new HashSet<String>();
   private static final HashMap<String, String> cacheContainer = new HashMap<String, String>();
