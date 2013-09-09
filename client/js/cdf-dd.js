@@ -879,7 +879,7 @@ var CDFDD = Base.extend({
       '<input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input>'+
       '<br/>\n' +
       '{{#widget}}' +
-          '<span class="title">Component Name:</span>'+
+          '<span class="title">Widget Name:</span>'+
           '<br/>'+
           '<input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input>'+
           '<br/>\n' +
