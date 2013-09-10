@@ -180,8 +180,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		final String path = ((String) requestParams
 				.getParameter(MethodParams.FILE)).replaceAll("cdfde", "wcdf");
 		if (requestParams.hasParameter(MethodParams.PATH)
-				&& !PentahoRepositoryAccess.getRepository(userSession)
-						.hasAccess(path, FileAccess.EXECUTE)) {
+				&& !CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(path, FileAccess.EXECUTE)) {
 			final HttpServletResponse response = getResponse();
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			logger.warn("Access denied for the syncronize method: " + path
@@ -243,7 +242,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		String relativePath = getWcdfRelativePath(getRequestParameters());
 
 		// Check security
-		if (!PentahoRepositoryAccess.getRepository().hasAccess(relativePath,
+		if (!CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(relativePath,
 				FileAccess.EXECUTE)) {
 			writeOut(out, "Access Denied or File Not Found.");
 			return;
@@ -425,7 +424,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		String wcdfPath = getWcdfRelativePath(requestParams);
 
 		if (requestParams.hasParameter(CdeConstants.MethodParams.PATH)
-				&& !PentahoRepositoryAccess.getRepository().hasAccess(wcdfPath,
+				&& !CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(wcdfPath,
 						IRepositoryAccess.FileAccess.EDIT)) {
 			writeOut(out, "Access Denied");
 		}

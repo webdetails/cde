@@ -174,10 +174,14 @@
 		  </fileset>
 		  <fileset dir="runtime-lib">
 			  <include name="cpf-*.jar" />
+			  <include name="cde-*.jar" />
+			  
+			  <!-- PTEIXEIRA, 10-09-2013, decurring of cde core-refactor -->
+			  <!-- not happy with this, could use some re-thinking -->
+			  <include name="json-*.jar" /> 
 		  </fileset>
-		  
-		  
 	  </copy>
+
 	  <!-- Copy the client files to the resource dir -->
 	  <delete dir="${resource.dir}/css"/>
 	  <delete dir="${resource.dir}/js"/>

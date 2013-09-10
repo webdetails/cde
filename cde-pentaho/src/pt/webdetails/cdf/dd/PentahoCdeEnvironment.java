@@ -14,7 +14,11 @@ import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.plugin.resource.ResourceLoader;
 import pt.webdetails.cpf.IPluginCall;
+import pt.webdetails.cpf.PentahoPluginEnvironment;
+import pt.webdetails.cpf.plugins.Plugin;
+import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.utils.IPluginUtils;
 import pt.webdetails.cpf.utils.PluginUtils;
@@ -47,6 +51,22 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
     		
     		if(factory.containsBean(IRepositoryAccess.class.getSimpleName())){    		
     			repositoryAccess = (IRepositoryAccess)factory.getBean(IRepositoryAccess.class.getSimpleName());
+    			/*
+    			if(repositoryAccess != null){
+    				
+    				PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    		        pluginsAnalyzer.refresh();
+    		        String pluginName = pluginUtils.getPluginName();
+    		        for (Plugin plgn : pluginsAnalyzer.getInstalledPlugins()) {
+    		            if (plgn.getName().equalsIgnoreCase(pluginName) || plgn.getId().equalsIgnoreCase(pluginName)) {
+    		                plgn.setName(pluginName);
+    		                //IReadAccess readAccess = PentahoPluginEnvironment.getInstance().getOtherPluginSystemAccess(plgn.getId(), null);
+    		                //readAccess.
+    		                repositoryAccess.setPlugin(plgn);
+    		                break;
+    		            }
+    		        }
+    			}*/
     		}
     		
     		if(factory.containsBean(IPluginCall.class.getSimpleName())){    		

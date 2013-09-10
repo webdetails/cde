@@ -15,6 +15,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
@@ -28,6 +29,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 @SuppressWarnings("unchecked")
@@ -88,7 +90,7 @@ public class CdfTemplates {
     final String fileName = (String) parameters.get("file");
     logger.info("Saving File:" + fileName);
     
-    PentahoRepositoryAccess solutionRepository = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
+    IRepositoryAccess solutionRepository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
     
     if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
     {

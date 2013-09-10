@@ -29,7 +29,7 @@ public class DataSourceManager implements IDataSourceManager {
   
   private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
   
-  private static final DataSourceManager instance = new DataSourceManager();
+  private static DataSourceManager instance;
   
   // The map key is the data source provider id.
   private final Map<String, DataSourceProvider> providersById;
@@ -39,9 +39,13 @@ public class DataSourceManager implements IDataSourceManager {
 
   private boolean _isRefresh;
   
-  public static DataSourceManager getInstance()
-  {
-    return instance;
+  public static DataSourceManager getInstance(){
+    
+	  if(instance == null){
+		  instance = new DataSourceManager();
+	  }
+	  
+	  return instance;
   }
   
   private DataSourceManager() 

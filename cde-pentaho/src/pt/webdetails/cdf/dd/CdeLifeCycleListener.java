@@ -19,6 +19,8 @@ import org.pentaho.platform.repository.hibernate.HibernateUtil;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
+
+import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 public class CdeLifeCycleListener implements IPluginLifecycleListener
@@ -123,7 +125,7 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
         if(success){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         }
-        PentahoRepositoryAccess repo = (PentahoRepositoryAccess) PentahoRepositoryAccess.getRepository();
+        IRepositoryAccess repo = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.cdfde", "cde/widgets/sample.cdfde");
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.wcdf", "cde/widgets/sample.wcdf");
         repo.copySolutionFile("system/pentaho-cdf-dd/resources/samples/widget.cda", "cde/widgets/sample.cda");
