@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
+import java.io.ByteArrayInputStream;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -20,8 +22,8 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
-import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 /**
@@ -34,10 +36,10 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   
   public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
-    this.write((IRepositoryAccess)output, (CggRunJsDashboardWriteContext)context, (GenericComponent)t);
+    this.write((IUserContentAccess) output, (CggRunJsDashboardWriteContext)context, (GenericComponent)t);
   }
   
-  public void write(IRepositoryAccess repository, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
+  public void write(IUserContentAccess access, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
   {
     StringBuilder out = new StringBuilder();
     
@@ -63,12 +65,12 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     
     String chartScript = out.toString();
     
-    writeFile(repository, chartScript, dashboardFileDir, chartName, dashboardFileName);
-    writeFile(repository, chartScript, dashboardFileDir, chartName,  null);
+    writeFile(access, chartScript, dashboardFileDir, chartName, dashboardFileName);
+    writeFile(access, chartScript, dashboardFileDir, chartName,  null);
   }
   
    private void writeFile(
-           IRepositoryAccess repository, 
+		   IUserContentAccess access, 
            String chartScript, 
            String dashboardFileDir,
            String chartName, 
@@ -81,13 +83,10 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       
       byte[] content = chartScript.getBytes(CharsetHelper.getEncoding());
       
-      if(repository.publishFile(dashboardFileDir, fileName, content, true) != SaveFileStatus.OK)
-      {
+      if(!access.saveFile(Utils.joinPath(dashboardFileDir, fileName), new ByteArrayInputStream(content))) {
         _logger.error("Failed to write CGG script file for chart '" + chartName + "'.");
       }
-    }
-    catch(Exception ex)
-    {
+    } catch(Exception ex) {
       _logger.error("Failed to write script file for '" + chartName + "': " + ex.getCause().getMessage());
     }
   }

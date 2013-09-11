@@ -43,11 +43,10 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.IRepositoryAccess.FileAccess;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
-import pt.webdetails.cpf.repository.IRepositoryFile;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 
 /**
  * @author dcleao
@@ -158,7 +157,7 @@ public final class DashboardManager
           throws ThingWriteException 
   {
     // 1. Build the cache key.
-    String cdeFilePath = Utils.normalizeSolutionRelativePath(wcdf.getStructurePath());
+    String cdeFilePath = Utils.sanitizeSlashesInPath(wcdf.getStructurePath());
     
     DashboardCacheKey cacheKey = new DashboardCacheKey(
             cdeFilePath,
@@ -172,23 +171,18 @@ public final class DashboardManager
     // NOTE: the cache is shared by all users.
     // The current user may not have access to a cache item previously
     // created by another user.
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-    IRepositoryFile cdeFile = repository.getRepositoryFile(cdeFilePath, FileAccess.READ); // was NO_PERM=0;
-    if(cdeFile == null)
-    {
+    IBasicFile cdeFile = CdeEnvironment.getUserContentAccess().fetchFile(cdeFilePath);
+    if(cdeFile == null) {
       throw new ThingWriteException(new FileNotFoundException(cdeFilePath));
     }
     
     // 3. Reading from the cache?
     CdfRunJsDashboardWriteResult dashWrite;
-    if(!bypassCacheRead)
-    {
-      try
-      {
-        dashWrite = getDashboardWriteResultFromCache(cacheKey, repository, cdeFile);
-      }
-      catch(FileNotFoundException ex)
-      {
+    if(!bypassCacheRead) {
+      try {
+        dashWrite = getDashboardWriteResultFromCache(cacheKey, cdeFilePath);
+      
+      } catch(FileNotFoundException ex) {
         // Is in cache but:
         // * file doesn't exist (anymore)
         // * user has insufficient permissions to access the cdfde file
@@ -212,7 +206,7 @@ public final class DashboardManager
     Dashboard dash;
     try
     {
-      dash = this.getDashboard(wcdf, repository, cdeFile, cdeFilePath, bypassCacheRead);
+      dash = this.getDashboard(wcdf, cdeFilePath, bypassCacheRead);
     }
     catch(ThingReadException ex)
     {
@@ -252,21 +246,20 @@ public final class DashboardManager
           boolean bypassCacheRead)
           throws ThingReadException
   {
-    String cdeFilePath = Utils.normalizeSolutionRelativePath(wcdf.getStructurePath());
+    String cdeFilePath = Utils.sanitizeSlashesInPath(wcdf.getStructurePath());
     
     // 1. Check existence and permissions to the original CDFDE file
     // NOTE: the cache is shared by all users.
     // The current user may not have access to a cache item previously
     // created by another user.
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-    IRepositoryFile cdeFile = repository.getRepositoryFile(cdeFilePath, FileAccess.READ); // was NO_PERM=0;
+    IBasicFile cdeFile = CdeEnvironment.getUserContentAccess().fetchFile(cdeFilePath);
     if(cdeFile == null)
     {
       throw new ThingReadException(new FileNotFoundException(cdeFilePath));
     }
     
     // 2. Get the Dashboard object
-    return this.getDashboard(wcdf, repository, cdeFile, cdeFilePath, bypassCacheRead);
+    return this.getDashboard(wcdf, cdeFilePath, bypassCacheRead);
   }
   
   /**
@@ -288,7 +281,7 @@ public final class DashboardManager
   {
     // Look for cached Dashboard objects that contain the widget.
     
-    String cdeFilePath = Utils.normalizeSolutionRelativePath(DashboardWcdfDescriptor.toStructurePath(wcdfPath));
+    String cdeFilePath = Utils.sanitizeSlashesInPath(DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     
     Map<String, Dashboard> dashboardsByCdfdeFilePath;
     synchronized(this._dashboardsByCdfdeFilePath)
@@ -393,8 +386,6 @@ public final class DashboardManager
   
   private Dashboard getDashboard(
           DashboardWcdfDescriptor wcdf,
-          IRepositoryAccess repository,
-          IRepositoryFile cdeFile,
           String cdeFilePath,
           boolean bypassCacheRead)
           throws ThingReadException
@@ -415,36 +406,32 @@ public final class DashboardManager
     
     // Read cache, cache item existed and it is valid?
     if(cachedDash != null &&
-       cachedDash.getSourceDate().getTime() >= cdeFile.getLastModified())
+       cachedDash.getSourceDate().getTime() >= CdeEnvironment.getUserContentAccess().getLastModified(cdeFilePath))
     {
       // Check WCDF file date as well
-      IRepositoryFile wcdfFile = repository.getRepositoryFile(wcdf.getPath(), FileAccess.READ); // was NO_PERM=0;
-      if(wcdfFile == null)
-      {
+      
+      if(CdeEnvironment.getUserContentAccess().fileExists(wcdf.getPath())) {
         throw new ThingReadException(new FileNotFoundException(wcdf.getPath()));
       }
 
-      if(cachedDash.getSourceDate().getTime() >= wcdfFile.getLastModified()) 
-      {
+      if(cachedDash.getSourceDate().getTime() >= CdeEnvironment.getUserContentAccess().getLastModified(wcdf.getPath())) {
         _logger.info("Cached Dashboard instance is valid, using it.");
 
         return cachedDash;
       }
     }
     
-    if(cachedDash != null)
-    {
+    if(cachedDash != null) {
       _logger.info("Cached Dashboard instance invalidated, reading from repository.");
     }
     
-    Dashboard newDash = this.readDashboardFromCdfdeJs(wcdf, repository);
+    Dashboard newDash = this.readDashboardFromCdfdeJs(wcdf);
     
     return this.replaceDashboardInCache(cdeFilePath, newDash, cachedDash);
   }
   
   private Dashboard readDashboardFromCdfdeJs(
-          DashboardWcdfDescriptor wcdf,
-          IRepositoryAccess repository)
+          DashboardWcdfDescriptor wcdf)
           throws ThingReadException
   {
     // 1. Open the CDFDE file.
@@ -453,7 +440,7 @@ public final class DashboardManager
     
     try
     {
-      cdfdeDoc = openDashboardAsJXPathContext(repository, wcdf);
+      cdfdeDoc = openDashboardAsJXPathContext(wcdf);
     }
     catch(FileNotFoundException ex)
     {
@@ -526,8 +513,7 @@ public final class DashboardManager
   
   private CdfRunJsDashboardWriteResult getDashboardWriteResultFromCache(
           DashboardCacheKey cacheKey,
-          IRepositoryAccess repository,
-          IRepositoryFile cdeFile) 
+          String cdeFilePath) 
           throws FileNotFoundException
   {
     // 1. Try to obtain dashboard from cache
@@ -556,11 +542,10 @@ public final class DashboardManager
             (CdfRunJsDashboardWriteResult)cacheElement.getValue();
     
     // 3. Get the template file
-    IRepositoryFile templFile = null;
+    IBasicFile templFile = null;
     String templPath = cacheKey.getTemplate();
-    if(StringUtils.isNotEmpty(templPath))
-    {
-      templFile = repository.getRepositoryFile(templPath, FileAccess.READ);
+    if(StringUtils.isNotEmpty(templPath)) {
+      templFile = CdeEnvironment.getUserContentAccess().fetchFile(templPath);
     }
     
     // 4. Check if cache item has expired
@@ -577,17 +562,15 @@ public final class DashboardManager
     Date dashLoadedDate = dashWrite.getLoadedDate();
     
     boolean cacheExpired = cal.getTime().after(dashLoadedDate);
-    if(cacheExpired)
-    {
+    if(cacheExpired) {
       _logger.info("Cached dashboard render expired, re-rendering.");
       return null;
     }
 
-    boolean cacheInvalid = (cdeFile.getLastModified  () > dashLoadedDate.getTime()) ||
-                           (templFile != null && 
-                            templFile.getLastModified() > dashLoadedDate.getTime());
-    if(cacheInvalid)
-    {
+    boolean cacheInvalid = (CdeEnvironment.getUserContentAccess().getLastModified(cdeFilePath)  > dashLoadedDate.getTime()) ||
+                           (CdeEnvironment.getUserContentAccess().fileExists(templPath) 
+                        		   && CdeEnvironment.getUserContentAccess().getLastModified(templPath) > dashLoadedDate.getTime());
+    if(cacheInvalid) {
       _logger.info("Cached dashboard render invalidated, re-rendering.");
       return null;
     }
@@ -639,9 +622,10 @@ public final class DashboardManager
     // to avoid overriding default cache
     String cacheConfigFile = CACHE_CFG_FILE;
 
-    String cfgFile = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(CdeEngine.getInstance().getEnvironment().getPluginUtils().getPluginDirectory().getPath() + cacheConfigFile);
-   
-    CacheManager cacheMgr = new CacheManager(cfgFile);
+    IBasicFile cfgFile = CdeEnvironment.getPluginSystemReader().fetchFile(
+    		CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getPluginLocation() + cacheConfigFile);
+  
+    CacheManager cacheMgr = new CacheManager(cfgFile != null ? cfgFile.getFullPath() : null);
     
     // enableCacheProperShutdown
     System.setProperty(CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true");
@@ -683,21 +667,19 @@ public final class DashboardManager
   }
   
   public static JXPathContext openDashboardAsJXPathContext(
-          IRepositoryAccess repository, 
           DashboardWcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
-    return openDashboardAsJXPathContext(repository, wcdf.getStructurePath(), wcdf);
+    return openDashboardAsJXPathContext(wcdf.getStructurePath(), wcdf);
   }
   
   public static JXPathContext openDashboardAsJXPathContext(
-          IRepositoryAccess repository, 
           String dashboardLocation, 
           DashboardWcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
     final JSONObject json = (JSONObject)JsonUtils.readJsonFromInputStream(
-            repository.getResourceInputStream(dashboardLocation));
+            CdeEnvironment.getUserContentAccess().getFileInputStream(dashboardLocation));
 
     if (wcdf != null)
     {

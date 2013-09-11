@@ -18,6 +18,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+
 
 /**
  * Utility class for internationalization
@@ -37,8 +39,8 @@ public class Messages {
     if (bundle == null) {
       InputStream in = null;
         try {
-          String messagesPath = CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getMessagePropertiesResourceLocation();
-          in = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getResourceInputStream(messagesPath) ; 
+          String messagesPath = CdeEnvironment.getPluginResourceLocationManager().getMessagePropertiesResourceLocation();
+          in = CdeEnvironment.getPluginSystemReader().getFileInputStream(messagesPath); 
           bundle = new PropertyResourceBundle( in );
           Messages.locales.put(locale, bundle);
         } catch (Exception e) {

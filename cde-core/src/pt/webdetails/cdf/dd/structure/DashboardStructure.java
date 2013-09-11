@@ -4,14 +4,15 @@
 
 package pt.webdetails.cdf.dd.structure;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -19,9 +20,9 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
@@ -42,55 +43,47 @@ import pt.webdetails.cdf.dd.model.meta.IPropertyTypeSource;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 import pt.webdetails.cdf.dd.model.meta.writer.cdexml.XmlThingWriterFactory;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
-import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
-import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
-public class DashboardStructure implements IDashboardStructure
-{
+public class DashboardStructure implements IDashboardStructure {
   private static final String ENCODING = "UTF-8";
   
   private static Log logger = LogFactory.getLog(DashboardStructure.class);
   
-  public DashboardStructure()
-  {
+  public DashboardStructure() {
   }
 
-  public void delete(HashMap<String, Object> parameters) throws DashboardStructureException
-  {
+  public void delete(HashMap<String, Object> parameters) throws DashboardStructureException {
     // 1. Delete File
     String filePath = (String)parameters.get("file");
     
     logger.info("Deleting File:" + filePath);
     
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-    if(!repository.removeFile(filePath))
-    {
+    if(!CdeEnvironment.getUserContentAccess().deleteFile(filePath)) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
   }
   
-  public JSON load(HashMap<String, Object> parameters) throws Exception
-  {
+  public JSON load(HashMap<String, Object> parameters) throws Exception {
     JSONObject result = null;
 
     InputStream file = null;
     InputStream wcdfFile = null;
-    try
-    {
+    try {
       String cdeFilePath = (String)parameters.get("file");
       
       logger.info("Loading File:" + cdeFilePath);
     
       // 1. Read .CDFDE file
-      IRepositoryAccess solutionRepository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-      if(solutionRepository.resourceExists(cdeFilePath))
-      {
-        file = solutionRepository.getResourceInputStream(cdeFilePath);
-      }
-      else
-      {
-        file = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE_PATH));
+      
+      IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+      
+      if(access.fileExists(cdeFilePath)) {
+        file = access.getFileInputStream(cdeFilePath);
+      
+      } else {
+    	
+        file = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
       }
 
       JSON cdeData = JsonUtils.readJsonFromInputStream(file);
@@ -103,17 +96,9 @@ public class DashboardStructure implements IDashboardStructure
       result = new JSONObject();
       result.put("wcdf", wcdfData);
       result.put("data", cdeData);
-    }
-    catch (FileNotFoundException e)
-    {
-      throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_001_LOAD_FILE_NOT_FOUND_EXCEPTION"));
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
-    }
-    finally
-    {
+    } finally {
       IOUtils.closeQuietly(file);
       IOUtils.closeQuietly(wcdfFile);
     }
@@ -121,75 +106,62 @@ public class DashboardStructure implements IDashboardStructure
     return result;
   }
 
-  public DashboardWcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException
-  {
+  public DashboardWcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException {
     DashboardWcdfDescriptor wcdf  = DashboardWcdfDescriptor.load(wcdfFilePath);
     
     return wcdf != null ? wcdf : new DashboardWcdfDescriptor();
   }
   
-  public DashboardWcdfDescriptor loadWcdfDescriptor(Document wcdfDoc)
-  {
+  public DashboardWcdfDescriptor loadWcdfDescriptor(Document wcdfDoc) {
     return DashboardWcdfDescriptor.fromXml(wcdfDoc);
   }
 
-  public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception
-  {
+  public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception {
     final HashMap<String, String> result = new HashMap<String, String>();
     
     // 1. Get CDE file parameters
-    String cdeRelFilePath = (String)parameters.get("file");
-    String cdeFileDir  = FilenameUtils.getFullPath(cdeRelFilePath);
-    String cdeFileName = FilenameUtils.getName(cdeRelFilePath);
+    String cdeFilePath = (String)parameters.get("file");
     
-    logger.info("Saving File:" + cdeRelFilePath);
+    logger.info("Saving File:" + cdeFilePath);
 
     // 2. If not the CDE temp file, delete the temp file, if one exists
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
+    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     
-    boolean isPreview = cdeRelFilePath.indexOf("_tmp.cdfde") >= 0;
-    if(!isPreview)
-    {
-      String cdeTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cdfde");
-      repository.removeFileIfExists(cdeTempFilePath);
+    boolean isPreview = cdeFilePath.indexOf("_tmp.cdfde") >= 0;
+    if(!isPreview) {
+      String cdeTempFilePath = cdeFilePath.replace(".cdfde", "_tmp.cdfde");
+      access.deleteFile(cdeTempFilePath);
       
-      String cdaTempFilePath = cdeFileDir + cdeFileName.replace(".cdfde", "_tmp.cda");
-      repository.removeFileIfExists(cdaTempFilePath);
+      String cdaTempFilePath = cdeFilePath.replace(".cdfde", "_tmp.cda");
+      access.deleteFile(cdaTempFilePath);
     }
     
     // 3. CDE
     String cdfdeJsText = (String)parameters.get("cdfstructure");
-    SaveFileStatus status = repository.publishFile(cdeFileDir, cdeFileName, safeGetEncodedBytes(cdfdeJsText), true);
-    if (status != SaveFileStatus.OK)
-    {
+
+    if (!access.saveFile(cdeFilePath, new ByteArrayInputStream(safeGetEncodedBytes(cdfdeJsText)))) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
 
     // 3. CDA
     CdaRenderer cdaRenderer = new CdaRenderer(cdfdeJsText);
     
-    String cdaFileName = cdeFileName.replace(".cdfde", ".cda");
+    String cdaFileName = cdeFilePath.replace(".cdfde", ".cda");
     
     // Any data sources?
-    if(cdaRenderer.isEmpty())
-    {
-      repository.removeFileIfExists(Utils.joinPath(cdeFileDir, cdaFileName));
-    }
-    else
-    {
+    if(cdaRenderer.isEmpty()) {
+    	access.deleteFile(cdaFileName);
+   
+    } else {
       // throws Exception ????
       String cdaText = cdaRenderer.render();
-
-      status = repository.publishFile(cdeFileDir, cdaFileName, safeGetEncodedBytes(cdaText), true);
-      if(status != SaveFileStatus.OK)
-      {
+      if(!access.saveFile(cdaFileName, new ByteArrayInputStream(safeGetEncodedBytes(cdaText)))) {
         throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
     }
     
-    if(!isPreview) 
-    {
-      String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+    if(!isPreview) {
+      String wcdfFilePath = cdeFilePath.replace(".cdfde", ".wcdf");
     
       // 4. When the component is a widget,
       //    and its internal "structure" has changed,
@@ -199,7 +171,7 @@ public class DashboardStructure implements IDashboardStructure
       DashboardManager.getInstance().invalidateDashboard(wcdfFilePath);
 
       // 5. CGG (requires an updated Dashboard instance)
-      this.saveCgg(repository, wcdfFilePath);
+      this.saveCgg(access, wcdfFilePath);
     }
     
     // TODO: Is this used?
@@ -210,9 +182,8 @@ public class DashboardStructure implements IDashboardStructure
     return result;
   }
   
-  private void saveCgg(IRepositoryAccess repository, String cdeRelFilePath) 
-          throws ThingReadException, UnsupportedThingException, ThingWriteException
-  {
+  private void saveCgg(IUserContentAccess access, String cdeRelFilePath) 
+          throws ThingReadException, UnsupportedThingException, ThingWriteException {
     String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
     
     // Obtain an UPDATED dashboard object
@@ -222,35 +193,28 @@ public class DashboardStructure implements IDashboardStructure
     CggRunJsThingWriterFactory cggWriteFactory = new CggRunJsThingWriterFactory();
     IThingWriter cggDashWriter = cggWriteFactory.getWriter(dash);
     CggRunJsDashboardWriteContext cggDashContext = new CggRunJsDashboardWriteContext(cggWriteFactory, dash);
-    cggDashWriter.write(repository, cggDashContext, dash);
+    cggDashWriter.write(access, cggDashContext, dash);
   }
   
-  public void saveas(HashMap<String, Object> parameters) throws Exception
-  {
+  public void saveas(HashMap<String, Object> parameters) throws Exception {
     // TODO: This method does not maintain the Widget status and parameters of a dashboard
     // Is this intended?
     
     // 1. Read empty wcdf file
-    File wcdfFile = new File(SyncronizeCdfStructure.EMPTY_WCDF_FILE_PATH);
+    InputStream wcdfFile = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_WCDF_FILE_PATH);
     
-    String wcdfContentAsString = FileUtils.readFileToString(wcdfFile, ENCODING);
+    String wcdfContentAsString = IOUtils.toString(wcdfFile, ENCODING);
 
     // 2. Fill-in wcdf file title and description
     String title = StringUtils.defaultIfEmpty((String)parameters.get("title"), "Dashboard");
     String description = StringUtils.defaultIfEmpty((String)parameters.get("description"), "");
 
-    wcdfContentAsString = wcdfContentAsString
-            .replaceFirst("@DASBOARD_TITLE@",       title)
-            .replaceFirst("@DASBOARD_DESCRIPTION@", description);
+    wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_TITLE@", title).replaceFirst("@DASBOARD_DESCRIPTION@", description);
 
     String filePath = (String)parameters.get("file");
 
     // 3. Publish new wcdf file
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-    
-    SaveFileStatus status = repository.publishFile(filePath, wcdfContentAsString.getBytes(ENCODING), true);
-    if(status != SaveFileStatus.OK)
-    {
+    if(!CdeEnvironment.getUserContentAccess().saveFile(filePath, new ByteArrayInputStream(wcdfContentAsString.getBytes(ENCODING)))) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
     
@@ -260,45 +224,38 @@ public class DashboardStructure implements IDashboardStructure
     save(parameters);
   }
 
-  public void newfile(HashMap<String, Object> parameters) throws Exception
-  {
+  public void newfile(HashMap<String, Object> parameters) throws Exception {
     // 1. Read Empty Structure
     InputStream cdfstructure = null;
-    try
-    {
-      cdfstructure = new FileInputStream(new File(SyncronizeCdfStructure.EMPTY_STRUCTURE_FILE_PATH));
+    try {
+    	cdfstructure = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
 
       // 2. Save file
       parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
       
       saveas(parameters);
-    }
-    finally
-    {
+      
+    } finally {
       IOUtils.closeQuietly(cdfstructure);
     }
   }
 
   // .WCDF file
   // (called using reflection by SyncronizeCdfStructure)
-  public void savesettings(HashMap<String, Object> parameters) throws DashboardStructureException
-  {
+  public void savesettings(HashMap<String, Object> parameters) throws DashboardStructureException {
     String wcdfFilePath = (String)parameters.get("file");
     logger.info("Saving settings file:" + wcdfFilePath);
 
     DashboardWcdfDescriptor wcdf = null;
-    try
-    {
+    try {
       wcdf = DashboardWcdfDescriptor.load(wcdfFilePath);
-    }
-    catch(IOException ex)
-    {
+    
+    } catch(IOException ex) {
       // Access?
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
     }
 
-    if(wcdf == null)
-    {
+    if(wcdf == null) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_009_SAVE_SETTINGS_FILENOTFOUND_EXCEPTION"));
     }
 
@@ -306,48 +263,37 @@ public class DashboardStructure implements IDashboardStructure
     wcdf.update(parameters);
     
     // Save to repository
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
     String wcdfText = wcdf.toXml().asXML();
-    SaveFileStatus status = repository.publishFile(wcdfFilePath, safeGetEncodedBytes(wcdfText), true);
-    if(status != SaveFileStatus.OK)
-    {
+    if(!CdeEnvironment.getUserContentAccess().saveFile(wcdfFilePath, new ByteArrayInputStream(safeGetEncodedBytes(wcdfText)))) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
     }
     
     // Save widget component.xml file?
-    if(wcdf.isWidget())
-    {
+    if(wcdf.isWidget()) {
       publishWidgetComponentXml(wcdf);
     }
   }
 
-  private void publishWidgetComponentXml(DashboardWcdfDescriptor wcdf)
-  {
+  private void publishWidgetComponentXml(DashboardWcdfDescriptor wcdf) {
     String widgetPath = wcdf.getPath().replaceAll(".wcdf$", ".component.xml");
     
     logger.info("Saving widget component file:" + widgetPath);
     
     Document doc = createAndWriteWidgetComponentTypeXml(wcdf);
-    if(doc == null)
-    {
+    if(doc == null) {
       // Failed
       return;
     }
 
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-
-    repository.publishFile(widgetPath, safeGetEncodedBytes(doc.asXML()), true);
+    CdeEnvironment.getPluginSystemWriter().saveFile(widgetPath, new ByteArrayInputStream(safeGetEncodedBytes(doc.asXML())));
     
     // This will allow the metadata model to receive the
     // new/updated widget-component definition (name and parameters).
     // The CDE Editor will show new/updated widgets.
     // No need to refresh data source definitions.
-    try
-    {
+    try {
       DashboardManager.getInstance().refreshAll(/*refreshDatasources*/false);
-    }
-    catch(Exception ex)
-    {
+    } catch(Exception ex)  {
       logger.error("Error while refreshing the meta data cache", ex);
     }
   }

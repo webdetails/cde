@@ -15,12 +15,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 /**
  * Class to hold the descriptors for a .wcdf file 
@@ -296,16 +297,21 @@ public class DashboardWcdfDescriptor
   
   public static DashboardWcdfDescriptor load(String wcdfFilePath) throws IOException
   {
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
-    if(!repository.resourceExists(wcdfFilePath))
-    {
+    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    if(!access.fileExists(wcdfFilePath)){
       return null;
     }
     
-    Document wcdfDoc = repository.getResourceAsDocument(wcdfFilePath);
-    DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml(wcdfDoc);
-    wcdf.setPath(wcdfFilePath);
-    return wcdf;
+    Document wcdfDoc = null;
+	try {
+		wcdfDoc = Utils.getDocFromFile(access.fetchFile(wcdfFilePath), null);
+		DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.fromXml(wcdfDoc);
+	    wcdf.setPath(wcdfFilePath);
+	    return wcdf;
+	} catch (DocumentException e) {
+		_logger.error("DashboardWcdfDescriptor.load(wcdfFilePath)", e);
+	}
+	return null;
   }
   
   public static DashboardRendererType parseRendererType(String rendererType, DashboardRendererType defaultValue)

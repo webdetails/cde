@@ -48,7 +48,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     }
     
     this._wcdf = builder._wcdf;
-    this._sourcePath = Utils.normalizeSolutionRelativePath(StringUtils.defaultIfEmpty(builder._sourcePath, ""));
+    this._sourcePath = Utils.sanitizeSlashesInPath(StringUtils.defaultIfEmpty(builder._sourcePath, ""));
     this._sourceDate = builder._sourceDate == null ? new Date() : builder._sourceDate;
     
     // NOTE: During editing, components may have no name and even duplicate names...

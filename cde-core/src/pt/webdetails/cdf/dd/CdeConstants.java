@@ -4,11 +4,11 @@ import pt.webdetails.cdf.dd.util.Utils;
 
 public class CdeConstants {
 	
-	public static final String PLUGIN_NAME = "pentaho-cdf-dd";
+  //public static final String PLUGIN_NAME = "pentaho-cdf-dd";
 
   public static final String SYSTEM_PATH = "system";
 
-  public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + PLUGIN_NAME + "/";
+  //public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + PLUGIN_NAME + "/";
 
   public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
 	
@@ -57,5 +57,13 @@ public class CdeConstants {
   public static final String DATA_URL_TAG = "cdf-structure.js";
 
   public static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/pentaho-cdf-dd/Syncronize";
+  
+  public static final String RESOURCE_FOOTER = "resources/patch-footer.html";
+  
+  public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
+  
+  public static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
+  
+  public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
 
 }

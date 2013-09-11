@@ -42,8 +42,6 @@
 
 package pt.webdetails.cdf.dd.packager;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -286,12 +284,12 @@ public class JSMin {
 	class UnterminatedRegExpLiteralException extends Exception {
 	}
 
+	/*
 	public static void main(String arg[]) {
 		try {
-			JSMin jsmin = new JSMin(new FileInputStream(arg[0]), System.out);
+			JSMin jsmin = new JSMin(new InputStream(arg[0]), System.out);
 			jsmin.jsmin();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		
 		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -303,7 +301,7 @@ public class JSMin {
 		} catch (UnterminatedStringLiteralException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 }

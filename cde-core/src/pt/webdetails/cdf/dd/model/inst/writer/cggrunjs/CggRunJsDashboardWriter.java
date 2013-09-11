@@ -14,7 +14,7 @@ import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 /**
  * @author dcleao
@@ -23,10 +23,10 @@ public class CggRunJsDashboardWriter implements IThingWriter
 {
   public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
-    this.write((IRepositoryAccess)output, (CggRunJsDashboardWriteContext)context, (Dashboard)t);
+    this.write((IUserContentAccess)output, (CggRunJsDashboardWriteContext)context, (Dashboard)t);
   }
   
-  public void write(IRepositoryAccess repository, CggRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
+  public void write(IUserContentAccess access, CggRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
   {
     assert context.getDashboard() == dash;
     
@@ -52,7 +52,7 @@ public class CggRunJsDashboardWriter implements IThingWriter
             throw new ThingWriteException(ex);
           }
           
-          writer.write(repository, context, comp);
+          writer.write(access, context, comp);
         }
       }
     }

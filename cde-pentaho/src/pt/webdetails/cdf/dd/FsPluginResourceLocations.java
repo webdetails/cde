@@ -65,7 +65,6 @@ public final class FsPluginResourceLocations
     }
 
     // External component locations
-    /*
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
     pluginsAnalyzer.refresh();
 
@@ -77,6 +76,5 @@ public final class FsPluginResourceLocations
       
       _logger.debug(String.format("Found CDE components location declared in %s [%s]", entity.getPlugin().getId(), location));
     }
-    */
   }
 }

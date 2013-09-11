@@ -5,12 +5,10 @@
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.XmlPluginModelReadContext;
-import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.CdeEngine;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,7 +26,11 @@ import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.PrimitiveComponentType;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IBasicFileFilter;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * Loads XML model files,
@@ -38,13 +40,9 @@ import pt.webdetails.cdf.dd.util.Utils;
  *
  * @author dcleao
  */
-public final class XmlFsPluginModelReader implements IThingReader
-{
-  public static final String SOLUTION_PATH = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath("");
-  
-  // Paths relative to getSolutionPath
-  public static final String PLUGIN_DIR       = Utils.joinPath("system", CdeConstants.PLUGIN_NAME);
-  public static final String RESOURCES_DIR    = Utils.joinPath(PLUGIN_DIR, "resources");
+public final class XmlFsPluginModelReader implements IThingReader {
+
+  public static final String RESOURCES_DIR    = "resources";
 
   public static final String DEF_BASE_TYPE    = PrimitiveComponentType.class.getSimpleName();
   
@@ -59,37 +57,30 @@ public final class XmlFsPluginModelReader implements IThingReader
   public static final String DEF_WIDGET_STUB_TYPE  = WidgetComponentType.class.getSimpleName();
   public static final String WIDGETS_DIR      = Utils.joinPath("cde", "widgets");
 
-  public static final String CUSTOM_PROPS_FILENAME  = "property.xml";
-  public static final String COMPONENT_FILENAME     = "component.xml";
+  public static final String CUSTOM_PROPS_FILENAME  = "property";
+  public static final String COMPONENT_FILENAME     = "component";
+  public static final String CUSTOM_PROPS_FILE_EXTENSION  = "xml";
 
-  protected static final Log _logger = LogFactory.getLog(XmlFsPluginModelReader.class);
+  protected static final Log logger = LogFactory.getLog(XmlFsPluginModelReader.class);
 
   // -----------
   
-  private final String  _basePath;
-  private final Boolean _continueOnError;
+  private final Boolean continueOnError;
 
-  public XmlFsPluginModelReader()
-  {
-    this(SOLUTION_PATH);
-  }
-
-  public XmlFsPluginModelReader(String path)
-  {
-    this(path, false);
+  public XmlFsPluginModelReader(){
+	  continueOnError = false; /* default */
   }
 
   public XmlFsPluginModelReader(boolean continueOnError)
   {
-    this(SOLUTION_PATH, continueOnError);
+    this.continueOnError = continueOnError;
   }
 
   public XmlFsPluginModelReader(String path, boolean continueOnError)
   {
     if(StringUtils.isEmpty(path)) { throw new IllegalArgumentException("path"); }
 
-    this._continueOnError = continueOnError;
-    this._basePath = path;
+    this.continueOnError = continueOnError;
   }
 
   // As this is a top-level reader,
@@ -135,8 +126,7 @@ public final class XmlFsPluginModelReader implements IThingReader
   {
     assert model != null;
 
-    XmlPluginModelReadContext fsContext = new
-            XmlPluginModelReadContext(context, this._basePath);
+    XmlPluginModelReadContext fsContext = new XmlPluginModelReadContext(context);
 
     // Read Properties
     this.readBaseProperties  (model, fsContext);
@@ -148,196 +138,154 @@ public final class XmlFsPluginModelReader implements IThingReader
     this.readWidgetStubComponents(model, fsContext);
   }
   
-  private void readBaseProperties(MetaModel.Builder model, IThingReadContext context)
-          throws ThingReadException
-  {
-    File baseDir = new File(this._basePath, BASE_PROPS_DIR);
-    FilenameFilter xmlFilesFilter = new FilenameFilter()
-    {
-      public boolean accept(File adir, String name)
-      {
-        return !name.startsWith(".") && name.endsWith(".xml");
-      }
-    };
+  private void readBaseProperties(MetaModel.Builder model, IThingReadContext context) throws ThingReadException {
     
-    _logger.info(String.format("Loading BASE properties from: %s", BASE_PROPS_DIR));
-    
-    String baseDirPath = baseDir.getPath();
-    String[] fileNames = baseDir.list(xmlFilesFilter);
-    if(fileNames != null)
-    {
-      for (String fileName : fileNames)
-      {
-        String filePath = Utils.joinPath(baseDirPath, fileName);
-        this.readPropertiesFile(model, context, filePath);
-      }
-    }
-  }
-
-  private void readCustomProperties(MetaModel.Builder model, IThingReadContext context)
-          throws ThingReadException
-  {
-    File baseDir = new File(this._basePath, CUSTOM_PROPS_DIR);
-
-    FilenameFilter subFoldersWithPropsFilter = new FilenameFilter()
-    {
-      public boolean accept(File systemFolder, String name)
-      {
-        File propFile = new File(Utils.joinPath(systemFolder.getPath(), name, CUSTOM_PROPS_FILENAME));
-        return propFile.isFile() && propFile.canRead();
-      }
-    };
-    
-    _logger.info(String.format("Loading CUSTOM properties from: %s", CUSTOM_PROPS_DIR));
-    
-    String baseDirPath = baseDir.getPath();
-    String[] folderNames = baseDir.list(subFoldersWithPropsFilter);
-    if(folderNames != null)
-    {
-      for(String folderName : folderNames)
-      {
-        String filePath = Utils.joinPath(baseDirPath, folderName, CUSTOM_PROPS_FILENAME);
-        this.readPropertiesFile(model, context, filePath);
-      }
-    }
-  }
-
-  private void readBaseComponents(MetaModel.Builder model, IThingReadContext context)
-          throws ThingReadException
-  {
-    File baseDir = new File(this._basePath, BASE_COMPS_DIR);
-    FilenameFilter xmlFilesFilter = new FilenameFilter()
-    {
-      public boolean accept(File dir, String name)
-      {
-        return !name.startsWith(".") && name.endsWith(".xml");
-      }
-    };
-
-    _logger.info(String.format("Loading BASE components from: %s", BASE_COMPS_DIR));
-
-    List<File> files = Utils.listAllFiles(baseDir, xmlFilesFilter);
-    if(files.size() > 0) 
-    {
-      _logger.debug(String.format("%s BASE component files found", files.size()));
-
-      for (File file : files)
-      {
-        String relFilePath = Utils.getRelativePath(file.getPath(), _basePath);
-        this.readComponentsFile(model, context, relFilePath, DEF_BASE_TYPE, BASE_COMPS_DIR);
-      }
-    }
-  }
-
-  private void readCustomComponents(MetaModel.Builder model, IThingReadContext context)
-          throws ThingReadException
-  {
+	logger.info(String.format("Loading BASE properties from: %s", BASE_PROPS_DIR));
 	  
-    for(String relDir : CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getAllCustomComponentsResourceLocations())
-    {
+    List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader(BASE_PROPS_DIR).listFiles(null, 
+    		new GenericBasicFileFilter(null, CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ZERO);
+
+    if(filesList != null) {
+    	
+      for (IBasicFile file : filesList) {
+        this.readPropertiesFile(model, context, file);
+      }
+    }
+  }
+
+  private void readCustomProperties(MetaModel.Builder model, IThingReadContext context)  throws ThingReadException {
+    
+	 logger.info(String.format("Loading CUSTOM properties from: %s", CUSTOM_PROPS_DIR));
+	 
+	 List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader(CUSTOM_PROPS_DIR).listFiles(null, 
+			 new GenericBasicFileFilter(CUSTOM_PROPS_FILENAME,CUSTOM_PROPS_FILE_EXTENSION, true, CdeEnvironment.getPluginSystemReader(CUSTOM_PROPS_DIR)), IReadAccess.DEPTH_ALL);
+
+    if(filesList != null) {
+      for(IBasicFile file : filesList) {
+        this.readPropertiesFile(model, context, file);
+      }
+    }
+  }
+
+  private void readBaseComponents(MetaModel.Builder model, IThingReadContext context) throws ThingReadException  {
+    
+	  logger.info(String.format("Loading BASE components from: %s", BASE_COMPS_DIR));
+	  
+	  List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader(BASE_COMPS_DIR).listFiles(null, 
+	    		new GenericBasicFileFilter(null, CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ALL);
+
+    if(filesList != null && filesList.size() > 0) {
+      
+    	logger.debug(String.format("%s BASE component files found", filesList.size()));
+
+      for (IBasicFile file : filesList) {
+        this.readComponentsFile(model, context, file, DEF_BASE_TYPE, BASE_COMPS_DIR);
+      }
+    }
+  }
+
+  private void readCustomComponents(MetaModel.Builder model, IThingReadContext context) throws ThingReadException {
+	  
+    for(String relDir : CdeEnvironment.getPluginResourceLocationManager().getAllCustomComponentsResourceLocations()) {
       readCustomComponentsLocation(model, context, relDir);
     }
   }
 
-  private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, String relDir)
-          throws ThingReadException
-  {
-    String compAbsDirPath = Utils.joinPath(this._basePath, relDir);
+  private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, String relDir) throws ThingReadException {
     
-    File compAbsDir = new File(compAbsDirPath);
-    
-    _logger.info(String.format("Loading CUSTOM components from: %s", relDir.toString()));
+	 logger.info(String.format("Loading CUSTOM components from: %s", relDir));
+	  
+	 List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(relDir).listFiles(null, 
+			 new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION, true, CdeEnvironment.getPluginRepositoryReader(relDir)), IReadAccess.DEPTH_ALL);
 
-    FilenameFilter subFoldersFilter = new FilenameFilter()
-    {
-      public boolean accept(File folder, String name)
-      {
-        File plugin = new File(Utils.joinPath(folder.getPath(), name, COMPONENT_FILENAME));
-        return plugin.isFile() && plugin.canRead();
-      }
-    };
+    if (filesList != null) {
+    	
+      logger.debug(String.format("%s sub-folders found", filesList.size()));
+      
+      IBasicFile[] filesArray = filesList.toArray(new IBasicFile[]{});
+      
+      Arrays.sort(filesArray, 
+    		  new Comparator<IBasicFile>(){
 
-    String[] folderNames = compAbsDir.list(subFoldersFilter);
-    if (folderNames != null)
-    {
-      _logger.debug(String.format("%s sub-folders found", folderNames.length));
-
-      Arrays.sort(folderNames, String.CASE_INSENSITIVE_ORDER);
+				@Override
+				public int compare(IBasicFile file1, IBasicFile file2) {
+					if (file1 == null && file2 == null){
+						return 0;
+					}else{
+						return file1.getFullPath().toLowerCase().compareTo(file2.getFullPath().toLowerCase());
+					}
+				}	
+      		});
       
       String relDirText = relDir.toString();
       
-      for (String folderName : folderNames)
-      {
-        String relFilePath = Utils.joinPath(relDir, folderName, COMPONENT_FILENAME);
-        this.readComponentsFile(model, context, relFilePath, DEF_CUSTOM_TYPE, relDirText);
+      for (IBasicFile file : filesList) {
+        this.readComponentsFile(model, context, file, DEF_CUSTOM_TYPE, relDirText);
       }
     }
   }
 
-  private void readWidgetStubComponents(MetaModel.Builder model, IThingReadContext context)
-          throws ThingReadException
-  {
-    File widgetsDir = new File(this._basePath, WIDGETS_DIR);
-    FilenameFilter widgetComponentFilter = new FilenameFilter()
-    {
-      public boolean accept(File folder, String name)
-      {
-        return !name.startsWith(".") && name.endsWith("." + COMPONENT_FILENAME);
-      }
-    };
-
-    _logger.info(String.format("Loading WIDGET components from: %s", widgetsDir.toString()));
+  private void readWidgetStubComponents(MetaModel.Builder model, IThingReadContext context) throws ThingReadException {
     
-    String[] fileNames = widgetsDir.list(widgetComponentFilter);
-    if(fileNames != null)
-    {
-      _logger.debug(String.format("%s widget components found", fileNames.length));
+	logger.info(String.format("Loading WIDGET components from: %s", WIDGETS_DIR));
+	  
+	List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(WIDGETS_DIR).listFiles(null, 
+			  new GenericBasicFileFilter(COMPONENT_FILENAME,CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ALL);
+	  
+    
+    if(filesList != null) {
       
-      Arrays.sort(fileNames, String.CASE_INSENSITIVE_ORDER);
+    	logger.debug(String.format("%s widget components found", filesList.size()));
+      
+    	IBasicFile[] filesArray = filesList.toArray(new IBasicFile[]{});
+        
+        Arrays.sort(filesArray, 
+      		  new Comparator<IBasicFile>(){
 
-      for (String fileName : fileNames)
-      {
-        String fileRelPath = Utils.joinPath(WIDGETS_DIR, fileName);
-        this.readComponentsFile(model, context, fileRelPath, DEF_WIDGET_STUB_TYPE, WIDGETS_DIR);
+  				@Override
+  				public int compare(IBasicFile file1, IBasicFile file2) {
+  					if (file1 == null && file2 == null){
+  						return 0;
+  					}else{
+  						return file1.getFullPath().toLowerCase().compareTo(file2.getFullPath().toLowerCase());
+  					}
+  				}	
+        });
+
+      for (IBasicFile file : filesList) {
+        this.readComponentsFile(model, context, file, DEF_WIDGET_STUB_TYPE, WIDGETS_DIR);
       }
     }
   }
 
   // ------------------
 
-  private void readPropertiesFile(MetaModel.Builder model, IThingReadContext context, String filePath)
-          throws ThingReadException
-  {
+  private void readPropertiesFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file) throws ThingReadException {
     Document doc;
-    try
-    {
-      doc = Utils.getDocFromFile(filePath, null);
+    try {
+      doc = Utils.getDocFromFile(file, null);
     }
-    catch (Exception ex)
-    {
-      ThingReadException ex2 = new ThingReadException("Cannot read properties file '" + filePath + "'.", ex);
-      if(!this._continueOnError) { throw ex2; }
+    catch (Exception ex) {
+      ThingReadException ex2 = new ThingReadException("Cannot read properties file '" + file + "'.", ex);
+      if(!this.continueOnError) { throw ex2; }
 
       // log and move on
-      _logger.fatal(null, ex2);
+      logger.fatal(null, ex2);
       return;
     }
 
     // One file can contain multiple definitions.
     @SuppressWarnings("unchecked")
     List<Element> propertieElems = doc.selectNodes("//DesignerProperty");
-    for (Element propertyElem : propertieElems)
-    {
-      readProperty(model, context, propertyElem, filePath);
+    for (Element propertyElem : propertieElems) {
+      readProperty(model, context, propertyElem, file);
     }
   }
 
-  private void readProperty(MetaModel.Builder model, IThingReadContext context, Element propertyElem, String sourcePath)
-          throws ThingReadException
-  {
+  private void readProperty(MetaModel.Builder model, IThingReadContext context, Element propertyElem, IBasicFile file) throws ThingReadException {
+	  
     String className = null;
-    try
-    {
+    try {
       className = Utils.getNodeText("Header/Override", propertyElem);
       
       if(StringUtils.isEmpty(className)) { className = "PropertyType"; }
@@ -346,49 +294,44 @@ public final class XmlFsPluginModelReader implements IThingReader
         
       IThingReader reader = context.getFactory().getReader(KnownThingKind.PropertyType, className, name);
 
-      PropertyType.Builder prop = (PropertyType.Builder)reader.read(context, propertyElem, sourcePath);
+      PropertyType.Builder prop = (PropertyType.Builder)reader.read(context, propertyElem, file.getPath());
 
       model.addProperty(prop);
-    }
-    catch(UnsupportedThingException ex)
-    {
+    
+    } catch(UnsupportedThingException ex) {
       ThingReadException ex2 = new ThingReadException("Failed to read property of class name '" +  className + "'.", ex);
-      if(!this._continueOnError) { throw ex2; }
+      if(!this.continueOnError) { throw ex2; }
 
       // Just log and move on
-      _logger.fatal(null, ex2);
+      logger.fatal(null, ex2);
     }
   }
 
   // ------------------
-  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, String relFilePath, String defaultClassName, String baseRelDir)
+  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file, String defaultClassName, String baseRelDir)
           throws ThingReadException
   {
     Document doc;
-    try
-    {
-      try
-      {
-        doc = Utils.getDocFromFile(Utils.joinPath(_basePath, relFilePath), null);
-      } 
-      catch(Exception ex1) 
-      {
-        if(relFilePath.endsWith(COMPONENT_FILENAME)) { throw ex1; }
+    try {
+      
+      try {
+        doc = Utils.getDocFromFile(file, null);
+      } catch(Exception ex1) {
+        if(file != null && file.getPath().endsWith(COMPONENT_FILENAME + "." + CUSTOM_PROPS_FILE_EXTENSION)) { throw ex1; }
 
         // TODO: confirm this is really needed
         // Second that is relevant for CUSTOM and WIDGET components reading...
-        relFilePath = Utils.joinPath(relFilePath, COMPONENT_FILENAME);
+        //relFilePath = Utils.joinPath(relFilePath, COMPONENT_FILENAME);
 
-        doc = Utils.getDocFromFile(relFilePath, null);
+        doc = Utils.getDocFromFile(file, null);
       }
     }
-    catch (Exception ex)
-    {
-      ThingReadException ex2 = new ThingReadException("Cannot read components file '" + relFilePath + "'.", ex);
-      if(!this._continueOnError) { throw ex2; }
+    catch (Exception ex) {
+      ThingReadException ex2 = new ThingReadException("Cannot read components file '" + file.getPath() + "'.", ex);
+      if(!this.continueOnError) { throw ex2; }
 
       // log and move on
-      _logger.fatal(null, ex2);
+      logger.fatal(null, ex2);
       return;
     }
 
@@ -396,14 +339,12 @@ public final class XmlFsPluginModelReader implements IThingReader
     @SuppressWarnings("unchecked")
     List<Element> componentElems = doc.selectNodes("//DesignerComponent");
 
-    if (_logger.isDebugEnabled() && componentElems.size() > 0)
-    {
-      _logger.debug(String.format("\t%s [%s]", Utils.getRelativePath(relFilePath, baseRelDir), componentElems.size()));
+    if (logger.isDebugEnabled() && componentElems.size() > 0) {
+      logger.debug(String.format("\t%s [%s]", file.getPath(), componentElems.size()));
     }
 
-    for (Element componentElem : componentElems)
-    {
-      readComponent(model, context, componentElem, relFilePath, defaultClassName);
+    for (Element componentElem : componentElems) {
+      readComponent(model, context, componentElem, file.getPath(), defaultClassName);
     }
   }
 
@@ -412,8 +353,7 @@ public final class XmlFsPluginModelReader implements IThingReader
           IThingReadContext context,
           Element componentElem,
           String sourcePath,
-          String defaultClassName) throws ThingReadException
-  {
+          String defaultClassName) throws ThingReadException {
     String className = null;
 
     if(StringUtils.isEmpty(defaultClassName)) { defaultClassName = "ComponentType"; }
@@ -435,10 +375,60 @@ public final class XmlFsPluginModelReader implements IThingReader
     catch(UnsupportedThingException ex)
     {
       ThingReadException ex2 = new ThingReadException("Failed to read component of class name '" +  className + "'.", ex);
-      if(!this._continueOnError) { throw ex2; }
+      if(!this.continueOnError) { throw ex2; }
 
       // Just log and move on
-      _logger.fatal(null, ex2);
+      logger.fatal(null, ex2);
     }
+  }
+  
+  private class GenericBasicFileFilter implements IBasicFileFilter{
+		
+	private String fileName;
+	private String fileExtension;
+	private boolean checkReadability;
+	private IReadAccess access;
+	
+	public GenericBasicFileFilter(String fileName, String fileExtension){
+		this.fileName = fileName;
+		this.fileExtension = fileExtension;
+	}
+	
+	public GenericBasicFileFilter(String fileName, String fileExtension, boolean checkReadability, IReadAccess access){
+		this.fileName = fileName;
+		this.fileExtension = fileExtension;
+		this.checkReadability = checkReadability;
+		this.access = access;
+		
+	}
+	  
+	@Override
+	public boolean accept(IBasicFile file) {
+		
+		boolean accept = false;
+		
+		if(file != null){
+			
+			if(!StringUtils.isEmpty(fileName)){
+				accept = fileName.equalsIgnoreCase(file.getName());
+			}
+			
+			if(!StringUtils.isEmpty(fileExtension)){
+				accept = fileName.equalsIgnoreCase(file.getExtension());
+			}
+			
+			if(checkReadability){
+				boolean success = false;
+				try{
+					success = access.fileExists(file.getFullPath()) && access.fetchFile(file.getFullPath()) != null;
+				}catch(Exception e){
+					logger.error("checkReadability", e);
+				}
+				return success;
+			}
+		}
+		
+		return accept;
+	}
   }
 }

@@ -14,7 +14,6 @@ import org.dom4j.Element;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cpf.PluginSettings;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.repository.pentaho.SystemPluginResourceAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 

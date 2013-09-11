@@ -5,9 +5,8 @@ import java.util.Locale;
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cpf.IPluginCall;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.resources.IResourceLoader;
-import pt.webdetails.cpf.utils.IPluginUtils;
 
 public class DefaultCdeEnvironment implements ICdeEnvironment {
 
@@ -46,12 +45,6 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 	}
 
 	@Override
-	public IPluginUtils getPluginUtils() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IPluginCall getInterPluginCall() {
 		// TODO Auto-generated method stub
 		return null;
@@ -64,12 +57,6 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 	}
 
 	@Override
-	public IRepositoryAccess getRepositoryAccess() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IDataSourceManager getDataSourceManager() {
 		// TODO Auto-generated method stub
 		return null;
@@ -77,6 +64,12 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 
 	@Override
 	public IPluginResourceLocationManager getPluginResourceLocationManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IContentAccessFactory getContentAccessFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}

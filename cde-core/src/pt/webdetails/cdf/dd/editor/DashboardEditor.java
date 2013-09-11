@@ -1,17 +1,18 @@
 package pt.webdetails.cdf.dd.editor;
 
-import pt.webdetails.cdf.dd.ResourceManager;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 
 
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,8 +23,6 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
   public static String getEditor(String wcdfPath, boolean debugMode, String scheme, Packager packager) throws IOException {
 
 
-    final ResourceManager resMgr = ResourceManager.getInstance();
-
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
     final String cdeDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDFDD).getDependencies();
@@ -32,8 +31,8 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     final String scriptDeps, styleDeps;
     if(debugMode){
-      scriptDeps = resMgr.getResourceAsString(CdeConstants.DESIGNER_SCRIPTS_RESOURCE);
-      styleDeps  = resMgr.getResourceAsString(CdeConstants.DESIGNER_STYLES_RESOURCE );
+      scriptDeps = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_SCRIPTS_RESOURCE));
+      styleDeps  = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_STYLES_RESOURCE));
     } else {
       String stylesHash  = packager.minifyPackage("styles" );
       String scriptsHash = packager.minifyPackage("scripts");
@@ -52,6 +51,6 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
     tokens.put(CdeConstants.SERVER_URL_TAG,   CdeConstants.SERVER_URL_VALUE);
     tokens.put(CdeConstants.DATA_URL_TAG,     CdeConstants.DATA_URL_VALUE);
 
-    return resMgr.getResourceAsString(CdeConstants.DESIGNER_RESOURCE, tokens);
+    return IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
   }
 }

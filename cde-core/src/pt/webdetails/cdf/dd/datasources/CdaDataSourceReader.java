@@ -15,7 +15,6 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
@@ -73,8 +72,7 @@ public class CdaDataSourceReader
     JXPathContext context;
     try 
     {
-      context = DashboardManager.openDashboardAsJXPathContext(
-    		  CdeEngine.getInstance().getEnvironment().getRepositoryAccess(), 
+      context = DashboardManager.openDashboardAsJXPathContext( 
               dashboard, 
               /*wcdf*/null);
     } 

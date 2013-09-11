@@ -19,10 +19,8 @@ public class SyncronizeCdfStructure
 {
 
   private static SyncronizeCdfStructure syncronizeCdfStructure = null;
-  public static String EMPTY_STRUCTURE_FILE_PATH = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(
-		  CdeEngine.getInstance().getEnvironment().getPluginUtils().getPluginDirectory().getPath() + "resources/empty-structure.json");
-  public static String EMPTY_WCDF_FILE_PATH = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(
-		  CdeEngine.getInstance().getEnvironment().getPluginUtils().getPluginDirectory().getPath() + "resources/empty.wcdf");
+  public static String PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
+  public static String PLUGIN_EMPTY_WCDF_FILE_PATH = "resources/empty.wcdf";
 
   static SyncronizeCdfStructure getInstance()
   {

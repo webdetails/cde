@@ -9,6 +9,8 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -16,7 +18,6 @@ import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
-import pt.webdetails.cdf.dd.ResourceManager;
 import pt.webdetails.cdf.dd.model.core.*;
 import pt.webdetails.cdf.dd.model.core.writer.*;
 import pt.webdetails.cdf.dd.model.core.writer.js.*;
@@ -24,6 +25,7 @@ import pt.webdetails.cdf.dd.model.inst.*;
 import pt.webdetails.cdf.dd.render.*;
 import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.plugin.CorePlugin;
 
@@ -33,12 +35,6 @@ import pt.webdetails.cpf.plugin.CorePlugin;
 public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter
 {
   private static final Log _logger = LogFactory.getLog(CdfRunJsDashboardWriter.class);
-
-  private static final String RESOURCE_FOOTER = "resources/patch-footer.html";
-  
-  public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
-  private static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
-  private static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
   
   private static final String EPILOGUE = wrapJsScriptTags("Dashboards.init();");
   
@@ -82,7 +78,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     String footer;
     try
     {
-      footer = ResourceManager.getInstance().getResourceAsString(RESOURCE_FOOTER);
+      footer = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.RESOURCE_FOOTER));
     }
     catch(IOException ex)
     {
@@ -98,9 +94,9 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     
     // Leave the DASHBOARD_HEADER_TAG to replace additional stuff on render.
     template = template
-      .replaceAll(DASHBOARD_HEADER_TAG,  Matcher.quoteReplacement(header) + DASHBOARD_HEADER_TAG)
-      .replaceAll(DASHBOARD_FOOTER_TAG,  Matcher.quoteReplacement(footer))
-      .replaceAll(DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement(content));
+      .replaceAll(CdeConstants.DASHBOARD_HEADER_TAG,  Matcher.quoteReplacement(header) + CdeConstants.DASHBOARD_HEADER_TAG)
+      .replaceAll(CdeConstants.DASHBOARD_FOOTER_TAG,  Matcher.quoteReplacement(footer))
+      .replaceAll(CdeConstants.DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement(content));
     
     // Export
     builder
@@ -296,11 +292,10 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return readTemplateFile(CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getStyleResourceLocation(styleName));
   }
   
-  protected static String readTemplateFile(String templateFile) throws IOException
-  {
+  protected static String readTemplateFile(String templateFile) throws IOException {
     try
     {
-      return ResourceManager.getInstance().getResourceAsString(templateFile);
+      return IOUtils.toString(CdeEnvironment.getPluginRepositoryReader().getFileInputStream(templateFile));
     }
     catch(IOException ex)
     {

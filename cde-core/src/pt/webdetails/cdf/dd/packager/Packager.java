@@ -4,12 +4,9 @@
 
 package pt.webdetails.cdf.dd.packager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -19,15 +16,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  *
@@ -73,37 +75,44 @@ public class Packager
 
   public void registerPackage(String name, Filetype type, String root, String filename, String[] files)
   {
-    ArrayList<File> fileHandles = new ArrayList<File>();
-    if (files != null)
-    {
-      for (String file : files)
-      {
-        fileHandles.add(new File((root + "/" + file).replaceAll("/+", "/")));
-      }
+    List<IBasicFile> fileHandles = new ArrayList<IBasicFile>();
+    if (files != null) {
+      
+    	for (String file : files) {
+    		fileHandles.add(CdeEnvironment.getPluginSystemReader().fetchFile(file));
+    	}
     }
-    registerPackage(name, type, root, filename, (File[]) fileHandles.toArray(new File[fileHandles.size()]));
+    registerPackage(name, type, root, filename, (IBasicFile[]) fileHandles.toArray(new IBasicFile[fileHandles.size()]));
   }
 
-  public void registerPackage(String name, Filetype type, String root, String output, File[] files)
-  {
-    if (this.fileSets.containsKey(name))
-    {
-      Logger.getLogger(Packager.class.getName()).log(Level.WARNING, name + " is overriding an existing file package!");
-    }
-    try
-    {
-      FileSet fileSet = new FileSet(output, type, files, root);
+  public void registerPackage(String name, Filetype type, String root, String output, IBasicFile[] files) {
+    
+	  if (this.fileSets.containsKey(name)) {
+		  Logger.getLogger(Packager.class.getName()).log(Level.WARNING, name + " is overriding an existing file package!");
+      }
+	  
+    try {
+    	
+      // [TEMPORARY FIX] do magic here - convert 'root' to intended IReadAccess
+      IReadAccess access = CdeEnvironment.getUserContentAccess();
+      if(!StringUtils.isEmpty(root)){
+    	  if(root.toLowerCase().startsWith("system") || root.toLowerCase().startsWith("/system")){
+    		  access = CdeEnvironment.getPluginSystemReader();
+    	  }else if(root.toLowerCase().startsWith("cde") || root.toLowerCase().startsWith("/cde")){
+    		  access = CdeEnvironment.getPluginRepositoryReader();
+    	  }
+      }	
+      // end temporary fix
+      
+      
+      FileSet fileSet = new FileSet(output, type, files, access);
       this.fileSets.put(name, fileSet);
-    }
-    catch (IOException ex)
-    {
+    
+    } catch (IOException ex) {
+      Logger.getLogger(Packager.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (NoSuchAlgorithmException ex) {
       Logger.getLogger(Packager.class.getName()).log(Level.SEVERE, null, ex);
     }
-    catch (NoSuchAlgorithmException ex)
-    {
-      Logger.getLogger(Packager.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
   }
 
   public boolean isPackageRegistered(String pkg)
@@ -138,21 +147,20 @@ public class Packager
     this.fileSets.get(pkg).addFile(name, path);
   }
 
-  public void addFileToPackage(String pkg, String name, File file)
+  public void addFileToPackage(String pkg, String name, IBasicFile file)
   {
     this.fileSets.get(pkg).addFile(name, file);
   }
 }
 
-class FileSet
-{
+class FileSet {
 
   private boolean dirty;
   private String latestVersion;
   private Map<String, String> files;
   private String location;
   private Packager.Filetype filetype;
-  private String rootdir;
+  private IReadAccess access;
 
   public void addFile(String name, String path)
   {
@@ -163,96 +171,87 @@ class FileSet
     }
   }
 
-  public void addFile(String name, File file)
-  {
-    try
-    {
-      addFile(name, file.getCanonicalPath());
-    }
-    catch (IOException e)
-    {
-      Packager.logger.error("Couldn' add resource '" + name + "': ", e);
+  public void addFile(String name, IBasicFile file) {
+    try {
+      addFile(name, file.getPath());
+    } catch (Throwable t) {
+      Packager.logger.error("Couldn' add resource '" + name + "': ", t);
     }
   }
 
-  public FileSet(String location, Packager.Filetype type, File[] fileSet, String rootdir) throws IOException, NoSuchAlgorithmException
-  {
+  public FileSet(String location, Packager.Filetype type, IBasicFile[] fileSet, IReadAccess access) throws IOException, NoSuchAlgorithmException {
     this.files = new LinkedHashMap<String, String>();
-    for (File file : fileSet)
-    {
-      String path = file.getCanonicalPath();
+    for (IBasicFile file : fileSet) {
+      String path = file.getPath();
       this.files.put(path, path);
     }
     this.location = location;
     this.filetype = type;
     this.latestVersion = "";
     this.dirty = true;
-    this.rootdir = rootdir;
+    this.access = access;
   }
 
-  public FileSet() throws IOException, NoSuchAlgorithmException
-  {
+  public FileSet() throws IOException, NoSuchAlgorithmException {
     dirty = true;
     files = new HashMap<String, String>();
     latestVersion = null;
     location = null;
   }
 
-  private String minify(Mode mode) throws IOException, NoSuchAlgorithmException
-  {
+  private String minify(Mode mode) throws IOException, NoSuchAlgorithmException {
     InputStream concatenatedStream;
-    FileWriter wout;
-    Reader freader;
-    //FileWriter output;
-    try
-    {
+    Reader freader = null;
+    OutputStream fos = null;
+    try {
       //output = new FileWriter(location);
-      File[] filesArray = new File[this.files.size()];
+      IBasicFile[] filesArray = new IBasicFile[this.files.size()];
 
       int i = 0;
       Set<String> keys = files.keySet();
-      for (String key : keys)
-      {
-        filesArray[i++] = new File(this.files.get(key));
+      for (String key : keys) {
+        filesArray[i++] = CdeEnvironment.getPluginSystemReader().fetchFile(this.files.get(key));
       }
-      File location = new File(this.location);
-      switch (this.filetype)
-      {
+      
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      IOUtils.copy(access.getFileInputStream(location), byteArrayOutputStream);
+      
+      switch (this.filetype) {
         case JS:
           concatenatedStream = Concatenate.concat(filesArray);
           freader = new InputStreamReader(concatenatedStream, "UTF8");
-
-
-          switch (mode)
-          {
+          
+          switch (mode) {
             case MINIFY:
-              JSMin jsmin = new JSMin(concatenatedStream, new FileOutputStream(location));
+              JSMin jsmin = new JSMin(concatenatedStream, byteArrayOutputStream);
               jsmin.jsmin();
               break;
             case CONCATENATE:
-              OutputStream fos = new FileOutputStream(location);
+              fos = byteArrayOutputStream;
               byte[] buffer = null;
-              while (concatenatedStream.available() > 0)
-              {
+              while (concatenatedStream.available() > 0) {
                 concatenatedStream.read(buffer, 0, 4096);
                 fos.write(buffer);
               }
           }
           break;
+          
         case CSS:
-          concatenatedStream = Concatenate.concat(filesArray, rootdir);
+          concatenatedStream = Concatenate.concat(filesArray, access);
           freader = new InputStreamReader(concatenatedStream, "UTF8");
-
-          //FileWriter 
-          wout = new FileWriter(location);
-
-          IOUtils.copy(freader, wout);
+          
+          fos = byteArrayOutputStream;
+          byte[] buffer = null;
+          while (concatenatedStream.available() > 0) {
+            concatenatedStream.read(buffer, 0, 4096);
+            fos.write(buffer);
+          }
 
           //CSSMin.formatFile(freader, new FileOutputStream(location));
-          wout.close();
           break;
       }
-      FileInputStream script = new FileInputStream(location);
+      InputStream script = access.getFileInputStream(location);
+      
       byte[] fileContent = new byte[(int) location.length()];
 
       script.read(fileContent);
@@ -262,54 +261,42 @@ class FileSet
       this.latestVersion = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
 
       return latestVersion;
-    }
-    catch (Exception ex)
-    {
+    } catch (Exception ex) {
       Logger.getLogger(FileSet.class.getName()).log(Level.SEVERE, null, ex);
-
-
       return null;
+    } finally{
+    	if(fos != null){ fos.close(); }
     }
   }
 
-  private String byteToHex(byte[] bytes)
-  {
+  private String byteToHex(byte[] bytes) {
     StringBuffer hexString = new StringBuffer();
-    for (int i = 0; i < bytes.length; i++)
-    {
+    for (int i = 0; i < bytes.length; i++) {
       String byteValue = Integer.toHexString(0xFF & bytes[i]);
       hexString.append(byteValue.length() == 2 ? byteValue : "0" + byteValue);
     }
     return hexString.toString();
   }
 
-  public String update() throws IOException, NoSuchAlgorithmException
-  {
+  public String update() throws IOException, NoSuchAlgorithmException {
     return update(false);
   }
 
-  public String update(Mode mode) throws IOException, NoSuchAlgorithmException
-  {
+  public String update(Mode mode) throws IOException, NoSuchAlgorithmException {
     return update(false, mode);
   }
 
-  public String update(boolean force) throws IOException, NoSuchAlgorithmException
-  {
+  public String update(boolean force) throws IOException, NoSuchAlgorithmException {
     return update(force, Mode.MINIFY);
   }
 
-  public String update(boolean force, Mode mode) throws IOException, NoSuchAlgorithmException
-  {
+  public String update(boolean force, Mode mode) throws IOException, NoSuchAlgorithmException {
     // If we're not otherwise sure we must update, we actively check if the
     //minified file is older than any file in the set.
-    if (!dirty && !force)
-    {
-      File location = new File(this.location);
-      for (String filePath : files.values())
-      {
-        File file = new File(filePath);
-        if (!location.exists() || file.lastModified() > location.lastModified())
-        {
+    if (!dirty && !force) {
+      
+      for (String filePath : files.values()) {
+        if (access.getLastModified(filePath) > access.getLastModified(this.location)) {
           this.dirty = true;
           break;
         }

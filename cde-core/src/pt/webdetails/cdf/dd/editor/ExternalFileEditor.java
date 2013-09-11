@@ -4,14 +4,16 @@
 
 package pt.webdetails.cdf.dd.editor;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import pt.webdetails.cdf.dd.CdeEngine;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 /**
  * External Editor (stub)
@@ -22,68 +24,56 @@ public class ExternalFileEditor {
   
   private static final String ENCODING = "UTF-8";
   
-  public static String getFileContents(final String filePath) throws IOException
+  public static InputStream getFileContents(final String filePath) throws IOException
   {
     if(StringUtils.isEmpty(filePath)){
       logger.error("getFileContents: no path given");
       return null;
     }
     
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
+    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     
-    if(repository.resourceExists(filePath))
-    {
-      return repository.getResourceAsString(filePath);
-    }
-    else 
-    {//TODO: better treatment needed here
-      return StringUtils.EMPTY; 
+    if(access.fileExists(filePath)) {
+      return access.getFileInputStream(filePath);
+    
+    } else {
+      return null; 
     }
   }
 
   public static boolean canEdit(final String filePath){
-    return CdeEngine.getInstance().getEnvironment().getRepositoryAccess().canWrite(filePath);
+	 return CdeEnvironment.getUserContentAccess().hasAccess(filePath, FileAccess.WRITE);
   }
 
-  public static boolean createFolder(String path) throws IOException
-  {
+  public static boolean createFolder(String path) throws IOException {
    
-    boolean status = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().createFolder(path);
+    boolean success = CdeEnvironment.getUserContentAccess().createFolder(path);
     
-    if (status)
-    {
-      return true;
-    }
-    else
-    {
-      logger.error("createFolder: creating " + path + " returned error. Folder Already exists?");
-      return false;
-    }
+    if (!success) {
+    	logger.error("createFolder: creating " + path + " returned error. Folder Already exists?");
+    } 
+    
+    return success;
   }
 
 
-  public static boolean writeFile(String path, String contents) throws IOException
-  {    
+  public static boolean writeFile(String path, String contents) throws IOException {    
     
-    IRepositoryAccess repository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess(); 
-    
-    if(repository.canWrite(path)){
-      switch(repository.publishFile(path, contents.getBytes(ENCODING), true)){
-        case OK:
-          return true;
-        case FAIL:
-          default:
-          logger.error("writeFile: failed saving " + path);
-          return false;
+	IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+	  
+    if(access.hasAccess(path, FileAccess.WRITE)) {
+    	
+      boolean success = access.saveFile(path, new ByteArrayInputStream(contents.getBytes(ENCODING)));
+    	
+      if(!success){
+    	  logger.error("writeFile: failed saving " + path);
       }
-    }
-    else
-    {
-      logger.error("writeFile: no permissions to write file " + path );
+      
+      return success;
+    
+    } else {
+      logger.error("writeFile: no permissions to write file " + path);
       return false;
     }
   }
- 
-  
-  
 }

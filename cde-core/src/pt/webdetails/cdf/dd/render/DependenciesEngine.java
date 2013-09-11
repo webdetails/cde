@@ -4,18 +4,18 @@
 
 package pt.webdetails.cdf.dd.render;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
-import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 /**
@@ -26,26 +26,22 @@ public class DependenciesEngine
 {
 
   public static final String newLine = System.getProperty("line.separator");
-  private final String sourcePath;
   private Map<String, Dependency> dependencyPool;
   private StringFilter format;
   static private Packager packager = Packager.getInstance();
-  private static String rootdir = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath("system/" + CdeConstants.PLUGIN_NAME);
+  private static String rootdir = "system";
   private String packagedPath;
   private String name;
 
-  public DependenciesEngine(String name, StringFilter format, String sourcePath, Packager.Filetype type)
-  {
+  public DependenciesEngine(String name, StringFilter format, Packager.Filetype type) {
     this.name = name;
-    packagedPath = type.toString().toLowerCase() + "/" + name + "." + type.toString().toLowerCase();
+    this.packagedPath = type.toString().toLowerCase() + "/" + name + "." + type.toString().toLowerCase();
     packager.registerPackage(name, type, rootdir, rootdir + "/" + packagedPath, (String[]) null);
-    dependencyPool = new LinkedHashMap<String, Dependency>();
+    this.dependencyPool = new LinkedHashMap<String, Dependency>();
     this.format = format;
-    this.sourcePath = sourcePath;
   }
 
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 
@@ -54,8 +50,7 @@ public class DependenciesEngine
     return getPackagedDependencies(format);
   }
 
-  public String getPackagedDependencies(StringFilter filter)
-  {
+  public String getPackagedDependencies(StringFilter filter) {
     final IResourceLoader resLoader = CdeEngine.getInstance().getEnvironment().getResourceLoader();
     final String minification = resLoader.getPluginSetting(this.getClass(), "packager/minification").toUpperCase();
     Mode mode = Mode.valueOf(minification != null ? minification : "MINIFY");
@@ -63,62 +58,51 @@ public class DependenciesEngine
     return (filter == null ? format : filter).filter(packagedPath + "?v=" + hash);
   }
 
-  public String getDependencies()
-  {
+  public String getDependencies() {
     return getDependencies(format);
   }
 
-  public String getDependencies(StringFilter filter)
-  {
+  public String getDependencies(StringFilter filter) {
     StringBuilder output = new StringBuilder();
-    for (Dependency dep : dependencyPool.values())
-    {
+    for (Dependency dep : dependencyPool.values()) {
       output.append((filter == null ? format : filter).filter(dep.getDeps()) + newLine);
     }
     return output.toString();
   }
 
-  public String getDependencies(StringFilter filter, boolean isPackaged)
-  {
+  public String getDependencies(StringFilter filter, boolean isPackaged) {
     return isPackaged ? getPackagedDependencies(filter) : getDependencies(filter);
   }
 
-  public void register(String name, String version, String path) throws Exception
-  {
+  public void register(String name, String version, String path) throws Exception {
     Dependency dep;
-    File f = new File((sourcePath + File.separator + path).replaceAll("\\\\", "/").replaceAll("/+", "/"));
-
     
-    try
-    {
+    IBasicFile file = CdeEnvironment.getPluginSystemReader().fetchFile(path);
+    
+    try {
       dep = dependencyPool.get(name);
     }
-    catch (Exception e)
-    {
+    catch (Exception e) {
       dep = null;
     }
-    if (dep != null)
-    {
+    if (dep != null) {
       dep.update(version, path);
-      packager.addFileToPackage(this.name, name, f.getCanonicalPath());
-    }
-    else
-    {
+      packager.addFileToPackage(this.name, name, file.getPath());
+    
+    } else {
 
-      FileInputStream fis = null;
-      try
-      {
-        fis = new FileInputStream(f);
-        byte[] fileContent = new byte[(int) f.length()];
-        fis.read(fileContent);
+      InputStream is = null;
+      try  {
+        is = file.getContents();
+        byte[] fileContent = new byte[(int) IOUtils.toByteArray(is).length];
+        is.read(fileContent);
         String hash = byteToHex(MessageDigest.getInstance("MD5").digest(fileContent));
         dep = new Dependency(version, path, hash);
         dependencyPool.put(name, dep);
-        packager.addFileToPackage(this.name, name, f.getCanonicalPath());
-      }
-      finally
-      {
-        IOUtils.closeQuietly(fis);
+        packager.addFileToPackage(this.name, name, file.getPath());
+      
+      } finally {
+        IOUtils.closeQuietly(is);
       }
     }
   }

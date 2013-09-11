@@ -51,7 +51,7 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
     		
     		if(factory.containsBean(IRepositoryAccess.class.getSimpleName())){    		
     			repositoryAccess = (IRepositoryAccess)factory.getBean(IRepositoryAccess.class.getSimpleName());
-    			/*
+    			
     			if(repositoryAccess != null){
     				
     				PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
@@ -62,11 +62,11 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
     		                plgn.setName(pluginName);
     		                //IReadAccess readAccess = PentahoPluginEnvironment.getInstance().getOtherPluginSystemAccess(plgn.getId(), null);
     		                //readAccess.
-    		                repositoryAccess.setPlugin(plgn);
+    		                //repositoryAccess.setPlugin(plgn);
     		                break;
     		            }
     		        }
-    			}*/
+    			}
     		}
     		
     		if(factory.containsBean(IPluginCall.class.getSimpleName())){    		
@@ -107,16 +107,6 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 	@Override
 	public IPluginResourceLocationManager getPluginResourceLocationManager() {
 		return pluginResourceLocationManager;
-	}
-
-	@Override
-	public IPluginUtils getPluginUtils() { 
-		return pluginUtils;
-	}
-
-	@Override
-	public IRepositoryAccess getRepositoryAccess() {
-		return repositoryAccess;
 	}
 
 	@Override

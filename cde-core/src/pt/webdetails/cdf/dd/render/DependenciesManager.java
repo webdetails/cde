@@ -6,7 +6,6 @@ package pt.webdetails.cdf.dd.render;
 
 import java.util.HashMap;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.Packager;
 
 /**
@@ -57,13 +56,11 @@ public final class DependenciesManager
     };
     
     DependenciesManager manager = new DependenciesManager();
-
-    String basePath = CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath("");
     
-    manager.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, basePath, Packager.Filetype.CSS));
-    manager.registerEngine(Engines.CDF,     new DependenciesEngine(Engines.CDF,     jsFilter,  basePath, Packager.Filetype.JS));
-    manager.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, basePath, Packager.Filetype.JS));
-    manager.registerEngine(Engines.CDFDD,   new DependenciesEngine(Engines.CDFDD,   jsFilter,  basePath, Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, Packager.Filetype.CSS));
+    manager.registerEngine(Engines.CDF,     new DependenciesEngine(Engines.CDF,     jsFilter,  Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDFDD,   new DependenciesEngine(Engines.CDFDD,   jsFilter,  Packager.Filetype.JS));
     
     return manager;
   }          

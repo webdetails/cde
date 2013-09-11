@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import org.apache.commons.lang.StringUtils;
 
+import pt.webdetails.cdf.dd.CdeConstants;
+
 /**
  * @author dcleao
  */
@@ -72,7 +74,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
   public String render(String dashboardContext)
   {
     return this._template.replaceAll(
-                CdfRunJsDashboardWriter.DASHBOARD_HEADER_TAG, 
+                CdeConstants.DASHBOARD_HEADER_TAG, 
                 Matcher.quoteReplacement(dashboardContext));
   }
   

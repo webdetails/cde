@@ -12,19 +12,10 @@ import pt.webdetails.cdf.dd.model.core.reader.IThingReaderFactory;
  * @author dcleao
  */
 public class XmlPluginModelReadContext extends DefaultThingReadContext
-{
-  private final String _basePath;
-  
-  public XmlPluginModelReadContext(IThingReadContext parent, String basePath)
+{ 
+  public XmlPluginModelReadContext(IThingReadContext parent)
   {
     super(getParentFactory(parent));
-
-    this._basePath = basePath;
-  }
-
-  public String getBasePath()
-  {
-    return this._basePath;
   }
 
   private static IThingReaderFactory getParentFactory(IThingReadContext parent)
