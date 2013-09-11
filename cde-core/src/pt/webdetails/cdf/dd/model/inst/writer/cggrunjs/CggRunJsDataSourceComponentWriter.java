@@ -11,7 +11,6 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
-import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 /**
@@ -26,72 +25,43 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
   
   public void write(StringBuilder out, CggRunJsComponentWriteContext context, DataSourceComponent comp) throws ThingWriteException
   {
-    String dataAccessId = comp.getName();
-
-    GenericComponent chartComp = context.getChartComponent();
-    out.append("var datasource = datasourceFactory.createDatasource('cda');");
-    out.append(NEWLINE);
-    
-    String jsPathToDataSourcePath = "render_" + chartComp.getName() + ".chartDefinition.path";
-    out.append("datasource.setDefinitionFile(");
-    out.append(jsPathToDataSourcePath);
-    out.append(");");
-    out.append(NEWLINE);
-    
-    out.append("datasource.setDataAccessId(");
-    out.append(JsonUtils.toJsString(dataAccessId));
-    out.append(");");
-    out.append(NEWLINE);
-    
     String jsParamsArray = comp.tryGetPropertyValue("parameters", null);
     if(jsParamsArray != null) 
     {
       renderParameters(out, JSONArray.fromObject(jsParamsArray));
     }
-    
-    out.append("var data = eval('new Object(' + String(datasource.execute()) + ');');");
-    out.append(NEWLINE);
   }
 
   private void renderParameters(StringBuilder out, JSONArray params)
   {
+    if(params.isEmpty()) { return; }
+    
+    /* ex:
+      cgg.initParameter
+      ('productLine', 'Classic Cars')
+      ('territory'    'EMEA')
+      ;
+     */
+    out.append("cgg.initParameter");
+    out.append(NEWLINE);
+    
     @SuppressWarnings("unchecked")
     Iterator<JSONArray> it = params.iterator();
-    while (it.hasNext())
+    while(it.hasNext())
     {
       JSONArray param = it.next();
       
       String paramName    = param.get(0).toString();
       String defaultValue = param.get(1).toString();
       
-      String paramVarName = "param" + paramName;
-      String jsParamName = JsonUtils.toJsString(paramName);
-      
-      out.append("var "); 
-      out.append(paramVarName);
-      out.append(" = params.get(");
-      out.append(jsParamName);
-      out.append(");");
-      out.append(NEWLINE);
-      
-      out.append(paramVarName);
-      out.append(" = (");
-      out.append(paramVarName);
-      out.append(" !== null && ");
-      out.append(paramVarName);
-      out.append(" !== '') ? ");
-      out.append(paramVarName);
-      out.append(" : ");
-      out.append(JsonUtils.toJsString(defaultValue));
-      out.append(";");
-      out.append(NEWLINE);
-      
-      out.append("datasource.setParameter(");
-      out.append(jsParamName);
+      out.append("("); 
+      out.append(JsonUtils.toJsString(paramName));
       out.append(", ");
-      out.append(paramVarName);
-      out.append(");");
+      out.append(JsonUtils.toJsString(defaultValue));
+      out.append(")");
       out.append(NEWLINE);
     }
+    
+    out.append(";");
   }
 }
