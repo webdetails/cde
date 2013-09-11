@@ -21,7 +21,6 @@ import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
-import java.io.*;
 import java.lang.reflect.Method;
 import java.text.Collator;
 import java.util.Arrays;
@@ -29,8 +28,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 
 @SuppressWarnings("unchecked")
 public class CdfTemplates {

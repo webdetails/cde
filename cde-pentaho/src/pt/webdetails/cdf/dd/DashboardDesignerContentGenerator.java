@@ -41,13 +41,10 @@ import pt.webdetails.cdf.dd.utils.CommonParameterProvider;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
-import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
 import pt.webdetails.cpf.olap.OlapUtils;
-import pt.webdetails.cpf.repository.IRepositoryAccess.FileAccess;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {

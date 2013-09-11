@@ -13,10 +13,8 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
-import pt.webdetails.cdf.dd.ResourceManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
-import java.io.File;
 import java.io.FilenameFilter;
 import java.io.OutputStream;
 import java.lang.reflect.Method;

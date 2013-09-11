@@ -1,8 +1,17 @@
 package pt.webdetails.cdf.dd.packager;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 import java.util.regex.*;
-import java.io.*;
+
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class CSSMin
 {
@@ -43,11 +52,11 @@ public class CSSMin
     formatFile(args[0], out);
   }
 
-  public static void formatFile(String f, PrintStream out)
+  public static void formatFile(String filePath, PrintStream out)
   {
     try
     {
-      formatFile(new FileReader(f), out);
+      formatFile(CdeEnvironment.getPluginSystemReader().getFileInputStream(filePath), out);
     }
     catch (Exception e)
     {
@@ -55,18 +64,18 @@ public class CSSMin
     }
   }
 
-  public static void formatFile(Reader input, OutputStream out)
+  public static void formatFile(InputStream input, OutputStream out)
   {
     formatFile(input, new PrintStream(out));
   }
 
-  public static void formatFile(Reader input, PrintStream out)
+  public static void formatFile(InputStream input, PrintStream out)
   {
     try
     {
       int k, n;
 
-      BufferedReader br = new BufferedReader(input);
+      BufferedReader br = new BufferedReader(new InputStreamReader(input, CharsetHelper.getEncoding()));
       StringBuffer sb = new StringBuffer();
 
       if (bDebug)
