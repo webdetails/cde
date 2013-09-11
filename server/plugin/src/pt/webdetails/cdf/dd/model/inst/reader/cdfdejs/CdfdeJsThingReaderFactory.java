@@ -25,7 +25,7 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
   private static final Logger logger = LoggerFactory.getLogger(CdfdeJsThingReaderFactory.class);
   
   private static final Pattern _modelIdToNamePattern = 
-          Pattern.compile("^(?:Components|Layout|DataSources)?(.*?)(?:Model)?$");
+          Pattern.compile("^(?:Components|Layout|Datasources)?(.*?)(?:Model)?$");
   
   private final MetaModel _metaModel;
   
