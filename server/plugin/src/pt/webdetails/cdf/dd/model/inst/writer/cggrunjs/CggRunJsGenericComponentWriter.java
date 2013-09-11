@@ -46,15 +46,16 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
        .append(NEWLINE);
     
     this.renderChart(out, context, comp);
+    out.append(NEWLINE);
+    
     this.renderDatasource(out, context, comp);
+    out.append(NEWLINE)
+       .append(NEWLINE);
     
     String chartName = comp.getName();
     String compVarName = "render_" + chartName;
     
-    out.append(NEWLINE)
-       .append("renderCccFromComponent(")
-       .append(compVarName)
-       .append(", data);")
+    out.append("cgg.render(").append(compVarName).append(");")
        .append(NEWLINE);
     
     String dashboardFilePath = context.getDashboard().getSourcePath();
@@ -64,6 +65,8 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     String chartScript = out.toString();
     
     writeFile(repository, chartScript, dashboardFileDir, chartName, dashboardFileName);
+    
+    // Legacy support requires to keep generating dashboard unqualified scripts as well
     writeFile(repository, chartScript, dashboardFileDir, chartName,  null);
   }
   
@@ -146,12 +149,6 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       CggRunJsComponentWriteContext compContext = 
               new CggRunJsComponentWriteContext(factory, dash, comp, context.getUserSession());
       dsWriter.write(out, compContext, dsComp);
-    } 
-    else
-    {
-      // For when no datasource is specified, the variable data must be defined anyway.
-      out.append("var data;");
-      out.append(NEWLINE);
     }
   }
 }
