@@ -24,11 +24,12 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import pt.webdetails.cdf.dd.MetaModelManager;
+import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.render.cda.*;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
+ * Creates the .CDA file XML.
  * TODO: this should be changed to a ThingWriter of DataSourceComponents?
  * @author pdpi
  */
@@ -46,7 +47,7 @@ public class CdaRenderer
   }
   public CdaRenderer(JXPathContext doc)
   {
-    this.cdaDefinitions = MetaModelManager.getInstance().getCdaDefinitions();
+    this.cdaDefinitions = DataSourceManager.getInstance().getProviderJsDefinition("cda");
     this.doc = doc; // NOTE: may be null!
   }
   
@@ -187,13 +188,7 @@ public class CdaRenderer
     //  compound = true;
     }
     String name = (String) context.getValue("properties/.[name='name']/value", String.class);
-    JXPathContext conn;
-    try {
-      conn = JXPathContext.newContext((JSONObject) cda.getValue(type + "/definition/dataaccess", JSONObject.class));
-    } catch (JXPathException e) {
-      // hack
-      return null;  
-    }
+    JXPathContext conn = JXPathContext.newContext((JSONObject) cda.getValue(type + "/definition/dataaccess", JSONObject.class));
     Element dataAccess = doc.createElement(tagName);
     dataAccess.setAttribute("id", name);
     dataAccess.setAttribute("type", daType);

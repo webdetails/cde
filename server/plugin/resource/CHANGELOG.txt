@@ -1,3 +1,20 @@
+13.09.10
+    * CDE has a whole new layout
+    * CDE now fully supports IE8 and IE9 in Edit mode    
+    * CDE now uses Ace Editor 1.0
+    * Tooltips on components' properties
+    * Added Google Maps Overlay Component
+    * CDE now uses cpf-core and cpf-pentaho
+    * Refactor of the whole component render and definition read.
+    * Added the property 'iframe' to the XActionComponent. A boolean to decide wheter or not to display the component inside an iFrame
+    * Fixed [REDMINE-1645]: Concurrency possibility in Dasboards' initialization
+    * Fixed [REDMINE-1592]: Xaction component doesn't render
+    * Fixed [REDMINE-113]: Kettle property not clear
+    * Fixed [REDMINE-2262]: CDE Widgets not showing in Pentaho PUC
+    * Fixed [REDMINE-2024]: When applying new template, every component and data source choice gets duplicated
+    * Fixed [REDMINE-2181]: OLAP Chart Wizard - When selecting the type "line" or "dot" the resulting chart is the same
+    * Custom Components bug correction
+
 13.06.05
     * Update OlapSelector to show selected options when the pulldown is closed.
     *  [CHG] (CCC plot2SeriesIndexes) On third thought, renamed the option plot2DataSeriesIndexes to plot2SeriesIndexes, although the current implementation stilll works like the deprecated v1 secondAxisIdx. The meaning of "series" should already be taken as the value of the "series" visual role.    

@@ -5,6 +5,7 @@ var ExportButtonComponent = BaseComponent.extend({
 
   ph: undefined,
   tc: undefined,
+  queryObjectNames: { queryState:null, query:null },
   
 /* BUILD THE COMPONENT */
 

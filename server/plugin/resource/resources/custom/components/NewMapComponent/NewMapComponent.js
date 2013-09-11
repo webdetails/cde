@@ -152,7 +152,7 @@ var NewMapComponent = BaseComponent.extend({
            	return;
        	}
 
-		if (!myself.queryDefinition)  {  
+		if (!myself.queryDefinition || $.isEmptyObject(myself.queryDefinition))  {  
 			myself.render({});
 			return
 		}

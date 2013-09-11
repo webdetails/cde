@@ -536,7 +536,6 @@ public class OlapUtils
             + ", " + level + ".hierarchy.currentMember.Name,BASC), " + pageStart + ", " + (pageSize + 1) + ") ON ROWS "
             + "from [" + cube + "] where {" + context + "}";
 
-
     Query mdxQuery = connection.parseQuery(query);
     RolapResult result = (RolapResult) connection.execute(mdxQuery);
     List<Position> positions = result.getAxes()[1].getPositions();

@@ -41,54 +41,21 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   {
     StringBuilder out = new StringBuilder();
     
-    this.renderPreamble(out);
+    out.append("lib('protovis-bundle.js');")
+       .append(NEWLINE)
+       .append(NEWLINE);
+    
     this.renderChart(out, context, comp);
     this.renderDatasource(out, context, comp);
     
     String chartName = comp.getName();
+    String compVarName = "render_" + chartName;
     
-    // Adding abbility to process external height and width
-    out
-      .append("var w = parseInt(params.get('width')) || render_" )
-      .append(chartName)
-      .append(".chartDefinition.width;\n");
-    
-    out
-      .append("var h = parseInt(params.get('height')) || render_")
-      .append(chartName)
-      .append(".chartDefinition.height;\n");
-    
-    out
-      .append("render_")
-      .append(chartName)
-      .append(".chartDefinition.width = w;\n");
-    
-    out
-      .append("render_")
-      .append(chartName)
-      .append(".chartDefinition.height = h;\n");
-
-    out
-      .append("print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');\n");
-    
-    /* Chart Background */
-    out.append("bg = document.createElementNS('http://www.w3.org/2000/svg','rect');\n");
-    out.append("bg.setAttribute('id','foo');\n");
-    out.append("bg.setAttribute('x','0');\n");
-    out.append("bg.setAttribute('y','0');\n");
-    out.append("bg.setAttribute('width', w);\n");
-    out.append("bg.setAttribute('height',h);\n");
-    out.append("bg.setAttribute('style', 'fill:white');\n");
-    out.append("document.lastChild.appendChild(bg);\n");
-
-    out.append("renderCccFromComponent(render_").append(chartName).append(", data);\n");
-    
-    out.append("document.lastChild.setAttribute('width', render_")
-       .append(chartName)
-       .append(".chartDefinition.width);\n" + "document.lastChild.setAttribute('height', render_")
-       .append(chartName)
-       .append(".chartDefinition.height);");
-    
+    out.append(NEWLINE)
+       .append("renderCccFromComponent(")
+       .append(compVarName)
+       .append(", data);")
+       .append(NEWLINE);
     
     String dashboardFilePath = context.getDashboard().getSourcePath();
     String dashboardFileDir  = FilenameUtils.getFullPath(dashboardFilePath);
@@ -118,7 +85,6 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       {
         _logger.error("Failed to write CGG script file for chart '" + chartName + "'.");
       }
-
     }
     catch(Exception ex)
     {
@@ -126,15 +92,6 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     }
   }
    
-  private void renderPreamble(StringBuilder out)
-  {
-    out.append("lib('protovis-bundle.js');\n\n");
-
-    out.append("elem = document.createElement('g');\n"
-            + "elem.setAttribute('id','canvas');\n"
-            + "document.lastChild.appendChild(elem);\n\n");
-  }
-  
   private void renderChart(StringBuilder out, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
   {
     // Delegate writing the component to the corresponding CdfRunJs writer

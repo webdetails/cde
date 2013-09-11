@@ -252,7 +252,7 @@ var CDFDD = Base.extend({
         }
       });
     } else {
-      this.saveAs(false);
+      this.combinedSaveAs();
     }
   },
     
@@ -528,13 +528,14 @@ var CDFDD = Base.extend({
 
   newDashboard: function(){
     var myself = this;
-    $.prompt('Are you sure you want to start a new dashboard?<br/>Unsaved changes will be lost.',{
+    $.prompt('<h2>New Dashboard</h2><hr/>Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
         Ok: true,
         Cancel: false
-      } ,
-      callback: function(v,m,f){
-        if(v) myself.saveAs(true);
+      },
+      prefix: "popup",
+      callback: function(v, m, f) {
+        if (v) myself.saveAs(true);
       }
     });
   },
@@ -546,14 +547,14 @@ var CDFDD = Base.extend({
     var selectedTitle = this.getDashboardWcdf().title;
     var selectedDescription = this.getDashboardWcdf().description;
     var myself = this;
-    var content = '<div class="saveaslabel">Save as:</div>\n' +
-'               <div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-'                 <span class="folderexplorerfilelabel">File Name:</span>\n' +
-'                 <span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
-'               <hr class="filexplorerhr"/>\n' +
-'               <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-'                 <span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle +'"></input>\n' +
-'                 <br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription +'"></input>';
+    var content = '<h2>Save as:</h2><hr style="background:none;"/>\n' +
+      '               <div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+      '                 <span class="folderexplorerfilelabel">File Name:</span>\n' +
+      '                 <span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
+      '               <hr class="filexplorerhr"/>\n' +
+      '               <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+      '                 <span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '"></input>\n' +
+      '                 <br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '"></input>';
 
     $.prompt(content,{
       loaded: function(){
@@ -591,16 +592,22 @@ var CDFDD = Base.extend({
         Cancel: false
       },
       opacity: 0.2,
-      prefix: 'treeTableNewJqi',
-      callback: function(v,m,f){
-        if(v){
+      prefix: 'popup',
+      callback: function(v, m, f) {
+        if (v) {
 
-          if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length-5))
-            $.prompt('Invalid file extension. Must be .wcdf');
-          else if(selectedFolder.length == 0)
-            $.prompt('Please choose destination folder.');
-          else if(selectedFile.length == 0)
-            $.prompt('Please enter the file name.');
+          if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5))
+            $.prompt('Invalid file extension. Must be .wcdf', {
+              prefix: "popup"
+            });
+          else if (selectedFolder.length == 0)
+            $.prompt('Please choose destination folder.', {
+              prefix: "popup"
+            });
+          else if (selectedFile.length == 0)
+            $.prompt('Please enter the file name.', {
+              prefix: "popup"
+            });
 
           else if(selectedFile.length > 0){
             if(selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
@@ -798,13 +805,14 @@ var CDFDD = Base.extend({
   reload: function(){
     this.logger.warn("Reloading dashboard... ");
 
-    $.prompt('Are you sure you want to reload? Unsaved changes will be lost.',{
+    $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
         Ok: true,
         Cancel: false
-      } ,
-      callback: function(v,m,f){
-        if(v) window.location.reload();
+      },
+      prefix: "popup",
+      callback: function(v, m, f) {
+        if (v) window.location.reload();
       }
     });
   },
@@ -896,18 +904,26 @@ var CDFDD = Base.extend({
       '{{#styles}}' +
       '   <option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
       '{{/styles}}' +
-      '</select>'+
-      '<span>Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
+      '</select>' +
+      '<hr style="background:none;"/>'+
+      '<span class="title">Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
       '{{#renderers}}' +
       '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
       '{{/renderers}}' +
       '</select>' +
       '{{#widget}}' +
-      '<span><b>Widget Parameters:</b></span><br><span id="widgetParameters">' +
-      '{{#parameters}}' +
-      '   <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}}><span>{{parameter}}</span><br>\n' +
-      '{{/parameters}}' +
+      '<span>'+
+      '  <br>'+
+      '  <b>Widget Parameters:</b>'+
+      '</span>'+
+      '<br>'+
+      '<span id="widgetParameters">' +
+      ' <div style=" max-height: 110px; overflow: auto; ">'+
+      ' {{#parameters}}' +
+      '     <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}} style=" position: relative; top: 4px; "><span>{{parameter}}</span><br>\n' +
+      ' {{/parameters}}' +
       '</span>' +
+      ' </div>'+
       '{{/widget}}';
 
     content = Mustache.render(content, settingsData);
@@ -916,7 +932,8 @@ var CDFDD = Base.extend({
         Save: true,
         Cancel: false
       },
-      submit: function(){
+      prefix: "popup",
+      submit: function() {
         wcdf.title = $("#titleInput").val();
         wcdf.author = $("#authorInput").val();
         wcdf.description = $("#descriptionInput").val();
@@ -925,22 +942,26 @@ var CDFDD = Base.extend({
         wcdf.rendererType = $("#rendererInput").val();
         wcdf.widgetParameters = [];
         $("#widgetParameters input[type='checkbox']:checked")
-            .each(function(i,e){
-              wcdf.widgetParameters.push(e.value);
-            });
+          .each(function(i, e) {
+          wcdf.widgetParameters.push(e.value);
+        });
       },
-      callback: function(v,m,f){
-        if(v){
+      callback: function(v, m, f) {
+        if (v) {
 
           /* Validations */
           var validInputs = true;
-          if (wcdf.widget){
-            if(!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName) ) {
-              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
+          if (wcdf.widget) {
+            if (!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName)) {
+              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {
+                prefix: "popup"
+              });
               validInputs = false;
             } else if (wcdf.widgetName.length == 0){
               if (wcdf.title.length == 0) {
-                $.prompt('No widget name provided. Tried to use title instead but title is empty.');
+                $.prompt('No widget name provided. Tried to use title instead but title is empty.', {
+                  prefix: "popup"
+                });
                 validInputs = false;
               } else {
                 wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
@@ -1240,16 +1261,16 @@ var CDFDD = Base.extend({
         Ok: true,
         Cancel: false
       },
+      prefix:"popup",
       opacity: 0.2,
-      prefix: 'treeTableNewJqi',
       classes: 'save-as-widget',
-      callback: function(v,m,f){
-        if(v){
+      callback: function(v, m, f) {
+        if (v) {
 
           /* Validations */
           var validInputs = true;
-          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)){
-            $.prompt('Invalid file extension. Must be .wcdf');
+          if (selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)) {
+            $.prompt('Invalid file extension. Must be .wcdf',{prefix:"popup"});
             validInputs = false;
           } else if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName) ) {
             $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.');
@@ -1528,22 +1549,8 @@ var Panel = Base.extend({
     //var DISABLED_STR = "_inactive";
     // Disable other buttons and enable this one
     var a = $(doc);
-    var myIdx = a.prevAll("a").length;
-    a.parent().find("img").each(function(i,x){
-      if (i==myIdx){
-        //may be hovered
-        Panel.unsetHover(x);
-        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/$2"));
-      //enable
-      //$(x).attr("src", $(x).attr("src").replace(DISABLED_STR,ENABLED_STR));
-      }else{
-        $(x).attr("src",$(x).attr("src").replace(/(.*)\/X?(.*)/,"$1/X$2"));
-      //$(x).attr("src", $(x).attr("src").replace(ENABLED_STR,DISABLED_STR));
-      //disable
-
-      }
-
-    });
+    $(".panelButton").removeClass("panelButton-active");
+    a.parent().addClass("panelButton-active");
   },
 
   disableThisButton: function(doc) {
@@ -1744,31 +1751,18 @@ $(function() {
 
 templates = {};
 templates.savePulldown = Mustache.compile(
-  "<ul class='pulldown'>" +
-  " <li class='item save-as-dashboard'>Save As Dashboard</li>" +
-  " <li class='item save-as-widget'>Save As Widget</li>" +
-  "</ul>"
-);
+  "<ul class='controlOptions'>" +
+  " <li class='item popup'>Save As Dashboard</li>" +
+  " <li class='item popup'>Save As Widget</li>" +
+  "</ul>");
 
 templates.saveAsWidget = Mustache.compile(
-  '<div class="saveaslabel">Save as Widget:</div>' +
-  '<div class="inputContainer">' + 
-  '  <span class="inputLabel">File Name:</span>' +
-  '  <input id="fileInput" type="text"></input>' +
-  '</div>' +
-  '<div class="inputContainer">' + 
-  ' <span class="inputLabel">Widget Name:</span>' +
-  ' <input id="componentInput"  type="text"></input>\n' +
-  '</div>' +
-  '<hr class="filexplorerhr"/>\n' +
-  '<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-  '<div class="inputContainer">' + 
-  ' <span class="inputLabel" >Title:</span>' +
-  ' <input id="titleInput" type="text" value="{{title}}"></input><br/>\n' +
-  '</div>' +
-  '<div class="inputContainer">' + 
-  ' <span class="inputLabel" >Description:</span>'+
-  ' <input id="descriptionInput"  type="text" value="{{description}}"></input>' +
-  '</div>'
-
-);
+  '<h2>Save as Widget:</h2><hr/>\n' +
+  ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
+  ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"></input>\n' +
+  ' <hr class="filexplorerhr"/>\n' +
+  ' <span class="folderexplorerextralabel" >-Extra Information-</span><br/>\n' +
+  ' <span class="folderexplorerextralabels" >Title:</span>' +
+  ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"></input><br/>\n' +
+  ' <span class="folderexplorerextralabels" >Description:</span>' +
+  ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"></input>');

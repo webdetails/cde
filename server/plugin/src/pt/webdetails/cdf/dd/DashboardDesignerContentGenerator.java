@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,9 +42,11 @@ import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cdf.dd.structure.WcdfDescriptor;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
+import pt.webdetails.cpf.repository.IRepositoryAccess;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
@@ -120,11 +120,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   /**
    * Parameters received by content generator
    */
-  protected static class MethodParams {
-
-    /**
-     * Debug flag
-     */
+  protected static class MethodParams 
+  {
     public static final String DEBUG = "debug";
 
     public static final String ROOT = "root";
@@ -212,12 +209,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JAVASCRIPT)
-  public void getComponentDefinitions(OutputStream out) throws Exception {
-    // The ComponentManager is responsible for producing the component definitions
-    ComponentManager engine = ComponentManager.getInstance();
-
-    engine.parseDataSourceDefinitions(DataSourceManager.getInstance().getDataSourcesJsonDefinition());
-    
+  public void getComponentDefinitions(OutputStream out) throws Exception
+  {
     // Get and output the definitions
     try
     {
@@ -238,12 +231,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
    * @author pdpi
    */
   @Exposed(accessLevel = AccessLevel.PUBLIC)
-  public static void refresh(OutputStream out) throws Exception {
-    DependenciesManager.refresh();
-    ComponentManager.getInstance().refresh();
-
-    DataSourceManager.getInstance().refresh();
-    ComponentManager.getInstance().parseDataSourceDefinitions(DataSourceManager.getInstance().getDataSourcesJsonDefinition());
+  public static void refresh(OutputStream out) throws Exception 
+  {
+    DashboardManager.getInstance().refreshAll();
   }
 
   @Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -533,7 +523,55 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       writeOut(out, FileExplorer.getInstance().getJqueryFileTree(folder, fileExtensions, permission, userSession));
     }
   }
+  
+  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  public void getCDEplugins(final OutputStream out) throws IOException
+  {
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    pluginsAnalyzer.refresh();
+    
+    IPluginFilter pluginFilter = new IPluginFilter() 
+    {
+      public boolean include(Plugin plugin)
+      {
+        boolean include = false;
+        if(plugin.hasSettingsXML())
+        {
+          include = (plugin.getXmlValue("/settings/cde-compatible", "settings.xml").equals("true")) ? true : false;
+        }
+        return include;
+      }
+    };
+    
+    List<Plugin> cdePlugins = pluginsAnalyzer.getPlugins(pluginFilter);
+    
+    JSONArray pluginsArray = new JSONArray();
+    
+    
+    for(Plugin plugin : cdePlugins)
+    {
+      try
+      {
+        JSONObject pluginObject = new JSONObject();
+        String [] split = plugin.getPluginRelativePath().split("/");
+        pluginObject.put("title", split[split.length-1]);
+        pluginObject.put("description", plugin.getXmlValue("/settings/description", "settings.xml"));
+        pluginObject.put("url", plugin.getXmlValue("/settings/url", "settings.xml"));
+        pluginObject.put("jsPath", plugin.getXmlValue("/settings/jsPath", "settings.xml"));
+        pluginObject.put("pluginId", plugin.getId());
 
+        pluginsArray.add(pluginObject);
+      }
+      catch(Exception e)
+      {
+      }
+    }
+    
+    logger.info("Feeding client with CDE-Compatible plugin list");
+    
+    
+    writeOut(out, pluginsArray.toString());
+  }
   /**
    * List CDA datasources for given dashboard.
    */
@@ -543,9 +581,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     String dashboard = getRequestParameters().getStringParameter("dashboard", null);
     dashboard = WcdfDescriptor.toStructurePath(dashboard);
     
-    List<DataSourceReader.CdaDataSource> dataSourcesList = DataSourceReader.getCdaDataSources(dashboard);
-    DataSourceReader.CdaDataSource[] dataSources = dataSourcesList
-        .toArray(new DataSourceReader.CdaDataSource[dataSourcesList.size()]);
+    List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources(dashboard);
+    CdaDataSourceReader.CdaDataSource[] dataSources = dataSourcesList
+        .toArray(new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()]);
     String result = "[" + StringUtils.join(dataSources, ",") + "]";
     writeOut(out, result);
   }
@@ -654,9 +692,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
     String formats = resLoader.getPluginSetting(this.getClass(), "resources/downloadable-formats");
 
-    if (formats == null) {
-      logger
-          .error("Could not obtain resources/downloadable-formats settings entry, please check plugin.xml and make sure settings are refreshed.");
+    if (formats == null) 
+    {
+      logger.error(
+              "Could not obtain resources/downloadable-formats settings entry, " + 
+              "please check plugin.xml and make sure settings are refreshed.");
+      
       formats = ""; //avoid NPE
     }
 
@@ -720,31 +761,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
   }
 
-  /**
-   * 
-   * @param refresh
-   * @return
-   * @throws Exception
-   */
-  @Deprecated
-  public static JSON getCdaDefs(boolean refresh) throws Exception {
-    JSON result = null;
-
-    if (refresh) {
-      result = DataSourceManager.getInstance().getDefinition("cda");
-    } else {
-      result = DataSourceManager.getInstance().getDefinitionFromCache("cda");
-    }
-
-    return result;
-  }
-
-  @Exposed(accessLevel = AccessLevel.PUBLIC, outputType = MimeType.JSON)
-  public void getAvailableDataSources(OutputStream out) throws Exception {
-    out.write(DataSourceManager.getInstance().getDataSourcesJsonDefinition().toString().getBytes());
-  }
-
-  private void init() throws IOException {
+  private void init() throws IOException 
+  {
     this.packager = Packager.getInstance();
     Properties props = new Properties();
     String rootdir = PentahoSystem.getApplicationContext().getSolutionPath(PLUGIN_PATH);

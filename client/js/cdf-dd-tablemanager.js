@@ -193,10 +193,18 @@ var TableManager = Base.extend({
       tooltip : ""
     };
 
-      // Rerender this column
-      tr.find("td:eq("+colIdx+")").remove();
-      myself.renderColumn(tr,row,colIdx);
-    });
+    if(_type === "Label"){
+      options.tooltip = row.tooltip;
+    }
+
+      return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value){
+        _setExpression.apply(myself,[row, value]);
+
+        // Rerender this column
+        tr.find("td:eq("+colIdx+")").remove();
+        myself.renderColumn(tr,row,colIdx);
+      }, options);
+    
   },
 
   renderColumnByRow: function(row,colIdx){

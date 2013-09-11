@@ -185,6 +185,7 @@ public class XmlStructure implements IStructure
 
       status = repository.publishFile(cdeFileDir, cdaFileName, safeGetEncodedBytes(cdaText), true);
       if(status != SaveFileStatus.OK)
+      {
         throw new StructureException(Messages.getString("XmlStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
       }
     }
@@ -208,6 +209,7 @@ public class XmlStructure implements IStructure
     result.put("cdfde", "true");
     result.put("cda",   "true");
     result.put("cgg",   "true");
+    
     return result;
   }
   

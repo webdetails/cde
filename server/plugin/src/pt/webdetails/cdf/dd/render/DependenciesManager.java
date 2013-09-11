@@ -43,20 +43,16 @@ public final class DependenciesManager
     
     StringFilter jsFilter = new StringFilter()
     {
-
       public String filter(String input)
       {
-        //input = input.replaceAll("\\?", "&");
         return "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"getJsResource/" + input + "\"></script>";
       }
     };
     
     StringFilter cssFilter = new StringFilter()
     {
-
       public String filter(String input)
       {
-        //input = input.replaceAll("\\?", "&");
         return "\t\t<link href='getCssResource/" + input + "' rel='stylesheet' type='text/css' />";
       }
     };
@@ -86,7 +82,7 @@ public final class DependenciesManager
   {
     _manager = manager;
   }
-  
+
   public static final class Engines {
     public final static String CDF = "CDF";
 

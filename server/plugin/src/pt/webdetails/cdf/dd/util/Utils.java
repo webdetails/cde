@@ -34,27 +34,30 @@ public class Utils {
   
   private static String baseUrl = null;
 
-  public static String getBaseUrl() {
-
-    if (baseUrl == null) {
-      try {
+  public static String getBaseUrl() 
+  {
+    if(baseUrl == null)
+    {
+      try
+      {
         // Note - this method is deprecated and returns different values in 3.6
         // and 3.7. Change this in future versions -- but not yet
         // getFullyQualifiedServerURL only available from 3.7
         //      URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
         URI uri = new URI(PentahoSystem.getApplicationContext().getBaseUrl());
         baseUrl = uri.getPath();
-        if (!baseUrl.endsWith("/")) {
+        if(!baseUrl.endsWith("/"))
+        {
           baseUrl += "/";
-        }
-      } catch (URISyntaxException ex) {
-        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(), ex);
+        } 
       }
-
+      catch (URISyntaxException ex)
+      {
+        logger.fatal("Error building BaseURL from " + PentahoSystem.getApplicationContext().getBaseUrl(),ex);
+      }
     }
 
     return baseUrl;
-
   }
   
   public static String composeErrorMessage(String message, Exception cause)
@@ -86,7 +89,9 @@ public class Utils {
       System.out.println(uri.getPath());
       uri = new URI("/pentaho");
       System.out.println(uri.getPath());
-    } catch (URISyntaxException ex) {
+    }
+    catch (URISyntaxException ex)
+    {
       Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
@@ -98,8 +103,8 @@ public class Utils {
   public static String getSolutionPath(String path) {
     return joinPath(getSolutionPath(), path);
   }
-  
-  public static String joinPath(String...paths){
+
+  public static String joinPath(String... paths) {
     // TODO: dcleao Shouldn't this use File.separator
     return StringUtils.defaultString(StringUtils.join(paths, "/")).replaceAll("/+", "/");
   }
