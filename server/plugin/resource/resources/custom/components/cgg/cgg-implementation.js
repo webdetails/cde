@@ -5,6 +5,8 @@
  * fashion (i.e. that works under IE!)
  */
 
+ // TODO: remove SVGWeb stuff!
+
 if (typeof pv == 'undefined' || typeof pv.listenForPageLoad == 'undefined') {
   window.pv = {};
   pv.renderer = function() {
@@ -38,13 +40,23 @@ var CggComponent = BaseComponent.extend({
 
   ph: null,
   relComp: null,
+  
+  getScriptUrl: function() {
+    return this.resourceFile;
+  },
 
-  update : function() {
-    var url = '../cgg/draw',
-      data = this.processParams(),
-      script = this.resourceFile,
-      myself = this,
-      ph = $('#' + myself.htmlObject);
+  getOutputType: function() {
+    return 'svg';
+  },
+
+  update: function() {
+    var url    = '../cgg/draw',
+        data   = this.processParams(),
+        script = this.getScriptUrl(),
+        myself = this,
+        ph     = $('#' + myself.htmlObject);
+
+    // TODO: integrate with CDF's async?
 
     // If the browser doesn't support SVG natively, we need SVGWeb to be loaded.
     // Jamie Love's Protovis+SVGWeb handles this elegantly.
@@ -82,25 +94,47 @@ var CggComponent = BaseComponent.extend({
    */
   processParams: function() {
     var data = {};
-    for (var i = 0; i < this.parameters.length; i ++) {
-        var param = this.parameters[i];
-        data["param" + param[0]] = Dashboards.getParameterValue(param[1]);
+
+    this._processParametersCore(data);
+
+    // Check debug level and pass as parameter
+    var level = this.dashboard.debug;
+    if(level > 1) {
+        data.paramdebug = true;
+        data.paramdebugLevel = level;
     }
-    data.script = escape(this.resourceFile);
-    data.outputType='svg';
+
+    data.script     = escape(this.getScriptUrl());
+    data.outputType = this.getOutputType() || 'svg';
+
     return data;
+  },
+
+  _processParametersCore: function(params) {
+    var dash = this.dashboard;
+    var params = this.parameters;
+    for (var i = 0, L = params.length ; i < L ; i ++) {
+        var param = params[i];
+        var value = dash.getParameterValue(param[1]);
+
+        if($.isArray(value) && value.length == 1 && ('' + value[0]).indexOf(';') >= 0) {
+            // Special case where single element will wrongly be treated as a parseable array by cda
+            value = doCsvQuoting(value[0],';');
+        }
+
+        data["param" + param[0]] = value;
+    }
   },
 
   /*
    * Produces an URL to use in <object> tags
    */
   objectUrl: function(baseUrl, script, params) {
-
     var objUrl = baseUrl + '?',
-      pArray = [];
+        pArray = [];
 
-    for (var p in params) {
-      if (params.hasOwnProperty(p)){
+    for(var p in params) {
+      if(params.hasOwnProperty(p)){
         pArray.push(escape(p) + '=' + escape(params[p]));
       }
     }
@@ -121,18 +155,20 @@ var CggComponent = BaseComponent.extend({
 });
 
 
-CggDialComponent = CggComponent.extend({
+var CggDialComponent = CggComponent.extend({
   script: "system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js",
+  
+  getScriptUrl: function() {
+    return this.script;
+  },
 
-  processParams: function() {
-    var data = {
-      paramvalue: Dashboards.getParameterValue(this.parameter),
-      paramcolors: this.colors,
-      paramscale: this.intervals
-    };
-    data.script = escape(this.script);
-    data.outputType='svg';
-    return data;
+  getOutputType: function() {
+    return 'svg';
+  },
+
+  _processParametersCore: function(data) {
+    data.paramvalue  = this.dashboard.getParameterValue(this.parameter);
+    data.paramcolors = this.colors;
+    data.paramscale  = this.intervals;
   }
-
 });
