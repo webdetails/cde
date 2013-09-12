@@ -19,7 +19,6 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 	
 	protected static Log logger = LogFactory.getLog(PentahoCdeEnvironment.class);
 	
-	
 	private ICdeBeanFactory factory;
 	private IPluginCall interPluginCall;
 	private IContentAccessFactory contentAccessFactory;
@@ -40,7 +39,9 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
     	
     	init();
     	
-    	//contentaccessfactory
+    	if(factory.containsBean(IContentAccessFactory.class.getSimpleName())){    		
+    		contentAccessFactory = (IContentAccessFactory)factory.getBean(IContentAccessFactory.class.getSimpleName());
+		}
     		
 		if(factory.containsBean(IResourceLoader.class.getSimpleName())){    		
 			resourceLoader = (IResourceLoader)factory.getBean(IResourceLoader.class.getSimpleName());
