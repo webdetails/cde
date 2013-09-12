@@ -180,24 +180,23 @@ public final class XmlFsPluginModelReader implements IThingReader {
     	logger.debug(String.format("%s BASE component files found", filesList.size()));
 
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_BASE_TYPE, BASE_COMPS_DIR);
+        this.readComponentsFile(model, context, file, DEF_BASE_TYPE);
       }
     }
   }
 
   private void readCustomComponents(MetaModel.Builder model, IThingReadContext context) throws ThingReadException {
 	  
-    for(String relDir : CdeEnvironment.getPluginResourceLocationManager().getAllCustomComponentsResourceLocations()) {
-      readCustomComponentsLocation(model, context, relDir);
+    for(IReadAccess access : CdeEnvironment.getPluginResourceLocationManager().getAllCustomComponentsResourceLocations()) {
+      readCustomComponentsLocation(model, context, access);
     }
   }
 
-  private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, String relDir) throws ThingReadException {
-    
-	 logger.info(String.format("Loading CUSTOM components from: %s", relDir));
+  private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, IReadAccess access) throws ThingReadException {
+    	  
+	 GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION, true, access);
 	  
-	 List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(relDir).listFiles(null, 
-			 new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION, true, CdeEnvironment.getPluginRepositoryReader(relDir)), IReadAccess.DEPTH_ALL);
+	 List<IBasicFile> filesList = access.listFiles(null, filter, IReadAccess.DEPTH_ALL);
 
     if (filesList != null) {
     	
@@ -218,10 +217,8 @@ public final class XmlFsPluginModelReader implements IThingReader {
 				}	
       		});
       
-      String relDirText = relDir.toString();
-      
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_CUSTOM_TYPE, relDirText);
+        this.readComponentsFile(model, context, file, DEF_CUSTOM_TYPE);
       }
     }
   }
@@ -254,7 +251,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
         });
 
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_WIDGET_STUB_TYPE, WIDGETS_DIR);
+        this.readComponentsFile(model, context, file, DEF_WIDGET_STUB_TYPE);
       }
     }
   }
@@ -309,7 +306,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
   }
 
   // ------------------
-  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file, String defaultClassName, String baseRelDir)
+  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file, String defaultClassName)
           throws ThingReadException
   {
     Document doc;
@@ -318,17 +315,10 @@ public final class XmlFsPluginModelReader implements IThingReader {
       try {
         doc = Utils.getDocFromFile(file, null);
       } catch(Exception ex1) {
-        if(file != null && file.getPath().endsWith(COMPONENT_FILENAME + "." + CUSTOM_PROPS_FILE_EXTENSION)) { throw ex1; }
-
-        // TODO: confirm this is really needed
-        // Second that is relevant for CUSTOM and WIDGET components reading...
-        //relFilePath = Utils.joinPath(relFilePath, COMPONENT_FILENAME);
-
-        doc = Utils.getDocFromFile(file, null);
+    	  throw ex1;
       }
-    }
-    catch (Exception ex) {
-      ThingReadException ex2 = new ThingReadException("Cannot read components file '" + file.getPath() + "'.", ex);
+    } catch (Exception ex) {
+      ThingReadException ex2 = new ThingReadException("Cannot read components file '" + file.getFullPath() + "'.", ex);
       if(!this.continueOnError) { throw ex2; }
 
       // log and move on

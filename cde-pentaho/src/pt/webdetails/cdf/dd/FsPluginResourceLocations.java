@@ -7,18 +7,18 @@ package pt.webdetails.cdf.dd;
 import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
-import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * @author dcleao
  */
 public final class FsPluginResourceLocations
 {
-  private static final String[] _resourceAbsDirs;
-  private static final String[] _customCompsSolRelDirs;
+  private static final IReadAccess[] _resourceAbsDirs;
+  private static final IReadAccess[] _customCompsSolRelDirs;
   
   protected static final Log _logger;
 
@@ -26,13 +26,13 @@ public final class FsPluginResourceLocations
   {
     _logger = LogFactory.getLog(FsPluginResourceLocations.class);
     
-    ArrayList<String> resourceAbsDirs = new ArrayList<String>();
-    ArrayList<String> customCompsSolRelDirs = new ArrayList<String>();
+    ArrayList<IReadAccess> resourceAbsDirs = new ArrayList<IReadAccess>();
+    ArrayList<IReadAccess> customCompsSolRelDirs = new ArrayList<IReadAccess>();
     
     initLocations(resourceAbsDirs, customCompsSolRelDirs);
     
-    _resourceAbsDirs = resourceAbsDirs.toArray(new String[resourceAbsDirs.size()]);
-    _customCompsSolRelDirs = customCompsSolRelDirs.toArray(new String[customCompsSolRelDirs.size()]);
+    _resourceAbsDirs = resourceAbsDirs.toArray(new IReadAccess[resourceAbsDirs.size()]);
+    _customCompsSolRelDirs = customCompsSolRelDirs.toArray(new IReadAccess[customCompsSolRelDirs.size()]);
   }
   
   // Static class
@@ -40,41 +40,71 @@ public final class FsPluginResourceLocations
   {
   }
   
-  public static String[] getResourcesAbsDirs()
+  public static IReadAccess[] getResourcesAbsDirs()
   {
     return _resourceAbsDirs;
   }
   
-  public static String[] getCustomComponentsRelDirs()
+  public static IReadAccess[] getCustomComponentsRelDirs()
   {
     return _customCompsSolRelDirs;
   }
 
   // ----------
   
-  private static void initLocations(ArrayList<String> resourceAbsDirs, ArrayList<String> customCompsSolRelDirs)
-  {
+  private static void initLocations(ArrayList<IReadAccess> resourceAbsDirs, ArrayList<IReadAccess> customCompsSolRelDirs) {
     // Add base locations
-    resourceAbsDirs.add(CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(DashboardDesignerContentGenerator.PLUGIN_PATH));
-    resourceAbsDirs.add(CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(""));
+    resourceAbsDirs.add(CdeEnvironment.getPluginSystemReader());
+    resourceAbsDirs.add(CdeEnvironment.getUserContentAccess());
 
-    for (String componentsDir : CdeSettings.getComponentLocations())
-    {
-      customCompsSolRelDirs.add(componentsDir);
-      resourceAbsDirs.add(CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(componentsDir));
+    for (IReadAccess componentsDir : CdeSettings.getComponentLocations()){
+    	customCompsSolRelDirs.add(componentsDir);
+    	resourceAbsDirs.add(componentsDir);
     }
 
     // External component locations
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
     pluginsAnalyzer.refresh();
 
-    for(PluginsAnalyzer.PluginWithEntity entity : pluginsAnalyzer.getRegisteredEntities("/cde-components"))
-    {
-      String location = entity.getRegisteredEntity().valueOf("path");
-      customCompsSolRelDirs.add(location);
-      resourceAbsDirs.add(CdeEngine.getInstance().getEnvironment().getRepositoryAccess().getSolutionPath(location));
+    for(PluginsAnalyzer.PluginWithEntity entity : pluginsAnalyzer.getRegisteredEntities("/cde-components")) {
+      String path = entity.getRegisteredEntity().valueOf("path");
       
-      _logger.debug(String.format("Found CDE components location declared in %s [%s]", entity.getPlugin().getId(), location));
+      if(path != null){
+          
+    	  path = path.startsWith("/") ? path.replaceFirst("/", "").toLowerCase().trim() : path.toLowerCase().trim();
+      
+    	  if(path.startsWith(DashboardDesignerContentGenerator.PLUGIN_PATH)){
+    		  
+    		  path = path.replaceFirst(DashboardDesignerContentGenerator.PLUGIN_PATH, "");
+    		
+    		  customCompsSolRelDirs.add(CdeEnvironment.getPluginSystemReader(path));
+    	      resourceAbsDirs.add(CdeEnvironment.getPluginSystemReader(path));
+    	  
+    	  }else if(path.startsWith(DashboardDesignerContentGenerator.SYSTEM_PATH)){
+    		  
+    		  path = path.replaceFirst(DashboardDesignerContentGenerator.SYSTEM_PATH + "/", ""); 
+    		  path = path.replaceFirst(entity.getPlugin().getId().toLowerCase() + "/", "");
+    		  
+    		  customCompsSolRelDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
+    	      resourceAbsDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
+    		
+    	  }else if(path.startsWith(DashboardDesignerContentGenerator.SOLUTION_DIR)) {
+    		  
+    		  path = path.replaceFirst(DashboardDesignerContentGenerator.SOLUTION_DIR + "/", ""); 
+    		  
+    		  customCompsSolRelDirs.add(CdeEnvironment.getPluginRepositoryReader(path));
+    	      resourceAbsDirs.add(CdeEnvironment.getPluginRepositoryReader(path));  
+    	  
+    	  }else{
+    		
+    		  path = path.replaceFirst(entity.getPlugin().getId().toLowerCase() + "/", "");
+    		  customCompsSolRelDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
+    	      resourceAbsDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
+    	  
+    	  }
+      
+    	  _logger.debug(String.format("Found CDE components location declared in %s [%s]", entity.getPlugin().getId(), entity.getRegisteredEntity().valueOf("path")));
     }
+  }
   }
 }

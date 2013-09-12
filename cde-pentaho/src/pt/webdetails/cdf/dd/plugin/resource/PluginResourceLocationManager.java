@@ -4,11 +4,12 @@ import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.FsPluginResourceLocations;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class PluginResourceLocationManager implements IPluginResourceLocationManager{
 
 	@Override
-	public String[] getAllCustomComponentsResourceLocations() {
+	public IReadAccess[] getAllCustomComponentsResourceLocations() {
 		return FsPluginResourceLocations.getCustomComponentsRelDirs();
 	}
 

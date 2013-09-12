@@ -9,23 +9,23 @@ import net.sf.json.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
-import org.pentaho.platform.api.engine.IPentahoSession;
 
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
-import java.io.FilenameFilter;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 @SuppressWarnings("unchecked")
 
@@ -37,7 +37,7 @@ public class CdfStyles
   private static CdfStyles instance;
   
   private static final String SYSTEM_RESOURCE_STYLES_DIR = "resources/styles/";
-  private static final String RESOURCE_STYLES_DIR = "styles/";
+  private static final String RESOURCE_STYLES_DIR_SOLUTION = "styles/";
   
   public static final String DEFAULTSTYLE = "Clean";
 
@@ -79,43 +79,34 @@ public class CdfStyles
 
   private class Style{
     String pluginId = null;
-    IBasicFile directory = null;
+    IReadAccess access;
+    String directory;
     List<IBasicFile> styleFiles = null;
     
-    public Style(IBasicFile directory, String pluginName){
+    public Style(IReadAccess access, String directory, String pluginName){
       
-      this.directory = directory;
+      this.access = access;
       this.pluginId = pluginName;
+      this.directory = directory;
       styleSelfBuild();
     }
     
     private void styleSelfBuild(){
       styleFiles = new ArrayList<IBasicFile>();
-      final FilenameFilter htmlFilter = new FilenameFilter() {
-        public boolean accept(final File dir, final String name) {
-          return name.endsWith(".html");
-        }
-      };
+      final GenericBasicFileFilter htmlFilter = new GenericBasicFileFilter(null, ".html");
       
-      if(getDirectory().isDirectory()){
-        String files[] = directory.list(htmlFilter);
-        
-        for(String file : files){
-          File f = new File(directory.getAbsolutePath() + "/" + file);
-          styleFiles.add(f);
-        }
-        
+      List<IBasicFile> htmlList = access.listFiles(directory, htmlFilter, IReadAccess.DEPTH_ALL);
+      
+      if(htmlList != null){
+    	  if(styleFiles == null){
+    		  styleFiles = htmlList;
+    	  }else{
+    		  styleFiles.addAll(htmlList);
+    	  }
       }
-      
     }
 
-    public IBasicFile getDirectory()
-    {
-      return directory;
-    }
-
-    public String getPluginId()
-    {
+    public String getPluginId() {
       return pluginId;
     }
     
@@ -131,11 +122,9 @@ public class CdfStyles
       return sufix;
     }
 
-    public List<File> getStyleFiles()
-    {
+    public List<IBasicFile> getStyleFiles() {
       return styleFiles;
     }
-    
   }
 
   public Object liststyles(HashMap<String,String> parameters) throws DashboardDesignerException {
@@ -144,47 +133,39 @@ public class CdfStyles
 
     List<Style> styles = new ArrayList<Style>();
     Style style = null; 
-    style = new Style(new File(ResourceManager.PLUGIN_DIR + SYSTEM_RESOURCE_STYLES_DIR), null);
+    style = new Style(CdeEnvironment.getPluginSystemReader(), SYSTEM_RESOURCE_STYLES_DIR, null);
     styles.add(style);
-    style = new Style(new File(ResourceManager.SOLUTION_DIR + RESOURCE_STYLES_DIR_SOLUTION), null);
+    style = new Style(CdeEnvironment.getPluginRepositoryReader(), RESOURCE_STYLES_DIR_SOLUTION, null);
     styles.add(style);
     
     PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
     pluginsAnalyzer.refresh();
     
-    
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities("/cde-styles");
     
     for(PluginsAnalyzer.PluginWithEntity entity : entities){
-      String solutionPath = PentahoSystem.getApplicationContext().getSolutionPath("");
       String pluginStylesDir = entity.getRegisteredEntity().valueOf("path");
-      String finalPath = solutionPath+pluginStylesDir+"/";
+      String finalPath = pluginStylesDir+"/";
       String pluginId = entity.getPlugin().getId().toUpperCase();
       style = null;
       
-      File folder = new File(finalPath);
+      IReadAccess access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
       
-      if(folder.isDirectory()){
-        style = new Style(folder, pluginId);
-        styles.add(style);
-        
+      if(access.fileExists(finalPath) && access.fetchFile(finalPath).isDirectory()){
+    	  style = new Style(access, finalPath, pluginId);
+          styles.add(style);
       }
     }
-    
-    
-
-    
 
     if (styles == null || styles.size() < 1) {
       logger.error("No styles directory found in resources");
       styles = new ArrayList<Style>();
     }
-    
 
     for (Style s : styles) {
-      List<File> styleFiles = s.getStyleFiles();
+      List<IBasicFile> styleFiles = s.getStyleFiles();
       
-      for(File file : styleFiles){
+      for(IBasicFile file : styleFiles){
         String name = file.getName();
         result.add(name.substring(0,name.lastIndexOf('.')) + s.getSufixPluginName());
       }
@@ -204,14 +185,12 @@ public class CdfStyles
 
   }
 
-  public String getResourceLocation(String style)
-  {
+  public String getResourceLocation(String style) {
     String stylePath = null;
     
     String styleFilename;
     String[] split = style.split(" - ");
-    if(split.length > 1)
-    {
+    if(split.length > 1) {
       String pluginId = split[1].replace("(", "").replace(")", "");
       
       styleFilename = split[0] + ".html";
@@ -221,28 +200,23 @@ public class CdfStyles
       
       List<Plugin> plugins = pluginsAnalizer.getInstalledPlugins();
       
-      for(Plugin plugin : plugins)
-      {
-        if(plugin.getId().equalsIgnoreCase(pluginId))
-        {
+      for(Plugin plugin : plugins) {
+        if(plugin.getId().equalsIgnoreCase(pluginId)) {
           stylePath = "/" + plugin.getRegisteredEntities("/cde-styles").valueOf("path")+ "/" + styleFilename;
           break;
         }
       }
-    }
-    else
-    {
+    
+    } else {
       styleFilename = style + ".html";
       
       String customStylePath = RESOURCE_STYLES_DIR_SOLUTION + styleFilename;
-      File styleFile = new File(ResourceManager.SOLUTION_DIR + customStylePath);
-      if(styleFile.exists())
-      {
+      
+      if(CdeEnvironment.getPluginRepositoryReader().fileExists(customStylePath)) {
         stylePath =  customStylePath;
-      }
-      else if(new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR+"/"+styleFilename).exists())
-      {
-        stylePath = RESOURCE_STYLES_DIR + styleFilename;
+      
+      } else if(CdeEnvironment.getPluginSystemReader(SYSTEM_RESOURCE_STYLES_DIR).fileExists(styleFilename)) {
+        stylePath = SYSTEM_RESOURCE_STYLES_DIR + styleFilename;
       }
     }
     
