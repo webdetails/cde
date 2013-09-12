@@ -289,7 +289,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   
   protected static String readStyleTemplate(String styleName) throws IOException
   {
-    return readTemplateFile(CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getStyleResourceLocation(styleName));
+    return readTemplateFile(CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation(styleName));
   }
   
   protected static String readTemplateFile(String templateFile) throws IOException {

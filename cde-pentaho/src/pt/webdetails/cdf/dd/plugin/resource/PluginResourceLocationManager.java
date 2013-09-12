@@ -21,10 +21,4 @@ public class PluginResourceLocationManager implements IPluginResourceLocationMan
 	public String getStyleResourceLocation(String arg0) {
 		return CdfStyles.getInstance().getResourceLocation(arg0);
 	}
-
-	@Override
-	public String getPluginLocation() {
-		return DashboardDesignerContentGenerator.PLUGIN_PATH;
-	}
-
 }

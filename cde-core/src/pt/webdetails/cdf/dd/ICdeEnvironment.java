@@ -19,11 +19,6 @@ public interface ICdeEnvironment {
 		
 	public String getApplicationBaseUrl();
 	
-	/**
-	 * solution folder for custom components, styles and templates
-	 */
-	public String getSolutionBaseDir();
-	
 	public Locale getLocale();
 	
 	public IPluginCall getInterPluginCall();

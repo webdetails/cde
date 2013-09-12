@@ -3,11 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Properties;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,12 +32,13 @@ import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
-import pt.webdetails.cdf.dd.editor.ExternalFileEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cdf.dd.utils.CommonParameterProvider;
@@ -45,6 +49,11 @@ import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
 import pt.webdetails.cpf.olap.OlapUtils;
+import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -52,8 +61,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	public static final String SYSTEM_PATH = "system";
 
-	public static final String PLUGIN_PATH = SYSTEM_PATH + "/"
-			+ DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
+	public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
 
 	public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
 
@@ -62,11 +70,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	 */
 	public static final String SOLUTION_DIR = "cde";
 
-	public static final String SERVER_URL_VALUE = PentahoSystem
-			.getApplicationContext().getBaseUrl() + "content/pentaho-cdf-dd/";
-
-	private static final Log logger = LogFactory
-			.getLog(DashboardDesignerContentGenerator.class);
+	private static final Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -75,30 +79,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	private static final String CSS_TYPE = "text/css";
 
 	private static final String JAVASCRIPT_TYPE = "text/javascript";
-
-	private static final String FILE_NAME_TAG = "@FILENAME@";
-
-	private static final String SERVER_URL_TAG = "@SERVERURL@";
-
-	private static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
-
-	private static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
-
-	private static final String DESIGNER_SCRIPTS_RESOURCE = "resources/scripts.html";
-
-	private static final String DESIGNER_HEADER_TAG = "@HEADER@";
-
-	private static final String DESIGNER_CDF_TAG = "@CDF@";
-
-	private static final String DESIGNER_STYLES_TAG = "@STYLES@";
-
-	private static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
-
-	private static final String DATA_URL_TAG = "cdf-structure.js";
-
-	private static final String DATA_URL_VALUE = PentahoSystem
-			.getApplicationContext().getBaseUrl()
-			+ "content/pentaho-cdf-dd/Syncronize";
 
 	/**
 	 * 1 week cache
@@ -127,6 +107,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		public static final String PATH = "path";
 
 		public static final String FILE = "file";
+		
+		public static final String RESOURCE = "resource";
 
 		/**
 		 * JSON structure
@@ -171,23 +153,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncronize(final OutputStream out) throws Exception {
-		// 0 - Check security. Caveat: if no path is supplied, then we're in the
-		// new parameter
+		// 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 		IParameterProvider requestParams = getRequestParameters();
-		final String path = ((String) requestParams
-				.getParameter(MethodParams.FILE)).replaceAll("cdfde", "wcdf");
-		if (requestParams.hasParameter(MethodParams.PATH)
-				&& !CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(path, FileAccess.EXECUTE)) {
+		final String path = ((String) requestParams.getParameter(MethodParams.FILE)).replaceAll("cdfde", "wcdf");
+		
+		if (requestParams.hasParameter(MethodParams.PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
+			
 			final HttpServletResponse response = getResponse();
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			logger.warn("Access denied for the syncronize method: " + path
-					+ " by user " + userSession.getName());
+			logger.warn("Access denied for the syncronize method: " + path + " by user " + userSession.getName());
 			return;
 		}
 
 		final SyncronizeCdfStructure syncCdfStructure = new SyncronizeCdfStructure();
-		syncCdfStructure.syncronize(out, new CommonParameterProvider(
-				requestParams));
+		syncCdfStructure.syncronize(out, new CommonParameterProvider(requestParams));
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -200,12 +179,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	public void getComponentDefinitions(OutputStream out) throws Exception {
 		// Get and output the definitions
 		try {
-			String definition = MetaModelManager.getInstance()
-					.getJsDefinition();
+			String definition = MetaModelManager.getInstance() .getJsDefinition();
 			out.write(definition.getBytes());
 		} catch (Exception ex) {
-			String msg = "Could not get component definitions: "
-					+ ex.getMessage();
+			String msg = "Could not get component definitions: " + ex.getMessage();
 			logger.error(msg);
 			throw ex;
 		}
@@ -239,8 +216,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		String relativePath = getWcdfRelativePath(getRequestParameters());
 
 		// Check security
-		if (!CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(relativePath,
-				FileAccess.EXECUTE)) {
+		if (!CdeEnvironment.getUserContentAccess().hasAccess(relativePath, FileAccess.EXECUTE)) {
 			writeOut(out, "Access Denied or File Not Found.");
 			return;
 		}
@@ -331,39 +307,64 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void res(final OutputStream out) throws Exception {
-		String pathString = getPathParameters().getStringParameter(
-				MethodParams.PATH, "");
+		String pathString = getPathParameters().getStringParameter(MethodParams.PATH, "");
 		String resource;
 		if (pathString.split("/").length > 2) {
 			resource = pathString.replaceAll("^/.*?/", "");
 		} else {
-			resource = getRequestParameters().getStringParameter(
-					MethodParams.PATH, "");
+			resource = getRequestParameters().getStringParameter(MethodParams.PATH, "");
 		}
-		resource = resource.startsWith("/") ? resource : "/" + resource;
+		
+		final HttpServletResponse response = getResponse();
+		
+		if(StringUtils.isEmpty(resource)){
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		
+		resource = resource.startsWith("/") ? resource.replaceFirst("/", "").toLowerCase() : resource.toLowerCase();
 
 		String[] path = resource.split("/");
 		String[] fileName = path[path.length - 1].split("\\.");
 
 		String mimeType;
 		try {
-			final MimeTypes.FileType fileType = MimeTypes.FileType
-					.valueOf(fileName[fileName.length - 1].toUpperCase());
+			final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
 			mimeType = MimeTypes.getMimeType(fileType);
 		} catch (java.lang.IllegalArgumentException ex) {
 			mimeType = "";
 		} catch (EnumConstantNotPresentException ex) {
 			mimeType = "";
 		}
+		
+		IReadAccess access = null;
+		
+		if(resource.startsWith(PLUGIN_PATH)){
+			access = CdeEnvironment.getPluginSystemReader();
+		
+		}else if(resource.startsWith("system")){
+			
+			resource = resource.replaceFirst("system/", "");
+			String pluginId = resource.substring(0, resource.indexOf("/"));
+			resource = resource.replaceFirst(pluginId + "/", "");
+			
+			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
+			
+		}else if(resource.startsWith(SOLUTION_DIR)){
+			access = CdeEnvironment.getUserContentAccess();
+					
+		}else{
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
 
 		setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
-		final HttpServletResponse response = getResponse();
+		
 		// Set cache for 1 year, give or take.
 		response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
-		response.setHeader("content-disposition", "inline; filename=\""
-				+ path[path.length - 1] + "\"");
+		response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 		try {
-			ResourceManager.getInstance().getSolutionResource(out, resource);
+			writeOut(out, IOUtils.toString(access.getFileInputStream(resource)));
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -374,31 +375,47 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void getResource(final OutputStream out) throws IOException {
-		String pathString = getPathParameters().getStringParameter(
-				MethodParams.PATH, null);
+		
+		String pathString = getPathParameters().getStringParameter(MethodParams.PATH, null);
 		String resource;
 		if (pathString.split("/").length > 2) {
 			resource = pathString.replaceAll("^/.*?/", "");
 		} else {
-			resource = getRequestParameters().getStringParameter("resource",
-					null);
+			resource = getRequestParameters().getStringParameter(MethodParams.RESOURCE, null);
 		}
-
-		if (!Utils.pathStartsWith(resource, SOLUTION_DIR)
-				&& !Utils.pathStartsWith(resource, PLUGIN_PATH)
-				&& !Utils.pathStartsWith(resource, "system"))// added for other
-																// plugins'
-																// components
-		{
-			resource = Utils.joinPath(PLUGIN_PATH, resource);// default path
-		}
-
+		
 		final HttpServletResponse response = getResponse();
-
-		String[] roots = FsPluginResourceLocations.getResourcesAbsDirs();
+		
+		if(StringUtils.isEmpty(resource)){
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		
+		resource = resource.startsWith("/") ? resource.replaceFirst("/", "").toLowerCase() : resource.toLowerCase();
+		
+		IReadAccess access = null;
+		
+		if(resource.startsWith(PLUGIN_PATH)){
+			access = CdeEnvironment.getPluginSystemReader();
+		
+		}else if(resource.startsWith("system")){
+			
+			resource = resource.replaceFirst("system/", "");
+			String pluginId = resource.substring(0, resource.indexOf("/"));
+			resource = resource.replaceFirst(pluginId + "/", "");
+			
+			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
+			
+		}else if(resource.startsWith(SOLUTION_DIR)){
+			access = CdeEnvironment.getUserContentAccess();
+					
+		}else{
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		
 		try {
-			ResourceManager.getInstance().getSolutionResource(out, resource,
-					roots);
+			writeOut(out, IOUtils.toString(access.getFileInputStream(resource)));
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 		} catch (FileNotFoundException e) {
@@ -409,27 +426,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	@Audited(action = "edit")
 	public void edit(final OutputStream out) throws IOException {
-		// 0 - Check security. Caveat: if no path is supplied, then we're in the
-		// new parameter
+		// 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 		IParameterProvider requestParams = getRequestParameters();
 		IParameterProvider pathParams = getPathParameters();
 
 		boolean debugMode = requestParams.hasParameter(MethodParams.DEBUG)
-				&& requestParams.getParameter(MethodParams.DEBUG).toString()
-						.equals("true");
+				&& requestParams.getParameter(MethodParams.DEBUG).toString().equals("true");
 
 		String wcdfPath = getWcdfRelativePath(requestParams);
 
 		if (requestParams.hasParameter(CdeConstants.MethodParams.PATH)
-				&& !CdeEngine.getInstance().getEnvironment().getRepositoryAccess().hasAccess(wcdfPath,
-						IRepositoryAccess.FileAccess.EDIT)) {
+				&& !CdeEnvironment.getUserContentAccess().hasAccess(wcdfPath,FileAccess.WRITE)) {
 			writeOut(out, "Access Denied");
 		}
-
-		// TODO: remove packager from content generator when no need to get
-		// solutionpath of plugin
-		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode,
-				getScheme(pathParams), packager));
+		
+		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams), packager));
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -462,32 +473,28 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			JsonUtils.buildJsonResult(out, result != null, result);
 		} catch (Exception ex) {
 			logger.fatal(ex);
-			JsonUtils.buildJsonResult(out, false, "Exception found: "
-					+ ex.getClass().getName() + " - " + ex.getMessage());
+			JsonUtils.buildJsonResult(out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage());
 		}
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void exploreFolder(final OutputStream out) throws IOException {
+		
 		IParameterProvider requestParams = getRequestParameters();
 		final String folder = requestParams.getStringParameter("dir", null);
-		final String fileExtensions = requestParams.getStringParameter(
-				"fileExtensions", null);
-		final String permission = requestParams.getStringParameter("access",
-				null);
-		final String outputType = requestParams.getStringParameter(
-				"outputType", null);
+		final String fileExtensions = requestParams.getStringParameter("fileExtensions", null);
+		final String permission = requestParams.getStringParameter("access", null);
+		final String outputType = requestParams.getStringParameter("outputType", null);
 
 		if (outputType != null && outputType.equals("json")) {
-			writeOut(
-					out,
-					FileExplorer.getInstance().getJSON(folder, fileExtensions,
-							permission));
+			try {
+				writeOut(out, RepositoryHelper.toJSON(folder, getFileList(folder, fileExtensions, permission)));
+			} catch (JSONException e) {
+				logger.error("exploreFolder" + folder , e);
+				writeOut(out,"error getting files in folder " + folder);
+			}
 		} else {
-			writeOut(
-					out,
-					FileExplorer.getInstance().getJqueryFileTree(folder,
-							fileExtensions, permission));
+			writeOut(out, RepositoryHelper.toJQueryFileTree(folder, getFileList(folder, fileExtensions, permission)));
 		}
 	}
 
@@ -503,15 +510,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	@Deprecated
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void listCdaSources(final OutputStream out) throws IOException {
-		String dashboard = getRequestParameters().getStringParameter(
-				"dashboard", null);
+		
+		String dashboard = getRequestParameters().getStringParameter("dashboard", null);
 		dashboard = DashboardWcdfDescriptor.toStructurePath(dashboard);
 
-		List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader
-				.getCdaDataSources(dashboard);
-		CdaDataSourceReader.CdaDataSource[] dataSources = dataSourcesList
-				.toArray(new CdaDataSourceReader.CdaDataSource[dataSourcesList
-						.size()]);
+		List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources(dashboard);
+		CdaDataSourceReader.CdaDataSource[] dataSources = dataSourcesList.toArray(new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()]);
 		String result = "[" + StringUtils.join(dataSources, ",") + "]";
 		writeOut(out, result);
 	}
@@ -519,78 +523,105 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	// External Editor v
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void getFile(final OutputStream out) throws IOException {
-		String path = getRequestParameters().getStringParameter(
-				MethodParams.PATH, "");
-
-		String contents = ExternalFileEditor.getFileContents(path);
-
-		setResponseHeaders("text/plain", NO_CACHE_DURATION, null);
-		writeOut(out, contents);
-	}
-
-	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public void createFolder(OutputStream out)
-			throws PentahoAccessControlException, IOException {
-		String path = getRequestParameters().getStringParameter(
-				MethodParams.PATH, null);
-
-		if (ExternalFileEditor.createFolder(path)) {
-			writeOut(out, "Path " + path + " created ok");
-		} else {
-			writeOut(out, "error creating folder " + path);
+		
+		String path = getRequestParameters().getStringParameter(MethodParams.PATH, "");
+		IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+		
+		if(access.fileExists(path)){
+			setResponseHeaders("text/plain", NO_CACHE_DURATION, null);
+			writeOut(out, IOUtils.toString(access.getFileInputStream(path)));
+		}else{
+			writeOut(out, "No file found in given path " + path);
 		}
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public void deleteFile(OutputStream out)
-			throws PentahoAccessControlException, IOException {
-		String path = getRequestParameters().getStringParameter(
-				MethodParams.PATH, null);
-
-		IRepositoryAccess access = PentahoRepositoryAccess
-				.getRepository(userSession);
-		if (access.hasAccess(path, FileAccess.DELETE)
-				&& access.removeFileIfExists(path))
-			writeOut(out, "file  " + path + " removed ok");
-		else
-			writeOut(out, "Error removing " + path);
+	public void createFolder(OutputStream out) throws PentahoAccessControlException, IOException {
+		
+		String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
+		IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+		
+		if(access.fileExists(path)){
+			writeOut(out, "already exists: " + path);
+		}else{
+			if(access.createFolder(path)){
+				writeOut(out, path + "created ok");
+			}else{
+				writeOut(out, "error creating folder " + path);
+			}
+		}
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public void writeFile(OutputStream out)
-			throws PentahoAccessControlException, IOException {
+	public void deleteFile(OutputStream out) throws PentahoAccessControlException, IOException {
+		
+		String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
+
+		IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+		if (access.hasAccess(path, FileAccess.DELETE) && access.deleteFile(path)){
+			writeOut(out, "file  " + path + " removed ok");
+		} else { 
+			writeOut(out, "Error removing " + path);
+		}
+	}
+
+	@Exposed(accessLevel = AccessLevel.PUBLIC)
+	public void writeFile(OutputStream out) throws PentahoAccessControlException, IOException {
+		
 		IParameterProvider requestParams = getRequestParameters();
 		String path = requestParams.getStringParameter(MethodParams.PATH, null);
-		String contents = requestParams.getStringParameter(MethodParams.DATA,
-				null);
-
-		if (ExternalFileEditor.writeFile(path, contents)) {// saved ok
-			writeOut(out, "file '" + path + "' saved ok");
-		} else {// error
-			writeOut(out, "error saving file " + path);
-		}
+		String contents = requestParams.getStringParameter(MethodParams.DATA, null);
+		
+		IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+		  
+	    if(access.hasAccess(path, FileAccess.WRITE)) {
+	    		    	
+	      if(access.saveFile(path, new ByteArrayInputStream(contents.getBytes(ENCODING)))){
+	    	  // saved ok
+			  writeOut(out, "file '" + path + "' saved ok");
+	      }else {
+	    	  // error
+	    	  logger.error("writeFile: failed saving " + path);
+	    	  writeOut(out, "error saving file " + path);
+	      }
+	    
+	    } else {
+	      logger.error("writeFile: no permissions to write file " + path);
+	      writeOut(out, "no permissions to write file " + path);
+	    }
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void canEdit(OutputStream out) throws IOException {
-		String path = getRequestParameters().getStringParameter(
-				MethodParams.PATH, null);
+		
+		String path = getRequestParameters().getStringParameter(MethodParams.PATH, null);
 
-		Boolean result = ExternalFileEditor.canEdit(path);
-		writeOut(out, result.toString());
+		writeOut(out, String.valueOf(CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.WRITE)));
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void extEditor(final OutputStream out) throws IOException {
-		String editorPath = Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE);
-		writeOut(out, ExternalFileEditor.getFileContents(editorPath));
+		
+		IReadAccess access = CdeEnvironment.getPluginSystemReader();
+		
+		if(access.fileExists(EXTERNAL_EDITOR_PAGE)){
+			writeOut(out, IOUtils.toString(access.getFileInputStream(EXTERNAL_EDITOR_PAGE)));
+		}else{
+			writeOut(out, "no external editor found in " + Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE));
+		}
 	}
 
 	// External Editor ^
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void componentEditor(final OutputStream out) throws IOException {
-		String editorPath = Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE);
-		writeOut(out, ExternalFileEditor.getFileContents(editorPath));
+		
+		IReadAccess access = CdeEnvironment.getPluginSystemReader();
+		
+		if(access.fileExists(COMPONENT_EDITOR_PAGE)){
+			writeOut(out, IOUtils.toString(access.getFileInputStream(COMPONENT_EDITOR_PAGE)));
+		}else{
+			writeOut(out, "no external editor found in " + Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE));
+		}
 	}
 
 	private String getWcdfRelativePath(final IParameterProvider pathParams) {
@@ -602,16 +633,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		return path.replaceAll("//+", "/");
 	}
 
-	private String getStructureRelativePath(final IParameterProvider pathParams) {
-		String wcdfPath = getWcdfRelativePath(pathParams);
-		return DashboardWcdfDescriptor.toStructurePath(wcdfPath);
-	}
-
 	private void setCacheControl() {
-		final IPluginResourceLoader resLoader = PentahoSystem.get(
-				IPluginResourceLoader.class, null);
-		final String maxAge = resLoader.getPluginSetting(this.getClass(),
-				"max-age");
+		final IPluginResourceLoader resLoader = PentahoSystem.get(IPluginResourceLoader.class, null);
+		final String maxAge = resLoader.getPluginSetting(this.getClass(), "max-age");
 		final HttpServletResponse response = getResponse();
 		if (maxAge != null && response != null) {
 			response.setHeader("Cache-Control", "max-age=" + maxAge);
@@ -706,4 +730,33 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		cdfContext.setRequestParameters(requestParameterProvider);
 		return cdfContext.callInPluginClassLoader();
 	}
+	
+	public IBasicFile[] getFileList(String dir, final String fileExtensions, String permission) {
+
+        ArrayList<String> extensionsList = new ArrayList<String>();
+        String[] extensions = StringUtils.split(fileExtensions, ".");
+        if (extensions != null) {
+            for (String extension : extensions) {
+                // For some reason, in 4.5 filebased rep started to report a leading dot in extensions
+                // Adding both just to be sure we don't break stuff
+                extensionsList.add("." + extension);
+                extensionsList.add(extension);
+            }
+        }
+        
+        FileAccess fileAccess = FileAccess.parse(permission);
+        if (fileAccess == null) {
+            fileAccess = FileAccess.READ;
+        }
+        
+        GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(null, extensions);
+
+        List<IBasicFile> fileList = CdeEnvironment.getUserContentAccess().listFiles(dir, fileFilter, IReadAccess.DEPTH_ALL);
+        
+        if(fileList != null && fileList.size() > 0){
+        	return fileList.toArray(new IBasicFile[fileList.size()]);
+        }
+        
+        return new IBasicFile[]{};
+    }
 }

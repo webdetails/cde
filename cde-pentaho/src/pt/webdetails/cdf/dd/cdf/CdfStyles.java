@@ -25,6 +25,7 @@ import java.util.List;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 
 @SuppressWarnings("unchecked")
 
@@ -35,8 +36,8 @@ public class CdfStyles
 
   private static CdfStyles instance;
   
-  private static final String RESOURCE_STYLES_DIR = "resources/styles/";
-  private static final String RESOURCE_STYLES_DIR_SOLUTION = "styles/";
+  private static final String SYSTEM_RESOURCE_STYLES_DIR = "resources/styles/";
+  private static final String RESOURCE_STYLES_DIR = "styles/";
   
   public static final String DEFAULTSTYLE = "Clean";
 
@@ -78,10 +79,10 @@ public class CdfStyles
 
   private class Style{
     String pluginId = null;
-    File directory = null;
-    List<File> styleFiles = null;
+    IBasicFile directory = null;
+    List<IBasicFile> styleFiles = null;
     
-    public Style(File directory, String pluginName){
+    public Style(IBasicFile directory, String pluginName){
       
       this.directory = directory;
       this.pluginId = pluginName;
@@ -89,7 +90,7 @@ public class CdfStyles
     }
     
     private void styleSelfBuild(){
-      styleFiles = new ArrayList<File>();
+      styleFiles = new ArrayList<IBasicFile>();
       final FilenameFilter htmlFilter = new FilenameFilter() {
         public boolean accept(final File dir, final String name) {
           return name.endsWith(".html");
@@ -108,7 +109,7 @@ public class CdfStyles
       
     }
 
-    public File getDirectory()
+    public IBasicFile getDirectory()
     {
       return directory;
     }
@@ -143,7 +144,7 @@ public class CdfStyles
 
     List<Style> styles = new ArrayList<Style>();
     Style style = null; 
-    style = new Style(new File(ResourceManager.PLUGIN_DIR + RESOURCE_STYLES_DIR), null);
+    style = new Style(new File(ResourceManager.PLUGIN_DIR + SYSTEM_RESOURCE_STYLES_DIR), null);
     styles.add(style);
     style = new Style(new File(ResourceManager.SOLUTION_DIR + RESOURCE_STYLES_DIR_SOLUTION), null);
     styles.add(style);

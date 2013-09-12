@@ -7,38 +7,42 @@ package pt.webdetails.cdf.dd.cdf;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
-import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.text.Collator;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
 
-  private static String CDF_DD_TEMPLATES = "system/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/resources/templates";
-  private static String CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
+  private static String SYSTEM_CDF_DD_TEMPLATES = /*"system/" + DashboardDesignerContentGenerator.PLUGIN_NAME +*/ "/resources/templates";
+  private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
   
-  public static String DEFAULT_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES);
-  public static String CUSTOM_TEMPLATE_DIR = PentahoSystem.getApplicationContext().getSolutionPath( CDF_DD_TEMPLATES_CUSTOM);
-  public static String RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
-  public static String UNKNOWN_IMAGE = RESOURCE_TEMPLATE_DIR + "unknown.png";
+  public static String SYSTEM_RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
+  public static String UNKNOWN_IMAGE = SYSTEM_RESOURCE_TEMPLATE_DIR + "unknown.png";
 
   private static Log logger = LogFactory.getLog(CdfTemplates.class);
 
@@ -87,21 +91,17 @@ public class CdfTemplates {
     final String fileName = (String) parameters.get("file");
     logger.info("Saving File:" + fileName);
     
-    IRepositoryAccess solutionRepository = CdeEngine.getInstance().getEnvironment().getRepositoryAccess();
+    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     
-    if(!solutionRepository.resourceExists(CDF_DD_TEMPLATES_CUSTOM))
-    {
-      solutionRepository.createFolder(CDF_DD_TEMPLATES_CUSTOM);
+    if(!access.fileExists(REPOSITORY_CDF_DD_TEMPLATES_CUSTOM)) {
+    	access.createFolder(REPOSITORY_CDF_DD_TEMPLATES_CUSTOM);
     }
     
     String cdfStructure = (String) parameters.get(CdeConstants.MethodParams.CDF_STRUCTURE);
-    byte[] fileData = cdfStructure.getBytes("UTF-8");
-    switch( solutionRepository.publishFile(CDF_DD_TEMPLATES_CUSTOM, fileName, fileData, true)){
-      case OK:
-        break;
-      case FAIL:
-        default:
-          throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
+    byte[] fileData = cdfStructure.getBytes(CharsetHelper.getEncoding());
+    
+    if(!access.saveFile(Utils.joinPath(REPOSITORY_CDF_DD_TEMPLATES_CUSTOM,fileName), new ByteArrayInputStream(fileData))){
+    	throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
     }
   }
 
@@ -111,31 +111,23 @@ public class CdfTemplates {
 
     try {
 
-      final File defaultTemplatesDir = new File(DEFAULT_TEMPLATE_DIR);
-
-      final FilenameFilter jsonFilter = new FilenameFilter() {
-        public boolean accept(final File dir, final String name) {
-          return name.endsWith(".cdfde");
-        }
-      };
-
-      File[] jsonFiles = defaultTemplatesDir.listFiles(jsonFilter);
-      if (jsonFiles != null) {
-        loadFiles(jsonFiles, (JSONArray) result, "default");
-      } else
+    	GenericBasicFileFilter jsonFilter = new GenericBasicFileFilter(null, ".cdfde");
+    	
+    	List<IBasicFile> defaultTemplatesList = CdeEnvironment.getPluginSystemReader(SYSTEM_CDF_DD_TEMPLATES).listFiles(null, jsonFilter, IReadAccess.DEPTH_ALL);
+    	
+      if (defaultTemplatesList != null) {
+        loadFiles(defaultTemplatesList.toArray(new IBasicFile[]{}), (JSONArray) result, "default");
+      } else {
         result = Messages.getString("CdfTemplates.ERROR_002_LOADING_TEMPLATES_EXCEPTION");
-
-      final File customTemplates = new File(CUSTOM_TEMPLATE_DIR);
-      if (customTemplates.exists()) {
-        jsonFiles = customTemplates.listFiles(jsonFilter);
-        if (jsonFiles != null) {
-          loadFiles(jsonFiles, (JSONArray) result, "custom");
-        }
       }
-
-    } catch (FileNotFoundException e) {
-      result = Messages.getString("CdfTemplates.ERROR_002_LOADING_EXCEPTION");
-    } catch (IOException e) {
+      
+      List<IBasicFile> customTemplatesList = CdeEnvironment.getPluginRepositoryReader(REPOSITORY_CDF_DD_TEMPLATES_CUSTOM).listFiles(null, jsonFilter, IReadAccess.DEPTH_ALL);
+      
+      if (customTemplatesList != null) {
+          loadFiles(customTemplatesList.toArray(new IBasicFile[]{}), (JSONArray) result, "custom");
+      }
+      
+    } catch (Exception e) {
       result = Messages.getString("CdfTemplates.ERROR_002_LOADING_EXCEPTION");
     }
 
@@ -143,33 +135,37 @@ public class CdfTemplates {
 
   }
 
-  private void loadFiles(final File[] jsonFiles, final JSONArray result, final String type) throws FileNotFoundException, IOException {
+  private void loadFiles(final IBasicFile[] jsonFiles, final JSONArray result, final String type) throws Exception {
 
-    Arrays.sort(jsonFiles, new Comparator<File>() {
-      private Collator c = Collator.getInstance();
+	  Arrays.sort(jsonFiles, 
+		  new Comparator<IBasicFile>(){
+	
+			@Override
+			public int compare(IBasicFile file1, IBasicFile file2) {
+				if (file1 == null && file2 == null){
+					return 0;
+				}else{
+					return file1.getFullPath().toLowerCase().compareTo(file2.getFullPath().toLowerCase());
+				}
+			}	
+	  });
 
-      public int compare(final File f1, final File f2) {
-        return c.compare(f1.getName(), f2.getName());
-      }
-    });
-
+	IReadAccess access = CdeEnvironment.getPluginSystemReader(SYSTEM_RESOURCE_TEMPLATE_DIR);
+	  
     for (int i = 0; i < jsonFiles.length; i++) {
       final JSONObject template = new JSONObject();
-      final File image = new File(jsonFiles[i].getAbsolutePath().replace(".cdfde", ".png"));
-      final String imgResourcePath = image.exists() ? RESOURCE_TEMPLATE_DIR + image.getName() : UNKNOWN_IMAGE;
+      
+      String imgResourcePath = UNKNOWN_IMAGE;
+      
+      if(access.fileExists(jsonFiles[i].getName().replace(".cdfde", ".png"))){
+    	  imgResourcePath = jsonFiles[i].getFullPath().replace(".cdfde", ".png");
+      }
+      
       template.put("img", imgResourcePath);
       template.put("type", type);
-      FileInputStream cdfdeFile = null;
-      try{
-        cdfdeFile = new FileInputStream(jsonFiles[i]);
-        template.put("structure", JsonUtils.readJsonFromInputStream(cdfdeFile));
-        result.add(template);
-      }
-      finally {
-        IOUtils.closeQuietly(cdfdeFile);
-      }
-
+      
+      template.put("structure", JsonUtils.readJsonFromInputStream(jsonFiles[i].getContents()));
+      result.add(template);
     }
   }
-
 }

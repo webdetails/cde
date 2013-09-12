@@ -13,11 +13,13 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 	@Override
 	public void init() throws InitializationException {
 		// TODO Auto-generated method stub
+		
 	}
-	
+
 	@Override
 	public void init(ICdeBeanFactory factory) throws InitializationException {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -28,12 +30,6 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 
 	@Override
 	public String getApplicationBaseUrl() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getSolutionBaseDir() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -73,4 +69,6 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 }

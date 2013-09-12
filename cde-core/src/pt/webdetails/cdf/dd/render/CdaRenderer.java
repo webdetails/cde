@@ -26,6 +26,7 @@ import org.w3c.dom.Element;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.render.cda.*;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
@@ -47,7 +48,7 @@ public class CdaRenderer
   }
   public CdaRenderer(JXPathContext doc)
   {
-    this.cdaDefinitions = CdeEngine.getInstance().getEnvironment().getDataSourceManager().getProviderJsDefinition("cda");
+    this.cdaDefinitions = CdeEnvironment.getDataSourceManager().getProviderJsDefinition("cda");
     this.doc = doc; // NOTE: may be null!
   }
   

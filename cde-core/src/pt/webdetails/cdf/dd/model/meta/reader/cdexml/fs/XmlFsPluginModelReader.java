@@ -27,6 +27,7 @@ import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.PrimitiveComponentType;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
@@ -380,55 +381,5 @@ public final class XmlFsPluginModelReader implements IThingReader {
       // Just log and move on
       logger.fatal(null, ex2);
     }
-  }
-  
-  private class GenericBasicFileFilter implements IBasicFileFilter{
-		
-	private String fileName;
-	private String fileExtension;
-	private boolean checkReadability;
-	private IReadAccess access;
-	
-	public GenericBasicFileFilter(String fileName, String fileExtension){
-		this.fileName = fileName;
-		this.fileExtension = fileExtension;
-	}
-	
-	public GenericBasicFileFilter(String fileName, String fileExtension, boolean checkReadability, IReadAccess access){
-		this.fileName = fileName;
-		this.fileExtension = fileExtension;
-		this.checkReadability = checkReadability;
-		this.access = access;
-		
-	}
-	  
-	@Override
-	public boolean accept(IBasicFile file) {
-		
-		boolean accept = false;
-		
-		if(file != null){
-			
-			if(!StringUtils.isEmpty(fileName)){
-				accept = fileName.equalsIgnoreCase(file.getName());
-			}
-			
-			if(!StringUtils.isEmpty(fileExtension)){
-				accept = fileName.equalsIgnoreCase(file.getExtension());
-			}
-			
-			if(checkReadability){
-				boolean success = false;
-				try{
-					success = access.fileExists(file.getFullPath()) && access.fetchFile(file.getFullPath()) != null;
-				}catch(Exception e){
-					logger.error("checkReadability", e);
-				}
-				return success;
-			}
-		}
-		
-		return accept;
-	}
   }
 }

@@ -4,14 +4,6 @@ import pt.webdetails.cdf.dd.util.Utils;
 
 public class CdeConstants {
 	
-  //public static final String PLUGIN_NAME = "pentaho-cdf-dd";
-
-  public static final String SYSTEM_PATH = "system";
-
-  //public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + PLUGIN_NAME + "/";
-
-  public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
-	
   public static final String DEFAULT_STYLE = "Clean";
 
   public static final String DESIGNER_HEADER_TAG = "@HEADER@";

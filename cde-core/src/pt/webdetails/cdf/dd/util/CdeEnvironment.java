@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd.util;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
+import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -29,6 +30,10 @@ public class CdeEnvironment {
 		return getContentAccessFactory().getPluginRepositoryWriter(null);
 	}
 	
+	public static IRWAccess getPluginRepositoryWriter(String initialPath){
+		return getContentAccessFactory().getPluginRepositoryWriter(initialPath);
+	}
+	
 	public static IReadAccess getPluginSystemReader(){
 		return getContentAccessFactory().getPluginSystemReader(null);
 	}
@@ -41,8 +46,20 @@ public class CdeEnvironment {
 		return getContentAccessFactory().getPluginSystemWriter(null);
 	}
 	
+	public static IReadAccess getOtherPluginSystemReader(String pluginId){
+		return getContentAccessFactory().getOtherPluginSystemReader(pluginId, null);
+	}
+	
+	public static IReadAccess getOtherPluginSystemReader(String pluginId, String initialPath){
+		return getContentAccessFactory().getOtherPluginSystemReader(pluginId, initialPath);
+	}
+	
 	public static IPluginResourceLocationManager getPluginResourceLocationManager(){
 		return CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager();
+	}
+	
+	public static IDataSourceManager getDataSourceManager(){
+		return CdeEngine.getInstance().getEnvironment().getDataSourceManager();
 	}
 }
 			

@@ -10,9 +10,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
-import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginSettings;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.pentaho.SystemPluginResourceAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
@@ -28,23 +29,57 @@ public class CdeSettings{
     return settings;
   }
   
-  public static String[] getComponentLocations(){
+  public static IReadAccess[] getComponentLocations(){
 
-    ArrayList<String> paths = new ArrayList<String>();
+    ArrayList<IReadAccess> componentAccesses = new ArrayList<IReadAccess>();
     CdfDDSettings settings = getSettings();
     for(Element element : settings.getComponentLocations()){
       String path = element.getText();
-      String solutionPath = PentahoSystem.getApplicationContext().getSolutionPath(path);
-      File file = new File(solutionPath);
-      if(file.exists() && file.isDirectory()){
-        //files.add(file);
-        paths.add(path);
-      }
-      else {
-        logger.warn("Components directory '" + file.getAbsolutePath() + "' was not found.");
+      
+      if(path != null){
+      
+    	  path = path.startsWith("/") ? path.replaceFirst("/", "").toLowerCase().trim() : path.toLowerCase().trim();
+    	  
+    	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>, <path>system/cdc/cdeComponents</path>
+	      if(path.startsWith(DashboardDesignerContentGenerator.SYSTEM_PATH)){
+	    	  
+	    	  path = path.replaceFirst(DashboardDesignerContentGenerator.SYSTEM_PATH + "/", "");
+	    	  
+	    	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>
+	    	  if(path.startsWith(DashboardDesignerContentGenerator.PLUGIN_NAME)){
+	    		  
+	    		  path = path.replaceFirst(DashboardDesignerContentGenerator.PLUGIN_NAME + "/", "");
+
+	    		  if(CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()){
+	    			  componentAccesses.add(CdeEnvironment.getPluginSystemReader(path));
+	    		  }
+	    		  
+	    	  }else{
+	    		
+	    		//ex: <path>system/cdc/cdeComponents</path>
+	    		String pluginId = path.substring(0, path.indexOf("/"));
+	    		path = path.replaceFirst(pluginId + "/", "");
+	    		
+	    		if(CdeEnvironment.getOtherPluginSystemReader(pluginId).fileExists(path) && CdeEnvironment.getOtherPluginSystemReader(pluginId).fetchFile(path).isDirectory()){
+	    			componentAccesses.add(CdeEnvironment.getOtherPluginSystemReader(pluginId, path));
+	    		}
+	    		
+	    	  }
+	    	  
+	      } else if(path.startsWith(DashboardDesignerContentGenerator.SOLUTION_DIR)){
+	    	  
+	    	  //ex: <path>cde/components</path>
+	    	  path = path.replaceFirst(DashboardDesignerContentGenerator.SOLUTION_DIR + "/", "");
+	    	  
+	    	  if(CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()){
+	    		  componentAccesses.add(CdeEnvironment.getPluginRepositoryReader(path));
+	    	  }
+	      } else {
+	    	  logger.warn("Components directory '" + element.getText() + "' was not found.");
+	      }
       }
     }
-    return paths.toArray(new String[paths.size()]);
+    return componentAccesses.toArray(new IReadAccess[componentAccesses.size()]);
   }
   
   public static String getEncoding(){

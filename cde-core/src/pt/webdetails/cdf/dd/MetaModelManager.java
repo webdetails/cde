@@ -33,6 +33,7 @@ import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsThingWriterFactor
 import pt.webdetails.cdf.dd.render.DependenciesEngine;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
@@ -96,7 +97,7 @@ public final class MetaModelManager
     Date dtStart = new Date();
     _logger.info("CDE Starting Reload MetaModelManager");
     
-    if(refreshDatasources) { CdeEngine.getInstance().getEnvironment().getDataSourceManager().refresh(); }
+    if(refreshDatasources) { CdeEnvironment.getDataSourceManager().refresh(); }
     
     MetaModel model = this.readModel();
     if(model != null)
@@ -165,7 +166,7 @@ public final class MetaModelManager
       _logger.error("Error while obtaining the model reader from the factory.", ex);
       return null;
     }
-    IDataSourceManager dataSourceManager = CdeEngine.getInstance().getEnvironment().getDataSourceManager();
+    IDataSourceManager dataSourceManager = CdeEnvironment.getDataSourceManager();
     for(IDataSourceProvider dsProvider : dataSourceManager.getProviders())
     {
       String providerId = dsProvider.getId();

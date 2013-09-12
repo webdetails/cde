@@ -161,7 +161,7 @@ public final class DashboardManager
     
     DashboardCacheKey cacheKey = new DashboardCacheKey(
             cdeFilePath,
-            CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getStyleResourceLocation(wcdf.getStyle()),
+            CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation(wcdf.getStyle()),
             options.isDebug(),
             options.isAbsolute(),
             options.getSchemedRoot(), 
@@ -618,12 +618,10 @@ public final class DashboardManager
   
   private static CacheManager createWriteResultCacheManager() throws CacheException
   {
-    // 'new CacheManager' used instead of 'CacheManager.create' 
-    // to avoid overriding default cache
+    // 'new CacheManager' used instead of 'CacheManager.create' to avoid overriding default cache
     String cacheConfigFile = CACHE_CFG_FILE;
 
-    IBasicFile cfgFile = CdeEnvironment.getPluginSystemReader().fetchFile(
-    		CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager().getPluginLocation() + cacheConfigFile);
+    IBasicFile cfgFile = CdeEnvironment.getPluginSystemReader().fetchFile(cacheConfigFile);
   
     CacheManager cacheMgr = new CacheManager(cfgFile != null ? cfgFile.getFullPath() : null);
     
