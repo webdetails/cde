@@ -2,57 +2,36 @@
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
 
     <info organisation="pentaho" module="pentaho-cdf-dd" revision="${project.revision}" />
-    
+
     <configurations>
       <conf name="default"/>
             <conf name="runtime"/>
       <conf name="test" visibility="private"/>
       <conf name="sources"/>
     </configurations>
-    
+
     <dependencies defaultconf="default->default" >
 
+      <!-- Core dependencies -->
+      <dependency org="pt.webdetails" name="cde-core"
+          rev="${project.revision}" transitive="false" changing="true" conf='runtime->default'/>
+      <!-- cpf transitive to pull standard pentaho packages -->
+      <dependency org="pt.webdetails" name="cpf-pentaho"
+          rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" conf='runtime->default'/>
+
       <!--  third party dependencies -->
-      <dependency org="commons-logging"       name="commons-logging"     rev="1.1"   transitive="false"/>
-      <dependency org="dom4j"                 name="dom4j"               rev="1.6.1" transitive="false" />
-      <dependency org="net.sf.ehcache"        name="ehcache"             rev="1.4.1" transitive="false"/>
-      <dependency org="commons-lang"          name="commons-lang"        rev="2.4" />
-      <dependency org="org.json"              name="json"                rev="${dependency.json.revision}" transitive="false"/>        
-      <dependency org="javax.servlet"         name="servlet-api"         rev="2.4" />
-      <dependency org="commons-jxpath"        name="commons-jxpath"      rev="1.3" transitive="false"/>
-      <dependency org="org.slf4j" 			      name="slf4j-api" 		       rev="1.7.5" />
-      <dependency org="org.codehaus.jackson"  name="jackson-mapper-asl"  rev="1.8.2" conf='runtime->default'/>
-      
+      <dependency org="net.sf.ehcache" name="ehcache" rev="1.4.1" transitive="false"/>
+      <dependency org="commons-jxpath" name="commons-jxpath" rev="1.3" transitive="false"/>
+
+      <!-- TODO: either pass to cpf or use another log lib -->
+      <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" />
+      <!-- TODO: replace by either jackson or org.json -->
       <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" transitive="false" conf='runtime->default'>
         <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
       </dependency>
 
-      <!--  pentaho dependencies -->
-      <dependency org="pentaho" name="pentaho-connections" rev="${dependency.pentaho-connections.revision}" changing="true" />
-      <dependency org="pentaho" name="pentaho-bi-platform-api" rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-util" rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>        
-      <dependency org="pentaho" name="pentaho-bi-platform-engine-core" rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-engine-services" rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-repository" rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-plugin-services" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-web" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-web-servlet" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
-      <dependency org="pentaho" name="pentaho-bi-platform-plugin-actions" rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
-			<dependency org="pentaho" name="pentaho-bi-platform-engine-security" rev="${dependency.bi-platform.revision}" transitive="true"  changing="true"/>
-
-
-      <dependency org="pt.webdetails" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
-      <dependency org="pt.webdetails" name="cpf-pentaho" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
-
-      <dependency org="pt.webdetails" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
-
-      <!-- olap -->
-      <dependency org="pentaho" name="mondrian" rev="3.5.0">
-        <exclude org="commons-dbcp" name="commons-dbcp"/>
-        <exclude org="javax.servlet" name="jsp-api"/>
-        <exclude org="javax.servlet" name="servlet-api"/>
-      </dependency>
-
+      <!-- TESTS -->
+      <dependency org="junit" name="junit" conf="test->default" rev='4.10'/>
     </dependencies>
     
 </ivy-module>
