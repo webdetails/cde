@@ -75,7 +75,7 @@ public class CdfdeJsThingReaderFactory implements IThingReaderFactory
         }
         catch(ValidationException ex)
         {
-          logger.error("Error building dashboard layout.", ex);
+          logger.error("Error building dashboard layout.", ex.getError());
           return null;
         }
       }

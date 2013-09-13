@@ -81,6 +81,14 @@ public class CdfdeJsDashboardReader implements IThingReader
     try
     {
       reader = context.getFactory().getReader(KnownThingKind.Component, "layout", null);
+      
+      // TOTO: HACK: Until layout is handled the right way, we need to detect 
+      // a null reader, returned when there is an error buildinf the layout inside
+      // the factory :-(
+      if(reader == null) 
+      {
+        return;
+      }
     }
     catch(UnsupportedThingException ex)
     {

@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.validation.DuplicateAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 
@@ -22,8 +24,10 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  */
 public abstract class Entity extends Thing
 {
+  private static final Log _logger = LogFactory.getLog(Entity.class);
+  
   private final Map<String, Attribute> _attributesByName;
-
+  
   public Entity(Builder builder) throws ValidationException
   {
     if(builder.getAttributeCount() > 0)
@@ -32,10 +36,23 @@ public abstract class Entity extends Thing
 
       for(Attribute.Builder metaBuilder : builder._attributes)
       {
-        Attribute attribute = metaBuilder.build();
+        Attribute attribute;
+        try 
+        {
+          attribute = metaBuilder.build();
+        }
+        catch(ValidationException ex)
+        {
+          // Ignore attribute, log warning and continue
+          _logger.warn(ex);
+          continue;
+        }
+        
         if(this._attributesByName.containsKey(attribute.getName()))
         {
-          throw new ValidationException(new DuplicateAttributeError(attribute.getName()));
+          // Ignore attribute, log warning and continue
+          _logger.warn(new DuplicateAttributeError(attribute.getName()));
+          continue;
         }
 
         this._attributesByName.put(attribute.getName(), attribute);

@@ -83,8 +83,10 @@ public class PropertyType extends MetaObject
         LabeledValue labeledValue = labeledValueBuilder.build();
         if(this._possibleValuesByValue.containsKey(labeledValue.getValue()))
         {
-          // TODO: error class should not be this one?
-          throw new ValidationException(new DuplicateAttributeError(labeledValue.getValue()));
+          // Ignore LabeledValue, log warning and continue.
+          // TODO: error class should not be this one?!
+          _logger.warn(new DuplicateAttributeError(labeledValue.getValue()));
+          continue;
         }
 
         this._possibleValuesByValue.put(labeledValue.getValue(), labeledValue);

@@ -9,11 +9,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
@@ -24,7 +23,7 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  */
 public class MetaModel extends MetaObject
 {
-  private static final Logger logger = LoggerFactory.getLogger(MetaModel.class);
+  private static final Log _logger = LogFactory.getLog(MetaModel.class);
   
   // NOTE: The fact that there are some legacy components
   // whose name differs only by case...causes us to need to recognize the difference.
@@ -40,6 +39,7 @@ public class MetaModel extends MetaObject
     super(builder);
 
     this._componentTypesByName = new LinkedHashMap<String, ComponentType>();
+    
     // Don't need two «keep order» implementations.
     this._componentTypesByLegacyName = new HashMap<String, ComponentType>();
     
@@ -47,15 +47,28 @@ public class MetaModel extends MetaObject
     
     for(PropertyType.Builder propBuilder : builder._propertyTypes)
     {
-      PropertyType prop = propBuilder.build();
-      String key = prop.getName().toLowerCase();
-      if(this._propertyTypesByLowerName.containsKey(key))
+      PropertyType prop;
+      try
       {
-        logger.warn(
-            "While building the meta-model. Ignoring property type definition.",
-            new DuplicatePropertyTypeError(prop));
-      } else {
+        prop = propBuilder.build();
+      }
+      catch(ValidationException ex)
+      {
+        // Ignore PropertyType, log warning and continue.
+        _logger.warn(ex.getError());
+        continue;
+      }
+      
+      String key = prop.getName().toLowerCase();
+      if(!this._propertyTypesByLowerName.containsKey(key))
+      {
         this._propertyTypesByLowerName.put(key, prop);
+      }
+      else
+      {
+        // Ignore PropertyType, log warning and continue.
+        _logger.warn(new DuplicatePropertyTypeError(prop));
+        continue;
       }
     }
 
@@ -66,7 +79,18 @@ public class MetaModel extends MetaObject
     
     for(ComponentType.Builder compBuilder : builder._componentTypes)
     {
-      ComponentType comp = compBuilder.build(propSource);
+      ComponentType comp;
+      try
+      {
+        comp = compBuilder.build(propSource);
+      }
+      catch(ValidationException ex)
+      {
+        // Ignore ComponentType, log warning and continue.
+        _logger.warn(ex.getError());
+        continue;
+      }
+      
       String key = comp.getName();
       
       // Detect Component Type Override.
@@ -84,7 +108,7 @@ public class MetaModel extends MetaObject
       // This thus overrides all mappings to the previous definition.
       if(oldComp != null)
       {
-        logger.info("ComponentType '" + oldComp.getLabel() + "' was overriden.");
+        _logger.info("ComponentType '" + oldComp.getLabel() + "' was overriden.");
         
         List<String> alternateNames = null;
         for(Map.Entry<String, ComponentType> entry : this._componentTypesByLegacyName.entrySet())

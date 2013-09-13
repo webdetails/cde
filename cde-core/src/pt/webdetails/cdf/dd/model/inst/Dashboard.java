@@ -58,7 +58,18 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     
     for(DataSourceComponent.Builder compBuilder : builder._dataSourceComponents)
     {
-      DataSourceComponent comp = compBuilder.build(metaModel);
+      DataSourceComponent comp;
+      try
+      {
+        comp = compBuilder.build(metaModel);
+      }
+      catch(ValidationException ex)
+      {
+        // Ignore datasource component, log warning and continue.
+        _logger.warn(ex.getError());
+        continue;
+      }
+      
       this._dataSourceComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
@@ -68,6 +79,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
       }
       else
       {
+        // Don't index datasource component by lower name and log warning.
         _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
       }
     }
@@ -76,7 +88,18 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     this._layoutComponents = new ArrayList<LayoutComponent>();
     for(LayoutComponent.Builder compBuilder : builder._layoutComponents)
     {
-      LayoutComponent comp = compBuilder.build(metaModel);
+      LayoutComponent comp; 
+      try
+      {
+        comp = compBuilder.build(metaModel);
+      }
+      catch(ValidationException ex)
+      {
+        // Ignore layout component, log warning and continue.
+        _logger.warn(ex.getError());
+        continue;
+      }
+      
       this._layoutComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
@@ -84,8 +107,9 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
       {
         this._layoutComponentsByLowerName.put(key, comp);
       }
-      else
+      else 
       {
+        // Don't index layout component by lower name and log warning.
         _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
       }
     }
@@ -94,7 +118,18 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     this._regularComponents = new ArrayList<Component>();
     for(Component.Builder compBuilder : builder._regularComponents)
     {
-      Component comp = compBuilder.build(metaModel);
+      Component comp;
+      try
+      {
+        comp = compBuilder.build(metaModel);
+      }
+      catch(ValidationException ex)
+      {
+        // Ignore regular component, log warning and continue.
+        _logger.warn(ex.getError());
+        continue;
+      }
+      
       this._regularComponents.add(comp);
       
       String key = comp.getName().toLowerCase();
@@ -104,6 +139,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
       }
       else
       {
+        // Don't index regular component by lower name and log warning.
         _logger.warn(new DashboardDuplicateComponentError(comp.getName(), this.getId()));
       }
     }

@@ -27,7 +27,7 @@ public class DashboardType extends MetaObject
     }
     catch(ValidationException ex)
     {
-      // Should never happen
+      // Should never happen (Would be FATAL!)
       _logger.error("Error creating DashboardType instance", ex);
       instance = null;
     }
