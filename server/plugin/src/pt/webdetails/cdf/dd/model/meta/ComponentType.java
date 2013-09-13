@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicatePropertyError;
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
@@ -26,6 +28,8 @@ import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicateResource
  */
 public abstract class ComponentType extends MetaObject
 {
+  private static final Log _logger = LogFactory.getLog(ComponentType.class);
+  
   private final Map<String, PropertyTypeUsage> _propertyUsagesByLowerAlias;
   private final Map<String, PropertyTypeUsage> _propertyUsagesByLowerName;
   
@@ -53,14 +57,26 @@ public abstract class ComponentType extends MetaObject
         for(PropertyType.Builder propBuilder : builder._propertyTypes)
         {
           @SuppressWarnings("LeakingThisInConstructor")
-          PropertyType prop = propBuilder.build(this);
+          PropertyType prop;
+          try
+          {
+            prop = propBuilder.build(this);
+          }
+          catch(ValidationException ex)
+          {
+            // Ignore PropertyType, log warning and continue.
+            _logger.warn(ex.getError());
+            continue;
+          }
 
           String key = prop.getName().toLowerCase();
           if(propertyTypesByLowerName.containsKey(key))
           {
-            throw new ValidationException(new DuplicatePropertyTypeError(prop));
+            // Ignore PropertyType, log warning and continue.
+            _logger.warn(new DuplicatePropertyTypeError(prop));
+            continue;
           }
-
+          
           propertyTypesByLowerName.put(key, prop);
         }
       }
@@ -86,13 +102,27 @@ public abstract class ComponentType extends MetaObject
       for(PropertyTypeUsage.Builder propUsageBuilder : builder._propertyUsages)
       {
         @SuppressWarnings("LeakingThisInConstructor")
-        PropertyTypeUsage propUsage = propUsageBuilder.build(this, propSourceLocal);
+
+        PropertyTypeUsage propUsage;
+        try
+        {
+          propUsage = propUsageBuilder.build(this, propSourceLocal);
+        }
+        catch(ValidationException ex)
+        {
+           // Ignore PropertyTypeUsage, log warning and continue.
+            _logger.warn(ex.getError());
+            continue;
+        }
         
         String aliasKey = propUsage.getAlias().toLowerCase();
         if(this._propertyUsagesByLowerAlias.containsKey(aliasKey))
         {
-          throw new ValidationException(
-                new ComponentTypeDuplicatePropertyError(this.getLabel(), propUsage.getAlias()));
+          // Ignore PropertyTypeUsage, log warning and continue.
+          _logger.warn(new ComponentTypeDuplicatePropertyError(
+                  this.getLabel(), 
+                  propUsage.getAlias()));
+          continue;
         }
 
         this._propertyUsagesByLowerAlias.put(aliasKey, propUsage);
@@ -158,11 +188,12 @@ public abstract class ComponentType extends MetaObject
         String key = resource.getKey();
         if(this._resourcesByKey.containsKey(key))
         {
-          throw new ValidationException(
-                new ComponentTypeDuplicateResourceError(
-                  this.getLabel(),
-                  resource.getType(),
-                  resource.getName()));
+          // Ignore Resource, log warning and continue.
+          _logger.warn(new ComponentTypeDuplicateResourceError(
+              this.getLabel(),
+              resource.getType(),
+              resource.getName()));
+          continue;
         }
 
         this._resourcesByKey.put(key, resource);

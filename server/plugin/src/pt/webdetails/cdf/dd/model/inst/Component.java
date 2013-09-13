@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
+import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
+import pt.webdetails.cdf.dd.model.core.validation.ValidationError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.validation.ComponentDuplicatePropertyBindingError;
 import pt.webdetails.cdf.dd.model.inst.validation.ComponentUnresolvedPropertyBindingError;
@@ -24,7 +26,7 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
  */
 public abstract class Component<TM extends ComponentType> extends Instance<TM>
 {
-  protected static final Log _logger = LogFactory.getLog(Component.class);
+  private static final Log _logger = LogFactory.getLog(Component.class);
 
   private final String _idPrefix;
   private final String _name; // cached
@@ -68,26 +70,25 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
         }
         catch(ValidationException ex)
         {
-          if(!(ex.getError() instanceof ComponentUnresolvedPropertyBindingError))
-          {
-            throw ex;
-          }
-
-          // Just log and continue
-          _logger.warn(ex);
+          // Ignore PropertyBinding, log warning and continue.
+          
+          // At least these errors are included:
+          // * ComponentUnresolvedPropertyBindingError
+          // * RequiredAttributeError
+          
+          _logger.warn(ex.getError());
           continue;
         }
 
         String propAlias = bind.getAlias().toLowerCase();
         if(this._propertyBindingsByLowerAlias.containsKey(propAlias))
         {
-          _logger.warn("Property " + propAlias + " was found on " + this.getMeta().getName() + " component declaration twice.");
-          // Component still initializing, so don't have an id yet
-          /*throw new ValidationException(
+          _logger.warn(
               new ComponentDuplicatePropertyBindingError(
                   bind.getAlias(),
                   this.getId(),
-                  this.getMeta().getLabel()));  */
+                  this.getMeta().getLabel()));
+          continue;
         }
         
         String propName = bind.getName().toLowerCase();
