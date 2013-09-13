@@ -9,7 +9,10 @@ import net.sf.json.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
+import org.pentaho.platform.api.engine.IPluginManager;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -138,7 +141,7 @@ public class CdfStyles
     style = new Style(CdeEnvironment.getPluginRepositoryReader(), RESOURCE_STYLES_DIR_SOLUTION, null);
     styles.add(style);
     
-    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer(CdeEnvironment.getContentAccessFactory(), PentahoSystem.get(IPluginManager.class));
     pluginsAnalyzer.refresh();
     
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities("/cde-styles");

@@ -12,36 +12,23 @@ import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cpf.IPluginCall;
-import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
-public class PentahoCdeEnvironment implements ICdeEnvironment {
+public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironment {
 	
 	protected static Log logger = LogFactory.getLog(PentahoCdeEnvironment.class);
 	
 	private ICdeBeanFactory factory;
 	private IPluginCall interPluginCall;
-	private IContentAccessFactory contentAccessFactory;
 	private IResourceLoader resourceLoader;
 	
     private IPluginResourceLocationManager pluginResourceLocationManager;
     
-    
-	
-    @Override
-	public void init() throws InitializationException {		
-		pluginResourceLocationManager = new PluginResourceLocationManager();
-	}
-    
-    @Override
     public void init(ICdeBeanFactory factory) throws InitializationException {
     	this.factory = factory;
     	
-    	init();
-    	
-    	if(factory.containsBean(IContentAccessFactory.class.getSimpleName())){    		
-    		contentAccessFactory = (IContentAccessFactory)factory.getBean(IContentAccessFactory.class.getSimpleName());
-		}
+    	pluginResourceLocationManager = new PluginResourceLocationManager();
     		
 		if(factory.containsBean(IResourceLoader.class.getSimpleName())){    		
 			resourceLoader = (IResourceLoader)factory.getBean(IResourceLoader.class.getSimpleName());
@@ -51,6 +38,7 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 			interPluginCall = (IPluginCall)factory.getBean(IPluginCall.class.getSimpleName());
 		}
     	
+		super.init(this);
     }
     
     @Override
@@ -86,12 +74,7 @@ public class PentahoCdeEnvironment implements ICdeEnvironment {
 	public IPluginResourceLocationManager getPluginResourceLocationManager() {
 		return pluginResourceLocationManager;
 	}
-
-	@Override
-	public IContentAccessFactory getContentAccessFactory() {
-		return contentAccessFactory;
-	}
-
+	
 	@Override
 	public IResourceLoader getResourceLoader() {
 		return resourceLoader;

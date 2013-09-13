@@ -7,6 +7,8 @@ package pt.webdetails.cdf.dd;
 import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.engine.IPluginManager;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
@@ -63,7 +65,7 @@ public final class FsPluginResourceLocations
     }
 
     // External component locations
-    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer(CdeEnvironment.getContentAccessFactory(), PentahoSystem.get(IPluginManager.class));
     pluginsAnalyzer.refresh();
 
     for(PluginsAnalyzer.PluginWithEntity entity : pluginsAnalyzer.getRegisteredEntities("/cde-components")) {
@@ -104,7 +106,7 @@ public final class FsPluginResourceLocations
     	  }
       
     	  _logger.debug(String.format("Found CDE components location declared in %s [%s]", entity.getPlugin().getId(), entity.getRegisteredEntity().valueOf("path")));
-    }
-  }
+      }
+  	}
   }
 }

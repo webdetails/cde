@@ -354,8 +354,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			access = CdeEnvironment.getUserContentAccess();
 					
 		}else{
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return;
+			access = CdeEnvironment.getPluginSystemReader(); //default (fallback) access
+			logger.info("setting default access CdeEnvironment.getPluginSystemReader()");
 		}
 
 		setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
@@ -364,13 +364,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 		response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 		try {
-			writeOut(out, IOUtils.toString(access.getFileInputStream(resource)));
+			IOUtils.copy(access.getFileInputStream(resource), out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-		} catch (FileNotFoundException e) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
+		} 
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -393,6 +391,19 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		
 		resource = resource.startsWith("/") ? resource.replaceFirst("/", "").toLowerCase() : resource.toLowerCase();
 		
+		String[] path = resource.split("/");
+		String[] fileName = path[path.length - 1].split("\\.");
+
+		String mimeType;
+		try {
+			final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf(fileName[fileName.length - 1].toUpperCase());
+			mimeType = MimeTypes.getMimeType(fileType);
+		} catch (java.lang.IllegalArgumentException ex) {
+			mimeType = "";
+		} catch (EnumConstantNotPresentException ex) {
+			mimeType = "";
+		}
+		
 		IReadAccess access = null;
 		
 		if(resource.startsWith(PLUGIN_PATH)){
@@ -410,17 +421,22 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			access = CdeEnvironment.getUserContentAccess();
 					
 		}else{
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return;
+			access = CdeEnvironment.getPluginSystemReader(); //default (fallback) access
+			logger.info("setting default access CdeEnvironment.getPluginSystemReader()");
 		}
 		
 		try {
-			writeOut(out, IOUtils.toString(access.getFileInputStream(resource)));
+			setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
+			
+			// Set cache for 1 year, give or take.
+			response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
+			response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
+			
+			IOUtils.copy(access.getFileInputStream(resource), out);
+			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-		} catch (FileNotFoundException e) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
+		} 
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)

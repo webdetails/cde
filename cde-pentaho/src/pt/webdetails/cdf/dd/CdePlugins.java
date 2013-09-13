@@ -5,7 +5,10 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.engine.IPluginManager;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.IPluginFilter;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
@@ -20,16 +23,16 @@ public class CdePlugins {
   private static Log logger = LogFactory.getLog(CdePlugins.class);
 
   public String getCdePlugins(){
-    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+    
+	  JSONArray pluginsArray = new JSONArray();
+	
+	PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer(CdeEnvironment.getContentAccessFactory(), PentahoSystem.get(IPluginManager.class));
     pluginsAnalyzer.refresh();
 
-    IPluginFilter pluginFilter = new IPluginFilter()
-    {
-      public boolean include(Plugin plugin)
-      {
+    IPluginFilter pluginFilter = new IPluginFilter() {
+      public boolean include(Plugin plugin) {
         boolean include = false;
-        if(plugin.hasSettingsXML())
-        {
+        if(plugin.hasSettingsXML()) {
           include = (plugin.getXmlValue("/settings/cde-compatible", "settings.xml").equals("true")) ? true : false;
         }
         return include;
@@ -37,7 +40,6 @@ public class CdePlugins {
     };
 
     List<Plugin> cdePlugins = pluginsAnalyzer.getPlugins(pluginFilter);
-    JSONArray pluginsArray = new JSONArray();
 
     for(Plugin plugin : cdePlugins) {
       try {
@@ -56,7 +58,6 @@ public class CdePlugins {
     }
 
     logger.info("Feeding client with CDE-Compatible plugin list");
-
 
     return pluginsArray.toString();
   }

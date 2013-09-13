@@ -11,8 +11,6 @@ import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
 public interface ICdeEnvironment {
 	
-	public void init() throws InitializationException;
-	
 	public void init(ICdeBeanFactory factory) throws InitializationException;
 	
 	public void refresh();

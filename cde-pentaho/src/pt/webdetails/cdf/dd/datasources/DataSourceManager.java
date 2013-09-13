@@ -13,9 +13,12 @@ import java.util.Map;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
+import org.pentaho.platform.api.engine.IPluginManager;
+import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 
@@ -61,28 +64,24 @@ public class DataSourceManager implements IDataSourceManager {
    * 
    * @return List of file paths containing declaration of data sources for CDE Editor
    */
-  private List<DataSourceProvider> readProviders() 
-  {
-    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer();
+  private List<DataSourceProvider> readProviders() {
+	
+	List<DataSourceProvider> dataSourceProviders = new ArrayList<DataSourceProvider>();
+	  
+    PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer(CdeEnvironment.getContentAccessFactory(), PentahoSystem.get(IPluginManager.class));
     pluginsAnalyzer.refresh();
 
-    List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = 
-      pluginsAnalyzer.getRegisteredEntities("/" + CDE_DATASOURCE_IDENTIFIER);
+    List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities("/" + CDE_DATASOURCE_IDENTIFIER);
 
-    List<DataSourceProvider> dataSourceProviders = new ArrayList<DataSourceProvider>();
-
-    for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) 
-    {
+    for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) {
       Plugin provider = entity.getPlugin();
 
-      try 
-      {
+      try {
         DataSourceProvider ds = new DataSourceProvider(provider);
         dataSourceProviders.add(ds);
         logger.info("Found valid CDE Data Source provider: {}", ds);
-      } 
-      catch(InvalidDataSourceProviderException e)
-      {
+      
+      } catch(InvalidDataSourceProviderException e) {
         logger.info(
             "Found invalid CDE Data Source provider in: {}. " + 
             "Please review plugin implementation and/or configuration.",

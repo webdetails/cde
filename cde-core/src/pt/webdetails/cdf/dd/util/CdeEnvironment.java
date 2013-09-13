@@ -10,7 +10,7 @@ import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 public class CdeEnvironment {
 
-	private static IContentAccessFactory getContentAccessFactory() {
+	public static IContentAccessFactory getContentAccessFactory() {
 		return CdeEngine.getInstance().getEnvironment().getContentAccessFactory();
 	}		
 			

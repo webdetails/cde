@@ -6,18 +6,18 @@ package pt.webdetails.cdf.dd;
 import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.api.engine.IPluginLifecycleListener;
 import org.pentaho.platform.api.engine.PluginLifecycleException;
 import org.pentaho.platform.repository.hibernate.HibernateUtil;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.SimpleLifeCycleListener;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
-public class CdeLifeCycleListener implements IPluginLifecycleListener
-{
+public class CdeLifeCycleListener extends SimpleLifeCycleListener {
 
   static Log logger = LogFactory.getLog(CdeLifeCycleListener.class);
 
@@ -104,8 +104,12 @@ public class CdeLifeCycleListener implements IPluginLifecycleListener
   }
 
   @Override
-  public void unLoaded() throws PluginLifecycleException
-  {
+  public void unLoaded() throws PluginLifecycleException {
     logger.debug("Unload for CDE");
   }
+
+@Override
+public PluginEnvironment getEnvironment() {
+	return (PluginEnvironment)CdeEngine.getInstance().getEnvironment();
+}
 }

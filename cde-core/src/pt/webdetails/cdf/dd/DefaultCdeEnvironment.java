@@ -5,21 +5,16 @@ import java.util.Locale;
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cpf.IPluginCall;
+import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.PluginSettings;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
-public class DefaultCdeEnvironment implements ICdeEnvironment {
-
-	@Override
-	public void init() throws InitializationException {
-		// TODO Auto-generated method stub
-		
-	}
+public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvironment {
 
 	@Override
 	public void init(ICdeBeanFactory factory) throws InitializationException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -70,5 +65,9 @@ public class DefaultCdeEnvironment implements ICdeEnvironment {
 		return null;
 	}
 
-	
+	@Override
+	public PluginSettings getPluginSettings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
