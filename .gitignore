@@ -24,6 +24,7 @@ nbproject/private/
 .classpath
 .project
 .settings
+.metadata/
 
 #Intellij IDEA project files
 *.iml
