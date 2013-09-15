@@ -76,11 +76,11 @@ public class DataSourceManager
       {
         DataSourceProvider ds = new DataSourceProvider(provider);
         dataSourceProviders.add(ds);
-        logger.info("Found valid CDE Data Source provider: {}", ds);
+        logger.warn("Found valid CDE Data Source provider: {}", ds);
       } 
       catch(InvalidDataSourceProviderException e)
       {
-        logger.info(
+        logger.warn(
             "Found invalid CDE Data Source provider in: {}. " + 
             "Please review plugin implementation and/or configuration.",
             provider.getPath());
