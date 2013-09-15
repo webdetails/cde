@@ -27,9 +27,6 @@
       </Model>
       <Implementation>
         <Code src="cgg-implementation.js" />
-        <Styles>
-        </Styles>
-        <Dependencies/>
         <CustomProperties>
           <DesignerProperty>
             <Header>
@@ -66,7 +63,7 @@
         <Property>executeAtStart</Property>
         <Property name="parameter">parameter</Property>
         <Property name="colors">colors</Property>
-	<Property name="intervals">intervals</Property>
+	      <Property name="intervals">intervals</Property>
         <Property>htmlObject</Property>
         <Property>preExecution</Property>
         <Property>postExecution</Property>
@@ -76,11 +73,6 @@
       </Model>
       <Implementation>
         <Code src="cgg-implementation.js" />
-        <Styles>
-        </Styles>
-        <Dependencies/>
-        <CustomProperties>
-        </CustomProperties>
       </Implementation>
     </Contents>
   </DesignerComponent>
