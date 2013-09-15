@@ -21,6 +21,8 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
+import pt.webdetails.cdf.dd.model.meta.ComponentType;
+import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cpf.repository.IRepositoryAccess.SaveFileStatus;
 import pt.webdetails.cpf.repository.IRepositoryAccess;
 
@@ -39,13 +41,17 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   
   public void write(IRepositoryAccess repository, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
   {
+    String dashboardFilePath = context.getDashboard().getSourcePath();
+    String dashboardFileDir  = FilenameUtils.getFullPath(dashboardFilePath);
+    String dashboardFileName = FilenameUtils.getName(dashboardFilePath);
+    
     StringBuilder out = new StringBuilder();
     
     out.append("lib('protovis-bundle.js');")
        .append(NEWLINE)
        .append(NEWLINE);
     
-    this.renderChart(out, context, comp);
+    this.renderChart(out, context, comp, dashboardFileDir);
     out.append(NEWLINE);
     
     this.renderDatasource(out, context, comp);
@@ -57,10 +63,6 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     
     out.append("cgg.render(").append(compVarName).append(");")
        .append(NEWLINE);
-    
-    String dashboardFilePath = context.getDashboard().getSourcePath();
-    String dashboardFileDir  = FilenameUtils.getFullPath(dashboardFilePath);
-    String dashboardFileName = FilenameUtils.getName(dashboardFilePath);
     
     String chartScript = out.toString();
     
@@ -95,9 +97,49 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     }
   }
    
-  private void renderChart(StringBuilder out, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
+  private void renderChart(
+          StringBuilder out, 
+          CggRunJsDashboardWriteContext context, 
+          GenericComponent comp,
+          String dashDir) throws ThingWriteException
   {
-    // Delegate writing the component to the corresponding CdfRunJs writer
+    ComponentType compType = comp.getMeta();
+    
+    // Implementation
+    String srcImpl = compType.getImplementationPath();
+    if(StringUtils.isNotEmpty(srcImpl))
+    {
+      out.append(NEWLINE);
+      out.append("load('");
+      out.append(makeDashRelative(srcImpl, dashDir));
+      out.append("');");
+      out.append(NEWLINE);
+    }
+
+    for(Resource resource : compType.getResources())
+    {
+      Resource.Type resType = resource.getType();
+      switch(resType) 
+      {
+        case RAW:
+          out.append(NEWLINE);
+          out.append(resource.getSource());
+          out.append(NEWLINE);
+          break;
+        
+        case SCRIPT:
+          out.append(NEWLINE);
+          out.append("load('");
+          out.append(makeDashRelative(resource.getSource(), dashDir)); 
+          out.append("');");
+          out.append(NEWLINE);
+          break;
+      }
+    }
+    
+    // ---------------
+    // TODO: HACK: Delegate writing the component definition to the corresponding CdfRunJs writer
+    // Should this be done differently?
     IThingWriterFactory writerFactory = new CdfRunJsThingWriterFactory();
     IThingWriter compWriter;
     try
@@ -123,10 +165,31 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
             context.getUserSession(),
             options);
     
-    
     compWriter.write(out, writeContext, comp);
   }
   
+  // Both are solution dir relative.
+  private static String makeDashRelative(String path, String dashDir)
+  {
+    // resource -> system/pentaho-cdf-dd/resources/custom/components/InteractiveCosmos/interactiveCosmos.js
+    // dashDir  -> cde/ <dashboard-is-here>
+    // resource must be found relative to dashDir:
+    // -> ../system/pentaho-cdf-dd/...
+    // Find how many times to go back
+    // Remove leading and trailing /
+    dashDir = dashDir.replaceAll("^[/\\\\]*(.*?)[/\\\\]*$", "$1");
+    
+    if(!dashDir.isEmpty())
+    {
+      int count = dashDir.split("[/\\\\]").length;
+      for(int i = 0 ; i < count ; i++) 
+      {
+        path = "../" + path;
+      }
+    }
+    
+    return path;
+  }
   private void renderDatasource(StringBuilder out, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
   {
     Dashboard dash = context.getDashboard();
