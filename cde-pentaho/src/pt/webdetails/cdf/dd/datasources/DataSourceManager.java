@@ -79,8 +79,7 @@ public class DataSourceManager implements IDataSourceManager {
       try {
         DataSourceProvider ds = new DataSourceProvider(provider);
         dataSourceProviders.add(ds);
-
-        logger.warn("Found valid CDE Data Source provider: {}", ds);
+        logger.info("Found valid CDE Data Source provider: {}", ds);
       } 
       catch(InvalidDataSourceProviderException e)
       {
