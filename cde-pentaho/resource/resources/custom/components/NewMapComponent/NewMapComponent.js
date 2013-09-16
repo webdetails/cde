@@ -60,7 +60,8 @@
 	
 	
 		name = name.replace(/&/g,",");
-		var request = 'http://ws.geonames.org/searchJSON?q=' +  encodeURIComponent(name)  + '&maxRows=1&featureClass=' + featureClass + '&callback=' + callBackName;
+		var request = 'http://ws.geonames.org/searchJSON?q=' +  encodeURIComponent(name)  + '&maxRows=1&callback=' + callBackName;
+        request += ( featureClass ? '&featureClass=' + featureClass : '' ) ;
 		
 		
 			var aObj = new JSONscriptRequest(request);
