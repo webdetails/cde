@@ -15,27 +15,26 @@
             <Property>tooltip</Property>
             <Property>parameters</Property>
             <Property>listeners</Property>
-			<Property>preExecution</Property>
-			<Property>postExecution</Property>
-    		      		<Property>centerLongitude</Property>
-      		      		<Property>centerLatitude</Property>			
-<Property>defaultZoomLevel</Property>      		      							
+						<Property>preExecution</Property>
+						<Property>postExecution</Property>
+						<Property>postFetch</Property>
+    		    <Property>centerLongitude</Property>
+      		  <Property>centerLatitude</Property>			
+						<Property>defaultZoomLevel</Property>      		      							
 						<Definition name="queryDefinition">
-        		<Property type="query">dataSource</Property>
-      		</Definition>        
-      		<Property>mapEngineType</Property>
-      		<Property>marker</Property>
+        				<Property type="query">dataSource</Property>
+      			</Definition>        
+      			<Property>mapEngineType</Property>
+      			<Property>marker</Property>
             <Property>markerWidth</Property>
             <Property>markerHeight</Property>      
-      		<Property>popupParameters</Property>
-      		<Property>markerCggGraph</Property>
-      		<Property>cggGraphParameters</Property>
+      			<Property>popupParameters</Property>
+      			<Property>markerCggGraph</Property>
+      			<Property>cggGraphParameters</Property>
             <Property>markerClickFunction</Property>
             <Property>popupWidth</Property>
             <Property>popupHeight</Property>
-            
             <Property>popupContentsDiv</Property>
-
         </Model>
         <Implementation>
             <Code src="NewMapComponent.js" />
