@@ -96,7 +96,7 @@ public class DashboardStructure implements IDashboardStructure {
       result = new JSONObject();
       result.put("wcdf", wcdfData);
       result.put("data", cdeData);
-    } catch (Exception e) {
+    } catch (Throwable t) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
     } finally {
       IOUtils.closeQuietly(file);

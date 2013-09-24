@@ -36,7 +36,7 @@ public class DependenciesEngine
   public DependenciesEngine(String name, StringFilter format, Packager.Filetype type) {
     this.name = name;
     this.packagedPath = type.toString().toLowerCase() + "/" + name + "." + type.toString().toLowerCase();
-    packager.registerPackage(name, type, rootdir, rootdir + "/" + packagedPath, (String[]) null);
+    packager.registerPackage(name, type, rootdir, packagedPath, (String[]) null);
     this.dependencyPool = new LinkedHashMap<String, Dependency>();
     this.format = format;
   }

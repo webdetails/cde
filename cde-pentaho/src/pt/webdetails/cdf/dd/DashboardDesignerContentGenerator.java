@@ -56,18 +56,13 @@ import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
-	public static final String PLUGIN_NAME = "pentaho-cdf-dd";
+	public static final String PLUGIN_NAME = CdeEnvironment.getPluginId();
 
 	public static final String SYSTEM_PATH = "system";
 
 	public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
 
 	public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
-
-	/**
-	 * solution folder for custom components, styles and templates
-	 */
-	public static final String SOLUTION_DIR = "cde";
 
 	private static final Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
 
@@ -178,7 +173,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	public void getComponentDefinitions(OutputStream out) throws Exception {
 		// Get and output the definitions
 		try {
-			String definition = MetaModelManager.getInstance() .getJsDefinition();
+			String definition = MetaModelManager.getInstance().getJsDefinition();
 			out.write(definition.getBytes());
 		} catch (Exception ex) {
 			String msg = "Could not get component definitions: " + ex.getMessage();
@@ -349,8 +344,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			
 			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
 			
-		}else if(resource.startsWith(SOLUTION_DIR)){
-			access = CdeEnvironment.getUserContentAccess();
+		}else if(resource.startsWith(CdeEnvironment.getPluginRepositoryDir())){
+			access = CdeEnvironment.getPluginRepositoryReader();
 					
 		}else{
 			access = CdeEnvironment.getPluginSystemReader(); //default (fallback) access
@@ -416,7 +411,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			
 			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
 			
-		}else if(resource.startsWith(SOLUTION_DIR)){
+		}else if(resource.startsWith(CdeEnvironment.getPluginRepositoryDir())){
 			access = CdeEnvironment.getUserContentAccess();
 					
 		}else{
@@ -733,13 +728,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 				"Context");
 		cdfContext.setRequest(getRequest());
 		cdfContext.setRequestParameters(getRequestParameters());
-		return cdfContext.callInPluginClassLoader();
-	}
-
-	private String getCdfContext(IParameterProvider requestParameterProvider) {
-		InterPluginCall cdfContext = new InterPluginCall(InterPluginCall.CDF,
-				"Context");
-		cdfContext.setRequestParameters(requestParameterProvider);
 		return cdfContext.callInPluginClassLoader();
 	}
 	

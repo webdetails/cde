@@ -1,46 +1,37 @@
 package pt.webdetails.cdf.dd.util;
 
+import java.util.ArrayList;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
-import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class GenericBasicFileFilter implements IBasicFileFilter{
 	
-	private static Log logger = LogFactory.getLog(GenericBasicFileFilter.class);
-	
 	private String fileName;
 	private String[] fileExtensions;
-	private boolean checkReadability;
-	private IReadAccess access;
 	
 	public GenericBasicFileFilter(String fileName, String fileExtension){
 		this.fileName = fileName;
-		this.fileExtensions = new String[]{fileExtension};
+		this.fileExtensions = !StringUtils.isEmpty(fileExtension) ? new String[]{cleanDot(fileExtension)} : null;
 	}
 	
 	public GenericBasicFileFilter(String fileName, String[] fileExtensions){
 		this.fileName = fileName;
-		this.fileExtensions = fileExtensions;
-	}
-	
-	public GenericBasicFileFilter(String fileName, String fileExtension, boolean checkReadability, IReadAccess access){
-		this.fileName = fileName;
-		this.fileExtensions = new String[]{fileExtension};
-		this.checkReadability = checkReadability;
-		this.access = access;
 		
-	}
-	
-	public GenericBasicFileFilter(String fileName, String[] fileExtensions, boolean checkReadability, IReadAccess access){
-		this.fileName = fileName;
-		this.fileExtensions = fileExtensions;
-		this.checkReadability = checkReadability;
-		this.access = access;
-		
+		if(fileExtensions != null && fileExtensions.length > 0){
+			ArrayList<String> extensions = new ArrayList<String>();
+			for(String fileExtension : fileExtensions){
+				if(!StringUtils.isEmpty(fileExtension)){
+					extensions.add(cleanDot(fileExtension));
+				}
+			}
+			this.fileExtensions = extensions.toArray(new String[extensions.size()]);
+		} else {
+			this.fileExtensions = null;
+		}
 	}
 	  
 	@Override
@@ -48,33 +39,35 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 		
 		boolean fileNameOK = false;
 		boolean fileExtensionOK = false;
-		boolean fileReadabilityOK = false;
 		
-		if(file != null){
+		if(file != null && file.getName() != null){
 			
 			// file name is equal ?
 			if(!StringUtils.isEmpty(fileName)){
-				fileNameOK = fileName.equalsIgnoreCase(file.getName());
+				fileNameOK = fileName.equalsIgnoreCase(FilenameUtils.getBaseName(file.getName()));
+			}else{
+				fileNameOK = true; //filename was not placed as filter
 			}
 		
-			// file extension is one of the allowed extensions ?	
-			for(String fileExtension : fileExtensions){
-				if(!StringUtils.isEmpty(fileExtension) && fileExtension.equalsIgnoreCase(file.getExtension())){
-					fileExtensionOK = true;
-					break;
+			if(fileExtensions != null && fileExtensions.length > 0){
+				// is file extension one of the allowed extensions ?	
+				for(String fileExtension : fileExtensions){
+					if(!StringUtils.isEmpty(fileExtension)){
+						fileExtensionOK = fileExtension.equalsIgnoreCase(cleanDot(file.getExtension()));
+						if(fileExtensionOK){
+							break; //found a match
+						}
+					}
 				}
-			}			
-			
-			// does the file actually exist (i.e. not a bogus path) ?
-			if(checkReadability){ 
-				try{
-					fileReadabilityOK = access.fileExists(file.getFullPath()) && access.fetchFile(file.getFullPath()) != null;
-				}catch(Exception e){
-					logger.error("checkReadability", e);
-				}
+			}else{
+				fileExtensionOK = true; //file extension was not placed as filter
 			}
 		}
 		
-		return fileNameOK && fileExtensionOK && fileReadabilityOK;
+		return fileNameOK && fileExtensionOK;
+	}
+	
+	private static String cleanDot(String extension){
+		return !StringUtils.isEmpty(extension) && extension.startsWith(".") ? extension.substring(1) : extension;
 	}
 }

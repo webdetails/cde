@@ -90,9 +90,9 @@ public final class FsPluginResourceLocations
     		  customCompsSolRelDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
     	      resourceAbsDirs.add(CdeEnvironment.getOtherPluginSystemReader(entity.getPlugin().getId(), path));
     		
-    	  }else if(path.startsWith(DashboardDesignerContentGenerator.SOLUTION_DIR)) {
+    	  }else if(path.startsWith(CdeEnvironment.getPluginRepositoryDir())) {
     		  
-    		  path = path.replaceFirst(DashboardDesignerContentGenerator.SOLUTION_DIR + "/", ""); 
+    		  path = path.replaceFirst(CdeEnvironment.getPluginRepositoryDir() + "/", ""); 
     		  
     		  customCompsSolRelDirs.add(CdeEnvironment.getPluginRepositoryReader(path));
     	      resourceAbsDirs.add(CdeEnvironment.getPluginRepositoryReader(path));  

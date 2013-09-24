@@ -30,53 +30,55 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
   @Override
   public void loaded() throws PluginLifecycleException {
     
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IRWAccess access = CdeEnvironment.getPluginRepositoryWriter();
     
-    if (!access.fileExists("cde")){
+    String pluginSolutionRepositoryDir = CdeEnvironment.getPluginRepositoryDir(); // "cde"
+    
+    if (!access.fileExists(null)){
 
-        if(access.createFolder("cde")){
+        if(access.createFolder(pluginSolutionRepositoryDir)){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         }else {
-        	logger.error("Error while creating folder cde for cde plugin. CDE may not work as expected", null);
+        	logger.error("Error while creating folder " + pluginSolutionRepositoryDir + " for cde plugin. CDE may not work as expected", null);
         }
     }
 
-    if (!access.fileExists("cde/styles")) {
+    if (!access.fileExists("styles")) {
     
-        if(access.createFolder("cde/styles")){
+        if(access.createFolder("styles")){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         } else {
-        	logger.error("Error while creating folder cde/styles for cde plugin. CDE may not work as expected", null);
+        	logger.error("Error while creating folder " + pluginSolutionRepositoryDir + "/styles for cde plugin. CDE may not work as expected", null);
         }
     }
     
-    if (!access.fileExists("cde/components")) {      
+    if (!access.fileExists("components")) {      
     	
-        if(access.createFolder("cde/components")){
+        if(access.createFolder("components")){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         } else {
-	       logger.error("Error while creating folder cde/components for cde plugin. CDE may not work as expected", null);
+	       logger.error("Error while creating folder " + pluginSolutionRepositoryDir + "/components for cde plugin. CDE may not work as expected", null);
 	    }
     }
 
-    if (!access.fileExists("cde/templates")) {
+    if (!access.fileExists("templates")) {
     
-        if(access.createFolder("cde/templates")){
+        if(access.createFolder("templates")){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         } else {
-        	logger.error("Error while creating folder cde/templates for cde plugin. CDE may not work as expected", null);
+        	logger.error("Error while creating folder " + pluginSolutionRepositoryDir + "/templates for cde plugin. CDE may not work as expected", null);
         }
     }
 
-    if (!access.fileExists("cde/widgets")) {
+    if (!access.fileExists("widgets")) {
       
     	try {
-	        if(access.createFolder("cde/widgets")){
+	        if(access.createFolder("widgets")){
 	        	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
 	        }
         
 	        IReadAccess pluginSystemReader = CdeEnvironment.getPluginSystemReader("resources/samples/");
-	        IRWAccess pluginRepositoryWriter = CdeEnvironment.getPluginRepositoryWriter("cde/widgets/");
+	        IRWAccess pluginRepositoryWriter = CdeEnvironment.getPluginRepositoryWriter("/widgets/");
         
 	        if(pluginSystemReader.fileExists("widget.cdfde")){
 	        	IBasicFile file = pluginSystemReader.fetchFile("widget.cdfde");
@@ -98,7 +100,7 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
 	        	pluginRepositoryWriter.saveFile(file.getFullPath().replace("widget.xml", "sample.component.xml"), file.getContents());
 	        }
 	    } catch (IOException ioe) {
-	        logger.error("Error while creating folder cde/widgets for cde plugin. CDE may not work as expected", ioe);
+	        logger.error("Error while creating folder " + pluginSolutionRepositoryDir + "/widgets for cde plugin. CDE may not work as expected", ioe);
 	    }
      }
   }
@@ -108,8 +110,8 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
     logger.debug("Unload for CDE");
   }
 
-@Override
-public PluginEnvironment getEnvironment() {
-	return (PluginEnvironment)CdeEngine.getInstance().getEnvironment();
-}
+	@Override
+	public PluginEnvironment getEnvironment() {
+		return (PluginEnvironment)CdeEngine.getInstance().getEnvironment();
+	}
 }

@@ -29,6 +29,7 @@
       <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" transitive="false" conf='runtime->default'>
         <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
       </dependency>
+      <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.4" conf='runtime->default'/>
 
       <!-- TESTS -->
       <dependency org="junit" name="junit" conf="test->default" rev='4.10'/>

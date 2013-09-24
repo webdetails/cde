@@ -66,10 +66,10 @@ public class CdeSettings{
 	    		
 	    	  }
 	    	  
-	      } else if(path.startsWith(DashboardDesignerContentGenerator.SOLUTION_DIR)){
+	      } else if(path.startsWith(CdeEnvironment.getPluginRepositoryDir())){
 	    	  
 	    	  //ex: <path>cde/components</path>
-	    	  path = path.replaceFirst(DashboardDesignerContentGenerator.SOLUTION_DIR + "/", "");
+	    	  path = path.replaceFirst(CdeEnvironment.getPluginRepositoryDir() + "/", "");
 	    	  
 	    	  if(CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()){
 	    		  componentAccesses.add(CdeEnvironment.getPluginRepositoryReader(path));
@@ -88,7 +88,7 @@ public class CdeSettings{
   
   private static class CdfDDSettings extends PluginSettings {
 
-	public CdfDDSettings(Class c){
+	public CdfDDSettings(@SuppressWarnings("rawtypes") Class c){
 		super(new SystemPluginResourceAccess(c.getClassLoader(), null));
 	}
     

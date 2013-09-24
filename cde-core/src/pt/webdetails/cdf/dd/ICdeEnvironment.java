@@ -28,4 +28,8 @@ public interface ICdeEnvironment {
 	public IPluginResourceLocationManager getPluginResourceLocationManager();
 	
 	public IContentAccessFactory getContentAccessFactory();
+	
+	public String getPluginRepositoryDir();
+	
+	public String getPluginId();
 }

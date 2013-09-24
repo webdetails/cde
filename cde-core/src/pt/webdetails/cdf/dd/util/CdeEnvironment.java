@@ -74,6 +74,14 @@ public class CdeEnvironment {
 	public static IDataSourceManager getDataSourceManager(){
 		return CdeEngine.getInstance().getEnvironment().getDataSourceManager();
 	}
+	
+	public static String getPluginRepositoryDir(){
+		return CdeEngine.getInstance().getEnvironment().getPluginRepositoryDir();
+	}
+	
+	public static String getPluginId(){
+		return CdeEngine.getInstance().getEnvironment().getPluginId();
+	}
 }
 			
 	

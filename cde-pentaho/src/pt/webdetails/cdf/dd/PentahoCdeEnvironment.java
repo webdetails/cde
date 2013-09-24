@@ -19,6 +19,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 	
 	protected static Log logger = LogFactory.getLog(PentahoCdeEnvironment.class);
 	
+	private static final String PLUGIN_REPOSITORY_DIR = "cde";
+	
 	private ICdeBeanFactory factory;
 	private IPluginCall interPluginCall;
 	private IResourceLoader resourceLoader;
@@ -81,7 +83,12 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 	}
 
 	@Override
-	protected String getPluginRepositoryDir() {
-	  return "cde";
+	public String getPluginRepositoryDir() {
+	  return PLUGIN_REPOSITORY_DIR;
+	}
+	
+	@Override
+	public String getPluginId(){
+		return super.getPluginId();
 	}
 }

@@ -30,7 +30,6 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
@@ -56,7 +55,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
   public static final String CUSTOM_PROPS_DIR = Utils.joinPath(CUSTOM_DIR, "properties");
   
   public static final String DEF_WIDGET_STUB_TYPE  = WidgetComponentType.class.getSimpleName();
-  public static final String WIDGETS_DIR      = Utils.joinPath("cde", "widgets");
+  public static final String WIDGETS_DIR      = "widgets";
 
   public static final String CUSTOM_PROPS_FILENAME  = "property";
   public static final String COMPONENT_FILENAME     = "component";
@@ -144,7 +143,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
 	logger.info(String.format("Loading BASE properties from: %s", BASE_PROPS_DIR));
 	  
     List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader(BASE_PROPS_DIR).listFiles(null, 
-    		new GenericBasicFileFilter(null, CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ZERO);
+    		new GenericBasicFileFilter(null, CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ALL);
 
     if(filesList != null) {
     	
@@ -159,7 +158,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
 	 logger.info(String.format("Loading CUSTOM properties from: %s", CUSTOM_PROPS_DIR));
 	 
 	 List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader(CUSTOM_PROPS_DIR).listFiles(null, 
-			 new GenericBasicFileFilter(CUSTOM_PROPS_FILENAME,CUSTOM_PROPS_FILE_EXTENSION, true, CdeEnvironment.getPluginSystemReader(CUSTOM_PROPS_DIR)), IReadAccess.DEPTH_ALL);
+			 new GenericBasicFileFilter(CUSTOM_PROPS_FILENAME,CUSTOM_PROPS_FILE_EXTENSION), IReadAccess.DEPTH_ALL);
 
     if(filesList != null) {
       for(IBasicFile file : filesList) {
@@ -194,7 +193,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
 
   private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, IReadAccess access) throws ThingReadException {
     	  
-	 GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION, true, access);
+	 GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION);
 	  
 	 List<IBasicFile> filesList = access.listFiles(null, filter, IReadAccess.DEPTH_ALL);
 

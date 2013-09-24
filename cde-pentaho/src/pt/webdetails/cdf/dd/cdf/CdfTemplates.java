@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -38,8 +37,8 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 @SuppressWarnings("unchecked")
 public class CdfTemplates {
 
-  private static String SYSTEM_CDF_DD_TEMPLATES = /*"system/" + DashboardDesignerContentGenerator.PLUGIN_NAME +*/ "/resources/templates";
-  private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = DashboardDesignerContentGenerator.SOLUTION_DIR + "/templates";
+  private static String SYSTEM_CDF_DD_TEMPLATES = "/resources/templates";
+  private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "/templates";
   
   public static String SYSTEM_RESOURCE_TEMPLATE_DIR = Utils.getBaseUrl() + "content/pentaho-cdf-dd/getResource?resource=/resources/templates/";
   public static String UNKNOWN_IMAGE = SYSTEM_RESOURCE_TEMPLATE_DIR + "unknown.png";

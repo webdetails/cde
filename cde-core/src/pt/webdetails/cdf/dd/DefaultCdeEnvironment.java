@@ -12,6 +12,9 @@ import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvironment {
 
+	private static final String PLUGIN_REPOSITORY_DIR = "cde";
+	private static final String PLUGIN_ID = "pentaho-cdf-dd";
+	
 	@Override
 	public void init(ICdeBeanFactory factory) throws InitializationException {
 		// TODO Auto-generated method stub
@@ -69,5 +72,15 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 	public PluginSettings getPluginSettings() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public String getPluginRepositoryDir() {
+	  return PLUGIN_REPOSITORY_DIR;
+	}
+	
+	@Override
+	public String getPluginId(){
+		return PLUGIN_ID;
 	}
 }

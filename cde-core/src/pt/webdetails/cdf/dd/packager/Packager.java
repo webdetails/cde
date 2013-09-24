@@ -6,9 +6,7 @@ package pt.webdetails.cdf.dd.packager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -24,15 +22,13 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IRWAccess;
-import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.repository.api.IRWAccess;;
 
 /**
  *
@@ -216,9 +212,6 @@ class FileSet {
       }
       
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-      if(!access.fileExists(location)){
-    	  access.saveFile(location, new ByteArrayInputStream("".getBytes()));
-      }
       
       switch (this.filetype) {
         case JS:

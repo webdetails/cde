@@ -178,7 +178,8 @@
 			  
 			  <!-- PTEIXEIRA, 10-09-2013, decurring of cde core-refactor -->
 			  <!-- not happy with this, could use some re-thinking -->
-			  <include name="json-*.jar" /> 
+			  <include name="json-*.jar" />
+			  <include name="ezmorph-*.jar" /> 
 		  </fileset>
 	  </copy>
 
