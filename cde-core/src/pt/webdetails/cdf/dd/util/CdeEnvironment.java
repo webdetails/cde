@@ -8,6 +8,19 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
+
+/**
+ * this is a simple util class that reduces the length of a call, nothing more
+ * ex:
+ * from
+ * CdeEngine.getInstance().getEnvironment().getContentAccessFactory().getUserContentAccess(null).getFileInputStream(arg0)
+ * to
+ * CdeEnvironment.getUserContentAccess().getFileInputStream(arg0)
+ * 
+ * 
+ * @author pedroteixeira
+ *
+ */
 public class CdeEnvironment {
 
 	public static IContentAccessFactory getContentAccessFactory() {

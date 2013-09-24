@@ -1,8 +1,8 @@
 package pt.webdetails.cdf.dd.editor;
 
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
+import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,7 +51,29 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     tokens.put(CdeConstants.SERVER_URL_TAG,   CdeConstants.SERVER_URL_VALUE);
     tokens.put(CdeConstants.DATA_URL_TAG,     CdeConstants.DATA_URL_VALUE);
+    
+    String resource = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
+    
+    if (tokens != null && tokens.size() > 0) {
+	    for (final String key : tokens.keySet())  {
+	    	resource = StringUtils.replace(resource, key, tokens.get(key));
+	    }
+	  }
+    
+    return resource;
+  }
+  
+  private static String buildCacheKey(final String path, final HashMap<String, String> tokens) {
 
-    return IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
+    final StringBuilder keyBuilder = new StringBuilder(path);
+
+    if (tokens != null) {
+      for (final String key : tokens.keySet()) {
+        keyBuilder.append(key.hashCode());
+        keyBuilder.append(tokens.get(key).hashCode());
+      }
+    }
+
+    return keyBuilder.toString();
   }
 }

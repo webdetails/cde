@@ -4,7 +4,9 @@
 
 package pt.webdetails.cdf.dd.packager;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.InputStream;
@@ -29,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
@@ -94,12 +97,12 @@ public class Packager
     try {
     	
       // [TEMPORARY FIX] do magic here - convert 'root' to intended IReadAccess
-      IReadAccess access = CdeEnvironment.getUserContentAccess();
+      IRWAccess access = CdeEnvironment.getUserContentAccess();
       if(!StringUtils.isEmpty(root)){
     	  if(root.toLowerCase().startsWith("system") || root.toLowerCase().startsWith("/system")){
-    		  access = CdeEnvironment.getPluginSystemReader();
+    		  access = CdeEnvironment.getPluginSystemWriter();
     	  }else if(root.toLowerCase().startsWith("cde") || root.toLowerCase().startsWith("/cde")){
-    		  access = CdeEnvironment.getPluginRepositoryReader();
+    		  access = CdeEnvironment.getPluginRepositoryWriter();
     	  }
       }	
       // end temporary fix
@@ -160,7 +163,7 @@ class FileSet {
   private Map<String, String> files;
   private String location;
   private Packager.Filetype filetype;
-  private IReadAccess access;
+  private IRWAccess access;
 
   public void addFile(String name, String path)
   {
@@ -179,7 +182,7 @@ class FileSet {
     }
   }
 
-  public FileSet(String location, Packager.Filetype type, IBasicFile[] fileSet, IReadAccess access) throws IOException, NoSuchAlgorithmException {
+  public FileSet(String location, Packager.Filetype type, IBasicFile[] fileSet, IRWAccess access) throws IOException, NoSuchAlgorithmException {
     this.files = new LinkedHashMap<String, String>();
     for (IBasicFile file : fileSet) {
       String path = file.getPath();
@@ -204,7 +207,6 @@ class FileSet {
     Reader freader = null;
     OutputStream fos = null;
     try {
-      //output = new FileWriter(location);
       IBasicFile[] filesArray = new IBasicFile[this.files.size()];
 
       int i = 0;
@@ -214,40 +216,28 @@ class FileSet {
       }
       
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-      IOUtils.copy(access.getFileInputStream(location), byteArrayOutputStream);
+      if(!access.fileExists(location)){
+    	  access.saveFile(location, new ByteArrayInputStream("".getBytes()));
+      }
       
       switch (this.filetype) {
         case JS:
           concatenatedStream = Concatenate.concat(filesArray);
-          freader = new InputStreamReader(concatenatedStream, "UTF8");
           
           switch (mode) {
             case MINIFY:
               JSMin jsmin = new JSMin(concatenatedStream, byteArrayOutputStream);
               jsmin.jsmin();
+              access.saveFile(location, new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
               break;
             case CONCATENATE:
-              fos = byteArrayOutputStream;
-              byte[] buffer = null;
-              while (concatenatedStream.available() > 0) {
-                concatenatedStream.read(buffer, 0, 4096);
-                fos.write(buffer);
-              }
+              access.saveFile(location, concatenatedStream);
           }
           break;
           
         case CSS:
           concatenatedStream = Concatenate.concat(filesArray, access);
-          freader = new InputStreamReader(concatenatedStream, "UTF8");
-          
-          fos = byteArrayOutputStream;
-          byte[] buffer = null;
-          while (concatenatedStream.available() > 0) {
-            concatenatedStream.read(buffer, 0, 4096);
-            fos.write(buffer);
-          }
-
-          //CSSMin.formatFile(freader, new FileOutputStream(location));
+          access.saveFile(location, concatenatedStream);
           break;
       }
       InputStream script = access.getFileInputStream(location);

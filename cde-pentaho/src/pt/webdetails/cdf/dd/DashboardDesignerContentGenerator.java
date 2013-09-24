@@ -4,7 +4,6 @@
 package pt.webdetails.cdf.dd;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -661,19 +660,16 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	private void init() throws IOException {
 		this.packager = Packager.getInstance();
 		Properties props = new Properties();
-		String rootdir = PentahoSystem.getApplicationContext().getSolutionPath(
-				PLUGIN_PATH);
-		props.load(new FileInputStream(rootdir + "/includes.properties"));
+		String rootdir = PLUGIN_PATH;
+		props.load(CdeEnvironment.getPluginSystemReader().getFileInputStream("includes.properties"));
 
 		if (!packager.isPackageRegistered("scripts")) {
 			String[] files = props.get("scripts").toString().split(",");
-			packager.registerPackage("scripts", Packager.Filetype.JS, rootdir,
-					rootdir + "/js/scripts.js", files);
+			packager.registerPackage("scripts", Packager.Filetype.JS, rootdir, "/js/scripts.js", files);
 		}
 		if (!packager.isPackageRegistered("styles")) {
 			String[] files = props.get("styles").toString().split(",");
-			packager.registerPackage("styles", Packager.Filetype.CSS, rootdir,
-					rootdir + "/css/styles.css", files);
+			packager.registerPackage("styles", Packager.Filetype.CSS, rootdir, "/css/styles.css", files);
 		}
 	}
 

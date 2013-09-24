@@ -83,7 +83,7 @@ public class DashboardStructure implements IDashboardStructure {
       
       } else {
     	
-        file = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
       }
 
       JSON cdeData = JsonUtils.readJsonFromInputStream(file);
@@ -96,7 +96,7 @@ public class DashboardStructure implements IDashboardStructure {
       result = new JSONObject();
       result.put("wcdf", wcdfData);
       result.put("data", cdeData);
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
     } finally {
       IOUtils.closeQuietly(file);
