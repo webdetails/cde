@@ -80,4 +80,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 		return resourceLoader;
 	}
 
+	@Override
+	protected String getPluginId() {
+	  return "cde";
+	}
 }
