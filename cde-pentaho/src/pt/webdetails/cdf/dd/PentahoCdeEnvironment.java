@@ -81,7 +81,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 	}
 
 	@Override
-	protected String getPluginId() {
+	protected String getPluginRepositoryDir() {
 	  return "cde";
 	}
 }
