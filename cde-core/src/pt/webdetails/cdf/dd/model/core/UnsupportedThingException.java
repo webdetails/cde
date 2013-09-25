@@ -11,7 +11,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class UnsupportedThingException extends Exception
 {
-  private final String _thingKind;
+
+	private static final long serialVersionUID = 879684902399171869L;
+	
+private final String _thingKind;
   private final String _thingId;
 
   public UnsupportedThingException(String thingKind, String thingId) throws IllegalArgumentException

@@ -19,8 +19,8 @@ public class SyncronizeCdfStructure
 {
 
   private static SyncronizeCdfStructure syncronizeCdfStructure = null;
-  public static String PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
-  public static String PLUGIN_EMPTY_WCDF_FILE_PATH = "resources/empty.wcdf";
+  public static String SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
+  public static String SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH = "resources/empty.wcdf";
 
   static SyncronizeCdfStructure getInstance()
   {

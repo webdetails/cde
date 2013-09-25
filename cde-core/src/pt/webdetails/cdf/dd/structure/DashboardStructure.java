@@ -83,7 +83,7 @@ public class DashboardStructure implements IDashboardStructure {
       
       } else {
     	
-        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
       }
 
       JSON cdeData = JsonUtils.readJsonFromInputStream(file);
@@ -201,7 +201,7 @@ public class DashboardStructure implements IDashboardStructure {
     // Is this intended?
     
     // 1. Read empty wcdf file
-    InputStream wcdfFile = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_WCDF_FILE_PATH);
+    InputStream wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH);
     
     String wcdfContentAsString = IOUtils.toString(wcdfFile, ENCODING);
 
@@ -228,7 +228,7 @@ public class DashboardStructure implements IDashboardStructure {
     // 1. Read Empty Structure
     InputStream cdfstructure = null;
     try {
-    	cdfstructure = CdeEnvironment.getPluginRepositoryReader().getFileInputStream(SyncronizeCdfStructure.PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+    	cdfstructure = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
 
       // 2. Save file
       parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());

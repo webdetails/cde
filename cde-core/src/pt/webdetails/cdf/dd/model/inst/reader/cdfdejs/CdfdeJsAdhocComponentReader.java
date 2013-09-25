@@ -26,7 +26,9 @@ public class CdfdeJsAdhocComponentReader<TM extends Component.Builder> extends C
     this._compType = compType;
   }
 
+  
   @Override
+  @SuppressWarnings("unchecked")
   public TM read(IThingReadContext context, Object source, String sourcePath) throws ThingReadException
   {
     TM builder = this.createInstance();

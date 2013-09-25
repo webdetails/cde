@@ -56,13 +56,10 @@ import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
-	public static final String PLUGIN_NAME = CdeEnvironment.getPluginId();
 
-	public static final String SYSTEM_PATH = "system";
+	public static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
 
-	public static final String PLUGIN_PATH = SYSTEM_PATH + "/" + DashboardDesignerContentGenerator.PLUGIN_NAME + "/";
-
-	public static final String MOLAP_PLUGIN_PATH = SYSTEM_PATH + "/MOLA/";
+	public static final String MOLAP_PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/MOLA/";
 
 	private static final Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
 
@@ -142,7 +139,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Override
 	public String getPluginName() {
-		return PLUGIN_NAME;
+		return CdeEnvironment.getPluginId();
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -316,7 +313,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			return;
 		}
 		
-		resource = resource.startsWith("/") ? resource.replaceFirst("/", "").toLowerCase() : resource.toLowerCase();
+		resource = StringUtils.strip(resource, "/");
 
 		String[] path = resource.split("/");
 		String[] fileName = path[path.length - 1].split("\\.");
@@ -331,34 +328,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			mimeType = "";
 		}
 		
-		IReadAccess access = null;
-		
-		if(resource.startsWith(PLUGIN_PATH)){
-			access = CdeEnvironment.getPluginSystemReader();
-		
-		}else if(resource.startsWith("system")){
-			
-			resource = resource.replaceFirst("system/", "");
-			String pluginId = resource.substring(0, resource.indexOf("/"));
-			resource = resource.replaceFirst(pluginId + "/", "");
-			
-			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
-			
-		}else if(resource.startsWith(CdeEnvironment.getPluginRepositoryDir())){
-			access = CdeEnvironment.getPluginRepositoryReader();
-					
-		}else{
-			access = CdeEnvironment.getPluginSystemReader(); //default (fallback) access
-			logger.info("setting default access CdeEnvironment.getPluginSystemReader()");
-		}
-
 		setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
 		
 		// Set cache for 1 year, give or take.
 		response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 		response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 		try {
-			IOUtils.copy(access.getFileInputStream(resource), out);
+			IOUtils.copy(CdeEnvironment.getAppropriateReadAccess(resource).getFileInputStream(resource), out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -383,7 +359,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			return;
 		}
 		
-		resource = resource.startsWith("/") ? resource.replaceFirst("/", "").toLowerCase() : resource.toLowerCase();
+		resource = StringUtils.strip(resource, "/");
 		
 		String[] path = resource.split("/");
 		String[] fileName = path[path.length - 1].split("\\.");
@@ -398,27 +374,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			mimeType = "";
 		}
 		
-		IReadAccess access = null;
-		
-		if(resource.startsWith(PLUGIN_PATH)){
-			access = CdeEnvironment.getPluginSystemReader();
-		
-		}else if(resource.startsWith("system")){
-			
-			resource = resource.replaceFirst("system/", "");
-			String pluginId = resource.substring(0, resource.indexOf("/"));
-			resource = resource.replaceFirst(pluginId + "/", "");
-			
-			access = CdeEnvironment.getOtherPluginSystemReader(pluginId);
-			
-		}else if(resource.startsWith(CdeEnvironment.getPluginRepositoryDir())){
-			access = CdeEnvironment.getUserContentAccess();
-					
-		}else{
-			access = CdeEnvironment.getPluginSystemReader(); //default (fallback) access
-			logger.info("setting default access CdeEnvironment.getPluginSystemReader()");
-		}
-		
 		try {
 			setResponseHeaders(mimeType, RESOURCE_CACHE_DURATION, null);
 			
@@ -426,7 +381,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 			response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 			
-			IOUtils.copy(access.getFileInputStream(resource), out);
+			IOUtils.copy(CdeEnvironment.getAppropriateReadAccess(resource).getFileInputStream(resource), out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -749,7 +704,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
             fileAccess = FileAccess.READ;
         }
         
-        GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(null, extensions);
+        GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(null, extensionsList.toArray(new String[extensionsList.size()]), true);
 
         List<IBasicFile> fileList = CdeEnvironment.getUserContentAccess().listFiles(dir, fileFilter, IReadAccess.DEPTH_ALL);
         

@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
@@ -38,17 +39,17 @@ public class CdeSettings{
       
       if(path != null){
       
-    	  path = path.startsWith("/") ? path.replaceFirst("/", "").toLowerCase().trim() : path.toLowerCase().trim();
+    	  path = StringUtils.strip(path, "/");
     	  
     	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>, <path>system/cdc/cdeComponents</path>
-	      if(path.startsWith(DashboardDesignerContentGenerator.SYSTEM_PATH)){
+	      if(path.startsWith(CdeEnvironment.getSystemDir())){
 	    	  
-	    	  path = path.replaceFirst(DashboardDesignerContentGenerator.SYSTEM_PATH + "/", "");
+	    	  path = path.replaceFirst(CdeEnvironment.getSystemDir() + "/", "");
 	    	  
 	    	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>
-	    	  if(path.startsWith(DashboardDesignerContentGenerator.PLUGIN_NAME)){
+	    	  if(path.startsWith(CdeEnvironment.getPluginId())){
 	    		  
-	    		  path = path.replaceFirst(DashboardDesignerContentGenerator.PLUGIN_NAME + "/", "");
+	    		  path = path.replaceFirst(CdeEnvironment.getPluginId() + "/", "");
 
 	    		  if(CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()){
 	    			  componentAccesses.add(CdeEnvironment.getPluginSystemReader(path));
@@ -71,7 +72,7 @@ public class CdeSettings{
 	    	  //ex: <path>cde/components</path>
 	    	  path = path.replaceFirst(CdeEnvironment.getPluginRepositoryDir() + "/", "");
 	    	  
-	    	  if(CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()){
+	    	  if(CdeEnvironment.getPluginRepositoryReader().fileExists(path) && CdeEnvironment.getPluginRepositoryReader().fetchFile(path).isDirectory()){
 	    		  componentAccesses.add(CdeEnvironment.getPluginRepositoryReader(path));
 	    	  }
 	      } else {

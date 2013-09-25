@@ -294,8 +294,18 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
   
   protected static String readTemplateFile(String templateFile) throws IOException {
     try
-    {
-      return IOUtils.toString(CdeEnvironment.getPluginRepositoryReader().getFileInputStream(templateFile));
+    {	
+    	if(CdeEnvironment.getPluginRepositoryReader().fileExists(templateFile)){
+    		// template is in solution repository
+    		return IOUtils.toString(CdeEnvironment.getPluginRepositoryReader().getFileInputStream(templateFile));
+    	
+    	} else if(CdeEnvironment.getPluginSystemReader().fileExists(templateFile)) {
+    		// template is in system
+    		return IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(templateFile));
+    	} else {
+    		// last chance : template is in user-defined folder
+    		return IOUtils.toString(CdeEnvironment.getUserContentAccess().getFileInputStream(templateFile));
+    	}
     }
     catch(IOException ex)
     {

@@ -44,7 +44,7 @@ public class CdePlugins {
     for(Plugin plugin : cdePlugins) {
       try {
         JSONObject pluginObject = new JSONObject();
-        String [] split = plugin.getPluginRelativePath().split("/");
+		String [] split = plugin.getPluginRelativePath().split("/");
         pluginObject.put("title", split[split.length-1]);
         pluginObject.put("description", plugin.getXmlValue("/settings/description", "settings.xml"));
         pluginObject.put("url", plugin.getXmlValue("/settings/url", "settings.xml"));

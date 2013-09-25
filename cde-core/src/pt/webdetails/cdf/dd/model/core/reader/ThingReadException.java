@@ -11,7 +11,10 @@ import pt.webdetails.cdf.dd.util.Utils;
  */
 public final class ThingReadException extends Exception
 {
-  public ThingReadException(String message, Exception cause)
+
+	private static final long serialVersionUID = 8809845865057834418L;
+
+public ThingReadException(String message, Exception cause)
   {
     super(Utils.composeErrorMessage(message, cause), cause);
   }

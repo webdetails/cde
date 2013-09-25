@@ -15,7 +15,6 @@ import pt.webdetails.cpf.SimpleLifeCycleListener;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 public class CdeLifeCycleListener extends SimpleLifeCycleListener {
 

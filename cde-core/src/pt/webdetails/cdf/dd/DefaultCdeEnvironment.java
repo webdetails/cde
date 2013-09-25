@@ -14,6 +14,7 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 
 	private static final String PLUGIN_REPOSITORY_DIR = "cde";
 	private static final String PLUGIN_ID = "pentaho-cdf-dd";
+	private static final String SYSTEM_DIR = "system";
 	
 	@Override
 	public void init(ICdeBeanFactory factory) throws InitializationException {
@@ -82,5 +83,10 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 	@Override
 	public String getPluginId(){
 		return PLUGIN_ID;
+	}
+	
+	@Override
+	public String getSystemDir() {
+		return SYSTEM_DIR;
 	}
 }

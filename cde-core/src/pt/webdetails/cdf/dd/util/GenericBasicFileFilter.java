@@ -1,7 +1,5 @@
 package pt.webdetails.cdf.dd.util;
 
-import java.util.ArrayList;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +10,7 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 	
 	private String fileName;
 	private String[] fileExtensions;
+	private boolean acceptDirectories;
 	
 	public GenericBasicFileFilter(String fileName, String fileExtension){
 		this.fileName = fileName;
@@ -20,18 +19,13 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 	
 	public GenericBasicFileFilter(String fileName, String[] fileExtensions){
 		this.fileName = fileName;
-		
-		if(fileExtensions != null && fileExtensions.length > 0){
-			ArrayList<String> extensions = new ArrayList<String>();
-			for(String fileExtension : fileExtensions){
-				if(!StringUtils.isEmpty(fileExtension)){
-					extensions.add(cleanDot(fileExtension));
-				}
-			}
-			this.fileExtensions = extensions.toArray(new String[extensions.size()]);
-		} else {
-			this.fileExtensions = null;
-		}
+		this.fileExtensions = fileExtensions;
+	}
+	
+	public GenericBasicFileFilter(String fileName, String[] fileExtensions, boolean acceptDirectories){
+		this.fileName = fileName;
+		this.fileExtensions = fileExtensions;
+		this.acceptDirectories = acceptDirectories;
 	}
 	  
 	@Override
@@ -41,6 +35,10 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 		boolean fileExtensionOK = false;
 		
 		if(file != null && file.getName() != null){
+			
+			if(acceptDirectories && file.isDirectory()){
+				return true;
+			}
 			
 			// file name is equal ?
 			if(!StringUtils.isEmpty(fileName)){
@@ -53,7 +51,7 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 				// is file extension one of the allowed extensions ?	
 				for(String fileExtension : fileExtensions){
 					if(!StringUtils.isEmpty(fileExtension)){
-						fileExtensionOK = fileExtension.equalsIgnoreCase(cleanDot(file.getExtension()));
+						fileExtensionOK = cleanDot(fileExtension).equalsIgnoreCase(cleanDot(file.getExtension()));
 						if(fileExtensionOK){
 							break; //found a match
 						}

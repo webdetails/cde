@@ -24,7 +24,6 @@ public abstract class Entity extends Thing
 {
   private final Map<String, Attribute> _attributesByName;
 
-  @SuppressWarnings("OverridableMethodCallInConstructor")
   public Entity(Builder builder) throws ValidationException
   {
     if(builder.getAttributeCount() > 0)

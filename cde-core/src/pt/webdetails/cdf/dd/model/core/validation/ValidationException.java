@@ -11,7 +11,10 @@ package pt.webdetails.cdf.dd.model.core.validation;
  */
 public class ValidationException extends Exception
 {
-  private final ValidationError _error;
+ 
+	private static final long serialVersionUID = -7782142065075580240L;
+	
+private final ValidationError _error;
 
   public ValidationException(ValidationError error)
   {

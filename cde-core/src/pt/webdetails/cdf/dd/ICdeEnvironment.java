@@ -31,5 +31,7 @@ public interface ICdeEnvironment {
 	
 	public String getPluginRepositoryDir();
 	
+	public String getSystemDir();
+	
 	public String getPluginId();
 }
