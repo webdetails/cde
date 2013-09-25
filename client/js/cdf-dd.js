@@ -762,12 +762,11 @@ var CDFDD = Base.extend({
       cdfstructure: serializedDashboard //JSON.stringify(this.dashboardData,null,2)
     };
 
+    var _href = this.getPreviewUrl( CDFDDDataUrl, solution, path, file, style );
 
     $.post(CDFDDDataUrl, saveParams, function(result) {
       var json = eval("(" + result + ")");
       if (json.status == "true") {
-        //window.open("Render?solution=" + solution + "&path=/" + path + "&file=" + file + "&cache=false");
-        var _href = CDFDDDataUrl.replace("Syncronize", "Render?") + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
         $.fancybox({
           type: "iframe",
           href: _href,
@@ -780,6 +779,22 @@ var CDFDD = Base.extend({
         });
       }
     });
+  },
+
+  getPreviewUrl: function( CDFDDDataUrl, solution, path, file, style){
+     var _href;
+     if (solution == 'system'){
+      // CPK Dashboard
+      path = path.split('/');
+      var pluginName = (path.length > 0 ) ? path[0] : "",
+          endpointName = file.replace('.cdfde',"");
+      _href = CDFDDDataUrl.replace("pentaho-cdf-dd", pluginName).replace("Syncronize", endpointName) ;
+     } else {
+      // Regular Dashboard
+      _href = CDFDDDataUrl.replace("Syncronize", "Render?") + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
+    }
+    return _href
+
   },
 
   savePulldown: function(target, evt) {
