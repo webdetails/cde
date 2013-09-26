@@ -19,7 +19,6 @@ import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginSettings;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.pentaho.SystemPluginResourceAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class CdeSettings {
@@ -49,7 +48,7 @@ public class CdeSettings {
 
     ArrayList<IReadAccess> componentAccesses = new ArrayList<IReadAccess>();
     CdfDDSettings settings = getSettings();
-    for(Element element : settings.getComponentLocations()){
+    for(Element element : settings.getComponentLocationElements()){
       String path = element.getText();
 
       if (path != null) {
@@ -64,7 +63,7 @@ public class CdeSettings {
           // ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>
 	    	  if(path.startsWith(CdeEnvironment.getPluginId())){
 	    		  
-            path = path.replaceFirst(DashboardDesignerContentGenerator.PLUGIN_NAME + "/", "");
+            path = path.replaceFirst(CdeEnvironment.getPluginId() + "/", "");
 
             if (CdeEnvironment.getPluginSystemReader().fileExists(path) && CdeEnvironment.getPluginSystemReader().fetchFile(path).isDirectory()) {
               componentAccesses.add(CdeEnvironment.getPluginSystemReader(path));
