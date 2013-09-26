@@ -11,6 +11,7 @@ import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.resources.IResourceLoader;
@@ -21,6 +22,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 	
 	private static final String PLUGIN_REPOSITORY_DIR = "cde";
 	private static final String SYSTEM_DIR = "system";
+	private static final String CONTENT = "content";
 	
 	private ICdeBeanFactory factory;
 	private IPluginCall interPluginCall;
@@ -96,5 +98,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 	@Override
 	public String getSystemDir() {
 		return SYSTEM_DIR;
+	}
+
+	@Override
+	public String getApplicationBaseContentUrl() {
+		return Utils.joinPath(getApplicationBaseUrl(), CONTENT, getPluginId()) + "/";
 	}
 }

@@ -410,7 +410,7 @@ public final class DashboardManager
     {
       // Check WCDF file date as well
       
-      if(CdeEnvironment.getUserContentAccess().fileExists(wcdf.getPath())) {
+      if(!CdeEnvironment.getUserContentAccess().fileExists(wcdf.getPath())) {
         throw new ThingReadException(new FileNotFoundException(wcdf.getPath()));
       }
 

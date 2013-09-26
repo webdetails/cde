@@ -31,6 +31,7 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
 /**
  * Loads XML model files,
@@ -179,7 +180,8 @@ public final class XmlFsPluginModelReader implements IThingReader {
     	logger.debug(String.format("%s BASE component files found", filesList.size()));
 
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_BASE_TYPE);
+        this.readComponentsFile(model, context, file, DEF_BASE_TYPE, 
+        		RepositoryHelper.joinPaths(CdeEnvironment.getSystemDir(), CdeEnvironment.getPluginId(), BASE_COMPS_DIR));
       }
     }
   }
@@ -217,11 +219,35 @@ public final class XmlFsPluginModelReader implements IThingReader {
       		});
       
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_CUSTOM_TYPE);
+        this.readComponentsFile(model, context, file, DEF_CUSTOM_TYPE, getRelativeBasePath(file));
       }
     }
   }
 
+  private String getRelativeBasePath(IBasicFile file){
+	  
+	  if(file == null){
+		  return null;
+	  }
+	  
+	  String basePath = null;
+	  
+	  if(file.getFullPath().contains(CdeEnvironment.getSystemDir())){
+		  basePath = file.getFullPath().substring(file.getFullPath().indexOf(CdeEnvironment.getSystemDir()));
+	  }else if(file.getFullPath().contains(CdeEnvironment.getPluginRepositoryDir())){
+		  basePath =  file.getFullPath().substring(file.getFullPath().indexOf(CdeEnvironment.getPluginRepositoryDir()));
+	  }else{
+		  //what to do ?
+		  basePath = file.getFullPath();
+	  }
+	  
+	  if(basePath != null && basePath.contains(file.getPath())){
+		  basePath = basePath.replace(file.getPath(), "");
+	  }
+	  
+	  return basePath;
+  }
+  
   private void readWidgetStubComponents(MetaModel.Builder model, IThingReadContext context) throws ThingReadException {
     
 	logger.info(String.format("Loading WIDGET components from: %s", WIDGETS_DIR));
@@ -250,7 +276,8 @@ public final class XmlFsPluginModelReader implements IThingReader {
         });
 
       for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, context, file, DEF_WIDGET_STUB_TYPE);
+        this.readComponentsFile(model, context, file, DEF_WIDGET_STUB_TYPE, 
+        		RepositoryHelper.joinPaths(CdeEnvironment.getPluginRepositoryDir(), WIDGETS_DIR));
       }
     }
   }
@@ -305,7 +332,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
   }
 
   // ------------------
-  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file, String defaultClassName)
+  private void readComponentsFile(MetaModel.Builder model, IThingReadContext context, IBasicFile file, String defaultClassName, String basePath)
           throws ThingReadException
   {
     Document doc;
@@ -334,7 +361,7 @@ public final class XmlFsPluginModelReader implements IThingReader {
     }
 
     for (Element componentElem : componentElems) {
-      readComponent(model, context, componentElem, file.getPath(), defaultClassName);
+      readComponent(model, context, componentElem, RepositoryHelper.appendPath(basePath, file.getPath()), defaultClassName);
     }
   }
 

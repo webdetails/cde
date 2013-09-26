@@ -34,4 +34,6 @@ public interface ICdeEnvironment {
 	public String getSystemDir();
 	
 	public String getPluginId();
+	
+	public String getApplicationBaseContentUrl();
 }

@@ -88,48 +88,6 @@ public class CdeEnvironment {
 	public static String getSystemDir(){
 		return CdeEngine.getInstance().getEnvironment().getSystemDir();
 	}
-	
-	public static IReadAccess getAppropriateReadAccess(String resource){
-		
-		if(StringUtils.isEmpty(resource)){
-			return null;
-		}
-		
-		String res = StringUtils.strip(resource.toLowerCase(), "/");
-		
-		if(res.startsWith(getSystemDir())){
-		
-			res = StringUtils.strip(res, getSystemDir() + "/");
-			
-			// system dir - this plugin
-			if(res.startsWith(getPluginId())){
-				return getPluginSystemReader();
-				
-			} else {
-				// system dir - other plugin
-				String pluginId = res.substring(0, resource.indexOf("/"));
-				return getOtherPluginSystemReader(pluginId);
-			
-			}
-			
-		} else if(res.startsWith(getPluginRepositoryDir())) {
-			
-			// plugin repository dir
-			return getPluginRepositoryReader();
-			
-		} else {
-			
-			// one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
-			// or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
-			
-			if(getPluginSystemReader().fileExists(res)){
-				return getPluginSystemReader();
-			} else {
-				// user solution dir
-				return getUserContentAccess();
-			}
-		}
-	}
 }
 			
 	

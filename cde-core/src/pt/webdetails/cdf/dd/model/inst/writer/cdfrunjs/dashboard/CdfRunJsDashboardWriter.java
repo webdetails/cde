@@ -243,7 +243,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     
     // Get CDE headers
     final String baseUrl = (options.isAbsolute() ? options.getSchemedRoot() : "") +
-    		CdeEngine.getInstance().getEnvironment().getApplicationBaseUrl();
+    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
     
     StringFilter cssFilter = new StringFilter()
     {

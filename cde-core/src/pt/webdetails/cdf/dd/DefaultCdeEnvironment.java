@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.PluginSettings;
@@ -15,6 +16,7 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 	private static final String PLUGIN_REPOSITORY_DIR = "cde";
 	private static final String PLUGIN_ID = "pentaho-cdf-dd";
 	private static final String SYSTEM_DIR = "system";
+	private static final String CONTENT = "content";
 	
 	@Override
 	public void init(ICdeBeanFactory factory) throws InitializationException {
@@ -88,5 +90,10 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 	@Override
 	public String getSystemDir() {
 		return SYSTEM_DIR;
+	}
+	
+	@Override
+	public String getApplicationBaseContentUrl() {
+		return Utils.joinPath(getApplicationBaseUrl(), CONTENT, getPluginId()) + "/";
 	}
 }

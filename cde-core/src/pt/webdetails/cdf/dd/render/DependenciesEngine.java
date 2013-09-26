@@ -15,7 +15,9 @@ import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 /**
@@ -77,7 +79,7 @@ public class DependenciesEngine
   public void register(String name, String version, String path) throws Exception {
     Dependency dep;
     
-    IBasicFile file = CdeEnvironment.getPluginSystemReader().fetchFile(path);
+    IBasicFile file = Utils.getFileViaAppropriateReadAccess(path);
     
     try {
       dep = dependencyPool.get(name);

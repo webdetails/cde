@@ -21,7 +21,9 @@ import org.dom4j.DocumentException;
 import org.xml.sax.EntityResolver;
 
 import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
@@ -188,4 +190,108 @@ public class Utils {
   public static Document getDocFromFile(final IReadAccess access, final String filePath, final EntityResolver resolver) throws DocumentException, IOException {    
 	  return (access != null && filePath != null ? getDocFromFile(access.fetchFile(filePath), resolver) : null);
   }
+  
+  public static IReadAccess getAppropriateReadAccess(String resource){
+	  return getAppropriateReadAccess(resource, null);
+  }
+  
+  public static IReadAccess getAppropriateReadAccess(String resource, String basePath){
+		
+		if(StringUtils.isEmpty(resource)){
+			return null;
+		}
+		
+		ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+		IContentAccessFactory factory = environment.getContentAccessFactory();
+		
+		String res = StringUtils.strip(resource.toLowerCase(), "/");
+		
+		if(res.startsWith(environment.getSystemDir() + "/")){
+		
+			res = StringUtils.strip(res, environment.getSystemDir() + "/");
+			
+			// system dir - this plugin
+			if(res.startsWith(environment.getPluginId() + "/")){
+				return factory.getPluginSystemReader(basePath);
+				
+			} else {
+				// system dir - other plugin
+				String pluginId = res.substring(0, resource.indexOf("/"));
+				return factory.getOtherPluginSystemReader(pluginId, basePath);
+			
+			}
+			
+		} else if(res.startsWith(environment.getPluginRepositoryDir() + "/")) {
+			
+			// plugin repository dir
+			return factory.getPluginRepositoryReader(basePath);
+			
+		} else {
+			
+			// one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
+			// or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
+			
+			if(factory.getPluginSystemReader(basePath).fileExists(res)){
+				return factory.getPluginSystemReader(basePath);
+			} else {
+				// user solution dir
+				return factory.getUserContentAccess(basePath);
+			}
+		}
+	}
+  
+  	public static IBasicFile getFileViaAppropriateReadAccess(String resource){
+  		return getFileViaAppropriateReadAccess(resource, null);
+  	}
+  
+  	public static IBasicFile getFileViaAppropriateReadAccess(String resource, String basePath){
+  		if(StringUtils.isEmpty(resource)){
+			return null;
+		}
+		
+		ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+		IContentAccessFactory factory = environment.getContentAccessFactory();
+		
+		String res = StringUtils.strip(resource.toLowerCase(), "/");
+		
+		if(res.startsWith(environment.getSystemDir() + "/")){
+		
+			res = StringUtils.strip(res, environment.getSystemDir() + "/");
+			
+			// system dir - this plugin
+			if(res.startsWith(environment.getPluginId() + "/")){
+				
+				resource = resource.replaceFirst(environment.getSystemDir() + "/" + environment.getPluginId() + "/", "");
+				
+				return factory.getPluginSystemReader(basePath).fetchFile(resource);
+				
+			} else {
+				// system dir - other plugin
+				String pluginId = res.substring(0, resource.indexOf("/"));
+				resource = resource.replaceFirst(environment.getSystemDir() + "/" +pluginId + "/", "");
+				
+				return factory.getOtherPluginSystemReader(pluginId, basePath).fetchFile(resource);
+			}
+			
+		} else if(res.startsWith(environment.getPluginRepositoryDir() + "/")) {
+			
+			// plugin repository dir
+			resource = resource.replaceFirst(environment.getPluginRepositoryDir() + "/", "");
+			return factory.getPluginRepositoryReader(basePath).fetchFile(resource);
+			
+		} else {
+			
+			// one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
+			// or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
+			
+			if (factory.getPluginSystemReader(basePath).fileExists(resource)){
+				return factory.getPluginSystemReader(basePath).fetchFile(resource);
+			
+			} else if (factory.getUserContentAccess(basePath).fileExists(resource)){
+				// user solution dir
+				return factory.getUserContentAccess(basePath).fetchFile(resource);
+			}
+		}
+		return null; //unable to determine appropriate way to fetch file
+  	}
 }

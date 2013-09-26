@@ -95,9 +95,10 @@ public class Packager
       // [TEMPORARY FIX] do magic here - convert 'root' to intended IReadAccess
       IRWAccess access = CdeEnvironment.getUserContentAccess();
       if(!StringUtils.isEmpty(root)){
-    	  if(root.toLowerCase().startsWith("system") || root.toLowerCase().startsWith("/system")){
+    	  String rootPath = StringUtils.strip(root, "/").toLowerCase();
+    	  if(rootPath.startsWith(CdeEnvironment.getSystemDir())){
     		  access = CdeEnvironment.getPluginSystemWriter();
-    	  }else if(root.toLowerCase().startsWith("cde") || root.toLowerCase().startsWith("/cde")){
+    	  }else if(rootPath.startsWith(CdeEnvironment.getPluginRepositoryDir())){
     		  access = CdeEnvironment.getPluginRepositoryWriter();
     	  }
       }	

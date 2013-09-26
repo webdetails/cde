@@ -334,7 +334,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 		response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 		try {
-			IOUtils.copy(CdeEnvironment.getAppropriateReadAccess(resource).getFileInputStream(resource), out);
+			IOUtils.copy(Utils.getFileViaAppropriateReadAccess(resource).getContents(), out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -381,7 +381,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 			response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
 			
-			IOUtils.copy(CdeEnvironment.getAppropriateReadAccess(resource).getFileInputStream(resource), out);
+			IOUtils.copy(Utils.getFileViaAppropriateReadAccess(resource).getContents(), out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
