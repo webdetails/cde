@@ -788,7 +788,7 @@ var CDFDD = Base.extend({
       path = path.split('/');
       var pluginName = (path.length > 0 ) ? path[0] : "",
           endpointName = file.replace('.cdfde',"");
-      _href = CDFDDDataUrl.replace("pentaho-cdf-dd", pluginName).replace("Syncronize", endpointName) ;
+      _href = CDFDDDataUrl.replace("pentaho-cdf-dd", pluginName).replace("Syncronize", endpointName) + "?mode=preview" ;
      } else {
       // Regular Dashboard
       _href = CDFDDDataUrl.replace("Syncronize", "Render?") + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
