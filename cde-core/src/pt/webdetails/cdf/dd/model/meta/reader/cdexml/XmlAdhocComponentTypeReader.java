@@ -5,33 +5,28 @@
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml;
 
 import org.dom4j.Element;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
+
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
+import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
 
 /**
+ * Casts arguments to fit XmlComponentTypeReader and instantiates builders with empty ctors
  * @author dcleao
  */
 public final class XmlAdhocComponentTypeReader<TB extends ComponentType.Builder> 
     extends XmlComponentTypeReader
 {
   private final Class<TB> _class;
+  private XmlFsPluginThingReaderFactory factory;
   
-  public XmlAdhocComponentTypeReader(Class<TB> pclass)
+  public XmlAdhocComponentTypeReader(Class<TB> pclass, XmlFsPluginThingReaderFactory factory)
   {
-    if(pclass == null) { throw new IllegalArgumentException("pclass"); }
+    assert pclass != null;
     _class = pclass;
+    this.factory = factory;
   }
-  
-  @Override
-  public TB read(IThingReadContext context, java.lang.Object source, String sourcePath)
-            throws ThingReadException
-  {
-    TB builder = createInstance();
-    this.read(builder, (XmlPluginModelReadContext)context, (Element)source, sourcePath);
-    return builder;
-  }
-  
+
   private TB createInstance() throws ThingReadException
   {
     try
@@ -46,5 +41,12 @@ public final class XmlAdhocComponentTypeReader<TB extends ComponentType.Builder>
     {
       throw new ThingReadException(ex);
     }
+  }
+
+  //IReader<Element,TB>?
+  public TB read(Element source, String sourcePath) throws ThingReadException {
+    TB builder = createInstance();
+    this.read(builder, factory, source, sourcePath);
+    return builder;
   }
 }

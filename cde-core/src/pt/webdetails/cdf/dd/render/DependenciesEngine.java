@@ -21,7 +21,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 /**
- *
+ * TODO: DependenciesRegistry? DependenciesPackage? anything but "engine"
  * @author pdpi
  */
 public class DependenciesEngine

@@ -8,47 +8,27 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Element;
-import pt.webdetails.cdf.dd.model.core.KnownThingKind;
-import pt.webdetails.cdf.dd.model.core.Thing;
-import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.meta.Resource;
+import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
 import pt.webdetails.cdf.dd.util.Utils;
 
 /**
  * @author dcleao
  */
-public abstract class XmlComponentTypeReader implements IThingReader
+public abstract class XmlComponentTypeReader
 {
-   public abstract ComponentType.Builder read(IThingReadContext context, java.lang.Object source, String sourcePath)
-            throws ThingReadException;
-//  {
-//    ComponentType.Builder builder = new ComponentType.Builder();
-//    this.read(builder, context, (Element)source, sourcePath);
-//    return builder;
-//  }
-  
-  public void read(
-          Thing.Builder builder,
-          IThingReadContext context,
-          java.lang.Object source,
-          String sourcePath)
-          throws ThingReadException
-  {
-    this.read((ComponentType.Builder)builder, (XmlPluginModelReadContext)context, (Element)source, sourcePath);
-  }
 
   public void read(
           ComponentType.Builder builder,
-          XmlPluginModelReadContext context,
+          XmlFsPluginThingReaderFactory factory, //just need property type here
           Element elem,
           String sourcePath)
           throws ThingReadException
   {
+    //TODO: methods instead of comments for separation
     String compDir = FilenameUtils.getFullPath(sourcePath);
     
     // componentElem is <DesignerComponent>
@@ -148,32 +128,20 @@ public abstract class XmlComponentTypeReader implements IThingReader
     for(Element propElem : propElems)
     {
       String className = Utils.getNodeText("Header/Override", propElem);
-      String propName = Utils.getNodeText("Header/Name", propElem);
+//      String propName = Utils.getNodeText("Header/Name", propElem);
       
       if(StringUtils.isEmpty(className)) { className = "PropertyType"; }
       
-      IThingReader propReader;
-      try
-      {
-        propReader = context.getFactory().getReader(KnownThingKind.PropertyType, className, propName);
-      }
-      catch(UnsupportedThingException ex)
-      {
-        throw new ThingReadException(ex);
-      }
+      XmlPropertyTypeReader propReader = factory.getPropertyTypeReader();
 
-      PropertyType.Builder prop = (PropertyType.Builder)propReader.read(
-              context,
-              propElem,
-              sourcePath);
-
+      PropertyType.Builder prop = propReader.read(propElem, sourcePath);
       builder.addProperty(prop);
     }
     
     // -----------
     
     // The "//" in the XPath is to catch properties inside Defintions
-    List<Element> usedPropElems = elem.selectNodes("Contents/Model//Property");
+    List<Element> usedPropElems = Utils.selectNodes(elem, "Contents/Model//Property");
     for(Element usedPropElem : usedPropElems)
     {
       String definitionName = null;
@@ -189,7 +157,7 @@ public abstract class XmlComponentTypeReader implements IThingReader
          definitionName);
     }
 
-    List<Element> attributeElems = elem.selectNodes("Metadata/*");
+    List<Element> attributeElems = Utils.selectNodes(elem, "Metadata/*");
     for (Element attributeElem : attributeElems)
     {
       builder.addAttribute(
@@ -197,4 +165,5 @@ public abstract class XmlComponentTypeReader implements IThingReader
     		  Utils.getNodeText(".", attributeElem));
     }
   }
+
 }

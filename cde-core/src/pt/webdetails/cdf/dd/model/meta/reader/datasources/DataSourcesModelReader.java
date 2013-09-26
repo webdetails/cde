@@ -14,12 +14,8 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.model.meta.MetaObject;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 
 /**
@@ -30,39 +26,16 @@ import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
  *
  * @author dcleao
  */
-public final class DataSourcesModelReader implements IThingReader
+public final class DataSourcesModelReader
 {
-  protected static final Log _logger = LogFactory.getLog(DataSourcesModelReader.class);
+  protected static final Log logger = LogFactory.getLog(DataSourcesModelReader.class);
 
-  public void read(
-          Thing.Builder builder,
-          IThingReadContext context,
-          java.lang.Object source,
-          String sourcePath)
-          throws ThingReadException
-  {
-    this.read((MetaModel.Builder) builder, context, (JSON)source, sourcePath);
-  }
 
-  // idem
-  public MetaObject.Builder read(
-          IThingReadContext context,
-          java.lang.Object source,
-          String sourcePath)
-          throws ThingReadException
-  {
-    MetaModel.Builder builder = new MetaModel.Builder();
-
-    this.read(builder, context, (JSON)source, sourcePath);
-
-    return builder;
-  }
-  
-  public void read(MetaModel.Builder model, IThingReadContext context, JSON cdaDefs, String sourcePath) throws ThingReadException
+  public void read(MetaModel.Builder model, JSON cdaDefs, String sourcePath) throws ThingReadException
   {
     assert model != null;
 
-    _logger.info("Loading data source components of '" + sourcePath + "'");
+    logger.info("Loading data source components of '" + sourcePath + "'");
 
     final JXPathContext doc = JXPathContext.newContext(cdaDefs);
 
@@ -75,10 +48,14 @@ public final class DataSourcesModelReader implements IThingReader
     }
   }
 
+  /**
+   * 
+   * @param model where component type builders are placed
+   * @param pointer
+   * @param sourcePath sourcePath for all components
+   */
   private void readDataSourceComponent(MetaModel.Builder model, Pointer pointer, String sourcePath)
   {
-    // TODO: What a generality...
-    
     DataSourceComponentType.Builder builder = new DataSourceComponentType.Builder();
 
     JSONObject def = (JSONObject) pointer.getNode();
@@ -94,7 +71,7 @@ public final class DataSourcesModelReader implements IThingReader
     // This specific Data Source has special treatment below
     boolean isKettleOverX = isCDA && "kettle over kettleTransFromFile".equalsIgnoreCase(label);
     
-    _logger.debug(String.format("\t%s", label));
+    logger.debug(String.format("\t%s", label));
 
     String connType = (String) jctx.getValue("metadata/conntype");
     connType = connType != null ? connType : "";

@@ -23,12 +23,12 @@ public final class DependenciesManager
     _engines = new HashMap<String, DependenciesEngine>();
   }
 
-  public static void refresh()
+  public static synchronized void refresh()
   {
     _manager = null;
   }
   
-  public static DependenciesManager createInstance()
+  private static DependenciesManager createInstance()
   {
     // Raw Filter is really just an identity function for when we want the dependency contents to be included as-is.
     StringFilter rawFilter = new StringFilter()
@@ -58,9 +58,9 @@ public final class DependenciesManager
     DependenciesManager manager = new DependenciesManager();
     
     manager.registerEngine(Engines.CDF_CSS, new DependenciesEngine(Engines.CDF_CSS, cssFilter, Packager.Filetype.CSS));
-    manager.registerEngine(Engines.CDF,     new DependenciesEngine(Engines.CDF,     jsFilter,  Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDF, new DependenciesEngine(Engines.CDF, jsFilter, Packager.Filetype.JS));
     manager.registerEngine(Engines.CDF_RAW, new DependenciesEngine(Engines.CDF_RAW, rawFilter, Packager.Filetype.JS));
-    manager.registerEngine(Engines.CDFDD,   new DependenciesEngine(Engines.CDFDD,   jsFilter,  Packager.Filetype.JS));
+    manager.registerEngine(Engines.CDFDD, new DependenciesEngine(Engines.CDFDD, jsFilter, Packager.Filetype.JS));
     
     return manager;
   }          
@@ -72,11 +72,6 @@ public final class DependenciesManager
       _manager = createInstance();
     }
     return _manager;
-  }
-  
-  public static synchronized void setInstance(DependenciesManager manager)
-  {
-    _manager = manager;
   }
 
   public static final class Engines {

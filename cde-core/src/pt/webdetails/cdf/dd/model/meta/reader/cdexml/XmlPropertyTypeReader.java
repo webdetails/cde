@@ -11,6 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
+import pt.webdetails.cdf.dd.model.meta.PropertyType.Builder;
+import pt.webdetails.cdf.dd.model.core.reader.IReader;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
@@ -19,37 +21,54 @@ import pt.webdetails.cdf.dd.util.Utils;
 /**
  * @author dcleao
  */
-public class XmlPropertyTypeReader implements IThingReader
+public class XmlPropertyTypeReader implements IThingReader, IReader<PropertyType.Builder, Element>
 {
   protected static final Log _logger = LogFactory.getLog(XmlPropertyTypeReader.class);
 
+
+  /**
+   * IReader.read
+   */
+  public Builder read(Element source, String sourcePath) {
+    PropertyType.Builder builder = new PropertyType.Builder();
+    read(builder, null, source, sourcePath);
+    return builder;
+  }
+
+  /**
+   * @deprecated
+   */
   public PropertyType.Builder read(
-          IThingReadContext context,
+          IThingReadContext contextNotUsed,
           java.lang.Object source,
           String sourcePath)
           throws ThingReadException
   {
     PropertyType.Builder builder = new PropertyType.Builder();
-    read(builder, context, (Element)source, sourcePath);
+    read(builder, contextNotUsed, (Element)source, sourcePath);
     return builder;
   }
 
+  /**
+   * @deprecated
+   */
   public void read(
           Thing.Builder builder,
-          IThingReadContext context,
+          IThingReadContext contextNotUsed,
           java.lang.Object source,
           String sourcePath)
           throws ThingReadException
   {
-    read((PropertyType.Builder)builder, context, (Element)source, sourcePath);
+    read((PropertyType.Builder)builder, null, (Element)source, sourcePath);
   }
 
+  //TODO: purge context
   public void read(
           PropertyType.Builder builder,
-          IThingReadContext context,
+          IThingReadContext contextNotUsed,
           Element propertyElem,
           String sourcePath)
-          throws ThingReadException
+          throws IllegalArgumentException
   {
     String name = Utils.getNodeText("Header/Name", propertyElem, "");
 
@@ -132,13 +151,13 @@ public class XmlPropertyTypeReader implements IThingReader
     }
     else
     {
-      throw new ThingReadException(
+      throw new IllegalArgumentException(
         "PropertyType '" + name + "' in file '" + sourcePath + "' has an invalid 'Header/InputType/@type' value: '" + rendererKind + "'.");
     }
 
     builder.setPossibleValuesSource(Utils.getNodeText("Values/@source", propertyElem));
 
-    List<Element> labeledValueElems = propertyElem.selectNodes("Values/Value");
+    List<Element> labeledValueElems = Utils.selectNodes(propertyElem, "Values/Value");
     for (Element labeledValueElem : labeledValueElems)
     {
       builder.addPossibleValue(
@@ -146,4 +165,5 @@ public class XmlPropertyTypeReader implements IThingReader
     		  Utils.getNodeText("@display", labeledValueElem));
     }
   }
+
 }

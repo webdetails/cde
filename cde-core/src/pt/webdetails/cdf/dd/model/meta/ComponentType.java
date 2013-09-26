@@ -18,6 +18,7 @@ import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicateProperty
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicateResourceError;
+import pt.webdetails.cdf.dd.packager.PathOrigin;
 
 /**
  * A type of component.
@@ -34,8 +35,10 @@ public abstract class ComponentType extends MetaObject
   private final List<String> _definitionNames;
   private final Map<String, List<PropertyTypeUsage>> _propertyDefinitionsByLowerName;
   
-  private final String _implementationPath;
+  private final String implementationPath;
   private final Map<String, Resource> _resourcesByKey;
+  
+  private PathOrigin origin;
   
   protected ComponentType(Builder builder, final IPropertyTypeSource propSource) throws ValidationException
   {
@@ -52,7 +55,6 @@ public abstract class ComponentType extends MetaObject
         // Build local properties dictionary
         for(PropertyType.Builder propBuilder : builder._propertyTypes)
         {
-          @SuppressWarnings("LeakingThisInConstructor")
           PropertyType prop = propBuilder.build(this);
 
           String key = prop.getName().toLowerCase();
@@ -69,7 +71,7 @@ public abstract class ComponentType extends MetaObject
       final IPropertyTypeSource propSourceLocal = new IPropertyTypeSource() {
         public PropertyType getProperty(String name)
         {
-          // Test existance locally first
+          // Test existence locally first
           String key = name != null ? name.toLowerCase() : "";
           PropertyType prop = propertyTypesByLowerName.get(key);
 
@@ -85,7 +87,6 @@ public abstract class ComponentType extends MetaObject
       
       for(PropertyTypeUsage.Builder propUsageBuilder : builder._propertyUsages)
       {
-        @SuppressWarnings("LeakingThisInConstructor")
         PropertyTypeUsage propUsage = propUsageBuilder.build(this, propSourceLocal);
         
         String aliasKey = propUsage.getAlias().toLowerCase();
@@ -115,7 +116,8 @@ public abstract class ComponentType extends MetaObject
         
         props.add(propUsage);
       }
-    } else {
+    } //if(builder.getPropertyUsageCount() > 0)
+    else {
       this._propertyUsagesByLowerAlias = null;
       this._propertyUsagesByLowerName = null;
       this._propertyDefinitionsByLowerName = null;
@@ -146,7 +148,7 @@ public abstract class ComponentType extends MetaObject
     
     // IMPLEMENTATION
     // TODO: is implementationPath required?
-    this._implementationPath = StringUtils.defaultIfEmpty(builder._implementationPath, "");
+    this.implementationPath = StringUtils.defaultIfEmpty(builder.getImplementationPath(), "");
     
     if(builder.getResourceCount() > 0)
     {
@@ -170,6 +172,7 @@ public abstract class ComponentType extends MetaObject
     } else {
       this._resourcesByKey = null;
     }
+    this.origin = builder.origin;
   }
 
   @Override
@@ -180,9 +183,12 @@ public abstract class ComponentType extends MetaObject
   
   public final String getImplementationPath()
   {
-    return this._implementationPath;
+    return this.implementationPath;
   }
   
+  public PathOrigin getOrigin() {
+    return this.origin;
+  }
   // --------
   // PropertyTypeUsage
   public final PropertyTypeUsage getPropertyUsage(String alias)
@@ -315,20 +321,23 @@ public abstract class ComponentType extends MetaObject
    */
   public static abstract class Builder extends MetaObject.Builder
   {
-    private List<PropertyTypeUsage.Builder> _propertyUsages;
+    private List<PropertyTypeUsage.Builder> _propertyUsages = new ArrayList<PropertyTypeUsage.Builder>();
     private List<PropertyType.Builder> _propertyTypes;
     
     private List<String> _legacyNames;
     
     private String _implementationPath;
     private List<Resource.Builder> _resources;
+    private PathOrigin origin;
     
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public Builder()
     {
       super();
-
-      this.useProperty(null, "name");
+      _propertyUsages.add(new PropertyTypeUsage.Builder().setName("name"));
+    }
+    
+    public void setOrigin(PathOrigin pathOrigin) {
+      this.origin = pathOrigin; 
     }
     
     public String getImplementationPath()
@@ -346,12 +355,7 @@ public abstract class ComponentType extends MetaObject
     // PropertyTypeUsage
     public Builder useProperty(PropertyTypeUsage.Builder prop)
     {
-      if(prop == null) { throw new IllegalArgumentException("prop"); }
-
-      if(this._propertyUsages == null)
-      {
-        this._propertyUsages = new ArrayList<PropertyTypeUsage.Builder>();
-      }
+      assert prop != null;
 
       this._propertyUsages.add(prop);
 

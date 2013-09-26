@@ -11,14 +11,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
-import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
-import pt.webdetails.cdf.dd.model.core.reader.DefaultThingReadContext;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
-import pt.webdetails.cdf.dd.model.core.reader.IThingReaderFactory;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.model.meta.reader.datasources.DataSourcesModelReader;
 import pt.webdetails.cdf.dd.model.meta.reader.datasources.DataSourcesObjectReaderFactory;
+import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginModelReader;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
@@ -41,49 +38,47 @@ import pt.webdetails.cdf.dd.util.Utils;
  */
 public final class MetaModelManager
 {
-  protected static final Log _logger = LogFactory.getLog(MetaModelManager.class);
+  protected static final Log logger = LogFactory.getLog(MetaModelManager.class);
   
-  private static MetaModelManager _instance;
+  private static MetaModelManager instance;
   
   public static synchronized MetaModelManager getInstance()
   {
-    if(_instance == null) { _instance = new MetaModelManager(); }
-    return _instance;
+    if(instance == null) { instance = new MetaModelManager(); }
+    return instance;
   }
 
-  private final Object _lock = new Object();
-  private MetaModel  _model;
-  private String _jsDefinition;
+  private final Object lock = new Object();
+  private MetaModel model;
+  private String jsDefinition;
     
   private MetaModelManager()
   {
     Date dtStart = new Date();
-    _logger.info("CDE Starting Load MetaModelManager");
+    logger.info("CDE Starting Load MetaModelManager");
     
-    this._model = readModel();
+    this.model = readModel();
     
-    DependenciesManager.setInstance(this.createDependencyManager(this._model));
-    
-    _logger.info("CDE Finished Load MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
+    logger.info("CDE Finished Load MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
   }
   
   public MetaModel getModel()
   {
-      synchronized(_lock)
+      synchronized(lock)
       {
-        return this._model;
+        return this.model;
       }
   }
 
   public String getJsDefinition()
   {
-      synchronized(_lock)
+      synchronized(lock)
       {
-        if(this._jsDefinition == null && this._model != null)
+        if(this.jsDefinition == null && this.model != null)
         {
-          this._jsDefinition = writeJsDefinition(this._model);
+          this.jsDefinition = writeJsDefinition(this.model);
         }
-        return this._jsDefinition;
+        return this.jsDefinition;
       }
   }
   
@@ -95,77 +90,57 @@ public final class MetaModelManager
   public void refresh(boolean refreshDatasources)
   {
     Date dtStart = new Date();
-    _logger.info("CDE Starting Reload MetaModelManager");
+    logger.info("CDE Starting Reload MetaModelManager");
     
     if(refreshDatasources) { CdeEnvironment.getDataSourceManager().refresh(); }
     
     MetaModel model = this.readModel();
     if(model != null)
     {
-      DependenciesManager depMgr = this.createDependencyManager(model);
+      DependenciesManager.refresh();
+      this.createDependencyManager(model);
       
       // Switch current model.
-      synchronized(_lock)
+      synchronized(lock)
       {
-        this._model  = model;
-        this._jsDefinition = null;
+        this.model  = model;
+        this.jsDefinition = null;
       }
-      
-      // Switch the current dependencies manager
-      //  Not doing this inside the above synchronize
-      //  because I guess it could create a dead-lock.
-      DependenciesManager.setInstance(depMgr);
     }
     
-    _logger.info("CDE Finished Reload MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
+    logger.info("CDE Finished Reload MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
   }
 
   private MetaModel readModel()
   {
-    // --------------------
     // Read Components from the FS
-    IThingReaderFactory factory = new XmlFsPluginThingReaderFactory();
-    IThingReadContext   context = new DefaultThingReadContext(factory);
-
-    // Obtain the root model reader from the factory
-    IThingReader modelReader;
+    XmlFsPluginThingReaderFactory factory = new XmlFsPluginThingReaderFactory(CdeEnvironment.getContentAccessFactory());
+    XmlFsPluginModelReader metaModelReader = factory.getMetaModelReader();
     try
     {
-      modelReader = factory.getReader(KnownThingKind.MetaModel, null, null);
-    }
-    catch (UnsupportedThingException ex)
-    {
-      _logger.error("Error while obtaining the model reader from the file system factory.", ex);
-      return null;
-    }
-
-    // Reading with the model reader
-    MetaModel.Builder builder;
-    try
-    {
-      builder = (MetaModel.Builder)modelReader.read(context, null, null);
+      // read component and property definitions
+      MetaModel.Builder builder = metaModelReader.read(factory);
+      // read data source definitions
+      readDataSourceComponents(builder);
+      return builder.build();
     }
     catch(ThingReadException ex)
     {
-      _logger.error("Error while reading model from file system.", ex);
-      return null;
+      logger.error("Error while reading model from file system.", ex);
     }
+    catch(ValidationException ex)
+    {
+      logger.error("Error while building model.", ex);
+    }
+    return null;
+  }
 
+  private void readDataSourceComponents(MetaModel.Builder builder) {
     // --------------------
     // Read DataSource Components from each DataSourceProvider
-    factory = new DataSourcesObjectReaderFactory();
-    context = new DefaultThingReadContext(factory);
-    
-    // Obtain the root model reader from the factory
-    try
-    {
-      modelReader = factory.getReader(KnownThingKind.MetaModel, null, null);
-    }
-    catch(UnsupportedThingException ex)
-    {
-      _logger.error("Error while obtaining the model reader from the factory.", ex);
-      return null;
-    }
+    DataSourcesObjectReaderFactory dsFactory = new DataSourcesObjectReaderFactory();
+
+    DataSourcesModelReader dsModelReader = dsFactory.getModelReader();
     IDataSourceManager dataSourceManager = CdeEnvironment.getDataSourceManager();
     for(IDataSourceProvider dsProvider : dataSourceManager.getProviders())
     {
@@ -173,28 +148,18 @@ public final class MetaModelManager
       JSON jsDef = dataSourceManager.getProviderJsDefinition(providerId);
       try
       {
-        modelReader.read(builder, context, jsDef, providerId);
+        // id is apparently a source
+        dsModelReader.read(builder, jsDef, providerId);
       }
       catch(ThingReadException ex)
-      {
-        _logger.error("Error while reading model from data source definitions in '" + providerId + "'.", ex);
-        return null;
+      { //TODO: isn't it be better to log and attempt to move on?
+        logger.error("Error while reading model from data source definitions in '" + providerId + "'.", ex);
+       // throw new ThingReadException("Error while reading model from data source definitions in '" + providerId + "'.", ex);
+        //return null;
       }
     }
-    
-    // ---------------
-    // BUILD
-    try
-    {
-      return builder.build();
-    }
-    catch(ValidationException ex)
-    {
-      _logger.error("Error while building model.", ex);
-      return null;
-    }
   }
-  
+
   private String writeJsDefinition(MetaModel model)
   {
     IThingWriterFactory factory = new CdeRunJsThingWriterFactory();
@@ -206,7 +171,7 @@ public final class MetaModelManager
     }
     catch (UnsupportedThingException ex)
     {
-      _logger.error("Error while obtaining the model writer from the factory.", ex);
+      logger.error("Error while obtaining the model writer from the factory.", ex);
       return null;
     }
 
@@ -218,21 +183,22 @@ public final class MetaModelManager
     }
     catch (ThingWriteException ex)
     {
-      _logger.error("Error while writing the model to JS.", ex);
+      logger.error("Error while writing the model to JS.", ex);
       return null;
     }
 
     return out.toString();
   }
 
+  //TODO: this should't be here;
   private DependenciesManager createDependencyManager(MetaModel metaModel)
   {
-    DependenciesManager depMgr = DependenciesManager.createInstance();
+    DependenciesManager depMgr = DependenciesManager.getInstance();
     
-    DependenciesEngine cdfDeps   = depMgr.getEngine(Engines.CDF    );
-    DependenciesEngine rawDeps   = depMgr.getEngine(Engines.CDF_RAW);
+    DependenciesEngine cdfDeps = depMgr.getEngine(Engines.CDF);
+    DependenciesEngine rawDeps = depMgr.getEngine(Engines.CDF_RAW);
     DependenciesEngine styleDeps = depMgr.getEngine(Engines.CDF_CSS);
-    DependenciesEngine ddDeps    = depMgr.getEngine(Engines.CDFDD  );
+    DependenciesEngine ddDeps = depMgr.getEngine(Engines.CDFDD);
     
     for(ComponentType compType : metaModel.getComponentTypes())
     {
@@ -246,7 +212,7 @@ public final class MetaModelManager
         }
         catch (Exception e)
         {
-          _logger.error("Failed to register dependency '" + srcImpl + "'");
+          logger.error("Failed to register dependency '" + srcImpl + "'");
         }
       }
       
@@ -262,7 +228,7 @@ public final class MetaModelManager
           }
           catch(Exception ex)
           {
-            _logger.error("Failed to register code fragment '" + res.getSource() + "'");
+            logger.error("Failed to register code fragment '" + res.getSource() + "'");
           }
         }
         else 
@@ -293,7 +259,7 @@ public final class MetaModelManager
             }
             catch (Exception ex)
             {
-              _logger.error("Failed to register dependency '" + res.getSource() + "'");
+              logger.error("Failed to register dependency '" + res.getSource() + "'");
             }
           }
         }

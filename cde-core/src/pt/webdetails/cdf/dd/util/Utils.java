@@ -5,9 +5,11 @@
 package pt.webdetails.cdf.dd.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.dom4j.DocumentException;
@@ -150,10 +153,24 @@ public class Utils {
    */
   public static Document getDocFromFile(final IBasicFile file, final EntityResolver resolver) throws DocumentException, IOException {
     SAXReader reader = new SAXReader();
-    if (resolver != null) {
+    if (resolver != null) { //TODO: this is always being called with null
       reader.setEntityResolver(resolver);
     }
     return reader.read(file.getContents());
+  }
+  
+  public static Document getDocument(InputStream input) throws DocumentException {
+    SAXReader reader = new SAXReader();
+    return reader.read(input);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static List<Element> selectNodes(Element elem, String xpath) {
+    return elem.selectNodes(xpath);
+  }
+  @SuppressWarnings("unchecked")
+  public static List<Element> selectNodes(Document doc, String xpath) {
+    return doc.selectNodes(xpath);
   }
   
   public static Document getDocFromFile(final IReadAccess access, final String filePath, final EntityResolver resolver) throws DocumentException, IOException {    

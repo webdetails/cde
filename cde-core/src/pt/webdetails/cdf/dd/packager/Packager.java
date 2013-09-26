@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -201,7 +200,6 @@ class FileSet {
 
   private String minify(Mode mode) throws IOException, NoSuchAlgorithmException {
     InputStream concatenatedStream;
-    Reader freader = null;
     OutputStream fos = null;
     try {
       IBasicFile[] filesArray = new IBasicFile[this.files.size()];

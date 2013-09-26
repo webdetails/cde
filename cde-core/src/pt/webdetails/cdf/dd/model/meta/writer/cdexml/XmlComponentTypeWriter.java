@@ -26,25 +26,14 @@ public class XmlComponentTypeWriter implements IThingWriter
 {
   public void write(java.lang.Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
+    //TODO: use methods instead of comments to segment this
     ComponentType comp = (ComponentType)t;
     Branch parent = (Branch)output; // Element or Document
     
     Element compElem = parent.addElement("DesignerComponent");
 
-    // ----------------
-    // HEADER
-    Element headerElem = compElem.addElement("Header");
-    headerElem.addElement("Name" ).setText(comp.getLabel());
-    headerElem.addElement("IName").setText(comp.getName());
-    headerElem.addElement("Description").setText(comp.getTooltip());
-    headerElem.addElement("Category").setText(comp.getCategory());
-    headerElem.addElement("CatDescription").setText(comp.getCategoryLabel());
-    headerElem.addElement("Type").setText(comp.tryGetAttributeValue("cdePalleteType", "PalleteEntry"));
-    headerElem.addElement("Version").setText(comp.getVersion());
-    headerElem.addElement("Visible").setText(comp.getVisible() ? "true" : "false");
+    writeHeader(comp, compElem);
 
-    // ----------------
-    // METADATA
     Attribute cdeModelIgnoreAttr = comp.tryGetAttribute("cdeModelIgnore");
     Attribute cdeModelPrefixAttr = comp.tryGetAttribute("cdeModelPrefix");
     int ignoreCount = 0;
@@ -53,17 +42,7 @@ public class XmlComponentTypeWriter implements IThingWriter
     
     if(comp.getAttributeCount() > ignoreCount)
     {
-      Element attributesElem = compElem.addElement("Metadata");
-      for (Attribute attribute : comp.getAttributes())
-      {
-        if(!"cdeModelIgnore".equalsIgnoreCase(attribute.getName()) &&
-           !"cdeModelPrefix".equalsIgnoreCase(attribute.getName()))
-        {
-          Element attributeElem = attributesElem.addElement("meta");
-          attributeElem.setText(attribute.getValue());
-          attributeElem.addAttribute("name", attribute.getName());
-        }
-      }
+      writeMetadata(comp, compElem);
     }
     
     // ----------------
@@ -217,5 +196,33 @@ public class XmlComponentTypeWriter implements IThingWriter
         }
       }
     }
+  }
+
+  private void writeMetadata(ComponentType comp, Element compElem) {
+    Element attributesElem = compElem.addElement("Metadata");
+    for (Attribute attribute : comp.getAttributes())
+    {
+      if(!"cdeModelIgnore".equalsIgnoreCase(attribute.getName()) &&
+         !"cdeModelPrefix".equalsIgnoreCase(attribute.getName()))
+      {
+        Element attributeElem = attributesElem.addElement("meta");
+        attributeElem.setText(attribute.getValue());
+        attributeElem.addAttribute("name", attribute.getName());
+      }
+    }
+  }
+
+  private void writeHeader(ComponentType comp, Element compElem) {
+    // ----------------
+    // HEADER
+    Element headerElem = compElem.addElement("Header");
+    headerElem.addElement("Name" ).setText(comp.getLabel());
+    headerElem.addElement("IName").setText(comp.getName());
+    headerElem.addElement("Description").setText(comp.getTooltip());
+    headerElem.addElement("Category").setText(comp.getCategory());
+    headerElem.addElement("CatDescription").setText(comp.getCategoryLabel());
+    headerElem.addElement("Type").setText(comp.tryGetAttributeValue("cdePalleteType", "PalleteEntry"));
+    headerElem.addElement("Version").setText(comp.getVersion());
+    headerElem.addElement("Visible").setText(comp.getVisible() ? "true" : "false");
   }
 }
