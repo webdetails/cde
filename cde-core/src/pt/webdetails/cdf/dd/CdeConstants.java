@@ -1,8 +1,5 @@
 package pt.webdetails.cdf.dd;
 
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
-import pt.webdetails.cdf.dd.util.Utils;
-
 public class CdeConstants {
 	
   public static final String DEFAULT_STYLE = "Clean";
@@ -45,11 +42,7 @@ public class CdeConstants {
 
   public static final String SERVER_URL_TAG = "@SERVERURL@";
 
-  public static final String SERVER_URL_VALUE = Utils.getBaseUrl() + "content/" + CdeEnvironment.getPluginId() + "/";
-
   public static final String DATA_URL_TAG = "cdf-structure.js";
-
-  public static final String DATA_URL_VALUE = Utils.getBaseUrl() + "content/" + CdeEnvironment.getPluginId() + "/Syncronize";
   
   public static final String RESOURCE_FOOTER = "resources/patch-footer.html";
   

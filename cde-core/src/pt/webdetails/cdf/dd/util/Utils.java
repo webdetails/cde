@@ -36,37 +36,6 @@ public class Utils {
 
   private static final String NEWLINE = System.getProperty("line.separator");
   
-  private static String baseUrl = null;
-
-  public static String getBaseUrl() {  
-    
-	  if(baseUrl == null) {
-		  
-		  String appBaseUrl = "";
-		  
-		  try {	
-			 
-			  appBaseUrl = CdeEngine.getInstance().getEnvironment().getApplicationBaseUrl();
-			  
-			  // Note - this method is deprecated and returns different values in 3.6
-			  // and 3.7. Change this in future versions -- but not yet
-			  // getFullyQualifiedServerURL only available from 3.7
-			  // URI uri = new URI(PentahoSystem.getApplicationContext().getFullyQualifiedServerURL());
-			  URI uri = new URI(appBaseUrl);
-	        
-			  baseUrl = uri.getPath();
-        
-		      if(!baseUrl.endsWith("/")) {
-		       	baseUrl += "/";
-		      } 
-		  } catch (URISyntaxException ex) {
-			  logger.fatal("Error building BaseURL from " + appBaseUrl, ex);
-		  }
-	  }
-
-	  return baseUrl;
-  }
-  
   public static String composeErrorMessage(String message, Exception cause)
   {
     String msg = "";

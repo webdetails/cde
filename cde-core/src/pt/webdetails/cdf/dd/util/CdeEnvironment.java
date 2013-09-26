@@ -1,7 +1,5 @@
 package pt.webdetails.cdf.dd.util;
 
-import org.apache.commons.lang.StringUtils;
-
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;

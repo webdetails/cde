@@ -142,7 +142,7 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
     final long timestamp = this._writeDate.getTime();
     
     final String root = this._options.isAbsolute() ?
-                  (this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseUrl()) :
+                  (this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl()) :
                   "";
     
     final String path = this._dash.getSourcePath().replaceAll("(.+/).*", "$1");

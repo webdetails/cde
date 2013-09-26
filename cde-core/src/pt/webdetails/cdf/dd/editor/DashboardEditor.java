@@ -1,6 +1,7 @@
 package pt.webdetails.cdf.dd.editor;
 
 import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
@@ -49,8 +50,8 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
     final String cdfDeps = CdfRunJsDashboardWriter.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
     tokens.put(CdeConstants.DESIGNER_CDF_TAG, cdfDeps);
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
-    tokens.put(CdeConstants.SERVER_URL_TAG,   CdeConstants.SERVER_URL_VALUE);
-    tokens.put(CdeConstants.DATA_URL_TAG,     CdeConstants.DATA_URL_VALUE);
+    tokens.put(CdeConstants.SERVER_URL_TAG,   CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl());
+    tokens.put(CdeConstants.DATA_URL_TAG,     CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() + "Syncronize");
     
     String resource = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
     
