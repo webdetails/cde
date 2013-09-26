@@ -4,25 +4,27 @@
 
 package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
-import pt.webdetails.cdf.dd.model.core.reader.DefaultThingReadContext;
+import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
 /**
  * @author dcleao
  */
-public class CdfdeJsReadContext extends DefaultThingReadContext
+public class CdfdeJsReadContext implements IThingReadContext// extends DefaultThingReadContext
 {
   private final DashboardWcdfDescriptor _wcdf;
   private final MetaModel _metaModel;
+  private CdfdeJsThingReaderFactory factory;
   
   public CdfdeJsReadContext(CdfdeJsThingReaderFactory factory, DashboardWcdfDescriptor wcdf, MetaModel metaModel)
   {
-    super(factory);
-    
-    if(wcdf == null) { throw new IllegalArgumentException("wcdf"); }
-    if(metaModel == null) { throw new IllegalArgumentException("metaModel"); }
-    
+    assert factory != null;
+    assert wcdf != null;
+    assert metaModel != null;
+
+    this.factory = factory;
+
     this._wcdf = wcdf;
     this._metaModel = metaModel;
   }
@@ -35,5 +37,9 @@ public class CdfdeJsReadContext extends DefaultThingReadContext
   public final MetaModel getMetaModel()
   {
     return this._metaModel;
+  }
+
+  public CdfdeJsThingReaderFactory getFactory() {
+    return factory;
   }
 }

@@ -25,8 +25,8 @@ public class CdeEnvironment {
 
 	public static IContentAccessFactory getContentAccessFactory() {
 		return CdeEngine.getInstance().getEnvironment().getContentAccessFactory();
-	}		
-			
+	}
+
 	public static IUserContentAccess getUserContentAccess(){
 		return getContentAccessFactory().getUserContentAccess(null);
 	}
@@ -71,6 +71,8 @@ public class CdeEnvironment {
 		return CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager();
 	}
 	
+	
+	
 	public static IDataSourceManager getDataSourceManager(){
 		return CdeEngine.getInstance().getEnvironment().getDataSourceManager();
 	}
@@ -87,5 +89,4 @@ public class CdeEnvironment {
 		return CdeEngine.getInstance().getEnvironment().getSystemDir();
 	}
 }
-			
-	
+

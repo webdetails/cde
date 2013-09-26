@@ -13,11 +13,11 @@ import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
  */
 public final class Resource
 {
-  private final String _name;
-  private final String _app;
-  private final String _version;
-  private final String _source;
-  private final Type   _type;
+  private final String name;
+  private final String app;
+  private final String version;
+  private final String source;
+  private final Type type;
 
   private Resource(Builder builder) throws ValidationException
   {
@@ -33,13 +33,13 @@ public final class Resource
       throw new ValidationException(new RequiredAttributeError("Type"));
     }
 
-    this._name    = StringUtils.defaultIfEmpty(builder._name, builder._source);
-    this._app     = StringUtils.defaultIfEmpty(builder._app, "");
-    this._source  = builder._source;
-    this._version = StringUtils.defaultIfEmpty(builder._version, "1.0");
+    this.name = StringUtils.defaultIfEmpty(builder._name, builder._source);
+    this.app = StringUtils.defaultIfEmpty(builder._app, "");
+    this.source = builder._source;
+    this.version = StringUtils.defaultIfEmpty(builder._version, "1.0");
     // TODO: validate version format
     
-    this._type    = builder._type;
+    this.type    = builder._type;
   }
 
   // -------------
@@ -51,32 +51,32 @@ public final class Resource
 
   public String getKey()
   {
-    return buildKey(this._type, this._name);
+    return buildKey(this.type, this.name);
   }
 
   public String getName()
   {
-    return this._name;
+    return this.name;
   }
 
   public String getVersion()
   {
-    return this._version;
+    return this.version;
   }
 
   public String getSource()
   {
-    return this._source;
+    return this.source;
   }
 
   public Type getType()
   {
-    return this._type;
+    return this.type;
   }
 
   public String getApp()
   {
-    return this._app;
+    return this.app;
   }
 
   // ------------
@@ -84,10 +84,11 @@ public final class Resource
   public enum Type
   {
     SCRIPT,
-    RAW, // Raw code
+    RAW, // Raw code //TODO: can't raw be either?
     STYLE
   }
 
+  //TODO: this builder is just a reiteration of resource..
   public final static class Builder
   {
     private String _name;

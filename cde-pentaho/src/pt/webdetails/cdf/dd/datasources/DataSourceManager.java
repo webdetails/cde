@@ -23,7 +23,7 @@ import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 
 /**
- * 
+ * TODO: DOC!!
  * @author Rafael P. Gomes<rafael.gomes@webdetails.pt>
  *
  */
@@ -55,7 +55,7 @@ public class DataSourceManager implements IDataSourceManager {
   {
     this.providersById = new LinkedHashMap<String, DataSourceProvider>();
     this.providerDefinitionsById = new HashMap<String, JSON>();
-    init(/*isRefresh*/false);
+    init(false);
   }
   
   /**
@@ -173,7 +173,7 @@ public class DataSourceManager implements IDataSourceManager {
    */
   public List<IDataSourceProvider> getProviders() {
     synchronized(providersById) {
-      return new ArrayList(providersById.values());
+      return new ArrayList<IDataSourceProvider>(providersById.values());
     }
   }
 
@@ -208,6 +208,6 @@ public class DataSourceManager implements IDataSourceManager {
    */
   public void refresh() 
   {
-    init(/*isRefresh*/true);
+    init(true);
   }
 }

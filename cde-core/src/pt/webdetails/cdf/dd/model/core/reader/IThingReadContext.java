@@ -6,7 +6,7 @@ package pt.webdetails.cdf.dd.model.core.reader;
 
 /**
  * Allows passing context information during the reading process.
- * 
+ * <br><br>A factory holder that can be cast into classes containing other methods.
  * @author dcleao
  */
 public interface IThingReadContext

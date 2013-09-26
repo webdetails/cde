@@ -11,7 +11,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://jax-ws.dev.java.net/spring/core http://jax-ws.dev.java.net/spring/core.xsd
 http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/servlet.xsd">
 
-	<context:annotation-config />
+  <context:annotation-config />
 
   <bean id="ICdeEnvironment" class="pt.webdetails.cdf.dd.PentahoCdeEnvironment" scope="prototype"/>
   <bean id="IPluginCall" class="pt.webdetails.cpf.PentahoLegacyInterPluginCall" scope="prototype"/>

@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd.model.core.reader;
 import pt.webdetails.cdf.dd.model.core.Thing;
 
 /**
+ * A two-stage builder factory with unknown context, source, or output
  * @author dcleao
  */
 public interface IThingReader

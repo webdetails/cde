@@ -13,6 +13,7 @@ import java.util.regex.*;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
+//TODO never used
 public class CSSMin
 {
 
@@ -389,58 +390,58 @@ class Part
     //simplifyColours();
   }
 
-  private void simplifyColours()
-  {
-    if (CSSMin.bDebug)
-    {
-      System.out.println("Simplifying colours; contents is " + this.contents);
-    }
-    // Convert rgb() colours to Hex
-    if (this.contents.toLowerCase().indexOf("rgb(") == 0)
-    {
-      String[] parts = this.contents.substring(4, this.contents.indexOf(")")).split(",");
-      if (parts.length == 3)
-      {
-        int r = Integer.parseInt(parts[0], 10);
-        int g = Integer.parseInt(parts[1], 10);
-        int b = Integer.parseInt(parts[2], 10);
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("#");
-        if (r < 16)
-        {
-          sb.append("0");
-        }
-        sb.append(Integer.toHexString(r));
-        if (g < 16)
-        {
-          sb.append("0");
-        }
-        sb.append(Integer.toHexString(g));
-        if (b < 16)
-        {
-          sb.append("0");
-        }
-        sb.append(Integer.toHexString(b));
-
-        this.contents = sb.toString();
-      }
-    }
-
-    // Replace #223344 with #234
-    if ((this.contents.indexOf("#") == 0) && (this.contents.length() == 7))
-    {
-      this.contents = this.contents.toLowerCase(); // Always have hex colours in lower case.
-      if ((this.contents.charAt(1) == this.contents.charAt(2))
-          && (this.contents.charAt(3) == this.contents.charAt(4))
-          && (this.contents.charAt(5) == this.contents.charAt(6)))
-      {
-        StringBuffer sb = new StringBuffer();
-        sb.append("#").append(this.contents.charAt(1)).append(this.contents.charAt(3)).append(this.contents.charAt(5));
-        this.contents = sb.toString();
-      }
-    }
-  }
+//  private void simplifyColours()
+//  {
+//    if (CSSMin.bDebug)
+//    {
+//      System.out.println("Simplifying colours; contents is " + this.contents);
+//    }
+//    // Convert rgb() colours to Hex
+//    if (this.contents.toLowerCase().indexOf("rgb(") == 0)
+//    {
+//      String[] parts = this.contents.substring(4, this.contents.indexOf(")")).split(",");
+//      if (parts.length == 3)
+//      {
+//        int r = Integer.parseInt(parts[0], 10);
+//        int g = Integer.parseInt(parts[1], 10);
+//        int b = Integer.parseInt(parts[2], 10);
+//
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("#");
+//        if (r < 16)
+//        {
+//          sb.append("0");
+//        }
+//        sb.append(Integer.toHexString(r));
+//        if (g < 16)
+//        {
+//          sb.append("0");
+//        }
+//        sb.append(Integer.toHexString(g));
+//        if (b < 16)
+//        {
+//          sb.append("0");
+//        }
+//        sb.append(Integer.toHexString(b));
+//
+//        this.contents = sb.toString();
+//      }
+//    }
+//
+//    // Replace #223344 with #234
+//    if ((this.contents.indexOf("#") == 0) && (this.contents.length() == 7))
+//    {
+//      this.contents = this.contents.toLowerCase(); // Always have hex colours in lower case.
+//      if ((this.contents.charAt(1) == this.contents.charAt(2))
+//          && (this.contents.charAt(3) == this.contents.charAt(4))
+//          && (this.contents.charAt(5) == this.contents.charAt(6)))
+//      {
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("#").append(this.contents.charAt(1)).append(this.contents.charAt(3)).append(this.contents.charAt(5));
+//        this.contents = sb.toString();
+//      }
+//    }
+//  }
 
   public String toString()
   {
