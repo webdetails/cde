@@ -9,9 +9,14 @@
     <minification>MINIFY</minification>
   </packager>
   <custom-components>
-    <!-- paths from solution with cde component definitions to be loaded-->
-    <path>system/pentaho-cdf-dd/resources/custom/components</path>
-    <path>cde/components</path>
-<!--    <path>system/cdc/cdeComponents</path>-->
+    <!-- paths with cde components -->
+    <!-- origin: 
+      "static" - folder under this directory, declared as static 
+      "repo" - this plugin's folder in the solution repository (<solution>/cde)
+    -->
+    <!--4.x old <path>system/pentaho-cdf-dd/resources/custom/components</path>-->
+    <path origin="static">resources/custom/components</path>
+    <!--4.x old <path>cde/components</path-->
+    <path origin="repo">components</path>
   </custom-components>
 </settings>
