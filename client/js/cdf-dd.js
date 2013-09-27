@@ -787,7 +787,7 @@ var CDFDD = Base.extend({
       // CPK Dashboard
       path = path.split('/');
       var pluginName = (path.length > 0 ) ? path[0] : "",
-          endpointName = file.replace('.cdfde',"");
+          endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
       _href = CDFDDDataUrl.replace("pentaho-cdf-dd", pluginName).replace("Syncronize", endpointName) + "?mode=preview" ;
      } else {
       // Regular Dashboard
