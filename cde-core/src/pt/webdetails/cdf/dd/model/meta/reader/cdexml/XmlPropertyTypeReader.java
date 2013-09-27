@@ -12,7 +12,6 @@ import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.meta.PropertyType.Builder;
-import pt.webdetails.cdf.dd.model.core.reader.IReader;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
@@ -21,7 +20,7 @@ import pt.webdetails.cdf.dd.util.Utils;
 /**
  * @author dcleao
  */
-public class XmlPropertyTypeReader implements IThingReader, IReader<PropertyType.Builder, Element>
+public class XmlPropertyTypeReader implements IThingReader
 {
   protected static final Log _logger = LogFactory.getLog(XmlPropertyTypeReader.class);
 
