@@ -194,11 +194,13 @@ public final class XmlFsPluginModelReader implements IThingReader {
   }
 
   private void readCustomComponentsLocation(MetaModel.Builder model, IThingReadContext context, IReadAccess access) throws ThingReadException {
-    	  
+     	  
 	 GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, CUSTOM_PROPS_FILE_EXTENSION);
 	  
 	 List<IBasicFile> filesList = access.listFiles(null, filter, IReadAccess.DEPTH_ALL);
 
+	 logger.info(String.format("Loading CUSTOM components from: %s", access.toString()));
+	 
     if (filesList != null) {
     	
       logger.debug(String.format("%s sub-folders found", filesList.size()));
@@ -241,8 +243,23 @@ public final class XmlFsPluginModelReader implements IThingReader {
 		  basePath = file.getFullPath();
 	  }
 	  
-	  if(basePath != null && basePath.contains(file.getPath())){
-		  basePath = basePath.replace(file.getPath(), "");
+	  if(basePath != null && file != null){
+		  
+		  if(basePath.contains(file.getPath())){
+			  // ex: 
+			  // basePath: system/pentaho-cdf-dd/resources/custom/components/Bogus/component.xml
+			  // file.getPath(): Bogus/component.xml
+			  
+			  basePath = basePath.replace(file.getPath(), "");
+		  
+		  } else if(file.getPath().startsWith(basePath)){
+			  
+			  // ex: 
+			  // basePath: cde/components/Bogus/component.xml
+			  // file.getPath(): cde/components/Bogus/component.xml
+			  
+			  basePath = null;
+		  }
 	  }
 	  
 	  return basePath;

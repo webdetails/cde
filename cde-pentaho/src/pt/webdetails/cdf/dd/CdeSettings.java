@@ -42,12 +42,12 @@ public class CdeSettings{
     	  path = StringUtils.strip(path, "/");
     	  
     	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>, <path>system/cdc/cdeComponents</path>
-	      if(path.startsWith(CdeEnvironment.getSystemDir())){
+	      if(path.startsWith(CdeEnvironment.getSystemDir() + "/")){
 	    	  
 	    	  path = path.replaceFirst(CdeEnvironment.getSystemDir() + "/", "");
 	    	  
 	    	  //ex: <path>system/pentaho-cdf-dd/resources/custom/components</path>
-	    	  if(path.startsWith(CdeEnvironment.getPluginId())){
+	    	  if(path.startsWith(CdeEnvironment.getPluginId() + "/")){
 	    		  
 	    		  path = path.replaceFirst(CdeEnvironment.getPluginId() + "/", "");
 
@@ -67,7 +67,7 @@ public class CdeSettings{
 	    		
 	    	  }
 	    	  
-	      } else if(path.startsWith(CdeEnvironment.getPluginRepositoryDir())){
+	      } else if(path.startsWith(CdeEnvironment.getPluginRepositoryDir() + "/")){
 	    	  
 	    	  //ex: <path>cde/components</path>
 	    	  path = path.replaceFirst(CdeEnvironment.getPluginRepositoryDir() + "/", "");

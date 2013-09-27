@@ -13,13 +13,15 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 	private boolean acceptDirectories;
 	
 	public GenericBasicFileFilter(String fileName, String fileExtension){
-		this.fileName = fileName;
-		this.fileExtensions = !StringUtils.isEmpty(fileExtension) ? new String[]{cleanDot(fileExtension)} : null;
+		this(fileName, fileExtension, false);
+	}
+	
+	public GenericBasicFileFilter(String fileName, String fileExtension, boolean acceptDirectories){
+		this(fileName, !StringUtils.isEmpty(fileExtension) ? new String[]{cleanDot(fileExtension)} : null, acceptDirectories);
 	}
 	
 	public GenericBasicFileFilter(String fileName, String[] fileExtensions){
-		this.fileName = fileName;
-		this.fileExtensions = fileExtensions;
+		this(fileName, fileExtensions, false);
 	}
 	
 	public GenericBasicFileFilter(String fileName, String[] fileExtensions, boolean acceptDirectories){
