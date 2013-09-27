@@ -185,7 +185,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	 * @author pdpi
 	 */
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public static void refresh() throws Exception {
+	public static void refresh(final OutputStream out) throws Exception {
 		DashboardManager.getInstance().refreshAll();
 	}
 
