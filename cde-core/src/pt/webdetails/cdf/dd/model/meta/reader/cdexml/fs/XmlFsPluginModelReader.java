@@ -297,7 +297,7 @@ public final class XmlFsPluginModelReader {
       logger.fatal(msg);
     }
 
-    ComponentType.Builder comp = reader.read(componentElem, sourcePath);
+    ComponentType.Builder comp = reader.read(componentElem, origin, sourcePath);
     comp.setOrigin(origin);//TODO: in reader?
     model.addComponent(comp);
   }

@@ -34,6 +34,7 @@ public abstract class XmlComponentTypeReader
     // componentElem is <DesignerComponent>
     String name = elem.selectSingleNode("Header/IName") != null ? elem.selectSingleNode("Header/IName").getText() : null;
     
+    //TODO: origin here
     builder
       .setName(name)
       .setLabel(Utils.getNodeText("Header/Name", elem))
@@ -93,15 +94,18 @@ public abstract class XmlComponentTypeReader
     List<Element> styleElems = elem.selectNodes("Contents/Implementation/Styles/*");
     for (Element styleElem : styleElems)
     {
-      builder.addResource(
-        new Resource.Builder()
-             .setType(Resource.Type.STYLE)
-             .setApp(Utils.getNodeText("@app", styleElem))
-             .setName(Utils.getNodeText(".", styleElem))
-             .setVersion(Utils.getNodeText("@version", styleElem))
-             .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", styleElem))));
+      //TODO: style resource, needs url thingy
+//      addResource(builder, compDir, styleElem);
+      builder.addResource(createResource(Resource.Type.STYLE, compDir, styleElem));
+//      builder.addResource(
+//          new Resource.Builder()
+//               .setType(Resource.Type.STYLE)
+//               .setApp(Utils.getNodeText("@app", styleElem))
+//               .setName(Utils.getNodeText(".", styleElem))
+//               .setVersion(Utils.getNodeText("@version", styleElem))
+//               .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", styleElem))));
     }
-
+    //TODO: raw resource, may be style, does it need url thingy?
     @SuppressWarnings("unchecked")
     List<Element> rawElems = elem.selectNodes("Contents/Implementation/Raw/*");
     for (Element rawElem : rawElems)
@@ -152,18 +156,30 @@ public abstract class XmlComponentTypeReader
       }
       
       builder.useProperty(
-    		  Utils.getNodeText("@name", usedPropElem), // alias
-    		  Utils.getNodeText(".", usedPropElem),    // ref-name
-         definitionName);
+          Utils.getNodeText("@name", usedPropElem), // alias
+          Utils.getNodeText(".", usedPropElem),    // ref-name
+          definitionName);
     }
 
     List<Element> attributeElems = Utils.selectNodes(elem, "Metadata/*");
     for (Element attributeElem : attributeElems)
     {
       builder.addAttribute(
-    		  Utils.getNodeText("@name", attributeElem),
-    		  Utils.getNodeText(".", attributeElem));
+          Utils.getNodeText("@name", attributeElem),
+          Utils.getNodeText(".", attributeElem));
     }
   }
+
+  private Resource.Builder createResource(Resource.Type type, String compDir, Element resourceElement) {
+    return
+      new Resource.Builder()
+           .setType(type)
+           .setApp(Utils.getNodeText("@app", resourceElement))
+           .setName(Utils.getNodeText(".", resourceElement))
+           .setVersion(Utils.getNodeText("@version", resourceElement))
+           .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", resourceElement)));
+  }
+
+
 
 }

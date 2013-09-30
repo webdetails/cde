@@ -27,11 +27,13 @@ import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cdf.dd.render.DependenciesEngine;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * @author dcleao
@@ -202,13 +204,18 @@ public final class MetaModelManager
     
     for(ComponentType compType : metaModel.getComponentTypes())
     {
+      PathOrigin origin = compType.getOrigin();
+      if (origin == null) {
+        logger.error("ComponentType " + compType.getName() + " src=" + compType.getImplementationPath() + " has no origin!");
+      }
+      IReadAccess reader = origin.getReader( CdeEnvironment.getContentAccessFactory() );
       // Implementation
       String srcImpl = compType.getImplementationPath();
       if (StringUtils.isNotEmpty(srcImpl))
       {
         try
         {
-          cdfDeps.register(compType.getName(), compType.getVersion(), srcImpl);
+          cdfDeps.register(compType.getName(), compType.getVersion(), reader, srcImpl);
         }
         catch (Exception e)
         {
@@ -255,7 +262,8 @@ public final class MetaModelManager
           {
             try
             {
-              engine.register(res.getName(), res.getVersion(), res.getSource());
+              //TODO: path origin
+              engine.register(res.getName(), res.getVersion(), reader, res.getSource());
             }
             catch (Exception ex)
             {

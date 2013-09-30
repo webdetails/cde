@@ -17,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cdf.dd.packager.input.OtherPluginStaticSystemOrigin;
 
 /**
  * Loads XML model files,
@@ -67,7 +69,11 @@ public final class DataSourcesModelReader
     
     boolean isCPK = dataSourceType.equalsIgnoreCase("cpk");
     boolean isCDA = !isCPK;
-    
+
+    //TODO: oh so wrong
+    PathOrigin origin = new OtherPluginStaticSystemOrigin(isCPK? "cpk" : "cda", "");
+    builder.setOrigin( origin );
+
     // This specific Data Source has special treatment below
     boolean isKettleOverX = isCDA && "kettle over kettleTransFromFile".equalsIgnoreCase(label);
     

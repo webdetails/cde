@@ -7,6 +7,7 @@ package pt.webdetails.cdf.dd.model.meta;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
+import pt.webdetails.cdf.dd.packager.PathOrigin;
 
 /**
  * @author dcleao
@@ -18,6 +19,7 @@ public final class Resource
   private final String version;
   private final String source;
   private final Type type;
+  private final PathOrigin origin;
 
   private Resource(Builder builder) throws ValidationException
   {
@@ -38,8 +40,10 @@ public final class Resource
     this.source = builder._source;
     this.version = StringUtils.defaultIfEmpty(builder._version, "1.0");
     // TODO: validate version format
-    
+
     this.type    = builder._type;
+
+    this.origin = builder.origin;
   }
 
   // -------------
@@ -79,7 +83,13 @@ public final class Resource
     return this.app;
   }
 
+
+  public PathOrigin getOrigin() {
+    return origin;
+  }
   // ------------
+
+
 
   public enum Type
   {
@@ -96,6 +106,7 @@ public final class Resource
     private String _source;
     private Type   _type;
     private String _app;
+    private PathOrigin origin;
 
     // ----------
     // Properties
@@ -152,6 +163,11 @@ public final class Resource
     public Builder setApp(String app)
     {
       this._app = app;
+      return this;
+    }
+
+    public Builder setOrigin(PathOrigin origin) {
+      this.origin = origin;
       return this;
     }
 

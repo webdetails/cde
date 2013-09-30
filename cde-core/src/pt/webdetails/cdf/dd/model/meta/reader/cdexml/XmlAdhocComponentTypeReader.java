@@ -9,6 +9,7 @@ import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
+import pt.webdetails.cdf.dd.packager.PathOrigin;
 
 /**
  * Casts arguments to fit XmlComponentTypeReader and instantiates builders with empty ctors
@@ -43,9 +44,9 @@ public final class XmlAdhocComponentTypeReader<TB extends ComponentType.Builder>
     }
   }
 
-  //IReader<Element,TB>?
-  public TB read(Element source, String sourcePath) throws ThingReadException {
+  public TB read(Element source, PathOrigin origin, String sourcePath) throws ThingReadException {
     TB builder = createInstance();
+    builder.setOrigin(origin);
     this.read(builder, factory, source, sourcePath);
     return builder;
   }

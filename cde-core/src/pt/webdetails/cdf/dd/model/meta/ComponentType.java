@@ -337,7 +337,7 @@ public abstract class ComponentType extends MetaObject
     }
     
     public void setOrigin(PathOrigin pathOrigin) {
-      this.origin = pathOrigin; 
+      this.origin = pathOrigin;
     }
     
     public String getImplementationPath()
@@ -447,8 +447,9 @@ public abstract class ComponentType extends MetaObject
     // Resources
     public Builder addResource(Resource.Builder res)
     {
-      if(res == null) { throw new IllegalArgumentException("res"); }
+      assert res != null;
 
+      res.setOrigin(origin);
       if(this._resources == null)
       {
         this._resources = new ArrayList<Resource.Builder>();
