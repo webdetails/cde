@@ -11,7 +11,5 @@ public interface IPluginResourceLocationManager {
 	
 	public String getStyleResourceLocation(String styleName);
 	
-	public IReadAccess[] getAllCustomComponentsResourceLocations();
-	
 	List<PathOrigin> getCustomComponentsLocations();
 }

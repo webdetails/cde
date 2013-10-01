@@ -1,0 +1,39 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+package pt.webdetails.cdf.dd.packager.dependencies;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.repository.api.IRWAccess;
+
+/**
+ * Base class for concatenated and minified files.
+ */
+public abstract class PackagedFileDependency extends FileDependency {
+
+  private Iterable<FileDependency> inputFiles;
+  private IRWAccess writer;
+  private boolean isSaved;
+
+  public PackagedFileDependency(PathOrigin origin, String path, IRWAccess writer, Iterable<FileDependency> inputFiles) {
+    super( null, origin, path );
+    this.inputFiles = inputFiles;
+    this.writer = writer;
+  }
+
+  @Override
+  public synchronized InputStream getFileInputStream() throws IOException {
+    if ( !isSaved ) {
+      writer.saveFile( filePath, minifyPackage(inputFiles));//TODO: check save
+      inputFiles = null;
+    }
+    return super.getFileInputStream();
+  }
+
+  protected abstract InputStream minifyPackage(Iterable<FileDependency> inputFiles);
+
+}

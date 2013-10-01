@@ -1,7 +1,12 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.packager.input;
 
 import org.apache.commons.lang.StringUtils;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
@@ -23,12 +28,12 @@ public class OtherPluginStaticSystemOrigin extends PathOrigin {
   }
 
   @Override
-  public String getUrlPrepend(String localPath) {
+  public String getUrl(String localPath) {
     // ex.: 
     // pluginId=cdc
     // basePath=static, localPath=css/some.css
     // url-> "<host>/pentaho/content/pentaho-cdf-dd/" + "../cdc/static/css/some.css"<- prepend
-    return RepositoryHelper.joinPaths( "..", pluginId, basePath, localPath );
+    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getApplicationBaseContentUrl() , "..", pluginId, basePath, localPath );
   }
 
   @Override

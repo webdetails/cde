@@ -23,7 +23,7 @@ import pt.webdetails.cdf.dd.model.core.writer.*;
 import pt.webdetails.cdf.dd.model.core.writer.js.*;
 import pt.webdetails.cdf.dd.model.inst.*;
 import pt.webdetails.cdf.dd.render.*;
-import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
+import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.IPluginCall;
@@ -242,15 +242,16 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
     
     // Get CDE headers
-    final String baseUrl = (options.isAbsolute() ? options.getSchemedRoot() : "") +
-    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
+    final String baseUrl = (options.isAbsolute() ? options.getSchemedRoot() + "/" : "");
+//    +
+//    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
     
     StringFilter cssFilter = new StringFilter()
     {
       public String filter(String input)
       {
         return String.format(
-          "\t\t<link href=\"%sgetCssResource/%s\" rel=\"stylesheet\" type=\"text/css\" />",
+          "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
           baseUrl, input);
       }
     };
@@ -260,16 +261,16 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       public String filter(String input)
       {
         return String.format(
-          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%sgetJsResource/%s\"></script>",
+          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
           baseUrl, input);
       }
     };
     
     DependenciesManager depMgr = DependenciesManager.getInstance();
     boolean isPackaged = !options.isDebug();
-    String scriptDeps = depMgr.getEngine(Engines.CDF    ).getDependencies(jsFilter,  isPackaged);
-    String styleDeps  = depMgr.getEngine(Engines.CDF_CSS).getDependencies(cssFilter, isPackaged);
-    String rawDeps    = depMgr.getEngine(Engines.CDF_RAW).getDependencies();
+    String scriptDeps = depMgr.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS ).getDependencies( jsFilter, isPackaged );
+    String styleDeps = depMgr.getPackage( StdPackages.COMPONENT_STYLES ).getDependencies( cssFilter, isPackaged );
+    String rawDeps = depMgr.getPackage( StdPackages.COMPONENT_SNIPPETS ).getRawDependencies( false );
     
     return title + cdfDeps + rawDeps + scriptDeps + styleDeps;
   }

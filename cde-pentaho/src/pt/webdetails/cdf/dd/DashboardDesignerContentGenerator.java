@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +33,6 @@ import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
-import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
@@ -83,8 +81,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
 
-	private Packager packager;
-
 	/**
 	 * Parameters received by content generator
 	 */
@@ -130,11 +126,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	}
 
 	public DashboardDesignerContentGenerator() {
-		try {
-			init();
-		} catch (IOException ex) {
-			logger.error("Failed to initialize!");
-		}
 	}
 
 	@Override
@@ -227,11 +218,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 					+ Utils.ellapsedSeconds(dtStart) + "s");
 		} catch (FileNotFoundException ex) { // could not open cdfe
 			String msg = "File not found: " + ex.getLocalizedMessage();
-			logger.error(msg);
+			logger.error(msg, ex);
 			writeOut(out, msg);
 		} catch (Exception ex) {
 			String msg = "Could not load dashboard: " + ex.getMessage();
-			logger.error(msg);
+			logger.error(msg, ex);
 			writeOut(out, msg);
 		}
 	}
@@ -419,7 +410,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			writeOut(out, "Access Denied");
 		}
 		
-		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams), packager));
+		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams)));
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -618,22 +609,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		final HttpServletResponse response = getResponse();
 		if (maxAge != null && response != null) {
 			response.setHeader("Cache-Control", "max-age=" + maxAge);
-		}
-	}
-
-	private void init() throws IOException {
-		this.packager = Packager.getInstance();
-		Properties props = new Properties();
-		String rootdir = PLUGIN_PATH;
-		props.load(CdeEnvironment.getPluginSystemReader().getFileInputStream("includes.properties"));
-
-		if (!packager.isPackageRegistered("scripts")) {
-			String[] files = props.get("scripts").toString().split(",");
-			packager.registerPackage("scripts", Packager.Filetype.JS, rootdir, "/js/scripts.js", files);
-		}
-		if (!packager.isPackageRegistered("styles")) {
-			String[] files = props.get("styles").toString().split(",");
-			packager.registerPackage("styles", Packager.Filetype.CSS, rootdir, "/css/styles.css", files);
 		}
 	}
 

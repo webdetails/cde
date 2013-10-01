@@ -16,7 +16,7 @@ public abstract class JsWriterAbstract
   protected static final String INDENT3 = "\t\t\t";
   protected static final String INDENT4 = "\t\t\t\t";
 
-  protected static final String NEWLINE = System.getProperty("line.separator");
+  protected static final String NEWLINE = System.getProperty("line.separator");//TODO: do we really want this?
 
   protected static void addCommaAndLineSep(StringBuilder out)
   {

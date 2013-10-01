@@ -27,13 +27,12 @@ import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.packager.DependenciesPackage;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.render.DependenciesEngine;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
-import pt.webdetails.cdf.dd.render.DependenciesManager.Engines;
+import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * @author dcleao
@@ -154,10 +153,8 @@ public final class MetaModelManager
         dsModelReader.read(builder, jsDef, providerId);
       }
       catch(ThingReadException ex)
-      { //TODO: isn't it be better to log and attempt to move on?
+      {
         logger.error("Error while reading model from data source definitions in '" + providerId + "'.", ex);
-       // throw new ThingReadException("Error while reading model from data source definitions in '" + providerId + "'.", ex);
-        //return null;
       }
     }
   }
@@ -192,30 +189,26 @@ public final class MetaModelManager
     return out.toString();
   }
 
-  //TODO: this should't be here;
+  //TODO: should this be here?
   private DependenciesManager createDependencyManager(MetaModel metaModel)
   {
     DependenciesManager depMgr = DependenciesManager.getInstance();
     
-    DependenciesEngine cdfDeps = depMgr.getEngine(Engines.CDF);
-    DependenciesEngine rawDeps = depMgr.getEngine(Engines.CDF_RAW);
-    DependenciesEngine styleDeps = depMgr.getEngine(Engines.CDF_CSS);
-    DependenciesEngine ddDeps = depMgr.getEngine(Engines.CDFDD);
+    DependenciesPackage componentScripts = depMgr.getPackage(StdPackages.COMPONENT_DEF_SCRIPTS);
+    DependenciesPackage componentSnippets = depMgr.getPackage(StdPackages.COMPONENT_SNIPPETS);
+    DependenciesPackage componentStyles = depMgr.getPackage(StdPackages.COMPONENT_STYLES);
+
+    DependenciesPackage ddScripts = depMgr.getPackage(StdPackages.CDFDD);
     
     for(ComponentType compType : metaModel.getComponentTypes())
     {
       PathOrigin origin = compType.getOrigin();
-      if (origin == null) {
-        logger.error("ComponentType " + compType.getName() + " src=" + compType.getImplementationPath() + " has no origin!");
-      }
-      IReadAccess reader = origin.getReader( CdeEnvironment.getContentAccessFactory() );
-      // Implementation
       String srcImpl = compType.getImplementationPath();
       if (StringUtils.isNotEmpty(srcImpl))
       {
         try
         {
-          cdfDeps.register(compType.getName(), compType.getVersion(), reader, srcImpl);
+          componentScripts.registerFileDependency( compType.getName(), compType.getVersion(), origin, srcImpl);
         }
         catch (Exception e)
         {
@@ -231,7 +224,7 @@ public final class MetaModelManager
         {
           try
           {
-            rawDeps.registerRaw(res.getName(), res.getVersion(), res.getSource());
+            componentSnippets.registerRawDependency( res.getName(), res.getVersion(), res.getSource() );
           }
           catch(Exception ex)
           {
@@ -240,30 +233,29 @@ public final class MetaModelManager
         }
         else 
         {
-          DependenciesEngine engine = null;
+          DependenciesPackage pack = null;
           if(resType == Resource.Type.SCRIPT)
           {
             String app = res.getApp();
-            if(StringUtils.isEmpty(app) || app.equals(Engines.CDF))
+            if(StringUtils.isEmpty(app) || app.equals(StdPackages.COMPONENT_DEF_SCRIPTS))
             {
-              engine = cdfDeps;
+              pack = componentScripts;
             }
-            else if(app.equals(Engines.CDFDD))
+            else if(app.equals(StdPackages.CDFDD))
             {
-              engine = ddDeps;
+              pack = ddScripts;
             }
           }
           else if(resType == Resource.Type.STYLE)
           {
-            engine = styleDeps;
+            pack = componentStyles;
           }
         
-          if(engine != null)
+          if(pack != null)
           {
             try
             {
-              //TODO: path origin
-              engine.register(res.getName(), res.getVersion(), reader, res.getSource());
+              pack.registerFileDependency( res.getName(),res.getVersion(), res.getOrigin(), res.getSource() );
             }
             catch (Exception ex)
             {

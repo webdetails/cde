@@ -35,5 +35,11 @@ public interface ICdeEnvironment {
 	
 	public String getPluginId();
 	
+	/**
+	 * 
+	 * @return Base content URL <u>for this plugin</u>
+	 */
 	public String getApplicationBaseContentUrl();
+	
+	public String getRepositoryBaseContentUrl();
 }

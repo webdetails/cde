@@ -44,7 +44,7 @@ public class CdeEngine {
     	return getInstance().cdeEnv;
     }
     
-    public static void initialize() throws InitializationException {
+    private static void initialize() throws InitializationException {
   	  if (instance.cdeEnv == null) {
   		  
   		  ICdeBeanFactory factory = new CoreBeanFactory();
@@ -59,6 +59,10 @@ public class CdeEngine {
   		  
   		  instance.cdeEnv = env;
   	  }
+    }
+
+    public static ICdeEnvironment getEnv() {
+      return getInstance().getEnvironment();
     }
 
     protected synchronized ICdeEnvironment getConfiguredEnvironment(ICdeBeanFactory factory) throws InitializationException {

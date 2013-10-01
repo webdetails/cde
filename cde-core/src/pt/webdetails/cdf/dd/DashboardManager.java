@@ -541,7 +541,7 @@ public final class DashboardManager
     CdfRunJsDashboardWriteResult dashWrite = 
             (CdfRunJsDashboardWriteResult)cacheElement.getValue();
     
-    // 3. Get the template file
+    // 3. Get the template file //XXX we're not using it
     IBasicFile templFile = null;
     String templPath = cacheKey.getTemplate();
     if(StringUtils.isNotEmpty(templPath)) {

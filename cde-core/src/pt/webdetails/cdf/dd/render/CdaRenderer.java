@@ -24,7 +24,6 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.render.cda.*;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;

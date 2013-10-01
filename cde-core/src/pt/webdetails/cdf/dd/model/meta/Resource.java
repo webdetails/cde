@@ -78,6 +78,7 @@ public final class Resource
     return this.type;
   }
 
+  //TODO: doc
   public String getApp()
   {
     return this.app;

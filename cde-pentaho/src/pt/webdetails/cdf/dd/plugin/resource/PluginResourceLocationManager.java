@@ -2,6 +2,8 @@ package pt.webdetails.cdf.dd.plugin.resource;
 
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import pt.webdetails.cdf.dd.DashboardDesignerContentGenerator;
 import pt.webdetails.cdf.dd.FsPluginResourceLocations;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
@@ -11,11 +13,10 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class PluginResourceLocationManager implements IPluginResourceLocationManager{
 
-    private FsPluginResourceLocations componentLocator;
+  private FsPluginResourceLocations componentLocator;
 
-	@Override
 	public IReadAccess[] getAllCustomComponentsResourceLocations() {
-		return FsPluginResourceLocations.getCustomComponentsRelDirs();
+		throw new NotImplementedException("shouldn't be using this anymore");
 	}
 
 	@Override

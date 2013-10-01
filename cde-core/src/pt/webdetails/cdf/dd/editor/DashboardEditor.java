@@ -4,7 +4,6 @@ import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ResourceManager;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
-import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -22,17 +21,19 @@ import org.apache.commons.lang.StringUtils;
  * User: diogomariano
  * Date: 06/09/13
  */
-public class DashboardEditor {   //TODO: remove packager from content generator when no need to get solutionpath of plugin
+public class DashboardEditor {
 
-  public static String getEditor(String wcdfPath, boolean debugMode, String scheme, Packager packager) throws IOException {
+  public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws IOException {
 
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
-    final String cdeDeps = DependenciesManager.getInstance().getEngine(DependenciesManager.Engines.CDFDD).getDependencies();
+    DependenciesManager depMgr = DependenciesManager.getInstance();
+    final String cdeDeps = depMgr.getPackage(DependenciesManager.StdPackages.CDFDD).getDependencies(false);//TODO: check
     tokens.put(CdeConstants.DESIGNER_HEADER_TAG, cdeDeps);
 
     ResourceManager resMgr = ResourceManager.getInstance();
     
+    //TODO: this is a tad confusing
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     final String scriptDeps, styleDeps;
     if(debugMode){
@@ -58,11 +59,8 @@ public class DashboardEditor {   //TODO: remove packager from content generator 
       }
       
     } else {
-      String stylesHash  = packager.minifyPackage("styles" );
-      String scriptsHash = packager.minifyPackage("scripts");
-
-      styleDeps  = "<link href=\"css/styles.css?version=" + stylesHash + "\" rel=\"stylesheet\" type=\"text/css\" />";
-      scriptDeps = "<script type=\"text/javascript\" src=\"js/scripts.js?version=" + scriptsHash + "\"></script>";
+        styleDeps = depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_CSS_INCLUDES ).getDependencies( true );
+        scriptDeps = depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_JS_INCLUDES ).getDependencies( true );
     }
 
     tokens.put(CdeConstants.DESIGNER_STYLES_TAG,  styleDeps );

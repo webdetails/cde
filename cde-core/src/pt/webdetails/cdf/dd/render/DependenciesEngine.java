@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.packager.DependenciesPackage;
 import pt.webdetails.cdf.dd.packager.Packager;
 import pt.webdetails.cdf.dd.packager.Packager.Mode;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -19,7 +20,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 /**
- * TODO: DependenciesRegistry? DependenciesPackage? anything but "engine"
+ * deprecated use {@link DependenciesPackage}
  * @author pdpi
  */
 public class DependenciesEngine

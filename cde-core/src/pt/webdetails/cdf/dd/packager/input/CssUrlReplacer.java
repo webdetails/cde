@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package pt.webdetails.cdf.dd.packager.input;
 
 import java.util.regex.Pattern;
@@ -50,8 +54,8 @@ public class CssUrlReplacer {
     return replacedContents;
   }
 
-  public String processContents(final String fileContents, String pathDisplacement) {
-    return replaceUrls(fileContents, pathDisplacement);
+  public String processContents(final String fileContents, String location) {
+    return replaceUrls(fileContents, location);
   }
 
 }

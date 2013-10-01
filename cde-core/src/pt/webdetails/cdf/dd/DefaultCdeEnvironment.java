@@ -92,8 +92,12 @@ public class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvi
 		return SYSTEM_DIR;
 	}
 	
-	@Override
-	public String getApplicationBaseContentUrl() {
-		return Utils.joinPath(getApplicationBaseUrl(), CONTENT, getPluginId()) + "/";
-	}
+  @Override
+  public String getApplicationBaseContentUrl() {// TODO: NPE
+    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/";
+  }
+
+  public String getRepositoryBaseContentUrl() {// TODO: NPE
+    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";
+  }
 }

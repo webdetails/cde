@@ -76,7 +76,6 @@ public class Utils {
   }
 
   public static String joinPath(String... paths) {
-    // TODO: dcleao Shouldn't this use File.separator
     return StringUtils.defaultString(StringUtils.join(paths, "/")).replaceAll("/+", "/");
   }
 

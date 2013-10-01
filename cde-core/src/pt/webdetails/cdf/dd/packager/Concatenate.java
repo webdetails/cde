@@ -22,7 +22,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
- * 
+ * @deprecated will be deleted! \o/
  * @author pdpi
  */
 class Concatenate {

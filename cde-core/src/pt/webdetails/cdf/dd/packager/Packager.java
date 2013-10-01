@@ -30,7 +30,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;;
 
 /**
- *
+ * @deprecated use {@link DependenciesPackage}
  * @author pdpi
  */
 public class Packager
@@ -38,7 +38,6 @@ public class Packager
 
   public enum Filetype
   {
-
     CSS, JS
   };
 
