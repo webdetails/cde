@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccStructDatasource</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Structure source</Description>
+      <Tooltip>Structure of (complex) chart</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>25</Order>
+      <Advanced>false</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

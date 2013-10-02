@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Id</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>ID</Description>
+	<Tooltip>The ID for this data source</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>11</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccOrthoFixedMax</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>V1 - upBound Ortho</Description>
+      <Tooltip>Upper bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>89</Order>
+      <Advanced>true</Advanced>
+      <Version>1.1</Version>
+    </Header>
+  </DesignerProperty>

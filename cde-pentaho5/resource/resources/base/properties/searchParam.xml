@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>searchParam</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Search parameter</Description>
+	<Tooltip>Name of datasource parameter.</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>6</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

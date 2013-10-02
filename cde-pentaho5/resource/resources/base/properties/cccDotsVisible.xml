@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccDotsVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>dotsVisible</Description>
+    <Tooltip>Indicates if the visual elements show dots/markers in each point's position.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>285</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

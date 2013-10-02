@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>variables</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Variables</Description>
+	<Tooltip>Variables passed to Kettle</Tooltip>
+	<InputType>ValuesArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>28</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

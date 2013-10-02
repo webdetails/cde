@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>initialDate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Initial date.</Description>
+	<Tooltip>Initial date to display in the selector</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ResourceFile</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Resource file</Description>
+	<Tooltip>Resource file to include</Tooltip>
+	<InputType>ResourceFile</InputType>
+	<OutputType>String</OutputType>
+	<Order>18</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

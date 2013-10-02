@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Bottom</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Bottom</Description>
+	<Tooltip>The bottom part of the union</Tooltip>
+	<InputType>Datasource</InputType>
+	<OutputType>String</OutputType>
+	<Order>11</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

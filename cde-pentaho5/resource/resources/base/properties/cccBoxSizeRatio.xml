@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBoxSizeRatio</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.333</DefaultValue>
+    <Description>boxSizeRatio</Description>
+    <Tooltip>The percentage of space of each band that is occupied by the box bar.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>241</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

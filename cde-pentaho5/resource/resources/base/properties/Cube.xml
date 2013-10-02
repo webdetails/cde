@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>cube</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Mondrian cube</Description>
+	<Tooltip>Mondrian cube to be used in the query</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>23</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

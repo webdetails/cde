@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>colSearchable</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Searchable Column</Description>
+	<Tooltip>Array with the indexes of the columns to search</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Array</InputType>
+	<OutputType>Array</OutputType>
+	<Order>42</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

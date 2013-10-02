@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>datasetType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>CategoryDataset</DefaultValue>
+	<Description>Dataset Type</Description>
+	<Tooltip>Set the chart dataset Type</Tooltip>
+	<InputType>DatasetType</InputType>
+	<OutputType>String</OutputType>
+	<Advanced>true</Advanced>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

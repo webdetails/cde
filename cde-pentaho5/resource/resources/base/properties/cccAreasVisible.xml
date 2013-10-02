@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccAreasVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>areasVisible</Description>
+    <Tooltip>Indicates if shaded areas are shown in the plot.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>203</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

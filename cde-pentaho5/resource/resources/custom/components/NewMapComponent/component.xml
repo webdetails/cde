@@ -1,0 +1,267 @@
+<DesignerComponent>
+    <Header>
+        <Name>NewMapComponent</Name>
+        <IName>NewMapComponent</IName>
+        <Description>Map Component</Description>
+        <Category>CUSTOMCOMPONENTS</Category>
+        <CatDescription>Custom</CatDescription>
+        <Type>PalleteEntry</Type>
+        <Version>1.0</Version>
+    </Header>
+    <Contents>
+        <Model>
+            <Property>executeAtStart</Property>
+            <Property>htmlObject</Property>
+            <Property>tooltip</Property>
+            <Property>parameters</Property>
+            <Property>listeners</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+    		      		<Property>centerLongitude</Property>
+      		      		<Property>centerLatitude</Property>			
+<Property>defaultZoomLevel</Property>      		      							
+						<Definition name="queryDefinition">
+        		<Property type="query">dataSource</Property>
+      		</Definition>        
+      		<Property>mapEngineType</Property>
+      		<Property>marker</Property>
+            <Property>markerWidth</Property>
+            <Property>markerHeight</Property>      
+      		<Property>popupParameters</Property>
+      		<Property>markerCggGraph</Property>
+      		<Property>cggGraphParameters</Property>
+            <Property>markerClickFunction</Property>
+            <Property>popupWidth</Property>
+            <Property>popupHeight</Property>
+            
+            <Property>popupContentsDiv</Property>
+
+        </Model>
+        <Implementation>
+            <Code src="NewMapComponent.js" />
+		      <Dependencies>		    
+          <Dependency src="MapComponentAsyncLoader.js" version="1.0">MapComponentAsyncLoader</Dependency>
+        </Dependencies>
+            <Styles>
+                <Style version="1.0" src="NewMapComponent.css">NewMapComponent</Style>
+            </Styles>
+            <CustomProperties>
+            
+				<DesignerProperty>
+					<Header>
+						<Name>popupContentsDiv</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Div for popup window</Description>
+						<Tooltip>Div id that contains the contents for popup window</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>String</InputType>
+						<OutputType>String</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>            
+            
+				<DesignerProperty>
+					<Header>
+						<Name>popupWidth</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>250</DefaultValue>
+						<Description>Popup Width</Description>
+						<Tooltip> Width for the popup window </Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>Integer</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+           		<DesignerProperty>
+					<Header>
+						<Name>popupHeight</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>250</DefaultValue>
+						<Description>Popup Height</Description>
+						<Tooltip> Height for the popup window</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>Integer</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+		      	            
+
+           		<DesignerProperty>
+					<Header>
+						<Name>markerCggGraph</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Cgg Graph for Marker</Description>
+						<Tooltip>Cgg Graph name to use as marker</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>String</InputType>
+						<OutputType>String</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+
+
+           		<DesignerProperty>
+					<Header>
+						<Name>cggGraphParameters</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>"[]"</DefaultValue>
+						<Description>Cgg Graph Parameters</Description>
+						<Tooltip> Mapping between resultset columns and parameters for cgg graph</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>ValuesArray</InputType>
+						<OutputType>Array</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+
+
+           		<DesignerProperty>
+					<Header>
+						<Name>marker</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Marker image</Description>
+						<Tooltip>Image to use as marker</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>String</InputType>
+						<OutputType>String</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+
+
+            
+           		<DesignerProperty>
+					<Header>
+						<Name>markerClickFunction</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Marker click Function</Description>
+						<Tooltip>Function to be called when marker is clicked</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>JavaScript</InputType>
+						<OutputType>Function</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+            
+           		<DesignerProperty>
+					<Header>
+						<Name>markerWidth</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>25</DefaultValue>
+						<Description>Marker Width</Description>
+						<Tooltip> Width for the marker image</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>Integer</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+           		<DesignerProperty>
+					<Header>
+						<Name>markerHeight</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>25</DefaultValue>
+						<Description>Marker Height</Description>
+						<Tooltip> Height for the marker image</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>Integer</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+		      	
+           		<DesignerProperty>
+					<Header>
+						<Name>popupParameters</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>"[]"</DefaultValue>
+						<Description>Marker Click Parameters</Description>
+						<Tooltip> Parameters to be changed when a marker is clicked - arg is column id, value is parameter name to change with column value</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>ValuesArray</InputType>
+						<OutputType>Array</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+
+
+    
+        		<DesignerProperty>
+          			<Header>
+            			<Name>defaultZoomLevel</Name>
+            			<Parent>BaseProperty</Parent>
+			            <DefaultValue>5</DefaultValue>
+            			<Description>Default zoom Level</Description>
+			            <Tooltip>Default zoom Level</Tooltip>
+            			<InputType>Integer</InputType>
+			            <OutputType>Number</OutputType>
+            			<Order>40</Order>
+						<Advanced>false</Advanced>
+            			<Version>1.0</Version>
+          			</Header>
+        		</DesignerProperty>                          
+                <DesignerProperty>
+          			<Header>          
+			            <Name>mapEngineType</Name>
+            			<Parent>BaseProperty</Parent>
+			            <DefaultValue>openstreet</DefaultValue>
+			            <Description>Map Engine</Description>
+            			<Tooltip>can be google or openstreet</Tooltip>
+			            <InputType>String</InputType>
+            			<OutputType>String</OutputType>
+			            <Order>40</Order>
+						<Advanced>false</Advanced>
+			            <Version>1.0</Version>
+		          </Header>
+        		</DesignerProperty>
+ 
+     		<DesignerProperty>
+					<Header>
+						<Name>centerLatitude</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Center Latitude</Description>
+						<Tooltip> Center latitude for map</Tooltip>
+						<Advanced>false</Advanced>
+						<InputType>Float</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>
+           		<DesignerProperty>
+					<Header>
+						<Name>centerLongitude</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Center Longitude</Description>
+						<Tooltip>Center Longitude for Map</Tooltip>
+						<Advanced>false</Advanced>
+						<InputType>Float</InputType>
+						<OutputType>Number</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>            
+		      	</DesignerProperty>            
+            
+            
+            </CustomProperties>
+        </Implementation>
+    </Contents>
+</DesignerComponent>

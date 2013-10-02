@@ -1,0 +1,28 @@
+<DesignerComponent>
+	<Header>
+		<Name>Simple Auto Complete component</Name>
+		<IName>SimpleAutoComplete</IName>
+		<Description>Simple Auto-Complete Box</Description>
+		<Category>SELECTORS</Category>
+		<CatDescription>Selects</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property>parameter</Property>
+			<Property>listeners</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Definition name="queryDefinition">
+				<Property>dataSource</Property>
+			</Definition>
+			<Property>searchParam</Property>
+			<Property>maxResults</Property>
+			<Property name='minTextLength'>minTextLenght</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

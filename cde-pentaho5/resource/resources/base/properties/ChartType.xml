@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>chartType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>BarChart</DefaultValue>
+	<Description>Chart Type</Description>
+	<Tooltip>Chart Type</Tooltip>
+	<InputType>ChartType</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

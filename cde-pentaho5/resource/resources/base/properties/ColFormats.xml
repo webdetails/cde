@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>colFormats</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Column Formats</Description>
+	<Tooltip>The table column formats</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Array</InputType>
+	<OutputType>Array</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

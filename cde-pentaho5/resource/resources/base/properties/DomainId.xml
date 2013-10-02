@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>DomainId</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Domain ID</Description>
+	<Tooltip>Domain ID</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Advanced>true</Advanced>
+	<Order>5</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

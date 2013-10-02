@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<DesignerProperty>
+<Header>
+    <Name>dataSource</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>Datasource</Description>
+    <Tooltip>DataSource to be used in this selector</Tooltip>
+    <InputType>Datasource</InputType>
+    <Order>43</Order>
+    <Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>domainPeriodType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>Day</DefaultValue>
+	<Description>Period Type</Description>
+	<Tooltip>Period Type</Tooltip>
+	<InputType>DomainPeriodType</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

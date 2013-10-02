@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccIsMultiValued</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>isMultiValued</Description>
+    <Tooltip>Indicates if the data source has multiple value and dimensions.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>293</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

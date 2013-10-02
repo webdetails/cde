@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccDoubleClickAction</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>doubleClickAction</Description>
+    <Tooltip>A callback function that is called when the user double-clicks on a visual element.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>286</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,18 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLeafContentOverflow</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>auto</DefaultValue>
+    <Description>leafContentOverflow</Description>
+    <Tooltip>Indicates what is to be done with content that overflows in leaf charts.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>295</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Auto">auto</Value>
+    <Value display="Hidden">hidden</Value>
+  </Values>
+</DesignerProperty>

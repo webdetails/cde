@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>catalog</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Mondrian schema</Description>
+	<Tooltip>Mondrian schema location</Tooltip>
+	<InputType>MondrianCatalog</InputType>
+	<OutputType>String</OutputType>
+	<Order>22</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

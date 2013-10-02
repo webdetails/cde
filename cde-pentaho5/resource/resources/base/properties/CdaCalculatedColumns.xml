@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Cdacalculatedcolumns</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Calculated Columns</Description>
+	<Tooltip>Calculated Columns</Tooltip>
+	<InputType>CdaCalculatedColumnsArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

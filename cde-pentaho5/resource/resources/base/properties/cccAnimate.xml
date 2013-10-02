@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccAnimate</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>animate</Description>
+    <Tooltip>Indicates if a chart should show an entry animation, every time it is fully rendered.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>202</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

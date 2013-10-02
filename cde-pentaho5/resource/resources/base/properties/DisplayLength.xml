@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>displayLength</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Page Length</Description>
+	<Tooltip>The page lengh</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

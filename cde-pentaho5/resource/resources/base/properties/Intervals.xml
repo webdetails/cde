@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>intervals</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Intervals Array</Description>
+	<Tooltip>Intervals to use on the dial. Eg: [0, 50,80,100].</Tooltip>
+	<InputType>Array</InputType>
+	<OutputType>Array</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccAxisOffset</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"0"</DefaultValue>
+      <Description>V1 - Axis offset</Description>
+      <Tooltip>YY axis area size</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>86</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

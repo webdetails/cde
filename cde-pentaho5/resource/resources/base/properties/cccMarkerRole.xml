@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccMarkerRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>markerRole</Description>
+    <Tooltip>The marker visual role represents a set of reference or target values for a given title and sub-title categories.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>321</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>preExecution</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Pre Execution</Description>
+	<Tooltip>Function to be executed before the component is updated</Tooltip>
+	<InputType>JavaScript</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Function</OutputType>
+	<Order>92</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

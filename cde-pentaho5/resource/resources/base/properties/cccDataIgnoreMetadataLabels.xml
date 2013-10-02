@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccDataIgnoreMetadataLabels</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>dataIgnoreMetadataLabels</Description>
+    <Tooltip>Indicates if the data source translation should not use the column labels provided in the data source's metadata as defaults for the labels of dimensions that are directly bound to those columns.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>280</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

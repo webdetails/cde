@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>CssClass</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Css Class</Description>
+	<Tooltip>Css Class to be used when this element is rendered</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>80</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

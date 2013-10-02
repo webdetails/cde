@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccXAxisFullGrid</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>V1 - Show xx grid</Description>
+      <Tooltip>Show xx axis full grid?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>84</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>iframe</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>IFrame</Description>
+	<Tooltip>Whether to use iframe or insert inside the div</Tooltip>
+	<InputType>Boolean</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Boolean</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

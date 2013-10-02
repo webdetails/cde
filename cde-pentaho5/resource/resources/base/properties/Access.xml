@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Access</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>public</DefaultValue>
+	<Description>Access Level</Description>
+	<Tooltip>The Access Level (Scope) for this data access</Tooltip>
+	<InputType>Access</InputType>
+	<OutputType>String</OutputType>
+	<Order>11</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

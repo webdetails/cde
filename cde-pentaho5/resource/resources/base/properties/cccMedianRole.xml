@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccMedianRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>medianRole</Description>
+    <Tooltip>The median visual role controls the position of the middle rule of the box visual element, along the orthogonal axis.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>324</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

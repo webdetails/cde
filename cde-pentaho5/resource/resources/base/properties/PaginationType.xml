@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>paginationType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>two_button</DefaultValue>
+	<Description>Pagination Type</Description>
+	<Tooltip>Pagination Type</Tooltip>
+	<InputType>PaginationType</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>String</OutputType>
+	<Order>56</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

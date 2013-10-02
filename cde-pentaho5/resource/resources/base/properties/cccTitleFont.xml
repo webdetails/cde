@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTitleFont</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>14px sans-serif</DefaultValue>
+    <Description>titleFont</Description>
+    <Tooltip>The font of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>447</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

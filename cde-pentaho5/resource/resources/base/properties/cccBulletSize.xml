@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBulletSize</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>30</DefaultValue>
+    <Description>bulletSize</Description>
+    <Tooltip>The orthogonal size of each bullet, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>246</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

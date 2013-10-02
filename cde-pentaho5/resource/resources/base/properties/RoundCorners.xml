@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>roundCorners</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Corners</Description>
+	<Tooltip>Corners type</Tooltip>
+	<InputType>RoundCorners</InputType>
+	<OutputType>String</OutputType>
+	<Order>70</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

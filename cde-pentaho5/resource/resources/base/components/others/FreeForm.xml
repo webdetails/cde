@@ -1,0 +1,49 @@
+<DesignerComponent>
+	<Header>
+		<Name>Freeform Component</Name>
+		<IName>freeform</IName>
+		<Description>Freeform Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Definition name="queryDefinition">
+				<Property type="query">dataSource</Property>
+			</Definition>
+			<Property name="width" type="number">width</Property>
+			<Property name="height" type="number">height</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>manageCallee</Property>
+			<Property type="boolean">executeAtStart</Property>
+			<Property type="function">preChange</Property>
+			<Property type="function">postChange</Property>
+			<Property type="function">postFetch</Property>
+			<Property type="function">customfunction</Property>
+			<Property type="string">htmlObject</Property>
+			<Property type="function">preExecution</Property>
+			<Property type="function">postExecution</Property>
+			<Property type="number">tooltip</Property>
+			<Property type="number">listeners</Property>
+		</Model>
+		<Implementation>
+			<CustomProperties>
+				<DesignerProperty>
+					<Header>
+						<Name>customfunction</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Custom Script</Description>
+						<Tooltip>Custom component script</Tooltip>
+						<InputType>JavaScript</InputType>
+						<OutputType>Function</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>
+				</DesignerProperty>
+			</CustomProperties>
+		</Implementation>
+	</Contents>
+</DesignerComponent>

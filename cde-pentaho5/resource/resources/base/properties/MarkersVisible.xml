@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>markersVisible</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Markers Visible</Description>
+	<Tooltip>Markers Visible</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

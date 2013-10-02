@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>lineStyle</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>solid</DefaultValue>
+	<Description>Line Style</Description>
+	<Tooltip>JFreeChart line style: solid , dash , dot , dashdot , dashdotdot</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>29</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

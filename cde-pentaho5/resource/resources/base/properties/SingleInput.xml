@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>singleInput</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Single Input</Description>
+	<Tooltip>True will render a single input; False will use 2 input boxes. Default: true</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Advanced>true</Advanced>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

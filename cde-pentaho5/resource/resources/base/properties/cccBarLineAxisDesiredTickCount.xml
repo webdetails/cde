@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+        <Name>cccBarLineDesiredTickCount</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue/>
+        <Description>V1 - 2nd axis desired tick count</Description>
+        <Tooltip>The desired number of (major) ticks of the 2nd axis</Tooltip>
+        <InputType>Integer</InputType>
+        <OutputType>Number</OutputType>
+        <Order>92</Order>
+        <Advanced>true</Advanced>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

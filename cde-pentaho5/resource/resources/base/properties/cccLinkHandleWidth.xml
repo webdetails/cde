@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLinkHandleWidth</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.5</DefaultValue>
+    <Description>linkHandleWidth</Description>
+    <Tooltip>The width of the link line handle width, in em units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>313</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

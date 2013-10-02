@@ -1,0 +1,22 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisTitleAlign</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>baseAxisTitleAlign</Description>
+    <Tooltip>The alignment side of the panel (the source) that will align to a side of the parent panel (the target).</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>230</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Bottom">bottom</Value>
+    <Value display="Center">center</Value>
+    <Value display="Left">left</Value>
+    <Value display="Middle">middle</Value>
+    <Value display="Right">right</Value>
+    <Value display="Top">top</Value>
+  </Values>
+</DesignerProperty>

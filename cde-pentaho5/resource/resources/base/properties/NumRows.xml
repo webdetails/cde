@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>numRows</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Rows</Description>
+	<Tooltip>Number of Rows</Tooltip>
+	<Advanced>false</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>cdaquery</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Query</Description>
+	<Tooltip>Query to be executed in the selected CDA datasource</Tooltip>
+	<InputType>CdaQuery</InputType>
+	<OutputType>String</OutputType>
+	<Order>25</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLegendMargins</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>legendMargins</Description>
+    <Tooltip>The margins of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>303</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnBigBorder</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Big right border</Description>
+	<Tooltip>Generates a border between the columns, </Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>37</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

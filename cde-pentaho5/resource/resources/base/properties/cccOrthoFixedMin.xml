@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccOrthoFixedMin</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>V1 - loBound Ortho</Description>
+      <Tooltip>Lower bound on the Orthogonal axis (y-axis in normal orientation)</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>88</Order>
+      <Advanced>true</Advanced>
+      <Version>1.1</Version>
+    </Header>
+  </DesignerProperty>

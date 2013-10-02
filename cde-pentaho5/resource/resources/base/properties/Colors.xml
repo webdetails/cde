@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>colors</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Range Colors Array</Description>
+	<Tooltip>Colors to use in the intervals range.</Tooltip>
+	<InputType>Array</InputType>
+	<OutputType>Array</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,30 @@
+<DesignerComponent>
+	<Header>
+		<Name>Pivot Component</Name>
+		<IName>jpivot</IName>
+		<Description>pivot Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>solution</Property>
+			<Property>path</Property>
+			<Property>action</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>iframeHeight</Property>
+			<Property>iframeWidth</Property>
+			<Property>iframeScrolling</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

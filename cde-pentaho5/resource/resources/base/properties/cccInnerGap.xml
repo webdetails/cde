@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccInnerGap</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0.9</DefaultValue>
+      <Description>V1 - Inner gap</Description>
+      <Tooltip>Pie inner gap</Tooltip>
+      <InputType>Float</InputType>
+      <OutputType>Number</OutputType>
+      <Order>42</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

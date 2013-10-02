@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccShowDots</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - Show dots</Description>
+      <Tooltip>Show dots next to markers</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Advanced>true</Advanced>
+      <Order>53</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>scrollHeight</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Scrollbar size.</Description>
+	<Tooltip>The size of the scrollbar. Default: Not defined (without scrollbar) .</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

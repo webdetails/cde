@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>xaction</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Xaction</Description>
+	<Tooltip>Xaction name</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>28</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

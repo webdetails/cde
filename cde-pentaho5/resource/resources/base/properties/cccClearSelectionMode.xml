@@ -1,0 +1,18 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccClearSelectionMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>emptySpaceClick</DefaultValue>
+    <Description>clearSelectionMode</Description>
+    <Tooltip>Controls if and how the selection can be cleared by the user.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>252</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="EmptySpaceClick">emptySpaceClick</Value>
+    <Value display="Manual">manual</Value>
+  </Values>
+</DesignerProperty>

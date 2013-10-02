@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>legendFontSize</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Legend Font Size</Description>
+	<Tooltip>Legend Font Size</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

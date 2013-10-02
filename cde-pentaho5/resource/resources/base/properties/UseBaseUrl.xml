@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>useBaseUrl</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Use Base Url</Description>
+	<Tooltip>Use Base Url</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

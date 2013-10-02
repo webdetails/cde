@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>columns</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Columns names</Description>
+	<Tooltip>Mandatory. An array of the columns that will be displayed.</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

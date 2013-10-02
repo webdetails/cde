@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>FontSize</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Font Size</Description>
+	<Tooltip>Font size, in pixels </Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>49</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

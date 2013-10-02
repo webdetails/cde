@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLinkInsetRadius</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>5%</DefaultValue>
+    <Description>linkInsetRadius</Description>
+    <Tooltip>The length of the link line segment that is inset into a slice, in pixel units, or as a percentage.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>314</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

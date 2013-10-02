@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccMaxBarSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>100</DefaultValue>
+      <Description>V1 - Max bar size</Description>
+      <Tooltip>Max bar size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>43</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccYAxisSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>50</DefaultValue>
+      <Description>V1 - YY axis size</Description>
+      <Tooltip>YY axis area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>83</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

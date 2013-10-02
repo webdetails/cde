@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLinkLabelSize</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>15%</DefaultValue>
+    <Description>linkLabelSize</Description>
+    <Tooltip>The width of the columns reserved, on each side of the pie, for laying out the linked label marks.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>315</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

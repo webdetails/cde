@@ -1,0 +1,28 @@
+<DesignerComponent>
+	<Header>
+		<Name>Xaction Component</Name>
+		<IName>xaction</IName>
+		<Description>Xaction Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>action</Property>
+			<Property>path</Property>
+			<Property>solution</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>valueAsId</Property>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>listeners</Property>
+			<Property>htmlObject</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>tooltip</Property>
+			<Property>iframe</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

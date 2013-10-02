@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ResourceType</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Type</Description>
+	<Tooltip>Resource Type to include</Tooltip>
+	<InputType>Label</InputType>
+	<OutputType>String</OutputType>
+	<Order>19</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,21 @@
+<DesignerProperty>
+    <Header>
+        <Name>ajaxRequestType</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>json</DefaultValue>
+        <Description>Request Type</Description>
+        <Tooltip>Ajax request type</Tooltip>
+        <InputType type="valuelist" />
+        <OutputType>String</OutputType>
+        <Order>89</Order>
+        <Advanced>false</Advanced>
+        <Version>1.0</Version>
+    </Header>
+    <Values>
+        <Value display="json">json</Value>
+        <Value display="xml">xml</Value>
+        <Value display="html">html</Value>
+        <Value display="script">script</Value>
+        <Value display="text">text</Value>
+    </Values>
+</DesignerProperty>

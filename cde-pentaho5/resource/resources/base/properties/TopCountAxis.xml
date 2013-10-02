@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>topCountAxis</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>rows</DefaultValue>
+	<Description>Top Count Axis</Description>
+	<Tooltip>Top Count Axis</Tooltip>
+	<InputType>TopCountAxis</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

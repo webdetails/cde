@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccColorMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>colorMin</Description>
+    <Tooltip>The minimum color (applies to numeric domain axes).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>265</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

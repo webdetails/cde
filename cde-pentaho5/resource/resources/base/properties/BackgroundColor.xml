@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>BackgroundColor</Name>
+	<Parent>Color</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>BackgroundColor</Description>
+	<Tooltip>Element background color</Tooltip>
+	<InputType>Color</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>String</OutputType>
+	<Order>56</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBarLineOriginIsZero</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - 2nd axis origin is 0?</Description>
+      <Tooltip>Independent line scale origin is zero?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>93</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

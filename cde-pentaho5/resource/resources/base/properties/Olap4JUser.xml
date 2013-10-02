@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Olap4juser</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>User name for the underlying database</Description>
+	<Tooltip>User name</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>5</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

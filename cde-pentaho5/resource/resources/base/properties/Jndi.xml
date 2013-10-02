@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>jndi</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Jndi</Description>
+	<Tooltip>JNDI string for the desired connection</Tooltip>
+	<InputType>Jndi</InputType>
+	<OutputType>String</OutputType>
+	<Order>21</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>inputSeparator</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>&gt;</DefaultValue>
+	<Description>Input Separator</Description>
+	<Tooltip>This separator will be used between the fields</Tooltip>
+	<InputType>String</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>String</OutputType>
+	<Order>42</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

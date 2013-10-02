@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLinkMargin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>2.5%</DefaultValue>
+    <Description>linkMargin</Description>
+    <Tooltip>The width of the space that separates the label from the end of the line segment that starts in the link elbow, in pixel units, or as a percentage.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>317</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

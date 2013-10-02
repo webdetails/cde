@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Output</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Output Options</Description>
+	<Tooltip>Output options for this data access</Tooltip>
+	<InputType>IndexArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

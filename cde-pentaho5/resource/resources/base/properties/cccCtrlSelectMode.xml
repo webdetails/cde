@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccCtrlSelectMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>ctrlSelectMode</Description>
+    <Tooltip>When true, indicates that a selection made by the user replaces the current selection, if any.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>278</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccXAxisSize</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>30</DefaultValue>
+      <Description>V1 - XX axis size</Description>
+      <Tooltip>XX axis area size</Tooltip>
+      <InputType>Integer</InputType>
+      <OutputType>Number</OutputType>
+      <Order>82</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

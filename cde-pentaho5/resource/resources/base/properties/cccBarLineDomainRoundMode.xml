@@ -1,0 +1,19 @@
+<DesignerProperty>
+    <Header>
+        <Name>cccBarLineDomainRoundMode</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>none</DefaultValue>
+        <Description>V1 - 2nd axis domain rounding mode</Description>
+        <Tooltip>Rounding mode for domain values of the 2nd axis</Tooltip>
+        <InputType type="valuelist" />
+        <OutputType>String</OutputType>
+        <Order>89</Order>
+        <Advanced>true</Advanced>
+        <Version>1.0</Version>
+    </Header>
+    <Values>
+        <Value display="None">none</Value>
+        <Value display="Nice">nice</Value>
+        <Value display="Tick">tick</Value>
+    </Values>
+</DesignerProperty>

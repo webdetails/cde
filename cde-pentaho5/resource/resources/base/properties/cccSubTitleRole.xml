@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSubTitleRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>subTitleRole</Description>
+    <Tooltip>The subTitle visual role represents the sub-title of each bullet.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>443</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

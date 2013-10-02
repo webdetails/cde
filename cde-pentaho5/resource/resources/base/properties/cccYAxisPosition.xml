@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccYAxisPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>left</DefaultValue>
+      <Description>V1 - Y axis position</Description>
+      <Tooltip>Y axis position</Tooltip>
+      <InputType>LeftRight</InputType>
+      <OutputType>String</OutputType>
+      <Order>53</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

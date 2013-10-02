@@ -1,0 +1,48 @@
+<DesignerComponent>
+	<Header>
+		<Name>Dial Chart Component</Name>
+		<IName>Dial</IName>
+		<Description>Dial Chart Component</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Definition name="chartDefinition">
+				<Property>jFreeChartDataSource</Property>
+				<Property name="title">title</Property>
+				<Property name="subtitle">subtitle</Property>
+				<Property name="width">width</Property>
+				<Property name="height">height</Property>
+				<Property name="rangeTitle">rangeTitle</Property>
+				<Property name="byRow">byRow</Property>
+				<Property name="useBaseUrl">useBaseUrl</Property>
+				<Property name="urlTarget">urlTarget</Property>
+				<Property name="urlTemplate">urlTemplate</Property>
+				<Property name="parameterName">parameterName</Property>
+				<Property name="backgroundColor">backgroundColor</Property>
+				<Property name="plotbgcolor">plotbgcolor</Property>
+				<Property name="foregroundAlpha">foregroundAlpha</Property>
+				<Property name="backgroundAlpha">backgroundAlpha</Property>
+				<Property name="orientation">orientation</Property>
+				<Property name="colors">colors</Property>
+				<Property name="intervals">intervals</Property>
+				<Property name="caption">caption</Property>
+				<Property name="legendFontFamily">legendFontFamily</Property>
+				<Property name="legendFontSize">legendFontSize</Property>
+				<Property name="legendFontIsBold">legendFontIsBold</Property>
+				<Property name="legendFontIsItalic">legendFontIsItalic</Property>
+			</Definition>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

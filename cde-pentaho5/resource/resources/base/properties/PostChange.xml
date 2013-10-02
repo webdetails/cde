@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>postChange</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Post Change</Description>
+	<Tooltip>Function to be executed after the component is changed. It's a function of the type function(value){...}</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>95</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

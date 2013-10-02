@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>drawCallback</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Draw Function</Description>
+	<Tooltip>Custom function to be executed when a page table is rendered</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>42</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>parameter</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Parameter</Description>
+	<Tooltip>Parameter to prompt</Tooltip>
+	<InputType>Parameter</InputType>
+	<OutputType>String</OutputType>
+	<Order>12</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

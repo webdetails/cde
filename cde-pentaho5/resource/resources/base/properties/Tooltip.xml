@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>tooltip</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Tooltip</Description>
+	<Tooltip>Tooltip to be displayed on component's mouse hover</Tooltip>
+	<InputType>Html</InputType>
+	<OutputType>String</OutputType>
+	<Advanced>true</Advanced>
+	<Order>99</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

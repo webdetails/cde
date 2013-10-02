@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTrendValuesVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>trendValuesVisible</Description>
+    <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>478</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

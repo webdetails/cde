@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisTitleFont</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>12px sans-serif</DefaultValue>
+    <Description>baseAxisTitleFont</Description>
+    <Tooltip>The font of the panel.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>231</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

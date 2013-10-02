@@ -63,6 +63,7 @@
                         </fileset>
 				  </classpath>
 				  <src path="${src.dir}" />
+                  <src path="../cde-pentaho-base/src" />
 			  </javac>
 		  </target>
 

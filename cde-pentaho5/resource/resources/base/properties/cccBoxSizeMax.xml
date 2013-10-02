@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBoxSizeMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>boxSizeMax</Description>
+    <Tooltip>The maximum width of a box plot bar, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>240</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

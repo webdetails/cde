@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+        <title>SampleWidget</title>
+        <author></author>
+        <description></description>
+        <icon/>
+		<style>Clean</style>
+<rendererType>blueprint</rendererType><widget>true</widget><widgetParameters>year</widgetParameters></cdf>

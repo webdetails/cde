@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccMaxColor</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>darkgreen</DefaultValue>
+      <Description>V1 - color (max)</Description>
+      <Tooltip>Color used for the maximal value of the scale</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>91</Order>
+      <Advanced>true</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

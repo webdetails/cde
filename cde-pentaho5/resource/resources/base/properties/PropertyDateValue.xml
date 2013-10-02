@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>PropertyDateValue</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Property date value</Description>
+	<Tooltip>Property date value</Tooltip>
+	<InputType>Date</InputType>
+	<OutputType>String</OutputType>
+	<Order>20</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

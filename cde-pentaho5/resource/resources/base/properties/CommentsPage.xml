@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>CommentsPage</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Comments Page</Description>
+	<Tooltip>Comments Page</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>55</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

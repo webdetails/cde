@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>sqlquery</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Sql Query</Description>
+	<Tooltip>Sql Query to be executed in the selected datasource</Tooltip>
+	<InputType>SqlQuery</InputType>
+	<OutputType>String</OutputType>
+	<Order>25</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

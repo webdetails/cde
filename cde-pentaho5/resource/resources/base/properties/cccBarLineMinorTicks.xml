@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBarLineMinorTicks</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - Show 2nd axis minor ticks</Description>
+      <Tooltip>Show 2nd axis minor ticks?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>95</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

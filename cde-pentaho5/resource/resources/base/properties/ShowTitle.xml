@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>showTitle</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"true"</DefaultValue>
+	<Description>Show Tile</Description>
+	<Tooltip>If true, show item titles for this carousel.</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Advanced>false</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

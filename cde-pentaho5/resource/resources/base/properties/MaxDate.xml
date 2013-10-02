@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>maxDate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Maximum date to display.</Description>
+	<Tooltip>Maximum date to display in the selector</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

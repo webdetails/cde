@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccNullColor</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>#efc5ad</DefaultValue>
+      <Description>V1 - color (missing-value)</Description>
+      <Tooltip>Color used for missing values (value = null).</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>92</Order>
+      <Advanced>true</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

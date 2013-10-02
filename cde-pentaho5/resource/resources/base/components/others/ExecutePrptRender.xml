@@ -1,0 +1,30 @@
+<DesignerComponent>
+	<Header>
+		<Name>Execute Prpt Component</Name>
+		<IName>executePrpt</IName>
+		<Description>Execute Prpt Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>label</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>solution</Property>
+			<Property>path</Property>
+			<Property>action</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>showParameters</Property>
+			<Property>paginate</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

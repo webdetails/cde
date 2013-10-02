@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>dataFile</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Data File on which to apply the XPath query</Description>
+	<Tooltip>Data File</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>mdxquery</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Mdx Query</Description>
+	<Tooltip>Mdx Query to be executed in the selected datasource</Tooltip>
+	<InputType>MdxQuery</InputType>
+	<OutputType>String</OutputType>
+	<Order>25</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

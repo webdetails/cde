@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccColors</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>colors</Description>
+      <Tooltip>The colors of a color axis.</Tooltip>
+      <InputType>Array</InputType>
+      <OutputType>Array</OutputType>
+      <Order>67</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+    </Header>
+</DesignerProperty>

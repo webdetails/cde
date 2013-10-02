@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccMultiChartIndexes</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>multiChartIndexes</Description>
+    <Tooltip>The indexes of the data source's virtual item columns that are to feed the default multiChart, multiChart2, .</Tooltip>
+    <InputType>Array</InputType>
+    <OutputType>Array</OutputType>
+    <Order>327</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

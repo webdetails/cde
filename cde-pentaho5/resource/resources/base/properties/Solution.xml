@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>solution</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Solution</Description>
+	<Tooltip>Solution where the xaction is</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>26</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

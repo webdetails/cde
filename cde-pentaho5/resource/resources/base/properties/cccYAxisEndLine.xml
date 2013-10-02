@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccYAxisEndLine</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>V1 - Show yy end line</Description>
+      <Tooltip>Show yy axis end line?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>87</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

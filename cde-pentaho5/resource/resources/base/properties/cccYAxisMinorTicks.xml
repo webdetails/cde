@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccYAxisMinorTicks</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - Show yy minor ticks</Description>
+      <Tooltip>Show yy axis minor ticks?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>94</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

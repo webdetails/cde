@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBarLineTickColor</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>blue</DefaultValue>
+      <Description>V1 - Line color</Description>
+      <Tooltip>Independent line and scale color</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>94</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccShowLegend</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - Show legend</Description>
+      <Tooltip>Show the legend?</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>71</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

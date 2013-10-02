@@ -1,0 +1,21 @@
+<DesignerProperty>
+   <Header>
+      <Name>cccBaseAxisDomainScope</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>global</DefaultValue>
+      <Description>baseAxisDomainScope</Description>
+      <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>212</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
+   <Values>
+      <Value display="Cell">cell</Value>
+      <Value display="Column">column</Value>
+      <Value display="Global">global</Value>
+      <Value display="Row">row</Value>
+      <Value display="Section">section</Value>
+   </Values>
+</DesignerProperty>

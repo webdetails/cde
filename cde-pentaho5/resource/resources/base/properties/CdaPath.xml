@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cdaPath</Name>
+    <OutputName>path</OutputName>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>Path</Description>
+    <Tooltip>CDA Path</Tooltip>
+    <InputType>CdaPath</InputType>
+    <OutputType>String</OutputType>
+    <Order>27</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>

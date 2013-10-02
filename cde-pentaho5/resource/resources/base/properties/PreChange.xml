@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>preChange</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Pre Change</Description>
+	<Tooltip>Function to be executed before the component is changed. It's a function of the type function(value){return value}, and can be used for validation</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>JavaScript</InputType>
+	<OutputType>Function</OutputType>
+	<Order>94</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

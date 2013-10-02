@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccNormPerBaseCategory</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"true"</DefaultValue>
+      <Description>V1 - Norm. per BC</Description>
+      <Tooltip>Normalize per base-axis category (true/false). If set to false the scaling is based on the full matrix (not per column/category)</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>90</Order>
+      <Advanced>true</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

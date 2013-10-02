@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccLinkLabelSpacingMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.5</DefaultValue>
+    <Description>linkLabelSpacingMin</Description>
+    <Tooltip>The minimum vertical space between consecutive link labels, in em units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>316</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>dots</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Shows dos</Description>
+	<Tooltip>If true, Shows a dot for the values.</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

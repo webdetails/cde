@@ -1,0 +1,56 @@
+<html>
+<head>
+<!-- Generico -->
+<script src="../pentaho-cdf/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/jquery.ui.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/jquery.blockUI.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/Base.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/Dashboards.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/CoreComponents.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"  type="text/javascript" language="javascript"></script>
+</head>
+
+<body>
+
+    <div id='render_table'></div>
+
+<script>
+var component = {
+   name: "myExportPopupComponent",
+	type: "ExportPopupComponent",
+    title: "Export",
+    gravity: "SW",
+    dataExportComponent: 'table',
+    dataAttachmentName: 'attach',
+    dataExportType: 'csv',
+    dataExportLabel: '',
+    contentLinks: [
+            ['Export Table', function() {alert('A');}], 
+            ['Export Graph', function() {alert('B');}]
+            ],
+	htmlObject: "testComponent"
+};
+$(function(){
+	Dashboards.log("Starting test ExportPopupComponent");
+	Dashboards.init([component]);
+	Dashboards.update(component);
+});
+
+</script>
+
+<div class="container">
+	<div id="firstRow" class="clearfix" style="width:75%">
+		<div class="ExportPopupComponentstyle" id="testComponent">
+        <ul><li>Teste 1 </li><li>Teste 2 </li>
+		</div>
+	</div>
+    
+
+    
+</div>
+
+
+<div class='cdf_error'></div>
+
+</body>
+</html>

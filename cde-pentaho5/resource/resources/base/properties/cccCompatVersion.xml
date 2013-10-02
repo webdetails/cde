@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccCompatVersion</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>2</DefaultValue>
+    <Description>compatVersion</Description>
+    <Tooltip>The CCC version that the chart should run in.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>274</Order>
+    <Advanced>false</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

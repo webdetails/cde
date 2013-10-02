@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnAppend</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Append size</Description>
+	<Tooltip>Append size - optional</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>33</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

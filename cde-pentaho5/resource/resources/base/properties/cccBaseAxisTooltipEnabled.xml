@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisTooltipEnabled</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>true</DefaultValue>
+    <Description>baseAxisTooltipEnabled</Description>
+    <Tooltip>Indicates if the axis' labels show tooltips.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>236</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

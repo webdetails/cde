@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccGroupedLabelSep</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue> ~ </DefaultValue>
+    <Description>groupedLabelSep</Description>
+    <Tooltip>The separator used to join the labels of the values of a multi-dimensional visual role.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>289</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

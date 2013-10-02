@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>includeLegend</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Include Legend</Description>
+	<Tooltip>Include Legend. </Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>30</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

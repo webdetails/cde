@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccXRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>xRole</Description>
+    <Tooltip>The x visual role controls the base position of the "point" visual element.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>490</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

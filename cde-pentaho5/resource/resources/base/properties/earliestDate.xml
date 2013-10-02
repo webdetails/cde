@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>earliestDate</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>-1years</DefaultValue>
+	<Description>Earliest Date</Description>
+	<Tooltip>DateRangeInput earliest date</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>30</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

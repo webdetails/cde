@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>Url</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>URL</Description>
+	<Tooltip>URL for the element</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>11</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

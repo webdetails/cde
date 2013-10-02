@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccCategoryRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>categoryRole</Description>
+    <Tooltip>The category visual role.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>251</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

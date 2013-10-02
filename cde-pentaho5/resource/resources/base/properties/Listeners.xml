@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>listeners</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Listeners</Description>
+	<Tooltip>Parameters to listen to</Tooltip>
+	<InputType>Listeners</InputType>
+	<OutputType>Array</OutputType>
+	<Order>13</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

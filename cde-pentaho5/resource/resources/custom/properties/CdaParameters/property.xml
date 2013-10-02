@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>cdaParams</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>CDA Parameters</Description>
+	<Tooltip>Parameters to be sent to the CDA request</Tooltip>
+	<InputType>ValuesArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>28</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

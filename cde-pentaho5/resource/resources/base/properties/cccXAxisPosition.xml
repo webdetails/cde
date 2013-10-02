@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccXAxisPosition</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>bottom</DefaultValue>
+      <Description>V1 - X axis position</Description>
+      <Tooltip>X axis position</Tooltip>
+      <InputType>TopBottom</InputType>
+      <OutputType>String</OutputType>
+      <Order>52</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

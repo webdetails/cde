@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>ColumnBorder</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Right border</Description>
+	<Tooltip>Generates a border between the columns</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>36</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

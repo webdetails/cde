@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccExplodedSliceIndex</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>explodedSliceIndex</Description>
+    <Tooltip>The index of the exploded slice, or null, for all slices to be exploded.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>287</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

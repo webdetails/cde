@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccBarLine</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>V1 - Bar line</Description>
+      <Tooltip>Bar line</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>90</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>

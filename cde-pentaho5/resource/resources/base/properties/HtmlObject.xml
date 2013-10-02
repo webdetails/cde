@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>htmlObject</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>HtmlObject</Description>
+	<Tooltip>HtmlObject to prompt</Tooltip>
+	<InputType>HtmlObject</InputType>
+	<OutputType>String</OutputType>
+	<Order>90</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

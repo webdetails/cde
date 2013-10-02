@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>maxResults</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Results limit</Description>
+	<Tooltip>Maximum number of results to display.</Tooltip>
+	<InputType>Integer</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Number</OutputType>
+	<Order>41</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

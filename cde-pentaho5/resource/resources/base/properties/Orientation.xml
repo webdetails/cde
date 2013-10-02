@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>orientation</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>vertical</DefaultValue>
+	<Description>Orientation</Description>
+	<Tooltip>Orientation</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>Orientation</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

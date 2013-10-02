@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>tableStyle</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>themeroller</DefaultValue>
+	<Description>Style</Description>
+	<Tooltip>Table style</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>TableStyle</InputType>
+	<OutputType>String</OutputType>
+	<Order>56</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

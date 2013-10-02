@@ -1,0 +1,42 @@
+<DesignerComponent>
+	<Header>
+		<Name>Related Content Component</Name>
+		<IName>relatedContent</IName>
+		<Description>Related Content Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Other components</CatDescription>
+		<Type>PalleteEntry</Type>
+		<Version>1.0</Version>
+	</Header>
+	<Contents>
+		<Model>
+			<Property type="string">htmlObject</Property>
+			<Property>relatedContent</Property>
+			<Property type="boolean">executeAtStart</Property>
+<!--			<Property type="function">preChange</Property>
+			<Property type="function">postChange</Property>
+			<Property type="function">preExecution</Property>
+			<Property type="function">postExecution</Property>
+			<Property type="number">tooltip</Property>
+			<Property type="number">listeners</Property>-->
+		</Model>
+		<Implementation>
+			<Code src="related-content-implementation.js" />
+			<CustomProperties>
+				<DesignerProperty>
+					<Header>
+						<Name>relatedContent</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue>"[]"</DefaultValue>
+						<Description>Related Content</Description>
+						<Tooltip>Related Content (name, link)</Tooltip>
+						<InputType>ValuesArray</InputType>
+						<OutputType>Array</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>
+				</DesignerProperty>
+			</CustomProperties>
+		</Implementation>
+	</Contents>
+</DesignerComponent>

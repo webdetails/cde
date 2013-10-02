@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTotalLineLabel</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>Accumulated</DefaultValue>
+    <Description>totalLineLabel</Description>
+    <Tooltip>The description of the legend item of the water line.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>464</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

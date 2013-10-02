@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>sortBy</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Sort by</Description>
+	<Tooltip>Choose the columns where the sorting will default. Example: [[0,asc],[1,desc]]</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>SortByArray</InputType>
+	<OutputType>Array</OutputType>
+	<Order>43</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

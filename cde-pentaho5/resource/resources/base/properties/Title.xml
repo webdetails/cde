@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>title</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Title</Description>
+	<Tooltip>Title</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+   <Header>
+      <Name>cccBaseAxisTitleMargins</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>0</DefaultValue>
+      <Description>baseAxisTitleMargins</Description>
+      <Tooltip>The margins of the panel.</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>232</Order>
+      <Advanced>true</Advanced>
+      <Version>2.0</Version>
+   </Header>
+</DesignerProperty>
