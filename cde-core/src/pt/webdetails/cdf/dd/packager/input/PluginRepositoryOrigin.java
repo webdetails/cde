@@ -23,11 +23,11 @@ public class PluginRepositoryOrigin extends PathOrigin {
 
   @Override
   public String getUrl(String localPath) {
-    return RepositoryHelper.joinPaths( getRepositoryBaseUrlPath(), basePath, localPath);
+    return RepositoryHelper.joinPaths(getRepositoryBaseUrlPath(), CdeEngine.getEnv().getPluginRepositoryDir(), basePath, localPath);
   }
 
   protected String getRepositoryBaseUrlPath() {
     //TODO: cpf-friendly
-    return CdeEngine.getEnv().getApplicationBaseContentUrl();
+    return CdeEngine.getEnv().getRepositoryBaseContentUrl();
   }
 }

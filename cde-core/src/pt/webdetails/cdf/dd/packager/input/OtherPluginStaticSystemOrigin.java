@@ -32,8 +32,8 @@ public class OtherPluginStaticSystemOrigin extends PathOrigin {
     // ex.: 
     // pluginId=cdc
     // basePath=static, localPath=css/some.css
-    // url-> "<host>/pentaho/content/pentaho-cdf-dd/" + "../cdc/static/css/some.css"<- prepend
-    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getApplicationBaseContentUrl() , "..", pluginId, basePath, localPath );
+    // url-> "/pentaho/content/<pluginId>/..."
+    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getApplicationBaseUrl() , "content", pluginId, basePath, localPath );
   }
 
   @Override
@@ -55,5 +55,9 @@ public class OtherPluginStaticSystemOrigin extends PathOrigin {
       hash *= 73;
       hash += pluginId.hashCode();
       return hash;
+    }
+
+    public String toString() {
+      return getClass().getSimpleName() + ":" + pluginId + ":" + basePath;
     }
 }

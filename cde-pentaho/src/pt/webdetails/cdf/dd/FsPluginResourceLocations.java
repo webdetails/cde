@@ -20,7 +20,6 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer.PluginPair;
-import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
 /**
  * @author dcleao
@@ -69,8 +68,11 @@ public final class FsPluginResourceLocations
 
   private PathOrigin inferPathOriginFromLegacyLocation(Plugin plugin, String path) {
     //FIXME need extra method! and don't always assume system
-    path = StringUtils.removeStart( path, "system" );
-    return new OtherPluginStaticSystemOrigin(plugin.getId(), RepositoryHelper.appendPath("../..", path));
+    if (path.startsWith( "system" )) {
+      path = StringUtils.removeStart( path, "system/" );
+      path = path.substring( path.indexOf( "/" ) );
+    }
+    return new OtherPluginStaticSystemOrigin(plugin.getId(), path);
   }
 
 }

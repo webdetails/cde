@@ -59,7 +59,8 @@ public final class MetaModelManager
     logger.info("CDE Starting Load MetaModelManager");
     
     this.model = readModel();
-    
+    this.createDependencyManager( model );
+
     logger.info("CDE Finished Load MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
   }
   

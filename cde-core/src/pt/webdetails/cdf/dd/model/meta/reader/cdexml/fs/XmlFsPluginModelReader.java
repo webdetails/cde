@@ -193,12 +193,14 @@ public final class XmlFsPluginModelReader {
   }
   
   private void readCustomComponentsLocation(MetaModel.Builder model, XmlFsPluginThingReaderFactory factory, PathOrigin origin) throws ThingReadException {
+      logger.info( "reading custom components from " + origin );
+
       GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, DEFINITION_FILE_EXT);
       IReadAccess access = origin.getReader(contentAccessFactory);
       List<IBasicFile> filesList = access.listFiles (null, filter, IReadAccess.DEPTH_ALL);
   
       if (filesList != null) {
-        logger.debug(String.format("%s sub-folders found", filesList.size()));
+        logger.debug(String.format("%d sub-folders found", filesList.size()));
         
         IBasicFile[] filesArray = filesList.toArray(new IBasicFile[]{});
         
@@ -298,7 +300,7 @@ public final class XmlFsPluginModelReader {
     }
 
     ComponentType.Builder comp = reader.read(componentElem, origin, sourcePath);
-    comp.setOrigin(origin);//TODO: in reader?
+    comp.setOrigin(origin);
     model.addComponent(comp);
   }
 

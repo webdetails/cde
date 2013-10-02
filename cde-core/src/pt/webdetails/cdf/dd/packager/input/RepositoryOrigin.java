@@ -25,11 +25,10 @@ public class RepositoryOrigin extends PathOrigin {
   }
 
   @Override
-  public String getUrl(String localPath) {
-    // XXX hcoded!
-    // want it resolving to: <host>/pentaho/content/pentaho-cdf-dd/res/<basePath>/<localPath>
-    return RepositoryHelper.joinPaths(CdeEngine.getEnv().getRepositoryBaseContentUrl(), basePath, localPath);
-    //throw new NotImplementedException();
+  public String getUrl( String localPath ) {
+    // TODO: cpf-friendly
+    // want it resolving to: /pentaho/content/pentaho-cdf-dd/res/<basePath>/<localPath>
+    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getRepositoryBaseContentUrl(), basePath, localPath );
   }
 
 }

@@ -55,9 +55,7 @@ public class CssMinifiedDependency extends PackagedFileDependency {
 
         String contents = Util.toString( dep.getFileInputStream() );
         //strip filename from url
-        String originalUrlPath = FilenameUtils.getPath(dep.getUrlFilePath());
-//        //TODO: if we use full paths we don't need to relativize
-//        String pathChange = RepositoryHelper.relativizePath( outputFolderUrlPath, originalUrlPath, true );
+        String originalUrlPath = FilenameUtils.getFullPath(dep.getUrlFilePath());
         contents = replacer.processContents( contents, originalUrlPath );
         return Util.toInputStream( contents );
       } catch ( IOException e ) {
