@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.util.regex.*;
 
+import org.apache.commons.io.IOUtils;
+
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
@@ -55,13 +57,18 @@ public class CSSMin
 
   public static void formatFile(String filePath, PrintStream out)
   {
+    InputStream in = null;
     try
     {
-      formatFile(CdeEnvironment.getPluginSystemReader().getFileInputStream(filePath), out);
+      in = CdeEnvironment.getPluginSystemReader().getFileInputStream(filePath);
+      formatFile(in, out);
     }
     catch (Exception e)
     {
       System.out.println(e.getMessage());
+    }
+    finally {
+      IOUtils.closeQuietly( in );
     }
   }
 

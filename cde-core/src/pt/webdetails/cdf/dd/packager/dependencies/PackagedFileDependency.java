@@ -28,9 +28,16 @@ public abstract class PackagedFileDependency extends FileDependency {
   @Override
   public synchronized InputStream getFileInputStream() throws IOException {
     if ( !isSaved ) {
-      writer.saveFile( filePath, minifyPackage(inputFiles));//TODO: check save
-      inputFiles = null;
+      isSaved = writer.saveFile( filePath, minifyPackage(inputFiles));
+      if ( !isSaved ) {
+        throw new IOException("Unable to save file " + filePath);
+      }
+      else {
+        //release refs
+        inputFiles = null;
+      }
     }
+
     return super.getFileInputStream();
   }
 

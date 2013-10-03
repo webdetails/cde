@@ -70,7 +70,7 @@ public class FileDependency extends Dependency {
 
   @Override
   public String getContents() throws IOException {
-    return Util.toString( origin.getReader( getContentFactory() ).getFileInputStream( filePath ) );
+    return Util.toString( getFileInputStream() );
   }
 
   public String getUrlFilePath() {

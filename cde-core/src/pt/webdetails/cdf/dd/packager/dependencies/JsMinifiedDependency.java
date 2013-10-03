@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,8 +51,9 @@ public class JsMinifiedDependency extends PackagedFileDependency {
     @Override
     public InputStream nextElement() {
       FileDependency dep = deps.next();
+      InputStream input = null;
       try {
-        InputStream input = dep.getFileInputStream();
+        input = dep.getFileInputStream();
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
         JSMin jsMin = new JSMin( input, bytesOut );
         jsMin.jsmin();
@@ -60,6 +62,9 @@ public class JsMinifiedDependency extends PackagedFileDependency {
         logger.error( "Error parsing javascript dependency " + dep + " at offset " + e.getErrorOffset() + ", skipping..", e );
       } catch ( IOException e ) {
         logger.error( "Error getting input stream for dependency " + dep + ", skipping..", e );
+      }
+      finally {
+        IOUtils.closeQuietly( input );
       }
       return Util.toInputStream( "" );
     }

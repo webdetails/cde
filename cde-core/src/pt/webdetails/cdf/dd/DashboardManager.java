@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -676,14 +679,20 @@ public final class DashboardManager
           DashboardWcdfDescriptor wcdf)
           throws IOException, FileNotFoundException
   {
-    final JSONObject json = (JSONObject)JsonUtils.readJsonFromInputStream(
-            CdeEnvironment.getUserContentAccess().getFileInputStream(dashboardLocation));
+    InputStream input = null;
+    try {
+      input = CdeEnvironment.getUserContentAccess().getFileInputStream(dashboardLocation);
+      final JSONObject json = (JSONObject)JsonUtils.readJsonFromInputStream(input);
 
-    if (wcdf != null)
-    {
-      json.put("settings", wcdf.toJSON());
+      if (wcdf != null)
+      {
+        json.put("settings", wcdf.toJSON());
+      }
+      
+      return JXPathContext.newContext(json);
     }
-    
-    return JXPathContext.newContext(json);
+    finally {
+      IOUtils.closeQuietly( input );
+    }
   }
 }

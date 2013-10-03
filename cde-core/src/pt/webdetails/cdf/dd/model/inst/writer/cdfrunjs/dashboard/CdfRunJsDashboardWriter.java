@@ -27,6 +27,7 @@ import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.IPluginCall;
+import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.plugin.CorePlugin;
 
 /**
@@ -78,7 +79,8 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     String footer;
     try
     {
-      footer = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.RESOURCE_FOOTER));
+      footer =
+          Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( CdeConstants.RESOURCE_FOOTER ) );
     }
     catch(IOException ex)
     {
@@ -298,14 +300,14 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     {	
     	if(CdeEnvironment.getPluginRepositoryReader().fileExists(templateFile)){
     		// template is in solution repository
-    		return IOUtils.toString(CdeEnvironment.getPluginRepositoryReader().getFileInputStream(templateFile));
+    		return Util.toString(CdeEnvironment.getPluginRepositoryReader().getFileInputStream(templateFile));
     	
     	} else if(CdeEnvironment.getPluginSystemReader().fileExists(templateFile)) {
     		// template is in system
-    		return IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(templateFile));
+    		return Util.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(templateFile));
     	} else {
     		// last chance : template is in user-defined folder
-    		return IOUtils.toString(CdeEnvironment.getUserContentAccess().getFileInputStream(templateFile));
+    		return Util.toString(CdeEnvironment.getUserContentAccess().getFileInputStream(templateFile));
     	}
     }
     catch(IOException ex)

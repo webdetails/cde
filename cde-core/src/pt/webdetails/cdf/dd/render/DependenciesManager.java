@@ -5,9 +5,11 @@
 package pt.webdetails.cdf.dd.render;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,7 +57,14 @@ public final class DependenciesManager
     //read include.properties
     Properties props = new Properties();
     try {
-      props.load( CdeEnvironment.getPluginSystemReader().getFileInputStream( INCLUDES_PROP ) );
+      InputStream in = null;
+      try {
+        in = CdeEnvironment.getPluginSystemReader().getFileInputStream( INCLUDES_PROP );
+        props.load( in );
+      } 
+      finally {
+        IOUtils.closeQuietly( in );
+      }
       PathOrigin origin = new StaticSystemOrigin("");
 
       manager.registerPackage( StdPackages.EDITOR_JS_INCLUDES, PackageType.JS );
