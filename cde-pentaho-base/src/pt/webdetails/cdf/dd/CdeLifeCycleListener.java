@@ -35,7 +35,7 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
     
     if (!access.fileExists(null)){
 
-        if(access.createFolder(pluginSolutionRepositoryDir)){
+        if(access.createFolder(null)){
         	HibernateUtil.closeSession(); //solves http://redmine.webdetails.org/issues/2094
         }else {
         	logger.error("Error while creating folder " + pluginSolutionRepositoryDir + " for cde plugin. CDE may not work as expected", null);
