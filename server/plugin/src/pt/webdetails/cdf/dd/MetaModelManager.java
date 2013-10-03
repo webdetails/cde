@@ -239,20 +239,6 @@ public final class MetaModelManager
     
     for(ComponentType compType : metaModel.getComponentTypes())
     {
-      // Implementation
-      String srcImpl = compType.getImplementationPath();
-      if (StringUtils.isNotEmpty(srcImpl))
-      {
-        try
-        {
-          cdfDeps.register(compType.getName(), compType.getVersion(), srcImpl);
-        }
-        catch (Exception e)
-        {
-          _logger.error("Failed to register dependency '" + srcImpl + "'");
-        }
-      }
-      
       // General Resources
       for(Resource res : compType.getResources())
       {
@@ -299,6 +285,20 @@ public final class MetaModelManager
               _logger.error("Failed to register dependency '" + res.getSource() + "'");
             }
           }
+        }
+      }
+      
+      // Implementation
+      String srcImpl = compType.getImplementationPath();
+      if (StringUtils.isNotEmpty(srcImpl))
+      {
+        try
+        {
+          cdfDeps.register(compType.getName(), compType.getVersion(), srcImpl);
+        }
+        catch (Exception e)
+        {
+          _logger.error("Failed to register dependency '" + srcImpl + "'");
         }
       }
     }
