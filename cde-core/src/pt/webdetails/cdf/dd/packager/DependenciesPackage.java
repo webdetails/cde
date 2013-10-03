@@ -5,12 +5,9 @@
 package pt.webdetails.cdf.dd.packager;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
-
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.dependencies.CssMinifiedDependency;
 import pt.webdetails.cdf.dd.packager.dependencies.Dependency;
 import pt.webdetails.cdf.dd.packager.dependencies.FileDependency;
@@ -58,8 +55,8 @@ public class DependenciesPackage {
    */
   public DependenciesPackage(String name, PackageType type, IContentAccessFactory factory) {
     this.name = name;
-    fileDependencies = new HashMap<String, FileDependency>();
-    rawDependencies = new HashMap<String, SnippetDependency>();
+    fileDependencies = new LinkedHashMap<String, FileDependency>();
+    rawDependencies = new LinkedHashMap<String, SnippetDependency>();
     this.type = type;
     this.factory = factory;
   }
@@ -119,9 +116,9 @@ public class DependenciesPackage {
   }
 
   /**
-   * 
+   * Get references to the dependencies.
    * @param isPackaged if to return a single compressed file
-   * @return ready to include file dependencies
+   * @return script or link tag with file references
    */
   public String getDependencies(boolean isPackaged) {
     return getDependencies( getDefaultStringFilter( type ), isPackaged );
@@ -133,6 +130,8 @@ public class DependenciesPackage {
 
   public String getUnpackagedDependencies(StringFilter format) {
     StringBuilder sb = new StringBuilder();
+    sb.append( "\n" );
+//    sb.append( "\t<!-- " + getName() + "-->\n" );
     for (Dependency dep : fileDependencies.values()) {
       sb.append( format.filter( dep.getDependencyInclude() ) );
     }
@@ -160,8 +159,6 @@ public class DependenciesPackage {
   }
 
   private static StringFilter getDefaultStringFilter(PackageType type) {
-    final String baseUrl = 
-        CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
     switch (type) {
       case CSS:
         return new StringFilter()
@@ -169,8 +166,8 @@ public class DependenciesPackage {
           public String filter(String input)
           {
             return String.format(
-              "\t\t<link href=\"%s/%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-              baseUrl, input);
+              "\t\t<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
+              input);
           }
         };
       case JS:
@@ -179,8 +176,8 @@ public class DependenciesPackage {
           public String filter(String input)
           {
             return String.format(
-              "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s/%s\"></script>\n",
-              baseUrl, input);
+              "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s\"></script>\n",
+              input);
           }
         };
       default:
