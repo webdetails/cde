@@ -11,7 +11,7 @@
     </target>
 
     <target name="build-core" >
-        <ant dir="cda-core" antfile="build.xml" target="dist" inheritAll="true"/>
+        <ant dir="cde-core" antfile="build.xml" target="dist" inheritAll="true"/>
     </target>
 
     <target name="build-and-test-core" >
@@ -32,7 +32,7 @@
     </target>
 
     <target name="install-plugin" depends="publish-local-core"> 
-        <ant dir="cda-pentaho" antfile="build.xml" target="install-plugin" inheritAll="true"/>
+        <ant dir="cde-pentaho" antfile="build.xml" target="install-plugin" inheritAll="true"/>
     </target>
 
 </project>
