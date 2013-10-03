@@ -47,7 +47,8 @@
 
 		  <!-- Global properties -->
 		  <property name='CLIENT' value='./client' />
-		  <property file='${CLIENT}/includes.properties' />
+		  <property name='SERVER' value='.' />
+		  <property file='${SERVER}/resource/includes.properties' />
 
 		  <target name="compile.compile" depends="init" description="Performs the actual javac compile">
 			  <javac destdir="${classes.dir}"

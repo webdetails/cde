@@ -362,30 +362,7 @@ var OlapWizard = WizardManager.extend({
 			};
 			var myself = this;
 
-			$.getJSON(CDFDDServerUrl + "OlapUtils", params, function(json) {
-					if(json && json.status == "true"){
-
-						var catalogs = json.result.catalogs;
-						myself.setCatalogs(catalogs);
-
-						myself.logger.info("Got correct response from getCubes: " + catalogs);
-
-						var _selector = $("#cdfddOlapCubeSelector");
-						_selector.append(
-							'<select id="cdfddOlapCatalogSelect" class="small" onchange="WizardManager.getWizardManager(\''+ myself.wizardId +'\').catalogSelected()"><option value="-"> Select catalog </option></select><br/>');
-						_selector.append(
-							'<select id="cdfddOlapCubeSelect" class="small" onchange="WizardManager.getWizardManager(\''+ myself.wizardId +'\').cubeSelected()" ><option value="-"> Select cube </option></select>');
-
-						$.each(catalogs,function(i,catalog){
-								$("select#cdfddOlapCatalogSelect",_selector).append("<option>"+catalog.name+"</option>");
-							});
-
-					}
-					else {
-						alert(json.result);
-					}
-				});
-
+			OlapWizardRequests.olapManager(params, myself);
 		},
 
 		renderDimensions: function(){
@@ -423,59 +400,7 @@ var OlapWizard = WizardManager.extend({
 			};
 			var myself = this;
 
-			$.getJSON(CDFDDServerUrl + "OlapUtils", params, function(json) {
-					if(json.status == "true"){
-
-						myself.logger.info("Got correct response from GetCubeStructure");
-
-						var dimensions = json.result.dimensions;
-
-						var dimensionIdx = 0;
-						var dimensionTBody = $("#cdfddOlapDimensionSelector > tbody");
-						dimensionTBody.empty();
-						$.each(dimensions,function(i,dimension){
-								var hierarchies = dimension.hierarchies;
-								$.each(hierarchies,function(j,hierarchy){
-										var hierarchyId = "dimRow-"+(++dimensionIdx);
-										dimensionTBody.append("<tr id='"+ hierarchyId +"'><td>"+hierarchy.caption+"</td></tr>");
-
-										var levels = hierarchy.levels;
-										$.each(levels,function(k,level){
-												var levelId = "dimRow-"+(++dimensionIdx);
-												dimensionTBody.append("<tr id='"+ levelId +"' class='olapObject child-of-"+hierarchyId+"'><td class='draggableDimension'>"+level.caption+"</td></tr>");
-												level.hierarchy = hierarchy;level.catalog = selectedCatalog;level.cube = selectedCube;
-												myself.addOlapObject(WizardOlapObjectManager.DIMENSION,level);
-											});
-									});
-
-
-							});
-						dimensionTBody.parent().treeTable();
-						$("td.draggableDimension",dimensionTBody).draggable({helper:'clone'});
-
-						// Measures
-
-						var measures = json.result.measures;
-
-						var measureIdx = 0;
-						var measureTBody = $("#cdfddOlapMeasureSelector > tbody");
-						measureTBody.empty();
-						$.each(measures,function(i,measure){
-								var measureId = "levelRow-"+(++measureIdx);
-								measureTBody.append("<tr id='"+ measureId +"' class='olapObject'><td class='draggableMeasure'>"+measure.caption+"</td></tr>");
-								myself.addOlapObject(WizardOlapObjectManager.MEASURE,measure);
-
-							});
-						measureTBody.parent().treeTable();
-						$("td.draggableMeasure",measureTBody).draggable({helper:'clone',type: "Measure"});
-
-						myself.getAvailableFilters();
-					}
-					else {
-						alert(json.result);
-					}
-				});
-
+			OlapWizardRequests.olapCubeSelected(params, selectedCube, selectedCatalog, myself);
 		},
 		
 		getAvailableFilters: function(){

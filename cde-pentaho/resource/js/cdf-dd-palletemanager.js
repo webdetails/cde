@@ -160,7 +160,6 @@ var PalleteEntry = Base.extend({
 		id: "PALLETE_ENTRY",
 		name: "Base operation",
 		description: "Base Operation description",
-		icon: "/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/toolbar-folder-add-48x48.png",
 		category: undefined,
 		categoryDesc: undefined,
 		logger: {},

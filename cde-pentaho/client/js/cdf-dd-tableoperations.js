@@ -191,7 +191,6 @@ var BaseOperation = Base.extend({
     types: ["TYPE"],
     name: "Base operation",
     description: "Base Operation description",
-    icon: "getResource?resource=/images/toolbar-folder-add-48x48.png",
     order: 20,
     logger: {},
     hoverIcon: null, //icon to display on hover
@@ -229,9 +228,7 @@ var BaseOperation = Base.extend({
     getName: function(){return this.name},
     setName: function(name){this.name = name},
     getDescription: function(){return this.description},
-    setDescription: function(description){this.description = description},
-    getIcon: function(){return this.icon},
-    setIcon: function(icon){this.icon = icon}
+    setDescription: function(description){this.description = description}
 
 });
 
@@ -242,7 +239,6 @@ var AddRowOperation = BaseOperation.extend({
     types: ["GenericRow"],
     name: "New Row",
     description: "Adds a new row to the layout on the specific position",
-    icon: "getResource?resource=/images/NAV/addrow.png",
 
     constructor: function(){
       this.logger = new Logger("AddRowOperation");
@@ -258,9 +254,6 @@ var MoveUpOperation = BaseOperation.extend({
     types: ["GenericMoveUp"],
     name: "Move Up",
     description: "Move up",
-    icon: "getResource?resource=/images/NAV/up.png",
-    hoverIcon: "getResource?resource=/images/NAV/up_mouseover.png",
-    clickIcon: "getResource?resource=/images/NAV/up_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("MoveUpOperation");
@@ -344,9 +337,6 @@ var MoveDownOperation = BaseOperation.extend({
     types: ["GenericMoveDown"],
     name: "Move Down",
     description: "Move down",
-    icon: "getResource?resource=/images/NAV/down.png",
-    hoverIcon: "getResource?resource=/images/NAV/down_mouseover.png",
-    clickIcon: "getResource?resource=/images/NAV/down_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("MoveDownOperation");
@@ -430,9 +420,6 @@ var DeleteOperation = BaseOperation.extend({
     types: ["GenericDelete"],
     name: "Delete",
     description: "Delete",
-    icon: "getResource?resource=/images/NAV/remove.png",
-    hoverIcon: "getResource?resource=/images/NAV/remove_mouseover.png",
-    clickIcon: "getResource?resource=/images/NAV/remove_onclick.png",
 
     constructor: function(){
       this.logger = new Logger("DeleteOperation");
@@ -518,10 +505,7 @@ var ApplyTemplateOperation = BaseOperation.extend({
     id: "APPLY_TEMPLATE",
     types: ["GenericApplyTemplate"],
     name: "Apply Template",
-    description: "Applys a template.",
-    icon: "getResource?resource=/images/NAV/loadtemp.png",
-    hoverIcon: "getResource?resource=/images/NAV/loadtemp_mouseover.png",
-    clickIcon: "getResource?resource=/images/NAV/loadtemp_onclick.png",
+    description: "Applies a template.",
 
     constructor: function(){
       this.logger = new Logger("ApplyTemplateOperation");
@@ -536,10 +520,7 @@ var SaveAsTemplateOperation = BaseOperation.extend({
     id: "SAVEAS_TEMPLATE",
     types: ["GenericSaveAsTemplate"],
     name: "Save as Template",
-    description: "Save sa template.",
-    icon: "getResource?resource=/images/NAV/savetemp.png",
-    hoverIcon: "getResource?resource=/images/NAV/savetemp_mouseover.png",
-    clickIcon: "getResource?resource=/images/NAV/savetemp_onclick.png",
+    description: "Save as template.",
 
     constructor: function(){
       this.logger = new Logger("SaveAsTemplateOperation");

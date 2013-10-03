@@ -148,18 +148,10 @@ var CDFDD = Base.extend({
 
     // Load styles list
     var myself = this;
-    $.getJSON("SyncStyles", {
-      operation: "listStyles"
-    }, function(json) {
-      myself.styles = json.result;
+    
+    StylesRequests.syncStyles(myself);
 
-    });
-    $.getJSON("listRenderers", {
-      operation: "listStyles"
-    }, function(json) {
-      myself.renderers = json.result;
-
-    });
+    StylesRequests.listStyleRenderers(myself);
   },
 
   initStyles: function(callback) {
@@ -177,17 +169,9 @@ var CDFDD = Base.extend({
         file: CDFDDFileName.replace(".cdfde", ".wcdf"),
         style: wcdf.style
       };
-      $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
-        var json = eval("(" + result + ")");
-        if (json.status == "true") {
-          myself.setDashboardWcdf(wcdf);
-          callback();
-        } else {
-          $.notifyBar({
-            html: "Errors initializing settings: " + json.result
-          });
-        }
-      });
+
+      StylesRequests.initStyles(saveSettingsParams, wcdf, myself, callback);
+
     }
   },
 
@@ -201,16 +185,8 @@ var CDFDD = Base.extend({
       file: CDFDDFileName
     };
 
-    $.post(CDFDDDataUrl, loadParams, function(result) {
-      var json = eval("(" + result + ")");
-      if(json && json.status == "true"){
-        myself.setDashboardData(myself.unstrip(json.result.data));
-        myself.setDashboardWcdf(json.result.wcdf);
-        myself.init();
-      } else {
-        alert(json && json.result);
-      }
-    });
+    LoadRequests.loadDashboard(loadParams, myself);
+
   },
 
   save: function() {
@@ -230,24 +206,8 @@ var CDFDD = Base.extend({
     };
 
     if (CDFDDFileName != "/null/null/null") {
-      $.post(CDFDDDataUrl, saveParams, function(result) {
-        //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
-        var json = eval("(" + result + ")");
-        if (json.status == "true") {
-          if (stripArgs.needsReload) {
-            window.location.reload();
-          } else {
-            $.notifyBar({
-              html: "Dashboard saved successfully",
-              delay: 1000
-            });
-          }
-        } else {
-          $.notifyBar({
-            html: "Errors saving file: " + json.result
-          });
-        }
-      });
+      
+      SaveRequests.saveDashboard(saveParams, stripArgs);      
     } else {
       this.combinedSaveAs();
     }
@@ -616,20 +576,8 @@ var CDFDD = Base.extend({
               description: selectedDescription,
               cdfstructure: JSON.stringify(myself.dashboardData, null, 2) // TODO: shouldn't it strip, like save does?
             };
-            $.post(CDFDDDataUrl, saveAsParams, function(result) {
-              var json = eval("(" + result + ")");
-              if (json.status == "true") {
-                if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
-                var solutionPath = selectedFolder.split("/");
-                myself.initStyles(function() {
-                  //cdfdd.setExitNotification(false);
-                  window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                });
-              } else
-                $.notifyBar({
-                  html: "Errors saving file: " + json.result
-                });
-            });
+            
+            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
           }
         }
       }
@@ -657,14 +605,14 @@ var CDFDD = Base.extend({
 
       getVersion: function() {
 
-        var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/getVersion';
+        var versionCheckUrl = Endpoints.getStaticUrl() + '/getVersion';
         versionGetInfo = this.getInfo(versionCheckUrl);
         return versionGetInfo;
       },
 
       checkVersion: function() {
 
-        var versionCheckUrl = '/pentaho/content/pentaho-cdf-dd/checkVersion';
+        var versionCheckUrl = Endpoints.getStaticUrl() + '/checkVersion';
         var versionCheckInfo = this.getInfo(versionCheckUrl);
         var msg = '';
 
@@ -706,8 +654,8 @@ var CDFDD = Base.extend({
       }
     }
 
-    var htmlHref = "/pentaho/content/pentaho-cdf-dd/static/" + mode + ".html";
-    var cssFileRef = "/pentaho/content/pentaho-cdf-dd/css/" + mode + ".css";
+    var htmlHref = Endpoints.getStaticUrl() + "/static/" + mode + ".html";
+    var cssFileRef = Endpoints.getStaticUrl() + "/css/" + mode + ".css";
 
     $.fancybox({
       href: htmlHref,
@@ -764,21 +712,7 @@ var CDFDD = Base.extend({
 
     var _href = this.getPreviewUrl( CDFDDDataUrl, solution, path, file, style );
 
-    $.post(CDFDDDataUrl, saveParams, function(result) {
-      var json = eval("(" + result + ")");
-      if (json.status == "true") {
-        $.fancybox({
-          type: "iframe",
-          href: _href,
-          width: $(window).width(),
-          height: $(window).height()
-        });
-      } else {
-        $.notifyBar({
-          html: "Errors saving file: " + json.result
-        });
-      }
-    });
+    PreviewRequests.previewDashboard(saveParams, _href);
   },
 
   getPreviewUrl: function( CDFDDDataUrl, solution, path, file, style){
@@ -1158,21 +1092,7 @@ var CDFDD = Base.extend({
               cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 2) // TODO: shouldn't it strip, like save does?
             };
 
-            $.post(CDFDDDataUrl, saveAsParams, function(result) {
-              var json = eval("(" + result + ")");
-              if (json.status == "true") {
-                if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
-                var solutionPath = selectedFolder.split("/");
-                cdfdd.initStyles(function() {
-                  //cdfdd.setExitNotification(false);
-                  window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                });
-              } else
-                $.notifyBar({
-                  html: "Errors saving file: " + json.result
-                });
-            });
-
+            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
 
           }
           /*In case of Widgets
@@ -1216,29 +1136,7 @@ var CDFDD = Base.extend({
                 widgetName: selectedWidgetName
               };
 
-              $.post(CDFDDDataUrl, saveAsParams, function(result) {
-                var json = JSON.parse(result);
-                if (json.status == "true") {
-                  if (selectedFolder[0] == "/") {
-                    selectedFolder = selectedFolder.substring(1, selectedFolder.length);
-                  }
-                  var solutionPath = selectedFolder.split("/");
-                  var wcdf = myself.getDashboardWcdf();
-                  // TODO: dashboard is being saved twice. This also needs to be fixed..
-                  wcdf.title = saveAsParams.title;
-                  wcdf.description = saveAsParams.description;
-                  wcdf.widgetName = saveAsParams.widgetName;
-                  wcdf.widget = true;
-                  myself.saveSettingsRequest(wcdf);
-                  myself.initStyles(function() {
-                    window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                  });
-                } else {
-                  $.notifyBar({
-                    html: "Errors saving file: " + json.result
-                  });
-                }
-              });
+              SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
             }
 
           }
@@ -1325,29 +1223,7 @@ var CDFDD = Base.extend({
               widgetName: selectedWidgetName
             };
 
-            $.post(CDFDDDataUrl, saveAsParams, function(result) {
-              var json = JSON.parse(result);
-              if (json.status == "true") {
-                if (selectedFolder[0] == "/") {
-                  selectedFolder = selectedFolder.substring(1, selectedFolder.length);
-                }
-                var solutionPath = selectedFolder.split("/");
-                var wcdf = myself.getDashboardWcdf();
-                // TODO: dashboard is being saved twice. This also needs to be fixed..
-                wcdf.title = saveAsParams.title;
-                wcdf.description = saveAsParams.description;
-                wcdf.widgetName = saveAsParams.widgetName;
-                wcdf.widget = true;
-                myself.saveSettingsRequest(wcdf);
-                myself.initStyles(function() {
-                  window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                });
-              } else {
-                $.notifyBar({
-                  html: "Errors saving file: " + json.result
-                });
-              }
-            });
+            SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
           }
         }
       }
@@ -1362,26 +1238,8 @@ var CDFDD = Base.extend({
       file: CDFDDFileName.replace(".cdfde", ".wcdf")
     }, wcdf);
 
-    $.post(CDFDDDataUrl, saveSettingsParams, function(result) {
-      try {
-        var json = eval("(" + result + ")");
-        if (json.status == "true") {
-          myself.setDashboardWcdf(wcdf);
-          // We need to reload the layout engine in case the rendererType changed
-          cdfdd.layout.init();
-          $.notifyBar({
-            html: "Dashboard Settings saved successfully",
-            delay: 1000
-          });
-        } else {
-          throw json.result;
-        }
-      } catch (e) {
-        $.notifyBar({
-          html: "Errors saving settings: " + e
-        });
-      }
-    });
+    SaveRequests.saveSettings(saveSettingsParams, cdfdd, wcdf, myself);
+
   },
 
   setDashboardData: function(dashboardData) {

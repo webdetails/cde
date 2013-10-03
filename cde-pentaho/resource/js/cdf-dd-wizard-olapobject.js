@@ -110,7 +110,7 @@ var WizardDimensionObject = WizardOlapObject.extend({
 	renderLeftButton: function(selector,container){
 		var myself = this;
 		if(this.memberDepth > 0){
-			this.htmlObject.append($('<a><img class="image-left" src="getResource?resource=/images/arrow-left.png"></a>').bind('click',
+			this.htmlObject.append($('<a><img class="image-left" src="' + Endpoints.getStaticUrl() + '/images/arrow-left.png"></a>').bind('click',
 				function(){myself.getMembersArray('up',selector.val(),container);}));
 		}
 		else
@@ -120,7 +120,7 @@ var WizardDimensionObject = WizardOlapObject.extend({
 	renderRightButton: function(selector,container){
 		var myself = this;
 		if(this.memberDepth < this.olapObject.depth -1)
-			this.htmlObject.append( $('<a><img class="image-right" src="getResource?resource=/images/arrow-right.png"></a>').bind('click',
+			this.htmlObject.append( $('<a><img class="image-right" src="' + Endpoints.getStaticUrl() + '/images/arrow-right.png"></a>').bind('click',
 				function(){myself.getMembersArray('down',selector.val(),container);}));
 	},
 	
@@ -157,26 +157,7 @@ var WizardDimensionObject = WizardOlapObject.extend({
 			direction: direction
 		};
 			
-		$.getJSON(CDFDDServerUrl + "OlapUtils", params, function(json) {
-			if(json.status == "true"){
-				myself.membersArray = json.result.members;
-				
-				if(myself.membersArray.length == 0){
-					myself.membersArray = Util.clone(myself.initialMembersArray);
-					myself.member = myself.initialMember;
-				}
-				else
-					myself.member  = myself.membersArray[0].qualifiedName;
-				
-				if(direction == 'down')
-					myself.memberDepth ++;
-				else
-					myself.memberDepth --;
-					
-				myself.render(container);
-				myself.processChange();
-			}
-		});	
+		OlapWizardRequests.olapObject(params, container, myself);	
 	}
 });
 
