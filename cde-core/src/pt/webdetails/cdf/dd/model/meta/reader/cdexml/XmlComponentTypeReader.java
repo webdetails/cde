@@ -7,6 +7,8 @@ package pt.webdetails.cdf.dd.model.meta.reader.cdexml;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
@@ -20,6 +22,7 @@ import pt.webdetails.cdf.dd.util.Utils;
  */
 public abstract class XmlComponentTypeReader
 {
+  private static final Log logger = LogFactory.getLog(XmlComponentTypeReader.class);
 
   public void read(
           ComponentType.Builder builder,
@@ -30,13 +33,99 @@ public abstract class XmlComponentTypeReader
   {
     //TODO: methods instead of comments for separation
     String compDir = FilenameUtils.getFullPath(sourcePath);
+
+    String componentName = readBaseProperties( builder, elem, sourcePath );
+
+    // model stuff and header type, better names welcome here
+    readModel( builder, elem );
+
+    readResourceDependencies( builder, elem, compDir, componentName );
+
+    String srcPath = Utils.getNodeText("Contents/Implementation/Code/@src", elem);
+    if(StringUtils.isNotEmpty(srcPath))
+    {
+      builder.setImplementationPath(Utils.joinPath(compDir, srcPath));
+    }
+
+    readCustomProperties( builder, factory, elem, sourcePath );
+
+    readModelProperties( builder, elem );
+
+    List<Element> attributeElems = Utils.selectNodes(elem, "Metadata/*");
+    for (Element attributeElem : attributeElems)
+    {
+      builder.addAttribute(
+          Utils.getNodeText("@name", attributeElem),
+          Utils.getNodeText(".", attributeElem));
+    }
+  }
+
+
+  private void readModel( ComponentType.Builder builder, Element elem ) {
+    String cdeModelIgnoreText = Utils.getNodeText("Contents/Model/@ignore", elem);
+    boolean cdeModelIgnore = cdeModelIgnoreText != null && cdeModelIgnoreText.toLowerCase().equals("true");
+
+    builder.addAttribute("cdeModelIgnore", cdeModelIgnore ? "true" : "false");
     
+    String cdeModelPrefix = Utils.getNodeText("Contents/Model/@prefix", elem);
+    if(StringUtils.isNotEmpty(cdeModelPrefix))
+    {
+      builder.addAttribute("cdeModelPrefix", cdeModelPrefix);
+    }
+    
+    String cdePalleteType = Utils.getNodeText("Header/Type", elem);
+    if(StringUtils.isNotEmpty(cdeModelPrefix))
+    {
+      builder.addAttribute("cdePalleteType", cdePalleteType);
+    }
+  }
+
+
+  private void readCustomProperties( ComponentType.Builder builder, XmlFsPluginThingReaderFactory factory,
+      Element elem, String sourcePath ) {
+    List<Element> propElems = Utils.selectNodes( elem, "Contents/Implementation/CustomProperties/*" );
+    for ( Element propElem : propElems ) {
+      String className = Utils.getNodeText( "Header/Override", propElem );
+      // String propName = Utils.getNodeText("Header/Name", propElem);
+
+      if ( StringUtils.isEmpty( className ) ) {
+        className = "PropertyType";
+      }
+
+      XmlPropertyTypeReader propReader = factory.getPropertyTypeReader();
+
+      PropertyType.Builder prop = propReader.read( propElem, sourcePath );
+      builder.addProperty( prop );
+    }
+  }
+
+
+  private void readModelProperties( ComponentType.Builder builder, Element elem ) {
+    // The "//" in the XPath is to catch properties inside Defintions
+    List<Element> usedPropElems = Utils.selectNodes(elem, "Contents/Model//Property");
+    for(Element usedPropElem : usedPropElems)
+    {
+      String definitionName = null;
+      Element parentElem = usedPropElem.getParent();
+      if(parentElem != null && parentElem.getName().equals("Definition"))
+      {
+        definitionName = Utils.getNodeText("@name", parentElem);
+      }
+      
+      builder.useProperty(
+          Utils.getNodeText("@name", usedPropElem), // alias
+          Utils.getNodeText(".", usedPropElem),    // ref-name
+          definitionName);
+    }
+  }
+
+
+  private String readBaseProperties( ComponentType.Builder builder, Element elem, String sourcePath ) {
     // componentElem is <DesignerComponent>
-    String name = elem.selectSingleNode("Header/IName") != null ? elem.selectSingleNode("Header/IName").getText() : null;
-    
-    //TODO: origin here
+    String componentName =
+        elem.selectSingleNode( "Header/IName" ) != null ? elem.selectSingleNode( "Header/IName" ).getText() : null;
     builder
-      .setName(name)
+      .setName(componentName)
       .setLabel(Utils.getNodeText("Header/Name", elem))
       .setTooltip(Utils.getNodeText("Header/Description", elem))
       .setCategory(Utils.getNodeText("Header/Category", elem))
@@ -59,55 +148,33 @@ public abstract class XmlComponentTypeReader
         builder.addLegacyName(legacyName);
       }
     }
-    
-    String cdeModelIgnoreText = Utils.getNodeText("Contents/Model/@ignore", elem);
-    boolean cdeModelIgnore = cdeModelIgnoreText != null && cdeModelIgnoreText.toLowerCase().equals("true");
+    return componentName;
+  }
 
-    builder.addAttribute("cdeModelIgnore", cdeModelIgnore ? "true" : "false");
-    
-    String cdeModelPrefix = Utils.getNodeText("Contents/Model/@prefix", elem);
-    if(StringUtils.isNotEmpty(cdeModelPrefix))
-    {
-      builder.addAttribute("cdeModelPrefix", cdeModelPrefix);
-    }
-    
-    String cdePalleteType = Utils.getNodeText("Header/Type", elem);
-    if(StringUtils.isNotEmpty(cdeModelPrefix))
-    {
-      builder.addAttribute("cdePalleteType", cdePalleteType);
-    }
-    
+
+  private void readResourceDependencies( ComponentType.Builder builder, Element compElem, String compDir, String compName ) {
     @SuppressWarnings("unchecked")
-    List<Element> depElems = elem.selectNodes("Contents/Implementation/Dependencies/*");
+    List<Element> depElems = compElem.selectNodes("Contents/Implementation/Dependencies/*");
     for (Element depElem : depElems)
     {
-      builder.addResource(
-        new Resource.Builder()
-             .setType(Resource.Type.SCRIPT)
-             .setApp(Utils.getNodeText("@app", depElem))
-             .setName(Utils.getNodeText(".", depElem))
-             .setVersion(Utils.getNodeText("@version", depElem))
-             .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", depElem))));
+      Resource.Builder resourceBuilder = createResource( Resource.Type.SCRIPT, compDir, depElem, compName );
+      if ( resourceBuilder != null ) {
+        builder.addResource( resourceBuilder );
+      }
     }
 
     @SuppressWarnings("unchecked")
-    List<Element> styleElems = elem.selectNodes("Contents/Implementation/Styles/*");
+    List<Element> styleElems = compElem.selectNodes("Contents/Implementation/Styles/*");
     for (Element styleElem : styleElems)
     {
-      //TODO: style resource, needs url thingy
-//      addResource(builder, compDir, styleElem);
-      builder.addResource(createResource(Resource.Type.STYLE, compDir, styleElem));
-//      builder.addResource(
-//          new Resource.Builder()
-//               .setType(Resource.Type.STYLE)
-//               .setApp(Utils.getNodeText("@app", styleElem))
-//               .setName(Utils.getNodeText(".", styleElem))
-//               .setVersion(Utils.getNodeText("@version", styleElem))
-//               .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", styleElem))));
+      Resource.Builder resourceBuilder = createResource( Resource.Type.STYLE, compDir, styleElem, compName );
+      if ( resourceBuilder != null ) {
+        builder.addResource( resourceBuilder );
+      }
     }
-    //TODO: raw resource, may be style, does it need url thingy?
+
     @SuppressWarnings("unchecked")
-    List<Element> rawElems = elem.selectNodes("Contents/Implementation/Raw/*");
+    List<Element> rawElems = compElem.selectNodes("Contents/Implementation/Raw/*");
     for (Element rawElem : rawElems)
     {
       builder.addResource(
@@ -118,68 +185,31 @@ public abstract class XmlComponentTypeReader
              .setVersion(Utils.getNodeText("@version", rawElem))
              .setSource(Utils.getNodeText(".", rawElem)));
     }
-
-    String srcPath = Utils.getNodeText("Contents/Implementation/Code/@src", elem);
-    if(StringUtils.isNotEmpty(srcPath))
-    {
-      builder.setImplementationPath(Utils.joinPath(compDir, srcPath));
-    }
-    
-    // -----------
-
-    @SuppressWarnings("unchecked")
-    List<Element> propElems = elem.selectNodes("Contents/Implementation/CustomProperties/*");
-    for(Element propElem : propElems)
-    {
-      String className = Utils.getNodeText("Header/Override", propElem);
-//      String propName = Utils.getNodeText("Header/Name", propElem);
-      
-      if(StringUtils.isEmpty(className)) { className = "PropertyType"; }
-      
-      XmlPropertyTypeReader propReader = factory.getPropertyTypeReader();
-
-      PropertyType.Builder prop = propReader.read(propElem, sourcePath);
-      builder.addProperty(prop);
-    }
-    
-    // -----------
-    
-    // The "//" in the XPath is to catch properties inside Defintions
-    List<Element> usedPropElems = Utils.selectNodes(elem, "Contents/Model//Property");
-    for(Element usedPropElem : usedPropElems)
-    {
-      String definitionName = null;
-      Element parentElem = usedPropElem.getParent();
-      if(parentElem != null && parentElem.getName().equals("Definition"))
-      {
-        definitionName = Utils.getNodeText("@name", parentElem);
-      }
-      
-      builder.useProperty(
-          Utils.getNodeText("@name", usedPropElem), // alias
-          Utils.getNodeText(".", usedPropElem),    // ref-name
-          definitionName);
-    }
-
-    List<Element> attributeElems = Utils.selectNodes(elem, "Metadata/*");
-    for (Element attributeElem : attributeElems)
-    {
-      builder.addAttribute(
-          Utils.getNodeText("@name", attributeElem),
-          Utils.getNodeText(".", attributeElem));
-    }
   }
 
-  private Resource.Builder createResource(Resource.Type type, String compDir, Element resourceElement) {
+  private Resource.Builder createResource(
+      Resource.Type type,
+      String compDir,
+      Element resourceElement,
+      String componentName )
+  {
+    String dependencySource = Utils.getNodeText( "@src", resourceElement );
+    String name = Utils.getNodeText( ".", resourceElement );
+    if ( StringUtils.isEmpty( dependencySource ) ) {
+      logger.error( String.format( "Dependency with empty src in component '%s'. Skipping.", componentName ) );
+      return null;
+    }
+    if ( StringUtils.isEmpty( name ) ) {
+      logger.warn( String.format( "Dependency with empty name in component '%s', src='%s'.", componentName,
+          dependencySource ) );
+    }
     return
       new Resource.Builder()
            .setType(type)
            .setApp(Utils.getNodeText("@app", resourceElement))
            .setName(Utils.getNodeText(".", resourceElement))
            .setVersion(Utils.getNodeText("@version", resourceElement))
-           .setSource(Utils.joinPath(compDir, Utils.getNodeText("@src", resourceElement)));
+           .setSource(Utils.joinPath(compDir, dependencySource));
   }
-
-
 
 }
