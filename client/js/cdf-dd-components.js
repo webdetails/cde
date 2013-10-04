@@ -39,16 +39,15 @@ var ComponentsPanel = Panel.extend({
     this.componentsTable.setTitle("Components");
     this.componentsPallete.setLinkedTableManager(this.componentsTable);
 
-  // this.componentsTable.setInitialOperations([new ComponentsAddRowOperation()]);
+    // this.componentsTable.setInitialOperations([new ComponentsAddRowOperation()]);
 
     var componentsTableModel = new TableModel('componentsTreeTableModel');
     componentsTableModel.setColumnNames(['Type','Name']);
     componentsTableModel.setColumnGetExpressions([
-      function(row){
-        return row.typeDesc
-        },
-      function(row){
-        return row.properties[0].value
+        function(row) { return row.typeDesc; },
+        function(row) {
+          var props = row.properties;
+          return props.length ? props[0].value : "";
         }
       ]);
     componentsTableModel.setColumnTypes(['String','String']);
