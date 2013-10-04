@@ -31,7 +31,7 @@
 
     <!-- Global properties -->
     <property name='pentaho-base.dir' value='../cde-pentaho-base' description="Name of pentaho base dir"/>
-    <property name='core.dir' value ='../cde-core' description="Name of core dir"/>
+    <property name='core.dir' value='../cde-core' description="Name of core dir"/>
     <property name="plugin.name" value="pentaho-cdf-dd" description="Name of the plugin"/>
     <property name="resource.dir" value="resource" description="Name of the resource directory"/>
     <property name="includes.name" value="includes.properties"/>
@@ -294,21 +294,21 @@
         <for list='${core-scripts}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
+                    <entry key="scripts" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
         <for list='${pentaho-base-scripts}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
+                    <entry key="scripts" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
         <for list='${pentaho-scripts}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
+                    <entry key="scripts" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
@@ -316,21 +316,21 @@
         <for list='${core-styles}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
+                    <entry key="styles" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
         <for list='${pentaho-base-styles}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
+                    <entry key="styles" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
         <for list='${pentaho-styles}' param='filename'>
             <sequential>
                 <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
+                    <entry key="styles" operation="+" value="@{filename},"/>
                 </propertyfile>
             </sequential>
         </for>
