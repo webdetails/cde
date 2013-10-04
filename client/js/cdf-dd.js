@@ -33,6 +33,8 @@ $.editable.addInputType('autocomplete', {
   }
 });
 
+Dashboards.syncDebugLevel && Dashboards.syncDebugLevel();
+
 var CDFDD = Base.extend({
 
   logger: "",
@@ -297,6 +299,8 @@ var CDFDD = Base.extend({
       url:   true  // TODO: What's this??
     };
     
+    var debugLevel = Dashboards.debug;
+
     // Holds the user's response to keeping properties with no defintion.
     var userKeepUndefinedProps = null; // not asked yet
     var userDeletePreviousVersionProps = null; // not asked yet
@@ -310,11 +314,25 @@ var CDFDD = Base.extend({
       
       // Each COMPONENT
       $.each(section.rows, function(j, comp) {
+        var isSpecial = comp.type === 'Label' || comp.type === 'Group';
         var compModel = BaseModel.getModel(comp.type);
-        if(!compModel) {
-          me.logger.warn("  strip undefined component type '" + comp.type + "'");
-        }
-        
+        var isUndefinedModel = !compModel || compModel.isUndefined;
+        var hasUndefinedProps;
+        var hasLoggedComp;
+        var logComponent = function(debugLevel) {
+          if(!hasLoggedComp && debugLevel >= 2) {
+            if(!isSpecial && compModel.isUndefined) {
+              hasLoggedComp = true;
+              me.logger.warn("    save/strip - component " + me.describeComponent(comp) + " is of undefined type.");
+            } else if(debugLevel >= 3) {
+              hasLoggedComp = true;
+              me.logger.info("    save/strip - component " + me.describeComponent(comp) + ".");
+            }
+          }
+        };
+
+        logComponent(debugLevel);
+
         var ps = comp.properties;
         var L;
         if(ps && (L = ps.length)) {
@@ -329,8 +347,20 @@ var CDFDD = Base.extend({
             // Had already said that he wants to keep undefineds?
             var keepProp = (userKeepUndefinedProps === true);
             if(!keepProp) {
-              keepProp = name === 'Group' || // Special property; has no definition, but is saved anyway
-                         !!(compModel && compModel.getPropertyUsage(name));
+              // Special property; has no definition, but is saved anyway
+              var isSpecialProp = (name === 'Group');
+              var isDefinedProp = isSpecialProp || !!compModel.getPropertyUsage(name);
+              if(!isDefinedProp) {
+                hasUndefinedProps = true;
+              }
+
+              // Don't remove properties of unknown/undefined component types
+              keepProp = isDefinedProp || isUndefinedModel;
+
+              if(!keepProp && debugLevel >= 2) {
+                logComponent(Infinity);
+                me.logger.warn("      save/strip - found property of undefined type '" + name + "'.");
+              }
 
               if(!keepProp && userKeepUndefinedProps == null) {
                 // Didn't ask the user yet.
@@ -387,6 +417,13 @@ var CDFDD = Base.extend({
            }
           }
         }
+
+        if(!isSpecial && (isUndefinedModel || hasUndefinedProps)) {
+          // Remove added "?? ", in load/unstrip.
+          if(comp.typeDesc && comp.typeDesc.charAt(0) === "?") {
+            comp.typeDesc = comp.typeDesc.substr(3);
+          }
+        }
       });
     });
 
@@ -416,52 +453,51 @@ var CDFDD = Base.extend({
   unstrip: function(original) {
     var me = this;
     var beefed = Util.clone(original);
+    var debugLevel = Dashboards.debug;
     
     $.each(beefed, function(i, section) {
       if(typeof section !== "object") { return; }
       
-      me.logger.debug("  unstrip: " + i + ", " + section);
+      if(debugLevel >= 3) { me.logger.info("  load/unstrip - " + i); }
       
       $.each(section.rows, function(j, comp) {
         
-        me.logger.debug("  unstrip component of type '" + comp.type + "' property count: " + comp.properties.length);
-        
-        var compModel = BaseModel.getModel(comp.type);
-        if(!compModel && comp.type !== 'Label') {
-          me.logger.warn("  unstrip undefined component type '" + comp.type + "'");
-        }
+        var isSpecial = comp.type === 'Label';
+        var compModel = BaseModel.getModel(comp.type, /*createIfUndefined*/true);
+        var hasUndefinedProps;
+        var hasLoggedComp;
+        var logComponent = function(debugLevel) {
+          if(!hasLoggedComp && debugLevel >= 2) {
+            if(!isSpecial && compModel.isUndefined) {
+              hasLoggedComp = true;
+              me.logger.warn("    load/unstrip - component " + me.describeComponent(comp) + " is of undefined type, and has " + comp.properties.length + " properties.");
+            } else if(debugLevel >= 3) {
+              hasLoggedComp = true;
+              me.logger.info("    load/unstrip - component " + me.describeComponent(comp) +  " has " + comp.properties.length + " properties.");
+            }
+          }
+        };
+
+        logComponent(debugLevel);
         
         $.each(comp.properties, function(idx, prop) {
           try {
             var propName  = prop.name;
-            var propUsage = compModel && compModel.getPropertyUsage(propName);
-            var propType  = propUsage && propUsage.type;
-            
-            var propStub;
-            if(!propType) {
-              var isSpecial = propName === 'Group'; // Group is special
-              if(!isSpecial) {
-                me.logger.warn("unstrip undefined property type '" + propName + "'");
-                
-                // Add a ? to the description, so that the user can 
-                // realize that something is wrong.
-                propStub = {
-                  description: "? " + propName,
-                  tooltip:     "Property '" + propName + "' is not defined.",
-                  classType:   'advanced'
-                };
-              } else {
-                propStub = {
-                  description: propName,
-                  tooltip:     propName
-                };
+            var stubAndUsage = compModel.getPropertyStubAndUsage(propName);
+            var propStub  = stubAndUsage[0];
+            var propUsage = stubAndUsage[1];
+            if(!propUsage) {
+              if(propName !== "Group") {
+                hasUndefinedProps = true;
+                if(debugLevel >= 2) {
+                  logComponent(Infinity);
+                  me.logger.warn("      load/unstrip - found property of undefined type '" + propName + "'.");
+                }
               }
-            } else {
-              propStub = propType.stub;
+              } else {
+              // Normalize name -> alias
+              prop.name = propUsage.alias;
             }
-            
-            // Normalize name -> alias
-            if(propUsage) { prop.name = propUsage.alias; }
             
             // Add own attributes of Stub to property, 
             // if it doesn't have them already.
@@ -480,6 +516,11 @@ var CDFDD = Base.extend({
             Dashboards.log(prop.name + ": " + e);
           }
         });
+        
+        if(!isSpecial && (compModel.isUndefined || hasUndefinedProps)) {
+          // This is removed later upon save, in strip.
+          comp.typeDesc = (compModel.isUndefined ? "?? " : "?  ") + comp.typeDesc;
+        }
       });
     });
     
@@ -519,6 +560,16 @@ var CDFDD = Base.extend({
     }
   },
 
+  getComponentName: function(comp) {
+    var name = CDFDDUtils.getProperty(comp, 'name');
+    return name ? name.value : '';
+  },
+
+  describeComponent: function(comp) {
+    var name = this.getComponentName(comp);
+    return (name ? (name + " ") : "") + "[" + comp.type + "]";
+  },
+  
   toggleHelp: function() {
     $("#keyboard_shortcuts_help").toggle();
   },

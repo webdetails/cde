@@ -377,13 +377,13 @@ var TableManager = Base.extend({
   },
 
   extendProperties: function(row, stub){
-    // 1 - get names on original
-    // 2 - get names on stub
-    // 3 - add to the original the ones not on the second
+    // 1 - get names in `row`
+    // 2 - get names in `stub`
+    // 3 - add to `row` new ones from `stub`
     var pRow = {};
-    var rowProps = row.properties;
+    var rowProps = row.properties || (row.properties = []);
 
-    // Index names of property already on the row
+    // Index names of properties already in `row`
     $.each(rowProps, function(i,p){
       pRow[p.name] = p;
     });
