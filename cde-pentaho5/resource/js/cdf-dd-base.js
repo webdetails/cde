@@ -1,7 +1,7 @@
 var Endpoints = {
 
-    staticUrl: "/pentaho/content/pentaho-cdf-dd",
-    pluginUrl: "/pentaho/content/pentaho-cdf-dd",
+    staticUrl: "/pentaho/api/plugins/pentaho-cdf/files/",
+    pluginUrl: "/pentaho/plugin/pentaho-cdf/api/",
     cssResourceUrl: "/getCssResource?resource=",
     imageResourceUrl: "/getResource?resource=",
     jsResourceUrl: "/getJsResource?resource=",
