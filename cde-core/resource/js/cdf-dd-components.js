@@ -170,9 +170,6 @@ var ComponentsDuplicateOperation = BaseOperation.extend({
 		types: ["Components"],
 		name: "Duplicate component",
 		description: "Insert a clone of this component",
-		icon: "getResource?resource=/images/NAV/addcomponent.png",
-		hoverIcon: "getResource?resource=/images/NAV/addcomponent_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/addcomponent_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("ComponentsDuplicateOperation");

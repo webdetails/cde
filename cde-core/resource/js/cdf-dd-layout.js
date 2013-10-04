@@ -166,10 +166,6 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 		types: [],
 		name: "Add Row",
 		description: "Add a new row",
-		icon: "getResource?resource=/images/NAV/addrow.png",
-		hoverIcon: "getResource?resource=/images/NAV/addrow_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/addrow_onclick.png",
-
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddRowOperation");
@@ -279,10 +275,6 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL],
 		name: "Add Columns",
 		description: "Add a new column",
-		icon: "getResource?resource=/images/NAV/addcolumn.png",
-		hoverIcon: "getResource?resource=/images/NAV/addcolumn_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/addcolumn_onclick.png",
-
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddColumnsOperation");
@@ -383,9 +375,6 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL],
 		name: "Add Space",
 		description: "Adds a horizontal rule",
-		icon: "getResource?resource=/images/NAV/spacer.png",
-		hoverIcon: "getResource?resource=/images/NAV/spacer_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/spacer_onclick.png",
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddSpaceOperation");
@@ -455,10 +444,6 @@ var LayoutAddImageOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
 		name: "Add Image",
 		description: "Adds an image",
-		icon: "getResource?resource=/images/NAV/image.png",
-		hoverIcon: "getResource?resource=/images/NAV/image_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/image_onclick.png",   
-
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddImageOperation");
@@ -534,10 +519,6 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
-		icon: "getResource?resource=/images/NAV/html.png",
-		hoverIcon: "getResource?resource=/images/NAV/html_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/html_onclick.png",   
-
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddHtmlOperation");
@@ -646,10 +627,6 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 		types: [],
 		name: "Add Resource",
 		description: "Adds a resource external file or code to the dashboard",
-		icon: "getResource?resource=/images/NAV/addcomponent.png",
-		hoverIcon: "getResource?resource=/images/NAV/addcomponent_mouseover.png",
-		clickIcon: "getResource?resource=/images/NAV/addcomponent_onclick.png",
-
 
 		constructor: function(){
 			this.logger = new Logger("LayoutAddResourceOperation");
@@ -761,78 +738,9 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 
 			var loadParams = {operation:"load"} 
 
-			$.getJSON(CDFDDDataUrl.replace("Syncronize","SyncTemplates"), loadParams, function(json) {
-				if(json.status){
-					
-					templates = json.result;
-					var selectTemplate = undefined;
-					var myTemplatesCount = 0;
-					var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-					var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-					for(v in templates){
-						if(templates.hasOwnProperty(v)){
-							if(templates[v].type =="default")
-								_templates +='<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-							else if(templates[v].type =="custom"){
-								_myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-								myTemplatesCount ++;
-							}
-						}
-					}
-					_templates += '</div></div><a class="next"></a></div>';
-					_myTemplates += '</div></div><a class="next"></a></div>';
-					var loaded  = function(){
-						selectTemplate = undefined;
-						$("div.scrollable").scrollable({size: 3,items: '#thumbs', hoverClass: 'hover'});
-						$(function() { 
-							$("div.scrollable:eq(0) div.thumbs div").bind('click',function(){
-								selectTemplate = templates[$(this).find("img").attr("id")];
-							});
-						});
-					};
-					
-					var callback = function(v,m,f){
-						if(v == 1 && selectTemplate != undefined){
-							$.prompt('Are you sure you want to load the template? ',{ buttons: { Ok: true, Cancel: false} , prefix:"popupTemplate",
-									callback: function(v,m,f){
-										if(v){
-											cdfdd.dashboardData = selectTemplate.structure;
-											cdfdd.layout.init();
-											cdfdd.components.init();
-											cdfdd.datasources.init();
-										}}});
-						}};
-					
-					var promptTemplates = {
-						loaded: loaded,
-						buttons: myTemplatesCount > 0 ? { MyTemplates: 2,  Ok: 1, Cancel: 0 } : {Ok: 1, Cancel: 0},
-						opacity: 0.2,
-						prefix:'popupTemplate',
-						callback: callback,
-						submit:function(v,m,f){
-							 if(v!=2) return true;
-							 $.prompt.close();
-							 $.prompt(_myTemplates,promptMyTemplates,{prefix:"popupTemplate"});
-						}};
-					
-					var promptMyTemplates = {
-						loaded: loaded,
-						buttons: { Back: 2,  Ok: 1, Cancel: 0 },
-						opacity: 0.2,
-						prefix:'popupTemplate',
-						callback: callback,
-						submit:function(v,m,f){
-							if(v!=2) return true;
-							$.prompt.close();
-							$.prompt(_templates,promptTemplates,{prefix:"popupTemplate"});
-						}};
-					
-					$.prompt(_templates,promptTemplates,{prefix:"popupTemplate"});
-			}
-			else 
-				$.notifyBar({ html: "Error loading templates: " + json.result });
-		});
-	}
+			SynchronizeRequests.doGetJson(loadParams);
+			
+		}
 });
 
 
@@ -899,15 +807,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 					//var templateParams = {operation:"save", file:file, cdfstructure: JSON.toJSONString(template,true)} ;
 					var templateParams = {operation:"save", file:file, cdfstructure: JSON.stringify(template)} ;
 					
-					$.post(CDFDDDataUrl.replace("Syncronize","SyncTemplates"), templateParams, function(result) {
-						var json = Util.parseJsonResult(result);
-						if(json.status == "true"){
-							$.notifyBar({ html: "Template saved successfully", delay: 1000 });
-						}
-						else{
-							$.notifyBar({ html: "Errors saving template: " + json.result });
-						}
-					});
+					SynchronizeRequests.doPost(templateParams);
 				}
 			}});
 		}
