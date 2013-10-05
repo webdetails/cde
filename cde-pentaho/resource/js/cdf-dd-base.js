@@ -1,7 +1,7 @@
 var Endpoints = {
 
-    staticUrl: "/pentaho/content/pentaho-cdf-dd",
-    pluginUrl: "/pentaho/content/pentaho-cdf-dd",
+    staticUrl: "/pentaho/content/pentaho-cdf-dd/",
+    pluginUrl: "/pentaho/content/pentaho-cdf-dd/",
     cssResourceUrl: "/getCssResource?resource=",
     imageResourceUrl: "/getResource?resource=",
     jsResourceUrl: "/getJsResource?resource=",
@@ -32,7 +32,7 @@ var SynchronizeRequests = {
 
     doPost: function (templateParams) {
 
-        $.post(getPluginUrl()+"SyncTemplates", templateParams, function (result) {
+        $.post(Endpoints.getPluginUrl()+"SyncTemplates", templateParams, function (result) {
             var json = Util.parseJsonResult(result);
             if (json.status == "true") {
                 $.notifyBar({ html: "Template saved successfully", delay: 1000 });
@@ -45,7 +45,7 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.getJSON(getPluginUrl()+"SyncTemplates", loadParams, function (json) {
+        $.getJSON(Endpoints.getPluginUrl()+"SyncTemplates", loadParams, function (json) {
             if (json.status) {
 
                 templates = json.result;
@@ -127,7 +127,7 @@ var OlapWizardRequests = {
 
     olapObject: function (params, container, myself) {
 
-        $.getJSON(getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
             if (json.status == "true") {
                 myself.membersArray = json.result.members;
 
@@ -152,7 +152,7 @@ var OlapWizardRequests = {
 
     olapManager: function (params, myself) {
 
-        $.getJSON(getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
             if (json && json.status == "true") {
 
                 var catalogs = json.result.catalogs;
@@ -179,7 +179,7 @@ var OlapWizardRequests = {
 
     olapCubeSelected: function (params, selectedCube, selectedCatalog, myself) {
 
-        $.getJSON(getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
             if (json.status == "true") {
 
                 myself.logger.info("Got correct response from GetCubeStructure");
@@ -241,7 +241,7 @@ var StylesRequests = {
 
     syncStyles: function (myself) {
 
-        $.getJSON(getPluginUrl() + "SyncStyles", {
+        $.getJSON(Endpoints.getPluginUrl() + "SyncStyles", {
             operation: "listStyles"
         }, function (json) {
             myself.styles = json.result;
@@ -250,7 +250,7 @@ var StylesRequests = {
 
     listStyleRenderers: function (myself) {
 
-        $.getJSON(getPluginUrl() + "listRenderers", {
+        $.getJSON(Endpoints.getPluginUrl() + "listRenderers", {
             operation: "listStyles"
         }, function (json) {
             myself.renderers = json.result;
@@ -260,7 +260,7 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
-        $.post(getPluginUrl() + CDFDDDataUrl, saveSettingsParams, function (result) {
+        $.post(CDFDDDataUrl, saveSettingsParams, function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 myself.setDashboardWcdf(wcdf);
@@ -279,7 +279,7 @@ var SaveRequests = {
 
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
 
-        $.post(getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
             try {
                 var json = eval("(" + result + ")");
                 if (json.status == "true") {
@@ -303,7 +303,7 @@ var SaveRequests = {
 
     saveDashboard: function (saveParams, stripArgs) {
 
-        $.post(getPluginUrl() + "Syncronize", saveParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, function (result) {
             //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
@@ -325,14 +325,14 @@ var SaveRequests = {
 
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        $.post(getPluginUrl() + "Syncronize", saveAsParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
                     //cdfdd.setExitNotification(false);
-                    window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else
                 $.notifyBar({
@@ -343,7 +343,7 @@ var SaveRequests = {
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        $.post(getPluginUrl() + "Syncronize", saveAsParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, function (result) {
             var json = JSON.parse(result);
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") {
@@ -358,7 +358,7 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = '../pentaho-cdf-dd/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.origin + Endpoints.getPluginUrl() + '/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else {
                 $.notifyBar({
@@ -372,7 +372,7 @@ var SaveRequests = {
 var LoadRequests = {
 
     loadDashboard: function (loadParams, myself) {
-        $.post(getPluginUrl() + "Syncronize", loadParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", loadParams, function (result) {
             var json = eval("(" + result + ")");
             if (json && json.status == "true") {
                 myself.setDashboardData(myself.unstrip(json.result.data));
@@ -388,7 +388,7 @@ var LoadRequests = {
 var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
-        $.post(getPluginUrl() + "Syncronize", saveParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 $.fancybox({
