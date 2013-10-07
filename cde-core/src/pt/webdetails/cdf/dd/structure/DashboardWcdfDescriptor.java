@@ -38,6 +38,10 @@ public class DashboardWcdfDescriptor
     DashboardRendererType(String t) {
       type = t;
     }
+    
+    public String getType(){
+    	return this.type;
+    }
   }
   
   private String _title = "";

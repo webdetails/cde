@@ -145,7 +145,7 @@ public final class DashboardManager
         wcdf.setPath(wcdfFilePath);
       }
       wcdf.setStyle(CdeConstants.DEFAULT_STYLE);
-      wcdf.setRendererType(DashboardRendererType.BLUEPRINT.toString());
+      wcdf.setRendererType(DashboardRendererType.BLUEPRINT.getType());
       
       bypassCacheRead = true; // no cache for preview
     }

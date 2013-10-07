@@ -428,9 +428,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void listRenderers(final OutputStream out) throws Exception {
 		writeOut(out, "{\"result\": [\""
-				+ DashboardWcdfDescriptor.DashboardRendererType.MOBILE
+				+ DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
 				+ "\",\""
-				+ DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT
+				+ DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
 				+ "\"]}");
 	}
 
