@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletRequest;
@@ -38,13 +39,14 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cdf.dd.utils.CommonParameterProvider;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
+import pt.webdetails.cpf.WrapperUtils;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
+import pt.webdetails.cpf.http.ICommonParameterProvider;
 import pt.webdetails.cpf.olap.OlapUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -135,20 +137,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncronize(final OutputStream out) throws Exception {
-		// 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
-		IParameterProvider requestParams = getRequestParameters();
-		final String path = ((String) requestParams.getParameter(MethodParams.FILE)).replaceAll("cdfde", "wcdf");
-		
-		if (requestParams.hasParameter(MethodParams.PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
-			
-			final HttpServletResponse response = getResponse();
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			logger.warn("Access denied for the syncronize method: " + path + " by user " + userSession.getName());
-			return;
-		}
-
-		final SyncronizeCdfStructure syncCdfStructure = new SyncronizeCdfStructure();
-		syncCdfStructure.syncronize(out, new CommonParameterProvider(requestParams));
+		new SyncronizeCdfStructure().syncronize(WrapperUtils.wrapParamProvider(getRequestParameters()), getResponse());
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
