@@ -77,27 +77,24 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
 	        }
         
 	        IReadAccess pluginSystemReader = CdeEnvironment.getPluginSystemReader("resources/samples/");
-	        IRWAccess pluginRepositoryWriter = CdeEnvironment.getPluginRepositoryWriter("/widgets/");
-        
+	        IRWAccess pluginRepositoryWriter = CdeEnvironment.getPluginRepositoryWriter("widgets/");
+	        
 	        if(pluginSystemReader.fileExists("widget.cdfde")){
-	        	IBasicFile file = pluginSystemReader.fetchFile("widget.cdfde");
-	        	pluginRepositoryWriter.saveFile(file.getFullPath().replace("widget.cdfde", "sample.cdfde"), file.getContents());
+	        	pluginRepositoryWriter.saveFile("sample.cdfde", pluginSystemReader.getFileInputStream("widget.cdfde"));
 	        }
 	        
 	        if(pluginSystemReader.fileExists("widget.wcdf")){
-	        	IBasicFile file = pluginSystemReader.fetchFile("widget.wcdf");
-	        	pluginRepositoryWriter.saveFile(file.getFullPath().replace("widget.wcdf", "sample.wcdf"), file.getContents());
+	        	pluginRepositoryWriter.saveFile("sample.wcdf", pluginSystemReader.getFileInputStream("widget.wcdf"));
 	        }
 	        
 	        if(pluginSystemReader.fileExists("widget.cda")){
-	        	IBasicFile file = pluginSystemReader.fetchFile("widget.cda");
-	        	pluginRepositoryWriter.saveFile(file.getFullPath().replace("widget.cda", "sample.cda"), file.getContents());
+	        	pluginRepositoryWriter.saveFile("sample.cda", pluginSystemReader.getFileInputStream("widget.cda"));
 	        }
 	        
 	        if(pluginSystemReader.fileExists("widget.xml")){
-	        	IBasicFile file = pluginSystemReader.fetchFile("widget.xml");
-	        	pluginRepositoryWriter.saveFile(file.getFullPath().replace("widget.xml", "sample.component.xml"), file.getContents());
+	        	pluginRepositoryWriter.saveFile("sample.component.xml", pluginSystemReader.getFileInputStream("widget.xml"));
 	        }
+	        
 	    } catch (IOException ioe) {
 	        logger.error("Error while creating folder " + pluginSolutionRepositoryDir + "/widgets for cde plugin. CDE may not work as expected", ioe);
 	    }

@@ -44,7 +44,14 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 			
 			// file name is equal ?
 			if(!StringUtils.isEmpty(fileName)){
-				fileNameOK = fileName.equalsIgnoreCase(FilenameUtils.getBaseName(file.getName()));
+				
+				String fileBaseName = FilenameUtils.getBaseName(file.getName());
+				
+				fileNameOK = fileName.equalsIgnoreCase(fileBaseName)
+						|| ( !fileBaseName.startsWith(".") && fileBaseName.endsWith("." + fileName));
+				
+				//ex: component.xml
+				//ex: sample.component.xml
 			}else{
 				fileNameOK = true; //filename was not placed as filter
 			}
