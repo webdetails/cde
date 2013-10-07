@@ -260,7 +260,7 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
-        $.post(CDFDDDataUrl, saveSettingsParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 myself.setDashboardWcdf(wcdf);
