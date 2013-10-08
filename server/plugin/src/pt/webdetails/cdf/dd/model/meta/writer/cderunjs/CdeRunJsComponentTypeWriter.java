@@ -129,11 +129,35 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
     
     addJsProperty(out, "name",        JsonUtils.toJsString(modelName), INDENT1, true);
     addJsProperty(out, "description", jsTooltip, INDENT1, false);
-    
+    if(comp.getLegacyNameCount() > 0) 
+    {
+      addCommaAndLineSep(out); out.append(INDENT1);
+      out.append("legacyNames: [");
+      boolean isFirstLegacyName = true;
+      for(String legacyName : comp.getLegacyNames()) 
+      {
+        if(isFirstLegacyName) 
+        {
+          isFirstLegacyName = false;
+        }
+        else
+        {
+          out.append(", ");
+        } 
+
+        out.append(JsonUtils.toJsString(legacyName));
+      }
+      out.append("]");
+    }
+
     boolean isFirstAttr = true;
     for(Attribute attribute : comp.getAttributes())
     {
-      if(!"cdeModelIgnore".equals(attribute.getName()))
+      String attName = attribute.getName();
+      
+      if(!"cdeModelIgnore".equals(attName) &&
+         !"cdeModelPrefix".equals(attName) &&
+         !"cdePalleteType".equals(attName))
       {
         if(isFirstAttr)
         {

@@ -464,6 +464,12 @@ var CDFDD = Base.extend({
         
         var isSpecial = comp.type === 'Label';
         var compModel = BaseModel.getModel(comp.type, /*createIfUndefined*/true);
+        
+        // Fix component type name over time, reducing number of legacy names around.
+        comp.type = compModel.MODEL;
+        if(compModel.description) { comp.typeDesc = compModel.description; }
+        // TODO: parent node fixing when model changes.
+        
         var hasUndefinedProps;
         var hasLoggedComp;
         var logComponent = function(debugLevel) {

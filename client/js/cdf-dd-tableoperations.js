@@ -78,7 +78,13 @@ var BaseModel = (function() {
      * @type string
      */
     MODEL: 'BaseModel',
-
+    
+    /**
+     * Legacy names by which this component type is known.
+     * @type Array<string>
+     */
+    legacyNames: undefined,
+    
     /**
      * Obtains a JSON stub for a component instance 
      * of the model's corresponding component type.
@@ -101,7 +107,7 @@ var BaseModel = (function() {
     getPropertyUsage: function(alias) {
       return PropertyTypeUsage.create(alias, this); // may be null
     },
-
+    
     getPropertyStubAndUsage: function(alias) {
       var usage = this.getPropertyUsage(alias);
       var type  = usage && usage.type;
@@ -153,7 +159,14 @@ var BaseModel = (function() {
      * @type object
      */
     models: {},
-
+    
+    /**
+     * A dictionary of the registered model classes, 
+     * indexed by their legacy names.
+     * @type object
+     */        
+    modelsByLegacyName: {},
+    
     /**
      * Registers a {@link BaseModel} sub-class that represents a model.
      * <p>The <tt>MODEL</tt> property has the model name.</p>
@@ -165,6 +178,14 @@ var BaseModel = (function() {
      */
     registerModel: function(modelClass) {
       this.models[modelClass.MODEL] = modelClass;
+      
+      // Index also by legacy names
+      var legacyNames = modelClass.legacyNames;
+      if(legacyNames) {
+        for(var i = 0, L = legacyNames.length; i < L; i++) {
+          this.modelsByLegacyName[legacyNames[i]] = modelClass;
+        }
+      }
       
       if(!modelClass.getPropertyUsage) {
         $.extend(modelClass, LegacyModel);
@@ -181,13 +202,20 @@ var BaseModel = (function() {
      * @return function the model class, if one exists, or <tt>undefined</tt>, otherwise.
      */
     getModel: function(modelId, createIfUndefined) {
-      var ModelClass, m;
+      var ModelClass;
       if(modelId) {
         ModelClass = this.models[modelId];
-
-        // Some legacy code naming exceptions. Example: "DatasourcesCDAModel".
-        if(!ModelClass && (m = /^(.+?)Model$/.exec(modelId))) {
-          ModelClass = this.models[m[1]];
+        
+        // Legacy naming
+        if(!ModelClass) {
+          // Remove any "Model" Suffix.
+          var m = /^(.+?)Model$/.exec(modelId);
+          if(m) { modelId = m[1]; }
+          
+          ModelClass = this.models[modelId];
+          if(!ModelClass) {
+            ModelClass = this.modelsByLegacyName[modelId];
+          }
         }
 
         if(!ModelClass && createIfUndefined) {
@@ -219,6 +247,7 @@ var BaseModel = (function() {
      *        a dashboard's component tree (components' view).
      *        By default, the value of {@link IndexManager.ROOTID}.
      *    </li>
+     *    <li>legacyNames - an array of legacy name strings.</li>
      *    <li>metas - an object with meta properties and their values. 
      *        These are properties that are named with the prefix "meta_", or, 
      *        possibly, named just "meta".
@@ -236,13 +265,17 @@ var BaseModel = (function() {
     create: function(spec) {
       var modelName   = spec.name;
       var modelDesc   = spec.description;
-      var modelParent = spec.parent;
+      var modelParent = spec.parent != null ? spec.parent : IndexManager.ROOTID;
       var modelMetas  = spec.metas;
-      var BaseModelClass = spec.baseModelClass || CdeComponentModel;
+      var modelLegacyNames = spec.legacyNames;
+      var BaseModelClass   = spec.baseModelClass || CdeComponentModel;
 
       // Extend the base BaseModelClass class.
       var ModelClass = BaseModelClass.extend({}, {
-        MODEL: modelName,
+        MODEL:       modelName,
+        legacyNames: modelLegacyNames,
+        description: modelDesc,
+        parent:      modelParent,
         
         // Store the property specs for later lazy compilation by CdeComponentModel._getPropertyUsages.
         _propertySpecs: spec.properties || [],
@@ -252,7 +285,7 @@ var BaseModel = (function() {
               id:         TableManager.generateGUID(),
               type:       modelName,
               typeDesc:   modelDesc,
-              parent:     modelParent != null ? modelParent : IndexManager.ROOTID,
+              parent:     modelParent,
               properties: this._getPropertyUsages().map(function(pu) { return pu.create(); })
             }, modelMetas);
         }
@@ -278,9 +311,10 @@ var BaseModel = (function() {
      * @return function the undefined component type model class.
      */
     createUndefined: function(name) {
+      var isSpecial = (name === 'Label' || name === 'Group');
       return this.create({
         name: name,
-        description: "? " + name, // Give a clue that the component is not defined.
+        description:    (isSpecial ? name : ("? " + name)), // Give a clue that the component is not defined.
         baseModelClass: UndefinedCdeComponentModel
       });
     }
