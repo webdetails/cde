@@ -404,14 +404,27 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncTemplates(final OutputStream out) throws Exception {
-		final CdfTemplates cdfTemplates = new CdfTemplates();
-		cdfTemplates.handleCall(out, getRequestParameters());
+    IParameterProvider requestParams = getRequestParameters();
+    String method = requestParams.getStringParameter("operation", null);
+
+    final CdfTemplates cdfTemplates = new CdfTemplates();
+
+    if( method.equals("load") ){
+      Object result = cdfTemplates.load();
+      JsonUtils.buildJsonResult(out, true, result);
+    } else if( method.equals("save") ){
+      String file = requestParams.getStringParameter("file", null),
+             structure = requestParams.getStringParameter(CdeConstants.MethodParams.CDF_STRUCTURE, null);
+      cdfTemplates.save( file, structure );
+    }
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncStyles(final OutputStream out) throws Exception {
-		final CdfStyles cdfStyles = new CdfStyles();
-		cdfStyles.handleCall(out, getRequestParameters());
+    final CdfStyles cdfStyles = new CdfStyles();
+
+    Object result = cdfStyles.liststyles();
+    JsonUtils.buildJsonResult(out, true, result);
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)

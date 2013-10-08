@@ -29,7 +29,7 @@ public class CdeSettings {
   
   private static CdfDDSettings settings = new CdfDDSettings();
   
-  static CdfDDSettings getSettings(){
+  public static CdfDDSettings getSettings(){
     return settings;
   }
   
