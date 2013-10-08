@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,8 @@ import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
+import pt.webdetails.cdf.dd.structure.DashboardStructure;
+import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
@@ -42,11 +45,9 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.VersionChecker;
-import pt.webdetails.cpf.WrapperUtils;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.http.ICommonParameterProvider;
 import pt.webdetails.cpf.olap.OlapUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -82,6 +83,17 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
 
 	private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
+	
+	private static final String OPERATION_LOAD = "load";
+	private static final String OPERATION_DELETE = "delete";
+	private static final String OPERATION_SAVE = "save";
+	private static final String OPERATION_SAVE_AS = "saveas";
+	private static final String OPERATION_NEW_FILE = "newfile";
+	private static final String OPERATION_SAVE_SETTINGS = "savesettings";
+	
+	private static final String REQUEST_PARAM_FILE = "file";
+	private static final String REQUEST_PARAM_PATH = "path";
+	private static final String REQUEST_PARAM_OPERATION = "operation";
 
 	/**
 	 * Parameters received by content generator
@@ -137,7 +149,62 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncronize(final OutputStream out) throws Exception {
-		new SyncronizeCdfStructure().syncronize(WrapperUtils.wrapParamProvider(getRequestParameters()), getResponse());
+		
+	  final String path = ((String) getRequestParameters().getParameter(REQUEST_PARAM_FILE)).replaceAll("cdfde", "wcdf");
+	      
+      // Check security. Caveat: if no path is supplied, then we're in the new parameter
+      if (getRequestParameters().hasParameter(REQUEST_PARAM_PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
+    	    getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
+			logger.warn("Access denied for the syncronize method: " + path);
+			return;
+	  }
+    	
+      final String operation = getRequestParameters().getStringParameter(REQUEST_PARAM_OPERATION, "").toLowerCase();
+      
+      // file path must exist
+	  if (getRequestParameters() == null || getRequestParameters().getParameter(REQUEST_PARAM_FILE) == null){
+	      throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
+	  }
+		
+	  try{
+	  
+		  final DashboardStructure dashboardStucture = new DashboardStructure();
+		  Object result = null;
+		  
+		  if(OPERATION_LOAD.equalsIgnoreCase(operation)){
+			  result = dashboardStucture.load(toHashMap(getRequestParameters()));
+		  
+		  }else if(OPERATION_DELETE.equalsIgnoreCase(operation)){
+			  dashboardStucture.delete(toHashMap(getRequestParameters()));
+		  
+		  }else if(OPERATION_SAVE.equalsIgnoreCase(operation)){
+			  result = dashboardStucture.save(toHashMap(getRequestParameters()));
+			  
+		  }else if(OPERATION_SAVE_AS.equalsIgnoreCase(operation)){
+			  dashboardStucture.saveas(toHashMap(getRequestParameters()));
+			  
+		  }else if(OPERATION_NEW_FILE.equalsIgnoreCase(operation)){
+			  dashboardStucture.newfile(toHashMap(getRequestParameters()));
+			  
+		  }else if(OPERATION_SAVE_SETTINGS.equalsIgnoreCase(operation)){
+			  dashboardStucture.savesettings(toHashMap(getRequestParameters()));
+			  
+		  }else{
+			  logger.error("Unknown operation: " + operation);
+		  }
+	  
+		  JsonUtils.buildJsonResult(getResponse().getOutputStream(), true, result);
+		  
+	  } catch (Exception e){
+		  if(e.getCause() != null) {
+	        if (e.getCause() instanceof DashboardStructureException) {
+	          JsonUtils.buildJsonResult(getResponse().getOutputStream(), false, e.getCause().getMessage());
+	        } else if(e instanceof InvocationTargetException) {
+	          throw (Exception)e.getCause();
+	        }
+	      }
+	      throw e;
+	  }
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
@@ -405,17 +472,18 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncTemplates(final OutputStream out) throws Exception {
     IParameterProvider requestParams = getRequestParameters();
-    String method = requestParams.getStringParameter("operation", null);
+    String method = requestParams.getStringParameter(REQUEST_PARAM_OPERATION, null);
 
     final CdfTemplates cdfTemplates = new CdfTemplates();
 
-    if( method.equals("load") ){
+    if( method.equals(OPERATION_LOAD) ){
       Object result = cdfTemplates.load();
       JsonUtils.buildJsonResult(out, true, result);
-    } else if( method.equals("save") ){
-      String file = requestParams.getStringParameter("file", null),
+    } else if( method.equals(OPERATION_SAVE) ){
+      String file = requestParams.getStringParameter(REQUEST_PARAM_FILE, null),
              structure = requestParams.getStringParameter(CdeConstants.MethodParams.CDF_STRUCTURE, null);
       cdfTemplates.save( file, structure );
+      JsonUtils.buildJsonResult(out, true, null);
     }
 	}
 
@@ -705,4 +773,23 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         
         return new IBasicFile[]{};
     }
+	
+	private static HashMap<String, Object> toHashMap(IParameterProvider parameterProvider){
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		 
+		 if(parameterProvider == null){
+			 return map;
+		 }
+		
+		Iterator<String> names = parameterProvider.getParameterNames();
+
+        while (names.hasNext()) {
+            String name = names.next();
+            Object value = parameterProvider.getParameter(name);
+            map.put(name, value);
+        }
+
+        return map;
+	}
 }

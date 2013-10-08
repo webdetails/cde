@@ -12,10 +12,8 @@ import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import pt.webdetails.cdf.dd.DashboardDesignerException;
-import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
-import pt.webdetails.cdf.dd.util.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,26 +22,14 @@ import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-@SuppressWarnings( "unchecked" )
 // TODO: move to core once pluginsAnalizer gets no pentaho-dependencies
 public class CdfStyles {
   public static final String DEFAULTSTYLE = "Clean";
   private static final String SYSTEM_RESOURCE_STYLES_DIR = "resources/styles/";
   private static final String RESOURCE_STYLES_DIR_SOLUTION = "styles/";
   private static Log logger = LogFactory.getLog( CdfStyles.class );
-  private static CdfStyles instance;
 
   public CdfStyles() {
-  }
-
-  public static synchronized CdfStyles getInstance() {
-
-    if ( instance == null ) {
-      instance = new CdfStyles();
-    }
-
-    return instance;
-
   }
 
   public Object liststyles() throws DashboardDesignerException {

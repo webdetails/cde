@@ -26,7 +26,7 @@ public class PluginResourceLocationManager implements IPluginResourceLocationMan
 
 	@Override
 	public String getStyleResourceLocation(String arg0) {
-		return CdfStyles.getInstance().getResourceLocation(arg0);
+		return new CdfStyles().getResourceLocation(arg0);
 	}
 
     public synchronized List<PathOrigin> getCustomComponentsLocations() {

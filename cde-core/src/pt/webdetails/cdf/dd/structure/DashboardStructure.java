@@ -21,7 +21,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
 import pt.webdetails.cdf.dd.Messages;
-import pt.webdetails.cdf.dd.SyncronizeCdfStructure;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.DashboardManager;
@@ -49,6 +48,9 @@ public class DashboardStructure implements IDashboardStructure {
   private static final String ENCODING = "UTF-8";
   
   private static Log logger = LogFactory.getLog(DashboardStructure.class);
+  
+  public static String SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
+  public static String SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH = "resources/empty.wcdf";
   
   public DashboardStructure() {
   }
@@ -83,7 +85,7 @@ public class DashboardStructure implements IDashboardStructure {
       
       } else {
     	
-        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
       }
 
       JSON cdeData = JsonUtils.readJsonFromInputStream(file);
@@ -201,7 +203,7 @@ public class DashboardStructure implements IDashboardStructure {
     // Is this intended?
     
     // 1. Read empty wcdf file
-    InputStream wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH);
+    InputStream wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH);
     
     String wcdfContentAsString = IOUtils.toString(wcdfFile, ENCODING);
 
@@ -228,7 +230,7 @@ public class DashboardStructure implements IDashboardStructure {
     // 1. Read Empty Structure
     InputStream cdfstructure = null;
     try {
-    	cdfstructure = CdeEnvironment.getPluginSystemReader().getFileInputStream(SyncronizeCdfStructure.SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+    	cdfstructure = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
 
       // 2. Save file
       parameters.put("cdfstructure", JsonUtils.readJsonFromInputStream(cdfstructure).toString());
@@ -241,7 +243,6 @@ public class DashboardStructure implements IDashboardStructure {
   }
 
   // .WCDF file
-  // (called using reflection by SyncronizeCdfStructure)
   public void savesettings(HashMap<String, Object> parameters) throws DashboardStructureException {
     String wcdfFilePath = (String)parameters.get("file");
     logger.info("Saving settings file:" + wcdfFilePath);
