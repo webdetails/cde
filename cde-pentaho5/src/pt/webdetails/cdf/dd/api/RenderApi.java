@@ -126,9 +126,9 @@ public class RenderApi {
   @GET
   @Path( "/edit" )
   @Produces( MIME_TYPE )
-  public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-                    @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                    @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+  public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
+                    @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
+                    @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
                     @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                     @Context HttpServletRequest request,
                     @Context HttpServletResponse response ) throws IOException {
@@ -139,7 +139,8 @@ public class RenderApi {
       IOUtils.write( "Access Denied to file " + wcdfPath, response.getOutputStream() );
     }
 
-    String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+    DashboardEditor dashboardEditor = new DashboardEditor();
+    String editor = dashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
     IOUtils.write( editor, response.getOutputStream() );
   }
 

@@ -7,55 +7,24 @@
 		<static-path url="/pentaho-cdf-dd/images" localFolder="images"/>
 		<static-path url="/pentaho-cdf-dd/lang" localFolder="lang"/>
 		<static-path url="/pentaho-cdf-dd/static" localFolder="static"/>
-                <static-path url="/pentaho-cdf-dd/resources" localFolder="resources"/>
+        <static-path url="/pentaho-cdf-dd/resources" localFolder="resources"/>
 	</static-paths>
 	<content-types>
 		<content-type type="wcdf" mime-type="text/html">
 			<title>Dashboard Designer</title>
 			<description>Dashboard Designer</description>
-			<icon-url>content/pentaho-cdf-dd/getResource?resource=/resources/wcdfFileType.png</icon-url>
-			<operations>
-				<operation>
-					<id>RUN</id>
-					<command>content/pentaho-cdf-dd/Render?solution={solution}&amp;path={path}&amp;file={name}</command>
-				</operation>
-				<operation>
-					<id>NEWWINDOW</id>
-					<command>content/pentaho-cdf-dd/Render?solution={solution}&amp;path={path}&amp;file={name}</command>
-				</operation>
-				<operation>
-					<id>EDIT</id>
-					<command>content/pentaho-cdf-dd/Edit?solution={solution}&amp;path={path}&amp;file={name}</command>
-				</operation>
-			</operations>
+			<icon-url>plugin/pentaho-cdf-dd/api/resources/get?resource=/resources/wcdfFileType.png</icon-url>
+            <meta-provider>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</meta-provider>
 		</content-type>
 	</content-types>
 	<overlays>
-		<overlay id="launch" resourcebundle="content/pentaho-cdf-dd/lang/messages.properties">
-			<button 
-				id="launch_new_cde" 
-				label="${Launcher.NEW_CDE}" 
-				image="content/pentaho-cdf-dd/images/overlay/quicklaunch_button_cde.png"
-				command="openURL('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'content/pentaho-cdf-dd/NewDashboard')"/>
-		</overlay>
-		<overlay id="startup.dashboardToolbar"  resourcebundle="../content/pentaho-cdf-dd/lang/messages">
-			<overlay id="startup.dashboardToolbar" resourcebundle="../content/pentaho-cdf-dd/lang/messages">
-				<toolbarbutton id="newAnalysisButton" removeelement="false"/>
-				<toolbar id="mainToolbar">
-					<toolbarbutton id="newCDE" image="../content/pentaho-cdf-dd/images/overlay/cde_toolbar_icon.png" onclick="mainToolbarHandler.openUrl('${tabName}','${tabName}','content/pentaho-cdf-dd/NewDashboard')" tooltiptext="${openNewCDE}" insertafter="newCDEButton"/>
-				</toolbar>
-			</overlay>
-		</overlay>
+        <overlay id="launch" resourcebundle="content/pentaho-cdf-dd/lang/messages">
+            <button id="launch_new_cde" label="${Launcher.CDE}" command="Home.openFile('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'plugin/pentaho-cdf-dd/api/renderer/new');$('#btnCreateNew').popover('hide');"/>
+        </overlay>
+        <overlay id="startup.cde_dashboard"  resourcebundle="content/pentaho-cdf-dd/lang/messages" priority="1">
+            <menubar id="newmenu">
+                <menuitem id="new-cde_dashboard" label="${Launcher.CDE}" command="mantleXulHandler.openUrl('${Launcher.CDE}','${Launcher.CDE_TOOLTIP}','plugin/pentaho-cdf-dd/api/renderer/new')" />
+            </menubar>
+        </overlay>
 	</overlays>
-
-	<content-generator scope="local" id="pentaho-cdf-dd" type="wcdf" url="">
-		<classname>pt.webdetails.cdf.dd.DashboardDesignerContentGenerator</classname>
-		<fileinfo-classname>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</fileinfo-classname>
-		<title>Dashboard Designer</title>
-	</content-generator>
-
-	<menu-items>
-		<menu-item id="wcdf" anchor="file-new-submenu" label="CDE Dashboard" command="content/pentaho-cdf-dd/NewDashboard" type="MENU_ITEM" how="LAST_CHILD"/>
-	</menu-items>
-
 </plugin>

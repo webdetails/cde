@@ -20,7 +20,7 @@ public class PluginsApi {
 
   @GET
   @Path( "/get" )
-  @Produces( "text/plain" )
+  @Produces( "text/javascript" )
   public void getCDEplugins( @Context HttpServletResponse response ) throws IOException {
     CdePlugins plugins = new CdePlugins();
     IOUtils.write( plugins.getCdePlugins(), response.getOutputStream() );

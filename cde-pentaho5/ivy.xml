@@ -24,10 +24,6 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5"/>
         <dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.8.2" conf='runtime->default'/>
 
-        <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" transitive="false">
-            <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
-        </dependency>
-
         <!--  pentaho dependencies -->
         <dependency org="pentaho" name="pentaho-platform-extensions"
                     rev="${dependency.bi-platform.revision}" transitive="false" changing="true"/>
@@ -54,6 +50,11 @@
 
         <dependency org="pt.webdetails" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true"
                     conf='runtime->default'/>
+
+        <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" transitive="false" conf='runtime->default'>
+            <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
+        </dependency>
+        <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.4" conf='runtime->default'/>
 
         <!-- olap -->
         <dependency org="pentaho" name="mondrian" rev="3.5.0">
