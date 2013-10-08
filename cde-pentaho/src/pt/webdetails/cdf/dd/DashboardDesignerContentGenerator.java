@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
@@ -168,26 +169,26 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		
 	  try{
 	  
-		  final DashboardStructure dashboardStucture = new DashboardStructure();
+		  final DashboardStructure dashboardStructure = new DashboardStructure();
 		  Object result = null;
 		  
 		  if(OPERATION_LOAD.equalsIgnoreCase(operation)){
-			  result = dashboardStucture.load(toHashMap(getRequestParameters()));
+			  result = dashboardStructure.load(toHashMap(getRequestParameters()));
 		  
 		  }else if(OPERATION_DELETE.equalsIgnoreCase(operation)){
-			  dashboardStucture.delete(toHashMap(getRequestParameters()));
+        dashboardStructure.delete(toHashMap(getRequestParameters()));
 		  
 		  }else if(OPERATION_SAVE.equalsIgnoreCase(operation)){
-			  result = dashboardStucture.save(toHashMap(getRequestParameters()));
+			  result = dashboardStructure.save(toHashMap(getRequestParameters()));
 			  
 		  }else if(OPERATION_SAVE_AS.equalsIgnoreCase(operation)){
-			  dashboardStucture.saveas(toHashMap(getRequestParameters()));
+        dashboardStructure.saveas(toHashMap(getRequestParameters()));
 			  
 		  }else if(OPERATION_NEW_FILE.equalsIgnoreCase(operation)){
-			  dashboardStucture.newfile(toHashMap(getRequestParameters()));
+        dashboardStructure.newfile(toHashMap(getRequestParameters()));
 			  
 		  }else if(OPERATION_SAVE_SETTINGS.equalsIgnoreCase(operation)){
-			  dashboardStucture.savesettings(toHashMap(getRequestParameters()));
+        dashboardStructure.savesettings(toHashMap(getRequestParameters()));
 			  
 		  }else{
 			  logger.error("Unknown operation: " + operation);
@@ -504,18 +505,42 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 				+ "\"]}");
 	}
 
-	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public void olapUtils(final OutputStream out) {
-		final OlapUtils olapUtils = new OlapUtils();
+  @Exposed( accessLevel = AccessLevel.PUBLIC )
+  public void olapUtils( final OutputStream out ) {
+    OlapUtils olapUtils = new OlapUtils();
+    JSONObject result = null;
 
-		try {
-			final Object result = olapUtils.process(getRequestParameters());
-			JsonUtils.buildJsonResult(out, result != null, result);
-		} catch (Exception ex) {
-			logger.fatal(ex);
-			JsonUtils.buildJsonResult(out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage());
-		}
-	}
+    try {
+      String operation = getRequestParameters().getStringParameter( "operation", "-" );
+
+      if ( operation.equals( "GetOlapCubes" ) ) {
+
+        result = olapUtils.getOlapCubes();
+
+      } else if ( operation.equals( "GetCubeStructure" ) ) {
+
+        String catalog = getRequestParameters().getStringParameter( "catalog", null );
+        String cube = getRequestParameters().getStringParameter( "cube", null );
+        String jndi = getRequestParameters().getStringParameter( "jndi", null );
+
+        result = olapUtils.getCubeStructure( catalog, cube, jndi );
+
+      } else if ( operation.equals( "GetLevelMembersStructure" ) ) {
+
+        String catalog = getRequestParameters().getStringParameter( "catalog", null );
+        String cube = getRequestParameters().getStringParameter( "cube", null );
+        String member = getRequestParameters().getStringParameter( "member", null );
+        String direction = getRequestParameters().getStringParameter( "direction", null );
+
+        result = olapUtils.getLevelMembersStructure( catalog, cube, member, direction );
+
+      }
+      JsonUtils.buildJsonResult( out, result != null, result );
+    } catch ( Exception ex ) {
+      logger.fatal( ex );
+      JsonUtils.buildJsonResult( out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage() );
+    }
+  }
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void exploreFolder(final OutputStream out) throws IOException {
