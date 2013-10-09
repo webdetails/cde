@@ -45,7 +45,7 @@
 
         <dependency org="pt.webdetails" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true"
                     conf='runtime->default'/>
-        <dependency org="pt.webdetails" name="cpf-pentaho" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true"
+        <dependency org="pt.webdetails" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true"
                     conf='runtime->default'/>
 
         <dependency org="pt.webdetails" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true"
