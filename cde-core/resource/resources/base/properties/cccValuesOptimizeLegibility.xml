@@ -2,7 +2,7 @@
   <Header>
     <Name>cccValuesOptimizeLegibility</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>true</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>valuesOptimizeLegibility</Description>
     <Tooltip>Indicates if legibility of value labels should be optimized.</Tooltip>
     <InputType>Boolean</InputType>

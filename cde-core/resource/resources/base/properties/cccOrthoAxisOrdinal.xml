@@ -3,7 +3,7 @@
       <Name>cccOrthoAxisOrdinal</Name>
       <Parent>BaseProperty</Parent>
       <DefaultValue>"false"</DefaultValue>
-      <Description>ortho axis ordinal</Description>
+      <Description>V1 - Ortho axis ordinal</Description>
       <Tooltip>Determines whether the orthogonal axis should be ordinal (y-axis in normal orientation)</Tooltip>
       <InputType>Boolean</InputType>
       <OutputType>Boolean</OutputType>

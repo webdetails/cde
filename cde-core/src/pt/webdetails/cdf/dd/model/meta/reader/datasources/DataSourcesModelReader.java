@@ -58,6 +58,8 @@ public final class DataSourcesModelReader
    */
   private void readDataSourceComponent(MetaModel.Builder model, Pointer pointer, String sourcePath)
   {
+    // TODO: What a generality...
+    
     DataSourceComponentType.Builder builder = new DataSourceComponentType.Builder();
 
     JSONObject def = (JSONObject) pointer.getNode();

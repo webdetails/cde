@@ -50,13 +50,13 @@
         <div style=" display: inline-block; position: absolute; right: 0; ">
           <div class="span-9 cdfdd-modes" style="min-width:380px;">
             <div class="panelButton" title="Datasources Panel">
-              <a onclick="Panel.enableThisButton(this);cdfdd.datasources.switchTo()" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
+            <a onclick="window.cdfdd &amp;&amp; cdfdd.datasources &amp;&amp; (Panel.enableThisButton(this), cdfdd.datasources.switchTo())" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
             </div>
             <div class="panelButton" title="Components Panel">
-              <a onclick="Panel.enableThisButton(this);cdfdd.components.switchTo()" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
+            <a onclick="window.cdfdd &amp;&amp; cdfdd.components &amp;&amp; (Panel.enableThisButton(this),cdfdd.components.switchTo())" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
             </div>
             <div class="panelButton panelButton-active" title="Layout Panel">
-              <a onclick="Panel.enableThisButton(this);cdfdd.layout.switchTo()" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
+            <a onclick="window.cdfdd &amp;&amp; cdfdd.layout &amp;&amp; (Panel.enableThisButton(this), cdfdd.layout.switchTo())" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
             </div>
           </div>
           <div class="span-2 cdfdd-preview last last">

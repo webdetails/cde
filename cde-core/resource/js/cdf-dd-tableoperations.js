@@ -1,11 +1,12 @@
 // Base model
 
 var PropertyTypeUsage = Base.extend({
-  constructor: function(pName, pAlias, isOwned, propType) {
+  constructor: function(pName, pAlias, isOwned, propType, isExtension) {
     this.alias = pAlias;
     this.name  = pName; // local type name, when owned
     this.owned = isOwned;
     this.type  = propType;
+    this.isExtension = isExtension;
   },
           
   create: function() {
@@ -15,7 +16,7 @@ var PropertyTypeUsage = Base.extend({
   }
 }, { // static
   create: function(propSpec, Model) {
-    var pName, pAlias, isOwned = false;
+    var pName, pAlias, isOwned = false, isExtension = false;
     switch(typeof propSpec) {
       case 'string':
         pName = pAlias = propSpec;
@@ -28,6 +29,7 @@ var PropertyTypeUsage = Base.extend({
              if(!pAlias && pName ) { pAlias = pName ; }
         else if(!pName  && pAlias) { pName  = pAlias; }
         isOwned = propSpec.owned === true;
+        isExtension = !!propSpec.isExtension;
         break;
     }
 
@@ -35,37 +37,314 @@ var PropertyTypeUsage = Base.extend({
     
     var pFullName = isOwned ? (Model.MODEL + "_" + pName) : pName;
     var propType = PropertiesManager.getPropertyType(pFullName);
-    
     if(!propType) { return null; }
     
-    return new PropertyTypeUsage(pName, pAlias, isOwned, propType);
+    return new PropertyTypeUsage(pName, pAlias, isOwned, propType, isExtension);
   }
 });
 
+/**
+ * @name BaseModel 
+ * @class The design-time view of a component type.
+ * <p>This is the base abstract class of all model classes.</p>
+ * <p>A model class generally only has static properties/methods.</p>
+ * @abstract
+ * @static
+ */
 var BaseModel = (function() {
   
-  var LegacyModel = {
-    getPropertyUsage: function(name) {
-      return PropertyTypeUsage.create(name, this); // may be null
+  /** 
+   * Make all BaseModel descendant classes inheritc static methods
+   * defined in the base class at extension time.
+   */
+  var baseExtend = Base.extend;
+  var staticExtend = function(instanceProps, staticProps) {
+    var extStaticProps = Object.create(this);
+    $.extend(extStaticProps, staticProps);
+
+    var SubClass = baseExtend.call(this, instanceProps, extStaticProps);
+    SubClass.extend = staticExtend;
+    return SubClass;
+  };
+
+  // ---------
+
+  // The BaseModel class.
+  var BM = Base.extend({}, /** @lends BaseModel */{
+    /**
+     * The unique name of the corresponding component type.
+     * <p>This is the name that component instances will 
+     *     have in their <tt>type</tt> property.</p>
+     * @type string
+     */
+    MODEL: 'BaseModel',
+    
+    /**
+     * Legacy names by which this component type is known.
+     * @type Array<string>
+     */
+    legacyNames: undefined,
+    
+    /**
+     * Obtains a JSON stub for a component instance 
+     * of the model's corresponding component type.
+     * <p>This method must be overriden in concrete sub-classes.</p>
+     * @return object the component instance stub.
+     */
+    getStub: function() { return {}; },
+
+    /**
+     * Obtains a property usage for a given property type.
+     * <p>
+     * The base implementation satisfies legacy model classes -- 
+     * the ones created directly in JavaScript, 
+     * generally the case of CDF only component types.
+     * </p>
+     * @param alias the alias of the property type usage.
+     * @return PropertyTypeUsage a property type usage, 
+     * when there is one defined, or <tt>null</tt>, otherwise.
+     */
+    getPropertyUsage: function(alias) {
+      return PropertyTypeUsage.create(alias, this); // may be null
     },
     
-    createProperty: function(name) {
-      var propUsage = this.getPropertyUsage(name);
+    getPropertyStubAndUsage: function(alias) {
+      var usage = this.getPropertyUsage(alias);
+      var type  = usage && usage.type;
+      var isUndefinedProp;
+      var isSpecialProp = (alias === 'Group');
+      var stub;
+      if(type) {
+        stub = type.stub;
+      } else {
+        isUndefinedProp = !isSpecialProp;
+        stub = {
+          description: alias,
+          tooltip:     alias
+        };
+      }
+
+      // Add a ? or ?! prefix to the description, 
+      // so that the user can realize that something is wrong.
+      if(!isSpecialProp) {
+        if(this.isUndefined) {
+          if(type) { stub = $.extend({}, stub); }
+          stub.description = "?! " + stub.description;
+          stub.tooltip     = "The component type of property '" + alias + "' is not defined.";
+          stub.classType = 'advanced';
+        } else if(isUndefinedProp) {
+          stub.description = "? " + stub.description;
+          stub.tooltip     = "Property '" + alias + "' is not defined.";
+          stub.classType = 'advanced';
+        }
+      }
+      return [stub, usage];
+    },
+
+    /**
+     * Creates a property instance for a given property type usage,
+     * given its alias.
+     * @param alias the alias of the property type usage.
+     * @return object a property instance, 
+     * when the property type usage is defined, or <tt>null</tt>, otherwise.
+     */
+    createProperty: function(alias) {
+      var propUsage = this.getPropertyUsage(alias);
       return propUsage && propUsage.create();
-    }
-  };
+    },
+
+    /**
+     * A dictionary of the registered model classes, 
+     * indexed by their {@link MODEL} property.
+     * @type object
+     */
+    models: {},
+    
+    /**
+     * A dictionary of the registered model classes, 
+     * indexed by their legacy names.
+     * @type object
+     */        
+    modelsByLegacyName: {},
+    
+    /**
+     * Registers a {@link BaseModel} sub-class that represents a model.
+     * <p>The <tt>MODEL</tt> property has the model name.</p>
+     * <p>The <tt>getStub</tt> method returns a stub 
+     * for a new component of the corresponding type.
+     * </p>
+     * @param {function} modelClass the model class constructor function.
+     * @return function the model class.
+     */
+    registerModel: function(modelClass) {
+      this.models[modelClass.MODEL] = modelClass;
+      
+      // Index also by legacy names
+      var legacyNames = modelClass.legacyNames;
+      if(legacyNames) {
+        for(var i = 0, L = legacyNames.length; i < L; i++) {
+          this.modelsByLegacyName[legacyNames[i]] = modelClass;
+        }
+      }
+      
+      if(!modelClass.getPropertyUsage) {
+        $.extend(modelClass, LegacyModel);
+      }
+      
+      return modelClass;
+    },
+
+    /**
+     * Obtains a model class given the value of its {@link MODEL} property.
+     * @param string modelId the model id.
+     * @param boolean [createIfUndefined=false] indicates if 
+     * an undefined model class should be created when a model with the given name exists.
+     * @return function the model class, if one exists, or <tt>undefined</tt>, otherwise.
+     */
+    getModel: function(modelId, createIfUndefined) {
+      var ModelClass;
+      if(modelId) {
+        ModelClass = this.models[modelId];
+        
+        // Legacy naming
+        if(!ModelClass) {
+          // Remove any "Model" Suffix.
+          var m = /^(.+?)Model$/.exec(modelId);
+          if(m) { modelId = m[1]; }
+          
+          ModelClass = this.models[modelId];
+          if(!ModelClass) {
+            ModelClass = this.modelsByLegacyName[modelId];
+          }
+        }
+
+        if(!ModelClass && createIfUndefined) {
+          ModelClass = this.createUndefined(modelId);
+        }
+      }
+      return ModelClass;
+    },
+      
+    /**
+     * Creates and registers a {@link BaseModel} sub-class, 
+     * with appropriate static properties and methods,
+     * given a model specification.
+     * <p>
+     * This is a helper method that supports 
+     * CDE generated code for component definitions, 
+     * allow for mostly declarative and concise 
+     * descriptions of component types.
+     * </p>
+     * @param object spec the component type specification. 
+     * <p>It has the following structure:</p>
+     * <ul>
+     *    <li>name - the name of the component type. 
+     *        The value of the {@link BaseModel.MODEL} property of the generated sub-class.
+     *        The name that component instances have in their <tt>type</tt> property.
+     *    </li>
+     *    <li>description - the description is the user-visible name of the component type.</li>
+     *    <li>parent - where the component type is shown in 
+     *        a dashboard's component tree (components' view).
+     *        By default, the value of {@link IndexManager.ROOTID}.
+     *    </li>
+     *    <li>legacyNames - an array of legacy name strings.</li>
+     *    <li>metas - an object with meta properties and their values. 
+     *        These are properties that are named with the prefix "meta_", or, 
+     *        possibly, named just "meta".
+     *    </li>
+     *    <li>properties - an array of property usage specifications. 
+     *        See {@link PropertyTypeUsage.create} for the structure of this specification.
+     *        Optional.
+     *    </li>
+     *    <li>baseModelClass - the base model class 
+     *        from which to derive the new model class. Optional. Internal use.
+     *    </li>
+     * </ul>
+     * @return function the custom component type model class.
+     */
+    create: function(spec) {
+      var modelName   = spec.name;
+      var modelDesc   = spec.description;
+      var modelParent = spec.parent != null ? spec.parent : IndexManager.ROOTID;
+      var modelMetas  = spec.metas;
+      var modelLegacyNames = spec.legacyNames;
+      var BaseModelClass   = spec.baseModelClass || CdeComponentModel;
+
+      // Extend the base BaseModelClass class.
+      var ModelClass = BaseModelClass.extend({}, {
+        MODEL:       modelName,
+        legacyNames: modelLegacyNames,
+        description: modelDesc,
+        parent:      modelParent,
+        
+        // Store the property specs for later lazy compilation by CdeComponentModel._getPropertyUsages.
+        _propertySpecs: spec.properties || [],
+        
+        getStub: function() {
+          return $.extend({
+              id:         TableManager.generateGUID(),
+              type:       modelName,
+              typeDesc:   modelDesc,
+              parent:     modelParent,
+              properties: this._getPropertyUsages().map(function(pu) { return pu.create(); })
+            }, modelMetas);
+        }
+      });
   
-  var CommonModel = {
+      // Register the just created model class and return it.
+      return this.registerModel(ModelClass);
+    },
+
+    /**
+     * Creates and registers a model class for 
+     * an undefined component type, given its name.
+     * <p>Having a dynamically generated model class helps
+     *    the editor preserve information of unknown component types,
+     *    and work with defined properties as much as possible.
+     *    This can be dangerous, however, if a property alias used
+     *    in the component definition is also the name of an existing global property type.
+     * </p>
+     * <p>An undefined component type can result from a coding bug, or, 
+     *    from a custom component not being read by CDE, generally
+     *    due to a CDE configuration problem or CDE plugin installation.
+     * </p>
+     * @return function the undefined component type model class.
+     */
+    createUndefined: function(name) {
+      var isSpecial = (name === 'Label' || name === 'Group');
+      return this.create({
+        name: name,
+        description:    (isSpecial ? name : ("? " + name)), // Give a clue that the component is not defined.
+        baseModelClass: UndefinedCdeComponentModel
+      });
+    }
+  }); // End BaseModel
+  
+  BM.extend = staticExtend;
+
+  /**
+   * The base model class for CDE generated model classes.
+   * <p>This class is used internally, by {@link BaseModel.create}.</p>
+   * @class CdeComponentModel
+   * @extends BaseModel
+   * @see BaseModel.create
+   */
+  var CdeComponentModel = BM.extend({}, /** @lends CdeComponentModel */{
+    /** @private */
     _addPropertyUsage: function(propUsage) {
       this._properties.push(propUsage);
       this._propertiesByAlias[propUsage.alias] = propUsage;
       this._propertiesByName [propUsage.name ] = propUsage;
       return propUsage;
     },
+    
+    /** @private */
     _addPropSpec: function(propSpec) {
       var propUsage = PropertyTypeUsage.create(propSpec, this);
       return propUsage && this._addPropertyUsage(propUsage);
     },
+    
+    /** @private */
     _getPropertyUsages: function() {
       if(this._propertySpecs) {
         this._propertiesByAlias = {};
@@ -80,6 +359,7 @@ var BaseModel = (function() {
       return this._properties;
     },
 
+    /** @override */
     getPropertyUsage: function(name) {
       // Lazy init
       if(this._propertySpecs) { this._getPropertyUsages(); }
@@ -87,65 +367,20 @@ var BaseModel = (function() {
       return this._propertiesByAlias[name] || 
              this._propertiesByName[name]  ||
              // Some component properties are extension properties --
-             // are not defined in the component type, maybe because they are deprecated --
+             // are not defined in the component type, 
+             // because they are deprecated or this is an undefined component model --
              // try to find a global definition for them, anyway.
              // If found, the property is dynamically registered in 
              // the component type's properties.
-             this._addPropSpec(name);
-    },
-    
-    createProperty: LegacyModel.createProperty
-  }; // End CommonModel
-  
-  // BaseModel
-  return Base.extend({}, {
-    MODEL:  'BaseModel',
-    getStub: function() { return {}; },
-    models:  {},
-
-    registerModel: function(_class) {
-      this.models[_class.MODEL] = _class;
-      
-      if(!_class.getPropertyUsage) {
-        $.extend(_class, LegacyModel);
+             this._addPropSpec({name: name, isExtension: true});
       }
+  }); // End CdeComponentModel
       
-      return _class;
-    },
-
-    getModel: function(modelId) {
-      return this.models[modelId];
-    },
+  var UndefinedCdeComponentModel = CdeComponentModel.extend({}, {
+    isUndefined: true
+  });
       
-    /**
-     * Creates a BaseModel sub-class with appropriate static properties and methods.
-     */
-    create: function(spec) {
-      var modelName   = spec.name;
-      var modelDesc   = spec.description;
-      var modelParent = spec.parent;
-      var modelMetas  = spec.metas;
-      
-      var CustomModel = this.extend({}, {
-        MODEL: modelName,
-        _propertySpecs: spec.properties || [], // Lazily compiled by _getPropertyUsages
-        
-        getStub: function() {
-          return $.extend({
-            id:         TableManager.generateGUID(),
-            type:       modelName,
-            typeDesc:   modelDesc,
-            parent:     modelParent != null ? modelParent : IndexManager.ROOTID,
-            properties: this._getPropertyUsages().map(function(pu) { return pu.create(); })
-          }, modelMetas);
-        }
-      }); // CustomModel
-      
-      $.extend(CustomModel, CommonModel);
-      
-      return this.registerModel(CustomModel);
-    }
-  }); // End BaseModel
+  return BM;
 }());
 
 

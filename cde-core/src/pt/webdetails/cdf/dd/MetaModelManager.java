@@ -86,7 +86,7 @@ public final class MetaModelManager
   
   public void refresh()
   {
-   this.refresh(true);
+    this.refresh(true);
   }
   
   public void refresh(boolean refreshDatasources)
@@ -138,7 +138,6 @@ public final class MetaModelManager
   }
 
   private void readDataSourceComponents(MetaModel.Builder builder) {
-    // --------------------
     // Read DataSource Components from each DataSourceProvider
     DataSourcesObjectReaderFactory dsFactory = new DataSourcesObjectReaderFactory();
 
@@ -203,20 +202,6 @@ public final class MetaModelManager
     
     for(ComponentType compType : metaModel.getComponentTypes())
     {
-      PathOrigin origin = compType.getOrigin();
-      String srcImpl = compType.getImplementationPath();
-      if (StringUtils.isNotEmpty(srcImpl))
-      {
-        try
-        {
-          componentScripts.registerFileDependency( compType.getName(), compType.getVersion(), origin, srcImpl);
-        }
-        catch (Exception e)
-        {
-          logger.error("Failed to register dependency '" + srcImpl + "'");
-        }
-      }
-      
       // General Resources
       for(Resource res : compType.getResources())
       {
@@ -263,6 +248,21 @@ public final class MetaModelManager
               logger.error("Failed to register dependency '" + res.getSource() + "'");
             }
           }
+        }
+      }
+
+      // Implementation
+      PathOrigin origin = compType.getOrigin();
+      String srcImpl = compType.getImplementationPath();
+      if (StringUtils.isNotEmpty(srcImpl))
+      {
+        try
+        {
+          componentScripts.registerFileDependency( compType.getName(), compType.getVersion(), origin, srcImpl);
+        }
+        catch (Exception e)
+        {
+          logger.error("Failed to register dependency '" + srcImpl + "'");
         }
       }
     }

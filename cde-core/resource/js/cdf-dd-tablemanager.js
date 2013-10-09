@@ -377,19 +377,19 @@ var TableManager = Base.extend({
   },
 
   extendProperties: function(row, stub){
-    // 1 - get names on original
-    // 2 - get names on stub
-    // 3 - add to the original the ones not on the second
+    // 1 - get names in `row`
+    // 2 - get names in `stub`
+    // 3 - add to `row` new ones from `stub`
     var pRow = {};
-    var rowProps = row.properties;
+    var rowProps = row.properties || (row.properties = []);
 
-    // Index names of property already on the row
-    $.each(rowProps, function(i,p){
+    // Index names of properties already in `row`
+    $.each(rowProps, function(i,p) {
       pRow[p.name] = p;
     });
 
-    $.each(stub.properties, function(i,s){
-      if(!pRow[s.name]){
+    $.each(stub.properties, function(i,s) {
+      if(!pRow[s.name]) {
         rowProps.push(s);
       }
     });
@@ -400,7 +400,7 @@ var TableManager = Base.extend({
     // * V1 - properties are all placed alphabetically between
     //        standard component props and V2 props
     // * ?  - last ones
-    rowProps.sort(function(p1, p2){
+    rowProps.sort(function(p1, p2) {
       if(p1.name === 'name') { return -1; }
       if(p2.name === 'name') { return  1; }
       

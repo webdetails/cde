@@ -3,7 +3,7 @@
         <Name>Olap Selector</Name>
         <IName>olapSelector</IName>
         <Description>Olap Selector</Description>
-        <Category>SELECTS</Category>
+        <Category>SELECTORS</Category>
         <CatDescription>Selects</CatDescription>
         <Type>PalleteEntry</Type>
         <Version>1.0</Version>

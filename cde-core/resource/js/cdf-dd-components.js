@@ -44,13 +44,12 @@ var ComponentsPanel = Panel.extend({
     var componentsTableModel = new TableModel('componentsTreeTableModel');
     componentsTableModel.setColumnNames(['Type','Name']);
     componentsTableModel.setColumnGetExpressions([
-      function(row){
-        return row.typeDesc
-        },
-      function(row){
-        return row.properties[0].value
-        }
-      ]);
+      function(row) { return row.typeDesc; },
+      function(row) {
+          var props = row.properties;
+          return props.length ? props[0].value : "";
+      }
+    ]);
     componentsTableModel.setColumnTypes(['String','String']);
     var rowId = function(row){return row.id};
     componentsTableModel.setRowId(rowId);
