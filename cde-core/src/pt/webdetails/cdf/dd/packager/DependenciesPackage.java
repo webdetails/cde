@@ -4,7 +4,6 @@
 
 package pt.webdetails.cdf.dd.packager;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class DependenciesPackage {
     CSS, JS
   };
 
-  //FIXME TODO raw dependencies, minified file output, use in DependenciesManager, check streams
+  //FIXME TODO raw dependencies, check streams
   //TODO: separate raw from rest
   private String name;
   private Map<String, FileDependency> fileDependencies;

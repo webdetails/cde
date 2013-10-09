@@ -1,5 +1,10 @@
 package pt.webdetails.cdf.dd.editor;
 
+import java.util.HashMap;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ResourceManager;
@@ -8,14 +13,6 @@ import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 
-
-
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Created with IntelliJ IDEA.
  * User: diogomariano
@@ -23,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class DashboardEditor {
 
-  public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws IOException {
+  public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws Exception {
 
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
@@ -70,6 +67,7 @@ public class DashboardEditor {
     final String cdfDeps = CdfRunJsDashboardWriter.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
     tokens.put(CdeConstants.DESIGNER_CDF_TAG, cdfDeps);
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
+    //FIXME paths
     tokens.put(CdeConstants.SERVER_URL_TAG,   CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl());
     tokens.put(CdeConstants.DATA_URL_TAG,     CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() + "Syncronize");
     

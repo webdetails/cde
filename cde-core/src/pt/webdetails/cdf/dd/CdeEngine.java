@@ -43,7 +43,7 @@ public class CdeEngine {
     public ICdeEnvironment getEnvironment() {
     	return getInstance().cdeEnv;
     }
-    
+
     private static void initialize() throws InitializationException {
   	  if (instance.cdeEnv == null) {
   		  
@@ -71,9 +71,12 @@ public class CdeEngine {
     	
     	if(obj != null && obj instanceof ICdeEnvironment){
     		return (ICdeEnvironment) obj;
-    	}else{
-    		logger.warn("No bean found for ICdeEnvironment, assuming DefaultCdeEnvironment");
-    		return new DefaultCdeEnvironment();
-    	}
+      } else {
+        String msg = "No bean found for ICdeEnvironment!!";
+        logger.fatal( msg );
+        // let's stop pretending we have an environment right now...
+        throw new InitializationException( msg, null );
+        // return new DefaultCdeEnvironment();
+      }
     }
 }

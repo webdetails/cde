@@ -131,7 +131,7 @@ public class RenderApi {
                     @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
                     @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                     @Context HttpServletRequest request,
-                    @Context HttpServletResponse response ) throws IOException {
+                    @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
 
@@ -139,8 +139,8 @@ public class RenderApi {
       IOUtils.write( "Access Denied to file " + wcdfPath, response.getOutputStream() );
     }
 
-    DashboardEditor dashboardEditor = new DashboardEditor();
-    String editor = dashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+//    DashboardEditor dashboardEditor = new DashboardEditor();
+    String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
     IOUtils.write( editor, response.getOutputStream() );
   }
 

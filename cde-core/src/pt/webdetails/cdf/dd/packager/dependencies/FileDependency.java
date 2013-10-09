@@ -52,6 +52,10 @@ public class FileDependency extends Dependency {
     return hash;
   }
 
+  protected long getTimeStamp() {
+    return origin.getReader( getContentFactory() ).getLastModified( filePath );
+  }
+
   public InputStream getFileInputStream() throws IOException {
     return origin.getReader( getContentFactory() ).getFileInputStream( filePath );
   }
@@ -62,10 +66,13 @@ public class FileDependency extends Dependency {
   public String getDependencyInclude()
   {
     // the ?v=<hash> is used to bypass browser cache when needed
+    // TODO: why not just a timestamp?
+    // String ts = "?ts=" + getTimeStamp();
     String md5 = getCheckSum();
-    String file = filePath + ((md5 == null) ? "" : "?v=" + md5);
+    String urlAppend = ((md5 == null) ? "" : "?v=" + md5);
+//    String file = filePath + ((md5 == null) ? "" : "?v=" + md5);
     // translate local path to a url path
-    return origin.getUrl(file);
+    return origin.getUrl(filePath) + urlAppend;
   }
 
   @Override

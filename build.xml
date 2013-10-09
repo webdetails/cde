@@ -8,6 +8,7 @@
     <target name="clean-all">
         <ant dir="cde-core" antfile="build.xml" target="clean-all" inheritAll="true"/>
         <ant dir="cde-pentaho" antfile="build.xml" target="clean-all" inheritAll="true"/>
+        <ant dir="cde-pentaho5" antfile="build.xml" target="clean-all" inheritAll="true"/>
     </target>
 
     <target name="build-core" >
@@ -28,7 +29,8 @@
     </target>
 
     <target name="dist" depends="publish-local-core">
-	<ant dir="cde-pentaho" antfile="build.xml" target="dist" inheritAll="true"/>
+      <ant dir="cde-pentaho" antfile="build.xml" target="dist" inheritAll="true"/>
+      <ant dir="cde-pentaho5" antfile="build.xml" target="dist" inheritAll="true"/>
     </target>
 
     <target name="install-plugin" depends="publish-local-core"> 

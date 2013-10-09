@@ -6,18 +6,14 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.*;
 import pt.webdetails.cdf.dd.model.core.writer.*;
 import pt.webdetails.cdf.dd.model.core.writer.js.*;
@@ -26,16 +22,18 @@ import pt.webdetails.cdf.dd.render.*;
 import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
-import pt.webdetails.cpf.IPluginCall;
+import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.plugin.CorePlugin;
+import pt.webdetails.cpf.plugincall.api.IPluginCall;
+import pt.webdetails.cpf.plugincall.base.CallParameters;
 
 /**
  * @author dcleao
  */
 public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter
 {
-  private static final Log _logger = LogFactory.getLog(CdfRunJsDashboardWriter.class);
+  private static final Log logger = LogFactory.getLog(CdfRunJsDashboardWriter.class);
   
   private static final String EPILOGUE = wrapJsScriptTags("Dashboards.init();");
   
@@ -131,7 +129,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       }
       catch(Exception ex)
       {
-        _logger.error("Error rendering layout", ex);
+        logger.error("Error rendering layout", ex);
       }
     }
     
@@ -239,7 +237,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
     catch(Exception ex)
     {
-      _logger.error("Failed to get cdf includes");
+      logger.error("Failed to get cdf includes");
       cdfDeps = "";
     }
     
@@ -312,7 +310,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
     catch(IOException ex)
     {
-      _logger.error(MessageFormat.format("Couldn't open template file '{0}'.", templateFile), ex);
+      logger.error(MessageFormat.format("Couldn't open template file '{0}'.", templateFile), ex);
       throw ex;
     }
   }
@@ -330,21 +328,21 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return out.toString();
   }
   
-  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws IOException {
-	    Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("dashboardContent", dashboard);
-	    params.put("debug", debug);
-	    params.put("scheme", scheme);
-	    if (type != null) {
-	      params.put("dashboardType", type);
-	    }
-	    if (!StringUtils.isEmpty(absRoot)) {
-	      params.put("root", absRoot);
-	    }
-	    
-	    IPluginCall pluginCall = CdeEngine.getInstance().getEnvironment().getInterPluginCall();
-	    pluginCall.init(CorePlugin.CDF, "GetHeaders", params);
-	    
-	    return  pluginCall.call();
+  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
+    CallParameters params = new CallParameters();
+    params.put("dashboardContent", dashboard);
+    params.put("debug", debug);
+    if (type != null) {
+      params.put("dashboardType", type);
+    }
+
+    if (!StringUtils.isEmpty(absRoot)) {
+      params.put("root", absRoot);
+    }
+
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), null, "getHeaders" );
+
+    return pluginCall.call( params.getParameters() );
+
 	 }
 }

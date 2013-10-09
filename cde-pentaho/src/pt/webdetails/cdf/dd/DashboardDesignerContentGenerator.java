@@ -452,7 +452,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	@Audited(action = "edit")
-	public void edit(final OutputStream out) throws IOException {
+	public void edit(final OutputStream out) throws Exception {
 		// 0 - Check security. Caveat: if no path is supplied, then we're in the new parameter
 		IParameterProvider requestParams = getRequestParameters();
 		IParameterProvider pathParams = getPathParameters();
