@@ -35,6 +35,8 @@ public interface ICdeEnvironment {
 	
 	public String getPluginId();
 	
+
+	
 	/**
 	 * 
 	 * @return Base content URL <u>for this plugin</u>
@@ -42,4 +44,6 @@ public interface ICdeEnvironment {
 	public String getApplicationBaseContentUrl();
 	
 	public String getRepositoryBaseContentUrl();
+	
+  String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception;
 }

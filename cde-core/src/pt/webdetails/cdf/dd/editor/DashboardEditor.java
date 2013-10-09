@@ -64,7 +64,7 @@ public class DashboardEditor {
     tokens.put(CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps);
 
 
-    final String cdfDeps = CdfRunJsDashboardWriter.getCdfIncludes("empty", "desktop", debugMode, null, scheme);
+    final String cdfDeps = CdeEngine.getEnv().getCdfIncludes("empty", "desktop", debugMode, null, scheme);
     tokens.put(CdeConstants.DESIGNER_CDF_TAG, cdfDeps);
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     //FIXME paths

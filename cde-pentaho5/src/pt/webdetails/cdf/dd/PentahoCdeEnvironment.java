@@ -15,9 +15,7 @@ import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.PentahoInterPluginCall;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
-import pt.webdetails.cpf.plugincall.api.IPluginCall;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironment {
@@ -57,7 +55,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     }
   }
 
-  @Override
+
   public String getApplicationBaseUrl() {
     return PentahoSystem.getApplicationContext().getBaseUrl();
   }
@@ -107,8 +105,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";// TODO:
   }
 
-
-  public pt.webdetails.cpf.IPluginCall getInterPluginCall() {
-    return null;
-  }
+  public String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
+    return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
+}
 }

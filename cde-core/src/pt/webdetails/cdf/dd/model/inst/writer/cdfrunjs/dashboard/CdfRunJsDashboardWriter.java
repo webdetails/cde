@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.*;
 import pt.webdetails.cdf.dd.model.core.writer.*;
 import pt.webdetails.cdf.dd.model.core.writer.js.*;
@@ -228,7 +229,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     String cdfDeps;
     try
     {
-      cdfDeps = getCdfIncludes(
+      cdfDeps = CdeEngine.getEnv().getCdfIncludes(
                 contents, 
                 this.getType(), 
                 options.isDebug(), 
@@ -328,21 +329,5 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return out.toString();
   }
   
-  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
-    CallParameters params = new CallParameters();
-    params.put("dashboardContent", dashboard);
-    params.put("debug", debug);
-    if (type != null) {
-      params.put("dashboardType", type);
-    }
 
-    if (!StringUtils.isEmpty(absRoot)) {
-      params.put("root", absRoot);
-    }
-
-    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), null, "getHeaders" );
-
-    return pluginCall.call( params.getParameters() );
-
-	 }
 }
