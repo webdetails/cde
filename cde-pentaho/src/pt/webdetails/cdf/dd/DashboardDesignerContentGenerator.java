@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -385,19 +386,24 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		// Set cache for 1 year, give or take.
 		response.setHeader("Cache-Control", "max-age=" + 60 * 60 * 24 * 365);
 		response.setHeader("content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"");
+		InputStream resInput = null;
 		try {
 			IBasicFile file = Utils.getFileViaAppropriateReadAccess(resource);
-			if(file == null){
+			if(file == null) {
 				logger.error("resource not found:" + resource);
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
 			}
-			
-			IOUtils.copy(file.getContents(), out);
+			resInput = file.getContents();
+			IOUtils.copy(resInput, out);
 			setCacheControl();
 		} catch (SecurityException e) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-		} 
+		} catch ( IOException e ) {
+		  logger.error("Erro reading resource " + resource, e);
+		} finally {
+		  IOUtils.closeQuietly( resInput );
+		}
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)

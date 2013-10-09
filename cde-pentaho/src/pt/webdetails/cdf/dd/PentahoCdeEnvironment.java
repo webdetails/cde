@@ -16,7 +16,6 @@ import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.PentahoLegacyInterPluginCall;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
@@ -59,10 +58,6 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public IDataSourceManager getDataSourceManager() {
     return DataSourceManager.getInstance();
   }
-
-//  public pt.webdetails.cpf.IPluginCall getInterPluginCall() {
-//    return new PentahoLegacyInterPluginCall();
-//  }
 
   @Override
   public Locale getLocale() {

@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
@@ -19,6 +21,8 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
  * Date: 06/09/13
  */
 public class DashboardEditor {
+
+  private static Log logger = LogFactory.getLog( DashboardEditor.class );
 
   public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws Exception {
 
@@ -63,9 +67,12 @@ public class DashboardEditor {
     tokens.put(CdeConstants.DESIGNER_STYLES_TAG,  styleDeps );
     tokens.put(CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps);
 
-
-    final String cdfDeps = CdeEngine.getEnv().getCdfIncludes("empty", "desktop", debugMode, null, scheme);
-    tokens.put(CdeConstants.DESIGNER_CDF_TAG, cdfDeps);
+    try {
+      final String cdfDeps = CdeEngine.getEnv().getCdfIncludes("empty", "desktop", debugMode, null, scheme);
+      tokens.put(CdeConstants.DESIGNER_CDF_TAG, cdfDeps);
+    } catch (Exception e) {
+      logger.fatal( "Unable to get CDF dependencies", e );
+    }
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     //FIXME paths
     tokens.put(CdeConstants.SERVER_URL_TAG,   CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl());
