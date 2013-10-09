@@ -18,7 +18,7 @@
     <bean id="olap" class="pt.webdetails.cdf.dd.api.OlapApi"/>
     <bean id="plugins" class="pt.webdetails.cdf.dd.api.PluginsApi"/>
     <bean id="renderer" class="pt.webdetails.cdf.dd.api.RenderApi"/>
-    <bean id="resources" class="pt.webdetails.cdf.dd.api.ResourcesApi"/>
+    <bean id="resourcesapi" class="pt.webdetails.cdf.dd.api.ResourcesApi"/>
     <bean id="syncronizer" class="pt.webdetails.cdf.dd.api.SyncronizerApi"/>
     <bean id="version" class="pt.webdetails.cdf.dd.api.VersionApi"/>
 </beans>
