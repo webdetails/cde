@@ -50,6 +50,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 /**
  * @author dcleao
@@ -514,72 +515,68 @@ public final class DashboardManager
     return dashboardWriteBuilder.build();
   }
   
-  private CdfRunJsDashboardWriteResult getDashboardWriteResultFromCache(
-          DashboardCacheKey cacheKey,
-          String cdeFilePath) 
-          throws FileNotFoundException
-  {
+  private CdfRunJsDashboardWriteResult
+    getDashboardWriteResultFromCache( DashboardCacheKey cacheKey, String cdeFilePath ) throws FileNotFoundException {
+
+    IUserContentAccess userContentAccess = CdeEnvironment.getUserContentAccess();
+
     // 1. Try to obtain dashboard from cache
     Element cacheElement;
-    try
-    {
-      synchronized(this._ehCacheLock)
-      {
-        cacheElement = this._ehCache.get(cacheKey);
+    try {
+      synchronized ( this._ehCacheLock ) {
+        cacheElement = this._ehCache.get( cacheKey );
       }
-    }
-    catch(CacheException ex)
-    {
-      _logger.info("Cached dashboard render invalidated, re-rendering.");
-      return null;
-    }
-    
-    // 2. In the cache?
-    if(cacheElement == null) 
-    {
-      _logger.info("Dashboard render is not in cache.");
-      return null; 
-    }
-    
-    CdfRunJsDashboardWriteResult dashWrite = 
-            (CdfRunJsDashboardWriteResult)cacheElement.getValue();
-    
-    // 3. Get the template file //XXX we're not using it
-    IBasicFile templFile = null;
-    String templPath = cacheKey.getTemplate();
-    if(StringUtils.isNotEmpty(templPath)) {
-      templFile = CdeEnvironment.getUserContentAccess().fetchFile(templPath);
-    }
-    
-    // 4. Check if cache item has expired
-    //    Cache is invalidated if the dashboard or template have changed since
-    //    the cache was loaded, or at midnight every day, 
-    //    because of dynamic generation of date parameters.
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.HOUR_OF_DAY, 00);
-    cal.set(Calendar.MINUTE, 00);
-    cal.set(Calendar.SECOND, 1);
-    
-    // The date at which the source Dashboard object
-    // was loaded from disk, not the date at which the DashResult was written.
-    Date dashLoadedDate = dashWrite.getLoadedDate();
-    
-    boolean cacheExpired = cal.getTime().after(dashLoadedDate);
-    if(cacheExpired) {
-      _logger.info("Cached dashboard render expired, re-rendering.");
+    } catch ( CacheException ex ) {
+      _logger.info( "Cached dashboard render invalidated, re-rendering." );
       return null;
     }
 
-    boolean cacheInvalid = (CdeEnvironment.getUserContentAccess().getLastModified(cdeFilePath)  > dashLoadedDate.getTime()) ||
-                           (CdeEnvironment.getUserContentAccess().fileExists(templPath) 
-                        		   && CdeEnvironment.getUserContentAccess().getLastModified(templPath) > dashLoadedDate.getTime());
-    if(cacheInvalid) {
-      _logger.info("Cached dashboard render invalidated, re-rendering.");
+    // 2. In the cache?
+    if ( cacheElement == null ) {
+      _logger.info( "Dashboard render is not in cache." );
       return null;
     }
-    
-    _logger.info("Cached dashboard render is valid, using it.");
-    
+
+    CdfRunJsDashboardWriteResult dashWrite = (CdfRunJsDashboardWriteResult) cacheElement.getValue();
+
+    // 3. Get the template file //XXX we're not using it
+    IBasicFile templFile = null;
+    String templPath = cacheKey.getTemplate();
+    if ( StringUtils.isNotEmpty( templPath ) ) {
+      templFile = userContentAccess.fetchFile( templPath );
+    }
+
+    // 4. Check if cache item has expired
+    // Cache is invalidated if the dashboard or template have changed since
+    // the cache was loaded, or at midnight every day,
+    // because of dynamic generation of date parameters.
+    Calendar cal = Calendar.getInstance();
+    cal.set( Calendar.HOUR_OF_DAY, 00 );
+    cal.set( Calendar.MINUTE, 00 );
+    cal.set( Calendar.SECOND, 1 );
+
+    // The date at which the source Dashboard object
+    // was loaded from disk, not the date at which the DashResult was written.
+    Date dashLoadedDate = dashWrite.getLoadedDate();
+
+    boolean cacheExpired = cal.getTime().after( dashLoadedDate );
+    if ( cacheExpired ) {
+      _logger.info( "Cached dashboard render expired, re-rendering." );
+      return null;
+    }
+
+    boolean cacheInvalid =
+            ( userContentAccess.getLastModified( cdeFilePath ) > dashLoadedDate.getTime() )
+            || ( userContentAccess.fileExists( templPath )
+                    &&
+                 userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
+    if ( cacheInvalid ) {
+      _logger.info( "Cached dashboard render invalidated, re-rendering." );
+      return null;
+    }
+
+    _logger.info( "Cached dashboard render is valid, using it." );
+
     return dashWrite;
   }
   
