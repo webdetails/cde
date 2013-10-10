@@ -7,7 +7,9 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -41,22 +43,22 @@ public class SyncronizerApi {
   private static final String OPERATION_SAVE_SETTINGS = "savesettings";
 
 
-  @GET
+  @POST
   @Path( "/syncronizeDashboard" )
-  public void syncronize( @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.OPERATION ) String operation, @Context HttpServletRequest request,
+  public void syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+		  @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+		  @FormParam( MethodParams.OPERATION ) String operation, @Context HttpServletRequest request,
       @Context HttpServletResponse response ) throws Exception {
 
     String filePath = file.replaceAll( "cdfde", "wcdf" );
 
-    if ( !path.isEmpty() && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+    if ( !filePath.isEmpty() && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       response.setStatus( HttpServletResponse.SC_FORBIDDEN );
       logger.warn( "Access denied for the syncronize method: " + path );
       return;
     }
 
-    if ( path.isEmpty() ) {
+    if ( filePath.isEmpty() ) {
       throw new Exception( Messages.getString( "SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION" ) );
     }
 
@@ -94,11 +96,11 @@ public class SyncronizerApi {
     }
   }
 
-  @GET
+  @POST
   @Path( "/syncronizeTemplates" )
   public void
-    syncTemplates( @QueryParam( MethodParams.OPERATION ) String operation, @QueryParam( MethodParams.FILE ) String file,
-        @QueryParam( MethodParams.STRUCTURE ) String cdfStructure,
+    syncTemplates( @FormParam( MethodParams.OPERATION ) String operation, @FormParam( MethodParams.FILE ) String file,
+    		@FormParam( MethodParams.STRUCTURE ) String cdfStructure,
         @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
     final CdfTemplates cdfTemplates = new CdfTemplates();
 
@@ -110,7 +112,7 @@ public class SyncronizerApi {
     }
   }
 
-  @GET
+  @POST
   @Path( "/syncronizeStyles" )
   public void syncStyles( @Context HttpServletResponse response ) throws IOException, DashboardDesignerException {
     final CdfStyles cdfStyles = new CdfStyles();
