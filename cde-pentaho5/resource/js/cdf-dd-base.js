@@ -36,12 +36,12 @@ var Endpoints = {
         var newDash = "null/null/null"; // file path that represents a new dash
 
         if(window.location.pathname.indexOf("/:") == -1){
-            return newDash; 
+            return newDash;
         } else {
             var regExp = window.location.pathname.match("(/:)(.*)(/)");
 
             if(regExp[2]){
-                return regExp[2].replace(new RegExp(":", "g"), "/")
+                return "/"+regExp[2].replace(new RegExp(":", "g"), "/");
             }
 
         }

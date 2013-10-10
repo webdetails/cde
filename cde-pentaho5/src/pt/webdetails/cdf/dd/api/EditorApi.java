@@ -54,7 +54,7 @@ public class EditorApi {
   @Path( "/file/delete" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public boolean deleteFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
+  public boolean deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
@@ -70,8 +70,8 @@ public class EditorApi {
   @Path( "/file/write" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public boolean writeFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.DATA ) @DefaultValue( "" ) String data ) throws IOException {
+  public boolean writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data ) throws IOException {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
       if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
@@ -98,7 +98,7 @@ public class EditorApi {
   @POST
   @Path( "/createFolder" )
   @Consumes( { APPLICATION_JSON } )
-  public boolean createFolder( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
+  public boolean createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
 
     if ( access.fileExists( path ) ) {
@@ -118,7 +118,7 @@ public class EditorApi {
 
   @GET
   @Path( "/getExternalEditor" )
-  @Produces( "text/plain" )
+  @Produces( "text/html" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String externalEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();

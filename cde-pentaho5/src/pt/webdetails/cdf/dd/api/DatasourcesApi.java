@@ -1,15 +1,12 @@
 package pt.webdetails.cdf.dd.api;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.core.Context;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -25,8 +22,7 @@ public class DatasourcesApi {
   @GET
   @Path( "/get" )
   @Produces( "text/javascript" )
-  public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard,
-      @Context HttpServletResponse response ) throws IOException {
+  public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard ) {
 
     if( dashboard.isEmpty() ) {
       return "[]";

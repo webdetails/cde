@@ -35,50 +35,42 @@ public class ResourcesApi {
 
   @GET
   @Path( "/get" )
-  public void getResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
-      @QueryParam( "resource" ) @DefaultValue( "" ) String resource, @Context HttpServletResponse response )
-    throws IOException {
-    if ( path.split( "/" ).length > 2 ) {
-      resource = path.replaceAll( "^/.*?/", "" );
-    }
-    if ( StringUtils.isEmpty( resource ) ) {
-      response.sendError( HttpServletResponse.SC_NOT_FOUND );
-      return;
-    }
-    resource = StringUtils.strip( resource, "/" );
-
-    String[] pathSplit = resource.split( "/" );
-    String[] fileName = pathSplit[pathSplit.length - 1].split( "\\." );
-
-    String mimeType;
+  @Produces( "text/plain" )
+  public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
+                           @Context HttpServletResponse response ) throws IOException {
     try {
-      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( fileName[fileName.length - 1].toUpperCase() );
-      mimeType = MimeTypes.getMimeType( fileType );
-    } catch ( java.lang.IllegalArgumentException ex ) {
-      mimeType = "";
-    } catch ( EnumConstantNotPresentException ex ) {
-      mimeType = "";
-    }
-
-    try {
-      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
-      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
-
-      response.setHeader( "Content-Type", mimeType );
-      response.setHeader( "content-disposition", "inline; filename=\"" + pathSplit[pathSplit.length - 1] + "\"" );
-
-      if ( maxAge != null && response != null ) {
-        response.setHeader( "Cache-Control", "max-age=" + maxAge );
-      }
-
       IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
+
       if ( file == null ) {
         logger.error( "resource not found:" + resource );
         response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
         return;
       }
 
-      IOUtils.write( IOUtils.toString( file.getContents() ), response.getOutputStream() );
+      IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
+      String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
+
+      String mimeType;
+      try {
+        final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( file.getExtension().toUpperCase() );
+        mimeType = MimeTypes.getMimeType( fileType );
+      } catch ( java.lang.IllegalArgumentException ex ) {
+        mimeType = "";
+      } catch ( EnumConstantNotPresentException ex ) {
+        mimeType = "";
+      }
+
+      response.setHeader( "Content-Type", mimeType );
+      response.setHeader( "content-disposition", "inline; filename=\"" + file.getName() + "\"" );
+
+      if ( maxAge != null ) {
+        response.setHeader( "Cache-Control", "max-age=" + maxAge );
+      }
+
+      byte[] contents = IOUtils.toByteArray( file.getContents() );
+
+      IOUtils.write( contents, response.getOutputStream() );
+      response.getOutputStream().flush();
     } catch ( SecurityException e ) {
       response.sendError( HttpServletResponse.SC_FORBIDDEN );
     }
@@ -90,7 +82,7 @@ public class ResourcesApi {
   public void getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
       @QueryParam( "resource" ) @DefaultValue( "" ) String resource, @Context HttpServletResponse response )
     throws IOException {
-    getResource( path, resource, response );
+    getResource( resource, response );
   }
 
   @GET
@@ -99,7 +91,7 @@ public class ResourcesApi {
   public void getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
       @QueryParam( "resource" ) @DefaultValue( "" ) String resource, @Context HttpServletResponse response )
     throws IOException {
-    getResource( path, resource, response );
+    getResource( resource, response );
   }
 
   @GET
@@ -110,29 +102,31 @@ public class ResourcesApi {
     throws IOException {
     response.setHeader( "content-disposition", "inline" );
 
-    getResource( path, resource, response );
+    getResource( resource, response );
   }
 
   @GET
   @Path( "/getImg" )
+  @Produces( "text/plain" )
   public void getImage( @QueryParam( "path" ) @DefaultValue( "" ) String path,
       @QueryParam( "resource" ) @DefaultValue( "" ) String resource, @Context HttpServletResponse response )
     throws IOException {
-    getResource( path, resource, response );
+    getResource( resource, response );
   }
 
   @GET
   @Path( "/res" )
+  @Produces( "text/plain" )
   public void res( @QueryParam( "path" ) @DefaultValue( "" ) String path,
       @QueryParam( "resource" ) @DefaultValue( "" ) String resource, @Context HttpServletResponse response )
     throws Exception {
-    getResource( path, resource, response );
+    getResource( resource, response );
   }
 
   @GET
   @Path( "/explore" )
   @Produces( "text/javascript" )
-  public void exploreFolder( @QueryParam( "dir" ) String folder, @QueryParam( "fileExtensions" ) String fileExtensions,
+  public void exploreFolder( @QueryParam( "dir" ) @DefaultValue( "/" ) String folder, @QueryParam( "fileExtensions" ) String fileExtensions,
       @QueryParam( "access" ) String access, @QueryParam( "outputType" ) String outputType,
       @Context HttpServletResponse response ) throws IOException {
 
