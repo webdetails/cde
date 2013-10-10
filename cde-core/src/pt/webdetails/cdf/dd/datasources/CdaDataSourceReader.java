@@ -70,9 +70,8 @@ public class CdaDataSourceReader
   public static List<CdaDataSource> getCdaDataSources( String dashboard ) {
     JXPathContext context;
 
-    DashboardManager dashboardManager = DashboardManager.getInstance();
     try {
-      context = dashboardManager.openDashboardAsJXPathContext( dashboard, /* wcdf */null );
+      context = DashboardManager.openDashboardAsJXPathContext( dashboard, /* wcdf */null );
     } catch ( FileNotFoundException e ) {
       return null;
     } catch ( IOException e ) {
