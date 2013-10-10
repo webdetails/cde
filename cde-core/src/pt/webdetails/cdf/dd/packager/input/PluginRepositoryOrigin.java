@@ -4,16 +4,19 @@
 
 package pt.webdetails.cdf.dd.packager.input;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
 public class PluginRepositoryOrigin extends PathOrigin {
 
-  public PluginRepositoryOrigin(String basePath) {
+  private String pluginBasePath;
+
+  public PluginRepositoryOrigin(String pluginBasePath, String basePath) {
     super(basePath);
+    this.pluginBasePath = pluginBasePath;
   }
 
   @Override
@@ -22,12 +25,8 @@ public class PluginRepositoryOrigin extends PathOrigin {
   }
 
   @Override
-  public String getUrl(String localPath) {
-    return RepositoryHelper.joinPaths(getRepositoryBaseUrlPath(), CdeEngine.getEnv().getPluginRepositoryDir(), basePath, localPath);
-  }
-
-  protected String getRepositoryBaseUrlPath() {
-    //TODO: cpf-friendly
-    return CdeEngine.getEnv().getRepositoryBaseContentUrl();
+  public String getUrl(String localPath, IUrlProvider urlProvider) {
+    String relPath = RepositoryHelper.joinPaths(pluginBasePath, basePath, localPath );
+    return urlProvider.getRepositoryUrl( relPath );
   }
 }

@@ -4,6 +4,7 @@
 
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.XmlAdhocComponentTypeReader;
 
 import java.util.Arrays;
@@ -218,7 +219,7 @@ public final class XmlFsPluginModelReader {
       
     List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(WIDGETS_DIR).listFiles(null, 
               new GenericBasicFileFilter(COMPONENT_FILENAME,DEFINITION_FILE_EXT), IReadAccess.DEPTH_ALL);
-    PathOrigin widgetsOrigin = new PluginRepositoryOrigin(WIDGETS_DIR);
+    PathOrigin widgetsOrigin = new PluginRepositoryOrigin(CdeEngine.getEnv().getPluginRepositoryDir(), WIDGETS_DIR);
     
     if(filesList != null) {
 

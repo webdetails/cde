@@ -4,8 +4,8 @@
 
 package pt.webdetails.cdf.dd.packager.input;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
@@ -25,10 +25,11 @@ public class RepositoryOrigin extends PathOrigin {
   }
 
   @Override
-  public String getUrl( String localPath ) {
-    // TODO: cpf-friendly
+  public String getUrl( String localPath, IUrlProvider urlProvider ) {
     // want it resolving to: /pentaho/content/pentaho-cdf-dd/res/<basePath>/<localPath>
-    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getRepositoryBaseContentUrl(), basePath, localPath );
+    String relPath = RepositoryHelper.joinPaths( basePath, localPath );
+    return urlProvider.getRepositoryUrl( relPath );
+//    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getRepositoryBaseContentUrl(), basePath, localPath );
   }
 
 }

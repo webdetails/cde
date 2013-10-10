@@ -97,4 +97,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
       return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
   }
 
+  public PentahoPluginEnvironment getPluginEnv() {
+    return PentahoPluginEnvironment.getInstance();
+  }
 }

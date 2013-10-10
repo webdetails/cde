@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cdf.dd.packager.input.CssUrlReplacer;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
 
@@ -24,8 +25,8 @@ public class CssMinifiedDependency extends PackagedFileDependency {
 
   private static Log logger = LogFactory.getLog(CssMinifiedDependency.class);
 
-  public CssMinifiedDependency( PathOrigin origin, String path, IRWAccess writer, Iterable<FileDependency> inputFiles ) {
-    super( origin, path, writer, inputFiles );
+  public CssMinifiedDependency( PathOrigin origin, String path, IRWAccess writer, Iterable<FileDependency> inputFiles, IUrlProvider urlProvider ) {
+    super( origin, path, writer, inputFiles, urlProvider );
   }
 
   @Override

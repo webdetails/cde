@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd.packager;
 
 import org.apache.commons.lang.StringUtils;
 
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
@@ -25,11 +26,7 @@ public abstract class PathOrigin {
     /**
      * @return URL path from host
      */
-    public abstract String getUrl(String localPath);
-
-//    public String getUrlPrepend() {
-//      return getUrl("");//TODO: which one?
-//    }
+    public abstract String getUrl(String localPath, IUrlProvider urlProvider);
 
     public String toString() {
       return getClass().getSimpleName() + ":" + basePath;

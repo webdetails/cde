@@ -124,7 +124,7 @@ public class CdeSettings {
             locations.add(new StaticSystemOrigin(path)); 
           }
           else if (StringUtils.equals(origin, "repo")) {
-            locations.add(new PluginRepositoryOrigin(path));
+            locations.add(new PluginRepositoryOrigin(CdeEngine.getEnv().getPluginRepositoryDir(), path));
           }
         }
         else {

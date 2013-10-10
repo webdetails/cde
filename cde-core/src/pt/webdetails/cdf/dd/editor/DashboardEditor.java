@@ -14,6 +14,8 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +25,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 public class DashboardEditor {
 
   private static Log logger = LogFactory.getLog( DashboardEditor.class );
+
 
   public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws Exception {
 
@@ -37,13 +40,15 @@ public class DashboardEditor {
     //TODO: this is a tad confusing
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     final String scriptDeps, styleDeps;
+    IReadAccess sysReader = CdeEnvironment.getPluginSystemReader();
     if(debugMode){
       
-      if(resMgr.existsInCache(CdeConstants.DESIGNER_SCRIPTS_RESOURCE)){
-        scriptDeps = resMgr.getResourceFromCache(CdeConstants.DESIGNER_SCRIPTS_RESOURCE);
-      }else{
-        scriptDeps = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_SCRIPTS_RESOURCE));
-        
+      if ( resMgr.existsInCache( CdeConstants.DESIGNER_SCRIPTS_RESOURCE ) ) {
+        scriptDeps = resMgr.getResourceFromCache( CdeConstants.DESIGNER_SCRIPTS_RESOURCE );
+      } else {
+
+        scriptDeps = Util.toString(sysReader.getFileInputStream(CdeConstants.DESIGNER_SCRIPTS_RESOURCE));
+
         if(scriptDeps != null){
           resMgr.putResourceInCache(CdeConstants.DESIGNER_SCRIPTS_RESOURCE, scriptDeps);
         }
@@ -52,7 +57,7 @@ public class DashboardEditor {
       if(resMgr.existsInCache(CdeConstants.DESIGNER_STYLES_RESOURCE)){
         styleDeps = resMgr.getResourceFromCache(CdeConstants.DESIGNER_STYLES_RESOURCE);
       }else{
-        styleDeps  = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_STYLES_RESOURCE));
+        styleDeps  = Util.toString(sysReader.getFileInputStream(CdeConstants.DESIGNER_STYLES_RESOURCE));
         
         if(styleDeps != null){
           resMgr.putResourceInCache(CdeConstants.DESIGNER_STYLES_RESOURCE, styleDeps);
@@ -87,7 +92,7 @@ public class DashboardEditor {
       
     }else{
     
-      resource = IOUtils.toString(CdeEnvironment.getPluginSystemReader().getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
+      resource = Util.toString(sysReader.getFileInputStream(CdeConstants.DESIGNER_RESOURCE));
     
       if (tokens != null && tokens.size() > 0) {
         for (final String key : tokens.keySet())  {

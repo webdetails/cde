@@ -13,12 +13,16 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.DependenciesPackage;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cdf.dd.packager.DependenciesPackage.PackageType;
 import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import sun.security.util.PendingException;
 
 /**
  *
@@ -45,13 +49,14 @@ public final class DependenciesManager
   
   private static DependenciesManager createInstance()
   {
-
     DependenciesManager manager = new DependenciesManager();
-
+    IUrlProvider urlProvider = CdeEngine.getEnv().getPluginEnv().getUrlProvider();
     IContentAccessFactory factory = CdeEnvironment.getContentAccessFactory();
     manager.registerPackage( StdPackages.COMPONENT_STYLES, PackageType.CSS);
     manager.registerPackage( StdPackages.COMPONENT_DEF_SCRIPTS, PackageType.JS);
-    manager.registerPackage( StdPackages.COMPONENT_SNIPPETS, new DependenciesPackage(StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory) );//XXX to change
+    manager.registerPackage(
+        StdPackages.COMPONENT_SNIPPETS,
+        new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS,PackageType.JS, factory, urlProvider ) );// TODO change
     manager.registerPackage( StdPackages.CDFDD, PackageType.JS );
 
     //read include.properties
@@ -119,6 +124,7 @@ public final class DependenciesManager
   }
 
   public boolean registerPackage(String id, PackageType type) {
-    return registerPackage( id, new DependenciesPackage( id, type, CdeEnvironment.getContentAccessFactory() ) );
+    IUrlProvider urlProvider = CdeEngine.getEnv().getPluginEnv().getUrlProvider();
+    return registerPackage( id, new DependenciesPackage( id, type, CdeEnvironment.getContentAccessFactory(), urlProvider) );
   }
 }

@@ -6,12 +6,11 @@ package pt.webdetails.cdf.dd.packager.input;
 
 import org.apache.commons.lang.StringUtils;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.util.RepositoryHelper;
-
 
 public class OtherPluginStaticSystemOrigin extends PathOrigin {
 
@@ -28,12 +27,13 @@ public class OtherPluginStaticSystemOrigin extends PathOrigin {
   }
 
   @Override
-  public String getUrl(String localPath) {
+  public String getUrl(String localPath, IUrlProvider urlProvider) {
     // ex.: 
     // pluginId=cdc
     // basePath=static, localPath=css/some.css
     // url-> "/pentaho/content/<pluginId>/..."
-    return RepositoryHelper.joinPaths( CdeEngine.getEnv().getApplicationBaseUrl() , "content", pluginId, basePath, localPath );
+   // return RepositoryHelper.joinPaths( CdeEngine.getEnv().getApplicationBaseUrl() , "content", pluginId, basePath, localPath );
+    return Util.joinPath( urlProvider.getPluginStaticBaseUrl( pluginId ), basePath, localPath );
   }
 
   @Override

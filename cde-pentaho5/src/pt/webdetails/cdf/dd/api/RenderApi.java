@@ -1,6 +1,5 @@
 package pt.webdetails.cdf.dd.api;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -36,16 +35,16 @@ public class RenderApi {
   @GET
   @Path( "/getComponentDefinitions" )
   @Produces( "text/plain" )
-  public void getComponentDefinitions( @Context HttpServletResponse response ) throws IOException {
+  public String getComponentDefinitions( @Context HttpServletResponse response ) throws IOException {
     // Get and output the definitions
-    String definition = MetaModelManager.getInstance().getJsDefinition();
-    IOUtils.write( definition.getBytes(), response.getOutputStream() );
+    return MetaModelManager.getInstance().getJsDefinition();
+    //IOUtils.write( definition.getBytes(), response.getOutputStream() );
   }
 
   @GET
   @Path( "/getContent" )
   @Produces( "text/plain" )
-  public void getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+  public String getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
       @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
@@ -60,13 +59,14 @@ public class RenderApi {
 
     CdfRunJsDashboardWriteResult dashboardWrite =
         this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
-    IOUtils.write( dashboardWrite.getContent(), response.getOutputStream() );
+    return dashboardWrite.getContent();
+//    IOUtils.write( dashboardWrite.getContent(), response.getOutputStream() );
   }
 
   @GET
   @Path( "/getHeaders" )
   @Produces( "text/plain" )
-  public void getHeaders( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+  public String getHeaders( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
       @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
@@ -81,13 +81,14 @@ public class RenderApi {
 
     CdfRunJsDashboardWriteResult dashboardWrite =
         this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
-    IOUtils.write( dashboardWrite.getHeader(), response.getOutputStream() );
+    return dashboardWrite.getHeader();
+//    IOUtils.write( dashboardWrite.getHeader(), response.getOutputStream() );
   }
 
   @GET
   @Path( "/render" )
   @Produces( MIME_TYPE )
-  public void render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+  public String render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
       @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
@@ -102,8 +103,8 @@ public class RenderApi {
 
     // Check security
     if ( !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
-      IOUtils.write( "Access Denied or File Not Found.", response.getOutputStream() );
-      return;
+      //IOUtils.write( "Access Denied or File Not Found.", response.getOutputStream() );
+      return "Access Denied or File Not Found.";
     }
 
     try {
@@ -111,22 +112,25 @@ public class RenderApi {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
       String result = dashboard.render( getCdfContext() ); // TODO: check new interplugin call
-      IOUtils.write( result, response.getOutputStream() );
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( dtStart ) + "s" );
-    } catch ( FileNotFoundException ex ) {
-      String msg = "File not found: " + ex.getLocalizedMessage();
-      logger.error( msg, ex );
-    } catch ( Exception ex ) {
+      return result;
+      //IOUtils.write( result, response.getOutputStream() );
+//    } catch ( FileNotFoundException ex ) {
+//      String msg = "File not found: " + ex.getLocalizedMessage();
+//      logger.error( msg, ex );
+//      return msg;
+    } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
       IOUtils.write( msg, response.getOutputStream() );
       logger.error( msg, ex );
+      return msg;
     }
   }
 
   @GET
   @Path( "/edit" )
   @Produces( MIME_TYPE )
-  public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
+  public String edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
                     @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
                     @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
                     @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
@@ -141,19 +145,20 @@ public class RenderApi {
 
 //    DashboardEditor dashboardEditor = new DashboardEditor();
     String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
-    IOUtils.write( editor, response.getOutputStream() );
+    return editor;
+    //IOUtils.write( editor, response.getOutputStream() );
   }
 
   @GET
   @Path( "/new" )
   @Produces( MIME_TYPE )
-  public void newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+  public String newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
-    edit( solution, path, file, debug, request, response );
+    return edit( solution, path, file, debug, request, response );
   }
 
   @GET

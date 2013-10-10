@@ -15,6 +15,7 @@ import pt.webdetails.cdf.dd.packager.dependencies.PackagedFileDependency;
 import pt.webdetails.cdf.dd.packager.dependencies.SnippetDependency;
 import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.render.StringFilter;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
@@ -45,19 +46,21 @@ public class DependenciesPackage {
 
   private Map<String, SnippetDependency> rawDependencies;
   private IContentAccessFactory factory;
-
+  protected IUrlProvider urlProvider;
+  
   /**
    * 
    * @param name
    * @param type
    * @param factory
    */
-  public DependenciesPackage(String name, PackageType type, IContentAccessFactory factory) {
+  public DependenciesPackage(String name, PackageType type, IContentAccessFactory factory, IUrlProvider urlProvider) {
     this.name = name;
     fileDependencies = new LinkedHashMap<String, FileDependency>();
     rawDependencies = new LinkedHashMap<String, SnippetDependency>();
     this.type = type;
     this.factory = factory;
+    this.urlProvider = urlProvider;
   }
 
   /**
@@ -69,7 +72,7 @@ public class DependenciesPackage {
    * @return
    */
   public boolean registerFileDependency(String name, String version, PathOrigin origin, String path) {
-    FileDependency newDep = new FileDependency( version, origin, path);
+    FileDependency newDep = new FileDependency( version, origin, path, urlProvider);
     if (registerDependency( name, newDep, fileDependencies )) {
       //invalidate packaged if there
       packagedDependency = null;
@@ -145,10 +148,10 @@ public class DependenciesPackage {
       PathOrigin origin = new StaticSystemOrigin( baseDir );
       switch ( type ) {
         case CSS:
-          packagedDependency = new CssMinifiedDependency( origin, packagedPath, writer, fileDependencies.values() );
+          packagedDependency = new CssMinifiedDependency( origin, packagedPath, writer, fileDependencies.values(), urlProvider );
           break;
         case JS:
-          packagedDependency = new JsMinifiedDependency( origin, packagedPath, writer, fileDependencies.values() );
+          packagedDependency = new JsMinifiedDependency( origin, packagedPath, writer, fileDependencies.values(), urlProvider );
           break;
         default:
           break;//TODO:

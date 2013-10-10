@@ -23,7 +23,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   private static final String PLUGIN_REPOSITORY_DIR = "cde";
   private static final String SYSTEM_DIR = "system";
-  private static final String CONTENT = "plugin";
+  private static final String PLUGIN = "plugin";
   protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
@@ -97,15 +97,19 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public String getApplicationBaseContentUrl() {
-    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/";
+    return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/";
   }
 
   @Override
   public String getRepositoryBaseContentUrl() {
-    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";// TODO:
+    return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/res/";// TODO:
   }
 
   public String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
-}
+  }
+
+  public PentahoPluginEnvironment getPluginEnv() {
+    return PentahoPluginEnvironment.getInstance();
+  }
 }

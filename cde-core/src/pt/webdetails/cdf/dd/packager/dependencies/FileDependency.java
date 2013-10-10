@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
 /**
@@ -25,13 +26,15 @@ public class FileDependency extends Dependency {
   
   protected String filePath;
   protected PathOrigin origin;
+  protected IUrlProvider urlProvider;
   private String hash;
 
-  public FileDependency(String version, PathOrigin origin, String path) {
+  public FileDependency(String version, PathOrigin origin, String path, IUrlProvider urlProvider) {
     super(version);
     this.filePath = path;
     this.hash = null;
     this.origin = origin;
+    this.urlProvider = urlProvider;
   }
 
 
@@ -72,7 +75,7 @@ public class FileDependency extends Dependency {
     String urlAppend = ((md5 == null) ? "" : "?v=" + md5);
 //    String file = filePath + ((md5 == null) ? "" : "?v=" + md5);
     // translate local path to a url path
-    return origin.getUrl(filePath) + urlAppend;
+    return origin.getUrl(filePath, urlProvider) + urlAppend;
   }
 
   @Override
@@ -81,7 +84,7 @@ public class FileDependency extends Dependency {
   }
 
   public String getUrlFilePath() {
-    return origin.getUrl(filePath);
+    return origin.getUrl(filePath, urlProvider);
   }
 
   protected IContentAccessFactory getContentFactory() {

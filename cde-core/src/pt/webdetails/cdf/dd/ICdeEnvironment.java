@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
+import pt.webdetails.cpf.PluginEnvironment;
 //import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -36,6 +37,7 @@ public interface ICdeEnvironment {
 	public String getPluginId();
 	
 
+	PluginEnvironment getPluginEnv();
 	
 	/**
 	 * 

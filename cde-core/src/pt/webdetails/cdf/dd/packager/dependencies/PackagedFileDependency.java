@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
 /**
@@ -19,8 +20,8 @@ public abstract class PackagedFileDependency extends FileDependency {
   private IRWAccess writer;
   private boolean isSaved;
 
-  public PackagedFileDependency(PathOrigin origin, String path, IRWAccess writer, Iterable<FileDependency> inputFiles) {
-    super( null, origin, path );
+  public PackagedFileDependency(PathOrigin origin, String path, IRWAccess writer, Iterable<FileDependency> inputFiles, IUrlProvider urlProvider) {
+    super( null, origin, path, urlProvider );
     this.inputFiles = inputFiles;
     this.writer = writer;
   }
