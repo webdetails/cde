@@ -2,8 +2,6 @@ package pt.webdetails.cdf.dd.api;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
-import org.json.JSONException;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.olap.OlapUtils;
 
@@ -15,6 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.json.JSONException;
 
 /**
  * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13

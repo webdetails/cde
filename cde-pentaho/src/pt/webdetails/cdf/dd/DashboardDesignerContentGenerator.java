@@ -22,8 +22,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
+
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
@@ -508,7 +512,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void olapUtils( final OutputStream out ) {
     OlapUtils olapUtils = new OlapUtils();
-    JSONObject result = null;
+    Object result = null;
 
     try {
       String operation = getRequestParameters().getStringParameter( "operation", "-" );
@@ -543,7 +547,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   }
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
-	public void exploreFolder(final OutputStream out) throws IOException {
+	public void exploreFolder(final OutputStream out) throws IOException, JSONException {
 		
 		IParameterProvider requestParams = getRequestParameters();
 		final String folder = requestParams.getStringParameter("dir", null);
