@@ -8,9 +8,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.core.Context;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
@@ -24,17 +24,20 @@ public class DatasourcesApi {
 
   @GET
   @Path( "/get" )
-  @Produces( "text/plain" )
-  public void listCdaSources( @QueryParam( MethodParams.DASHBOARD ) String dashboard, @Context HttpServletResponse response )
-    throws IOException {
+  @Produces( "text/javascript" )
+  public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard,
+      @Context HttpServletResponse response ) throws IOException {
 
-    dashboard = DashboardWcdfDescriptor.toStructurePath( dashboard );
+    if( dashboard.isEmpty() ) {
+      return "[]";
+    } else {
+      dashboard = DashboardWcdfDescriptor.toStructurePath( dashboard );
 
-    List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources( dashboard );
-    CdaDataSourceReader.CdaDataSource[] dataSources =
-        dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
-    String result = "[" + StringUtils.join( dataSources, "," ) + "]";
-    IOUtils.write( result, response.getOutputStream() );
+      List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources( dashboard );
+      CdaDataSourceReader.CdaDataSource[] dataSources =
+              dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
+      return "[" + StringUtils.join( dataSources, "," ) + "]";
+    }
   }
 
   private class MethodParams {
