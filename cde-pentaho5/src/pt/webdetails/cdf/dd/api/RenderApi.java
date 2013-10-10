@@ -166,7 +166,7 @@ public class RenderApi {
   }
 
   @GET
-  @Path( "/listRenderes" )
+  @Path( "/listRenderers" )
   @Produces( "text/javascript" )
   public String listRenderers() {
     return "{\"result\": [\"" + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType() + "\",\""
