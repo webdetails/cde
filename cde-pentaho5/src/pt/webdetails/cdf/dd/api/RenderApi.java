@@ -130,35 +130,39 @@ public class RenderApi {
   @GET
   @Path( "/edit" )
   @Produces( MIME_TYPE )
-  public String edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
-                    @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
-                    @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
-                    @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-                    @Context HttpServletRequest request,
-                    @Context HttpServletResponse response ) throws Exception {
+  public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+                  @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                  @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                  @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                  @Context HttpServletRequest request,
+                  @Context HttpServletResponse response ) throws Exception {
 
-    String wcdfPath = getWcdfRelativePath( solution, path, file );
+	  String wcdfPath = getWcdfRelativePath( solution, path, file );
 
-    if ( !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
-      IOUtils.write( "Access Denied to file " + wcdfPath, response.getOutputStream() );
-    }
+	  if ( !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
+		  IOUtils.write( "Access Denied to file " + wcdfPath, response.getOutputStream() );
+		  return;
+	  }
 
-//    DashboardEditor dashboardEditor = new DashboardEditor();
-    String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
-    return editor;
-    //IOUtils.write( editor, response.getOutputStream() );
-  }
+	//  DashboardEditor dashboardEditor = new DashboardEditor();
+	  String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+	  IOUtils.write( editor, response.getOutputStream() );
+}
 
   @GET
   @Path( "/new" )
   @Produces( MIME_TYPE )
-  public String newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-                            @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                            @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+  public void newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
+                            @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
+                            @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
-    return edit( solution, path, file, debug, request, response );
+    
+	  String wcdfPath = getWcdfRelativePath( solution, path, file );
+	  
+	  String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+	  IOUtils.write( editor, response.getOutputStream() );
   }
 
   @GET

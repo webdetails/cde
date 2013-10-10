@@ -31,11 +31,11 @@
 	</content-types>
 	<overlays>
         <overlay id="launch" resourcebundle="content/pentaho-cdf-dd/lang/messages">
-            <button id="launch_new_cde" label="${Launcher.CDE}" command="Home.openFile('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'plugin/pentaho-cdf-dd/api/renderer/new');$('#btnCreateNew').popover('hide');"/>
+            <button id="launch_new_cde" label="${Launcher.CDE}" command="Home.openFile('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'api/repos/wcdf/new');$('#btnCreateNew').popover('hide');"/>
         </overlay>
         <overlay id="startup.cde_dashboard"  resourcebundle="content/pentaho-cdf-dd/lang/messages" priority="1">
             <menubar id="newmenu">
-                <menuitem id="new-cde_dashboard" label="${Launcher.CDE}" command="mantleXulHandler.openUrl('${Launcher.CDE}','${Launcher.CDE_TOOLTIP}','plugin/pentaho-cdf-dd/api/renderer/new')" />
+                <menuitem id="new-cde_dashboard" label="${Launcher.CDE}" command="mantleXulHandler.openUrl('${Launcher.CDE}','${Launcher.CDE_TOOLTIP}','api/repos/wcdf/new')" />
             </menubar>
         </overlay>
 	</overlays>

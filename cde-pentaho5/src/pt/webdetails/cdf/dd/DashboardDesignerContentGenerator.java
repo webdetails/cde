@@ -17,6 +17,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   private static final Log logger = LogFactory.getLog( DashboardDesignerContentGenerator.class );
 
   private boolean edit = false;
+  private boolean create = false;
 
   public DashboardDesignerContentGenerator() {
     super();
@@ -45,11 +46,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     RenderApi renderer = new RenderApi();
 
-    if( edit ) {
-      renderer.edit( solution, path, file, debug, getRequest(), getResponse() );
+    if( create ) {
+    	renderer.newDashboard( solution, path, file, debug, getRequest(), getResponse() );
+    
+    } else if( edit ) {
+    	renderer.edit( solution, path, file, debug, getRequest(), getResponse() );
+    
+    } else {
+    	renderer.render( solution, path, file, inferScheme, root, absolute, bypassCacheRead, debug, getRequest(), getResponse() );
     }
-    renderer.render( solution, path, file, inferScheme, root, absolute, bypassCacheRead, debug, getRequest(),
-        getResponse() );
   }
 
   @Override
@@ -66,9 +71,24 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
     public static final String FILE = "file";
-    public static final String REQUEST = "resource";
+    public static final String REQUEST = "request";
 
     public static final String DATA = "data";
   }
 
+	public boolean isEdit() {
+		return edit;
+	}
+	
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
+	
+	public boolean isCreate() {
+		return create;
+	}
+	
+	public void setCreate(boolean create) {
+		this.create = create;
+	}
 }
