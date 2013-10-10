@@ -1,4 +1,4 @@
-<ehcache>
+<ehcache name="cdeCache">
 
 
     <!--CDE Cache configuration. 

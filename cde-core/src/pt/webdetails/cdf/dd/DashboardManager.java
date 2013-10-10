@@ -671,24 +671,19 @@ public final class DashboardManager
     return openDashboardAsJXPathContext(wcdf.getStructurePath(), wcdf);
   }
   
-  public static JXPathContext openDashboardAsJXPathContext(
-          String dashboardLocation, 
-          DashboardWcdfDescriptor wcdf)
-          throws IOException, FileNotFoundException
-  {
+  public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
+    throws IOException, FileNotFoundException {
     InputStream input = null;
     try {
-      input = CdeEnvironment.getUserContentAccess().getFileInputStream(dashboardLocation);
-      final JSONObject json = (JSONObject)JsonUtils.readJsonFromInputStream(input);
+      input = CdeEnvironment.getUserContentAccess().getFileInputStream( dashboardLocation );
+      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
 
-      if (wcdf != null)
-      {
-        json.put("settings", wcdf.toJSON());
+      if ( wcdf != null ) {
+        json.put( "settings", wcdf.toJSON() );
       }
-      
-      return JXPathContext.newContext(json);
-    }
-    finally {
+
+      return JXPathContext.newContext( json );
+    } finally {
       IOUtils.closeQuietly( input );
     }
   }

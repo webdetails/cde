@@ -65,26 +65,20 @@ public class CdaDataSourceReader
     }
   }
   
-  // TODO: The instance model 
+  // TODO: The instance model
   // already has a DataSourceComponent list in the Dashboard object...
-  public static List<CdaDataSource> getCdaDataSources(String dashboard)
-  {
+  public static List<CdaDataSource> getCdaDataSources( String dashboard ) {
     JXPathContext context;
-    try 
-    {
-      context = DashboardManager.openDashboardAsJXPathContext( 
-              dashboard, 
-              /*wcdf*/null);
-    } 
-    catch (FileNotFoundException e) 
-    {
+
+    DashboardManager dashboardManager = DashboardManager.getInstance();
+    try {
+      context = dashboardManager.openDashboardAsJXPathContext( dashboard, /* wcdf */null );
+    } catch ( FileNotFoundException e ) {
       return null;
-    } 
-    catch (IOException e) 
-    {
+    } catch ( IOException e ) {
       return null;
     }
-    return getCdaDataSources(context);
+    return getCdaDataSources( context );
   }
   
   private static List<CdaDataSource> getCdaDataSources(JXPathContext docContext)
