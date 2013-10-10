@@ -33,19 +33,19 @@ var Endpoints = {
     getFilePathFromUrl: function(){
         // ex: /pentaho/api/repos/:public:plugin-samples:pentaho-cdf-dd:cde_sample1.wcdf/wcdf.edit
         
-        var newDash = "null/null/null"; // file path that represents a new dash
+        var dash = ""; // empty file path that represents a new dash
 
         if(window.location.pathname.indexOf("/:") == -1){
-            return newDash;
+            return dash;
         } else {
             var regExp = window.location.pathname.match("(/:)(.*)(/)");
 
             if(regExp[2]){
-                return "/"+regExp[2].replace(new RegExp(":", "g"), "/");
+                dash = "/"+regExp[2].replace(new RegExp(":", "g"), "/");
             }
 
         }
-        return newDash;
+        return dash;
     }
 };
 
@@ -271,7 +271,7 @@ var StylesRequests = {
 
     listStyleRenderers: function (myself) {
 
-        $.getJSON(getPluginUrl() + "renderer/listRenderers", {
+        $.getJSON(Endpoints.getPluginUrl() + "renderer/listRenderers", {
             operation: "listStyles"
         }, function (json) {
             myself.renderers = json.result;

@@ -50,7 +50,7 @@ public class SyncronizerApi {
 		  @FormParam( MethodParams.OPERATION ) String operation, @Context HttpServletRequest request,
       @Context HttpServletResponse response ) throws Exception {
 
-    String filePath = file.replaceAll( "cdfde", "wcdf" );
+    String filePath = file.replace( ".wcdf", ".cdfde" );
 
     if ( !filePath.isEmpty() && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       response.setStatus( HttpServletResponse.SC_FORBIDDEN );
@@ -58,14 +58,11 @@ public class SyncronizerApi {
       return;
     }
 
-    if ( filePath.isEmpty() ) {
-      throw new Exception( Messages.getString( "SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION" ) );
-    }
-
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
+      params.put(MethodParams.FILE, filePath);
 
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.load( params );
@@ -96,11 +93,11 @@ public class SyncronizerApi {
     }
   }
 
-  @POST
+  @GET
   @Path( "/syncronizeTemplates" )
   public void
-    syncTemplates( @FormParam( MethodParams.OPERATION ) String operation, @FormParam( MethodParams.FILE ) String file,
-    		@FormParam( MethodParams.STRUCTURE ) String cdfStructure,
+    syncTemplates( @QueryParam( MethodParams.OPERATION ) String operation, @QueryParam( MethodParams.FILE ) String file,
+    		@QueryParam( MethodParams.STRUCTURE ) String cdfStructure,
         @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
     final CdfTemplates cdfTemplates = new CdfTemplates();
 
@@ -112,7 +109,7 @@ public class SyncronizerApi {
     }
   }
 
-  @POST
+  @GET
   @Path( "/syncronizeStyles" )
   public void syncStyles( @Context HttpServletResponse response ) throws IOException, DashboardDesignerException {
     final CdfStyles cdfStyles = new CdfStyles();
