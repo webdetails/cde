@@ -74,7 +74,7 @@
 
     <echo>distribution.version = ${distribution.version}</echo>
 
-    <target name="dist" depends="clean, resolve,jar,write-properties,dist-plugin,write-patches,dist-solution"/>
+    <target name="dist" depends="clean, resolve,jar,write-properties,dist-plugin,write-patches,replace-ext-editor-labels,dist-solution"/>
     <target name="dist-compile" depends="jar,dist-plugin"/>
 
     <property name="plugin.artifact.id" value="${plugin.name}"/>
@@ -358,5 +358,11 @@
                 <echo file='${styles.patch}' append='true'>&lt;link href="@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
             </sequential>
         </for>
+    </target>
+
+    <target name='replace-ext-editor-labels'>
+        <property file="${basedir}/build.properties"/>
+        <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
+        <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
     </target>
 </project>
