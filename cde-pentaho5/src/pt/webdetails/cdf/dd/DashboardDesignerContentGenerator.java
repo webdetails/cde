@@ -16,6 +16,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   public static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
   private static final Log logger = LogFactory.getLog( DashboardDesignerContentGenerator.class );
 
+  private boolean edit = false;
+
   public DashboardDesignerContentGenerator() {
     super();
   }
@@ -42,6 +44,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) && requestParams.getParameter( MethodParams.DEBUG ).equals( "true" );
 
     RenderApi renderer = new RenderApi();
+
+    if( edit ) {
+      renderer.edit( solution, path, file, debug, getRequest(), getResponse() );
+    }
     renderer.render( solution, path, file, inferScheme, root, absolute, bypassCacheRead, debug, getRequest(),
         getResponse() );
   }

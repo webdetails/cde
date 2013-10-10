@@ -15,6 +15,18 @@
 			<description>Dashboard Designer</description>
 			<icon-url>plugin/pentaho-cdf-dd/api/resources/get?resource=/resources/wcdfFileType.png</icon-url>
             <meta-provider>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</meta-provider>
+            <operations>
+                <operation>
+                    <id>EDIT</id>
+                    <perspective>wcdf.edit</perspective>
+                </operation>
+                <operation>
+                    <id>RUN</id>
+                </operation>
+                <operation>
+                    <id>NEWWINDOW</id>
+                </operation>
+            </operations>
 		</content-type>
 	</content-types>
 	<overlays>
