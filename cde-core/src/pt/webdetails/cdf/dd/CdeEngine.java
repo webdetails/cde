@@ -3,12 +3,19 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.bean.factory.CoreBeanFactory;
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.repository.api.IRWAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class CdeEngine {
 
@@ -58,7 +65,54 @@ public class CdeEngine {
   		  }
   		  
   		  instance.cdeEnv = env;
+  		  
+  		  instance.ensureBasicDirs();
   	  }
+    }
+
+    private void ensureBasicDirs() {
+      IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
+      // TODO: better error messages
+      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS )) {
+        logger.error( "Couldn't find or create CDE components dir." );
+      }
+      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.STYLES )) {
+        logger.error( "Couldn't find or create CDE styles dir." );
+      }
+      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES )) {
+        logger.error( "Couldn't find or create CDE templates dir." );
+      }
+      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS )) {
+        logger.error( "Couldn't find or create CDE widgets dir." );
+      }
+      else {
+        // copy widget samples into dir if not there TODO: humm...
+        if ( repoBase.fileExists( Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ) ) ) {
+          IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
+          saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde") , sysPluginSamples, "widget.cdfde" );
+          saveAndClose( repoBase, "sample.wcdf", sysPluginSamples, "widget.wcdf" );
+          saveAndClose( repoBase, "sample.cda", sysPluginSamples, "widget.cda" );
+          saveAndClose( repoBase, "sample.component.xml", sysPluginSamples, "widget.xml" );
+        }
+      }
+    }
+
+    private boolean saveAndClose( IRWAccess writer, String fileOut, IReadAccess reader, String fileIn ) {
+      InputStream input = null; 
+      try {
+        input = reader.getFileInputStream( fileIn );
+        return writer.saveFile( fileOut, input );
+      } catch ( IOException e ) {
+        logger.error( "Couldn't read " + fileIn + " in " + reader );
+      }
+      finally {
+        IOUtils.closeQuietly( input );
+      }
+      return false;
+    }
+
+    private boolean ensureDirExists(IRWAccess access, String relPath) {
+      return access.fileExists( relPath ) || access.createFolder( relPath );
     }
 
     public static ICdeEnvironment getEnv() {

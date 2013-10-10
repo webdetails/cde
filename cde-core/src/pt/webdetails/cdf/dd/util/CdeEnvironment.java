@@ -21,14 +21,14 @@ import pt.webdetails.cpf.repository.api.IUserContentAccess;
  * @author pedroteixeira
  *
  */
-public class CdeEnvironment {
+public abstract class CdeEnvironment {
 
 	public static IContentAccessFactory getContentAccessFactory() {
 		return CdeEngine.getInstance().getEnvironment().getContentAccessFactory();
 	}
 
 	public static IUserContentAccess getUserContentAccess(){
-		return getContentAccessFactory().getUserContentAccess(null);
+		return getContentAccessFactory().getUserContentAccess("/");
 	}
 	
 	public static IReadAccess getPluginRepositoryReader(){
@@ -70,9 +70,7 @@ public class CdeEnvironment {
 	public static IPluginResourceLocationManager getPluginResourceLocationManager(){
 		return CdeEngine.getInstance().getEnvironment().getPluginResourceLocationManager();
 	}
-	
-	
-	
+
 	public static IDataSourceManager getDataSourceManager(){
 		return CdeEngine.getInstance().getEnvironment().getDataSourceManager();
 	}

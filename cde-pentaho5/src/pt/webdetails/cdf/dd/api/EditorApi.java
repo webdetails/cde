@@ -15,7 +15,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
-import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
@@ -31,7 +30,7 @@ public class EditorApi {
   private static final Log logger = LogFactory.getLog( EditorApi.class );
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
   private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
-  private static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
+  //private static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
 
   @GET
   @Path( "/file/get" )
@@ -127,7 +126,7 @@ public class EditorApi {
     if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
       return IOUtils.toString( access.getFileInputStream( EXTERNAL_EDITOR_PAGE ) );
     } else {
-      String msg = "No external editor found in " + Utils.joinPath( PLUGIN_PATH, EXTERNAL_EDITOR_PAGE );
+      String msg = "External editor not found: " +  EXTERNAL_EDITOR_PAGE;
       logger.error( msg );
       return msg;
     }
@@ -143,7 +142,7 @@ public class EditorApi {
     if ( access.fileExists( COMPONENT_EDITOR_PAGE ) ) {
       return IOUtils.toString( access.getFileInputStream( COMPONENT_EDITOR_PAGE ) );
     } else {
-      String msg = "no external editor found in " + Utils.joinPath( PLUGIN_PATH, COMPONENT_EDITOR_PAGE );
+      String msg = "no external editor found: " + COMPONENT_EDITOR_PAGE;
       logger.error( msg );
       return msg;
     }

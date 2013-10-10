@@ -1,5 +1,8 @@
 package pt.webdetails.cdf.dd;
 
+/**
+ * Just constants. Inner classes serve as namespaces
+ */
 public class CdeConstants {
 	
   public static final String DEFAULT_STYLE = "Clean";
@@ -17,6 +20,16 @@ public class CdeConstants {
   public static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
 
   public static final String DESIGNER_SCRIPTS_RESOURCE = "resources/scripts.html";
+
+  /**
+   * Inner paths relative to plugin repository dir
+   */
+  public static class SolutionFolders {
+    public static final String COMPONENTS = "components";
+    public static final String WIDGETS = "widgets";
+    public static final String STYLES = "styles";
+    public static final String TEMPLATES = "templates";
+  }
 
 
   public static class MethodParams {

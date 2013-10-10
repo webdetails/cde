@@ -21,7 +21,7 @@ import pt.webdetails.cpf.resources.IResourceLoader;
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironment {
 
 
-  private static final String PLUGIN_REPOSITORY_DIR = "cde";
+  private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
   protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
