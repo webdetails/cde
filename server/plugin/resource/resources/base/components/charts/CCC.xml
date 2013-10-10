@@ -14,23 +14,23 @@
     </Metadata>
     <Contents>
       <Model>
-        <Property name="width" type="number">width</Property>
-        <Property name="height" type="number">height</Property>
+        <Property>width</Property>
+        <Property>height</Property>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>customfunction</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -50,7 +50,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -276,17 +276,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -306,7 +305,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -529,17 +528,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -559,7 +557,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -732,17 +730,16 @@
           <Property name="valueFormat">cccValueFormat</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -762,7 +759,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -822,17 +819,16 @@
           <Property name="valueRole">cccValueRole</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -852,7 +848,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -1078,17 +1074,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1108,7 +1103,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -1233,17 +1228,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1263,7 +1257,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -1489,17 +1483,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1519,7 +1512,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -1709,17 +1702,16 @@
           <Property name="yRole">cccYRole</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1739,7 +1731,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -1929,17 +1921,16 @@
           <Property name="yRole">cccYRole</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -1959,7 +1950,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -2118,17 +2109,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2148,7 +2138,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -2261,17 +2251,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2291,7 +2280,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -2517,17 +2506,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2547,7 +2535,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -2773,17 +2761,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -2803,7 +2790,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -3029,17 +3016,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3059,7 +3045,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -3167,17 +3153,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
@@ -3197,7 +3182,7 @@
     <Contents>
       <Model>
         <Definition name="chartDefinition">
-          <Property type="query">dataSource</Property>
+          <Property>dataSource</Property>
           <Property name="width">width</Property>
           <Property name="height">height</Property>
           <Property name="extensionPoints">cccExtensionPoints</Property>
@@ -3361,17 +3346,16 @@
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
-        <Property type="boolean">executeAtStart</Property>
-        <Property type="function">preChange</Property>
-        <Property type="function">postChange</Property>
-        <Property type="function">postFetch</Property>
-        <Property type="function">customfunction</Property>
-        <Property type="string">htmlObject</Property>
-        <Property type="function">preExecution</Property>
-        <Property type="function">postExecution</Property>
-        <Property type="number">tooltip</Property>
-        <Property type="number">listeners</Property>
-        <Property type="number">refreshPeriod</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
       </Model>
     </Contents>
   </DesignerComponent>
