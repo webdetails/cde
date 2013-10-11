@@ -8,13 +8,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
+ * TODO: what is a resource manager?
  * User: pedro
  * Date: Dec 22, 2009
  * Time: 4:55:59 PM
  */
 public class ResourceManager {
+
+  private static final Log logger = LogFactory.getLog(ResourceManager.class);
 
   public static ResourceManager instance;
   
@@ -86,8 +91,14 @@ public class ResourceManager {
 
     if (tokens != null) {
       for (final String key : tokens.keySet()) {
-        keyBuilder.append(key.hashCode());
-        keyBuilder.append(tokens.get(key).hashCode());
+        String value = tokens.get( key );
+        if (value != null) {
+          keyBuilder.append(key.hashCode());
+          keyBuilder.append(value.hashCode());
+        }
+        else {
+          logger.error( "NULL token for key " + key );
+        }
       }
     }
 

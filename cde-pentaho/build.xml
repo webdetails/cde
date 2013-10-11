@@ -74,7 +74,7 @@
 
     <echo>distribution.version = ${distribution.version}</echo>
 
-    <target name="dist" depends="clean, resolve,jar,dist-plugin,write-properties,write-patches,replace-ext-editor-labels,dist-solution"/>
+    <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,replace-ext-editor-labels,dist-solution"/>
     <target name="dist-compile" depends="jar,dist-plugin"/>
 
     <property name="plugin.artifact.id" value="${plugin.name}"/>
@@ -122,11 +122,14 @@
 
   Creates a distribution of this project's plugin zip
   ====================================================================-->
-    <target name="dist-plugin" depends="jar" description="Creates a distribution">
+    <target name="make-stage">
         <!-- Make dirs-->
         <mkdir dir="${stage.dir}"/>
         <mkdir dir="${stage.dir}/${plugin.name}"/>
         <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
+    </target>
+  
+    <target name="dist-plugin" depends="jar,make-stage" description="Creates a distribution">
 
         <!-- Copy core resources -->
         <copy todir='${stage.dir}/${plugin.name}'>
@@ -288,7 +291,7 @@
         </antcall>
     </target>
 
-    <target name="write-properties">
+    <target name="write-properties" depends="make-stage">
         <!-- Create includes.properties -->
         <echo file="${stage.dir}/${plugin.name}/${includes.name}"/>
         <for list='${core-scripts}' param='filename'>
@@ -336,7 +339,7 @@
         </for>
     </target>
 
-    <target name='write-patches'>
+    <target name="write-patches" depends="write-properties">
         <property name="scripts.patch" value="${stage.dir}/${plugin.name}/resources/scripts.html"/>
         <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
         <property file="${includes.path}"/>

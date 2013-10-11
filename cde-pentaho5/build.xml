@@ -74,7 +74,7 @@
 
     <echo>distribution.version = ${distribution.version}</echo>
 
-    <target name="dist" depends="clean, resolve,jar,write-properties,dist-plugin,write-patches,replace-ext-editor-labels,dist-solution"/>
+    <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,replace-ext-editor-labels,dist-solution"/>
     <target name="dist-compile" depends="jar,dist-plugin"/>
 
     <property name="plugin.artifact.id" value="${plugin.name}"/>
@@ -339,7 +339,7 @@
         </for>
     </target>
 
-    <target name='write-patches'>
+    <target name="write-patches" depends="write-properties">
         <property name="scripts.patch" value="${stage.dir}/${plugin.name}/resources/scripts.html"/>
         <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
         <property file="${includes.path}"/>
