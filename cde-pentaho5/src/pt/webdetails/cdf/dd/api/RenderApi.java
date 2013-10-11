@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
@@ -93,8 +94,8 @@ public class RenderApi {
       @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
       @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
       @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug, @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws IOException {
+      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+      @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId    , @Context HttpServletRequest request) throws IOException {
 
     String scheme = inferScheme ? "" : request.getScheme();
     String filePath = getWcdfRelativePath( solution, path, file );
@@ -109,7 +110,7 @@ public class RenderApi {
       Date dtStart = new Date();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
-      String result = dashboard.render( getCdfContext() ); // TODO: check new interplugin call
+      String result = dashboard.render(CdeEngine.getEnv().getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( dtStart ) + "s" );
       return result;
       //IOUtils.write( result, response.getOutputStream() );
@@ -119,7 +120,6 @@ public class RenderApi {
 //      return msg;
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
-      IOUtils.write( msg, response.getOutputStream() );
       logger.error( msg, ex );
       return msg;
     }
@@ -171,7 +171,7 @@ public class RenderApi {
         + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType() + "\"]}";
   }
 
-  @POST
+  @GET
   @Path( "/refresh" )
   public void refresh() throws Exception {
     DashboardManager.getInstance().refreshAll();
@@ -207,6 +207,7 @@ public class RenderApi {
     public static final String ROOT = "root";
     public static final String BYPASSCACHE = "bypassCache";
     public static final String DEBUG = "debug";
+    public static final String VIEWID = "viewId";
   }
 
 }

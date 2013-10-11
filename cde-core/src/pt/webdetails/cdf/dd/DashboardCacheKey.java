@@ -6,7 +6,9 @@ package pt.webdetails.cdf.dd;
 
 import org.apache.commons.lang.StringUtils;
 
-public final class DashboardCacheKey
+import java.io.Serializable;
+
+public final class DashboardCacheKey implements Serializable
 {
   private final String cdfde, template, root;
   private final boolean debug, abs;

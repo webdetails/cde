@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 package pt.webdetails.cdf.dd;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -31,10 +32,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   @Override
   public void createContent() throws Exception {
     IParameterProvider requestParams = parameterProviders.get( MethodParams.REQUEST );
+    IParameterProvider pathParams = parameterProviders.get( MethodParams.PATH );
 
     String solution = requestParams.getStringParameter( MethodParams.SOLUTION, "" ), path =
         requestParams.getStringParameter( MethodParams.PATH, "" ), file = requestParams.getStringParameter( MethodParams.FILE, "" );
     String root = requestParams.getStringParameter( MethodParams.ROOT, "" );
+
+    String viewId = requestParams.getStringParameter( MethodParams.VIEWID, "" );
+
+    String filePath = pathParams.getStringParameter( MethodParams.PATH, null);
 
     boolean inferScheme =
         requestParams.hasParameter( MethodParams.INFER_SCHEME ) && requestParams.getParameter( MethodParams.INFER_SCHEME ).equals( "false" );
@@ -47,13 +53,16 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     RenderApi renderer = new RenderApi();
 
     if( create ) {
-    	renderer.newDashboard( solution, path, file, debug, getRequest(), getResponse() );
+    	renderer.newDashboard( "", "", filePath, debug, getRequest(), getResponse() );
     
     } else if( edit ) {
-    	renderer.edit( solution, path, file, debug, getRequest(), getResponse() );
+    	renderer.edit( "", "", filePath, debug, getRequest(), getResponse() );
     
     } else {
-    	renderer.render( solution, path, file, inferScheme, root, absolute, bypassCacheRead, debug, getRequest(), getResponse() );
+    	String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, getRequest());
+
+      IOUtils.write(result, getResponse().getOutputStream());
+      getResponse().getOutputStream().flush();
     }
   }
 
@@ -72,6 +81,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String PATH = "path";
     public static final String FILE = "file";
     public static final String REQUEST = "request";
+    public static final String VIEWID = "viewId";
 
     public static final String DATA = "data";
   }

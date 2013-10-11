@@ -28,5 +28,17 @@ public class InterPluginBroker {
     
     return pluginCall.call( params.getParameters() );
 
-   }
+  }
+
+  public static String getCdfContext(String dashboard, String action, String viewId) throws Exception {
+    CallParameters params = new CallParameters();
+    params.put("path", dashboard);
+    params.put("action", action);
+    params.put("viewId", viewId);
+
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), null, "getContext" );
+
+    return pluginCall.call( params.getParameters() );
+
+  }
 }

@@ -112,6 +112,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
   }
 
+  public String getCdfContext(String dashboard, String action, String viewId) throws Exception {
+    return InterPluginBroker.getCdfContext( dashboard, action, viewId );
+  }
+
   public PentahoPluginEnvironment getPluginEnv() {
     return PentahoPluginEnvironment.getInstance();
   }
