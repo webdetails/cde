@@ -362,6 +362,9 @@
         <property file="${basedir}/build.properties"/>
         <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
         <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
+
+        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
+        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
     </target>
     
 </project>
