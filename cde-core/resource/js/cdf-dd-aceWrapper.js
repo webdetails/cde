@@ -48,14 +48,14 @@ var CodeEditor = Base.extend({
 	loadFile: function(fileName){
 		var myself = this;
 		//check edit permission
-		$.get("canEdit", {path: fileName},
+		$.get("file/canEdit", {path: fileName},
 			function(result){
 				var readonly = result != 'true';
 				myself.setReadOnly(readonly);
 				//TODO: can read?..get permissions?...
 
 				//load file contents
-				$.get("getFile",{path:fileName},
+				$.get("file/get",{path:fileName},
 					function(fileContents) {
 						myself.setContents(fileContents);
 					}
@@ -75,13 +75,18 @@ var CodeEditor = Base.extend({
 	},
 	
 	saveFile: function(fileName, contents, callback){
-		$.post("writeFile", { path: fileName, data: contents },
-			 function(data){
-				if(typeof callback == 'function'){
-					callback(data);
-				}
-			 }
-		);
+        $.ajax({
+            url: "file/write",
+            type: "POST",
+            contentType: "application/xml",
+            dataType: "xml",
+            data: { path: fileName, data: contents },
+            complete: function(data){
+                if(typeof callback == 'function'){
+                    callback(data);
+                }
+            }
+        });
 	},
 	
 	getContents: function(){

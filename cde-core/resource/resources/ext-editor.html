@@ -101,13 +101,19 @@
         var save = function(){
           editor.saveFile(params.path, editor.getContents(),
             function(result){
-              if(result.indexOf('saved ok') > -1){
-                setDirty(false);
-                notify(result);
-              }
-              else {
-                notify(result,'error');
-              }
+                var msg = "";
+                if($.type(result) == "object"){
+                    msg = result.responseText;
+                } else if($.type(result) == "string"){
+                    msg = result;
+                }
+                if(msg.indexOf('saved ok') > -1){
+                    setDirty(false);
+                    notify(msg);
+                }
+                else {
+                    notify(msg,'error');
+                }
             }
           );
         };

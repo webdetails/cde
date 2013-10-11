@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import static javax.ws.rs.core.MediaType.WILDCARD;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,12 +10,14 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
@@ -30,7 +33,6 @@ public class EditorApi {
   private static final Log logger = LogFactory.getLog( EditorApi.class );
   private static final String EXTERNAL_EDITOR_PAGE = "resources/ext-editor.html";
   private static final String COMPONENT_EDITOR_PAGE = "resources/cdf-dd-component-editor.html";
-  //private static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
 
   @GET
   @Path( "/file/get" )
@@ -52,39 +54,44 @@ public class EditorApi {
 
   @POST
   @Path( "/file/delete" )
-  @Produces( "text/plain" )
+  @Produces( "text/javascript" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public boolean deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
+  public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                             @Context HttpServletResponse response) throws IOException {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
-      return true;
+      JsonUtils.buildJsonResult( response.getOutputStream(), true, null );
     } else {
       logger.debug( "File: " + path + "not removed" );
-      return false;
+      JsonUtils.buildJsonResult( response.getOutputStream(), false, null );
     }
-
   }
 
   @POST
   @Path( "/file/write" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public boolean writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data ) throws IOException {
+  public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
+      @Context HttpServletResponse response) throws IOException {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+
+    String msg = "";
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
       if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
-        logger.debug( "File: " + path + " written" );
-        return true;
+        msg = "file '" + path + "' saved ok";
+        logger.debug( msg );
       } else {
-        logger.error( "writeFile: failed saving " + path );
-        return false;
+        msg = "error saving file " + path;
+        logger.error( msg );
       }
     } else {
-      logger.error( "writeFile: no permissions to write file " + path );
-      return false;
+      msg = "no permissions to write file " + path;
+      logger.error( msg );
     }
+
+    return msg;
   }
 
   @GET
@@ -97,22 +104,25 @@ public class EditorApi {
 
   @POST
   @Path( "/createFolder" )
-  @Consumes( { APPLICATION_JSON } )
-  public boolean createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                            @Context HttpServletResponse response) throws IOException {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
 
+    String msg;
     if ( access.fileExists( path ) ) {
-      logger.debug( "Folder: " + path + " already exists" );
-      return false;
+      msg = "already exists: " + path;
+      logger.debug( msg );
     } else {
       if ( access.createFolder( path ) ) {
-        logger.debug( "Folder: " + path + " created" );
-        return true;
+        msg = path + "created ok";
+        logger.debug( msg );
       } else {
-        logger.debug( "Folder: " + path + " not created" );
-        return false;
+        msg = "error creating folder " + path;
+        logger.debug( msg );
       }
     }
+    return msg;
   }
 
 
@@ -135,7 +145,7 @@ public class EditorApi {
 
   @GET
   @Path( "/getComponentEditor" )
-  @Produces( "text/plain" )
+  @Produces( "text/html" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String componentEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
