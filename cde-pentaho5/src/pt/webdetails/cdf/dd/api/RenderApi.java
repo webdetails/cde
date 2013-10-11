@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
@@ -110,7 +111,7 @@ public class RenderApi {
       Date dtStart = new Date();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
-      String result = dashboard.render(CdeEngine.getEnv().getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
+      String result = dashboard.render(InterPluginBroker.getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( dtStart ) + "s" );
       return result;
       //IOUtils.write( result, response.getOutputStream() );

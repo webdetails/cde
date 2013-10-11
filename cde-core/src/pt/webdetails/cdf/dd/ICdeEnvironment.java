@@ -51,5 +51,5 @@ public interface ICdeEnvironment {
 
   String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception;
 
-  String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
+  //String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
 }
