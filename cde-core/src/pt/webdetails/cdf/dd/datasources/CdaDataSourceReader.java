@@ -110,14 +110,6 @@ public class CdaDataSourceReader
       fileName = StringUtils.replace(fileName, toReplace, replaceWith);
       //just add cda name
       dataSources.add(new CdaDataSource(fileName, null));
-//      
-//  
-//      while(builtInDataSources.hasNext()){
-//        Pointer source = builtInDataSources.next();
-//        if(!(source instanceof NullPointer)){
-//          dataSources.add(new CdaDataSource(docContext.getRelativeContext(source), fileName));
-//        }
-//      }
     }
     
     return dataSources;

@@ -7,120 +7,84 @@ package pt.webdetails.cdf.dd.datasources;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import pt.webdetails.cpf.InterPluginCall;
-import pt.webdetails.cpf.plugins.Plugin;
+import pt.webdetails.cdf.dd.InterPluginBroker;
 
 public class DataSourceProvider implements IDataSourceProvider {
   public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
 
-  private Plugin provider;
+  String pluginId;
 
-  private InterPluginCall.Plugin providerPlugin;
-
-  protected Logger logger = LoggerFactory.getLogger(getClass());
+  private static Log logger = LogFactory.getLog(DataSourceProvider.class);
 
   /**
    * 
    * @param provider PLugin that contains Data Source definitions
    * @throws InvalidDataSourceProviderException when passed provider is null
    */
-  public DataSourceProvider(Plugin provider) throws InvalidDataSourceProviderException
+  public DataSourceProvider(String pluginId) throws InvalidDataSourceProviderException
   {
-    if(provider == null) { throw new IllegalArgumentException("provider"); }
-
-    setProvider(provider);
+    assert pluginId != null;
+    this.pluginId = pluginId;
   }
   
   public JSON getDataSourceDefinitions(boolean refresh)
   {
-    JSON result = null;
-
-    InterPluginCall listDATypesCall = new InterPluginCall(this.providerPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
-    listDATypesCall.setSession(PentahoSessionHolder.getSession());
-    listDATypesCall.putParameter("refreshCache", "" + refresh);
-
     try 
     {
-      String dsDefinitions = listDATypesCall.call();
-      result = JSONSerializer.toJSON(dsDefinitions);
+      String dsDefinitions = InterPluginBroker.getDataSourceDefinitions(pluginId, null, DATA_SOURCE_DEFINITION_METHOD_NAME, refresh);
+      return JSONSerializer.toJSON(dsDefinitions);
     } 
     catch(Exception ex)
     {
       logger.error(ex.getMessage(), ex);
+      return null;
     }
-
-    return result;
   }
 
   public String getId()
   {
-    return provider.getId();
+    return pluginId;
   }
 
-  private void setProvider(Plugin provider) throws InvalidDataSourceProviderException 
-  {
-    InterPluginCall.Plugin ipcPlugin = new InterPluginCall.Plugin(provider.getId(), provider.getName());
-    
-    checkValid(ipcPlugin);
+//  protected void checkValid(InterPluginCall.Plugin ipcPlugin) throws InvalidDataSourceProviderException 
+//  {
+//    InterPluginCall ipc = new InterPluginCall(ipcPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
+//    if(!ipc.pluginExists()) 
+//    {
+//      throw new InvalidDataSourceProviderException(String.format("%s not found!", this));
+//    }
+//
+//    /*
+//     * TODO(rafa) 
+//     * 
+//     * check if there is a better way to check if a given plugin has a method
+//     * called DATA_SOURCE_DEFINITION_METHOD_NAME defined
+//     */
+//    String result = null;
+//    try 
+//    {
+//      result = ipc.call();
+//    } 
+//    catch(Exception e) 
+//    {
+//      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
+//          DATA_SOURCE_DEFINITION_METHOD_NAME, this), e);
+//    }
+//
+//    if(StringUtils.isEmpty(result)) 
+//    {
+//      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
+//          DATA_SOURCE_DEFINITION_METHOD_NAME, this));
+//    }
+//
+//  }
 
-    this.provider = provider;
-    this.providerPlugin = ipcPlugin;
-  }
-  
-  
-  protected void checkValid(InterPluginCall.Plugin ipcPlugin) throws InvalidDataSourceProviderException 
-  {
-    InterPluginCall ipc = new InterPluginCall(ipcPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
-    if(!ipc.pluginExists()) 
-    {
-      throw new InvalidDataSourceProviderException(String.format("%s not found!", this));
-    }
-
-    /*
-     * TODO(rafa) 
-     * 
-     * check if there is a better way to check if a given plugin has a method
-     * called DATA_SOURCE_DEFINITION_METHOD_NAME defined
-     */
-    String result = null;
-    try 
-    {
-      result = ipc.call();
-    } 
-    catch(Exception e) 
-    {
-      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
-          DATA_SOURCE_DEFINITION_METHOD_NAME, this), e);
-    }
-
-    if(StringUtils.isEmpty(result)) 
-    {
-      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
-          DATA_SOURCE_DEFINITION_METHOD_NAME, this));
-    }
-
-  }
-  
   @Override
   public String toString() 
   {
-    String result = "";
-
-    if(provider != null) 
-    {
-      result = String.format(
-              "DataSourceProvider [id=%s, name=%s, path=%s]", 
-              provider.getId(), 
-              provider.getName(),
-              provider.getPath());
-    }
-
-    return result;
+    return String.format("DataSourceProvider [pluginId=%s]", pluginId);
   }
 }

@@ -22,7 +22,6 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;

@@ -7,7 +7,6 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
-import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.writer.DefaultThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
@@ -125,7 +124,7 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
   
   // --------------
   
-  public String getId(Component comp)
+  public String getId(Component<?> comp)
   {
     return comp.buildId(this._options.getAliasPrefix());
   }

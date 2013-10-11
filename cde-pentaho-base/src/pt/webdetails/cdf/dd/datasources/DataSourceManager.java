@@ -13,13 +13,12 @@ import java.util.Map;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
-import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 
 /**
@@ -29,11 +28,11 @@ import pt.webdetails.cpf.plugins.PluginsAnalyzer;
  */
 public class DataSourceManager implements IDataSourceManager {
   public static final String CDE_DATASOURCE_IDENTIFIER = "cde-datasources";
-  
-  private static final Logger logger = LoggerFactory.getLogger(DataSourceManager.class);
-  
+
+  private static Log logger = LogFactory.getLog(DataSourceManager.class);
+
   private static DataSourceManager instance;
-  
+
   // The map key is the data source provider id.
   private final Map<String, DataSourceProvider> providersById;
   
@@ -74,19 +73,16 @@ public class DataSourceManager implements IDataSourceManager {
     List<PluginsAnalyzer.PluginWithEntity> pluginsWithEntity = pluginsAnalyzer.getRegisteredEntities("/" + CDE_DATASOURCE_IDENTIFIER);
 
     for(PluginsAnalyzer.PluginWithEntity entity : pluginsWithEntity) {
-      Plugin provider = entity.getPlugin();
+      String provider = entity.getPlugin().getId();
 
       try {
         DataSourceProvider ds = new DataSourceProvider(provider);
         dataSourceProviders.add(ds);
-        logger.info("Found valid CDE Data Source provider: {}", ds);
+        logger.debug( String.format("Found valid CDE Data Source provider: %s", ds) );
       } 
       catch(InvalidDataSourceProviderException e)
       {
-        logger.warn(
-            "Found invalid CDE Data Source provider in: {}. " + 
-            "Please review plugin implementation and/or configuration.",
-            provider.getPath());
+        logger.error( String.format("Found invalid CDE Data Source provider in plugin %s.",provider) );
       }
     }
 
@@ -193,13 +189,13 @@ public class DataSourceManager implements IDataSourceManager {
         
         for(DataSourceProvider ds : providers)
         {
-          logger.info("Loaded DataSourceProvider: id={}, object={}", ds.getId(), ds);
+          logger.info( String.format("Loaded DataSourceProvider: id=%s, object=%s", ds.getId(), ds ));
           providersById.put(ds.getId(), ds);
         }
 
-        logger.info("Successfully initialized.");
+        logger.debug("Successfully initialized.");
       } catch(Exception e) {
-        logger.error("Error initializing: {}", e.getMessage(), e);
+        logger.error("Error initializing.", e);
       }
     }
   }

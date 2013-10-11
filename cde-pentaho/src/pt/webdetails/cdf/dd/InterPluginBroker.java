@@ -5,11 +5,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.PentahoLegacyInterPluginCall;
 import pt.webdetails.cpf.plugin.CorePlugin;
 
 /**
- * at least put cdf stuff here
+ * temporary arrangement for inter plugin calls
  */
 public class InterPluginBroker {
 
@@ -29,5 +30,13 @@ public class InterPluginBroker {
     pluginCall.init(CorePlugin.CDF, "GetHeaders", params);
 
     return pluginCall.call();
+  }
+
+  public static String getDataSourceDefinitions(String pluginId, String service, String method, boolean forceRefresh) throws Exception {
+    PentahoCdeEnvironment.env().getPluginCall( pluginId, service, method );
+    InterPluginCall listDATypesCall = new InterPluginCall(new InterPluginCall.Plugin(pluginId), method);
+    // listDATypesCall.setSession(PentahoSessionHolder.getSession()); //TODO: why?
+    listDATypesCall.putParameter( "refreshCache", Boolean.toString( forceRefresh ) );
+    return listDATypesCall.call();
   }
 }

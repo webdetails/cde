@@ -19,118 +19,117 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class CdeEngine {
 
-    private static CdeEngine instance;
-    protected static Log logger = LogFactory.getLog(CdeEngine.class);
-    private ICdeEnvironment cdeEnv;
+  private static CdeEngine instance;
+  protected static Log logger = LogFactory.getLog( CdeEngine.class );
+  private ICdeEnvironment cdeEnv;
 
+  private CdeEngine() {
+    logger.debug( "Starting ElementEngine" );
+  }
 
-    private CdeEngine() {
-        logger.debug("Starting ElementEngine");
-    } 
+  private CdeEngine( ICdeEnvironment environment ) {
+    this();
+    this.cdeEnv = environment;
+  }
 
-    private CdeEngine(ICdeEnvironment environment) {
-        this();
-        this.cdeEnv = environment;
-    }
+  public static CdeEngine getInstance() {
 
-    public static CdeEngine getInstance() {
-
-        if (instance == null) {
-            instance = new CdeEngine();
-            try {
-            	initialize();
-            } catch (Exception ex) {
-              logger.fatal("Error initializing CdeEngine: " + Util.getExceptionDescription(ex));
-            }                                    
-        }
-
-        return instance;
-    }
-    
-    public ICdeEnvironment getEnvironment() {
-    	return getInstance().cdeEnv;
-    }
-
-    private static void initialize() throws InitializationException {
-  	  if (instance.cdeEnv == null) {
-  		  
-  		  ICdeBeanFactory factory = new CoreBeanFactory();
-  		  
-  		  // try to get the environment from the configuration
-  		  // will return the DefaultCdaEnvironment by default
-  		  ICdeEnvironment env = instance.getConfiguredEnvironment(factory);
-  		  
-  		  if(env != null){
-  			  env.init(factory);
-  		  }
-  		  
-  		  instance.cdeEnv = env;
-  		  
-  		  instance.ensureBasicDirs();
-  	  }
-    }
-
-    private void ensureBasicDirs() {
-      IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
-      // TODO: better error messages
-      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS )) {
-        logger.error( "Couldn't find or create CDE components dir." );
-      }
-      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.STYLES )) {
-        logger.error( "Couldn't find or create CDE styles dir." );
-      }
-      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES )) {
-        logger.error( "Couldn't find or create CDE templates dir." );
-      }
-      if (!ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS )) {
-        logger.error( "Couldn't find or create CDE widgets dir." );
-      }
-      else {
-        // copy widget samples into dir if not there TODO: humm...
-        if ( repoBase.fileExists( Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ) ) ) {
-          IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
-          saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde") , sysPluginSamples, "widget.cdfde" );
-          saveAndClose( repoBase, "sample.wcdf", sysPluginSamples, "widget.wcdf" );
-          saveAndClose( repoBase, "sample.cda", sysPluginSamples, "widget.cda" );
-          saveAndClose( repoBase, "sample.component.xml", sysPluginSamples, "widget.xml" );
-        }
-      }
-    }
-
-    private boolean saveAndClose( IRWAccess writer, String fileOut, IReadAccess reader, String fileIn ) {
-      InputStream input = null; 
+    if ( instance == null ) {
+      instance = new CdeEngine();
       try {
-        input = reader.getFileInputStream( fileIn );
-        return writer.saveFile( fileOut, input );
-      } catch ( IOException e ) {
-        logger.error( "Couldn't read " + fileIn + " in " + reader );
+        initialize();
+      } catch ( Exception ex ) {
+        logger.fatal( "Error initializing CdeEngine: " + Util.getExceptionDescription( ex ) );
       }
-      finally {
-        IOUtils.closeQuietly( input );
+    }
+
+    return instance;
+  }
+
+  public ICdeEnvironment getEnvironment() {
+    return getInstance().cdeEnv;
+  }
+
+  private static void initialize() throws InitializationException {
+    if ( instance.cdeEnv == null ) {
+
+      ICdeBeanFactory factory = new CoreBeanFactory();
+
+      // try to get the environment from the configuration
+      // will return the DefaultCdaEnvironment by default
+      ICdeEnvironment env = instance.getConfiguredEnvironment( factory );
+
+      if ( env != null ) {
+        env.init( factory );
       }
-      return false;
+
+      instance.cdeEnv = env;
+      // XXX figure out where to put ensureBasicDirs
+      instance.ensureBasicDirs();
+    }
+  }
+
+  private void ensureBasicDirs() {
+    IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
+    // TODO: better error messages
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS ) ) {
+      logger.error( "Couldn't find or create CDE components dir." );
+    }
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.STYLES ) ) {
+      logger.error( "Couldn't find or create CDE styles dir." );
+    }
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES ) ) {
+      logger.error( "Couldn't find or create CDE templates dir." );
     }
 
-    private boolean ensureDirExists(IRWAccess access, String relPath) {
-      return access.fileExists( relPath ) || access.createFolder( relPath );
-    }
-
-    public static ICdeEnvironment getEnv() {
-      return getInstance().getEnvironment();
-    }
-
-    protected synchronized ICdeEnvironment getConfiguredEnvironment(ICdeBeanFactory factory) throws InitializationException {
-    	
-    	Object obj = new CoreBeanFactory().getBean(ICdeEnvironment.class.getSimpleName()); 
-    	
-    	if(obj != null && obj instanceof ICdeEnvironment){
-    		return (ICdeEnvironment) obj;
+    // special case for widgets: copy widget samples into dir if creating dir for the first time
+    if ( !repoBase.fileExists( CdeConstants.SolutionFolders.WIDGETS ) ) {
+      if ( !repoBase.createFolder( CdeConstants.SolutionFolders.WIDGETS ) ) {
+        logger.error( "Couldn't find or create CDE widgets dir." );
       } else {
-        String msg = "No bean found for ICdeEnvironment!!";
-        logger.fatal( msg );
-        // let's stop pretending we have an environment right now...
-        throw new InitializationException( msg, null );
-        // return new DefaultCdeEnvironment();
+        IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
+            sysPluginSamples, "widget.cdfde" );
+        saveAndClose( repoBase, "sample.wcdf", sysPluginSamples, "widget.wcdf" );
+        saveAndClose( repoBase, "sample.cda", sysPluginSamples, "widget.cda" );
+        saveAndClose( repoBase, "sample.component.xml", sysPluginSamples, "widget.xml" );
       }
     }
+
+  }
+
+  private boolean saveAndClose( IRWAccess writer, String fileOut, IReadAccess reader, String fileIn ) {
+    InputStream input = null;
+    try {
+      input = reader.getFileInputStream( fileIn );
+      return writer.saveFile( fileOut, input );
+    } catch ( IOException e ) {
+      logger.error( "Couldn't read " + fileIn + " in " + reader );
+    } finally {
+      IOUtils.closeQuietly( input );
+    }
+    return false;
+  }
+
+  private boolean ensureDirExists( IRWAccess access, String relPath ) {
+    return access.fileExists( relPath ) || access.createFolder( relPath );
+  }
+
+  public static ICdeEnvironment getEnv() {
+    return getInstance().getEnvironment();
+  }
+
+  protected synchronized ICdeEnvironment getConfiguredEnvironment( ICdeBeanFactory factory )
+    throws InitializationException {
+
+    Object obj = new CoreBeanFactory().getBean( ICdeEnvironment.class.getSimpleName() );
+
+    if ( obj != null && obj instanceof ICdeEnvironment ) {
+      return (ICdeEnvironment) obj;
+    } else {
+      String msg = "No bean found for ICdeEnvironment!!";
+      logger.fatal( msg );
+      throw new InitializationException( msg, null );
+    }
+  }
 }

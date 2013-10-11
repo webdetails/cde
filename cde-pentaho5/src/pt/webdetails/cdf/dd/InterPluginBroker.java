@@ -12,6 +12,8 @@ import pt.webdetails.cpf.plugincall.base.CallParameters;
  */
 public class InterPluginBroker {
 
+  public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
+
   public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
     CallParameters params = new CallParameters();
     params.put("dashboardContent", dashboard);
@@ -28,6 +30,13 @@ public class InterPluginBroker {
     
     return pluginCall.call( params.getParameters() );
 
+  }
+
+  public static String getDataSourceDefinitions(String plugin, String service, String method, boolean forceRefresh) throws Exception {
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( plugin, null, method );
+    CallParameters params = new CallParameters();
+    params.put( "refreshCache", forceRefresh );
+    return pluginCall.call( params.getParameters() );
   }
 
   public static String getCdfContext(String dashboard, String action, String viewId) throws Exception {

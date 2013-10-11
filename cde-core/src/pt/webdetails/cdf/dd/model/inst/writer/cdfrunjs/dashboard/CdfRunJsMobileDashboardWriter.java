@@ -22,7 +22,7 @@ public final class CdfRunJsMobileDashboardWriter extends CdfRunJsDashboardWriter
   {
     return TYPE;
   }
-  
+
   @Override
   protected String readTemplate(DashboardWcdfDescriptor wcdf) throws IOException
   {
