@@ -23,6 +23,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 /**
  * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13
@@ -30,7 +31,7 @@ import pt.webdetails.cpf.repository.api.FileAccess;
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
   private static final Log logger = LogFactory.getLog( RenderApi.class );
-  private static final String MIME_TYPE = "text/html";
+//  private static final String MIME_TYPE = "text/html";
 
   @GET
   @Path( "/getComponentDefinitions" )
@@ -87,7 +88,7 @@ public class RenderApi {
 
   @GET
   @Path( "/render" )
-  @Produces( MIME_TYPE )
+  @Produces( MimeTypes.HTML )
   public String render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -129,7 +130,7 @@ public class RenderApi {
 
   @GET
   @Path( "/edit" )
-  @Produces( MIME_TYPE )
+  @Produces( MimeTypes.HTML )
   public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                   @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                   @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -151,7 +152,7 @@ public class RenderApi {
 
   @GET
   @Path( "/new" )
-  @Produces( MIME_TYPE )
+  @Produces( MimeTypes.HTML )
   public void newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
@@ -188,8 +189,8 @@ public class RenderApi {
   }
 
   private String getCdfContext() {
-    InterPluginCall cdfContext = new InterPluginCall( InterPluginCall.CDF, "Context" ); // TODO: check new interplugin
-                                                                                        // call from tgf
+    //XXX does this work? remember to remake plugin call tgf!
+    InterPluginCall cdfContext = new InterPluginCall( InterPluginCall.CDF, "Context" );
     // cdfContext.setRequest( getRequest() );
     // cdfContext.setRequestParameters( getRequestParameters() );
     return cdfContext.callInPluginClassLoader();

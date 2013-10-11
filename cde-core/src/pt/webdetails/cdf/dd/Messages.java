@@ -80,10 +80,15 @@ public class Messages {
 
   public static String getString(final String key) {
     try {
-      return Messages.getBundle().getString(key);
+      ResourceBundle bundle = Messages.getBundle();
+      if (bundle != null) {
+        return bundle.getString(key);
+      }
+
     } catch (MissingResourceException e) {
-      return '!' + key + '!';
+      logger.error("Unable to fetch message for key " + key);
     }
+    return '!' + key + '!';
   }
 
   public static String getString(final String key, final String param1) {

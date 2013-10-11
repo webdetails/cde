@@ -20,7 +20,7 @@ import pt.webdetails.cdf.dd.util.Utils;
 /**
  * @author dcleao
  */
-public class Dashboard<TM extends DashboardType> extends Instance<TM>
+public class Dashboard extends Instance<DashboardType>
 {
   private static final Log _logger = LogFactory.getLog(Dashboard.class);
   
@@ -146,7 +146,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
   }
 
   @Override
-  public TM getMeta()
+  public DashboardType getMeta()
   {
     return super.getMeta();
   }
@@ -270,7 +270,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
   /**
    * Class to create and modify Dashboard instances.
    */
-  public static class Builder extends Instance.Builder
+  public static class Builder extends Instance.Builder<DashboardType>
   {
     private DashboardWcdfDescriptor _wcdf;
     private String _sourcePath;
@@ -325,7 +325,7 @@ public class Dashboard<TM extends DashboardType> extends Instance<TM>
     {
       if(comp == null) { throw new IllegalArgumentException("comp"); }
       
-      Class compClass = comp.getClass();
+      Class<?> compClass = comp.getClass();
       
       if(DataSourceComponent.Builder.class.isAssignableFrom(compClass))
       {

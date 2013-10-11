@@ -539,12 +539,8 @@ public final class DashboardManager
 
     CdfRunJsDashboardWriteResult dashWrite = (CdfRunJsDashboardWriteResult) cacheElement.getValue();
 
-    // 3. Get the template file //XXX we're not using it
-    IBasicFile templFile = null;
+    // 3. Get the template file 
     String templPath = cacheKey.getTemplate();
-    if ( StringUtils.isNotEmpty( templPath ) ) {
-      templFile = userContentAccess.fetchFile( templPath );
-    }
 
     // 4. Check if cache item has expired
     // Cache is invalidated if the dashboard or template have changed since
@@ -568,8 +564,7 @@ public final class DashboardManager
     boolean cacheInvalid =
             ( userContentAccess.getLastModified( cdeFilePath ) > dashLoadedDate.getTime() )
             || ( userContentAccess.fileExists( templPath )
-                    &&
-                 userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
+                 && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
     if ( cacheInvalid ) {
       _logger.info( "Cached dashboard render invalidated, re-rendering." );
       return null;

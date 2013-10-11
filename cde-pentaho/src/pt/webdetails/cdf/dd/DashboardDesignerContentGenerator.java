@@ -178,8 +178,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		  Object result = null;
 		  
 		  if(OPERATION_LOAD.equalsIgnoreCase(operation)){
-			  result = dashboardStructure.load(toHashMap(getRequestParameters()));
-		  
+		    String file = getRequestParameters().getStringParameter( "file", null );
+		    writeOut (getResponse().getOutputStream(), dashboardStructure.load(file));
+		    return;
 		  }else if(OPERATION_DELETE.equalsIgnoreCase(operation)){
         dashboardStructure.delete(toHashMap(getRequestParameters()));
 		  

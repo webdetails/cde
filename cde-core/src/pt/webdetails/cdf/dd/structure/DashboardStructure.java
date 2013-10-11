@@ -65,47 +65,50 @@ public class DashboardStructure implements IDashboardStructure {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
   }
-  
-  public JSON load(HashMap<String, Object> parameters) throws Exception {
-    JSONObject result = null;
 
-    InputStream file = null;
-    InputStream wcdfFile = null;
+  /**
+   * @returns a standard json result obj (?)
+   */
+  public String load(String cdeFilePath) throws Exception {
+    InputStream cdeFileInput = null;
+    //InputStream wcdfFile = null;
     try {
-      String cdeFilePath = (String)parameters.get("file");
+      //String cdeFilePath = (String)parameters.get("file");
       
       logger.info("Loading File:" + cdeFilePath);
     
       // 1. Read .CDFDE file
-      
-      IUserContentAccess access = CdeEnvironment.getUserContentAccess();
-      
-      if(access.fileExists(cdeFilePath)) {
-        file = access.getFileInputStream(cdeFilePath);
-      
-      } else {
-    	
-        file = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+
+      String wcdfFilePath = null;
+      if (StringUtils.isEmpty( cdeFilePath )) {
+        cdeFileInput = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH);
+        wcdfFilePath = SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH;
+      }
+      else {
+        IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+        if (access.fileExists( cdeFilePath )) {
+          cdeFileInput = access.getFileInputStream(cdeFilePath);
+          wcdfFilePath = cdeFilePath.replace(".cdfde", ".wcdf");
+        } else {
+          String msg = "File not found " + cdeFilePath + " in " + access;
+          logger.error(msg);
+          return JsonUtils.getJsonResult( false, msg );
+        }
       }
 
-      JSON cdeData = JsonUtils.readJsonFromInputStream(file);
-      
-      // 3. Read .WCDF
-      String wcdfFilePath = cdeFilePath.replace(".cdfde", ".wcdf");
-      
+      JSON cdeData = JsonUtils.readJsonFromInputStream(cdeFileInput);
       JSONObject wcdfData = loadWcdfDescriptor(wcdfFilePath).toJSON();
-      
-      result = new JSONObject();
+      // 3. Read .WCDF
+      JSONObject result = new JSONObject();
       result.put("wcdf", wcdfData);
       result.put("data", cdeData);
+      return JsonUtils.getJsonResult( true, result );
     } catch (Throwable t) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION"));
     } finally {
-      IOUtils.closeQuietly(file);
-      IOUtils.closeQuietly(wcdfFile);
+      IOUtils.closeQuietly(cdeFileInput);
     }
 
-    return result;
   }
 
   public DashboardWcdfDescriptor loadWcdfDescriptor(String wcdfFilePath) throws IOException {
@@ -118,11 +121,20 @@ public class DashboardStructure implements IDashboardStructure {
     return DashboardWcdfDescriptor.fromXml(wcdfDoc);
   }
 
+  /**
+   * @deprecated
+   */
   public HashMap<String, String> save(HashMap<String, Object> parameters) throws Exception {
+    String cdeFilePath = (String)parameters.get("file");
+    String cdfdeJsText = (String)parameters.get("cdfstructure");
+    return save(cdeFilePath, cdfdeJsText);
+  }
+
+  public HashMap<String, String> save(String cdeFilePath, String cdfdeJsText) throws Exception {
     final HashMap<String, String> result = new HashMap<String, String>();
     
     // 1. Get CDE file parameters
-    String cdeFilePath = (String)parameters.get("file");
+    
     
     logger.info("Saving File:" + cdeFilePath);
 
@@ -139,7 +151,7 @@ public class DashboardStructure implements IDashboardStructure {
     }
     
     // 3. CDE
-    String cdfdeJsText = (String)parameters.get("cdfstructure");
+
 
     if (!access.saveFile(cdeFilePath, new ByteArrayInputStream(safeGetEncodedBytes(cdfdeJsText)))) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION"));
@@ -199,6 +211,14 @@ public class DashboardStructure implements IDashboardStructure {
   }
   
   public void saveas(HashMap<String, Object> parameters) throws Exception {
+    String filePath = (String)parameters.get("file");
+    String title = StringUtils.defaultIfEmpty((String)parameters.get("title"), "Dashboard");
+    String description = StringUtils.defaultIfEmpty((String)parameters.get("description"), "");
+    String cdfdeJsText = (String)parameters.get("cdfstructure");
+    saveAs(filePath, title, description, cdfdeJsText);
+  }
+
+  public void saveAs(String filePath, String title, String description, String cdfdeJsText ) throws Exception {
     // TODO: This method does not maintain the Widget status and parameters of a dashboard
     // Is this intended?
     
@@ -208,12 +228,7 @@ public class DashboardStructure implements IDashboardStructure {
     String wcdfContentAsString = IOUtils.toString(wcdfFile, ENCODING);
 
     // 2. Fill-in wcdf file title and description
-    String title = StringUtils.defaultIfEmpty((String)parameters.get("title"), "Dashboard");
-    String description = StringUtils.defaultIfEmpty((String)parameters.get("description"), "");
-
     wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_TITLE@", title).replaceFirst("@DASBOARD_DESCRIPTION@", description);
-
-    String filePath = (String)parameters.get("file");
 
     // 3. Publish new wcdf file
     if(!CdeEnvironment.getUserContentAccess().saveFile(filePath, new ByteArrayInputStream(wcdfContentAsString.getBytes(ENCODING)))) {
@@ -221,9 +236,10 @@ public class DashboardStructure implements IDashboardStructure {
     }
     
     // 4. Save cdf structure
-    parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
+//    parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
     
-    save(parameters);
+    save(filePath.replace(".wcdf", ".cdfde"), cdfdeJsText);
+    //save(parameters);
   }
 
   public void newfile(HashMap<String, Object> parameters) throws Exception {

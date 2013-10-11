@@ -22,7 +22,6 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
-import sun.security.util.PendingException;
 
 /**
  *

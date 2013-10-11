@@ -16,7 +16,6 @@ public abstract class Instance<TM extends MetaObject> extends Entity
 {
   private final TM _meta;
 
-  @SuppressWarnings("OverridableMethodCallInConstructor")
   protected Instance(Builder<TM> builder) throws ValidationException
   {
     super(builder);
@@ -46,7 +45,7 @@ public abstract class Instance<TM extends MetaObject> extends Entity
       return this._meta;
     }
 
-    public Builder setMeta(TM meta)
+    public Builder<TM> setMeta(TM meta)
     {
       this._meta = meta;
       return this;

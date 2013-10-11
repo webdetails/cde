@@ -1,6 +1,7 @@
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
@@ -11,9 +12,11 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,13 +28,15 @@ import pt.webdetails.cdf.dd.structure.DashboardStructure;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 /**
  * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13
  */
 @Path( "pentaho-cdf-dd/api/syncronizer" )
-public class SyncronizerApi {
+public class SyncronizerApi {//TODO: synchronizer?
 
   private static final Log logger = LogFactory.getLog( SyncronizerApi.class );
 
@@ -41,31 +46,37 @@ public class SyncronizerApi {
   private static final String OPERATION_SAVE_AS = "saveas";
   private static final String OPERATION_NEW_FILE = "newfile";
   private static final String OPERATION_SAVE_SETTINGS = "savesettings";
+  /**
+   * for historical reasons..
+   */
+  public static final String UNSAVED_FILE_PATH = "null/null/null";
 
 
   @POST
   @Path( "/syncronizeDashboard" )
-  public void syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+  @Produces( MimeTypes.JSON )
+  public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
 		  @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
 		  @FormParam( MethodParams.OPERATION ) String operation, @Context HttpServletRequest request,
       @Context HttpServletResponse response ) throws Exception {
 
     String filePath = file.replace( ".wcdf", ".cdfde" );
 
-    if ( !filePath.isEmpty() && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+    if ( !filePath.isEmpty() && !filePath.equals( UNSAVED_FILE_PATH )
+        && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       response.setStatus( HttpServletResponse.SC_FORBIDDEN );
-      logger.warn( "Access denied for the syncronize method: " + path );
-      return;
+      String msg = "Access denied for the syncronize method: " + path;
+      logger.warn( msg );
+      return JsonUtils.getJsonResult( false, msg ); 
     }
 
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
-      params.put(MethodParams.FILE, filePath);
-
+      OutputStream out = response.getOutputStream();
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.load( params );
+        return dashboardStructure.load( file );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
@@ -79,8 +90,7 @@ public class SyncronizerApi {
       } else {
         logger.error( "Unknown operation: " + operation );
       }
-
-      JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
+      return JsonUtils.getJsonResult( true, result );
     } catch ( Exception e ) {
       if ( e.getCause() != null ) {
         if ( e.getCause() instanceof DashboardStructureException ) {
@@ -95,6 +105,7 @@ public class SyncronizerApi {
 
   @GET
   @Path( "/syncronizeTemplates" )
+  @Produces( MimeTypes.JSON )
   public void
     syncTemplates( @QueryParam( MethodParams.OPERATION ) String operation, @QueryParam( MethodParams.FILE ) String file,
     		@QueryParam( MethodParams.STRUCTURE ) String cdfStructure,
@@ -111,6 +122,7 @@ public class SyncronizerApi {
 
   @GET
   @Path( "/syncronizeStyles" )
+  @Produces( MimeTypes.JSON )
   public void syncStyles( @Context HttpServletResponse response ) throws IOException, DashboardDesignerException {
     final CdfStyles cdfStyles = new CdfStyles();
     JsonUtils.buildJsonResult( response.getOutputStream(), true, cdfStyles.liststyles() );

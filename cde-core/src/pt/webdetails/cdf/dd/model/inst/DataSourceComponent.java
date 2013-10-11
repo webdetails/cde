@@ -11,7 +11,7 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 /**
  * @author dcleao
  */
-public class DataSourceComponent<TM extends DataSourceComponentType> extends NonVisualComponent<TM>
+public class DataSourceComponent extends NonVisualComponent<DataSourceComponentType>
 {
   protected DataSourceComponent(Builder builder, MetaModel metaModel) throws ValidationException
   {
@@ -19,7 +19,7 @@ public class DataSourceComponent<TM extends DataSourceComponentType> extends Non
   }
 
   @Override
-  public TM getMeta()
+  public DataSourceComponentType getMeta()
   {
     return super.getMeta();
   }

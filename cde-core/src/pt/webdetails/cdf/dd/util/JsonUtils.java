@@ -21,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class JsonUtils
 {
+  private static final int INDENT = 2;
+
   public static JSON readJsonFromInputStream(final InputStream input) throws IOException {
     
     String contents = StringUtils.trim(IOUtils.toString(input, "UTF-8"));
@@ -39,11 +41,20 @@ public class JsonUtils
     PrintWriter pw = null;
     try {
       pw = new PrintWriter(out);
-      pw.print(jsonResult.toString(2));
+      pw.print(jsonResult.toString(INDENT));
       pw.flush();
     } finally{
       IOUtils.closeQuietly(pw);
     }
+  }
+
+  public static String getJsonResult(boolean success, Object result) {
+    final JSONObject jsonResult = new JSONObject();
+    jsonResult.put("status", Boolean.toString( success ) );
+    if (result != null) {
+      jsonResult.put( "result", result );
+    }
+    return jsonResult.toString( INDENT );
   }
 
   public static String toJsString(String text)
