@@ -179,7 +179,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		  
 		  if(OPERATION_LOAD.equalsIgnoreCase(operation)){
 		    String file = getRequestParameters().getStringParameter( "file", null );
-		    writeOut (getResponse().getOutputStream(), dashboardStructure.load(file));
+		    JsonUtils.buildJsonResult(getResponse().getOutputStream(), true, dashboardStructure.load(file));
 		    return;
 		  }else if(OPERATION_DELETE.equalsIgnoreCase(operation)){
         dashboardStructure.delete(toHashMap(getRequestParameters()));
