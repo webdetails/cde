@@ -322,6 +322,8 @@ var SaveRequests = {
 
     saveDashboard: function (saveParams, stripArgs) {
 
+        if(Endpoints.isEmptyFilePath(saveParams.file)){ saveParams.file = Endpoints.getFilePathFromUrl(); }
+        
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
             if (result && result.status == "true") {
                 if (stripArgs.needsReload) {
