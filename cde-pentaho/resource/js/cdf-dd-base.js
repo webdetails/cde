@@ -406,3 +406,9 @@ var PreviewRequests = {
     }
 };
 
+var SolutionTreeRequests = {
+
+    getExplorerFolderEndpoint: function (url) {
+        return url.replace("Syncronize","ExploreFolder");
+    }
+};

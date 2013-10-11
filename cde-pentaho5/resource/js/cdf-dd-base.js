@@ -429,3 +429,10 @@ var PreviewRequests = {
         });
     }
 };
+
+var SolutionTreeRequests = {
+
+    getExplorerFolderEndpoint: function (url) {
+        return Endpoints.getPluginUrl() + "resources/explore";
+    }
+};

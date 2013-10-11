@@ -123,11 +123,11 @@ public class ResourcesApi {
     getResource( resource, response );
   }
 
-  @GET
+  @POST
   @Path( "/explore" )
   @Produces( "text/javascript" )
-  public void exploreFolder( @QueryParam( "dir" ) @DefaultValue( "/" ) String folder, @QueryParam( "fileExtensions" ) String fileExtensions,
-      @QueryParam( "access" ) String access, @QueryParam( "outputType" ) String outputType,
+  public void exploreFolder( @FormParam( "dir" ) @DefaultValue( "/" ) String folder, @QueryParam( "fileExtensions" ) String fileExtensions,
+		  @QueryParam( "access" ) String access, @FormParam( "outputType" ) String outputType,
       @Context HttpServletResponse response ) throws IOException {
 
     if ( outputType != null && outputType.equals( "json" ) ) {
@@ -166,7 +166,7 @@ public class ResourcesApi {
         new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
 
     List<IBasicFile> fileList =
-        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, IReadAccess.DEPTH_ALL );
+        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, 1, true );
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[fileList.size()] );

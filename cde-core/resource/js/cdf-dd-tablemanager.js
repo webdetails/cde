@@ -1741,7 +1741,7 @@ var ResourceFileRenderer = CellRenderer.extend({
           $('#container_id').fileTree(
           {
             root: '/',
-            script: CDFDDDataUrl.replace("Syncronize","ExploreFolder?fileExtensions="+fileExtensions),
+            script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions="+fileExtensions,
             expandSpeed: 1000,
             collapseSpeed: 1000,
             multiFolder: false,

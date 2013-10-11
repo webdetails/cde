@@ -583,7 +583,7 @@ var CDFDD = Base.extend({
         });
         $('#container_id').fileTree({
           root: '/',
-          script: CDFDDDataUrl.replace("Syncronize", "ExploreFolder?fileExtensions=.wcdf&access=create"),
+          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions=.wcdf&access=create",
           expandSpeed: 1000,
           collapseSpeed: 1000,
           multiFolder: false,
@@ -836,19 +836,17 @@ var CDFDD = Base.extend({
     }
     if (this.styles.length == 0) {
       ready = false;
-      $.getJSON("SyncStyles", {
-        operation: "listStyles"
-      }, function(json) {
-        myself.styles = json.result;
-        sCallback();
-      });
+
+      StylesRequests.syncStyles(myself);
+      sCallback();
+
     };
     if (this.renderers.length == 0) {
       ready = false;
-      $.getJSON("listRenderers", {}, function(json) {
-        myself.renderers = json.result;
-        sCallback();
-      });
+      
+      StylesRequests.listStyleRenderers(myself);
+      sCallback();
+
     };
     if (ready) {
       this.saveSettingsCallback();
@@ -1078,7 +1076,7 @@ var CDFDD = Base.extend({
 
         $('#container_id').fileTree({
           root: '/',
-          script: CDFDDDataUrl.replace("Syncronize", "ExploreFolder?fileExtensions=.wcdf&access=create"),
+          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions=.wcdf&access=create",
           expandSpeed: 1000,
           collapseSpeed: 1000,
           multiFolder: false,

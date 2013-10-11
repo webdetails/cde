@@ -123,7 +123,7 @@ var UrlTemplateRenderer = CellRenderer.extend({
 									if(clickBehaviour == "linkToAnotherDashboard"){
 										selectedFile = "";
 										$('#container_id').fileTree(
-											{root: '/',script: CDFDDDataUrl.replace("Syncronize","ExploreFolder?fileExtensions=.wcdf&access=execute"),expandSpeed: 1000, collapseSpeed: 1000, multiFolder: false,folderClick: 
+											{root: '/',script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions=.wcdf&access=execute",expandSpeed: 1000, collapseSpeed: 1000, multiFolder: false,folderClick: 
 											function(obj,folder){if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");$(obj).attr("class","selectedFolder");}}, 
 											function(file) {selectedFile = file;$(".selectedFile").attr("class","");$("a[rel='" + file + "']").attr("class","selectedFile");});
 									}
