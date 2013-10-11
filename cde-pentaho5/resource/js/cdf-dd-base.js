@@ -263,7 +263,6 @@ var StylesRequests = {
     syncStyles: function (myself) {
 
         $.getJSON(Endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", {
-            operation: "listStyles"
         }, function (json) {
             myself.styles = json.result;
         });
@@ -272,7 +271,6 @@ var StylesRequests = {
     listStyleRenderers: function (myself) {
 
         $.getJSON(Endpoints.getPluginUrl() + "renderer/listRenderers", {
-            operation: "listStyles"
         }, function (json) {
             myself.renderers = json.result;
 
