@@ -178,12 +178,7 @@ $(document).ready(function(){
   }
 
 
-  $.ajax({
-    url : "getCDEplugins",
-    dataType: 'json',
-    data: [],
-    success : initPlugins
-  });
+  PluginRequests.getCDEPlugins(initPlugins);
   
 });
 

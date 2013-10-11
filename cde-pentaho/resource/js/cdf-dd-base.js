@@ -412,3 +412,16 @@ var SolutionTreeRequests = {
         return url.replace("Syncronize","ExploreFolder");
     }
 };
+
+
+var PluginRequests = {
+
+    getCDEPlugins: function (onSuccess) {
+        $.ajax({
+        url : "getCDEplugins",
+        dataType: 'json',
+        data: [],
+        success : onSuccess
+      });
+    }
+};

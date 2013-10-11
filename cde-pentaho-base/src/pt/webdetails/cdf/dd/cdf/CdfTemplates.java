@@ -32,11 +32,11 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 @SuppressWarnings( "unchecked" )
 public class CdfTemplates {
 
-  public static String SYSTEM_RESOURCE_TEMPLATE_DIR = CdeEngine.getInstance().getEnvironment()
-      .getApplicationBaseContentUrl()
-      + "getResource?resource=/resources/templates/";
-  public static String UNKNOWN_IMAGE = SYSTEM_RESOURCE_TEMPLATE_DIR + "unknown.png";
   private static String SYSTEM_CDF_DD_TEMPLATES = "/resources/templates";
+  public static String SYSTEM_RESOURCE_TEMPLATE_DIR = CdeEngine.getInstance().getEnvironment()
+      .getApplicationBaseContentUrl() + "api/resources/get?resource=" + SYSTEM_CDF_DD_TEMPLATES + "/" ;
+  public static String UNKNOWN_IMAGE = SYSTEM_RESOURCE_TEMPLATE_DIR + "unknown.png";
+  
   private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "/templates";
   private static Log logger = LogFactory.getLog( CdfTemplates.class );
 

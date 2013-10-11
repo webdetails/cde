@@ -282,13 +282,12 @@ var StylesRequests = {
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", saveSettingsParams, function (result) {
-            var json = eval("(" + result + ")");
-            if (json.status == "true") {
+            if (result && result.status == "true") {
                 myself.setDashboardWcdf(wcdf);
                 callback();
             } else {
                 $.notifyBar({
-                    html: "Errors initializing settings: " + json.result
+                    html: "Errors initializing settings: " + result.result
                 });
             }
         });
@@ -302,8 +301,7 @@ var SaveRequests = {
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             try {
-                var json = eval("(" + result + ")");
-                if (json.status == "true") {
+                if (result && result.status == "true") {
                     myself.setDashboardWcdf(wcdf);
                     // We need to reload the layout engine in case the rendererType changed
                     cdfdd.layout.init();
@@ -312,7 +310,7 @@ var SaveRequests = {
                         delay: 1000
                     });
                 } else {
-                    throw json.result;
+                    throw result.result;
                 }
             } catch (e) {
                 $.notifyBar({
@@ -325,9 +323,7 @@ var SaveRequests = {
     saveDashboard: function (saveParams, stripArgs) {
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
-            //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
-            var json = eval("(" + result + ")");
-            if (json.status == "true") {
+            if (result && result.status == "true") {
                 if (stripArgs.needsReload) {
                     window.location.reload();
                 } else {
@@ -338,7 +334,7 @@ var SaveRequests = {
                 }
             } else {
                 $.notifyBar({
-                    html: "Errors saving file: " + json.result
+                    html: "Errors saving file: " + result.result
                 });
             }
         });
@@ -347,17 +343,15 @@ var SaveRequests = {
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
-            var json = eval("(" + result + ")");
-            if (json.status == "true") {
+            if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
-                    //cdfdd.setExitNotification(false);
                     window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else
                 $.notifyBar({
-                    html: "Errors saving file: " + json.result
+                    html: "Errors saving file: " + result.result
                 });
         });
     },
@@ -365,8 +359,7 @@ var SaveRequests = {
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
-            var json = JSON.parse(result);
-            if (json.status == "true") {
+            if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") {
                     selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 }
@@ -383,7 +376,7 @@ var SaveRequests = {
                 });
             } else {
                 $.notifyBar({
-                    html: "Errors saving file: " + json.result
+                    html: "Errors saving file: " + result.result
                 });
             }
         });
@@ -397,13 +390,12 @@ var LoadRequests = {
         if(Endpoints.isEmptyFilePath(loadParams.file)){ loadParams.file = Endpoints.getFilePathFromUrl(); }
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", loadParams, function (result) {            
-            var json = eval("(" + result + ")");
-            if (json && json.status == "true") {
-                myself.setDashboardData(myself.unstrip(json.result.data));
-                myself.setDashboardWcdf(json.result.wcdf);
+            if (result && result.status == "true") {
+                myself.setDashboardData(myself.unstrip(result.result.data));
+                myself.setDashboardWcdf(result.result.wcdf);
                 myself.init();
             } else {
-                alert(json && json.result);
+                alert(result && result.result);
             }
         });
     }
@@ -413,8 +405,7 @@ var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
-            var json = eval("(" + result + ")");
-            if (json.status == "true") {
+            if (result && result.status == "true") {
                 $.fancybox({
                     type: "iframe",
                     href: _href,
@@ -423,7 +414,7 @@ var PreviewRequests = {
                 });
             } else {
                 $.notifyBar({
-                    html: "Errors saving file: " + json.result
+                    html: "Errors saving file: " + result.result
                 });
             }
         });
@@ -434,5 +425,19 @@ var SolutionTreeRequests = {
 
     getExplorerFolderEndpoint: function (url) {
         return Endpoints.getPluginUrl() + "resources/explore";
+    }
+};
+
+
+var PluginRequests = {
+
+    getCDEPlugins: function (onSuccess) {
+        $.ajax({
+        url : Endpoints.getPluginUrl() + "plugins/get",
+        type: 'GET',
+        dataType: 'json',
+        data: [],
+        success : onSuccess
+      });
     }
 };
