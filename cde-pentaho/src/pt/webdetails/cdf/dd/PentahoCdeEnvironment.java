@@ -14,6 +14,8 @@ import org.pentaho.platform.util.messages.LocaleHelper;
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
+import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
+import pt.webdetails.cdf.dd.extapi.LegacyApiPathProvider;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
@@ -29,6 +31,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
+  private LegacyApiPathProvider apiPaths;
 
   private IPluginResourceLocationManager pluginResourceLocationManager;
 
@@ -99,5 +102,13 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   public PentahoPluginEnvironment getPluginEnv() {
     return PentahoPluginEnvironment.getInstance();
+  }
+
+  public ICdeApiPathProvider getExtApi() {
+    // not worth the sync
+    if (apiPaths == null) {
+      apiPaths = new LegacyApiPathProvider( getPluginEnv().getUrlProvider() );
+    }
+    return apiPaths;
   }
 }

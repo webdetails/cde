@@ -2,7 +2,6 @@ package pt.webdetails.cdf.dd.editor;
 
 import java.util.HashMap;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,11 +9,12 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ResourceManager;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
+import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
@@ -80,9 +80,15 @@ public class DashboardEditor {
     }
     tokens.put(CdeConstants.FILE_NAME_TAG,    DashboardWcdfDescriptor.toStructurePath(wcdfPath));
     //FIXME paths
-    tokens.put(CdeConstants.SERVER_URL_TAG,   CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl());
-    tokens.put(CdeConstants.DATA_URL_TAG,     CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() + "Syncronize");
+    IUrlProvider urlProvider = CdeEngine.getEnv().getPluginEnv().getUrlProvider();
+    final String apiPath = urlProvider.getPluginBaseUrl();
+    tokens.put(CdeConstants.SERVER_URL_TAG, apiPath);
+    // external api
+    ICdeApiPathProvider extApi = CdeEngine.getEnv().getExtApi();
+    tokens.put(CdeConstants.DATA_URL_TAG, CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() + "Syncronize");
     
+    tokens.put(CdeConstants.Tags.Api.RENDERER, extApi.getRendererBasePath());
+
     String cacheKey = ResourceManager.buildCacheKey(wcdfPath, tokens);
     String resource  = null;
     

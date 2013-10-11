@@ -50,6 +50,22 @@ public class CdeConstants {
 
     public static final String DATA = "data";
   }
+  
+  public static class Tags {
+    public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
+
+    public static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
+
+    public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
+
+    public static final String FILE_NAME_TAG = "@FILENAME@";
+
+    public static final String SERVER_URL_TAG = "@SERVERURL@";
+
+    public static class Api {
+      public static final String RENDERER = "@CDE_RENDERER_API@";
+    }
+  }
 
   public static final String FILE_NAME_TAG = "@FILENAME@";
 

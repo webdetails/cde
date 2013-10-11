@@ -35,16 +35,15 @@ public class RenderApi {
 
   @GET
   @Path( "/getComponentDefinitions" )
-  @Produces( "text/plain" )
+  @Produces( MimeTypes.JAVASCRIPT )
   public String getComponentDefinitions( @Context HttpServletResponse response ) throws IOException {
     // Get and output the definitions
     return MetaModelManager.getInstance().getJsDefinition();
-    //IOUtils.write( definition.getBytes(), response.getOutputStream() );
   }
 
   @GET
   @Path( "/getContent" )
-  @Produces( "text/plain" )
+  @Produces( MimeTypes.JAVASCRIPT )
   public String getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -61,7 +60,6 @@ public class RenderApi {
     CdfRunJsDashboardWriteResult dashboardWrite =
         this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
     return dashboardWrite.getContent();
-//    IOUtils.write( dashboardWrite.getContent(), response.getOutputStream() );
   }
 
   @GET
@@ -83,7 +81,6 @@ public class RenderApi {
     CdfRunJsDashboardWriteResult dashboardWrite =
         this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
     return dashboardWrite.getHeader();
-//    IOUtils.write( dashboardWrite.getHeader(), response.getOutputStream() );
   }
 
   @GET
@@ -168,7 +165,7 @@ public class RenderApi {
 
   @GET
   @Path( "/listRenderers" )
-  @Produces( "text/javascript" )
+  @Produces( MimeTypes.JSON )
   public String listRenderers() {
     return "{\"result\": [\"" + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType() + "\",\""
         + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType() + "\"]}";

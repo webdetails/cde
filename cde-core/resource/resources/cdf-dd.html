@@ -117,7 +117,7 @@
       var CDFDDFileName = '@FILENAME@';
       var CDFDDServerUrl = '@SERVERURL@';
       var CDFDDDataUrl = "cdf-structure.js";
-      var WEB_CONTEXT_BASE = CDFDDServerUrl + "../../";
+      var WEB_CONTEXT_BASE = CDFDDServerUrl + "../../";//TODO: use a new tag here?
     </script>
     <script type="text/javascript" src="../pentaho-cdf/js/json.js"></script>
     <!-- CDF files -->
@@ -125,7 +125,8 @@
  @STYLES@ 
     <!-- CDF-DD files -->
  @SCRIPTS@
-<script type="text/javascript" src="getcomponentdefinitions"></script>
+<!-- TODO: ugly as hell: -->
+<script type="text/javascript" src="@CDE_RENDERER_API@/getComponentDefinitions"></script>
 <!-- ACE -->
 <!-- TODO: move ACE -->
 <script language="javascript" type="text/javascript" src="./resources/ace/src/ace.js"></script>
@@ -145,7 +146,7 @@ $(".controlOptions").click(function(evt){
 $( function(){
     $(".round").corner();
     if(!($.browser.msie && parseInt($.browser.version) < 9)){
-        
+
     }
             }) ;
 //Fix the logo for IE<9 & Popup strech problems

@@ -16,19 +16,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.DashboardDesignerException;
-import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.structure.DashboardStructure;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -74,7 +71,6 @@ public class SyncronizerApi {//TODO: synchronizer?
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
-      OutputStream out = response.getOutputStream();
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
         return dashboardStructure.load( file );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
@@ -133,5 +129,7 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String PATH = "path";
     private static final String OPERATION = "operation";
     private static final String STRUCTURE = "structure";
+
+    private static final String DASHBOARD_STRUCTURE = "cdfstructure";
   }
 }
