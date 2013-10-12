@@ -1,17 +1,22 @@
 var Endpoints = {
 
-    staticUrl: "/pentaho/api/plugins/pentaho-cdf-dd/files/",
-    pluginUrl: "/pentaho/plugin/pentaho-cdf-dd/api/",
+    webappBasePath: "/pentaho", 
+    staticUrl: "/api/plugins/pentaho-cdf-dd/files/",
+    pluginUrl: "/plugin/pentaho-cdf-dd/api/",
     cssResourceUrl: "/getCssResource?resource=",
     imageResourceUrl: "/getResource?resource=",
     jsResourceUrl: "/getJsResource?resource=",
 
+    getWebappBasePath: function () {
+        return this.webappBasePath;
+    },
+
     getStaticUrl: function () {
-        return this.staticUrl;
+        return this.webappBasePath + this.staticUrl;
     },
 
     getPluginUrl: function () {
-        return this.pluginUrl;
+        return this.webappBasePath + this.pluginUrl;
     },
 
     getCssResourceUrl: function () {
@@ -279,7 +284,7 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", saveSettingsParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             if (result && result.status == "true") {
                 myself.setDashboardWcdf(wcdf);
                 callback();
@@ -347,7 +352,8 @@ var SaveRequests = {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
-                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    //window.location = window.location.origin + Endpoints.getPluginUrl() + 'renderer/edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
             } else
                 $.notifyBar({
@@ -372,7 +378,8 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    //window.location = window.location.origin + Endpoints.getPluginUrl() + 'renderer/edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                     window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
             } else {
                 $.notifyBar({

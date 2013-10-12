@@ -218,7 +218,7 @@ public class DashboardStructure implements IDashboardStructure {
     saveAs(filePath, title, description, cdfdeJsText);
   }
 
-  public void saveAs(String filePath, String title, String description, String cdfdeJsText ) throws Exception {
+  public HashMap<String, String> saveAs(String filePath, String title, String description, String cdfdeJsText ) throws Exception {
     // TODO: This method does not maintain the Widget status and parameters of a dashboard
     // Is this intended?
     
@@ -238,7 +238,7 @@ public class DashboardStructure implements IDashboardStructure {
     // 4. Save cdf structure
 //    parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
     
-    save(filePath.replace(".wcdf", ".cdfde"), cdfdeJsText);
+    return save(filePath.replace(".wcdf", ".cdfde"), cdfdeJsText);
     //save(parameters);
   }
 

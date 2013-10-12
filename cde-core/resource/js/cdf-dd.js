@@ -207,7 +207,7 @@ var CDFDD = Base.extend({
       cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1)
     };
 
-    if (CDFDDFileName != "/null/null/null") {
+    if (CDFDDFileName != "/" && CDFDDFileName != "/null/null/null") {
       
       SaveRequests.saveDashboard(saveParams, stripArgs);      
     } else {

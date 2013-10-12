@@ -53,32 +53,43 @@ public class SyncronizerApi {//TODO: synchronizer?
   @Path( "/syncronizeDashboard" )
   @Produces( MimeTypes.JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-		  @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-		  @FormParam( MethodParams.OPERATION ) String operation, @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws Exception {
-
-    String filePath = file.replace( ".wcdf", ".cdfde" );
-
-    if ( !filePath.isEmpty() && !filePath.equals( UNSAVED_FILE_PATH )
-        && !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
-      response.setStatus( HttpServletResponse.SC_FORBIDDEN );
-      String msg = "Access denied for the syncronize method: " + path;
-      logger.warn( msg );
-      return JsonUtils.getJsonResult( false, msg ); 
+		  					@FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+		  					@FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+		  					@FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
+		  					@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
+		  					@FormParam( MethodParams.OPERATION ) String operation,
+		  					@Context HttpServletRequest request,
+		  					@Context HttpServletResponse response ) throws Exception {
+    
+    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH )){
+    	
+    	// check access to path folder
+    	String fileDir = file.contains(".wcdf") || file.contains(".cdfde") ? file.substring(0, file.lastIndexOf("/")) : file;
+    	
+    	if( !CdeEnvironment.getUserContentAccess().hasAccess( fileDir, FileAccess.EXECUTE )){
+    	   response.setStatus( HttpServletResponse.SC_FORBIDDEN );
+	       String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
+	       logger.warn( msg );
+	       return JsonUtils.getJsonResult( false, msg );
+    	}
     }
 
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
+      params.put(MethodParams.FILE, file);
+      
+      String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
+      
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
-        return dashboardStructure.load( file );
+        return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.save( params );
+        result = dashboardStructure.save(file, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        dashboardStructure.saveas( params );
+        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
@@ -127,6 +138,8 @@ public class SyncronizerApi {//TODO: synchronizer?
   private class MethodParams {
     private static final String FILE = "file";
     private static final String PATH = "path";
+    private static final String TITLE = "title";
+    private static final String DESCRIPTION = "description";
     private static final String OPERATION = "operation";
     private static final String STRUCTURE = "structure";
 

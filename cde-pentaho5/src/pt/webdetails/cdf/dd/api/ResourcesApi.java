@@ -21,7 +21,6 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -125,22 +124,22 @@ public class ResourcesApi {
 
   @POST
   @Path( "/explore" )
-  @Produces( "text/javascript" )
-  public void exploreFolder( @FormParam( "dir" ) @DefaultValue( "/" ) String folder, @QueryParam( "fileExtensions" ) String fileExtensions,
-		  @QueryParam( "access" ) String access, @FormParam( "outputType" ) String outputType,
-      @Context HttpServletResponse response ) throws IOException {
+  @Produces( "text/plain" )
+  public String exploreFolder(  @FormParam( "dir" ) @DefaultValue( "/" ) String folder, 
+		  						@FormParam( "outputType" ) String outputType, 
+		  						@QueryParam( "fileExtensions" ) String fileExtensions,
+		  						@QueryParam( "access" ) String access,
+		  						@Context HttpServletResponse response ) throws IOException {
 
-    if ( outputType != null && outputType.equals( "json" ) ) {
+    if ( !StringUtils.isEmpty(outputType) && outputType.equals( "json" ) ) {
       try {
-        String result = RepositoryHelper.toJSON( folder, getFileList( folder, fileExtensions, access ) );
-        IOUtils.write( result, response.getOutputStream() );
+    	 return RepositoryHelper.toJSON( folder, getFileList( folder, fileExtensions, access ) );
       } catch ( JSONException e ) {
         logger.error( "exploreFolder" + folder, e );
-        IOUtils.write( "Error getting files in folder " + folder, response.getOutputStream() );
+        return "Error getting files in folder " + folder;
       }
     } else {
-      String result = RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, fileExtensions, access ) );
-      IOUtils.write( result, response.getOutputStream() );
+      return RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, fileExtensions, access ) );
     }
   }
 

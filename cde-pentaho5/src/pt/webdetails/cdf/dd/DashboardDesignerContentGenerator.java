@@ -40,7 +40,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     String viewId = requestParams.getStringParameter( MethodParams.VIEWID, "" );
 
-    String filePath = pathParams.getStringParameter( MethodParams.PATH, null);
+    String filePath = pathParams.getStringParameter( MethodParams.PATH, "");
 
     boolean inferScheme =
         requestParams.hasParameter( MethodParams.INFER_SCHEME ) && requestParams.getParameter( MethodParams.INFER_SCHEME ).equals( "false" );
