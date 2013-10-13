@@ -119,21 +119,24 @@ public class SyncronizerApi {//TODO: synchronizer?
     }
   }
 
-  @GET
+  @POST
   @Path( "/syncronizeTemplates" )
   @Produces( MimeTypes.JSON )
-  public void
-    syncTemplates( @QueryParam( MethodParams.OPERATION ) String operation, @QueryParam( MethodParams.FILE ) String file,
-    		@QueryParam( MethodParams.STRUCTURE ) String cdfStructure,
-        @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
+  public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation, 
+		  					 @FormParam( MethodParams.FILE ) String file,
+		  					 @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+		  					 @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
     final CdfTemplates cdfTemplates = new CdfTemplates();
-
-    if ( operation.equalsIgnoreCase( OPERATION_LOAD ) ) {
-      Object result = cdfTemplates.load();
-      JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
-    } else if ( operation.equalsIgnoreCase( OPERATION_SAVE ) ) {
+    Object result = null;
+    
+    if ( OPERATION_LOAD.equalsIgnoreCase(operation) ) {
+      result = cdfTemplates.load();
+    
+    } else if ( OPERATION_SAVE.equalsIgnoreCase(operation) ) {
       cdfTemplates.save( file, cdfStructure );
     }
+    
+    JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
   }
 
   @GET

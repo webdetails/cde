@@ -60,7 +60,7 @@ var SynchronizeRequests = {
 
         $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", templateParams, function (result) {
             var json = Util.parseJsonResult(result);
-            if (json.status == "true") {
+            if (json && json.status == "true") {
                 $.notifyBar({ html: "Template saved successfully", delay: 1000 });
             }
             else {
@@ -71,8 +71,8 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.getJSON(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", loadParams, function (json) {
-            if (json.status) {
+        $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", loadParams, function (json) {
+            if (json && json.status) {
 
                 templates = json.result;
                 var selectTemplate = undefined;
