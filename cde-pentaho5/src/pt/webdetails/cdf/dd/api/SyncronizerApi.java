@@ -19,6 +19,8 @@ import javax.ws.rs.core.Context;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.CdeConstants;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
@@ -26,6 +28,7 @@ import pt.webdetails.cdf.dd.structure.DashboardStructure;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -58,22 +61,28 @@ public class SyncronizerApi {//TODO: synchronizer?
 		  					@FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
 		  					@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
 		  					@FormParam( MethodParams.OPERATION ) String operation,
+		  					@FormParam( MethodParams.WIDGET ) boolean widget,
 		  					@Context HttpServletRequest request,
 		  					@Context HttpServletResponse response ) throws Exception {
     
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH )){
     	
+    	if( widget ) {
+    		//widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
+    		file = Utils.joinPath(CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file);
+    	}
+    	
     	// check access to path folder
     	String fileDir = file.contains(".wcdf") || file.contains(".cdfde") ? file.substring(0, file.lastIndexOf("/")) : file;
     	
     	if( !CdeEnvironment.getUserContentAccess().hasAccess( fileDir, FileAccess.EXECUTE )){
-    	   response.setStatus( HttpServletResponse.SC_FORBIDDEN );
-	       String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
-	       logger.warn( msg );
-	       return JsonUtils.getJsonResult( false, msg );
+     	  response.setStatus( HttpServletResponse.SC_FORBIDDEN );
+ 	      String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
+ 	      logger.warn( msg );
+ 	      return JsonUtils.getJsonResult( false, msg );
     	}
     }
-
+    
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
@@ -142,7 +151,7 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String DESCRIPTION = "description";
     private static final String OPERATION = "operation";
     private static final String STRUCTURE = "structure";
-
+    private static final String WIDGET = "widget";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
   }
 }

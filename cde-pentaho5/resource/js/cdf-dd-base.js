@@ -302,6 +302,11 @@ var SaveRequests = {
 
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
 
+        // widgets are always stored in a specific user content folder, best left handled server-side
+        if (saveSettingsParams && saveSettingsParams.widget) { 
+            saveSettingsParams.file = saveSettingsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
+        } 
+
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             try {
                 if (result && result.status == "true") {
@@ -363,6 +368,12 @@ var SaveRequests = {
     },
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
+
+        // widgets are always stored in a specific user content folder, best left handled server-side
+        if (saveAsParams) { 
+            saveAsParams.widget = true; 
+            saveAsParams.file = saveAsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
+        }  
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
             if (result && result.status == "true") {
