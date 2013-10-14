@@ -29,4 +29,8 @@
     <bean id="wcdf.edit" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
         <property name="edit" value="true" />
     </bean>
+
+    <bean id="wcdf.res" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
+        <property name="resource" value="true" />
+    </bean>
 </beans>
