@@ -174,8 +174,7 @@ public final class DashboardManager
     // NOTE: the cache is shared by all users.
     // The current user may not have access to a cache item previously
     // created by another user.
-    IBasicFile cdeFile = CdeEnvironment.getUserContentAccess().fetchFile(cdeFilePath);
-    if(cdeFile == null) {
+    if (!CdeEnvironment.getUserContentAccess().fileExists(cdeFilePath)) {
       throw new ThingWriteException(new FileNotFoundException(cdeFilePath));
     }
     
@@ -406,10 +405,11 @@ public final class DashboardManager
     {
       _logger.info("Bypassing Dashboard instance cache, reading from repository.");
     }
-    
+
+    IUserContentAccess userAccess = CdeEnvironment.getUserContentAccess();
     // Read cache, cache item existed and it is valid?
     if(cachedDash != null &&
-       cachedDash.getSourceDate().getTime() >= CdeEnvironment.getUserContentAccess().getLastModified(cdeFilePath))
+       cachedDash.getSourceDate().getTime() >= userAccess.getLastModified(cdeFilePath))
     {
       // Check WCDF file date as well
       
@@ -417,7 +417,7 @@ public final class DashboardManager
         throw new ThingReadException(new FileNotFoundException(wcdf.getPath()));
       }
 
-      if(cachedDash.getSourceDate().getTime() >= CdeEnvironment.getUserContentAccess().getLastModified(wcdf.getPath())) {
+      if(cachedDash.getSourceDate().getTime() >= userAccess.getLastModified(wcdf.getPath())) {
         _logger.info("Cached Dashboard instance is valid, using it.");
 
         return cachedDash;
