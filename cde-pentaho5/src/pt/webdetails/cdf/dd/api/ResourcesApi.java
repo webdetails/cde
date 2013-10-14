@@ -21,6 +21,7 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -165,7 +166,7 @@ public class ResourcesApi {
         new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
 
     List<IBasicFile> fileList =
-        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, 1, true );
+        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true );
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[fileList.size()] );
