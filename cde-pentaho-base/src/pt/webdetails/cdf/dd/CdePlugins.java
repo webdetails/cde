@@ -40,12 +40,12 @@ public class CdePlugins {
     };
 
     List<Plugin> cdePlugins = pluginsAnalyzer.getPlugins(pluginFilter);
-
+    // TODO: plugin is json serializable...
     for(Plugin plugin : cdePlugins) {
       try {
         JSONObject pluginObject = new JSONObject();
-		String [] split = plugin.getPluginRelativePath().split("/");
-        pluginObject.put("title", split[split.length-1]);
+        pluginObject.put("title", plugin.getId());
+        pluginObject.put("name", plugin.getName());
         pluginObject.put("description", plugin.getXmlValue("/settings/description", "settings.xml"));
         pluginObject.put("url", plugin.getXmlValue("/settings/url", "settings.xml"));
         pluginObject.put("jsPath", plugin.getXmlValue("/settings/jsPath", "settings.xml"));
