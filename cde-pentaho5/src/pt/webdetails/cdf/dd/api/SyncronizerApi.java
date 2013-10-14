@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,10 +59,16 @@ public class SyncronizerApi {//TODO: synchronizer?
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
 		  					@FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
 		  					@FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+                @FormParam( MethodParams.AUTHOR ) @DefaultValue( "" ) String author,
 		  					@FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
+                @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
+                @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
+                @FormParam( MethodParams.WIDGET ) boolean widget,
+                @FormParam( MethodParams.RENDER_TYPE ) @DefaultValue( "" ) String renderType,
+                @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
 		  					@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
 		  					@FormParam( MethodParams.OPERATION ) String operation,
-		  					@FormParam( MethodParams.WIDGET ) boolean widget,
+
 		  					@Context HttpServletRequest request,
 		  					@Context HttpServletResponse response ) throws Exception {
     
@@ -88,7 +95,13 @@ public class SyncronizerApi {//TODO: synchronizer?
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
       params.put(MethodParams.FILE, file);
-      
+      params.put(MethodParams.WIDGET, String.valueOf(widget));
+      params.put(MethodParams.AUTHOR, author);
+      params.put(MethodParams.STYLE, style);
+      params.put(MethodParams.WIDGET_NAME, widgetName);
+      params.put(MethodParams.RENDER_TYPE, renderType);
+      params.put(MethodParams.WIDGET_PARAMETERS, widgetParams);
+
       String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
       
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
@@ -151,10 +164,14 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String FILE = "file";
     private static final String PATH = "path";
     private static final String TITLE = "title";
+    private static final String AUTHOR = "author";
     private static final String DESCRIPTION = "description";
+    private static final String STYLE = "style";
     private static final String OPERATION = "operation";
-    private static final String STRUCTURE = "structure";
+    private static final String RENDER_TYPE = "renderType";
     private static final String WIDGET = "widget";
+    private static final String WIDGET_NAME = "widgetName";
+    private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
   }
 }

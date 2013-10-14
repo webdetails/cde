@@ -1555,7 +1555,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     var myself = this;
     return $('<button class="cdfddInput">...</button>').click(function(){
       if(myself.fileName == null) return;
-      var url = "extEditor?path=" + myself.fileName + "&mode=" + myself.getResourceType();
+      var url = ExternalEditor.getUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
       // Store what we need in a global var

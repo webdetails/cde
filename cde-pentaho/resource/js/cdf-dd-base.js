@@ -403,6 +403,22 @@ var PreviewRequests = {
                 });
             }
         });
+    },
+
+    getPreviewUrl: function( solution, path, file, style){
+        var _href;
+        if (solution == 'system'){
+            // CPK Dashboard
+            path = path.split('/');
+            var pluginName = (path.length > 0 ) ? path[0] : "",
+                endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
+            _href = Endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
+        } else {
+            // Regular Dashboard
+            _href = Endpoints.getPluginUrl() + "Render?" + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
+        }
+        return _href
+
     }
 };
 
@@ -425,3 +441,19 @@ var PluginRequests = {
       });
     }
 };
+
+var VersionRequests = {
+    getGetVersion: function(){
+        return Endpoints.getPluginUrl() + "getVersion";
+    },
+
+    getCheckVersion: function(){
+        return Endpoints.getPluginUrl() + "checkVersion";
+    }
+};
+
+var ExternalEditor = {
+    getUrl: function(){
+        return Endpoints.getPluginUrl() + "extEditor";
+    }
+}

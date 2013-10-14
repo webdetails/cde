@@ -302,7 +302,7 @@ public class DashboardStructure implements IDashboardStructure {
       return;
     }
 
-    CdeEnvironment.getPluginSystemWriter().saveFile(widgetPath, new ByteArrayInputStream(safeGetEncodedBytes(doc.asXML())));
+    CdeEnvironment.getUserContentAccess().saveFile(widgetPath, new ByteArrayInputStream(safeGetEncodedBytes(doc.asXML())));
     
     // This will allow the metadata model to receive the
     // new/updated widget-component definition (name and parameters).

@@ -662,14 +662,14 @@ var CDFDD = Base.extend({
 
       getVersion: function() {
 
-        var versionCheckUrl = Endpoints.getStaticUrl() + '/getVersion';
+        var versionCheckUrl = VersionRequests.getGetVersion();
         versionGetInfo = this.getInfo(versionCheckUrl);
         return versionGetInfo;
       },
 
       checkVersion: function() {
 
-        var versionCheckUrl = Endpoints.getStaticUrl() + '/checkVersion';
+        var versionCheckUrl = VersionRequests.getCheckVersion();
         var versionCheckInfo = this.getInfo(versionCheckUrl);
         var msg = '';
 
@@ -767,26 +767,10 @@ var CDFDD = Base.extend({
       cdfstructure: serializedDashboard //JSON.stringify(this.dashboardData,null,2)
     };
 
-    var _href = this.getPreviewUrl( CDFDDDataUrl, solution, path, file, style );
-
-    PreviewRequests.previewDashboard(saveParams, _href);
+    PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl( solution, path, file, style ));
   },
 
-  getPreviewUrl: function( CDFDDDataUrl, solution, path, file, style){
-     var _href;
-     if (solution == 'system'){
-      // CPK Dashboard
-      path = path.split('/');
-      var pluginName = (path.length > 0 ) ? path[0] : "",
-          endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
-      _href = CDFDDDataUrl.replace("pentaho-cdf-dd", pluginName).replace("Syncronize", endpointName) + "?mode=preview" ;
-     } else {
-      // Regular Dashboard
-      _href = CDFDDDataUrl.replace("Syncronize", "Render?") + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
-    }
-    return _href
 
-  },
 
   savePulldown: function(target, evt) {
     var myself = this,

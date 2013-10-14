@@ -168,8 +168,8 @@ public class RenderApi {
   @Path( "/listRenderers" )
   @Produces( MimeTypes.JSON )
   public String listRenderers() {
-    return "{\"result\": [\"" + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType() + "\",\""
-        + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType() + "\"]}";
+    return "{\"result\": [\"" + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType() + "\",\""
+        + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType() + "\"]}";
   }
 
   @GET
