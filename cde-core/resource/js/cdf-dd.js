@@ -715,10 +715,13 @@ var CDFDD = Base.extend({
       }
     }
 
-    var htmlHref = Endpoints.getStaticUrl() + "/static/" + mode + ".html";
-    var cssFileRef = Endpoints.getStaticUrl() + "/css/" + mode + ".css";
+    var htmlHref = "static/" + mode + ".html";
+    var cssFileRef = "css/" + mode + ".css";
 
     $.fancybox({
+      ajax: {
+          type: "GET"
+      },
       href: htmlHref,
       autoDimensions: false,
       width: 950,

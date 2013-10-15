@@ -71,7 +71,7 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", loadParams, function (json) {
+        $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", loadParams, function (result) {
             var json = Util.parseJsonResult(result);
             if (json && json.status == "true") {
 
