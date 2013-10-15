@@ -1010,7 +1010,7 @@
 						"description":"HTML",
 						"tooltip":"Html code to be added",
 						"type":"Html",
-						"value":"<a style=\"position:relative;top:12;\" border=\"0\" title=\"WebDetails\" href=\"http://www.webdetails.pt\">\n<img src=\"/pentaho/content/pentaho-cdf-dd/getResource?resource=/images/webdetails.png\"/>\n</a>",
+						"value":"<a style=\"position:relative;top:12;\" border=\"0\" title=\"WebDetails\" href=\"http://www.webdetails.pt\">\n<img src=\"images/webdetails.png\"/>\n</a>",
 						"order":15
 						}]
 				}]
