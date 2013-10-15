@@ -285,6 +285,12 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
+        // widgets are always stored in a specific user content folder, best left handled server-side
+        if (saveSettingsParams && wcdf.widget) {
+            saveSettingsParams.widget = true;
+            saveSettingsParams.file = saveSettingsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
+        }
+
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             if (result && result.status == "true") {
                 myself.setDashboardWcdf(wcdf);
@@ -488,7 +494,26 @@ var VersionRequests = {
 };
 
 var ExternalEditor = {
-    getUrl: function(){
+    getEditorUrl: function(){
         return Endpoints.getPluginUrl() + "editor/getExternalEditor";
+    },
+
+    getGetUrl: function(){
+        return Endpoints.getPluginUrl() + "file/get";
+    },
+
+    getCanEditUrl: function(){
+        return Endpoints.getPluginUrl() + "file/canEdit";
+    },
+
+    getWriteUrl: function(){
+        return Endpoints.getPluginUrl() + "file/write";
     }
-}
+};
+
+
+var OlapUtils = {
+    getOlapCubesUrl: function(){
+        return Endpoints.getPluginUrl() + "olap/getCubes";
+    }
+};

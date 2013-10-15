@@ -474,9 +474,7 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
   getDataInit: function(){
     
     var myself = this;
-    $.getJSON(CDFDDServerUrl + "OlapUtils", {
-      operation: "GetOlapCubes"
-    }, function(json) {
+    $.getJSON(OlapUtils.getOlapCubesUrl(), {} , function(json) {
       if(json.status == "true"){
         var catalogs = json.result.catalogs;
         myself.catalogs = catalogs;
@@ -529,9 +527,7 @@ var JndiRenderer = SelectRenderer.extend({
   getDataInit: function(){
 
     var myself = this;
-    $.getJSON(CDFDDServerUrl + "OlapUtils", {
-      operation: "GetOlapCubes"
-    }, function(json) {
+    $.getJSON(OlapUtils.getOlapCubesUrl(), {}, function(json) {
       if(json.status == "true"){
         var catalogs = json.result.catalogs;
         var hash = {};

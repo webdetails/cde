@@ -24,7 +24,11 @@ var Endpoints = {
 
     getJsResourceUrl: function () {
         return this.pluginUrl + this.jsResourceUrl;
-    }
+    },
+
+    isEmptyFilePath: function(filePath){
+        return (!filePath || "/null/null/null" == filePath);
+    },
 };
 
 
@@ -358,7 +362,7 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = window.location.origin + Endpoints.getPluginUrl() + '/Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else {
                 $.notifyBar({
@@ -372,8 +376,10 @@ var SaveRequests = {
 var LoadRequests = {
 
     loadDashboard: function (loadParams, myself) {
+        if(Endpoints.isEmptyFilePath(loadParams.file)){ loadParams.file = ""; }
+
         $.post(Endpoints.getPluginUrl() + "Syncronize", loadParams, function (result) {
-            var json = eval("(" + result + ")");
+            var json = eval("("+eval("(" + result + ")").result+")");
             if (json && json.status == "true") {
                 myself.setDashboardData(myself.unstrip(json.result.data));
                 myself.setDashboardWcdf(json.result.wcdf);
@@ -453,7 +459,25 @@ var VersionRequests = {
 };
 
 var ExternalEditor = {
-    getUrl: function(){
+    getEditorUrl: function(){
         return Endpoints.getPluginUrl() + "extEditor";
+    },
+
+    getGetUrl: function(){
+        return Endpoints.getPluginUrl() + "getFile";
+    },
+
+    getCanEditUrl: function(){
+        return Endpoints.getPluginUrl() + "canEdit";
+    },
+
+    getWriteUrl: function(){
+        return Endpoints.getPluginUrl() + "writeFile";
     }
-}
+};
+
+var OlapUtils = {
+    getOlapCubesUrl: function(){
+        return Endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes";
+    }
+};

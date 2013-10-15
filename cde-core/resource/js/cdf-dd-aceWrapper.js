@@ -48,14 +48,14 @@ var CodeEditor = Base.extend({
 	loadFile: function(fileName){
 		var myself = this;
 		//check edit permission
-		$.get("file/canEdit", {path: fileName},
+		$.get(ExternalEditor.getCanEditUrl(), {path: fileName},
 			function(result){
 				var readonly = result != 'true';
 				myself.setReadOnly(readonly);
 				//TODO: can read?..get permissions?...
 
 				//load file contents
-				$.get("file/get",{path:fileName},
+				$.get(ExternalEditor.getGetUrl(),{path:fileName},
 					function(fileContents) {
 						myself.setContents(fileContents);
 					}
@@ -76,7 +76,7 @@ var CodeEditor = Base.extend({
 	
 	saveFile: function(fileName, contents, callback){
         $.ajax({
-            url: "file/write",
+            url: ExternalEditor.getWriteUrl(),
             type: "POST",
             contentType: "application/xml",
             dataType: "xml",
