@@ -44,7 +44,7 @@ public abstract class PackagedFileDependency extends FileDependency {
         //release refs
         inputFiles = null;
         if ( logger.isDebugEnabled() ) {
-          logger.info( String.format( "Generated '%s' in %ss", filePath, Utils.ellapsedSeconds( startTime ) ) );
+          logger.debug( String.format( "Generated '%s' in %ss", filePath, Utils.ellapsedSeconds( startTime ) ) );
         }
       }
     }

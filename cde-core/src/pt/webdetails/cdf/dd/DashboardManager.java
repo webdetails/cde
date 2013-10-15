@@ -30,8 +30,6 @@ import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReader;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
-import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
-import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
@@ -42,6 +40,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactor
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
@@ -503,29 +502,21 @@ public final class DashboardManager
           throws ThingWriteException
   {
     // 1. Obtain a Writer for the CdfRunJs format
-    IThingWriterFactory writerFactory = new CdfRunJsThingWriterFactory();
-    IThingWriter writer;
-    try
-    {
-      writer = writerFactory.getWriter(dash);
-    }
-    catch(UnsupportedThingException ex)
-    {
-      throw new ThingWriteException("While obtaining a writer for rendering the dashboard.", ex);
-    }
-    
+    CdfRunJsThingWriterFactory writerFactory = new CdfRunJsThingWriterFactory();
+    CdfRunJsDashboardWriter writer = writerFactory.getDashboardWriter(dash);
+
     // 2. Write it
     CdfRunJsDashboardWriteContext writeContext = 
       new CdfRunJsDashboardWriteContext(writerFactory, /*indent*/"", bypassCacheRead, dash, options);
       
     CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder = 
             new CdfRunJsDashboardWriteResult.Builder();
-    
+
     writer.write(dashboardWriteBuilder, writeContext, dash);
-      
+
     return dashboardWriteBuilder.build();
   }
-  
+
   private CdfRunJsDashboardWriteResult
     getDashboardWriteResultFromCache( DashboardCacheKey cacheKey, String cdeFilePath ) throws FileNotFoundException {
 

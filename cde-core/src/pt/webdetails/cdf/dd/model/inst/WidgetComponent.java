@@ -11,7 +11,7 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
 /**
  * @author dcleao
  */
-public final class WidgetComponent<TM extends WidgetComponentType> extends GenericComponent<TM>
+public final class WidgetComponent extends GenericComponent<WidgetComponentType>
 {
   private WidgetComponent(Builder builder, MetaModel metaModel) throws ValidationException
   {
@@ -19,7 +19,7 @@ public final class WidgetComponent<TM extends WidgetComponentType> extends Gener
   }
 
   @Override
-  public TM getMeta()
+  public WidgetComponentType getMeta()
   {
     return super.getMeta();
   }

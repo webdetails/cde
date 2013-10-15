@@ -26,6 +26,21 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
  */
 public class CdfRunJsThingWriterFactory implements IThingWriterFactory
 {
+  
+  public CdfRunJsDashboardWriter getDashboardWriter(Dashboard dashboard) {
+    DashboardWcdfDescriptor wcdf = dashboard.getWcdf();
+    DashboardRendererType rendererType = wcdf.getParsedRendererType();
+      
+    if(rendererType == DashboardRendererType.MOBILE)
+    {
+      return new CdfRunJsMobileDashboardWriter();
+    }
+
+    return wcdf.isWidget() ?
+           new CdfRunJsBlueprintWidgetWriter() :
+           new CdfRunJsBlueprintDashboardWriter();
+  }
+
   public IThingWriter getWriter(Thing t) throws UnsupportedThingException
   {
     if(t == null) { throw new IllegalArgumentException("t"); }
@@ -73,19 +88,8 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
       return new CdfRunJsGenericPropertyBindingWriter();
     }
     else if(KnownThingKind.Dashboard.equals(kind))
-    {
-      // Dashboard or Widget
-      DashboardWcdfDescriptor wcdf = ((Dashboard)t).getWcdf();
-      DashboardRendererType rendererType = wcdf.getParsedRendererType();
-        
-      if(rendererType == DashboardRendererType.MOBILE)
-      {
-        return new CdfRunJsMobileDashboardWriter();
-      }
-
-      return wcdf.isWidget() ?
-             new CdfRunJsBlueprintWidgetWriter() :
-             new CdfRunJsBlueprintDashboardWriter();
+    { // shouldn't get here anymore
+      return getDashboardWriter(((Dashboard)t));
     }
 
     throw new UnsupportedThingException(kind, t.getId());

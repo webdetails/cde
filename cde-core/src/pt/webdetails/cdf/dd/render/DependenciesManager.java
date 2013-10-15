@@ -24,6 +24,7 @@ import pt.webdetails.cdf.dd.packager.PathOrigin;
 import pt.webdetails.cdf.dd.packager.DependenciesPackage.PackageType;
 import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
@@ -81,7 +82,6 @@ public final class DependenciesManager
    */
   private static DependenciesManager createInstance()
   {
-    long start = System.currentTimeMillis();
     DependenciesManager manager = new DependenciesManager();
     IUrlProvider urlProvider = CdeEngine.getEnv().getPluginEnv().getUrlProvider();
     IContentAccessFactory factory = CdeEnvironment.getContentAccessFactory();
@@ -119,10 +119,7 @@ public final class DependenciesManager
     } catch ( IOException e ) {
       logger.error("Error attempting to read " + INCLUDES_PROP, e);
     }
-    if (logger.isDebugEnabled()) {
-      float durationSec = (System.currentTimeMillis() - start) / 1000f;
-      logger.debug( String.format("Registered meta model dependencies in %.3gs", durationSec) );
-    }
+
     return manager;
   }
 
@@ -131,6 +128,7 @@ public final class DependenciesManager
    */
   private static DependenciesManager createDependencyManager(MetaModel metaModel)
   {
+    long start = System.currentTimeMillis();
     DependenciesManager depMgr = createInstance();
     
     DependenciesPackage componentScripts = depMgr.getPackage(StdPackages.COMPONENT_DEF_SCRIPTS);
@@ -205,7 +203,9 @@ public final class DependenciesManager
         }
       }
     }
-    
+    if (logger.isDebugEnabled()) {
+      logger.debug( String.format("Registered meta model dependencies in %ss", Utils.ellapsedSeconds( start )) );
+    }
     return depMgr;
   }
 

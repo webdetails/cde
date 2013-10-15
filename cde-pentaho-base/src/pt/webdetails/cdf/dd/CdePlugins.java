@@ -57,7 +57,7 @@ public class CdePlugins {
       }
     }
 
-    logger.info("Feeding client with CDE-Compatible plugin list");
+    logger.debug("Feeding client with CDE-Compatible plugin list");
 
     return pluginsArray.toString();
   }

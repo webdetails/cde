@@ -29,7 +29,6 @@ public abstract class MetaObject extends Entity
   private final String _version;
   private final boolean _visible;
 
-  @SuppressWarnings("OverridableMethodCallInConstructor")
   protected MetaObject(Builder builder) throws ValidationException
   {
     super(builder);
@@ -62,7 +61,7 @@ public abstract class MetaObject extends Entity
     this._sourcePath = StringUtils.defaultIfEmpty(builder._sourcePath, "");
   }
 
-  protected String initName(Builder builder)
+  private String initName(Builder builder)
   {
     // Although a name can be empty, there can only be one empty named component per kind...
     String name = builder._name;

@@ -140,7 +140,8 @@ public class DashboardStructure implements IDashboardStructure {
 
     // 2. If not the CDE temp file, delete the temp file, if one exists
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
-    
+
+    // TODO: 
     boolean isPreview = cdeFilePath.indexOf("_tmp.cdfde") >= 0;
     if(!isPreview) {
       String cdeTempFilePath = cdeFilePath.replace(".cdfde", "_tmp.cdfde");
