@@ -94,13 +94,14 @@ public class SyncronizerApi {//TODO: synchronizer?
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
-      params.put(MethodParams.FILE, file);
-      params.put(MethodParams.WIDGET, String.valueOf(widget));
-      params.put(MethodParams.AUTHOR, author);
-      params.put(MethodParams.STYLE, style);
-      params.put(MethodParams.WIDGET_NAME, widgetName);
-      params.put(MethodParams.RENDER_TYPE, renderType);
-      params.put(MethodParams.WIDGET_PARAMETERS, widgetParams);
+      params.put( MethodParams.FILE, file );
+      params.put( MethodParams.WIDGET, String.valueOf(widget) );
+      if( !author.isEmpty() ) params.put( MethodParams.AUTHOR, author );
+      if( !style.isEmpty() ) params.put( MethodParams.STYLE, style );
+      if( !widgetName.isEmpty() ) params.put( MethodParams.WIDGET_NAME, widgetName );
+      if( !renderType.isEmpty() ) params.put( MethodParams.RENDER_TYPE, renderType );
+      String[] widgetParameters = widgetParams.toArray( new String[0] );
+      if( widgetParameters.length > 0 ) params.put( MethodParams.WIDGET_PARAMETERS, widgetParameters );
 
       String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
       

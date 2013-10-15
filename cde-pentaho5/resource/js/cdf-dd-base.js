@@ -391,7 +391,7 @@ var SaveRequests = {
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
                     //window.location = window.location.origin + Endpoints.getPluginUrl() + 'renderer/edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                     window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+                     window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:public:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
             } else {
                 $.notifyBar({
