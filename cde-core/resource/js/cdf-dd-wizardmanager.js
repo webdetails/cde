@@ -357,12 +357,9 @@ var OlapWizard = WizardManager.extend({
 		renderCubeSelector: function(){
 		
 			// Fetch list of cubes from server
-			var params = {
-				operation: "GetOlapCubes"
-			};
 			var myself = this;
 
-			OlapWizardRequests.olapManager(params, myself);
+			OlapWizardRequests.olapManager({}, myself);
 		},
 
 		renderDimensions: function(){
@@ -394,7 +391,6 @@ var OlapWizard = WizardManager.extend({
 
 			// Fetch dimension structure of selected cube from server
 			var params = {
-				operation: "GetCubeStructure",
 				catalog: selectedCatalog,
 				cube: selectedCube
 			};
@@ -433,7 +429,7 @@ var OlapWizard = WizardManager.extend({
 
 			//3. Add clear button.
 			var clearButtonContainer = $('<div class="cdfdd-olap-clearButton"></div>');
-			var clearButton = $('<a border="0"><img src="getResource?resource=/images/clear.gif">&nbsp;</a>');
+			var clearButton = $('<a border="0"><img src="'+Endpoints.getImageResourceUrl()+'/images/clear.gif">&nbsp;</a>');
 			$(clearButton).bind('click',function(){
 				myself.removeSelectdWizardObject(type,wizardObject);
 				clearButtonContainer.remove();

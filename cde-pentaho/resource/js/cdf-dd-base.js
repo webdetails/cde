@@ -156,7 +156,7 @@ var OlapWizardRequests = {
 
     olapManager: function (params, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes", params, function (json) {
             if (json && json.status == "true") {
 
                 var catalogs = json.result.catalogs;
@@ -183,7 +183,7 @@ var OlapWizardRequests = {
 
     olapCubeSelected: function (params, selectedCube, selectedCatalog, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetCubeStructure", params, function (json) {
             if (json.status == "true") {
 
                 myself.logger.info("Got correct response from GetCubeStructure");
@@ -197,12 +197,14 @@ var OlapWizardRequests = {
                     var hierarchies = dimension.hierarchies;
                     $.each(hierarchies, function (j, hierarchy) {
                         var hierarchyId = "dimRow-" + (++dimensionIdx);
-                        dimensionTBody.append("<tr id='" + hierarchyId + "'><td>" + hierarchy.caption + "</td></tr>");
+                        var name = hierarchy.caption == undefined ? hierarchy.name : hierarchy.caption;
+                        dimensionTBody.append("<tr id='" + hierarchyId + "'><td>" + name + "</td></tr>");
 
                         var levels = hierarchy.levels;
                         $.each(levels, function (k, level) {
                             var levelId = "dimRow-" + (++dimensionIdx);
-                            dimensionTBody.append("<tr id='" + levelId + "' class='olapObject child-of-" + hierarchyId + "'><td class='draggableDimension'>" + level.caption + "</td></tr>");
+                            var name = level.caption == undefined ? level.name : level.caption;
+                            dimensionTBody.append("<tr id='" + levelId + "' class='olapObject child-of-" + hierarchyId + "'><td class='draggableDimension'>" + name + "</td></tr>");
                             level.hierarchy = hierarchy;
                             level.catalog = selectedCatalog;
                             level.cube = selectedCube;
@@ -224,7 +226,8 @@ var OlapWizardRequests = {
                 measureTBody.empty();
                 $.each(measures, function (i, measure) {
                     var measureId = "levelRow-" + (++measureIdx);
-                    measureTBody.append("<tr id='" + measureId + "' class='olapObject'><td class='draggableMeasure'>" + measure.caption + "</td></tr>");
+                    var name = measure.caption == undefined ? measure.name : measure.caption;
+                    measureTBody.append("<tr id='" + measureId + "' class='olapObject'><td class='draggableMeasure'>" + name + "</td></tr>");
                     myself.addOlapObject(WizardOlapObjectManager.MEASURE, measure);
 
                 });

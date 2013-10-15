@@ -1,11 +1,11 @@
 var Endpoints = {
 
-    webappBasePath: "/pentaho", 
+    webappBasePath: "/pentaho",
     staticUrl: "/api/plugins/pentaho-cdf-dd/files/",
     pluginUrl: "/plugin/pentaho-cdf-dd/api/",
-    cssResourceUrl: "/getCssResource?resource=",
-    imageResourceUrl: "/getResource?resource=",
-    jsResourceUrl: "/getJsResource?resource=",
+    cssResourceUrl: "resources/get?resource=",
+    imageResourceUrl: "resources/get?resource=",
+    jsResourceUrl: "resources/getJs?resource=",
 
     getWebappBasePath: function () {
         return this.webappBasePath;
@@ -20,15 +20,15 @@ var Endpoints = {
     },
 
     getCssResourceUrl: function () {
-        return this.pluginUrl + this.cssResourceUrl;
+        return this.webappBasePath + this.pluginUrl + this.cssResourceUrl;
     },
 
     getImageResourceUrl: function () {
-        return this.pluginUrl + this.imageResourceUrl;
+        return this.webappBasePath + this.pluginUrl + this.imageResourceUrl;
     },
 
     getJsResourceUrl: function () {
-        return this.pluginUrl + this.jsResourceUrl;
+        return this.webappBasePath + this.pluginUrl + this.jsResourceUrl;
     },
 
     isEmptyFilePath: function(filePath){
@@ -37,7 +37,7 @@ var Endpoints = {
 
     getFilePathFromUrl: function(){
         // ex: /pentaho/api/repos/:public:plugin-samples:pentaho-cdf-dd:cde_sample1.wcdf/wcdf.edit
-        
+
         var dash = ""; // empty file path that represents a new dash
 
         if(window.location.pathname.indexOf("/:") == -1){
@@ -179,7 +179,7 @@ var OlapWizardRequests = {
 
     olapManager: function (params, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "olap/getCubes", params, function (json) {
             if (json && json.status == "true") {
 
                 var catalogs = json.result.catalogs;
@@ -206,7 +206,7 @@ var OlapWizardRequests = {
 
     olapCubeSelected: function (params, selectedCube, selectedCatalog, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "olap/getCubeStructure", params, function (json) {
             if (json.status == "true") {
 
                 myself.logger.info("Got correct response from GetCubeStructure");
@@ -220,20 +220,20 @@ var OlapWizardRequests = {
                     var hierarchies = dimension.hierarchies;
                     $.each(hierarchies, function (j, hierarchy) {
                         var hierarchyId = "dimRow-" + (++dimensionIdx);
-                        dimensionTBody.append("<tr id='" + hierarchyId + "'><td>" + hierarchy.caption + "</td></tr>");
+                        var name = hierarchy.caption == undefined ? hierarchy.name : hierarchy.caption;
+                        dimensionTBody.append("<tr id='" + hierarchyId + "'><td>" + name + "</td></tr>");
 
                         var levels = hierarchy.levels;
                         $.each(levels, function (k, level) {
                             var levelId = "dimRow-" + (++dimensionIdx);
-                            dimensionTBody.append("<tr id='" + levelId + "' class='olapObject child-of-" + hierarchyId + "'><td class='draggableDimension'>" + level.caption + "</td></tr>");
+                            var name = level.caption == undefined ? level.name : level.caption;
+                            dimensionTBody.append("<tr id='" + levelId + "' class='olapObject child-of-" + hierarchyId + "'><td class='draggableDimension'>" + name + "</td></tr>");
                             level.hierarchy = hierarchy;
                             level.catalog = selectedCatalog;
                             level.cube = selectedCube;
                             myself.addOlapObject(WizardOlapObjectManager.DIMENSION, level);
                         });
                     });
-
-
                 });
                 dimensionTBody.parent().treeTable();
                 $("td.draggableDimension", dimensionTBody).draggable({helper: 'clone'});
@@ -247,7 +247,8 @@ var OlapWizardRequests = {
                 measureTBody.empty();
                 $.each(measures, function (i, measure) {
                     var measureId = "levelRow-" + (++measureIdx);
-                    measureTBody.append("<tr id='" + measureId + "' class='olapObject'><td class='draggableMeasure'>" + measure.caption + "</td></tr>");
+                    var name = measure.caption == undefined ? measure.name : measure.caption;
+                    measureTBody.append("<tr id='" + measureId + "' class='olapObject'><td class='draggableMeasure'>" + name + "</td></tr>");
                     myself.addOlapObject(WizardOlapObjectManager.MEASURE, measure);
 
                 });
@@ -310,9 +311,9 @@ var SaveRequests = {
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
 
         // widgets are always stored in a specific user content folder, best left handled server-side
-        if (saveSettingsParams && saveSettingsParams.widget) { 
+        if (saveSettingsParams && saveSettingsParams.widget) {
             saveSettingsParams.file = saveSettingsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
-        } 
+        }
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             try {
@@ -338,7 +339,7 @@ var SaveRequests = {
     saveDashboard: function (saveParams, stripArgs) {
 
         if(Endpoints.isEmptyFilePath(saveParams.file)){ saveParams.file = Endpoints.getFilePathFromUrl(); }
-        
+
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
             if (result && result.status == "true") {
                 if (stripArgs.needsReload) {
@@ -377,10 +378,10 @@ var SaveRequests = {
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
         // widgets are always stored in a specific user content folder, best left handled server-side
-        if (saveAsParams) { 
-            saveAsParams.widget = true; 
+        if (saveAsParams) {
+            saveAsParams.widget = true;
             saveAsParams.file = saveAsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
-        }  
+        }
 
         $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
             if (result && result.status == "true") {
@@ -397,7 +398,7 @@ var SaveRequests = {
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
                     //window.location = window.location.origin + Endpoints.getPluginUrl() + 'renderer/edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
-                     window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:public:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+                    window.location = window.location.origin + Endpoints.getWebappBasePath() + '/api/repos/:public:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
             } else {
                 $.notifyBar({
@@ -414,7 +415,7 @@ var LoadRequests = {
 
         if(Endpoints.isEmptyFilePath(loadParams.file)){ loadParams.file = Endpoints.getFilePathFromUrl(); }
 
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", loadParams, function (result) {            
+        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", loadParams, function (result) {
             if (result && result.status == "true") {
                 myself.setDashboardData(myself.unstrip(result.result.data));
                 myself.setDashboardWcdf(result.result.wcdf);
