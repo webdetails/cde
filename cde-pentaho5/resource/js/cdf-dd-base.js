@@ -499,15 +499,15 @@ var ExternalEditor = {
     },
 
     getGetUrl: function(){
-        return Endpoints.getPluginUrl() + "file/get";
+        return Endpoints.getPluginUrl() + "editor/file/get";
     },
 
     getCanEditUrl: function(){
-        return Endpoints.getPluginUrl() + "file/canEdit";
+        return Endpoints.getPluginUrl() + "editor/file/canEdit";
     },
 
     getWriteUrl: function(){
-        return Endpoints.getPluginUrl() + "file/write";
+        return Endpoints.getPluginUrl() + "editor/file/write";
     }
 };
 
