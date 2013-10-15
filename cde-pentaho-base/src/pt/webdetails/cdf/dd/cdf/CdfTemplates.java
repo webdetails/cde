@@ -25,6 +25,7 @@ import java.util.List;
 
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
@@ -33,20 +34,20 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 public class CdfTemplates {
 
   private static String SYSTEM_CDF_DD_TEMPLATES = "/resources/templates";
-  public static String SYSTEM_RESOURCE_TEMPLATE_DIR = CdeEngine.getInstance().getEnvironment()
-      .getApplicationBaseContentUrl() + "api/resources/get?resource=" + SYSTEM_CDF_DD_TEMPLATES + "/" ;
-  public static String UNKNOWN_IMAGE = SYSTEM_RESOURCE_TEMPLATE_DIR + "unknown.png";
+  private String resoureUrl;
   
-  private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "/templates";
+  private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "templates";
   private static Log logger = LogFactory.getLog( CdfTemplates.class );
 
-  public CdfTemplates() {
+  public CdfTemplates( String getResourceEndpoint ) {
+    this.resoureUrl = CdeEngine.getInstance().getEnvironment()
+            .getApplicationBaseContentUrl() + getResourceEndpoint + SYSTEM_CDF_DD_TEMPLATES + "/" ;
   }
 
   public void save( String file, String structure ) throws DashboardStructureException,
     IOException {
     logger.info( "Saving File:" + file );
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IRWAccess access = CdeEnvironment.getPluginRepositoryWriter();
 
     if ( !access.fileExists( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM ) ) {
       access.createFolder( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM );
@@ -104,15 +105,15 @@ public class CdfTemplates {
       }
     } );
 
-    IReadAccess access = CdeEnvironment.getPluginSystemReader( SYSTEM_RESOURCE_TEMPLATE_DIR );
+    IReadAccess access = CdeEnvironment.getPluginSystemReader( SYSTEM_CDF_DD_TEMPLATES );
 
     for ( int i = 0; i < jsonFiles.length; i++ ) {
       final JSONObject template = new JSONObject();
 
-      String imgResourcePath = UNKNOWN_IMAGE;
+      String imgResourcePath = resoureUrl+"unknown.png";
 
       if ( access.fileExists( jsonFiles[i].getName().replace( ".cdfde", ".png" ) ) ) {
-        imgResourcePath = jsonFiles[i].getFullPath().replace( ".cdfde", ".png" );
+        imgResourcePath = resoureUrl+jsonFiles[i].getName().replace( ".cdfde", ".png" );
       }
 
       template.put( "img", imgResourcePath );

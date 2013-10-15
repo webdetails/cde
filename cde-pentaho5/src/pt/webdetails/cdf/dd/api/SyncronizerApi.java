@@ -44,6 +44,8 @@ public class SyncronizerApi {//TODO: synchronizer?
   private static final String OPERATION_SAVE_AS = "saveas";
   private static final String OPERATION_NEW_FILE = "newfile";
   private static final String OPERATION_SAVE_SETTINGS = "savesettings";
+
+  private static final String GET_RESOURCE = "api/resources/get?resource=";
   /**
    * for historical reasons..
    */
@@ -137,7 +139,7 @@ public class SyncronizerApi {//TODO: synchronizer?
 		  					 @FormParam( MethodParams.FILE ) String file,
 		  					 @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
 		  					 @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
-    final CdfTemplates cdfTemplates = new CdfTemplates();
+    final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
     Object result = null;
     
     if ( OPERATION_LOAD.equalsIgnoreCase(operation) ) {

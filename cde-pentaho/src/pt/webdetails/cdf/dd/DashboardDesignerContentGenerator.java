@@ -101,6 +101,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	private static final String REQUEST_PARAM_PATH = "path";
 	private static final String REQUEST_PARAM_OPERATION = "operation";
 
+  private static final String GET_RESOURCE = "getResource?resource=";
+
 	/**
 	 * Parameters received by content generator
 	 */
@@ -486,7 +488,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider requestParams = getRequestParameters();
     String method = requestParams.getStringParameter(REQUEST_PARAM_OPERATION, null);
 
-    final CdfTemplates cdfTemplates = new CdfTemplates();
+    final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
 
     if( method.equals(OPERATION_LOAD) ){
       Object result = cdfTemplates.load();
