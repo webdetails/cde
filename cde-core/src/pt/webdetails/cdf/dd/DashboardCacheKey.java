@@ -10,6 +10,9 @@ import java.io.Serializable;
 
 public final class DashboardCacheKey implements Serializable
 {
+  // don't forget to update when changing class
+  private static final long serialVersionUID = 1L;
+
   private final String cdfde, template, root;
   private final boolean debug, abs;
   private final String aliasPrefix;

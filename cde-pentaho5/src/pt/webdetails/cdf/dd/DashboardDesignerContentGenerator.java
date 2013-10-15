@@ -12,6 +12,7 @@ import pt.webdetails.cdf.dd.api.RenderApi;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.SimpleContentGenerator;
+import pt.webdetails.cpf.Util;
 
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -55,10 +56,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     RenderApi renderer = new RenderApi();
 
     if( create ) {
-    	renderer.newDashboard( "", "", filePath, debug, getRequest(), getResponse() );
-    
+      String result = renderer.newDashboard( filePath, debug, getRequest(), getResponse() );
+      IOUtils.write( result, getResponse().getOutputStream() );
     } else if( edit ) {
-    	renderer.edit( "", "", filePath, debug, getRequest(), getResponse() );
+      //TODO: file to path
+      String result = renderer.edit( "", "", filePath, debug, getRequest(), getResponse() );
+      IOUtils.write( result, getResponse().getOutputStream() );
     
     } else if( resource ) {
     	// TODO review later if there is a viable solution to making resources being 

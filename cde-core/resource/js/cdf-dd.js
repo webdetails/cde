@@ -177,6 +177,11 @@ var CDFDD = Base.extend({
     }
   },
 
+  isNewFile: function(fileName) {
+    //TODO: mashup of all checks found and then some; should be only null/empty
+    return fileName == "/" || fileName == "/null/null/null" || fileName == "" || fileName == null;
+  },
+
   load: function() {
 
     this.logger.info("Loading dashboard...");
@@ -207,8 +212,7 @@ var CDFDD = Base.extend({
       cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1)
     };
 
-    if (CDFDDFileName != "/" && CDFDDFileName != "/null/null/null") {
-      
+    if ( !this.isNewFile(CDFDDFileName) ) {
       SaveRequests.saveDashboard(saveParams, stripArgs);      
     } else {
       this.combinedSaveAs();
@@ -738,7 +742,7 @@ var CDFDD = Base.extend({
 
   previewMode: function(){
 
-    if (CDFDDFileName == "/null/null/null") {
+    if (this.isNewFile(CDFDDFileName)) {
       $.notifyBar({
         html: "Need to save an initial dashboard before previews are available."
       });

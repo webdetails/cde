@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
@@ -23,7 +21,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.InterPluginCall;
+import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -99,7 +97,7 @@ public class RenderApi {
       @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId    , @Context HttpServletRequest request) throws IOException {
 
     String scheme = inferScheme ? "" : request.getScheme();
-    String filePath = getWcdfRelativePath( solution, path, file );
+    String filePath = getWcdfRelativePath( solution, path, file );//FIXME Util.joinPath
 
     // Check security
     if ( !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
@@ -108,17 +106,12 @@ public class RenderApi {
     }
 
     try {
-      Date dtStart = new Date();
+      long start = System.currentTimeMillis();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
       String result = dashboard.render(InterPluginBroker.getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
-      logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( dtStart ) + "s" );
+      logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
       return result;
-      //IOUtils.write( result, response.getOutputStream() );
-//    } catch ( FileNotFoundException ex ) {
-//      String msg = "File not found: " + ex.getLocalizedMessage();
-//      logger.error( msg, ex );
-//      return msg;
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error( msg, ex );
@@ -129,39 +122,36 @@ public class RenderApi {
   @GET
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
-  public void edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-                  @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                  @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-                  @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-                  @Context HttpServletRequest request,
-                  @Context HttpServletResponse response ) throws Exception {
+  public String edit(
+      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+      @Context HttpServletRequest request,
+      @Context HttpServletResponse response ) throws Exception {
 
-	  String wcdfPath = getWcdfRelativePath( solution, path, file );
+    String wcdfPath = getWcdfRelativePath( solution, path, file );
 
-	  if ( !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
-		  IOUtils.write( "Access Denied to file " + wcdfPath, response.getOutputStream() );
-		  return;
-	  }
+    if ( !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
+      return "Access Denied to file " + wcdfPath; //TODO: keep html?
+    }
 
-	//  DashboardEditor dashboardEditor = new DashboardEditor();
-	  String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
-	  IOUtils.write( editor, response.getOutputStream() );
-}
+    return DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+  }
 
   @GET
   @Path( "/new" )
   @Produces( MimeTypes.HTML )
-  public void newDashboard( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
-                            @QueryParam( MethodParams.PATH ) @DefaultValue( "null" ) String path,
-                            @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
-                            @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-                            @Context HttpServletRequest request,
-                            @Context HttpServletResponse response ) throws Exception {
+  public String newDashboard( //TODO: change file to path; does new ever use this arg?
+//      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
+      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+//      @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
+      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+        @Context HttpServletRequest request,
+        @Context HttpServletResponse response ) throws Exception {
     
-	  String wcdfPath = getWcdfRelativePath( solution, path, file );
-	  
-	  String editor = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
-	  IOUtils.write( editor, response.getOutputStream() );
+//	  String wcdfPath = getWcdfRelativePath( solution, path, file );
+    return DashboardEditor.getEditor( path, debug, request.getScheme() );
   }
 
   @GET
@@ -186,17 +176,16 @@ public class RenderApi {
     return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache );
   }
 
-  private String getCdfContext() {
-    //XXX does this work? remember to remake plugin call tgf!
-    InterPluginCall cdfContext = new InterPluginCall( InterPluginCall.CDF, "Context" );
-    // cdfContext.setRequest( getRequest() );
-    // cdfContext.setRequestParameters( getRequestParameters() );
-    return cdfContext.callInPluginClassLoader();
-  }
 
   private String getWcdfRelativePath( String solution, String path, String file ) {
-    final String filePath = "/" + solution + "/" + path + "/" + file;
-    return filePath.replaceAll( "//+", "/" );
+    //TODO: change to use path instead of file
+//    if ( !StringUtils.isEmpty( solution ) || !StringUtils.isEmpty( file ) ) {
+//      logger.warn( "Use of solution/path/file is deprecated. Use just the path argument" );
+      return Util.joinPath( solution, path, file );
+//    }
+//    else return path;
+//    final String filePath = "/" + solution + "/" + path + "/" + file;
+//    return filePath.replaceAll( "//+", "/" );
   }
 
   private class MethodParams {

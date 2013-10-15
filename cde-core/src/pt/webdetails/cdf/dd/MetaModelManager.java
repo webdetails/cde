@@ -4,9 +4,7 @@
 
 package pt.webdetails.cdf.dd;
 
-import java.util.Date;
 import net.sf.json.JSON;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
@@ -23,14 +21,8 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
-import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsThingWriterFactory;
-import pt.webdetails.cdf.dd.packager.DependenciesPackage;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.render.DependenciesManager;
-import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 
@@ -55,13 +47,12 @@ public final class MetaModelManager
     
   private MetaModelManager()
   {
-    Date dtStart = new Date();
+    long start = System.currentTimeMillis();
     logger.info("CDE Starting Load MetaModelManager");
     
     this.model = readModel();
-    this.createDependencyManager( model );
 
-    logger.info("CDE Finished Load MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
+    logger.info("CDE Finished Load MetaModelManager: " + Utils.ellapsedSeconds(start) + "s");
   }
   
   public MetaModel getModel()
@@ -91,7 +82,7 @@ public final class MetaModelManager
   
   public void refresh(boolean refreshDatasources)
   {
-    Date dtStart = new Date();
+    long start = System.currentTimeMillis();
     logger.info("CDE Starting Reload MetaModelManager");
     
     if(refreshDatasources) { CdeEnvironment.getDataSourceManager().refresh(); }
@@ -99,8 +90,6 @@ public final class MetaModelManager
     MetaModel model = this.readModel();
     if(model != null)
     {
-      DependenciesManager.refresh();
-      this.createDependencyManager(model);
       
       // Switch current model.
       synchronized(lock)
@@ -110,7 +99,7 @@ public final class MetaModelManager
       }
     }
     
-    logger.info("CDE Finished Reload MetaModelManager: " + Utils.ellapsedSeconds(dtStart) + "s");
+    logger.info("CDE Finished Reload MetaModelManager: " + Utils.ellapsedSeconds(start) + "s");
   }
 
   private MetaModel readModel()
@@ -189,84 +178,5 @@ public final class MetaModelManager
     return out.toString();
   }
 
-  //TODO: should this be here?
-  private DependenciesManager createDependencyManager(MetaModel metaModel)
-  {
-    DependenciesManager depMgr = DependenciesManager.getInstance();
-    
-    DependenciesPackage componentScripts = depMgr.getPackage(StdPackages.COMPONENT_DEF_SCRIPTS);
-    DependenciesPackage componentSnippets = depMgr.getPackage(StdPackages.COMPONENT_SNIPPETS);
-    DependenciesPackage componentStyles = depMgr.getPackage(StdPackages.COMPONENT_STYLES);
 
-    DependenciesPackage ddScripts = depMgr.getPackage(StdPackages.CDFDD);
-    
-    for(ComponentType compType : metaModel.getComponentTypes())
-    {
-      // General Resources
-      for(Resource res : compType.getResources())
-      {
-        Resource.Type resType = res.getType();
-        if(resType == Resource.Type.RAW)
-        {
-          try
-          {
-            componentSnippets.registerRawDependency( res.getName(), res.getVersion(), res.getSource() );
-          }
-          catch(Exception ex)
-          {
-            logger.error("Failed to register code fragment '" + res.getSource() + "'");
-          }
-        }
-        else 
-        {
-          DependenciesPackage pack = null;
-          if(resType == Resource.Type.SCRIPT)
-          {
-            String app = res.getApp();
-            if(StringUtils.isEmpty(app) || app.equals(StdPackages.COMPONENT_DEF_SCRIPTS))
-            {
-              pack = componentScripts;
-            }
-            else if(app.equals(StdPackages.CDFDD))
-            {
-              pack = ddScripts;
-            }
-          }
-          else if(resType == Resource.Type.STYLE)
-          {
-            pack = componentStyles;
-          }
-        
-          if(pack != null)
-          {
-            try
-            {
-              pack.registerFileDependency( res.getName(),res.getVersion(), res.getOrigin(), res.getSource() );
-            }
-            catch (Exception ex)
-            {
-              logger.error("Failed to register dependency '" + res.getSource() + "'");
-            }
-          }
-        }
-      }
-
-      // Implementation
-      PathOrigin origin = compType.getOrigin();
-      String srcImpl = compType.getImplementationPath();
-      if (StringUtils.isNotEmpty(srcImpl))
-      {
-        try
-        {
-          componentScripts.registerFileDependency( compType.getName(), compType.getVersion(), origin, srcImpl);
-        }
-        catch (Exception e)
-        {
-          logger.error("Failed to register dependency '" + srcImpl + "'");
-        }
-      }
-    }
-    
-    return depMgr;
-  }
 }

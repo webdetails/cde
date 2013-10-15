@@ -8,14 +8,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -35,10 +33,12 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
  */
 public class Utils {
 
-  private static Log logger = LogFactory.getLog(Utils.class);
+//  private static Log logger = LogFactory.getLog(Utils.class);
 
   private static final String NEWLINE = System.getProperty("line.separator");
-  
+
+  private static final DecimalFormat defaultNbrFormat = new DecimalFormat("0.00");
+
   public static String composeErrorMessage(String message, Exception cause)
   {
     String msg = "";
@@ -97,8 +97,8 @@ public class Utils {
        text.toUpperCase();
   }
   
-  public static double ellapsedSeconds(Date dtStart) {
-    return Math.round(100.0 * ((new Date().getTime() - dtStart.getTime()) / 1000.0)) / 100.0;
+  public static String ellapsedSeconds(long start) {
+    return defaultNbrFormat.format( (System.currentTimeMillis() - start) / 1000.0 );
   }
   
   // Must start with a / and all \ are converted to / and has no duplicate /s.

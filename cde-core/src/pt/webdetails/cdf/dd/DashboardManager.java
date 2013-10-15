@@ -43,6 +43,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
+import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -69,7 +70,7 @@ public final class DashboardManager
   private final Object _ehCacheLock;
   
   private final Map<String, Dashboard> _dashboardsByCdfdeFilePath;
-          
+
   private DashboardManager()
   {
     // The eh-cache holds
@@ -140,19 +141,27 @@ public final class DashboardManager
     {
       // We didn't receive a valid path. We're in preview mode.
       // TODO: Support mobile preview mode (must remove dependency on setStyle())
-      wcdf = new DashboardWcdfDescriptor();
-      if(!wcdfFilePath.isEmpty() && wcdfFilePath.endsWith(".cdfde")) {
-        wcdf.setPath(wcdfFilePath);
-      }
-      wcdf.setStyle(CdeConstants.DEFAULT_STYLE);
-      wcdf.setRendererType(DashboardRendererType.BLUEPRINT.getType());
-      
+      wcdf = getPreviewWcdf(wcdfFilePath);
       bypassCacheRead = true; // no cache for preview
     }
-    
+
     return this.getDashboardCdfRunJs(wcdf, options, bypassCacheRead);
   }
-  
+
+  //TODO: is wcdfPath needed?
+  public DashboardWcdfDescriptor getPreviewWcdf( String cdfdePath )
+    throws ThingWriteException
+  {
+    DashboardWcdfDescriptor wcdf = new DashboardWcdfDescriptor();
+    //TODO is this needed?
+    if(!cdfdePath.isEmpty() && cdfdePath.endsWith(".cdfde")) {
+      wcdf.setPath(cdfdePath);
+    }
+    wcdf.setStyle(CdeConstants.DEFAULT_STYLE);
+    wcdf.setRendererType(DashboardRendererType.BLUEPRINT.getType());
+    return wcdf;
+  }
+
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
           DashboardWcdfDescriptor wcdf,
           CdfRunJsDashboardWriteOptions options,
@@ -300,9 +309,11 @@ public final class DashboardManager
       collectWidgetsToInvalidate(invalidateDashboards, dashboardsByCdfdeFilePath, cdeFilePath);
     }
     
-    for(String invalidCdeFilePath : invalidateDashboards)
-    {
-      _logger.info("Invalidating cache of dashboard '" + invalidCdeFilePath + "'.");
+    if (_logger.isDebugEnabled()) {
+      for(String invalidCdeFilePath : invalidateDashboards)
+      {
+        _logger.debug("Invalidating cache of dashboard '" + invalidCdeFilePath + "'.");
+      }
     }
     
     synchronized(this._dashboardsByCdfdeFilePath)
@@ -335,7 +346,8 @@ public final class DashboardManager
   public void refreshAll(boolean refreshDatasources)
   {
     MetaModelManager.getInstance().refresh(refreshDatasources);
-    
+    DependenciesManager.refresh();
+
     synchronized(this._dashboardsByCdfdeFilePath)
     {
       this._dashboardsByCdfdeFilePath.clear();
@@ -398,7 +410,7 @@ public final class DashboardManager
       cachedDash = this.getDashboardFromCache(cdeFilePath);
       if(cachedDash == null)
       {
-        _logger.info("Dashboard instance is not in cache, reading from repository.");
+        _logger.debug("Dashboard instance is not in cache, reading from repository.");
       }
     }
     else
@@ -418,7 +430,7 @@ public final class DashboardManager
       }
 
       if(cachedDash.getSourceDate().getTime() >= userAccess.getLastModified(wcdf.getPath())) {
-        _logger.info("Cached Dashboard instance is valid, using it.");
+        _logger.debug("Cached Dashboard instance is valid, using it.");
 
         return cachedDash;
       }
@@ -532,7 +544,7 @@ public final class DashboardManager
 
     // 2. In the cache?
     if ( cacheElement == null ) {
-      _logger.info( "Dashboard render is not in cache." );
+      _logger.debug( "Dashboard render is not in cache." );
       return null;
     }
 
@@ -556,7 +568,7 @@ public final class DashboardManager
 
     boolean cacheExpired = cal.getTime().after( dashLoadedDate );
     if ( cacheExpired ) {
-      _logger.info( "Cached dashboard render expired, re-rendering." );
+      _logger.debug( "Cached dashboard render expired, re-rendering." );
       return null;
     }
 

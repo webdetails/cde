@@ -23,11 +23,7 @@ import pt.webdetails.cdf.dd.render.*;
 import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
-import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.Util;
-import pt.webdetails.cpf.plugin.CorePlugin;
-import pt.webdetails.cpf.plugincall.api.IPluginCall;
-import pt.webdetails.cpf.plugincall.base.CallParameters;
 
 /**
  * @author dcleao
@@ -266,7 +262,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
           baseUrl, input);
       }
     };
-    
+
     DependenciesManager depMgr = DependenciesManager.getInstance();
     boolean isPackaged = !options.isDebug();
     String scriptDeps = depMgr.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS ).getDependencies( jsFilter, isPackaged );

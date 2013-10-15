@@ -49,39 +49,6 @@ public class DataSourceProvider implements IDataSourceProvider {
     return pluginId;
   }
 
-//  protected void checkValid(InterPluginCall.Plugin ipcPlugin) throws InvalidDataSourceProviderException 
-//  {
-//    InterPluginCall ipc = new InterPluginCall(ipcPlugin, DATA_SOURCE_DEFINITION_METHOD_NAME);
-//    if(!ipc.pluginExists()) 
-//    {
-//      throw new InvalidDataSourceProviderException(String.format("%s not found!", this));
-//    }
-//
-//    /*
-//     * TODO(rafa) 
-//     * 
-//     * check if there is a better way to check if a given plugin has a method
-//     * called DATA_SOURCE_DEFINITION_METHOD_NAME defined
-//     */
-//    String result = null;
-//    try 
-//    {
-//      result = ipc.call();
-//    } 
-//    catch(Exception e) 
-//    {
-//      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
-//          DATA_SOURCE_DEFINITION_METHOD_NAME, this), e);
-//    }
-//
-//    if(StringUtils.isEmpty(result)) 
-//    {
-//      throw new InvalidDataSourceProviderException(String.format("error calling method %s in %s",
-//          DATA_SOURCE_DEFINITION_METHOD_NAME, this));
-//    }
-//
-//  }
-
   @Override
   public String toString() 
   {

@@ -274,11 +274,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		}
 
 		try {
-			Date dtStart = new Date();
+			long start = System.currentTimeMillis();
 			logger.info("[Timing] CDE Starting Dashboard Rendering");
 			writeOut(out, this.loadDashboard().render(getCdfContext()));
 			logger.info("[Timing] CDE Finished Dashboard Rendering: "
-					+ Utils.ellapsedSeconds(dtStart) + "s");
+					+ Utils.ellapsedSeconds(start) + "s");
 		} catch (FileNotFoundException ex) { // could not open cdfe
 			String msg = "File not found: " + ex.getLocalizedMessage();
 			logger.error(msg, ex);

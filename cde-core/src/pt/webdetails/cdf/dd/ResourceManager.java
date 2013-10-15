@@ -12,10 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * TODO: what is a resource manager?
- * User: pedro
- * Date: Dec 22, 2009
- * Time: 4:55:59 PM
+ * Caches files that need token replacements.<br>
+ * @author pedro
  */
 public class ResourceManager {
 
@@ -76,7 +74,7 @@ public class ResourceManager {
 	  
 	  return success;
   }
-  
+
   public String getResourceFromCache(String key){
 	  
 	  if(isCacheEnabled() && cacheContainer.containsKey(key)){
@@ -84,27 +82,18 @@ public class ResourceManager {
 	  }
 	  return null;
   }
-  
+
   public static String buildCacheKey(final String path, final HashMap<String, String> tokens) {
 
     final StringBuilder keyBuilder = new StringBuilder(path);
 
     if (tokens != null) {
-      for (final String key : tokens.keySet()) {
-        String value = tokens.get( key );
-        if (value != null) {
-          keyBuilder.append(key.hashCode());
-          keyBuilder.append(value.hashCode());
-        }
-        else {
-          logger.error( "NULL token for key " + key );
-        }
-      }
+      keyBuilder.append( tokens.hashCode() );
     }
 
     return keyBuilder.toString();
   }
-  
+
   public static String getResourceExtension(final String path) {
     return path.substring(path.lastIndexOf('.') + 1);
 

@@ -7,7 +7,11 @@ package pt.webdetails.cdf.dd.packager.dependencies;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 
@@ -15,6 +19,8 @@ import pt.webdetails.cpf.repository.api.IRWAccess;
  * Base class for concatenated and minified files.
  */
 public abstract class PackagedFileDependency extends FileDependency {
+
+  private static Log logger = LogFactory.getLog(PackagedFileDependency.class);
 
   private Iterable<FileDependency> inputFiles;
   private IRWAccess writer;
@@ -29,6 +35,7 @@ public abstract class PackagedFileDependency extends FileDependency {
   @Override
   public synchronized InputStream getFileInputStream() throws IOException {
     if ( !isSaved ) {
+      long startTime = System.currentTimeMillis();
       isSaved = writer.saveFile( filePath, minifyPackage(inputFiles));
       if ( !isSaved ) {
         throw new IOException("Unable to save file " + filePath);
@@ -36,6 +43,9 @@ public abstract class PackagedFileDependency extends FileDependency {
       else {
         //release refs
         inputFiles = null;
+        if ( logger.isDebugEnabled() ) {
+          logger.info( String.format( "Generated '%s' in %ss", filePath, Utils.ellapsedSeconds( startTime ) ) );
+        }
       }
     }
 

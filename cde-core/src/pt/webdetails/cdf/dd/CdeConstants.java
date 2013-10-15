@@ -71,7 +71,7 @@ public class CdeConstants {
 
   public static final String SERVER_URL_TAG = "@SERVERURL@";
 
-  public static final String DATA_URL_TAG = "cdf-structure.js";//XXX
+  public static final String DATA_URL_TAG = "@DATAURL@";//formerly known as cdf-structure.js
   
   public static final String RESOURCE_FOOTER = "resources/patch-footer.html";
   
