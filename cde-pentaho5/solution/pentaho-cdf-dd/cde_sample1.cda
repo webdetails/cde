@@ -2,7 +2,7 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="mdxQuery" type="mondrian.jndi">
-         <Catalog>../steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="sqlQuery" type="sql.jndi">

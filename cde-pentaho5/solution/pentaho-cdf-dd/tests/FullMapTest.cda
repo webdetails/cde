@@ -2,7 +2,7 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="salesGraphQueryOld" type="mondrian.jndi">
-         <Catalog>/steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="ForMapWithGeo" type="scripting.scripting">

@@ -2,27 +2,27 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="querySalesCountry" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="querySalesQuantityCountryMonths" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="querySalesQuantityCountry" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="queryQuantityMonths" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="queryQuantityTerritoryMonths" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
       <Connection id="querySalesYears" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
