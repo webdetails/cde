@@ -2,6 +2,7 @@ var Endpoints = {
 
     staticUrl: "/pentaho/content/pentaho-cdf-dd/",
     pluginUrl: "/pentaho/content/pentaho-cdf-dd/",
+    cggPluginUrl: "/pentaho/content/cgg/",
     cssResourceUrl: "/getCssResource?resource=",
     imageResourceUrl: "/getResource?resource=",
     jsResourceUrl: "/getJsResource?resource=",
@@ -12,6 +13,10 @@ var Endpoints = {
 
     getPluginUrl: function () {
         return this.pluginUrl;
+    },
+
+    getCggPluginUrl: function () {
+        return this.cggPluginUrl;
     },
 
     getCssResourceUrl: function () {
@@ -481,5 +486,11 @@ var ExternalEditor = {
 var OlapUtils = {
     getOlapCubesUrl: function(){
         return Endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes";
+    }
+};
+
+var Cgg = {
+    getCggDrawUrl: function(){
+        return Endpoints.getCggPluginUrl() + "Draw";
     }
 };

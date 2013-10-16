@@ -1325,7 +1325,7 @@ var CDFDD = Base.extend({
 
 
     // cgg url:
-    var cggUrl = window.location.href.substring(0, window.location.href.indexOf("content")) + "content/cgg/Draw?script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/";
+    var cggUrl = Cgg.getCggDrawUrl() + "?script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/";
 
     ph.empty();
 
