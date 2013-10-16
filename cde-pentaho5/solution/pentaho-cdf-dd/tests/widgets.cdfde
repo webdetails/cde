@@ -781,7 +781,7 @@
     "id": "e2479a2f-c8d8-612b-15b1-ff193ceb2ff3",
     "type": "ComponentswidgetSampleWidget",
     "typeDesc": "SampleWidget Widget",
-    "meta_wcdf": "/cde/widgets/sample.wcdf",
+    "meta_wcdf": "/public/cde/widgets/sample.wcdf",
     "meta_widget": "true",
     "parent": "WIDGETS",
     "properties": [
