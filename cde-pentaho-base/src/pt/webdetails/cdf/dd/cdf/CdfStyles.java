@@ -6,6 +6,7 @@ package pt.webdetails.cdf.dd.cdf;
 
 import net.sf.json.JSONArray;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IPluginManager;
@@ -82,7 +83,11 @@ public class CdfStyles {
 
   public String getResourceLocation( String style ) {
     String stylePath = null;
-
+    
+    if(StringUtils.isEmpty(style)){
+		  style = DEFAULTSTYLE;
+	}
+    
     String styleFilename;
     String[] split = style.split( " - " );
     if ( split.length > 1 ) {
