@@ -90,9 +90,9 @@ public class CdeEngine {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
             sysPluginSamples, "widget.cdfde" );
-        saveAndClose( repoBase, "sample.wcdf", sysPluginSamples, "widget.wcdf" );
-        saveAndClose( repoBase, "sample.cda", sysPluginSamples, "widget.cda" );
-        saveAndClose( repoBase, "sample.component.xml", sysPluginSamples, "widget.xml" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples, "widget.wcdf" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples, "widget.cda" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ), sysPluginSamples, "widget.xml" );
       }
     }
 

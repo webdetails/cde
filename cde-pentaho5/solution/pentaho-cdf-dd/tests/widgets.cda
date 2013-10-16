@@ -26,7 +26,7 @@
          <Language>beanshell</Language>
       </Connection>
       <Connection id="Years" type="mondrian.jndi">
-         <Catalog>steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Catalog>mondrian:/SteelWheels</Catalog>
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
