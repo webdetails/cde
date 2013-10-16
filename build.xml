@@ -37,4 +37,9 @@
         <ant dir="cde-pentaho" antfile="build.xml" target="install-plugin" inheritAll="true"/>
     </target>
 
+    <target name="install-plugin5" depends="publish-local-core"> 
+        <ant dir="cde-pentaho5" antfile="build.xml" target="install-plugin" inheritAll="true"/>
+    </target>
+
+
 </project>

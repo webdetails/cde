@@ -24,10 +24,26 @@
       <dependency org="pt.webdetails" name="cpf-pentaho"
           rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
+    <dependency org="pentaho" name="pentaho-bi-platform-api"
+                rev="${dependency.bi-platform.revision}" changing="true" transitive="false" />
+    <dependency org="pentaho" name="pentaho-bi-platform-util"
+                rev="${dependency.bi-platform.revision}" changing="true" transitive="false" />
+    <dependency org="pentaho" name="pentaho-bi-platform-engine-core"
+                rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
+    <dependency org="pentaho" name="pentaho-bi-platform-engine-services"
+                rev="${dependency.bi-platform.revision}" transitive="false"  changing="true"/>
+
+
       <!--  third party dependencies -->
       <dependency org="net.sf.ehcache" name="ehcache" rev="1.4.1" transitive="false"/>
       <dependency org="commons-jxpath" name="commons-jxpath" rev="1.3" transitive="false"/>
-
+      <dependency org="commons-logging" name="commons-logging" rev="1.1" transitive="false"/>
+      <dependency org="commons-io" name="commons-io" rev="1.4"/>
+      <dependency org="commons-lang" name="commons-lang" rev="2.6"/>    
+      <dependency org="dom4j" name="dom4j" rev="1.6.1"/>    
+      <dependency org="javax.servlet" name="servlet-api" rev="2.4"/>      
+      <dependency org="org.json" name="json" rev="${dependency.json.revision}" transitive="false"/>      
+      
       <!-- TODO: either pass to cpf or use another log lib -->
       <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" />
       <!-- TODO: replace by either jackson or org.json -->
