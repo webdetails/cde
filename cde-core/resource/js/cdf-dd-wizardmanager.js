@@ -784,6 +784,7 @@ var OlapParameterWizard = OlapWizard.extend({
 						query: this.getSelectedOptions().query,
 						cube: this.getSelectedOptions().cube
 					},
+                    parameters: {},
 
 					htmlObject: "cdfdd-olap-preview-area",
 					executeAtStart: true
