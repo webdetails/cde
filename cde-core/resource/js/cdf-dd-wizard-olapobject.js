@@ -150,14 +150,13 @@ var WizardDimensionObject = WizardOlapObject.extend({
 	
 		var myself = this;
 		var params = {
-			operation: "GetLevelMembersStructure",
 			catalog: myself.catalog,
 			cube: myself.cube,
 			member: memberQualifiedName,
 			direction: direction
 		};
 			
-		OlapWizardRequests.olapObject(params, container, myself);	
+		OlapWizardRequests.olapObject(params, container, myself, direction);
 	}
 });
 

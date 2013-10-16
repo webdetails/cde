@@ -129,9 +129,8 @@ var SynchronizeRequests = {
 
 var OlapWizardRequests = {
 
-    olapObject: function (params, container, myself) {
-
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils", params, function (json) {
+    olapObject: function (params, container, myself, direction) {
+        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetLevelMembersStructure", params, function (json) {
             if (json.status == "true") {
                 myself.membersArray = json.result.members;
 
