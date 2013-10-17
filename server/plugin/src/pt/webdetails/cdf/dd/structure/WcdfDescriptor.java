@@ -32,7 +32,7 @@ public class WcdfDescriptor
   
   public enum DashboardRendererType
   {
-    MOBILE, BLUEPRINT
+    MOBILE, BLUEPRINT, BOOTSTRAP
   }
   
   private String _title = "";

@@ -82,6 +82,13 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
       {
         return new CdfRunJsMobileDashboardWriter();
       }
+      
+      if(rendererType == DashboardRendererType.BOOTSTRAP)
+      {
+    	  return wcdf.isWidget() ?
+    	             new CdfRunJsBootstrapWidgetWriter() :
+    	             new CdfRunJsBootstrapDashboardWriter();
+      }
 
       return wcdf.isWidget() ?
              new CdfRunJsBlueprintWidgetWriter() :
