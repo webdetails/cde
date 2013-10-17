@@ -7,6 +7,7 @@ var Endpoints = {
     imageResourceUrl: "resources/get?resource=",
     jsResourceUrl: "resources/getJs?resource=",
 
+    //The webAppPath is defined at the start of Dashboards.js
     getWebappBasePath: function () {
         return webAppPath;
     },
@@ -17,6 +18,10 @@ var Endpoints = {
 
     getPluginUrl: function () {
         return this.getWebappBasePath() + this.pluginUrl;
+    },
+
+    getUnbasedCggPluginUrl: function() {
+        return this.cggPluginUrl;
     },
 
     getCggPluginUrl: function () {
@@ -525,6 +530,6 @@ var OlapUtils = {
 
 var Cgg = {
     getCggDrawUrl: function(){
-        return Endpoints.getCggPluginUrl() + "draw";
+        return window.location.href.substring(0, window.location.href.indexOf("api")-1) + Endpoints.getUnbasedCggPluginUrl() + "draw";
     }
 };

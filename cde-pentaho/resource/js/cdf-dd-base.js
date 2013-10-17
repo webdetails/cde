@@ -1,5 +1,6 @@
 var Endpoints = {
 
+
     staticUrl: "/content/pentaho-cdf-dd/",
     pluginUrl: "/content/pentaho-cdf-dd/",
     cggPluginUrl: "/content/cgg/",
@@ -7,6 +8,7 @@ var Endpoints = {
     imageResourceUrl: "getResource?resource=",
     jsResourceUrl: "getJsResource?resource=",
 
+    //The webAppPath is defined at the start of Dashboards.js
     getWebappBasePath: function () {
         return webAppPath;
     },
@@ -21,6 +23,10 @@ var Endpoints = {
 
     getCggPluginUrl: function () {
         return this.getWebappBasePath() + this.cggPluginUrl;
+    },
+
+    getUnbasedCggPluginUrl: function() {
+        return this.cggPluginUrl;
     },
 
     getCssResourceUrl: function () {
@@ -381,7 +387,7 @@ var SaveRequests = {
                 });
             }
         });
-    },
+    }
 };
 
 var LoadRequests = {
@@ -495,6 +501,6 @@ var OlapUtils = {
 
 var Cgg = {
     getCggDrawUrl: function(){
-        return Endpoints.getCggPluginUrl() + "Draw";
+        return window.location.href.substring(0, window.location.href.indexOf("content") -1) + Endpoints.getUnbasedCggPluginUrl() + "Draw";
     }
 };
