@@ -1,6 +1,5 @@
 var Endpoints = {
 
-    webappBasePath: "/pentaho",
     staticUrl: "/api/plugins/pentaho-cdf-dd/files/",
     pluginUrl: "/plugin/pentaho-cdf-dd/api/",
     cggPluginUrl: "/plugin/cgg/api/services/",
@@ -9,31 +8,31 @@ var Endpoints = {
     jsResourceUrl: "resources/getJs?resource=",
 
     getWebappBasePath: function () {
-        return this.webappBasePath;
+        return webAppPath;
     },
 
     getStaticUrl: function () {
-        return this.webappBasePath + this.staticUrl;
+        return this.getWebappBasePath() + this.staticUrl;
     },
 
     getPluginUrl: function () {
-        return this.webappBasePath + this.pluginUrl;
+        return this.getWebappBasePath() + this.pluginUrl;
     },
 
     getCggPluginUrl: function () {
-        return this.webappBasePath + this.cggPluginUrl;
+        return this.getWebappBasePath() + this.cggPluginUrl;
     },
 
     getCssResourceUrl: function () {
-        return this.webappBasePath + this.pluginUrl + this.cssResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.cssResourceUrl;
     },
 
     getImageResourceUrl: function () {
-        return this.webappBasePath + this.pluginUrl + this.imageResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.imageResourceUrl;
     },
 
     getJsResourceUrl: function () {
-        return this.webappBasePath + this.pluginUrl + this.jsResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.jsResourceUrl;
     },
 
     isEmptyFilePath: function(filePath){

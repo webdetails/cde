@@ -1,39 +1,43 @@
 var Endpoints = {
 
-    staticUrl: "/pentaho/content/pentaho-cdf-dd/",
-    pluginUrl: "/pentaho/content/pentaho-cdf-dd/",
-    cggPluginUrl: "/pentaho/content/cgg/",
-    cssResourceUrl: "/getCssResource?resource=",
-    imageResourceUrl: "/getResource?resource=",
-    jsResourceUrl: "/getJsResource?resource=",
+    staticUrl: "/content/pentaho-cdf-dd/",
+    pluginUrl: "/content/pentaho-cdf-dd/",
+    cggPluginUrl: "/content/cgg/",
+    cssResourceUrl: "getCssResource?resource=",
+    imageResourceUrl: "getResource?resource=",
+    jsResourceUrl: "getJsResource?resource=",
+
+    getWebappBasePath: function () {
+        return webAppPath;
+    },
 
     getStaticUrl: function () {
-        return this.staticUrl;
+        return this.getWebappBasePath() + this.staticUrl;
     },
 
     getPluginUrl: function () {
-        return this.pluginUrl;
+        return this.getWebappBasePath() + this.pluginUrl;
     },
 
     getCggPluginUrl: function () {
-        return this.cggPluginUrl;
+        return this.getWebappBasePath() + this.cggPluginUrl;
     },
 
     getCssResourceUrl: function () {
-        return this.pluginUrl + this.cssResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.cssResourceUrl;
     },
 
     getImageResourceUrl: function () {
-        return this.pluginUrl + this.imageResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.imageResourceUrl;
     },
 
     getJsResourceUrl: function () {
-        return this.pluginUrl + this.jsResourceUrl;
+        return this.getWebappBasePath() + this.pluginUrl + this.jsResourceUrl;
     },
 
     isEmptyFilePath: function(filePath){
         return (!filePath || "/null/null/null" == filePath);
-    },
+    }
 };
 
 
