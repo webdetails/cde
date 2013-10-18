@@ -344,6 +344,7 @@
         <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
         <property file="${includes.path}"/>
 
+        <touch file='${scripts.patch}'/>
         <echo file='${scripts.patch}' append='false'/>
         <for list='${scripts}' param='filename'>
             <sequential>
