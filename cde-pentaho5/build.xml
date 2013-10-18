@@ -127,6 +127,7 @@
         <mkdir dir="${stage.dir}"/>
         <mkdir dir="${stage.dir}/${plugin.name}"/>
         <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
+        <mkdir dir="${stage.dir}/${plugin.name}/resources"/>                
     </target>
   
     <target name="dist-plugin" depends="jar,make-stage" description="Creates a distribution">
