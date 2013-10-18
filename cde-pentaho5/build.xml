@@ -127,6 +127,7 @@
         <mkdir dir="${stage.dir}"/>
         <mkdir dir="${stage.dir}/${plugin.name}"/>
         <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
+        <mkdir dir="${stage.dir}/${plugin.name}/resources"/>                
     </target>
   
     <target name="dist-plugin" depends="jar,make-stage" description="Creates a distribution">
@@ -344,6 +345,7 @@
         <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
         <property file="${includes.path}"/>
 
+        <touch file='${scripts.patch}'/>
         <echo file='${scripts.patch}' append='false'/>
         <for list='${scripts}' param='filename'>
             <sequential>
