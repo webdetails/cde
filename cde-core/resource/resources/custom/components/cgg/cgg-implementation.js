@@ -5,8 +5,6 @@
  * fashion (i.e. that works under IE!)
  */
 
- // TODO: remove SVGWeb stuff!
-
 if (typeof pv == 'undefined' || typeof pv.listenForPageLoad == 'undefined') {
   window.pv = {};
   pv.renderer = function() {
@@ -50,7 +48,7 @@ var CggComponent = BaseComponent.extend({
   },
 
   update: function() {
-    var url    = '../cgg/draw',
+    var url    = '../../../plugin/cgg/api/services/draw',
         data   = this.processParams(),
         script = this.getScriptUrl(),
         myself = this,
@@ -62,8 +60,9 @@ var CggComponent = BaseComponent.extend({
     // Jamie Love's Protovis+SVGWeb handles this elegantly.
     pv.listenForPageLoad(function () {
       $.ajax({
-        url: url,
+        url:  url,
         data: data,
+        type: 'get', // CGG requires GET.
         // IE9 and "decent" browsers will succeed this call, so the success handler deals with those cases.
         success: function (xmlData) {
           ph.empty();
@@ -78,12 +77,14 @@ var CggComponent = BaseComponent.extend({
             ph.find("svg").width(myself.width).height(myself.height);
           }
         },
-        error:function(){
+        error:function() {
           // For some reason or another, IE8 fails to parse the SVG, and will throw us into the error handler.
           // If that's the case, we have to add the SVG as an <object>, in a way that SVGWeb can understand.
           ph.empty();
-          var obj = myself.createObj(url,script,data,myself.width,myself.height,true);
-          svgweb.appendChild(obj, ph[0]);
+          if(pv.renderer() === "svgweb") {
+            var obj = myself.createObj(url,script,data,myself.width,myself.height,true);
+            svgweb.appendChild(obj, ph[0]);
+          }
         }
       });
     });
