@@ -103,17 +103,6 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   {
     ComponentType compType = comp.getMeta();
     
-    // Implementation
-    String srcImpl = compType.getImplementationPath();
-    if(StringUtils.isNotEmpty(srcImpl))
-    {
-      out.append(NEWLINE);
-      out.append("load('");
-      out.append(makeDashRelative(srcImpl, dashDir));
-      out.append("');");
-      out.append(NEWLINE);
-    }
-
     for(Resource resource : compType.getResources())
     {
       Resource.Type resType = resource.getType();
@@ -135,6 +124,17 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       }
     }
     
+    // Implementation
+    String srcImpl = compType.getImplementationPath();
+    if(StringUtils.isNotEmpty(srcImpl))
+    {
+      out.append(NEWLINE);
+      out.append("load('");
+      out.append(makeDashRelative(srcImpl, dashDir));
+      out.append("');");
+      out.append(NEWLINE);
+    }
+
     // ---------------
     // TODO: HACK: Delegate writing the component definition to the corresponding CdfRunJs writer
     // Should this be done differently?
