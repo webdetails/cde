@@ -790,6 +790,7 @@ var OlapParameterWizard = OlapWizard.extend({
 					executeAtStart: true
 				};
 			Dashboards.components = [];
+            Dashboards.finishedInit = false;
 			Dashboards.init([CDFDDPreviewComponent]);
 		
 		},
@@ -1104,6 +1105,7 @@ var OlapChartWizard = OlapWizard.extend({
 				};
 				
 			Dashboards.components = [];
+            Dashboards.finishedInit = false;
 			Dashboards.init([CDFDDPreviewComponent]);
 		},
 
