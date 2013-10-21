@@ -59,11 +59,34 @@ public class OlapApi {
     JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
   }
 
+  @GET
+  @Path( "/getPaginatedLevelMembers" )
+  @Produces( "text/javascript" )
+  public void getPaginatedLevelMembers( @QueryParam( MethodParams.CATALOG ) String catalog,
+      @QueryParam( MethodParams.CUBE ) String cube, @QueryParam( MethodParams.LEVEL ) String level,
+      @QueryParam( MethodParams.START_MEMBER ) String startMember, @QueryParam( MethodParams.CONTEXT ) String context,
+      @QueryParam( MethodParams.SEARCH_TERM ) String searchTerm, @QueryParam( MethodParams.PAGE_SIZE ) long pageSize,
+      @QueryParam( MethodParams.PAGE_START ) long pageStart,
+
+      @Context HttpServletResponse response ) throws IOException, JSONException {
+    OlapUtils olapUtils = new OlapUtils();
+    JSONObject result =
+        olapUtils
+            .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
+    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+  }
+
   private class MethodParams {
     public static final String CATALOG = "catalog";
     public static final String CUBE = "cube";
+    public static final String LEVEL = "level";
     public static final String JNDI = "jndi";
     public static final String MEMBER = "member";
+    public static final String START_MEMBER = "startMember";
     public static final String DIRECTION = "direction";
+    public static final String CONTEXT = "context";
+    public static final String SEARCH_TERM = "searchTerm";
+    public static final String PAGE_SIZE = "pageSize";
+    public static final String PAGE_START = "pageStart";
   }
 }

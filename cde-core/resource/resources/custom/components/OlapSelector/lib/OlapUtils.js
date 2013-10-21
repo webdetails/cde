@@ -27,10 +27,10 @@ wd.utils.OlapUtils = function(spec){
     var cubeStructureCache = {};
     
     var olapOperations = {
-        GET_CUBE_STRUCTURE: 'GetCubeStructure',
-        GET_PAGINATED_LEVEL_MEMBERS: 'GetPaginatedLevelMembers',
-        GET_MEMBER_STRUCTURE: 'GetLevelMembersStructure',
-        GET_OLAP_CUBES: 'GetOlapCubes'
+        GET_CUBE_STRUCTURE: 'getCubeStructure',
+        GET_PAGINATED_LEVEL_MEMBERS: 'getPaginatedLevelMembers',
+        GET_MEMBER_STRUCTURE: 'getLevelMembersStructure',
+        GET_OLAP_CUBES: 'getCubes'
     };
     
     
@@ -53,6 +53,7 @@ wd.utils.OlapUtils = function(spec){
         wd.debug("Getting info from cube");
        
         myself.callOlapUtils({
+
             operation: olapOperations.GET_OLAP_CUBES
         },
         function(result){
@@ -227,13 +228,6 @@ wd.utils.OlapUtils = function(spec){
     myself.getSelectedCatalogName = function(_args){
 
         var catalog = $.extend({},myself.options,_args).catalog;
-                
-        if(catalog.charAt(0) == '/'){
-            catalog = 'solution:' + catalog.substring(1);
-        }
-        else {
-            catalog = 'solution:' + catalog;
-        }
         return catalog;
         
     };
@@ -278,7 +272,8 @@ wd.utils.OlapUtils = function(spec){
         var ret;
         
         $.ajax({
-            url: myself.getOlapUtilsUrl(),
+            type: "GET",
+            url: myself.getOlapUtilsUrl() + params.operation,
             data: $.extend({}, myself.options.extraParams, params),
             dataType: "json",
             success: function(json){

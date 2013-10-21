@@ -3,7 +3,7 @@ var OlapSelectorComponent = BaseComponent.extend({
   init: function() {
     this.model = new OlapSelectorModel({
       olapUtils: new wd.utils.OlapUtils({
-          url: "/pentaho/content/pentaho-cdf-dd/OlapUtils",
+          url: Dashboards.getWebAppPath() + "/plugin/pentaho-cdf-dd/api/olap/",
           catalog: this.catalog,
           cube: this.cube,
           dimension: this.dimensionName
