@@ -16,4 +16,9 @@ public class CdeApiPathProvider implements ICdeApiPathProvider {
     return Util.joinPath( urlProvider.getPluginBaseUrl(), "renderer" );
   }
 
+  @Override
+  public String getPluginStaticBaseUrl() {
+    return urlProvider.getPluginStaticBaseUrl();
+  }
+
 }

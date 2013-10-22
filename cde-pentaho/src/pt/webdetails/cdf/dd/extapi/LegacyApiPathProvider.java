@@ -18,4 +18,9 @@ public class LegacyApiPathProvider implements ICdeApiPathProvider {
     return pluginPath;
   }
 
+  @Override
+  public String getPluginStaticBaseUrl() {
+    return pluginPath; // TODO check this
+  }
+
 }
