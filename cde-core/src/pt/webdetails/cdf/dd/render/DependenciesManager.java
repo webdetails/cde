@@ -36,7 +36,9 @@ public final class DependenciesManager
 {
   private static Log logger = LogFactory.getLog(DependenciesManager.class);
   
-  private static final String INCLUDES_PROP = "includes.properties";
+  private static final String INCLUDES_PROP = "editor.includes.properties";
+
+  private static final String EXTRA_INCLUDES_PROP = "render.includes.properties";
   
   private static DependenciesManager manager;
   private final HashMap<String, DependenciesPackage> packages;
@@ -107,14 +109,22 @@ public final class DependenciesManager
 
       manager.registerPackage( StdPackages.EDITOR_JS_INCLUDES, PackageType.JS );
       DependenciesPackage scripts = manager.getPackage( StdPackages.EDITOR_JS_INCLUDES );
-      for (String path : props.get("scripts").toString().split(",")) {
-        scripts.registerFileDependency( path, null, origin, path );
+      if(props.containsKey("scripts")){
+        for (String path : props.get("scripts").toString().split(",")) {
+          if(!path.isEmpty()) {
+            scripts.registerFileDependency( path, null, origin, path );
+          }
+        }
       }
 
       manager.registerPackage( StdPackages.EDITOR_CSS_INCLUDES, PackageType.CSS );
       DependenciesPackage styles = manager.getPackage( StdPackages.EDITOR_CSS_INCLUDES );
-      for (String path : props.get("styles").toString().split(",")) {
-        styles.registerFileDependency( path, null, origin, path );
+      if(props.containsKey("styles")){
+        for (String path : props.get("styles").toString().split(",")) {
+          if(!path.isEmpty()) {
+            styles.registerFileDependency( path, null, origin, path );
+          }
+        }
       }
     } catch ( IOException e ) {
       logger.error("Error attempting to read " + INCLUDES_PROP, e);
@@ -203,6 +213,41 @@ public final class DependenciesManager
         }
       }
     }
+
+    //read resources/include.properties
+    Properties extraProps = new Properties();
+    try {
+      InputStream in = null;
+      try {
+        in = CdeEnvironment.getPluginSystemReader().getFileInputStream( EXTRA_INCLUDES_PROP );
+        extraProps.load( in );
+      }
+      finally {
+        IOUtils.closeQuietly( in );
+      }
+      PathOrigin origin = new StaticSystemOrigin("");
+
+      DependenciesPackage scripts = depMgr.getPackage( StdPackages.COMPONENT_DEF_SCRIPTS );
+      if(extraProps.containsKey("scripts")){
+        for (String path : extraProps.get("scripts").toString().split(",")) {
+          if(!path.isEmpty()) {
+            scripts.registerFileDependency( path, null, origin, path );
+          }
+        }
+      }
+
+      DependenciesPackage styles = depMgr.getPackage( StdPackages.COMPONENT_STYLES );
+      if(extraProps.containsKey("styles")){
+        for (String path : extraProps.get("styles").toString().split(",")) {
+          if(!path.isEmpty()) {
+            styles.registerFileDependency( path, null, origin, path );
+          }
+        }
+      }
+    } catch ( IOException e ) {
+      logger.error("Error attempting to read " + EXTRA_INCLUDES_PROP, e);
+    }
+
     if (logger.isDebugEnabled()) {
       logger.debug( String.format("Registered meta model dependencies in %ss", Utils.ellapsedSeconds( start )) );
     }

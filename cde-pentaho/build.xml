@@ -34,7 +34,7 @@
     <property name='core.dir' value='../cde-core' description="Name of core dir"/>
     <property name="plugin.name" value="pentaho-cdf-dd" description="Name of the plugin"/>
     <property name="resource.dir" value="resource" description="Name of the resource directory"/>
-    <property name="includes.name" value="includes.properties"/>
+    <property name="includes.name" value="editor.includes.properties"/>
     <property name="stage.dir" value="${bin.dir}/stage" description="Name of the resource directory"/>
     <property name="solution.stage.dir" value="${bin.dir}/stage-solution" description="Name of the resource directory"/>
 
@@ -44,9 +44,9 @@
     <!-- Extra Source Dir Locations -->
     <property name='pentaho-base-src.dir' value='${pentaho-base.dir}/src'/>
     <!-- Properties for includes -->
-    <property file='${core-resource.dir}/${includes.name}'/>
+    <property file='../cde-core/resource/editor.includes.properties'/>
     <property file='${pentaho-base-resource.dir}/${includes.name}'/>
-    <property file='${resource.dir}/${includes.name}'/>
+    <property file='resource/editor.includes.properties'/>
     <property name='includes.path' value='${stage.dir}/${plugin.name}/${includes.name}'/>
 
     <target name="compile.compile" depends="init" description="Performs the actual javac compile">
@@ -293,7 +293,7 @@
     </target>
 
     <target name="write-properties" depends="make-stage">
-        <!-- Create includes.properties -->
+        <!-- Create editor.editor.includes.properties -->
         <echo file="${stage.dir}/${plugin.name}/${includes.name}"/>
         <for list='${core-scripts}' param='filename'>
             <sequential>
