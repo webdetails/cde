@@ -78,7 +78,7 @@
   	name: "urlMarker",
   	label: "Url Marker",
   	defaults: {
-  		defaultUrl:  'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey.png'
+  		defaultUrl: '/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey.png'
   	},
   	implementation: function (tgt, st, opt) {
   		if (st.url) 
@@ -87,19 +87,19 @@
 	  	if (st.position) {
 	  		switch (st.position % 5) {
 	  			case 0:
-	  				return 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey.png';
+	  				return wd.helpers.repository.getRsourceUrl()+'/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey.png';
 	  			case 1:
-	  				return 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_blue.png'
+	  				return wd.helpers.repository.getRsourceUrl()+'/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_blue.png'
 	  			case 2:
-	  				return 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey02.png';
+	  				return wd.helpers.repository.getRsourceUrl()+'/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_grey02.png';
 	  			case 3:
-	  				return 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_orange.png';
+	  				return wd.helpers.repository.getRsourceUrl()+'/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_orange.png';
 	  			case 4:
-	  				return 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_purple.png';
+	  				return wd.helpers.repository.getRsourceUrl()+'/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent/images/marker_purple.png';
 	  		}	  	
 	  	}
 	  		
-	  	return opt.defaultUrl;
+	  	return wd.helpers.repository.getRsourceUrl() + opt.defaultUrl;
   	}
   };
   Dashboards.registerAddIn("NewMapComponent", "MarkerImage", new AddIn(urlMarker));
