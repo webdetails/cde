@@ -5,7 +5,7 @@ wd.utils.OlapUtils = function(spec){
     
     var defaults = {
         
-        url: "OlapUtils",
+        url: wd.helpers.olap.getServiceUrl(),
         extraParams: {}
     //catalog: "FoodMart/FoodMart.xml",
     //cube: "Sales",
@@ -27,10 +27,10 @@ wd.utils.OlapUtils = function(spec){
     var cubeStructureCache = {};
     
     var olapOperations = {
-        GET_CUBE_STRUCTURE: 'getCubeStructure',
-        GET_PAGINATED_LEVEL_MEMBERS: 'getPaginatedLevelMembers',
-        GET_MEMBER_STRUCTURE: 'getLevelMembersStructure',
-        GET_OLAP_CUBES: 'getCubes'
+        GET_OLAP_CUBES: wd.helpers.olap.getCubesUrl(),
+        GET_CUBE_STRUCTURE: wd.helpers.olap.getCubeStructureUrl(),
+        GET_PAGINATED_LEVEL_MEMBERS: wd.helpers.olap.getPaginatedLevelMembersUrl(),
+        GET_MEMBER_STRUCTURE: wd.helpers.olap.getLevelMembersStructureUrl()
     };
     
     
