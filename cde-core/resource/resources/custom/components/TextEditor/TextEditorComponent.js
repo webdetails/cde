@@ -138,7 +138,7 @@ var TextEditorComponent = BaseComponent.extend({
             $('#notifications').hide();
         });
 
-        this.externalEditor.attr('src','../pentaho-cdf-dd/extEditor?path=' + this.file + '&theme=ace/theme/eclipse&editorOnly=true');// &width='+width );        
+        this.externalEditor.attr('src',wd.helpers.editor.getUrl()+'path=' + this.file + '&theme=ace/theme/eclipse&editorOnly=true');// &width='+width );
         
     },
     
