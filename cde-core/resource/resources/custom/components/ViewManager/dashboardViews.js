@@ -5,22 +5,7 @@ var templates = templates || {};
 templates.dashboardViews = templates.dashboardViews || {}; 
 
 wd.cdf.views.getUrl = function() {
-  /* $.params uses + to encode spaces, we need
-   * to use uri encoding-style "%20" instead
-   */
-  var params = $.param({
-    file: this.file,
-    path: this.path,
-    solution: this.solution,
-    view: this.name
-  }).replace(/\+/g,"%20");
-  if(/\.(wcdf|cdfde)$/.test(this.file)) {
-    /* CDE mode*/
-    return webAppPath + "/content/pentaho-cdf-dd/Render?" + params 
-  } else {
-    /* CDF mode */
-    return webAppPath + "/content/pentaho-cdf/renderWcdf?" + params 
-  }
+  return wd.helpers.views.getUrl(this.solution, this.path, this.file, this.name);
 };
 
 wd.cdf.views.DashboardView = Backbone.Model.extend({
@@ -201,11 +186,10 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
       view.key = old.get("key");
     }
     args = {
-      method: "saveView",
       view: JSON.stringify(view)
     };
     var myself = this;
-    $.post(webAppPath + "/content/pentaho-cdf/Views",$.param(args),function(){
+    $.post(webAppPath + wd.helpers.views.getSaveViewsEndpoint(),$.param(args),function(){
       Dashboards.view = view;
       myself.model.set("currentView",name);
       myself.model.trigger("update");
@@ -215,11 +199,10 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   deleteView: function(evt) {
     var view = $(evt.target).parent().data("model"),
         args = {
-          method: "deleteView",
           name: view.get("name")
         };
     var myself = this;
-    $.post(webAppPath + "/content/pentaho-cdf/Views",$.param(args),function(){
+    $.post(webAppPath + wd.helpers.views.getDeleteViewsEndpoint(),$.param(args),function(){
       myself.model.get("views").remove(view);
       myself.model.trigger("update");
     });

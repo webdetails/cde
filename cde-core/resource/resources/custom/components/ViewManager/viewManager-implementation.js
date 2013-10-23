@@ -2,8 +2,7 @@ var viewManagerComponent = BaseComponent.extend({
   update: function() {
     function fetchData() {
       $.ajax({
-        url: webAppPath + "/content/pentaho-cdf/Views",
-        data: {method: "listViews"},
+        url: webAppPath + wd.helpers.views.getListViewsEndpoint(),
         dataType: 'json',
         success: function(response){
           myself.model.initViews(response.views);
