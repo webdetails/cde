@@ -1,64 +1,94 @@
 lib('protovis-bundle.js');
 
-elem = document.createElement('g');
-elem.setAttribute('id','canvas');
-document.lastChild.appendChild(elem);
-
 var render_salesGraphForMarker = {
 	type: "cccPieChart",
 	name: "render_salesGraphForMarker",
-	chartDefinition: {
-		width: 75,
-		height: 75,
-		dataAccessId: "salesGraphQuery",
-path: "/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cda",
-		crosstabMode: false,
-		seriesInRows: false,
-		animate: false,
-		clickable: false,
-		timeSeries: false,
-		timeSeriesFormat: "%Y-%m-%d",
-		innerGap: 0.9,
-		explodedSliceIndex: 0,
-		explodedSliceRadius: 0,
-		orientation: "vertical",
-		colors: [],
-		showValues: false,
-		valuesAnchor: "right",
-		titlePosition: "top",
-		titleSize: 25,
-		legend: false,
-		legendPosition: "bottom",
-		legendAlign: "center",
-		showXScale: true,
-		xAxisPosition: "bottom",
-		xAxisSize: 30,
-		showYScale: true,
-		yAxisPosition: "left",
-		yAxisSize: 50,
-		xAxisFullGrid: false,
-		yAxisFullGrid: false,
-		axisOffset: 0,
-		originIsZero: true,
-		extensionPoints: []
-	},
+	priority: 5,
 	parameters: [["customer","CustomerNameParameter"]],
 	executeAtStart: true,
-	listeners: []
-
+	listeners: [],
+	chartDefinition:  {
+		dataAccessId: "salesGraphQuery",
+		path: "/public/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cda",
+		width: 75,
+		height: 75,
+		extensionPoints: [],
+		colors: [],
+		activeSliceRadius: "5%",
+		animate: false,
+		clearSelectionMode: "emptySpaceClick",
+		clickable: false,
+		compatVersion: 2,
+		contentMargins: "0",
+		contentPaddings: "0",
+		crosstabMode: false,
+		ctrlSelectMode: true,
+		dataIgnoreMetadataLabels: false,
+		dataMeasuresInColumns: false,
+		dataSeparator: "~",
+		explodedSliceIndex: 0,
+		explodedSliceRadius: "0",
+		groupedLabelSep: " ~ ",
+		hoverable: false,
+		ignoreNulls: true,
+		isMultiValued: false,
+		legend: false,
+		legendAlign: "center",
+		legendClickMode: "toggleVisible",
+		legendFont: "10px sans-serif",
+		legendItemPadding: 2.5,
+		legendMargins: "0",
+		legendMarkerSize: 15,
+		legendPaddings: "5",
+		legendPosition: "bottom",
+		legendTextMargin: 6,
+		legendVisible: true,
+		linkHandleWidth: 0.5,
+		linkInsetRadius: "5%",
+		linkLabelSize: "15%",
+		linkLabelSpacingMin: 0.5,
+		linkMargin: "2.5%",
+		linkOutsetRadius: "2.5%",
+		margins: "3",
+		measuresIndexes: [],
+		multiChartColumnsMax: 3,
+		multiChartIndexes: [],
+		multiChartOverflow: "grow",
+		multiChartSingleColFillsHeight: true,
+		multiChartSingleRowFillsHeight: true,
+		paddings: "0",
+		selectable: false,
+		seriesInRows: false,
+		smallContentMargins: "0",
+		smallContentPaddings: "0",
+		smallMargins: "2%",
+		smallPaddings: "0",
+		smallTitleFont: "14px sans-serif",
+		smallTitleMargins: "0",
+		smallTitlePaddings: "0",
+		smallTitlePosition: "top",
+		timeSeries: false,
+		timeSeriesFormat: "%Y-%m-%d",
+		titleFont: "14px sans-serif",
+		titleMargins: "0",
+		titlePaddings: "0",
+		titlePosition: "top",
+		titleSize: "25",
+		tooltipEnabled: true,
+		tooltipFade: true,
+		tooltipFollowMouse: false,
+		tooltipHtml: true,
+		tooltipOpacity: 0.9,
+		valuesAnchor: "right",
+		valuesFont: "10px sans-serif",
+		valuesLabelStyle: "linked",
+		valuesVisible: false,
+		orientation: "vertical"
+	}
 };
-var datasource = datasourceFactory.createDatasource('cda');
-datasource.setDefinitionFile(render_salesGraphForMarker.chartDefinition.path);
-datasource.setDataAccessId('salesGraphQuery');
 
-var paramcustomer = params.get('customer');
-paramcustomer = (paramcustomer !== null && paramcustomer !== '')? paramcustomer : 'none';
-datasource.setParameter('customer', paramcustomer);
-var data = eval('new Object(' + String(datasource.execute()) + ');');
-var w = parseInt(params.get('width')) || render_salesGraphForMarker.chartDefinition.width;
-var h = parseInt(params.get('height')) || render_salesGraphForMarker.chartDefinition.height;
-render_salesGraphForMarker.chartDefinition.width = w; render_salesGraphForMarker.chartDefinition.height = h;
-print( 'Width: ' + w +  ' ( ' + typeof w + ' ) ; Height: ' + h +' ( ' + typeof h +' )');
-bg = document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('id','foo');bg.setAttribute('x','0');bg.setAttribute('y','0');bg.setAttribute('width', w);bg.setAttribute('height',h);bg.setAttribute('style', 'fill:white');document.lastChild.appendChild(bg);renderCccFromComponent(render_salesGraphForMarker, data);
-document.lastChild.setAttribute('width', render_salesGraphForMarker.chartDefinition.width);
-document.lastChild.setAttribute('height', render_salesGraphForMarker.chartDefinition.height);
+cgg.initParameter
+("customer", "none")
+;
+
+cgg.render(render_salesGraphForMarker);
