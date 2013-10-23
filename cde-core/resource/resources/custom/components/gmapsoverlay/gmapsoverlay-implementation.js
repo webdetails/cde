@@ -101,7 +101,8 @@ var gMapsOverlayComponent = BaseComponent.extend({
 				
 			});
 			
-			$.getJSON("getResource/cde/components/GMapsOverlay/map-def/" + myself.mapName + ".js", function(json) {
+			$.getJSON(wd.helpers.repository.getRsourceUrl()+wd.helpers.repository.getBaseSolutionPluginRoot()+
+                "cde/components/GMapsOverlay/map-def/" + myself.mapName + ".js", function(json) {
 			
 				if (!json)  {  
 					return
