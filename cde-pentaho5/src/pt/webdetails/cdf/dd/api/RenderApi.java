@@ -1,13 +1,14 @@
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -15,6 +16,7 @@ import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
+import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -110,6 +112,13 @@ public class RenderApi {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
       String result = dashboard.render(InterPluginBroker.getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
+      
+      //i18n token replacement
+      if(!StringUtils.isEmpty( result )){
+        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ));
+        result = new MessageBundlesHelper( msgDir , null ).replaceParameters( result, null );
+      }
+      
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?

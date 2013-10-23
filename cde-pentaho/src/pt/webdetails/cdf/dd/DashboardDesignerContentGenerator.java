@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -38,6 +39,7 @@ import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
+import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -278,7 +280,16 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		try {
 			long start = System.currentTimeMillis();
 			logger.info("[Timing] CDE Starting Dashboard Rendering");
-			writeOut(out, this.loadDashboard().render(getCdfContext()));
+			
+			String result = this.loadDashboard().render(getCdfContext());
+			
+			//i18n token replacement
+      if(!StringUtils.isEmpty( result )){
+        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( relativePath ));
+        result = new MessageBundlesHelper( msgDir , null ).replaceParameters( result, null );
+      }
+			
+			writeOut(out, result);
 			logger.info("[Timing] CDE Finished Dashboard Rendering: "
 					+ Utils.ellapsedSeconds(start) + "s");
 		} catch (FileNotFoundException ex) { // could not open cdfe

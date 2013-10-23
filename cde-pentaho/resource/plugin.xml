@@ -7,7 +7,8 @@
 		<static-path url="/pentaho-cdf-dd/images" localFolder="images"/>
 		<static-path url="/pentaho-cdf-dd/lang" localFolder="lang"/>
 		<static-path url="/pentaho-cdf-dd/static" localFolder="static"/>
-                <static-path url="/pentaho-cdf-dd/resources" localFolder="resources"/>
+        <static-path url="/pentaho-cdf-dd/resources" localFolder="resources"/>
+        <static-path url="/pentaho-cdf-dd/tmp" localFolder="tmp"/>
 	</static-paths>
 	<content-types>
 		<content-type type="wcdf" mime-type="text/html">
