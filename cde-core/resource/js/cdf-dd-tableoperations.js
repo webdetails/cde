@@ -311,10 +311,18 @@ var BaseModel = (function() {
      * @return function the undefined component type model class.
      */
     createUndefined: function(name) {
-      var isSpecial = (name === 'Label' || name === 'Group');
+      var description;
+      switch(name) {
+        case 'Label':
+        case 'Group': description = "<i>Group</i>"; break;
+        default: 
+          // Give a clue that the component is not defined.
+          description = "? " + name;
+      }
+
       return this.create({
         name: name,
-        description:    (isSpecial ? name : ("? " + name)), // Give a clue that the component is not defined.
+        description:    description,
         baseModelClass: UndefinedCdeComponentModel
       });
     }
