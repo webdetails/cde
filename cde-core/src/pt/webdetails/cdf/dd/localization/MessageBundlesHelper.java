@@ -109,7 +109,7 @@ public class MessageBundlesHelper {
   }
 
   public String getMessageFilesCacheUrl() {
-    return FilenameUtils.normalize( FilenameUtils.separatorsToUnix( languagesCacheUrl ) );
+    return FilenameUtils.separatorsToUnix( FilenameUtils.normalize( languagesCacheUrl ) );
   }
 
   protected void appendMessageFiles( IBasicFile sourceDashboardBaseMsgFile, IBasicFile globalBaseMessageFile,
