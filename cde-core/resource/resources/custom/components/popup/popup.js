@@ -439,7 +439,8 @@ var ExportPopupComponent = PopupComponent.extend({
 
     var loc = (Dashboards.getQueryParameter("solution") + "/" + Dashboards.getQueryParameter("path") + "/").replace(/\/\//g,"/");
 
-    var url = "../cgg/draw?script="+ loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
+    var url = Dashboards.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
+    
     var param;
     // Get parameter values; metadata is a special parameter, carries important
     // info for dashboard operation but has no data so isn't exported
@@ -449,7 +450,14 @@ var ExportPopupComponent = PopupComponent.extend({
         url += "&param" + parameters[i][0] + "=" + (parameters[i][0] != 'metadata' ? encodeURIComponent( param ) : 'false');
       }
     }
-
+    
+    // Check debug level and pass as parameter
+    var level = Dashboards.debug;
+    if(level > 1) {
+        url += "&paramdebug=true";
+        url += "&paramdebugLevel=" + level;
+    }
+    
     var myself = this;
     var masterDiv = $('<div class="exportChartMasterDiv">');
     //Style later
