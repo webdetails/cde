@@ -389,39 +389,30 @@ var ExportPopupComponent = PopupComponent.extend({
   },
   
   
-  exportData: function(det){
-
-    var effectiveExportType = det == undefined ? this.dataExportType : det ;   
-
-    // Get query
+  exportData: function(det) {
+    var effectiveExportType = det == undefined ? this.dataExportType : det;
+    
     Dashboards.log("Exporting to " + effectiveExportType);
 
-    var parameters = this.dataComponent.parameters;
-    var cd = ( this.dataComponent.chartDefinition ) ? this.dataComponent.chartDefinition : this.dataComponent.queryDefinition;
-    var dataAccess = cd.dataAccessId;
-    var path = cd.path;
-
-    var url = "../cda/doQuery?path="+path+"&dataAccessId="+dataAccess+"&outputType=" + effectiveExportType + "&settingattachmentName="+this.dataExportAttachmentName+"." + effectiveExportType;
-    // Get parameter values; metadata is a special parameter, carries important
-    // info for dashboard operation but has no data so isn't exported
-    
-    var doQueryParameters = {};
+    // metadata is a special parameter,
+    // carries important info for dashboard operation, 
+    // but has no data so isn't exported
+    var parameters = this.dataComponent.parameters.slice();
     for(var i=0; i<parameters.length; i++){
-        var paramName = 'param' + parameters[i][0];
-        doQueryParameters[paramName] = parameters[i][0] != 'metadata' ?
-          Dashboards.ev(Dashboards.getParameterValue(parameters[i][1])) :
-          'false';
+        if(parameters[i][0] === 'metadata') {
+          parameters[i] = parameters[i].slice();
+          parameters[i][1] = 'false';
+          break;
+        }
     }
 
-    var theDoQuery = url + '&wrapItUp=wrapit';
-    $.post(theDoQuery, doQueryParameters, function(uuid) {
-        var _exportIframe = _exportIframe || $('<iframe style="display:none">');
-        _exportIframe.detach();
-        _exportIframe[0].src = webAppPath + '/content/cda/unwrapQuery?' + $.param( {"path": cd.path, "uuid": uuid});
-        _exportIframe.appendTo($('body'));
+    var cd = this.dataComponent.chartDefinition || this.dataComponent.queryDefinition;
+    
+    var query = Dashboards.getQuery(cd);
+    
+    query.exportData(effectiveExportType, parameters, {
+      filename: this.dataExportAttachmentName+"." + effectiveExportType
     });
-
-
   },  
   
   
@@ -437,7 +428,7 @@ var ExportPopupComponent = PopupComponent.extend({
     var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
     var path = this.chartComponent.chartDefinition.path;
 
-    var loc = (Dashboards.getQueryParameter("solution") + "/" + Dashboards.getQueryParameter("path") + "/").replace(/\/\//g,"/");
+    var loc = Dashboards.context.path.replace(/[^\/]+$/, "");
 
     var url = Dashboards.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
     
@@ -450,14 +441,14 @@ var ExportPopupComponent = PopupComponent.extend({
         url += "&param" + parameters[i][0] + "=" + (parameters[i][0] != 'metadata' ? encodeURIComponent( param ) : 'false');
       }
     }
-    
+
     // Check debug level and pass as parameter
     var level = Dashboards.debug;
     if(level > 1) {
         url += "&paramdebug=true";
         url += "&paramdebugLevel=" + level;
     }
-    
+
     var myself = this;
     var masterDiv = $('<div class="exportChartMasterDiv">');
     //Style later
