@@ -3,6 +3,7 @@ package pt.webdetails.cdf.dd.util;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
+import pt.webdetails.cdf.dd.extapi.IFileHandler;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -86,5 +87,9 @@ public abstract class CdeEnvironment {
 	public static String getSystemDir(){
 		return CdeEngine.getInstance().getEnvironment().getSystemDir();
 	}
+	
+	public static IFileHandler getFileHandler(){
+    return CdeEngine.getInstance().getEnvironment().getFileHandler();
+  }
 }
 

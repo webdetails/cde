@@ -15,12 +15,13 @@ import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.CdeApiPathProvider;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
+import pt.webdetails.cdf.dd.extapi.IFileHandler;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
-public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironment {
+public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
 
 
   private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
@@ -32,6 +33,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   private IPluginResourceLocationManager pluginResourceLocationManager;
   private ICdeApiPathProvider apiPaths;
+  private IFileHandler fileHandler;
 
   public PentahoCdeEnvironment() {
     
@@ -44,6 +46,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
     if ( factory.containsBean( IResourceLoader.class.getSimpleName() ) ) {
       resourceLoader = (IResourceLoader) factory.getBean( IResourceLoader.class.getSimpleName() );
+    }
+    
+    if ( factory.containsBean( IFileHandler.class.getSimpleName() ) ) {
+      fileHandler = (IFileHandler) factory.getBean( IFileHandler.class.getSimpleName() );
     }
 
     super.init( this );
@@ -126,5 +132,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
       apiPaths = new CdeApiPathProvider( getPluginEnv().getUrlProvider() );
     }
     return apiPaths;
+  }
+
+  @Override
+  public IFileHandler getFileHandler() {
+    return fileHandler;
   }
 }

@@ -16,5 +16,6 @@ http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/serv
   <bean id="ICdeEnvironment" class="pt.webdetails.cdf.dd.PentahoCdeEnvironment" scope="prototype"/>
   <bean id="IPluginCall" class="pt.webdetails.cpf.PentahoLegacyInterPluginCall" scope="prototype"/>
   <bean id="IResourceLoader" class="pt.webdetails.cpf.resources.PentahoPluginResourceLoader" scope="prototype"/>
+  <bean id="IFileHandler" class="pt.webdetails.cdf.dd.extapi.LegacyFileHandler" scope="prototype"/>
 
 </beans>

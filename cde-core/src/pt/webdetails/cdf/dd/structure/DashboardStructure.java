@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -223,24 +224,11 @@ public class DashboardStructure implements IDashboardStructure {
     // TODO: This method does not maintain the Widget status and parameters of a dashboard
     // Is this intended?
     
-    // 1. Read empty wcdf file
-    InputStream wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH);
-    
-    String wcdfContentAsString = IOUtils.toString(wcdfFile, ENCODING);
-
-    // 2. Fill-in wcdf file title and description
-    wcdfContentAsString = wcdfContentAsString.replaceFirst("@DASBOARD_TITLE@", title).replaceFirst("@DASBOARD_DESCRIPTION@", description);
-
-    // 3. Publish new wcdf file
-    if(!CdeEnvironment.getUserContentAccess().saveFile(filePath, new ByteArrayInputStream(wcdfContentAsString.getBytes(ENCODING)))) {
+    if(!CdeEnvironment.getFileHandler().saveDashboardAs( filePath, title, description, cdfdeJsText )){
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION"));
     }
     
-    // 4. Save cdf structure
-//    parameters.put("file", filePath.replace(".wcdf", ".cdfde"));
-    
     return save(filePath.replace(".wcdf", ".cdfde"), cdfdeJsText);
-    //save(parameters);
   }
 
   public void newfile(HashMap<String, Object> parameters) throws Exception {
