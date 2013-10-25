@@ -7,7 +7,7 @@
     <Tooltip>The multiChart visual role allows turning a chart in a small multiples chart .</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>330</Order>
+    <Order>331</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

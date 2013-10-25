@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>tick</DefaultValue>
     <Description>ortho2AxisDomainRoundMode</Description>
-    <Tooltip>The axis' domain rounding mode (applies to continuous-numeric axes).</Tooltip>
+    <Tooltip>The axis' domain rounding mode (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>337</Order>
+    <Order>338</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

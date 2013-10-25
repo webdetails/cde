@@ -7,7 +7,7 @@
     <Tooltip>The docking position of the panel.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>306</Order>
+    <Order>307</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

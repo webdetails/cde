@@ -125,6 +125,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -374,6 +375,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -624,6 +626,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -923,6 +926,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -1333,6 +1337,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -1588,6 +1593,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -1808,6 +1814,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -2010,6 +2017,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -2177,6 +2185,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -2355,6 +2364,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -2610,6 +2620,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -2866,6 +2877,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -3083,6 +3095,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>
@@ -3245,6 +3258,7 @@
           <Property name="legendDrawMarker">cccLegendDrawMarker</Property>
           <Property name="legendFont">cccLegendFont</Property>
           <Property name="legendItemPadding">cccLegendItemPadding</Property>
+          <Property name="legendItemSize">cccLegendItemSize</Property>
           <Property name="legendMargins">cccLegendMargins</Property>
           <Property name="legendMarkerSize">cccLegendMarkerSize</Property>
           <Property name="legendPaddings">cccLegendPaddings</Property>

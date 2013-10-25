@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccOrthoAxisFixedMax</Name>
+    <Name>cccLegendItemSize</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>orthoAxisFixedMax</Description>
-    <Tooltip>The fixed maximum domain value that the axis will show (applies to continuous axes).</Tooltip>
+    <Description>legendItemSize</Description>
+    <Tooltip>The fixed size of legend items, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>369</Order>
+    <Order>303</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
