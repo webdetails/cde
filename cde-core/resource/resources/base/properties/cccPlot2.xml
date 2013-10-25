@@ -7,7 +7,7 @@
     <Tooltip>Activates the second plot.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>398</Order>
+    <Order>399</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

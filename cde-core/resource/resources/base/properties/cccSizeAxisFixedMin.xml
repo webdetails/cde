@@ -7,7 +7,7 @@
     <Tooltip>The fixed minimum domain value that the axis will show (applies to numeric axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>424</Order>
+    <Order>425</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
