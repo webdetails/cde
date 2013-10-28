@@ -74,7 +74,7 @@
 
     <echo>distribution.version = ${distribution.version}</echo>
 
-    <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,replace-ext-editor-labels,dist-solution"/>
+    <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,dist-solution"/>
     <target name="dist-compile" depends="jar,dist-plugin"/>
 
     <property name="plugin.artifact.id" value="${plugin.name}"/>
@@ -154,6 +154,7 @@
             </fileset>
         </copy>
 
+        <antcall target="replace-ext-editor-labels"/>
 
         <!-- copy the plugin jar to the plugin dist lib folder -->
         <copy todir="${stage.dir}/${plugin.name}/lib" overwrite="true">
