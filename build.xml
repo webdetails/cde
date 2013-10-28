@@ -1,0 +1,45 @@
+<project name="Community Dashboard Editor" basedir="." default="jar"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <description>
+    CDE convenience build
+  </description>
+
+    <target name="clean-all">
+        <ant dir="cde-core" antfile="build.xml" target="clean-all" inheritAll="true"/>
+        <ant dir="cde-pentaho" antfile="build.xml" target="clean-all" inheritAll="true"/>
+        <ant dir="cde-pentaho5" antfile="build.xml" target="clean-all" inheritAll="true"/>
+    </target>
+
+    <target name="build-core" >
+        <ant dir="cde-core" antfile="build.xml" target="dist" inheritAll="true"/>
+    </target>
+
+    <target name="build-and-test-core" >
+        <ant dir="cde-core" antfile="build.xml" target="dist" inheritAll="true"/>
+        <ant dir="cde-core" antfile="build.xml" target="test" inheritAll="true"/>
+    </target>
+
+    <target name="publish-local-core">
+        <ant dir="cde-core"    antfile="build.xml" target="publish-local" inheritAll="true"/>   
+    </target>
+
+    <target name="publish-local" depends="publish-local-core">
+        <ant dir="cde-pentaho" antfile="build.xml" target="publish-local" inheritAll="true"/>
+    </target>
+
+    <target name="dist" depends="publish-local-core">
+      <ant dir="cde-pentaho" antfile="build.xml" target="dist" inheritAll="true"/>
+      <ant dir="cde-pentaho5" antfile="build.xml" target="dist" inheritAll="true"/>
+    </target>
+
+    <target name="install-plugin" depends="publish-local-core"> 
+        <ant dir="cde-pentaho" antfile="build.xml" target="install-plugin" inheritAll="true"/>
+    </target>
+
+    <target name="install-plugin5" depends="publish-local-core"> 
+        <ant dir="cde-pentaho5" antfile="build.xml" target="install-plugin" inheritAll="true"/>
+    </target>
+
+
+</project>

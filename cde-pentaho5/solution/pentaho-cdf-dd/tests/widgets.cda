@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="groupHeadersQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="trendArrowQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="hyperlinkQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="circleQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="formattedTextQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="bulletChartQuery" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="Years" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="groupHeadersQuery"
+               id="groupHeadersQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Group1",
+"Group2",
+"Data Column 1",
+"Data Column 2"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("AAA"), new String("aaa")
+,new Float("-26") ,new Float("50")
+});
+model.addRow(new Object[]{ new String("AAA"), new String("ccc")
+,new Float("6") ,new Float("-32")
+});
+model.addRow(new Object[]{ new String("BBB"), new String("aaa")
+,new Float("2") ,new Float("23")
+});
+model.addRow(new Object[]{ new String("BBB"), new String("bbb")
+,new Float("34") ,new Float("91")
+});
+model.addRow(new Object[]{ new String("AAA"), new String("aaa")
+,new Float("14") ,new Float("14")
+});
+model.addRow(new Object[]{ new String("AAA"), new String("aaa")
+,new Float("90") ,new Float("-50")
+});
+model.addRow(new Object[]{ new String("AAA"), new String("bbb")
+,new Float("5") ,new Float("50")
+});
+model.addRow(new Object[]{ new String("BBB"), new String("ccc")
+,new Float("-46") ,new Float("10")
+});
+model.addRow(new Object[]{ new String("BBB"), new String("aaa")
+,new Float("26") ,new Float("5")
+});
+
+
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="trendArrowQuery"
+               id="trendArrowQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default trendArrow",
+"Custom trendArrow"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new Float("26") ,new Float("50")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new Float("-30") ,new Float("77")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new Float("-14.5") ,new Float("-65")
+});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="hyperlinkQuery"
+               id="hyperlinkQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default hyperlink",
+"Custom hyperlink"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new String("www.webdetails.org") ,new String("www.webdetails.pt")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new String("ctools.webdetails.org") ,new String("http://ctools.webdetails.org")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new String("cdf.webdetails.org") ,new String("cde.webdetails.org")
+});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="circleQuery"
+               id="circleQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default circle",
+"Custom circle"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new Float("1.26") ,new Float("0")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new Float("33.0") ,new Float("30")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new Float("14.5") ,new Float("50.49")
+});
+
+model.addRow(new Object[]{ new String("Row 4")
+,new Float("14.5") ,new Float("70")
+});
+
+model.addRow(new Object[]{ new String("Row 5")
+,new Float("14.5") ,new Float("100")
+});
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="formattedTextQuery"
+               id="formattedTextQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default format",
+"Custom custom"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new Float("1.26") ,new Float("0.21")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new Float("33.0") ,new Float("30.25")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new Float("14.5") ,new Float("50.49")
+});
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="bulletChartQuery"
+               id="bulletChartQuery"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Name",
+"Default bulletChart",
+"Custom bulletChart"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{ new String("Row 1")
+,new String("'',30,50") ,new String("'','',40,30,20,40,100")
+});
+
+
+model.addRow(new Object[]{ new String("Row 2")
+,new String("'',60,40") ,new String("'','',30,40,30,35,50")
+});
+
+
+model.addRow(new Object[]{ new String("Row 3")
+,new String("'',70,35") ,new String("'','',100,110,50,150,200")
+});
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="Years" id="Years"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>with member [Measures].[Year Name] as [Time].CurrentMember.Name
+select NON EMPTY {[Measures].[Year Name]} ON COLUMNS,
+  NON EMPTY {[Time].Children} ON ROWS
+from [SteelWheelsSales]</Query>
+   </DataAccess>
+</CDADescriptor>

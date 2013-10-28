@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdw><metadata><title>Map Component Full Test</title><author/><description>Tests Map Component with Graph</description></metadata><charts><chart id="salesGraphForMarker" name="salesGraphForMarker"><script>/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js</script><parameters><parameter type="String">customer</parameter></parameters></chart></charts></cdw>

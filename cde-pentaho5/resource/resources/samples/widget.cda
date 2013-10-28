@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="sales" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sales" id="sales"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters>
+         <Parameter default="All Years" name="year" type="String"/>
+      </Parameters>
+      <Query>select NON EMPTY {[Product].Children} ON COLUMNS,
+  NON EMPTY {[Markets].Children} ON ROWS
+from [SteelWheelsSales]
+where [Time].[${year}]</Query>
+   </DataAccess>
+</CDADescriptor>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+                           http://jax-ws.dev.java.net/spring/core http://jax-ws.dev.java.net/spring/core.xsd
+                           http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/servlet.xsd">
+
+    <context:annotation-config/>
+    <!-- JAX-RS beans -->
+    <bean id="api" class="org.pentaho.platform.web.servlet.JAXRSPluginServlet"/>
+    <bean id="wcdf" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype"/>
+    <bean id="wcdf.mobile" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype"/>
+    <bean id="datasources" class="pt.webdetails.cdf.dd.api.DatasourcesApi"/>
+    <bean id="editor" class="pt.webdetails.cdf.dd.api.EditorApi"/>
+    <bean id="olap" class="pt.webdetails.cdf.dd.api.OlapApi"/>
+    <bean id="plugins" class="pt.webdetails.cdf.dd.api.PluginsApi"/>
+    <bean id="renderer" class="pt.webdetails.cdf.dd.api.RenderApi"/>
+    <bean id="resourcesapi" class="pt.webdetails.cdf.dd.api.ResourcesApi"/>
+    <bean id="syncronizer" class="pt.webdetails.cdf.dd.api.SyncronizerApi"/>
+    <bean id="version" class="pt.webdetails.cdf.dd.api.VersionApi"/>
+
+    <bean id="wcdf.new" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
+      <property name="create" value="true" />
+    </bean>
+
+    <bean id="wcdf.edit" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
+        <property name="edit" value="true" />
+    </bean>
+
+    <bean id="wcdf.res" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype">
+        <property name="resource" value="true" />
+    </bean>
+</beans>
