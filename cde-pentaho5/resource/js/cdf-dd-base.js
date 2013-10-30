@@ -67,13 +67,18 @@ var SynchronizeRequests = {
 
     doPost: function (templateParams) {
 
-        $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", templateParams, function (result) {
-            var json = Util.parseJsonResult(result);
-            if (json && json.status == "true") {
-                $.notifyBar({ html: "Template saved successfully", delay: 1000 });
-            }
-            else {
-                $.notifyBar({ html: "Errors saving template: " + json.result });
+        $.ajax({
+            type: 'POST',
+            data: templateParams,
+            dataType: 'json',
+            url: Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates",
+            success: function (result) {
+                if (result && result.status == "true") {
+                    $.notifyBar({ html: "Template saved successfully", delay: 100 });
+                }
+                else {
+                    $.notifyBar({ html: "Errors saving template: " + json.result });
+                }
             }
         });
     },
