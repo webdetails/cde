@@ -80,11 +80,16 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.post(Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates", loadParams, function (result) {
-            var json = Util.parseJsonResult(result);
-            if (json && json.status == "true") {
+        $.ajax({
+            type: 'POST',
+            data: loadParams,
+            dataType: 'json',
+            url: Endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates",
+            success: function (result) {
 
-                templates = json.result;
+            if (result && result.status == "true") {
+
+                templates = result.result;
                 var selectTemplate = undefined;
                 var myTemplatesCount = 0;
                 var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
@@ -153,9 +158,9 @@ var SynchronizeRequests = {
             }
             else
                 $.notifyBar({ html: "Error loading templates: " + json.result });
+        }
         });
     }
-
 };
 
 
