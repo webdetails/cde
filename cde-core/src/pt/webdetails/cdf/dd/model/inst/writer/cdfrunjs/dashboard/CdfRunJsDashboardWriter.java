@@ -249,7 +249,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       {
         return String.format(
           "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-          baseUrl, input);
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
       }
     };
 
@@ -259,7 +259,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       {
         return String.format(
           "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
-          baseUrl, input);
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
       }
     };
 
