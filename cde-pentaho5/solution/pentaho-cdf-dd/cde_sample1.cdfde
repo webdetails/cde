@@ -1492,7 +1492,7 @@
      },
      {
       "name": "catalog",
-      "value": "../steel-wheels/analysis/steelwheels.mondrian.xml",
+      "value": "mondrian:/SteelWheels",
       "type": "String"
      },
      {
