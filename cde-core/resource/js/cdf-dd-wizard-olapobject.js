@@ -53,7 +53,7 @@ var WizardMeasureObject = WizardOlapObject.extend({
 	},
 	
 	render: function(container){
-		this.htmlObject = $('<div class="cdfdd-olap-measures">' + this.olapObject.name+ '</div>');
+		this.htmlObject = $('<div class="cdfdd-olap-measures">' + this.olapObject.caption+ '</div>');
 		container.append(this.htmlObject);
 		return this.htmlObject;
 	},
@@ -97,8 +97,8 @@ var WizardDimensionObject = WizardOlapObject.extend({
 		}
 		
 		this.htmlObject.empty();
-		this.htmlObject.append('<div class="cdfdd-olap-dimensions-label">' + this.olapObject.name + '</div>');
 		
+		this.htmlObject.append('<div class="cdfdd-olap-dimensions-label">' + this.olapObject.caption + '</div>');
 		var selector = this.buildSelector();
 		this.renderLeftButton(selector);
 		this.htmlObject.append(selector);
