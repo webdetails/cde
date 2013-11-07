@@ -491,7 +491,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 			writeOut(out, "Access Denied");
 		}
 		
-		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams)));
+		writeOut(out, DashboardEditor.getEditor(wcdfPath, debugMode, getScheme(pathParams), false));
 	}
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)

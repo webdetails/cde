@@ -56,11 +56,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     RenderApi renderer = new RenderApi();
 
     if( create ) {
-      String result = renderer.newDashboard( filePath, debug, getRequest(), getResponse() );
+      String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
       IOUtils.write( result, getResponse().getOutputStream() );
     } else if( edit ) {
       //TODO: file to path
-      String result = renderer.edit( "", "", filePath, debug, getRequest(), getResponse() );
+      String result = renderer.edit( "", "", filePath, debug, true, getRequest(), getResponse() );
       IOUtils.write( result, getResponse().getOutputStream() );
     
     } else if( resource ) {

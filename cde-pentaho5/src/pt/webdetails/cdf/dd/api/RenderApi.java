@@ -68,20 +68,21 @@ public class RenderApi {
   @Path( "/getHeaders" )
   @Produces( "text/plain" )
   public String getHeaders( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
-      @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
-      @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
-      @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug, @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+                            @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                            @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                            @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
+                            @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
+                            @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
+                            @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                            @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @Context HttpServletRequest request,
+                            @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String scheme = inferScheme ? "" : request.getScheme();
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
+      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
     return dashboardWrite.getHeader();
   }
 
@@ -136,6 +137,7 @@ public class RenderApi {
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
       @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+      @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
       @Context HttpServletRequest request,
       @Context HttpServletResponse response ) throws Exception {
 
@@ -145,7 +147,7 @@ public class RenderApi {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
-    return DashboardEditor.getEditor( wcdfPath, debug, request.getScheme() );
+    return DashboardEditor.getEditor( wcdfPath, debug, request.getScheme(), isDefault );
   }
 
   @GET
@@ -156,11 +158,12 @@ public class RenderApi {
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
 //      @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
       @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+        @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
         @Context HttpServletRequest request,
         @Context HttpServletResponse response ) throws Exception {
     
 //	  String wcdfPath = getWcdfRelativePath( solution, path, file );
-    return DashboardEditor.getEditor( path, debug, request.getScheme() );
+    return DashboardEditor.getEditor( path, debug, request.getScheme(), isDefault );
   }
 
   @GET

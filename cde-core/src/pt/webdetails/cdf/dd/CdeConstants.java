@@ -17,6 +17,8 @@ public class CdeConstants {
 
   public static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
 
+  public static final String DESIGNER_RESOURCE_DEFAULT = "resources/cdf-dd-default.html";
+
   public static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
 
   public static final String DESIGNER_SCRIPTS_RESOURCE = "resources/scripts.html";

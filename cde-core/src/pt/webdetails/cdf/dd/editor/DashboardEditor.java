@@ -28,14 +28,14 @@ public class DashboardEditor {
   private static Log logger = LogFactory.getLog( DashboardEditor.class );
 
 
-  public static String getEditor(String wcdfPath, boolean debugMode, String scheme) throws Exception {
+  public static String getEditor(String wcdfPath, boolean debugMode, String scheme, boolean isDefault) throws Exception {
 
     ResourceManager resMgr = ResourceManager.getInstance();
     IReadAccess sysReader = CdeEnvironment.getPluginSystemReader();
 
     final HashMap<String, String> tokens = buildReplacementTokenMap( wcdfPath, scheme, debugMode, resMgr, sysReader );
 
-    return getProcessedEditor( wcdfPath, resMgr, tokens, sysReader );
+    return getProcessedEditor( wcdfPath, resMgr, tokens, sysReader, isDefault );
 
   }
 
@@ -85,13 +85,9 @@ public class DashboardEditor {
   }
 
 
-  private static String getProcessedEditor(
-      String wcdfPath,
-      ResourceManager resMgr,
-      final HashMap<String, String> tokens,
-      IReadAccess sysReader) throws IOException
-  {
-    String cacheKey = ResourceManager.buildCacheKey(wcdfPath, tokens);
+  private static String getProcessedEditor( String wcdfPath, ResourceManager resMgr,
+      final HashMap<String, String> tokens, IReadAccess sysReader, boolean isDefault ) throws IOException {
+    String cacheKey = ResourceManager.buildCacheKey( wcdfPath, tokens );
     String editorPage;
     if ( resMgr.existsInCache( cacheKey ) ) {
 
@@ -99,7 +95,11 @@ public class DashboardEditor {
 
     } else {
 
-      editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE ) );
+      if( isDefault ) {
+        editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE_DEFAULT ) );
+      } else {
+        editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE ) );
+      }
 
       if ( tokens != null && tokens.size() > 0 ) {
         for ( final String key : tokens.keySet() ) {
