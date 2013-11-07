@@ -7,15 +7,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
+import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import org.pentaho.platform.web.http.api.resources.PluginResource;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -175,4 +180,24 @@ public class ResourcesApi {
     return new IBasicFile[] {};
   }
 
+  @GET
+  @Path( "/{path: [^?]+ }" )
+  @Produces( { MediaType.WILDCARD } )
+  public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response ) throws IOException {
+    
+    final String PLUGIN_ID = "pentaho-cdf-dd";
+    
+    IPluginManager pluginManager = PentahoSystem.get( IPluginManager.class );
+    
+    if(!StringUtils.isEmpty( path ) && pluginManager.isPublic( PLUGIN_ID, path ) ){
+      
+      Response readFileResponse = new PluginResource( response ).readFile( PLUGIN_ID, path );
+      
+      if ( readFileResponse.getStatus() != Status.NOT_FOUND.getStatusCode() ) {        
+        return readFileResponse;
+      }
+    }
+    
+    return Response.status( Status.NOT_FOUND ).build();
+  }
 }
