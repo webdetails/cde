@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
@@ -71,7 +72,7 @@ public class EditorApi {
   @POST
   @Path( "/file/write" )
   @Produces( "text/plain" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
       @Context HttpServletResponse response) throws IOException {

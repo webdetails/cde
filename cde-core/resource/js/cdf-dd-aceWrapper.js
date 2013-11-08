@@ -78,7 +78,6 @@ var CodeEditor = Base.extend({
         $.ajax({
             url: ExternalEditor.getWriteUrl(),
             type: "POST",
-            contentType: "application/xml",
             dataType: "xml",
             data: { path: fileName, data: contents },
             complete: function(data){
