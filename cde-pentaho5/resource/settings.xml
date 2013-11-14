@@ -19,4 +19,6 @@
     <!--4.x old <path>cde/components</path-->
     <path origin="repo">components</path>
   </custom-components>
+
+  <new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
 </settings>
