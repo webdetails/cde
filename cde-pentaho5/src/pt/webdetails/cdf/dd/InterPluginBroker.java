@@ -26,7 +26,7 @@ public class InterPluginBroker {
       params.put("root", absRoot);
     }
     //TODO: instantiate directly
-    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), null, "getHeaders" );
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "xcdf", "getHeaders" );
     
     return pluginCall.call( params.getParameters() );
 
@@ -45,7 +45,7 @@ public class InterPluginBroker {
     params.put("action", action);
     params.put("viewId", viewId);
 
-    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), null, "getContext" );
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "xcdf", "getContext" );
 
     return pluginCall.call( params.getParameters() );
 
