@@ -43,6 +43,9 @@ import pt.webdetails.cdf.dd.model.meta.IPropertyTypeSource;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 import pt.webdetails.cdf.dd.model.meta.writer.cdexml.XmlThingWriterFactory;
 import pt.webdetails.cdf.dd.render.CdaRenderer;
+import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.IRWAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 public class DashboardStructure implements IDashboardStructure {
@@ -51,7 +54,7 @@ public class DashboardStructure implements IDashboardStructure {
   private static Log logger = LogFactory.getLog(DashboardStructure.class);
   
   public static String SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
-  public static String SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH = "resources/empty.wcdf";
+  public static String SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH = "/system/pentaho-cdf-dd/resources/empty.wcdf";
   
   public DashboardStructure() {
   }
@@ -61,8 +64,9 @@ public class DashboardStructure implements IDashboardStructure {
     String filePath = (String)parameters.get("file");
     
     logger.info("Deleting File:" + filePath);
-    
-    if(!CdeEnvironment.getUserContentAccess().deleteFile(filePath)) {
+
+
+    if(Utils.getSystemOrUserRWAccess( filePath ).deleteFile( filePath )) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_007_DELETE_FILE_EXCEPTION"));
     }
   }
@@ -86,7 +90,7 @@ public class DashboardStructure implements IDashboardStructure {
         wcdfFilePath = SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH;
       }
       else {
-        IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+        IReadAccess access = Utils.getSystemOrUserReadAccess(cdeFilePath);
         if (access.fileExists( cdeFilePath )) {
           cdeFileInput = access.getFileInputStream(cdeFilePath);
           wcdfFilePath = cdeFilePath.replace(".cdfde", ".wcdf");
@@ -140,7 +144,8 @@ public class DashboardStructure implements IDashboardStructure {
     logger.info("Saving File:" + cdeFilePath);
 
     // 2. If not the CDE temp file, delete the temp file, if one exists
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IRWAccess access = Utils.getSystemOrUserRWAccess( cdeFilePath );
+
 
     // TODO: 
     boolean isPreview = cdeFilePath.indexOf("_tmp.cdfde") >= 0;
@@ -211,6 +216,21 @@ public class DashboardStructure implements IDashboardStructure {
     CggRunJsDashboardWriteContext cggDashContext = new CggRunJsDashboardWriteContext(cggWriteFactory, dash);
     cggDashWriter.write(access, cggDashContext, dash);
   }
+
+  private void saveCgg(IRWAccess access, String cdeRelFilePath)
+    throws ThingReadException, UnsupportedThingException, ThingWriteException {
+    String wcdfFilePath = cdeRelFilePath.replace(".cdfde", ".wcdf");
+
+    // Obtain an UPDATED dashboard object
+    DashboardManager dashMgr = DashboardManager.getInstance();
+    Dashboard dash = dashMgr.getDashboard(wcdfFilePath, /*bypassCacheRead*/false);
+
+    CggRunJsThingWriterFactory cggWriteFactory = new CggRunJsThingWriterFactory();
+    IThingWriter cggDashWriter = cggWriteFactory.getWriter(dash);
+    CggRunJsDashboardWriteContext cggDashContext = new CggRunJsDashboardWriteContext(cggWriteFactory, dash);
+    cggDashWriter.write(access, cggDashContext, dash);
+  }
+
   
   public void saveas(HashMap<String, Object> parameters) throws Exception {
     String filePath = (String)parameters.get("file");
@@ -270,7 +290,7 @@ public class DashboardStructure implements IDashboardStructure {
     
     // Save to repository
     String wcdfText = wcdf.toXml().asXML();
-    if(!CdeEnvironment.getUserContentAccess().saveFile(wcdfFilePath, new ByteArrayInputStream(safeGetEncodedBytes(wcdfText)))) {
+     if(!Utils.getSystemOrUserRWAccess( wcdfFilePath ).saveFile(wcdfFilePath, new ByteArrayInputStream(safeGetEncodedBytes(wcdfText)))) {
       throw new DashboardStructureException(Messages.getString("DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION"));
     }
     
@@ -291,7 +311,7 @@ public class DashboardStructure implements IDashboardStructure {
       return;
     }
 
-    CdeEnvironment.getUserContentAccess().saveFile(widgetPath, new ByteArrayInputStream(safeGetEncodedBytes(doc.asXML())));
+    Utils.getSystemOrUserRWAccess( widgetPath ).saveFile(widgetPath, new ByteArrayInputStream(safeGetEncodedBytes(doc.asXML())));
     
     // This will allow the metadata model to receive the
     // new/updated widget-component definition (name and parameters).

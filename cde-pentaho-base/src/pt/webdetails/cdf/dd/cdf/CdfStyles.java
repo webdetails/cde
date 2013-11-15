@@ -18,6 +18,8 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -51,9 +53,10 @@ public class CdfStyles {
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities( "/cde-styles" );
 
     for ( PluginsAnalyzer.PluginWithEntity entity : entities ) {
-        String pluginStylesDir = entity.getRegisteredEntity().valueOf( "path" );
-        String finalPath = pluginStylesDir + "/";
-        String pluginId = entity.getPlugin().getId();
+
+      String pluginStylesDir = entity.getRegisteredEntity().valueOf( "path" );
+      String finalPath = pluginStylesDir + "/";
+      String pluginId = entity.getPlugin().getId();
       style = null;
 
       IReadAccess access = CdeEnvironment.getOtherPluginSystemReader( pluginId );

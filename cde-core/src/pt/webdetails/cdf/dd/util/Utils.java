@@ -23,8 +23,10 @@ import org.xml.sax.EntityResolver;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
+import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
@@ -175,55 +177,124 @@ public class Utils {
   public static Document getDocFromFile(final IReadAccess access, final String filePath, final EntityResolver resolver) throws DocumentException, IOException {    
 	  return (access != null && filePath != null ? getDocFromFile(access.fetchFile(filePath), resolver) : null);
   }
-  
+
   public static IReadAccess getAppropriateReadAccess(String resource){
-	  return getAppropriateReadAccess(resource, null);
+    return getAppropriateReadAccess(resource, null);
   }
-  
+
   public static IReadAccess getAppropriateReadAccess(String resource, String basePath){
-		
-		if(StringUtils.isEmpty(resource)){
-			return null;
-		}
-		
-		ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
-		IContentAccessFactory factory = environment.getContentAccessFactory();
-		
-		String res = StringUtils.strip(resource.toLowerCase(), "/");
-		
-		if(res.startsWith(environment.getSystemDir() + "/")){
-		
-			res = StringUtils.strip(res, environment.getSystemDir() + "/");
-			
-			// system dir - this plugin
-			if(res.startsWith(environment.getPluginId() + "/")){
-				return factory.getPluginSystemReader(basePath);
-				
-			} else {
-				// system dir - other plugin
-				String pluginId = res.substring(0, resource.indexOf("/"));
-				return factory.getOtherPluginSystemReader(pluginId, basePath);
-			
-			}
-			
-		} else if(res.startsWith(environment.getPluginRepositoryDir() + "/")) {
-			
-			// plugin repository dir
-			return factory.getPluginRepositoryReader(basePath);
-			
-		} else {
-			
-			// one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
-			// or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
-			
-			if(factory.getPluginSystemReader(basePath).fileExists(res)){
-				return factory.getPluginSystemReader(basePath);
-			} else {
-				// user solution dir
-				return factory.getUserContentAccess(basePath);
-			}
-		}
-	}
+
+    if(StringUtils.isEmpty(resource)){
+      return null;
+    }
+
+    ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+    IContentAccessFactory factory = environment.getContentAccessFactory();
+
+    String res = resource.toLowerCase().replaceFirst( "/","" );
+
+    if(res.startsWith(environment.getSystemDir() + "/")){
+
+      res = res.replaceFirst( environment.getSystemDir() + "/","");
+
+      // system dir - this plugin
+      if(res.startsWith(environment.getPluginId() + "/")){
+        return factory.getPluginSystemReader(basePath);
+
+      } else {
+        // system dir - other plugin
+        String pluginId = res.substring(0, res.indexOf("/"));
+        return factory.getOtherPluginSystemReader(pluginId, basePath);
+
+      }
+
+    } else if(res.startsWith(environment.getPluginRepositoryDir() + "/")) {
+
+      // plugin repository dir
+      return factory.getPluginRepositoryReader(basePath);
+
+    } else {
+
+      // one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
+      // or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
+
+      if(factory.getPluginSystemReader(basePath).fileExists(res)){
+        return factory.getPluginSystemReader(basePath);
+      } else {
+        // user solution dir
+        return factory.getUserContentAccess(basePath);
+      }
+    }
+  }
+
+  public static IReadAccess getSystemReadAccess(String pluginId, String basePath){
+    ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+    IContentAccessFactory factory = environment.getContentAccessFactory();
+    if(StringUtils.isEmpty( pluginId ))               {
+      return factory.getPluginSystemReader( basePath );
+    } else {
+      return factory.getOtherPluginSystemReader( pluginId, basePath );
+    }
+  }
+
+  public static IRWAccess getSystemRWAccess(String pluginId, String basePath){
+    ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+    IContentAccessFactory factory = environment.getContentAccessFactory();
+    if(StringUtils.isEmpty( pluginId ))               {
+      return factory.getPluginSystemWriter( basePath );
+    } else {
+      return factory.getOtherPluginSystemWriter( pluginId, basePath );
+    }
+  }
+
+  public static IRWAccess getAppropriateWriteAccess(String resource){
+    return getAppropriateWriteAccess( resource, null );
+  }
+
+  public static IRWAccess getAppropriateWriteAccess(String resource, String basePath){
+
+    if(StringUtils.isEmpty(resource)){
+      return null;
+    }
+
+    ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+    IContentAccessFactory factory = environment.getContentAccessFactory();
+
+    String res = resource.toLowerCase().replaceFirst( "/","" );
+
+    if(res.startsWith(environment.getSystemDir() + "/")){
+
+      res = res.replaceFirst( environment.getSystemDir() + "/","");
+
+      // system dir - this plugin
+      if(res.startsWith(environment.getPluginId() + "/")){
+        return factory.getPluginSystemWriter( basePath );
+
+      } else {
+        // system dir - other plugin
+        String pluginId = res.substring(0, res.indexOf("/"));
+        return factory.getOtherPluginSystemWriter( pluginId, basePath );
+
+      }
+
+    } else if(res.startsWith(environment.getPluginRepositoryDir() + "/")) {
+
+      // plugin repository dir
+      return factory.getPluginRepositoryWriter( basePath );
+
+    } else {
+
+      // one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
+      // or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
+
+      if(factory.getPluginSystemReader(basePath).fileExists(res)){
+        return factory.getPluginSystemWriter( basePath );
+      } else {
+        // user solution dir
+        return factory.getUserContentAccess(basePath);
+      }
+    }
+  }
   
   	public static IBasicFile getFileViaAppropriateReadAccess(String resource){
   		return getFileViaAppropriateReadAccess(resource, null);
@@ -279,4 +350,29 @@ public class Utils {
 		}
 		return null; //unable to determine appropriate way to fetch file
   	}
+
+
+  public static IReadAccess getSystemOrUserReadAccess( String filePath ){
+    IReadAccess readAccess = null;
+    if(filePath.startsWith( "/system/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
+      readAccess = getSystemReadAccess( filePath.split( "/" )[2],null);
+    }  else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+      readAccess =  CdeEnvironment.getUserContentAccess();
+    }
+    return readAccess;
+  }
+
+   public static IRWAccess getSystemOrUserRWAccess(String filePath){
+    IRWAccess rwAccess = null;
+    if(filePath.startsWith( "/system/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
+      rwAccess = getSystemRWAccess( filePath.split( "/" )[2],null);
+    }  else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+      rwAccess =  CdeEnvironment.getUserContentAccess();
+    }
+    return rwAccess;
+
+  }
+
+
+
 }

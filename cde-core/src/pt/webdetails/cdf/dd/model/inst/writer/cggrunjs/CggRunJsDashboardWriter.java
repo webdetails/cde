@@ -14,6 +14,7 @@ import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 /**
@@ -23,10 +24,10 @@ public class CggRunJsDashboardWriter implements IThingWriter
 {
   public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
-    this.write((IUserContentAccess)output, (CggRunJsDashboardWriteContext)context, (Dashboard)t);
+    this.write((IRWAccess)output, (CggRunJsDashboardWriteContext)context, (Dashboard)t);
   }
   
-  public void write(IUserContentAccess access, CggRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
+  public void write(IRWAccess access, CggRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
   {
     assert context.getDashboard() == dash;
     

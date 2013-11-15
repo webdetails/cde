@@ -21,10 +21,9 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
-import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 /**
@@ -101,12 +100,11 @@ public class RenderApi {
 
     String scheme = inferScheme ? "" : request.getScheme();
     String filePath = getWcdfRelativePath( solution, path, file );//FIXME Util.joinPath
+    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
-    // Check security
-    if ( !CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
-      //IOUtils.write( "Access Denied or File Not Found.", response.getOutputStream() );
-      return "Access Denied or File Not Found.";
-    }
+      if(readAccess == null ){
+        return "Access Denied or File Not Found.";
+      }
 
     try {
       long start = System.currentTimeMillis();
@@ -142,8 +140,7 @@ public class RenderApi {
       @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
-
-    if ( !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
+    if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 

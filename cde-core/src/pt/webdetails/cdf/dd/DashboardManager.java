@@ -49,7 +49,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 
 /**
  * @author dcleao
@@ -110,7 +110,7 @@ public final class DashboardManager
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
           String wcdfFilePath,
           CdfRunJsDashboardWriteOptions options,
-          boolean bypassCacheRead) 
+          boolean bypassCacheRead)
           throws ThingWriteException
   {
     if(wcdfFilePath == null) { throw new IllegalArgumentException("wcdfFilePath"); }
@@ -182,7 +182,8 @@ public final class DashboardManager
     // NOTE: the cache is shared by all users.
     // The current user may not have access to a cache item previously
     // created by another user.
-    if (!CdeEnvironment.getUserContentAccess().fileExists(cdeFilePath)) {
+    if(!Utils.getSystemOrUserReadAccess( wcdf.getPath() ).fileExists(cdeFilePath)) {
+
       throw new ThingWriteException(new FileNotFoundException(cdeFilePath));
     }
     
@@ -262,7 +263,7 @@ public final class DashboardManager
     // NOTE: the cache is shared by all users.
     // The current user may not have access to a cache item previously
     // created by another user.
-    IBasicFile cdeFile = CdeEnvironment.getUserContentAccess().fetchFile(cdeFilePath);
+    IBasicFile cdeFile = Utils.getSystemOrUserReadAccess( cdeFilePath ).fetchFile( cdeFilePath );
     if(cdeFile == null)
     {
       throw new ThingReadException(new FileNotFoundException(cdeFilePath));
@@ -417,14 +418,14 @@ public final class DashboardManager
       _logger.info("Bypassing Dashboard instance cache, reading from repository.");
     }
 
-    IUserContentAccess userAccess = CdeEnvironment.getUserContentAccess();
+    IReadAccess userAccess = Utils.getSystemOrUserReadAccess( cdeFilePath );
     // Read cache, cache item existed and it is valid?
     if(cachedDash != null &&
        cachedDash.getSourceDate().getTime() >= userAccess.getLastModified(cdeFilePath))
     {
       // Check WCDF file date as well
       
-      if(!CdeEnvironment.getUserContentAccess().fileExists(wcdf.getPath())) {
+      if(!userAccess.fileExists(wcdf.getPath())) {
         throw new ThingReadException(new FileNotFoundException(wcdf.getPath()));
       }
 
@@ -520,7 +521,7 @@ public final class DashboardManager
   private CdfRunJsDashboardWriteResult
     getDashboardWriteResultFromCache( DashboardCacheKey cacheKey, String cdeFilePath ) throws FileNotFoundException {
 
-    IUserContentAccess userContentAccess = CdeEnvironment.getUserContentAccess();
+    IReadAccess userContentAccess = Utils.getSystemOrUserReadAccess( cdeFilePath );
 
     // 1. Try to obtain dashboard from cache
     Element cacheElement;
@@ -672,7 +673,7 @@ public final class DashboardManager
     throws IOException, FileNotFoundException {
     InputStream input = null;
     try {
-      input = CdeEnvironment.getUserContentAccess().getFileInputStream( dashboardLocation );
+      input = Utils.getSystemOrUserReadAccess( wcdf.getPath() ).getFileInputStream( dashboardLocation );
       final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
 
       if ( wcdf != null ) {

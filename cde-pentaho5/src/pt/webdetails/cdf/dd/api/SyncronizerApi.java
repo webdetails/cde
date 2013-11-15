@@ -27,7 +27,7 @@ import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 /**
@@ -80,13 +80,14 @@ public class SyncronizerApi {//TODO: synchronizer?
     	
     	// check access to path folder
     	String fileDir = file.contains(".wcdf") || file.contains(".cdfde") ? file.substring(0, file.lastIndexOf("/")) : file;
-    	
-    	if( !CdeEnvironment.getUserContentAccess().hasAccess( fileDir, FileAccess.EXECUTE )){
-     	  response.setStatus( HttpServletResponse.SC_FORBIDDEN );
- 	      String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
- 	      logger.warn( msg );
- 	      return JsonUtils.getJsonResult( false, msg );
-    	}
+
+      IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
+
+      if ( rwAccess == null ) {
+        String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
+        logger.warn( msg );
+        return JsonUtils.getJsonResult( false, msg );
+      }
     }
     
     try {
@@ -174,4 +175,5 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
   }
+
 }
