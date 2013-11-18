@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -364,11 +365,19 @@ public class Utils {
 
    public static IRWAccess getSystemOrUserRWAccess(String filePath){
     IRWAccess rwAccess = null;
-    if(filePath.startsWith( "/system/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
+    if(filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
       rwAccess = getSystemRWAccess( filePath.split( "/" )[2],null);
-    }  else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+    }  else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+      
+      if(CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ){
+        rwAccess =  CdeEnvironment.getUserContentAccess();
+      } else {
+        return null;
+      }
+    } else if( CdeEnvironment.getUserContentAccess().hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.EXECUTE ) ){
+      // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself; it should be checked against destination folder 
       rwAccess =  CdeEnvironment.getUserContentAccess();
-    }
+    } 
     return rwAccess;
 
   }
