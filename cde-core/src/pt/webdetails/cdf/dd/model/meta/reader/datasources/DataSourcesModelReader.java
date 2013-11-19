@@ -17,8 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.packager.input.OtherPluginStaticSystemOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
+import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
 /**
  * Loads XML model files,

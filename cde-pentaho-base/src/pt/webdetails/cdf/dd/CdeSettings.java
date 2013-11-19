@@ -13,9 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 
-import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.packager.input.PluginRepositoryOrigin;
-import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
+import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
+import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginSettings;
 import pt.webdetails.cpf.repository.api.IReadAccess;

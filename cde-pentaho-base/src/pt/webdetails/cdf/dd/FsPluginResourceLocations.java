@@ -14,8 +14,8 @@ import org.dom4j.Element;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
-import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.packager.input.OtherPluginStaticSystemOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
+import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;

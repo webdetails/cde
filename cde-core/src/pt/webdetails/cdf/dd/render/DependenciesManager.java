@@ -19,13 +19,13 @@ import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.Resource;
-import pt.webdetails.cdf.dd.packager.DependenciesPackage;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
-import pt.webdetails.cdf.dd.packager.DependenciesPackage.PackageType;
-import pt.webdetails.cdf.dd.packager.input.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.context.api.IUrlProvider;
+import pt.webdetails.cpf.packager.DependenciesPackage;
+import pt.webdetails.cpf.packager.DependenciesPackage.PackageType;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
+import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
 /**

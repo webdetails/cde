@@ -20,7 +20,7 @@ import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicateProperty
 import pt.webdetails.cdf.dd.model.meta.validation.DuplicatePropertyTypeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.meta.validation.ComponentTypeDuplicateResourceError;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
 
 /**
  * A type of component.

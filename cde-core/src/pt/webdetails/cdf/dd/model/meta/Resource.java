@@ -7,7 +7,7 @@ package pt.webdetails.cdf.dd.model.meta;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.validation.RequiredAttributeError;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
 
 /**
  * @author dcleao

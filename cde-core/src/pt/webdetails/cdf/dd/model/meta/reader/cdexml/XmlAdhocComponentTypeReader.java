@@ -9,7 +9,7 @@ import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
-import pt.webdetails.cdf.dd.packager.PathOrigin;
+import pt.webdetails.cpf.packager.origin.PathOrigin;
 
 /**
  * Casts arguments to fit XmlComponentTypeReader and instantiates builders with empty ctors

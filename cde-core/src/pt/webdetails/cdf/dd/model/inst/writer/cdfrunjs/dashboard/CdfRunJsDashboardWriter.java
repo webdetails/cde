@@ -19,12 +19,16 @@ import pt.webdetails.cdf.dd.model.core.*;
 import pt.webdetails.cdf.dd.model.core.writer.*;
 import pt.webdetails.cdf.dd.model.core.writer.js.*;
 import pt.webdetails.cdf.dd.model.inst.*;
-import pt.webdetails.cdf.dd.render.*;
+
+import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.DependenciesManager.StdPackages;
+import pt.webdetails.cdf.dd.render.RenderLayout;
+import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.packager.StringFilter;
 
 /**
  * @author dcleao
