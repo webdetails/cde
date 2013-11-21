@@ -16,12 +16,12 @@
       <dependency org="pt.webdetails" name="cde-core"
           rev="${project.revision}" transitive="false" changing="true" conf='runtime->default'/>
       <!-- cpf transitive to pull standard pentaho packages -->
-      <dependency org="pt.webdetails" name="cpf-pentaho"
+      <dependency org="pentaho" name="cpf-pentaho"
           rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" conf='default->default'/>
         <!-- cpf non-transitive to post copy to lib -->
-      <dependency org="pt.webdetails" name="cpf-core"
+      <dependency org="pentaho" name="cpf-core"
           rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
-      <dependency org="pt.webdetails" name="cpf-pentaho"
+      <dependency org="pentaho" name="cpf-pentaho"
           rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
     <dependency org="pentaho" name="pentaho-bi-platform-api"

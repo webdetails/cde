@@ -24,12 +24,12 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5"/>
         <dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.8.2" conf='runtime->default'/>
 
-      <dependency org="pt.webdetails" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" />
-      <dependency org="pt.webdetails" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" />
+      <dependency org="pentaho" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" />
+      <dependency org="pentaho" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" />
 
 
-      <dependency org="pt.webdetails" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
-      <dependency org="pt.webdetails" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+      <dependency org="pentaho" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+      <dependency org="pentaho" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
       <dependency org="pt.webdetails" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
