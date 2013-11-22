@@ -34,7 +34,7 @@
 	</dual>
 
   <resolver ref="public" />
-    <ibiblio name="analytical-labs" root="http://repo.analytical-labs.com/alabs-snapshot-local" m2compatible="true" />       
+           
     
   </chain>
   </resolvers>
