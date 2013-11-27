@@ -14,6 +14,10 @@ public class CdeConstants {
   public static final String DESIGNER_STYLES_TAG = "@STYLES@";
 
   public static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
+  
+  public static final String DASHBOARD_TITLE_TAG = "@DASBOARD_TITLE@";
+  
+  public static final String DASHBOARD_DESCRIPTION_TAG = "@DASBOARD_DESCRIPTION@";
 
   public static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
 
