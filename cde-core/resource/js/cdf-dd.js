@@ -635,7 +635,8 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData, null, 2) // TODO: shouldn't it strip, like save does?
+              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1) // TODO: shouldn't it strip, like save does?
+              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1)
             };
             
             SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
@@ -764,7 +765,7 @@ var CDFDD = Base.extend({
     //temporarily set the filename to tmp
     var tmpFileName = CDFDDFileName.replace(".cdfde", "_tmp.cdfde");
     this.dashboardData.filename = tmpFileName;
-    var serializedDashboard = JSON.stringify(this.dashboardData, null, 2);
+    var serializedDashboard = JSON.stringify(this.dashboardData, null, 0);
     this.dashboardData.filename = CDFDDFileName;
 
     var saveParams = {
@@ -1128,14 +1129,18 @@ var CDFDD = Base.extend({
 
             CDFDDFileName = selectedFolder + selectedFile;
             cdfdd.dashboardData.filename = CDFDDFileName;
-
+            var stripArgs = {
+              needsReload: false
+            };
+        
 
             var saveAsParams = {
               operation: fromScratch ? "newFile" : "saveas",
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 2) // TODO: shouldn't it strip, like save does?
+              //cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 1) // TODO: shouldn't it strip, like save does?
+              cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
             };
 
             SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
@@ -1178,7 +1183,8 @@ var CDFDD = Base.extend({
                 file: selectedFolder + selectedFile,
                 title: selectedTitle,
                 description: selectedDescription,
-                cdfstructure: JSON.stringify(myself.dashboardData, null, 2),
+                //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
+                cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
                 widgetName: selectedWidgetName
               };
 
@@ -1265,7 +1271,8 @@ var CDFDD = Base.extend({
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
-              cdfstructure: JSON.stringify(myself.dashboardData, null, 2),
+              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
+              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
               widgetName: selectedWidgetName
             };
 
