@@ -6,8 +6,8 @@ cgg.utils.initDocument("dial.svg");
 
 var scale  = params.get("scale"),
     colors = params.get("colors"),
-    scale  = (scale !== null && scale.length > 0 ? scale : [0,25,50,100]),
-    colors = (colors !== null && colors.length > 0 ? colors : ["red", "yellow", "green"]),
+    scale  = (scale != null && scale.length > 0 ? scale : [0,25,50,100]),
+    colors = (colors != null && colors.length > 0 ? colors : ["red", "yellow", "green"]),
     min    = parseFloat(scale[0]),
     max    = parseFloat(scale[scale.length - 1]),
     value  = parseFloat(params.get("value"));
