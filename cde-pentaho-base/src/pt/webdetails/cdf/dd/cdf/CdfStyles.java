@@ -61,6 +61,10 @@ public class CdfStyles {
 
       IReadAccess access = CdeEnvironment.getOtherPluginSystemReader( pluginId );
 
+      //Clean final path if it starts with sytem/pluginId/
+      if (finalPath.startsWith("system/" + pluginId + "/"))
+        finalPath = finalPath.substring(("system/" + pluginId + "/").length());
+
       if ( access.fileExists( finalPath ) && access.fetchFile( finalPath ).isDirectory() ) {
         style = new Style( access, finalPath, pluginId );
         styles.add( style );
