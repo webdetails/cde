@@ -55,7 +55,7 @@ public class CdfStyles {
     for ( PluginsAnalyzer.PluginWithEntity entity : entities ) {
 
       String pluginStylesDir = entity.getRegisteredEntity().valueOf( "path" );
-      String finalPath = pluginStylesDir + "/";
+      String finalPath = "/" + pluginStylesDir + "/";
       String pluginId = entity.getPlugin().getId();
       style = null;
 
