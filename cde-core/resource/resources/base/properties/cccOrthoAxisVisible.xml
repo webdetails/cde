@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the axis panel is shown.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>393</Order>
+    <Order>394</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

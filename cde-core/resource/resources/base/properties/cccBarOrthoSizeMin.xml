@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBarOrthoSizeMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>1.5</DefaultValue>
+    <Description>barOrthoSizeMin</Description>
+    <Tooltip>The minimum height of a non-null valued bar, in pixel units.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>205</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

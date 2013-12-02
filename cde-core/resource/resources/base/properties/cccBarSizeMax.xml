@@ -7,7 +7,7 @@
     <Tooltip>The maximum width of a bar, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>205</Order>
+    <Order>206</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
