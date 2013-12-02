@@ -13,7 +13,7 @@
     <dependencies defaultconf="default->default" >
 
       <!-- Core dependencies -->
-      <dependency org="pt.webdetails" name="cde-core"
+      <dependency org="pentaho" name="cde-core"
           rev="${project.revision}" transitive="false" changing="true" conf='runtime->default'/>
       <!-- cpf transitive to pull standard pentaho packages -->
       <dependency org="pentaho" name="cpf-pentaho"
