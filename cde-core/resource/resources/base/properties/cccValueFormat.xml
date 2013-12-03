@@ -7,7 +7,7 @@
     <Tooltip>A function that formats the non-null numeric values of the dimensions named value, value2, etc.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>483</Order>
+    <Order>484</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The space between bars of a given stack, in pixel units (applies to stacked bars).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>207</Order>
+    <Order>208</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

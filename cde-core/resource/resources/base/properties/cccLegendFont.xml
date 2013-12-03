@@ -7,7 +7,7 @@
     <Tooltip>The font of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>301</Order>
+    <Order>302</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

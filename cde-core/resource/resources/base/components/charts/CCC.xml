@@ -313,6 +313,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="barOrthoSizeMin">cccBarOrthoSizeMin</Property>
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
@@ -1964,6 +1965,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="barOrthoSizeMin">cccBarOrthoSizeMin</Property>
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
@@ -3204,6 +3206,7 @@
           <Property name="allCategoryLabel">cccAllCategoryLabel</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="areasVisible">cccAreasVisible</Property>
+          <Property name="barOrthoSizeMin">cccBarOrthoSizeMin</Property>
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
