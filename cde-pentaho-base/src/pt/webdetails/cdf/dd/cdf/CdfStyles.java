@@ -55,13 +55,17 @@ public class CdfStyles {
     for ( PluginsAnalyzer.PluginWithEntity entity : entities ) {
 
       String pluginStylesDir = entity.getRegisteredEntity().valueOf( "path" );
-      String finalPath = "/" + pluginStylesDir + "/";
+      String finalPath = pluginStylesDir + "/";
       String pluginId = entity.getPlugin().getId();
       style = null;
 
       IReadAccess access = CdeEnvironment.getOtherPluginSystemReader( pluginId );
 
       //Clean final path if it starts with sytem/pluginId/
+      //Allows specification for style paths to be in the form (assuming styles is the folder):
+      // * system/<plugin>/styles
+      // * /system/<plugin>/styles - no need to clear start info
+      // * styles
       if (finalPath.startsWith("system/" + pluginId + "/"))
         finalPath = finalPath.substring(("system/" + pluginId + "/").length());
 
