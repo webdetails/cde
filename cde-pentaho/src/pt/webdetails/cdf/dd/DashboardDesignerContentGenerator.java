@@ -814,7 +814,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         
         GenericBasicFileFilter fileFilter = new GenericBasicFileFilter(null, extensionsList.toArray(new String[extensionsList.size()]), true);
 
-        List<IBasicFile> fileList = CdeEnvironment.getUserContentAccess().listFiles(dir, fileFilter, 1, true);
+        List<IBasicFile> fileList = CdeEnvironment.getContentAccessFactory().getUserContentAccess("/solution").listFiles(dir, fileFilter, 1, true);
         
         if(fileList != null && fileList.size() > 0){
         	return fileList.toArray(new IBasicFile[fileList.size()]);
