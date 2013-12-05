@@ -1097,7 +1097,11 @@ var CDFDD = Base.extend({
         if (v == 1) {
 
           function isValidField(field){
+            return (field != null && field != undefined);            
+          }
+          function isValidFieldNotEmpty(field){
             return (field != null && field != undefined && field != "");
+            
           }
 
           /*In case of Dashboards
@@ -1109,7 +1113,7 @@ var CDFDD = Base.extend({
 
             selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidField($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
+            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
 
             if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
               $.prompt('Invalid file extension. Must be .wcdf', {
@@ -1153,7 +1157,7 @@ var CDFDD = Base.extend({
             selectedFolder = "/cde/widgets/";
             selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidField($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
+            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
             var selectedWidgetName = $("#componentInput").val();
             /* Validations */
 
