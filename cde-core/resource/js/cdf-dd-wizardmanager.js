@@ -1148,8 +1148,8 @@ var OlapChartWizard = OlapWizard.extend({
 			CDFDDUtils.getProperty(chartStub,"dataSource").value = this.getSelectedOptions().name+"Query";
 			CDFDDUtils.getProperty(chartStub,"height").value = "300";
 			CDFDDUtils.getProperty(chartStub,"width").value = "400";
-			CDFDDUtils.getProperty(chartStub,"cccCrosstabMode").value = true;
-			CDFDDUtils.getProperty(chartStub,"cccOrientation").value = this.getSelectedOptions().orientation;
+			CDFDDUtils.getProperty(chartStub,"crosstabMode").value = true;
+			CDFDDUtils.getProperty(chartStub,"orientation").value = this.getSelectedOptions().orientation;
 			
 			var listeners = this.getListenners();
 			if(listeners.length > 0){
