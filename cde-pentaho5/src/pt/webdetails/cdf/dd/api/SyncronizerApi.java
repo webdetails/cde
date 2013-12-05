@@ -65,9 +65,11 @@ public class SyncronizerApi {//TODO: synchronizer?
                 @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                 @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
                 @FormParam( MethodParams.WIDGET ) boolean widget,
-                @FormParam( MethodParams.RENDER_TYPE ) @DefaultValue( "" ) String renderType,
+                @FormParam( MethodParams.RENDERER_TYPE ) @DefaultValue( "" ) String rendererType,
                 @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
 		  					@FormParam( MethodParams.OPERATION ) String operation,
+                @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+                @FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
 
 		  					@Context HttpServletRequest request,
 		  					@Context HttpServletResponse response ) throws Exception {
@@ -99,7 +101,9 @@ public class SyncronizerApi {//TODO: synchronizer?
       if( !author.isEmpty() ) params.put( MethodParams.AUTHOR, author );
       if( !style.isEmpty() ) params.put( MethodParams.STYLE, style );
       if( !widgetName.isEmpty() ) params.put( MethodParams.WIDGET_NAME, widgetName );
-      if( !renderType.isEmpty() ) params.put( MethodParams.RENDER_TYPE, renderType );
+      if( !rendererType.isEmpty() ) params.put( MethodParams.RENDERER_TYPE, rendererType );
+      if( !title.isEmpty() ) params.put( MethodParams.TITLE, title );
+      if( !description.isEmpty() ) params.put( MethodParams.DESCRIPTION, description );
       String[] widgetParameters = widgetParams.toArray( new String[0] );
       if( widgetParameters.length > 0 ) params.put( MethodParams.WIDGET_PARAMETERS, widgetParameters );
 
@@ -165,7 +169,7 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String DESCRIPTION = "description";
     private static final String STYLE = "style";
     private static final String OPERATION = "operation";
-    private static final String RENDER_TYPE = "renderType";
+    private static final String RENDERER_TYPE = "rendererType";
     private static final String WIDGET = "widget";
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
