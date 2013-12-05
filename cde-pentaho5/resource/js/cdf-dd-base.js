@@ -357,8 +357,10 @@ var SaveRequests = {
     saveDashboard: function (saveParams, stripArgs) {
 
         if(Endpoints.isEmptyFilePath(saveParams.file)){ saveParams.file = Endpoints.getFilePathFromUrl(); }
-
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
+        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveParams,
+            success: function (result) {
             if (result && result.status == "true") {
                 if (stripArgs.needsReload) {
                     window.location.reload();
@@ -373,12 +375,18 @@ var SaveRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        }
         });
+        $uploadForm.submit();
+        
     },
 
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
+        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveAsParams,
+            success: function (result) {
             if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
@@ -391,7 +399,9 @@ var SaveRequests = {
                 $.notifyBar({
                     html: "Errors saving file: " + result.result
                 });
+        }
         });
+        $uploadForm.submit();        
     },
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
@@ -402,7 +412,10 @@ var SaveRequests = {
             saveAsParams.file = saveAsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
         }
 
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function (result) {
+        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveAsParams,
+            success: function (result) {
             if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") {
                     selectedFolder = selectedFolder.substring(1, selectedFolder.length);
@@ -425,7 +438,9 @@ var SaveRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        }
         });
+        $uploadForm.submit();
     },
 };
 
@@ -450,7 +465,10 @@ var LoadRequests = {
 var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
-        $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, function (result) {
+        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveParams,
+            success: function (result) {
             if (result && result.status == "true") {
                 $.fancybox({
                     type: "iframe",
@@ -463,7 +481,9 @@ var PreviewRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        }
         });
+        $uploadForm.submit();
     },
 
     getPreviewUrl: function( solution, path, file, style){

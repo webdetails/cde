@@ -19,6 +19,11 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -159,22 +164,73 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void syncronize(final OutputStream out) throws Exception {
-		
-	  final String path = ((String) getRequestParameters().getParameter(REQUEST_PARAM_FILE)).replaceAll("cdfde", "wcdf");
+    String title = null;
+    String description = null;
+    String operation = null;
+    String path = null;
+    String cdfStructure = null;
+    if ( getRequest().getContentType().startsWith( "multipart/form-data" ) ) {
+      FileItemFactory factory = new DiskFileItemFactory();
+      ServletFileUpload upload = new ServletFileUpload( factory );
+      List items = null;
+      try {
+        items = upload.parseRequest( getRequest() );
+      } catch ( FileUploadBase.InvalidContentTypeException e ) {
+        logger.debug( "Syncronize - content type not multipart/form-data" );
+      }
+      if ( items != null ) {
+        for ( int i = 0; i < items.size(); i++ ) {
+          FileItem fi = (FileItem) items.get( i );
+
+          if ( "operation".equals( fi.getFieldName() ) ) {
+            operation = fi.getString();
+          }
+          if ( "file".equals( fi.getFieldName() ) ) {
+            path = fi.getString();
+          }
+          if ( "cdfstructure".equals( fi.getFieldName() ) ) {
+            cdfStructure = fi.getString();
+          }
+          if ( "title".equals( fi.getFieldName() ) ) {
+            title = fi.getString();
+          }
+          if ( "description".equals( fi.getFieldName() ) ) {
+            description = fi.getString();
+          }
+        }
+        if ( StringUtils.isEmpty( title ) ) {
+          title = FilenameUtils.getBaseName( path );
+        }
+        boolean saveAsAccessGranted = false;
+        if( operation.equals( OPERATION_SAVE_AS )) {
+          saveAsAccessGranted =
+            CdeEnvironment.getUserContentAccess().hasAccess( FilenameUtils.getPath( path ), FileAccess.EXECUTE );
+        }
+        if ( !saveAsAccessGranted && ( path != null ) && ( !path.endsWith( "_tmp.cdfde" ) )
+          && ( !CdeEnvironment.getUserContentAccess().hasAccess( path, FileAccess.EXECUTE ) ) ) {
+          getResponse().setStatus( 403 );
+          logger.warn( "Access denied for the syncronize method: " + path );
+          return;
+        }
+      }
+    } else {
+
+      path = ((String) getRequestParameters().getParameter(REQUEST_PARAM_FILE)).replaceAll("cdfde", "wcdf");
 	      
-      // Check security. Caveat: if no path is supplied, then we're in the new parameter
-      if (getRequestParameters().hasParameter(REQUEST_PARAM_PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
-    	    getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
-			logger.warn("Access denied for the syncronize method: " + path);
-			return;
-	  }
+       // Check security. Caveat: if no path is supplied, then we're in the new parameter
+       if (getRequestParameters().hasParameter(REQUEST_PARAM_PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
+      	    getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
+		  	logger.warn("Access denied for the syncronize method: " + path);
+		  	return;
+	    }
     	
-      final String operation = getRequestParameters().getStringParameter(REQUEST_PARAM_OPERATION, "").toLowerCase();
+       operation = getRequestParameters().getStringParameter(REQUEST_PARAM_OPERATION, "").toLowerCase();
       
-      // file path must exist
-	  if (getRequestParameters() == null || getRequestParameters().getParameter(REQUEST_PARAM_FILE) == null){
-	      throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
-	  }
+        // file path must exist
+	   if (getRequestParameters() == null || getRequestParameters().getParameter(REQUEST_PARAM_FILE) == null){
+	       throw new Exception(Messages.getString("SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION"));
+	   }
+    }
 		
 	  try{
 	  
@@ -189,10 +245,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         dashboardStructure.delete(toHashMap(getRequestParameters()));
 		  
 		  }else if(OPERATION_SAVE.equalsIgnoreCase(operation)){
-			  result = dashboardStructure.save(toHashMap(getRequestParameters()));
+			  result = dashboardStructure.save( path, cdfStructure );
 			  
 		  }else if(OPERATION_SAVE_AS.equalsIgnoreCase(operation)){
-        dashboardStructure.saveas(toHashMap(getRequestParameters()));
+        dashboardStructure.saveAs( path, title, description, cdfStructure );
 			  
 		  }else if(OPERATION_NEW_FILE.equalsIgnoreCase(operation)){
         dashboardStructure.newfile(toHashMap(getRequestParameters()));

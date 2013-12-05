@@ -51,7 +51,7 @@ var SynchronizeRequests = {
 
     doPost: function (templateParams) {
 
-        $.post(Endpoints.getPluginUrl()+"SyncTemplates", templateParams, function (result) {
+        $.post(Endpoints.getPluginUrl() + "SyncTemplates", templateParams, function (result) {
             var json = Util.parseJsonResult(result);
             if (json.status == "true") {
                 $.notifyBar({ html: "Template saved successfully", delay: 1000 });
@@ -64,7 +64,7 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.getJSON(Endpoints.getPluginUrl()+"SyncTemplates", loadParams, function (json) {
+        $.getJSON(Endpoints.getPluginUrl() + "SyncTemplates", loadParams, function (json) {
             if (json.status) {
 
                 templates = json.result;
@@ -324,7 +324,10 @@ var SaveRequests = {
 
     saveDashboard: function (saveParams, stripArgs) {
 
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, function (result) {
+        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveParams,
+            success: function (result) {                
             //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
@@ -341,12 +344,17 @@ var SaveRequests = {
                     html: "Errors saving file: " + json.result
                 });
             }
+        
+            }
         });
+        $uploadForm.submit();
     },
 
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
-
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, function (result) {
+        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveAsParams,
+            success: function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
@@ -359,12 +367,17 @@ var SaveRequests = {
                 $.notifyBar({
                     html: "Errors saving file: " + json.result
                 });
+        }
         });
+        $uploadForm.submit();
     },
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, function (result) {
+        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveAsParams,
+            success: function (result) {
             var json = JSON.parse(result);
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") {
@@ -386,7 +399,9 @@ var SaveRequests = {
                     html: "Errors saving file: " + json.result
                 });
             }
+        }
         });
+        $uploadForm.submit();
     }
 };
 
@@ -411,21 +426,27 @@ var LoadRequests = {
 var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, function (result) {
-            var json = eval("(" + result + ")");
-            if (json.status == "true") {
-                $.fancybox({
-                    type: "iframe",
-                    href: _href,
-                    width: $(window).width(),
-                    height: $(window).height()
-                });
-            } else {
-                $.notifyBar({
-                    html: "Errors saving file: " + json.result
-                });
+
+        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+        $uploadForm.ajaxForm({
+            data:saveParams,
+            success: function (result) {
+                var json = eval("(" + result + ")");
+                    if (json.status == "true") {
+                    $.fancybox({
+                        type: "iframe",
+                        href: _href,
+                        width: $(window).width(),
+                        height: $(window).height()
+                        });
+                    } else {
+                        $.notifyBar({
+                        html: "Errors saving file: " + json.result
+                    });
+                }
             }
         });
+        $uploadForm.submit();
     },
 
     getPreviewUrl: function( solution, path, file, style){

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -15,6 +16,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import com.sun.jersey.multipart.FormDataParam;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,24 +61,19 @@ public class SyncronizerApi {//TODO: synchronizer?
   @Path( "/syncronizeDashboard" )
   @Produces( MimeTypes.JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-		  					@FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-		  					@FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
                 @FormParam( MethodParams.AUTHOR ) @DefaultValue( "" ) String author,
-		  					@FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
                 @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                 @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
                 @FormParam( MethodParams.WIDGET ) boolean widget,
                 @FormParam( MethodParams.RENDER_TYPE ) @DefaultValue( "" ) String renderType,
                 @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
-		  					@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
 		  					@FormParam( MethodParams.OPERATION ) String operation,
 
 		  					@Context HttpServletRequest request,
 		  					@Context HttpServletResponse response ) throws Exception {
-    
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH )){
     	
-    	if( widget ) {
+    	if ( widget ) {
     		//widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
     		file = Utils.joinPath(CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file);
     	}
@@ -109,10 +109,6 @@ public class SyncronizerApi {//TODO: synchronizer?
         return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
-      } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.save(file, cdfStructure );
-      } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
@@ -174,6 +170,72 @@ public class SyncronizerApi {//TODO: synchronizer?
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
+  }
+
+  @POST
+  @Path( "/saveDashboard" )
+  @Produces( MimeTypes.JSON )
+  @Consumes( "multipart/form-data" )
+  public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                            @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+                            @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
+                            @FormDataParam( MethodParams.WIDGET ) @DefaultValue( "false" ) boolean widget,
+                            @FormDataParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
+                            @FormDataParam( MethodParams.OPERATION ) String operation,
+                            @Context HttpServletResponse response ) throws Exception {
+
+    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      if ( StringUtils.isEmpty( title ) ) {
+        title = FilenameUtils.getBaseName( file );
+      }
+
+      if ( widget ) {
+        //widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
+        file = Utils.joinPath( CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file );
+      }
+
+      // check access to path folder
+      String fileDir =
+        file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
+
+      IReadAccess rwAccess = null;
+      if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
+        rwAccess = Utils.getSystemOrUserRWAccess( fileDir );
+      } else {
+        rwAccess = Utils.getSystemOrUserRWAccess( file );
+      }
+
+      if ( rwAccess == null ) {
+        String msg = "Access denied for the syncronize method saveDashboard." + operation + " : " + file;
+        logger.warn( msg );
+        return JsonUtils.getJsonResult( false, msg );
+      }
+    }
+
+    try {
+      final DashboardStructure dashboardStructure = new DashboardStructure();
+      Object result = null;
+
+
+      if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
+        result = dashboardStructure.save( file, cdfStructure );
+      } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
+        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
+      } else {
+        logger.error( "Unknown operation: " + operation );
+      }
+      return JsonUtils.getJsonResult( true, result );
+    } catch ( Exception e ) {
+      if ( e.getCause() != null ) {
+        if ( e.getCause() instanceof DashboardStructureException ) {
+          JsonUtils.buildJsonResult( response.getOutputStream(), false, e.getCause().getMessage() );
+        } else if ( e instanceof InvocationTargetException ) {
+          throw (Exception) e.getCause();
+        }
+      }
+      throw e;
+    }
   }
 
 }
