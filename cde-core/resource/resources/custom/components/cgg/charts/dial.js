@@ -1,6 +1,9 @@
-lib("protovis-bundle.js");
 
-cgg.init && cgg.init();
+lib("cgg-env.js");
+
+cgg.init();
+
+var pv = require('ccc!protovis-standalone');
 
 cgg.utils.initDocument("dial.svg");
 
