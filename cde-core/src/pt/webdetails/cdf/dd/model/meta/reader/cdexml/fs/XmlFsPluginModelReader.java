@@ -218,7 +218,7 @@ public final class XmlFsPluginModelReader {
     logger.info(String.format("Loading WIDGET components from: %s", WIDGETS_DIR));
       
     List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(WIDGETS_DIR).listFiles(null, 
-              new GenericBasicFileFilter(COMPONENT_FILENAME,DEFINITION_FILE_EXT), IReadAccess.DEPTH_ALL);
+              new GenericBasicFileFilter(COMPONENT_FILENAME,DEFINITION_FILE_EXT), IReadAccess.DEPTH_ALL, false, true);
     PathOrigin widgetsOrigin = new PluginRepositoryOrigin(CdeEngine.getEnv().getPluginRepositoryDir(), WIDGETS_DIR);
     
     if(filesList != null) {
