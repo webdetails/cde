@@ -9,12 +9,10 @@ var CurrentVersionComponent = BaseComponent.extend({
   update : function(){
     var self = this;
     this.ph = $('#' + this.htmlObject).empty();
-    console.log("[CURRENT VERSION COMPONENT] ### before ajax call ###");
     $.get(this.versionUrl, function(result){
       var msgHolder = $('<div/>').html(result);
       self.ph.append(msgHolder);
     });
-    console.log("[CURRENT VERSION COMPONENT] ### after ajax call ###");
   }
   
 });
