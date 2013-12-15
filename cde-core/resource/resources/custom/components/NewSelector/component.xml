@@ -37,9 +37,6 @@
         <Style version="1.0" src="component.css">NewSelector</Style>
       </Styles>
       <Dependencies>
-        <Dependency src="lib/underscore.js" version="1.0">Underscore</Dependency>
-        <Dependency src="lib/backbone.js" version="2.0">Backbone</Dependency>
-        <Dependency src="lib/mustache.js" version="1.0">Mustache</Dependency>
         <Dependency src="component.js" version="1.0">NewSelector</Dependency>
       </Dependencies>
       <CustomProperties>
