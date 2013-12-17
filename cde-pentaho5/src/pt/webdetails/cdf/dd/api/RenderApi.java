@@ -59,7 +59,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
+        this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -81,7 +81,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
+      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -96,20 +96,22 @@ public class RenderApi {
       @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
       @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
       @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-      @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId    , @Context HttpServletRequest request) throws IOException {
+      @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+      @QueryParam( MethodParams.STYLE ) @DefaultValue("") String style,
+      @Context HttpServletRequest request) throws IOException {
 
     String scheme = inferScheme ? "" : request.getScheme();
     String filePath = getWcdfRelativePath( solution, path, file );//FIXME Util.joinPath
     IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
-      if(readAccess == null ){
-        return "Access Denied or File Not Found.";
-      }
+    if(readAccess == null ){
+      return "Access Denied or File Not Found.";
+    }
 
     try {
       long start = System.currentTimeMillis();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
-      CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug );
+      CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
       String result = dashboard.render(InterPluginBroker.getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
       
       //i18n token replacement
@@ -178,11 +180,11 @@ public class RenderApi {
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
-      boolean bypassCache, boolean debug ) throws ThingWriteException {
+      boolean bypassCache, boolean debug, String style ) throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
         new CdfRunJsDashboardWriteOptions( absolute || !root.equals( "" ), debug, root, scheme );
-    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache );
+    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style);
   }
 
 
@@ -207,6 +209,7 @@ public class RenderApi {
     public static final String BYPASSCACHE = "bypassCache";
     public static final String DEBUG = "debug";
     public static final String VIEWID = "viewId";
+    public static final String STYLE = "style";
   }
 
 }

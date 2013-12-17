@@ -201,6 +201,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         if ( StringUtils.isEmpty( title ) ) {
           title = FilenameUtils.getBaseName( path );
         }
+        if ( StringUtils.isEmpty( description ) ) {
+          description = FilenameUtils.getBaseName( path );
+        }
         boolean saveAsAccessGranted = false;
         if( operation.equals( OPERATION_SAVE_AS )) {
           saveAsAccessGranted =
@@ -835,11 +838,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 		String wcdfFilePath = getWcdfRelativePath(requestParams);
 
+		String style = requestParams.getStringParameter("style", "");
+
 		CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions(
 				absolute, debug, absRoot, scheme);
 
 		return DashboardManager.getInstance().getDashboardCdfRunJs(
-				wcdfFilePath, options, bypassCacheRead);
+				wcdfFilePath, options, bypassCacheRead, style);
 	}
 
 	private String getCdfContext() {

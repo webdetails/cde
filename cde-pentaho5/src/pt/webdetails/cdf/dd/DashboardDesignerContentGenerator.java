@@ -53,6 +53,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         requestParams.hasParameter( MethodParams.BYPASS_CACHE ) && requestParams.getParameter( MethodParams.BYPASS_CACHE ).equals( "true" );
     boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) && requestParams.getParameter( MethodParams.DEBUG ).equals( "true" );
 
+    String style = requestParams.getStringParameter( MethodParams.STYLE, "");
+
     RenderApi renderer = new RenderApi();
 
     if( create ) {
@@ -73,7 +75,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     	new ResourcesApi().getResource(pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse());
     
     } else {
-    	String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, getRequest());
+    	String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest());
 
       IOUtils.write(result, getResponse().getOutputStream());
       getResponse().getOutputStream().flush();
@@ -97,6 +99,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String REQUEST = "request";
     public static final String VIEWID = "viewId";
     public static final String COMMAND = "cmd";
+    public static final String STYLE = "style";
+
 
     public static final String DATA = "data";
   }

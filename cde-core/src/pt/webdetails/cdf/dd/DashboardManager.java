@@ -111,11 +111,18 @@ public final class DashboardManager
   {
     return _instance;
   }
+
+  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(String wcdfFilePath,
+                                                           CdfRunJsDashboardWriteOptions options,
+                                                           boolean bypassCacheRead) throws ThingWriteException {
+    return getDashboardCdfRunJs(wcdfFilePath, options, bypassCacheRead, null);
+  }
   
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
           String wcdfFilePath,
           CdfRunJsDashboardWriteOptions options,
-          boolean bypassCacheRead)
+          boolean bypassCacheRead,
+          String style)
           throws ThingWriteException
   {
     if(wcdfFilePath == null) { throw new IllegalArgumentException("wcdfFilePath"); }
@@ -147,6 +154,10 @@ public final class DashboardManager
       // TODO: Support mobile preview mode (must remove dependency on setStyle())
       wcdf = getPreviewWcdf(wcdfFilePath);
       bypassCacheRead = true; // no cache for preview
+    }
+
+    if(!style.isEmpty()) {
+      wcdf.setStyle(style);
     }
 
     return this.getDashboardCdfRunJs(wcdf, options, bypassCacheRead);

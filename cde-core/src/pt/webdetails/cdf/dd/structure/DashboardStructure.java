@@ -155,6 +155,9 @@ public class DashboardStructure implements IDashboardStructure {
       
       String cdaTempFilePath = cdeFilePath.replace(".cdfde", "_tmp.cda");
       access.deleteFile(cdaTempFilePath);
+
+      String wcdfTempFilePath = cdeFilePath.replace(".cdfde", "_tmp.wcdf");
+      access.deleteFile(wcdfTempFilePath);
     }
     
     // 3. CDE

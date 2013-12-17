@@ -756,23 +756,22 @@ var CDFDD = Base.extend({
     var fullPath = CDFDDFileName.split("/");
     var solution = fullPath[1];
     var path = fullPath.slice(2, fullPath.length - 1).join("/");
-    var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.cdfde");
+    var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.wcdf");
 
     var style = this.getDashboardWcdf().style;
 
     this.logger.info("Saving temporary dashboard...");
 
     //temporarily set the filename to tmp
-    var tmpFileName = CDFDDFileName.replace(".cdfde", "_tmp.cdfde");
+    var tmpFileName = CDFDDFileName.replace(".cdfde", "_tmp.wcdf");
     this.dashboardData.filename = tmpFileName;
     var serializedDashboard = JSON.stringify(this.dashboardData, null, 0);
     this.dashboardData.filename = CDFDDFileName;
 
     var saveParams = {
-      operation: "save",
+      operation: "saveas",
       file: tmpFileName,
-      //cdfstructure: JSON.toJSONString(this.dashboardData,true)
-      cdfstructure: serializedDashboard //JSON.stringify(this.dashboardData,null,2)
+      cdfstructure: serializedDashboard
     };
 
     PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl( solution, path, file, style ));
