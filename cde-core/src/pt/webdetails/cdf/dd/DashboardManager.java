@@ -115,7 +115,7 @@ public final class DashboardManager
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(String wcdfFilePath,
                                                            CdfRunJsDashboardWriteOptions options,
                                                            boolean bypassCacheRead) throws ThingWriteException {
-    return getDashboardCdfRunJs(wcdfFilePath, options, bypassCacheRead, null);
+    return getDashboardCdfRunJs(wcdfFilePath, options, bypassCacheRead, "");
   }
   
   public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
