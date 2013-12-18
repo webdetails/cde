@@ -496,8 +496,9 @@ var PreviewRequests = {
             _href = Endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
         } else {
             // Regular Dashboard
-            var path = window.location.pathname.replace(".wcdf/wcdf.edit", "_tmp.wcdf");
-            _href = path + "/generatedContent?" + "style=" + style + "&cache=false";
+            var path = window.location.pathname;
+            path = path.substring(0, path.lastIndexOf("/")+1);
+            _href = path + "generatedContent?" + "style=" + style + "&cache=false";
         }
         return _href;
 
