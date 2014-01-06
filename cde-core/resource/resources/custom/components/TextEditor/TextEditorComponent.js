@@ -126,7 +126,7 @@ var TextEditorComponent = BaseComponent.extend({
         var editorHeight = this.$ph.height() - headerHeight - 5;
         this.externalEditor.height(editorHeight);
 
-        this.externalEditor.load(function() 
+        this.externalEditor.load(function()
         {
 
             var editorEnv = myself.getEditorWindow();
@@ -138,7 +138,7 @@ var TextEditorComponent = BaseComponent.extend({
             $('#notifications').hide();
         });
 
-        this.externalEditor.attr('src',wd.helpers.editor.getUrl()+'path=' + this.file + '&theme=ace/theme/eclipse&editorOnly=true');// &width='+width );
+        this.externalEditor.attr('src',"/pentaho" + wd.helpers.editor.getUrl()+'path=' + this.file + '&theme=ace/theme/eclipse&editorOnly=true');// &width='+width );
         
     },
     
