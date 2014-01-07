@@ -137,21 +137,21 @@ public class ResourcesApi {
 		  						@FormParam( "outputType" ) String outputType, 
 		  						@QueryParam( "fileExtensions" ) String fileExtensions,
 		  						@QueryParam( "access" ) String access,
-		  						@Context HttpServletResponse response ) throws IOException {
+                  @QueryParam( "showHiddenFiles" ) @DefaultValue("false") boolean showHiddenFiles) throws IOException {
 
     if ( !StringUtils.isEmpty(outputType) && outputType.equals( "json" ) ) {
       try {
-    	 return RepositoryHelper.toJSON( folder, getFileList( folder, fileExtensions, access ) );
+    	 return RepositoryHelper.toJSON( folder, getFileList( folder, fileExtensions, access, showHiddenFiles ) );
       } catch ( JSONException e ) {
         logger.error( "exploreFolder" + folder, e );
         return "Error getting files in folder " + folder;
       }
     } else {
-      return RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, fileExtensions, access ) );
+      return RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, fileExtensions, access, showHiddenFiles ) );
     }
   }
 
-  public IBasicFile[] getFileList( String dir, final String fileExtensions, String permission ) {
+  private IBasicFile[] getFileList( String dir, final String fileExtensions, String permission, boolean showHiddenFiles ) {
 
     ArrayList<String> extensionsList = new ArrayList<String>();
     String[] extensions = StringUtils.split( fileExtensions, "." );
@@ -173,7 +173,7 @@ public class ResourcesApi {
         new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
 
     List<IBasicFile> fileList =
-        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true );
+        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true, showHiddenFiles );
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[fileList.size()] );

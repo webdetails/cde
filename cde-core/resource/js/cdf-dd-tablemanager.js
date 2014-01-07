@@ -1741,7 +1741,7 @@ var ResourceFileRenderer = CellRenderer.extend({
           $('#container_id').fileTree(
           {
             root: '/',
-            script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions="+fileExtensions,
+            script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions="+fileExtensions+"&showHiddenFiles=true",
             expandSpeed: 1000,
             collapseSpeed: 1000,
             multiFolder: false,

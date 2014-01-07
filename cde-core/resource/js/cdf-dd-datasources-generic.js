@@ -147,23 +147,7 @@ var KtrPathRenderer = ResourceFileRenderer.extend({
   },
 
   formatSelection: function(file){
-    var common = true,
-    splitFile = file.split("/"),
-    splitPath = cdfdd.getDashboardData().filename.split("/"),
-    finalPath = "",
-    i = 0;
-    while (common){
-      if (splitFile[i] !== splitPath[i]) {
-        common = false;
-      }
-      i += 1;
-    }
-
-    $.each(splitPath.slice(i),function(i,j){
-      finalPath+="../";
-    });
-    finalPath += splitFile.slice(i - 1).join('/');
-    return finalPath.replace(/\/+/g, "/");
+    return file;
   }
 });
 
