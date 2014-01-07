@@ -11,7 +11,9 @@ var PalleteManager = Base.extend({
 			this.logger = new Logger("PalleteManager - " + id);
 			this.id = id;
 			this.setPalleteId(id+"Pallete");
-
+			this.categories = {};
+			this.entries = {};
+			
 			$("#"+this.id).append(this.newPallete());
 
 			// Register this tablemanager in the global area
