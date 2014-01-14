@@ -152,7 +152,7 @@ public class CdfStyles {
       styleFiles = new ArrayList<IBasicFile>();
       final GenericBasicFileFilter htmlFilter = new GenericBasicFileFilter( null, ".html" );
 
-      List<IBasicFile> htmlList = access.listFiles( directory, htmlFilter, IReadAccess.DEPTH_ALL );
+      List<IBasicFile> htmlList = access.listFiles( directory, htmlFilter, IReadAccess.DEPTH_ALL, false, true );
 
       if ( htmlList != null ) {
         if ( styleFiles == null ) {
