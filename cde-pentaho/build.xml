@@ -198,16 +198,16 @@
 
 
         <echo file="${dist.dir}/marketplace.xml">&lt;version>
-            &lt;branch>TRUNK&lt;/branch>
-            &lt;version>${distribution.version}&lt;/version>
-            &lt;name>Trunk&lt;/name>
-            &lt;package_url>
-            http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip
-            &lt;/package_url>
-            &lt;samples_url>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/server/plugin/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip
-            &lt;/samples_url>
-            &lt;description>Trunk Snapshot. Get the latest, edgy, still work in progress features here....&lt;/description>
-            &lt;build_id>${sequential.build.id}&lt;/build_id>
+                &lt;branch>TRUNK&lt;/branch>
+                &lt;version>${distribution.version}&lt;/version>
+                &lt;name>Trunk&lt;/name>
+        		&lt;package_url> http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/cde-pentaho/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip &lt;/package_url>
+		        &lt;samples_url>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/cde-pentaho/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip &lt;/samples_url>
+                &lt;description>Trunk Snapshot. Get the latest, edgy, still work in progress features here....&lt;/description>
+                &lt;build_id>${sequential.build.id}&lt;/build_id>
+                &lt;max_parent_version>4.8&lt;/max_parent_version>
+                &lt;min_parent_version>1.0&lt;/min_parent_version>		        		
+            
             &lt;/version>
         </echo>
 
