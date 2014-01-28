@@ -142,6 +142,7 @@ public class RenderApi {
       @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
+    response.setContentType( MimeTypes.HTML );
     if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
@@ -162,6 +163,7 @@ public class RenderApi {
         @Context HttpServletResponse response ) throws Exception {
     
 //	  String wcdfPath = getWcdfRelativePath( solution, path, file );
+    response.setContentType( MimeTypes.HTML );
     return DashboardEditor.getEditor( path, debug, request.getScheme(), isDefault );
   }
 

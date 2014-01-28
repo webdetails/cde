@@ -13,6 +13,7 @@ import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.utils.MimeTypes;
 
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -76,6 +77,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     
     } else {
     	String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest());
+      getResponse().setContentType( MimeTypes.HTML );
 
       IOUtils.write(result, getResponse().getOutputStream());
       getResponse().getOutputStream().flush();
