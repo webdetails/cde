@@ -30,6 +30,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
@@ -156,8 +157,8 @@ public final class DashboardManager
       bypassCacheRead = true; // no cache for preview
     }
 
-    if(!style.isEmpty()) {
-      wcdf.setStyle(style);
+    if( StringUtils.isNotEmpty( style ) ) {
+      wcdf.setStyle( style );
     }
 
     return this.getDashboardCdfRunJs(wcdf, options, bypassCacheRead);
