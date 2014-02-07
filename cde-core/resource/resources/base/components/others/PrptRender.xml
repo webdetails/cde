@@ -18,6 +18,7 @@
 			<Property>showParameters</Property>
 			<Property>paginate</Property>
 			<Property>iframe</Property>
+			<Property>usePost</Property>
 			<Property>executeAtStart</Property>
 			<Property>preChange</Property>
 			<Property>postChange</Property>
