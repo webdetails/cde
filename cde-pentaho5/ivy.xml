@@ -32,7 +32,7 @@
       <dependency org="pentaho" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
       <dependency org="pentaho" name="cpf-pentaho5" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
 
-      <dependency org="pentaho" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+      <dependency org="pentaho" name="cde-core" rev="TRUNK-SNAPSHOT" transitive="false" changing="true" conf='runtime,test->default'/>
 
     <dependency org="pentaho" name="pentaho-platform-api" 
                 rev="${dependency.bi-platform.revision}" changing="true" transitive="false" />
@@ -50,6 +50,9 @@
             <exclude org="javax.servlet" name="jsp-api"/>
             <exclude org="javax.servlet" name="servlet-api"/>
         </dependency>
+
+        <dependency org="junit" name="junit" rev="4.10" conf="test->default" transitive="false"/>
+        <dependency org="jaxen" name="jaxen" rev="1.1"  conf="test->default" transitive="false"/>
 
     </dependencies>
 

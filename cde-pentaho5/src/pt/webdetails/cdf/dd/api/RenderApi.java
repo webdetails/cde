@@ -50,7 +50,7 @@ public class RenderApi {
       @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
       @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
       @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
-      @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
+      @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "false" ) boolean absolute,
       @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
       @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug, @Context HttpServletRequest request,
       @Context HttpServletResponse response ) throws IOException, ThingWriteException {

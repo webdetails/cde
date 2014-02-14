@@ -6,8 +6,11 @@ import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.extapi.IFileHandler;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cpf.PluginEnvironment;
-//import pt.webdetails.cpf.IPluginCall;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
@@ -55,4 +58,9 @@ public interface ICdeEnvironment {
   //String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
   
   public IFileHandler getFileHandler();
+
+  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext(IThingWriterFactory factory, String indent,
+      boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options);
+
+  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext(CdfRunJsDashboardWriteContext factory, String indent);
 }

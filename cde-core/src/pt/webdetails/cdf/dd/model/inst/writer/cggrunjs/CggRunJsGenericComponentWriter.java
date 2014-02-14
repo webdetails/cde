@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
@@ -155,7 +156,7 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     // Idem
     CdfRunJsDashboardWriteContext writeContext =
-      new CdfRunJsDashboardWriteContext(
+        CdeEngine.getInstance().getEnvironment().getCdfRunJsDashboardWriteContext(
             writerFactory,
             /*indent*/"",
             /*bypassCacheRead*/true,

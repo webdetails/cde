@@ -524,8 +524,8 @@ public final class DashboardManager
     CdfRunJsDashboardWriter writer = writerFactory.getDashboardWriter(dash);
 
     // 2. Write it
-    CdfRunJsDashboardWriteContext writeContext = 
-      new CdfRunJsDashboardWriteContext(writerFactory, /*indent*/"", bypassCacheRead, dash, options);
+    CdfRunJsDashboardWriteContext writeContext = CdeEngine.getInstance().
+        getEnvironment().getCdfRunJsDashboardWriteContext(writerFactory, /*indent*/"", bypassCacheRead, dash, options);
       
     CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder = 
             new CdfRunJsDashboardWriteResult.Builder();

@@ -16,37 +16,37 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 /**
  * @author dcleao
  */
-public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
+public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
 {
-  private static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
-  
-  private static final String ABS_DIR_RES_TAG    = "\\$\\{res:(/.+/)\\}";
-  private static final String REL_DIR_RES_TAG    = "\\$\\{res:(.+/)\\}";
-  
-  private static final String ABS_RES_TAG        = "\\$\\{res:(/.+)\\}";
-  private static final String REL_RES_TAG        = "\\$\\{res:(.+)\\}";
-  
-  private static final String ABS_IMG_TAG        = "\\$\\{img:(/.+)\\}";
-  private static final String REL_IMG_TAG        = "\\$\\{img:(.+)\\}";
-  
-  // ------------
-  
-  private static final String COMPONENT_PREFIX = "render_";
-  
-  private static final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}";
-  private static final String SHORT_C_TAG = "\\$\\{c:(.+?)\\}";
-  private static final String SHORT_P_TAG = "\\$\\{p:(.+?)\\}";
-  private static final String LONG_H_TAG  = "\\$\\{htmlObject:(.+?)\\}";
-  private static final String LONG_C_TAG  = "\\$\\{component:(.+?)\\}";
-  private static final String LONG_P_TAG  = "\\$\\{parameter:(.+?)\\}";
+  protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
+
+  protected static final String ABS_DIR_RES_TAG    = "\\$\\{res:(/.+/)\\}";
+  protected static final String REL_DIR_RES_TAG    = "\\$\\{res:(.+/)\\}";
+
+  protected static final String ABS_RES_TAG        = "\\$\\{res:(/.+)\\}";
+  protected static final String REL_RES_TAG        = "\\$\\{res:(.+)\\}";
+
+  protected static final String ABS_IMG_TAG        = "\\$\\{img:(/.+)\\}";
+  protected static final String REL_IMG_TAG        = "\\$\\{img:(.+)\\}";
   
   // ------------
+
+  protected static final String COMPONENT_PREFIX = "render_";
+
+  protected static final String SHORT_H_TAG = "\\$\\{h:(.+?)\\}";
+  protected static final String SHORT_C_TAG = "\\$\\{c:(.+?)\\}";
+  protected static final String SHORT_P_TAG = "\\$\\{p:(.+?)\\}";
+  protected static final String LONG_H_TAG  = "\\$\\{htmlObject:(.+?)\\}";
+  protected static final String LONG_C_TAG  = "\\$\\{component:(.+?)\\}";
+  protected static final String LONG_P_TAG  = "\\$\\{parameter:(.+?)\\}";
   
-  private boolean _isFirstInList = true;
-  private final Date      _writeDate;
-  private final String    _indent;
-  private final Dashboard _dash;
-  private final boolean   _bypassCacheRead;
+  // ------------
+
+  protected boolean _isFirstInList = true;
+  protected final Date      _writeDate;
+  protected final String    _indent;
+  protected final Dashboard _dash;
+  protected final boolean   _bypassCacheRead;
   
   protected final CdfRunJsDashboardWriteOptions _options;
 
@@ -69,7 +69,7 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
     this._writeDate = new Date();
   }
   
-  private CdfRunJsDashboardWriteContext(
+  protected CdfRunJsDashboardWriteContext(
           CdfRunJsDashboardWriteContext other,
           String indent)
   {
@@ -84,7 +84,8 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
   
   public CdfRunJsDashboardWriteContext withIndent(String indent)
   {
-    return new CdfRunJsDashboardWriteContext(this, indent);
+    return CdeEngine.getInstance().getEnvironment()
+        .getCdfRunJsDashboardWriteContext( this, indent );
   }
   
   public String getIndent()
@@ -136,25 +137,7 @@ public class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext
     return this.replaceAlias(this.replaceTokens(content));
   }
           
-  public String replaceTokens(String content)
-  {
-    final long timestamp = this._writeDate.getTime();
-    
-    final String root = this._options.isAbsolute() ?
-                  (this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl()) :
-                  "";
-    
-    final String path = this._dash.getSourcePath().replaceAll("(.+/).*", "$1");
-    
-    return content
-      .replaceAll(DASHBOARD_PATH_TAG, path.replaceAll("(^/.*/$)", "$1")) // replace the dashboard path token
-      .replaceAll(ABS_IMG_TAG,        root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-      .replaceAll(REL_IMG_TAG,        root + "res" + path + "$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-      .replaceAll(ABS_DIR_RES_TAG,    root + "res$1")// Directories don't need the caching timestamp
-      .replaceAll(REL_DIR_RES_TAG,    root + "res" + path + "$1")// Directories don't need the caching timestamp
-      .replaceAll(ABS_RES_TAG,        root + "res$1" + "?v=" + timestamp)// build the image links, with a timestamp for caching purposes
-      .replaceAll(REL_RES_TAG,        root + "res" + path + "$1" + "?v=" + timestamp);// build the image links, with a timestamp for caching purposes
-  }
+  public abstract String replaceTokens(String content);
   
   public String replaceAlias(String content)
   {

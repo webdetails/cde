@@ -14,7 +14,7 @@
 
       <!-- Core dependencies -->
       <dependency org="pentaho" name="cde-core"
-          rev="${project.revision}" transitive="false" changing="true" conf='runtime->default'/>
+          rev="${project.revision}" transitive="false" changing="true" conf='runtime,test->default'/>
       <!-- cpf transitive to pull standard pentaho packages -->
       <dependency org="pentaho" name="cpf-pentaho"
           rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" conf='default->default'/>
@@ -51,7 +51,8 @@
       <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf='runtime->default'/>
 
       <!-- TESTS -->
-      <dependency org="junit" name="junit" conf="test->default" rev='4.10'/>
+      <dependency org="junit" name="junit" rev="4.10" conf="test->default" transitive="false"/>
+      <dependency org="jaxen" name="jaxen" rev="1.1"  conf="test->default" transitive="false"/>
     </dependencies>
     
 </ivy-module>

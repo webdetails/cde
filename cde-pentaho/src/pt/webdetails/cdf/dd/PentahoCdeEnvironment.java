@@ -17,6 +17,11 @@ import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.extapi.IFileHandler;
 import pt.webdetails.cdf.dd.extapi.LegacyApiPathProvider;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
@@ -122,5 +127,15 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   @Override
   public IFileHandler getFileHandler() {
     return fileHandler;
+  }
+
+  @Override
+  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
+      boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options ) {
+    return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
+  }
+
+  @Override public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
+    return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
   }
 }
