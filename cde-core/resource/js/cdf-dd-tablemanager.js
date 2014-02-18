@@ -1782,6 +1782,10 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   formatSelection: function(file){
+    //force file absolute
+    if (file.charAt(0) != '/') {
+      file = "/"+ file;
+    }
     var common = true;
     var splitFile = file.split("/");
     var dashFile = cdfdd.getDashboardData().filename;
