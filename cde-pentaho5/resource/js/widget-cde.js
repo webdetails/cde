@@ -21,7 +21,7 @@ function(ossm, pdc) {
 	PentahoCdeComponent = BaseComponent.extend({
 		staticParameters: true,
 		type: "PentahoCdeComponent",
-		iconImgSrc: '../../images/cdeFileType.png',
+		iconImgSrc: '../../../../../../content/pentaho-cdf-dd/resources/wcdfFileType.png',
 		executeAtStart: true,
 		options: {
 			"showParameters": false
