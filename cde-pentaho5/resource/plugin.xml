@@ -40,4 +40,10 @@
             </menubar>
         </overlay>
 	</overlays>
+	
+    <external-resources>
+        <file context="dashboards">content/pentaho-cdf-dd/js/widget-cde.js</file>	
+          <file context="requirejs">content/pentaho-cdf-dd/js/cde-require-js-cfg.js</file>	
+    </external-resources>
+	
 </plugin>
