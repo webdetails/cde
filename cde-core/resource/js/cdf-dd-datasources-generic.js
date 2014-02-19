@@ -147,7 +147,30 @@ var KtrPathRenderer = ResourceFileRenderer.extend({
   },
 
   formatSelection: function(file){
-    return file;
+    if (file.charAt(0) != '/') {
+      file = "/"+ file;
+    }
+    var common = true;
+    var splitFile = file.split("/");
+    var dashFile = cdfdd.getDashboardData().filename;
+    if(dashFile == null) {
+     return file;
+    }
+    splitPath = dashFile.split("/"),
+    finalPath = "",
+    i = 0;
+    while (common){
+      if (splitFile[i] !== splitPath[i]) {
+        common = false;
+      }
+      i += 1;
+    }
+       
+    $.each(splitPath.slice(i),function(i,j){
+      finalPath+="../";
+    });
+    finalPath += splitFile.slice(i - 1).join('/');
+    return finalPath.replace(/\/+/g, "/");
   }
 });
 
