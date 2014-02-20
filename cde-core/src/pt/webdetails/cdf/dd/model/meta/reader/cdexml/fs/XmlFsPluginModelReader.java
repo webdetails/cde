@@ -198,8 +198,8 @@ public final class XmlFsPluginModelReader {
 
       GenericBasicFileFilter filter = new GenericBasicFileFilter(COMPONENT_FILENAME, DEFINITION_FILE_EXT);
       IReadAccess access = origin.getReader(contentAccessFactory);
-      List<IBasicFile> filesList = access.listFiles (null, filter, IReadAccess.DEPTH_ALL);
-  
+      List<IBasicFile> filesList = access.listFiles( null, filter, IReadAccess.DEPTH_ALL, false, true );
+    
       if (filesList != null) {
         logger.debug(String.format("%d sub-folders found", filesList.size()));
         
