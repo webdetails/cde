@@ -142,6 +142,9 @@ var CggPathRenderer = ResourceFileRenderer.extend({
 
 var KtrPathRenderer = ResourceFileRenderer.extend({
 
+  //disallow selecting a folder for new file creation
+  createNew: false,
+
   getFileExtensions: function(){
     return ".ktr";
   },
