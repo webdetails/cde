@@ -133,25 +133,26 @@ public class ResourcesApi {
   @POST
   @Path( "/explore" )
   @Produces( "text/plain" )
-  public String exploreFolder(  @FormParam( "dir" ) @DefaultValue( "/" ) String folder, 
-		  						@FormParam( "outputType" ) String outputType, 
+  public String exploreFolder(  @FormParam( "dir" ) @DefaultValue( "/" ) String folder,
+		  						@FormParam( "outputType" ) String outputType,
+                  @QueryParam( "dashboardPath" ) @DefaultValue( "" ) String dashboardPath,
 		  						@QueryParam( "fileExtensions" ) String fileExtensions,
 		  						@QueryParam( "access" ) String access,
                   @QueryParam( "showHiddenFiles" ) @DefaultValue("false") boolean showHiddenFiles) throws IOException {
 
     if ( !StringUtils.isEmpty(outputType) && outputType.equals( "json" ) ) {
       try {
-    	 return RepositoryHelper.toJSON( folder, getFileList( folder, fileExtensions, access, showHiddenFiles ) );
+    	 return RepositoryHelper.toJSON( folder, getFileList( folder, dashboardPath, fileExtensions, access, showHiddenFiles ) );
       } catch ( JSONException e ) {
         logger.error( "exploreFolder" + folder, e );
         return "Error getting files in folder " + folder;
       }
     } else {
-      return RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, fileExtensions, access, showHiddenFiles ) );
+      return RepositoryHelper.toJQueryFileTree( folder, getFileList( folder, dashboardPath, fileExtensions, access, showHiddenFiles ) );
     }
   }
 
-  private IBasicFile[] getFileList( String dir, final String fileExtensions, String permission, boolean showHiddenFiles ) {
+  private IBasicFile[] getFileList( String dir, String dashboardPath, final String fileExtensions, String permission, boolean showHiddenFiles ) {
 
     ArrayList<String> extensionsList = new ArrayList<String>();
     String[] extensions = StringUtils.split( fileExtensions, "." );
@@ -172,8 +173,25 @@ public class ResourcesApi {
     GenericBasicFileFilter fileFilter =
         new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
 
-    List<IBasicFile> fileList =
-        CdeEnvironment.getUserContentAccess().listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true, showHiddenFiles );
+    //check if it is a system dashboard
+    List<IBasicFile> fileList;
+    IReadAccess access = CdeEnvironment.getUserContentAccess();
+    boolean isSystem = false;
+    if(!dashboardPath.isEmpty()) {
+      String path = dashboardPath.toLowerCase().replaceFirst( "/","" );
+      if(path.startsWith(CdeEnvironment.getSystemDir() + "/")){
+        access =Utils.getAppropriateReadAccess(dashboardPath);
+        isSystem = true;
+      }
+    }
+
+    if(isSystem){
+      fileList = access.listFiles(dir, fileFilter, 1, true, false);
+      fileList.remove(0); //remove the first because the root is being added
+    } else {
+      fileList = access.listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true, showHiddenFiles );
+    }
+
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[fileList.size()] );

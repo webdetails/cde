@@ -1741,7 +1741,7 @@ var ResourceFileRenderer = CellRenderer.extend({
           $('#container_id').fileTree(
           {
             root: '/',
-            script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions="+fileExtensions+"&showHiddenFiles=true",
+            script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions="+fileExtensions+"&showHiddenFiles=true" + (CDFDDFileName != "" ? "&dashboardPath=" + CDFDDFileName : ""),
             expandSpeed: 1000,
             collapseSpeed: 1000,
             multiFolder: false,
@@ -1782,29 +1782,41 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   formatSelection: function(file){
-    //force file absolute
-    if (file.charAt(0) != '/') {
-      file = "/"+ file;
+    var isSystem = false;
+    if(CDFDDFileName != "") {
+        if(CDFDDFileName.indexOf("/system") == 0){
+            isSystem = true;
+        }
     }
-    var common = true;
-    var splitFile = file.split("/");
-    var dashFile = cdfdd.getDashboardData().filename;
-    if(dashFile == null) dashFile = '';
-    splitPath = dashFile.split("/"),
-    finalPath = "",
-    i = 0;
-    while (common){
-      if (splitFile[i] !== splitPath[i]) {
-        common = false;
-      }
-      i += 1;
+
+    if(isSystem) {
+        return Endpoints.getStaticResUrl() + "/" + CDFDDFileName.split("/")[2] + "/" + file;
+    } else {
+        //force file absolute
+        if (file.charAt(0) != '/') {
+            file = "/"+ file;
+        }
+        var common = true;
+        var splitFile = file.split("/");
+        var dashFile = cdfdd.getDashboardData().filename;
+        if(dashFile == null) dashFile = '';
+        splitPath = dashFile.split("/"),
+            finalPath = "",
+            i = 0;
+        while (common){
+            if (splitFile[i] !== splitPath[i]) {
+                common = false;
+            }
+            i += 1;
+        }
+
+        $.each(splitPath.slice(i),function(i,j){
+            finalPath+="../";
+        });
+        finalPath += splitFile.slice(i - 1).join('/');
+        return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
     }
-        
-    $.each(splitPath.slice(i),function(i,j){
-      finalPath+="../";
-    });
-    finalPath += splitFile.slice(i - 1).join('/');
-    return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
+
   },
   
   setFileName: function(settings)

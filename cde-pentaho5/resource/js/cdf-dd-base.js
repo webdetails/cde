@@ -1,5 +1,6 @@
 var Endpoints = {
 
+    staticResUrl: "/api/repos",
     staticUrl: "/api/plugins/pentaho-cdf-dd/files/",
     pluginUrl: "/plugin/pentaho-cdf-dd/api/",
     cggPluginUrl: "/plugin/cgg/api/services/",
@@ -15,6 +16,10 @@ var Endpoints = {
 
     getStaticUrl: function () {
         return this.getWebappBasePath() + this.staticUrl;
+    },
+
+    getStaticResUrl: function () {
+        return this.getWebappBasePath() + this.staticResUrl;
     },
 
     getPluginUrl: function () {
