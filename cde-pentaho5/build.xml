@@ -188,7 +188,7 @@
         <tstamp/>
         <property name="sequential.build.id" value="manual-${DSTAMP}"/>
         <echo file="${stage.dir}/${plugin.name}/version.xml"
-              message="&lt;version branch='TRUNK'  buildId='${sequential.build.id}'>${distribution.version}&lt;/version>"/>
+              message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${distribution.version}&lt;/version>"/>
 
 
         <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
