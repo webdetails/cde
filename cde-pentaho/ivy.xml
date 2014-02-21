@@ -17,12 +17,12 @@
           rev="${project.revision}" transitive="false" changing="true" conf='runtime,test->default'/>
       <!-- cpf transitive to pull standard pentaho packages -->
       <dependency org="pentaho" name="cpf-pentaho"
-          rev="REFACTOR-SNAPSHOT" transitive="true" changing="true" conf='default->default'/>
+          rev="${dependency.pentaho-cpf-plugin.revision}" transitive="true" changing="true" conf='default->default'/>
         <!-- cpf non-transitive to post copy to lib -->
       <dependency org="pentaho" name="cpf-core"
-          rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+          rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
       <dependency org="pentaho" name="cpf-pentaho"
-          rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+          rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
 
     <dependency org="pentaho" name="pentaho-bi-platform-api"
                 rev="${dependency.bi-platform.revision}" changing="true" transitive="false" />
