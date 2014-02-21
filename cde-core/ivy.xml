@@ -33,7 +33,7 @@
       <dependency org="junit" name="junit" conf="test->default" rev='4.10'/>     
       <dependency org="xmlunit" name="xmlunit" rev="1.3" conf="test->default"/> 
 
-      <dependency org="pentaho" name="cpf-core" rev="REFACTOR-SNAPSHOT" transitive="false" changing="true" conf='runtime->default'/>
+      <dependency org="pentaho" name="cpf-core" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
 
     </dependencies>
     

@@ -20,8 +20,15 @@
         <classpath path="sonar-ant-task-1.3.jar"/>
     </taskdef>
 
-    <!-- Import the subfloor.xml file which contains all the default tasks -->
-    <import file="build-res/subfloor.xml"/>
+
+  <property file="../override.properties"
+            description="Top level Properties customized for your development environment belong in this file.  This file will never be checked into the SCM." />
+  <property file="../build.properties"
+            description="Top level Properties customized for your particular project belong in this file." />
+
+
+  <!-- Import subfloor.xml which contains all the default tasks -->
+  <import file="../build-res/subfloor.xml"/>
 
     <!--
         AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
@@ -181,7 +188,7 @@
         <tstamp/>
         <property name="sequential.build.id" value="manual-${DSTAMP}"/>
         <echo file="${stage.dir}/${plugin.name}/version.xml"
-              message="&lt;version branch='TRUNK'  buildId='${sequential.build.id}'>${distribution.version}&lt;/version>"/>
+              message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${distribution.version}&lt;/version>"/>
 
 
         <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
@@ -197,19 +204,21 @@
              excludes="**/Thumbs.db"/>
 
 
+
+
         <echo file="${dist.dir}/marketplace.xml">&lt;version>
-                &lt;branch>TRUNK&lt;/branch>
-                &lt;version>${distribution.version}&lt;/version>
-                &lt;name>Trunk&lt;/name>
-        		&lt;package_url> http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/cde-pentaho/dist/pentaho-cdf-dd-TRUNK-SNAPSHOT.zip &lt;/package_url>
-		        &lt;samples_url>http://ci.analytical-labs.com/job/Webdetails-CDE/lastSuccessfulBuild/artifact/cde-pentaho/dist/pentaho-cdf-dd-solution-TRUNK-SNAPSHOT.zip &lt;/samples_url>
-                &lt;description>Trunk Snapshot. Get the latest, edgy, still work in progress features here....&lt;/description>
-                &lt;build_id>${sequential.build.id}&lt;/build_id>
-                &lt;max_parent_version>4.8&lt;/max_parent_version>
-                &lt;min_parent_version>1.0&lt;/min_parent_version>		        		
-            
-            &lt;/version>
-        </echo>
+            &lt;branch>${project.stage}&lt;/branch>
+    		&lt;version>${distribution.version}&lt;/version>
+	    	&lt;name>${marketplace.metadata.name}&lt;/name>
+            &lt;package_url>${marketplace.metadata.package_url}&lt;/package_url>
+            &lt;samples_url>${marketplace.metadata.samples_url}&lt;/samples_url>
+            &lt;description>${marketplace.metadata.description}&lt;/description>
+		    &lt;build_id>${sequential.build.id}&lt;/build_id>
+            &lt;min_parent_version>${marketplace.metadata.min_parent_version}&lt;/min_parent_version>		
+	    	&lt;max_parent_version>${marketplace.metadata.max_parent_version}&lt;/max_parent_version>        
+		    &lt;/version>	</echo>
+
+
 
 
     </target>

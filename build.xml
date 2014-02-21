@@ -1,45 +1,132 @@
-<project name="Community Dashboard Editor" basedir="." default="jar"
+<project name="Community Dashboards Editor" basedir="." default="jar"
          xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <description>
     CDE convenience build
   </description>
 
-    <target name="clean-all">
-        <ant dir="cde-core" antfile="build.xml" target="clean-all" inheritAll="true"/>
-        <ant dir="cde-pentaho" antfile="build.xml" target="clean-all" inheritAll="true"/>
-        <ant dir="cde-pentaho5" antfile="build.xml" target="clean-all" inheritAll="true"/>
-    </target>
 
-    <target name="build-core" >
-        <ant dir="cde-core" antfile="build.xml" target="dist" inheritAll="true"/>
-    </target>
+  <property file="override.properties"
+            description="Properties customized for your development environment belong in this file.  This file will never be checked into the SCM." />
+  <property file="build.properties"
+            description="Properties customized for your particular project belong in this file." />
 
-    <target name="build-and-test-core" >
-        <ant dir="cde-core" antfile="build.xml" target="dist" inheritAll="true"/>
-        <ant dir="cde-core" antfile="build.xml" target="test" inheritAll="true"/>
-    </target>
+  <property name="projects.list" value="cde-pentaho,cde-pentaho5" description="directories of dependant projects"/>
+  <property name="core.project" value="cde-core" description="the core project on which all depend"/>
 
-    <target name="publish-local-core">
-        <ant dir="cde-core"    antfile="build.xml" target="publish-local" inheritAll="true"/>   
-    </target>
+  <!-- just to steal install-antcontrib from subfloor -->
+  <property name="Implementation-Version" value="bogus"/>
+  <property name="Implementation-Title" value="cde:bogus"/>
+  <import file="build-res/subfloor.xml" as="subfloor"/>
 
-    <target name="publish-local" depends="publish-local-core">
-        <ant dir="cde-pentaho" antfile="build.xml" target="publish-local" inheritAll="true"/>
-    </target>
+  <!-- No project-specific stuff beyond this point! -->
 
-    <target name="dist" depends="publish-local-core">
-      <ant dir="cde-pentaho" antfile="build.xml" target="dist" inheritAll="true"/>
-      <ant dir="cde-pentaho5" antfile="build.xml" target="dist" inheritAll="true"/>
-    </target>
+  <property name="all.projects" value="${core.project},${projects.list}"/>
 
-    <target name="install-plugin" depends="publish-local-core"> 
-        <ant dir="cde-pentaho" antfile="build.xml" target="install-plugin" inheritAll="true"/>
-    </target>
+ <!--params: projects, target -->
+  <target name="call" depends="subfloor.install-antcontrib">
+    <for list="${projects}" param="proj">
+      <sequential>
+        <echo level="info">###############################</echo>
+        <echo level="info">   CALL ${target} on @{proj}</echo>
+        <echo level="info">###############################</echo>
+        <ant dir="@{proj}" antfile="build.xml" target="${target}" inheritAll="false"/>
+        <echo level="info">###############################</echo>
+        <echo level="info">FINISHED</echo>        
+        <echo level="info">###############################</echo>
+      </sequential>
+    </for>
+  </target>
+  
 
-    <target name="install-plugin5" depends="publish-local-core"> 
-        <ant dir="cde-pentaho5" antfile="build.xml" target="install-plugin" inheritAll="true"/>
-    </target>
+  
 
+  <target name="clean-all">
+    <antcall target="call">
+      <param name="target" value="clean-all"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>
+  </target>
 
+  <target name="clean">
+    <antcall target="call">
+      <param name="target" value="clean"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>
+  </target>
+
+  <target name="resolve">
+    <antcall target="call">
+      <param name="target" value="resolve"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>
+  </target>
+  
+  <target name="test">
+    <antcall target="call">
+      <param name="target" value="test"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>  
+  </target>  
+  
+
+  <target name="publish-local-core">
+    <ant dir="${core.project}" antfile="build.xml" target="resolve" inheritAll="false" />
+    <ant dir="${core.project}" antfile="build.xml" target="publish-local" inheritAll="false"/>
+  </target>
+  <target name="resolve-projects">
+    <antcall target="call">
+      <param name="target" value="resolve"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+  </target>
+
+  <target name="publish">
+    <antcall target="call">
+      <param name="target" value="publish"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>  
+  </target>
+
+  <target name="dist" depends="publish-local-core, resolve-projects, subfloor.install-antcontrib"> 
+    <antcall target="call">
+      <param name="target" value="dist"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+    
+    <for list="${projects.list}" param="proj">
+      <sequential>
+        <mkdir dir="dist/@{proj}"/>
+        <copy todir='dist/@{proj}'>
+            <fileset dir='@{proj}/dist'/>
+        </copy>
+      </sequential>
+    </for>    
+    
+  </target>
+  
+  <target name="build-core" >
+      <ant dir="${core.project}" antfile="build.xml" target="dist" inheritAll="false"/>
+  </target>
+
+  <target name="build-and-test-core" depends="build-core">
+      <ant dir="${core.project}" antfile="build.xml" target="test" inheritAll="false"/>
+  </target>
+
+  <target name="publish-local">
+    <antcall target="call">
+      <param name="target" value="publish-local"/>
+      <param name="projects" value="${all.projects}"/>
+    </antcall>
+  </target>
+
+  <target name="full-dist" depends="build-and-test-core,dist"/>
+
+  <target name="install-plugin" depends="publish-local-core, resolve-projects">
+    <antcall target="call">
+      <param name="target" value="install-plugin"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+  </target>
+	
 </project>
