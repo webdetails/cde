@@ -6,6 +6,7 @@ var Endpoints = {
     cssResourceUrl: "resources/get?resource=",
     imageResourceUrl: "resources/get?resource=",
     jsResourceUrl: "resources/getJs?resource=",
+    saikuUiPluginUrl: "/content/saiku-ui/index.html?biplugin5=true",
 
     //The webAppPath is defined at the start of Dashboards.js
     getWebappBasePath: function () {
@@ -60,6 +61,10 @@ var Endpoints = {
 
         }
         return dash;
+    },
+
+    getSaikuUiPluginUrl: function () {
+        return this.getWebappBasePath() + this.saikuUiPluginUrl;
     }
 };
 
