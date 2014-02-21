@@ -180,7 +180,7 @@ var SaikuOlapWizard = WizardManager.extend({
     					path += "/" + splitFile[i];
     				}
     			}
-    			var iframe = '<iframe id="saikuIframe" src="../saiku-ui/index.html?biplugin=true&solution=' + solution + '&path=' + path + '&action=' + action + '&dimension_prefetch=false#query/open/' + action + '" width="100%" height="400px" />';
+    			var iframe = '<iframe id="saikuIframe" src="' + Endpoints.getSaikuUiPluginUrl() + '&solution=' + solution + '&path=' + path + '&action=' + action + '&dimension_prefetch=false#query/open/' + action + '" width="100%" height="400px" />';
 				$('#SaikuWindow').html(iframe);
 				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
@@ -189,7 +189,7 @@ var SaikuOlapWizard = WizardManager.extend({
   
 			$("#" + WizardManager.WIZARD_BODY).html( saikuContent );
 			$("#newSaikuQuery").click(function() {
-				var iframe = '<iframe id="saikuIframe" src="../saiku-ui/index.html?biplugin=true" width="100%" height="400px" />';
+				var iframe = '<iframe id="saikuIframe" src="' + Endpoints.getSaikuUiPluginUrl() + '" width="100%" height="400px" />';
 				$('#SaikuWindow').html(iframe);
 				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
