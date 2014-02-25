@@ -183,7 +183,7 @@ public class ResourcesApi {
   }
 
   @GET
-  @Path( "/{path: [^?]+ }" )
+  @Path( "/system/{path: [^?]+ }" )
   @Produces( { MediaType.WILDCARD } )
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response ) throws IOException {
     
@@ -202,4 +202,13 @@ public class ResourcesApi {
     
     return Response.status( Status.NOT_FOUND ).build();
   }
+
+  @GET
+  @Path( "/{resource: [^?]+ }" )
+  @Produces( "text/plain" )
+  public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
+      throws Exception {
+    getResource( resource, response );
+  }
+
 }
