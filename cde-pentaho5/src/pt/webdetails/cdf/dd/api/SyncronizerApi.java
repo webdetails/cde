@@ -119,6 +119,9 @@ public class SyncronizerApi {//TODO: synchronizer?
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save(file, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
+        if ( StringUtils.isEmpty( title ) ) {
+          title = FilenameUtils.getBaseName( file );
+        }
         result = dashboardStructure.saveAs( file, title, description, cdfStructure );
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
