@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//import com.sun.xml.internal.ws.util.StringUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -106,11 +107,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	
 	private static final String REQUEST_PARAM_FILE = "file";
 	private static final String REQUEST_PARAM_PATH = "path";
-	private static final String REQUEST_PARAM_OPERATION = "operation";
+  private static final String REQUEST_PARAM_OPERATION = "operation";
+  private static final String REQUEST_PARAM_CDFSTRUCTURE = "cdfstructure";
+  private static final String REQUEST_PARAM_TITLE = "title";
+  private static final String REQUEST_PARAM_DESCRIPTION = "description";
 
   private static final String GET_RESOURCE = "getResource?resource=";
 
-	/**
+
+  /**
 	 * Parameters received by content generator
 	 */
 	protected static class MethodParams {
@@ -219,14 +224,19 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     } else {
 
       path = ((String) getRequestParameters().getParameter(REQUEST_PARAM_FILE)).replaceAll("cdfde", "wcdf");
-	      
+
        // Check security. Caveat: if no path is supplied, then we're in the new parameter
        if (getRequestParameters().hasParameter(REQUEST_PARAM_PATH) && !CdeEnvironment.getUserContentAccess().hasAccess(path, FileAccess.EXECUTE)) {
       	    getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
 		  	logger.warn("Access denied for the syncronize method: " + path);
 		  	return;
 	    }
-    	
+       cdfStructure = (String) getRequestParameters().getStringParameter(REQUEST_PARAM_CDFSTRUCTURE, null);
+
+       path = getRequestParameters().getStringParameter( REQUEST_PARAM_FILE, null );
+       title = StringUtils.defaultIfEmpty(( (String) getRequestParameters().getParameter( REQUEST_PARAM_TITLE ) ),
+          FilenameUtils.getBaseName( path ));
+       description = StringUtils.defaultIfEmpty((String) getRequestParameters().getParameter(REQUEST_PARAM_DESCRIPTION), "");
        operation = getRequestParameters().getStringParameter(REQUEST_PARAM_OPERATION, "").toLowerCase();
       
         // file path must exist
@@ -249,7 +259,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		  
 		  }else if(OPERATION_SAVE.equalsIgnoreCase(operation)){
 			  result = dashboardStructure.save( path, cdfStructure );
-			  
 		  }else if(OPERATION_SAVE_AS.equalsIgnoreCase(operation)){
         dashboardStructure.saveAs( path, title, description, cdfStructure );
 			  

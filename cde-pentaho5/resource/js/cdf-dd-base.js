@@ -361,11 +361,9 @@ var SaveRequests = {
 
     saveDashboard: function (saveParams, stripArgs) {
 
-        if(Endpoints.isEmptyFilePath(saveParams.file)){ saveParams.file = Endpoints.getFilePathFromUrl(); }
-        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveParams,
-            success: function (result) {
+        if(Endpoints.isEmptyFilePath(saveParams.file)){ saveParams.file = Endpoints.getFilePathFromUrl(); }        
+        var successFunction = function(result) {
+
             if (result && result.status == "true") {
                 if (stripArgs.needsReload) {
                     window.location.reload();
@@ -380,18 +378,25 @@ var SaveRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        
+        };
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
         }
-        });
-        $uploadForm.submit();
         
     },
 
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveAsParams,
-            success: function (result) {
+        var successFunction = function (result) { 
             if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
@@ -404,9 +409,18 @@ var SaveRequests = {
                 $.notifyBar({
                     html: "Errors saving file: " + result.result
                 });
+        };
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveAsParams,
+                success: successFunction
+            });
+            $uploadForm.submit();        
         }
-        });
-        $uploadForm.submit();        
     },
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
@@ -417,10 +431,7 @@ var SaveRequests = {
             saveAsParams.file = saveAsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
         }
 
-        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveAsParams,
-            success: function (result) {
+        var successFunction = function (result) {
             if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") {
                     selectedFolder = selectedFolder.substring(1, selectedFolder.length);
@@ -443,9 +454,18 @@ var SaveRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        };
+         if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
+        } else {
+             var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveAsParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
         }
-        });
-        $uploadForm.submit();
     },
 };
 
@@ -470,10 +490,7 @@ var LoadRequests = {
 var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
-        var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveParams,
-            success: function (result) {
+        var successFunction = function (result) {
             if (result && result.status == "true") {
                 $.fancybox({
                     type: "iframe",
@@ -486,9 +503,19 @@ var PreviewRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
+        };
+
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="'+Endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
         }
-        });
-        $uploadForm.submit();
     },
 
     getPreviewUrl: function( solution, path, file, style){
