@@ -145,10 +145,9 @@
   var cggMarker = {
     name: "cggMarker",
     label: "CGG Marker",
-    defaults: {
-    },
-    implementation: function (tgt, st, opt) {
-      var url = '../cgg/draw?script=' + st.cggGraphName;
+    defaults: {},
+    implementation: function(tgt, st, opt) {
+      var url = Dashboards.getCggDrawUrl() + '?script=' + st.cggGraphName;
 
       var width = st.width;
       var height = st.height;
@@ -156,13 +155,22 @@
       if (st.width) cggParameters.width = st.width;
       if (st.height) cggParameters.height = st.height;
 
+      cggParameters.noChartBg = true;
+
       for (parameter in st.parameters) {
         cggParameters[parameter] = st.parameters[parameter];
       }
 
-      for(parameter in cggParameters){
-        if( cggParameters[parameter] !== undefined ){
-          url += "&param" + parameter + "=" + encodeURIComponent( cggParameters[parameter] ) ;
+      // Check debug level and pass as parameter
+      var level = Dashboards.debug;
+      if (level > 1) {
+        cggParameters.debug = true;
+        cggParameters.debugLevel = level;
+      }
+
+      for (parameter in cggParameters) {
+        if (cggParameters[parameter] !== undefined) {
+          url += "&param" + parameter + "=" + encodeURIComponent(cggParameters[parameter]);
         }
       }
 
