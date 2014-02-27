@@ -867,7 +867,7 @@ var NewMapComponent = (function (){
     getAddressLocation: function (address, addressType, data, mapping, position) {
 
       var addinName = this.locationResolver;
-      if (!addinName) addinName = 'geonames';
+      if (!addinName) addinName = 'openstreetmap';
       var addIn = this.getAddIn("LocationResolver",addinName);
 
       var target = this.ph;

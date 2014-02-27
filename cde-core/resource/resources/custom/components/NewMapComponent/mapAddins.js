@@ -64,17 +64,54 @@
   };
   Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames));
 
-  // BEGIN HACK
-  //if (wd.helpers.repository.getBaseSolutionPluginRoot() == '/public/' || true){
-  if (true){
-    // pentaho >= 5
-    componentPath = '/pentaho/api/repos/pentaho-cdf-dd/resources/custom/components/NewMapComponent';
-  } else {
-    // pentaho < 5
-    componentPath = 'getResource/system/pentaho-cdf-dd/resources/custom/components/NewMapComponent';
-  }
-  // END HACK
+  var nominatim = {
+    name: "openstreetmap",
+    label: "OpenStreetMap",
+    defaults: {
+    },
+    implementation: function (tgt, st, opt) {
+      var name = st.address;
+      var keyword = 'q'; //Generic query
+      if (!name) {
+        //Check city
+        if (st.city) {
+          name = st.city;
+          keyword = 'city';
+        } else if (st.county) {
+          name = st.county;
+          keyword = 'county';
+        } else if (st.region) {
+          name = st.region;
+          keyword = 'q';
+        } else if (st.state) {
+          name=st.state;
+          keyword = 'state=';
+        } else if (st.country) {
+          name = st.country;
+          keyword = 'country';
+        }
+      }
+      var url = 'http://nominatim.openstreetmap.org/search';
+      var data = {
+        format: 'json',
+        limit: '1'
+      };
+      data[keyword] = name;
+      var success = function (result) {
+        if (result && result.length > 0) {
+          var location = [parseFloat(result[0].lon),
+                          parseFloat(result[0].lat)];
+          st.continuationFunction(location);
+        }
+      };
+      $.getJSON(url, data, success);
 
+    }
+  };
+  Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim));
+
+
+  var componentPath = Dashboards.getWebAppPath() + '/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent';
   var urlMarker = {
     name: "urlMarker",
     label: "Url Marker",
