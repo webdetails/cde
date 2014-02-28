@@ -430,7 +430,7 @@ var ExportPopupComponent = PopupComponent.extend({
 
     var loc = Dashboards.context.path.replace(/[^\/]+$/, "");
 
-    var url = Dashboards.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
+    var url = wd.helpers.cggHelper.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
     
     var param;
     // Get parameter values; metadata is a special parameter, carries important

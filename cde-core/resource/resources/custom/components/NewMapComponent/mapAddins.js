@@ -147,7 +147,7 @@
     label: "CGG Marker",
     defaults: {},
     implementation: function(tgt, st, opt) {
-      var url = Dashboards.getCggDrawUrl() + '?script=' + st.cggGraphName;
+      var url = wd.helpers.cggHelper.getCggDrawUrl() + '?script=' + st.cggGraphName;
 
       var width = st.width;
       var height = st.height;
