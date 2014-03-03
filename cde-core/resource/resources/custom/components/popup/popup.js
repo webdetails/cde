@@ -428,7 +428,8 @@ var ExportPopupComponent = PopupComponent.extend({
     var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
     var path = this.chartComponent.chartDefinition.path;
 
-    var loc = Dashboards.context.path.replace(/[^\/]+$/, "");
+    //4.x has fullPath and 5.0 has path, this can go away when cdf gets refactored
+    var loc = (Dashboards.context.fullPath) ? Dashboards.context.fullPath.replace(/[^\/]+$/, "") : Dashboards.context.path.replace(/[^\/]+$/, "");
 
     var url = wd.helpers.cggHelper.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
     
