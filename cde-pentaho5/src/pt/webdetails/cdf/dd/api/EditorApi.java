@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -94,6 +95,33 @@ public class EditorApi {
 
     return msg;
   }
+
+  @PUT
+  @Path( "/file/write" )
+  @Produces( "text/plain" )
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
+      @Context HttpServletResponse response) throws IOException {
+    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+
+    String msg = "";
+    if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
+      if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
+        msg = "file '" + path + "' saved ok";
+        logger.debug( msg );
+      } else {
+        msg = "error saving file " + path;
+        logger.error( msg );
+      }
+    } else {
+      msg = "no permissions to write file " + path;
+      logger.error( msg );
+    }
+    return msg;
+  }
+
+
 
   @GET
   @Path( "/file/canEdit" )

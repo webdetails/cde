@@ -142,6 +142,16 @@ var SynchronizeRequests = {
             else
                 $.notifyBar({ html: "Error loading templates: " + json.result });
         });
+    }, 
+
+    createFile: function (params) {
+        $.post(ExternalEditor.getWriteUrl(), params,   
+            function (result) {
+                if(result.indexOf('saved ok') < 0){
+                    alert(result);
+                }
+            }
+        );
     }
 
 };
