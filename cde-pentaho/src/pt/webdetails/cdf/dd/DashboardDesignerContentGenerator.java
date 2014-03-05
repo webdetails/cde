@@ -728,10 +728,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		IParameterProvider requestParams = getRequestParameters();
 		String path = requestParams.getStringParameter(MethodParams.PATH, null);
 		String contents = requestParams.getStringParameter(MethodParams.DATA, null);
+    boolean createNew = requestParams.hasParameter( "createNew" );
 		
 		IUserContentAccess access = CdeEnvironment.getUserContentAccess();
 		  
-	    if(access.hasAccess(path, FileAccess.WRITE)) {
+	    if(access.hasAccess(path, FileAccess.WRITE)
+          || (createNew && access.hasAccess(FilenameUtils.getFullPath( path ), FileAccess.WRITE))) {
 	    		    	
 	      if(access.saveFile(path, new ByteArrayInputStream(contents.getBytes(ENCODING)))){
 	    	  // saved ok

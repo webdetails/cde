@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +42,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path, @Context HttpServletResponse response )
     throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     if ( access.fileExists( path ) ) {
       response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
@@ -59,7 +60,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                              @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
       JsonUtils.buildJsonResult( response.getOutputStream(), true, null );
@@ -76,7 +77,7 @@ public class EditorApi {
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
       @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     String msg = "";
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
@@ -95,12 +96,39 @@ public class EditorApi {
     return msg;
   }
 
+  @PUT
+  @Path( "/file/write" )
+  @Produces( "text/plain" )
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
+      @Context HttpServletResponse response) throws IOException {
+    IUserContentAccess access = getUserContentAccess();
+
+    String msg = "";
+    if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
+      if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
+        msg = "file '" + path + "' saved ok";
+        logger.debug( msg );
+      } else {
+        msg = "error saving file " + path;
+        logger.error( msg );
+      }
+    } else {
+      msg = "no permissions to write file " + path;
+      logger.error( msg );
+    }
+    return msg;
+  }
+
+
+
   @GET
   @Path( "/file/canEdit" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
-    return String.valueOf( CdeEnvironment.getUserContentAccess().hasAccess( path, FileAccess.WRITE ) );
+    return String.valueOf( getUserContentAccess().hasAccess( path, FileAccess.WRITE ) );
   }
 
   @POST
@@ -108,7 +136,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     String msg;
     if ( access.fileExists( path ) ) {
@@ -162,5 +190,8 @@ public class EditorApi {
   private class MethodParams {
     public static final String PATH = "path";
     public static final String DATA = "data";
+  }
+  protected IUserContentAccess getUserContentAccess(){
+    return CdeEnvironment.getUserContentAccess();
   }
 }

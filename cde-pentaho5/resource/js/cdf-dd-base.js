@@ -170,6 +170,19 @@ var SynchronizeRequests = {
                 $.notifyBar({ html: "Error loading templates: " + json.result });
         }
         });
+    }, 
+
+    createFile: function (params) {
+        $.ajax({
+            url: ExternalEditor.getWriteUrl(),
+            type: 'PUT',
+            data: params,
+            success: function(result){
+                if(result.indexOf('saved ok') < 0){
+                    alert(result);
+                }
+            }
+        });
     }
 };
 
