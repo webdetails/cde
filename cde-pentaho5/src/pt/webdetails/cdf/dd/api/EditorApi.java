@@ -42,7 +42,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path, @Context HttpServletResponse response )
     throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     if ( access.fileExists( path ) ) {
       response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
@@ -60,7 +60,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                              @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
       JsonUtils.buildJsonResult( response.getOutputStream(), true, null );
@@ -77,7 +77,7 @@ public class EditorApi {
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
       @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     String msg = "";
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
@@ -103,7 +103,7 @@ public class EditorApi {
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
       @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
       @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     String msg = "";
     if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
@@ -128,7 +128,7 @@ public class EditorApi {
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
-    return String.valueOf( CdeEnvironment.getUserContentAccess().hasAccess( path, FileAccess.WRITE ) );
+    return String.valueOf( getUserContentAccess().hasAccess( path, FileAccess.WRITE ) );
   }
 
   @POST
@@ -136,7 +136,7 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @Context HttpServletResponse response) throws IOException {
-    IUserContentAccess access = CdeEnvironment.getUserContentAccess();
+    IUserContentAccess access = getUserContentAccess();
 
     String msg;
     if ( access.fileExists( path ) ) {
@@ -190,5 +190,8 @@ public class EditorApi {
   private class MethodParams {
     public static final String PATH = "path";
     public static final String DATA = "data";
+  }
+  protected IUserContentAccess getUserContentAccess(){
+    return CdeEnvironment.getUserContentAccess();
   }
 }
