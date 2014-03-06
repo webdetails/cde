@@ -280,22 +280,26 @@ var ExportPopupComponent = PopupComponent.extend({
     delete this.dataComponent;
     delete this.chartComponent;
     var that = this.base(parameterRemap,componentRemap,htmlRemap);
-    this.dataComponent = dataComponent;
-    that.dataComponent = componentRemap[dataComponent.name] || dataComponent;
-    this.chartComponent = chartComponent;
-	var truncated = /render_(.*)/.test(chartComponent.name) ?
-		chartComponent.name.match(/render_(.*)/)[1]:
-		null;
-	if(componentRemap[chartComponent.name]) {
-	  that.chartComponent = Dashboards.getComponentByName(componentRemap[chartComponent.name]);
-	  that.chartExportComponent = componentRemap[chartComponent.name];
-	} else if(truncated && componentRemap[truncated]) {
-	  that.chartComponent = Dashboards.getComponentByName("render_" + componentRemap[truncated]);
-	  that.chartExportComponent = componentRemap[truncated];
-	} else {
-	  that.chartComponent = chartComponent;
-	}
-    that.chartComponent = componentRemap[chartComponent.name] || chartComponent;
+    if (dataComponent) {
+      this.dataComponent = dataComponent;
+      that.dataComponent = componentRemap[dataComponent.name] || dataComponent;
+    }
+    if(chartComponent){
+        this.chartComponent = chartComponent;
+    	var truncated = /render_(.*)/.test(chartComponent.name) ?
+    		chartComponent.name.match(/render_(.*)/)[1]:
+    		null;
+    	if(componentRemap[chartComponent.name]) {
+    	  that.chartComponent = Dashboards.getComponentByName(componentRemap[chartComponent.name]);
+    	  that.chartExportComponent = componentRemap[chartComponent.name];
+    	} else if(truncated && componentRemap[truncated]) {
+    	  that.chartComponent = Dashboards.getComponentByName("render_" + componentRemap[truncated]);
+    	  that.chartExportComponent = componentRemap[truncated];
+    	} else {
+    	  that.chartComponent = chartComponent;
+    	}
+        that.chartComponent = componentRemap[chartComponent.name] || chartComponent;
+    }
     return that;
   },
 
