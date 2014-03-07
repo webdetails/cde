@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Name>New Selector</Name>
+    <IName>newSelector</IName>
+    <Description>New Selector Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>parameter</Property>
+      <Property>title</Property>
+      <Property>searchParam</Property>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Definition name="chartDefinition">
+        <Property type="query">dataSource</Property>
+      </Definition>
+      <Property>valuesArray</Property>
+      <Property>valueAsId</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>postFetch</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>tooltip</Property>
+      <Property>listeners</Property>
+      <Property>multiselect</Property>
+    </Model>
+    <Implementation>
+      <Code src="NewSelector.js"/>
+      <Styles>
+        <Style version="1.0" src="component.css">NewSelector</Style>
+      </Styles>
+      <Dependencies>
+        <Dependency src="component.js" version="1.0">NewSelector</Dependency>
+      </Dependencies>
+      <CustomProperties>
+		<DesignerProperty>
+		  <Header>
+		    <Name>multiselect</Name>
+		    <Parent>BaseProperty</Parent>
+		    <DefaultValue>"true"</DefaultValue>
+		    <Description>Multi Select</Description>
+		    <Tooltip>Define if selector allows multi select or not</Tooltip>
+		    <InputType>Boolean</InputType>
+		    <OutputType>Boolean</OutputType>
+		    <Order>30</Order>
+		    <Version>1.0</Version>
+		  </Header>
+		</DesignerProperty>          	    
+	  </CustomProperties>
+      
+    </Implementation>
+  </Contents>
+</DesignerComponent>

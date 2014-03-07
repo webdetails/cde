@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>kettleQuery</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Kettle Step name</Description>
+	<Tooltip>Transformation Step Name</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>25</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

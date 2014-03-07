@@ -1,0 +1,90 @@
+<DesignerComponent>
+    <Header>
+        <Name>Button Component</Name>
+        <IName>buttonComponent</IName>
+        <Description>Button Component</Description>
+        <Category>OTHERCOMPONENTS</Category>
+        <CatDescription>Others</CatDescription>
+        <Type>PalleteEntry</Type>
+        <Version>1.0</Version>
+    </Header>
+    <Contents>
+        <Model>
+            <Property>label</Property>
+            <Property>htmlObject</Property>
+            <Property name="buttonStyle">tableStyle</Property>
+            <Property>executeAtStart</Property>
+            <Property>listeners</Property>
+            <Property>preExecution</Property>
+            <Property>postExecution</Property>
+            <Property>refreshPeriod</Property>
+            <Property>tooltip</Property>
+            <Definition name="actionDefinition">
+                <Property type="query">Datasource</Property>
+            </Definition>
+            <Property>actionParameters</Property>
+            <Property>expression</Property>
+            <Property>successCallback</Property>
+            <Property>failureCallback</Property>
+        </Model>
+        <Implementation>
+            <CustomProperties>
+                <DesignerProperty>
+                    <Header>
+	                <Name>successCallback</Name>
+	                <Parent>BaseProperty</Parent>
+	                <DefaultValue></DefaultValue>
+	                <Description>Success Callback</Description>
+	                <Tooltip>Javascript expression to be evaluated if the call to the endpoint is successful.</Tooltip>
+	                <InputType>JavaScript</InputType>
+	                <OutputType>Function</OutputType>
+                        <Advanced>true</Advanced>
+	                <Order>40</Order>
+	                <Version>1.0</Version>
+                    </Header>
+                </DesignerProperty>
+                <DesignerProperty>
+                    <Header>
+	                <Name>failureCallback</Name>
+	                <Parent>BaseProperty</Parent>
+	                <DefaultValue></DefaultValue>
+	                <Description>Failure Callback</Description>
+	                <Tooltip>Javascript expression to be evaluated  if the call to the endpoint fails or returns an error.</Tooltip>
+	                <InputType>JavaScript</InputType>
+	                <OutputType>Function</OutputType>
+                        <Advanced>true</Advanced>
+	                <Order>40</Order>
+	                <Version>1.0</Version>
+                    </Header>
+                </DesignerProperty>
+                <DesignerProperty>
+                    <Header>
+                        <Name>Datasource</Name>
+                        <Parent>BaseProperty</Parent>
+                        <DefaultValue></DefaultValue>
+                        <Description>Action Datasource</Description>
+                        <Tooltip>Datasource used to trigger the action</Tooltip>
+                        <InputType>Datasource</InputType>
+                        <Advanced>true</Advanced>
+                        <Order>43</Order>
+                        <Version>1.0</Version>
+                    </Header>
+                </DesignerProperty>
+                <DesignerProperty>
+                    <Header>
+	                <Name>actionParameters</Name>
+	                <Parent>BaseProperty</Parent>
+	                <DefaultValue>"[]"</DefaultValue>
+	                <Description>Action Parameters</Description>
+	                <Tooltip>Parameters to pass to the datasource</Tooltip>
+	                <InputType>ValuesArray</InputType>
+	                <OutputType>Array</OutputType>
+                        <Advanced>true</Advanced>
+	                <Order>40</Order>
+	                <Version>1.0</Version>
+                    </Header>
+                </DesignerProperty>
+            </CustomProperties>
+        </Implementation>
+    </Contents>
+</DesignerComponent>

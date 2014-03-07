@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccAllCategoryLabel</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>All</DefaultValue>
+    <Description>allCategoryLabel</Description>
+    <Tooltip>The description of the fictitious root category that aggregates all other categories.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>201</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

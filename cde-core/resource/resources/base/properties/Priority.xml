@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+  <Name>priority</Name>
+  <Advanced>true</Advanced>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>5</DefaultValue>
+	<Description>Priority</Description>
+	<Tooltip>Priority for component execution component. Lower values have higher priority</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

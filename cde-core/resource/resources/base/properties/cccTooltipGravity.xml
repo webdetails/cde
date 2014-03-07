@@ -1,0 +1,24 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTooltipGravity</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>tooltipGravity</Description>
+    <Tooltip>The preferred tooltip gravity.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>461</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="East">e</Value>
+    <Value display="North">n</Value>
+    <Value display="NorthEast">ne</Value>
+    <Value display="NorthWest">nw</Value>
+    <Value display="South">s</Value>
+    <Value display="SouthEast">se</Value>
+    <Value display="SouthWest">sw</Value>
+    <Value display="West">w</Value>
+  </Values>
+</DesignerProperty>

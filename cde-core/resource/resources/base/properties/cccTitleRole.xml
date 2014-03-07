@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTitleRole</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>titleRole</Description>
+    <Tooltip>The title visual role represents the title of each bullet.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>453</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

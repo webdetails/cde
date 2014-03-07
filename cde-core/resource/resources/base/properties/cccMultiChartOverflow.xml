@@ -1,0 +1,19 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccMultiChartOverflow</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>grow</DefaultValue>
+    <Description>multiChartOverflow</Description>
+    <Tooltip>The strategy to follow when the resulting multi-chart layout does not fit entirely in the initial chart size.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>331</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Clip">clip</Value>
+    <Value display="Fit">fit</Value>
+    <Value display="Grow">grow</Value>
+  </Values>
+</DesignerProperty>

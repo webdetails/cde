@@ -1,0 +1,31 @@
+<DesignerComponent>
+	<Header>
+		<Name>PRPT Component</Name>
+		<IName>prpt</IName>
+		<Description>PRPT Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>action</Property>
+			<Property>solution</Property>
+			<Property>path</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>showParameters</Property>
+			<Property>paginate</Property>
+			<Property>iframe</Property>
+			<Property>usePost</Property>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

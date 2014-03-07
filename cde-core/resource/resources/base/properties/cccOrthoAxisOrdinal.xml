@@ -1,0 +1,14 @@
+<DesignerProperty>
+    <Header>
+      <Name>cccOrthoAxisOrdinal</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"false"</DefaultValue>
+      <Description>V1 - Ortho axis ordinal</Description>
+      <Tooltip>Determines whether the orthogonal axis should be ordinal (y-axis in normal orientation)</Tooltip>
+      <InputType>Boolean</InputType>
+      <OutputType>Boolean</OutputType>
+      <Order>90</Order>
+      <Advanced>true</Advanced>
+      <Version>1.3</Version>
+    </Header>
+  </DesignerProperty>

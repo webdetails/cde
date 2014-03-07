@@ -1,0 +1,79 @@
+
+<DesignerComponents>
+  <DesignerComponent>
+    <Header>
+      <Name>CGG Component</Name>
+      <IName>cgg</IName>
+      <Description>Container for CGG Grahpics</Description>
+      <Category>CHARTS</Category>
+      <CatDescription>Charts</CatDescription>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Metadata>
+      <meta name='cdwSupport'>false</meta>
+    </Metadata>
+    <Contents>
+      <Model>
+        <Property>executeAtStart</Property>
+        <Property name="parameters">xActionArrayParameter</Property>
+        <Property>htmlObject</Property>
+        <Property name='resourceFile'>cggPath</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>listeners</Property>
+        <Property>width</Property>
+        <Property>height</Property>
+      </Model>
+      <Implementation>
+        <Code src="cgg-implementation.js" />
+        <CustomProperties>
+          <DesignerProperty>
+            <Header>
+              <Name>cggPath</Name>
+              <Parent>BaseProperty</Parent>
+              <DefaultValue></DefaultValue>
+              <Description>Cgg path</Description>
+              <Tooltip>Path to cgg script</Tooltip>
+              <InputType>CggPath</InputType>
+              <OutputType>String</OutputType>
+              <Order>40</Order>
+              <Version>1.0</Version>
+            </Header>
+          </DesignerProperty>
+        </CustomProperties>
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+  <DesignerComponent>
+    <Header>
+      <Name>CGG Dial Component</Name>
+      <IName>cggDial</IName>
+      <Description>CGG Dial Chart</Description>
+      <Category>CHARTS</Category>
+      <CatDescription>Charts</CatDescription>
+      <Type>PalleteEntry</Type>
+      <Version>1.0</Version>
+    </Header>
+    <Metadata>
+      <meta name='cdwSupport'>true</meta>
+    </Metadata>
+    <Contents>
+      <Model>
+        <Property>executeAtStart</Property>
+        <Property name="parameter">parameter</Property>
+        <Property name="colors">colors</Property>
+	      <Property name="intervals">intervals</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>listeners</Property>
+        <Property>width</Property>
+        <Property>height</Property>
+      </Model>
+      <Implementation>
+        <Code src="cgg-implementation.js" />
+      </Implementation>
+    </Contents>
+  </DesignerComponent>
+</DesignerComponents>

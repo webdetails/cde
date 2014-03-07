@@ -1,0 +1,20 @@
+<DesignerProperty>
+  <Header>
+    <Name>joinType</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>Join Type</Description>
+    <Tooltip>Type of the join</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>451</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Inner">INNER</Value>
+    <Value display="Left Outer">LEFT OUTER</Value>
+    <Value display="Right Outer">RIGHT OUTER</Value>
+    <Value display="Full Outer">FULL OUTER</Value>
+  </Values>
+</DesignerProperty>

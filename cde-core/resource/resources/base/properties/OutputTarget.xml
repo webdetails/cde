@@ -1,0 +1,14 @@
+<DesignerProperty>		
+		<Header>
+						<Name>outputTarget</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>output target for report</Description>
+						<Tooltip>Output target for report</Tooltip>
+						<Advanced>true</Advanced>
+						<InputType>String</InputType>
+						<OutputType>String</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+    </Header>            
+</DesignerProperty>      

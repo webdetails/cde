@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTooltipFormat</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>tooltipFormat</Description>
+    <Tooltip>A callback function that is called to build the tooltip of a visual element.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>460</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSelectionChangedAction</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>selectionChangedAction</Description>
+    <Tooltip>A callback function that is called when, after selection has changed, the chart is updated to reflect the change.</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>421</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

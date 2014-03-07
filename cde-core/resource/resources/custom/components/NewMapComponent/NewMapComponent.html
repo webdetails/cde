@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<!-- Generico -->
+<script src="../pentaho-cdf/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/jquery.ui.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/jquery.blockUI.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/Base.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/Dashboards.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/CoreComponents.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/AddIns.js" type="text/javascript" language="javascript"></script>
+<script src="../pentaho-cdf/js/daterangepicker/daterangepicker.jQuery.js"  type="text/javascript" language="javascript"></script>
+
+
+
+
+<script src='getJsResource/cde/components/NewMapComponent/MapComponentAsyncLoader.js' type="text/javascript" language="javascript"></script>
+
+
+<script src="../pentaho-cdf/js/OpenMap/open_map.js"  
+type="text/javascript" 
+language="javascript"></script>
+
+<script src="../pentaho-cdf/js/OpenMap/OpenLayers/lib/OpenLayers.js"  
+type="text/javascript" 
+language="javascript"></script>
+
+
+<script src="../pentaho-cdf/js/OpenStreetMap.js"  
+type="text/javascript" 
+language="javascript"></script>
+
+
+
+
+
+<!--
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBEAhN73gIwPWcM0-vafAPDijoFarKNDec" type="text/javascript" language="javascript"></script>
+-->
+<script>
+
+
+var API_KEY = 'AIzaSyBEAhN73gIwPWcM0-vafAPDijoFarKNDec';
+Dashboards.showErrorTooltip = function() {};
+
+
+
+</script>
+    
+</head>
+
+<body>
+<script>
+var component = {
+	name: "myNewMapComponent",
+	type: "NewMapComponent",
+	htmlObject: "testComponent",
+    mapEngineType: "google",
+    testData: {},
+    centerLongitude: -7.5,
+    centerLatitude:  39.8,
+    defaultZoomLevel: 6
+};
+
+var component2 = {
+    name: "myNewMapComponent",
+	type: "NewMapComponent",
+	htmlObject: "testComponent2",    
+    centerLongitude: -7.5,
+    centerLatitude:  39.8,
+    defaultZoomLevel: 6,
+    mapEngineType: "google",    
+    popupHeight: 100,
+    popupWidth: 100,
+    popupContentsDiv: 'popuptest',
+    marker: '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-green.png',
+    markerWidth: 25,
+    markerHeight: 25,
+    testData: {
+    "queryInfo": {
+		"totalRows": "2"
+	},
+	"resultset": [[-7.5, 39.8, 'First', '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-gold.png' , null, null, null, 25, 25], 
+                  [-9.11, 42.87, 'Second',  null, "<img src='" + wd.helpers.cggHelper.getCggDrawUrl() + "'/>", 200, 200, 25, 25]],
+	"metadata": [{
+		"colIndex": 0,
+		"colType": "Numeric",
+		"colName": "Longitude"
+	},
+	{
+		"colIndex": 1,
+		"colType": "Numeric",
+		"colName": "Latitude"
+	},
+    {
+		"colIndex": 2,
+		"colType": "String",
+		"colName": "Description"
+	},
+    {
+    	"colIndex": 3,
+		"colType": "String",
+		"colName": "Marker"
+	},
+   {
+        "colIndex": 4,
+		"colType": "String",
+		"colName": "Popup Content"
+	},
+   {
+        "colIndex": 5,
+    	"colType": "Numeric",
+		"colName": "PopupWidth"
+	},
+   {
+        "colIndex": 6,
+    	"colType": "Numeric",
+		"colName": "PopupHeight"
+	},
+   {
+        "colIndex": 7,
+        "colType": "Numeric",
+		"colName": "MarkerWidth"
+	},
+   {
+        "colIndex": 8,
+    	"colType": "Numeric",
+		"colName": "MarkerHeight"
+	}    
+    
+    
+    ]
+}
+};
+
+
+var component3 = {
+    name: "myNewMapComponent",
+    type: "NewMapComponent",
+	htmlObject: "testComponent3",    
+    centerLongitude: -7.5,
+    centerLatitude:  39.8,
+    defaultZoomLevel: 6,
+    popupHeight: 300,
+    popupWidth: 300,
+    mapEngineType: "google",      
+    popupContentsDiv: 'popuptest',
+    marker: '../pentaho-cdf/js/OpenMap/OpenLayers/img/marker-green.png',
+    markerWidth: 25,
+    markerHeight: 30,    
+    dataSourceMapping: [["address", "0"], ["marker", "2"], ["description", "1"]],
+    testData: {
+    "queryInfo": {
+		"totalRows": "2"
+	},
+	"resultset": [['Vancouver', 'First', null], ['Ottawa', 'Second',  null]],
+	"metadata": [{
+		"colIndex": 0,
+		"colType": "String",
+		"colName": "State"
+	},
+    {
+		"colIndex": 1,
+		"colType": "String",
+		"colName": "Description"
+	},
+    {
+    	"colIndex": 2,
+		"colType": "String",
+		"colName": "Marker"
+	}        
+    
+    ]
+}
+};
+
+
+
+$(function (){
+    Dashboards.log("Starting test NewMapComponent");
+//    Dashboards.init([component]);
+//    Dashboards.update(component);
+//    Dashboards.init([component2]);
+//	Dashboards.update(component2);    
+    Dashboards.init([component3]);
+    Dashboards.update(component3);        
+});
+
+</script>
+
+
+<div class="container">
+	<div id="firstRow" class="clearfix" style="width:75%">
+		<div class="NewMapComponentstyle" id="testComponent">
+		</div>
+	</div>
+
+    <div id="firstRow" class="clearfix" style="width:75%">
+		<div class="NewMapComponentstyle" id="testComponent2">
+		</div>
+	</div>
+
+    <div id="firstRow" class="clearfix" style="width:75%">
+    	<div class="NewMapComponentstyle" id="testComponent3">
+		</div>
+	</div>
+
+<div id='popuptest'>Hello World</div>
+
+<div class='cdf_error' id='cdfErrorDiv'></div>
+</div>
+
+
+
+
+
+</body>
+
+</html>

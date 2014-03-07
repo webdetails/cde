@@ -1,0 +1,13 @@
+<DesignerProperty>
+    <Header>
+        <Name>file</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue></DefaultValue>
+        <Description>File</Description>
+        <Tooltip>File</Tooltip>
+        <InputType>String</InputType>
+        <OutputType>String</OutputType>
+        <Order>27</Order>
+        <Version>1.0</Version>
+    </Header>
+</DesignerProperty>

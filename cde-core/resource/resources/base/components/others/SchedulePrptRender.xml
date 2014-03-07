@@ -1,0 +1,34 @@
+<DesignerComponent>
+	<Header>
+		<Name>Schedule Prpt Component</Name>
+		<IName>schedulePrpt</IName>
+		<Description>Schedule Prpt Component</Description>
+		<Category>OTHERCOMPONENTS</Category>
+		<CatDescription>Others</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>label</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property>solution</Property>
+			<Property>path</Property>
+			<Property>action</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+      
+      <Property>group</Property>
+      <Property>outputTarget</Property>
+      
+		</Model>
+    
+
+	</Contents>
+</DesignerComponent>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrthoAxisFixedMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>orthoAxisFixedMax</Description>
+    <Tooltip>The fixed maximum domain value that the axis will show (applies to continuous axes).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>370</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

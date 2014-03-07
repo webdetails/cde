@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBarSizeRatio</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.9</DefaultValue>
+    <Description>barSizeRatio</Description>
+    <Tooltip>The percentage of the grouped bar width versus the space between grouped bars (does not apply to stacked bars).</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>207</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSelectable</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>selectable</Description>
+    <Tooltip>Indicates if the chart's visual elements can be selected by the user, by clicking on them or using the rubber-band.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>420</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

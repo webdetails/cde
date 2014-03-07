@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>leftOffset</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>0</DefaultValue>
+	<Description>Left Offset</Description>
+	<Tooltip>DateRangeInput left offset</Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>32</Order>
+	<Advanced>true</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccTrendValuesFont</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>10px sans-serif</DefaultValue>
+    <Description>trendValuesFont</Description>
+    <Tooltip>The font of a value label.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>478</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>
