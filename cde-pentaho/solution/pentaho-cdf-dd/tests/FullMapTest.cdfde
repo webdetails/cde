@@ -570,7 +570,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
+      "value": "/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
       "type": "String"
      },
      {
@@ -2303,5 +2303,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
+ "filename": "/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
 }
