@@ -56,7 +56,7 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: 'Open Sans', Arial, sans-serif; font-size: 1.1em; }
+.ui-widget { font-family: Trebuchet MS, Helvetica, Arial, sans-serif; font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Helvetica, Arial, sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #aaaaaa; background: #f5f5f5; color: #a3a3a3; }
@@ -70,7 +70,7 @@
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #9a9a9a; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #1999d1; background: #203741 url(images/ui-bg_flat_100_203741_40x100.png) 50% 50% repeat-x; font-weight: bold; color: #1999d1; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #1999d1; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #0098c4; background: #0098c4; font-weight: bold; color: #ffffff; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #1999d1; background: #1c3843 url(images/ui-bg_highlight-hard_20_1c3843_1x100.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }
 
@@ -335,8 +335,6 @@
 /* IE/Win - Fix animation bug - #4615 */
 .ui-accordion { width: 100%; }
 .ui-accordion .ui-accordion-header { cursor: pointer; position: relative; margin-top: 1px; zoom: 1; }
-.ui-accordion-header:hover { font-weight: normal; }
-.ui-accordion .ui-accordion-header { font-weight: normal; }
 .ui-accordion .ui-accordion-li-fix { display: inline; }
 .ui-accordion .ui-accordion-header-active { border-bottom: 0 !important; }
 .ui-accordion .ui-accordion-header a { display: block; font-size: 1em; padding: .5em .5em .5em .7em; }

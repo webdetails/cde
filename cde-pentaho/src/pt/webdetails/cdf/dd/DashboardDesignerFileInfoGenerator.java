@@ -34,7 +34,6 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
   }
 
   //FIXME: use ISolutionFileMetaProvider
-  @SuppressWarnings("deprecation")
   public ContentType getContentType() {
     return ContentType.DOM4JDOC;
   }

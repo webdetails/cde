@@ -86,20 +86,6 @@ var PalleteManager = Base.extend({
 			return exists;
 		},
 
-		exists: function(object, array){
-			var exists = new Boolean(false);
-			
-			for(var index in array){
-				if(array.hasOwnProperty(index)){
-					if(array[index] == object){
-						exists = new Boolean(true);
-						break;
-					}
-				}
-			}
-			return exists;
-		},
-
 		addEntry: function(palleteEntry){
 
 			var object = palleteEntry;
