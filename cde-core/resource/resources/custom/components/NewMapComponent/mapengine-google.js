@@ -144,32 +144,41 @@ var GoogleMapEngine = MapEngine.extend({
       raw: event
     };
   },
-  setShape: function(polygonArray, shapeStyle, data) {
+  setShape: function(multiPolygon, shapeStyle, data) {
     var myself = this;
+    var shapes = [];
 
-    _.each(polygonArray, function(polygon) {
-      var polyPath =  _.map(polygon, function (p) {
-        return _.map(p, function (latlong){
+    // It seems that Google Maps does not support multipolygons, so we have to register each polygon instead.
+    _.each(multiPolygon, function(polygon) {
+      var polygonGM = _.map(polygon, function (ring) {
+        return _.map(ring, function (latlong){
           return new google.maps.LatLng( latlong[0], latlong[1] );
         });
       });
 
       var shape = new google.maps.Polygon(_.extend({
-        paths : polyPath
+        paths : polygonGM
       }, myself.toNativeStyle(shapeStyle)));
       shape.setMap(myself.map);
+      shapes.push(shape);
 
+      // We'll have to use a trick to emulate the multipolygons...
       google.maps.event.addListener(shape, 'click', function (event) {
-        myself.mapComponent.trigger('shape:click', myself.wrapEvent(event, shape, 'shape',  shapeStyle, data));
+        _.each(shapes, function (s){
+          myself.mapComponent.trigger('shape:click', myself.wrapEvent(event, s, 'shape',  shapeStyle, data));
+        });
       });
       google.maps.event.addListener(shape, 'mousemove',function (event) {
-        myself.mapComponent.trigger('shape:mouseover', myself.wrapEvent(event, shape, 'shape', shapeStyle, data));
+        _.each(shapes, function (s){
+          myself.mapComponent.trigger('shape:mouseover', myself.wrapEvent(event, s, 'shape', shapeStyle, data));
+        });
       });
       google.maps.event.addListener(shape, 'mouseout', function (event) {
-        myself.mapComponent.trigger('shape:mouseout', myself.wrapEvent(event, shape, 'shape', shapeStyle, data));
+        _.each(shapes, function (s){
+          myself.mapComponent.trigger('shape:mouseout', myself.wrapEvent(event, s, 'shape', shapeStyle, data));
+        });
       });
     });
-
   },
 
   postSetShapes: function (){},

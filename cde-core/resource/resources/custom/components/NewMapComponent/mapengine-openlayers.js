@@ -31,27 +31,29 @@ var OpenLayersEngine = MapEngine.extend({
   },
 
 
-  setShape: function(polygonArray, shapeStyle, data) {
+  setShape: function(multiPolygon, shapeStyle, data) {
     var myself =this;
     var proj = new OpenLayers.Projection("EPSG:4326"),  // transform from WGS 1984 //4326
         mapProj = this.map.getProjectionObject();
-    _.each(polygonArray, function(polygon){
-      var polyArray =  _.map(polygon, function (p) {
-        var polyPath = _.map(p, function (latlong){
+
+    var multiPolygonOL = _.map(multiPolygon, function(polygon){
+      var polygonOL = _.map(polygon, function (ring) {
+        var linearRingOL = _.map(ring, function (latlong){
           var point = new OpenLayers.LonLat(latlong[1], latlong[0] ).transform(
             proj, // transform from WGS 1984
             mapProj // to the map system
           );
           return new OpenLayers.Geometry.Point(point.lon, point.lat);
         });
-        return new OpenLayers.Geometry.LinearRing(polyPath);
+        return new OpenLayers.Geometry.LinearRing(linearRingOL);
       });
-
-      var shape = new OpenLayers.Geometry.Polygon(polyArray);
-      var feature = new OpenLayers.Feature.Vector(shape, {data: data, style: shapeStyle}, myself.toNativeStyle(shapeStyle) );
-      myself.shapes.addFeatures([feature]);
-      //$('#' + feature.id ).tipsy({gravity: 'n', title: function(){return JSON.stringify(data);}});
+      return new OpenLayers.Geometry.Polygon(polygonOL);
     });
+
+    var shape = new OpenLayers.Geometry.MultiPolygon(multiPolygonOL);
+    var feature = new OpenLayers.Feature.Vector(shape, {data: data, style: shapeStyle}, myself.toNativeStyle(shapeStyle) );
+    myself.shapes.addFeatures([feature]);
+    //$('#' + feature.id ).tipsy({gravity: 'n', title: function(){return JSON.stringify(data);}});
 
   },
 
