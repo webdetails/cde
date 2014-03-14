@@ -35,6 +35,14 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
     {
       return new CdfRunJsMobileDashboardWriter();
     }
+    
+    if(rendererType == DashboardRendererType.BOOTSTRAP)
+      {
+    	  return wcdf.isWidget() ?
+    	             new CdfRunJsBootstrapWidgetWriter() :
+    	             new CdfRunJsBootstrapDashboardWriter();
+      }    
+    
 
     return wcdf.isWidget() ?
            new CdfRunJsBlueprintWidgetWriter() :
@@ -88,6 +96,7 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory
       return new CdfRunJsGenericPropertyBindingWriter();
     }
     else if(KnownThingKind.Dashboard.equals(kind))
+
     { // shouldn't get here anymore
       return getDashboardWriter(((Dashboard)t));
     }
