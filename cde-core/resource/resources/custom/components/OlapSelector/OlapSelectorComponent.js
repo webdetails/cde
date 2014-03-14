@@ -8,7 +8,8 @@ var OlapSelectorComponent = BaseComponent.extend({
           cube: this.cube,
           dimension: this.dimensionName
       }),
-      title: this.title
+      title: this.title,
+      multiselect: this.multiSelect
     });
     this.view = new OlapSelectorView({
       model: this.model,
