@@ -594,6 +594,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 				+ DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
 				+ "\",\""
 				+ DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
+        + "\",\""
+        + DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP.getType()
+
 				+ "\"]}");
 	}
 
