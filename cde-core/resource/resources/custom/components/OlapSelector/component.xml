@@ -14,7 +14,7 @@
             <Property>parameter</Property>
             <Property>executeAtStart</Property>
             <Property>htmlObject</Property>
-            <!--Property name="parameters">xActionArrayParameter</Property-->
+            <Property name="parameters">xActionArrayParameter</Property>
             <Property>catalog</Property>
             <Property>cube</Property>
             <Property>dimensionName</Property>

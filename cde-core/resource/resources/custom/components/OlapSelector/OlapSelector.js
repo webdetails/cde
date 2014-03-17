@@ -27,7 +27,8 @@ var OlapSelectorModel = Backbone.Model.extend({
         "mode": "level",
         olapUtils: null,
         "levels": null,
-        "breadcrumb": []
+        "breadcrumb": [],
+        "parameters": []
     },
 
     initialize: function() {
@@ -224,6 +225,17 @@ var OlapSelectorModel = Backbone.Model.extend({
       } else {
         options.level = level;
       }
+
+      paramArray = this.get("parameters");
+      if(paramArray.length > 0) {
+        var nameArray = _.keys(paramArray);
+
+        for(pos = 0; pos < paramArray.length; pos++) {
+          options[nameArray[pos]] = paramArray[nameArray[pos]];
+
+        }
+      }
+
       var myself = this;
       this.get("olapUtils").getPaginatedLevelMembers(options,function(v){
         myself.set("morePages",v.more);
