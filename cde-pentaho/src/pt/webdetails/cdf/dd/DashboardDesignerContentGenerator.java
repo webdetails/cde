@@ -194,7 +194,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
             path = fi.getString();
           }
           if ( "cdfstructure".equals( fi.getFieldName() ) ) {
-            cdfStructure = fi.getString();
+            cdfStructure = fi.getString("UTF-8");
           }
           if ( "title".equals( fi.getFieldName() ) ) {
             title = fi.getString();
