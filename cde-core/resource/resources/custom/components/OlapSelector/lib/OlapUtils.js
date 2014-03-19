@@ -48,20 +48,23 @@ wd.utils.OlapUtils = function(spec){
         myself.options = $.extend(myself.options,_args);
     }
 
+    myself.setCatalog = function (catalog) {
+        myself.catalog = catalog;
+        myself.options.catalog = catalog;
+    }
+
     myself.initCatalogs = function(){
         
         wd.debug("Getting info from cube");
        
-        myself.callOlapUtils({
+        var res = myself.callOlapUtilsSync({
 
             operation: olapOperations.GET_OLAP_CUBES
-        },
-        function(result){
-            catalogs = result.catalogs;
-            wd.info("[OlapUtils] Successfully got catalog information");
-            
-            
         });
+
+        catalogs = res.catalogs;
+
+        wd.info("[OlapUtils] Successfully got catalog information");
     
     }
     

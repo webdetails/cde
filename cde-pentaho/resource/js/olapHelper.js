@@ -2,12 +2,12 @@ wd = wd || {};
 wd.helpers = wd.helpers || {};
 
 wd.helpers.olap = {
-    getService: function(){
+    getServiceUrl: function(){
         return "/content/pentaho-cdf-dd/OlapUtils";
     },
 
     getCubesUrl: function(){
-        return "?operation=GetCubes";
+        return "?operation=GetOlapCubes";
     },
 
     getCubeStructureUrl: function(){
