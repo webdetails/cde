@@ -629,6 +629,19 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
         result = olapUtils.getLevelMembersStructure( catalog, cube, member, direction );
 
+      } else if ( operation.equals( "GetPaginatedLevelMembers" ) ) {
+
+        String catalog = getRequestParameters().getStringParameter( "catalog", null );
+        String cube = getRequestParameters().getStringParameter( "cube", null );
+        String startMember = getRequestParameters().getStringParameter( "startMember", null );
+        String level = getRequestParameters().getStringParameter( "level", null );
+        String context = getRequestParameters().getStringParameter( "context", null );
+        String searchTerm = getRequestParameters().getStringParameter( "searchTerm", null );
+        long pageSize = getRequestParameters().getLongParameter( "pageSize", 0 );
+        long pageStart = getRequestParameters().getLongParameter( "pageStart", 0 );
+
+        result = olapUtils.getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
+
       }
       JsonUtils.buildJsonResult( out, result != null, result );
     } catch ( Exception ex ) {

@@ -1,13 +1,24 @@
 var OlapSelectorComponent = BaseComponent.extend({
 
   init: function() {
-    this.model = new OlapSelectorModel({
-      olapUtils: new wd.utils.OlapUtils({
+    var olapUtilsInstance = new wd.utils.OlapUtils({
           url: Dashboards.getWebAppPath() + wd.helpers.olap.getServiceUrl(),
           catalog: this.catalog,
           cube: this.cube,
           dimension: this.dimensionName
-      }),
+      });
+    
+    var cToFind = this.catalog;
+    var entry = _.find(olapUtilsInstance.getCatalogs(), function(c) {
+      return (c.schema.indexOf(cToFind)>=0);
+    });
+   
+    if(entry !== false) {
+      olapUtilsInstance.setCatalog(entry.name);
+    }
+    
+    this.model = new OlapSelectorModel({
+      olapUtils: olapUtilsInstance,
       title: this.title,
       multiselect: this.multiSelect
     });
