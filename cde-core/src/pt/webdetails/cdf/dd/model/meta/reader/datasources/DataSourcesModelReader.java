@@ -92,7 +92,7 @@ public final class DataSourcesModelReader
       .setCategoryLabel((String) jctx.getValue("metadata/groupdesc"))
       .setSourcePath(sourcePath)
       .addAttribute("", isCPK ? "CPK" : "CDA"); // meta: "CDA"
-    
+
     if(isCDA)
     {
       builder
@@ -102,8 +102,10 @@ public final class DataSourcesModelReader
     else if(isCPK)
     {
       builder
-      .addAttribute("pluginId", (String)jctx.getValue("metadata/pluginId"))
-      .addAttribute("endpoint", (String)jctx.getValue("metadata/endpoint"));
+        .useProperty( null, "stepName" )
+        .useProperty( null, "kettleOutput" )
+        .addAttribute("pluginId", (String)jctx.getValue("metadata/pluginId"))
+        .addAttribute("endpoint", (String)jctx.getValue("metadata/endpoint"));
     }
     
     if(isCDA) 
