@@ -141,7 +141,14 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     context.setIsFirstInList(false);
     
     addJsProperty(out, "pluginId", buildJsStringValue(compType.tryGetAttributeValue("pluginId", "")), indent, false);
-    
+
+    String stepName = dataSourceComp.getPropertyBindingByName( "stepname" ).getValue();
+    this.addJsProperty( out, "stepName", this.buildJsStringValue( stepName ), indent, false );
+
+    String kettleOutput = dataSourceComp.getPropertyBindingByName( "kettleoutput" ).getValue();
+    this.addJsProperty( out, "kettleOutput", this.buildJsStringValue( kettleOutput ), indent, false );
+
+
     String queryType = "cpk";
     
     addJsProperty(out, "queryType", JsonUtils.toJsString(queryType), indent, false);
