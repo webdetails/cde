@@ -3,8 +3,8 @@
         <Name>kettleOutput</Name>
         <Parent>BaseProperty</Parent>
         <DefaultValue>Inferred</DefaultValue>
-        <Description>The format of the output data obtained from the kettle job/transformation.</Description>
-        <Tooltip></Tooltip>
+        <Description>Output Type</Description>
+        <Tooltip>The format of the output data obtained from the kettle job/transformation.</Tooltip>
         <InputType type="valuelist"/>
         <OutputType>String</OutputType>
         <Order>3</Order>
