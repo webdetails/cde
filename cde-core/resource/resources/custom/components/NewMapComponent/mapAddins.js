@@ -29,37 +29,24 @@
         }
       }
 
-
-
-      var opts =            {
-        q: name,
+      var url = 'http://ws.geonames.org/searchJSON';
+      var data = {
+        q: name.replace(/&/g,","),
         maxRows: 1,
         dataType: "json",
         featureClass: featureClass
       };
-
-
-
-      var callBackName = 'GeoNameContinuation' + $.now() + st.position;
-      window[callBackName] = function (result) {
+      if (featureClass) {
+        data.featureClass = featureClass;
+      }
+      var success = function (result) {
         if (result.geonames && result.geonames.length > 0) {
           location = [parseFloat(result.geonames[0].lng),
                       parseFloat(result.geonames[0].lat)];
           st.continuationFunction(location);
         }
       };
-
-
-      name = name.replace(/&/g,",");
-      var request = 'http://ws.geonames.org/searchJSON?q=' +  encodeURIComponent(name)  + '&maxRows=1&callback=' + callBackName;
-      request += ( featureClass ? '&featureClass=' + featureClass : '' ) ;
-
-
-      var aObj = new JSONscriptRequest(request);
-      // Build the script tag
-      aObj.buildScriptTag();
-      // Execute (add) the script tag
-      aObj.addScriptTag();
+      $.getJSON(url, data, success);
     }
   };
   Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames));
