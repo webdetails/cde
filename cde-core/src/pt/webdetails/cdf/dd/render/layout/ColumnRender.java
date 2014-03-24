@@ -22,7 +22,7 @@ public class ColumnRender extends DivRender {
 
         super.processProperties();
 
-        final String spanPrefix = renderType.equals("bootstrap") ? "col-xs-" : "span-" ;
+        final String spanPrefix = renderType.equals("bootstrap") ? "col-md-" : "span-" ;
         
         getPropertyBag().addColClass(spanPrefix, getPropertyString("columnSpan"));
         getPropertyBag().addColClass("append-", getPropertyString("columnAppend"));
