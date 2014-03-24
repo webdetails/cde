@@ -4,6 +4,7 @@
     name: "geonames",
     label: "GeoNames",
     defaults: {
+      username: ''
     },
     implementation: function (tgt, st, opt) {
       var location;
@@ -34,6 +35,7 @@
         q: name.replace(/&/g,","),
         maxRows: 1,
         dataType: "json",
+        username: opt.username,
         featureClass: featureClass
       };
       if (featureClass) {
