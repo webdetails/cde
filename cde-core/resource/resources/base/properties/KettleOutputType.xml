@@ -1,0 +1,21 @@
+<DesignerProperty>
+    <Header>
+        <Name>kettleOutput</Name>
+        <Parent>BaseProperty</Parent>
+        <DefaultValue>Inferred</DefaultValue>
+        <Description>Output Type</Description>
+        <Tooltip>The format of the output data obtained from the kettle job/transformation.</Tooltip>
+        <InputType type="valuelist"/>
+        <OutputType>String</OutputType>
+        <Order>3</Order>
+        <Advanced>false</Advanced>
+        <Version>1.0</Version>
+    </Header>
+    <Values>
+        <Value display="Inferred">Inferred</Value>
+        <Value display="Json">Json</Value>
+        <Value display="ResultFiles">ResultFiles</Value>
+        <Value display="ResultOnly">ResultOnly</Value>
+        <Value display="SingleCell">SingleCell</Value>
+    </Values>
+</DesignerProperty>
