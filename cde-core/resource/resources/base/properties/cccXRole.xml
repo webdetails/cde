@@ -7,7 +7,7 @@
     <Tooltip>The x visual role controls the base position of the "point" visual element.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>492</Order>
+    <Order>493</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
