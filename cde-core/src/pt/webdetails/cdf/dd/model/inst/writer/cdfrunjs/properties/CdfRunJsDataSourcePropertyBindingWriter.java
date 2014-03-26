@@ -199,10 +199,10 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     String pluginId = buildJsStringValue( compType.tryGetAttributeValue( PropertyName.PLUGIN_ID, "" ) );
     addJsProperty( out, PropertyName.PLUGIN_ID, pluginId, indent, false );
 
-    String stepName = dataSourceComp.getPropertyBindingByName( PropertyName.KETTLE_OUTPUT_STEP_NAME ).getValue();
+    String stepName = dataSourceComp.tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_STEP_NAME, "OUTPUT" );
     addJsProperty( out, PropertyName.KETTLE_OUTPUT_STEP_NAME, buildJsStringValue( stepName ), indent, false );
 
-    String kettleOutput = dataSourceComp.getPropertyBindingByName( PropertyName.KETTLE_OUTPUT_FORMAT ).getValue();
+    String kettleOutput = dataSourceComp.tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_FORMAT, "Infered" );
     addJsProperty( out, PropertyName.KETTLE_OUTPUT_FORMAT, buildJsStringValue( kettleOutput ), indent, false );
 
     addJsProperty( out, PropertyName.QUERY_TYPE, JsonUtils.toJsString( PropertyValue.CPK_QUERY_TYPE ), indent, false );

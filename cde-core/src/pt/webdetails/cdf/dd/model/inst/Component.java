@@ -197,6 +197,14 @@ public abstract class Component<TM extends ComponentType> extends Instance<TM>
     return propBind;
   }
 
+  public String tryGetPropertyValueByName( String name, String defaultValue)
+  {
+    PropertyBinding bind = this.tryGetPropertyBindingByName( name );
+    return bind == null ?
+      defaultValue :
+      StringUtils.defaultIfEmpty(bind.getValue(), defaultValue);
+  }
+
   public PropertyBinding tryGetPropertyBinding(String alias)
   {
     if(StringUtils.isEmpty(alias)) { throw new IllegalArgumentException("alias"); }
