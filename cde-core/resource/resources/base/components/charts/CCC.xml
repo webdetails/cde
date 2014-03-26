@@ -528,6 +528,7 @@
           <Property name="valuesFont">cccValuesFont</Property>
           <Property name="valuesMask">cccValuesMask</Property>
           <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
@@ -2116,6 +2117,7 @@
           <Property name="valuesFont">cccValuesFont</Property>
           <Property name="valuesMask">cccValuesMask</Property>
           <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
@@ -2259,6 +2261,7 @@
           <Property name="valuesLabelStyle">cccValuesLabelStyle</Property>
           <Property name="valuesMask">cccValuesMask</Property>
           <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
@@ -3165,6 +3168,7 @@
           <Property name="valuesFont">cccValuesFont</Property>
           <Property name="valuesMask">cccValuesMask</Property>
           <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
@@ -3360,6 +3364,7 @@
           <Property name="valuesFont">cccValuesFont</Property>
           <Property name="valuesMask">cccValuesMask</Property>
           <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
           <Property name="valuesVisible">cccValuesVisible</Property>
         </Definition>
         <Property name="parameters">xActionArrayParameter</Property>
