@@ -28,6 +28,7 @@ var OlapSelectorModel = Backbone.Model.extend({
         olapUtils: null,
         "levels": null,
         "breadcrumb": [],
+        "preselected": [],
         "parameters": []
     },
 
@@ -55,9 +56,77 @@ var OlapSelectorModel = Backbone.Model.extend({
       this.processLevelSelection();
       levels.on("change:selected",this.processLevelSelection,this);
       this.setupEvents();
-      this.fetchValues();
+      this.preSelectValues();
     },
     
+    preSelectValues: function() {
+      var myself = this,
+          olapUtils = this.get("olapUtils"),
+          defaultSelect = myself.get("preselected"),
+          levelsArray = myself.get("levels");
+
+      for(var i = 0; i < levelsArray.length; i++) {
+        options = {
+            pageSize: this.get("pageSize"),
+            pageStart: this.get("pageStart"),
+            searchTerm: this.get("searchterm"),
+            level: levelsArray.at(i).get("name")
+        };
+
+        olapUtils.getPaginatedLevelMembers(options ,function(v) {
+
+          var toChange = myself.processPreSelectValues(v.members, defaultSelect);
+
+          myself.addPreSelectValues(toChange, myself);
+   
+        });
+      }
+    },
+
+    processPreSelectValues: function(members, defaultVals) {
+      var values = [],
+          selectedLevelDepth = this.getSelectedLevels().at(0).get("depth"),
+          memberDepth;
+          
+      if(!defaultVals.length)  {
+        return members;
+      }
+
+      for(var c = 0; c < members.length; c++) {
+        level = members[c];
+        memberDepth = (level.qualifiedName.split(".").length-1);
+        for(var p = 0; p < defaultVals.length; p++) {
+          if(level.qualifiedName === defaultVals[p]) {
+            level.selected = true;
+            values.push(level);
+            break;
+          } else if(selectedLevelDepth === memberDepth) {
+            values.push(level);
+            break;
+          }
+        }
+      }
+      return values;
+    },
+
+    addPreSelectValues: function(toChange, myself) {
+      var newValue,
+          values = myself.get("values");
+
+      for (c = 0; c < toChange.length; c++) {
+        var newValue = toChange[c], depth;
+              
+        depth = (newValue.qualifiedName.split(".").length - 2);
+        newValue.level = myself.get("levels").at(depth).id;
+              
+        values.add(newValue, {
+          silent: true
+        });
+      }
+      values.trigger("add");
+    },
+
+
     updateLevels: function(){
       var olapUtils = this.get("olapUtils"),
       h = olapUtils.getHierarchy();
@@ -106,11 +175,13 @@ var OlapSelectorModel = Backbone.Model.extend({
           return; // we'll be back
       }
     },
+
     getSelectedLevels: function(){
         return new Backbone.Collection(this.get("levels").where({
             selected: true
         }));
     },
+
     setupEvents: function() {
       var values = this.get("values");
       values.on("change:selected",this.updateSelection,this);
@@ -121,6 +192,7 @@ var OlapSelectorModel = Backbone.Model.extend({
       this.on("drillUp",this.drillUp,this);
       this.get("levels").on("select",this.changeLevel,this);
     },
+
     handleCollapse: function(m, isCollapsed) {
       if(isCollapsed) {
         return;
@@ -154,26 +226,24 @@ var OlapSelectorModel = Backbone.Model.extend({
     },
 
     drillDown: function(m, drill) {
-      if(drill) {
-        this.get("breadcrumb").push(m);
-        var levels = this.get("levels"),
-          olapUtils = this.get("olapUtils"),
-          defaultQualified = olapUtils.getHierarchy().defaultMemberQualifiedName,
-          atTopLevel,
-          selectedLevel = levels.where({selected:true})[0],
-          qualifiedName = selectedLevel.get("qualifiedName"), 
-          idx = levels.indexOf(selectedLevel);
-        selectedLevel.set("selected",false);
-        atTopLevel =  qualifiedName == defaultQualified;
-        if(atTopLevel) {
-          levels.at(idx+2).set("selected",true);
-        } else {
-          levels.at(idx+1).set("selected",true);
-        }
-        this.set("pageStart",0,{silent:true});
-        this.trigger("drill");
-        this.fetchValues();
+      this.get("breadcrumb").push(m);
+      var levels = this.get("levels"),
+        olapUtils = this.get("olapUtils"),
+        defaultQualified = olapUtils.getHierarchy().defaultMemberQualifiedName,
+        atTopLevel,
+        selectedLevel = levels.where({selected:true})[0],
+        qualifiedName = selectedLevel.get("qualifiedName"), 
+        idx = levels.indexOf(selectedLevel);
+      selectedLevel.set("selected",false);
+      atTopLevel =  qualifiedName == defaultQualified;
+      if(atTopLevel) {
+        levels.at(idx+2).set("selected",true);
+      } else {
+        levels.at(idx+1).set("selected",true);
       }
+      this.set("pageStart",0,{silent:true});
+      this.trigger("drill");
+      this.fetchValues();
     },
 
     drillUp: function() {
@@ -701,7 +771,8 @@ var OptionView = Backbone.View.extend({
     },
     
     drillDown: function() {
-      this.model.set("drill", true);
+      var val = this.model.get("drill");
+      this.model.set("drill", !val);
     },
 
     render: function() {
