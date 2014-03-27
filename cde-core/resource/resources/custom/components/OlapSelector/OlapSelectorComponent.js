@@ -20,7 +20,9 @@ var OlapSelectorComponent = BaseComponent.extend({
     this.model = new OlapSelectorModel({
       olapUtils: olapUtilsInstance,
       title: this.title,
-      multiselect: this.multiSelect
+      multiselect: this.multiSelect,
+      parameters: this.getParamValues(this.parameters),
+      preselected: this.getPreSelValue(this.parameter)
     });
     this.view = new OlapSelectorView({
       model: this.model,
@@ -70,5 +72,19 @@ var OlapSelectorComponent = BaseComponent.extend({
       });
 
       return paramValues;
-    }
+    },
+
+  getPreSelValue: function(param) {
+    var paramValue = Dashboards.getParameterValue(param),
+        values = [];
+
+    if(typeof paramValue !== 'undefined') {
+      values = JSON.parse(paramValue);
+      if(!this.multiSelect) {
+        values = new Array(values[0]);
+      }
+    } 
+
+    return values
+  }
 });
