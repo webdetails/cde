@@ -26,10 +26,22 @@ public abstract class JsWriterAbstract
   
   protected static void addVar(StringBuilder out, String name, String value)
   {
-    out.append("var ");addAssignment(out, name, value);
+    out.append("var ");
+    addAssignmentWithOr(out, name, value);
   }
 
-  protected static void addAssignment(StringBuilder out, String name, String value)
+  protected static void addAssignmentWithOr(StringBuilder out, String name, String value)
+  {
+    out.append(name);
+    out.append(" = ");
+    out.append(name);
+    out.append(" || ");
+    out.append(value);
+    out.append(";");
+    out.append(NEWLINE);
+  }
+  
+    protected static void addAssignment(StringBuilder out, String name, String value)
   {
     out.append(name);
     out.append(" = ");
