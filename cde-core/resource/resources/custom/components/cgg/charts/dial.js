@@ -13,7 +13,15 @@ var scale  = params.get("scale"),
     colors = (colors != null && colors.length > 0 ? colors : ["red", "yellow", "green"]),
     min    = parseFloat(scale[0]),
     max    = parseFloat(scale[scale.length - 1]),
-    value  = parseFloat(params.get("value"));
+    value  = parseFloat(params.get("value")),
+    maxPrecision = 5;
+
+function decimalPlaces(number) {
+  n_str = Math.abs(number).toString();
+  lastPoint = (n_str.lastIndexOf('.') != -1) ? n_str.lastIndexOf('.') : 0; 
+  decimalDigits = n_str.length - lastPoint - 1;
+  return decimalDigits;
+}
 
 /*
  * reset max to biggest of the original maximum or the actual value
@@ -44,7 +52,23 @@ var w = 600,
     r = .75 * h,
     a = pv.Scale.linear(min, max).range(0, Math.PI),
     ticks = a.ticks();
-    start = -Math.PI;
+    start = -Math.PI,
+    localMax = 0;
+
+/* Fix ticks decimal values*/
+for(i = 0; i < ticks.length; i++) {
+    
+    decimals = decimalPlaces(ticks[i]);
+    
+    if(decimals < maxPrecision && decimals > localMax) {
+        localMax = decimals;
+    }
+
+    if(decimals > maxPrecision) {
+        ticks[i] = ticks[i].toFixed(localMax);
+    }
+}
+
 /* The root panel. */
 var vis = new pv.Panel()
     .canvas(document.getElementById("escala_cor"))
