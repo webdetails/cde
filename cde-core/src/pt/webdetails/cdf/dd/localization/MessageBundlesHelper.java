@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -15,6 +16,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
 public class MessageBundlesHelper {
 
@@ -43,7 +45,11 @@ public class MessageBundlesHelper {
 
     this.staticBaseContentUrl = CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl();
 
-    this.msgsRelativeDir = msgsRelativeDir;
+    if( StringUtils.isEmpty( msgsRelativeDir ) ){
+      this.msgsRelativeDir = String.valueOf( RepositoryHelper.SEPARATOR );
+    } else if( !msgsRelativeDir.startsWith( String.valueOf( RepositoryHelper.SEPARATOR ) ) ){
+      this.msgsRelativeDir = String.valueOf( RepositoryHelper.SEPARATOR ) + msgsRelativeDir;
+    }
     this.sourceDashboardBaseMsgFile = sourceDashboardBaseMsgFile;
     this.languagesCacheUrl = Utils.joinPath( staticBaseContentUrl, BASE_CACHE_DIR, msgsRelativeDir );
   }
