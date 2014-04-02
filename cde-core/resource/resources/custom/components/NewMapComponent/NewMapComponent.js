@@ -618,7 +618,7 @@ var NewMapComponent = (function (){
       }
 
       this.values = values;
-      this.mapEngine.API_KEY = this.API_KEY || API_KEY; //either local or global API_KEY
+      this.mapEngine.API_KEY = this.API_KEY || window.API_KEY; //either local or global API_KEY
       this.mapEngine.tileServices = this.tileServices;
       this.mapEngine.tileServicesOptions = this.tileServicesOptions;
       this.mapEngine.init(this, this.tilesets);
