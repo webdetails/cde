@@ -10,6 +10,7 @@ var OpenLayersEngine = MapEngine.extend({
   centered: false,
   //    featureLayer: undefined,
   useMercator: true,
+  API_KEY: 0,
   init: function(mapComponent, tilesets) {
     this.tilesets = tilesets;
     this.mapComponent = mapComponent; // the callbacks will use this
