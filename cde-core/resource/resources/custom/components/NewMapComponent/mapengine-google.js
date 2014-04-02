@@ -279,7 +279,7 @@ var GoogleMapEngine = MapEngine.extend({
     var myself = this;
 
     return new google.maps.ImageMapType(_.defaults({
-      name: name.contains('/') ? 'custom' : name,
+      name: name.indexOf('/') >= 0 ? 'custom' : name,
       getTileUrl: function(coord, zoom) {
         var limit = Math.pow(2, zoom);
         if (coord.y < 0 || coord.y >= limit) {
