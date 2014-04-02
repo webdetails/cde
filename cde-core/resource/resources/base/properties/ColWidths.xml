@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Column Widths</Description>
-	<Tooltip>The table widths</Tooltip>
+	<Tooltip>The table widths. Works with percentages or points. Example: [70%, 30%], [200px, 150px], [200, 150]</Tooltip>
 	<Advanced>True</Advanced>
 	<InputType>Array</InputType>
 	<OutputType>Array</OutputType>

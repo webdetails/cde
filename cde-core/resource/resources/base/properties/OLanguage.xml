@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
 	<Description>oLanguage</Description>
-	<Tooltip>oLanguage</Tooltip>
+	<Tooltip>Alter the table language information</Tooltip>
 	<InputType>JavaScript</InputType>
 	<OutputType>String</OutputType>
 	<Order>17</Order>
