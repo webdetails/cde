@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Expand Parameters</Description>
-	<Tooltip> Expand Parameters  - arg is column id, value is parameter name to change with column value</Tooltip>
+	<Tooltip>Choose which parameter stores the column value on expand. Example: [[0,param0],[1,param1]]</Tooltip>
 	<Advanced>true</Advanced>
 	<InputType>ValuesArray</InputType>
 	<OutputType>Array</OutputType>
