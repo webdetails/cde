@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
 	<Description>oLanguage</Description>
-	<Tooltip>Alter the table language information</Tooltip>
+	<Tooltip>Change the table language information using oLanguage object properties. Example: { "oLanguage": { "sLengthMenu": "information" } }</Tooltip>
 	<InputType>JavaScript</InputType>
 	<OutputType>String</OutputType>
 	<Order>17</Order>
