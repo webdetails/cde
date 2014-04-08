@@ -1,0 +1,9 @@
+More documentation: http://code.google.com/p/pentaho-gmaps-overlay/
+Sample file: http://sourceforge.net/projects/pentahogmapsoverlay/files/
+
+2.0.0
+
+- CDF Async Support (Contributions by Carlos Russo from Webdetails.pt)
+- Support for colors map based on a Continuous Color Map (Contributions by Carlos Russo from Webdetails.pt)
+- Support for colors map defined in the query resultset
+- Another code improvements
