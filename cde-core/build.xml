@@ -43,7 +43,7 @@
 -->
 
 
-    <target name="dist" depends="clean,resolve,jar,source.jar,test, test-js"/>
+    <target name="dist" depends="clean,resolve,jar,source.jar,test"/>
 
 
   <target name="compile.compile" depends="init, resolve" description="Performs the actual javac compile">
