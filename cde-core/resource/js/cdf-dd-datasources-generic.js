@@ -4,8 +4,8 @@ var MdxEntryBase = PalleteEntry.extend({
     var myself = this;
     this._execute = this.base;
     
-    var content = '<select id="cdfddOlapCatalogSelect" onchange="MdxEntry.getEntry(\'MDX_ENTRY\').catalogSelected()"><option value="-"> Select catalog </option></select><br/>\n' +
-'			<select id="cdfddOlapCubeSelect" onchange="MdxEntry.getEntry(\'MDX_ENTRY\').cubeSelected()" ><option value="-"> Select cube </option></select>';
+    var content = '<select id="cdfddOlapCatalogSelect" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').catalogSelected()"><option value="-"> Select catalog </option></select><br/>\n' +
+'			<select id="cdfddOlapCubeSelect" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').cubeSelected()" ><option value="-"> Select cube </option></select>';
 
     $.prompt(content,{
       buttons: {
