@@ -6,7 +6,7 @@
 		<Category>COMMUNITYCOMPONENTS</Category>
 		<CatDescription>Community Contributions</CatDescription>
 		<Type>PalleteEntry</Type>
-		<Version>1.0</Version>
+		<Version>2.0</Version>
 	</Header>
 	<Contents>
 		<Model>
@@ -15,30 +15,29 @@
 			<Property type="boolean">executeAtStart</Property>
 			<Property type="string">htmlObject</Property>
 			<Property type="number">listeners</Property>
-			<Property type="function">preChange</Property>
-			<Property type="function">postChange</Property>
 			<Property type="function">postFetch</Property>
 			<Property type="function">preExecution</Property>
 			<Property type="function">postExecution</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Definition name="queryDefinition">
 				<Property type="query">dataSource</Property>
-			</Definition>        
-			<Property>mapName</Property>			
+			</Definition>
+			<Property>mapName</Property>
 			<Property>mapWidth</Property>
 			<Property>mapHeight</Property>
-			<Property>centerLatitude</Property>			
+			<Property>centerLatitude</Property>
 			<Property>centerLongitude</Property>
-			<Property>defaultColor</Property>      		      							
-			<Property>defaultZoomLevel</Property>      		      							
+			<Property>defaultColor</Property>
+			<Property>defaultZoomLevel</Property>
 			<Property>legend</Property>
 			<Property>legendText</Property>
+			<Property>sourceText</Property>
 			<Property>search</Property>
 		</Model>
 		<Implementation>
 			<Code src="gmapsoverlay-implementation.js" />
-			<Dependencies>		    
-				<Dependency src="GMapComponentAsyncLoader.js" version="1.0">GMapComponentAsyncLoader</Dependency>
+			<Dependencies>
+				<Dependency src="GMapComponentAsyncLoader.js" version="1.1">GMapComponentAsyncLoader</Dependency>
 			</Dependencies>
 			<Styles>
 				<Style src="gmapsoverlay.css">gMapsOverlayComponent</Style>
@@ -56,7 +55,7 @@
 						<OutputType>String</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
 				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
@@ -70,8 +69,8 @@
 						<OutputType>Number</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
-				</DesignerProperty>            
+					</Header>
+				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
 						<Name>mapWidth</Name>
@@ -84,8 +83,8 @@
 						<OutputType>Number</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
-				</DesignerProperty>            
+					</Header>
+				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
 						<Name>centerLatitude</Name>
@@ -98,7 +97,7 @@
 						<OutputType>Number</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
 				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
@@ -112,8 +111,8 @@
 						<OutputType>Number</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
-				</DesignerProperty>            
+					</Header>
+				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
 						<Name>defaultColor</Name>
@@ -126,7 +125,7 @@
 						<OutputType>String</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
 				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
@@ -141,7 +140,7 @@
 						<Advanced>false</Advanced>
 						<Version>1.0</Version>
 					</Header>
-				</DesignerProperty>                          
+				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
 						<Name>legend</Name>
@@ -154,13 +153,13 @@
 						<OutputType>Array</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
 				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
 						<Name>legendText</Name>
 						<Parent>BaseProperty</Parent>
-						<DefaultValue></DefaultValue>
+						<DefaultValue>Legend</DefaultValue>
 						<Description>Legend Text</Description>
 						<Tooltip></Tooltip>
 						<Advanced>false</Advanced>
@@ -168,7 +167,21 @@
 						<OutputType>String</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
+				</DesignerProperty>
+				<DesignerProperty>
+					<Header>
+						<Name>sourceText</Name>
+						<Parent>BaseProperty</Parent>
+						<DefaultValue></DefaultValue>
+						<Description>Source Text</Description>
+						<Tooltip></Tooltip>
+						<Advanced>false</Advanced>
+						<InputType>String</InputType>
+						<OutputType>String</OutputType>
+						<Order>40</Order>
+						<Version>1.0</Version>
+					</Header>
 				</DesignerProperty>
 				<DesignerProperty>
 					<Header>
@@ -182,7 +195,7 @@
 						<OutputType>Boolean</OutputType>
 						<Order>40</Order>
 						<Version>1.0</Version>
-					</Header>            
+					</Header>
 				</DesignerProperty>
 			</CustomProperties>
 		</Implementation>
