@@ -598,13 +598,19 @@ var ArraySelectRenderer = ValuesArrayRenderer.extend({
     },10);
   },
   autoCompleteRequest: function(req,add) {
-    var results = this.selectData.map(function(e){return {label: e[1], value: e[0]};});
+    var results = $.map(this.getDataComplete(), function(v, k) { return k });
     add(jQuery.grep(results, function(elt, i){
-      return elt.value.indexOf(req.term) >= 0;
+      return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
     }));
   },
   validate: function(settings, original){
     return true;
+  },
+  getDataComplete: function() {
+    var data = this.selectData;
+    data["string"] = 'string';
+    data["numeric"] = 'numeric';
+    return data;
   },
   getData: function(){
     // Default implementation
