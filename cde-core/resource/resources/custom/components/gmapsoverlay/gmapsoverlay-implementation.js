@@ -429,7 +429,7 @@ var GMapEngine = Base.extend({
 		controlReset.setAttribute('id', 'controlReset_' + id);
 		linkReset.setAttribute('id', 'linkReset_' + id);
 		linkReset.href = "javascript:void(0)";
-		linkReset.className = 'button';
+		linkReset.className = 'gmapsoverlay-button';
 		linkReset.onclick = (function () {	myself.map.setZoom(zoom);
 							myself.map.setCenter(new google.maps.LatLng(centerLatitude, centerLongitude));
 						 });
