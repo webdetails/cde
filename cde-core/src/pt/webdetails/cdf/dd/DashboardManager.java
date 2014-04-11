@@ -690,12 +690,12 @@ public final class DashboardManager
   {
     return openDashboardAsJXPathContext(wcdf.getStructurePath(), wcdf);
   }
-  
+
   public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException {
+      throws IOException, FileNotFoundException {
     InputStream input = null;
     try {
-      input = Utils.getSystemOrUserReadAccess( wcdf.getPath() ).getFileInputStream( dashboardLocation );
+      input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
       final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
 
       if ( wcdf != null ) {
