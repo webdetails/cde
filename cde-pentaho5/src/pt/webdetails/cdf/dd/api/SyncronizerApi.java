@@ -61,15 +61,18 @@ public class SyncronizerApi {//TODO: synchronizer?
   @Path( "/syncronizeDashboard" )
   @Produces( MimeTypes.JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+				@FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
                 @FormParam( MethodParams.AUTHOR ) @DefaultValue( "" ) String author,
+                @FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
                 @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                 @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
                 @FormParam( MethodParams.WIDGET ) boolean widget,
                 @FormParam( MethodParams.RENDERER_TYPE ) @DefaultValue( "" ) String rendererType,
                 @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
+				@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
 		  					@FormParam( MethodParams.OPERATION ) String operation,
-                @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
-                @FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
+
 
 		  					@Context HttpServletRequest request,
 		  					@Context HttpServletResponse response ) throws Exception {
@@ -113,6 +116,13 @@ public class SyncronizerApi {//TODO: synchronizer?
         return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
+      } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
+        result = dashboardStructure.save(file, cdfStructure );
+      } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
+        if ( StringUtils.isEmpty( title ) ) {
+          title = FilenameUtils.getBaseName( file );
+        }
+        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {

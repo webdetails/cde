@@ -537,7 +537,7 @@
     "id": "CUSTOMCOMPONENTS",
     "name": "Custom",
     "type": "Label",
-    "typeDesc": "Label",
+    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
@@ -570,7 +570,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
+      "value": "/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
       "type": "String"
      },
      {
@@ -639,6 +639,26 @@
       "type": "Integer"
      },
      {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "mapMode",
+      "value": "markers",
+      "type": "mapModeCustom"
+     },
+     {
       "name": "dataSource",
       "type": "Datasource",
       "value": "ForMapWithGeo"
@@ -677,6 +697,21 @@
       "name": "tooltip",
       "value": "",
       "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "",
+      "type": "JavaScript"
      }
     ]
    },
@@ -684,7 +719,7 @@
     "id": "GENERIC",
     "name": "Generic",
     "type": "Label",
-    "typeDesc": "Label",
+    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
@@ -726,7 +761,7 @@
     "id": "CHARTS",
     "name": "Charts",
     "type": "Label",
-    "typeDesc": "Label",
+    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
@@ -769,8 +804,13 @@
       "value": "salesGraphQuery"
      },
      {
-      "name": "width",
-      "value": "290",
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -779,13 +819,8 @@
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "width",
+      "value": "290",
       "type": "Integer"
      },
      {
@@ -809,12 +844,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
@@ -1002,6 +1037,11 @@
       "name": "legendItemPadding",
       "value": 2.5,
       "type": "Float"
+     },
+     {
+      "name": "legendItemSize",
+      "value": "",
+      "type": "String"
      },
      {
       "name": "legendMargins",
@@ -1404,8 +1444,13 @@
       "value": "salesGraphQuery"
      },
      {
-      "name": "width",
-      "value": "75",
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -1414,13 +1459,8 @@
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "width",
+      "value": "75",
       "type": "Integer"
      },
      {
@@ -1444,12 +1484,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
@@ -1637,6 +1677,11 @@
       "name": "legendItemPadding",
       "value": 2.5,
       "type": "Float"
+     },
+     {
+      "name": "legendItemSize",
+      "value": "",
+      "type": "String"
      },
      {
       "name": "legendMargins",
@@ -2014,7 +2059,7 @@
     "id": "MDX",
     "name": "MDX Queries",
     "type": "Label",
-    "typeDesc": "Label",
+    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
@@ -2104,7 +2149,7 @@
     "id": "SCRIPTING",
     "name": "SCRIPTING Queries",
     "type": "Label",
-    "typeDesc": "Label",
+    "typeDesc": "<i>Group</i>",
     "parent": "UnIqEiD",
     "properties": [
      {
@@ -2129,13 +2174,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -2200,13 +2245,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -2258,5 +2303,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
+ "filename": "/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
 }

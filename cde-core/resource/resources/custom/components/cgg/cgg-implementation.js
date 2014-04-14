@@ -48,7 +48,7 @@ var CggComponent = BaseComponent.extend({
   },
 
   update: function() {
-    var url    = Dashboards.getCggDrawUrl(),
+    var url    = wd.helpers.cggHelper.getCggDrawUrl(),
         data   = this.processParams(),
         script = this.getScriptUrl(),
         myself = this,

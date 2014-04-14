@@ -280,22 +280,26 @@ var ExportPopupComponent = PopupComponent.extend({
     delete this.dataComponent;
     delete this.chartComponent;
     var that = this.base(parameterRemap,componentRemap,htmlRemap);
-    this.dataComponent = dataComponent;
-    that.dataComponent = componentRemap[dataComponent.name] || dataComponent;
-    this.chartComponent = chartComponent;
-	var truncated = /render_(.*)/.test(chartComponent.name) ?
-		chartComponent.name.match(/render_(.*)/)[1]:
-		null;
-	if(componentRemap[chartComponent.name]) {
-	  that.chartComponent = Dashboards.getComponentByName(componentRemap[chartComponent.name]);
-	  that.chartExportComponent = componentRemap[chartComponent.name];
-	} else if(truncated && componentRemap[truncated]) {
-	  that.chartComponent = Dashboards.getComponentByName("render_" + componentRemap[truncated]);
-	  that.chartExportComponent = componentRemap[truncated];
-	} else {
-	  that.chartComponent = chartComponent;
-	}
-    that.chartComponent = componentRemap[chartComponent.name] || chartComponent;
+    if (dataComponent) {
+      this.dataComponent = dataComponent;
+      that.dataComponent = componentRemap[dataComponent.name] || dataComponent;
+    }
+    if(chartComponent){
+        this.chartComponent = chartComponent;
+    	var truncated = /render_(.*)/.test(chartComponent.name) ?
+    		chartComponent.name.match(/render_(.*)/)[1]:
+    		null;
+    	if(componentRemap[chartComponent.name]) {
+    	  that.chartComponent = Dashboards.getComponentByName(componentRemap[chartComponent.name]);
+    	  that.chartExportComponent = componentRemap[chartComponent.name];
+    	} else if(truncated && componentRemap[truncated]) {
+    	  that.chartComponent = Dashboards.getComponentByName("render_" + componentRemap[truncated]);
+    	  that.chartExportComponent = componentRemap[truncated];
+    	} else {
+    	  that.chartComponent = chartComponent;
+    	}
+        that.chartComponent = componentRemap[chartComponent.name] || chartComponent;
+    }
     return that;
   },
 
@@ -428,9 +432,10 @@ var ExportPopupComponent = PopupComponent.extend({
     var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
     var path = this.chartComponent.chartDefinition.path;
 
-    var loc = Dashboards.context.path.replace(/[^\/]+$/, "");
+    //4.x has fullPath and 5.0 has path, this can go away when cdf gets refactored
+    var loc = (Dashboards.context.fullPath) ? Dashboards.context.fullPath.replace(/[^\/]+$/, "") : Dashboards.context.path.replace(/[^\/]+$/, "");
 
-    var url = Dashboards.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
+    var url = wd.helpers.cggHelper.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
     
     var param;
     // Get parameter values; metadata is a special parameter, carries important

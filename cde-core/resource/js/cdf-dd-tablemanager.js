@@ -1722,6 +1722,12 @@ var ResourceFileRenderer = CellRenderer.extend({
               myself.fileName = selectedFile;//new
               var file = myself.formatSelection(selectedFile);
               _editArea.text(file);
+              var params = {
+                createNew: true,
+                path: selectedFile,
+                data: ""
+              }
+              SynchronizeRequests.createFile(params);
               myself.callback(file);
               return true;
             }

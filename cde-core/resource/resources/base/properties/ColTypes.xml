@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Column Types</Description>
-	<Tooltip>The table column types</Tooltip>
+	<Tooltip>The table column types. Example: [numeric, string, circle, link, sparkline]</Tooltip>
 	<InputType type='valueList' base='ArraySelectRenderer'/>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>

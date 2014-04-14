@@ -1142,14 +1142,30 @@ var OlapChartWizard = OlapWizard.extend({
 			var chartModel = BaseModel.getModel('Components' + type);
 			var chartStub = chartModel.getStub();
 			
-			CDFDDUtils.getProperty(chartStub,"name").value = this.getSelectedOptions().name+"Chart";
-			CDFDDUtils.getProperty(chartStub,"title").value = this.getSelectedOptions().name; //ToDo: new form field
-			CDFDDUtils.getProperty(chartStub,"htmlObject").value = $("#cdfdd-olap-parameter-htmlobject").val();
-			CDFDDUtils.getProperty(chartStub,"dataSource").value = this.getSelectedOptions().name+"Query";
-			CDFDDUtils.getProperty(chartStub,"height").value = "300";
-			CDFDDUtils.getProperty(chartStub,"width").value = "400";
-			CDFDDUtils.getProperty(chartStub,"crosstabMode").value = true;
-			CDFDDUtils.getProperty(chartStub,"orientation").value = this.getSelectedOptions().orientation;
+			if (CDFDDUtils.getProperty(chartStub,"name")){
+				CDFDDUtils.getProperty(chartStub,"name").value = this.getSelectedOptions().name+"Chart";
+			}
+			if (CDFDDUtils.getProperty(chartStub,"title")) {
+				CDFDDUtils.getProperty(chartStub,"title").value = this.getSelectedOptions().name; //ToDo: new form field
+			}
+			if (CDFDDUtils.getProperty(chartStub,"htmlObject")) {
+				CDFDDUtils.getProperty(chartStub,"htmlObject").value = $("#cdfdd-olap-parameter-htmlobject").val();
+			}
+			if (CDFDDUtils.getProperty(chartStub,"dataSource")) {
+				CDFDDUtils.getProperty(chartStub,"dataSource").value = this.getSelectedOptions().name+"Query";
+			}
+			if (CDFDDUtils.getProperty(chartStub,"height")) {
+				CDFDDUtils.getProperty(chartStub,"height").value = "300";
+			}
+			if (CDFDDUtils.getProperty(chartStub,"width")) {
+				CDFDDUtils.getProperty(chartStub,"width").value = "400";
+			}
+			if (CDFDDUtils.getProperty(chartStub,"crosstabMode")) {
+				CDFDDUtils.getProperty(chartStub,"crosstabMode").value = true;
+			}
+			if (CDFDDUtils.getProperty(chartStub,"orientation")) {
+				CDFDDUtils.getProperty(chartStub,"orientation").value = this.getSelectedOptions().orientation;
+			}
 			
 			var listeners = this.getListenners();
 			if(listeners.length > 0){
