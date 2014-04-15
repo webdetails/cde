@@ -72,10 +72,6 @@ import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
-	public static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
-
-	public static final String MOLAP_PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/MOLA/";
-
 	private static final Log logger = LogFactory.getLog(DashboardDesignerContentGenerator.class);
 
 	private static final long serialVersionUID = 1L;
@@ -684,13 +680,18 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		String dashboard = getRequestParameters().getStringParameter("dashboard", null);
 		dashboard = DashboardWcdfDescriptor.toStructurePath(dashboard);
 
-		List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources(dashboard);
+		List<CdaDataSourceReader.CdaDataSource> dataSourcesList = getCdaSources( dashboard );
 		CdaDataSourceReader.CdaDataSource[] dataSources = dataSourcesList.toArray(new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()]);
 		String result = "[" + StringUtils.join(dataSources, ",") + "]";
 		writeOut(out, result);
 	}
 
-	// External Editor v
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaSources( String dashboard ) {
+    return CdaDataSourceReader.getCdaDataSources(dashboard);
+  }
+
+
+  // External Editor v
 	@Exposed(accessLevel = AccessLevel.PUBLIC)
 	public void getFile(final OutputStream out) throws IOException {
 		
@@ -779,7 +780,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		if(access.fileExists(EXTERNAL_EDITOR_PAGE)){
 			writeOut(out, IOUtils.toString(access.getFileInputStream(EXTERNAL_EDITOR_PAGE)));
 		}else{
-			writeOut(out, "no external editor found in " + Utils.joinPath(PLUGIN_PATH, EXTERNAL_EDITOR_PAGE));
+			writeOut(out, "no external editor found in " + Utils.joinPath(getPluginDir(), EXTERNAL_EDITOR_PAGE));
 		}
 	}
 
@@ -792,7 +793,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 		if(access.fileExists(COMPONENT_EDITOR_PAGE)){
 			writeOut(out, IOUtils.toString(access.getFileInputStream(COMPONENT_EDITOR_PAGE)));
 		}else{
-			writeOut(out, "no external editor found in " + Utils.joinPath(PLUGIN_PATH, COMPONENT_EDITOR_PAGE));
+			writeOut(out, "no external editor found in " + Utils.joinPath(getPluginDir(), COMPONENT_EDITOR_PAGE));
 		}
 	}
 
@@ -926,4 +927,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
         return map;
 	}
+
+  public static String getPluginDir() {
+    return CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
+  }
 }

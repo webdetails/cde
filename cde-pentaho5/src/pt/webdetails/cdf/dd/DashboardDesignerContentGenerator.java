@@ -17,7 +17,6 @@ import pt.webdetails.cpf.utils.MimeTypes;
 
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
-  public static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
   private static final Log logger = LogFactory.getLog( DashboardDesignerContentGenerator.class );
 
   private boolean edit = false;
@@ -130,4 +129,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 	public void setResource(boolean resource) {
 		this.resource = resource;
 	}
+
+  public static String getPluginDir() {
+    return CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
+  }
 }
