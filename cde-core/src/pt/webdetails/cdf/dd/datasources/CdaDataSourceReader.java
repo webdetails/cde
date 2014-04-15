@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.datasources;
 
@@ -18,53 +27,43 @@ import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-public class CdaDataSourceReader 
-{
-  public static class CdaDataSource 
-  {
+public class CdaDataSourceReader {
+  public static class CdaDataSource {
     String cdaSettings;
     String dataAccessId;
-    
-    CdaDataSource(JXPathContext dataSourceContext)
-    {
-      this(dataSourceContext,null);
+
+    CdaDataSource( JXPathContext dataSourceContext ) {
+      this( dataSourceContext, null );
     }
-    
-    CdaDataSource(JXPathContext dataSourceContext, String cdaSettings)
-    {
-      this.dataAccessId = XPathUtils.getStringValue(dataSourceContext, "properties/value[../name='name']");
-      
-      if(cdaSettings != null)
-      {
+
+    CdaDataSource( JXPathContext dataSourceContext, String cdaSettings ) {
+      this.dataAccessId = XPathUtils.getStringValue( dataSourceContext, "properties/value[../name='name']" );
+
+      if ( cdaSettings != null ) {
         this.cdaSettings = cdaSettings;
-      }
-      else 
-      {
-        if(XPathUtils.exists(dataSourceContext, "properties/value[../name='cdaPath']"))
-        {
-          this.cdaSettings = XPathUtils.getStringValue(dataSourceContext, "properties/value[../name='cdaPath']"); 
-        }
-        else 
-        {
-          this.cdaSettings = XPathUtils.getStringValue(dataSourceContext, "properties/value[../name='solution']") + '/' +
-                             XPathUtils.getStringValue(dataSourceContext, "properties/value[../name='path']") + '/' +
-                             XPathUtils.getStringValue(dataSourceContext, "properties/value[../name='file']");
+      } else {
+        if ( XPathUtils.exists( dataSourceContext, "properties/value[../name='cdaPath']" ) ) {
+          this.cdaSettings = XPathUtils.getStringValue( dataSourceContext, "properties/value[../name='cdaPath']" );
+        } else {
+          this.cdaSettings =
+              XPathUtils.getStringValue( dataSourceContext, "properties/value[../name='solution']" ) + '/' + XPathUtils
+                  .getStringValue( dataSourceContext, "properties/value[../name='path']" ) + '/' + XPathUtils
+                  .getStringValue( dataSourceContext, "properties/value[../name='file']" );
         }
       }
     }
-    
-    public CdaDataSource(String cdaSettings, String dataAccessId)
-    {
+
+    public CdaDataSource( String cdaSettings, String dataAccessId ) {
       this.cdaSettings = cdaSettings;
       this.dataAccessId = dataAccessId;
     }
-    
-    public String toString()
-    {
-      return "{cdaSettingsId:'" + cdaSettings + "'" + (dataAccessId != null? (", dataAccessId:'" + dataAccessId + "'") : "") + "}";
+
+    public String toString() {
+      return "{cdaSettingsId:'" + cdaSettings + "'" + ( dataAccessId != null
+          ? ( ", dataAccessId:'" + dataAccessId + "'" ) : "" ) + "}";
     }
   }
-  
+
   // TODO: The instance model
   // already has a DataSourceComponent list in the Dashboard object...
   public static List<CdaDataSource> getCdaDataSources( String dashboard ) {
@@ -79,39 +78,35 @@ public class CdaDataSourceReader
     }
     return getCdaDataSources( context );
   }
-  
-  protected static List<CdaDataSource> getCdaDataSources(JXPathContext docContext)
-  {  
+
+  protected static List<CdaDataSource> getCdaDataSources( JXPathContext docContext ) {
     ArrayList<CdaDataSource> dataSources = new ArrayList<CdaDataSource>();
     //external
-    @SuppressWarnings("unchecked")
-    Iterator<Pointer> extDataSources = docContext.iteratePointers("/datasources/rows[properties/name='dataAccessId']");
-    while(extDataSources.hasNext())
-    {
+    @SuppressWarnings( "unchecked" )
+    Iterator<Pointer> extDataSources =
+        docContext.iteratePointers( "/datasources/rows[properties/name='dataAccessId']" );
+    while ( extDataSources.hasNext() ) {
       Pointer source = extDataSources.next();
-      if(!(source instanceof NullPointer))
-      {
-        dataSources.add(new CdaDataSource(docContext.getRelativeContext(source)));
+      if ( !( source instanceof NullPointer ) ) {
+        dataSources.add( new CdaDataSource( docContext.getRelativeContext( source ) ) );
       }
     }
-    
-    @SuppressWarnings("unchecked")
-    Iterator<Pointer> builtInDataSources = docContext.iteratePointers("/datasources/rows[meta='CDA']");
-    if(builtInDataSources.hasNext())
-    {
+
+    @SuppressWarnings( "unchecked" )
+    Iterator<Pointer> builtInDataSources = docContext.iteratePointers( "/datasources/rows[meta='CDA']" );
+    if ( builtInDataSources.hasNext() ) {
       //built-in
-      String fileName = XPathUtils.getStringValue(docContext, "/filename");
+      String fileName = XPathUtils.getStringValue( docContext, "/filename" );
       String toReplace = ".cdfde";
       String replaceWith = ".cda";
-      if(StringUtils.endsWith(fileName,".wcdf"))
-      {
+      if ( StringUtils.endsWith( fileName, ".wcdf" ) ) {
         toReplace = ".wcdf";
       }
-      fileName = StringUtils.replace(fileName, toReplace, replaceWith);
+      fileName = StringUtils.replace( fileName, toReplace, replaceWith );
       //just add cda name
-      dataSources.add(new CdaDataSource(fileName, null));
+      dataSources.add( new CdaDataSource( fileName, null ) );
     }
-    
+
     return dataSources;
   }
 }

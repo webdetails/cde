@@ -14,10 +14,8 @@
 package pt.webdetails.cdf.dd;
 
 import junit.framework.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pentaho.platform.api.engine.IParameterProvider;
-import sun.security.x509.IPAddressName;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,21 +29,16 @@ public class DashboardDesignerContentGeneratorTest {
   private final String DASHBOARD = "/test-resources/dummyDashboard/dummy.cdfde";
   private final String EXPECTED = "[{cdaSettingsId:'dummy/dummy.cda'}]";
 
-  @BeforeClass
-  public static void setUp(){
-
-  }
-
   @Test
   public void listCdaSourcesTest() throws IOException {
     MockParameterProvider requestMap = new MockParameterProvider();
-    requestMap.setParameter("dashboard", DASHBOARD);
-    Map<String,IParameterProvider > parameterProviders = new HashMap<String, IParameterProvider>();
+    requestMap.setParameter( "dashboard", DASHBOARD );
+    Map<String, IParameterProvider> parameterProviders = new HashMap<String, IParameterProvider>();
     parameterProviders.put( "request", requestMap );
     DashboardDesignerContentGenerator ddcg = new DashboardDesignerContentGeneratorForTesting();
     ddcg.setParameterProviders( parameterProviders );
-    OutputStream out = new ByteArrayOutputStream(  );
-    ddcg.listCdaSources(out);
+    OutputStream out = new ByteArrayOutputStream();
+    ddcg.listCdaSources( out );
     String actualResult = out.toString();
     Assert.assertEquals( EXPECTED, actualResult );
   }

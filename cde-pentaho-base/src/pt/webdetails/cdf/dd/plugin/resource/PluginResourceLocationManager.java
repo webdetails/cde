@@ -11,28 +11,28 @@ import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-public class PluginResourceLocationManager implements IPluginResourceLocationManager{
+public class PluginResourceLocationManager implements IPluginResourceLocationManager {
 
   private FsPluginResourceLocations componentLocator;
 
-	public IReadAccess[] getAllCustomComponentsResourceLocations() {
-		throw new NotImplementedException("shouldn't be using this anymore");
-	}
+  public IReadAccess[] getAllCustomComponentsResourceLocations() {
+    throw new NotImplementedException( "shouldn't be using this anymore" );
+  }
 
-	@Override
-	public String getMessagePropertiesResourceLocation() {
-		return DashboardDesignerContentGenerator.getPluginDir() +"lang/messages.properties";
-	}
+  @Override
+  public String getMessagePropertiesResourceLocation() {
+    return DashboardDesignerContentGenerator.getPluginDir() + "lang/messages.properties";
+  }
 
-	@Override
-	public String getStyleResourceLocation(String arg0) {
-		return new CdfStyles().getResourceLocation(arg0);
-	}
+  @Override
+  public String getStyleResourceLocation( String arg0 ) {
+    return new CdfStyles().getResourceLocation( arg0 );
+  }
 
-    public synchronized List<PathOrigin> getCustomComponentsLocations() {
-      if (componentLocator == null) {
-        componentLocator = new FsPluginResourceLocations();
-      }
-      return componentLocator.getCustomComponentLocations();
+  public synchronized List<PathOrigin> getCustomComponentsLocations() {
+    if ( componentLocator == null ) {
+      componentLocator = new FsPluginResourceLocations();
     }
+    return componentLocator.getCustomComponentLocations();
+  }
 }
