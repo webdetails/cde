@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DatasourcesApiForTesting extends DatasourcesApi {
 
-  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources (String dashboard) {
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources( String dashboard ) {
     return CdaDataSourceReaderForTesting.getCdaDataSources( dashboard );
   }
 }
