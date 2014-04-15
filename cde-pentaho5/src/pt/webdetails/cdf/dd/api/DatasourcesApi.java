@@ -29,7 +29,7 @@ public class DatasourcesApi {
     } else {
       dashboard = DashboardWcdfDescriptor.toStructurePath( dashboard );
 
-      List<CdaDataSourceReader.CdaDataSource> dataSourcesList = CdaDataSourceReader.getCdaDataSources( dashboard );
+      List<CdaDataSourceReader.CdaDataSource> dataSourcesList =  getCdaDataSources(dashboard);
       CdaDataSourceReader.CdaDataSource[] dataSources =
               dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
       return "[" + StringUtils.join( dataSources, "," ) + "]";
@@ -38,5 +38,8 @@ public class DatasourcesApi {
 
   private class MethodParams {
     public static final String DASHBOARD = "dashboard";
+  }
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources (String dashboard) {
+    return CdaDataSourceReader.getCdaDataSources( dashboard );
   }
 }

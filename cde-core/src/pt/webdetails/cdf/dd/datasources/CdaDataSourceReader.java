@@ -80,7 +80,7 @@ public class CdaDataSourceReader
     return getCdaDataSources( context );
   }
   
-  private static List<CdaDataSource> getCdaDataSources(JXPathContext docContext)
+  protected static List<CdaDataSource> getCdaDataSources(JXPathContext docContext)
   {  
     ArrayList<CdaDataSource> dataSources = new ArrayList<CdaDataSource>();
     //external

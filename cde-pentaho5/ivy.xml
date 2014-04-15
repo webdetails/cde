@@ -30,7 +30,7 @@
 
         <dependency org="pentaho" name="cpf-core"     rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
         <dependency org="pentaho" name="cpf-pentaho5" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>
-        <dependency org="pentaho" name="cde-core"     rev="${project.revision}"    transitive="false" changing="true" conf='runtime,test->default'/>
+        <dependency org="pentaho" name="cde-core"     rev="${project.revision}"    transitive="false" changing="true" conf='runtime->default'/>
 
         <dependency org="pentaho" name="pentaho-platform-api"        rev="${dependency.bi-platform.revision}" changing="true" transitive="false"/>
         <dependency org="pentaho" name="pentaho-platform-core"       rev="${dependency.bi-platform.revision}" changing="true" transitive="false"/>
@@ -49,9 +49,15 @@
         <dependency org="net.sf.ezmorph"       name="ezmorph"            rev="1.0.6" conf='runtime->default'/>
 
         <!-- test dependencies -->
-        <dependency org="junit" name="junit" rev="4.10" conf="test->default" transitive="false"/>
-        <dependency org="jaxen" name="jaxen" rev="1.1"  conf="test->default" transitive="false"/>
-
+        <dependency org="junit"             name="junit"             rev="4.10"                conf="test->default" transitive="false"/>
+        <dependency org="jaxen"             name="jaxen"             rev="1.1"                 conf="test->default" transitive="false"/>
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"               conf='test->default' transitive="false"/>
+        <dependency org="net.sf.ezmorph"    name="ezmorph"           rev="1.0.6"               conf='test->default' transitive="false"/>
+        <dependency org="pentaho"           name="cde-core"          rev="${project.revision}" conf="test->default" transitive="false" changing="true">
+             <artifact name="cde-core-test" type="jar" ext="jar" conf="test"/>
+             <artifact name="cde-core"      type="jar" ext="jar"/>
+        </dependency>
+            
     </dependencies>
 
 </ivy-module>
