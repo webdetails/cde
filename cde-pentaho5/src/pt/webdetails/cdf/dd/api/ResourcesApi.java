@@ -45,6 +45,8 @@ import org.pentaho.platform.web.http.api.resources.PluginResource;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
+import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
+import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -183,6 +185,8 @@ public class ResourcesApi {
 
     ArrayList<String> extensionsList = new ArrayList<String>();
     String[] extensions = StringUtils.split( fileExtensions, "." );
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( dashboardPath );
+
     if ( extensions != null ) {
       for ( String extension : extensions ) {
         // For some reason, in 4.5 filebased rep started to report a leading dot in extensions
@@ -202,15 +206,17 @@ public class ResourcesApi {
 
     //check if it is a system dashboard
     List<IBasicFile> fileList;
-    IReadAccess access = CdeEnvironment.getUserContentAccess();
+    //IReadAccess access = CdeEnvironment.getUserContentAccess();
     boolean isSystem = false;
     if ( !dashboardPath.isEmpty() ) {
       String path = dashboardPath.toLowerCase().replaceFirst( "/", "" );
       if ( path.startsWith( CdeEnvironment.getSystemDir() + "/" ) ) {
-        access = Utils.getAppropriateReadAccess( dashboardPath );
+        //access = Utils.getAppropriateReadAccess( dashboardPath );
         isSystem = true;
       }
     }
+
+    IReadAccess access = loader.getReader();
 
     if ( isSystem ) {
       fileList = access.listFiles( dir, fileFilter, 1, true, false );
@@ -253,7 +259,7 @@ public class ResourcesApi {
   @Path( "/{resource: [^?]+ }" )
   @Produces( { MediaType.WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
-      throws Exception {
+    throws Exception {
     getResource( resource, response );
   }
 
