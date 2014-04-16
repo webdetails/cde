@@ -17,7 +17,11 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
 import org.apache.commons.io.FilenameUtils;
@@ -39,13 +43,10 @@ import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
-/**
- * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13
- */
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
   private static final Log logger = LogFactory.getLog( RenderApi.class );
-//  private static final String MIME_TYPE = "text/html";
+  //  private static final String MIME_TYPE = "text/html";
 
   @GET
   @Path( "/getComponentDefinitions" )
@@ -59,20 +60,21 @@ public class RenderApi {
   @Path( "/getContent" )
   @Produces( MimeTypes.JAVASCRIPT )
   public String getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
-      @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
-      @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "false" ) boolean absolute,
-      @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug, @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws IOException, ThingWriteException {
+                            @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                            @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                            @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
+                            @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
+                            @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "false" ) boolean absolute,
+                            @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                            @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @Context HttpServletRequest request,
+                            @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String scheme = inferScheme ? "" : request.getScheme();
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
+      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -102,37 +104,39 @@ public class RenderApi {
   @Path( "/render" )
   @Produces( MimeTypes.HTML )
   public String render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
-      @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
-      @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
-      @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-      @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
-      @QueryParam( MethodParams.STYLE ) @DefaultValue("") String style,
-      @Context HttpServletRequest request) throws IOException {
+                        @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                        @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                        @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
+                        @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
+                        @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
+                        @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                        @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                        @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+                        @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
+                        @Context HttpServletRequest request ) throws IOException {
 
     String scheme = inferScheme ? "" : request.getScheme();
-    String filePath = getWcdfRelativePath( solution, path, file );//FIXME Util.joinPath
+    String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
     IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
-    if(readAccess == null ){
+    if ( readAccess == null ) {
       return "Access Denied or File Not Found.";
     }
 
     try {
       long start = System.currentTimeMillis();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
-      CdfRunJsDashboardWriteResult dashboard = loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
-      String result = dashboard.render(InterPluginBroker.getCdfContext(filePath, "", viewId) ); // TODO: check new interplugin call
-      
+      CdfRunJsDashboardWriteResult dashboard =
+        loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
+      String result =
+        dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
+
       //i18n token replacement
-      if(!StringUtils.isEmpty( result )){
-        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ));
-        result = new MessageBundlesHelper( msgDir , null ).replaceParameters( result, null );
+      if ( !StringUtils.isEmpty( result ) ) {
+        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
+        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
       }
-      
+
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
@@ -146,13 +150,13 @@ public class RenderApi {
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
   public String edit(
-      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-      @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
-      @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws Exception {
+    @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+    @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+    @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+    @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+    @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
+    @Context HttpServletRequest request,
+    @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
     response.setContentType( MimeTypes.HTML );
@@ -167,15 +171,15 @@ public class RenderApi {
   @Path( "/new" )
   @Produces( MimeTypes.HTML )
   public String newDashboard( //TODO: change file to path; does new ever use this arg?
-//      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-//      @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-        @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
-        @Context HttpServletRequest request,
-        @Context HttpServletResponse response ) throws Exception {
-    
-//	  String wcdfPath = getWcdfRelativePath( solution, path, file );
+                              //      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
+                              @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                              //      @QueryParam( MethodParams.FILE ) @DefaultValue( "null" ) String file,
+                              @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                              @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
+                              @Context HttpServletRequest request,
+                              @Context HttpServletResponse response ) throws Exception {
+
+    //	  String wcdfPath = getWcdfRelativePath( solution, path, file );
     response.setContentType( MimeTypes.HTML );
     return DashboardEditor.getEditor( path, debug, request.getScheme(), isDefault );
   }
@@ -184,13 +188,13 @@ public class RenderApi {
   @Path( "/listRenderers" )
   @Produces( MimeTypes.JSON )
   public String listRenderers() {
-    return "{\"result\": [\"" +
-            DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
-            + "\",\""
-            + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
-            + "\",\""
-            + DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP.getType()
-            + "\"]}";
+    return "{\"result\": [\""
+      + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
+      + "\",\""
+      + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
+      + "\",\""
+      + DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP.getType()
+      + "\"]}";
   }
 
   @GET
@@ -200,23 +204,24 @@ public class RenderApi {
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
-      boolean bypassCache, boolean debug, String style ) throws ThingWriteException {
+                                                      boolean bypassCache, boolean debug, String style )
+    throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( absolute || !root.equals( "" ), debug, root, scheme );
-    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style);
+      new CdfRunJsDashboardWriteOptions( absolute || !root.equals( "" ), debug, root, scheme );
+    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
 
   private String getWcdfRelativePath( String solution, String path, String file ) {
     //TODO: change to use path instead of file
-//    if ( !StringUtils.isEmpty( solution ) || !StringUtils.isEmpty( file ) ) {
-//      logger.warn( "Use of solution/path/file is deprecated. Use just the path argument" );
-      return Util.joinPath( solution, path, file );
-//    }
-//    else return path;
-//    final String filePath = "/" + solution + "/" + path + "/" + file;
-//    return filePath.replaceAll( "//+", "/" );
+    //    if ( !StringUtils.isEmpty( solution ) || !StringUtils.isEmpty( file ) ) {
+    //      logger.warn( "Use of solution/path/file is deprecated. Use just the path argument" );
+    return Util.joinPath( solution, path, file );
+    //    }
+    //    else return path;
+    //    final String filePath = "/" + solution + "/" + path + "/" + file;
+    //    return filePath.replaceAll( "//+", "/" );
   }
 
   private class MethodParams {
