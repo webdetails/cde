@@ -32,9 +32,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
-/**
- * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13
- */
+
 
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
@@ -205,7 +203,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  @Produces( "text/plain" )
+  @Produces( { MediaType.WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
       throws Exception {
     getResource( resource, response );
