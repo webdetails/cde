@@ -18,9 +18,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
+import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
+import pt.webdetails.cpf.repository.api.IACAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
@@ -40,9 +43,11 @@ public class EditorApi {
   @Path( "/file/get" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path, @Context HttpServletResponse response )
+  public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                         @Context HttpServletResponse response )
     throws IOException {
-    IUserContentAccess access = getUserContentAccess();
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IReadAccess access = loader.getReader();
 
     if ( access.fileExists( path ) ) {
       response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
@@ -127,8 +132,10 @@ public class EditorApi {
   @Path( "/file/canEdit" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
-    return String.valueOf( getUserContentAccess().hasAccess( path, FileAccess.WRITE ) );
+  public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path) {
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IACAccess contentAccess = loader.getAccessControl();
+    return String.valueOf( contentAccess.hasAccess( path, FileAccess.WRITE ) );
   }
 
   @POST
@@ -161,7 +168,6 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String externalEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
-
     if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
       return IOUtils.toString( access.getFileInputStream( EXTERNAL_EDITOR_PAGE ) );
     } else {
