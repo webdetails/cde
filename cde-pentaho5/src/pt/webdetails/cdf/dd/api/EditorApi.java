@@ -1,17 +1,37 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.api;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.WILDCARD;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -27,10 +47,6 @@ import pt.webdetails.cpf.repository.api.IACAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
-
-/**
- * Created with IntelliJ IDEA. User: diogomariano Date: 04/10/13
- */
 
 @Path( "pentaho-cdf-dd/api/editor" )
 public class EditorApi {
@@ -64,7 +80,7 @@ public class EditorApi {
   @Produces( "text/javascript" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                             @Context HttpServletResponse response) throws IOException {
+                          @Context HttpServletResponse response ) throws IOException {
     IUserContentAccess access = getUserContentAccess();
     if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
@@ -80,8 +96,8 @@ public class EditorApi {
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
-      @Context HttpServletResponse response) throws IOException {
+                           @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
+                           @Context HttpServletResponse response ) throws IOException {
     IUserContentAccess access = getUserContentAccess();
 
     String msg = "";
@@ -106,8 +122,8 @@ public class EditorApi {
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
-      @Context HttpServletResponse response) throws IOException {
+                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
+                            @Context HttpServletResponse response ) throws IOException {
     IUserContentAccess access = getUserContentAccess();
 
     String msg = "";
@@ -127,12 +143,11 @@ public class EditorApi {
   }
 
 
-
   @GET
   @Path( "/file/canEdit" )
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
-  public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path) {
+  public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
     IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
     IACAccess contentAccess = loader.getAccessControl();
     return String.valueOf( contentAccess.hasAccess( path, FileAccess.WRITE ) );
@@ -142,7 +157,7 @@ public class EditorApi {
   @Path( "/createFolder" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                            @Context HttpServletResponse response) throws IOException {
+                              @Context HttpServletResponse response ) throws IOException {
     IUserContentAccess access = getUserContentAccess();
 
     String msg;
@@ -171,7 +186,7 @@ public class EditorApi {
     if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
       return IOUtils.toString( access.getFileInputStream( EXTERNAL_EDITOR_PAGE ) );
     } else {
-      String msg = "External editor not found: " +  EXTERNAL_EDITOR_PAGE;
+      String msg = "External editor not found: " + EXTERNAL_EDITOR_PAGE;
       logger.error( msg );
       return msg;
     }
@@ -197,7 +212,8 @@ public class EditorApi {
     public static final String PATH = "path";
     public static final String DATA = "data";
   }
-  protected IUserContentAccess getUserContentAccess(){
+
+  protected IUserContentAccess getUserContentAccess() {
     return CdeEnvironment.getUserContentAccess();
   }
 }

@@ -41,7 +41,7 @@ public class DatasourcesApi {
 
       List<CdaDataSourceReader.CdaDataSource> dataSourcesList = getCdaDataSources( dashboard );
       CdaDataSourceReader.CdaDataSource[] dataSources =
-          dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
+        dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[ dataSourcesList.size() ] );
       return "[" + StringUtils.join( dataSources, "," ) + "]";
     }
   }

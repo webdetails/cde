@@ -54,8 +54,6 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
-
-
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
   private static final Log logger = LogFactory.getLog( ResourcesApi.class );
