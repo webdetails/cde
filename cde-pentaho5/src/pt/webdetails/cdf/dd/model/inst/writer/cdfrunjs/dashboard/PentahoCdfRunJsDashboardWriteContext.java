@@ -19,6 +19,7 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 
 public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWriteContext {
   private static final String RESOURCE_API_GET = "api/resources";
+  private static final String SYS_RESOURCE_API_GET = "/pentaho/api/repos";
 
   public PentahoCdfRunJsDashboardWriteContext( IThingWriterFactory factory,
                                                String indent, boolean bypassCacheRead, Dashboard dash,
@@ -42,16 +43,20 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     return content
       .replaceAll( DASHBOARD_PATH_TAG, path.replaceAll( "(^/.*/$)", "$1" ) ) // replace the dashboard path token
       .replaceAll( ABS_IMG_TAG, root + RESOURCE_API_GET + "$1" + "?v="
-        + timestamp )// build the image links, with a timestamp for caching purposes
+        + timestamp ) // build the image links, with a timestamp for caching purposes
       .replaceAll( REL_IMG_TAG, root + RESOURCE_API_GET + path + "$1" + "?v="
-        + timestamp )// build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$1" )// Directories don't need the caching timestamp
+        + timestamp ) // build the image links, with a timestamp for caching purposes
+      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$1" ) // Directories don't need the caching timestamp
       .replaceAll( REL_DIR_RES_TAG,
         root + RESOURCE_API_GET + path + "$1" )// Directories don't need the caching timestamp
       .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$1" + "?v="
         + timestamp )// build the image links, with a timestamp for caching purposes
       .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$1" + "?v="
-        + timestamp ); // build the image links, with a timestamp for caching purposes
+        + timestamp ) // build the image links, with a timestamp for caching purposes
+      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
+        + "$1" + "?v=" + timestamp ) //build system resources links, with a timestamp for caching purposes
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
+        + "/$1" + "?v=" + timestamp ); //build system resources links, with a timestamp for caching purposes
   }
 
   protected String getRoot() {
@@ -59,6 +64,18 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
 
+  }
+
+  protected String getSystemDir() {
+    return CdeEngine.getEnv().getSystemDir();
+  }
+
+  protected String getPluginId( String path ) {
+    if ( path.charAt( 0 ) != '/' ) {
+      return path.split( "/" )[1];
+    } else {
+      return path.split( "/" )[2];
+    }
   }
 
 }

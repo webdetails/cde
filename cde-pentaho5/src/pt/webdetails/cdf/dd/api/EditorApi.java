@@ -44,8 +44,8 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 @Path( "pentaho-cdf-dd/api/editor" )
@@ -62,12 +62,13 @@ public class EditorApi {
   public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                          @Context HttpServletResponse response )
     throws IOException {
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
-    IReadAccess access = loader.getReader();
 
-    if ( access.fileExists( path ) ) {
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IReadAccess reader = loader.getReader();
+
+    if ( reader.fileExists( path ) ) {
       response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
-      return IOUtils.toString( access.getFileInputStream( path ) );
+      return IOUtils.toString( reader.getFileInputStream( path ) );
     } else {
       String msg = "File: " + path + "does not exist, or you do not have permissions to access it";
       logger.error( msg );
@@ -81,8 +82,12 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                           @Context HttpServletResponse response ) throws IOException {
-    IUserContentAccess access = getUserContentAccess();
-    if ( access.hasAccess( path, FileAccess.DELETE ) && access.deleteFile( path ) ) {
+
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IACAccess access = loader.getAccessControl();
+    IRWAccess writer = loader.getWriter();
+
+    if ( access.hasAccess( path, FileAccess.DELETE ) && writer.deleteFile( path ) ) {
       logger.debug( "File: " + path + " removed" );
       JsonUtils.buildJsonResult( response.getOutputStream(), true, null );
     } else {
@@ -98,11 +103,14 @@ public class EditorApi {
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
-    IUserContentAccess access = getUserContentAccess();
+
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IACAccess access = loader.getAccessControl();
+    IRWAccess writer = loader.getWriter();
 
     String msg = "";
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
-      if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
+      if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
         msg = "file '" + path + "' saved ok";
         logger.debug( msg );
       } else {
@@ -124,11 +132,14 @@ public class EditorApi {
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
-    IUserContentAccess access = getUserContentAccess();
+
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IACAccess access = loader.getAccessControl();
+    IRWAccess writer = loader.getWriter();
 
     String msg = "";
     if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
-      if ( access.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
+      if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
         msg = "file '" + path + "' saved ok";
         logger.debug( msg );
       } else {
@@ -158,14 +169,17 @@ public class EditorApi {
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                               @Context HttpServletResponse response ) throws IOException {
-    IUserContentAccess access = getUserContentAccess();
+
+    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IReadAccess reader = loader.getReader();
+    IRWAccess writer = loader.getWriter();
 
     String msg;
-    if ( access.fileExists( path ) ) {
+    if ( reader.fileExists( path ) ) {
       msg = "already exists: " + path;
       logger.debug( msg );
     } else {
-      if ( access.createFolder( path ) ) {
+      if ( writer.createFolder( path ) ) {
         msg = path + "created ok";
         logger.debug( msg );
       } else {
@@ -213,7 +227,4 @@ public class EditorApi {
     public static final String DATA = "data";
   }
 
-  protected IUserContentAccess getUserContentAccess() {
-    return CdeEnvironment.getUserContentAccess();
-  }
 }
