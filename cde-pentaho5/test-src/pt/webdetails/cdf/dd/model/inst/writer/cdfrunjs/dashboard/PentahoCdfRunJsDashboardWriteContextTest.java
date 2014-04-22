@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 
 public class PentahoCdfRunJsDashboardWriteContextTest {
 
-  private final String GET_RESOURCES = "api/resources/get?resource=";
+  private final String GET_RESOURCES = "api/resources";
   private static final String ROOT = "/test-resources/";
   private static final String TEST_FOLDER = "test/";
   private static final String DASHBOARD = "testDashboard";
@@ -49,9 +49,9 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String cssResourceExpected = GET_RESOURCES + ROOT + TEST_FOLDER + "style.css";
     String absoluteExpected = GET_RESOURCES + ROOT + "style.css";
 
-    String jsResourceReplaced = removeExtraParams( context.replaceTokens( jsResource ) );
-    String cssResourceReplaced = removeExtraParams( context.replaceTokens( cssResource ) );
-    String absoluteResourceReplaced = removeExtraParams( context.replaceTokens( absoluteResource ) );
+    String jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
+    String cssResourceReplaced = removeParams( context.replaceTokens( cssResource ) );
+    String absoluteResourceReplaced = removeParams( context.replaceTokens( absoluteResource ) );
 
     Assert.assertEquals( "", jsResourceExpected, jsResourceReplaced );
     Assert.assertEquals( "", cssResourceExpected, cssResourceReplaced );
@@ -100,8 +100,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     return new CdfRunJsDashboardWriteOptions( absolute, debug, absRoot, scheme );
   }
 
-  private String removeExtraParams( String msg ) {
-    return msg.substring( 0,msg.indexOf( "&" ) );
+  private String removeParams( String msg ) {
+    return msg.substring( 0,msg.indexOf( "?" ) );
   }
 
 }

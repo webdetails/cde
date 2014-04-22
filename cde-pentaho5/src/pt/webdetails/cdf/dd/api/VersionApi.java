@@ -1,3 +1,16 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.api;
 
 import pt.webdetails.cdf.dd.CdeSettings;
@@ -15,21 +28,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 
-
-
-/**
- * Created with IntelliJ IDEA.
- * User: diogomariano
- * Date: 07/10/13
- */
-
 @Path( "pentaho-cdf-dd/api/version" )
 public class VersionApi {
 
   @GET
   @Path( "/check" )
   @Produces( "text/plain" )
-  public void checkVersion(@Context HttpServletResponse response) throws IOException {
+  public void checkVersion( @Context HttpServletResponse response ) throws IOException {
     VersionChecker versionChecker = new CdeVersionChecker( CdeSettings.getSettings() );
     CheckVersionResponse result = versionChecker.checkVersion();
     JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );

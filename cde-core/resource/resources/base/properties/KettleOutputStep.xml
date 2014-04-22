@@ -1,0 +1,14 @@
+<DesignerProperty>
+	<Header>
+		<Name>stepName</Name>
+		<Parent>BaseProperty</Parent>
+		<DefaultValue>OUTPUT</DefaultValue>
+		<Description>Output Step</Description>
+		<Tooltip>The name of the kettle step where the output is to be fetched.</Tooltip>
+		<InputType>String</InputType>
+		<Advanced>false</Advanced>
+		<OutputType>String</OutputType>
+		<Order>2</Order>
+		<Version>1.0</Version>
+	</Header>
+</DesignerProperty>

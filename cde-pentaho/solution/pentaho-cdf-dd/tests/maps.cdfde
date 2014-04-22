@@ -3,6 +3,29 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
+    "id": "aec1d9f1-9c0a-228e-a550-dcf203c96bc4",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "resourceFile",
+      "value": "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js",
+      "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     }
+    ]
+   },
+   {
     "id": "0c161c28-7118-15a8-b495-840c5525b04f",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
@@ -14,14 +37,14 @@
       "type": "Id"
      },
      {
-      "name": "resourceType",
-      "value": "Css",
-      "type": "Label"
-     },
-     {
       "name": "resourceFile",
       "value": "${res:../template.css}",
       "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
      }
     ]
    },
@@ -37,14 +60,14 @@
       "type": "Id"
      },
      {
-      "name": "resourceType",
-      "value": "Css",
-      "type": "Label"
-     },
-     {
       "name": "resourceFile",
       "value": "${res:../cdeReference.css}",
       "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
      }
     ]
    },
@@ -66,7 +89,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "var API_KEY = '<GOOGLE_API_KEY>'; ",
+      "value": "var API_KEY = 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/theme/dark/'; ",
       "type": "Resource"
      }
     ]
@@ -89,7 +112,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "#simpleTest, #testWithMarker, #testWithGeoLocalization {\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n ",
+      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} ",
       "type": "Resource"
      }
     ]
@@ -121,14 +144,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDheader",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDheader",
+      "type": "String"
      }
     ]
    },
@@ -149,14 +172,14 @@
       "type": "Html"
      },
      {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
       "name": "fontSize",
       "value": "18",
       "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -167,6 +190,148 @@
    },
    {
     "id": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "documentation",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "a05b739c-8186-4b41-eacc-790980a35213",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<p>\n  This component  allows the user to either navigate through the map and see information about marked locations, or to represent quantities as the fill color of a set of shapes/regions.\n</p>\n\n<h3>Global Options</h3>\n<dl class=\"documentation\">\n  <dd><b>listeners: </b><i>Array - </i> Parameters to which this component will react</dd>\n  <dd><b>parameters:</b> <i>Array of Arrays - </i> Parameters</dd>\n  <dd><b>htmlObject:</b> map. Not optional for now</dd>\n  <dd><b>executeAtStart: </b>True to execute the component at start, false otherwise</dd>\n  <dd><b>preExecution: </b><i>Function - </i> Function to be called before the component is executed</dd>\n  <dd><b>postExecution: </b><i>Function - </i> Function to be called after the component is executed</dd>\n\n  <dd><b>Center Longitude: </b>Initial longitude position</dd>\n  <dd><b>Center Latitude: </b>Initial latitude position</dd>\n  <dd><b>Default zoom Level: </b>Initial map zoom</dd>\n  <dd><b>Datasource: </b>Name for the cda data source where the location data is read from</dd>\n  <dd><b>Map Engine: </b>Map engine to use to render the map. Can be either google (Google Maps 3) or openlayers (OpenLayers 2). If using Google Maps, please either define a global javascript variable with the name API_KEY containing the string with your API key.</dd>\n  <dd><b>API_KEY: </b>If using Google Maps, put your API key here.</dd>\n  <dd><b>Tilesets to display as layers:</b><i>Array of strings - </i> List of tile map servers, or urls of the form <pre>http://{switch:a,b,c}.tile.openstreetmap.org/${z}/${x}/${y}.png</pre></dd>\n   <dd><b>Operation Mode: </b>Define how the result set returned by the data source will be interpreted. Possible values: \"Just the map\" (the output of the datasource is ignores), \"Marker\", \"Shapes\". </dd>\n</dl>\n\n<h3>Options valid in Marker mode</h3>\n<dl class=\"documentation\">\n  <dd><b>Marker image:</b> URL-string for the marker image. This will be override either by markers defined in the resultset or when using cgg graphs to render markers.</dd>\n  <dd><b>Marker Width:</b> Width for the marker image.</dd>\n  <dd><b>Marker Height:</b> Height for the marker image.</dd>\n  <dd><b>Marker Click Parameters:</b> Parameters to be changed when a marker is clicked - arg is column Name, value is parameter name to change with column value</dd>\n  <dd><b>Marker click Function:</b> Javascript function to be executed when marker is clicked. If it returns anything other than <kbd>false</kbd>, the default popup window will open after this function is executed.</dd>\n  <dd><b>Cgg Graph for Marker:</b> Name of the cgg graph script to use as marker renderer. This will usually be in the form /solution/GraphName.js </dd>\n  <dd><b>Cgg Graph Parameters:</b> Mapping between resultset columns and parameters for cgg graph - arg is column Name, value is the parameter name that will be passed to CGG having as value the column value</dd>\n  <dd><b>Div for popup window:</b> Div id to use as the source for the popup window contents</dd>\n  <dd><b>Popup Width:</b> Width for the popup window.</dd>\n  <dd><b>Popup Height:</b> Height for the popup window.</dd>\n</dl>\n\n<h3>Location Result Set in Marker mode</h3>\nThese locations are obtained with a Data Source that returns a result set where certain column names have associated semantics.<br/>\n<dl class=\"documentation\">\n  <dd><b>Longitude:</b> Location Longitude</dd>\n  <dd><b>Latitude:</b> Location Latitude</dd>\n  <dd><b>Address:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b> City: </b>Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b> County:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b>State:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b>Region:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b> Country:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dd><b>Description:</b> Optional. If existent, its value will be used to populate an hover popup for each location</dd>\n  <dd><b>marker:</b> Optional. If exists, this will be used as the url for the marker image to be used</dd>\n  <dd><b>markerWidth:</b> Optional. Width of the marker image</dd>\n  <dd><b>markerHeight:</b> Optional. Height of the marker image</dd>\n  <dd><b>popupContents:</b> Optional. If exists, the value will be used as the html to populate a popup window that will appear when user clicks on the marker.</dd>\n  <dd><b>popupWidth:</b> Optional. Width for the popup window</dd>\n  <dd><b>popupHeight:</b> Optional. Height for the popup window.</dd>\n</dl>\n\n\n<h3>Options valid in Shapes mode</h3>\nIn Shape mode, the result set is assumed to be of the form <kbd>[[key1, value1], [key2, value2]]</kbd>.\n<dl class=\"documentation\">\n  <dd><b>Shape Definitions:</b> File/URL of a <kbd>.kml</kbd> or <kbd>.json</kbd> file  the definitions of the multipolygons to be drawn on the map.\n  <br/>The keys used in this file will be matched against the first column of the query results.\n  <ul>\n    <li>If the file is a <a href='https://developers.google.com/kml/documentation/'>KML</a>, the key is extracted by default from the tag <kbd>&lt;Placemark&gt;&lt;name&gt;</kbd></li>\n    <li>If the file is a Json structure, the format is a dictionary of multipolygons, as follows:\n    <pre class='json'>\n      {\n        \"key1\": [[[[lat, lon],...],...,],...],\n        \"key2\": [[[[lat, lon],...],...,],...]\n      }\n    </pre>\n    <b>Note:</b> A multipolygon is a list of polygons: <kbd>[[outerPolygon1, innerPolygon11, innerPolygon12],[outerPolygon2, innerPolygon21, innerPolygon22]]</kbd>, whereas a polygon is a list of points.\n    </li>\n  </ul>\n\n  </dd>\n\n  <dd><b>Shape Mouse Over Function:</b> Javascript function to be executed when marker is clicked</dd>\n  <dd><b>Shape Mouse Out Function:</b> Javascript function to be executed when marker is clicked</dd>\n  <dd><b>Shape Mouse Click Function:</b> Javascript function to be executed when the shape is clicked. <br/>\n  The callback functions in <i>Shape mode</i> are of the form:\n  <pre class='javascript prettyprint lang-js'>\nfunction f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this:\n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location\n        longitude: -9.35, //always in decimal degrees\n        data: {\n            key: \"PT\", // key associated with this shape\n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n\n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    return {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    };\n}\n</pre>\n</dd>\n</dl>\n ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b8d129ad-f915-3f93-2126-2b20405e81a4",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "subtitle0",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "efbbf0fc-7653-1da4-d822-5b25084834b2",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "b8d129ad-f915-3f93-2126-2b20405e81a4",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Map with no markers and no shapes - Simple Case ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "14",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "031ebae9-7227-45e4-d738-27b433366c88",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
@@ -192,42 +357,82 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
+      "name": "textAlign",
       "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
       "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "4ea7496b-9479-e551-8416-66464f5a239e",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "031ebae9-7227-45e4-d738-27b433366c88",
+    "properties": [
+     {
+      "name": "name",
+      "value": "simpleTest",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
      },
      {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
-     }
-    ]
-   },
-   {
-    "id": "a05b739c-8186-4b41-eacc-790980a35213",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "ca944a50-23e8-d5e2-c80c-1158ac263102",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "        <p>\n\t\t\tThis component allow the user to navigate through the map and see information about marked locations. \n\t\t\tThis locations are obtained with a Data Source that returns a result set where certain column names have associated semantics:\n\t\t</p>\n\n\t\t<h3>Locations Result Set</h3>\t\t\t\n\t\t<dl class=\"documentation\">\n\t\t\t<dd><b>Longitude:</b> Location Longitude</dd>\n\t\t\t<dd><b>Latitude:</b> Location Latitude</dd>\n\t\t\t<dd><b>Address:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> City: </b>Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> County:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b>State:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b>Region:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n<dd><b> Country:</b> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n\t\t\t<dd><b>Description:</b> Optional. If existent, its value will be used to populate an hover popup for each location</dd>\n\t\t\t<dd><b>marker:</b> Optional. If exists, this will be used as the url for the marker image to be used</dd>\n\t\t\t<dd><b>markerWidth:</b> Optional. Width of the marker image</dd>\n\t\t\t<dd><b>markerHeight:</b> Optional. Height of the marker image</dd>\n\t\t\t<dd><b>popupContents:</b> Optional. If exists, the value will be used as the html to populate a popup window that will appear when user clicks on the marker.</dd>\n\t\t\t<dd><b>popupWidth:</b> Optional. Width for the popup window</dd>\n\t\t\t<dd><b>popupHeight:</b> Optional. Height for the popup window.</dd>\n\t\t</dl>\n\n\t\t<h3>Options</h3>\n\n\t\t<dl class=\"documentation\">\n\t\t\t<dd><b>listeners: </b><i>Array - </i> Parameters who this component will react to</dd>\n\n\t\t\t<dd><b>parameters:</b> <i>Array of Arrays - </i> Parameters</dd>\n\n\t\t\t<dd><b>htmlObject:</b> map. Not optional for now</dd>\n\n\t\t\t<dd><b>executeAtStart: </b>True to execute the component at start, false otherwise</dd>\n\t\t\t\n\t\t\t<dd><b>preExecution:</b> <i>Function - </i> Function to be called before the component is executed</dd>\n\n\t\t\t<dd><b>postExecution: </b><i>Function - </i> Function to be called after the component is executed</dd>\n\t\t\t\n\t\t\t\n\t\t\t<dd><b>Center Longitude: </b>Initial longitude position</dd>\n\t\t\t\n\t\t\t<dd><b>Center Latitude: </b>Initial latitude position</dd>\n\t\t\t\n\t\t\t<dd><b>Default zoom Level:</b> Initial map zoom</dd>\n\n\t\t\t<dd><b>Datasource:</b> Name for the cda data source where the location data is read from</dd>\n\n\t\t\t<dd><b>Map Engine:</b> Map engine to use to render the map. Can be either google (Google Maps) or open (OpenStreetMaps). If using Google Maps, please define a global javascript variable with the name API_KEY containing the string with your API key.</dd>\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t<dd><b>Marker image:</b> URL-string for the marker image. This will be override either by markers defined in the resultset or when using cgg graphs to render markers.</dd>\n\n\t\t\t<dd><b>Marker Width:</b> Width for the marker image.</dd>\n\n\t\t\t<dd><b>Marker Height:</b> Height for the marker image.</dd>\n\t\t\t\t\t\t\n\t\t\t<dd><b>Marker Click Parameters:</b> Parameters to be changed when a marker is clicked - arg is column Name, value is parameter name to change with column value</dd>\n\n\n<dd><b>Marker click Function:</b> Javascript function to be executed when marker is clicked</dd>\n\n<dd><b>Cgg Graph for Marker:</b> Name of the cgg graph script to use as marker renderer. This will usually be in the form /solution/GraphName.js </dd>\n\n<dd><b>Cgg Graph Parameters:</b> Mapping between resultset columns and parameters for cgg graph - arg is column Name, value is the parameter name that will be passed to CGG having as value the column value</dd>\n\n\n<dd><b>Div for popup window:</b> Div id to use as the source for the popup window contents</dd>\n\n\t\t\t<dd><b>Popup Width:</b> Width for the popup window.</dd>\n\n\t\t\t<dd><b>Popup Height:</b> Height for the popup window.</dd>\n\t\t</dl>\n ",
-      "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "cssClass",
@@ -263,14 +468,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellHeader",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
      }
     ]
    },
@@ -287,18 +492,18 @@
      },
      {
       "name": "html",
-      "value": "Map with no markers - Simple Case ",
+      "value": "Map engine and map tile services ",
       "type": "Html"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
      },
      {
       "name": "fontSize",
       "value": "14",
       "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -334,14 +539,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellBody",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
      }
     ]
    },
@@ -353,12 +558,12 @@
     "properties": [
      {
       "name": "name",
-      "value": "simpleTest",
+      "value": "",
       "type": "Id"
      },
      {
       "name": "columnSpan",
-      "value": "5",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -392,6 +597,11 @@
       "type": "Boolean"
      },
      {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "backgroundColor",
       "value": "",
       "type": "Color"
@@ -402,19 +612,486 @@
       "type": "RoundCorners"
      },
      {
-      "name": "height",
+      "name": "textAlign",
       "value": "",
-      "type": "Integer"
+      "type": "TextAlign"
      },
      {
       "name": "cssClass",
       "value": "",
       "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "1b89b418-ecc5-8bdb-fcff-bc9d4907d13e",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "bb846800-9c98-a8c2-7fc0-a2490f52ea02",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
      },
      {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "7aefe54d-5f73-4f82-48df-8baa25bb4fcc",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "1b89b418-ecc5-8bdb-fcff-bc9d4907d13e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "44a50b2f-58f3-1c31-5e5e-db7a1989e91b",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "7aefe54d-5f73-4f82-48df-8baa25bb4fcc",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Select map engine: ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "5fd29c27-167e-a348-dc8d-d9f3379181b6",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "1b89b418-ecc5-8bdb-fcff-bc9d4907d13e",
+    "properties": [
+     {
+      "name": "name",
+      "value": "selectMapEngineObj",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "6",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f28cc621-7d21-c7bf-cb42-89b30a7f5984",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "bb846800-9c98-a8c2-7fc0-a2490f52ea02",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "92b508c4-d72c-be1d-4ffb-201d4c4a76fe",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "f28cc621-7d21-c7bf-cb42-89b30a7f5984",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "c410f305-ae8f-10f1-72fd-c19613e542bf",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "92b508c4-d72c-be1d-4ffb-201d4c4a76fe",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Select tile map service: ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "35ac31c2-b779-21b8-01e0-df474b6cc62d",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "f28cc621-7d21-c7bf-cb42-89b30a7f5984",
+    "properties": [
+     {
+      "name": "name",
+      "value": "selectTileObj",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "6",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "52b2f3af-f55d-072e-bed8-39d8080eff6f",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "bb846800-9c98-a8c2-7fc0-a2490f52ea02",
+    "properties": [
+     {
+      "name": "name",
+      "value": "testTileServices",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
      }
     ]
    },
@@ -445,14 +1122,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellHeader",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
      }
     ]
    },
@@ -473,14 +1150,14 @@
       "type": "Html"
      },
      {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
       "name": "fontSize",
       "value": "14",
       "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -516,14 +1193,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellBody",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "center",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
      }
     ]
    },
@@ -574,6 +1251,11 @@
       "type": "Boolean"
      },
      {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "backgroundColor",
       "value": "",
       "type": "Color"
@@ -584,19 +1266,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "height",
+      "name": "textAlign",
       "value": "",
-      "type": "Integer"
+      "type": "TextAlign"
      },
      {
       "name": "cssClass",
       "value": "",
       "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
      }
     ]
    },
@@ -627,14 +1304,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellHeader",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
      }
     ]
    },
@@ -655,14 +1332,14 @@
       "type": "Html"
      },
      {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
       "name": "fontSize",
       "value": "14",
       "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -698,14 +1375,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "WDdataCellBody",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "center",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
      }
     ]
    },
@@ -756,6 +1433,11 @@
       "type": "Boolean"
      },
      {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "backgroundColor",
       "value": "",
       "type": "Color"
@@ -766,19 +1448,196 @@
       "type": "RoundCorners"
      },
      {
-      "name": "height",
+      "name": "textAlign",
       "value": "",
-      "type": "Integer"
+      "type": "TextAlign"
      },
      {
       "name": "cssClass",
       "value": "",
       "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "1f52ad78-0b33-93b1-1030-9b5ef52133d2",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "subtitle4",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
      },
      {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellHeader",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "c25548ae-021d-ec41-8c37-a3b6a90e1df3",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "1f52ad78-0b33-93b1-1030-9b5ef52133d2",
+    "properties": [
+     {
+      "name": "name",
+      "value": "case3",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "Map with Shapes (population per km2, top 100 countries) ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "14",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "6b726fae-b0e3-1a26-a3b8-1802d4685a19",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "center",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "WDdataCellBody",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "02ee5bef-1f60-9d02-1481-b7a8345f6434",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "6b726fae-b0e3-1a26-a3b8-1802d4685a19",
+    "properties": [
+     {
+      "name": "name",
+      "value": "testWithShapes",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
      }
     ]
    },
@@ -809,14 +1668,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
      }
     ]
    },
@@ -867,6 +1726,11 @@
       "type": "Boolean"
      },
      {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "backgroundColor",
       "value": "",
       "type": "Color"
@@ -877,19 +1741,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "height",
+      "name": "textAlign",
       "value": "",
-      "type": "Integer"
+      "type": "TextAlign"
      },
      {
       "name": "cssClass",
       "value": "",
       "type": "String"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
      }
     ]
    },
@@ -920,14 +1779,14 @@
       "type": "RoundCorners"
      },
      {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     },
-     {
       "name": "textAlign",
       "value": "",
       "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
      }
     ]
    },
@@ -948,14 +1807,14 @@
       "type": "Html"
      },
      {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
       "name": "fontSize",
       "value": "",
       "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
      },
      {
       "name": "cssClass",
@@ -983,9 +1842,9 @@
     ]
    },
    {
-    "id": "f18f6f32-331c-97d4-37f8-2fe2dbc102f9",
+    "id": "74df39a2-e4f8-9a09-1c40-9f337f3383b6",
     "type": "ComponentsNewMapComponent",
-    "typeDesc": "NewMapComponent",
+    "typeDesc": "Map Component",
     "parent": "CUSTOMCOMPONENTS",
     "properties": [
      {
@@ -994,19 +1853,9 @@
       "type": "Id"
      },
      {
-      "name": "executeAtStart",
-      "value": "true",
-      "type": "Boolean"
-     },
-     {
-      "name": "htmlObject",
-      "value": "simpleTest",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
+      "name": "listeners",
+      "value": "['${p:tileServiceParam}']",
+      "type": "Listeners"
      },
      {
       "name": "parameters",
@@ -1014,28 +1863,38 @@
       "type": "CdaParameters"
      },
      {
-      "name": "listeners",
+      "name": "colormap",
       "value": "[]",
-      "type": "Listeners"
+      "type": "Array"
      },
      {
-      "name": "preExecution",
+      "name": "markerClickFunction",
       "value": "",
-      "type": "JavaScript"
+      "type": "String"
      },
      {
-      "name": "postExecution",
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "shapeSource",
       "value": "",
-      "type": "JavaScript"
+      "type": "String"
      },
      {
-      "name": "dataSource",
-      "type": "Datasource",
-      "value": ""
+      "name": "mapMode",
+      "value": "",
+      "type": "mapModeCustom"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "mapEngineType",
-      "value": "openstreet",
+      "value": "openlayers",
       "type": "String"
      },
      {
@@ -1069,8 +1928,8 @@
       "type": "Integer"
      },
      {
-      "name": "markerClickFunction",
-      "value": "",
+      "name": "API_KEY",
+      "value": "0",
       "type": "String"
      },
      {
@@ -1099,47 +1958,24 @@
       "type": "String"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     }
-    ]
-   },
-   {
-    "id": "2a31515b-0268-c4d9-6c58-3a9f17799ad5",
-    "type": "ComponentsNewMapComponent",
-    "typeDesc": "NewMapComponent",
-    "parent": "CUSTOMCOMPONENTS",
-    "properties": [
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": ""
+     },
      {
-      "name": "name",
-      "value": "GeoLocalizedMap",
-      "type": "Id"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "simpleTest",
+      "type": "HtmlObject"
      },
      {
       "name": "executeAtStart",
       "value": "true",
       "type": "Boolean"
-     },
-     {
-      "name": "htmlObject",
-      "value": "testWithGeoLocalization",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "listeners",
-      "value": "[]",
-      "type": "Listeners"
      },
      {
       "name": "preExecution",
@@ -1152,13 +1988,432 @@
       "type": "JavaScript"
      },
      {
-      "name": "dataSource",
-      "type": "Datasource",
-      "value": "ForMapWithGeo"
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "f18f6f32-331c-97d4-37f8-2fe2dbc102f9",
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "MapTilesets",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "['${p:tileServiceParam}','${p:mapEngineParam}']",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "mapMode",
+      "value": "",
+      "type": "mapModeCustom"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "mapEngineType",
-      "value": "openstreet",
+      "value": "openlayers",
+      "type": "String"
+     },
+     {
+      "name": "defaultZoomLevel",
+      "value": "5",
+      "type": "Integer"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "markerWidth",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "markerHeight",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "API_KEY",
+      "value": "0",
+      "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "popupHeight",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "marker",
+      "value": "25",
+      "type": "String"
+     },
+     {
+      "name": "markerCggGraph",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": ""
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:testTileServices}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n    this.mapEngineType = [ Dashboards.getParameterValue('${p:mapEngineParam}') ]; \n    this.tilesets = [ Dashboards.getParameterValue('${p:tileServiceParam}') ]; \n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "30de1732-b592-50c9-8dc9-8eafc0d7da3f",
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "MapWithMarkers",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "mapMode",
+      "value": "markers",
+      "type": "mapModeCustom"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "mapEngineType",
+      "value": "openlayers",
+      "type": "String"
+     },
+     {
+      "name": "defaultZoomLevel",
+      "value": "5",
+      "type": "Integer"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "marker",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerWidth",
+      "value": "36",
+      "type": "Integer"
+     },
+     {
+      "name": "API_KEY",
+      "value": "0",
+      "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "function() {\n    Dashboards.log(CustomerNameParameter + ' has  been clicked');\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "popupWidth",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "popupHeight",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "HiddenContentCol",
+      "type": "String"
+     },
+     {
+      "name": "markerCggGraph",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithMarkers"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "testWithMarker",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "2a31515b-0268-c4d9-6c58-3a9f17799ad5",
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "GeoLocalizedMap",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "mapMode",
+      "value": "markers",
+      "type": "mapModeCustom"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "mapEngineType",
+      "value": "openlayers",
       "type": "String"
      },
      {
@@ -1192,9 +2447,9 @@
       "type": "Integer"
      },
      {
-      "name": "markerHeight",
-      "value": "52",
-      "type": "Integer"
+      "name": "API_KEY",
+      "value": "0",
+      "type": "String"
      },
      {
       "name": "markerClickFunction",
@@ -1222,47 +2477,24 @@
       "type": "String"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     }
-    ]
-   },
-   {
-    "id": "007195fc-9625-c0f8-0391-42104ee7464f",
-    "type": "ComponentsNewMapComponent",
-    "typeDesc": "NewMapComponent",
-    "parent": "CUSTOMCOMPONENTS",
-    "properties": [
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithGeo"
+     },
      {
-      "name": "name",
-      "value": "MapWithMarkers",
-      "type": "Id"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:testWithGeoLocalization}",
+      "type": "HtmlObject"
      },
      {
       "name": "executeAtStart",
       "value": "true",
       "type": "Boolean"
-     },
-     {
-      "name": "htmlObject",
-      "value": "testWithMarker",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "listeners",
-      "value": "[]",
-      "type": "Listeners"
      },
      {
       "name": "preExecution",
@@ -1275,18 +2507,91 @@
       "type": "JavaScript"
      },
      {
-      "name": "dataSource",
-      "type": "Datasource",
-      "value": "ForMapWithMarkers"
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "007195fc-9625-c0f8-0391-42104ee7464f",
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "MapWithShapes",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "colormap",
+      "value": "[\"[0, 102, 0, 255]\",\"[255, 255 ,0,255]\",\"[255, 0,0, 255]\"]",
+      "type": "Array"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "tilesets",
+      "value": "stamen-watercolor",
+      "type": "tilesetsCustom"
+     },
+     {
+      "name": "shapeSource",
+      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/maps/countries.kml",
+      "type": "String"
+     },
+     {
+      "name": "mapMode",
+      "value": "shapes",
+      "type": "mapModeCustom"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "mapEngineType",
-      "value": "openstreet",
+      "value": "openlayers",
       "type": "String"
      },
      {
       "name": "defaultZoomLevel",
-      "value": "5",
+      "value": "2",
       "type": "Integer"
      },
      {
@@ -1315,9 +2620,9 @@
       "type": "Integer"
      },
      {
-      "name": "markerHeight",
-      "value": "52",
-      "type": "Integer"
+      "name": "API_KEY",
+      "value": "0",
+      "type": "String"
      },
      {
       "name": "markerClickFunction",
@@ -1331,7 +2636,7 @@
      },
      {
       "name": "popupHeight",
-      "value": 250,
+      "value": "250",
       "type": "Integer"
      },
      {
@@ -1345,9 +2650,59 @@
       "type": "String"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithShapes"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:testWithShapes}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //console.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n            Dashboards.log(beat);\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "shapeMouseOver",
+      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    return {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    };\n\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseOut",
+      "value": "function (event){\n    return event.style;\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "shapeMouseClick",
+      "value": "function f(event){\n    var msg = 'Mouse clicked at ' + event.data.key +', at latitude:' + event.latitude + ' and longitude:' + event.longitude;\n    Dashboards.log(msg);\n    \n    //if (!this.userData){\n    //    this.userData = {};\n    //}\n    //this.userData[event.data.key] = !this.userData[event.data.key];\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // otherwise, nothing happens\n    return {\n        fillColor: 'red',\n        fillOpacity: 1,\n        strokeColor: 'black',\n        strokeWidth: 2\n    };\n}",
+      "type": "JavaScript"
      }
     ]
    },
@@ -1368,7 +2723,7 @@
    {
     "id": "dc7565c1-1acd-d4d4-0e9c-eab103162f65",
     "type": "ComponentsParameter",
-    "typeDesc": "Parameter",
+    "typeDesc": "Simple parameter",
     "parent": "GENERIC",
     "properties": [
      {
@@ -1380,6 +2735,72 @@
       "name": "propertyValue",
       "value": "None",
       "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "8255ffd8-fd2e-f7c3-3c7a-054ffccc5ec6",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "tileServiceParam",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "mapquest-sat",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "6499a056-b6a2-4e16-e342-7fc7dac463e4",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "mapEngineParam",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "openlayers",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
      }
     ]
    },
@@ -1409,19 +2830,29 @@
       "type": "Id"
      },
      {
+      "name": "listeners",
+      "value": "['CustomerNameParameter']",
+      "type": "Listeners"
+     },
+     {
       "name": "expression",
       "value": "function () {\n    return CustomerNameParameter;    \n}",
       "type": "JavaScript"
      },
      {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
       "name": "htmlObject",
       "value": "HiddenContentCol",
       "type": "HtmlObject"
-     },
-     {
-      "name": "listeners",
-      "value": "['CustomerNameParameter']",
-      "type": "Listeners"
      },
      {
       "name": "executeAtStart",
@@ -1439,14 +2870,229 @@
       "type": "JavaScript"
      },
      {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     }
+    ]
+   },
+   {
+    "id": "SELECTORS",
+    "name": "Selects",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Selects",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "fe94aba4-cc1f-209a-4944-a7db6b68b935",
+    "type": "ComponentsSelect",
+    "typeDesc": "Select Component",
+    "parent": "SELECTORS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "selectMapEngineComponent",
+      "type": "Id"
+     },
+     {
+      "name": "parameter",
+      "value": "${p:mapEngineParam}",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "valueAsId",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "externalPlugin",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "dataSource",
+      "value": "",
+      "type": "Datasource"
+     },
+     {
+      "name": "valuesArray",
+      "value": "[[\"openlayers\",\"openlayers\"],[\"google\",\"google\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
       "name": "refreshPeriod",
       "value": "",
       "type": "Integer"
      },
      {
+      "name": "htmlObject",
+      "value": "${p:selectMapEngineObj}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
       "name": "tooltip",
       "value": "",
       "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     }
+    ]
+   },
+   {
+    "id": "3f268daf-49ea-0f2b-c0e7-2cc1b1ea5c24",
+    "type": "ComponentsSelect",
+    "typeDesc": "Select Component",
+    "parent": "SELECTORS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "selectTileServiceComponent",
+      "type": "Id"
+     },
+     {
+      "name": "parameter",
+      "value": "${p:tileServiceParam}",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "valueAsId",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "externalPlugin",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "dataSource",
+      "value": "",
+      "type": "Datasource"
+     },
+     {
+      "name": "valuesArray",
+      "value": "[[\"google\",\"google\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${p:selectTileObj}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f(){\n\n    var s = _.keys(Dashboards.getComponentByName('render_SimpleMap').tileServices);\n    this.valuesArray =  _.zip(s,s);\n}",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
      }
     ]
    }
@@ -1498,14 +3144,14 @@
       "type": "Access"
      },
      {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Longitude\",\n\"Latitude\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nFloat.class\n,Float.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Float(3), new Float(45.45), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new Float(12), new Float(45.45), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new Float(14), new Float(45.45), new String(\"Signal Gift Stores\")});\nreturn model;\n\n\n",
+      "type": "SqlQuery"
+     },
+     {
       "name": "parameters",
       "value": "[]",
       "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
      },
      {
       "name": "outputMode",
@@ -1523,19 +3169,90 @@
       "type": "CdaCalculatedColumnsArray"
      },
      {
-      "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Longitude\",\n\"Latitude\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nFloat.class\n,Float.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Float(3), new Float(45.45), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new Float(12), new Float(45.45), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new Float(14), new Float(45.45), new String(\"Signal Gift Stores\")});\nreturn model;\n\n\n",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
      },
      {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "d5bc637e-e056-f653-98ff-f64dd8d58061",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "ForMapWithGeo",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"City\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Nantes\"), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new String(\"Melbourne\"), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new String(\"Las Vegas\"), new String(\"Signal Gift Stores\")});\nmodel.addRow(new Object[]{ new String(\"Paris\"), new String(\"La Rochelle Gifts\")});\nmodel.addRow(new Object[]{ new String(\"Stavern\"), new String(\"Baane Mini Imports\")});\nreturn model;\n\n\n",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
      }
     ]
    },
@@ -1550,7 +3267,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "ForMapWithGeo",
+      "value": "ForMapWithShapes",
       "type": "Id"
      },
      {
@@ -1569,14 +3286,14 @@
       "type": "Access"
      },
      {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"key\",\n\"value\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;",
+      "type": "SqlQuery"
+     },
+     {
       "name": "parameters",
       "value": "[]",
       "type": "CdaParameters"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
      },
      {
       "name": "outputMode",
@@ -1594,23 +3311,23 @@
       "type": "CdaCalculatedColumnsArray"
      },
      {
-      "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"City\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Nantes\"), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new String(\"Melbourne\"), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new String(\"Las Vegas\"), new String(\"Signal Gift Stores\")});\nmodel.addRow(new Object[]{ new String(\"Paris\"), new String(\"La Rochelle Gifts\")});\nmodel.addRow(new Object[]{ new String(\"Stavern\"), new String(\"Baane Mini Imports\")});\nreturn model;\n\n\n",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
      },
      {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
      }
     ]
    }
   ]
  },
- "filename": "/plugin-samples/pentaho-cdf-dd/tests/maps.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/maps.cdfde"
 }

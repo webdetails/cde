@@ -142,6 +142,16 @@ var SynchronizeRequests = {
             else
                 $.notifyBar({ html: "Error loading templates: " + json.result });
         });
+    }, 
+
+    createFile: function (params) {
+        $.post(ExternalEditor.getWriteUrl(), params,   
+            function (result) {
+                if(result.indexOf('saved ok') < 0){
+                    alert(result);
+                }
+            }
+        );
     }
 
 };
@@ -329,10 +339,7 @@ var SaveRequests = {
 
     saveDashboard: function (saveParams, stripArgs) {
 
-        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveParams,
-            success: function (result) {                
+        var successFunction = function(result){
             //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
@@ -350,39 +357,54 @@ var SaveRequests = {
                 });
             }
         
-            }
-        });
-        $uploadForm.submit();
+            };
+
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
+        }
     },
 
     saveAsDashboard: function (saveAsParams, selectedFolder, selectedFile, myself) {
-        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveAsParams,
-            success: function (result) {
+
+        var successFunction = function(result){
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
                     //cdfdd.setExitNotification(false);
-                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.protocol + "//" + window.location.host + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else
                 $.notifyBar({
                     html: "Errors saving file: " + json.result
                 });
+        };
+
+         if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveAsParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
         }
-        });
-        $uploadForm.submit();
     },
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveAsParams,
-            success: function (result) {
+        var successFunction = function(result){
             var json = JSON.parse(result);
             if (json.status == "true") {
                 if (selectedFolder[0] == "/") {
@@ -397,16 +419,26 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = window.location.origin + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.protocol + "//" + window.location.host + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else {
                 $.notifyBar({
                     html: "Errors saving file: " + json.result
                 });
             }
+        };
+
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveAsParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
         }
-        });
-        $uploadForm.submit();
     }
 };
 
@@ -432,10 +464,7 @@ var PreviewRequests = {
 
     previewDashboard: function (saveParams, _href) {
 
-        var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
-        $uploadForm.ajaxForm({
-            data:saveParams,
-            success: function (result) {
+        var successFunction = function(result){
                 var json = eval("(" + result + ")");
                     if (json.status == "true") {
                     $.fancybox({
@@ -449,9 +478,18 @@ var PreviewRequests = {
                         html: "Errors saving file: " + json.result
                     });
                 }
-            }
-        });
-        $uploadForm.submit();
+            };
+        if ( $.browser.msie && $.browser.version < 10 ) {
+            console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+            $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
+        } else {
+            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            $uploadForm.ajaxForm({
+                data:saveParams,
+                success: successFunction
+            });
+            $uploadForm.submit();
+        }
     },
 
     getPreviewUrl: function( solution, path, file, style){

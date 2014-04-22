@@ -22,7 +22,15 @@ var TextEditorComponent = BaseComponent.extend({
         }
     }
     ],
-    
+    template: function(){ 
+        return "<div class='textEditorComponent'><div class='textEditorControls'>"+
+        "<div class='textEditorFile'><span class='fileLabel'>File: </span>{{file}}</div>"+
+        "<div class='textEditorButtons'>{{#buttons}}<button class='{{clazz}}'>{{label}}</button>{{/buttons}}</div>" +
+        "</div><div class='textEditorNotification'><span class='textEditorNotificationMsg'>Test</span></div>"+
+        "<div class='textEditorRightPanel'></div>"+
+        "<div class='textEditorIframeContainer'><div class='textEditorIframe'><iframe seamless='true' marginheight='0'></iframe></div>"+
+        "</div>"
+    },
     
     /* // Default settings
      * file: the file to edit
@@ -64,15 +72,8 @@ var TextEditorComponent = BaseComponent.extend({
         
         // Render the correct structure
         var buttons = this.getButtons();
-        var template = "<div class='textEditorComponent'><div class='textEditorControls'>"+
-        "<div class='textEditorFile'><span class='fileLabel'>File: </span>{{file}}</div>"+
-        "<div class='textEditorButtons'>{{#buttons}}<button class='{{clazz}}'>{{label}}</button>{{/buttons}}</div>" +
-        "</div><div class='textEditorNotification'><span class='textEditorNotificationMsg'>Test</span></div>"+
-        "<div class='textEditorRightPanel'></div>"+
-        "<div class='textEditorIframeContainer'><div class='textEditorIframe'><iframe seamless='true' marginheight='0'></iframe></div>"+
-        "</div>";
         
-        this.$ph.html(Mustache.render(template, {
+        this.$ph.html(Mustache.render(this.template(), {
             file: this.file || "Unknown file", 
             buttons:buttons
         }));

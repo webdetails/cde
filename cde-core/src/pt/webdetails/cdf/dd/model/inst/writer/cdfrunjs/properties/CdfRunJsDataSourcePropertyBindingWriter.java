@@ -1,207 +1,245 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*                
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed unde r the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author dcleao
  */
-public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBindingWriter
-{
-	protected static final Log logger = LogFactory.getLog(CdfRunJsDataSourcePropertyBindingWriter.class);
-	
-	private static final String META_TYPE_CDA = "CDA";
-	private static final String META_TYPE_CPK = "CPK";
-  
-  public void write(StringBuilder out, CdfRunJsDashboardWriteContext context, PropertyBinding propBind) throws ThingWriteException
-  {
-    DataSourceComponent dataSourceComp = this.getDataSourceComponent(context, propBind);
-    if(dataSourceComp == null)
-    {
-      return;
-    }
-    
-    String dataAccessId = dataSourceComp.tryGetPropertyValue("dataAccessId", null);
-    if(dataAccessId != null)
-    {
-      renderCdaDatasource(out, context, dataSourceComp, dataAccessId);
-    }
-    else 
-    {
-      // "meta" attribute has the value "CDA", "CPK" ?
-      // See DataSourceModelReader#readDataSourceComponent
-      String metaType = dataSourceComp.getMeta().tryGetAttributeValue("", "");
-      if(StringUtils.isEmpty(metaType))
-      {
-        renderDatasource(out, context, dataSourceComp);
-      } 
-      else if(metaType.equals(META_TYPE_CDA)) 
-      {
-        renderBuiltinCdaDatasource(out, context, dataSourceComp);
-      }
-      else if(metaType.equals(META_TYPE_CPK)) 
-      {
-        renderCpkDatasource(out, context, dataSourceComp);
-      }
-      else
-      {
-        throw new ThingWriteException("Cannot render a data source property of meta type '" + metaType + "'.");
-      }
-    }
-  }
-  
-  protected DataSourceComponent getDataSourceComponent(CdfRunJsDashboardWriteContext context, PropertyBinding propBind)
-  {
-    String dataSourceName = propBind.getValue();
-    return StringUtils.isEmpty(dataSourceName) ? 
-           null : 
-           context.getDashboard().tryGetDataSource(dataSourceName);
-  }
-  
-  protected void renderCdaDatasource(
-          StringBuilder out, 
-          CdfRunJsDashboardWriteContext context,
-          DataSourceComponent dataSourceComp, 
-          String dataAccessId)
-  {
-    String indent = context.getIndent();
-    
-    addJsProperty(out, "dataAccessId", buildJsStringValue(dataAccessId), indent, context.isFirstInList());
+public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBindingWriter {
+  protected static final Log logger = LogFactory.getLog( CdfRunJsDataSourcePropertyBindingWriter.class );
 
-    context.setIsFirstInList(false);
-    
-    String outputIndexId = dataSourceComp.tryGetPropertyValue("outputIndexId", null);
-    if(outputIndexId != null)
-    {
-      addJsProperty(out, "outputIndexId", buildJsStringValue(outputIndexId), indent, false);
-    }
-    
-    // Check if we have a cdaFile
-    String cdaPath = dataSourceComp.tryGetPropertyValue("cdaPath", null);
-    if(cdaPath != null)
-    {
-      addJsProperty(out, "path", buildJsStringValue(cdaPath), indent, false);
-    }
-    else 
-    {
-      // legacy
-      addJsProperty(out, "solution", buildJsStringValue(dataSourceComp.tryGetPropertyValue("solution", "")), indent, false);
-      addJsProperty(out, "path",     buildJsStringValue(dataSourceComp.tryGetPropertyValue("path",     "")), indent, false);
-      addJsProperty(out, "file",     buildJsStringValue(dataSourceComp.tryGetPropertyValue("file",     "")), indent, false);
-    }
-  }
-  
-  protected void renderBuiltinCdaDatasource(
-          StringBuilder out, 
-          CdfRunJsDashboardWriteContext context,
-          DataSourceComponent dataSourceComp)
-  {
-    String indent = context.getIndent();
-    
-    addJsProperty(out, "dataAccessId", buildJsStringValue(dataSourceComp.getName()), indent, context.isFirstInList());
-    
-    context.setIsFirstInList(false);
-    
-    String cdeFilePath = context.getDashboard().getSourcePath();
-    if(cdeFilePath.contains(".wcdf")){
-      logger.error("renderBuiltinCdaDatasource: [fileName] receiving a .wcdf when a .cdfde was expected!");
-      cdeFilePath = cdeFilePath.replace(".wcdf", ".cda");
-    }
-    
-    String cdaFilePath = cdeFilePath.replaceAll(".cdfde", ".cda");
-    
-    addJsProperty(out, "path", JsonUtils.toJsString(cdaFilePath), indent, false);
-  }
-  
-  protected void renderCpkDatasource(
-          StringBuilder out, 
-          CdfRunJsDashboardWriteContext context,
-          DataSourceComponent dataSourceComp)
-  {
-    
-    String indent = context.getIndent();
-    
-    DataSourceComponentType compType= dataSourceComp.getMeta();
-    
-    addJsProperty(out, "endpoint", buildJsStringValue(compType.tryGetAttributeValue("endpoint", "")), indent, context.isFirstInList());
-    context.setIsFirstInList(false);
-    
-    addJsProperty(out, "pluginId", buildJsStringValue(compType.tryGetAttributeValue("pluginId", "")), indent, false);
-    
-    String queryType = "cpk";
-    
-    addJsProperty(out, "queryType", JsonUtils.toJsString(queryType), indent, false);
-  }
-  
-  protected void renderDatasource(
-          StringBuilder out, 
-          CdfRunJsDashboardWriteContext context,
-          DataSourceComponent dataSourceComp)
-  {
-    
-    String indent = context.getIndent();
-    
-    addJsProperty(out, "jndi",    buildJsStringValue(dataSourceComp.tryGetPropertyValue("jndi", "")), indent, context.isFirstInList());
-    context.setIsFirstInList(false);
-    addJsProperty(out, "catalog", buildJsStringValue(dataSourceComp.tryGetPropertyValue("catalog", "")), indent, false);
-    addJsProperty(out, "cube",    buildJsStringValue(dataSourceComp.tryGetPropertyValue("cube", "")), indent, false);
-    
-    
-    String query = dataSourceComp.tryGetPropertyValue("mdxquery", null);
-    String queryType;
-    if (query != null)
-    {
-      queryType = "mdx";
-    }
-    else
-    {
-      queryType = "sql";
-      query = dataSourceComp.tryGetPropertyValue("sqlquery", null);
-    }
-    
-    if(query != null) 
-    {
-      query = writeFunction(query);
-    }
-    
-    addJsProperty(out, "query",     replaceParameters(query),        indent, false);
-    addJsProperty(out, "queryType", JsonUtils.toJsString(queryType), indent, false);
+  private static final String META_TYPE_CDA = "CDA";
+  private static final String META_TYPE_CPK = "CPK";
+
+  /**
+   * This class contains the constants that represent the names of the
+   * data source properties that are to be rendered to Javascript.
+   */
+  private static class PropertyName {
+    // Datasource
+    public static final String QUERY_TYPE = "queryType";
+    public static final String QUERY = "query";
+    public static final String SQL_QUERY = "sqlquery";
+    public static final String MDX_QUERY = "mdxquery";
+    public static final String JNDI = "jndi";
+    public static final String CATALOG = "catalog";
+    public static final String CUBE = "cube";
+
+    // CPK DataSource
+    public static final String DATA_ACCESS_ID = "dataAccessId";
+    public static final String ENDPOINT = "endpoint";
+    public static final String PLUGIN_ID = "pluginId";
+    public static final String KETTLE_OUTPUT_FORMAT = "kettleOutput";
+    public static final String KETTLE_OUTPUT_STEP_NAME = "stepName";
+
+    // CDA DataSource
+    public static final String OUTPUT_INDEX_ID = "outputIndexId";
+    public static final String SOLUTION = "solution";
+    public static final String PATH = "path";
+    public static final String FILE = "file";
   }
 
-  // ---------------------
-  
-  protected static String buildJsStringValue(String value)
-  {
-    return JsonUtils.toJsString(replaceParameters(value == null ? "" : value));
+  /**
+   * This class contains the constant values for data source properties.
+   */
+  private static class PropertyValue {
+    public static final String CPK_QUERY_TYPE = "cpk";
+    public static final String MDX_QUERY_TYPE = "mdx";
+    public static final String SQL_QUERY_TYPE = "sql";
   }
-  
-  protected static String replaceParameters(String value)
-  {
+
+
+  protected static String buildJsStringValue( String value ) {
+    return JsonUtils.toJsString( replaceParameters( value == null ? "" : value ) );
+  }
+
+  protected static String replaceParameters( String value ) {
     // TODO: Someone explain this SHIT!
-    if(value != null)
-    {
-      Pattern pattern = Pattern.compile("\\$\\{[^}]*\\}");
-      Matcher matcher = pattern.matcher(value);
-      while (matcher.find())
-      {
+    if ( value != null ) {
+      Pattern pattern = Pattern.compile( "\\$\\{[^}]*\\}" );
+      Matcher matcher = pattern.matcher( value );
+      while ( matcher.find() ) {
         String parameter = matcher.group();
-        value = value.replace(matcher.group(), "Dashboards.ev(" + parameter.substring(2, parameter.length() - 1) + ")");
+        value =
+          value.replace( matcher.group(), "Dashboards.ev(" + parameter.substring( 2, parameter.length() - 1 ) + ")" );
       }
     }
     return value;
+  }
+
+  public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, PropertyBinding propBind )
+    throws ThingWriteException {
+    DataSourceComponent dataSourceComp = this.getDataSourceComponent( context, propBind );
+    if ( dataSourceComp == null ) {
+      return;
+    }
+
+    String dataAccessId = dataSourceComp.tryGetPropertyValue( PropertyName.DATA_ACCESS_ID, null );
+    if ( dataAccessId != null ) {
+      renderCdaDatasource( out, context, dataSourceComp, dataAccessId );
+    } else {
+      // "meta" attribute has the value "CDA", "CPK" ?
+      // See DataSourceModelReader#readDataSourceComponent
+      String metaType = dataSourceComp.getMeta().tryGetAttributeValue( "", "" );
+      if ( StringUtils.isEmpty( metaType ) ) {
+        renderDatasource( out, context, dataSourceComp );
+      } else if ( metaType.equals( META_TYPE_CDA ) ) {
+        renderBuiltinCdaDatasource( out, context, dataSourceComp );
+      } else if ( metaType.equals( META_TYPE_CPK ) ) {
+        renderCpkDatasource( out, context, dataSourceComp );
+      } else {
+        throw new ThingWriteException( "Cannot render a data source property of meta type '" + metaType + "'." );
+      }
+    }
+  }
+
+  protected DataSourceComponent getDataSourceComponent( CdfRunJsDashboardWriteContext context,
+                                                        PropertyBinding propBind ) {
+    String dataSourceName = propBind.getValue();
+    return StringUtils.isEmpty( dataSourceName )
+      ? null
+      : context.getDashboard().tryGetDataSource( dataSourceName );
+  }
+
+  protected void renderCdaDatasource(
+    StringBuilder out,
+    CdfRunJsDashboardWriteContext context,
+    DataSourceComponent dataSourceComp,
+    String dataAccessId ) {
+    String indent = context.getIndent();
+
+    addJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dataAccessId ),
+      indent, context.isFirstInList() );
+
+    context.setIsFirstInList( false );
+
+    String outputIndexId = dataSourceComp.tryGetPropertyValue( PropertyName.OUTPUT_INDEX_ID, null );
+    if ( outputIndexId != null ) {
+      addJsProperty( out, PropertyName.OUTPUT_INDEX_ID, buildJsStringValue( outputIndexId ),
+        indent, false );
+    }
+
+    // Check if we have a cdaFile
+    String cdaPath = dataSourceComp.tryGetPropertyValue( "cdaPath", null );
+    if ( cdaPath != null ) {
+      addJsProperty( out, PropertyName.PATH, buildJsStringValue( cdaPath ), indent, false );
+    } else {
+      // legacy
+      String solution = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.SOLUTION, "" ) );
+      addJsProperty( out, PropertyName.SOLUTION, solution, indent, false );
+
+      String path = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.PATH, "" ) );
+      addJsProperty( out, PropertyName.PATH, path, indent, false );
+
+      String file = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.FILE, "" ) );
+      addJsProperty( out, PropertyName.FILE, file, indent, false );
+    }
+  }
+
+  protected void renderBuiltinCdaDatasource(
+    StringBuilder out,
+    CdfRunJsDashboardWriteContext context,
+    DataSourceComponent dataSourceComp ) {
+    String indent = context.getIndent();
+
+    addJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dataSourceComp.getName() ), indent,
+      context.isFirstInList() );
+
+    context.setIsFirstInList( false );
+
+    String cdeFilePath = context.getDashboard().getSourcePath();
+    if ( cdeFilePath.contains( ".wcdf" ) ) {
+      logger.error( "renderBuiltinCdaDatasource: [fileName] receiving a .wcdf when a .cdfde was expected!" );
+      cdeFilePath = cdeFilePath.replace( ".wcdf", ".cda" );
+    }
+
+    String cdaFilePath = cdeFilePath.replaceAll( ".cdfde", ".cda" );
+
+    addJsProperty( out, PropertyName.PATH, JsonUtils.toJsString( cdaFilePath ), indent, false );
+  }
+
+  // ---------------------
+
+  protected void renderCpkDatasource(
+    StringBuilder out,
+    CdfRunJsDashboardWriteContext context,
+    DataSourceComponent dataSourceComp ) {
+
+    String indent = context.getIndent();
+
+    DataSourceComponentType compType = dataSourceComp.getMeta();
+
+    String endPoint = buildJsStringValue( compType.tryGetAttributeValue( PropertyName.ENDPOINT, "" ) );
+    addJsProperty( out, PropertyName.ENDPOINT, endPoint , indent, context.isFirstInList() );
+    context.setIsFirstInList( false );
+
+    String pluginId = buildJsStringValue( compType.tryGetAttributeValue( PropertyName.PLUGIN_ID, "" ) );
+    addJsProperty( out, PropertyName.PLUGIN_ID, pluginId, indent, false );
+
+    String stepName = dataSourceComp.tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_STEP_NAME, "OUTPUT" );
+    addJsProperty( out, PropertyName.KETTLE_OUTPUT_STEP_NAME, buildJsStringValue( stepName ), indent, false );
+
+    String kettleOutput = dataSourceComp.tryGetPropertyValueByName( PropertyName.KETTLE_OUTPUT_FORMAT, "Infered" );
+    addJsProperty( out, PropertyName.KETTLE_OUTPUT_FORMAT, buildJsStringValue( kettleOutput ), indent, false );
+
+    addJsProperty( out, PropertyName.QUERY_TYPE, JsonUtils.toJsString( PropertyValue.CPK_QUERY_TYPE ), indent, false );
+  }
+
+  protected void renderDatasource(
+    StringBuilder out,
+    CdfRunJsDashboardWriteContext context,
+    DataSourceComponent dataSourceComp ) {
+
+    String indent = context.getIndent();
+
+    String jndi = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.JNDI, "" ) );
+    addJsProperty( out, PropertyName.JNDI, jndi, indent, context.isFirstInList() );
+    context.setIsFirstInList( false );
+
+    String catalog = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.CATALOG, "" ) );
+    addJsProperty( out, PropertyName.CATALOG, catalog, indent, false );
+
+    String cube = buildJsStringValue( dataSourceComp.tryGetPropertyValue( PropertyName.CUBE, "" ) );
+    addJsProperty( out, PropertyName.CUBE, cube, indent, false );
+
+
+    String query = dataSourceComp.tryGetPropertyValue( PropertyName.MDX_QUERY, null );
+    String queryType;
+    if ( query != null ) {
+      queryType = PropertyValue.MDX_QUERY_TYPE;
+    } else {
+      queryType = PropertyValue.SQL_QUERY_TYPE;
+      query = dataSourceComp.tryGetPropertyValue( PropertyName.SQL_QUERY, null );
+    }
+
+    if ( query != null ) {
+      query = writeFunction( query );
+    }
+
+    addJsProperty( out, PropertyName.QUERY, replaceParameters( query ), indent, false );
+    addJsProperty( out, PropertyName.QUERY_TYPE, JsonUtils.toJsString( queryType ), indent, false );
   }
 }

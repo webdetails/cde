@@ -1555,6 +1555,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     var myself = this;
     return $('<button class="cdfddInput">...</button>').click(function(){
       if(myself.fileName == null) return;
+      myself.fileName = myself.getFileName($(".cdfdd-resourceFileNameRender").text());
       var url = ExternalEditor.getEditorUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
@@ -1722,6 +1723,12 @@ var ResourceFileRenderer = CellRenderer.extend({
               myself.fileName = selectedFile;//new
               var file = myself.formatSelection(selectedFile);
               _editArea.text(file);
+              var params = {
+                createNew: true,
+                path: selectedFile,
+                data: ""
+              }
+              SynchronizeRequests.createFile(params);
               myself.callback(file);
               return true;
             }
@@ -1777,88 +1784,105 @@ var ResourceFileRenderer = CellRenderer.extend({
     
   },
 
-  getFileExtensions: function(){
+  getFileExtensions: function() {
     return this.getResourceType() == "css" ? ".css" : ".js";
   },
 
-  formatSelection: function(file){
+  formatSelection: function(file) {
     var isSystem = false;
-    if(CDFDDFileName != "") {
+    var finalPath = "";
+      if(CDFDDFileName != "") {
         if(CDFDDFileName.indexOf("/system") == 0){
-            isSystem = true;
-        }
+          isSystem = true;
+      }
     }
 
     if(isSystem) {
-        return Endpoints.getStaticResUrl() + "/" + CDFDDFileName.split("/")[2] + "/" + file;
+    	finalPath = "/" + file;
+    	return ("${system:" + finalPath.replace(/\/+/g, "/") + '}');
     } else {
-        //force file absolute
-        if (file.charAt(0) != '/') {
-            file = "/"+ file;
+      //force file absolute
+      if (file.charAt(0) != '/') {
+        file = "/"+ file;
+      }
+      var common = true;
+      var splitFile = file.split("/");
+      var dashFile = cdfdd.getDashboardData().filename;
+      if(dashFile == null) dashFile = '';
+      
+      var splitPath = dashFile.split("/");
+      var i = 0;
+      
+      while (common) {
+        if (splitFile[i] !== splitPath[i]) {
+          common = false;
         }
-        var common = true;
-        var splitFile = file.split("/");
-        var dashFile = cdfdd.getDashboardData().filename;
-        if(dashFile == null) dashFile = '';
-        splitPath = dashFile.split("/"),
-            finalPath = "",
-            i = 0;
-        while (common){
-            if (splitFile[i] !== splitPath[i]) {
-                common = false;
-            }
-            i += 1;
-        }
+        i += 1;
+      }
 
-        $.each(splitPath.slice(i),function(i,j){
-            finalPath+="../";
-        });
-        finalPath += splitFile.slice(i - 1).join('/');
-        return ("${res:" + finalPath.replace(/\/+/g, "/") + '}');
+      $.each(splitPath.slice(i),function(i,j){
+        finalPath+="../";
+      });
+
+      finalPath += splitFile.slice(i - 1).join('/');
+
+      return ("${solution:" + finalPath.replace(/\/+/g, "/") + '}');
+
     }
 
   },
-  
-  setFileName: function(settings)
-  {//set .fileName if possible
-    if(settings.indexOf('${res:') > -1){
-      var fileName = settings.replace('${res:', '').replace('}','');
-      if (fileName.charAt(0) != '/')
-      {//relative path, append dashboard location
+
+  getFileName: function(settings) {
+  	var fileName;
+  	if (settings.indexOf('${res:') > -1 || settings.indexOf('${solution:') > -1) {
+    	var toReplace = settings.substring(0, settings.indexOf(':') + 1);
+		  var fileName = settings.replace(toReplace, '').replace('}','');
+      if (fileName.charAt(0) != '/') { //relative path, append dashboard location
         var basePath =  cdfdd.getDashboardData().filename;
-        if(basePath == null)
-        {
+        if(basePath == null) {
           this.fileName = null;
           return;
         }
         var lastSep = basePath.lastIndexOf('/');
         basePath = basePath.substring(0, lastSep);
-        
-        if(fileName.indexOf('..') > -1)
-        {//resolve
+
+        if (fileName.indexOf('..') > -1) { //resolve
           var base = basePath.split('/');
           var file = fileName.split('/');
           var baseEnd = base.length;
           var fileStart = 0;
-          while(file[fileStart] == '..' && baseEnd > 0)
-          { 
+          while(file[fileStart] == '..' && baseEnd > 0) {
             fileStart++;
             baseEnd--;
           }
           fileName = base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
         }
-        
-        else {fileName = basePath + '/' + fileName;}
-      }
-      
-      this.fileName = fileName;
+
+        else { fileName = basePath + '/' + fileName; }
+
+	}
+
+    } else if (settings.indexOf('${system:') > -1) {
+    	var systemDir = CDFDDFileName.split("/")[1];
+    	var pluginId = CDFDDFileName.split("/")[2];
+    	fileName = "/" + systemDir + "/" + pluginId + "/";
+   		fileName += settings.replace('${system:', '').replace('}','');
+    	fileName = fileName.replace(/\/+/g, "/");
+
+    } else if (settings != null && settings != '') { //needs a solution path
+      fileName = settings;
+
+    } else {
+      fileName = null;
+
     }
-    else if (settings != null && settings != '') {//needs a solution path
-      this.fileName = settings;
-    }
-    else {
-      this.fileName = null;
-    }
+
+    return fileName;
+  },
+
+  setFileName: function(settings) { //set .fileName if possible
+    this.fileName = this.getFileName(settings);
+
   },
 
   validate: function(settings, original){
