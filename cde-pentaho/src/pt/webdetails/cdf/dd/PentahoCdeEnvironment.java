@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd;
 
@@ -25,6 +34,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJs
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironment {
@@ -34,6 +44,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private static final String PLUGIN_REPOSITORY_DIR = "cde";
   private static final String SYSTEM_DIR = "system";
   private static final String CONTENT = "content";
+  private static final String CDE_XML = "cde.xml";
 
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
@@ -50,11 +61,11 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     if ( factory.containsBean( IResourceLoader.class.getSimpleName() ) ) {
       resourceLoader = (IResourceLoader) factory.getBean( IResourceLoader.class.getSimpleName() );
     }
-    
+
     if ( factory.containsBean( IFileHandler.class.getSimpleName() ) ) {
       fileHandler = (IFileHandler) factory.getBean( IFileHandler.class.getSimpleName() );
     }
-    
+
     super.init( this );
   }
 
@@ -108,8 +119,9 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";// TODO:
   }
 
-  public String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
-      return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
+  public String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme )
+      throws Exception {
+    return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
   }
 
   public PentahoPluginEnvironment getPluginEnv() {
@@ -118,12 +130,12 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   public ICdeApiPathProvider getExtApi() {
     // not worth the sync
-    if (apiPaths == null) {
+    if ( apiPaths == null ) {
       apiPaths = new LegacyApiPathProvider( getPluginEnv().getUrlProvider() );
     }
     return apiPaths;
   }
-  
+
   @Override
   public IFileHandler getFileHandler() {
     return fileHandler;
@@ -135,7 +147,18 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
-  @Override public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
+  @Override
+  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
+      String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
+  }
+
+  @Override public IBasicFile getCdeXml() {
+    if ( getUserContentAccess( "/" ).fileExists( "/cde/" + CDE_XML ) ) {
+      return getUserContentAccess( "/" ).fetchFile( "/cde/" + CDE_XML );
+    } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
+      return getPluginSystemReader( null ).fetchFile( CDE_XML );
+    }
+    return null;
   }
 }
