@@ -24,6 +24,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJs
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
@@ -32,6 +33,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
+  private static final String CDE_XML = "cde.xml";
   protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
@@ -152,5 +154,14 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
+  }
+
+  @Override public IBasicFile getCdeXml() {
+    if ( getUserContentAccess( "/" ).fileExists( "/public/cde/" + CDE_XML ) ) {
+      return getUserContentAccess("/" ).fetchFile( "/public/cde/" + CDE_XML  );
+    } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
+      return getPluginSystemReader( null ).fetchFile( CDE_XML );
+    }
+    return null;
   }
 }

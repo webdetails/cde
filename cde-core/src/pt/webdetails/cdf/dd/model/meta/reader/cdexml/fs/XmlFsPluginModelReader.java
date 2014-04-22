@@ -4,9 +4,12 @@
 
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 
+import org.apache.commons.io.FilenameUtils;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.XmlAdhocComponentTypeReader;
 
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +27,7 @@ import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.PrimitiveComponentType;
 import pt.webdetails.cdf.dd.model.meta.WidgetComponentType;
 import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
+import pt.webdetails.cpf.packager.origin.RepositoryPathOrigin;
 import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
@@ -169,7 +173,7 @@ public final class XmlFsPluginModelReader {
   {
     String className = null;
     try {
-      className = Utils.getNodeText("Header/Override", propertyElem);
+      className = Utils.getNodeText( "Header/Override", propertyElem );
       
       if(StringUtils.isEmpty(className)) { className = "PropertyType"; }
       
@@ -212,25 +216,119 @@ public final class XmlFsPluginModelReader {
         }
       }
   }
-  
-  private void readWidgetStubComponents(MetaModel.Builder model, XmlFsPluginThingReaderFactory factory) throws ThingReadException {
-    
-    logger.info(String.format("Loading WIDGET components from: %s", WIDGETS_DIR));
-      
-    List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader(WIDGETS_DIR).listFiles(null, 
-              new GenericBasicFileFilter(COMPONENT_FILENAME,DEFINITION_FILE_EXT), IReadAccess.DEPTH_ALL, false, true);
-    PathOrigin widgetsOrigin = new PluginRepositoryOrigin(CdeEngine.getEnv().getPluginRepositoryDir(), WIDGETS_DIR);
-    
-    if(filesList != null) {
 
-      logger.debug(String.format("%s widget components found", filesList.size()));
+  private void readWidgetStubComponents( MetaModel.Builder model, XmlFsPluginThingReaderFactory factory )
+      throws ThingReadException {
+    Document doc = null;
+    IBasicFile cdeXml = CdeEngine.getInstance().getEnvironment().getCdeXml();
+    try {
+      if ( cdeXml != null ) {
+        doc = Utils.getDocFromFile( cdeXml, null );
+      }
+    } catch ( Exception e ) {
+      String msg = "Cannot read components file 'cde.xml'.";
 
-      IBasicFile[] filesArray = filesList.toArray(new IBasicFile[]{});
+      if ( !this.continueOnError ) {
+        throw new ThingReadException( msg, e );
+      }
+      // log and move on
+      logger.fatal( msg, e );
+      return;
+    }
+    if ( doc != null ) {
+      List<Element> widgetLocations = doc.selectNodes( "//widgetsLocations//location" );
+      List<List<IBasicFile>> widgetsLists = new ArrayList<List<IBasicFile>>();
+      String locations = "";
+      for ( Element location : widgetLocations ) {
+        try {
+          List<IBasicFile> filesList = CdeEnvironment.getUserContentAccess().listFiles( location.getText(),
+              new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false,
+              true );
+          if ( filesList != null ) {
+            widgetsLists.add( filesList );
+          }
+          locations = locations + location.getText() + ", ";
+        } catch ( Exception e ) {
+          logger.fatal( "Couldn't load widgets from: " + location.getText(), e );
+        }
+      }
+      logger.info( String.format( "Loading WIDGET components from: %s", locations ) );
+      List<String> files = new ArrayList<String>();
+      if ( widgetsLists.size() > 0 ) {
+        for ( List<IBasicFile> filesList : widgetsLists ) {
+          for ( IBasicFile file : filesList ) {
+            if ( !files.contains( file.getName() ) ) {
+              files.add( file.getName() );
+              fixWidgetMeta( file );
+              this.readComponentsFile( model, factory, file, DEF_WIDGET_STUB_TYPE,
+                  new RepositoryPathOrigin(
+                      FilenameUtils.getPath( file.getPath() ) ) );
+            } else {
+              logger.debug( "Duplicate widget, ignoring " + file.getPath() );
+            }
+          }
+        }
+      }
+      return;
+    }
 
-      Arrays.sort(filesArray, getComponentFileComparator());
+    logger.info( String.format( "Loading WIDGET components from: %s", WIDGETS_DIR ) );
 
-      for (IBasicFile file : filesList) {
-        this.readComponentsFile(model, factory, file, DEF_WIDGET_STUB_TYPE, widgetsOrigin);
+    List<IBasicFile> filesList = CdeEnvironment.getPluginRepositoryReader( WIDGETS_DIR ).listFiles( null,
+        new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false, true );
+    PathOrigin widgetsOrigin = new PluginRepositoryOrigin( CdeEngine.getEnv().getPluginRepositoryDir(), WIDGETS_DIR );
+
+    if ( filesList != null ) {
+      logger.debug( String.format( "%s widget components found", filesList.size() ) );
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] { } );
+      Arrays.sort( filesArray, getComponentFileComparator() );
+      for ( IBasicFile file : filesList ) {
+        this.readComponentsFile( model, factory, file, DEF_WIDGET_STUB_TYPE, widgetsOrigin );
+      }
+    }
+
+  }
+
+  private void fixWidgetMeta( IBasicFile componentXml ) {
+    Document doc = null;
+
+    try {
+      if ( CdeEnvironment.getUserContentAccess().fileExists( componentXml.getPath() ) ) {
+        doc =
+            Utils.getDocFromFile( CdeEnvironment.getUserContentAccess().fetchFile( componentXml.getPath() ), null );
+      } else if ( CdeEnvironment.getPluginSystemReader().fileExists( componentXml.getPath() ) ) {
+        doc = Utils
+            .getDocFromFile( CdeEnvironment.getPluginSystemReader().fetchFile( componentXml.getPath() ), null );
+      }
+    } catch ( Exception e ) {
+      logger.error( "Unable to check meta for " + componentXml.getPath() + ", moving on" );
+      return;
+    }
+    List<Element> wcdfMeta = doc.selectNodes( "//meta[@name='wcdf']" );
+    String wcdfName = componentXml.getName().replace( ".component.xml", ".wcdf" );
+    String wcdfPath = FilenameUtils.getPath( componentXml.getPath() ) + wcdfName;
+
+    for ( Element meta : wcdfMeta ) {
+      String metaText = meta.getText();
+      if ( metaText.startsWith( "/" ) && !wcdfPath.startsWith( "/" ) ) {
+        wcdfPath = "/" + wcdfPath;
+      }
+      if ( metaText.equals( wcdfPath ) ) {
+        logger.debug( "No need to fix current wcdf meta ( " + metaText + " ) " );
+      } else {
+        logger.debug( "Fixing wcdf meta, was " + metaText + ", setting " + wcdfPath );
+        meta.setText( wcdfPath );
+        try {
+          if ( CdeEnvironment.getUserContentAccess().fileExists( componentXml.getPath() ) ) {
+            CdeEnvironment.getUserContentAccess()
+                .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
+          } else if ( CdeEnvironment.getPluginSystemWriter().fileExists( componentXml.getPath() ) ) {
+            CdeEnvironment.getPluginSystemWriter()
+                .saveFile( componentXml.getPath(), new ByteArrayInputStream( doc.asXML().getBytes() ) );
+          }
+        } catch ( Exception e ) {
+          logger.error( "Unable to fix meta for " + componentXml.getName() + ", moving on" );
+        }
       }
     }
   }

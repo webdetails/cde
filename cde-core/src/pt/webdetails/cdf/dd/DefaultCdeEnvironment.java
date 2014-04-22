@@ -2,6 +2,7 @@ package pt.webdetails.cdf.dd;
 
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 
 public abstract class DefaultCdeEnvironment extends PluginEnvironment implements ICdeEnvironment {
 
@@ -28,5 +29,9 @@ public abstract class DefaultCdeEnvironment extends PluginEnvironment implements
 
   public String getRepositoryBaseContentUrl() {
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";
+  }
+
+  @Override public IBasicFile getCdeXml() {
+    return null;
   }
 }
