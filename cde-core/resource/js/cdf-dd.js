@@ -200,6 +200,13 @@ var CDFDD = Base.extend({
 
     this.logger.info("Saving dashboard...");
     this.dashboardData.filename = CDFDDFileName;
+    var myself = this;
+    _.each(this.components.getComponents(), function(w) {
+      if (w.meta_widget) {
+        w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+      }
+    });
+    
 
     var stripArgs = {
       needsReload: false
@@ -629,6 +636,11 @@ var CDFDD = Base.extend({
 
             CDFDDFileName = selectedFolder + selectedFile;
             myself.dashboardData.filename = CDFDDFileName;
+            _.each(myself.components.getComponents(), function(w) {
+              if (w.meta_widget) {
+                w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+              }
+            });
 
             var saveAsParams = {
               operation: fromScratch ? "newFile" : "saveas",
@@ -1268,6 +1280,11 @@ var CDFDD = Base.extend({
 
             CDFDDFileName = selectedFolder + selectedFile;
             myself.dashboardData.filename = CDFDDFileName;
+            _.each(myself.components.getComponents(), function(w) {
+              if (w.meta_widget) {
+                w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+              }
+            });
 
             var saveAsParams = {
               operation: fromScratch ? "newFile" : "saveas",

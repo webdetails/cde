@@ -11,6 +11,7 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
@@ -63,4 +64,6 @@ public interface ICdeEnvironment {
       boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options);
 
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext(CdfRunJsDashboardWriteContext factory, String indent);
+
+  public IBasicFile getCdeXml();
 }
