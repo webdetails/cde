@@ -193,3 +193,20 @@ var SaikuPathRenderer = ResourceFileRenderer.extend({
     return file;
   }
 });
+
+var AnalyzerPathRenderer = ResourceFileRenderer.extend({
+
+  //disallow selecting a folder for new file creation
+  createNew: false,
+	
+  //omit edit button
+  renderEditorButton: function(){ return '';},
+	
+  getFileExtensions: function(){
+    return ".xanalyzer";
+  },
+
+  formatSelection: function(file){
+    return file;
+  }
+});
