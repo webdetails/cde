@@ -1,6 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd;
 
 import org.apache.commons.io.IOUtils;
@@ -17,7 +27,6 @@ import pt.webdetails.cpf.utils.MimeTypes;
 
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
-  public static final String PLUGIN_PATH = CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
   private static final Log logger = LogFactory.getLog( DashboardDesignerContentGenerator.class );
 
   private boolean edit = false;
@@ -39,47 +48,54 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider pathParams = parameterProviders.get( MethodParams.PATH );
 
     String solution = requestParams.getStringParameter( MethodParams.SOLUTION, "" ), path =
-        requestParams.getStringParameter( MethodParams.PATH, "" ), file = requestParams.getStringParameter( MethodParams.FILE, "" );
+        requestParams.getStringParameter( MethodParams.PATH, "" ), file =
+        requestParams.getStringParameter( MethodParams.FILE, "" );
     String root = requestParams.getStringParameter( MethodParams.ROOT, "" );
 
     String viewId = requestParams.getStringParameter( MethodParams.VIEWID, "" );
 
-    String filePath = pathParams.getStringParameter( MethodParams.PATH, "");
+    String filePath = pathParams.getStringParameter( MethodParams.PATH, "" );
 
     boolean inferScheme =
-        requestParams.hasParameter( MethodParams.INFER_SCHEME ) && requestParams.getParameter( MethodParams.INFER_SCHEME ).equals( "false" );
+        requestParams.hasParameter( MethodParams.INFER_SCHEME ) && requestParams
+            .getParameter( MethodParams.INFER_SCHEME ).equals( "false" );
     boolean absolute =
-        requestParams.hasParameter( MethodParams.ABSOLUTE ) && requestParams.getParameter( MethodParams.ABSOLUTE ).equals( "true" );
+        requestParams.hasParameter( MethodParams.ABSOLUTE ) && requestParams.getParameter( MethodParams.ABSOLUTE )
+            .equals( "true" );
     boolean bypassCacheRead =
-        requestParams.hasParameter( MethodParams.BYPASS_CACHE ) && requestParams.getParameter( MethodParams.BYPASS_CACHE ).equals( "true" );
-    boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) && requestParams.getParameter( MethodParams.DEBUG ).equals( "true" );
+        requestParams.hasParameter( MethodParams.BYPASS_CACHE ) && requestParams
+            .getParameter( MethodParams.BYPASS_CACHE ).equals( "true" );
+    boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) && requestParams.getParameter( MethodParams.DEBUG )
+        .equals( "true" );
 
-    String style = requestParams.getStringParameter( MethodParams.STYLE, "");
+    String style = requestParams.getStringParameter( MethodParams.STYLE, "" );
 
     RenderApi renderer = new RenderApi();
 
-    if( create ) {
+    if ( create ) {
       String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
       IOUtils.write( result, getResponse().getOutputStream() );
-    } else if( edit ) {
+    } else if ( edit ) {
       //TODO: file to path
       String result = renderer.edit( "", "", filePath, debug, true, getRequest(), getResponse() );
       IOUtils.write( result, getResponse().getOutputStream() );
-    
-    } else if( resource ) {
-    	// TODO review later if there is a viable solution to making resources being 
-    	// called via cde resources rest api (pentaho/plugin/pentaho-cdf-dd/api/resources?resource=)
-    	// this has to take into consideration:
-    	// 1 - token replacement (see cde-core#CdfRunJsDashboardWriteContext.replaceTokens())
-    	// 2 - resources being called from other resources (ex: resource plugin-samples/template.css calls resource images/button-contact-png) 
-    	
-    	new ResourcesApi().getResource(pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse());
-    
+
+    } else if ( resource ) {
+      // TODO review later if there is a viable solution to making resources being
+      // called via cde resources rest api (pentaho/plugin/pentaho-cdf-dd/api/resources?resource=)
+      // this has to take into consideration:
+      // 1 - token replacement (see cde-core#CdfRunJsDashboardWriteContext.replaceTokens())
+      // 2 - resources being called from other resources (ex: resource plugin-samples/template.css calls resource
+      // images/button-contact-png)
+
+      new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse() );
+
     } else {
-    	String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest());
+      String result = renderer
+          .render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest() );
       getResponse().setContentType( MimeTypes.HTML );
 
-      IOUtils.write(result, getResponse().getOutputStream());
+      IOUtils.write( result, getResponse().getOutputStream() );
       getResponse().getOutputStream().flush();
     }
   }
@@ -107,27 +123,31 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String DATA = "data";
   }
 
-	public boolean isEdit() {
-		return edit;
-	}
-	
-	public void setEdit(boolean edit) {
-		this.edit = edit;
-	}
-	
-	public boolean isCreate() {
-		return create;
-	}
-	
-	public void setCreate(boolean create) {
-		this.create = create;
-	}
+  public boolean isEdit() {
+    return edit;
+  }
 
-	public boolean isResource() {
-		return resource;
-	}
+  public void setEdit( boolean edit ) {
+    this.edit = edit;
+  }
 
-	public void setResource(boolean resource) {
-		this.resource = resource;
-	}
+  public boolean isCreate() {
+    return create;
+  }
+
+  public void setCreate( boolean create ) {
+    this.create = create;
+  }
+
+  public boolean isResource() {
+    return resource;
+  }
+
+  public void setResource( boolean resource ) {
+    this.resource = resource;
+  }
+
+  public static String getPluginDir() {
+    return CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
+  }
 }

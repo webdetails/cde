@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd;
 
@@ -24,6 +33,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJs
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
@@ -32,6 +42,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private static final String PLUGIN_REPOSITORY_DIR = "/public/cde";
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
+  private static final String CDE_XML = "cde.xml";
   protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
@@ -41,7 +52,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IFileHandler fileHandler;
 
   public PentahoCdeEnvironment() {
-    
+
   }
 
   public void init( ICdeBeanFactory factory ) throws InitializationException {
@@ -52,7 +63,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     if ( factory.containsBean( IResourceLoader.class.getSimpleName() ) ) {
       resourceLoader = (IResourceLoader) factory.getBean( IResourceLoader.class.getSimpleName() );
     }
-    
+
     if ( factory.containsBean( IFileHandler.class.getSimpleName() ) ) {
       fileHandler = (IFileHandler) factory.getBean( IFileHandler.class.getSimpleName() );
     }
@@ -119,13 +130,14 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/res/";// TODO:
   }
 
-  public String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
+  public String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme )
+      throws Exception {
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
   }
 
-//  public String getCdfContext(String dashboard, String action, String viewId) throws Exception {
-//    return InterPluginBroker.getCdfContext( dashboard, action, viewId );
-//  }
+  //  public String getCdfContext(String dashboard, String action, String viewId) throws Exception {
+  //    return InterPluginBroker.getCdfContext( dashboard, action, viewId );
+  //  }
 
   public PentahoPluginEnvironment getPluginEnv() {
     return PentahoPluginEnvironment.getInstance();
@@ -133,7 +145,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   public ICdeApiPathProvider getExtApi() {
     // not worth the sync
-    if (apiPaths == null) {
+    if ( apiPaths == null ) {
       apiPaths = new CdeApiPathProvider( getPluginEnv().getUrlProvider() );
     }
     return apiPaths;
@@ -150,7 +162,18 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
-  @Override public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory, String indent ) {
+  @Override
+  public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
+      String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
+  }
+
+  @Override public IBasicFile getCdeXml() {
+    if ( getUserContentAccess( "/" ).fileExists( "/public/cde/" + CDE_XML ) ) {
+      return getUserContentAccess( "/" ).fetchFile( "/public/cde/" + CDE_XML );
+    } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
+      return getPluginSystemReader( null ).fetchFile( CDE_XML );
+    }
+    return null;
   }
 }

@@ -13,28 +13,14 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
-import pt.webdetails.cdf.dd.testUtils.MockResourceLoader;
+import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
+import pt.webdetails.cdf.dd.datasources.CdaDataSourceReaderForTesting;
 
+import java.util.List;
 
-public class EditorApiForTesting extends EditorApi {
+public class DatasourcesApiForTesting extends DatasourcesApi {
 
-  private MockResourceLoader mockResourceLoader;
-
-  public void initMockResourceLoader() {
-    this.mockResourceLoader = new MockResourceLoader();
-  }
-
-  @Override
-  protected IResourceLoader getResourceLoader( String path ) {
-    return this.mockResourceLoader;
-  }
-
-  public void setHasAccess( boolean hasAccess ) {
-    mockResourceLoader.setHasAccess( hasAccess );
-  }
-
-  public void setSavedFile( boolean savedFile ) {
-    mockResourceLoader.setSavedFile( savedFile );
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources( String dashboard ) {
+    return CdaDataSourceReaderForTesting.getCdaDataSources( dashboard );
   }
 }

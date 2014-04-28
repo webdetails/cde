@@ -38,7 +38,7 @@
 
     <!-- Global properties -->
     <property name='pentaho-base.dir' value='../cde-pentaho-base' description="Name of pentaho base dir"/>
-    <property name='core.dir' value ='../cde-core' description="Name of core dir"/>
+    <property name='core.dir' value='../cde-core' description="Name of core dir"/>
     <property name="plugin.name" value="pentaho-cdf-dd" description="Name of the plugin"/>
     <property name="resource.dir" value="resource" description="Name of the resource directory"/>
     <property name="includes.name" value="editor.includes.properties"/>
@@ -389,4 +389,12 @@
         <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url.default}" />
         <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url.default}" />
     </target>
+
+    <!-- Overriding retrieve pattern to distinguish artifacts from same module -->
+    <target name="resolve-test" depends="resolve-init">
+      <ivy:resolve file="${ivyfile}" conf="test" />
+      <ivy:retrieve conf="test" pattern="${testlib.dir}/[artifact]-[revision](-[classifier]).[ext]" />
+    </target>
+
+
 </project>

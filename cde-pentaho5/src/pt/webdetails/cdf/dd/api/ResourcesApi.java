@@ -53,6 +53,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
+
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
   private static final Log logger = LogFactory.getLog( ResourcesApi.class );
@@ -256,7 +257,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  @Produces( "text/plain" )
+  @Produces( { MediaType.WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
     getResource( resource, response );
