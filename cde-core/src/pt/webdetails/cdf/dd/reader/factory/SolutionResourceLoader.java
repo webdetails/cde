@@ -23,6 +23,9 @@ public class SolutionResourceLoader implements IResourceLoader {
   private IReadAccess reader;
   private IACAccess accessControl;
 
+  public SolutionResourceLoader() {
+  }
+
   public SolutionResourceLoader( String path ) {
     this.reader = Utils.getAppropriateReadAccess( path );
     this.accessControl = CdeEnvironment.getUserContentAccess();

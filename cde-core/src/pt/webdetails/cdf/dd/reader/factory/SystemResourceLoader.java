@@ -23,6 +23,9 @@ public class SystemResourceLoader implements IResourceLoader {
   private IReadAccess reader;
   private IACAccess accessControl;
 
+  public SystemResourceLoader() {
+  }
+
   public SystemResourceLoader( String path ) {
     this.reader = Utils.getAppropriateReadAccess( path );
     this.accessControl = new IACAccess() {

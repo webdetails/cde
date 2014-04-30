@@ -13,31 +13,23 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
+public class ResourceLoaderFactoryForTesting extends ResourceLoaderFactory {
 
-public class ResourceLoaderFactory {
+  public ResourceLoaderFactoryForTesting() {}
 
-  public ResourceLoaderFactory() {
-  }
-
-  public IResourceLoader getResourceLoader( String dashboardPath ) {
-    if ( isSystem( dashboardPath ) ) {
-      return getSystemResourceLoader( dashboardPath );
-    } else {
-      return getSolutionResourceLoader( dashboardPath );
-    }
-  }
-
+  @Override
   protected boolean isSystem( String path ) {
-    path = path.toLowerCase().replaceFirst( "/", "" );
-    return path.startsWith( CdeEnvironment.getSystemDir() + "/" );
+    return path.startsWith( "/system" );
   }
 
+  @Override
   protected SystemResourceLoader getSystemResourceLoader( String path ) {
-    return new SystemResourceLoader( path );
+    return new SystemResourceLoader();
   }
 
-  protected SolutionResourceLoader getSolutionResourceLoader( String path ) {
-    return new SolutionResourceLoader( path );
+  @Override
+  protected SolutionResourceLoader getSolutionResourceLoader( String path) {
+    return new SolutionResourceLoader();
   }
+
 }
