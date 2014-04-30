@@ -260,9 +260,19 @@ public final class XmlFsPluginModelReader {
       String locations = "";
       for ( Element location : widgetLocations ) {
         try {
-          List<IBasicFile> filesList = CdeEnvironment.getUserContentAccess().listFiles( location.getText(),
+          List<IBasicFile> filesList;
+          String path = location.getText().toLowerCase().replaceFirst( "/", "" );
+
+          if ( path.startsWith( CdeEnvironment.getSystemDir() + "/" ) ) {
+            filesList = CdeEnvironment.getPluginSystemReader().listFiles( location.getText(),
               new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false,
               true );
+          } else {
+            filesList = CdeEnvironment.getUserContentAccess().listFiles( location.getText(),
+              new GenericBasicFileFilter( COMPONENT_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL, false,
+              true );
+          }
+
           if ( filesList != null ) {
             widgetsLists.add( filesList );
           }
@@ -329,9 +339,15 @@ public final class XmlFsPluginModelReader {
 
     for ( Element meta : wcdfMeta ) {
       String metaText = meta.getText();
+
+      if ( CdeEnvironment.getPluginSystemWriter().fileExists( metaText ) ) {
+        wcdfPath = metaText;
+      }
+
       if ( metaText.startsWith( "/" ) && !wcdfPath.startsWith( "/" ) ) {
         wcdfPath = "/" + wcdfPath;
       }
+
       if ( metaText.equals( wcdfPath ) ) {
         logger.debug( "No need to fix current wcdf meta ( " + metaText + " ) " );
       } else {

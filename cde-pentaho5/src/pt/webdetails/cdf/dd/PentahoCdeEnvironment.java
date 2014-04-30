@@ -169,8 +169,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   }
 
   @Override public IBasicFile getCdeXml() {
-    if ( getUserContentAccess( "/" ).fileExists( "/public/cde/" + CDE_XML ) ) {
-      return getUserContentAccess( "/" ).fetchFile( "/public/cde/" + CDE_XML );
+    if ( getUserContentAccess( "/" ).fileExists( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML ) ) {
+      return getUserContentAccess( "/" ).fetchFile( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML );
     } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
       return getPluginSystemReader( null ).fetchFile( CDE_XML );
     }
