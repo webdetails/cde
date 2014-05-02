@@ -25,6 +25,9 @@ public class SystemResourceLoader implements IResourceLoader {
   private IACAccess accessControl;
   private IRWAccess writer;
 
+  public SystemResourceLoader() {
+  }
+
   public SystemResourceLoader( String path ) {
     this.reader = Utils.getAppropriateReadAccess( path );
     this.writer = Utils.getSystemOrUserRWAccess( path );

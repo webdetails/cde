@@ -63,7 +63,7 @@ public class EditorApi {
                          @Context HttpServletResponse response )
     throws IOException {
 
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
 
     if ( reader.fileExists( path ) ) {
@@ -83,7 +83,7 @@ public class EditorApi {
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                           @Context HttpServletResponse response ) throws IOException {
 
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
 
@@ -104,7 +104,7 @@ public class EditorApi {
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
 
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
 
@@ -133,7 +133,7 @@ public class EditorApi {
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
 
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
 
@@ -159,7 +159,7 @@ public class EditorApi {
   @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IACAccess contentAccess = loader.getAccessControl();
     return String.valueOf( contentAccess.hasAccess( path, FileAccess.WRITE ) );
   }
@@ -170,7 +170,7 @@ public class EditorApi {
   public String createFolder( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                               @Context HttpServletResponse response ) throws IOException {
 
-    IResourceLoader loader = ( new ResourceLoaderFactory() ).getResourceLoader( path );
+    IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
     IRWAccess writer = loader.getWriter();
 
@@ -227,4 +227,7 @@ public class EditorApi {
     public static final String DATA = "data";
   }
 
+  protected IResourceLoader getResourceLoader( String path ) {
+    return new ResourceLoaderFactory().getResourceLoader( path );
+  }
 }

@@ -13,28 +13,27 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
-import pt.webdetails.cdf.dd.testUtils.MockResourceLoader;
+import junit.framework.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+public class DatasourcesApiTest {
 
-public class EditorApiForTesting extends EditorApi {
+  private final String DASHBOARD = "/test-resources/dummyDashboard/dummy.cdfde";
+  private final String EXPECTED = "[{cdaSettingsId:'dummy/dummy.cda'}]";
 
-  private MockResourceLoader mockResourceLoader;
+  @BeforeClass
+  public static void setUp() throws Exception {
 
-  public void initMockResourceLoader() {
-    this.mockResourceLoader = new MockResourceLoader();
   }
 
-  @Override
-  protected IResourceLoader getResourceLoader( String path ) {
-    return this.mockResourceLoader;
+  @Test
+  public void listCdaSourcesTest() {
+    DatasourcesApiForTesting datasourcesApi = new DatasourcesApiForTesting();
+    String actualResult = datasourcesApi.listCdaSources( DASHBOARD );
+
+    Assert.assertEquals( EXPECTED, actualResult );
+
   }
 
-  public void setHasAccess( boolean hasAccess ) {
-    mockResourceLoader.setHasAccess( hasAccess );
-  }
-
-  public void setSavedFile( boolean savedFile ) {
-    mockResourceLoader.setSavedFile( savedFile );
-  }
 }
