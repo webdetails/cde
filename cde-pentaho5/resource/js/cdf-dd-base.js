@@ -542,6 +542,12 @@ var PreviewRequests = {
         } else {
             // Regular Dashboard
             var path = window.location.pathname;
+
+
+            if(file.indexOf("_tmp.wcdf") > -1) {
+                path = path.replace(".wcdf", "_tmp.wcdf");
+            }
+            
             path = path.substring(0, path.lastIndexOf("/")+1);
             _href = path + "generatedContent?" + "style=" + style + "&cache=false";
         }
