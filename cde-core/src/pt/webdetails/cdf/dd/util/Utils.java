@@ -86,18 +86,30 @@ public class Utils {
   {
     if(text == null) { return null; }
 
+<<<<<<< HEAD
     return text.length() > 1 ?
        text.substring(0, 1).toLowerCase() + text.substring(1) :
        text.toLowerCase();
+=======
+    return text.length() > 1
+      ? text.substring( 0, 1 ).toLowerCase() + text.substring( 1 )
+      : text.toLowerCase();
+>>>>>>> a3d0b8c... [CLEANUP]: Style review and license update
   }
 
   public static String toFirstUpperCase(String text)
   {
     if(text == null) { return null; }
 
+<<<<<<< HEAD
     return text.length() > 1 ?
        text.substring(0, 1).toUpperCase() + text.substring(1) :
        text.toUpperCase();
+=======
+    return text.length() > 1
+      ? text.substring( 0, 1 ).toUpperCase() + text.substring( 1 )
+      : text.toUpperCase();
+>>>>>>> a3d0b8c... [CLEANUP]: Style review and license update
   }
   
   public static String ellapsedSeconds(long start) {
@@ -140,6 +152,7 @@ public class Utils {
   
   /**
    * Create a <code>Document</code> from the contents of a file.
+<<<<<<< HEAD
    * 
    * @param path
    *          String containing the path to the file containing XML that will be
@@ -152,6 +165,15 @@ public class Utils {
    *           if the document isn't valid
    * @throws IOException 
    *           if the file doesn't exist
+=======
+   *
+   * @param file
+   * @param resolver EntityResolver an instance of an EntityResolver that will resolve any external URIs. See the docs
+   *                 on EntityResolver. null is an acceptable value.
+   * @return <code>Document</code> initialized with the xml in <code>strXml</code>.
+   * @throws DocumentException if the document isn't valid
+   * @throws IOException       if the file doesn't exist
+>>>>>>> a3d0b8c... [CLEANUP]: Style review and license update
    */
   public static Document getDocFromFile(final IBasicFile file, final EntityResolver resolver) throws DocumentException, IOException {
     SAXReader reader = new SAXReader();
@@ -292,7 +314,66 @@ public class Utils {
         return factory.getPluginSystemWriter( basePath );
       } else {
         // user solution dir
+<<<<<<< HEAD
         return factory.getUserContentAccess(basePath);
+=======
+        return factory.getUserContentAccess( basePath );
+      }
+    }
+    return null; //unable to determine appropriate way to fetch file
+  }
+
+  public static IBasicFile getFileViaAppropriateReadAccess( String resource ) {
+    return getFileViaAppropriateReadAccess( resource, null );
+  }
+
+  public static IBasicFile getFileViaAppropriateReadAccess( String resource, String basePath ) {
+    if ( StringUtils.isEmpty( resource ) ) {
+      return null;
+    }
+
+    ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
+    IContentAccessFactory factory = environment.getContentAccessFactory();
+
+    String res = StringUtils.strip( resource.toLowerCase(), "/" );
+
+    if ( res.startsWith( environment.getSystemDir() + "/" ) ) {
+
+      res = StringUtils.strip( res, environment.getSystemDir() + "/" );
+
+      // system dir - this plugin
+      if ( res.startsWith( environment.getPluginId() + "/" ) ) {
+
+        resource = resource.replaceFirst( environment.getSystemDir() + "/" + environment.getPluginId() + "/", "" );
+
+        return factory.getPluginSystemReader( basePath ).fetchFile( resource );
+
+      } else {
+        // system dir - other plugin
+        String pluginId = res.substring( 0, resource.indexOf( "/" ) );
+        resource = resource.replaceFirst( environment.getSystemDir() + "/" + pluginId + "/", "" );
+
+        return factory.getOtherPluginSystemReader( pluginId, basePath ).fetchFile( resource );
+      }
+
+    } else if ( res.startsWith( environment.getPluginRepositoryDir() + "/" ) ) {
+
+      // plugin repository dir
+      resource = resource.replaceFirst( environment.getPluginRepositoryDir() + "/", "" );
+      return factory.getPluginRepositoryReader( basePath ).fetchFile( resource );
+
+    } else {
+
+      // one of two: already trimmed system resource (ex: 'resources/templates/1-empty-structure.cdfde')
+      // or a user solution resource (ex: 'plugin-samples/pentaho-cdf-dd/styles/my-style.css')
+
+      if ( factory.getPluginSystemReader( basePath ).fileExists( resource ) ) {
+        return factory.getPluginSystemReader( basePath ).fetchFile( resource );
+
+      } else if ( factory.getUserContentAccess( basePath ).fileExists( resource ) ) {
+        // user solution dir
+        return factory.getUserContentAccess( basePath ).fetchFile( resource );
+>>>>>>> a3d0b8c... [CLEANUP]: Style review and license update
       }
     }
   }
@@ -355,22 +436,24 @@ public class Utils {
 
   public static IReadAccess getSystemOrUserReadAccess( String filePath ){
     IReadAccess readAccess = null;
-    if(filePath.startsWith( "/system/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
-      readAccess = getSystemReadAccess( filePath.split( "/" )[2],null);
-    }  else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
-      readAccess =  CdeEnvironment.getUserContentAccess();
+    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+      .endsWith( ".cdfde" ) ) ) {
+      readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
+    } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+      readAccess = CdeEnvironment.getUserContentAccess();
     }
     return readAccess;
   }
 
    public static IRWAccess getSystemOrUserRWAccess(String filePath){
     IRWAccess rwAccess = null;
-    if(filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && (filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ))){
-      rwAccess = getSystemRWAccess( filePath.split( "/" )[2],null);
-    }  else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
-      
-      if(CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ){
-        rwAccess =  CdeEnvironment.getUserContentAccess();
+    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+      .endsWith( ".cdfde" ) ) ) {
+      rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
+    } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+
+      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+        rwAccess = CdeEnvironment.getUserContentAccess();
       } else {
         return null;
       }
