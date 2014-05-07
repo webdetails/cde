@@ -48,6 +48,10 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> [CLEANUP]: Style review and license update
 @Path( "pentaho-cdf-dd/api/syncronizer" )
 public class SyncronizerApi { //TODO: synchronizer?
 
