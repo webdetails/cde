@@ -1,3 +1,16 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
@@ -35,11 +48,9 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
-/**
- * Created with IntelliJ IDEA. User: diogomariano Date: 07/10/13
- */
+
 @Path( "pentaho-cdf-dd/api/syncronizer" )
-public class SyncronizerApi {//TODO: synchronizer?
+public class SyncronizerApi { //TODO: synchronizer?
 
   private static final Log logger = LogFactory.getLog( SyncronizerApi.class );
 
@@ -61,63 +72,78 @@ public class SyncronizerApi {//TODO: synchronizer?
   @Path( "/syncronizeDashboard" )
   @Produces( MimeTypes.JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-				@FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
-                @FormParam( MethodParams.AUTHOR ) @DefaultValue( "" ) String author,
-                @FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
-                @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
-                @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
-                @FormParam( MethodParams.WIDGET ) boolean widget,
-                @FormParam( MethodParams.RENDERER_TYPE ) @DefaultValue( "" ) String rendererType,
-                @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
-				@FormParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
-		  					@FormParam( MethodParams.OPERATION ) String operation,
+                            @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                            @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+                            @FormParam( MethodParams.AUTHOR ) @DefaultValue( "" ) String author,
+                            @FormParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
+                            @FormParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
+                            @FormParam( MethodParams.WIDGET_NAME ) @DefaultValue( "" ) String widgetName,
+                            @FormParam( MethodParams.WIDGET ) boolean widget,
+                            @FormParam( MethodParams.RENDERER_TYPE ) @DefaultValue( "" ) String rendererType,
+                            @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
+                            @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+                            @FormParam( MethodParams.OPERATION ) String operation,
 
 
-		  					@Context HttpServletRequest request,
-		  					@Context HttpServletResponse response ) throws Exception {
-    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH )){
-    	
-    	if ( widget ) {
-    		//widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
-    		file = Utils.joinPath(CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file);
-    	}
-    	
-    	// check access to path folder
-    	String fileDir = file.contains(".wcdf") || file.contains(".cdfde") ? file.substring(0, file.lastIndexOf("/")) : file;
+                            @Context HttpServletRequest request,
+                            @Context HttpServletResponse response ) throws Exception {
+    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      if ( widget ) {
+        //widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
+        file = Utils.joinPath( CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file );
+      }
+
+      // check access to path folder
+      String fileDir =
+        file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
       IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
 
       if ( rwAccess == null ) {
-        String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : "+ file;
+        String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : " + file;
         logger.warn( msg );
         return JsonUtils.getJsonResult( false, msg );
       }
     }
-    
+
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
       HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
       params.put( MethodParams.FILE, file );
-      params.put( MethodParams.WIDGET, String.valueOf(widget) );
-      if( !author.isEmpty() ) params.put( MethodParams.AUTHOR, author );
-      if( !style.isEmpty() ) params.put( MethodParams.STYLE, style );
-      if( !widgetName.isEmpty() ) params.put( MethodParams.WIDGET_NAME, widgetName );
-      if( !rendererType.isEmpty() ) params.put( MethodParams.RENDERER_TYPE, rendererType );
-      if( !title.isEmpty() ) params.put( MethodParams.TITLE, title );
-      if( !description.isEmpty() ) params.put( MethodParams.DESCRIPTION, description );
-      String[] widgetParameters = widgetParams.toArray( new String[0] );
-      if( widgetParameters.length > 0 ) params.put( MethodParams.WIDGET_PARAMETERS, widgetParameters );
+      params.put( MethodParams.WIDGET, String.valueOf( widget ) );
+      if ( !author.isEmpty() ) {
+        params.put( MethodParams.AUTHOR, author );
+      }
+      if ( !style.isEmpty() ) {
+        params.put( MethodParams.STYLE, style );
+      }
+      if ( !widgetName.isEmpty() ) {
+        params.put( MethodParams.WIDGET_NAME, widgetName );
+      }
+      if ( !rendererType.isEmpty() ) {
+        params.put( MethodParams.RENDERER_TYPE, rendererType );
+      }
+      if ( !title.isEmpty() ) {
+        params.put( MethodParams.TITLE, title );
+      }
+      if ( !description.isEmpty() ) {
+        params.put( MethodParams.DESCRIPTION, description );
+      }
+      String[] widgetParameters = widgetParams.toArray( new String[ 0 ] );
+      if ( widgetParameters.length > 0 ) {
+        params.put( MethodParams.WIDGET_PARAMETERS, widgetParameters );
+      }
 
       String wcdfdeFile = file.replace( ".wcdf", ".cdfde" );
-      
+
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
         return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.save(file, cdfStructure );
+        result = dashboardStructure.save( file, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
         if ( StringUtils.isEmpty( title ) ) {
           title = FilenameUtils.getBaseName( file );
@@ -146,20 +172,20 @@ public class SyncronizerApi {//TODO: synchronizer?
   @POST
   @Path( "/syncronizeTemplates" )
   @Produces( MimeTypes.JSON )
-  public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation, 
-		  					 @FormParam( MethodParams.FILE ) String file,
-		  					 @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
-		  					 @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
+  public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation,
+                             @FormParam( MethodParams.FILE ) String file,
+                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+                             @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
     final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
     Object result = null;
-    
-    if ( OPERATION_LOAD.equalsIgnoreCase(operation) ) {
+
+    if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
       result = cdfTemplates.load();
-    
-    } else if ( OPERATION_SAVE.equalsIgnoreCase(operation) ) {
+
+    } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
       cdfTemplates.save( file, cdfStructure );
     }
-    
+
     JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
   }
 
@@ -191,12 +217,12 @@ public class SyncronizerApi {//TODO: synchronizer?
   @Produces( MimeTypes.JSON )
   @Consumes( "multipart/form-data" )
   public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-                            @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
-                            @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" )  String description,
-                            @FormDataParam( MethodParams.WIDGET ) @DefaultValue( "false" ) boolean widget,
-                            @FormDataParam( MethodParams.DASHBOARD_STRUCTURE )  String cdfStructure,
-                            @FormDataParam( MethodParams.OPERATION ) String operation,
-                            @Context HttpServletResponse response ) throws Exception {
+                               @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
+                               @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
+                               @FormDataParam( MethodParams.WIDGET ) @DefaultValue( "false" ) boolean widget,
+                               @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+                               @FormDataParam( MethodParams.OPERATION ) String operation,
+                               @Context HttpServletResponse response ) throws Exception {
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
 
