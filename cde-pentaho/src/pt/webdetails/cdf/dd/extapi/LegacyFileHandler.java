@@ -14,7 +14,7 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 public class LegacyFileHandler implements IFileHandler {
 
   @Override
-  public boolean saveDashboardAs( String path, String title, String description, String cdfdeJsText ) throws Exception {
+  public boolean saveDashboardAs( String path, String title, String description, String cdfdeJsText, boolean isPreview ) throws Exception {
 
     // 1. Read empty wcdf file
     InputStream wcdfFile =

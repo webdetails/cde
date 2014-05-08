@@ -532,25 +532,9 @@ var PreviewRequests = {
     },
 
     getPreviewUrl: function( solution, path, file, style){
-        var _href;
-        if (solution == 'system'){
-            // CPK Dashboard
-            path = path.split('/');
-            var pluginName = (path.length > 0 ) ? path[0] : "",
-                endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
-            _href = Endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
-        } else {
-            // Regular Dashboard
-            var path = window.location.pathname;
-
-
-            if(file.indexOf("_tmp.wcdf") > -1) {
-                path = path.replace(".wcdf", "_tmp.wcdf");
-            }
-            
-            path = path.substring(0, path.lastIndexOf("/")+1);
-            _href = path + "generatedContent?" + "style=" + style + "&cache=false";
-        }
+         var _href = Endpoints.getPluginUrl() + "renderer/render?";
+        _href = _href + "solution=" + solution + "&path=" + path + "&file=" + file + "&style=" + style + "&bypassCache=true&root=" + window.location.host;
+        
         return _href;
 
     }
