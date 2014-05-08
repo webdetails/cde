@@ -253,15 +253,19 @@ public class DashboardStructure implements IDashboardStructure {
     String title = StringUtils.defaultIfEmpty( (String) parameters.get( "title" ), "Dashboard" );
     String description = StringUtils.defaultIfEmpty( (String) parameters.get( "description" ), "" );
     String cdfdeJsText = (String) parameters.get( "cdfstructure" );
-    saveAs( filePath, title, description, cdfdeJsText );
+    saveAs( filePath, title, description, cdfdeJsText, false );
   }
 
-  public HashMap<String, String> saveAs( String filePath, String title, String description, String cdfdeJsText )
-    throws Exception {
+  public HashMap<String, String> saveAs( String filePath, String title, String description, String cdfdeJsText ) throws Exception {
+    return saveAs( filePath, title, description, cdfdeJsText, false );
+  }
+
+  public HashMap<String, String> saveAs( String filePath, String title, String description, String cdfdeJsText,
+                                         boolean isPreview ) throws Exception {
     // TODO: This method does not maintain the Widget status and parameters of a dashboard
     // Is this intended?
 
-    if ( !CdeEnvironment.getFileHandler().saveDashboardAs( filePath, title, description, cdfdeJsText ) ) {
+    if ( !CdeEnvironment.getFileHandler().saveDashboardAs( filePath, title, description, cdfdeJsText, isPreview ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_005_SAVE_PUBLISH_FILE_EXCEPTION" ) );
     }
