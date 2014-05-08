@@ -65,7 +65,7 @@ public class DashboardEditor {
     tokens.put( CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps );
 
     try {
-      final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "desktop", debugMode, null, scheme );
+      final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "blueprint", debugMode, null, scheme );
       tokens.put( CdeConstants.DESIGNER_CDF_TAG, cdfDeps );
     } catch ( Exception e ) {
       logger.fatal( "Unable to get CDF dependencies", e );

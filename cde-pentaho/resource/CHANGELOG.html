@@ -1,0 +1,216 @@
+
+
+<h1>
+        Release Notes - Community Dashboard Editor - Version 14.05.06
+    </h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-148'>CDE-148</a>] -         MDX queries: &quot;denormalizedMdx&quot; shouldn&#39;t have the &quot;Banded Mode&quot; option
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-170'>CDE-170</a>] -         Problem to view markers in maps
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-183'>CDE-183</a>] -         Olap Selector component : Multiselect to false is inoperative
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-197'>CDE-197</a>] -         OlapSelector Component not working in Pentaho 4.x
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-198'>CDE-198</a>] -         Anonymous access to CDE works for first request/display after BI-Platform start, fails for subsequent requests
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-203'>CDE-203</a>] -         Error on Legacy Datasource: OLAP MDX query
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-208'>CDE-208</a>] -         CGG Dial Component Chart&#39;s scale Problem
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-209'>CDE-209</a>] -         Execute prpt component not working in CDE.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-211'>CDE-211</a>] -         NewMapComponent requires API_KEY to be defined
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-217'>CDE-217</a>] -         Dropdown in Column Types of the table Component no longer appear
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-220'>CDE-220</a>] -         Listing CDA sources does not work
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-221'>CDE-221</a>] -         CDE export button returns the invalid mimetype
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-224'>CDE-224</a>] -         CDE can&#39;t open CSS files added as resources on dashboard (noticed only on IE)
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-226'>CDE-226</a>] -         Bug when removing Widget Parameters
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-232'>CDE-232</a>] -         Export Button not working
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-233'>CDE-233</a>] -         wd.helpers undefined error when trying to Export Chart via Export Pop-up
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-168'>CDE-168</a>] -         Add support for subdashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-184'>CDE-184</a>] -         NewMapComponent should handle shapes as MultiPolygons
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-192'>CDE-192</a>] -         Support Bootstrap as an additional Renderer type
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-201'>CDE-201</a>] -         Table component properties improvements
+</li>
+
+<li>[<a href='http://jira.pentaho.com/browse/SERVDEV-21'>SERVDEV-21</a>] - Added two new property types to allow specifying the output step and output data format of a sparkl endpoint datasource. - Added the above properties to its reader and writer.
+</li>
+
+<li>[<a href='http://jira.pentaho.com/browse/ANALYZER-1545'>ANALYZER-1545</a>] - Ability to show data labels on charts and visualizations. * New "ValuesOverflow" property for chart types: Bar, NormalizedBar, Waterfall, Pie and Treemap.
+</li>
+<li>
+[<a href='http://jira.pentaho.com/browse/SERVDEV-24'>SERVDEV-24</a>] - Corrected bug on CDE render cpm datasources where the render failed when the stepName and kettleOutput property bindings were not defined.
+</li>
+
+<li>Updated GMaps Overlay component to 1.2</li>
+</ul>
+
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-228'>CDE-228</a>] -          Allow customization of widget folder location
+</li>
+</ul>
+
+
+
+<h1> Previous Versions </h1>
+
+<code>
+
+14.03.07<br>
+	* Refactored to accomodate Pentaho 5. <br>
+<br>
+13.09.10<br>
+    * CDE has a whole new layout<br>
+    * CDE now fully supports IE8 and IE9 in Edit mode    <br>
+    * CDE now uses Ace Editor 1.0<br>
+    * Tooltips on components' properties<br>
+    * Added Google Maps Overlay Component<br>
+    * CDE now uses cpf-core and cpf-pentaho<br>
+    * Refactor of the whole component render and definition read.<br>
+    * Added the property 'iframe' to the XActionComponent. A boolean to decide wheter or not to display the component inside an iFrame<br>
+    * Fixed [REDMINE-1645]: Concurrency possibility in Dasboards' initialization<br>
+    * Fixed [REDMINE-1592]: Xaction component doesn't render<br>
+    * Fixed [REDMINE-113]: Kettle property not clear<br>
+    * Fixed [REDMINE-2262]: CDE Widgets not showing in Pentaho PUC<br>
+    * Fixed [REDMINE-2024]: When applying new template, every component and data source choice gets duplicated<br>
+    * Fixed [REDMINE-2181]: OLAP Chart Wizard - When selecting the type "line" or "dot" the resulting chart is the same<br>
+    * Custom Components bug correction<br>
+<br>
+13.06.05<br>
+    * Update OlapSelector to show selected options when the pulldown is closed.<br>
+    *  [CHG] (CCC plot2SeriesIndexes) On third thought, renamed the option plot2DataSeriesIndexes to plot2SeriesIndexes, although the current implementation stilll works like the deprecated v1 secondAxisIdx. The meaning of "series" should already be taken as the value of the "series" visual role.    <br>
+    * [FEAT](CCC plot2DataSeriesIndexes) Restored the functionality exposed by the deprecated option "secondAxisIdx". Added the CDE property "plot2DataSeriesIndexes".    <br>
+    * Implemented [REDMINE-1984] - Option to clean v1 Properties when saving v2 charts<br>
+    * Add TextEditor component (uses the same editor as CDE file editing).<br>
+    * [FEAT](CCC Properties) Added recent new properties to the chart components' properties panel.<br>
+    * CDE can now read styles from other sources<br>
+    * New layout for samples<br>
+    * Fixed [REDMINE-2083] - refreshPeriod not working after component lifecycle changes<br>
+    * Fixed [REDMINE-2094] - On startup, CDE creates the cde folder and 4 subfolders. These folders are not visible in PUC<br>
+    * Fixed [REDMINE-2011] -Save as Widget fails using the Extra information fields<br>
+    * Fixed [REDMINE-2111] - Third sample on the MapComponent Reference doesn't work properly<br>
+    * Fixed [REDMINE-1768] - Maps Popup integration is broken<br>
+    * Fixed bug with existence test for navigation component in CDF mobile.<br>
+<br>
+13.03.25<br>
+    * Support for CCC V2<br>
+    * Update siteMap component to accept an url from where to fetch the siteMap json using an ajax call.<br>
+    * Implemented [Redmine-93] -  Close the Popup Component<br>
+    * Fixed [Redmine-1840] - External resource editing is failing<br>
+    * Fixed [Redmine-345] - Scrollbars in PopupComponent<br>
+    * Fixed [Redmine-1874] -  Remplate import should now work as intended <br>
+<br>
+<br>
+13.02.07<br>
+    * Async behavior for components<br>
+    * Add NewSelector component <br>
+    * Added javascript unit tests<br>
+    * Exposing 4 properties (2 for setting date, 2 for setting offsets) under the date range input component. Removed the "getParameterValue" call for setting up the date, as it looked unpractical.<br>
+    * Added method that allows file/folder deletion<br>
+    * Added support for css url transformation for components from other plugins<br>
+    * Allowed res to work with symlinks<br>
+<br>
+    <br>
+12.12.10<br>
+<br>
+    * Added View Manager component<br>
+    * Added Widget support   <br>
+    * Add OlapSelector Component <br>
+    * Implemented [REDMINE-479] - Stop publishing CDW files, no longer used by CGG    <br>
+    * Implemented [REDMINE-1210] - Lifecycle for CDE added (class CdeLifeCycleListener). When plugin is loaded check if folder and subfolders exist? If not create them.     <br>
+    * Fixed [REDMINE-112] - Issues in textComponent expressions<br>
+    * Fixed box model in IE8<br>
+    * CDE editor now stretches to full extent of window/frame<br>
+    * Bug fixes in Olap Utils<br>
+<br>
+    <br>
+    <br>
+    <br>
+12.10.17<br>
+<br>
+    * Added google analytics componente developed by Sinn Tecnologia<br>
+    * Added about & documentation buttons to CDE. <br>
+    * Added new features to CGG export window<br>
+    * General image update<br>
+<br>
+12.09.05<br>
+    * Fix [REDMINE 512] - Export to png with size small<br>
+    * Fix [REDMINE 511] - Export to png <br>
+    * fix to mobile navigation component. Was not getting query string correctly<br>
+    * Add editor support for resource reordering. Yay!<br>
+    * Add support for removing url scheme detection when rendering dashboard headers<br>
+    * Add some more error logging to dashboard rendering<br>
+    * Make sure only one minifyPackage routine is runnning at any given time<br>
+    * Make export popup's export size configurable<br>
+    * Add missing pre/postChange properties to AutoCompleteBox<br>
+    * SiteMap now keeps track of the original entry point with a css class.<br>
+<br>
+12.07.19<br>
+    * Implemented [REDMINE 281] - Allow plugins to register extra cde components<br>
+    * Support for output index in external CDAs<br>
+    * CPF usage as component basis<br>
+    * New Popup Component and Reference    <br>
+    * Added new component based on textarea html object. Added properties of max length and size to text input component edition    <br>
+    * Fixed [REDMINE 856] - CDE allows non-privileged users access to edit dashboards.<br>
+    * Fixed [REDMINE 721] - SelectMulti Isn't populated, feeded by another SelectMulti Component<br>
+    * Fixed [REDMINE 424] - CDA creation sometimes adds a prefix / to catalog that disables Mondrian role mapping <br>
+    *  Added start and end Date parameters to DatePicker Component, which can be controlled by the dateFormat parameter.<br>
+    * FileExplorer returns different info from getExtension in fileBased and db rep. Adding both<br>
+    * Allow Icons (.ico) to be downloaded<br>
+    * [PATCH] BulletChart support for the tooltipFormat option<br>
+    * disable edit option in olap wizard file open; prompts a bit less green<br>
+    * SiteMap Component update<br>
+<br>
+12.05.15<br>
+	* Added SiteMap component<br>
+	* NewMapComponent was using cdw files for rendering cgg markers. Switched to direct js support since CGG no longer supports CDW	<br>
+	* Added target container property to duplicate component.<br>
+	* CDA cache clean folders and dashboards show the names they have in PUC<br>
+	* Added getResponse() to ContentGenerator<br>
+	* cleanup: unused imports, warnings, some frequent strings<br>
+	* first step at centralization/normalization of repository access<br>
+	* Solved bug in ie8<br>
+	* SyncronizedCdfStructure was hiding stack trace; XmlStructure warnings <br>
+	* ext-editor: +listener, optional button<br>
+	* SiteMap passes li to action function.<br>
+<br>
+<br>
+12.04.09<br>
+<br>
+	* Implemented [REDMINE 514] - Added auditing support for cde render and edit methods<br>
+	* Small change to allow MOLA plugin to work<br>
+	* Changed dependency to 3.10.0-stable<br>
+	* fix path construction in saiku olap wizard<br>
+<br>
+12.03.19<br>
+<br>
+	* [REDMINE 411] - Typo under Addin definition<br>
+	* Add CDA Cache Cleaner component<br>
+	* Add support for persistent parameters <br>
+	* Updated addIn reference to include groupHeaders addIn.<br>
+	* Added marketplace snippet generation to build process<br>
+	* Add Bookmarkable support to DuplicateComponent	<br>
+	* Fix interaction between duplicate and popup components <br>
+
+</code>

@@ -1,2 +1,0 @@
-14.03.07
-	* First stable release for 5.0
