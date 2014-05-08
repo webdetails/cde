@@ -30,7 +30,8 @@
 		<Implementation>
 			<Code src="raphael-implementation.js" />
 			<Dependencies>
-				<Dependency src="raphael.js" version="1.5.2">Raphael</Dependency>
+				<Dependency src="eve.js" version="0.2.4">Eve</Dependency>
+				<Dependency src="raphael.js" version="2.1.2">Raphael</Dependency>
 			</Dependencies>
 			<CustomProperties>
 				<DesignerProperty>
