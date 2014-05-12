@@ -11,30 +11,25 @@
 * the license for the specific language governing your rights and limitations.
 */
 
-package pt.webdetails.cdf.dd.api;
+package pt.webdetails.cdf.dd.reader.factory;
 
-import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
-import pt.webdetails.cdf.dd.testUtils.MockResourceLoader;
+public class ResourceLoaderFactoryForTesting extends ResourceLoaderFactory {
 
+  public ResourceLoaderFactoryForTesting() {}
 
-public class EditorApiForTesting extends EditorApi {
-
-  private MockResourceLoader mockResourceLoader;
-
-  public void initMockResourceLoader() {
-    this.mockResourceLoader = new MockResourceLoader();
+  @Override
+  protected boolean isSystem( String path ) {
+    return path.startsWith( "/system" );
   }
 
   @Override
-  protected IResourceLoader getResourceLoader( String path ) {
-    return this.mockResourceLoader;
+  protected SystemResourceLoader getSystemResourceLoader( String path ) {
+    return new SystemResourceLoader();
   }
 
-  public void setHasAccess( boolean hasAccess ) {
-    mockResourceLoader.setHasAccess( hasAccess );
+  @Override
+  protected SolutionResourceLoader getSolutionResourceLoader( String path) {
+    return new SolutionResourceLoader();
   }
 
-  public void setSavedFile( boolean savedFile ) {
-    mockResourceLoader.setSavedFile( savedFile );
-  }
 }

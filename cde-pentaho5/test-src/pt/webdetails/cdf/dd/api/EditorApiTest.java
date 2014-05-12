@@ -37,7 +37,7 @@ public class EditorApiTest {
     String MESSAGE_ERROR = "error saving file " + FAKE_PATH + FAKE_FILE;
     String MESSAGE_NO_PERMISSIONS = "no permissions to write file " + FAKE_PATH + FAKE_FILE;
 
-    editorApi.initMockUserContentAccess();
+    editorApi.initMockResourceLoader();
 
     editorApi.setHasAccess( true );
     editorApi.setSavedFile( true );
