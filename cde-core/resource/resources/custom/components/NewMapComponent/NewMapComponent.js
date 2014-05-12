@@ -452,7 +452,7 @@ var NewMapComponent = (function (){
        *
        * It takes a query definition object that is passed directly into the Query
        * constructor, and the component rendering callback, and implements the full
-       * preExecution->block->render->postExecution->unblock lifecycle. This method
+       * preExecution->block->postFetch->render->postExecution->unblock lifecycle. This method
        * detects concurrent updates to the component and ensures that only one
        * redraw is performed.
        */
@@ -470,14 +470,41 @@ var NewMapComponent = (function (){
       var success = _.bind(function(data) {
         // callback(data);
         //this.postExec();
+        return data;
       }, this);
       var always = _.bind(function (){
         if (!silent){
           this.unblock();
         }
       }, this);
-      var handler = this.getSuccessHandler(success, always),
-          errorHandler = this.getErrorHandler();
+
+      this.getDeferredSuccessHandler = function(success){
+        /* Code adapted from core.js/UnmanagedComponent.getSuccessHandler */
+        var counter = this.callCounter();
+        return _.bind(function(data) {
+          var newData, result;
+          if(counter >= this.runCounter) {
+            try {
+              if(typeof this.postFetch == "function") {
+                newData = this.postFetch(data);
+                this.trigger('cdf cdf:postFetch',this,data);
+                data = typeof newData == "undefined" ? data : newData;
+              }
+              result = success(data);
+            } catch(e) {
+              this.error(Dashboards.getErrorObj('COMPONENT_ERROR').msg, e);
+              this.dashboard.log(e,"error");
+            }
+          }
+          // if(typeof always == "function") {
+          // always();
+          // }
+          return result;
+        }, this);
+      };
+
+      var querySuccess = this.getDeferredSuccessHandler( success ); //prepare handler that calls postFetch
+      var queryError = this.getErrorHandler();
 
       var query = this.queryState = this.query = Dashboards.getQuery( queryDef );
       var ajaxOptions = {
@@ -498,16 +525,20 @@ var NewMapComponent = (function (){
       var launchQuery = function(){
         var _deferredQuery = $.Deferred();
         query.fetchData(myself.parameters, function(){
-          // handler.apply(myself, arguments);
-          _deferredQuery.resolve.apply(myself, arguments);
+          /* handle postFetch */
+          var data = querySuccess.apply(myself, arguments);
+          var processedArgs = _.extend([], arguments); //A shallow extend is ok
+          processedArgs[0] = data;
+          _deferredQuery.resolve.apply(myself, processedArgs);
         }, function(){
-          errorHandler.apply(myself, arguments);
+          queryError.apply(myself, arguments);
           _deferredQuery.reject();
         });
         return _deferredQuery.promise().done(always); // danger: is this done or always?
       };
 
       var deferredSuccess = function(datasets){
+        // typically render is called here
         if ( _.isFunction(callback) ){
           callback(datasets);
         }
@@ -516,7 +547,7 @@ var NewMapComponent = (function (){
 
       // Launch all tasks, run postExec once all are successful
       deferreds = deferreds || [];
-      deferreds.unshift( launchQuery() ); //prepend
+      deferreds.unshift( launchQuery() ); //prepend deferred that gets the data
       return $.when.apply(null, deferreds).then( deferredSuccess );
     },
 
