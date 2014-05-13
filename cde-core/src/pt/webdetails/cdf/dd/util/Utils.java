@@ -297,7 +297,6 @@ public class Utils {
         return factory.getUserContentAccess( basePath );
       }
     }
-    return null; //unable to determine appropriate way to fetch file
   }
 
   public static IBasicFile getFileViaAppropriateReadAccess( String resource ) {
@@ -352,6 +351,7 @@ public class Utils {
         return factory.getUserContentAccess( basePath ).fetchFile( resource );
       }
     }
+    return null;
   }
 
 
