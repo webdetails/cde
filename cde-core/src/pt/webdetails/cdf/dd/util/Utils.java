@@ -320,7 +320,6 @@ public class Utils {
         return factory.getUserContentAccess( basePath );
       }
     }
-    return null; //unable to determine appropriate way to fetch file
   }
 
   public static IBasicFile getFileViaAppropriateReadAccess( String resource ) {
@@ -376,6 +375,7 @@ public class Utils {
 >>>>>>> a3d0b8c... [CLEANUP]: Style review and license update
       }
     }
+    return null;
   }
   
   	public static IBasicFile getFileViaAppropriateReadAccess(String resource){
