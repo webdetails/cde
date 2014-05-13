@@ -48,6 +48,10 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> [CLEANUP]: Style review and license update
 @Path( "pentaho-cdf-dd/api/syncronizer" )
 public class SyncronizerApi { //TODO: synchronizer?
 
@@ -86,6 +90,9 @@ public class SyncronizerApi { //TODO: synchronizer?
 
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
+
+    boolean isPreview = false;
+
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
 
       if ( widget ) {
@@ -96,6 +103,8 @@ public class SyncronizerApi { //TODO: synchronizer?
       // check access to path folder
       String fileDir =
         file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
+
+      isPreview = ( file.indexOf( "_tmp.cdfde" ) > -1 || file.indexOf( "_tmp.wcdf" ) > -1 );
 
       IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
 
@@ -147,7 +156,7 @@ public class SyncronizerApi { //TODO: synchronizer?
         if ( StringUtils.isEmpty( title ) ) {
           title = FilenameUtils.getBaseName( file );
         }
-        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
+        result = dashboardStructure.saveAs( file, title, description, cdfStructure, isPreview );
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
@@ -223,6 +232,8 @@ public class SyncronizerApi { //TODO: synchronizer?
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
 
+    boolean isPreview = false;
+
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
 
       if ( StringUtils.isEmpty( title ) ) {
@@ -238,8 +249,10 @@ public class SyncronizerApi { //TODO: synchronizer?
       String fileDir =
         file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
+      isPreview = ( file.indexOf( "_tmp.cdfde" ) > -1 || file.indexOf( "_tmp.wcdf" ) > -1 );
+
       IReadAccess rwAccess = null;
-      if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
+      if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) && !isPreview ) {
         rwAccess = Utils.getSystemOrUserRWAccess( fileDir );
       } else {
         rwAccess = Utils.getSystemOrUserRWAccess( file );
@@ -260,7 +273,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( file, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        result = dashboardStructure.saveAs( file, title, description, cdfStructure );
+        result = dashboardStructure.saveAs( file, title, description, cdfStructure, isPreview );
       } else {
         logger.error( "Unknown operation: " + operation );
       }

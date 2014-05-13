@@ -88,7 +88,7 @@ public class Utils {
       return null;
     }
 
-    return ( text.length() > 1 )
+    return text.length() > 1
       ? text.substring( 0, 1 ).toLowerCase() + text.substring( 1 )
       : text.toLowerCase();
   }
@@ -98,7 +98,7 @@ public class Utils {
       return null;
     }
 
-    return ( text.length() > 1 )
+    return text.length() > 1
       ? text.substring( 0, 1 ).toUpperCase() + text.substring( 1 )
       : text.toUpperCase();
   }
@@ -145,7 +145,7 @@ public class Utils {
   /**
    * Create a <code>Document</code> from the contents of a file.
    *
-   * @param file     String containing the path to the file containing XML that will be used to create the Document.
+   * @param file
    * @param resolver EntityResolver an instance of an EntityResolver that will resolve any external URIs. See the docs
    *                 on EntityResolver. null is an acceptable value.
    * @return <code>Document</code> initialized with the xml in <code>strXml</code>.
@@ -297,6 +297,7 @@ public class Utils {
         return factory.getUserContentAccess( basePath );
       }
     }
+    return null; //unable to determine appropriate way to fetch file
   }
 
   public static IBasicFile getFileViaAppropriateReadAccess( String resource ) {
@@ -357,7 +358,8 @@ public class Utils {
 
   public static IReadAccess getSystemOrUserReadAccess( String filePath ) {
     IReadAccess readAccess = null;
-    if ( filePath.startsWith( "/system/" ) && ( filePath.endsWith( ".wcdf" ) || filePath.endsWith( ".cdfde" ) ) ) {
+    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+      .endsWith( ".cdfde" ) ) ) {
       readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
@@ -367,7 +369,8 @@ public class Utils {
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
     IRWAccess rwAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) ) {
+    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+      .endsWith( ".cdfde" ) ) ) {
       rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
