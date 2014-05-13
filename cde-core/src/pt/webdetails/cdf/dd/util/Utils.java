@@ -352,7 +352,6 @@ public class Utils {
         return factory.getUserContentAccess( basePath ).fetchFile( resource );
       }
     }
-    return null; //unable to determine appropriate way to fetch file
   }
 
 
