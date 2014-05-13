@@ -2,8 +2,38 @@ LoadRequests = {
   loadDashboard: function () {}
 }
 
+PreviewRequests = {
+  
+  status: false,
 
-CDFDDFileName = "test.wcdf";
+  previewDashboard: function( saveParams, _href ) {
+    
+    if( saveParams.operation != "saveas" ) {
+      this.status = false;
+      return;
+    }
+    if( saveParams.file.indexOf( "_tmp.wcdf" ) == -1 ) {
+      this.status = false;
+      return;
+    }
+    if( _href.indexOf( "_tmp.wcdf" ) == -1 ) {
+      this.status = false;
+      return;
+    }
+
+    this.status = true;
+
+  },
+
+  getPreviewUrl: function( sol, path, file, style ) {
+    return pluginUrl+"/renderer/render?solution="+sol+"&path="+path+"&file="+file+"&style="+style+"&bypassCache=true&root="+window.location.host;
+  }
+};
+
+
+pluginUrl = "/pentaho/plugin/pentaho-cdf-dd/api";
+
+CDFDDFileName = "test.cdfde";
 
 Dashboards = {};
 
