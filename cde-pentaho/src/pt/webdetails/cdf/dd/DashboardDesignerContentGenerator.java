@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONException;
 
+import org.json.JSONObject;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
@@ -606,7 +608,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
-  public void olapUtils( final OutputStream out ) {
+  public void olapUtils( final OutputStream out ) throws JSONException {
     OlapUtils olapUtils = new OlapUtils();
     Object result = null;
 
@@ -649,10 +651,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
             .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
 
       }
-      JsonUtils.buildJsonResult( out, result != null, result );
+      buildJsonResult( out, result != null, result );
     } catch ( Exception ex ) {
       logger.fatal( ex );
-      JsonUtils.buildJsonResult( out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage() );
+      buildJsonResult( out, false, "Exception found: " + ex.getClass().getName() + " - " + ex.getMessage() );
     }
   }
 
@@ -947,4 +949,24 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   public static String getPluginDir() {
     return CdeEnvironment.getSystemDir() + "/" + CdeEnvironment.getPluginId() + "/";
   }
+
+  // this should be in JsonUtils, when the custom json lib gets removed
+  private void buildJsonResult( OutputStream out, Boolean sucess, Object result ) throws JSONException {
+    JSONObject jsonResult = new JSONObject();
+
+    jsonResult.put( "status", sucess.toString() );
+    if ( result != null ) {
+      jsonResult.put( "result", result );
+    }
+    PrintWriter pw = null;
+    try {
+      pw = new PrintWriter( out );
+      pw.print( jsonResult.toString( 2 ) );
+      pw.flush();
+    } finally {
+      IOUtils.closeQuietly( pw );
+    }
+
+  }
+
 }

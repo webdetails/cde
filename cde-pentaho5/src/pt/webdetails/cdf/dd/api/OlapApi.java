@@ -13,6 +13,8 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -27,7 +29,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import java.io.IOException;
 
-import net.sf.json.JSONObject;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+
 import org.json.JSONException;
 
 @Path( "pentaho-cdf-dd/api/olap" )
@@ -41,7 +45,7 @@ public class OlapApi {
                         @Context HttpServletResponse response ) throws IOException, JSONException {
     OlapUtils olapUtils = new OlapUtils();
     JSONObject result = olapUtils.getOlapCubes();
-    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+    buildJsonResult( response.getOutputStream(), result != null, result );
   }
 
   @GET
@@ -53,7 +57,7 @@ public class OlapApi {
                                 @Context HttpServletResponse response ) throws IOException, JSONException {
     OlapUtils olapUtils = new OlapUtils();
     JSONObject result = olapUtils.getCubeStructure( catalog, cube, jndi );
-    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+    buildJsonResult( response.getOutputStream(), result != null, result );
   }
 
   @GET
@@ -67,7 +71,7 @@ public class OlapApi {
     throws IOException, JSONException {
     OlapUtils olapUtils = new OlapUtils();
     JSONObject result = olapUtils.getLevelMembersStructure( catalog, cube, member, direction );
-    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+    buildJsonResult( response.getOutputStream(), result != null, result );
   }
 
   @GET
@@ -85,9 +89,9 @@ public class OlapApi {
                                         @Context HttpServletResponse response ) throws IOException, JSONException {
     OlapUtils olapUtils = new OlapUtils();
     JSONObject result =
-      olapUtils
-        .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
-    JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );
+        olapUtils
+            .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
+    buildJsonResult( response.getOutputStream(), result != null, result );
   }
 
   private class MethodParams {
@@ -103,4 +107,24 @@ public class OlapApi {
     public static final String PAGE_SIZE = "pageSize";
     public static final String PAGE_START = "pageStart";
   }
+
+  // this should be in JsonUtils, when the custom json lib gets removed
+  private void buildJsonResult( OutputStream out, Boolean sucess, Object result ) throws JSONException {
+    JSONObject jsonResult = new JSONObject();
+
+    jsonResult.put( "status", sucess.toString() );
+    if ( result != null ) {
+      jsonResult.put( "result", result );
+    }
+    PrintWriter pw = null;
+    try {
+      pw = new PrintWriter( out );
+      pw.print( jsonResult.toString( 2 ) );
+      pw.flush();
+    } finally {
+      IOUtils.closeQuietly( pw );
+    }
+
+  }
+
 }
