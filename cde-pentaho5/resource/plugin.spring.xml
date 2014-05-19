@@ -15,7 +15,7 @@
     <bean id="wcdf.mobile" class="pt.webdetails.cdf.dd.DashboardDesignerContentGenerator" scope="prototype"/>
     <bean id="datasources" class="pt.webdetails.cdf.dd.api.DatasourcesApi"/>
     <bean id="wcdf.editor" class="pt.webdetails.cdf.dd.api.EditorApi"/>
-    <bean id="olap" class="pt.webdetails.cdf.dd.api.OlapApi"/>
+    <bean id="olap" class="pt.webdetails.cpf.olap.OlapApi"/>
     <bean id="plugins" class="pt.webdetails.cdf.dd.api.PluginsApi"/>
     <bean id="renderer" class="pt.webdetails.cdf.dd.api.RenderApi"/>
     <bean id="resourcesapi" class="pt.webdetails.cdf.dd.api.ResourcesApi"/>
