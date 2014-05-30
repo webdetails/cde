@@ -104,10 +104,16 @@ var SynchronizeRequests = {
                         $.prompt('Are you sure you want to load the template? ', { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
                             callback: function (v, m, f) {
                                 if (v) {
+                                    if ( !selectTemplate.structure.components.rows.length )
+                                        selectTemplate.structure.components.rows = cdfdd.dashboardData.components.rows;
+
+                                    if ( !selectTemplate.structure.datasources.rows.length )
+                                        selectTemplate.structure.datasources.rows = cdfdd.dashboardData.datasources.rows;
+
                                     cdfdd.dashboardData = selectTemplate.structure;
                                     cdfdd.layout.init();
-                                    cdfdd.components.init();
-                                    cdfdd.datasources.init();
+                                    cdfdd.components.initTemplate();
+                                    cdfdd.datasources.initTemplate();
                                 }
                             }});
                     }

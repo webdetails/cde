@@ -5,6 +5,7 @@ var CDFDDDatasourcesArray = [];
 var DatasourcesPanel = Panel.extend({
 
 		name: "Datasources Panel",
+		loadingTemplate: false,
 		datasourcesPallete: {},
 		datasourcesTable: {},
 		datasourcesTableModel: {},
@@ -19,7 +20,12 @@ var DatasourcesPanel = Panel.extend({
 			this.logger = new Logger("Datasources");
 			Panel.register(this);
 		
-		}, 
+		},
+
+		initTemplate: function() {
+			this.loadingTemplate = true;
+			this.init();
+		},
 
 		init: function(){
 
@@ -28,9 +34,11 @@ var DatasourcesPanel = Panel.extend({
 
 
 			// Pallete
-			this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
-			this.addPalleteEntries();
-			this.datasourcesPallete.init();
+			if (!this.loadingTemplate) {
+				this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
+				this.addPalleteEntries();
+				this.datasourcesPallete.init();
+			}
 
 
 

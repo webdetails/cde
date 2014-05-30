@@ -4,6 +4,7 @@ var CDFDDComponentsArray = [];
 var ComponentsPanel = Panel.extend({
 
   name: "Components Panel",
+  loadingTemplate: false,
   componentsPallete: {},
   componentsTable: {},
   componentsTableModel: {},
@@ -20,6 +21,11 @@ var ComponentsPanel = Panel.extend({
 		
   },
 
+  initTemplate: function(loadData) {
+    this.loadingTemplate = true;
+    this.init();
+  },
+
   init: function(){
 
     this.base();
@@ -27,9 +33,11 @@ var ComponentsPanel = Panel.extend({
 
 
     // Pallete
-    this.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
-    this.addPalleteEntries();
-    this.componentsPallete.init();
+    if(!this.loadingTemplate) {
+      this.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
+      this.addPalleteEntries();
+      this.componentsPallete.init();
+    }
 
 
 
