@@ -1,0 +1,18 @@
+describe("CDF-DD-DATASOURCES tests", function() {
+
+  it("Template Load Test - DataSources", function() {
+
+    var dsp = new DatasourcesPanel;
+    dsp.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
+
+    spyOn(dsp, "init").andCallFake(function() {
+      //init datasources
+    });
+
+    dsp.initTemplate();
+
+    expect( dsp.loadingTemplate ).toBeTruthy();
+
+  });
+
+});
