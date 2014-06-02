@@ -21,12 +21,12 @@ var ComponentsPanel = Panel.extend({
 		
   },
 
-  initTemplate: function(loadData) {
+  initTemplate: function() {
     this.loadingTemplate = true;
     this.init();
   },
 
-  init: function(){
+  init: function() {
 
     this.base();
     this.logger.debug("Specific init");
@@ -36,9 +36,8 @@ var ComponentsPanel = Panel.extend({
     if(!this.loadingTemplate) {
       this.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
       this.addPalleteEntries();
-      this.componentsPallete.init();
     }
-
+    this.componentsPallete.init();
 
 
     // Components

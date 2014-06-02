@@ -14,7 +14,7 @@ var DatasourcesPanel = Panel.extend({
 		datasourcesArray: [],
 
 
-		constructor: function(id){
+		constructor: function(id) {
 
 			this.base(id);
 			this.logger = new Logger("Datasources");
@@ -27,7 +27,7 @@ var DatasourcesPanel = Panel.extend({
 			this.init();
 		},
 
-		init: function(){
+		init: function() {
 
 			this.base();
 			this.logger.debug("Specific init");
@@ -37,8 +37,8 @@ var DatasourcesPanel = Panel.extend({
 			if (!this.loadingTemplate) {
 				this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
 				this.addPalleteEntries();
-				this.datasourcesPallete.init();
 			}
+			this.datasourcesPallete.init();
 
 
 
