@@ -44,14 +44,18 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       .replaceAll( ABS_IMG_TAG, root + RESOURCE_API_GET + "$1" + "?v="
         + timestamp )// build the image links, with a timestamp for caching purposes
       .replaceAll( REL_IMG_TAG, root + RESOURCE_API_GET + path + "$1" + "?v="
-        + timestamp )// build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$1" )// Directories don't need the caching timestamp
+        + timestamp ) // build the image links, with a timestamp for caching purposes
+      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$2" ) // Directories don't need the caching timestamp
       .replaceAll( REL_DIR_RES_TAG,
-        root + RESOURCE_API_GET + path + "$1" )// Directories don't need the caching timestamp
-      .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$1" + "?v="
+        root + RESOURCE_API_GET + path + "$2" )// Directories don't need the caching timestamp
+      .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$2" + "?v="
         + timestamp )// build the image links, with a timestamp for caching purposes
-      .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$1" + "?v="
-        + timestamp ); // build the image links, with a timestamp for caching purposes
+      .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$2" + "?v="
+        + timestamp ) // build the image links, with a timestamp for caching purposes
+      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
+        + "$1" + "?v=" + timestamp ) //build system resources links, with a timestamp for caching purposes
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
+        + "/$1" + "?v=" + timestamp ); //build system resources links, with a timestamp for caching purposes
   }
 
   protected String getRoot() {
@@ -59,6 +63,22 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
       ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
 
+  }
+
+  protected String getSystemDir() {
+    return CdeEngine.getEnv().getSystemDir();
+  }
+
+  protected String getPluginId( String path ) {
+    if ( path.startsWith( "/" ) ) {
+      path = path.replaceFirst( "/", "" );
+    }
+
+    if ( path.startsWith( getSystemDir() ) ) {
+      return path.split( "/" )[ 1 ];
+    } else {
+      return "";
+    }
   }
 
 }
