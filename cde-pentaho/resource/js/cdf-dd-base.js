@@ -1,5 +1,19 @@
-var Endpoints = {
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* 
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
+var wd = (typeof wd !== 'undefined') ? wd : {};
+wd.cde = wd.cde || {};
+wd.cde.endpoints = {
 
     staticUrl: "/content/pentaho-cdf-dd/",
     pluginUrl: "/content/pentaho-cdf-dd/",
@@ -56,7 +70,7 @@ var SynchronizeRequests = {
 
     doPost: function (templateParams) {
 
-        $.post(Endpoints.getPluginUrl() + "SyncTemplates", templateParams, function (result) {
+        $.post(wd.cde.endpoints.getPluginUrl() + "SyncTemplates", templateParams, function (result) {
             var json = Util.parseJsonResult(result);
             if (json.status == "true") {
                 $.notifyBar({ html: "Template saved successfully", delay: 1000 });
@@ -69,7 +83,7 @@ var SynchronizeRequests = {
 
     doGetJson: function (loadParams) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "SyncTemplates", loadParams, function (json) {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "SyncTemplates", loadParams, function (json) {
             if (json.status) {
 
                 templates = json.result;
@@ -166,7 +180,7 @@ var SynchronizeRequests = {
 var OlapWizardRequests = {
 
     olapObject: function (params, container, myself, direction) {
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetLevelMembersStructure", params, function (json) {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "OlapUtils?operation=GetLevelMembersStructure", params, function (json) {
             if (json.status == "true") {
                 myself.membersArray = json.result.members;
 
@@ -191,7 +205,7 @@ var OlapWizardRequests = {
 
     olapManager: function (params, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes", params, function (json) {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes", params, function (json) {
             if (json && json.status == "true") {
 
                 var catalogs = json.result.catalogs;
@@ -218,7 +232,7 @@ var OlapWizardRequests = {
 
     olapCubeSelected: function (params, selectedCube, selectedCatalog, myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "OlapUtils?operation=GetCubeStructure", params, function (json) {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "OlapUtils?operation=GetCubeStructure", params, function (json) {
             if (json.status == "true") {
 
                 myself.logger.info("Got correct response from GetCubeStructure");
@@ -283,7 +297,7 @@ var StylesRequests = {
 
     syncStyles: function (myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "SyncStyles", {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "SyncStyles", {
             operation: "listStyles"
         }, function (json) {
             myself.styles = json.result;
@@ -292,7 +306,7 @@ var StylesRequests = {
 
     listStyleRenderers: function (myself) {
 
-        $.getJSON(Endpoints.getPluginUrl() + "listRenderers", {
+        $.getJSON(wd.cde.endpoints.getPluginUrl() + "listRenderers", {
             operation: "listStyles"
         }, function (json) {
             myself.renderers = json.result;
@@ -302,7 +316,7 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
+        $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
             var json = eval("(" + result + ")");
             if (json.status == "true") {
                 myself.setDashboardWcdf(wcdf);
@@ -321,7 +335,7 @@ var SaveRequests = {
 
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
 
-        $.post(Endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
+        $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function (result) {
             try {
                 var json = eval("(" + result + ")");
                 if (json.status == "true") {
@@ -367,9 +381,9 @@ var SaveRequests = {
 
         if ( $.browser.msie && $.browser.version < 10 ) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-            $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
+            $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
         } else {
-            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
             $uploadForm.ajaxForm({
                 data:saveParams,
                 success: successFunction
@@ -387,7 +401,7 @@ var SaveRequests = {
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
                     //cdfdd.setExitNotification(false);
-                    window.location = window.location.protocol + "//" + window.location.host + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else
                 $.notifyBar({
@@ -397,9 +411,9 @@ var SaveRequests = {
 
          if ( $.browser.msie && $.browser.version < 10 ) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-            $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
+            $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
         } else {
-            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
             $uploadForm.ajaxForm({
                 data:saveAsParams,
                 success: successFunction
@@ -425,7 +439,7 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = window.location.protocol + "//" + window.location.host + Endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+                    window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
             } else {
                 $.notifyBar({
@@ -436,9 +450,9 @@ var SaveRequests = {
 
         if ( $.browser.msie && $.browser.version < 10 ) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-            $.post(Endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
+            $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
         } else {
-            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
             $uploadForm.ajaxForm({
                 data:saveAsParams,
                 success: successFunction
@@ -451,9 +465,9 @@ var SaveRequests = {
 var LoadRequests = {
 
     loadDashboard: function (loadParams, myself) {
-        if(Endpoints.isEmptyFilePath(loadParams.file)){ loadParams.file = ""; }
+        if(wd.cde.endpoints.isEmptyFilePath(loadParams.file)){ loadParams.file = ""; }
 
-        $.post(Endpoints.getPluginUrl() + "Syncronize", loadParams, function (result) {
+        $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", loadParams, function (result) {
             var json = eval("("+eval("(" + result + ")").result+")");
             if (json && json.status == "true") {
                 myself.setDashboardData(myself.unstrip(json.result.data));
@@ -487,9 +501,9 @@ var PreviewRequests = {
             };
         if ( $.browser.msie && $.browser.version < 10 ) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-            $.post(Endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
+            $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
         } else {
-            var $uploadForm = $('<form action="' + Endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
+            var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
             $uploadForm.ajaxForm({
                 data:saveParams,
                 success: successFunction
@@ -505,10 +519,10 @@ var PreviewRequests = {
             path = path.split('/');
             var pluginName = (path.length > 0 ) ? path[0] : "",
                 endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
-            _href = Endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
+            _href = wd.cde.endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
         } else {
             // Regular Dashboard
-            _href = Endpoints.getPluginUrl() + "Render?" + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
+            _href = wd.cde.endpoints.getPluginUrl() + "Render?" + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
         }
         return _href
 
@@ -537,40 +551,40 @@ var PluginRequests = {
 
 var VersionRequests = {
     getGetVersion: function(){
-        return Endpoints.getPluginUrl() + "getVersion";
+        return wd.cde.endpoints.getPluginUrl() + "getVersion";
     },
 
     getCheckVersion: function(){
-        return Endpoints.getPluginUrl() + "checkVersion";
+        return wd.cde.endpoints.getPluginUrl() + "checkVersion";
     }
 };
 
 var ExternalEditor = {
     getEditorUrl: function(){
-        return Endpoints.getPluginUrl() + "extEditor";
+        return wd.cde.endpoints.getPluginUrl() + "extEditor";
     },
 
     getGetUrl: function(){
-        return Endpoints.getPluginUrl() + "getFile";
+        return wd.cde.endpoints.getPluginUrl() + "getFile";
     },
 
     getCanEditUrl: function(){
-        return Endpoints.getPluginUrl() + "canEdit";
+        return wd.cde.endpoints.getPluginUrl() + "canEdit";
     },
 
     getWriteUrl: function(){
-        return Endpoints.getPluginUrl() + "writeFile";
+        return wd.cde.endpoints.getPluginUrl() + "writeFile";
     }
 };
 
 var OlapUtils = {
     getOlapCubesUrl: function(){
-        return Endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes";
+        return wd.cde.endpoints.getPluginUrl() + "OlapUtils?operation=GetOlapCubes";
     }
 };
 
 var Cgg = {
     getCggDrawUrl: function(){
-        return window.location.href.substring(0, window.location.href.indexOf("content") -1) + Endpoints.getUnbasedCggPluginUrl() + "Draw";
+        return window.location.href.substring(0, window.location.href.indexOf("content") -1) + wd.cde.endpoints.getUnbasedCggPluginUrl() + "Draw";
     }
 };
