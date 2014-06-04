@@ -115,6 +115,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/";
   }
 
+  public String getApplicationReposUrl() {
+    return "";
+  }
+
   public String getRepositoryBaseContentUrl() {
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";// TODO:
   }

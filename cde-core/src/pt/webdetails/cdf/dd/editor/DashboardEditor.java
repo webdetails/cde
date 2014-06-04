@@ -27,6 +27,8 @@ public class DashboardEditor {
 
   private static Log logger = LogFactory.getLog( DashboardEditor.class );
 
+  private static  final String WEBAPP_PATH = "#{WEBAPP_PATH}";
+
 
   public static String getEditor(String wcdfPath, boolean debugMode, String scheme, boolean isDefault) throws Exception {
 
@@ -126,6 +128,9 @@ public class DashboardEditor {
       if(resource != null){
         resMgr.putResourceInCache(path, resource);
       }
+    }
+    if (resource.contains( WEBAPP_PATH )) {
+      return resource.replace( WEBAPP_PATH,  CdeEngine.getInstance().getEnvironment().getApplicationReposUrl() + CdeEngine.getInstance().getEnvironment().getPluginId() + "/");
     }
     return resource;
   }

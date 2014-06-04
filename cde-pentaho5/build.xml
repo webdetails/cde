@@ -358,14 +358,14 @@
         <for list='${scripts}' param='filename'>
             <sequential>
                 <echo file='${scripts.patch}' append='true'>&lt;script language="javascript" type="text/javascript"
-                    src="@{filename}"/&gt;&lt;/script&gt;&#13;&#10;</echo>
+                    src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;&#13;&#10;</echo>
             </sequential>
         </for>
 
         <echo file='${styles.patch}' append='false'/>
         <for list='${styles}' param='filename'>
             <sequential>
-                <echo file='${styles.patch}' append='true'>&lt;link href="@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
+                <echo file='${styles.patch}' append='true'>&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
             </sequential>
         </for>
     </target>
