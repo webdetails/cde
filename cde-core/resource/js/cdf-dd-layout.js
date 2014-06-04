@@ -14,27 +14,28 @@ var LayoutPanel = Panel.extend({
 			Panel.register(this);
 
 		},
-		init: function(){
+		init: function() {
 	                operationSets = {
 	                  blueprint: [
 	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
+			                new LayoutApplyTemplateOperation(),
+			                new LayoutAddResourceOperation(),
+			                new LayoutAddRowOperation()
 	                  ],
 	                  bootstrap: [
 	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
+			                new LayoutApplyTemplateOperation(),
+                      new LayoutAddResourceOperation(),
+                      new LayoutAddRowOperation(),
+                      new LayoutAddBootstrapPanelOperation()
 	                  ],
 	                  mobile: [
 	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddCarouselOperation(),
-			    new LayoutAddRowOperation(),
-                            new LayoutAddFilterBlockOperation()
+                      new LayoutApplyTemplateOperation(),
+                      new LayoutAddResourceOperation(),
+                      new LayoutAddCarouselOperation(),
+                      new LayoutAddRowOperation(),
+                      new LayoutAddFilterBlockOperation()
 	                  ]
 	                };
 
@@ -104,7 +105,7 @@ var LayoutPanel = Panel.extend({
 
 		},
 
-		getContent: function(){
+		getContent: function() {
 		
 			return ' \n' +
 '			<div id="'+ LayoutPanel.TREE +'" class="span-12">Tree</div>\n' +
@@ -671,22 +672,257 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 				}
 				
 			}});
-
-			
-
 		}
-
-
 });
 
 CellOperations.registerOperation(new LayoutAddResourceOperation());
 
 
+
+// ------------------------ Panel ----------------------------------- //
+
+var LayoutBootstrapPanelModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanel',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelModel.MODEL,
+      typeDesc: "Bootstrap Panel",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapPanelStyle"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelModel);
+
+var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL",
+  types: [],
+  name: "Add Bootstrap Panel",
+  description: "Adds a bootstrap panel",
+
+  constructor: function(){
+    this.logger = new Logger("LayoutAddBootstrapPanelOperation");
+  },
+
+  execute: function(tableManager){
+
+    var _stub = LayoutBootstrapPanelModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var insertAtIdx = -1;
+
+    if (tableManager.isSelectedCell) {
+      var rowIdx = tableManager.getSelectedCell()[0];
+      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      if(rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else {
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+  }
+});
+CellOperations.registerOperation(new LayoutAddBootstrapPanelOperation());
+
+
+var LayoutBootstrapPanelHeaderModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelHeader',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelHeaderModel.MODEL,
+      typeDesc: "Panel Header",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapPanelHeaderTitle"));
+    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelHeaderStyle"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelHeaderModel);
+
+var LayoutAddBootstrapPanelHeaderOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_HEADER",
+  types: [ LayoutBootstrapPanelModel.MODEL ],
+  name: "Add Bootstrap Panel Header",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelHeaderOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelHeaderModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+    if (rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+      _stub.parent = indexManager.getIndex()[rowId].parent;
+    } else if (rowType == LayoutBootstrapPanelModel.MODEL) {
+      _stub.parent = rowId;
+    }
+
+    var insertAtIdx = indexManager.getIndex()[_stub.parent].index+1;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
+CellOperations.registerOperation(new LayoutAddBootstrapPanelHeaderOperation());
+
+
+var LayoutBootstrapPanelBodyModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelBody',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelBodyModel.MODEL,
+      typeDesc: "Panel Body",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelBodyStyle"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelBodyModel);
+
+var LayoutAddBootstrapPanelBodyOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_BODY",
+  types: [ LayoutBootstrapPanelModel.MODEL ],
+  name: "Add Bootstrap Panel Body",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelBodyOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelBodyModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+    var internalRow = 1;
+
+    if (rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+      _stub.parent = indexManager.getIndex()[rowId].parent;
+    } else if (rowType == LayoutBootstrapPanelModel.MODEL) {
+      _stub.parent = rowId;
+    }
+
+    $.each(indexManager.getIndex()[_stub.parent].children, function (i, e) {
+
+      if (e.type == LayoutBootstrapPanelHeaderModel.MODEL)
+        internalRow += 1;
+    });
+    var insertAtIdx = indexManager.getIndex()[_stub.parent].index + internalRow;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
+CellOperations.registerOperation(new LayoutAddBootstrapPanelBodyOperation());
+
+
+var LayoutBootstrapPanelFooterModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelFooter',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelFooterModel.MODEL,
+      typeDesc: "Panel Footer",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelFooterStyle"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelFooterModel);
+
+var LayoutAddBootstrapPanelFooterOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_FOOTER",
+  types: [ LayoutBootstrapPanelModel.MODEL ],
+  name: "Add Bootstrap Panel Footer",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelFooterOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelFooterModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+    var internalRow = 1;
+
+    if (rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+      _stub.parent = indexManager.getIndex()[rowId].parent;
+    } else if (rowType == LayoutBootstrapPanelModel.MODEL) {
+      _stub.parent = rowId;
+    }
+
+    $.each(indexManager.getIndex()[_stub.parent].children, function (i, e) {
+
+      if (e.type == LayoutBootstrapPanelHeaderModel.MODEL)
+        internalRow += 1;
+      else if (e.type == LayoutBootstrapPanelBodyModel.MODEL)
+        internalRow += 1;
+    });
+    var insertAtIdx = indexManager.getIndex()[_stub.parent].index + internalRow;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
+CellOperations.registerOperation(new LayoutAddBootstrapPanelFooterOperation());
+
+
+// --------------------------------- End Panel ---------------------------------- //
+
+
 var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
+             LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
+             LayoutBootstrapPanelModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -700,8 +936,9 @@ CellOperations.registerOperation(new LayoutMoveUpOperation);
 var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
+             LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
+             LayoutBootstrapPanelModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -711,7 +948,6 @@ var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 CellOperations.registerOperation(new LayoutMoveDownOperation);
 
-
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
@@ -719,7 +955,8 @@ var LayoutDeleteOperation = DeleteOperation.extend({
                   LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,
                   LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
                   LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,
-                  FilterRowModel.MODEL,FilterHeaderModel.MODEL],
+                  FilterRowModel.MODEL,FilterHeaderModel.MODEL,
+                  LayoutBootstrapPanelModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
@@ -748,7 +985,6 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 			
 		}
 });
-
 
 var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 
