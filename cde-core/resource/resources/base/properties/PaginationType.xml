@@ -2,7 +2,7 @@
 <Header>
 	<Name>paginationType</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue>two_button</DefaultValue>
+	<DefaultValue>simple_numbers</DefaultValue>
 	<Description>Pagination Type</Description>
 	<Tooltip>Pagination Type</Tooltip>
 	<InputType>PaginationType</InputType>
