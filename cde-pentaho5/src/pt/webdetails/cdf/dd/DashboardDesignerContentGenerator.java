@@ -47,28 +47,25 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider requestParams = parameterProviders.get( MethodParams.REQUEST );
     IParameterProvider pathParams = parameterProviders.get( MethodParams.PATH );
 
-    String solution = requestParams.getStringParameter( MethodParams.SOLUTION, "" ), path =
-        requestParams.getStringParameter( MethodParams.PATH, "" ), file =
-        requestParams.getStringParameter( MethodParams.FILE, "" );
-    String root = requestParams.getStringParameter( MethodParams.ROOT, "" );
+    String solution = getRequestParameterAsString( MethodParams.SOLUTION, "" ),
+           path = getRequestParameterAsString( MethodParams.PATH, "" ),
+           file = getRequestParameterAsString( MethodParams.FILE, "" );
+    String root = getRequestParameterAsString( MethodParams.ROOT, "" );
 
-    String viewId = requestParams.getStringParameter( MethodParams.VIEWID, "" );
+    String viewId = getRequestParameterAsString( MethodParams.VIEWID, "" );
 
-    String filePath = pathParams.getStringParameter( MethodParams.PATH, "" );
+    String filePath = getPathParameterAsString( MethodParams.PATH, "" );
 
-    boolean inferScheme =
-        requestParams.hasParameter( MethodParams.INFER_SCHEME ) && requestParams
-            .getParameter( MethodParams.INFER_SCHEME ).equals( "false" );
-    boolean absolute =
-        requestParams.hasParameter( MethodParams.ABSOLUTE ) && requestParams.getParameter( MethodParams.ABSOLUTE )
-            .equals( "true" );
-    boolean bypassCacheRead =
-        requestParams.hasParameter( MethodParams.BYPASS_CACHE ) && requestParams
-            .getParameter( MethodParams.BYPASS_CACHE ).equals( "true" );
-    boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) && requestParams.getParameter( MethodParams.DEBUG )
-        .equals( "true" );
+    boolean inferScheme = requestParams.hasParameter( MethodParams.INFER_SCHEME ) &&
+            getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
+    boolean absolute = requestParams.hasParameter( MethodParams.ABSOLUTE ) &&
+            getRequestParameterAsString( MethodParams.ABSOLUTE, "" ).equals( "true" );
+    boolean bypassCacheRead = requestParams.hasParameter( MethodParams.BYPASS_CACHE ) &&
+            getRequestParameterAsString( MethodParams.BYPASS_CACHE, "" ).equals( "true" );
+    boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) &&
+            getRequestParameterAsString( MethodParams.DEBUG, "" ).equals( "true" );
 
-    String style = requestParams.getStringParameter( MethodParams.STYLE, "" );
+    String style = getRequestParameterAsString( MethodParams.STYLE, "" );
 
     RenderApi renderer = new RenderApi();
 
