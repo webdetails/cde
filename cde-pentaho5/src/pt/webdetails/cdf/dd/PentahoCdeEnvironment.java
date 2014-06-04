@@ -43,6 +43,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private static final String SYSTEM_DIR = "system";
   private static final String PLUGIN = "plugin";
   private static final String CDE_XML = "cde.xml";
+  private static final String API_REPOS = "api/repos/";
   protected static Log logger = LogFactory.getLog( PentahoCdeEnvironment.class );
   private ICdeBeanFactory factory;
   private IResourceLoader resourceLoader;
@@ -83,6 +84,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   public String getApplicationBaseUrl() {
     return PentahoSystem.getApplicationContext().getBaseUrl();
+  }
+
+  public String getApplicationReposUrl() {
+    return getApplicationBaseUrl() + API_REPOS;
   }
 
   @Override

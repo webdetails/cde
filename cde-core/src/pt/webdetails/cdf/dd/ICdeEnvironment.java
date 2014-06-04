@@ -66,6 +66,8 @@ public interface ICdeEnvironment {
    */
   public String getApplicationBaseContentUrl();
 
+  public String getApplicationReposUrl();
+
   public String getRepositoryBaseContentUrl();
 
   String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme ) throws Exception;
