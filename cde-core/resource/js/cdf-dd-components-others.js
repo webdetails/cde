@@ -1,10 +1,13 @@
 var ResultRenderer = ParameterRenderer.extend({});
 var PaginationTypeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'two_button':'Two buttons',
-			'full_numbers':'Full numbers'
-		}
+    selectData: {
+        'simple':'Simple',
+        'simple_numbers':'Simple Numbers',
+        'full':'Full',
+        'full_numbers':'Full Numbers',
+        'two_button':'Two buttons'
+    }
 });
 var AccessRenderer = SelectRenderer.extend({
 
@@ -50,7 +53,7 @@ var TableStyleRenderer = SelectRenderer.extend({
 var MenuModeRenderer = SelectRenderer.extend({
 
 		selectData: {
-			'horizontal':'Horizontal', 
+			'horizontal':'Horizontal',
 			'vertical':'Vertical'
 		}
 });
