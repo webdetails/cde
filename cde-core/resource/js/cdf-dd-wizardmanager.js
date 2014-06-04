@@ -180,7 +180,7 @@ var SaikuOlapWizard = WizardManager.extend({
     					path += "/" + splitFile[i];
     				}
     			}
-    			var iframe = '<iframe id="saikuIframe" src="' + Endpoints.getSaikuUiPluginUrl() + '&solution=' + solution + '&path=' + path + '&action=' + action + '&dimension_prefetch=false#query/open/' + action + '" width="100%" height="400px" />';
+    			var iframe = '<iframe id="saikuIframe" src="' + wd.cde.endpoints.getSaikuUiPluginUrl() + '&solution=' + solution + '&path=' + path + '&action=' + action + '&dimension_prefetch=false#query/open/' + action + '" width="100%" height="400px" />';
 				$('#SaikuWindow').html(iframe);
 				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
@@ -189,7 +189,7 @@ var SaikuOlapWizard = WizardManager.extend({
   
 			$("#" + WizardManager.WIZARD_BODY).html( saikuContent );
 			$("#newSaikuQuery").click(function() {
-				var iframe = '<iframe id="saikuIframe" src="' + Endpoints.getSaikuUiPluginUrl() + '" width="100%" height="400px" />';
+				var iframe = '<iframe id="saikuIframe" src="' + wd.cde.endpoints.getSaikuUiPluginUrl() + '" width="100%" height="400px" />';
 				$('#SaikuWindow').html(iframe);
 				$("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
@@ -429,7 +429,7 @@ var OlapWizard = WizardManager.extend({
 
 			//3. Add clear button.
 			var clearButtonContainer = $('<div class="cdfdd-olap-clearButton"></div>');
-			var clearButton = $('<a border="0"><img src="'+Endpoints.getImageResourceUrl()+'/images/clear.gif">&nbsp;</a>');
+			var clearButton = $('<a border="0"><img src="'+wd.cde.endpoints.getImageResourceUrl()+'/images/clear.gif">&nbsp;</a>');
 			$(clearButton).bind('click',function(){
 				myself.removeSelectdWizardObject(type,wizardObject);
 				clearButtonContainer.remove();
