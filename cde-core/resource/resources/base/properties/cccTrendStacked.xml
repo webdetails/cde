@@ -7,7 +7,7 @@
     <Tooltip>Indicates that visual elements having identical category, but different series, are displayed on top of each other, along the plot's orthogonal direction, instead of side-by-side, along the base direction.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>475</Order>
+    <Order>476</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
