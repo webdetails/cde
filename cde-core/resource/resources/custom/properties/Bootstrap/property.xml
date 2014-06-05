@@ -1,5 +1,4 @@
 <DesignerProperties>
-
   <DesignerProperty>
     <Header>
       <Name>bootstrapExtraSmall</Name>
@@ -77,7 +76,7 @@
     <Header>
       <Name>bootstrapPanelStyle</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue>panel panel-default</DefaultValue>
+      <DefaultValue>panel-default</DefaultValue>
       <Description>Panel Style</Description>
       <Tooltip>Bootstrap Panel Style</Tooltip>
       <InputType type="valuelist"/>
@@ -86,15 +85,14 @@
       <Version>1.0</Version>
     </Header>
     <Values>
-      <Value display="Default">panel panel-default</Value>
-      <Value display="Primary">panel panel-primary</Value>
-      <Value display="Success">panel panel-success</Value>
-      <Value display="Info">panel panel-info</Value>
-      <Value display="Warning">panel panel-warning</Value>
-      <Value display="Danger">panel panel-danger</Value>
+      <Value display="Default">panel-default</Value>
+      <Value display="Primary">panel-primary</Value>
+      <Value display="Success">panel-success</Value>
+      <Value display="Info">panel-info</Value>
+      <Value display="Warning">panel-warning</Value>
+      <Value display="Danger">panel-danger</Value>
     </Values>
   </DesignerProperty>
-
 
   <!-- Header Properties -->
 
@@ -168,5 +166,4 @@
       <Value display="Default">panel-footer</Value>
     </Values>
   </DesignerProperty>
-
 </DesignerProperties>

@@ -23,28 +23,20 @@ public class BootstrapPanelHeaderRender extends DivRender {
 
   @Override
   public void processProperties() {
+
     super.processProperties();
-    getPropertyBag().addClass( getPropertyString( "cssClass" ) );
     getPropertyBag().addClass( "panel-heading" );
-    //getPropertyBag().addClass( getPropertyString( "bootstrapPanelHeaderStyle" ) );
   }
 
   @Override
   public String renderStart() {
     String content = "<div " + getPropertyBagString() + ">";
-    if ( !getPropertyString( "bootstrapPanelHeaderTitle" ).equals( "" ) ) {
-      content += "<div class='panel-title'>"
-        + getPropertyString( "bootstrapPanelHeaderTitle" )
-        + "</div>";
-    }
+
     return content;
   }
 
   @Override
   public String renderClose() {
-    String content = "</div>";
-
-    return content;
-
+    return "</div>";
   }
 }
