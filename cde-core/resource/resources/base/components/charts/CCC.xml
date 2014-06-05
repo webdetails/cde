@@ -248,6 +248,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -502,6 +503,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -724,6 +726,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -815,6 +818,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -1055,6 +1059,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -1222,6 +1227,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -1467,6 +1473,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -1689,6 +1696,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -1910,6 +1918,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -2111,6 +2120,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -2255,6 +2265,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -2503,6 +2514,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -2760,6 +2772,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -3017,6 +3030,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -3169,6 +3183,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
@@ -3362,6 +3377,7 @@
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
           <Property name="tooltipFade">cccTooltipFade</Property>
           <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
