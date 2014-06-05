@@ -23,10 +23,9 @@ public class BootstrapPanelBodyRender extends DivRender {
 
   @Override
   public void processProperties() {
+
     super.processProperties();
-    getPropertyBag().addClass( getPropertyString( "cssClass" ) );
     getPropertyBag().addClass( "panel-body" );
-    //getPropertyBag().addClass( getPropertyString( "bootstrapPanelBodyStyle" ) );
 
   }
 
@@ -39,9 +38,7 @@ public class BootstrapPanelBodyRender extends DivRender {
 
   @Override
   public String renderClose() {
-    String content = "</div>";
-
-    return content;
-
+    return "</div>";
   }
+
 }

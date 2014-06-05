@@ -17,6 +17,8 @@ import org.apache.commons.jxpath.JXPathContext;
 
 public class BootstrapPanelRender extends DivRender {
 
+
+
   
 
   public BootstrapPanelRender( JXPathContext context ) {
@@ -27,8 +29,9 @@ public class BootstrapPanelRender extends DivRender {
   public void processProperties() {
 
     super.processProperties();
-    getPropertyBag().addClass( getPropertyString( "cssClass" ) );
+    getPropertyBag().addClass( "panel" );
     getPropertyBag().addClass( getPropertyString( "bootstrapPanelStyle" ) );
+
 
   }
 
