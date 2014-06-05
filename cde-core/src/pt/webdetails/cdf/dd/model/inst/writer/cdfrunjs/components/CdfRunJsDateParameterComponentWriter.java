@@ -21,13 +21,14 @@ public class CdfRunJsDateParameterComponentWriter extends CdfRunJsParameterCompo
   @Override
   public void write(StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp) throws ThingWriteException
   {
-    String name  = context.getId(comp);
-    
-    String value = resolveDateValue(comp.tryGetPropertyValue("propertyDateValue", ""));
-    
-    addVar(out, name, JsonUtils.toJsString(value));
-    
-    maybeAddBookmarkable(out, comp, name);
+    String name  = JsonUtils.toJsString( context.getId(comp) );
+    String value = JsonUtils.toJsString( resolveDateValue(comp.tryGetPropertyValue("propertyDateValue", "")));
+    Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue("bookmarkable", null) );
+
+    addSetParameterAssignment(out, name, value);
+    if (isBookmarkable){
+      addBookmarkable(out, name);
+    }
   }
 
   private String resolveDateValue(String value)

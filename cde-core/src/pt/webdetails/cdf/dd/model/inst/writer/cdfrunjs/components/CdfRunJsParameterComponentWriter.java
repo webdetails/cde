@@ -25,33 +25,40 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   
   public void write(StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp) throws ThingWriteException
   {
-    String name = context.getId(comp);
-    
-    addVar(out, name, JsonUtils.toJsString(comp.tryGetPropertyValue("propertyValue", "")));
-    
-    maybeAddBookmarkable(out, comp, name);
-    
-    out.append("Dashboards.setParameterViewMode(");
-    out.append(JsonUtils.toJsString(name));
-    out.append(", ");
-    out.append(JsonUtils.toJsString(comp.tryGetPropertyValue("parameterViewRole", "unused")));
-    out.append(");");
-    out.append(NEWLINE);
-  }
-  
-  protected static void maybeAddBookmarkable(StringBuilder out, ParameterComponent comp, String name)
-  {
-    String bookmarkabelText = comp.tryGetPropertyValue("bookmarkable", null);
-    if ("true".equalsIgnoreCase(bookmarkabelText))
-    {
-      addBookmarkable(out, name);
+    String name = JsonUtils.toJsString( context.getId(comp) );
+    String value = JsonUtils.toJsString( comp.tryGetPropertyValue("propertyValue", "") );
+    String viewRole = JsonUtils.toJsString( comp.tryGetPropertyValue("parameterViewRole", "unused") );
+    Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue("bookmarkable", null) );
+
+    addSetParameterAssignment(out, name, value);
+    if (isBookmarkable){
+        addBookmarkable(out, name);
     }
+    addViewMode(out, name, viewRole);
   }
-  
+
+  protected static void addSetParameterAssignment(StringBuilder out, String name, String value){
+      out.append("Dashboards.setParameter(");
+      out.append(name);
+      out.append(", ");
+      out.append(value);
+      out.append(");");
+      out.append(NEWLINE);
+  }
+
+  protected static void addViewMode(StringBuilder out, String name, String viewRole){
+      out.append("Dashboards.setParameterViewMode(");
+      out.append(name);
+      out.append(", ");
+      out.append(viewRole);
+      out.append(");");
+      out.append(NEWLINE);
+  }
+
   protected static void addBookmarkable(StringBuilder out, String name)
   {
     out.append("Dashboards.setBookmarkable(");
-    out.append(JsonUtils.toJsString(name));
+    out.append(name);
     out.append(");");
     out.append(NEWLINE);
   }

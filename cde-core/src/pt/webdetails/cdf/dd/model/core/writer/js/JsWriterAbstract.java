@@ -41,7 +41,7 @@ public abstract class JsWriterAbstract
     out.append(NEWLINE);
   }
   
-    protected static void addAssignment(StringBuilder out, String name, String value)
+  protected static void addAssignment(StringBuilder out, String name, String value)
   {
     out.append(name);
     out.append(" = ");
@@ -49,7 +49,7 @@ public abstract class JsWriterAbstract
     out.append(";");
     out.append(NEWLINE);
   }
-  
+
   protected static void addJsProperty(StringBuilder out, String name, String jsValue, String indent)
   {
     addJsProperty(out, name, jsValue, indent, true);
