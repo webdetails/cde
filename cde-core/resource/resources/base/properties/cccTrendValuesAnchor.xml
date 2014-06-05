@@ -7,7 +7,7 @@
     <Tooltip>The alignment of a value label relative to its corresponding visual element position.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>477</Order>
+    <Order>478</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

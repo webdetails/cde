@@ -7,7 +7,7 @@
     <Tooltip>Forces a shape to be shown or not in the marker zone (applies to discrete domain axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>301</Order>
+    <Order>302</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
