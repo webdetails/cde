@@ -7,7 +7,7 @@
     <Tooltip>The font of a value label.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>487</Order>
+    <Order>488</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
