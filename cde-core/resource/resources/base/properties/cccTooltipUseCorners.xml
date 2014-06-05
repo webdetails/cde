@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the collateral tooltip gravities should be aligned with corners.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>466</Order>
+    <Order>467</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
