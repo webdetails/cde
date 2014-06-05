@@ -25,9 +25,7 @@ public class BootstrapPanelFooterRender extends DivRender {
   public void processProperties() {
 
     super.processProperties();
-    getPropertyBag().addClass( getPropertyString( "cssClass" ) );
     getPropertyBag().addClass( "panel-footer" );
-    //getPropertyBag().addClass( getPropertyString( "bootstrapPanelFooterStyle" ) );
   }
 
   @Override
@@ -39,9 +37,7 @@ public class BootstrapPanelFooterRender extends DivRender {
 
   @Override
   public String renderClose() {
-    String content = "</div>";
-
-    return content;
-
+    return "</div>";
   }
+
 }
