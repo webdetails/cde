@@ -26,8 +26,8 @@ var LayoutPanel = Panel.extend({
 					new LayoutSaveAsTemplateOperation(),
 					new LayoutApplyTemplateOperation(),
 					new LayoutAddResourceOperation(),
-					new LayoutAddRowOperation(),
-					new LayoutAddBootstrapPanelOperation()
+          new LayoutAddBootstrapPanelOperation(),
+					new LayoutAddRowOperation()
 				],
 				mobile: [
 					new LayoutSaveAsTemplateOperation(),
@@ -924,10 +924,10 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
         insertAtIdx = nextSibling.index;
       }
 
-      if( rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL ) {
+      if( rowType == LayoutSpaceModel.MODEL ) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
       } else if ( rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-                  rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutColumnModel.MODEL) {
+                  rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL) {
         _stub.parent = rowId;
       } else {
         insertAtIdx = tableManager.getTableModel().getData().length;
