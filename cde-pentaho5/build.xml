@@ -26,9 +26,11 @@
   <property file="../build.properties"
             description="Top level Properties customized for your particular project belong in this file." />
 
+  <property name="js.karma.config" value="karma.conf.js"/>
 
   <!-- Import subfloor.xml which contains all the default tasks -->
   <import file="../build-res/subfloor.xml"/>
+  <import file="../build-res/subfloor-js.xml"/>
 
     <!--
         AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
