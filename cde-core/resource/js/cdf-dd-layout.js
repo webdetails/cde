@@ -770,51 +770,52 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 '				<span>Title:</span><br/><input class="cdf_settings_input" id="titleInput" type="text" value=""style="width:100%;"></input><br>\n' +
 '				<span>Include Components:</span><input type="checkbox" checked="yes" id="includeComponentsInput" value="true" />\n' +
 '				&nbsp&nbsp<span>Include Datasources:</span><input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true" />';
-				
-			$.prompt(content,{buttons: { Save: true, Cancel: false }, prefix: "popup",
-			submit: function(v){
-				title = $("#titleInput").val();
-				file = $("#fileInput").val();
-				includeComponents = $("#includeComponentsInput").attr("checked");
-				includeDataSources = $("#includeDataSourcesInput").attr("checked");
-				
-				var validate = true
-				if(file.length == 0){
-					 $("#fileLabel").css("color","red");
-					 $("#fileLabel").text("* File Name: (required)");
-					 validate = false;
-				}
-				
-				if(file.indexOf(".") != -1 && (file.length < 6 || file.lastIndexOf(".cdfde") != file.length-6)){
-					 $("#fileLabel").css("color","red");
-					 $("#fileLabel").text("* File Name: (Invalid file extension. Must be .cdfde)");
-					 validate = false;
-				}
-				
-				if(file.indexOf(".") == -1)
-					file += ".cdfde";				
-				
-				return !v || validate;
-			},
-			callback: function(v,m,f){
-				if(v){
-					myself.logger.info("Saving template...");
-			
-					var template = cdfdd.getDashboardData();
-					template.layout.title = title;
-					if(!includeComponents) {
-						template.components.rows = [];
 
-					}
-					if(!includeDataSources) {
-						template.datasources.rows = [];
-					}
-					
-					//var templateParams = {operation:"save", file:file, cdfstructure: JSON.toJSONString(template,true)} ;
-					var templateParams = {operation:"save", file:file, cdfstructure: JSON.stringify(template)} ;
-					
-					SynchronizeRequests.doPost(templateParams);
-				}
-			}});
+      $.prompt(content, {buttons: { Save: true, Cancel: false }, prefix: "popup",
+        submit: function (v) {
+          title = $("#titleInput").val();
+          file = $("#fileInput").val();
+          includeComponents = $("#includeComponentsInput").attr("checked");
+          includeDataSources = $("#includeDataSourcesInput").attr("checked");
+
+          var validate = true
+          if (file.length == 0) {
+            $("#fileLabel").css("color", "red");
+            $("#fileLabel").text("* File Name: (required)");
+            validate = false;
+          }
+
+          if (file.indexOf(".") != -1 && (file.length < 6 || file.lastIndexOf(".cdfde") != file.length - 6)) {
+            $("#fileLabel").css("color", "red");
+            $("#fileLabel").text("* File Name: (Invalid file extension. Must be .cdfde)");
+            validate = false;
+          }
+
+          if (file.indexOf(".") == -1)
+            file += ".cdfde";
+
+          return !v || validate;
+        },
+        callback: function (v, m, f) {
+          if (v) {
+            myself.logger.info("Saving template...");
+
+            var template = cdfdd.getDashboardData();
+            template.layout.title = title;
+            if (!includeComponents) {
+              template.components.rows = [];
+
+            }
+            if (!includeDataSources) {
+              template.datasources.rows = [];
+            }
+
+            //var templateParams = {operation:"save", file:file, cdfstructure: JSON.toJSONString(template,true)} ;
+            var templateParams = {operation: "save", file: file, cdfstructure: JSON.stringify(template)};
+
+            SynchronizeRequests.doPost(templateParams);
+          }
+        }
+      });
 		}
 });
