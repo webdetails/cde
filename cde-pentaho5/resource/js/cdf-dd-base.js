@@ -350,12 +350,6 @@ var StylesRequests = {
 
     initStyles: function (saveSettingsParams, wcdf, myself, callback) {
 
-        // widgets are always stored in a specific user content folder, best left handled server-side
-        if (saveSettingsParams && wcdf.widget) {
-            saveSettingsParams.widget = true;
-            saveSettingsParams.file = saveSettingsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
-        }
-
         $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             if (result && result.status == "true") {
                 myself.setDashboardWcdf(wcdf);
@@ -373,11 +367,6 @@ var StylesRequests = {
 var SaveRequests = {
 
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
-
-        // widgets are always stored in a specific user content folder, best left handled server-side
-        if (saveSettingsParams && saveSettingsParams.widget) {
-            saveSettingsParams.file = saveSettingsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
-        }
 
         $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
             try {
@@ -467,7 +456,6 @@ var SaveRequests = {
         // widgets are always stored in a specific user content folder, best left handled server-side
         if (saveAsParams) {
             saveAsParams.widget = true;
-            saveAsParams.file = saveAsParams.file.replace(/^.*[\\\/]/, ''); // nix folder path, keep file
         }
 
         var successFunction = function (result) {
@@ -484,7 +472,7 @@ var SaveRequests = {
                 wcdf.widget = true;
                 myself.saveSettingsRequest(wcdf);
                 myself.initStyles(function () {
-                    window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:public:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+                    window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
             } else {
                 $.notifyBar({
