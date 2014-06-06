@@ -713,7 +713,9 @@ BaseModel.registerModel(LayoutHtmlModel);
 var LayoutAddHtmlOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_HTML",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+            LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
+            LayoutBootstrapPanelFooterModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
 
