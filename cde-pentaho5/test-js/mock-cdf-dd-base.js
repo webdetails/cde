@@ -1,0 +1,3 @@
+LoadRequests = {
+  loadDashboard: function () {}
+}

@@ -1,6 +1,8 @@
 describe("CDF-DD-BASE tests", function() {
   beforeEach(function() {
-
+    LoadRequests = {
+      loadDashboard: function () {}
+    }
     cdfdd.layout = {init: function() {}};
     cdfdd.components = {initTemplate: function() {}};
     cdfdd.datasources = {initTemplate: function() {}};
