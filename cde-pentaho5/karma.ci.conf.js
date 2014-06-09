@@ -22,6 +22,14 @@ module.exports = function(config) {
       '../cde-core/resource/js/cdf-dd-tablemanager.js',
       '../cde-core/resource/js/cdf-dd-wizardmanager.js',
       '../cde-core/resource/js/cdf-dd.js',
+      'resource/js/cdf-dd-base.js',
+      'test-js/mock-cdf-dd-base.js',
+      '../cde-core/resource/js/cdf-dd-palletemanager.js',
+      '../cde-core/resource/js/cdf-dd-tableoperations.js',
+      '../cde-core/resource/js/cdf-dd-layout-mobile.js',
+      '../cde-core/resource/js/cdf-dd-layout.js',
+      '../cde-core/resource/js/cdf-dd-components.js',
+      '../cde-core/resource/js/cdf-dd-datasources.js',
       'test-js/main.js',
       {pattern: 'test-js/**/*-spec.js', included: false}
     ],
@@ -33,7 +41,7 @@ module.exports = function(config) {
 
 
     preprocessors: {
-        "resource/js/cdf-dd.js" : 'coverage'
+        "../resource/js/cdf-dd.js" : 'coverage'
     },
 
     // test results reporter to use
