@@ -14,18 +14,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'resource/js/jquery.js',
-      'resource/js/jquery.jeditable.js',
-      'resource/js/Base.js',
+      '../cde-core/resource/js/jquery.js',
+      '../cde-core/resource/js/jquery.jeditable.js',
+      '../cde-core/resource/js/Base.js',
       'test-js/mockDashboards.js',
-      'resource/js/cdf-dd-config.js',
-      'resource/js/cdf-dd-tablemanager.js',
-      'resource/js/cdf-dd-wizardmanager.js',
-      'resource/js/cdf-dd.js',
-      'resource/js/cdf-dd-palletemanager.js',
-      'resource/js/cdf-dd-tableoperations.js',
-      'resource/js/cdf-dd-components.js',
-      'resource/js/cdf-dd-datasources.js',
+      '../cde-core/resource/js/cdf-dd-config.js',
+      '../cde-core/resource/js/cdf-dd-tablemanager.js',
+      '../cde-core/resource/js/cdf-dd-wizardmanager.js',
+      '../cde-core/resource/js/cdf-dd.js',
       'test-js/main.js',
       {pattern: 'test-js/**/*-spec.js', included: false}
     ],
@@ -101,6 +97,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true
   });
 };

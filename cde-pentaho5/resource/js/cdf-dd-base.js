@@ -90,6 +90,8 @@ wd.cde.endpoints = {
 
 var SynchronizeRequests = {
 
+    selectTemplate: undefined,
+
     doPost: function (templateParams) {
 
         $.ajax({
@@ -120,7 +122,8 @@ var SynchronizeRequests = {
             if (result && result.status == "true") {
 
                 templates = result.result;
-                var selectTemplate = undefined;
+                //var selectTemplate = undefined;
+                SynchronizeRequests.selectTemplate = undefined;
                 var myTemplatesCount = 0;
                 var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
                 var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
@@ -137,26 +140,20 @@ var SynchronizeRequests = {
                 _templates += '</div></div><a class="next"></a></div>';
                 _myTemplates += '</div></div><a class="next"></a></div>';
                 var loaded = function () {
-                    selectTemplate = undefined;
+                    SynchronizeRequests.selectTemplate = undefined;
                     $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
                     $(function () {
                         $("div.scrollable:eq(0) div.thumbs div").bind('click', function () {
-                            selectTemplate = templates[$(this).find("img").attr("id")];
+                            SynchronizeRequests.selectTemplate = templates[$(this).find("img").attr("id")];
                         });
                     });
                 };
 
                 var callback = function (v, m, f) {
-                    if (v == 1 && selectTemplate != undefined) {
+                    if (v == 1 && SynchronizeRequests.selectTemplate != undefined) {
                         $.prompt('Are you sure you want to load the template? ', { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
-                            callback: function (v, m, f) {
-                                if (v) {
-                                    cdfdd.dashboardData = selectTemplate.structure;
-                                    cdfdd.layout.init();
-                                    cdfdd.components.init();
-                                    cdfdd.datasources.init();
-                                }
-                            }});
+                          callback: SynchronizeRequests.callbackLoadTemplate
+                        });
                     }
                 };
 
@@ -190,7 +187,23 @@ var SynchronizeRequests = {
                 $.notifyBar({ html: "Error loading templates: " + json.result });
         }
         });
-    }, 
+    },
+  
+    //exposed callback function for ease of testing
+    callbackLoadTemplate: function (v, m, f) {
+      if (v) {
+        if ( !SynchronizeRequests.selectTemplate.structure.components.rows.length )
+          SynchronizeRequests.selectTemplate.structure.components.rows = cdfdd.dashboardData.components.rows;
+
+        if ( !SynchronizeRequests.selectTemplate.structure.datasources.rows.length )
+          SynchronizeRequests.selectTemplate.structure.datasources.rows = cdfdd.dashboardData.datasources.rows;
+
+        cdfdd.dashboardData = SynchronizeRequests.selectTemplate.structure;
+        cdfdd.layout.init();
+        cdfdd.components.initTemplate();
+        cdfdd.datasources.initTemplate();
+      }
+    },
 
     createFile: function (params) {
         $.ajax({
