@@ -1,13 +1,9 @@
-LoadRequests = {
-  loadDashboard: function () {}
-}
-
 PreviewRequests = {
-  
+
   status: false,
 
   previewDashboard: function( saveParams, _href ) {
-    
+
     if( saveParams.operation != "saveas" ) {
       this.status = false;
       return;
