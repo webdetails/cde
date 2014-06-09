@@ -1165,7 +1165,7 @@ var CDFDD = Base.extend({
               the propper means will be used
             */
           else if ($('input[name=saveAsRadio]:checked').val() == "widget") {
-            selectedFolder = "/cde/widgets/";
+            selectedFolder = wd.helpers.repository.getWidgetsLocation();
             selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
@@ -1216,7 +1216,7 @@ var CDFDD = Base.extend({
   },
   saveAsWidget: function(fromScratch) {
 
-    var selectedFolder = "cde/widgets/",
+    var selectedFolder = wd.helpers.repository.getWidgetsLocation(),
       selectedFile = "",
       selectedTitle = this.getDashboardWcdf().title,
       selectedDescription = this.getDashboardWcdf().description,

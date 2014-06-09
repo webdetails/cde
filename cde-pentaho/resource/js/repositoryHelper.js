@@ -8,6 +8,11 @@ wd.helpers.repository = {
 
     getBaseSolutionPluginRoot: function(){
         return "/";
+    },
+
+    getWidgetsLocation: function(){
+    	//widgets are stored in a plugin specific folder (currently it is /cde/widgets/)
+    	return "/cde/widgets/"
     }
 
 }

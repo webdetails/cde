@@ -91,11 +91,6 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
 
-      if ( widget ) {
-        //widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
-        file = Utils.joinPath( CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file );
-      }
-
       // check access to path folder
       String fileDir =
         file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
@@ -234,11 +229,6 @@ public class SyncronizerApi { //TODO: synchronizer?
 
       if ( StringUtils.isEmpty( title ) ) {
         title = FilenameUtils.getBaseName( file );
-      }
-
-      if ( widget ) {
-        //widgets are stored in a plugin specific folder (currently it is /public/cde/widgets/)
-        file = Utils.joinPath( CdeEnvironment.getPluginRepositoryDir(), CdeConstants.SolutionFolders.WIDGETS, file );
       }
 
       // check access to path folder
