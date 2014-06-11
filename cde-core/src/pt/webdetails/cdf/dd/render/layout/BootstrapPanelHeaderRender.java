@@ -28,15 +28,4 @@ public class BootstrapPanelHeaderRender extends DivRender {
     getPropertyBag().addClass( "panel-heading" );
   }
 
-  @Override
-  public String renderStart() {
-    String content = "<div " + getPropertyBagString() + ">";
-
-    return content;
-  }
-
-  @Override
-  public String renderClose() {
-    return "</div>";
-  }
 }

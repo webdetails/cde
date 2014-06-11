@@ -17,10 +17,6 @@ import org.apache.commons.jxpath.JXPathContext;
 
 public class BootstrapPanelRender extends DivRender {
 
-
-
-  
-
   public BootstrapPanelRender( JXPathContext context ) {
     super( context );
   }
@@ -35,18 +31,4 @@ public class BootstrapPanelRender extends DivRender {
 
   }
 
-  @Override
-  public String renderStart() {
-    String content = "<div " + getPropertyBagString() + ">";
-
-    return content;
-  }
-
-  @Override
-  public String renderClose() {
-    String content = "</div>";
-
-    return content;
-
-  }
 }
