@@ -17,25 +17,28 @@ var LayoutPanel = Panel.extend({
 		init: function() {
             operationSets = {
               blueprint: [
-                  new LayoutSaveAsTemplateOperation(),
-	              new LayoutApplyTemplateOperation(),
-                  new LayoutAddResourceOperation(),
-                  new LayoutAddRowOperation()
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation()
               ],
               bootstrap: [
-                  new LayoutSaveAsTemplateOperation(),
-		          new LayoutApplyTemplateOperation(),
-                  new LayoutAddResourceOperation(),
-                  new LayoutAddBootstrapPanelOperation(),
-                  new LayoutAddRowOperation()
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+              	new LayoutAddBootstrapPanelOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation()
               ],
               mobile: [
-                  new LayoutSaveAsTemplateOperation(),
-                  new LayoutApplyTemplateOperation(),
-                  new LayoutAddResourceOperation(),
-                  new LayoutAddCarouselOperation(),
-                  new LayoutAddRowOperation(),
-                  new LayoutAddFilterBlockOperation()
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+              	new LayoutAddCarouselOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation(),
+              	new LayoutAddFilterBlockOperation()
               ]
             };
 
@@ -153,12 +156,9 @@ var LayoutBootstrapPanelHeaderModel = BaseModel.extend({},{
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    //_stub.properties.push(PropertiesManager.getProperty("height"));
-    //_stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
-    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelHeaderStyle"));
     return _stub;
   }
 
@@ -205,12 +205,9 @@ var LayoutBootstrapPanelBodyModel = BaseModel.extend({},{
     };
 
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    //_stub.properties.push(PropertiesManager.getProperty("height"));
-    //_stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
-    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelBodyStyle"));
     return _stub;
   }
 
@@ -256,12 +253,9 @@ var LayoutBootstrapPanelFooterModel = BaseModel.extend({},{
       properties: []
     };
     _stub.properties.push(PropertiesManager.getProperty("name"));
-    //_stub.properties.push(PropertiesManager.getProperty("height"));
-    //_stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
     _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
     _stub.properties.push(PropertiesManager.getProperty("cssClass"));
     _stub.properties.push(PropertiesManager.getProperty("textAlign"));
-    //_stub.properties.push(PropertiesManager.getProperty("bootstrapPanelFooterStyle"));
     return _stub;
   }
 
@@ -508,6 +502,102 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 
 CellOperations.registerOperation(new LayoutAddColumnsOperation());
 
+
+var LayoutFreeFormModel = BaseModel.extend({
+},{
+
+  MODEL: 'LayoutFreeForm',
+
+  getStub: function(){
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutFreeFormModel.MODEL,
+      typeDesc: "FreeForm",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("elementTag"));
+    _stub.properties.push(PropertiesManager.getProperty("otherAttributes"));
+
+    return _stub;
+  }
+});
+BaseModel.registerModel(LayoutFreeFormModel);
+
+var LayoutAddFreeFormOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_FREEFORM",
+  types: [],
+  name: "Add FreeForm",
+  description: "Adds a freeForm element to the template",
+
+  constructor: function(){
+    this.logger = new Logger("LayoutAddFreeFormOperation");
+  },
+
+  execute: function(tableManager) {
+
+    var _stub = LayoutFreeFormModel.getStub();
+
+    var rowIdx;
+    var colIdx = 0;
+    var rowId;
+    var rowType;
+    var insertAtIdx = -1;
+
+    var indexManager = tableManager.getTableModel().getIndexManager();
+
+    if (tableManager.isSelectedCell){
+      rowIdx = tableManager.getSelectedCell()[0];
+      colIdx = tableManager.getSelectedCell()[1];
+      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if (typeof nextSibling == 'undefined'){
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      }
+      else{
+        insertAtIdx = nextSibling.index;
+      }
+      // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row;
+      // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
+      // to the end
+
+      if( rowType == LayoutSpaceModel.MODEL ) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      }
+      else if ( rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL ||
+                rowType == LayoutFreeFormModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
+                rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+        _stub.parent = rowId;
+      }
+      else {
+        // insert at the end
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+
+    }
+    else{
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
+
+    tableManager.insertAtIdx(_stub,insertAtIdx);
+
+    // edit the new entry - we know the name is on the first line
+    if( typeof tableManager.getLinkedTableManager() != 'undefined' ){
+      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
+    }
+
+  }
+
+});
+CellOperations.registerOperation(new LayoutAddFreeFormOperation());
 
 var LayoutSpaceModel = BaseModel.extend({
 	},{
@@ -894,7 +984,8 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
       if( rowType == LayoutSpaceModel.MODEL ) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
       } else if ( rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-                  rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL) {
+                  rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL ||
+                  rowType == LayoutColumnModel.MODEL || LayoutFreeFormModel.MODEL) {
         _stub.parent = rowId;
       } else {
         insertAtIdx = tableManager.getTableModel().getData().length;
@@ -922,7 +1013,7 @@ var LayoutMoveUpOperation = MoveUpOperation.extend({
 		id: "LAYOUT_MOVE_UP",
 		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
              LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
-             LayoutBootstrapPanelModel.MODEL],
+             LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL ],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -938,7 +1029,7 @@ var LayoutMoveDownOperation = MoveDownOperation.extend({
 		id: "LAYOUT_MOVE_DOWN",
 		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
              LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
-             LayoutBootstrapPanelModel.MODEL],
+             LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL ],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -951,12 +1042,12 @@ CellOperations.registerOperation(new LayoutMoveDownOperation);
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,
-                  LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,
-                  LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,
-                  FilterRowModel.MODEL,FilterHeaderModel.MODEL,
-                  LayoutBootstrapPanelModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL,
+                  LayoutSpaceModel.MODEL, LayoutImageModel.MODEL,
+                  LayoutHtmlModel.MODEL, LayoutResourceModel.MODEL,
+                  LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+                  FilterRowModel.MODEL, FilterHeaderModel.MODEL,
+                  LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
