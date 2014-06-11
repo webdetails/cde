@@ -29,16 +29,4 @@ public class BootstrapPanelBodyRender extends DivRender {
 
   }
 
-  @Override
-  public String renderStart() {
-    String content = "<div " + getPropertyBagString() + ">";
-
-    return content;
-  }
-
-  @Override
-  public String renderClose() {
-    return "</div>";
-  }
-
 }

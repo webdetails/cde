@@ -15,29 +15,29 @@ var LayoutPanel = Panel.extend({
 
 		},
 		init: function() {
-	                operationSets = {
-	                  blueprint: [
-	                    new LayoutSaveAsTemplateOperation(),
-			                new LayoutApplyTemplateOperation(),
-			                new LayoutAddResourceOperation(),
-			                new LayoutAddRowOperation()
-	                  ],
-	                  bootstrap: [
-	                    new LayoutSaveAsTemplateOperation(),
-			                new LayoutApplyTemplateOperation(),
-                      new LayoutAddResourceOperation(),
-                      new LayoutAddBootstrapPanelOperation(),
-                      new LayoutAddRowOperation()
-                    ],
-	                  mobile: [
-	                    new LayoutSaveAsTemplateOperation(),
-                      new LayoutApplyTemplateOperation(),
-                      new LayoutAddResourceOperation(),
-                      new LayoutAddCarouselOperation(),
-                      new LayoutAddRowOperation(),
-                      new LayoutAddFilterBlockOperation()
-	                  ]
-	                };
+            operationSets = {
+              blueprint: [
+                  new LayoutSaveAsTemplateOperation(),
+	              new LayoutApplyTemplateOperation(),
+                  new LayoutAddResourceOperation(),
+                  new LayoutAddRowOperation()
+              ],
+              bootstrap: [
+                  new LayoutSaveAsTemplateOperation(),
+		          new LayoutApplyTemplateOperation(),
+                  new LayoutAddResourceOperation(),
+                  new LayoutAddBootstrapPanelOperation(),
+                  new LayoutAddRowOperation()
+              ],
+              mobile: [
+                  new LayoutSaveAsTemplateOperation(),
+                  new LayoutApplyTemplateOperation(),
+                  new LayoutAddResourceOperation(),
+                  new LayoutAddCarouselOperation(),
+                  new LayoutAddRowOperation(),
+                  new LayoutAddFilterBlockOperation()
+              ]
+            };
 
 			this.base();
 			this.logger.debug("Specific init");

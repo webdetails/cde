@@ -28,16 +28,4 @@ public class BootstrapPanelFooterRender extends DivRender {
     getPropertyBag().addClass( "panel-footer" );
   }
 
-  @Override
-  public String renderStart() {
-    String content = "<div " + getPropertyBagString() + ">";
-
-    return content;
-  }
-
-  @Override
-  public String renderClose() {
-    return "</div>";
-  }
-
 }
