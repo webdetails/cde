@@ -362,7 +362,8 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 					_stub.parent = indexManager.getIndex()[rowId].parent;
 				}
 				else if ( rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
-                  rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL ){
+                  rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL ||
+                  rowType == LayoutFreeFormModel.MODEL ){
 					_stub.parent = rowId;
 				}
 				else{
