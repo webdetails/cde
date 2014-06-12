@@ -111,7 +111,7 @@ public class CdeEngine {
     InputStream input = null;
     try {
       input = reader.getFileInputStream( fileIn );
-      return getEnv().getFileHandler().ensureFileExists( writer , fileOut, input );
+      return getEnv().getFileHandler().createBasicFileIfNotExists( writer , fileOut, input );
     } catch ( IOException e ) {
       logger.error( "Couldn't read " + fileIn + " in " + reader );
     } finally {
@@ -121,7 +121,7 @@ public class CdeEngine {
   }
 
   private boolean ensureDirExists( IRWAccess access, String relPath ) {
-    return getEnv().getFileHandler().ensureDirExists( access, relPath );
+    return getEnv().getFileHandler().createBasicDirIfNotExists( access, relPath );
   }
 
   public static ICdeEnvironment getEnv() {

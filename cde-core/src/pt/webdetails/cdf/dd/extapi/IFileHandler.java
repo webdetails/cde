@@ -19,8 +19,21 @@ public interface IFileHandler {
 
   public boolean saveDashboardAs( String path, String title, String description, String cdfdeJsText, boolean isPreview ) throws Exception;
 
-  public boolean ensureFileExists( final IRWAccess access, final String file, final InputStream content );
+  /**
+   * Each environment is responsible for the implementation of the Basic CDE files creation
+   * @param access repositoryAccessor
+   * @param file name of the basic CDE file ( widget.cdfde, widget.wcdf, widget.cda, widget.xml )
+   * @param content content of the basic CDE file
+   * @return operation success
+   */
+  public boolean createBasicFileIfNotExists( final IRWAccess access, final String file, final InputStream content );
 
-  public boolean ensureDirExists( final IRWAccess access, final String relativeFolderPath );
+  /**
+   * Each environment is responsible for the implementation of the Basic CDE folders creation
+   * @param access repositoryAccessor
+   * @param relativeFolderPath name of the basic CDE folder ( styles, templates, components, wigdets )
+   * @return operation success
+   */
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath );
 
 }
