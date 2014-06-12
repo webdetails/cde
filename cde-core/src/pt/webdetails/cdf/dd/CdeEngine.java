@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 package pt.webdetails.cdf.dd;
 
 import java.io.IOException;
@@ -84,7 +93,7 @@ public class CdeEngine {
 
     // special case for widgets: copy widget samples into dir if creating dir for the first time
     if ( !repoBase.fileExists( CdeConstants.SolutionFolders.WIDGETS ) ) {
-      if ( !repoBase.createFolder( CdeConstants.SolutionFolders.WIDGETS ) ) {
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS ) ) {
         logger.error( "Couldn't find or create CDE widgets dir." );
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
@@ -102,7 +111,7 @@ public class CdeEngine {
     InputStream input = null;
     try {
       input = reader.getFileInputStream( fileIn );
-      return writer.saveFile( fileOut, input );
+      return getEnv().getFileHandler().ensureFileExists( writer , fileOut, input );
     } catch ( IOException e ) {
       logger.error( "Couldn't read " + fileIn + " in " + reader );
     } finally {
@@ -112,7 +121,7 @@ public class CdeEngine {
   }
 
   private boolean ensureDirExists( IRWAccess access, String relPath ) {
-    return access.fileExists( relPath ) || access.createFolder( relPath );
+    return getEnv().getFileHandler().ensureDirExists( access, relPath );
   }
 
   public static ICdeEnvironment getEnv() {
