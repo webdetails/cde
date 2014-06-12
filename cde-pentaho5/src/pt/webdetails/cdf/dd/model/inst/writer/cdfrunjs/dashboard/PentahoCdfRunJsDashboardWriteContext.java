@@ -55,8 +55,8 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
         + timestamp ) // build the image links, with a timestamp for caching purposes
       .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
         + "$1" + "?v=" + timestamp ) //build system resources links, with a timestamp for caching purposes
-      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
-        + "/$1" + "?v=" + timestamp ); //build system resources links, with a timestamp for caching purposes
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + path
+        + "$1" + "?v=" + timestamp ); //build system resources links, with a timestamp for caching purposes
   }
 
   protected String getRoot() {
