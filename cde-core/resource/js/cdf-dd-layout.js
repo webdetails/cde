@@ -363,7 +363,7 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 				}
 				else if (rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
                  rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-                 rowType == LayoutBootstrapPanelFooterModel.MODEL){
+                 rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutFreeFormModel.MODEL){
 					_stub.parent = rowId;
 				}
 				else{
