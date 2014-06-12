@@ -23,7 +23,10 @@ import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
+
+import java.util.UUID;
 
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -56,18 +59,23 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     String filePath = getPathParameterAsString( MethodParams.PATH, "" );
 
-    boolean inferScheme = requestParams.hasParameter( MethodParams.INFER_SCHEME ) &&
-            getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
-    boolean absolute = requestParams.hasParameter( MethodParams.ABSOLUTE ) &&
-            getRequestParameterAsString( MethodParams.ABSOLUTE, "" ).equals( "true" );
-    boolean bypassCacheRead = requestParams.hasParameter( MethodParams.BYPASS_CACHE ) &&
-            getRequestParameterAsString( MethodParams.BYPASS_CACHE, "" ).equals( "true" );
-    boolean debug = requestParams.hasParameter( MethodParams.DEBUG ) &&
-            getRequestParameterAsString( MethodParams.DEBUG, "" ).equals( "true" );
+    boolean inferScheme = requestParams.hasParameter( MethodParams.INFER_SCHEME )
+      && getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
+    boolean absolute = requestParams.hasParameter( MethodParams.ABSOLUTE )
+      && getRequestParameterAsString( MethodParams.ABSOLUTE, "" ).equals( "true" );
+    boolean bypassCacheRead = requestParams.hasParameter( MethodParams.BYPASS_CACHE )
+      && getRequestParameterAsString( MethodParams.BYPASS_CACHE, "" ).equals( "true" );
+    boolean debug = requestParams.hasParameter( MethodParams.DEBUG )
+      && getRequestParameterAsString( MethodParams.DEBUG, "" ).equals( "true" );
 
     String style = getRequestParameterAsString( MethodParams.STYLE, "" );
 
     RenderApi renderer = new RenderApi();
+
+    //audit log start
+    long start = System.currentTimeMillis();
+    UUID uuid = CpfAuditHelper.startAudit( "pentaho-cdf-dd", filePath,
+      DashboardDesignerContentGenerator.class.getName(), this.userSession, this, requestParams );
 
     if ( create ) {
       String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
@@ -95,6 +103,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       IOUtils.write( result, getResponse().getOutputStream() );
       getResponse().getOutputStream().flush();
     }
+
+    //audit log - end
+    long end = System.currentTimeMillis();
+    CpfAuditHelper.endAudit( "pentaho-cdf-dd", filePath, DashboardDesignerContentGenerator.class.getName(),
+      this.userSession, this, start, uuid, end );
   }
 
   @Override
