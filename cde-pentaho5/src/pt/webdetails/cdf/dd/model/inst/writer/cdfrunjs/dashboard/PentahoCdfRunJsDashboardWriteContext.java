@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
@@ -59,10 +60,11 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
   }
 
   protected String getRoot() {
-    return this._options.isAbsolute()
-      ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
+    return this._options.isAbsolute() ?
+      ( !StringUtils.isEmpty(this._options.getAbsRoot()) ?
+        ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
+        : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl())
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
-
   }
 
   protected String getSystemDir() {
