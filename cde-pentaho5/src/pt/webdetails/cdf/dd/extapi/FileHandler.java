@@ -79,7 +79,16 @@ public class FileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean ensureFileExists( final IRWAccess access, final String file, final InputStream content ) {
+  /**
+   * Implementation of the Basic CDE files creation; temporarily switches session to create folders as admin
+   *
+   * @see org.pentaho.platform.engine.security.SecurityHelper#runAsSystem()
+   * @param access repositoryAccessor
+   * @param file name of the basic CDE file ( widget.cdfde, widget.wcdf, widget.cda, widget.xml )
+   * @param content content of the basic CDE file
+   * @return operation success
+   */
+  public boolean createBasicFileIfNotExists( final IRWAccess access, final String file, final InputStream content ) {
 
     if ( access == null || StringUtils.isEmpty( file ) || content == null ) {
       return false;
@@ -108,7 +117,15 @@ public class FileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean ensureDirExists( final IRWAccess access, final String relativeFolderPath ) {
+  /**
+   * Implementation of the Basic CDE folders creation; temporarily switches session to create folders as admin
+   *
+   * @see org.pentaho.platform.engine.security.SecurityHelper#runAsSystem()
+   * @param access repositoryAccessor
+   * @param relativeFolderPath name of the basic CDE folder ( styles, templates, components, wigdets )
+   * @return operation success
+   */
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ) {
 
     if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;

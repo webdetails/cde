@@ -53,7 +53,7 @@ public class LegacyFileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean ensureFileExists( final IRWAccess access, final String file, final InputStream content ){
+  public boolean createBasicFileIfNotExists( final IRWAccess access, final String file, final InputStream content ){
 
     if( access == null || StringUtils.isEmpty( file ) || content == null ){
       return false;
@@ -68,7 +68,7 @@ public class LegacyFileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean ensureDirExists( final IRWAccess access, final String relativeFolderPath ){
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ){
 
     if( access == null || StringUtils.isEmpty( relativeFolderPath ) ){
       return false;
