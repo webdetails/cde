@@ -20,15 +20,15 @@ var LayoutPanel = Panel.extend({
 					new LayoutSaveAsTemplateOperation(),
 					new LayoutApplyTemplateOperation(),
 					new LayoutAddResourceOperation(),
-          new LayoutAddFreeFormOperation(),
+          			new LayoutAddFreeFormOperation(),
 					new LayoutAddRowOperation()
 				],
 				bootstrap: [
 					new LayoutSaveAsTemplateOperation(),
 					new LayoutApplyTemplateOperation(),
 					new LayoutAddResourceOperation(),
-          new LayoutAddBootstrapPanelOperation(),
-          new LayoutAddFreeFormOperation(),
+          			new LayoutAddBootstrapPanelOperation(),
+          			new LayoutAddFreeFormOperation(),
 					new LayoutAddRowOperation()
 				],
 				mobile: [
@@ -36,7 +36,7 @@ var LayoutPanel = Panel.extend({
 					new LayoutApplyTemplateOperation(),
 					new LayoutAddResourceOperation(),
 					new LayoutAddCarouselOperation(),
-          new LayoutAddFreeFormOperation(),
+          			new LayoutAddFreeFormOperation(),
 					new LayoutAddRowOperation(),
 					new LayoutAddFilterBlockOperation()
 				]
@@ -805,7 +805,7 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 		id: "LAYOUT_ADD_HTML",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
             LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
-            LayoutBootstrapPanelFooterModel.MODEL],
+            LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
 
