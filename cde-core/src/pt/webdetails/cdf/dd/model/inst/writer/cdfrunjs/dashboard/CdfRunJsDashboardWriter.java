@@ -222,7 +222,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
 
     // Get CDE headers
-    final String baseUrl = ( options.isAbsolute() ? options.getSchemedRoot() + "/" : "" );
+    final String baseUrl = ( options.isAbsolute() ? (!StringUtils.isEmpty(options.getAbsRoot()) ? options.getSchemedRoot() + "/" : "") : "" );
     //    +
     //    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
 
@@ -234,10 +234,26 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
           baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
 
       }
+
+      public String filter( String input, String baseUrl ) {
+        return String.format(
+          "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
+
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
+
+      }
     };
 
     StringFilter jsFilter = new StringFilter() {
       public String filter( String input ) {
+        return String.format(
+          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
+
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
+
+      }
+
+      public String filter( String input, String baseUrl ) {
         return String.format(
           "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
 

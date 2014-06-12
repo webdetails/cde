@@ -25,6 +25,9 @@ public class InterPluginBroker {
     if (!StringUtils.isEmpty(absRoot)) {
       params.put("root", absRoot);
     }
+    if (!StringUtils.isEmpty( scheme )) {
+      params.put("scheme", scheme);
+    }
     //TODO: instantiate directly
     IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "xcdf", "getHeaders" );
     
