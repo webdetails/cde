@@ -70,7 +70,8 @@ public interface ICdeEnvironment {
 
   public String getRepositoryBaseContentUrl();
 
-  String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme ) throws Exception;
+  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot, String scheme )
+    throws Exception;
 
   //String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
 

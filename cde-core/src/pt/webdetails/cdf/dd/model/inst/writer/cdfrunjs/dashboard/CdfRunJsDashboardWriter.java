@@ -214,6 +214,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
         contents,
         this.getType(),
         options.isDebug(),
+        options.isAbsolute(),
         options.getAbsRoot(),
         options.getScheme() );
     } catch ( Exception ex ) {
