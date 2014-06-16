@@ -17,10 +17,10 @@
     <Header>
       <Name>otherAttributes</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
-      <Description>Other attributes</Description>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Other Attributes</Description>
       <Tooltip>More attributes to add to the freeForm component</Tooltip>
-      <InputType>ValuesArray</InputType>
+      <InputType>OptionArray</InputType>
       <OutputType>Array</OutputType>
       <Order>301</Order>
       <Advanced>true</Advanced>
