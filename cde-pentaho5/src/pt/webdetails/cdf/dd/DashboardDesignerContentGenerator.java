@@ -22,7 +22,6 @@ import pt.webdetails.cdf.dd.api.RenderApi;
 import pt.webdetails.cdf.dd.api.ResourcesApi;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.SimpleContentGenerator;
-import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -72,10 +71,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     RenderApi renderer = new RenderApi();
 
-    //audit log start
     long start = System.currentTimeMillis();
-    UUID uuid = CpfAuditHelper.startAudit( "pentaho-cdf-dd", filePath,
-      DashboardDesignerContentGenerator.class.getName(), this.userSession, this, requestParams );
+    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(),
+      this.userSession, this, requestParams );
 
     if ( create ) {
       String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
@@ -104,15 +102,18 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       getResponse().getOutputStream().flush();
     }
 
-    //audit log - end
     long end = System.currentTimeMillis();
-    CpfAuditHelper.endAudit( "pentaho-cdf-dd", filePath, DashboardDesignerContentGenerator.class.getName(),
-      this.userSession, this, start, uuid, end );
+    CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(), this.userSession,
+      this, start, uuid, end );
   }
 
   @Override
   public String getPluginName() {
     return CdeEnvironment.getPluginId();
+  }
+
+  public String getObjectName() {
+    return this.getClass().getName();
   }
 
   private class MethodParams {
