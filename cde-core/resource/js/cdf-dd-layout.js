@@ -14,29 +14,33 @@ var LayoutPanel = Panel.extend({
 			Panel.register(this);
 
 		},
-		init: function(){
-	                operationSets = {
-	                  blueprint: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
-	                  ],
-	                  bootstrap: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
-	                  ],
-	                  mobile: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddCarouselOperation(),
-			    new LayoutAddRowOperation(),
-                            new LayoutAddFilterBlockOperation()
-	                  ]
-	                };
+		init: function() {
+            operationSets = {
+              blueprint: [
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation()
+              ],
+              bootstrap: [
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+              	new LayoutAddBootstrapPanelOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation()
+              ],
+              mobile: [
+              	new LayoutSaveAsTemplateOperation(),
+              	new LayoutApplyTemplateOperation(),
+              	new LayoutAddResourceOperation(),
+              	new LayoutAddCarouselOperation(),
+                new LayoutAddFreeFormOperation(),
+              	new LayoutAddRowOperation(),
+              	new LayoutAddFilterBlockOperation()
+              ]
+            };
 
 			this.base();
 			this.logger.debug("Specific init");
@@ -104,7 +108,7 @@ var LayoutPanel = Panel.extend({
 
 		},
 
-		getContent: function(){
+		getContent: function() {
 		
 			return ' \n' +
 '			<div id="'+ LayoutPanel.TREE +'" class="span-12">Tree</div>\n' +
@@ -138,6 +142,152 @@ var LayoutPanel = Panel.extend({
 		TREE: "cdfdd-layout-tree",
 		PROPERTIES: "cdfdd-layout-properties"
 	});
+
+
+var LayoutBootstrapPanelHeaderModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelHeader',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelHeaderModel.MODEL,
+      typeDesc: "Panel Header",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("textAlign"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelHeaderModel);
+
+var LayoutAddBootstrapPanelHeaderOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_HEADER",
+  types: [],
+  name: "Add Bootstrap Panel Header",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelHeaderOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelHeaderModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+    _stub.parent = rowId;
+    var insertAtIdx = indexManager.getIndex()[rowId].index + 1;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
+
+
+var LayoutBootstrapPanelBodyModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelBody',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelBodyModel.MODEL,
+      typeDesc: "Panel Body",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("textAlign"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelBodyModel);
+
+var LayoutAddBootstrapPanelBodyOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_BODY",
+  types: [],
+  name: "Add Bootstrap Panel Body",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelBodyOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelBodyModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+    _stub.parent = indexManager.getIndex()[rowId].parent;
+    var insertAtIdx = indexManager.getIndex()[_stub.parent].index + 2;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
+
+
+var LayoutBootstrapPanelFooterModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanelFooter',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelFooterModel.MODEL,
+      typeDesc: "Panel Footer",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("textAlign"));
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelFooterModel);
+
+var LayoutAddBootstrapPanelFooterOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL_FOOTER",
+  types: [],
+  name: "Add Bootstrap Panel Footer",
+  description: "Adds a bootstrap node",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutAddBootstrapPanelFooterOperation");
+  },
+
+  execute: function (tableManager) {
+    var _stub = LayoutBootstrapPanelFooterModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+    _stub.parent = indexManager.getIndex()[rowId].parent;
+    var insertAtIdx = indexManager.getIndex()[_stub.parent].index + 3;
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+  }
+});
 
 
 var LayoutRowModel = BaseModel.extend({
@@ -208,10 +358,12 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 				// if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
 				// to the end
 
-				if(rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL){
+				if( rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL ){
 					_stub.parent = indexManager.getIndex()[rowId].parent;
 				}
-				else if (rowType == LayoutColumnModel.MODEL){
+				else if ( rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
+                  rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL ||
+                  rowType == LayoutFreeFormModel.MODEL ){
 					_stub.parent = rowId;
 				}
 				else{
@@ -351,6 +503,102 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 
 CellOperations.registerOperation(new LayoutAddColumnsOperation());
 
+
+var LayoutFreeFormModel = BaseModel.extend({
+},{
+
+  MODEL: 'LayoutFreeForm',
+
+  getStub: function(){
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutFreeFormModel.MODEL,
+      typeDesc: "FreeForm",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("elementTag"));
+    _stub.properties.push(PropertiesManager.getProperty("otherAttributes"));
+
+    return _stub;
+  }
+});
+BaseModel.registerModel(LayoutFreeFormModel);
+
+var LayoutAddFreeFormOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_FREEFORM",
+  types: [],
+  name: "Add FreeForm",
+  description: "Adds a freeForm element to the template",
+
+  constructor: function(){
+    this.logger = new Logger("LayoutAddFreeFormOperation");
+  },
+
+  execute: function(tableManager) {
+
+    var _stub = LayoutFreeFormModel.getStub();
+
+    var rowIdx;
+    var colIdx = 0;
+    var rowId;
+    var rowType;
+    var insertAtIdx = -1;
+
+    var indexManager = tableManager.getTableModel().getIndexManager();
+
+    if (tableManager.isSelectedCell){
+      rowIdx = tableManager.getSelectedCell()[0];
+      colIdx = tableManager.getSelectedCell()[1];
+      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if (typeof nextSibling == 'undefined'){
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      }
+      else{
+        insertAtIdx = nextSibling.index;
+      }
+      // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row;
+      // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
+      // to the end
+
+      if( rowType == LayoutSpaceModel.MODEL ) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      }
+      else if ( rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL ||
+                rowType == LayoutFreeFormModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
+                rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+        _stub.parent = rowId;
+      }
+      else {
+        // insert at the end
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+
+    }
+    else{
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
+
+    tableManager.insertAtIdx(_stub,insertAtIdx);
+
+    // edit the new entry - we know the name is on the first line
+    if( typeof tableManager.getLinkedTableManager() != 'undefined' ){
+      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
+    }
+
+  }
+
+});
+CellOperations.registerOperation(new LayoutAddFreeFormOperation());
 
 var LayoutSpaceModel = BaseModel.extend({
 	},{
@@ -522,7 +770,9 @@ BaseModel.registerModel(LayoutHtmlModel);
 var LayoutAddHtmlOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_HTML",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
+		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL,
+             LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
+             LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL ],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
 
@@ -671,22 +921,101 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 				}
 				
 			}});
-
-			
-
 		}
-
-
 });
 
 CellOperations.registerOperation(new LayoutAddResourceOperation());
 
 
+var LayoutBootstrapPanelModel = BaseModel.extend({},{
+  MODEL: 'BootstrapPanel',
+  getStub: function() {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapPanelModel.MODEL,
+      typeDesc: "Bootstrap Panel",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapPanelStyle"));
+
+    return _stub;
+  }
+
+});
+BaseModel.registerModel(LayoutBootstrapPanelModel);
+
+var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_BOOTSTRAP_PANEL",
+  types: [],
+  name: "Add Bootstrap Panel",
+  description: "Adds a bootstrap panel",
+
+  constructor: function(){
+    this.logger = new Logger("LayoutAddBootstrapPanelOperation");
+  },
+
+  execute: function(tableManager){
+
+    var _stub = LayoutBootstrapPanelModel.getStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var header = new LayoutAddBootstrapPanelHeaderOperation();
+    var body = new LayoutAddBootstrapPanelBodyOperation();
+    var footer = new LayoutAddBootstrapPanelFooterOperation();
+    var insertAtIdx = -1;
+
+    if (tableManager.isSelectedCell) {
+      var rowIdx = tableManager.getSelectedCell()[0];
+      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if (typeof nextSibling == 'undefined'){
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      }
+      else{
+        insertAtIdx = nextSibling.index;
+      }
+
+      if( rowType == LayoutSpaceModel.MODEL ) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else if ( rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
+                  rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL ||
+                  rowType == LayoutColumnModel.MODEL || LayoutFreeFormModel.MODEL) {
+        _stub.parent = rowId;
+      } else {
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting bootstrap node after at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+    header.execute(tableManager);
+    body.execute(tableManager);
+    footer.execute(tableManager);
+
+
+  }
+});
+CellOperations.registerOperation(new LayoutAddBootstrapPanelOperation());
+
+
 var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
+             LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
+             LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL ],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -700,8 +1029,9 @@ CellOperations.registerOperation(new LayoutMoveUpOperation);
 var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [ LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
+             LayoutCarouselModel.MODEL, FilterBlockModel.MODEL, FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL,
+             LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL ],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -711,15 +1041,15 @@ var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 CellOperations.registerOperation(new LayoutMoveDownOperation);
 
-
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,
-                  LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,
-                  LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,
-                  FilterRowModel.MODEL,FilterHeaderModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL,
+                  LayoutSpaceModel.MODEL, LayoutImageModel.MODEL,
+                  LayoutHtmlModel.MODEL, LayoutResourceModel.MODEL,
+                  LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+                  FilterRowModel.MODEL, FilterHeaderModel.MODEL,
+                  LayoutBootstrapPanelModel.MODEL, LayoutFreeFormModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
@@ -748,7 +1078,6 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
 			
 		}
 });
-
 
 var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 

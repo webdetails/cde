@@ -1,0 +1,28 @@
+<DesignerProperties>
+
+  <!-- Panel Properties -->
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapPanelStyle</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>panel-default</DefaultValue>
+      <Description>Panel Style</Description>
+      <Tooltip>Bootstrap Panel Style</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>450</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Default">panel-default</Value>
+      <Value display="Primary">panel-primary</Value>
+      <Value display="Success">panel-success</Value>
+      <Value display="Info">panel-info</Value>
+      <Value display="Warning">panel-warning</Value>
+      <Value display="Danger">panel-danger</Value>
+    </Values>
+  </DesignerProperty>
+
+</DesignerProperties>
