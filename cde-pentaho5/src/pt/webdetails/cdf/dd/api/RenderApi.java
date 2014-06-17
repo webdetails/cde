@@ -46,6 +46,7 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
@@ -55,7 +56,6 @@ import pt.webdetails.cpf.utils.MimeTypes;
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
   private static final Log logger = LogFactory.getLog( RenderApi.class );
-  public static final String PLUGIN_NAME = "pentaho-cdf-dd";
   //  private static final String MIME_TYPE = "text/html";
 
   @GET
@@ -259,7 +259,7 @@ public class RenderApi {
   }
 
   private String getPluginName() {
-    return PLUGIN_NAME;
+    return CdeEnvironment.getPluginId();
   }
 
   private ILogger getAuditLogger() {
