@@ -132,7 +132,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public String getRepositoryBaseContentUrl() {
-    return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/res/";// TODO:
+    return Utils.joinPath( getApplicationBaseUrl(), PLUGIN, getPluginId() ) + "/res/"; // TODO:
   }
 
   public String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot,
@@ -173,7 +173,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
   }
 
-  @Override public IBasicFile getCdeXml() {
+  @Override
+  public IBasicFile getCdeXml() {
     if ( getUserContentAccess( "/" ).fileExists( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML ) ) {
       return getUserContentAccess( "/" ).fetchFile( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML );
     } else if ( getPluginSystemReader( null ).fileExists( CDE_XML ) ) {
@@ -181,4 +182,5 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     }
     return null;
   }
+
 }

@@ -44,7 +44,8 @@ public abstract class DefaultCdeEnvironment extends PluginEnvironment implements
     return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";
   }
 
-  @Override public IBasicFile getCdeXml() {
+  @Override
+  public IBasicFile getCdeXml() {
     return null;
   }
 }

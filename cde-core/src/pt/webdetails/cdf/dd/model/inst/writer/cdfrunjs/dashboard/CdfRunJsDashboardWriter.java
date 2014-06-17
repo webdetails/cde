@@ -223,9 +223,13 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
 
     // Get CDE headers
-    final String baseUrl = ( options.isAbsolute() ? (!StringUtils.isEmpty(options.getAbsRoot()) ? options.getSchemedRoot() + "/" : "") : "" );
+    final String baseUrl = ( options.isAbsolute()
+      ? ( !StringUtils.isEmpty( options.getAbsRoot() )
+        ? options.getSchemedRoot() + "/"
+        : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
+      : "" );
     //    +
-    //    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
+    //    		;
 
     StringFilter cssFilter = new StringFilter() {
       public String filter( String input ) {
