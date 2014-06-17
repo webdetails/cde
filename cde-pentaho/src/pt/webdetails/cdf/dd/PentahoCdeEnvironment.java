@@ -120,12 +120,13 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   }
 
   public String getRepositoryBaseContentUrl() {
-    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/";// TODO:
+    return Utils.joinPath( getApplicationBaseUrl(), CONTENT, getPluginId() ) + "/res/"; // TODO:
   }
 
-  public String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme )
-      throws Exception {
-    return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absRoot, scheme );
+  @Override
+  public String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute,
+    String absRoot, String scheme ) throws Exception {
+    return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absolute, absRoot, scheme );
   }
 
   public PentahoPluginEnvironment getPluginEnv() {

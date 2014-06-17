@@ -214,6 +214,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
         contents,
         this.getType(),
         options.isDebug(),
+        options.isAbsolute(),
         options.getAbsRoot(),
         options.getScheme() );
     } catch ( Exception ex ) {
@@ -222,9 +223,13 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     }
 
     // Get CDE headers
-    final String baseUrl = ( options.isAbsolute() ? (!StringUtils.isEmpty(options.getAbsRoot()) ? options.getSchemedRoot() + "/" : "") : "" );
+    final String baseUrl = ( options.isAbsolute()
+      ? ( !StringUtils.isEmpty( options.getAbsRoot() )
+        ? options.getSchemedRoot() + "/"
+        : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
+      : "" );
     //    +
-    //    		CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
+    //    		;
 
     StringFilter cssFilter = new StringFilter() {
       public String filter( String input ) {

@@ -14,7 +14,8 @@ public class InterPluginBroker {
 
   public static final String DATA_SOURCE_DEFINITION_METHOD_NAME = "listDataAccessTypes";
 
-  public static String getCdfIncludes(String dashboard, String type, boolean debug, String absRoot, String scheme) throws Exception {
+  public static String getCdfIncludes(String dashboard, String type, boolean debug, boolean absolute,
+                                      String absRoot, String scheme) throws Exception {
     CallParameters params = new CallParameters();
     params.put("dashboardContent", dashboard);
     params.put("debug", debug);
@@ -28,6 +29,9 @@ public class InterPluginBroker {
     if (!StringUtils.isEmpty( scheme )) {
       params.put("scheme", scheme);
     }
+
+    params.put( "absolute", absolute );
+
     //TODO: instantiate directly
     IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "xcdf", "getHeaders" );
     

@@ -24,6 +24,7 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -70,7 +71,10 @@ public interface ICdeEnvironment {
 
   public String getRepositoryBaseContentUrl();
 
-  String getCdfIncludes( String dashboard, String type, boolean debug, String absRoot, String scheme ) throws Exception;
+  public IUrlProvider getUrlProvider();
+
+  String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot, String scheme )
+    throws Exception;
 
   //String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
 

@@ -208,7 +208,7 @@ public class RenderApi {
     throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-      new CdfRunJsDashboardWriteOptions( absolute || !root.equals( "" ), debug, root, scheme );
+      new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
     return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
