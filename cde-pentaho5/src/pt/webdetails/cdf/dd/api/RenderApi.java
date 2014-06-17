@@ -14,6 +14,8 @@
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +31,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.pentaho.platform.api.engine.ILogger;
+import org.pentaho.platform.api.engine.IParameterProvider;
+import org.pentaho.platform.api.engine.IPentahoSession;
+import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import org.pentaho.platform.util.logging.SimpleLogger;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
@@ -38,8 +46,10 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.MimeTypes;
 
@@ -123,8 +133,15 @@ public class RenderApi {
       return "Access Denied or File Not Found.";
     }
 
+    long start = System.currentTimeMillis();
+    long end;
+    ILogger iLogger = getAuditLogger();
+    IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
+
+    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
+      iLogger, requestParams );
+
     try {
-      long start = System.currentTimeMillis();
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
         loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
@@ -138,10 +155,19 @@ public class RenderApi {
       }
 
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
+
+      end = System.currentTimeMillis();
+      CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
+        this.getPentahoSession(), iLogger, start, uuid, end );
+
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error( msg, ex );
+
+      end = System.currentTimeMillis();
+      CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
+        this.getPentahoSession(), iLogger, start, uuid, end );
       return msg;
     }
   }
@@ -222,6 +248,26 @@ public class RenderApi {
     //    else return path;
     //    final String filePath = "/" + solution + "/" + path + "/" + file;
     //    return filePath.replaceAll( "//+", "/" );
+  }
+
+  private IPentahoSession getPentahoSession() {
+    return PentahoSessionHolder.getSession();
+  }
+
+  private String getObjectName() {
+    return RenderApi.class.getName();
+  }
+
+  private String getPluginName() {
+    return CdeEnvironment.getPluginId();
+  }
+
+  private ILogger getAuditLogger() {
+    return new SimpleLogger( RenderApi.class.getName() );
+  }
+
+  private IParameterProvider getParameterProvider( Map<String, String> params ) {
+    return new SimpleParameterProvider( params );
   }
 
   private class MethodParams {
