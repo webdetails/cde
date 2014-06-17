@@ -64,39 +64,8 @@
     </javac>
   </target>
 
-	  <condition property="is.roundtrip">
-	  	<istrue value="${test.roundtrip}"/>
-	  </condition>
-	<condition property="is.not.roundtrip">
-		  	<isfalse value="${test.roundtrip}"/>
-	</condition>
 
 
-	<target name="init-tests" depends="clean-tests">
-	    <mkdir dir="${testclasses.dir}" />
-	    <mkdir dir="${testsrc.dir}" />
-
-	    <copy todir="${testclasses.dir}" overwrite='true'>
-	      <fileset dir='${testresources.dir}' />
-	    </copy>
-		  <unzip src="${testclasses.dir}/sampledata.zip" dest="${testclasses.dir}/sampledata" />
-	 </target>
-
-	  <target name="test" depends="compile,compile-tests" description="Compiles and runs unit tests">
-	    <junit printsummary="yes" haltonfailure="${junit.haltonfailure}" >
-	      <sysproperty key="java.awt.headless" value="${headless.unittest}"/>
-	      <classpath refid="test.classpath" />
-	      <formatter type="plain" />
-	      <batchtest fork="yes" todir="${testbin.dir}">
-	              	<fileset dir="${testsrc.dir}" casesensitive="yes">
-	                	<include name="**/RoundtripSuite.java" if="is.roundtrip" />
-	                	<include name="**/Test*.java" if="is.not.roundtrip" />
-	                	<include name="**/*Test.java" if="is.not.roundtrip"/>
-	              	</fileset>
-                <formatter type="xml"/>
-	      </batchtest>
-	    </junit>
-	  </target>
 
   <property name="plugin.name"
             value="pentaho-cdf-dd"
