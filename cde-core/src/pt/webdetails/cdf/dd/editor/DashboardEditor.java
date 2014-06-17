@@ -1,3 +1,16 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.editor;
 
 import java.io.IOException;
@@ -18,11 +31,6 @@ import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-/**
- * Created with IntelliJ IDEA.
- * User: diogomariano
- * Date: 06/09/13
- */
 public class DashboardEditor {
 
   private static Log logger = LogFactory.getLog( DashboardEditor.class );
@@ -30,7 +38,8 @@ public class DashboardEditor {
   private static  final String WEBAPP_PATH = "#{WEBAPP_PATH}";
 
 
-  public static String getEditor(String wcdfPath, boolean debugMode, String scheme, boolean isDefault) throws Exception {
+  public static String getEditor( String wcdfPath, boolean debugMode, String scheme, boolean isDefault )
+    throws Exception {
 
     ResourceManager resMgr = ResourceManager.getInstance();
     IReadAccess sysReader = CdeEnvironment.getPluginSystemReader();
@@ -46,20 +55,19 @@ public class DashboardEditor {
       String scheme,
       boolean debugMode,
       ResourceManager resMgr,
-      IReadAccess sysReader ) throws IOException
-  {
+      IReadAccess sysReader ) throws IOException {
 
     DependenciesManager depMgr = DependenciesManager.getInstance();
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
-    final String scriptDeps = debugMode ?
-        getResource( resMgr, sysReader, CdeConstants.DESIGNER_SCRIPTS_RESOURCE ) :
-        depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_JS_INCLUDES ).getDependencies( true );
-        
-    final String styleDeps = debugMode ?
-        getResource( resMgr, sysReader, CdeConstants.DESIGNER_STYLES_RESOURCE ) :
-        depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_CSS_INCLUDES ).getDependencies( true );
+    final String scriptDeps = debugMode
+      ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_SCRIPTS_RESOURCE )
+      : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_JS_INCLUDES ).getDependencies( true );
+
+    final String styleDeps = debugMode
+      ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_STYLES_RESOURCE )
+      : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_CSS_INCLUDES ).getDependencies( true );
 
     final String cdeDeps = depMgr.getPackage( DependenciesManager.StdPackages.CDFDD ).getDependencies( debugMode );
     tokens.put( CdeConstants.DESIGNER_HEADER_TAG, cdeDeps );
@@ -67,7 +75,7 @@ public class DashboardEditor {
     tokens.put( CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps );
 
     try {
-      final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "blueprint", debugMode, null, scheme );
+      final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "blueprint", debugMode, false, null, scheme );
       tokens.put( CdeConstants.DESIGNER_CDF_TAG, cdfDeps );
     } catch ( Exception e ) {
       logger.fatal( "Unable to get CDF dependencies", e );
@@ -97,7 +105,7 @@ public class DashboardEditor {
 
     } else {
 
-      if( isDefault ) {
+      if ( isDefault ) {
         editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE_DEFAULT ) );
       } else {
         editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE ) );
@@ -118,19 +126,21 @@ public class DashboardEditor {
   }
 
 
-  private static String getResource( ResourceManager resMgr, IReadAccess sysReader, String path) throws IOException {
+  private static String getResource( ResourceManager resMgr, IReadAccess sysReader, String path ) throws IOException {
     final String resource;
-    if(resMgr.existsInCache(path)){
-      resource = resMgr.getResourceFromCache(path);
-    }else{
-      resource  = Util.toString(sysReader.getFileInputStream(path));
-      
-      if(resource != null){
-        resMgr.putResourceInCache(path, resource);
+    if ( resMgr.existsInCache( path ) ) {
+      resource = resMgr.getResourceFromCache( path );
+    } else {
+      resource = Util.toString( sysReader.getFileInputStream( path ) );
+
+      if ( resource != null ) {
+        resMgr.putResourceInCache( path, resource );
       }
     }
-    if (resource.contains( WEBAPP_PATH )) {
-      return resource.replace( WEBAPP_PATH,  CdeEngine.getInstance().getEnvironment().getApplicationReposUrl() + CdeEngine.getInstance().getEnvironment().getPluginId() + "/");
+    if ( resource.contains( WEBAPP_PATH ) ) {
+      return resource.replace( WEBAPP_PATH,
+        CdeEngine.getInstance().getEnvironment().getApplicationReposUrl()
+          + CdeEngine.getInstance().getEnvironment().getPluginId() + "/" );
     }
     return resource;
   }

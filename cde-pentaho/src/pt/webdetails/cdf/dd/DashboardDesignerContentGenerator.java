@@ -867,8 +867,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     String absRoot = requestParams.getStringParameter( "root", "" );
 
-    boolean absolute = ( !absRoot.equals( "" ) )
-        || requestParams.hasParameter( "absolute" )
+    boolean absolute = requestParams.hasParameter( "absolute" )
         && requestParams.getParameter( "absolute" ).equals( "true" );
 
     boolean bypassCacheRead = requestParams.hasParameter( "bypassCache" )
