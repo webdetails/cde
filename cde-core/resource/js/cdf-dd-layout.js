@@ -15,28 +15,28 @@ var LayoutPanel = Panel.extend({
 
 		},
 		init: function(){
-	                operationSets = {
-	                  blueprint: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
-	                  ],
-	                  bootstrap: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddRowOperation()
-	                  ],
-	                  mobile: [
-	                    new LayoutSaveAsTemplateOperation(),
-			    new LayoutApplyTemplateOperation(),
-			    new LayoutAddResourceOperation(),
-			    new LayoutAddCarouselOperation(),
-			    new LayoutAddRowOperation(),
-                            new LayoutAddFilterBlockOperation()
-	                  ]
-	                };
+			operationSets = {
+				blueprint: [
+					new LayoutSaveAsTemplateOperation(),
+					new LayoutApplyTemplateOperation(),
+					new LayoutAddResourceOperation(),
+					new LayoutAddRowOperation()
+				],
+				bootstrap: [
+					new LayoutSaveAsTemplateOperation(),
+					new LayoutApplyTemplateOperation(),
+					new LayoutAddResourceOperation(),
+					new LayoutAddRowOperation()
+				],
+				mobile: [
+					new LayoutSaveAsTemplateOperation(),
+					new LayoutApplyTemplateOperation(),
+					new LayoutAddResourceOperation(),
+					new LayoutAddCarouselOperation(),
+					new LayoutAddRowOperation(),
+					new LayoutAddFilterBlockOperation()
+				]
+			};
 
 			this.base();
 			this.logger.debug("Specific init");
@@ -120,7 +120,7 @@ var LayoutPanel = Panel.extend({
 			var output = [];
 			var myself = this;
 			$.each(data,function(i,row){
-					if(row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL){
+					if(row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL){
 						// Use the ones that don't have children
 						if(myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length==0){
 							output.push(row);
@@ -211,7 +211,7 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 				if(rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL){
 					_stub.parent = indexManager.getIndex()[rowId].parent;
 				}
-				else if (rowType == LayoutColumnModel.MODEL){
+				else if (rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL){
 					_stub.parent = rowId;
 				}
 				else{
@@ -239,6 +239,7 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 });
 
 CellOperations.registerOperation(new LayoutAddRowOperation());
+
 
 var LayoutColumnModel = BaseModel.extend({
 	},{
@@ -274,11 +275,43 @@ var LayoutColumnModel = BaseModel.extend({
 	});
 BaseModel.registerModel(LayoutColumnModel);
 
+var LayoutBootstrapColumnModel = BaseModel.extend({
+}, {
+  MODEL: 'LayoutBootstrapColumn',
+
+  getStub: function () {
+
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutBootstrapColumnModel.MODEL,
+      typeDesc: "Column",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapExtraSmall"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapSmall"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapMedium"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapLarge"));
+    _stub.properties.push(PropertiesManager.getProperty("bootstrapCssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("backgroundColor"));
+    _stub.properties.push(PropertiesManager.getProperty("roundCorners"));
+    _stub.properties.push(PropertiesManager.getProperty("height"));
+    _stub.properties.push(PropertiesManager.getProperty("cssClass"));
+    _stub.properties.push(PropertiesManager.getProperty("textAlign"));
+
+
+    return _stub;
+  }
+});
+BaseModel.registerModel(LayoutBootstrapColumnModel);
+
 
 var LayoutAddColumnsOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_COLUMN",
-		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
 		name: "Add Columns",
 		description: "Add a new column",
 
@@ -286,12 +319,12 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 			this.logger = new Logger("LayoutAddColumnsOperation");
 		},
 
-		execute: function(tableManager){
+		execute: function(tableManager) {
 
 			// Add a row on the specified position;
-
-			var _stub = LayoutColumnModel.getStub();
-
+			var _stub = (cdfdd.dashboardWcdf.rendererType == "bootstrap") 
+				? LayoutBootstrapColumnModel.getStub()
+				: LayoutColumnModel.getStub();
 
 			var rowIdx;
 			var colIdx = 0;
@@ -318,7 +351,7 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
 				// if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
 				// to the end
 
-				if(rowType == LayoutColumnModel.MODEL){
+				if(rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL){
 					_stub.parent = indexManager.getIndex()[rowId].parent;
 				}
 				else if (rowType == LayoutRowModel.MODEL){
@@ -447,7 +480,7 @@ BaseModel.registerModel(LayoutImageModel);
 var LayoutAddImageOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_IMAGE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
 		name: "Add Image",
 		description: "Adds an image",
 
@@ -522,7 +555,7 @@ BaseModel.registerModel(LayoutHtmlModel);
 var LayoutAddHtmlOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_HTML",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL],
+		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
 
@@ -685,8 +718,9 @@ CellOperations.registerOperation(new LayoutAddResourceOperation());
 var LayoutMoveUpOperation = MoveUpOperation.extend({
 
 		id: "LAYOUT_MOVE_UP",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
+				LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+				FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveUpOperation");
@@ -700,8 +734,9 @@ CellOperations.registerOperation(new LayoutMoveUpOperation);
 var LayoutMoveDownOperation = MoveDownOperation.extend({
 
 		id: "LAYOUT_MOVE_DOWN",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,LayoutHtmlModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,FilterRowModel.MODEL,FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
+				LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+				FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutMoveDownOperation");
@@ -715,11 +750,10 @@ CellOperations.registerOperation(new LayoutMoveDownOperation);
 var LayoutDeleteOperation = DeleteOperation.extend({
 
 		id: "LAYOUT_DELETE",
-		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL,
-                  LayoutSpaceModel.MODEL,LayoutImageModel.MODEL,
-                  LayoutHtmlModel.MODEL,LayoutResourceModel.MODEL,
-                  LayoutCarouselModel.MODEL,FilterBlockModel.MODEL,
-                  FilterRowModel.MODEL,FilterHeaderModel.MODEL],
+		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+                LayoutSpaceModel.MODEL, LayoutImageModel.MODEL, LayoutHtmlModel.MODEL,
+                LayoutResourceModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+                FilterRowModel.MODEL, FilterHeaderModel.MODEL],
 
 		constructor: function(){
 			this.logger = new Logger("LayoutDeleteOperation");
