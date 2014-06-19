@@ -14,5 +14,6 @@
   <Values>
     <Value display="Auto">auto</Value>
     <Value display="Hidden">hidden</Value>
+    <Value display="Visible">visible</Value>
   </Values>
 </DesignerProperty>
