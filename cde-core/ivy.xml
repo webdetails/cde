@@ -37,8 +37,9 @@
         <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
       </dependency>
 
-      <dependency org="junit"   name="junit"   rev='4.10' conf="test->default" />     
-      <dependency org="xmlunit" name="xmlunit" rev="1.3"  conf="test->default"/> 
+      <dependency org="org.mockito"   name="mockito-all"   rev="1.8.4" conf="test, default->default"/>
+      <dependency org="junit"         name="junit"         rev='4.10'  conf="test->default" />
+      <dependency org="xmlunit"       name="xmlunit"       rev="1.3"   conf="test->default"/>
 
     </dependencies>
     

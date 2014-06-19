@@ -34,7 +34,7 @@ public class BootstrapColumnRender extends DivRender {
   @Override
   public String renderStart() {
 
-    String div = "<div ";
+    String div = "<div";
 
     div += cssClass + ">";
 
@@ -43,20 +43,19 @@ public class BootstrapColumnRender extends DivRender {
     return div;
   }
 
-
-  private boolean lastColumn() {
-    String parentId = (String) getNode().getValue( "parent" );
-    return ( (Boolean) getNode().getValue(
-      "not(following-sibling::*[parent='" + parentId + "'][type='LayoutBootstrapColumn'])" ) ).booleanValue();
-  }
-
   @Override
   public String renderClose() {
     return "</div></div>";
   }
 
-  private String getBootstrapClassString() {
-    String css = "class='";
+  protected boolean lastColumn() {
+    String parentId = (String) getNode().getValue( "parent" );
+    return ( (Boolean) getNode().getValue(
+      "not(following-sibling::*[parent='" + parentId + "'][type='LayoutBootstrapColumn'])" ) ).booleanValue();
+  }
+
+  protected String getBootstrapClassString() {
+    String css = "";
 
     if ( !getPropertyString( "bootstrapExtraSmall" ).equals( "" ) ) {
       css += "col-xs-" + getPropertyString( "bootstrapExtraSmall" );
@@ -77,7 +76,7 @@ public class BootstrapColumnRender extends DivRender {
       css += " last";
     }
 
-    css += "'";
-    return css;
+
+    return ( css.equals( "" ) ? css : " class='" + css + "'" );
   }
 }
