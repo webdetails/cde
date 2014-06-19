@@ -23,11 +23,6 @@ public class BootstrapColumnRenderTest extends TestCase {
     }
 
     @Override
-    public void processProperties() {
-      super.processProperties();
-    }
-
-    @Override
     protected boolean lastColumn() {
       return false;
     }
@@ -39,7 +34,6 @@ public class BootstrapColumnRenderTest extends TestCase {
 
     private void setBootstrapCss( String css ) {
       this.bootstrapCss = " class='" + css + "'";
-
     }
 
     private void setPropertyBagClass( String css ) {
