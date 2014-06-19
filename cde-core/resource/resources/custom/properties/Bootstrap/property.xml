@@ -1,0 +1,72 @@
+<DesignerProperties>
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapExtraSmall</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Extra Small Devices</Description>
+      <Tooltip>Bootstrap Extra Small Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>30</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapSmall</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Small Devices</Description>
+      <Tooltip>Bootstrap Small Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>31</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapMedium</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Medium Devices</Description>
+      <Tooltip>Bootstrap Medium Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>32</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapLarge</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Large Devices</Description>
+      <Tooltip>Bootstrap Large Devices Property</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>33</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>bootstrapCssClass</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue></DefaultValue>
+      <Description>Bootstrap Css Class</Description>
+      <Tooltip>Bootstrap Css Class to be used when this element is rendered</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>34</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+</DesignerProperties>
