@@ -362,8 +362,8 @@ var LayoutAddRowOperation = AddRowOperation.extend({
 					_stub.parent = indexManager.getIndex()[rowId].parent;
 				}
 				else if (rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
-                 rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-                 rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutFreeFormModel.MODEL){
+                 		 rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
+                 		 rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutFreeFormModel.MODEL){
 					_stub.parent = rowId;
 				}
 				else{
@@ -597,15 +597,15 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
       else{
         insertAtIdx = nextSibling.index;
       }
-      // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row;
+      // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row; 
       // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
       // to the end
 
       if( rowType == LayoutSpaceModel.MODEL ) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
       }
-      else if ( rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL ||
-                rowType == LayoutFreeFormModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
+      else if ( rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL || rowType == LayoutFreeFormModel.MODEL ||
+                rowType == LayoutBootstrapColumnModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
                 rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
         _stub.parent = rowId;
       }
@@ -804,8 +804,8 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 
 		id: "LAYOUT_ADD_HTML",
 		types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
-            LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
-            LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL],
+            	LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
+            	LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL],
 		name: "Add Html",
 		description: "Adds plain Html code to the template",
 
@@ -1020,7 +1020,8 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
         _stub.parent = indexManager.getIndex()[rowId].parent;
       } else if ( rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
                   rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL ||
-                  rowType == LayoutColumnModel.MODEL || LayoutFreeFormModel.MODEL) {
+                  rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
+                  rowType == LayoutFreeFormModel.MODEL) {
         _stub.parent = rowId;
       } else {
         insertAtIdx = tableManager.getTableModel().getData().length;
