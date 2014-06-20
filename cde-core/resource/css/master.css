@@ -756,6 +756,10 @@ div#cdfddOlapMeasureDiv{
   background-image: url("../images/NAV/duplicate.png");
 }
 
+.tooltip.layout_add_bootstrap_panel {
+  background-image: url("../images/NAV/add_row2.png"); /*get image for component*/
+}
+
 .tooltip.layout_add_row {
   background-image: url("../images/NAV/add_row.png");
 }
