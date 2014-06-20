@@ -13,11 +13,9 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
+import net.sf.json.JSONArray;
 import org.apache.commons.jxpath.JXPathContext;
 import pt.webdetails.cdf.dd.util.XPathUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FreeFormRender extends Render {
 
@@ -31,8 +29,9 @@ public class FreeFormRender extends Render {
   @Override
   public void processProperties() {
 
-    this.elementTag = getPropertyString( "elementTag" );
-    this.moreProperties = getPropertyString( "otherAttributes" );
+    setElementTag( getPropertyString( "elementTag" ) );
+    setMoreProperties( getPropertyString( "otherAttributes" ) );
+
     getPropertyBag().addId( getId() );
     getPropertyBag().addClass( getPropertyString( "cssClass" ) );
 
@@ -40,14 +39,8 @@ public class FreeFormRender extends Render {
 
   @Override
   public String renderStart() {
-    Map<String, String> attrs = getMoreProperties();
     String content = "<" + elementTag + " " + getPropertyBagString();
-
-    for ( Map.Entry<String, String> entry : attrs.entrySet() ) {
-      content += " " + entry.getKey() + "='" + entry.getValue() + "'";
-    }
-    content += ">";
-
+    content += getMoreProperties() + ">";
     return content;
   }
 
@@ -61,25 +54,27 @@ public class FreeFormRender extends Render {
     return id.length() > 0 ? id : XPathUtils.getStringValue( getNode(), "id" );
   }
 
-  protected Map<String, String> getMoreProperties() {
-    Map<String, String> values = new HashMap<String, String>();
-    String[] attrs;
-    String[] insertVal;
+  protected String getMoreProperties() {
+    String properties = "";
+    JSONArray attrs = JSONArray.fromObject( moreProperties );
+    JSONArray insertVal;
 
-    if ( !moreProperties.equals( "[]" ) ) {
-      moreProperties = moreProperties.replaceAll( "\"\"", "\" \"" ).replaceAll( "(\\[\\[\")|(\"\\]\\])" , "" )
-        .replaceAll( "\",\"", "," ).replaceAll( "\"\\],\\[\"", ";" );
-
-
-      attrs = moreProperties.split( ";" );
-      for ( int i = 0; i < attrs.length; i++ ) {
-        insertVal = attrs[ i ].split( "," );
-        if ( !insertVal[ 0 ].equals( "id" ) ) {
-          values.put( insertVal[ 0 ], insertVal[ 1 ] );
-        }
+    for ( int i = 0; i < attrs.size(); i++ )  {
+      insertVal = attrs.getJSONArray( i );
+      if ( ( insertVal.getString( 0 ).equals( "id" ) && getPropertyString( "name" ).equals( "" ) )
+        || !insertVal.getString( 0 ).equals( "id" ) ) {
+        properties += " " + insertVal.getString( 0 ) + "='" + insertVal.getString( 1 ) + "'";
       }
     }
 
-    return values;
+    return properties;
+  }
+
+  protected void setMoreProperties( String properties ) {
+    this.moreProperties = properties;
+  }
+
+  protected void setElementTag( String tag ) {
+    this.elementTag = tag;
   }
 }
