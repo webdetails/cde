@@ -13,24 +13,36 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-public class BootstrapPanelRender extends DivRender {
+public class BootstrapPanelHeaderRenderTest extends TestCase {
 
-  public BootstrapPanelRender( JXPathContext context ) {
-    super( context );
+  private BootstrapPanelHeaderRender renderForTest;
+
+  @Before
+  public void setUp() throws Exception {
+    JXPathContext context = Mockito.mock( JXPathContext.class );
+    renderForTest = new BootstrapPanelHeaderRender( context );
+    renderForTest.processProperties();
   }
 
-  @Override
-  public void processProperties() {
-    super.processProperties();
+  @Test
+  public void testRenderStart() {
+    String div = renderForTest.renderStart();
 
-    getPropertyBag().addClass( "panel" );
-    getPropertyBag().addClass( getBootstrapPanelStyle() );
+    Assert.assertEquals( "<div  class='panel-heading ' >", div );
   }
 
-  protected String getBootstrapPanelStyle() {
-    return getPropertyString( "bootstrapPanelStyle" );
+  @Test
+  public void testRenderClose() {
+    String div = renderForTest.renderClose();
+
+    Assert.assertEquals( "</div>", div );
   }
 
 }
