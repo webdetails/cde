@@ -120,7 +120,7 @@ var LayoutPanel = Panel.extend({
 			var output = [];
 			var myself = this;
 			$.each(data,function(i,row){
-					if(row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL){
+					if(row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL || row.type == LayoutBootstrapColumnModel.MODEL){
 						// Use the ones that don't have children
 						if(myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length==0){
 							output.push(row);
