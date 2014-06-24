@@ -606,7 +606,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         + "\"]}" );
   }
 
-
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void olapUtils( final OutputStream out ) throws JSONException {
     OlapUtils olapUtils = new OlapUtils();

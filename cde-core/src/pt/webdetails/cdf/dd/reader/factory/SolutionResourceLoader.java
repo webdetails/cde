@@ -16,12 +16,14 @@ package pt.webdetails.cdf.dd.reader.factory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IACAccess;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class SolutionResourceLoader implements IResourceLoader {
 
   private IReadAccess reader;
   private IACAccess accessControl;
+  private IRWAccess writer;
 
   public SolutionResourceLoader() {
   }
@@ -39,4 +41,9 @@ public class SolutionResourceLoader implements IResourceLoader {
   public IACAccess getAccessControl() {
     return this.accessControl;
   }
+
+  public IRWAccess getWriter() {
+    return this.writer;
+  }
+
 }

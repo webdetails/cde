@@ -1,26 +1,40 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.api;
 
+import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
+import pt.webdetails.cdf.dd.testUtils.MockResourceLoader;
 
-import pt.webdetails.cpf.repository.api.IUserContentAccess;
-import pt.webdetails.cdf.dd.testUtils.MockUserContentAccess;
 
 public class EditorApiForTesting extends EditorApi {
 
-  private MockUserContentAccess mockUserContentAccess;
+  private MockResourceLoader mockResourceLoader;
 
-  public void initMockUserContentAccess() {
-    this.mockUserContentAccess = new MockUserContentAccess();
+  public void initMockResourceLoader() {
+    this.mockResourceLoader = new MockResourceLoader();
   }
 
-  @Override protected IUserContentAccess getUserContentAccess() {
-    return mockUserContentAccess;
+  @Override
+  protected IResourceLoader getResourceLoader( String path ) {
+    return this.mockResourceLoader;
   }
 
   public void setHasAccess( boolean hasAccess ) {
-    mockUserContentAccess.setHasAccess( hasAccess );
+    mockResourceLoader.setHasAccess( hasAccess );
   }
 
   public void setSavedFile( boolean savedFile ) {
-    mockUserContentAccess.setSavedFile( savedFile );
+    mockResourceLoader.setSavedFile( savedFile );
   }
 }

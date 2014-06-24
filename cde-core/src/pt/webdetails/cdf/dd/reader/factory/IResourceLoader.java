@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.reader.factory;
 
 import pt.webdetails.cpf.repository.api.IACAccess;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public interface IResourceLoader {
@@ -21,5 +22,7 @@ public interface IResourceLoader {
   public IACAccess getAccessControl();
 
   public IReadAccess getReader();
+
+  public IRWAccess getWriter();
 
 }

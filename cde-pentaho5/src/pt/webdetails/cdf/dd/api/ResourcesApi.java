@@ -42,7 +42,6 @@ import org.pentaho.platform.engine.core.system.PentahoSystem;
 
 import org.pentaho.platform.web.http.api.resources.PluginResource;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
@@ -53,6 +52,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
+
 
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
@@ -204,12 +204,10 @@ public class ResourcesApi {
 
     //check if it is a system dashboard
     List<IBasicFile> fileList;
-    //IReadAccess access = CdeEnvironment.getUserContentAccess();
     boolean isSystem = false;
     if ( !dashboardPath.isEmpty() ) {
       String path = dashboardPath.toLowerCase().replaceFirst( "/", "" );
       if ( path.startsWith( CdeEnvironment.getSystemDir() + "/" ) ) {
-        //access = Utils.getAppropriateReadAccess( dashboardPath );
         isSystem = true;
       }
     }
@@ -222,7 +220,6 @@ public class ResourcesApi {
     } else {
       fileList = access.listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true, showHiddenFiles );
     }
-
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[ fileList.size() ] );
@@ -237,13 +234,18 @@ public class ResourcesApi {
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
-    String pluginId = CdeEngine.getInstance().getEnvironment().getPluginId();
+    String[] splitPath = path.split( "/" );
+    String pluginId = splitPath[0];
+    String resource = "";
+    for ( int i = 1; i < splitPath.length; i++ ) {
+      resource += "/" + splitPath[i];
+    }
 
     IPluginManager pluginManager = PentahoSystem.get( IPluginManager.class );
 
-    if ( !StringUtils.isEmpty( path ) && pluginManager.isPublic( pluginId, path ) ) {
+    if ( !StringUtils.isEmpty( path ) && pluginManager.isPublic( pluginId, resource ) ) {
 
-      Response readFileResponse = new PluginResource( response ).readFile( pluginId, path );
+      Response readFileResponse = new PluginResource( response ).readFile( pluginId, resource );
 
       if ( readFileResponse.getStatus() != Status.NOT_FOUND.getStatusCode() ) {
         return readFileResponse;

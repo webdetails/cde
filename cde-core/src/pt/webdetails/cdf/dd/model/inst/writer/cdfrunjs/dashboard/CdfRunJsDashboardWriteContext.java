@@ -29,14 +29,17 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
   protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
 
-  protected static final String ABS_DIR_RES_TAG = "\\$\\{res:(/.+/)\\}";
-  protected static final String REL_DIR_RES_TAG = "\\$\\{res:(.+/)\\}";
+  protected static final String ABS_DIR_RES_TAG = "\\$\\{(res|solution):(/.+/)\\}";
+  protected static final String REL_DIR_RES_TAG = "\\$\\{(res|solution):(.+/)\\}";
 
-  protected static final String ABS_RES_TAG = "\\$\\{res:(/.+)\\}";
-  protected static final String REL_RES_TAG = "\\$\\{res:(.+)\\}";
+  protected static final String ABS_RES_TAG = "\\$\\{(res|solution):(/.+)\\}";
+  protected static final String REL_RES_TAG = "\\$\\{(res|solution):(.+)\\}";
 
   protected static final String ABS_IMG_TAG = "\\$\\{img:(/.+)\\}";
   protected static final String REL_IMG_TAG = "\\$\\{img:(.+)\\}";
+
+  protected static final String ABS_SYS_RES_TAG = "\\$\\{system:(/.+)\\}";
+  protected static final String REL_SYS_RES_TAG = "\\$\\{system:(.+)\\}";
 
   // ------------
 

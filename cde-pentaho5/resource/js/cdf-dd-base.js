@@ -15,6 +15,7 @@ var wd = (typeof wd !== 'undefined') ? wd : {};
 wd.cde = wd.cde || {};
 wd.cde.endpoints = {
 
+    staticResUrl: "/api/repos",
     staticUrl: "/api/plugins/pentaho-cdf-dd/files/",
     pluginUrl: "/plugin/pentaho-cdf-dd/api/",
     cggPluginUrl: "/plugin/cgg/api/services/",
@@ -30,6 +31,10 @@ wd.cde.endpoints = {
 
     getStaticUrl: function () {
         return this.getWebappBasePath() + this.staticUrl;
+    },
+
+    getStaticResUrl: function () {
+        return this.getWebappBasePath() + this.staticResUrl;
     },
 
     getPluginUrl: function () {

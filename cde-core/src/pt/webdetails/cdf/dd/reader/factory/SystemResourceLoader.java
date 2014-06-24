@@ -16,18 +16,21 @@ package pt.webdetails.cdf.dd.reader.factory;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class SystemResourceLoader implements IResourceLoader {
 
   private IReadAccess reader;
   private IACAccess accessControl;
+  private IRWAccess writer;
 
   public SystemResourceLoader() {
   }
 
   public SystemResourceLoader( String path ) {
     this.reader = Utils.getAppropriateReadAccess( path );
+    this.writer = Utils.getSystemOrUserRWAccess( path );
     this.accessControl = new IACAccess() {
       public boolean hasAccess( String file, FileAccess access ) {
         switch( access ) {
@@ -47,6 +50,10 @@ public class SystemResourceLoader implements IResourceLoader {
 
   public IACAccess getAccessControl() {
     return this.accessControl;
+  }
+
+  public IRWAccess getWriter() {
+    return this.writer;
   }
 
 }

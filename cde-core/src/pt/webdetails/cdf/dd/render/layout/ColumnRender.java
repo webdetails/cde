@@ -17,12 +17,15 @@ import org.apache.commons.jxpath.JXPathContext;
 
 @SuppressWarnings( "unchecked" )
 public class ColumnRender extends DivRender {
+
   public ColumnRender( JXPathContext context ) {
     super( context );
   }
 
   @Override
   public void processProperties() {
+
+    super.processProperties();
 
     getPropertyBag().addColClass( "span-", getPropertyString( "columnSpan" ) );
     getPropertyBag().addColClass( "append-", getPropertyString( "columnAppend" ) );
@@ -37,6 +40,8 @@ public class ColumnRender extends DivRender {
 
   @Override
   public String renderStart() {
+
+    String div = "<div ";
 
     if ( lastColumn() ) {
       getPropertyBag().addClass( "last" );
