@@ -65,7 +65,6 @@ public class CdeEngine {
       ICdeBeanFactory factory = new CoreBeanFactory();
 
       // try to get the environment from the configuration
-      // will return the DefaultCdaEnvironment by default
       ICdeEnvironment env = instance.getConfiguredEnvironment( factory );
 
       if ( env != null ) {
@@ -73,12 +72,10 @@ public class CdeEngine {
       }
 
       instance.cdeEnv = env;
-      // XXX figure out where to put ensureBasicDirs
-      instance.ensureBasicDirs();
     }
   }
 
-  private void ensureBasicDirs() {
+  public void ensureBasicDirs() {
     IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
     // TODO: better error messages
     if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS ) ) {
