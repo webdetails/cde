@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 
@@ -26,11 +27,20 @@ public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRu
 
   @Override
   protected String getRoot() {
-    return "";
+    return this._options.isAbsolute() ?
+      ( !StringUtils.isEmpty( this._options.getAbsRoot() ) ?
+        ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
+        : "/pentaho/plugin/pentaho-cdf-dd/")
+      : "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
   @Override
   protected String getSystemDir() {
     return "system";
+  }
+
+  @Override
+  protected String getPluginId(String path) {
+    return "test-plugin";
   }
 }
