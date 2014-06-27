@@ -218,7 +218,7 @@ public class ResourcesApi {
       fileList = access.listFiles( dir, fileFilter, 1, true, false );
       fileList.remove( 0 ); //remove the first because the root is being added
     } else {
-      fileList = access.listFiles( dir, fileFilter, IReadAccess.DEPTH_ZERO, true, showHiddenFiles );
+      fileList = access.listFiles( dir, fileFilter, 1, true, showHiddenFiles );
     }
 
     if ( fileList != null && fileList.size() > 0 ) {
