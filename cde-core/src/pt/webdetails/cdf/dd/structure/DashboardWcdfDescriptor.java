@@ -163,7 +163,10 @@ public class DashboardWcdfDescriptor {
       }
 
       setWidgetParameters( widgetParameters );
+    } else {
+      setWidgetParameters( null );
     }
+
   }
 
   public String getTitle() {
@@ -255,7 +258,7 @@ public class DashboardWcdfDescriptor {
     if ( params != null ) {
       this._widgetParameters = Arrays.asList( params );
     } else {
-      this._widgetParameters.clear();
+      this._widgetParameters = Arrays.asList();
     }
   }
 
