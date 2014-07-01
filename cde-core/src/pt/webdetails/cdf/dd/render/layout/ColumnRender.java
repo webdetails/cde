@@ -14,12 +14,16 @@
 package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
+import pt.webdetails.cdf.dd.util.XPathUtils;
 
 @SuppressWarnings( "unchecked" )
 public class ColumnRender extends DivRender {
 
+  private String renderType;
+
   public ColumnRender( JXPathContext context ) {
     super( context );
+    renderType = XPathUtils.getStringValue( context, "//rendererType" );
   }
 
   @Override
@@ -27,7 +31,7 @@ public class ColumnRender extends DivRender {
 
     super.processProperties();
 
-    getPropertyBag().addColClass( "span-", getPropertyString( "columnSpan" ) );
+    addColSpan( getPropertyString( "columnSpan" ) );
     getPropertyBag().addColClass( "append-", getPropertyString( "columnAppend" ) );
     getPropertyBag().addColClass( "prepend-", getPropertyString( "columnPrepend" ) );
     getPropertyBag().addColClass( ".prepend-top", getPropertyBoolean( "columnPrependTop" ) );
@@ -37,10 +41,8 @@ public class ColumnRender extends DivRender {
 
   }
 
-
   @Override
   public String renderStart() {
-
     String div = "<div ";
 
     if ( lastColumn() ) {
@@ -51,13 +53,20 @@ public class ColumnRender extends DivRender {
     return div;
   }
 
-
-  private boolean lastColumn() {
+  protected boolean lastColumn() {
 
     String parentId = (String) getNode().getValue( "parent" );
     return ( (Boolean) getNode()
       .getValue( "not(following-sibling::*[parent='" + parentId + "'][type='LayoutColumn'])" ) ).booleanValue();
+  }
 
+  protected String getRenderType() {
+    return this.renderType;
+  }
+
+  protected void addColSpan( String value ) {
+    final String spanPrefix = getRenderType().equals( "bootstrap" ) ? "col-md-" : "span-";
+    getPropertyBag().addColClass( spanPrefix, value );
   }
 
 }
