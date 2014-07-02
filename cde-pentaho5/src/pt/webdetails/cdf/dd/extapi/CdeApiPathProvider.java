@@ -21,4 +21,9 @@ public class CdeApiPathProvider implements ICdeApiPathProvider {
     return urlProvider.getPluginStaticBaseUrl();
   }
 
+  @Override
+  public String getResourcesBasePath(){
+    return Util.joinPath( urlProvider.getPluginBaseUrl(), "resources" );
+  }
+
 }
