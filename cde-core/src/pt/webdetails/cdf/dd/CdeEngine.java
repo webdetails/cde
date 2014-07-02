@@ -72,6 +72,7 @@ public class CdeEngine {
       }
 
       instance.cdeEnv = env;
+      instance.ensureBasicDirs();
     }
   }
 
