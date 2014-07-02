@@ -1,9 +1,21 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 package pt.webdetails.cdf.dd.structure;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
 
@@ -23,6 +35,7 @@ public class DashboardWcdfDescriptorTest extends TestCase {
 
     public DashboardWcdfDescriptorForTest( String[] params ) {
       this();
+      setWidgetParameters( params );
     }
 
     private void addParameter(String key, Object value) {
@@ -33,18 +46,12 @@ public class DashboardWcdfDescriptorTest extends TestCase {
       return this.parameters;
     }
 
-    private String[] getWidgetParamsForTest() {
-      return (String[]) this.parameters.get( "widgetParameters" );
-    }
-
   }
-
 
   @Test
   public void testUpdateWidgetParamsSimple() {
     wcdf = new DashboardWcdfDescriptorForTest();
     wcdf.update( wcdf.getParameters() );
-
 
     Assert.assertTrue( "Should continue empty",wcdf.getWidgetParameters().length == 0 );
   }
@@ -61,8 +68,8 @@ public class DashboardWcdfDescriptorTest extends TestCase {
   @Test
   public void testUpdateWidgetParamsRemove() {
     wcdf = new DashboardWcdfDescriptorForTest( new String[]{"param1"} );
-    wcdf.update( wcdf.getParameters() );
 
+    wcdf.update( wcdf.getParameters() );
     Assert.assertTrue( "'param1' should have been removed", wcdf.getWidgetParameters().length == 0 );
   }
 }
