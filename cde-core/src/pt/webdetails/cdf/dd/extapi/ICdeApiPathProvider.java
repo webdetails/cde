@@ -12,4 +12,9 @@ public interface ICdeApiPathProvider {
    */
   public String getPluginStaticBaseUrl();
 
+  /**
+   * @return plugin resource url
+   */
+  public String getResourcesBasePath();
+
 }

@@ -34,6 +34,8 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJs
 import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
+import pt.webdetails.cpf.PentahoUrlProvider;
+import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 
@@ -165,5 +167,15 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
       return getPluginSystemReader( null ).fetchFile( CDE_XML );
     }
     return null;
+  }
+
+  @Override
+  public IUrlProvider getUrlProvider() {
+    return new PentahoUrlProvider( getPluginId() ) {
+      @Override
+      public String getResourcesBasePath(){
+        return getExtApi().getResourcesBasePath();
+      }
+    };
   }
 }
