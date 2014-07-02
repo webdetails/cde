@@ -12,22 +12,21 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 /**
  * @author dcleao
  */
-public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParameterComponentWriter
-{
+public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParameterComponentWriter {
   @Override
-  public void write(StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp) throws ThingWriteException
-  {
-    String name  = JsonUtils.toJsString( context.getId(comp));
-    String value = sanitizeExpression( comp.tryGetPropertyValue("javaScript", "") );
-    Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue("bookmarkable", null) );
+  public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp )
+    throws ThingWriteException {
+    String name = JsonUtils.toJsString( context.getId( comp ) );
+    String value = sanitizeExpression( comp.tryGetPropertyValue( "javaScript", "" ) );
+    Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue( "bookmarkable", null ) );
 
-    addSetParameterAssignment(out, name, value);
-    if (isBookmarkable){
-      addBookmarkable(out, name);
+    addSetParameterAssignment( out, name, value );
+    if ( isBookmarkable ) {
+      addBookmarkable( out, name );
     }
   }
 
-  protected static String sanitizeExpression(String expr){
-    return expr.replaceAll("[;\\s]+$", "");
+  protected static String sanitizeExpression( String expr ) {
+    return expr.replaceAll( "[;\\s]+$", "" );
   }
 }
