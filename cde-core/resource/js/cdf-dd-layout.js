@@ -587,7 +587,7 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
       // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
       // to the end
 
-      if( rowType == LayoutSpaceModel.MODEL ) {
+      if( rowType == LayoutSpaceModel.MODEL || rowType == LayoutBootstrapPanelModel.MODEL ) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
       }
       else if ( rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL || rowType == LayoutFreeFormModel.MODEL ||
