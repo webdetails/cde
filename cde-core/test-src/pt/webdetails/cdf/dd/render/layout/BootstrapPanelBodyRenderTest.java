@@ -13,10 +13,36 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
 
-public class ResourceFileRender extends ResourceRender {
-  public ResourceFileRender( JXPathContext context ) {
-    super( context );
+public class BootstrapPanelBodyRenderTest extends TestCase {
+
+  private BootstrapPanelBodyRender renderForTest;
+
+  @Before
+  public void setUp() throws Exception {
+    JXPathContext context = Mockito.mock( JXPathContext.class );
+    renderForTest = new BootstrapPanelBodyRender( context );
+    renderForTest.processProperties();
   }
+
+  @Test
+  public void testRenderStart() {
+    String div = renderForTest.renderStart();
+
+    Assert.assertEquals( "<div  class='panel-body ' >", div );
+  }
+
+  @Test
+  public void testRenderClose() {
+    String div = renderForTest.renderClose();
+
+    Assert.assertEquals( "</div>", div );
+  }
+
 }

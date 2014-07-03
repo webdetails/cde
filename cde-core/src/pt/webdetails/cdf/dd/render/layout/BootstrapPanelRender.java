@@ -15,8 +15,22 @@ package pt.webdetails.cdf.dd.render.layout;
 
 import org.apache.commons.jxpath.JXPathContext;
 
-public class ResourceFileRender extends ResourceRender {
-  public ResourceFileRender( JXPathContext context ) {
+public class BootstrapPanelRender extends DivRender {
+
+  public BootstrapPanelRender( JXPathContext context ) {
     super( context );
   }
+
+  @Override
+  public void processProperties() {
+    super.processProperties();
+
+    getPropertyBag().addClass( "panel" );
+    getPropertyBag().addClass( getBootstrapPanelStyle() );
+  }
+
+  protected String getBootstrapPanelStyle() {
+    return getPropertyString( "bootstrapPanelStyle" );
+  }
+
 }

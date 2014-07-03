@@ -1,0 +1,30 @@
+<DesignerProperties>
+  <DesignerProperty>
+    <Header>
+      <Name>elementTag</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>div</DefaultValue>
+      <Description>Element Tag</Description>
+      <Tooltip>Html Tag Name of this freeForm component</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>300</Order>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>otherAttributes</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Other Attributes</Description>
+      <Tooltip>More attributes to add to the freeForm component</Tooltip>
+      <InputType>OptionArray</InputType>
+      <OutputType>Array</OutputType>
+      <Order>301</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+</DesignerProperties>
