@@ -757,7 +757,11 @@ div#cdfddOlapMeasureDiv{
 }
 
 .tooltip.layout_add_bootstrap_panel {
-  background-image: url("../images/NAV/add_row2.png"); /*get image for component*/
+  background-image: url("../images/NAV/bootstrap_add_panel.png");
+}
+
+.tooltip.layout_add_freeform {
+  background-image: url("../images/NAV/free_form.png");
 }
 
 .tooltip.layout_add_row {
