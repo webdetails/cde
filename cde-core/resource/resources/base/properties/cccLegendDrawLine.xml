@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>legendDrawLine</Description>
-    <Tooltip>Forces a rule to be shown or not in the marker zone (applies to discrete domain axes).</Tooltip>
+    <Tooltip>Forces a rule to be shown or not in the marker zone (applies to color axes of discrete domain).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>301</Order>

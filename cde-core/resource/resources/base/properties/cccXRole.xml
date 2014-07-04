@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>xRole</Description>
-    <Tooltip>The x visual role controls the base position of the "point" visual element.</Tooltip>
+    <Tooltip>The x visual role is a plot-level visual role that is visually encoded by the base position of the "point" visual element.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>495</Order>

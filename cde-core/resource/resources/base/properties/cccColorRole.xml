@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>colorRole</Description>
-    <Tooltip>The color visual role controls the color of visual elements.</Tooltip>
+    <Tooltip>The color visual role is a plot-level visual role that is visually encoded by the color of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>270</Order>

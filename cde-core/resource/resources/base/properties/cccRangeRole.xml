@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>rangeRole</Description>
-    <Tooltip>The range visual role represents a classification of the values of the value visual role.</Tooltip>
+    <Tooltip>The range visual role is a plot-level visual role that represents classification threshold values of the value visual role.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>418</Order>
