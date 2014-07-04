@@ -4,10 +4,15 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
 	<Description>jQuery Plugin</Description>
-	<Tooltip>chosen: uses chosen.jquery.js to render select tags</Tooltip>
-	<InputType>String</InputType>
+	<Tooltip>jQuery plugin to render select tags</Tooltip>
+	<InputType type="valuelist"/>
 	<OutputType>String</OutputType>
 	<Order>41</Order>
 	<Version>1.0</Version>
 </Header>
+<Values>
+    <Value display="Select2">select2</Value>
+    <Value display="Chosen">chosen</Value>
+    <Value display="Hynds">hynds</Value>
+  </Values>
 </DesignerProperty>
