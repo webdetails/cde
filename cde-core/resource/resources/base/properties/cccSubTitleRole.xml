@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>subTitleRole</Description>
-    <Tooltip>The subTitle visual role represents the sub-title of each bullet.</Tooltip>
+    <Tooltip>The subTitle visual role is a plot-level visual role that represents the sub-title of each bullet.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>446</Order>

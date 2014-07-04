@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>valueRole</Description>
-    <Tooltip>The value visual role represents the main measure.</Tooltip>
+    <Tooltip>The value visual role is a plot-level visual role that represents its main measure under analysis, specifically, it is visually encoded by the orthogonal position of points.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>487</Order>
