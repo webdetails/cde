@@ -431,7 +431,7 @@ a:hover {
 
 #content blockquote {
 	border: dashed 1px #BFB793;
-	background: #FFFEFB url('images/x5.gif') top left repeat-x;
+	background: #FFFEFB;
 	padding: 1em;
 	margin-bottom: 1.5em;
 }
