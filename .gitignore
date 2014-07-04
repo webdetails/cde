@@ -45,3 +45,5 @@ cde-core/test-lib
 cde-pentaho/test-lib
 cde-pentaho5/test-lib
 
+cde-core/node_modules
+npm-debug.log
