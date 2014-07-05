@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>dataPartRole</Description>
-    <Tooltip>The dataPart visual role allows fine grained partitioning of the data that shows in the main plot and in the second plot.</Tooltip>
+    <Tooltip>The dataPart visual role is a chart-level visual role that allows partitioning of the data into several datum subsets.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>283</Order>

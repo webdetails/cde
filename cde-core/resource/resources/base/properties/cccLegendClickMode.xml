@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>toggleVisible</DefaultValue>
     <Description>legendClickMode</Description>
-    <Tooltip>What happens when the user clicks a legend item (applies to discrete domain axes).</Tooltip>
+    <Tooltip>What happens when the user clicks a legend item (applies to color axes of discrete domain).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
     <Order>300</Order>

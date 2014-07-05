@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>sizeRole</Description>
-    <Tooltip>The size visual role controls the size of visual elements.</Tooltip>
+    <Tooltip>The size visual role is a plot-level visual role that is visually encoded by the size of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>430</Order>

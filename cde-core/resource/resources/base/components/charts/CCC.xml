@@ -617,6 +617,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -795,6 +796,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="groupedLabelSep">cccGroupedLabelSep</Property>
@@ -1169,6 +1171,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -1594,6 +1597,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -1816,6 +1820,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="dotsVisible">cccDotsVisible</Property>
@@ -2023,6 +2028,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -2193,6 +2199,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -3113,6 +3120,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="doubleClickAction">cccDoubleClickAction</Property>
@@ -3279,6 +3287,7 @@
           <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
           <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
           <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
           <Property name="dataSeparator">cccDataSeparator</Property>
           <Property name="dataWhere">cccDataWhere</Property>
           <Property name="direction">cccDirection</Property>

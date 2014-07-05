@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>categoryRole</Description>
-    <Tooltip>The category visual role.</Tooltip>
+    <Tooltip>The category visual role is a plot-level visual role that represents a generic logical grouping of the data points.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
     <Order>252</Order>
