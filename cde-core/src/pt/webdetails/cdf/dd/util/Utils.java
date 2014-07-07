@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
@@ -386,6 +388,15 @@ public class Utils {
     }
     return rwAccess;
 
+  }
+
+  public static boolean isValidJsonArray( String jsonString ){
+    try{
+      JSONArray.fromObject( jsonString );
+      return true;
+    } catch( JSONException e ){
+      return false;
+    }
   }
 
 

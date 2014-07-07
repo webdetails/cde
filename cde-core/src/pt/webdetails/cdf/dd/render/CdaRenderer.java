@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
@@ -159,6 +160,23 @@ public class CdaRenderer
       child.appendChild(doc.createTextNode(value));
       connection.appendChild(child);
       }*/
+      else if (paramName.equals( "property" )
+        && Utils.isValidJsonArray( (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class) ) )
+      {
+        JSONArray jsonArray = JSONArray.fromObject( context.getValue("properties/.[name='" + paramName + "']/value", String.class) );
+
+        for ( int i = 0 ; i < jsonArray.size(); i++ ) {
+
+          JSONArray json = (JSONArray) jsonArray.get( i );
+          String name = json.getString( 0 ); // property name
+          String value = json.getString( 1 ); // property value
+
+          Element child = doc.createElement(Utils.toFirstUpperCase( paramName ));
+          child.setAttribute( "name" , name );
+          child.appendChild(doc.createTextNode(value));
+          connection.appendChild(child);
+        }
+      }
       else
       {
         String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
