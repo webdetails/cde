@@ -376,7 +376,7 @@
         <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   
         <antcall target="maven-publish-artifact">
             <param name="publish.pomFile" value="samples-pom.xml" />
-            <param name="publish.file" value="${dist.dir}/${plugin.samples.zipfile}" />
+            <param name="publish.file" value="${dist.dir}/${plugin.solution.zipfile}" />
         </antcall>   
    </target>
 
