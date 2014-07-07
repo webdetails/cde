@@ -274,33 +274,6 @@
     </target>
 
 
-    <!--=======================================================================
-        publish-pentaho-nojar (override)
-
-        Publishes the jar and plugin zip package to the Maven repository
-        ====================================================================-->
-    <target name="publish-pentaho-nojar"
-            depends="install-antcontrib,create-pom,ivy.deliver">
-        <ant antfile="build-res/subfloor.xml" target="publish-pentaho-nojar"/>
-
-        <ivy:makepom ivyfile="package-ivy.xml" pomfile="plugin-pom.xml"/>
-        <ivy:makepom ivyfile="package-ivy.xml" pomfile="solution-pom.xml"/>
-
-        <replace file="plugin-pom.xml" token="jar" value="zip"/>
-        <replace file="plugin-pom.xml" token="%artifact-name%" value="${plugin.artifact.id}"/>
-        <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="plugin-pom.xml"/>
-            <param name="publish.file" value="${dist.dir}/${plugin.zipfile}"/>
-        </antcall>
-
-
-        <replace file="solution-pom.xml" token="jar" value="zip"/>
-        <replace file="solution-pom.xml" token="%artifact-name%" value="${plugin.artifact.id}-solution"/>
-        <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="solution-pom.xml"/>
-            <param name="publish.file" value="${dist.dir}/${plugin.solution.zipfile}"/>
-        </antcall>
-    </target>
 
     <target name="write-properties" depends="make-stage">
         <!-- Create editor.includes.properties -->
@@ -397,6 +370,16 @@
       <ivy:resolve file="${ivyfile}" conf="test" />
       <ivy:retrieve conf="test" pattern="${testlib.dir}/[artifact]-[revision](-[classifier]).[ext]" />
     </target>
+
+
+    <target name="maven-publish.post">
+        <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   
+        <antcall target="maven-publish-artifact">
+            <param name="publish.pomFile" value="samples-pom.xml" />
+            <param name="publish.file" value="${dist.dir}/${plugin.samples.zipfile}" />
+        </antcall>   
+   </target>
+
 
 
 </project>
