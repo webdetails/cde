@@ -101,10 +101,14 @@ var SynchronizeRequests = {
             url: wd.cde.endpoints.getPluginUrl()+"syncronizer/syncronizeTemplates",
             success: function (result) {
                 if (result && result.status == "true") {
-                    $.notifyBar({ html: "Template saved successfully", delay: 100 });
+                    $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
+                        html: "Template saved successfully", delay: 100 });
                 }
                 else {
-                    $.notifyBar({ html: "Errors saving template: " + json.result });
+                    $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
+                        html: "Errors saving template: " + json.result });
                 }
             }
         });
@@ -184,7 +188,9 @@ var SynchronizeRequests = {
                 $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
             }
             else
-                $.notifyBar({ html: "Error loading templates: " + json.result });
+                $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
+                    html: "Error loading templates: " + json.result });
         }
         });
     },
@@ -361,6 +367,7 @@ var StylesRequests = {
                 callback();
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors initializing settings: " + result.result
                 });
             }
@@ -380,6 +387,7 @@ var SaveRequests = {
                     // We need to reload the layout engine in case the rendererType changed
                     cdfdd.layout.init();
                     $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
                         html: "Dashboard Settings saved successfully",
                         delay: 1000
                     });
@@ -388,6 +396,7 @@ var SaveRequests = {
                 }
             } catch (e) {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving settings: " + e
                 });
             }
@@ -404,12 +413,14 @@ var SaveRequests = {
                     window.location.reload();
                 } else {
                     $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
                         html: "Dashboard saved successfully",
                         delay: 1000
                     });
                 }
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + result.result
                 });
             }
@@ -440,6 +451,7 @@ var SaveRequests = {
                 });
             } else
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + result.result
                 });
         };
@@ -481,6 +493,7 @@ var SaveRequests = {
                 });
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + result.result
                 });
             }
@@ -530,6 +543,7 @@ var PreviewRequests = {
                 });
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + result.result
                 });
             }
@@ -618,4 +632,10 @@ var Cgg = {
     getCggDrawUrl: function(){
         return window.location.href.substring(0, window.location.href.indexOf("api")-1) + wd.cde.endpoints.getUnbasedCggPluginUrl() + "draw";
     }
+};
+
+var NotifyBarUtils = {
+  getNotifyBarObject: function() {
+    return $("#notifyBar").length ? $("#notifyBar") : undefined;
+  }
 };
