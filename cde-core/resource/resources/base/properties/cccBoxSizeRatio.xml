@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.333</DefaultValue>
     <Description>boxSizeRatio</Description>
-    <Tooltip>The percentage of space of each band that is occupied by the box bar.</Tooltip>
+    <Tooltip>The percentage of box space over total space in a category band and with a grouped layout.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
     <Order>242</Order>
