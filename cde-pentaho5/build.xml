@@ -29,7 +29,7 @@
   <property name="js.karma.config" value="karma.conf.js"/>
 
   <!-- Import subfloor.xml which contains all the default tasks -->
-  <import file="../build-res/subfloor-pkg.xml"/>
+  <import file="../build-res/subfloor-pkg.xml" id="subfloor-pkg"/>
   <import file="../build-res/subfloor-js.xml"/>
 
     <!--
@@ -372,7 +372,7 @@
     </target>
 
 
-    <target name="maven-publish.post">
+    <target name="publish-nojar" depends="subfloor-pkg.publish-nojar"/>
         <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   
         <antcall target="maven-publish-artifact">
             <param name="publish.pomFile" value="samples-pom.xml" />
