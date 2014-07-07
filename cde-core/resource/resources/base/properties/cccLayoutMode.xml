@@ -2,9 +2,9 @@
   <Header>
     <Name>cccLayoutMode</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>squarify</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>layoutMode</Description>
-    <Tooltip>The rectangle layout algorithm.</Tooltip>
+    <Tooltip>The layout algorithm.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
     <Order>296</Order>
@@ -16,5 +16,7 @@
     <Value display="Slice">slice</Value>
     <Value display="Slice-and-Dice">slice-and-dice</Value>
     <Value display="Squarify">squarify</Value>
+    <Value display="Grouped">grouped</Value>
+    <Value display="Overlapped">overlapped</Value>
   </Values>
 </DesignerProperty>
