@@ -73,10 +73,14 @@ var SynchronizeRequests = {
         $.post(wd.cde.endpoints.getPluginUrl() + "SyncTemplates", templateParams, function (result) {
             var json = Util.parseJsonResult(result);
             if (json.status == "true") {
-                $.notifyBar({ html: "Template saved successfully", delay: 1000 });
+                $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
+                    html: "Template saved successfully", delay: 1000 });
             }
             else {
-                $.notifyBar({ html: "Errors saving template: " + json.result });
+                $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
+                    html: "Errors saving template: " + json.result });
             }
         });
     },
@@ -160,7 +164,9 @@ var SynchronizeRequests = {
                 $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
             }
             else
-                $.notifyBar({ html: "Error loading templates: " + json.result });
+                $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
+                    html: "Error loading templates: " + json.result });
         });
     }, 
 
@@ -323,6 +329,7 @@ var StylesRequests = {
                 callback();
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors initializing settings: " + json.result
                 });
             }
@@ -343,6 +350,7 @@ var SaveRequests = {
                     // We need to reload the layout engine in case the rendererType changed
                     cdfdd.layout.init();
                     $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
                         html: "Dashboard Settings saved successfully",
                         delay: 1000
                     });
@@ -351,6 +359,7 @@ var SaveRequests = {
                 }
             } catch (e) {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving settings: " + e
                 });
             }
@@ -367,12 +376,14 @@ var SaveRequests = {
                     window.location.reload();
                 } else {
                     $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
                         html: "Dashboard saved successfully",
                         delay: 1000
                     });
                 }
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + json.result
                 });
             }
@@ -405,6 +416,7 @@ var SaveRequests = {
                 });
             } else
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + json.result
                 });
         };
@@ -443,6 +455,7 @@ var SaveRequests = {
                 });
             } else {
                 $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + json.result
                 });
             }
@@ -495,7 +508,8 @@ var PreviewRequests = {
                         });
                     } else {
                         $.notifyBar({
-                        html: "Errors saving file: " + json.result
+                            jqObject: NotifyBarUtils.getNotifyBarObject(),
+                            html: "Errors saving file: " + json.result
                     });
                 }
             };
@@ -587,4 +601,10 @@ var Cgg = {
     getCggDrawUrl: function(){
         return window.location.href.substring(0, window.location.href.indexOf("content") -1) + wd.cde.endpoints.getUnbasedCggPluginUrl() + "Draw";
     }
+};
+
+var NotifyBarUtils = {
+  getNotifyBarObject: function() {
+    return $("#notifyBar").length ? $("#notifyBar") : undefined;
+  }
 };
