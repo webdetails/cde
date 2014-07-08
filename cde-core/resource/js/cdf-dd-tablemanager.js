@@ -1791,8 +1791,8 @@ var ResourceFileRenderer = CellRenderer.extend({
   formatSelection: function(file) {
     var isSystem = false;
     var finalPath = "";
-      if(cdfdd.getDashboardData().filename != undefined) {
-        if(cdfdd.getDashboardData().filename.indexOf("/system") == 0){
+      if(CDFDDFileName != undefined) {
+        if(CDFDDFileName.indexOf("/system") == 0){
           isSystem = true;
       }
     }
@@ -1807,14 +1807,13 @@ var ResourceFileRenderer = CellRenderer.extend({
       }
       var common = true;
       var splitFile = file.split("/");
-      var dashFile = cdfdd.getDashboardData().filename;
-      if(dashFile == null) {
-        dashFile = '';
+      var dashFile = CDFDDFileName;
+      if(dashFile == "") {
         //the path is forced to start by slash because the cde editor is called without name in the context of
         //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
         //dashboards, the file name must exists and start by /system, so this scenario is not applied
         finalPath = "/";
-      };
+      }
       
       var splitPath = dashFile.split("/");
       var i = 0;
