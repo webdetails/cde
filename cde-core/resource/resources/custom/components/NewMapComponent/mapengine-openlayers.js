@@ -160,7 +160,7 @@ var OpenLayersEngine = MapEngine.extend({
 
     var popup = new OpenLayers.Popup.Anchored(name,
                                           feature.lonlat,
-                                          new OpenLayers.Size(popupHeight,popupWidth),
+                                          new OpenLayers.Size(popupWidth, popupHeight),
                                           contents,
                                           null, true, null);
 
