@@ -48,7 +48,7 @@ public class CdaRenderer
   }
   public CdaRenderer(JXPathContext doc)
   {
-    this.cdaDefinitions = CdeEnvironment.getDataSourceManager().getProviderJsDefinition("cda");
+    this.cdaDefinitions = getCdaDefinitions();
     this.doc = doc; // NOTE: may be null!
   }
   
@@ -160,10 +160,9 @@ public class CdaRenderer
       child.appendChild(doc.createTextNode(value));
       connection.appendChild(child);
       }*/
-      else if (paramName.equals( "property" )
-        && Utils.isValidJsonArray( (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class) ) )
+      else if (paramName.equals( "property" ) && isValidJsonArray( context, paramName) )
       {
-        JSONArray jsonArray = JSONArray.fromObject( context.getValue("properties/.[name='" + paramName + "']/value", String.class) );
+        JSONArray jsonArray = JSONArray.fromObject( context.getValue("properties/.[name='" + paramName + "']/value") );
 
         for ( int i = 0 ; i < jsonArray.size(); i++ ) {
 
@@ -293,5 +292,15 @@ public class CdaRenderer
       }
     }
     return dataAccess;
+  }
+
+  public JSON getCdaDefinitions(){
+    return CdeEnvironment.getDataSourceManager().getProviderJsDefinition("cda");
+  }
+
+  public boolean isValidJsonArray( JXPathContext context, String paramName ) {
+    return context != null
+      && context.getValue("properties/.[name='" + paramName + "']/value" ) != null
+      && Utils.isValidJsonArray( context.getValue("properties/.[name='" + paramName + "']/value" ).toString() );
   }
 }

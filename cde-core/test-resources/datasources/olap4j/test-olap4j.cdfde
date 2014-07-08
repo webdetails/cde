@@ -1,0 +1,109 @@
+{
+ "layout": {
+  "title": "CDF - Sample structure",
+  "rows": []
+ },
+ "components": {
+  "rows": []
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "OLAP4J",
+    "name": "OLAP4J Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "OLAP4J Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "7186e384-c5ae-e00f-9d52-f4945d07f31f",
+    "type": "ComponentsdenormalizedOlap4j_olap4j",
+    "typeDesc": "denormalizedOlap4j over olap4j",
+    "parent": "OLAP4J",
+    "properties": [
+     {
+      "name": "name",
+      "value": "testolap4j",
+      "type": "Id"
+     },
+     {
+      "name": "driver",
+      "value": "mondrian.olap4j.MondrianOlap4jDriver",
+      "type": "String"
+     },
+     {
+      "name": "url",
+      "value": "jdbc:mondrian:",
+      "type": "String"
+     },
+     {
+      "name": "role",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "property",
+      "value": "[[\"JdbcUser\",\"pentaho_user\"],[\"JdbcPassword\",\"password\"],[\"Jdbc\",\"jdbc:hsqldb:hsql://localhost:9001/Sampledata\"],[\"JdbcDriver\",\"org.hsqldb.jdbcDriver\"],[\"Catalog\",\"mondrian:/SteelWheels\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "",
+      "type": "SqlQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ],
+    "meta": "CDA",
+    "meta_conntype": "olap4j.defaultolap4j",
+    "meta_datype": "denormalizedOlap4j"
+   }
+  ]
+ },
+ "filename": "/public/cde/test-olap4j.cdfde"
+}
