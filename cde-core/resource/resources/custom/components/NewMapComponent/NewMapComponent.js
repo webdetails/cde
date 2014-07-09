@@ -658,7 +658,12 @@ var NewMapComponent = (function (){
     initCallBack: function() {
 
       this.ph = $('#' + this.htmlObject);// this.placeholder();
+      var $popupDivHolder = $("#"+this.popupContentsDiv).clone();
       this.ph.empty(); //clear();
+      //after first render, the popupContentsDiv gets moved inside ph, it will be discarded above, make sure we re-add him
+      if (this.popupContentsDiv && $("#"+this.popupContentsDiv).length != 1) {
+        this.ph.append($popupDivHolder.html("None"));
+      }
       this.mapEngine.renderMap(this.ph[0], this.centerLongitude, this.centerLatitude, this.defaultZoomLevel);
 
       switch (this.mapMode){
