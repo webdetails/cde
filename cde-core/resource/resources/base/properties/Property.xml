@@ -4,9 +4,9 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
 	<Description>Property</Description>
-	<Tooltip></Tooltip>
-	<InputType>String</InputType>
-	<OutputType>String</OutputType>
+	<Tooltip>List (key,value) of custom datasource connection properties</Tooltip>
+	<InputType>ValuesArray</InputType>
+	<OutputType>Array</OutputType>
 	<Order>11</Order>
 	<Version>1.0</Version>
 </Header>
