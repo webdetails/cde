@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>showRepositoryButtons</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"true"</DefaultValue>
+    <Description>Show Repository Buttons</Description>
+    <Tooltip>Show Repository Buttons</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Advanced>true</Advanced>
+    <Order>41</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,0 +1,30 @@
+<DesignerComponent>
+  <Header>
+    <Name>Analyzer Component</Name>
+    <IName>analyzer</IName>
+    <Description>Analyzer Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>action</Property>
+      <Property>solution</Property>
+      <Property>path</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Property>editMode</Property>
+      <Property>showFieldList</Property>
+      <Property>showRepositoryButtons</Property>
+      <Property>executeAtStart</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>refreshPeriod</Property>
+      <Property>tooltip</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>
