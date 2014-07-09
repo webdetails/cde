@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>showFieldList</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"true"</DefaultValue>
+    <Description>Show Field List</Description>
+    <Tooltip>If true, is possible to add more parameters to the analysis report</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Advanced>true</Advanced>
+    <Order>41</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
