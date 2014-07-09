@@ -219,6 +219,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -473,6 +474,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -626,6 +628,7 @@
           <Property name="ignoreNulls">cccIgnoreNulls</Property>
           <Property name="interactive">cccInteractive</Property>
           <Property name="isMultiValued">cccIsMultiValued</Property>
+          <Property name="layoutMode">cccLayoutMode</Property>
           <Property name="leafContentOverflow">cccLeafContentOverflow</Property>
           <Property name="legend">cccLegend</Property>
           <Property name="legendAlign">cccLegendAlign</Property>
@@ -699,10 +702,12 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="seriesRole">cccSeriesRole</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -1032,6 +1037,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -1209,6 +1215,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -1447,6 +1454,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -1665,6 +1673,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -1888,6 +1897,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -2097,6 +2107,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -2244,6 +2255,7 @@
           <Property name="multiChartSingleRowFillsHeight">cccMultiChartSingleRowFillsHeight</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -2492,6 +2504,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -2750,6 +2763,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -3008,6 +3022,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
@@ -3159,6 +3174,7 @@
           <Property name="orientation">cccOrientation</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="rootCategoryLabel">cccRootCategoryLabel</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -3357,6 +3373,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
