@@ -1,0 +1,18 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPointingMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>near</DefaultValue>
+    <Description>pointingMode</Description>
+    <Tooltip>The pointing mode used by the chart.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>418</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Near">near</Value>
+    <Value display="Over">over</Value>
+  </Values>
+</DesignerProperty>
