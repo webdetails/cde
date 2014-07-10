@@ -16,6 +16,9 @@
       <Property>path</Property>
       <Property>action</Property>
       <Property name="parameters">xActionArrayParameter</Property>
+      <Property>editMode</Property>
+      <Property>showFieldList</Property>
+      <Property>showRepositoryButtons</Property>
       <Property>executeAtStart</Property>
       <Property>preExecution</Property>
       <Property>postExecution</Property>
