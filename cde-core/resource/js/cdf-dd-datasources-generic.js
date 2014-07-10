@@ -88,7 +88,7 @@ var CdaPathRenderer = ResourceFileRenderer.extend({
 	},
 
   formatSelection: function(file){
-    return file;
+    return file.substring(0,1) == "/" ? file : "/" + file;
   }
 });
 
