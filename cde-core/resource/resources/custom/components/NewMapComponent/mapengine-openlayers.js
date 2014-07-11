@@ -169,7 +169,7 @@ var OpenLayersEngine = MapEngine.extend({
 
     $(this.map.popups).each(function (i, elt) {elt.hide();});
 
-    this.map.addPopup(popup);
+    this.map.addPopup(popup, true);
   },
 
   renderMap: function(target, centerLongitude, centerLatitude, zoomLevel) {
