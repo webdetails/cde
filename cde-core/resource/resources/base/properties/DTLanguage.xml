@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>DTLanguage</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>language</Description>
+    <Tooltip>Change the table language information using language object properties, since v1.10.0. Example: { "search": "Search:" } }</Tooltip>
+    <InputType>JavaScript</InputType>
+    <OutputType>String</OutputType>
+    <Order>18</Order>
+    <Version>1.0</Version>
+    <Advanced>true</Advanced>
+  </Header>
+</DesignerProperty>

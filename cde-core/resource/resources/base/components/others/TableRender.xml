@@ -34,6 +34,8 @@
 				<Property>drawCallback</Property>
 				<Property name="sDom">sDom</Property>
 				<Property name="oLanguage">oLanguage</Property>
+        <Property name="language">dtLanguage</Property>
+
 			</Definition>
 			<Property>executeAtStart</Property>
 			<Property>preChange</Property>
