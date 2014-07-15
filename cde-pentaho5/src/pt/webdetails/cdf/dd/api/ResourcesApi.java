@@ -47,6 +47,7 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.MimeTypeHandler;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
@@ -77,8 +78,7 @@ public class ResourcesApi {
 
       String mimeType;
       try {
-        final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( file.getExtension().toUpperCase() );
-        mimeType = MimeTypes.getMimeType( fileType );
+        mimeType = MimeTypeHandler.getMimeTypeFromExtension( file.getExtension() );
       } catch ( java.lang.IllegalArgumentException ex ) {
         mimeType = "";
       } catch ( EnumConstantNotPresentException ex ) {
