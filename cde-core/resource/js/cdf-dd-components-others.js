@@ -46,7 +46,8 @@ var TableStyleRenderer = SelectRenderer.extend({
 
 		selectData: {
 			'themeroller':'New',
-			'classic':'Classic'
+			'classic':'Classic',
+			'bootstrap':'Bootstrap'
 		}
 });
 
