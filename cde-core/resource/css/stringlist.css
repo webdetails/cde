@@ -91,11 +91,22 @@ div.jqiParameterList {
 }
 
 
-.StringListText , .StringArrayText, .ParameterListText, .GenericSelectText {
+.StringListText , .StringArrayText, .ParameterListText, .GenericSelectText, .StringListValueDiv {
 	float:left;
 /*	width:100px;*/
 	position:relative;
 	font-size:9pt; 
+}
+
+.StringListValueDiv {
+
+  width: 250px;
+  height: 20px;
+  top:5px;
+
+  background-color: #F2F4F5;
+  border:1px solid #D3D5D6;
+
 }
 
 /* StringList: names */

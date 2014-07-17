@@ -5,7 +5,7 @@
       <DefaultValue>"[]"</DefaultValue>
       <Description>Extension points</Description>
       <Tooltip>CCC Extension points</Tooltip>
-      <InputType>ValuesArray</InputType>
+      <InputType>EditorValuesArray</InputType>
       <OutputType>Array</OutputType>
       <Order>99</Order>
       <Advanced>true</Advanced>
