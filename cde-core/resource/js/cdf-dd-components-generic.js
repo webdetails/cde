@@ -166,11 +166,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
               myself.addParameter(index, "", $("#" + myself.cssPrefix));
             }
             $("#remove_button_"+index).bind('click',myself.removeParameter);
-            $("#parameter_button_"+index).bind('click',myself.addParamterValue);
+            $("#parameter_button_"+index).bind('click',myself.addParameterValue);
             index++;
           });
           $('.' + myself.cssPrefix + 'Remove').bind('click',myself.removeParameter);
-          $('.' + myself.cssPrefix + 'Parameter').bind('click',myself.addParamterValue);
+          $('.' + myself.cssPrefix + 'Parameter').bind('click',myself.addParameterValue);
         },
         
         submit: function(v,m,f){
@@ -310,17 +310,24 @@ var ValuesArrayRenderer = CellRenderer.extend({
     $("#" + this.id.replace("remove_button_","parameters_")).remove();
   },
   
-  //TODO: change name (2 refs)
-  addParamterValue : function(){
+  addParameterValue : function(){
     var id = this.id;
     var content = '<div id="parameterList" class="StringListParameterContainer">';
     var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    var isWidget = cdfdd.getDashboardWcdf().widget;
+
     if(filters.length == 0)
       content += "<p>No Parameters!</p>";
     else{
       content += '<p>Choose Parameter:</p><ul class="StringListParameter">';
-      $.each(filters,function(i,filter){
-        content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'' + filter.properties[0].value + '\')">' + filter.properties[0].value + '</div></li>';
+      $.each(filters,function(i,filter) {
+        var value = filter.properties[0].value;
+
+        if( isWidget && $.inArray( value, cdfdd.getDashboardWcdf().widgetParameters ) > -1 ) {
+          content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'${p:' + value + '}\')">' + value + '</div></li>';
+        } else {
+          content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'' + value + '\')">' + value + '</div></li>';
+        }
       });
       content += '</ul>';
     }
