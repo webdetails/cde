@@ -145,6 +145,9 @@ public abstract class CdfRunJsPropertyBindingWriter extends JsWriterAbstract imp
       // SOMEONE EXPLAIN THIS SHITY CODE!
       rep = rep.replaceAll("\\$", "\\\\\\$");
 
+      // 4. remove all newlines
+      rep = rep.replaceAll( "\\\\n", " " ).replaceAll( "\\\\r", " " );
+
       // Replace the whole match (including the wrapping quotes)
       m.appendReplacement(sb, rep);
     } while(m.find());
