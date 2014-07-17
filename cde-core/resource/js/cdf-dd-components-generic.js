@@ -340,6 +340,163 @@ var ValuesArrayRenderer = CellRenderer.extend({
   }
 });
 
+
+var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
+
+  arrayValue: null,
+
+  constructor: function( tableManager ) {
+    this.base( tableManager );
+    this.logger = new Logger( "EditorValuesArrayRenderer" );
+    this.logger.debug( "Creating new EditorValuesArrayRenderer" );
+  },
+
+  render: function( placeholder, value, callback ) {
+
+    var _editArea = $( "<td>"+ ( value.length > 30 ? ( value.substring( 0, 20 ) + " (...)" ) : value ) + "</td>" );
+    var myself = this;
+
+    _editArea.click( function() {
+
+      var arrayValue = value;
+      var content = $("\n" +
+          "<div id='" + myself.cssPrefix + "' class='" + myself.cssPrefix + "Container'>" +
+          "  <div class='" + myself.cssPrefix + "'></div>\n" +
+          "    <input class='" + myself.cssPrefix + "AddButton' type='button' value='Add'></input>");
+
+      vals = JSON.parse(value);
+      cdfdd.arrayValue = vals;
+      var index = vals.length;
+
+      for(var i=0; i < index; i++) {
+        myself.addParameters( i, vals[i][0], vals[i][1], content );
+      }
+
+      var htmlContent = content.wrap("<div>").parent().html();
+
+      $.prompt(htmlContent,{
+
+        buttons: {
+          Ok: true,
+          Cancel: false
+        },
+
+        prefix: "popup",
+
+        callback: function( v, m, f ) {
+          if(v){
+            // A bit of a hack to make null happen
+            arrayValue = arrayValue.replace( /"null"/g,"null" );
+            callback(arrayValue);
+            _editArea.text(arrayValue);
+          }
+          delete cdfdd.arrayValue;
+        },
+
+        loaded: function() { //button bindings
+          $( '.popup' ).css( "width","630px" );
+
+          $( '.' + myself.cssPrefix + 'AddButton' ).click( function() {
+            myself.addParameters( index, "", "", $( "#" + myself.cssPrefix ) );
+
+            $( "#remove_button_" + index ).click( myself.removeParameter);
+            $( "#parameter_button_" + index ).click( function() {
+              myself.editorInit( this, cdfdd.arrayValue );
+            });
+
+            index++;
+          });
+
+          $( '.' + myself.cssPrefix + 'Remove' ).click( myself.removeParameter );
+          $( '.' + myself.cssPrefix + 'Parameter' ).click( function() {
+            myself.editorInit( this, cdfdd.arrayValue );
+          });
+          $( '.' + myself.cssPrefix + 'ValueDiv' ).tooltip();
+
+        },
+
+        submit: function( v, m, f ) {
+          var array = [];
+          for( var i = 0; i < index; i++ ){
+            var paramVal = myself.getParameterValues( i );
+            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push( paramVal ); //don't attempt to add deleted lines
+          }
+          arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
+        }
+      });
+      //end of $.prompt
+    });
+    //end of _editArea.click
+    _editArea.appendTo(placeholder);
+  },
+
+  editorCallback: function( value, index ) {
+    var divValue = value;
+    if( divValue.length > 40 ) {
+      divValue = divValue.substring( 0, 30 ) + " (...)";
+    }
+
+    $( "#val_" + index ).text( divValue );
+
+    if( value != "" ) {
+      $( "#val_" + index ).attr( "title", "<pre>" + value + "</pre>" );
+      $( "#val_" + index ).tooltip();
+    }
+
+    cdfdd.arrayValue[index] = [ $("#arg_" + index).val(), value ];
+
+  },
+
+  editorInit: function( placeholder, values ) {
+    var param_i = placeholder.id.replace( "parameter_button_", "" );
+    var value = values[param_i] != undefined ? values[param_i][1] : "";
+
+    var editor = new EditExtensionPointsRenderer( this.getTableManager() );
+    editor.render( $(placeholder), value, this.editorCallback );
+  },
+
+  addParameters : function(i,arg,val,container){
+
+    if( val ) { val = val.replace( /["]/g,'&quot;' ); } //for output only, will come back ok
+
+    var parameterButton = this.getParameterButton(i);
+    var removeButton = this.getRemoveButton(i);
+
+    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i );
+    var valDiv = this.getValueDiv(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i );
+
+    var row = "<div id='parameters_" + i + "'>\n" + argInput +
+        "<div class='" + this.cssPrefix + "Values'>" + valDiv + parameterButton + removeButton + "</div><br />" +
+        "</div>\n";
+
+    container.find('.' + this.cssPrefix).append(row);
+  },
+
+  getParameterValues : function(i) {
+    var arg = $('#arg_' + i).val();
+    var value = cdfdd.arrayValue[i] != undefined ? cdfdd.arrayValue[i][1] : "";
+
+    return [arg, value];
+  },
+
+  getFormattedValue: function( _value ) {
+
+    if( _value.length > 40 ){
+      _value = _value.substring( 0, 30 ) + " (...)";
+    }
+    return _value;
+  },
+
+  getValueDiv : function ( title, value, cssClass, id ) {
+    var tooltip = value != "" ? "<pre>" + value + "</pre>" : "";
+    return "<div class='" + cssClass + "'>" +
+        (title != null ? "<span class='" + this.cssPrefix + "TextLabel'>" + title + "</span>" : "") +
+        "<div id='" + id + "' class='" + this.cssPrefix + "ValueDiv' title='" + tooltip + "'>" + this.getFormattedValue( value ) +
+        "</div></div>\n";
+  }
+
+});
+
 /**
  * Single value renderer
  */

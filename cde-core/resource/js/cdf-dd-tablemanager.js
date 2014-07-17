@@ -1371,6 +1371,67 @@ var CodeRenderer = CellRenderer.extend({
 });
 
 
+var EditExtensionPointsRenderer = CodeRenderer.extend({
+
+  index: null,
+
+  constructor: function( tableManager ) {
+    this.base(tableManager);
+    this.logger = new Logger("EditExtensionPointsRender");
+    this.logger.debug("Creating new EditExtensionPointsRender");
+  },
+
+  render: function(placeholder, value, callback){
+
+    // Storing the var for later use when render() is not called again
+    this.value = value;
+    if( placeholder.length ) {
+      this.index = placeholder[0].id.replace( /[a-zA-Z_]+/g, "" );
+    }
+
+    var myself = this;
+    var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px;height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+    // Store what we need in a global var
+    cdfdd.textarea = [myself, callback];
+    var prompt = $.prompt(_inner,{
+      buttons: {
+        Ok: true,
+        Cancel: false
+      },
+      loaded: function(){
+        //editor
+        myself.editor = new CodeEditor();
+        myself.editor.initEditor("codeArea");
+        myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
+        myself.editor.setMode(myself.getCodeType());
+        myself.editor.setContents(myself.value);
+
+        $('.popup:has(#codeArea)').css("width","820px");
+        $('.popup:has(#codeArea)').css('min-height','500px');
+        $('.popup:has(#codeArea)').css('min-width','820px');
+      },
+
+      callback: myself.callback,
+      opacity: 0.2,
+      prefix:'popup'
+    });
+    return prompt;
+  },
+
+  callback: function(v,m,f){
+    if (v) {
+      var value = cdfdd.textarea[0].editor.getContents();
+      var index = cdfdd.textarea[0].index;
+      this.value = value;
+
+      cdfdd.textarea[1](value, index);
+    }
+    delete cdfdd.textarea;
+  }
+
+});
+
+
 var HtmlRenderer =  CodeRenderer.extend({//TextAreaRenderer.extend({
   
   getCodeType: function(){
