@@ -470,27 +470,26 @@ var SaveRequests = {
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        // widgets are always stored in a specific user content folder, best left handled server-side
-        if (saveAsParams) {
-            saveAsParams.widget = true;
-        }
-
         var successFunction = function (result) {
             if (result && result.status == "true") {
                 if (selectedFolder[0] == "/") {
                     selectedFolder = selectedFolder.substring(1, selectedFolder.length);
                 }
-                var solutionPath = selectedFolder.split("/");
-                var wcdf = myself.getDashboardWcdf();
+
+                var updateParams = { widget: true };
                 // TODO: dashboard is being saved twice. This also needs to be fixed..
-                wcdf.title = saveAsParams.title;
-                wcdf.description = saveAsParams.description;
-                wcdf.widgetName = saveAsParams.widgetName;
-                wcdf.widget = true;
-                myself.saveSettingsRequest(wcdf);
-                myself.initStyles(function () {
-                    window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
-                });
+                var wcdf = myself.getDashboardWcdf();
+                var cleanStyle = myself.styles.indexOf('Clean');
+                if (!wcdf.style) {
+                    updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+                }
+
+                myself.saveSettingsRequest( updateParams );
+
+                //redirect to new dashboard
+                window.location = window.location.protocol + "//" + window.location.host + 
+                    wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+
             } else {
                 $.notifyBar({
                     jqObject: NotifyBarUtils.getNotifyBarObject(),
