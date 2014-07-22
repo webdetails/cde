@@ -5,7 +5,7 @@ describe("CDF-DD-DATASOURCES tests", function() {
     var dsp = new DatasourcesPanel;
     dsp.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
 
-    spyOn(dsp, "init").andCallFake(function() {
+    spyOn(dsp, "init").and.callFake(function() {
       //init datasources
     });
 
