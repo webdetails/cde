@@ -5,7 +5,7 @@ describe("CDF-DD-COMPONENTS tests", function() {
     var cp = new ComponentsPanel;
     cp.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
 
-    spyOn(cp, "init").andCallFake(function() {
+    spyOn(cp, "init").and.callFake(function() {
       alert("Components initialized");
     });
     cp.initTemplate();

@@ -16,11 +16,13 @@ module.exports = function(config) {
     files: [
       '../cde-core/resource/js/jquery.js',
       '../cde-core/resource/js/jquery.jeditable.js',
+      '../cde-core/resource/js/jquery.notifyBar.js',
       '../cde-core/resource/js/Base.js',
       'test-js/mockDashboards.js',
       '../cde-core/resource/js/cdf-dd-config.js',
       '../cde-core/resource/js/cdf-dd-tablemanager.js',
       '../cde-core/resource/js/cdf-dd-wizardmanager.js',
+      '../cde-core/resource/js/jquery.form.js',
       '../cde-core/resource/js/cdf-dd.js',
       'resource/js/cdf-dd-base.js',
       'test-js/mock-cdf-dd-base.js',

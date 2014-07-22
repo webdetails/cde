@@ -378,6 +378,13 @@ var StylesRequests = {
 
 var SaveRequests = {
 
+    saveRequestParams: {
+        selectedFolder: null,
+        selectedFile: null,
+        myself: null
+    },
+    
+
     saveSettings: function (saveSettingsParams, cdfdd, wcdf, myself) {
 
         $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function (result) {
@@ -470,45 +477,65 @@ var SaveRequests = {
 
     saveAsWidget: function (saveAsParams, selectedFolder, selectedFile, myself) {
 
-        var successFunction = function (result) {
-            if (result && result.status == "true") {
-                if (selectedFolder[0] == "/") {
-                    selectedFolder = selectedFolder.substring(1, selectedFolder.length);
-                }
+        $.extend(SaveRequests.saveRequestParams ,{
+            selectedFolder: selectedFolder,
+            selectedFile: selectedFile,
+            myself: myself
 
-                var updateParams = { widget: true };
-                // TODO: dashboard is being saved twice. This also needs to be fixed..
-                var wcdf = myself.getDashboardWcdf();
-                var cleanStyle = myself.styles.indexOf('Clean');
-                if (!wcdf.style) {
-                    updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
-                }
+        });
+        
 
-                myself.saveSettingsRequest( updateParams );
-
-                //redirect to new dashboard
-                window.location = window.location.protocol + "//" + window.location.host + 
-                    wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
-
-            } else {
-                $.notifyBar({
-                    jqObject: NotifyBarUtils.getNotifyBarObject(),
-                    html: "Errors saving file: " + result.result
-                });
-            }
-        };
-         if ( $.browser.msie && $.browser.version < 10 ) {
+        if ( $.browser.msie && $.browser.version < 10 ) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-            $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
+            $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, this.saveAsWidgetCallback);
         } else {
-             var $uploadForm = $('<form action="'+wd.cde.endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
+            var $uploadForm = $('<form action="'+wd.cde.endpoints.getPluginUrl()+'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
             $uploadForm.ajaxForm({
                 data:saveAsParams,
-                success: successFunction
+                success: this.saveAsWidgetCallback
             });
             $uploadForm.submit();
         }
+        
     },
+
+    saveAsWidgetCallback: function(result) {
+        if (result && result.status == "true") {
+
+            var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
+            var selectedFile = SaveRequests.saveRequestParams.selectedFile;
+            var myself = SaveRequests.saveRequestParams.myself;
+
+            if (selectedFolder[0] == "/") {
+                selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+            }
+
+            var updateParams = { widget: true };
+            // TODO: dashboard is being saved twice. This also needs to be fixed..
+            var wcdf = myself.getDashboardWcdf();
+            var cleanStyle = myself.styles.indexOf('Clean');
+            if (!wcdf.style) {
+                updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+            }
+
+            myself.saveSettingsRequest( updateParams );
+
+            //redirect to new widget
+            SaveRequests.redirect(selectedFolder, selectedFile);
+
+        } else {
+            $.notifyBar({
+                jqObject: NotifyBarUtils.getNotifyBarObject(),
+                html: "Errors saving file: " + result.result
+            });
+        }
+    },
+
+    redirect: function(selectedFolder, selectedFile) {
+        window.location = window.location.protocol + "//" + window.location.host + 
+                wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    }
+
 };
 
 var LoadRequests = {
