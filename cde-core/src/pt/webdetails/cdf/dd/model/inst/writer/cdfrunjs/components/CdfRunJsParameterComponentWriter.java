@@ -36,7 +36,7 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   }
 
   protected static void addSetParameterAssignment( StringBuilder out, String name, String value ) {
-    out.append( "Dashboards.setParameter(" );
+    out.append( "Dashboards.addParameter(" );
     out.append( name );
     out.append( ", " );
     out.append( value );
