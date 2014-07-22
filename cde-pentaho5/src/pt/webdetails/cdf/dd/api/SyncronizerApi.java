@@ -218,7 +218,6 @@ public class SyncronizerApi { //TODO: synchronizer?
   public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                                @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
                                @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
-                               @FormDataParam( MethodParams.WIDGET ) @DefaultValue( "false" ) boolean widget,
                                @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
