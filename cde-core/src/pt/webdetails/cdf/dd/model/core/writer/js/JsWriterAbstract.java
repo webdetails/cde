@@ -22,6 +22,7 @@ public abstract class JsWriterAbstract {
     out.append( NEWLINE );
   }
 
+  //TODO: review if this is used
   protected static void addVar( StringBuilder out, String name, String value ) {
     out.append( "var " );
     addAssignmentWithOr( out, name, value );
