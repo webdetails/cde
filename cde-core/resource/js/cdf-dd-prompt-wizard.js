@@ -319,6 +319,18 @@ var JavascriptWizard = AcePromptWizard.extend({
 		
 		getFunctionValue: function(_function){
 			return _function.value;
+		},
+
+		apply: function(){
+			var value = this.editor.getContents();
+
+			// set value. We need to add a space to prevent a string like function(){}
+			// to be interpreted by json as a function instead of a string
+			if(value && value.length != 0 && value.substr(value.length-1,1)!=" "){
+				value = value+" ";
+			}
+
+			this.invoker.promptCallback(value);
 		}
 		
 	},{
