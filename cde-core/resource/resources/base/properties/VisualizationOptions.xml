@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>visualizationOptions</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"[]"</DefaultValue>
+    <Description>Visualization Options</Description>
+    <Tooltip>Visualization Options</Tooltip>
+    <InputType>ValuesArray</InputType>
+    <OutputType>Array</OutputType>
+    <Order>40</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
