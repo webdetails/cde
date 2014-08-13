@@ -1,0 +1,37 @@
+<DesignerComponent>
+  <Header>
+    <Name>Visualization API Component</Name>
+    <IName>visualizationAPI</IName>
+    <Description>Visualization API Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Definition name="queryDefinition">
+        <Property>dataSource</Property>
+      </Definition>
+      <Property name="vizId">visualizationId</Property>
+      <Property name="vizOptions">visualizationOptions</Property>
+      <Property>executeAtStart</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>postFetch</Property>
+      <Property>htmlObject</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>tooltip</Property>
+      <Property>listeners</Property>
+      <Property>refreshPeriod</Property>
+    </Model>
+    <Implementation>
+      <Dependencies>
+        <Dependency src="../../../../../common-ui/resources/web/vizapi/VizController.js" version="1">VizController</Dependency>
+        <Dependency src="../../../../../common-ui/resources/web/vizapi/DataTable.js" version="1">DataTable</Dependency>
+        <Dependency src="../../../../../common-ui/resources/web/vizapi/Events.js" version="1">Events</Dependency>
+      </Dependencies>
+    </Implementation>
+  </Contents>
+</DesignerComponent>
