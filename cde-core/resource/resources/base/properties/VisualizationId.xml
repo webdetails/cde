@@ -7,7 +7,7 @@
     <Description>Visualization Id</Description>
     <Tooltip>Id of the visualization that will be loaded</Tooltip>
     <InputType>Datasource</InputType>
-    <Order>40s</Order>
+    <Order>40</Order>
     <Version>1.0</Version>
   </Header>
 </DesignerProperty>
