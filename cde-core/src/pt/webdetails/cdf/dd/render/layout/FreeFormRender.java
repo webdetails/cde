@@ -56,14 +56,21 @@ public class FreeFormRender extends Render {
 
   protected String getMoreProperties() {
     String properties = "";
+    String arg = "";
+    String value = "";
+
     JSONArray attrs = JSONArray.fromObject( moreProperties );
     JSONArray insertVal;
 
     for ( int i = 0; i < attrs.size(); i++ )  {
       insertVal = attrs.getJSONArray( i );
-      if ( ( insertVal.getString( 0 ).equals( "id" ) && getPropertyString( "name" ).equals( "" ) )
-        || !insertVal.getString( 0 ).equals( "id" ) ) {
-        properties += " " + insertVal.getString( 0 ) + "='" + insertVal.getString( 1 ) + "'";
+      arg = insertVal.getString( 0 );
+      value = insertVal.getString( 1 );
+
+      if ( ( arg.equals( "id" ) && getPropertyString( "name" ).equals( "" ) ) || !arg.equals( "id" ) ) {
+        properties += " " + arg + "=" + ( value.indexOf( "\'" ) != -1
+          ? "\"" + value + "\""
+          : "'" + value + "'" );
       }
     }
 
