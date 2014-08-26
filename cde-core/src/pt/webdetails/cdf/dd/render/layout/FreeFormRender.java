@@ -40,7 +40,7 @@ public class FreeFormRender extends Render {
   @Override
   public String renderStart() {
     String content = "<" + elementTag + " " + getPropertyBagString();
-    content += getMoreProperties() + ">";
+    content += buildMoreProperties() + ">";
     return content;
   }
 
@@ -54,12 +54,12 @@ public class FreeFormRender extends Render {
     return id.length() > 0 ? id : XPathUtils.getStringValue( getNode(), "id" );
   }
 
-  protected String getMoreProperties() {
+  protected String buildMoreProperties() {
     String properties = "";
     String arg = "";
     String value = "";
 
-    JSONArray attrs = JSONArray.fromObject( moreProperties );
+    JSONArray attrs = JSONArray.fromObject( getMoreProperties() );
     JSONArray insertVal;
 
     for ( int i = 0; i < attrs.size(); i++ )  {
@@ -75,6 +75,10 @@ public class FreeFormRender extends Render {
     }
 
     return properties;
+  }
+
+  protected String getMoreProperties() {
+    return moreProperties;
   }
 
   protected void setMoreProperties( String properties ) {
