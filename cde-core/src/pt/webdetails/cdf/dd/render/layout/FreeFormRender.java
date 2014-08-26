@@ -40,7 +40,7 @@ public class FreeFormRender extends Render {
   @Override
   public String renderStart() {
     String content = "<" + elementTag + " " + getPropertyBagString();
-    content += getMoreProperties() + ">";
+    content += buildMoreProperties() + ">";
     return content;
   }
 
@@ -54,20 +54,31 @@ public class FreeFormRender extends Render {
     return id.length() > 0 ? id : XPathUtils.getStringValue( getNode(), "id" );
   }
 
-  protected String getMoreProperties() {
+  protected String buildMoreProperties() {
     String properties = "";
-    JSONArray attrs = JSONArray.fromObject( moreProperties );
+    String arg = "";
+    String value = "";
+
+    JSONArray attrs = JSONArray.fromObject( getMoreProperties() );
     JSONArray insertVal;
 
     for ( int i = 0; i < attrs.size(); i++ )  {
       insertVal = attrs.getJSONArray( i );
-      if ( ( insertVal.getString( 0 ).equals( "id" ) && getPropertyString( "name" ).equals( "" ) )
-        || !insertVal.getString( 0 ).equals( "id" ) ) {
-        properties += " " + insertVal.getString( 0 ) + "='" + insertVal.getString( 1 ) + "'";
+      arg = insertVal.getString( 0 );
+      value = insertVal.getString( 1 );
+
+      if ( ( arg.equals( "id" ) && getPropertyString( "name" ).equals( "" ) ) || !arg.equals( "id" ) ) {
+        properties += " " + arg + "=" + ( value.indexOf( "\'" ) != -1
+          ? "\"" + value + "\""
+          : "'" + value + "'" );
       }
     }
 
     return properties;
+  }
+
+  protected String getMoreProperties() {
+    return moreProperties;
   }
 
   protected void setMoreProperties( String properties ) {

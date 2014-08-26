@@ -28,7 +28,7 @@ public class FreeFormRenderTest extends TestCase {
     private String properties;
     public FreeFormRenderForTest( JXPathContext context ) {
       super( context );
-      this.properties = "";
+      this.properties = "[]";
     }
 
     @Override
@@ -62,11 +62,21 @@ public class FreeFormRenderTest extends TestCase {
   }
 
   @Test
-  public void testRenderStartWithMoreProperties() {
-    renderForTest.setProperties( " arg1='value1' arg2='value2'" );
+  public void testRenderStartWithMorePropertiesSimple() {
+    renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();
 
     Assert.assertEquals( "<select  arg1='value1' arg2='value2'>", select );
+  }
+
+  @Test
+  public void testRenderStartWithMorePropertiesComplex() {
+    renderForTest.setProperties( "[['arg1','{{[ \"value11\", \"value12\"]}}'],"
+      + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
+    String select = renderForTest.renderStart();
+
+    Assert.assertEquals( "<select  arg1='{{[ \"value11\", \"value12\"]}}' arg2=\"{{[ 'value21', 'value22']}}\">",
+      select );
   }
 
   @Test
@@ -80,7 +90,7 @@ public class FreeFormRenderTest extends TestCase {
   @Test
   public void testRenderStartWithAll() {
     renderForTest.setPropertyBag( "clear" );
-    renderForTest.setProperties( " arg1='value1' arg2='value2'" );
+    renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();
 
     Assert.assertEquals( "<select  class='clear '  arg1='value1' arg2='value2'>", select );
