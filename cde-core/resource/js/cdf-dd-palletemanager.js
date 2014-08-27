@@ -48,7 +48,8 @@ var PalleteManager = Base.extend({
 				_placeholder.accordion({
 					header: "h3",
 					active: false,
-					autoHeight: false,
+					collapsible: true,
+					heightStyle: "content",
 					animated: false,
 					//event: "mouseover",
 					icons: {
@@ -61,7 +62,8 @@ var PalleteManager = Base.extend({
 			_placeholder.accordion({
 					header: "h3",
 					active: false,
-					autoHeight: false,
+					collapsible: true,
+					heightStyle: "content",
 					//event: "mouseover",
 					icons: {
 						header: "ui-icon-triangle-1-e",
