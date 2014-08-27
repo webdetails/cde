@@ -13,7 +13,8 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import junit.framework.Assert;
 
@@ -21,20 +22,43 @@ public class ResourceLoaderFactoryTest {
 
   private static ResourceLoaderFactoryForTesting rlfft;
   private final String SYS_PATH = "/system/pentaho-cdf-dd/etc/";
-  private final String SOL_PATH = "/path/etc/";
+  private final String SOL_PATH = "/public/cde/etc/";
+  private final String STATIC_PATH = "/path/etc/";
 
-  @BeforeClass
-  public static void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     rlfft = new ResourceLoaderFactoryForTesting();
   }
 
-  @Test
-  public void testResourceFactory() {
-    IResourceLoader sys = rlfft.getResourceLoader( SYS_PATH );
-    IResourceLoader sol = rlfft.getResourceLoader( SOL_PATH );
-
-    Assert.assertEquals( sys.getClass(), SystemResourceLoader.class );
-    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
-
+  @After
+  public void tearDown() throws Exception {
+    rlfft = null;
   }
+
+  @Test
+  public void testResourceFactorySystem() {
+    IResourceLoader sys = rlfft.getResourceLoader( SYS_PATH );
+    Assert.assertEquals( sys.getClass(), SystemResourceLoader.class );
+  }
+
+  @Test
+  public void testResourceFactoryRepos() {
+    IResourceLoader sol = rlfft.getResourceLoader( SOL_PATH );
+    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+  }
+
+  @Test
+  public void testResourceFactoryStaticSystem() {
+    rlfft.setSystemStatic( true );
+    IResourceLoader sys = rlfft.getResourceLoader( STATIC_PATH );
+    Assert.assertEquals( sys.getClass(), SystemResourceLoader.class );
+  }
+
+  @Test
+  public void testResourceFactoryStaticRepos() {
+    rlfft.setRepositoryStatic( true );
+    IResourceLoader sol = rlfft.getResourceLoader( STATIC_PATH );
+    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+  }
+
 }

@@ -13,25 +13,33 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-public class SolutionResourceLoader implements IResourceLoader {
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
+import org.pentaho.platform.engine.security.SecurityParameterProvider;
+
+public class SystemResourceLoader implements IResourceLoader {
 
   private IReadAccess reader;
   private IACAccess accessControl;
   private IRWAccess writer;
 
-  public SolutionResourceLoader() {
+  public SystemResourceLoader() {
   }
 
-  public SolutionResourceLoader( String path ) {
-    this.reader = Utils.getSystemOrUserReadAccess( path );
-    this.writer = Utils.getSystemOrUserRWAccess( path );
-    this.accessControl = CdeEnvironment.getUserContentAccess();
+  public SystemResourceLoader( String path ) {
+    this.reader = Utils.getAppropriateReadAccess( path );
+    this.writer = Utils.getAppropriateWriteAccess( path );
+
+    this.accessControl = new IACAccess() {
+      public boolean hasAccess( String file, FileAccess access ) {
+        return isAdmin();
+      }
+    };
   }
 
   public IReadAccess getReader() {
@@ -44,6 +52,11 @@ public class SolutionResourceLoader implements IResourceLoader {
 
   public IRWAccess getWriter() {
     return this.writer;
+  }
+
+  protected boolean isAdmin() {
+    SecurityParameterProvider securityParams = new SecurityParameterProvider( PentahoSessionHolder.getSession() );
+    return securityParams.getParameter( "principalAdministrator" ).equals( "true" );
   }
 
 }
