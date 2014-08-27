@@ -1,0 +1,13 @@
+/* CDF-271, maintaing some aditional styling (not included in theme roller generated custom theme)
+ in a seperate file to simplify future lib updates */
+.ui-widget-content tr.ui-state-active { background: #0098c4; color: #fff; }
+.ui-widget-content li:hover {
+	background: #eee;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.ui-widget-content li:hover > a{
+	color: #555;
+}
+.ui-accordion-header:hover { font-weight: normal; }
+.ui-accordion .ui-accordion-header { font-weight: normal; }

@@ -144,7 +144,7 @@ var TableManager = Base.extend({
     }
 
 
-    var selector = "table.#" + this.getTableId() + " tbody";
+    var selector = "table#" + this.getTableId() + " tbody";
     if(pos < 0 || pos == undefined){
       $(selector).append(rowObj);
       //rowObj.appendTo($(selector));
