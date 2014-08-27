@@ -66,11 +66,11 @@ public class EditorApi {
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
 
-    if ( reader.fileExists( path ) ) {
+    if ( reader.fileExists( path ) && loader.getAccessControl().hasAccess( path, FileAccess.READ ) ) {
       response.setHeader( "Cache-Control", "max-age=" + NO_CACHE_DURATION );
       return IOUtils.toString( reader.getFileInputStream( path ) );
     } else {
-      String msg = "File: " + path + "does not exist, or you do not have permissions to access it";
+      String msg = "File: " + path + " does not exist, or you do not have permissions to access it";
       logger.error( msg );
       return msg;
     }
@@ -108,7 +108,7 @@ public class EditorApi {
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
 
-    String msg = "";
+    String msg;
     if ( access.hasAccess( path, FileAccess.WRITE ) ) {
       if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
         msg = "file '" + path + "' saved ok";
@@ -137,7 +137,7 @@ public class EditorApi {
     IACAccess access = loader.getAccessControl();
     IRWAccess writer = loader.getWriter();
 
-    String msg = "";
+    String msg;
     if ( access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) {
       if ( writer.saveFile( path, new ByteArrayInputStream( data.getBytes( CharsetHelper.getEncoding() ) ) ) ) {
         msg = "file '" + path + "' saved ok";
@@ -173,20 +173,28 @@ public class EditorApi {
     IResourceLoader loader = getResourceLoader( path );
     IReadAccess reader = loader.getReader();
     IRWAccess writer = loader.getWriter();
+    IACAccess access = loader.getAccessControl();
+
 
     String msg;
-    if ( reader.fileExists( path ) ) {
-      msg = "already exists: " + path;
-      logger.debug( msg );
-    } else {
-      if ( writer.createFolder( path ) ) {
-        msg = path + "created ok";
+    if ( access.hasAccess( path, FileAccess.WRITE ) ) {
+      if ( reader.fileExists( path ) ) {
+        msg = "already exists: " + path;
         logger.debug( msg );
       } else {
-        msg = "error creating folder " + path;
-        logger.debug( msg );
+        if ( writer.createFolder( path ) ) {
+          msg = path + "created ok";
+          logger.debug( msg );
+        } else {
+          msg = "error creating folder " + path;
+          logger.debug( msg );
+        }
       }
+    } else {
+      msg = "no permissions to create folder " + path;
+      logger.error( msg );
     }
+
     return msg;
   }
 
@@ -230,4 +238,5 @@ public class EditorApi {
   protected IResourceLoader getResourceLoader( String path ) {
     return new ResourceLoaderFactory().getResourceLoader( path );
   }
+
 }
