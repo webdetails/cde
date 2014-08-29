@@ -13,35 +13,25 @@
 
 package pt.webdetails.cdf.dd.reader.factory;
 
+import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IACAccess;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-public class SystemResourceLoader implements IResourceLoader {
+public class SolutionResourceLoader implements IResourceLoader {
 
   private IReadAccess reader;
   private IACAccess accessControl;
   private IRWAccess writer;
 
-  public SystemResourceLoader() {
+  public SolutionResourceLoader() {
   }
 
-  public SystemResourceLoader( String path ) {
+  public SolutionResourceLoader( String path ) {
     this.reader = Utils.getAppropriateReadAccess( path );
-    this.writer = Utils.getSystemOrUserRWAccess( path );
-    this.accessControl = new IACAccess() {
-      public boolean hasAccess( String file, FileAccess access ) {
-        switch( access ) {
-          case EXECUTE:
-          case READ:
-            return true;
-          default:
-            return false;
-        }
-      }
-    };
+    this.writer = Utils.getAppropriateWriteAccess( path );
+    this.accessControl = CdeEnvironment.getUserContentAccess();
   }
 
   public IReadAccess getReader() {
