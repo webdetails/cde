@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>onCloseEvent</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>On Close</Description>
+    <Tooltip>Function to be executed when the component is closed</Tooltip>
+    <Advanced>true</Advanced>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>90</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
