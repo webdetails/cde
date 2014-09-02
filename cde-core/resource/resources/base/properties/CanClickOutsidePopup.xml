@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>canClickOutsidePopup</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>Can Click Outside Popup</Description>
+    <Tooltip>Indicates if the popup will not be closed when the user clicks outside of it</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>43</Order>
+    <Advanced>true</Advanced>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
