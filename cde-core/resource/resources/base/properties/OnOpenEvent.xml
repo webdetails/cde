@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>onOpenEvent</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>On Open</Description>
+    <Tooltip>Function to be executed when the component is opened</Tooltip>
+    <Advanced>true</Advanced>
+    <InputType>JavaScript</InputType>
+    <OutputType>Function</OutputType>
+    <Order>90</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
