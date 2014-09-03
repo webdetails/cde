@@ -33,6 +33,10 @@ public class ResourceLoaderFactory {
   }
 
   protected boolean isSystem( String path ) {
+    if( path.isEmpty() ) {
+      return false;
+    }
+    
     ICdeEnvironment env = getCdeEnvironment();
     IContentAccessFactory factory = getContentAccessFactory( env );
 
