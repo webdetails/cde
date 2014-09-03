@@ -15,6 +15,8 @@
 			<Property>startDate</Property>
 			<Property>dateFormat</Property>
 			<Property>endDate</Property>
+      <Property>onOpenEvent</Property>
+      <Property>onCloseEvent</Property>
 			<Property>executeAtStart</Property>
 			<Property>preChange</Property>
 			<Property>postChange</Property>
