@@ -24,6 +24,7 @@ public class ResourceLoaderFactoryTest {
   private final String SYS_PATH = "/system/pentaho-cdf-dd/etc/";
   private final String SOL_PATH = "/public/cde/etc/";
   private final String STATIC_PATH = "/path/etc/";
+  private final String EMPTY_PATH = "";
 
   @Before
   public void setUp() throws Exception {
@@ -58,6 +59,12 @@ public class ResourceLoaderFactoryTest {
   public void testResourceFactoryStaticRepos() {
     rlfft.setRepositoryStatic( true );
     IResourceLoader sol = rlfft.getResourceLoader( STATIC_PATH );
+    Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
+  }
+
+  @Test
+  public void testResourceFactoryEmptyPath() {
+    IResourceLoader sol = rlfft.getResourceLoader( EMPTY_PATH );
     Assert.assertEquals( sol.getClass(), SolutionResourceLoader.class );
   }
 
