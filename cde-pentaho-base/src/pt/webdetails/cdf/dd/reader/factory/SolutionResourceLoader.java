@@ -29,7 +29,11 @@ public class SolutionResourceLoader implements IResourceLoader {
   }
 
   public SolutionResourceLoader( String path ) {
-    this.reader = Utils.getAppropriateReadAccess( path );
+    if ( path.isEmpty() ) {
+      this.reader = CdeEnvironment.getUserContentAccess();
+    } else {
+      this.reader = Utils.getAppropriateReadAccess( path );
+    }
     this.writer = Utils.getAppropriateWriteAccess( path );
     this.accessControl = CdeEnvironment.getUserContentAccess();
   }
