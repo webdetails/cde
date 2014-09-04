@@ -4,11 +4,12 @@
   <configurations>
     <conf name="default" />
     <conf name="runtime" visibility="public" />
-    <conf name="test" visibility="private" />
+    <conf name="test"/>
   </configurations>
   
   <publications>
     <artifact name="%artifact-name%" type="zip" />
+    <artifact name="cde-core-test" type="jar" ext="jar" conf="test"/>    
   </publications>
   
   <dependencies defaultconf="default->default">
