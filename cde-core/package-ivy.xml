@@ -4,7 +4,7 @@
   <configurations>
     <conf name="default" />
     <conf name="runtime" visibility="public" />
-    <conf name="test" visibility="private" />
+    <conf name="test"/>
   </configurations>
   
   <publications>
