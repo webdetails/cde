@@ -6,7 +6,7 @@
     <configurations>
       <conf name="default"/>
       <conf name="runtime"/>
-      <conf name="test" visibility="private"/>
+      <conf name="test"/>
       <conf name="sources"/>
     </configurations>
 
