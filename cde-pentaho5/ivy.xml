@@ -53,10 +53,8 @@
         <dependency org="jaxen"             name="jaxen"             rev="1.1"                 conf="test->default" transitive="false"/>
         <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"               conf='test->default' transitive="false"/>
         <dependency org="net.sf.ezmorph"    name="ezmorph"           rev="1.0.6"               conf='test->default' transitive="false"/>
-        <dependency org="pentaho"           name="cde-core"          rev="${project.revision}" conf="test->default" transitive="false" changing="true">
-             <artifact name="cde-core-test" type="jar" ext="jar" conf="test"/>
-             <artifact name="cde-core"      type="jar" ext="jar"/>
-        </dependency>
+        <dependency org="pentaho"           name="cde-core"          rev="${project.revision}" conf="test->default" transitive="false" changing="true"/>       
+        <dependency org="pentaho"           name="cde-core-test"     rev="${project.revision}" conf="test->default" transitive="false" changing="true"/>
             
     </dependencies>
 
