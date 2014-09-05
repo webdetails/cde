@@ -12,7 +12,7 @@
 
     <publications>
       <artifact name="cde-core"      type="jar" ext="jar"/>
-      <artifact name="cde-core-test" type="jar" ext="jar" conf="test"/>
+      <artifact name="cde-core-test" type="jar" ext="jar"/>
     </publications>
     
     <dependencies defaultconf="default->default" >
