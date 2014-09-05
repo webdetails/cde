@@ -108,7 +108,7 @@
     <ivy:retrieve conf="runtime" pattern="${runtimelib.dir}/[module]-[revision](-[classifier]).[ext]" />
   </target>
 
-
+<!--
   <target name="publish-nojar" depends="subfloor-pkg.publish-nojar">
         <ivy:makepom ivyfile="package-ivy-tests.xml" pomfile="tests-pom.xml" />   
         <antcall target="maven-publish-artifact">
@@ -116,6 +116,6 @@
             <param name="publish.file" value="${dist.dir}/cde-core-test-TRUNK-SNAPSHOT.jar" />
         </antcall>   
    </target>
-
+-->
 
 </project>
