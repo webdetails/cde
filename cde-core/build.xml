@@ -21,10 +21,12 @@
   <property file="../build.properties"
             description="Top level Properties customized for your particular project belong in this file." />
 
+
+
   <property name="js.karma.config" value="karma.conf.js"/>
 
   <!-- Import subfloor.xml which contains all the default tasks -->
-  <import file="../build-res/subfloor-pkg.xml"/>
+  <import file="../build-res/subfloor.xml"/>
   <import file="../build-res/subfloor-js.xml"/>
 
   <!--
@@ -94,6 +96,7 @@
   <property name="distribution.version" value="${project.stage}-${project.version}"/>
 
 
+
   <echo>distribution.version = ${distribution.version}</echo>
 
 
@@ -108,14 +111,14 @@
     <ivy:retrieve conf="runtime" pattern="${runtimelib.dir}/[module]-[revision](-[classifier]).[ext]" />
   </target>
 
-<!--
-  <target name="publish-nojar" depends="subfloor-pkg.publish-nojar">
-        <ivy:makepom ivyfile="package-ivy-tests.xml" pomfile="tests-pom.xml" />   
+
+   <target name="publish-nojar" depends="subfloor.publish-nojar">
+        <ivy:makepom ivyfile="package-ivy-tests.xml" pomfile="test-pom.xml" />   
         <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="tests-pom.xml" />
-            <param name="publish.file" value="${dist.dir}/cde-core-test-TRUNK-SNAPSHOT.jar" />
+            <param name="publish.pomFile" value="test-pom.xml" />
+            <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-test-${project.revision}.jar" />
         </antcall>   
    </target>
--->
+
 
 </project>
