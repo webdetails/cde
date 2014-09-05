@@ -112,13 +112,4 @@
   </target>
 
 
-   <target name="publish-nojar" depends="subfloor.publish-nojar">
-        <ivy:makepom ivyfile="package-ivy-tests.xml" pomfile="test-pom.xml" />   
-        <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="test-pom.xml" />
-            <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-test-${project.revision}.jar" />
-        </antcall>   
-   </target>
-
-
 </project>
