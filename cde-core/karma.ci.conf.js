@@ -25,6 +25,7 @@ module.exports = function(config) {
       'resource/js/cdf-dd-palletemanager.js',
       'resource/js/cdf-dd-tableoperations.js',
       'resource/js/cdf-dd-components.js',
+      'resource/js/cdf-dd-components-generic.js',
       'resource/js/cdf-dd-datasources.js',
       'test-js/main.js',
       {pattern: 'test-js/**/*-spec.js', included: false}
