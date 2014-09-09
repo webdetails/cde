@@ -213,10 +213,10 @@
                 &lt;package_url>${marketplace.metadata.package_url}&lt;/package_url>
                 &lt;samples_url>${marketplace.metadata.samples_url}&lt;/samples_url>
                 &lt;description>${marketplace.metadata.description}&lt;/description>
-                &lt;developmentStage>
+                &lt;development_stage>
                     &lt;lane>Community&lt;/lane>
                     &lt;phase>2&lt;/phase>
-                &lt;/developmentStage>                                                    
+                &lt;/development_stage>                                                    
         		&lt;build_id>${sequential.build.id}&lt;/build_id>
                 &lt;min_parent_version>${marketplace.metadata.min_parent_version}&lt;/min_parent_version>	
             &lt;/version>
