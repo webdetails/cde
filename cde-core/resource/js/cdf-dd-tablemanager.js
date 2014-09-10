@@ -1852,88 +1852,66 @@ var ResourceFileRenderer = CellRenderer.extend({
   formatSelection: function(file) {
     var isSystem = false;
     var finalPath = "";
-      if(CDFDDFileName != undefined) {
-        if(CDFDDFileName.indexOf("/system") == 0){
-          isSystem = true;
-      }
+
+    if (file.charAt(0) != '/') {
+      file = "/" + file;
     }
 
-    if(isSystem) {
-      finalPath = file.indexOf("/") == 0 ? file : "/" + file;
-      return ("${system:" + finalPath.replace(/\/+/g, "/") + '}');
+    if (CDFDDFileName != undefined && CDFDDFileName.indexOf("/system") == 0) {
+      var systemDir = "system";
+      var pluginDir = CDFDDFileName.split('/')[2];
+      file = "/" + systemDir + "/" + pluginDir + file
+      isSystem = true;
+    }
+
+    var common = true;
+    var splitFile = file.split("/");
+    var dashFile = CDFDDFileName;
+    if (dashFile == "") {
+      //the path is forced to start by slash because the cde editor is called without name in the context of
+      //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
+      //dashboards, the file name must exists and start by /system, so this scenario is not applied
+      finalPath = "/";
+    }
+
+    var splitPath = dashFile.split("/");
+    var i = 0;
+
+    while (common) {
+      if (splitFile[i] !== splitPath[i]) {
+        common = false;
+      }
+      i += 1;
+    }
+
+    $.each(splitPath.slice(i), function (i, j) {
+        finalPath += "../";
+    });
+
+    finalPath += splitFile.slice(i - 1).join('/');
+    if (isSystem) {
+      return "${system:" + finalPath.replace(/\/+/g, "/") + "}";
     } else {
-      //force file absolute
-      if (file.charAt(0) != '/') {
-        file = "/"+ file;
-      }
-      var common = true;
-      var splitFile = file.split("/");
-      var dashFile = CDFDDFileName;
-      if(dashFile == "") {
-        //the path is forced to start by slash because the cde editor is called without name in the context of
-        //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
-        //dashboards, the file name must exists and start by /system, so this scenario is not applied
-        finalPath = "/";
-      }
-      
-      var splitPath = dashFile.split("/");
-      var i = 0;
-      
-      while (common) {
-        if (splitFile[i] !== splitPath[i]) {
-          common = false;
-        }
-        i += 1;
-      }
-
-      $.each(splitPath.slice(i),function(i,j){
-        finalPath+="../";
-      });
-
-      finalPath += splitFile.slice(i - 1).join('/');
-
-      return ("${solution:" + finalPath.replace(/\/+/g, "/") + '}');
-
+      return "${solution:" + finalPath.replace(/\/+/g, "/") + "}";
     }
-
   },
 
   getFileName: function(settings) {
-  	var fileName;
-  	if (settings.indexOf('${res:') > -1 || settings.indexOf('${solution:') > -1) {
-    	var toReplace = settings.substring(0, settings.indexOf(':') + 1);
-		  var fileName = settings.replace(toReplace, '').replace('}','');
+    var fileName;
+    if (settings.indexOf('${res:') > -1 || settings.indexOf('${solution:') > -1) {
+      var toReplace = settings.substring(0, settings.indexOf(':') + 1);
+      fileName = settings.replace(toReplace, '').replace('}','');
+
       if (fileName.charAt(0) != '/') { //relative path, append dashboard location
-        var basePath =  cdfdd.getDashboardData().filename;
-        if(basePath == null) {
-          this.fileName = null;
-          return;
-        }
-        var lastSep = basePath.lastIndexOf('/');
-        basePath = basePath.substring(0, lastSep);
-
-        if (fileName.indexOf('..') > -1) { //resolve
-          var base = basePath.split('/');
-          var file = fileName.split('/');
-          var baseEnd = base.length;
-          var fileStart = 0;
-          while(file[fileStart] == '..' && baseEnd > 0) {
-            fileStart++;
-            baseEnd--;
-          }
-          fileName = base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
-        }
-
-        else { fileName = basePath + '/' + fileName; }
-
-	}
+        fileName = this.getRelativeFileName(fileName);
+      }
 
     } else if (settings.indexOf('${system:') > -1) {
-    	var systemDir = CDFDDFileName.split("/")[1];
-    	var pluginId = CDFDDFileName.split("/")[2];
-    	fileName = "/" + systemDir + "/" + pluginId + "/";
-   		fileName += settings.replace('${system:', '').replace('}','');
-    	fileName = fileName.replace(/\/+/g, "/");
+      fileName = settings.replace('${system:', '').replace('}','');
+
+      if (fileName.charAt(0) != '/') { //relative path, append dashboard location
+        fileName = this.getRelativeFileName(fileName);
+      }
 
     } else if (settings != null && settings != '') { //needs a solution path
       fileName = settings;
@@ -1944,6 +1922,31 @@ var ResourceFileRenderer = CellRenderer.extend({
     }
 
     return fileName;
+  },
+
+  getRelativeFileName: function(fileName) {
+    var basePath = CDFDDFileName; //cdfdd.getDashboardData().filename;
+    if(basePath == null) {
+      this.fileName = null;
+      return;
+    }
+    var lastSep = basePath.lastIndexOf('/');
+    basePath = basePath.substring(0, lastSep);
+
+    if (fileName.indexOf('..') > -1) { //resolve
+      var base = basePath.split('/');
+      var file = fileName.split('/');
+      var baseEnd = base.length;
+      var fileStart = 0;
+      while(file[fileStart] == '..' && baseEnd > 0) {
+        fileStart++;
+        baseEnd--;
+      }
+      return base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
+
+    } else {
+      return basePath + '/' + fileName;
+    }
   },
 
   setFileName: function(settings) { //set .fileName if possible

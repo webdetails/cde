@@ -464,7 +464,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
   addParameters : function(i,arg,val,container){
 
-    if( val ) { val = val.replace( /["]/g,'&quot;' ); } //for output only, will come back ok
+    val = this.escapeOutputValue( val ); //for output only, will come back ok
 
     var parameterButton = this.getParameterButton(i);
     var removeButton = this.getRemoveButton(i);
@@ -477,6 +477,16 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
         "</div>\n";
 
     container.find('.' + this.cssPrefix).append(row);
+  },
+
+  escapeOutputValue: function( val ) {
+    if( val ) {
+      return val.replace( /["]/g, '&quot;' ).replace( /[']/g, '&#39;' );
+
+    } else {
+      return val;
+
+    }
   },
 
   getParameterValues : function(i) {
