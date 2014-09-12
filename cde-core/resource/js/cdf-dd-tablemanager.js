@@ -1911,6 +1911,8 @@ var ResourceFileRenderer = CellRenderer.extend({
 
       if (fileName.charAt(0) != '/') { //relative path, append dashboard location
         fileName = this.getRelativeFileName(fileName);
+      } else {
+        fileName = "/system/" + CDFDDFileName.split('/')[2] + fileName;
       }
 
     } else if (settings != null && settings != '') { //needs a solution path
@@ -1925,7 +1927,7 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   getRelativeFileName: function(fileName) {
-    var basePath = CDFDDFileName; //cdfdd.getDashboardData().filename;
+    var basePath = CDFDDFileName;
     if(basePath == null) {
       this.fileName = null;
       return;
