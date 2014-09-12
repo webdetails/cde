@@ -84,7 +84,7 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
     CDFDDFileName = "/system/myPlugin/mySolution/myDashboard.wcdf";
     var systemCtx = "/system/myPlugin";
     expect(resourceFileRenderer.getFileName("${system:/myResource.css}"))
-        .toBe(file1);
+        .toBe(systemCtx + file1);
     expect(resourceFileRenderer.getFileName("${system:../myResource.css}"))
         .toBe(systemCtx + file1);
     expect(resourceFileRenderer.getFileName("${system:../resources/myResource.css}"))
