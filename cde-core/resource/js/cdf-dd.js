@@ -1,3 +1,16 @@
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* 
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
+
 // Base class and general utils
 
 if (!Array.prototype.map) {
@@ -1615,6 +1628,40 @@ $(function() {
   // wizard.init();
 
   // Extend jeditable
+    /*
+     * Jeditable - jQuery in place edit plugin
+     *
+     * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
+     *
+     * Licensed under the MIT license:
+     *   http://www.opensource.org/licenses/mit-license.php
+     *
+     * Project home:
+     *   http://www.appelsiini.net/projects/jeditable
+     *
+     * Based on editable by Dylan Verheul <dylan_at_dyve.net>:
+     *    http://www.dyve.net/jquery/?editable
+     *
+     * The MIT License (MIT)
+     * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
+     * Permission is hereby granted, free of charge, to any person obtaining a copy
+     * of this software and associated documentation files (the "Software"), to deal
+     * in the Software without restriction, including without limitation the rights
+     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+     * copies of the Software, and to permit persons to whom the Software is
+     * furnished to do so, subject to the following conditions:
+     
+     * The above copyright notice and this permission notice shall be included in
+     * all copies or substantial portions of the Software.
+        
+     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+     * THE SOFTWARE.
+     */
   $.editable.types.selectMulti = {
     element: function(settings, original) {
       var select = $('<select multiple="multiple" />');
@@ -1657,6 +1704,20 @@ $(function() {
       }, function() {});
     }
   };
+
+    /* End Jeditable attribution */
+    /*!
+     * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+     * 
+     * This software was developed by Webdetails and is provided under the terms
+     * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+     * this file except in compliance with the license. If you need a copy of the license,
+     * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+     *
+     * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+     * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+     * the license for the specific language governing your rights and limitations.
+    */
 
   // Remove bug in position() of multipleselect
   $.extend($.fn, {
