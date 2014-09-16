@@ -38,14 +38,18 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
+import org.pentaho.platform.engine.security.SecurityHelper;
 import org.pentaho.platform.web.http.api.resources.PluginResource;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
+import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
+import pt.webdetails.cdf.dd.util.GenericFileAndDirectoryFilter;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.MimeTypeHandler;
 import pt.webdetails.cpf.repository.api.FileAccess;
@@ -214,11 +218,21 @@ public class ResourcesApi {
 
     IReadAccess access = loader.getReader();
 
+    GenericFileAndDirectoryFilter fileAndDirFilter = new GenericFileAndDirectoryFilter( fileFilter );
+
     if ( isSystem ) {
-      fileList = access.listFiles( dir, fileFilter, 1, true, false );
+      // folder filtering ( see settings.xml ) will only occur for non-admin users
+      if( !isAdministrator() ) {
+        fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.STATIC ) );
+      }
+      fileList = access.listFiles( dir, fileAndDirFilter , 1, true, false );
       fileList.remove( 0 ); //remove the first because the root is being added
     } else {
-      fileList = access.listFiles( dir, fileFilter, 1, true, showHiddenFiles );
+      // folder filtering ( see settings.xml ) will only occur for non-admin users
+      if( !isAdministrator() ) {
+        fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
+      }
+      fileList = access.listFiles( dir, fileAndDirFilter, 1, true, showHiddenFiles );
     }
 
     if ( fileList != null && fileList.size() > 0 ) {
@@ -261,6 +275,14 @@ public class ResourcesApi {
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
     getResource( resource, response );
+  }
+
+  /**
+   * checks is the current user is administrator
+   * @return true if the current user is administrator, false otherwise
+   */
+  protected boolean isAdministrator() {
+    return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
   }
 
 }
