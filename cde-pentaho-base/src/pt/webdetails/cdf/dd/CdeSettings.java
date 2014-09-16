@@ -13,11 +13,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
 import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginSettings;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
@@ -25,6 +28,9 @@ public class CdeSettings {
   
   protected static Log logger = LogFactory.getLog(CdeSettings.class);
   
+
+  public static enum FolderType { STATIC, REPO }
+
   private CdeSettings(){}
   
   private static CdfDDSettings settings = new CdfDDSettings();
@@ -98,12 +104,54 @@ public class CdeSettings {
   }
   
 
+  public static String[] getFilePickerHiddenFolderPaths( FolderType folderType ) {
+
+    List<String> paths = new ArrayList<String>();
+
+    // method IBasicFile[] getFilePickerHiddenFolders( folderType ) is already validating if folders exist
+    IBasicFile[] files = getFilePickerHiddenFolders( folderType );
+
+    if( files != null ) {
+
+      for( IBasicFile file : files ) {
+        paths.add( file.getFullPath() );
+      }
+    }
+
+    return paths.toArray( new String[ files.length ] );
+  }
+
+  public static IBasicFile[] getFilePickerHiddenFolders( FolderType folderType ) {
+    String[] paths = getSettings().getFilePickerHiddenFoldersByType( folderType );
+
+    List<IBasicFile> files = new ArrayList<IBasicFile>();
+
+    if( paths != null ){
+
+      for( String path : paths ){
+
+        IReadAccess access = Utils.getAppropriateReadAccess( path );
+
+        if( access != null && access.fileExists( path ) && access.fetchFile( path ).isDirectory() ){
+          files.add( access.fetchFile( path ) );
+        } else {
+          logger.error( "Discarding path '" + path + "': file does not exist or isn't a directory." );
+        }
+      }
+    }
+
+    return files.toArray( new IBasicFile[ files.size() ] );
+  }
   
   public static String getEncoding(){
     return CharsetHelper.getEncoding();
   }
   
-  private static class CdfDDSettings extends PluginSettings {
+  public static class CdfDDSettings extends PluginSettings {
+
+    public CdfDDSettings( IRWAccess writeAccess ){
+      super( writeAccess ); // useful when unit testing / mocking
+    }
 
     public CdfDDSettings(){
       super(CdeEnvironment.getPluginSystemWriter());
@@ -134,6 +182,30 @@ public class CdeSettings {
       return locations;
     }
 
-  }
+    public String[] getFilePickerHiddenFoldersByType( CdeSettings.FolderType folderType ) {
 
+      List<String> hiddenFolders = new ArrayList<String>();
+      List<Element> xmlPathElements = getSettingsXmlSection( "file-picker/hidden-folders/path" );
+
+      if( xmlPathElements != null ) {
+
+        for ( Element xmlPathElement : xmlPathElements ) {
+
+          String path = StringUtils.strip( xmlPathElement.getTextTrim() );
+          String origin = xmlPathElement.attributeValue( "origin" );
+
+          if ( StringUtils.isEmpty( path ) || StringUtils.isEmpty( origin ) ) {
+            logger.error( "Must specify origin (static|repo) and location '" + path + "." );
+            continue;
+          }
+
+          if ( folderType == FolderType.valueOf( origin.toUpperCase() ) ) {
+            hiddenFolders.add( path );
+          }
+        }
+      }
+
+      return hiddenFolders.toArray( new String[ hiddenFolders.size() ] );
+    }
+  }
 }
