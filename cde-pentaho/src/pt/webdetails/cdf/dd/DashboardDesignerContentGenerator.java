@@ -47,6 +47,7 @@ import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.api.engine.PentahoAccessControlException;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.pentaho.platform.engine.security.SecurityParameterProvider;
 
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
@@ -61,6 +62,7 @@ import pt.webdetails.cdf.dd.structure.DashboardStructureException;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
+import pt.webdetails.cdf.dd.util.GenericFileAndDirectoryFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.InterPluginCall;
@@ -915,8 +917,16 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     GenericBasicFileFilter fileFilter =
         new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
 
+    GenericFileAndDirectoryFilter fileAndDirFilter = new GenericFileAndDirectoryFilter( fileFilter );
+
+    // folder filtering ( see settings.xml ) will only occur for non-admin users
+    if( !isAdministrator() ) {
+      fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
+      fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
+    }
+
     List<IBasicFile> fileList =
-        CdeEnvironment.getContentAccessFactory().getUserContentAccess( "/" ).listFiles( dir, fileFilter, 1, true );
+        CdeEnvironment.getContentAccessFactory().getUserContentAccess( "/" ).listFiles( dir, fileAndDirFilter, 1, true );
 
     if ( fileList != null && fileList.size() > 0 ) {
       return fileList.toArray( new IBasicFile[fileList.size()] );
@@ -965,6 +975,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       IOUtils.closeQuietly( pw );
     }
 
+  }
+
+  /**
+   * checks is the current user is administrator
+   * @return true if the current user is administrator, false otherwise
+   */
+  protected boolean isAdministrator() {
+    SecurityParameterProvider securityParams = new SecurityParameterProvider( userSession );
+    return Boolean.valueOf( (String) securityParams.getParameter( "principalAdministrator" ) );
   }
 
 }
