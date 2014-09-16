@@ -121,17 +121,26 @@ var LayoutPanel = Panel.extend({
 			var data = this.treeTable.getTableModel().getData();
 			var output = [];
 			var myself = this;
-			$.each(data,function(i,row){
-				if(row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL || row.type == LayoutBootstrapColumnModel.MODEL){
+			$.each(data, function( i, row ) {
+				if( row.type == LayoutRowModel.MODEL || row.type ==  LayoutColumnModel.MODEL ||
+					row.type == LayoutBootstrapColumnModel.MODEL || row.type == LayoutFreeFormModel.MODEL ||
+					row.type == LayoutBootstrapPanelHeaderModel.MODEL || row.type == LayoutBootstrapPanelBodyModel.MODEL ||
+					row.type == LayoutBootstrapPanelFooterModel.MODEL ) {
+
 					// Use the ones that don't have children
-					if(myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length==0){
-						output.push(row);
+					if( myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length == 0 ) {
+						var rowProperties = row.properties;
+						$.each(rowProperties, function( i, prop ) {
+							if( prop.name == "name" && prop.value != "" ) {
+								output.push(row);
+								return false;
+							}
+						});
 					}
 				}
 			});
 			return output;
 		}
-
 	},{
 	
 		MAIN_PANEL: "layout_panel",
