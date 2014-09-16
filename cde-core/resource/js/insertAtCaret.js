@@ -1,3 +1,6 @@
+// This is taken from https://gist.github.com/mathiasbynens/326491
+// @author Mathias Bynens <http://mathiasbynens.be/>
+
 $.fn.insertAtCaret = function (myValue) {
 	return this.each(function(){
 			//IE support
