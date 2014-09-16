@@ -59,6 +59,7 @@ var GoogleMapEngine = MapEngine.extend({
             div.innerHTML = this.htmlContent_;
 
 
+          //Using implementation described on http://web.archive.org/web/20100522001851/http://code.google.com/apis/maps/documentation/javascript/overlays.html
           // Set the overlay's div_ property to this DIV
           this.div_ = div;
 
@@ -68,6 +69,8 @@ var GoogleMapEngine = MapEngine.extend({
           panes.overlayLayer.appendChild(div);
         };
 
+
+        //Using implementation described on http://web.archive.org/web/20100522001851/http://code.google.com/apis/maps/documentation/javascript/overlays.html
         OurMapOverlay.prototype.draw = function() {
           // Size and position the overlay. We use a southwest and northeast
           // position of the overlay to peg it to the correct position and size.
