@@ -148,7 +148,6 @@ var LayoutPanel = Panel.extend({
 		PROPERTIES: "cdfdd-layout-properties"
 	});
 
-
 var LayoutBootstrapPanelHeaderModel = BaseModel.extend({},{
   MODEL: 'BootstrapPanelHeader',
   getStub: function() {
@@ -1022,17 +1021,53 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
 CellOperations.registerOperation(new LayoutAddBootstrapPanelOperation());
 
 
+var LayoutDuplicateOperation = DuplicateOperation.extend({
+
+  id: "LAYOUT_DUPLICATE",
+  types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
+      LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+      FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
+      LayoutFreeFormModel.MODEL],
+  name: "Duplicate Layout Element",
+  description: "Duplicate the selected Element and all its children",
+
+  constructor: function () {
+    this.logger = new Logger("LayoutDuplicateOperation");
+  },
+
+  canExecute: function(tableManager) {
+    var rowIdx = tableManager.getSelectedCell()[0],
+        rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
+        isBootstrapPanelChild = rowType == LayoutBootstrapPanelBodyModel.MODEL
+            || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
+
+    return tableManager.isSelectedCell && !isBootstrapPanelChild;
+  }
+});
+CellOperations.registerOperation(new LayoutDuplicateOperation);
+
+
 var LayoutMoveUpOperation = MoveUpOperation.extend({
 
-		id: "LAYOUT_MOVE_UP",
-		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
-				LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
-				FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
-        LayoutFreeFormModel.MODEL],
+  id: "LAYOUT_MOVE_UP",
+  types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
+    LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+    FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
+    LayoutFreeFormModel.MODEL],
 
-		constructor: function(){
-			this.logger = new Logger("LayoutMoveUpOperation");
-		}
+  constructor: function(){
+    this.logger = new Logger("LayoutMoveUpOperation");
+  },
+
+  canExecute: function(tableManager) {
+    var rowIdx = tableManager.getSelectedCell()[0],
+        rowId = tableManager.getTableModel().getEvaluatedId(rowIdx),
+        rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
+        isBootstrapPanelChild = rowType == LayoutBootstrapPanelBodyModel.MODEL
+            || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
+
+    return !tableManager.getTableModel().getIndexManager().isFirstChild(rowId) && !isBootstrapPanelChild;
+  }
 
 });
 CellOperations.registerOperation(new LayoutMoveUpOperation);
@@ -1040,15 +1075,25 @@ CellOperations.registerOperation(new LayoutMoveUpOperation);
 
 var LayoutMoveDownOperation = MoveDownOperation.extend({
 
-		id: "LAYOUT_MOVE_DOWN",
-		types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
-				LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
-				FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
-        LayoutFreeFormModel.MODEL],
+  id: "LAYOUT_MOVE_DOWN",
+  types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
+    LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
+    FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
+    LayoutFreeFormModel.MODEL],
 
-		constructor: function(){
-			this.logger = new Logger("LayoutMoveDownOperation");
-		}
+  constructor: function(){
+    this.logger = new Logger("LayoutMoveDownOperation");
+  },
+
+  canExecute: function(tableManager){
+    var rowIdx = tableManager.getSelectedCell()[0],
+        rowId = tableManager.getTableModel().getEvaluatedId(rowIdx),
+        rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
+        isBootstrapPanelChild = rowType == LayoutBootstrapPanelBodyModel.MODEL
+            || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
+
+    return !tableManager.getTableModel().getIndexManager().isLastChild(rowId) && !isBootstrapPanelChild;
+	}
 
 });
 CellOperations.registerOperation(new LayoutMoveDownOperation);
