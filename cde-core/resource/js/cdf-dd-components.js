@@ -169,9 +169,7 @@ var ComponentsPanel = Panel.extend({
 
 });
 
-
-//Copy paste
-var ComponentsDuplicateOperation = BaseOperation.extend({
+var ComponentsDuplicateOperation = DuplicateOperation.extend({
 		id: "COMPONENTS_DUPLICATE",
 		types: ["Components"],
 		name: "Duplicate component",
@@ -179,25 +177,7 @@ var ComponentsDuplicateOperation = BaseOperation.extend({
 
 		constructor: function(){
 			this.logger = new Logger("ComponentsDuplicateOperation");
-		},
-
-		canExecute: function(tableManager){
-			return tableManager.isSelectedCell;
-		},
-
-		execute: function(tableManager){
-			if(tableManager.isSelectedCell){
-				var rowIdx = tableManager.getSelectedCell()[0];
-				var originalRow = tableManager.getTableModel().getData()[rowIdx];
-				var clonedRow = $.extend(true,{},originalRow);
-				clonedRow.id = TableManager.generateGUID();
-				//if(clonedRow.properties && clonedRow.properties[0].name == 'name'){//rename?
-				//	clonedRow.properties[0].value += 'New';
-				//}
-				tableManager.insertAtIdx(clonedRow, rowIdx);
-			}
 		}
-	
 });
 
 CellOperations.registerOperation(new ComponentsDuplicateOperation);

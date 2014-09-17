@@ -178,6 +178,18 @@ var DatasourcesPanel = Panel.extend({
 
 	});
 
+var DatasourcesDuplicateOperation = DuplicateOperation.extend({
+  id: "DATASOURCES_DUPLICATE",
+  types: ["Datasources"],
+  name: "Duplicate datasource",
+  description: "Insert a clone of this datasource",
+
+  constructor: function(){
+    this.logger = new Logger("DatasourcesDuplicateOperation");
+  }
+});
+
+CellOperations.registerOperation(new DatasourcesDuplicateOperation);
 
 var DatasourcesMoveUpOperation = MoveUpOperation.extend({
 
