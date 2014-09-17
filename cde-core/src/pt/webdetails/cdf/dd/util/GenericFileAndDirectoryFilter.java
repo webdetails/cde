@@ -15,33 +15,54 @@ package pt.webdetails.cdf.dd.util;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 
 /**
- * this class extends on the existing GenericBasicFileFilter calculations,
- * adding on top of it some basic directory filtering
+ * this class extends on the existing GenericBasicFileFilter calculations, adding on top of it some basic directory
+ * filtering
  */
 public class GenericFileAndDirectoryFilter extends GenericBasicFileFilter {
 
   /**
-   * directories to be filtered out
+   * type of directory filtering
+   * <p/>
+   * FILTER_IN means the directories list will act as a white-list;
+   * <p/>
+   * FILTER_OUT means the directories list will act as a black-list;
+   * <p/>
+   */
+  public static enum FilterType {
+    FILTER_IN, FILTER_OUT
+  }
+
+  /**
+   * directories to be filtered
    */
   private String[] directories;
 
-  public GenericFileAndDirectoryFilter( String fileName, String[] fileExtensions, String[] directories ) {
-    this( fileName, fileExtensions, true, directories );
+  /**
+   * type of directory filtering; default is FILTER_IN
+   */
+  private FilterType filterType;
+
+  public GenericFileAndDirectoryFilter( String fileName, String[] fileExtensions, String[] directories,
+                                        FilterType filterType ) {
+    this( fileName, fileExtensions, true, directories, filterType );
   }
 
   public GenericFileAndDirectoryFilter( String fileName, String[] fileExtensions, boolean acceptDirectories,
-                                        String[] directories ) {
+                                        String[] directories, FilterType filterType ) {
     super( fileName, fileExtensions, acceptDirectories );
     setDirectories( directories );
+    setFilterType( filterType != null ? filterType : /* default */ FilterType.FILTER_IN );
   }
 
   public GenericFileAndDirectoryFilter( GenericBasicFileFilter basicFileFilter ) {
     super( basicFileFilter.getFileName(), basicFileFilter.getFileExtensions(), basicFileFilter.isAcceptDirectories() );
   }
 
-  public GenericFileAndDirectoryFilter( GenericBasicFileFilter basicFileFilter, String[] directories ) {
-    super( basicFileFilter.getFileName(), basicFileFilter.getFileExtensions(), basicFileFilter.isAcceptDirectories() );
-    setDirectories( directories );
+  public GenericFileAndDirectoryFilter( GenericBasicFileFilter basicFileFilter, String[] directories,
+                                        FilterType filterType ) {
+    this( basicFileFilter.getFileName(), basicFileFilter.getFileExtensions(), basicFileFilter.isAcceptDirectories(),
+      directories, filterType );
+
   }
 
   @Override
@@ -52,12 +73,20 @@ public class GenericFileAndDirectoryFilter extends GenericBasicFileFilter {
 
     if ( acceptFile && isAcceptDirectories() && file.isDirectory() && directories != null ) {
 
-      for ( String directory : directories ) {
+      boolean directoryExists = false;
 
-        // filter out this folder if its path is contained in the directories array
-        if ( file.getFullPath().endsWith( directory ) ) {
-          return false;
-        }
+      for ( String directory : directories ) {
+        // check if its path is contained in the directories array
+        directoryExists |= file.getFullPath().endsWith( directory );
+      }
+
+      if( FilterType.FILTER_IN == filterType ) {
+        // acceptFile = true if directory exists in the white-list, false otherwise
+        acceptFile = directoryExists;
+
+      } else if ( FilterType.FILTER_OUT == filterType ) {
+        // acceptFile = false if directory exists in the black-list, true otherwise
+        acceptFile = !directoryExists;
       }
     }
 
@@ -70,5 +99,13 @@ public class GenericFileAndDirectoryFilter extends GenericBasicFileFilter {
 
   public void setDirectories( String[] directories ) {
     this.directories = directories;
+  }
+
+  public FilterType getFilterType() {
+    return filterType;
+  }
+
+  public void setFilterType( FilterType filterType ) {
+    this.filterType = filterType;
   }
 }

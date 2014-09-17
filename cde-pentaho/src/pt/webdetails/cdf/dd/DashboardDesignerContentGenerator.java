@@ -922,6 +922,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     // folder filtering ( see settings.xml ) will only occur for non-admin users
     if( !isAdministrator() ) {
       fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
+      fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
     }
 
     List<IBasicFile> fileList =

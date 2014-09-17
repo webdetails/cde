@@ -224,6 +224,7 @@ public class ResourcesApi {
       // folder filtering ( see settings.xml ) will only occur for non-admin users
       if( !isAdministrator() ) {
         fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.STATIC ) );
+        fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
       }
       fileList = access.listFiles( dir, fileAndDirFilter , 1, true, false );
       fileList.remove( 0 ); //remove the first because the root is being added
@@ -231,6 +232,7 @@ public class ResourcesApi {
       // folder filtering ( see settings.xml ) will only occur for non-admin users
       if( !isAdministrator() ) {
         fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
+        fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
       }
       fileList = access.listFiles( dir, fileAndDirFilter, 1, true, showHiddenFiles );
     }
