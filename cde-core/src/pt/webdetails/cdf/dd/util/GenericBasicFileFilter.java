@@ -77,4 +77,28 @@ public class GenericBasicFileFilter implements IBasicFileFilter{
 	private static String cleanDot(String extension){
 		return !StringUtils.isEmpty(extension) && extension.startsWith(".") ? extension.substring(1) : extension;
 	}
+
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName( String fileName ) {
+    this.fileName = fileName;
+  }
+
+  public String[] getFileExtensions() {
+    return fileExtensions;
+  }
+
+  public void setFileExtensions( String[] fileExtensions ) {
+    this.fileExtensions = fileExtensions;
+  }
+
+  public boolean isAcceptDirectories() {
+    return acceptDirectories;
+  }
+
+  public void setAcceptDirectories( boolean acceptDirectories ) {
+    this.acceptDirectories = acceptDirectories;
+  }
 }

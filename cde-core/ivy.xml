@@ -44,6 +44,8 @@
       <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"  conf="test->default" />
       <dependency org="net.sf.ezmorph"    name="ezmorph"           rev="1.0.6"  conf="test->default" />
       <dependency org="log4j" name="log4j" rev="1.2.16" conf="test->default" />
+      <dependency org="commons-io" name="commons-io" rev="2.4" conf="test->default"/>
+      <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="test->default"/>
 
     </dependencies>
     

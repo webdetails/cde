@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+
+  <file-picker>
+    <!-- the following are folders that should be kept hidden from any non-admin user -->
+    <hidden-folders>
+      <!-- origin: 
+        "static" - static/system folder under pentaho-solutions/system
+        "repo" - content repository path
+      -->
+      <path origin="static">/this/is/a/system/path</path>
+      <path origin="repo">/this/is/a/repo/path</path>
+    </hidden-folders>
+  </file-picker>
+
+</settings>

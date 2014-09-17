@@ -19,4 +19,16 @@
     <!--4.x old <path>cde/components</path-->
     <path origin="repo">components</path>
   </custom-components>
+
+  <file-picker>
+    <!-- the following are folders that should be kept hidden from any non-admin user -->
+    <hidden-folders>
+      <!-- origin: 
+        "static" - static/system folder under pentaho-solutions/system
+        "repo" - content repository path
+
+        Example: <path origin="repo">/bi-developers/etl</path>
+      -->
+    </hidden-folders>
+  </file-picker>
 </settings>
