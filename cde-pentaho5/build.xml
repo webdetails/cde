@@ -221,24 +221,27 @@
              excludes="**/Thumbs.db"/>
 
 
+    <echo file="${dist.dir}/marketplace.xml">      &lt;version&gt;
+        &lt;branch&gt;${project.stage}&lt;/branch&gt;
+        &lt;version&gt;${distribution.version}&lt;/version&gt;
+        &lt;name&gt;${marketplace.metadata.name}&lt;/name&gt;
+        &lt;package_url&gt;
+          ${marketplace.metadata.package_url}
+        &lt;/package_url&gt;
+        &lt;samples_url&gt;
+          ${marketplace.metadata.samples_url}
+        &lt;/samples_url&gt;
+        &lt;description&gt;
+          ${marketplace.metadata.description}
+        &lt;/description&gt;
+        &lt;build_id&gt;${sequential.build.id}&lt;/build_id&gt;
+        &lt;min_parent_version&gt;${marketplace.metadata.min_parent_version}&lt;/min_parent_version&gt;
+        &lt;max_parent_version&gt;${marketplace.metadata.max_parent_version}&lt;/max_parent_version&gt;
+        &lt;development_stage&gt;
+          &lt;lane&gt;Community&lt;/lane&gt;
+          &lt;phase&gt;2&lt;/development_stage&gt;
+      &lt;/version&gt;</echo>
 
-        <echo file="${dist.dir}/marketplace.xml">&lt;version>
-                &lt;branch>${project.stage}&lt;/branch>
-                &lt;version>${distribution.version}&lt;/version>
-        		&lt;name>${marketplace.metadata.name}&lt;/name>                
-                &lt;package_url>${marketplace.metadata.package_url}&lt;/package_url>
-                &lt;samples_url>${marketplace.metadata.samples_url}&lt;/samples_url>
-                &lt;description>${marketplace.metadata.description}&lt;/description>
-                &lt;development_stage>
-                    &lt;lane>Community&lt;/lane>
-                    &lt;phase>2&lt;/phase>
-                &lt;/development_stage>                                                    
-        		&lt;build_id>${sequential.build.id}&lt;/build_id>
-                &lt;min_parent_version>${marketplace.metadata.min_parent_version}&lt;/min_parent_version>	
-            &lt;/version>
-        </echo>
-        
-    
 
     </target>
 
