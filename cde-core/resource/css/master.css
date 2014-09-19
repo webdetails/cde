@@ -752,7 +752,7 @@ div#cdfddOlapMeasureDiv{
   background-image: url("../images/NAV/add.png");
 }
 
-.tooltip.components_duplicate {
+.tooltip.components_duplicate, .tooltip.layout_duplicate, .tooltip.datasources_duplicate {
   background-image: url("../images/NAV/duplicate.png");
 }
 
