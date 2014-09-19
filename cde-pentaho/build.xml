@@ -221,10 +221,10 @@
         &lt;min_parent_version&gt;${marketplace.metadata.min_parent_version}&lt;/min_parent_version&gt;
         &lt;max_parent_version&gt;${marketplace.metadata.max_parent_version}&lt;/max_parent_version&gt;
         &lt;development_stage&gt;
-          &lt;lane&gt;Community&lt;/lane&gt;
-          &lt;phase&gt;2&lt;/development_stage&gt;
+          &lt;lane&gt;${marketplace.metadata.development_stage.lane}&lt;/lane&gt;
+          &lt;phase&gt;${marketplace.metadata.development_stage.phase}&lt;/phase&gt;
+        &lt;/development_stage&gt;
       &lt;/version&gt;</echo>
-
 
     </target>
 
