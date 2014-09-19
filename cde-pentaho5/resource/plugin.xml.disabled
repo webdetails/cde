@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin title="pentaho-cdf-dd">
+	<lifecycle-listener class="pt.webdetails.cdf.dd.CdeLifeCycleListener"/>
+	<static-paths>
+		<static-path url="/pentaho-cdf-dd/js" localFolder="js"/>
+		<static-path url="/pentaho-cdf-dd/css" localFolder="css"/>
+		<static-path url="/pentaho-cdf-dd/images" localFolder="images"/>
+		<static-path url="/pentaho-cdf-dd/lang" localFolder="lang"/>
+		<static-path url="/pentaho-cdf-dd/static" localFolder="static"/>
+        <static-path url="/pentaho-cdf-dd/resources" localFolder="resources"/>
+        <static-path url="/pentaho-cdf-dd/tmp" localFolder="tmp"/>
+	</static-paths>
+	<content-types>
+		<content-type type="wcdf" mime-type="text/html">
+			<title>Dashboard Designer</title>
+			<description>Dashboard Designer</description>
+			<icon-url>plugin/pentaho-cdf-dd/api/resources/get?resource=/resources/wcdfFileType.png</icon-url>
+            <meta-provider>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</meta-provider>
+            <operations>
+  <!--              <operation>
+                    <id>EDIT</id>
+                    <perspective>wcdf.edit</perspective>
+                </operation>
+                -->
+                <operation>
+                    <id>RUN</id>
+                </operation>
+                <operation>
+                    <id>NEWWINDOW</id>
+                </operation>
+            </operations>
+		</content-type>
+	</content-types>
+
+
+
+</plugin>
