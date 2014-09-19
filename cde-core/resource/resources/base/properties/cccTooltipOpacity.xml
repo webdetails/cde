@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>0.9</DefaultValue>
     <Description>tooltipOpacity</Description>
-    <Tooltip>The distance of the closest tooltip edge or corner to the visual element's tooltip anchor point.</Tooltip>
+    <Tooltip>The opacity level of the tooltip box. Range from 0 (completely transparent) to 1.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
     <Order>467</Order>
