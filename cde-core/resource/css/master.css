@@ -740,6 +740,15 @@ div#cdfddOlapMeasureDiv{
   overflow: auto;
 }
 
+.layout_hover_moveTo { /*temporary style*/
+  color: white;
+  background-color: grey;
+}
+.layout_hover_dropInto { /*temporary style*/
+  background-color: green;
+  color: white;
+}
+
 .tooltip.layout_saveas_template {
   background-image: url("../images/NAV/save_template.png");
 }

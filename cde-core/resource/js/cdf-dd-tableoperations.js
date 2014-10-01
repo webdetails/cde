@@ -579,6 +579,106 @@ var DuplicateOperation = BaseOperation.extend({
 
 CellOperations.registerOperation(new DuplicateOperation());
 
+var MoveToOperation = BaseOperation.extend({
+  id: "MOVE_TO",
+  types: ["GenericMoveTo"],
+  name: "Move To",
+  description: "Move To",
+
+  constructor: function(){
+    this.logger = new Logger("MoveToOperation");
+  },
+
+  canExecute: function(tableManager) {
+    return false;
+  },
+
+  execute: function(tableManager) {
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var treeTableChildPrefix = $.fn.treeTable.defaults.childPrefix;
+
+    //Drag Row Info
+    var dragIdx = tableManager.getSelectedCell()[0];
+    var dragId = tableManager.getTableModel().getEvaluatedId(dragIdx);
+
+    //Drop Row Info
+    var dropId = tableManager.getDroppedOnId();
+    var dropIdx = indexManager.getIndex()[dropId].index;
+
+    //General Info
+    var moveIntoDrop = tableManager.canMoveInto(dragId, dropId);
+    var oldParent = indexManager.getIndex()[dragId].parent;
+    var newParent = moveIntoDrop ? dropId : indexManager.getIndex()[dropId].parent;
+
+    var fromIdx = dragIdx;
+    var toIdx = -1;
+    var targetIdx = dropIdx + (moveIntoDrop ? 1 : 0);
+
+    var nextSibling = indexManager.getNextSibling(dragId);
+    if (typeof nextSibling == 'undefined') {
+      toIdx = indexManager.getLastChild(dragId).index;
+    } else {
+      toIdx = nextSibling.index - 1;
+    }
+
+    var dragNodeLength = toIdx - fromIdx + 1;
+    var dropNodeLength = 0;
+    if( !moveIntoDrop ) {
+      var dropNextSibling = indexManager.getNextSibling(dropId);
+      if (typeof dropNextSibling == 'undefined') {
+        dropNodeLength = indexManager.getLastChild(dropId).index - dropIdx + 1;
+      } else {
+        dropNodeLength = dropNextSibling.index - dropIdx;
+      }
+    }
+
+    var startSplicePos = -1;
+    if( targetIdx > fromIdx ) {
+      startSplicePos = targetIdx - dragNodeLength + dropNodeLength;
+    } else {
+      startSplicePos = targetIdx;
+    }
+
+    this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
+
+    // Build new data array
+    var _data = tableManager.getTableModel().getData();
+    var _toMove = _data.splice(fromIdx, dragNodeLength);
+    var _tableData = $('#'+tableManager.getTableId() + " > tbody > tr");
+    var _uiToMove = _tableData.splice(fromIdx, dragNodeLength);
+
+    //update parent of the first moved node
+    var selectedNode = $(_uiToMove[0]);
+    selectedNode.removeClass(treeTableChildPrefix + oldParent);
+    if( newParent != IndexManager.ROOTID ) {
+      selectedNode.addClass(treeTableChildPrefix + newParent);
+    }
+    _toMove[0].parent = newParent;
+
+    //deploy new data arrays
+    Array().splice.apply(_data,[startSplicePos,0].concat(_toMove));
+    tableManager.getTableModel().setData(_data);
+    Array().splice.apply(_tableData,[startSplicePos,0].concat(_uiToMove));
+    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
+
+    //Refresh update rows display
+    tableManager.selectCell(startSplicePos, 0);
+    if( oldParent != IndexManager.ROOTID && newParent == IndexManager.ROOTID ) {
+      var rowData = _data[startSplicePos];
+      $("#"+rowData.id).remove();
+      tableManager.addRow(_data[startSplicePos], startSplicePos);
+    }
+    $.each(_data, function(i, row) {
+      if( i >= startSplicePos && i < startSplicePos+dragNodeLength || row.id == newParent || row.id == oldParent ) {
+        tableManager.updateTreeTable(row.id);
+      }
+    });
+  }
+
+});
+
+CellOperations.registerOperation(new MoveToOperation());
+
 var MoveUpOperation = BaseOperation.extend({
 
     id: "MOVE_UP",
