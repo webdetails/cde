@@ -9,7 +9,7 @@ describe("Table Operations #", function() {
   /*Mock tableManager for testing*/
   var initTableManager = function(spyObjName) {
     var spyOnMethods = ['getSelectedCell', 'selectCell', 'getDroppedOnId', 'setDroppedOnId', 'getTableModel',
-                        'getTableId', 'updateTreeTable', 'canMoveInto', 'addRow'];
+                        'getTableId', 'updateTreeTable', 'canMoveInto', 'addRow', 'insertAtIdx'];
     tableManager = jasmine.createSpyObj(spyObjName, spyOnMethods);
 
     tableManager.setDroppedOnId.and.callFake(function(id){ tableManager.droppedOnId = id; });
@@ -19,6 +19,7 @@ describe("Table Operations #", function() {
     tableManager.getTableModel.and.callFake(function() { return tableModel; });
     tableManager.canMoveInto.and.callFake(function(drag, drop){ return canMoveInto; });
     tableManager.addRow.and.callFake(function() { return; });
+    tableManager.insertAtIdx.and.callFake(function(row, pos) { tableModel.getData().splice(pos,0,row); indexManager.updateIndex() });
   };
 
   /*Mock tableModel for testing*/

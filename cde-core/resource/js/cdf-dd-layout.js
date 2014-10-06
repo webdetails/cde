@@ -715,7 +715,9 @@ BaseModel.registerModel(LayoutImageModel);
 var LayoutAddImageOperation = AddRowOperation.extend({
 
 	id: "LAYOUT_ADD_IMAGE",
-	types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
+	types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+          LayoutFreeFormModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+          LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL],
 	name: "Add Image",
 	description: "Adds an image",
 
