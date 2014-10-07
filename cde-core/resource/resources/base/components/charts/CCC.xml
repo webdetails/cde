@@ -320,6 +320,10 @@
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
+          <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
+          <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
+          <Property name="baseAxisBandSpacing">cccBaseAxisBandSpacing</Property>
+          <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
@@ -574,6 +578,10 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
+          <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
+          <Property name="baseAxisBandSpacing">cccBaseAxisBandSpacing</Property>
+          <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
@@ -1134,6 +1142,10 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
+          <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
+          <Property name="baseAxisBandSpacing">cccBaseAxisBandSpacing</Property>
+          <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisComposite">cccBaseAxisComposite</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
@@ -1191,6 +1203,10 @@
           <Property name="measuresIndexes">cccMeasuresIndexes</Property>
           <Property name="nullShape">cccNullShape</Property>
           <Property name="orientation">cccOrientation</Property>
+          <Property name="orthoAxisBandSize">cccOrthoAxisBandSize</Property>
+          <Property name="orthoAxisBandSizeMin">cccOrthoAxisBandSizeMin</Property>
+          <Property name="orthoAxisBandSpacing">cccOrthoAxisBandSpacing</Property>
+          <Property name="orthoAxisBandSpacingMin">cccOrthoAxisBandSpacingMin</Property>
           <Property name="orthoAxisClickAction">cccOrthoAxisClickAction</Property>
           <Property name="orthoAxisComposite">cccOrthoAxisComposite</Property>
           <Property name="orthoAxisDoubleClickAction">cccOrthoAxisDoubleClickAction</Property>
@@ -2003,6 +2019,10 @@
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
+          <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
+          <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
+          <Property name="baseAxisBandSpacing">cccBaseAxisBandSpacing</Property>
+          <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
@@ -3268,6 +3288,10 @@
           <Property name="barSizeMax">cccBarSizeMax</Property>
           <Property name="barSizeRatio">cccBarSizeRatio</Property>
           <Property name="barStackedMargin">cccBarStackedMargin</Property>
+          <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
+          <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
+          <Property name="baseAxisBandSpacing">cccBaseAxisBandSpacing</Property>
+          <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
