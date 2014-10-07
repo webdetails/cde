@@ -13,6 +13,7 @@ import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -40,8 +41,7 @@ public class CdfTemplates {
   private static Log logger = LogFactory.getLog( CdfTemplates.class );
 
   public CdfTemplates( String getResourceEndpoint ) {
-    this.resoureUrl = CdeEngine.getInstance().getEnvironment()
-            .getApplicationBaseContentUrl() + getResourceEndpoint + SYSTEM_CDF_DD_TEMPLATES + "/" ;
+    this.resoureUrl = getResourceUrl( getResourceEndpoint );
   }
 
   public void save( String file, String structure ) throws DashboardStructureException,
@@ -52,6 +52,8 @@ public class CdfTemplates {
     if ( !access.fileExists( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM ) ) {
       access.createFolder( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM );
     }
+
+    structure = addDashboardStyleAndRendererTypeToTemplate( structure );
 
     byte[] fileData = structure.getBytes( CharsetHelper.getEncoding() );
     if ( !access.saveFile( Utils.joinPath( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM, file ), new ByteArrayInputStream(
@@ -122,4 +124,63 @@ public class CdfTemplates {
       result.add( template );
     }
   }
+
+  /**
+   * This method updates the template structure by adding to it the current dashboard's style and renderer type.
+   * <p/>
+   * This is done by getting the current dashboard from within the json structure, loading it's wcdfDescriptor and
+   * fetching its stored style and renderer type.
+   * <p/>
+   * These values then are added to the template structure itself.
+   * <p/>
+   *
+   * @param origStructure original template structure
+   * @return original template structure updated to include the dashboard's style and renderer type
+   * @throws DashboardStructureException
+   */
+  protected String addDashboardStyleAndRendererTypeToTemplate( String origStructure ) throws DashboardStructureException {
+
+    if( origStructure == null ){
+      return origStructure; // nothing to do here
+    }
+
+    try {
+
+      String updatedStructure = origStructure;  // starts off as the original one
+
+      JSONObject jsonObj = JSONObject.fromObject( origStructure );
+
+      if( jsonObj != null && jsonObj.containsKey( "filename" ) ){
+
+        DashboardWcdfDescriptor wcdf = loadWcdfDescriptor( jsonObj.getString( "filename" ) );
+
+        if( wcdf != null ){
+
+          // update the template structure
+          jsonObj.put( "style" , wcdf.getStyle() );
+          jsonObj.put( "rendererType" , wcdf.getRendererType() );
+
+          updatedStructure = jsonObj.toString( 2 );
+        }
+      }
+
+      return updatedStructure;
+
+    } catch( Exception e ){
+      logger.error( e );
+      throw new DashboardStructureException( e.getMessage() );
+    }
+  }
+
+  // useful to mock the DashboardWcdfDescriptor when unit testing CdfTemplates
+  protected DashboardWcdfDescriptor loadWcdfDescriptor( String wcdfFile ) throws IOException {
+    return DashboardWcdfDescriptor.load( wcdfFile );
+  }
+
+  // useful to mock the resource endpoint when unit testing CdfTemplates
+  protected String getResourceUrl( String resourceEndpoint ){
+    return CdeEngine.getInstance().getEnvironment()
+      .getApplicationBaseContentUrl() + resourceEndpoint + SYSTEM_CDF_DD_TEMPLATES + "/" ;
+  }
 }
+
