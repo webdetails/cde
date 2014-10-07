@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
+import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.structure.DashboardStructure;
@@ -151,6 +152,12 @@ public class SyncronizerApi { //TODO: synchronizer?
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( params );
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
+
+        // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
+        if( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
+          logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
+          return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
+        }
         dashboardStructure.savesettings( params );
       } else {
         logger.error( "Unknown operation: " + operation );
@@ -273,6 +280,11 @@ public class SyncronizerApi { //TODO: synchronizer?
       }
       throw e;
     }
+  }
+
+  //useful to mock message bundle when unit testing SyncronizerApi
+  protected String getMessage( String key ){
+    return Messages.getString( key );
   }
 
 }

@@ -178,11 +178,16 @@ var CDFDD = Base.extend({
       if (!wcdf.style) {
         wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
       }
-      //only set style setting
+      var rendererType = myself.renderers.indexOf('bootstrap');
+      if (!wcdf.rendererType) {
+        wcdf.rendererType = myself.renderers[rendererType >= 0 ? rendererType : 0];
+      }
+      //only set style setting and renderer type (not title nor description)
       var saveSettingsParams = {
         operation: "saveSettings",
         file: CDFDDFileName.replace(".cdfde", ".wcdf"),
-        style: wcdf.style
+        style: wcdf.style,
+        rendererType: wcdf.rendererType
       };
 
       StylesRequests.initStyles(saveSettingsParams, wcdf, myself, callback);

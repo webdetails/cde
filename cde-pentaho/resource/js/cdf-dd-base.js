@@ -132,6 +132,8 @@ var SynchronizeRequests = {
                                     cdfdd.layout.init();
                                     cdfdd.components.initTemplate();
                                     cdfdd.datasources.initTemplate();
+                                    if( selectTemplate.structure.style ){ cdfdd.dashboardWcdf.style = selectTemplate.structure.style; }
+                                    if( selectTemplate.structure.rendererType ){ cdfdd.dashboardWcdf.rendererType = selectTemplate.structure.rendererType; }
                                 }
                             }});
                     }
