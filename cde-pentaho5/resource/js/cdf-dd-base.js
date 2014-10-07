@@ -208,6 +208,8 @@ var SynchronizeRequests = {
         cdfdd.layout.init();
         cdfdd.components.initTemplate();
         cdfdd.datasources.initTemplate();
+        if( SynchronizeRequests.selectTemplate.structure.style ){ cdfdd.dashboardWcdf.style = SynchronizeRequests.selectTemplate.structure.style; }
+        if( SynchronizeRequests.selectTemplate.structure.rendererType ){ cdfdd.dashboardWcdf.rendererType = SynchronizeRequests.selectTemplate.structure.rendererType; }
       }
     },
 

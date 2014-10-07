@@ -21,7 +21,7 @@ public class PluginResourceLocationManager implements IPluginResourceLocationMan
 
   @Override
   public String getMessagePropertiesResourceLocation() {
-    return DashboardDesignerContentGenerator.getPluginDir() + "lang/messages.properties";
+    return "lang/messages.properties";
   }
 
   @Override

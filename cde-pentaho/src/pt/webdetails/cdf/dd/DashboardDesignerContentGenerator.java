@@ -119,6 +119,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   private static final String GET_RESOURCE = "getResource?resource=";
 
+  public static final String UNSAVED_FILE_PATH = "/null/null/null";
+
 
   /**
    * Parameters received by content generator
@@ -274,6 +276,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         dashboardStructure.newfile( toHashMap( getRequestParameters() ) );
 
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
+        // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
+        String file = getRequestParameters().getStringParameter( "file", null );
+        if( StringUtils.isEmpty( file ) || UNSAVED_FILE_PATH.equals( file ) ) {
+          String msg = Messages.getString( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" );
+          logger.warn( msg );
+          JsonUtils.buildJsonResult( getResponse().getOutputStream(), false, msg );
+          return;
+        }
         dashboardStructure.savesettings( toHashMap( getRequestParameters() ) );
 
       } else {
