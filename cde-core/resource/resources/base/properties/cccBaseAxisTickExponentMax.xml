@@ -7,7 +7,7 @@
     <Tooltip>The maximum exponent of 10 that is used to generate ticks (applies to continuous-numeric axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>226</Order>
+    <Order>230</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

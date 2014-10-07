@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the chart's visual elements are automatically highlighted when the user hovers over them with the mouse.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>292</Order>
+    <Order>296</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

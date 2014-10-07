@@ -7,7 +7,7 @@
     <Tooltip>Forces a given shape to be used in the dot mark.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>477</Order>
+    <Order>485</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

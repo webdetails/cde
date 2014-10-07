@@ -7,7 +7,7 @@
     <Tooltip>Controls how labels are laid out when they overlap (does not apply to discrete-hierarchical axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>378</Order>
+    <Order>386</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

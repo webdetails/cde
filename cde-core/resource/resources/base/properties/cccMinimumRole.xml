@@ -7,7 +7,7 @@
     <Tooltip>The minimum visual role is a plot-level visual role that is visually encoded by the position of the rule that crosses the top whisker of the box visual element, along the orthogonal axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>328</Order>
+    <Order>332</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
