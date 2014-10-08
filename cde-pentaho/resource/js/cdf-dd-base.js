@@ -119,23 +119,36 @@ var SynchronizeRequests = {
 
                 var callback = function (v, m, f) {
                     if (v == 1 && selectTemplate != undefined) {
-                        $.prompt('Are you sure you want to load the template? ', { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
+                        var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
+                        var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+                        var message = 'Are you sure you want to load the template? <br><br><b>WARNING:</b> Dashboard Layout';
+
+                        if( overwriteComponents ) {
+                            message += (overwriteDatasources ? ',' : ' and') + ' Components';
+                        }
+                        if( overwriteDatasources ) {
+                            message += ' and Datasources';
+                        }
+                        message += ' will be overwritten!';
+                        
+                        $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
                             callback: function (v, m, f) {
                                 if (v) {
-                                    if ( !selectTemplate.structure.components.rows.length )
+                                    if ( !selectTemplate.structure.components.rows.length ) {
                                         selectTemplate.structure.components.rows = cdfdd.dashboardData.components.rows;
+                                    }
 
-                                    if ( !selectTemplate.structure.datasources.rows.length )
+                                    if ( !selectTemplate.structure.datasources.rows.length ) {
                                         selectTemplate.structure.datasources.rows = cdfdd.dashboardData.datasources.rows;
+                                    }
 
                                     cdfdd.dashboardData = selectTemplate.structure;
                                     cdfdd.layout.init();
                                     cdfdd.components.initTemplate();
                                     cdfdd.datasources.initTemplate();
-                                    if( selectTemplate.structure.style ){ cdfdd.dashboardWcdf.style = selectTemplate.structure.style; }
-                                    if( selectTemplate.structure.rendererType ){ cdfdd.dashboardWcdf.rendererType = selectTemplate.structure.rendererType; }
                                 }
-                            }});
+                            }
+                        });
                     }
                 };
 
