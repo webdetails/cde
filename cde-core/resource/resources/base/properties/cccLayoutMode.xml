@@ -4,19 +4,19 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>layoutMode</Description>
-    <Tooltip>The layout algorithm.</Tooltip>
+    <Tooltip>The placement of boxes within the same category band.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>296</Order>
+    <Order>300</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
   <Values>
     <Value display="Dice">dice</Value>
+    <Value display="Grouped">grouped</Value>
+    <Value display="Overlapped">overlapped</Value>
     <Value display="Slice">slice</Value>
     <Value display="Slice-and-Dice">slice-and-dice</Value>
     <Value display="Squarify">squarify</Value>
-    <Value display="Grouped">grouped</Value>
-    <Value display="Overlapped">overlapped</Value>
   </Values>
 </DesignerProperty>

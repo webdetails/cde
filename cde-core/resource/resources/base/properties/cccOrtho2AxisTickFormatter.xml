@@ -7,7 +7,7 @@
     <Tooltip>A tick formatter function (applies to continuous axes).</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>355</Order>
+    <Order>359</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

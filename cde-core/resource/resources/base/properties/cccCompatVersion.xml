@@ -7,7 +7,7 @@
     <Tooltip>The CCC version that the chart should run in.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>275</Order>
+    <Order>279</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>

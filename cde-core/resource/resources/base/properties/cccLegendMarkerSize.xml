@@ -7,7 +7,7 @@
     <Tooltip>The width and height of the marker panel, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>307</Order>
+    <Order>311</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

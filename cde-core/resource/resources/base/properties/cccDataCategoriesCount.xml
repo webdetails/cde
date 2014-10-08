@@ -7,7 +7,7 @@
     <Tooltip>The number of category-like columns that are present in a data source.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>280</Order>
+    <Order>284</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
