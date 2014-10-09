@@ -577,7 +577,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       writeOut( out, "Access Denied" );
     }
 
-    writeOut( out, DashboardEditor.getEditor( wcdfPath, debugMode, getScheme( pathParams ), false ) );
+    String result = DashboardEditor.getEditor( wcdfPath, debugMode, getScheme( pathParams ), false );
+
+    //i18n token replacement
+    if ( !StringUtils.isEmpty( result ) ) {
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
+      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+    }
+
+    writeOut( out, result );
   }
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
