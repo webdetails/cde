@@ -157,15 +157,17 @@ var SynchronizeRequests = {
                     if (v == 1 && selectTemplate != undefined) {
                         var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
                         var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
-                        var message = 'Are you sure you want to load the template? <br><br><b>WARNING:</b> Dashboard Layout';
+                        var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
 
-                        if( overwriteComponents ) {
-                            message += (overwriteDatasources ? ',' : ' and') + ' Components';
+                        if( overwriteComponents && overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
+                        } else if ( overwriteComponents ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
+                        } else if ( overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
+                        } else {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
                         }
-                        if( overwriteDatasources ) {
-                            message += ' and Datasources';
-                        }
-                        message += ' will be overwritten!';
                         
                         $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
                           callback: SynchronizeRequests.callbackLoadTemplate

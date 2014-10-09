@@ -190,7 +190,15 @@ public class RenderApi {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
-    return DashboardEditor.getEditor( wcdfPath, debug, request.getScheme(), isDefault );
+    String result = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme(), isDefault );
+
+    //i18n token replacement
+    if ( !StringUtils.isEmpty( result ) ) {
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
+      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+    }
+
+    return result;
   }
 
   @GET
