@@ -126,7 +126,6 @@ var SynchronizeRequests = {
             if (result && result.status == "true") {
 
                 templates = result.result;
-                //var selectTemplate = undefined;
                 SynchronizeRequests.selectTemplate = undefined;
                 var myTemplatesCount = 0;
                 var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
@@ -154,8 +153,23 @@ var SynchronizeRequests = {
                 };
 
                 var callback = function (v, m, f) {
-                    if (v == 1 && SynchronizeRequests.selectTemplate != undefined) {
-                        $.prompt('Are you sure you want to load the template? ', { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
+                    var selectTemplate = SynchronizeRequests.selectTemplate;
+                    if (v == 1 && selectTemplate != undefined) {
+                        var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
+                        var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+                        var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
+
+                        if( overwriteComponents && overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
+                        } else if ( overwriteComponents ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
+                        } else if ( overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
+                        } else {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+                        }
+                        
+                        $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
                           callback: SynchronizeRequests.callbackLoadTemplate
                         });
                     }
@@ -198,11 +212,13 @@ var SynchronizeRequests = {
     //exposed callback function for ease of testing
     callbackLoadTemplate: function (v, m, f) {
       if (v) {
-        if ( !SynchronizeRequests.selectTemplate.structure.components.rows.length )
+        if ( !SynchronizeRequests.selectTemplate.structure.components.rows.length ) {
           SynchronizeRequests.selectTemplate.structure.components.rows = cdfdd.dashboardData.components.rows;
+        }
 
-        if ( !SynchronizeRequests.selectTemplate.structure.datasources.rows.length )
+        if ( !SynchronizeRequests.selectTemplate.structure.datasources.rows.length ) {
           SynchronizeRequests.selectTemplate.structure.datasources.rows = cdfdd.dashboardData.datasources.rows;
+        }
 
         cdfdd.dashboardData = SynchronizeRequests.selectTemplate.structure;
         cdfdd.layout.init();

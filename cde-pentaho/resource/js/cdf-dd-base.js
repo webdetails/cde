@@ -119,23 +119,38 @@ var SynchronizeRequests = {
 
                 var callback = function (v, m, f) {
                     if (v == 1 && selectTemplate != undefined) {
-                        $.prompt('Are you sure you want to load the template? ', { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
+                        var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
+                        var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+                        var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
+
+                        if( overwriteComponents && overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
+                        } else if ( overwriteComponents ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
+                        } else if ( overwriteDatasources ) {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
+                        } else {
+                            message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+                        }
+                        
+                        $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
                             callback: function (v, m, f) {
                                 if (v) {
-                                    if ( !selectTemplate.structure.components.rows.length )
+                                    if ( !selectTemplate.structure.components.rows.length ) {
                                         selectTemplate.structure.components.rows = cdfdd.dashboardData.components.rows;
+                                    }
 
-                                    if ( !selectTemplate.structure.datasources.rows.length )
+                                    if ( !selectTemplate.structure.datasources.rows.length ) {
                                         selectTemplate.structure.datasources.rows = cdfdd.dashboardData.datasources.rows;
+                                    }
 
                                     cdfdd.dashboardData = selectTemplate.structure;
                                     cdfdd.layout.init();
                                     cdfdd.components.initTemplate();
                                     cdfdd.datasources.initTemplate();
-                                    if( selectTemplate.structure.style ){ cdfdd.dashboardWcdf.style = selectTemplate.structure.style; }
-                                    if( selectTemplate.structure.rendererType ){ cdfdd.dashboardWcdf.rendererType = selectTemplate.structure.rendererType; }
                                 }
-                            }});
+                            }
+                        });
                     }
                 };
 
