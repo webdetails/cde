@@ -333,6 +333,7 @@
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
+          <Property name="baseAxisTickFormatter">cccBaseAxisTickFormatter</Property>
           <Property name="baseAxisTicks">cccBaseAxisTicks</Property>
           <Property name="baseAxisTitle">cccBaseAxisTitle</Property>
           <Property name="baseAxisTitleAlign">cccBaseAxisTitleAlign</Property>
@@ -591,6 +592,7 @@
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
+          <Property name="baseAxisTickFormatter">cccBaseAxisTickFormatter</Property>
           <Property name="baseAxisTicks">cccBaseAxisTicks</Property>
           <Property name="baseAxisTitle">cccBaseAxisTitle</Property>
           <Property name="baseAxisTitleAlign">cccBaseAxisTitleAlign</Property>
@@ -1156,6 +1158,7 @@
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
+          <Property name="baseAxisTickFormatter">cccBaseAxisTickFormatter</Property>
           <Property name="baseAxisTicks">cccBaseAxisTicks</Property>
           <Property name="baseAxisTitle">cccBaseAxisTitle</Property>
           <Property name="baseAxisTitleAlign">cccBaseAxisTitleAlign</Property>
@@ -1217,6 +1220,7 @@
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
+          <Property name="orthoAxisTickFormatter">cccOrthoAxisTickFormatter</Property>
           <Property name="orthoAxisTicks">cccOrthoAxisTicks</Property>
           <Property name="orthoAxisTitle">cccOrthoAxisTitle</Property>
           <Property name="orthoAxisTitleAlign">cccOrthoAxisTitleAlign</Property>
@@ -2032,6 +2036,7 @@
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
+          <Property name="baseAxisTickFormatter">cccBaseAxisTickFormatter</Property>
           <Property name="baseAxisTicks">cccBaseAxisTicks</Property>
           <Property name="baseAxisTitle">cccBaseAxisTitle</Property>
           <Property name="baseAxisTitleAlign">cccBaseAxisTitleAlign</Property>
@@ -3301,6 +3306,7 @@
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
+          <Property name="baseAxisTickFormatter">cccBaseAxisTickFormatter</Property>
           <Property name="baseAxisTicks">cccBaseAxisTicks</Property>
           <Property name="baseAxisTitle">cccBaseAxisTitle</Property>
           <Property name="baseAxisTitleAlign">cccBaseAxisTitleAlign</Property>
