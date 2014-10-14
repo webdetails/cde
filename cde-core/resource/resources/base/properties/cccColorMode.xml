@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the color is assigned to parent nodes or to leaf nodes.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>272</Order>
+    <Order>274</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

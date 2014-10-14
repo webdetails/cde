@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisBandSizeMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>baseAxisBandSizeMax</Description>
+    <Tooltip>The maximum size, in pixels, of the bands used to represent the discrete domain values (applies to discrete axes).</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>210</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

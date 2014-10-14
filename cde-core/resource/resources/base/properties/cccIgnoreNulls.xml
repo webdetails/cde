@@ -7,7 +7,7 @@
     <Tooltip>Indicates if datums whose value of all measure dimensions is null should be ignored.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>297</Order>
+    <Order>299</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
