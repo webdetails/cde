@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
     <Description>baseAxisTooltipEnabled</Description>
-    <Tooltip>Indicates if the axis' labels show tooltips.</Tooltip>
+    <Tooltip>Indicates if the axis' labels show tooltips (applies to discrete axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>241</Order>
+    <Order>243</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

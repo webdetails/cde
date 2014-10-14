@@ -7,7 +7,7 @@
     <Tooltip>The separator character with which multiple values in a cross-tab format data source were joined, and also, used to build composite keys for multiple level groupings.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>288</Order>
+    <Order>290</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
