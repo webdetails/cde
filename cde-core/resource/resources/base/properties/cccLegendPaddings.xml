@@ -7,7 +7,7 @@
     <Tooltip>The paddings of the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>312</Order>
+    <Order>314</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

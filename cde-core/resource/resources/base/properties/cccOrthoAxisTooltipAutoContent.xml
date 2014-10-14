@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>value</DefaultValue>
     <Description>orthoAxisTooltipAutoContent</Description>
-    <Tooltip>Indicates the type of automatic content generated for the tooltip of axis' labels.</Tooltip>
+    <Tooltip>Indicates the type of automatic content generated for the tooltip of axis' labels (applies to discrete axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>400</Order>
+    <Order>404</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
