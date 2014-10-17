@@ -7,7 +7,7 @@
     <Tooltip>In the cross-tab format, indicates if, a column exists for each series value and measure dimension.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>288</Order>
+    <Order>291</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

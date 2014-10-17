@@ -7,7 +7,7 @@
     <Tooltip>The axis' domain rounding mode (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>346</Order>
+    <Order>349</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

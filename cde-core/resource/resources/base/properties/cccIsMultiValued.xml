@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the data source has multiple value and dimensions.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>301</Order>
+    <Order>304</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

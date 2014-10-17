@@ -7,7 +7,7 @@
     <Tooltip>The default bullet markers.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>250</Order>
+    <Order>253</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

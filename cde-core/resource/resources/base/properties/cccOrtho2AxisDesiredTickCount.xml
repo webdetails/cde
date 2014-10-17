@@ -7,7 +7,7 @@
     <Tooltip>The desired number of major ticks.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>345</Order>
+    <Order>348</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
