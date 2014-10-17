@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrtho2AxisTickUnitMin</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0</DefaultValue>
+    <Description>ortho2AxisTickUnitMin</Description>
+    <Tooltip>The minimum ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>368</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -7,7 +7,7 @@
     <Tooltip>The domain values (applies to numeric domain axes).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>270</Order>
+    <Order>273</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

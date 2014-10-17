@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccBaseAxisTickUnitMax</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>Infinity</DefaultValue>
+    <Description>baseAxisTickUnitMax</Description>
+    <Tooltip>The maximum ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>237</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

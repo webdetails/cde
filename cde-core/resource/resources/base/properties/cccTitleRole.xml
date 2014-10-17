@@ -7,7 +7,7 @@
     <Tooltip>The title visual role is a plot-level visual role that represents the title of each bullet.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>467</Order>
+    <Order>476</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
