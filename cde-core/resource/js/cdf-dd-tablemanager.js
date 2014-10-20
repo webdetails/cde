@@ -81,7 +81,7 @@ var TableManager = Base.extend({
     isLayoutTable=false;
     var table = ''+
     //  (isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
-    '<table id="'+ this.tableId +'" class="myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+    '<table id="'+ this.tableId +'" class="'+ this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
 '     <caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
     (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
     (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
@@ -162,7 +162,7 @@ var TableManager = Base.extend({
 
   },
 
-  dragAndDrop: function( row, id ) {
+dragAndDrop: function( row, id ) {
     var tableManager = TableManager.getTableManager('table-cdfdd-layout-tree');
     var layoutTableSelector = 'table.#table-cdfdd-layout-tree tbody';
 
@@ -170,9 +170,31 @@ var TableManager = Base.extend({
       revert: 'invalid',
       helper: 'clone',
       axis: 'y',
+      cursor:'auto',
       disabled: tableManager.disableDragObj( row ),
       delay: 100,
-      opacity: 0.50
+      opacity: 0.50,
+
+      //Events
+      start: function( event, ui ) {
+        var originalRow = $(this);
+        var originalRowElements = originalRow.find('td');
+        var dragObjElements = ui.helper.find('td');
+
+        originalRow.addClass( 'dragging_element' );
+        $('body').addClass( 'dragging_cursor' );
+
+        originalRowElements.each(function(i, elem) {
+          var width = $(elem).width();
+          dragObjElements.eq(i).width(width);
+        });
+      },
+      stop: function( event, ui ) {
+        var originalRow = $(this);
+
+        originalRow.removeClass( 'dragging_element' );
+        $('body').removeClass( 'dragging_cursor' );
+      }
 
     }).droppable({
       accept: function( dragObj ) {
@@ -193,14 +215,62 @@ var TableManager = Base.extend({
       },
       drop: function( event, ui ) {
         ui.helper.attr('class', '');
+        tableManager.removeExtraHoverStyles( $(this) );
 
         var dropId = $(this).attr('id');
         tableManager.setDroppedOnId(dropId);
 
         var moveOperation = new MoveToOperation();
         moveOperation.execute(tableManager);
+      },
+      over: function( event, ui ) {
+        tableManager.addExtraHoverStyles( ui.draggable, $(this) );
+      },
+
+      out: function( event, ui ) {
+        tableManager.removeExtraHoverStyles( $(this) );
       }
     });
+  },
+
+  addExtraHoverStyles: function( dragRow, hoverRow ) {
+    var indexManager = this.getTableModel().getIndexManager();
+    var dragYPos = dragRow.position().top;
+    var dropYPos = hoverRow.position().top;
+
+    if( hoverRow.hasClass('layout_hover_dropInto') ) {
+      return undefined;
+    }
+
+    if( dragYPos > dropYPos ) {
+      hoverRow.addClass('layout_hover_moveTo_up');
+    } else if( !hoverRow.hasClass( 'parent' ) || hoverRow.hasClass( 'collapsed' ) ) {
+      hoverRow.addClass('layout_hover_moveTo_down');
+    } else {
+      var hoverRowId = hoverRow.attr('id');
+      while( hoverRow.hasClass( 'parent' ) && hoverRow.hasClass( 'expanded' ) ) {
+        var children = indexManager.getIndex()[hoverRowId].children;
+        hoverRowId = children[children.length-1].id;
+        hoverRow = $('#'+hoverRowId);
+      }
+      hoverRow.addClass('layout_hover_moveTo_down');
+    }
+  },
+
+  removeExtraHoverStyles: function( row ) {
+    var indexManager = this.getTableModel().getIndexManager();
+
+    row.removeClass('layout_hover_moveTo_up').removeClass('layout_hover_moveTo_down');
+    
+    if( row.hasClass( 'parent' ) && row.hasClass( 'expanded' ) ) {
+      var rowId = row.attr('id');
+      while( row.hasClass( 'parent' ) && row.hasClass( 'expanded' ) ) {
+        var children = indexManager.getIndex()[rowId].children;
+        rowId = children[children.length-1].id;
+        row = $('#'+rowId);
+      }
+      row.removeClass('layout_hover_moveTo_up').removeClass('layout_hover_moveTo_down');
+    }
   },
 
   disableDragObj: function( row ) {
