@@ -555,7 +555,21 @@ var DuplicateOperation = BaseOperation.extend({
       tableManager.insertAtIdx( row, targetIdx + i );
     });
 
+    this.collapseDuplicated(_toClone);
     tableManager.selectCell(targetIdx,colIdx);
+  },
+
+  collapseDuplicated: function( duplicatedRowsData ) {
+    $.each( duplicatedRowsData.reverse(), function(i, row) {
+      var node = $("#"+row.id);
+      
+      if( node.hasClass( 'parent' ) ) {
+        node.toggleBranch();
+      } else {
+        node.hide();
+      }
+      
+    });
   }
 });
 
@@ -626,22 +640,83 @@ var MoveToOperation = BaseOperation.extend({
     // Build new data array
     var _data = tableManager.getTableModel().getData();
     var _toMove = _data.splice(fromIdx, dragNodeLength);
+    var _tableData = $('#'+tableManager.getTableId() + " > tbody > tr");
+    var _uiToMove = _tableData.splice(fromIdx, dragNodeLength);
 
-    //update parent of the first moved node
+    //only the parent of the first moved element changes
+    var selectedNode = $(_uiToMove[0]);
+    selectedNode.removeClass(treeTableChildPrefix + oldParent);
+    if( newParent != IndexManager.ROOTID ) {
+      selectedNode.addClass(treeTableChildPrefix + newParent);
+    }
     _toMove[0].parent = newParent;
 
-    //Delete moved rows from display
-    $('#'+tableManager.getTableId() + " > tbody > tr").slice(fromIdx, fromIdx+dragNodeLength).remove();
+    var _preventExpandData = this.getPreventExpandData( _uiToMove, indexManager );
 
-    //Insert moved rows
+    //deploy new data arrays
+    Array().splice.apply(_data,[startSplicePos,0].concat(_toMove));
+    tableManager.getTableModel().setData(_data);
+    Array().splice.apply(_tableData,[startSplicePos,0].concat(_uiToMove));
+    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
+
+    //Refresh update rows display
+    //padding isnt updated when ROOTID is parent of node
+    if( oldParent != IndexManager.ROOTID && newParent == IndexManager.ROOTID ) {
+      var rowData = _data[startSplicePos];
+
+      //keep the row wrapper so that in IE8 we maintain the draggable object intact, to prevent a bug when trying to stop drag events
+      var original = $("#"+rowData.id).empty();
+
+      //discard row but keep inner content to append in the original wrapper
+      //new inner content has the correct paddings for the row new position
+      tableManager.addRow(rowData, startSplicePos);
+      var newContent = $("#"+rowData.id + " td");
+      $("#"+rowData.id).remove();
+      original.append(newContent);
+    }
+
+    tableManager.updateTreeTable( newParent );
     $.each(_toMove, function(i, row) {
-      tableManager.insertAtIdx( row, startSplicePos + i );
+      tableManager.updateTreeTable(row.id);
     });
+    tableManager.updateTreeTable( oldParent );
 
-    //Updates moved rows old parent display
-    tableManager.updateTreeTable(oldParent);
-
+    this.preventExpand( _preventExpandData );
     tableManager.selectCell(startSplicePos, 0);
+  },
+
+  getPreventExpandData: function( rowList, indexManager ) {
+    var _preventExpand = [];
+
+    $.each( rowList, function() {
+      var node = $(this);
+      var nodeId = node.attr('id');
+      var parentId = indexManager.getIndex()[nodeId].parent;
+
+      _preventExpand.push({
+        id: nodeId,
+        isExpanded: node.hasClass('expanded'),
+        isParent: node.hasClass('parent'),
+        isParentExpanded: (parentId == IndexManager.ROOTID) ? true : $( "#"+ parentId ).hasClass('expanded')
+      });
+    });
+    return _preventExpand;
+  },
+
+  preventExpand: function( rowData ) {
+    $.each(rowData.reverse(), function(i, info) {
+      var node = $( "#" + info.id );
+
+      if( info.isParent ) {
+        if( !info.isExpanded ) {
+          node.toggleBranch();
+        } else if( !info.isParentExpanded ) {
+          node.hide();
+        }
+      } else if( !info.isParentExpanded ) {
+        node.hide();
+      }
+    });
   }
 
 });
