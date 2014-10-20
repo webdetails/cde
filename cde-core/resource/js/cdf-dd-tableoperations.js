@@ -528,56 +528,200 @@ var DuplicateOperation = BaseOperation.extend({
 
     // Build a new data array
     var _data = tableManager.getTableModel().getData();
-    var _tableData = $('#'+tableManager.getTableId() + " > tbody > tr").toArray();
     var _toClone = $.extend(true, [], _data).splice(fromIdx, toIdx-fromIdx + 1);
-    var _uiToClone = [];
     var _originalToNewIds = {};
 
     //Generate new names and ids for the duplicated nodes and ui nodes
     $.each(_toClone, function(i, node) {
-      var _uiNode = $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (fromIdx + i) +")").clone(true);
-      var _uiNodeName = _uiNode.find("td").eq(1);
       var _nodeProps = node.properties;
       var _newId = TableManager.generateGUID();
       var _oldId = node.id;
 
       node.id = _newId;
-      _uiNode.attr( "id", _newId );
       _originalToNewIds[_oldId] = _newId;
 
       //don't need to update first node parent, because its parent id didn't change
       if ( i != 0 ) {
-        _uiNode.removeClass( 'child-of-' + node.parent );
         node.parent = _originalToNewIds[node.parent];
-        _uiNode.addClass( 'child-of-' + node.parent );
-
       }
 
       //Update node and uiNode names
       if( _nodeProps && _nodeProps[0].name == 'name' && _nodeProps[0].value != "" ) {
         node.properties[0].value += cloneSuffix;
-        _uiNodeName.text( node.properties[0].value );
       }
-
-      _uiToClone.push(_uiNode[0]);
     });
 
-    $.each(_toClone, function(i, e) {
-      _data.splice(targetIdx+i, 0, e);
+    $.each(_toClone, function(i, row) {
+      tableManager.insertAtIdx( row, targetIdx + i );
     });
-    tableManager.getTableModel().setData(_data);
-    Array().splice.apply(_tableData,[targetIdx,0].concat(_uiToClone));
-    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
 
-    //updates events for cloned nodes
-    $.each(_originalToNewIds, function(oldId, newId) {
-      tableManager.updateTreeTable(newId);
-    });
+    this.collapseDuplicated(_toClone);
     tableManager.selectCell(targetIdx,colIdx);
+  },
+
+  collapseDuplicated: function( duplicatedRowsData ) {
+    $.each( duplicatedRowsData.reverse(), function(i, row) {
+      var node = $("#"+row.id);
+      
+      if( node.hasClass( 'parent' ) ) {
+        node.toggleBranch();
+      } else {
+        node.hide();
+      }
+      
+    });
   }
 });
 
 CellOperations.registerOperation(new DuplicateOperation());
+
+var MoveToOperation = BaseOperation.extend({
+  id: "MOVE_TO",
+  types: ["GenericMoveTo"],
+  name: "Move To",
+  description: "Move To",
+
+  constructor: function(){
+    this.logger = new Logger("MoveToOperation");
+  },
+
+  canExecute: function(tableManager) {
+    return false;
+  },
+
+  execute: function(tableManager) {
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var treeTableChildPrefix = $.fn.treeTable.defaults.childPrefix;
+
+    //Drag Row Info
+    var dragIdx = tableManager.getSelectedCell()[0];
+    var dragId = tableManager.getTableModel().getEvaluatedId(dragIdx);
+
+    //Drop Row Info
+    var dropId = tableManager.getDroppedOnId();
+    var dropIdx = indexManager.getIndex()[dropId].index;
+
+    //General Info
+    var moveIntoDrop = tableManager.canMoveInto(dragId, dropId);
+    var oldParent = indexManager.getIndex()[dragId].parent;
+    var newParent = moveIntoDrop ? dropId : indexManager.getIndex()[dropId].parent;
+
+    var fromIdx = dragIdx;
+    var toIdx = -1;
+    var targetIdx = dropIdx + (moveIntoDrop ? 1 : 0);
+
+    var nextSibling = indexManager.getNextSibling(dragId);
+    if (typeof nextSibling == 'undefined') {
+      toIdx = indexManager.getLastChild(dragId).index;
+    } else {
+      toIdx = nextSibling.index - 1;
+    }
+
+    var dragNodeLength = toIdx - fromIdx + 1;
+    var dropNodeLength = 0;
+    if( !moveIntoDrop ) {
+      var dropNextSibling = indexManager.getNextSibling(dropId);
+      if (typeof dropNextSibling == 'undefined') {
+        dropNodeLength = indexManager.getLastChild(dropId).index - dropIdx + 1;
+      } else {
+        dropNodeLength = dropNextSibling.index - dropIdx;
+      }
+    }
+
+    var startSplicePos = -1;
+    if( targetIdx > fromIdx ) {
+      startSplicePos = targetIdx - dragNodeLength + dropNodeLength;
+    } else {
+      startSplicePos = targetIdx;
+    }
+
+    this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
+
+    // Build new data array
+    var _data = tableManager.getTableModel().getData();
+    var _toMove = _data.splice(fromIdx, dragNodeLength);
+    var _tableData = $('#'+tableManager.getTableId() + " > tbody > tr");
+    var _uiToMove = _tableData.splice(fromIdx, dragNodeLength);
+
+    //only the parent of the first moved element changes
+    var selectedNode = $(_uiToMove[0]);
+    selectedNode.removeClass(treeTableChildPrefix + oldParent);
+    if( newParent != IndexManager.ROOTID ) {
+      selectedNode.addClass(treeTableChildPrefix + newParent);
+    }
+    _toMove[0].parent = newParent;
+
+    var _preventExpandData = this.getPreventExpandData( _uiToMove, indexManager );
+
+    //deploy new data arrays
+    Array().splice.apply(_data,[startSplicePos,0].concat(_toMove));
+    tableManager.getTableModel().setData(_data);
+    Array().splice.apply(_tableData,[startSplicePos,0].concat(_uiToMove));
+    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
+
+    //Refresh update rows display
+    //padding isnt updated when ROOTID is parent of node
+    if( oldParent != IndexManager.ROOTID && newParent == IndexManager.ROOTID ) {
+      var rowData = _data[startSplicePos];
+
+      //keep the row wrapper so that in IE8 we maintain the draggable object intact, to prevent a bug when trying to stop drag events
+      var original = $("#"+rowData.id).empty();
+
+      //discard row but keep inner content to append in the original wrapper
+      //new inner content has the correct paddings for the row new position
+      tableManager.addRow(rowData, startSplicePos);
+      var newContent = $("#"+rowData.id + " td");
+      $("#"+rowData.id).remove();
+      original.append(newContent);
+    }
+
+    tableManager.updateTreeTable( newParent );
+    $.each(_toMove, function(i, row) {
+      tableManager.updateTreeTable(row.id);
+    });
+    tableManager.updateTreeTable( oldParent );
+
+    this.preventExpand( _preventExpandData );
+    tableManager.selectCell(startSplicePos, 0);
+  },
+
+  getPreventExpandData: function( rowList, indexManager ) {
+    var _preventExpand = [];
+
+    $.each( rowList, function() {
+      var node = $(this);
+      var nodeId = node.attr('id');
+      var parentId = indexManager.getIndex()[nodeId].parent;
+
+      _preventExpand.push({
+        id: nodeId,
+        isExpanded: node.hasClass('expanded'),
+        isParent: node.hasClass('parent'),
+        isParentExpanded: (parentId == IndexManager.ROOTID) ? true : $( "#"+ parentId ).hasClass('expanded')
+      });
+    });
+    return _preventExpand;
+  },
+
+  preventExpand: function( rowData ) {
+    $.each(rowData.reverse(), function(i, info) {
+      var node = $( "#" + info.id );
+
+      if( info.isParent ) {
+        if( !info.isExpanded ) {
+          node.toggleBranch();
+        } else if( !info.isParentExpanded ) {
+          node.hide();
+        }
+      } else if( !info.isParentExpanded ) {
+        node.hide();
+      }
+    });
+  }
+
+});
+
+CellOperations.registerOperation(new MoveToOperation());
 
 var MoveUpOperation = BaseOperation.extend({
 

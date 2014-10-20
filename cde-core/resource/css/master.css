@@ -740,6 +740,132 @@ div#cdfddOlapMeasureDiv{
   overflow: auto;
 }
 
+div#cdfddOlapMeasureDiv{
+  height:100px;
+  overflow: auto;
+}
+tr.ui-droppable td {
+  position: relative;
+}
+tr.ui-droppable td:after {
+  position: absolute;
+  content: '';
+}
+#cdfdd-layout-tree table tbody tr td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+#cdfdd-layout-tree table tbody tr td:first-child {
+  border-left: 1px solid transparent;
+  border-left: 1px solid rgba(0,0,0,0);
+}
+#cdfdd-layout-tree table tbody tr td:last-child {
+  border-right: 1px solid transparent;
+  border-right: 1px solid rgba(0,0,0,0);
+}
+#cdfdd-layout-tree table tbody tr.ui-draggable-dragging td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.treeTable .ui-draggable-dragging {
+  background: #999 !important;
+  border: 1px solid #999 !important;
+  z-index: 10;
+}
+.treeTable .ui-draggable-dragging {
+  margin-left: -1px;
+  opacity: .3 !important;
+}
+.layout_hover_moveTo_up td:after { /*temporary style*/
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 100%;
+  background: none;
+  border-top: 1px dashed #0098c4;
+}
+.layout_hover_moveTo_down td:after { /*temporary style*/
+  position: absolute;
+  content: '';
+  bottom: 0;
+  left: 0;
+  height: 0;
+  width: 100%;
+  background: none;
+  border-bottom: 1px dashed #0098c4;
+}
+.layout_hover_dropInto td,
+.layout_hover_dropInto.layout_hover_moveTo_down td,
+.layout_hover_dropInto.layout_hover_moveTo_up td { /*temporary style*/
+  background-color: rgba(0, 152, 196, .1);
+}
+#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td {
+  border-top: 1px dashed #0098c4;
+  border-bottom: 1px dashed #0098c4;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:first-child {
+  border-left: 1px dashed #0098c4;
+}
+#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:last-child {
+  border-right: 1px dashed #0098c4;
+}
+#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:after { /*temporary style*/
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  background: none;
+}
+tr.ui-draggable { 
+  position: relative;
+}
+tr.ui-draggable td {  
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.dragging_cursor,
+.dragging_cursor *,
+.dragging_cursor tr.ui-draggable-dragging td,
+.dragging_cursor tr.ui-draggable td,
+tr.ui-draggable:active td {
+  cursor: move !important; /* fallback if grab cursor is unsupported */
+  cursor: grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: -webkit-grabbing !important;
+}
+tr.ui-draggable:hover td:last-child:after,
+tr.ui-draggable.dragging_element td:last-child:after,
+tr.ui-draggable-dragging td:last-child:after {
+  content: '';  
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -10px;
+  background-image: url("/pentaho/api/repos/pentaho-cdf-dd/css/../images/drag-icon.svg");
+  background-position: -20px 0;
+}
+.no-svg tr.ui-draggable:hover td:last-child:after,
+.no-svg tr.ui-draggable.dragging_element td:last-child:after,
+.no-svg tr.ui-draggable-dragging td:last-child:after {
+  background-image: url("/pentaho/api/repos/pentaho-cdf-dd/css/../images/drag-icon.png");
+}
+tr.ui-draggable.ui-state-active:hover td:last-child:after,
+tr.ui-draggable.ui-state-active.dragging_element td:last-child:after,
+tr.ui-draggable-dragging td:last-child:after {
+  background-position: 0 0;
+}
+
+
 .tooltip.layout_saveas_template {
   background-image: url("../images/NAV/save_template.png");
 }

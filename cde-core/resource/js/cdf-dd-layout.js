@@ -715,7 +715,9 @@ BaseModel.registerModel(LayoutImageModel);
 var LayoutAddImageOperation = AddRowOperation.extend({
 
 	id: "LAYOUT_ADD_IMAGE",
-	types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL],
+	types: [LayoutRowModel.MODEL,LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+          LayoutFreeFormModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+          LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL],
 	name: "Add Image",
 	description: "Adds an image",
 
@@ -1045,58 +1047,6 @@ var LayoutDuplicateOperation = DuplicateOperation.extend({
   }
 });
 CellOperations.registerOperation(new LayoutDuplicateOperation);
-
-
-var LayoutMoveUpOperation = MoveUpOperation.extend({
-
-  id: "LAYOUT_MOVE_UP",
-  types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
-    LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
-    FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
-    LayoutFreeFormModel.MODEL],
-
-  constructor: function(){
-    this.logger = new Logger("LayoutMoveUpOperation");
-  },
-
-  canExecute: function(tableManager) {
-    var rowIdx = tableManager.getSelectedCell()[0],
-        rowId = tableManager.getTableModel().getEvaluatedId(rowIdx),
-        rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-        isBootstrapPanelChild = rowType == LayoutBootstrapPanelBodyModel.MODEL
-            || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
-
-    return !tableManager.getTableModel().getIndexManager().isFirstChild(rowId) && !isBootstrapPanelChild;
-  }
-
-});
-CellOperations.registerOperation(new LayoutMoveUpOperation);
-
-
-var LayoutMoveDownOperation = MoveDownOperation.extend({
-
-  id: "LAYOUT_MOVE_DOWN",
-  types: [LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutSpaceModel.MODEL,
-    LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutCarouselModel.MODEL, FilterBlockModel.MODEL,
-    FilterRowModel.MODEL, FilterHeaderModel.MODEL, LayoutResourceModel.MODEL, LayoutBootstrapPanelModel.MODEL,
-    LayoutFreeFormModel.MODEL],
-
-  constructor: function(){
-    this.logger = new Logger("LayoutMoveDownOperation");
-  },
-
-  canExecute: function(tableManager){
-    var rowIdx = tableManager.getSelectedCell()[0],
-        rowId = tableManager.getTableModel().getEvaluatedId(rowIdx),
-        rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-        isBootstrapPanelChild = rowType == LayoutBootstrapPanelBodyModel.MODEL
-            || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
-
-    return !tableManager.getTableModel().getIndexManager().isLastChild(rowId) && !isBootstrapPanelChild;
-	}
-
-});
-CellOperations.registerOperation(new LayoutMoveDownOperation);
 
 
 var LayoutDeleteOperation = DeleteOperation.extend({

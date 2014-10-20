@@ -25,7 +25,7 @@
         <dependency org="org.slf4j"               name="slf4j-api"          rev="1.7.5"/>
 
         <dependency org="pentaho" name="cpf-core" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" />
-        <dependency org="pentaho" name="cpf-pentaho5" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="true" changing="true" />
+        <dependency org="pentaho" name="cpf-pentaho5" rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" />
 
 
         <dependency org="pentaho" name="cpf-core"     rev="${dependency.pentaho-cpf-plugin.revision}" transitive="false" changing="true" conf='runtime->default'/>

@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: '../',
 
 
     // frameworks to use
@@ -19,6 +19,7 @@ module.exports = function(config) {
       'resource/js/Base.js',
       'test-js/mockDashboards.js',
       'resource/js/cdf-dd-config.js',
+      'resource/js/jquery.treeTable.js',
       'resource/js/cdf-dd-tablemanager.js',
       'resource/js/cdf-dd-indexmanager.js',
       'resource/js/cdf-dd-wizardmanager.js',
