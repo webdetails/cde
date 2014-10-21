@@ -162,9 +162,10 @@ var TableManager = Base.extend({
 
   },
 
-dragAndDrop: function( row, id ) {
-    var tableManager = TableManager.getTableManager('table-cdfdd-layout-tree');
-    var layoutTableSelector = 'table.#table-cdfdd-layout-tree tbody';
+  dragAndDrop: function( row, id ) {
+    var layoutTreeName = "table-" + LayoutPanel.TREE;
+    var tableManager = TableManager.getTableManager( layoutTreeName );
+    var layoutTableSelector = 'table.#' + layoutTreeName + ' tbody';
 
     $(layoutTableSelector + ' #' + id).draggable({
       revert: 'invalid',
@@ -198,9 +199,13 @@ dragAndDrop: function( row, id ) {
 
     }).droppable({
       accept: function( dragObj ) {
-        var dropId = $(this).attr('id');
-        var dragId = dragObj.attr('id');
-        return !tableManager.disableDrop( dragId, dropId );
+        if( $(layoutTableSelector).find(dragObj).length ) {
+          var dropId = $(this).attr('id');
+          var dragId = dragObj.attr('id');
+          return !tableManager.disableDrop( dragId, dropId );
+        } else {
+          return false;
+        }
       },
 
       //Events
