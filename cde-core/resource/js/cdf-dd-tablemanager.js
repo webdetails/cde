@@ -1835,7 +1835,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     var myself = this;
     return $('<button class="cdfddInput">...</button>').click(function(){
       if(myself.fileName == null) return;
-      myself.fileName = myself.getFileName($(".cdfdd-resourceFileNameRender").text());
+      myself.fileName = myself.getFileName($(".cdfdd-resourceFileNameRender:visible").text());
       var url = ExternalEditor.getEditorUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
