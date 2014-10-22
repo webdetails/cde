@@ -44,7 +44,13 @@ var PalleteManager = Base.extend({
 			var _placeholder = $("#"+this.getPalleteId());
 
 			// Accordion
-			if($.browser.msie && parseInt($.browser.version)<9){
+			// CDF-271 $.browser is depricated
+			var rv;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+			if(rv && rv < 9) {
+				
 				_placeholder.accordion({
 					header: "h3",
 					active: false,
@@ -57,9 +63,9 @@ var PalleteManager = Base.extend({
 						headerSelected: "ui-icon-triangle-1-s"
 					}
 				});
-			}else{
+			} else {
 
-			_placeholder.accordion({
+				_placeholder.accordion({
 					header: "h3",
 					active: false,
 					collapsible: true,

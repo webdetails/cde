@@ -446,8 +446,8 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
     $( "#val_" + index ).text( divValue );
 
     if( value != "" ) {
-      $( "#val_" + index ).attr( "title", "<pre>" + value + "</pre>" );
-      $( "#val_" + index ).tooltip();
+      // CDF-271 jQueryUI tooltip bug #8861 XSS Vulnerability, no HTML allowed in an element's title
+      $( "#val_" + index ).tooltip({content: "<pre>" + value + "</pre>"});
     }
 
     cdfdd.arrayValue[index] = [ $("#arg_" + index).val(), value ];

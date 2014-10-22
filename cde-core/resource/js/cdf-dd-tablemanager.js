@@ -162,7 +162,8 @@ var TableManager = Base.extend({
   dragAndDrop: function( row, id ) {
     var layoutTreeName = "table-" + LayoutPanel.TREE;
     var tableManager = TableManager.getTableManager( layoutTreeName );
-    var layoutTableSelector = 'table.#' + layoutTreeName + ' tbody';
+    // CDF-271, jQuery 1.9.1 has a stricter selector syntax http://api.jquery.com/category/selectors/
+    var layoutTableSelector = 'table#' + layoutTreeName + ' tbody';
 
     $(layoutTableSelector + ' #' + id).draggable({
       revert: 'invalid',
@@ -740,7 +741,7 @@ var TableManager = Base.extend({
   globalInit: function(){
 
     // Enable the table selectors
-    $("table.myTreeTable tbody tr td").live("mousedown",function() {
+    $(document).on("mousedown","table.myTreeTable tbody tr td",function() {
       var myself = $(this);
 
       // get Current Id:
@@ -760,7 +761,7 @@ var TableManager = Base.extend({
     });
     
 
-    $(".advancedProperties").live('click',function() {
+    $(document).on("click",".advancedProperties",function() {
 
       var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
       tbody.fadeOut(300);
@@ -778,7 +779,7 @@ var TableManager = Base.extend({
       }, 500);
     });
     
-    $(".simpleProperties").live('click',function() {
+    $(document).on("click",".simpleProperties",function() {
       var tbody =  $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
       tbody.fadeOut(300);
       setTimeout(function(){
