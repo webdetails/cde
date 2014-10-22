@@ -746,23 +746,25 @@ var CDFDD = Base.extend({
       }
     }
 
-    var htmlHref = "static/" + mode + ".html";
-    var cssFileRef = "css/" + mode + ".css";
+    var htmlHref = "./static/" + mode + ".html";
+    var cssFileRef = "./css/" + mode + ".css";
 
     $.fancybox({
+      type: "ajax",
       ajax: {
-          type: "GET"
+        type: "GET"
       },
+      closeBtn: false,
       href: htmlHref,
-      autoDimensions: false,
+      autoScale: false,
       width: 950,
       height: 600,
       padding: 0,
       margin: 0,
-      onStart: function() {
+      beforeLoad: function() {
         addCSS(cssFileRef);
       },
-      onClosed: function() {
+      afterClose: function() {
         removeCSS(cssFileRef);
       }
     });

@@ -449,9 +449,14 @@ var SaveRequests = {
                     html: "Errors saving file: " + result.result
                 });
             }
-        
         };
-        if ( $.browser.msie && $.browser.version < 10 ) {
+
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
         } else {
@@ -469,18 +474,25 @@ var SaveRequests = {
 
         var successFunction = function (result) { 
             if (result && result.status == "true") {
-                if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+                if (selectedFolder[0] == "/") { selectedFolder = selectedFolder.substring(1, selectedFolder.length); }
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
                     window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
                 });
-            } else
+            } else {
                 $.notifyBar({
                     jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + result.result
                 });
+            }
         };
-        if ( $.browser.msie && $.browser.version < 10 ) {
+        
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
         } else {
@@ -499,11 +511,14 @@ var SaveRequests = {
             selectedFolder: selectedFolder,
             selectedFile: selectedFile,
             myself: myself
-
         });
         
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
 
-        if ( $.browser.msie && $.browser.version < 10 ) {
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, this.saveAsWidgetCallback);
         } else {
@@ -581,6 +596,7 @@ var PreviewRequests = {
             if (result && result.status == "true") {
                 $.fancybox({
                     type: "iframe",
+                    closeBtn: false,
                     href: _href,
                     width: $(window).width(),
                     height: $(window).height()
@@ -593,7 +609,12 @@ var PreviewRequests = {
             }
         };
 
-        if ( $.browser.msie && $.browser.version < 10 ) {
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
         } else {
