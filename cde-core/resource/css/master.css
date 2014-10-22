@@ -851,13 +851,13 @@ tr.ui-draggable-dragging td:last-child:after {
   right: 5px;
   top: 50%;
   margin-top: -10px;
-  background-image: url("/pentaho/api/repos/pentaho-cdf-dd/css/../images/drag-icon.svg");
+  background-image: url("../images/drag-icon.svg");
   background-position: -20px 0;
 }
 .no-svg tr.ui-draggable:hover td:last-child:after,
 .no-svg tr.ui-draggable.dragging_element td:last-child:after,
 .no-svg tr.ui-draggable-dragging td:last-child:after {
-  background-image: url("/pentaho/api/repos/pentaho-cdf-dd/css/../images/drag-icon.png");
+  background-image: url("../images/drag-icon.png");
 }
 tr.ui-draggable.ui-state-active:hover td:last-child:after,
 tr.ui-draggable.ui-state-active.dragging_element td:last-child:after,
