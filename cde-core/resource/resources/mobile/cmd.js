@@ -102,8 +102,10 @@ function CDFMobile() {
 
     function resizeCharts() {
 
-        var headerFooterPadding = $.mobile.activePage.find('[data-role=header]').height() +
-        $.mobile.activePage.find('[data-role=footer]').height();
+        var activePage = $.mobile.activePage;
+        var headerFooterPadding = ( activePage != undefined ) ?
+            activePage.find('[data-role=header]').height() +
+            activePage.find('[data-role=footer]').height() : 0;
         var widthMult,
         heightMult;
 
