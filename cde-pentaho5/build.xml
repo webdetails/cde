@@ -32,6 +32,11 @@
   <import file="../build-res/subfloor-pkg.xml" id="subfloor-pkg"/>
   <import file="../build-res/subfloor-js.xml"/>
 
+
+  <mkdir dir="${js.module.script.dir}"/>
+  <mkdir dir="${js.module.script.agg.dir}"/>
+
+
     <!--
         AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
         THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
@@ -146,6 +151,7 @@
         <copy todir='${stage.dir}/${plugin.name}'>
             <fileset dir='${core-resource.dir}'>
                 <exclude name="${includes.name}"/>
+                <exclude name="**/OlapSelector/test/**"/>
             </fileset>
         </copy>
 
