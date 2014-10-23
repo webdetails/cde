@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: '../',
 
 
     // frameworks to use
@@ -14,7 +14,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '../cde-core/resource/js/jquery.js',
+      '../cde-core/test-resources/js/jquery.js',
       '../cde-core/resource/js/jquery.jeditable.js',
       '../cde-core/resource/js/jquery.notifyBar.js',
       '../cde-core/resource/js/Base.js',
