@@ -38,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "webcontext.js?context=mantle",
+      "value": "webcontext.js?context=mantle&requireJsOnly=true",
       "type": "ResourceFile"
      },
      {

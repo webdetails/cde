@@ -134,7 +134,7 @@ var WizardManager = Base.extend({
 		globalInit: function(){
 
 			// Enable the table selectors
-			$("td.draggableDimension, td.draggableMeasure, td.draggableFilter").live("mouseover",function() {
+			$(document).on("mouseover","td.draggableDimension, td.draggableMeasure, td.draggableFilter",function() {
 					var myself = $(this);
 
 					myself.parent().parent().find("td").removeClass("ui-state-active");

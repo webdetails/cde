@@ -404,10 +404,14 @@ var SaveRequests = {
                     html: "Errors saving file: " + json.result
                 });
             }
-        
-            };
+        };
 
-        if ( $.browser.msie && $.browser.version < 10 ) {
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
         } else {
@@ -425,20 +429,26 @@ var SaveRequests = {
         var successFunction = function(result){
             var json = eval("(" + result + ")");
             if (json.status == "true") {
-                if (selectedFolder[0] == "/") selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+                if (selectedFolder[0] == "/") { selectedFolder = selectedFolder.substring(1, selectedFolder.length); }
                 var solutionPath = selectedFolder.split("/");
                 myself.initStyles(function () {
                     //cdfdd.setExitNotification(false);
                     window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
                 });
-            } else
+            } else {
                 $.notifyBar({
                     jqObject: NotifyBarUtils.getNotifyBarObject(),
                     html: "Errors saving file: " + json.result
                 });
+            }
         };
 
-         if ( $.browser.msie && $.browser.version < 10 ) {
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
         } else {
@@ -478,7 +488,12 @@ var SaveRequests = {
             }
         };
 
-        if ( $.browser.msie && $.browser.version < 10 ) {
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
         } else {
@@ -515,22 +530,29 @@ var PreviewRequests = {
     previewDashboard: function (saveParams, _href) {
 
         var successFunction = function(result){
-                var json = eval("(" + result + ")");
-                    if (json.status == "true") {
-                    $.fancybox({
-                        type: "iframe",
-                        href: _href,
-                        width: $(window).width(),
-                        height: $(window).height()
-                        });
-                    } else {
-                        $.notifyBar({
-                            jqObject: NotifyBarUtils.getNotifyBarObject(),
-                            html: "Errors saving file: " + json.result
+            var json = eval("(" + result + ")");
+                if (json.status == "true") {
+                $.fancybox({
+                    type: "iframe",
+                    closeBtn: false,
+                    href: _href,
+                    width: $(window).width(),
+                    height: $(window).height()
                     });
-                }
-            };
-        if ( $.browser.msie && $.browser.version < 10 ) {
+                } else {
+                    $.notifyBar({
+                        jqObject: NotifyBarUtils.getNotifyBarObject(),
+                        html: "Errors saving file: " + json.result
+                });
+            }
+        };
+
+        // CDF-271 $.browser is depricated
+        var rv;
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
+        
+        if(rv && rv < 10) {
             console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
             $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
         } else {

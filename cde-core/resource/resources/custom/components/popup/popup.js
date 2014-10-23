@@ -597,6 +597,7 @@ var ExportPopupComponent = PopupComponent.extend({
     
     $.fancybox({
       type:"html",
+      closeBtn: false,
       content: masterDiv,
       width:totalWidth ,
       height: this.chartComponent.chartDefinition.height  + 60
