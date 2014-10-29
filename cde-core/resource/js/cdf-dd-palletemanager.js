@@ -167,90 +167,104 @@ var PalleteManager = Base.extend({
 
 var PalleteEntry = Base.extend({
 
-		id: "PALLETE_ENTRY",
-		name: "Base operation",
-		description: "Base Operation description",
-		category: undefined,
-		categoryDesc: undefined,
-		logger: {},
+  id: "PALLETE_ENTRY",
+  name: "Base operation",
+  description: "Base Operation description",
+  category: undefined,
+  categoryDesc: undefined,
+  logger: {},
 
-		constructor: function(){
-			this.logger = new Logger("BaseOperation");
-		},
+  constructor: function(){
+    this.logger = new Logger("BaseOperation");
+  },
 
-		execute: function(palleteManager,stub){
-			// Add a new entry
+  execute: function(palleteManager,stub){
+    // Add a new entry
 
-			var tableManager = palleteManager.getLinkedTableManager();
+    var tableManager = palleteManager.getLinkedTableManager();
+    var rendererType = cdfdd.dashboardWcdf.rendererType;
 
-			var _stub = stub != undefined ? stub : this.getStub();
+    var _stub = stub != undefined ? stub : this.getStub();
 
-			var rowIdx;
-			var colIdx = 0;
-			var rowId;
-			var rowType;
-			var insertAtIdx = -1;
+    if( rendererType == "bootstrap" && this.id == "TABLE_ENTRY" ) {
+      this.changeProperty( _stub, "tableStyle", "bootstrap" )
+    }
 
-			var indexManager = tableManager.getTableModel().getIndexManager();
+    var rowIdx;
+    var colIdx = 0;
+    var rowId;
+    var rowType;
+    var insertAtIdx = -1;
 
-			// insertAtIdx = tableManager.getTableModel().getData().length;
-			insertAtIdx = tableManager.createOrGetParent(this.category, this.categoryDesc);
-			_stub.parent=this.category;
-			
+    var indexManager = tableManager.getTableModel().getIndexManager();
 
-			this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
-			
-			if(_stub.typeDesc == "" || _stub.typeDesc == "" || _stub.typeDesc == ""){
-				_stub.typeDesc = _stub.type;
-			}
+    // insertAtIdx = tableManager.getTableModel().getData().length;
+    insertAtIdx = tableManager.createOrGetParent( this.category, this.categoryDesc );
+    _stub.parent=this.category;
 
-			tableManager.insertAtIdx(_stub,insertAtIdx);
+    this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
 
-			// focus the newly created line
-			//atableManager.selectCell(insertAtIdx,colIdx);
+    if(_stub.typeDesc == "" || _stub.typeDesc == "" || _stub.typeDesc == "") {
+      _stub.typeDesc = _stub.type;
+    }
 
-			// edit the new entry - we know the name is on the first line
-			if( typeof tableManager.getLinkedTableManager() != 'undefined' ){
-				$("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
-			}
+    tableManager.insertAtIdx(_stub,insertAtIdx);
 
-			return _stub;
-		},
+    // focus the newly created line
+    //atableManager.selectCell(insertAtIdx,colIdx);
 
-		getStub: function(){
-			this.logger.warn("NOT IMPLEMENTED YET");
-		},
+    // edit the new entry - we know the name is on the first line
+    if( typeof tableManager.getLinkedTableManager() != 'undefined' ) {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
+    }
 
-		getId: function(){return this.id},
-		setId: function(id){this.id = id},
-		getName: function(){return this.name},
-		setName: function(name){this.name = name},
-		getCategory: function(){return this.category},
-		setCategory: function(category){this.category = category},
-		getCategoryDesc: function(){return this.categoryDesc},
-		setCategoryDesc: function(categoryDesc){this.categoryDesc = categoryDesc},
-		getDescription: function(){return this.description},
-		setDescription: function(description){this.description = description},
-		getIcon: function(){return this.icon},
-		setIcon: function(icon){this.icon = icon}
+    return _stub;
+  },
 
-	});
+  getStub: function(){
+    this.logger.warn("NOT IMPLEMENTED YET");
+  },
+
+  changeProperty: function( stub, name, value ) {
+    _.each( stub.properties, function( prop, i ) {
+      if( prop.name == name ) {
+        prop.value = value;
+        return;
+      }
+    });
+  },
+
+  getId: function(){return this.id},
+  setId: function(id){this.id = id},
+  getName: function(){return this.name},
+  setName: function(name){this.name = name},
+  getCategory: function(){return this.category},
+  setCategory: function(category){this.category = category},
+  getCategoryDesc: function(){return this.categoryDesc},
+  setCategoryDesc: function(categoryDesc){this.categoryDesc = categoryDesc},
+  getDescription: function(){return this.description},
+  setDescription: function(description){this.description = description},
+  getIcon: function(){return this.icon},
+  setIcon: function(icon){this.icon = icon}
+
+});
 
 
 var PalleteWizardEntry = PalleteEntry.extend({
 
-		// override this
-		execute: function(palleteManager){
+  // override this
+  execute: function( palleteManager ) {
 
-			this.renderWizard();
-		},
+    this.renderWizard();
+  },
 
-		// and this
-		apply: function(palleteManager){
-		
-			this.logger.fatal("Not done yet");
-		
-		}
+  // and this
+  apply: function(palleteManager) {
 
-	},{
-	});
+    this.logger.fatal("Not done yet");
+
+  }
+
+},{
+});
+

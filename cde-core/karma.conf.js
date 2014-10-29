@@ -15,6 +15,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'test-resources/js/jquery.js',
+      'test-resources/js/underscore.js',
       'resource/js/jquery.jeditable.js',
       'resource/js/Base.js',
       'test-js/mockDashboards.js',
