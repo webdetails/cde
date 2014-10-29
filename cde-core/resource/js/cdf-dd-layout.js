@@ -50,7 +50,7 @@ var LayoutPanel = Panel.extend({
             this.treeTable = new TableManager(LayoutPanel.TREE);
             this.treeTable.setTitle("Layout Structure");
 
-            var dashboardType = cdfdd.dashboardWcdf.rendererType || "blueprint";
+            var dashboardType = cdfdd.dashboardWcdf.rendererType || "bootstrap";
             this.treeTable.setInitialOperations(operationSets[dashboardType]);
 
             var treeTableModel = new TableModel('layoutTreeTableModel');
