@@ -4,7 +4,7 @@ package pt.webdetails.cdf.dd;
  * Just constants. Inner classes serve as namespaces
  */
 public class CdeConstants {
-	
+
   public static final String DEFAULT_STYLE = "Clean";
 
   public static final String DESIGNER_HEADER_TAG = "@HEADER@";
@@ -14,9 +14,9 @@ public class CdeConstants {
   public static final String DESIGNER_STYLES_TAG = "@STYLES@";
 
   public static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
-  
+
   public static final String DASHBOARD_TITLE_TAG = "@DASBOARD_TITLE@";
-  
+
   public static final String DASHBOARD_DESCRIPTION_TAG = "@DASBOARD_DESCRIPTION@";
 
   public static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
@@ -56,13 +56,13 @@ public class CdeConstants {
 
     public static final String DATA = "data";
   }
-  
+
   public static class Tags {
-    public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
+    public static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
 
     public static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
 
-    public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
+    public static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
 
     public static final String FILE_NAME_TAG = "@FILENAME@";
 
@@ -77,14 +77,14 @@ public class CdeConstants {
 
   public static final String SERVER_URL_TAG = "@SERVERURL@";
 
-  public static final String DATA_URL_TAG = "@DATAURL@";//formerly known as cdf-structure.js
-  
+  public static final String DATA_URL_TAG = "@DATAURL@"; //formerly known as cdf-structure.js
+
   public static final String RESOURCE_FOOTER = "resources/patch-footer.html";
-  
-  public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
-  
+
+  public static final String DASHBOARD_HEADER_TAG = "\\@HEADER\\@";
+
   public static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
-  
-  public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
+
+  public static final String DASHBOARD_FOOTER_TAG = "\\@FOOTER\\@";
 
 }
