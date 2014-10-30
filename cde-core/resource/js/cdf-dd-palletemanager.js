@@ -61,7 +61,8 @@ var PalleteManager = Base.extend({
 					icons: {
 						header: "ui-icon-triangle-1-e",
 						headerSelected: "ui-icon-triangle-1-s"
-					}
+					},
+					collapsible: true
 				});
 			} else {
 
@@ -74,7 +75,8 @@ var PalleteManager = Base.extend({
 					icons: {
 						header: "ui-icon-triangle-1-e",
 						headerSelected: "ui-icon-triangle-1-s"
-					}
+					},
+					collapsible: true
 				});
 			}
 
@@ -267,4 +269,3 @@ var PalleteWizardEntry = PalleteEntry.extend({
 
 },{
 });
-
