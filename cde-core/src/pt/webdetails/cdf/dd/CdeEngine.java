@@ -96,10 +96,13 @@ public class CdeEngine {
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
-            sysPluginSamples, "widget.cdfde" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples, "widget.wcdf" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples, "widget.cda" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ), sysPluginSamples, "widget.xml" );
+          sysPluginSamples, "widget.cdfde" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
+          "widget.wcdf" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
+          "widget.cda" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
+          sysPluginSamples, "widget.xml" );
       }
     }
 
@@ -109,7 +112,7 @@ public class CdeEngine {
     InputStream input = null;
     try {
       input = reader.getFileInputStream( fileIn );
-      return getEnv().getFileHandler().createBasicFileIfNotExists( writer , fileOut, input );
+      return getEnv().getFileHandler().createBasicFileIfNotExists( writer, fileOut, input );
     } catch ( IOException e ) {
       logger.error( "Couldn't read " + fileIn + " in " + reader );
     } finally {

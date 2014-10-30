@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.render;
 
@@ -28,9 +37,6 @@ import pt.webdetails.cpf.packager.origin.PathOrigin;
 import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 
-/**
- * @author pdpi
- */
 public final class DependenciesManager {
   private static Log logger = LogFactory.getLog( DependenciesManager.class );
 
@@ -80,7 +86,7 @@ public final class DependenciesManager {
     manager.registerPackage( StdPackages.COMPONENT_DEF_SCRIPTS, PackageType.JS );
     manager.registerPackage(
       StdPackages.COMPONENT_SNIPPETS,
-      new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider ) );// TODO change
+      new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider ) ); // TODO change
     manager.registerPackage( StdPackages.CDFDD, PackageType.JS );
 
     //read include.properties
