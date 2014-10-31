@@ -329,8 +329,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
    * @author pdpi
    */
   @Exposed( accessLevel = AccessLevel.PUBLIC )
-  public static void refresh( final OutputStream out ) throws Exception {
-    DashboardManager.getInstance().refreshAll();
+  public void refresh( final OutputStream out ) throws Exception {
+    String msg = "Refreshed CDE Successfully";
+
+    try {
+      DashboardManager.getInstance().refreshAll();
+    } catch ( Exception re ) {
+      msg = "Method refresh failed while trying to execute.";
+
+      logger.error( msg, re );
+      writeOut( out, msg );
+      return;
+    }
+
+    writeOut( out, msg );
   }
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
