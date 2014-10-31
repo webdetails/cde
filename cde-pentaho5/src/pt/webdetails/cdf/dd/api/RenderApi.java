@@ -233,8 +233,20 @@ public class RenderApi {
 
   @GET
   @Path( "/refresh" )
-  public void refresh() throws Exception {
-    DashboardManager.getInstance().refreshAll();
+  @Produces( MimeTypes.PLAIN_TEXT )
+  public String refresh( @Context HttpServletResponse servletResponse ) throws Exception {
+    String msg = "Refreshed CDE Successfully";
+
+    try {
+      DashboardManager.getInstance().refreshAll();
+    } catch ( Exception re ) {
+      msg = "Method refresh failed while trying to execute.";
+
+      logger.error( msg, re );
+      servletResponse.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg );
+    }
+
+    return msg;
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
