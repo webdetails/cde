@@ -189,20 +189,11 @@ public class RenderApi {
     @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
-    response.setContentType( MimeTypes.HTML );
     if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
-    String result = DashboardEditor.getEditor( wcdfPath, debug, request.getScheme(), isDefault );
-
-    //i18n token replacement
-    if ( !StringUtils.isEmpty( result ) ) {
-      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
-      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
-    }
-
-    return result;
+    return getEditor( wcdfPath, debug, request.getScheme(), isDefault, response );
   }
 
   @GET
@@ -217,9 +208,7 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
-    //	  String wcdfPath = getWcdfRelativePath( solution, path, file );
-    response.setContentType( MimeTypes.HTML );
-    return DashboardEditor.getEditor( path, debug, request.getScheme(), isDefault );
+    return getEditor( path, debug, request.getScheme(), isDefault, response );
   }
 
   @GET
@@ -292,6 +281,20 @@ public class RenderApi {
 
   private IParameterProvider getParameterProvider( Map<String, String> params ) {
     return new SimpleParameterProvider( params );
+  }
+
+  private String getEditor( String path, boolean debug, String scheme, boolean isDefault,
+                            HttpServletResponse response ) throws Exception {
+    response.setContentType( MimeTypes.HTML );
+    String result = DashboardEditor.getEditor( path, debug, scheme, isDefault );
+
+    //i18n token replacement
+    if ( !StringUtils.isEmpty( result ) ) {
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( path ) );
+      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+    }
+
+    return result;
   }
 
   private class MethodParams {
