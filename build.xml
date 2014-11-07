@@ -1,4 +1,4 @@
-<project name="Community Dashboards Editor" basedir="." default="jar"
+<project name="Community Dashboards Editor" basedir="." default="dist"
          xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <description>
