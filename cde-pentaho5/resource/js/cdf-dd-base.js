@@ -597,6 +597,7 @@ var PreviewRequests = {
                 $.fancybox({
                     type: "iframe",
                     closeBtn: false,
+                    autoSize: false,
                     href: _href,
                     width: $(window).width(),
                     height: $(window).height()
@@ -627,12 +628,11 @@ var PreviewRequests = {
         }
     },
 
-    getPreviewUrl: function( solution, path, file, style){
+    getPreviewUrl: function( solution, path, file ) {
          var _href = wd.cde.endpoints.getPluginUrl() + "renderer/render?";
-        _href = _href + "solution=" + solution + "&path=" + path + "&file=" + file + "&style=" + style + "&bypassCache=true&root=" + window.location.host;
-        
-        return _href;
+        _href = _href + "solution=" + solution + "&path=" + path + "&file=" + file + "&bypassCache=true&root=" + window.location.host;
 
+        return _href;
     }
 };
 

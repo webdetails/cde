@@ -790,8 +790,6 @@ var CDFDD = Base.extend({
     var path = fullPath.slice(2, fullPath.length - 1).join("/");
     var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.wcdf");
 
-    var style = this.getDashboardWcdf().style;
-
     this.logger.info("Saving temporary dashboard...");
 
     //temporarily set the filename to tmp
@@ -806,7 +804,7 @@ var CDFDD = Base.extend({
       cdfstructure: serializedDashboard
     };
 
-    PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl( solution, path, file, style ));
+    PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl( solution, path, file ));
   },
 
 
