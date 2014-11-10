@@ -28,18 +28,28 @@ import pt.webdetails.cpf.repository.api.IRWAccess;
 public class LegacyFileHandler implements IFileHandler {
 
   @Override
-  public boolean saveDashboardAs( String path, String title, String description, String cdfdeJsText, boolean isPreview ) throws Exception {
+  public boolean saveDashboardAs( String path, String title, String description,
+                                  String cdfdeJsText, boolean isPreview ) throws Exception {
 
-    // 1. Read empty wcdf file
-    InputStream wcdfFile =
-        CdeEnvironment.getPluginSystemReader().getFileInputStream(
-            DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+    // 1. Read empty wcdf file or get original wcdf file if previewing dashboard
+    InputStream wcdfFile;
+    if ( isPreview ) {
+      String wcdfPath = path.replace( "_tmp", "" );
+      wcdfFile = CdeEnvironment.getUserContentAccess().getFileInputStream( wcdfPath );
+    } else {
+      wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(
+        DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+
+      // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
+      if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
+        title = FilenameUtils.getBaseName( path );
+      }
+      if ( CdeConstants.DASHBOARD_DESCRIPTION_TAG.equals( description ) ) {
+        description = FilenameUtils.getBaseName( path );
+      }
+    }
 
     String wcdfContentAsString = IOUtils.toString( wcdfFile, CharsetHelper.getEncoding() );
-    
-    // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
-    if(CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ){ title = FilenameUtils.getBaseName( path ); }
-    if(CdeConstants.DASHBOARD_DESCRIPTION_TAG.equals( description ) ){ description = FilenameUtils.getBaseName( path ); }
 
     // 2. Fill-in wcdf file title and description
     wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_TITLE_TAG, title );
@@ -53,14 +63,14 @@ public class LegacyFileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean createBasicFileIfNotExists( final IRWAccess access, final String file, final InputStream content ){
+  public boolean createBasicFileIfNotExists( final IRWAccess access, final String file, final InputStream content ) {
 
-    if( access == null || StringUtils.isEmpty( file ) || content == null ){
+    if ( access == null || StringUtils.isEmpty( file ) || content == null ) {
       return false;
     }
 
     // skip creation if file already exists
-    if ( !access.fileExists( file ) ){
+    if ( !access.fileExists( file ) ) {
       access.saveFile( file, content );
     }
 
@@ -68,14 +78,14 @@ public class LegacyFileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ){
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ) {
 
-    if( access == null || StringUtils.isEmpty( relativeFolderPath ) ){
+    if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;
     }
 
     // skip creation if dir already exists
-    if ( !access.fileExists( relativeFolderPath ) ){
+    if ( !access.fileExists( relativeFolderPath ) ) {
       access.createFolder( relativeFolderPath );
     }
 
