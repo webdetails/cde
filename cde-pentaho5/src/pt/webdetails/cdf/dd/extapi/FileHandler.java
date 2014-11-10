@@ -39,20 +39,25 @@ public class FileHandler implements IFileHandler {
   public boolean saveDashboardAs( String path, String title, String description, String cdfdeJsText, boolean isPreview )
     throws Exception {
 
-    // 1. Read empty wcdf file
-    InputStream wcdfFile =
-      CdeEnvironment.getPluginSystemReader().getFileInputStream(
-        DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+    // 1. Read empty wcdf file or get original wcdf file if previewing dashboard
+    InputStream wcdfFile;
+    if ( isPreview ) {
+      String wcdfPath = path.replace( "_tmp", "" );
+      wcdfFile = Utils.getSystemOrUserRWAccess( wcdfPath ).getFileInputStream( wcdfPath );
+    } else {
+      wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(
+          DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+
+      // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
+      if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
+        title = FilenameUtils.getBaseName( path );
+      }
+      if ( CdeConstants.DASHBOARD_DESCRIPTION_TAG.equals( description ) ) {
+        description = FilenameUtils.getBaseName( path );
+      }
+    }
 
     String wcdfContentAsString = IOUtils.toString( wcdfFile, CharsetHelper.getEncoding() );
-
-    // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
-    if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
-      title = FilenameUtils.getBaseName( path );
-    }
-    if ( CdeConstants.DASHBOARD_DESCRIPTION_TAG.equals( description ) ) {
-      description = FilenameUtils.getBaseName( path );
-    }
 
     // 2. Fill-in wcdf file title and description
     wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_TITLE_TAG, title );
@@ -75,7 +80,6 @@ public class FileHandler implements IFileHandler {
         .saveFile( file );
 
     }
-
   }
 
   @Override

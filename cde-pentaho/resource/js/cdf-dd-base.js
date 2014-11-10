@@ -535,6 +535,7 @@ var PreviewRequests = {
                 $.fancybox({
                     type: "iframe",
                     closeBtn: false,
+                    autoSize: false,
                     href: _href,
                     width: $(window).width(),
                     height: $(window).height()
@@ -565,17 +566,18 @@ var PreviewRequests = {
         }
     },
 
-    getPreviewUrl: function( solution, path, file, style){
+    getPreviewUrl: function( solution, path, file ) {
         var _href;
-        if (solution == 'system'){
+        if (solution == 'system') {
             // CPK Dashboard
             path = path.split('/');
             var pluginName = (path.length > 0 ) ? path[0] : "",
-                endpointName = file.replace('_tmp.cdfde',"").toLowerCase();
-            _href = wd.cde.endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?mode=preview" ;
+                endpointName = file.replace('_tmp.cdfde',"").replace('_tmp.wcdf', "").toLowerCase();
+            _href = wd.cde.endpoints.getPluginUrl().replace("pentaho-cdf-dd", pluginName) + endpointName + "?pluginId=" + pluginName + "&mode=preview" ;
         } else {
             // Regular Dashboard
-            _href = wd.cde.endpoints.getPluginUrl() + "Render?" + "solution=" + solution + "&path=/" + path + "&file=" + file + "&style=" + style + "&cache=false";
+            _href = wd.cde.endpoints.getPluginUrl() + "Render?" + "solution=" + solution + "&path=" + path + "&file=" + file
+                + "&bypassCache=true&root=" + window.location.host;
         }
         return _href
 
