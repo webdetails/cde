@@ -196,7 +196,7 @@ public class Utils {
     ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
     IContentAccessFactory factory = environment.getContentAccessFactory();
 
-    String res = resource.toLowerCase().replaceFirst( "/", "" );
+    String res = resource.replaceFirst( "/", "" );
 
     if ( res.startsWith( environment.getSystemDir() + "/" ) ) {
 
@@ -265,7 +265,7 @@ public class Utils {
     ICdeEnvironment environment = CdeEngine.getInstance().getEnvironment();
     IContentAccessFactory factory = environment.getContentAccessFactory();
 
-    String res = resource.toLowerCase().replaceFirst( "/", "" );
+    String res = resource.replaceFirst( "/", "" );
 
     if ( res.startsWith( environment.getSystemDir() + "/" ) ) {
 
