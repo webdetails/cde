@@ -80,7 +80,7 @@ public class GenericFileAndDirectoryFilter extends GenericBasicFileFilter {
         directoryExists |= file.getFullPath().endsWith( directory );
       }
 
-      if( FilterType.FILTER_IN == filterType ) {
+      if ( FilterType.FILTER_IN == filterType ) {
         // acceptFile = true if directory exists in the white-list, false otherwise
         acceptFile = directoryExists;
 
