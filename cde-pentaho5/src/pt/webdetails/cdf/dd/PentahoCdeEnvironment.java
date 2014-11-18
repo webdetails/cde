@@ -176,6 +176,18 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   }
 
   @Override
+  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( IThingWriterFactory factory,
+      String indent, boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options ) {
+    return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
+  }
+
+  @Override
+  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
+      String indent ) {
+    return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
+  }
+
+  @Override
   public IBasicFile getCdeXml() {
     if ( getUserContentAccess( "/" ).fileExists( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML ) ) {
       return getUserContentAccess( "/" ).fetchFile( PLUGIN_REPOSITORY_DIR + "/" + CDE_XML );

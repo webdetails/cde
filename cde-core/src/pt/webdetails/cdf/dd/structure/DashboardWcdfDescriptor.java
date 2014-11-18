@@ -61,6 +61,7 @@ public class DashboardWcdfDescriptor {
   private List<String> _widgetParameters;
   private String _widgetName;
   private boolean _isWidget;
+  private boolean _isRequire;
 
   public DashboardWcdfDescriptor() {
     _widgetParameters = new ArrayList<String>();
@@ -80,6 +81,7 @@ public class DashboardWcdfDescriptor {
     json.put( "widgetName", getWidgetName() );
     json.put( "widget", isWidget() );
     json.put( "rendererType", getRendererType() );
+    json.put( "require", isRequire() );
 
     JSONArray aWidgetParams = new JSONArray();
     for ( String s : _widgetParameters ) {
@@ -100,6 +102,7 @@ public class DashboardWcdfDescriptor {
     wcdf.setAuthor( Utils.getNodeText( "/cdf/author", wcdfDoc, "" ) );
     wcdf.setStyle( Utils.getNodeText( "/cdf/style", wcdfDoc, "" ) );
     wcdf.setRendererType( Utils.getNodeText( "/cdf/rendererType", wcdfDoc, "" ) );
+    wcdf.setRequire( new Boolean( Utils.getNodeText( "/cdf/require", wcdfDoc, "true" ) ) );
 
     String widgetParams = wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ) != null ?
       wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ).getText() : "";
@@ -118,6 +121,7 @@ public class DashboardWcdfDescriptor {
     cdfElem.addElement( "author" ).setText( StringUtils.defaultIfEmpty( this.getAuthor(), "" ) );
     cdfElem.addElement( "style" ).setText( StringUtils.defaultIfEmpty( this.getStyle(), "" ) );
     cdfElem.addElement( "rendererType" ).setText( StringUtils.defaultIfEmpty( this.getRendererType(), "" ) );
+    cdfElem.addElement( "require" ).setText( this.isRequire() ? "true" : "false" );
     cdfElem.addElement( "widget" ).setText( this.isWidget() ? "true" : "false" );
     cdfElem.addElement( "widgetName" ).setText( StringUtils.defaultIfEmpty( this.getWidgetName(), "" ) );
     cdfElem.addElement( "widgetParameters" ).setText( StringUtils.join( getWidgetParameters(), "," ) );
@@ -140,6 +144,9 @@ public class DashboardWcdfDescriptor {
     }
     if ( parameters.containsKey( "rendererType" ) ) {
       setRendererType( (String) parameters.get( "rendererType" ) );
+    }
+    if( parameters.containsKey( "require" ) ) {
+      setRequire( "true".equals( parameters.get( "require" ) ) );
     }
     if ( parameters.containsKey( "widgetName" ) ) {
       setWidgetName( (String) parameters.get( "widgetName" ) );
@@ -252,6 +259,14 @@ public class DashboardWcdfDescriptor {
 
   public boolean isWidget() {
     return _isWidget;
+  }
+
+  private void setRequire( boolean isRequire ) {
+    this._isRequire = isRequire;
+  }
+
+  public boolean isRequire() {
+    return this._isRequire;
   }
 
   public void setWidgetParameters( String[] params ) {

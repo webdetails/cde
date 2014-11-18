@@ -40,11 +40,50 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
   // ------------
 
+  protected static String readStyleTemplateOrDefault( String styleName ) throws IOException {
+    if ( StringUtils.isNotEmpty( styleName ) ) {
+      try {
+        return readStyleTemplate( styleName );
+      } catch ( IOException ex ) {
+      }
+    }
+
+    // Couldn't open template file, attempt to use default
+    return readStyleTemplate( CdeConstants.DEFAULT_STYLE );
+  }
+
+  protected static String readStyleTemplate( String styleName ) throws IOException {
+    return readTemplateFile( CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName ) );
+  }
+
+  protected static String readTemplateFile( String templateFile ) throws IOException {
+    try {
+      if ( CdeEnvironment.getPluginRepositoryReader().fileExists( templateFile ) ) {
+        // template is in solution repository
+        return Util.toString( CdeEnvironment.getPluginRepositoryReader().getFileInputStream( templateFile ) );
+
+      } else if ( CdeEnvironment.getPluginSystemReader().fileExists( templateFile ) ) {
+        // template is in system
+        return Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( templateFile ) );
+      } else if ( Utils.getAppropriateReadAccess( templateFile ).fileExists( templateFile ) ) {
+        return Util.toString( Utils.getAppropriateReadAccess( templateFile ).getFileInputStream( templateFile ) );
+      } else {
+        // last chance : template is in user-defined folder
+        return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
+      }
+    } catch ( IOException ex ) {
+      logger.error( MessageFormat.format( "Couldn't open template file '{0}'.", templateFile ), ex );
+      throw ex;
+    }
+  }
+
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (CdfRunJsDashboardWriteResult.Builder) output,
       (CdfRunJsDashboardWriteContext) context,
       (Dashboard) t );
   }
+
+  // -----------------
 
   public abstract String getType();
 
@@ -103,6 +142,8 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       .setLoadedDate( ctx.getDashboard().getSourceDate() );
   }
 
+  // -----------------
+
   protected String readTemplate( DashboardWcdfDescriptor wcdf ) throws IOException {
     return readStyleTemplateOrDefault( wcdf.getStyle() );
   }
@@ -124,11 +165,11 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return "";
   }
 
+  // -----------------
+
   protected Renderer getLayoutRenderer( JXPathContext docXP, CdfRunJsDashboardWriteContext context ) {
     return new RenderLayout( docXP, context );
   }
-
-  // -----------------
 
   protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
@@ -167,7 +208,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
           out2.append( NEWLINE );
         }
 
-        // NOTE: Widgets don't really exist at runtime, 
+        // NOTE: Widgets don't really exist at runtime,
         // only their (leaf-)content does.
         if ( comp instanceof VisualComponent && !( comp instanceof WidgetComponent ) ) {
           if ( isFirstAddComp ) {
@@ -196,8 +237,6 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return out.toString();
   }
 
-  // -----------------
-
   protected String writeHeaders(
     String contents,
     CdfRunJsDashboardWriteContext context ) {
@@ -210,13 +249,8 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     // Get CDF headers
     String cdfDeps;
     try {
-      cdfDeps = CdeEngine.getEnv().getCdfIncludes(
-        contents,
-        this.getType(),
-        options.isDebug(),
-        options.isAbsolute(),
-        options.getAbsRoot(),
-        options.getScheme() );
+      cdfDeps = CdeEngine.getEnv().getCdfIncludes( contents, this.getType(), options.isDebug(), options.isAbsolute(),
+        options.getAbsRoot(), options.getScheme() );
     } catch ( Exception ex ) {
       logger.error( "Failed to get cdf includes" );
       cdfDeps = "";
@@ -225,27 +259,21 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     // Get CDE headers
     final String baseUrl = ( options.isAbsolute()
       ? ( !StringUtils.isEmpty( options.getAbsRoot() )
-        ? options.getSchemedRoot() + "/"
-        : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
+      ? options.getSchemedRoot() + "/"
+      : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
       : "" );
-    //    +
-    //    		;
 
     StringFilter cssFilter = new StringFilter() {
       public String filter( String input ) {
         return String.format(
           "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
-
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
       }
 
       public String filter( String input, String baseUrl ) {
         return String.format(
           "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
-
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
       }
     };
 
@@ -253,17 +281,13 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       public String filter( String input ) {
         return String.format(
           "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
-
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
-
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
       }
 
       public String filter( String input, String baseUrl ) {
         return String.format(
           "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
-
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input);
-
+          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
       }
     };
 
@@ -274,45 +298,6 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     String rawDeps = depMgr.getPackage( StdPackages.COMPONENT_SNIPPETS ).getRawDependencies( false );
 
     return title + cdfDeps + rawDeps + scriptDeps + styleDeps;
-  }
-
-  // -----------------
-
-  protected static String readStyleTemplateOrDefault( String styleName ) throws IOException {
-    if ( StringUtils.isNotEmpty( styleName ) ) {
-      try {
-        return readStyleTemplate( styleName );
-      } catch ( IOException ex ) {
-      }
-    }
-
-    // Couldn't open template file, attempt to use default
-    return readStyleTemplate( CdeConstants.DEFAULT_STYLE );
-  }
-
-  protected static String readStyleTemplate( String styleName ) throws IOException {
-    return readTemplateFile( CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName ) );
-  }
-
-  protected static String readTemplateFile( String templateFile ) throws IOException {
-    try {
-      if ( CdeEnvironment.getPluginRepositoryReader().fileExists( templateFile ) ) {
-        // template is in solution repository
-        return Util.toString( CdeEnvironment.getPluginRepositoryReader().getFileInputStream( templateFile ) );
-
-      } else if ( CdeEnvironment.getPluginSystemReader().fileExists( templateFile ) ) {
-        // template is in system
-        return Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( templateFile ) );
-      } else if ( Utils.getAppropriateReadAccess( templateFile ).fileExists( templateFile ) ) {
-        return Util.toString( Utils.getAppropriateReadAccess( templateFile ).getFileInputStream( templateFile ) );
-      } else {
-        // last chance : template is in user-defined folder
-        return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
-      }
-    } catch ( IOException ex ) {
-      logger.error( MessageFormat.format( "Couldn't open template file '{0}'.", templateFile ), ex );
-      throw ex;
-    }
   }
 
   private String writeContent( String layout, String components ) {
@@ -326,6 +311,4 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
     return out.toString();
   }
-
-
 }

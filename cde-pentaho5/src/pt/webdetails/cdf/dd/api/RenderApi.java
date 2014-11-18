@@ -43,6 +43,7 @@ import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
@@ -145,8 +146,11 @@ public class RenderApi {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
         loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
-      String result =
-        dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
+
+      DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
+      String context = dashboardWcdf.isRequire() ? InterPluginBroker.getCdfRequireContext( filePath )
+        : InterPluginBroker.getCdfContext( filePath, "", viewId );
+      String result = dashboard.render( context );
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) ) {

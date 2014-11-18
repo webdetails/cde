@@ -86,5 +86,11 @@ public interface ICdeEnvironment {
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
       String indent );
 
+  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( IThingWriterFactory factory,
+      String indent, boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options );
+
+  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
+      String indent );
+
   public IBasicFile getCdeXml();
 }
