@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <cache>false</cache>
+  <max-age>2628000</max-age>
+  <resources>
+      <downloadable-formats>css,js,html,htm,png,jpg,jpeg,gif,swf,htc,otf,woff,ico,doc,docx,xls,xlsx,pdf,ppt,pptx</downloadable-formats>
+  </resources>
+  <packager>
+    <minification>MINIFY</minification>
+  </packager>
+  <custom-components>
+    <!-- paths with cde components -->
+    <!-- origin: 
+      "static" - folder under this directory, declared as static 
+      "repo" - this plugin's folder in the solution repository (<solution>/cde)
+    -->
+    <!--4.x old <path>system/pentaho-cdf-dd/resources/custom/components</path>-->
+    <path origin="static">resources/custom/components</path>
+    <!--4.x old <path>cde/components</path-->
+    <path origin="repo">components</path>
+  </custom-components>
+
+  <file-picker>
+    <!-- the following are folders that should be kept hidden from any non-admin user -->
+    <hidden-folders>
+      <!-- origin: 
+        "static" - static/system folder under pentaho-solutions/system
+        "repo" - content repository path
+
+        Examples: 
+          <path origin="repo">/etc</path>
+          <path origin="static">/system/pentaho-cdf-dd/lib</path>
+          <path origin="static">/resources/styles</path>
+      -->
+      <path origin="repo">/etc</path>
+    </hidden-folders>
+  </file-picker>
+
+</settings>
