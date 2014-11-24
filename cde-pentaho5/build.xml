@@ -235,8 +235,10 @@
       <fileset dir="${stage.dir}/${plugin.name}"/>
     </copy>
 
-    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled" 
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled"
           tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml" overwrite="true"/>
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml.disabled"
+          tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml" overwrite="true"/>
 
 
     <!-- create a zip file -->
