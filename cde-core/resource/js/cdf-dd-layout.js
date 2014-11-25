@@ -1042,6 +1042,20 @@ var LayoutDuplicateOperation = DuplicateOperation.extend({
             || rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL;
 
     return tableManager.isSelectedCell && !isBootstrapPanelChild;
+  },
+
+  collapseDuplicated: function( duplicatedRowsData ) {
+    if (duplicatedRowsData.length > 1) {
+      $.each(duplicatedRowsData.reverse(), function (i, row) {
+        var node = $("#" + row.id);
+
+        if (node.hasClass('parent')) {
+          node.toggleBranch();
+        } else {
+          node.hide();
+        }
+      });
+    }
   }
 });
 CellOperations.registerOperation(new LayoutDuplicateOperation);
