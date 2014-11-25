@@ -82,8 +82,8 @@ var OpenLayersEngine = MapEngine.extend({
   },
 
   wrapEvent: function (event, featureType){
-    var coords = this.map.getLonLatFromPixel(
-      this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy)
+    var lastXy = this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy || {x: undefined, y: undefined};
+    var coords = this.map.getLonLatFromPixel(lastXy)
           .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326')
                     );
     var feature = event.feature.layer.getFeatureById(event.feature.id);
