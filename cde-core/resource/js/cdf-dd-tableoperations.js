@@ -560,16 +560,7 @@ var DuplicateOperation = BaseOperation.extend({
   },
 
   collapseDuplicated: function( duplicatedRowsData ) {
-    $.each( duplicatedRowsData.reverse(), function(i, row) {
-      var node = $("#"+row.id);
-      
-      if( node.hasClass( 'parent' ) ) {
-        node.toggleBranch();
-      } else {
-        node.hide();
-      }
-      
-    });
+    // Default implementation - do nothing
   }
 });
 
