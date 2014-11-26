@@ -57,35 +57,54 @@
     name: "openstreetmap",
     label: "OpenStreetMap",
     defaults: {
-    },
-    implementation: function (tgt, st, opt) {
-      var name = st.address;
-      var keyword = 'q'; //Generic query
-      if (!name) {
-        //Check city
-        if (st.city) {
-          name = st.city;
-          keyword = 'city';
-        } else if (st.county) {
-          name = st.county;
-          keyword = 'county';
-        } else if (st.region) {
-          name = st.region;
-          keyword = 'q';
-        } else if (st.state) {
-          name=st.state;
-          keyword = 'state=';
-        } else if (st.country) {
-          name = st.country;
-          keyword = 'country';
-        }
-      }
-      var url = 'http://nominatim.openstreetmap.org/search';
-      var data = {
+      url: 'http://nominatim.openstreetmap.org/search',
+      serviceParams: {
         format: 'json',
         limit: '1'
-      };
-      data[keyword] = name;
+      },
+      mapping: {
+        'street': 'street',
+        'postalcode': 'postalcode',
+        'city': 'city',
+        'county': 'county',
+        'state': 'state',
+        'country': 'country'
+      }
+    },
+    implementation: function (tgt, st, opt) {
+      if ( st.latitude || st.longitude){
+          var location = [parseFloat(st.longitude),
+                          parseFloat(st.latitude)];
+          st.continuationFunction(location);
+          return;
+      }
+        
+      var params = $.extend(true, {}, opt.serviceParams);
+
+      _.each(_.keys(st), function(key){
+        if (_.isFunction(st[key])){
+          return;
+        }
+        var keyLower = key.toLowerCase();
+        if (keyLower in opt.mapping){
+          params[ opt.mapping[ keyLower ] ] = st[key];
+        } else {
+          // unrecognized fields go here
+          //params['q'] = [ (params['q'] || ''), st[key] ].join(', ');
+        }
+
+      });
+
+      if (params['q']){
+        // we can't have "q=" and the more specific fields simultaneously.
+        // so we use only "q="
+        params = {
+          q:  params['q'] + ', ' + _.compact(_.map(opt.mapping, function(field){
+            return params[field];
+          })).join(', ')
+        };
+      }
+
       var success = function (result) {
         if (result && result.length > 0) {
           var location = [parseFloat(result[0].lon),
@@ -93,11 +112,20 @@
           st.continuationFunction(location);
         }
       };
-      $.getJSON(url, data, success);
+      $.getJSON(opt.url, $.extend({}, opt.serviceParams, params), success);
 
     }
   };
   Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim));
+  var mapquest = {};
+  $.extend(true, mapquest, nominatim, {
+    name: "mapquest",
+    label: "MapQuest",
+    defaults:{
+      url: "http://open.mapquestapi.com/nominatim/v1/search"
+    }
+  });
+  Dashboards.registerAddIn("NewMapComponent", "LocationResolver", new AddIn(mapquest));
 
 
   var componentPath = Dashboards.getWebAppPath() + '/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent';
@@ -105,27 +133,22 @@
     name: "urlMarker",
     label: "Url Marker",
     defaults: {
-      defaultUrl:  componentPath + '/images/marker_grey.png'
+      defaultUrl:  componentPath + '/images/marker_grey.png',
+      imagePath: componentPath + '/images/',
+      images: [
+        'marker_grey.png',
+        'marker_blue.png',
+        'marker_grey02.png',
+        'marker_orange.png',
+        'marker_purple.png',
+      ]
     },
     implementation: function (tgt, st, opt) {
       if (st.url)
         return st.url;
-
       if (st.position) {
-        switch (st.position % 5) {
-        case 0:
-          return componentPath + '/images/marker_grey.png';
-        case 1:
-          return componentPath + '/images/marker_blue.png';
-        case 2:
-          return componentPath + '/images/marker_grey02.png';
-        case 3:
-          return componentPath + '/images/marker_orange.png';
-        case 4:
-          return componentPath + '/images/marker_purple.png';
-        }
+        return opt.imagePath + opt.images[st.position % opt.images.length] || opt.defaultUrl;
       }
-
       return opt.defaultUrl;
     }
   };
