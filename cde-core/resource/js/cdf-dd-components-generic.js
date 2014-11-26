@@ -34,7 +34,6 @@ var PromptRenderer = CellRenderer.extend({
 
   },
 
-
   validate: function(settings, original){
     return true;
   },
@@ -92,7 +91,6 @@ var SqlQueryRenderer = PromptRenderer.extend({
   }
 });
 
-
 var ValuesArrayRenderer = CellRenderer.extend({
 
   multiDimensionArray: true,
@@ -102,6 +100,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   hasTypedValues: false,//if true, args also have a type
 			
   typesArray: [],//only used if hasTypedValues
+  selectData: {},//to use with autocomplete
   
 	//used for value input labels
 	argTitle: 'Arg',
@@ -167,6 +166,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
             }
             $("#remove_button_"+index).bind('click',myself.removeParameter);
             $("#parameter_button_"+index).bind('click',myself.addParameterValue);
+            myself.addAutoComplete(index);
             index++;
           });
           $('.' + myself.cssPrefix + 'Remove').bind('click',myself.removeParameter);
@@ -182,6 +182,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
       });
+
+      for(var i = 0; i < vals.length; i++) {
+        myself.addAutoComplete(i);
+      }
+
     });
 					 
     _editArea.appendTo(placeholder);
@@ -339,7 +344,48 @@ var ValuesArrayRenderer = CellRenderer.extend({
       prefix:'popup',
       focus:1
     });
+  },
+
+  addAutoComplete: function( index ) {
+    var elemID = (this.multiDimensionArray ? '#val_' : '#arg_') + index;
+    var placeHolder = '#' + this.cssPrefix;
+    var myself = this;
+    $(elemID).autocomplete({
+      appendTo: placeHolder,
+      source : function( req, add ) {
+        myself.autoCompleteRequest( req, add );
+      },
+      minLength: 0,
+      delay: 300,
+      select: function( event, ui ) {
+        $(elemID).find('input').val( ui.item.value );
+      },
+      focus:  function ( event, data ) {
+        if (data != undefined) {
+          $(elemID).val(data.item.value);
+        }
+      },
+      onsubmit: function( settings, original ) {
+        return myself.validate($('input',this).val());
+      },
+      height: 12
+    });
+  },
+
+  getData: function() {
+    return this.selectData || {};
+  },
+
+  autoCompleteRequest: function( req, add ) {
+    var results = $.map( this.getData(), function( v, k ) {
+      return k;
+    });
+
+    add($.grep( results, function( elt, i ) {
+      return elt.toLowerCase().indexOf( req.term.toLowerCase() ) >= 0;
+    }));
   }
+
 },{
   setParameterValue: function(id,value){
     $("#" + id.replace("parameter_button_","val_")).val(value);
@@ -530,6 +576,17 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
   }
 });
 
+var ColTypesArrayRender = ArrayRenderer.extend({
+  getData: function() {
+    var data = this.selectData || {};
+    _.extend(data, {
+      string: 'string',
+      numeric: 'numeric'
+    });
+    return data;
+  }
+});
+
 var IndexArrayRenderer = ArrayRenderer.extend({
     argTitle: 'Index'
 });
@@ -690,7 +747,6 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
   }
 });
 
-
 var JndiRenderer = SelectRenderer.extend({
 
   logger: null,
@@ -714,81 +770,4 @@ var JndiRenderer = SelectRenderer.extend({
       }
     });
   }
-});
-
-var ArraySelectRenderer = ValuesArrayRenderer.extend({
-  cssPrefix: "GenericSelect",
-  getParameterValues: function(i) {
-    var value = $("#val_" + i).val();
-    return value;
-  },
-  addParameter: function(i, val, container) {
-    var table;
-    if(i==0){//add table and header
-      table = $('<table> </table>').appendTo(container.find('.' + this.cssPrefix));
-      var hdr = '<tr>';
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.argTitle + '</span></th>';
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel">' + this.valTitle + '</span></th>';
-      hdr += '<th><span class="'+this.cssPrefix+'TextLabel"></span></th>';
-      hdr += '</tr>';
-      $(hdr).appendTo(table);
-    } else {
-      table = container.find('.' + this.cssPrefix + ' table');
-    }
-
-    if(val ===  undefined) { val = "" ; }
-    else if(val ===  null) { val = "null" ; }
-    else if(val instanceof Array) { val = val[0];}
-    val.replace(/["]/g,'&quot;');//for output only, will come back ok
-
-    var valInput = "<input id='val_" + i + "' type='text' value='"+val+"' />";
-    var removeButton = this.getRemoveButton(i);
-    var row = '<tr id="parameters_' + i + '" >';
-    row += '<td>' + this.argType + " " + i + "</td>";
-    row += '<td>' + valInput + '</td>';
-    row += '<td>' + removeButton + '</td>';
-    row += '</tr>';
-
-    table.append(row);
-    var myself = this;
-    setTimeout(function(){
-      $("#val_" + i).autocomplete({
-        source : function(req, add){
-          myself.autoCompleteRequest(req,add);
-        },
-        minLength: 0,
-        delay:myself.getDelay(),
-        select: function(evt,ui) {
-          $("#val_" + i).find("input").val(ui.item.value);
-        },
-        focus:  function (evt, data) {
-          if (data != undefined) $('#val_' + i).val(data.item.value);
-        },
-        onsubmit: function(settings,original){
-          return myself.validate($('input',this).val());
-        },
-        height: 12
-      });
-    },10);
-  },
-  autoCompleteRequest: function(req,add) {
-    var results = $.map(this.getDataComplete(), function(v, k) { return k });
-    add(jQuery.grep(results, function(elt, i){
-      return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
-    }));
-  },
-  validate: function(settings, original){
-    return true;
-  },
-  getDataComplete: function() {
-    var data = this.selectData;
-    data["string"] = 'string';
-    data["numeric"] = 'numeric';
-    return data;
-  },
-  getData: function(){
-    // Default implementation
-    return this.selectData;
-  },
-  getDelay: function() {return 300;}
 });
