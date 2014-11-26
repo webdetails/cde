@@ -273,6 +273,7 @@ var NewMapComponent = (function (){
     ph: undefined, //perhaps this is not needed
     mapEngine: undefined, // points to one instance of a MapEngine object
     values: undefined,
+    locationResolver: undefined, // addIn used to process location
     API_KEY: false, // API KEY for map services such as Google Maps
     // Properies defined in CDE
     //shapeDefinition: undefined,
@@ -923,7 +924,7 @@ var NewMapComponent = (function (){
       state.continuationFunction = function (location) {
         myself.renderMarker(location, data, mapping, position);
       };
-      addIn.call(target, state, this.getAddInOptions("LocationResolver",addIn.name));
+      addIn.call(target, state, this.getAddInOptions("LocationResolver", addIn.getName()));
     },
 
     getMapping: function(values) {
