@@ -48,7 +48,7 @@
      },
      {
       "name": "resourceCode",
-      "value": ".title {\n  font-style: italic;\n  font-size: 20px;\n  margin-top: 10px;\n} \n\n.heading {\n  font-weight: bold;\n  font-size: 12px;\n  font: \"Helvetica,Arial,Sans Serif\"\n  margin-top: 10px;\n  margin-bottom: 5px;\n} \n\ntable tr.even, table tr.odd{\n background-color: white;\n} \n\ntable thead th {\n border-bottom: 1px solid #CCC\n} \n\n\ntable tbody td.number {\n text-align: right;\n} \n\n.legend{\n font-style: italic;\n} \n\n\n.webdetailsFooter{\n\n    text-align: center;\n\n}\n\n\n\n\n\n\n\n ",
+      "value": ".title {\n  font-style: italic;\n  font-size: 20px;\n  margin-top: 10px;\n} \n\n.heading {\n  font-weight: bold;\n  font-size: 12px;\n  font: \"Helvetica,Arial,Sans Serif\"\n  margin-top: 10px;\n  margin-bottom: 5px;\n} \n\ntable tr.even, table tr.odd{\n background-color: white;\n} \n\ntable thead th {\n border-bottom: 1px solid #CCC\n} \n\n\ntable tbody td.number {\n text-align: right;\n} \n\n.legend{\n font-style: italic; padding-top: 80px;\n} \n\n\n.webdetailsFooter{\n\n    text-align: center;\n\n}\n\n\n\n\n\n\n\n ",
       "type": "Resource"
      }
     ]
@@ -842,7 +842,7 @@
      },
      {
       "name": "cccClickAction",
-      "value": "function(s,c,v){\n  Dashboards.log(\"Clicked on: \" + s + \", \" + c);\n\n  // Manually changing territory to fire both changes at once\n  territory=s;\n  Dashboards.fireChange('productLine',c);\n} ",
+      "value": "function(s,c,v){\n  /* CDF-374 TODO: Logger.log(\"Clicked on: \" + s + \", \" + c);*/\n\n  // Manually changing territory to fire both changes at once\n  //territory=s;\n dashboard.setParameter('territory', s.atoms.series.value);\n  dashboard.fireChange('productLine', s.atoms.category.value);\n} ",
       "type": "JavaScript"
      },
      {
@@ -1368,7 +1368,7 @@
      },
      {
       "name": "expression",
-      "value": "function(){\n  return \"Information for \" + territory + \" for product line \"+ productLine;\n} ",
+      "value": "function() {\n  return \"Information for \" + this.dashboard.getParameterValue('territory') + \" for product line \"+ this.dashboard.getParameterValue('productLine');\n} ",
       "type": "JavaScript"
      },
      {

@@ -262,6 +262,12 @@
              excludes="**/Thumbs.db"
                 />
 
+        <!-- copy AMD solution folder to stage dir -->
+        <copy todir="${solution.stage.dir}" overwrite="true">
+            <fileset dir="./solution">
+                <include name="pentaho-cdf-dd-require/**/*"/>
+            </fileset>
+        </copy>
 
     </target>
 
