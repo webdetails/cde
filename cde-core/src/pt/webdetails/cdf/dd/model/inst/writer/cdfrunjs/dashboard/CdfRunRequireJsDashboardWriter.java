@@ -39,8 +39,9 @@ import java.util.regex.Matcher;
 
 public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
 
-  private static final String EPILOGUE = "dashboard.init();";
+  private static final String EPILOGUE = "dashboard.init();" + NEWLINE + "return dashboard;";
   private static final String REQUIRE_START = "require(";
+  private static final String REQUIRE_STOP = "});";
 
   private List<String> componentList = new ArrayList<String>();
 
@@ -70,7 +71,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     String footer;
     try {
       footer =
-        Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( CdeConstants.RESOURCE_FOOTER ) );
+        Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( CdeConstants.RESOURCE_FOOTER_REQUIRE ) );
     } catch ( IOException ex ) {
       throw new ThingWriteException( "Could not read footer file.", ex );
     }
@@ -192,7 +193,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     final String title = "<title>" + wcdf.getTitle() + "</title>";
 
     final String webcontext = "<script language=\"javascript\" type=\"text/javascript\" src=\"webcontext" +
-      ".js?context=cdf&amp;requireJsOnly=true\"></script>";
+      ".js?context=cdf&requireJsOnly=true\"></script>";
 
     // Get CDE headers
     final String baseUrl = ( options.isAbsolute()
@@ -225,20 +226,37 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
   }
 
   /**
-   * Checks if components have the string Component in it and add it if not
+   * Gets the class names of the components based on their type.
+   * It converts the first character to upper case and appends the string 'Component'.
    *
    * @param components
    * @return
    */
-  private List<String> checkComponentNames( List<String> components ) {
-    List<String> newComponents = new ArrayList<String>(  );
+  private List<String> getComponentClassNames() {
+    List<String> newComponents = new ArrayList<String>();
+    StringBuilder sb = new StringBuilder();
 
-    for ( String component : this.componentList ) {
-      if ( !component.contains( "Component" ) ) {
-        newComponents.add( component += "Component" );
-      } else {
-        newComponents.add( component );
+    for ( String componentType : this.componentList ) {
+
+      if ( !StringUtils.isNotEmpty( componentType ) ) {
+        continue;
       }
+
+      // starts with upper case character
+      if ( !Character.isUpperCase( componentType.charAt(0) ) ) {
+        sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) );
+        sb.append( componentType.substring( 1 ) );
+      } else {
+        sb.append( componentType );
+      }
+
+      // ends with 'Component'
+      if ( !componentType.endsWith( "Component" ) ) {
+        sb.append( "Component" );
+      }
+
+      newComponents.add( sb.toString() );
+      sb.setLength( 0 );
     }
     return newComponents;
   }
@@ -247,39 +265,52 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
    *
    */
   protected String wrapRequireDefinitions( String content ) {
-    StringBuilder out = new StringBuilder();
-    String requireStart = "require([";
-    String requireEnd = "});";
+    StringBuilder out = new StringBuilder();;
 
-    List<String> digestedComponents = checkComponentNames( this.componentList );
-    String mainModule = "cdf/Dashboard";
-    String dashboardType = this.getType();
+    List<String> cdfRequirePaths = new ArrayList<String>();
+    // Add module class names to be used as parameters of the require function (except Dashboard module))
+    List<String> componentClassNames = getComponentClassNames();
 
+    // Add Dashboard module path
+    final String dashboardType = this.getType();
     if ( dashboardType.equals( CdfRunRequireJsBlueprintDashboardWriter.TYPE ) ) {
-      mainModule += ".Blueprint";
+      cdfRequirePaths.add( "cdf/Dashboard.Blueprint" );
     } else if ( dashboardType.equals( CdfRunRequireJsBootstrapDashboardWriter.TYPE ) ) {
-      mainModule += ".Bootstrap";
+      cdfRequirePaths.add( "cdf/Dashboard.Bootstrap" );
     } else if ( dashboardType.equals( CdfRunRequireJsMobileDashboardWriter.TYPE ) ) {
-      mainModule += ".Mobile";
+      cdfRequirePaths.add( "cdf/Dashboard.Mobile" );
+    } else {
+      cdfRequirePaths.add( "cdf/Dashboard" );
     }
 
-    List<String> cdfComponents = new ArrayList<String>();
-    for ( String component : digestedComponents ) {
-      cdfComponents.add( "cdf/components/" + component );
+    // Add remaining module paths
+    for ( String componentClassName : componentClassNames ) {
+      if ( componentClassName.startsWith( "Ccc" ) ) {
+        cdfRequirePaths.add( "cdf/components/ccc/" + componentClassName );
+      } else {
+        cdfRequirePaths.add( "cdf/components/" + componentClassName );
+      }
     }
-    cdfComponents.add( 0, mainModule );
-    String cdfComponentList = "'" + StringUtils.join( cdfComponents, "','" ) + "'";
-    String cdfComponentNameList = StringUtils.join( digestedComponents, "," );
 
-    out.append( requireStart + cdfComponentList + "], function(Dashboard," + cdfComponentNameList + "){" );
+    // Add Dashboard module class name as a parameter for the require function
+    componentClassNames.add(0, "Dashboard");
+
+    out.append( REQUIRE_START );
+    // Output require module paths
+    out.append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," );
     out.append( NEWLINE );
-    out.append( "var dashboard = new Dashboard();");
+    // Output require function module class names
+    out.append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" );
+    out.append( NEWLINE );
+    out.append( "// CDE-374" );
+    out.append( NEWLINE );
+    out.append( "var dashboard = new Dashboard();" );
     out.append( NEWLINE );
     out.append( content );
     out.append( NEWLINE );
-    out.append( requireEnd );
-
     out.append( EPILOGUE );
+    out.append( NEWLINE );
+    out.append( REQUIRE_STOP );
 
     return out.toString();
   }

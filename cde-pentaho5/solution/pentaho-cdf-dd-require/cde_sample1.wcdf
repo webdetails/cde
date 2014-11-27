@@ -4,7 +4,7 @@
   <author>Pedro Alves - Webdetails</author>
   <description>Sample dashboard that acts as a "Start here" for CDE dashboard development</description>
   <icon/>
-  <style>WDDocs</style>
+  <style>WDDocsRequire</style>
   <rendererType>blueprint</rendererType>
   <require>true</require>
 </cdf>

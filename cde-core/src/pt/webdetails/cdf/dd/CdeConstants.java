@@ -80,6 +80,8 @@ public class CdeConstants {
   public static final String DATA_URL_TAG = "@DATAURL@";//formerly known as cdf-structure.js
   
   public static final String RESOURCE_FOOTER = "resources/patch-footer.html";
+
+  public static final String RESOURCE_FOOTER_REQUIRE = "resources/patch-footer-require.html";
   
   public  static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
   
