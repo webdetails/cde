@@ -1393,16 +1393,33 @@ var ColorRenderer = CellRenderer.extend({
     var id = this.getId();
     var inputId = "#colorpicker_input_" + id;
     var checkId = "#colorpicker_check_" + id;
-    var _editArea = $('<td><form onsubmit="return false" class="cdfddInput"><input id="colorpicker_check_' + id + '" class="colorcheck" type="checkbox"></input><input id="colorpicker_input_' + id+ '" class="colorinput" readonly="readonly" type="text" size="7"></input></form></td>');
+    var _editArea = $('<td><form onsubmit="return false" class="cdfddInput"><input id="colorpicker_check_' + id + '" class="colorcheck" type="checkbox"></input><input id="colorpicker_input_' + id+ '" class="colorinput" type="text" size="7" maxlength="7"></input></form></td>');
     var myself=this;
+    var fixHex = function(hex) {
+      var length = 6 - hex.length;
+      //account for 3 digits color codes
+      if (length == 3){
+        var r = hex.charAt(0),
+            g = hex.charAt(1),
+            b = hex.charAt(2);
+        hex = r + r + g + g + b + b;
+      } else if (length > 0) {
+        for (var i = 0; i < length; i++) {
+          hex = "0".concat(hex);
+        }
+      }
+      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#"+hex)) {
+        return hex.toLowerCase();
+      } else {
+        return "";
+      }
+    };
     $(checkId ,_editArea).bind("click",function(){
 
       if($(this).is(":checked")){
-        $(inputId,_editArea).attr("disabled",true);
-        $(inputId,_editArea).attr("readonly","readonly");
+        $(inputId,_editArea).attr("disabled",false);
         $(inputId).trigger("click");
-      }
-      else{
+      } else {
         $(inputId,_editArea).val("");
         $(inputId,_editArea).attr("disabled",true);
         callback("");
@@ -1418,12 +1435,22 @@ var ColorRenderer = CellRenderer.extend({
       onBeforeShow: function () {
         $(this).ColorPickerSetColor(this.value.substring(1));
       }
-    });
-    // $("input",_editArea).ColorPicker();
+    }).bind('keyup', function(evt){
+        $(this).ColorPickerShow();
+        var fixedHex = fixHex( this.value.indexOf('#') > -1 ? this.value.substring(1) : this.value);
+        $(this).ColorPickerSetColor(fixedHex);
+        if (evt.keyCode == 13) {
+          $(this).ColorPickerHide();
+          if(fixedHex.length > 0){
+            fixedHex = "#".concat(fixedHex);
+          } else {
+            alert("Incorrect hex color code");
+          }
+          callback(fixedHex);
+        }
+        $(checkId,placeholder).attr("checked","true");
+      });
     _editArea.appendTo(placeholder);
-
-    
-
   },
 
   updateValueState: function(value,placeholder,inputId,checkId){
@@ -1432,11 +1459,9 @@ var ColorRenderer = CellRenderer.extend({
       $(checkId,placeholder).removeAttr("checked");
       $(checkId,placeholder).css("background-color","#ffffff");
       $(inputId,placeholder).attr("disabled",true);
-    }
-    else{
+    } else {
       $(checkId,placeholder).attr("checked","true");
       $(inputId,placeholder).removeAttr("disabled");
-      $(inputId,placeholder).attr("readonly","readonly");
       $(inputId,placeholder).val(value);
     }
 
