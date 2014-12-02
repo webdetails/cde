@@ -109,8 +109,8 @@ var LayoutPanel = Panel.extend({
 		getContent: function() {
 		
 			return ' \n' +
-'			<div id="'+ LayoutPanel.TREE +'" class="span-12">Tree</div>\n' +
-'			<div id="'+ LayoutPanel.PROPERTIES + '" class="span-12 last">Properties</div>\n' +
+'			<div id="'+ LayoutPanel.TREE +'" class="span-12 panel-scroll-element">Tree</div>\n' +
+'			<div id="'+ LayoutPanel.PROPERTIES + '" class="span-12 panel-scroll-element last">Properties</div>\n' +
 '			';			
 		
 		}, 
