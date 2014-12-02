@@ -59,7 +59,9 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public final class DashboardManager {
@@ -334,6 +336,23 @@ public final class DashboardManager {
     // Clear the DashboardWriteResult eh-cache
     synchronized ( this._ehCacheLock ) {
       this._ehCache.removeAll();
+    }
+
+    // clear i18n messages.properties cache dir
+    if( CdeEnvironment.getPluginSystemWriter().fileExists( MessageBundlesHelper.BASE_CACHE_DIR ) ){
+
+      List<IBasicFile> cacheFiles = CdeEnvironment.getPluginSystemWriter().listFiles( MessageBundlesHelper.BASE_CACHE_DIR,
+        new IBasicFileFilter() {
+          @Override public boolean accept( IBasicFile file ) {
+            return true; // accept everything
+          }
+        });
+
+      if( cacheFiles != null ){
+        for( IBasicFile file : cacheFiles ){
+          CdeEnvironment.getPluginSystemWriter().deleteFile( file.getPath() );
+        }
+      }
     }
   }
 
