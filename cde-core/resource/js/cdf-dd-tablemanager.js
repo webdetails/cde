@@ -34,7 +34,6 @@ var TableManager = Base.extend({
     this.reset();
     $("#"+this.id).append(this.newTable());
     this.render();
-
   },
 
   reset: function(){
@@ -42,15 +41,15 @@ var TableManager = Base.extend({
   },
 
 
-  render: function(){
-
+  render: function() {
     this.logger.debug("Rendering table " + this.getTableId());
 
     // Create headers;
     var headerRows = $("<tr></tr>");
     var myself = this;
-    $.each(myself.getTableModel().getColumnNames(),function(i,val){
-      var _header = $("<th class=\"ui-state-default\">"+ val +"</th>");
+    $.each(myself.getTableModel().getColumnNames(),function(i,val) {
+      var _header = $('<th><div class="tableHeader ui-state-default">' + val + '</div></th>');
+
       if ( typeof myself.getTableModel().getColumnSizes() != 'undefined'){
         _header.attr('width',myself.getTableModel().getColumnSizes()[i]);
       }
@@ -70,28 +69,25 @@ var TableManager = Base.extend({
 
     $("#"+this.getTableId()).treeTable();
     this.updateOperations();
-
-    
   },
 
-  newTable: function(args){
-    var isLayoutTable = this.tableId == 'table-cdfdd-layout-tree';
-    //  var operationsDiv = ;
-
-    isLayoutTable=false;
-    var table = ''+
-    //  (isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="height: 32px" class="cdfdd-operations"></div>') : '') +
-    '<table id="'+ this.tableId +'" class="'+ this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
-'     <caption class="ui-state-default"><div class="simpleProperties propertiesSelected">'+this.title+'</div>' +
-    (!isLayoutTable ? ('<div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>') : '') +
-    (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>' : '') +
-    '</caption>\n' +
-'     <thead>\n' +
-'     </thead>\n' +
-'     <tbody class="ui-widget-content">\n' +
-'     </tbody>\n' +
-'     </table>\n' +
-'     ';
+  newTable: function(args) {
+    var table = '' +
+      '<div class="tableContainer">\n' +
+      ' <div class="tableCaption ui-state-default">\n' +
+      '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
+      '   <div id="'+ this.tableId +'Operations" style="float: right" class="cdfdd-operations"></div>\n' +
+      (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
+      ' </div>\n' +
+      ' <div class="scrollContainer">\n' +
+      '   <table id="'+ this.tableId +'" class="'+ this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+      '     <thead>\n' +
+      '     </thead>\n' +
+      '     <tbody class="ui-widget-content">\n' +
+      '     </tbody>\n' +
+      '   </table>\n' +
+      ' </div>\n' +
+      '</div>\n';
 
     return table;
   },
