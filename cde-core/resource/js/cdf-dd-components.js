@@ -113,8 +113,8 @@ var ComponentsPanel = Panel.extend({
 		
     return ' \n' +
 '			<div id="'+ ComponentsPanel.PALLETE +'" class="span-6 accordion"></div>\n' +
-'			<div id="'+ ComponentsPanel.COMPONENTS +'" class="span-8">Components</div>\n' +
-'			<div id="'+ ComponentsPanel.PROPERTIES + '" class="span-10 last">Properties</div>\n' +
+'			<div id="'+ ComponentsPanel.COMPONENTS +'" class="span-8 panel-scroll-element">Components</div>\n' +
+'			<div id="'+ ComponentsPanel.PROPERTIES + '" class="span-10 panel-scroll-element last">Properties</div>\n' +
 '			';
 		
   },
