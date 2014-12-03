@@ -1,5 +1,6 @@
-body {
-  background:#f2f2f2;
+html, body {
+  height: 100%;
+  background: #F5F5F5;
   color: #222222;
 }
 
@@ -115,6 +116,11 @@ div.outside {
   
 
   background: #f2f2f2;
+  height: 100%;
+}
+
+div.outside > .container{
+  height: 100%;
 }
 
 .save-pulldown {
@@ -308,13 +314,17 @@ div.cdfdd-main {
 
 
  div#cdfdd-panels {
-   margin: 0px;
-   padding: 1%;
-   background: #F5F5F5;
-   min-height: 400px;
-   width: 98%;
-   left: 0;
-   min-width: 975px;
+  height: 100%;
+  margin: 0px;
+  padding: 40px 20px 35px;
+  background: #F5F5F5;
+  min-height: 400px;
+  width: 100%;
+  left: 0;
+  min-width: 975px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
  }
 
 tbody.ui-widget-content {
@@ -322,15 +332,24 @@ tbody.ui-widget-content {
   border: 1px solid #1999D1;
 }
 
- div.cdfdd-panel {
-   display: none;
-   box-sizing: border-box;
-   -moz-box-sizing: border-box;
-   -webkit-box-sizing: border-box;
-   padding: 40px 0px;
-   width: 100%;
-   min-width: 960px;
- }
+div.cdfdd-panel {
+  display: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 20px 0px;
+  width: 100%;
+  min-width: 960px;
+  height: 100%;
+}
+
+div.cdfdd-panel .panel-content,
+div.cdfdd-panel .panel-content > div {
+  height: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
 
 
 .panel-title {
@@ -412,6 +431,7 @@ li.ui-state-hover {
 
 hr.hr-hidden{
   background:#2D2D2D;
+  display: none;
 }
 
 hr {
@@ -751,6 +771,51 @@ tr.ui-droppable td:after {
   position: absolute;
   content: '';
 }
+
+/* CDE Scroll */
+#cdfdd-layout-tree.panel-scroll-element, #cdfdd-layout-properties.panel-scroll-element,
+#cdfdd-components-components.panel-scroll-element, #cdfdd-components-properties.panel-scroll-element,
+#cdfdd-datasources-datasources.panel-scroll-element, #cdfdd-datasources-properties.panel-scroll-element {
+  position: relative;
+  padding-top: 60px;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.panel-scroll-element .tableContainer {
+  height: 100%;
+}
+
+.panel-scroll-element .tableCaption {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+}
+
+.panel-scroll-element .tableCaption .cdfdd-operations {
+  padding-right: 5px;
+}
+
+#cdfdd-components-components.panel-scroll-element .tableCaption .cdfdd-operations,
+#cdfdd-datasources-datasources.panel-scroll-element .tableCaption .cdfdd-operations {
+  padding-right: 15px;
+}
+
+.panel-scroll-element .tableCaption span {
+  font-size:14px;
+}
+
+.panel-scroll-element .scrollContainer {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.panel-scroll-element th .tableHeader {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+}
+
 #cdfdd-layout-tree table tbody tr td {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -763,6 +828,9 @@ tr.ui-droppable td:after {
   border-right: 1px solid transparent;
   border-right: 1px solid rgba(0,0,0,0);
 }
+
+
+/* CDE Drag And Drop*/
 #cdfdd-layout-tree table tbody tr.ui-draggable-dragging td {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -776,7 +844,7 @@ tr.ui-droppable td:after {
   margin-left: -1px;
   opacity: .3 !important;
 }
-.layout_hover_moveTo_up td:after { /*temporary style*/
+.layout_hover_moveTo_up td:after {
   position: absolute;
   content: '';
   top: 0;
@@ -786,7 +854,7 @@ tr.ui-droppable td:after {
   background: none;
   border-top: 1px dashed #0098c4;
 }
-.layout_hover_moveTo_down td:after { /*temporary style*/
+.layout_hover_moveTo_down td:after {
   position: absolute;
   content: '';
   bottom: 0;
@@ -798,7 +866,7 @@ tr.ui-droppable td:after {
 }
 .layout_hover_dropInto td,
 .layout_hover_dropInto.layout_hover_moveTo_down td,
-.layout_hover_dropInto.layout_hover_moveTo_up td { /*temporary style*/
+.layout_hover_dropInto.layout_hover_moveTo_up td {
   background-color: rgba(0, 152, 196, .1);
 }
 #cdfdd-layout-tree table tbody tr.layout_hover_dropInto td {
@@ -813,7 +881,7 @@ tr.ui-droppable td:after {
 #cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:last-child {
   border-right: 1px dashed #0098c4;
 }
-#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:after { /*temporary style*/
+#cdfdd-layout-tree table tbody tr.layout_hover_dropInto td:after {
   position: absolute;
   content: '';
   top: 0;
@@ -1163,10 +1231,6 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
   width: 200px;
 }
 
-table.myTreeTable caption span{
-    font-size:14px;
-}
-
 .urlTemplateInput {
   width:380px;
   height:200px;
@@ -1300,6 +1364,7 @@ table.myTreeTable caption span{
    min-width: 470px;
  }
 
+.panel-scroll-element .tableCaption,
 table.cdfdd caption {
  height: 20px;
  padding: 5px;
@@ -1309,7 +1374,8 @@ table.cdfdd caption {
  color: #555;
 }
 
-th.ui-state-default{
+.panel-scroll-element th div.ui-state-default,
+th.ui-state-default {
   padding: 5px;
   background: #bbb;
   color: #fff;
@@ -1484,7 +1550,7 @@ a img {border:none; margin-top: -9px;}
 :focus {outline:0;}
 
 html {font-size:100.01%; background-color: #f5f5f5;}
-body {font-size:75%;color:#222;background:#2D2D2D;font-family: 'Open Sans', sans-serif;}
+body {font-size:75%;font-family: 'Open Sans', sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;}
 h1 {font-size:2em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:1.6em;margin-bottom:0.75em;}
@@ -1932,44 +1998,36 @@ div.popup .button:active {
 }
 
 .span-6.accordion {
-    width: 25%;
+  width: 25%;
 }
 
 .span-6.accordion {
-    width: 24%;
-    min-width: 230px;
-    margin: 0;
+  width: 24%;
+  min-width: 230px;
+  margin: 0;
 }
 
-#cdfdd-components-components.span-8 {
-    width: 32%;
-    min-width: 310px;
-    margin: 0;
-    position: relative;
-    padding: 0px 5px;
-}
-
-#cdfdd-components-properties.span-10.last {
-    min-width: 390px;
-    width: 42%;
-    right: 28px;
-}
-
+#cdfdd-components-components.span-8,
 #cdfdd-datasources-datasources.span-8 {
-  width: 32%;
+  width: 33%;
   min-width: 310px;
   margin: 0;
-  padding: 0px 0px 0px 10px;
+  padding-left: 10px;
 }
 
+#cdfdd-components-properties.span-10.last,
+#cdfdd-datasources-properties.span-10.last {
+  min-width: 390px;
+  width: 42%;
+  padding-left: 15px;
+  float: right;
+}
 
- 
- #cdfdd-layout-tree {
-   padding: 0;
-   margin: 0;
-   float: left;
- }
-
+#cdfdd-layout-tree {
+  padding: 0;
+  margin: 0;
+  float: left;
+}
 
 #cdfdd-layout-properties {
    padding: 0;
@@ -1995,27 +2053,6 @@ div.popup .button:active {
     left: 9px;
     top: 4px;
 }
-
- #cdfdd-components-properties.span-10.last {
-   min-width: 390px;
-   width: 42%;
-   float: right;
- }
-
-  #cdfdd-components-components.span-8 {
-   width: 32%;
-   min-width: 310px;
-   margin: 0;
-   position: relative;
-   padding: 0px 0px 0px 10px;
- }
-
-  #cdfdd-datasources-properties.span-10.last {
-   width: 42%;
-   min-width: 390px;
-   margin: 0;
-   float: right;
- }
 
 .datasourcesPanelButton {
     background-image: url("../images/NAV/menu-icons/data.png");

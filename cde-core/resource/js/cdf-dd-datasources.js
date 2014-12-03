@@ -112,8 +112,8 @@ var DatasourcesPanel = Panel.extend({
 		
 			return ' \n' +
 '			<div id="'+ DatasourcesPanel.PALLETE +'" class="span-6 accordion"></div>\n' +
-'			<div id="'+ DatasourcesPanel.DATASOURCES +'" class="span-8">Datasources</div>\n' +
-'			<div id="'+ DatasourcesPanel.PROPERTIES + '" class="span-10 last">Properties</div>\n' +
+'			<div id="'+ DatasourcesPanel.DATASOURCES +'" class="span-8 panel-scroll-element">Datasources</div>\n' +
+'			<div id="'+ DatasourcesPanel.PROPERTIES + '" class="span-10 panel-scroll-element last">Properties</div>\n' +
 '			';			
 		
 		},
