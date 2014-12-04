@@ -1365,7 +1365,7 @@ var CDFDD = Base.extend({
             prop.value = "themeroller";
           }
         });
-        cdfdd.components.initTemplate();
+        cdfdd.components.initTables();
       }
     }
 

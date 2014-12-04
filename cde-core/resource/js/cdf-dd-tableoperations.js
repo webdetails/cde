@@ -3,16 +3,16 @@
 var PropertyTypeUsage = Base.extend({
   constructor: function(pName, pAlias, isOwned, propType, isExtension) {
     this.alias = pAlias;
-    this.name  = pName; // local type name, when owned
+    this.name = pName; // local type name, when owned
     this.owned = isOwned;
-    this.type  = propType;
+    this.type = propType;
     this.isExtension = isExtension;
   },
-          
+
   create: function() {
-     return this.type.getPropertyObject({
-       name: this.alias
-     });
+    return this.type.getPropertyObject({
+      name: this.alias
+    });
   }
 }, { // static
   create: function(propSpec, Model) {
@@ -25,26 +25,33 @@ var PropertyTypeUsage = Base.extend({
       case 'object':
         // better be non-null...
         pAlias = propSpec.alias;
-        pName  = propSpec.name;
-             if(!pAlias && pName ) { pAlias = pName ; }
-        else if(!pName  && pAlias) { pName  = pAlias; }
+        pName = propSpec.name;
+        if(!pAlias && pName) {
+          pAlias = pName;
+        } else if(!pName && pAlias) {
+          pName = pAlias;
+        }
         isOwned = propSpec.owned === true;
         isExtension = !!propSpec.isExtension;
         break;
     }
 
-    if(!pAlias) { return null; }
-    
+    if(!pAlias) {
+      return null;
+    }
+
     var pFullName = isOwned ? (Model.MODEL + "_" + pName) : pName;
     var propType = PropertiesManager.getPropertyType(pFullName);
-    if(!propType) { return null; }
-    
+    if(!propType) {
+      return null;
+    }
+
     return new PropertyTypeUsage(pName, pAlias, isOwned, propType, isExtension);
   }
 });
 
 /**
- * @name BaseModel 
+ * @name BaseModel
  * @class The design-time view of a component type.
  * <p>This is the base abstract class of all model classes.</p>
  * <p>A model class generally only has static properties/methods.</p>
@@ -52,8 +59,8 @@ var PropertyTypeUsage = Base.extend({
  * @static
  */
 var BaseModel = (function() {
-  
-  /** 
+
+  /**
    * Make all BaseModel descendant classes inheritc static methods
    * defined in the base class at extension time.
    */
@@ -73,44 +80,46 @@ var BaseModel = (function() {
   var BM = Base.extend({}, /** @lends BaseModel */{
     /**
      * The unique name of the corresponding component type.
-     * <p>This is the name that component instances will 
+     * <p>This is the name that component instances will
      *     have in their <tt>type</tt> property.</p>
      * @type string
      */
     MODEL: 'BaseModel',
-    
+
     /**
      * Legacy names by which this component type is known.
      * @type Array<string>
      */
     legacyNames: undefined,
-    
+
     /**
-     * Obtains a JSON stub for a component instance 
+     * Obtains a JSON stub for a component instance
      * of the model's corresponding component type.
      * <p>This method must be overriden in concrete sub-classes.</p>
      * @return object the component instance stub.
      */
-    getStub: function() { return {}; },
+    getStub: function() {
+      return {};
+    },
 
     /**
      * Obtains a property usage for a given property type.
      * <p>
-     * The base implementation satisfies legacy model classes -- 
-     * the ones created directly in JavaScript, 
+     * The base implementation satisfies legacy model classes --
+     * the ones created directly in JavaScript,
      * generally the case of CDF only component types.
      * </p>
      * @param alias the alias of the property type usage.
-     * @return PropertyTypeUsage a property type usage, 
+     * @return PropertyTypeUsage a property type usage,
      * when there is one defined, or <tt>null</tt>, otherwise.
      */
     getPropertyUsage: function(alias) {
       return PropertyTypeUsage.create(alias, this); // may be null
     },
-    
+
     getPropertyStubAndUsage: function(alias) {
       var usage = this.getPropertyUsage(alias);
-      var type  = usage && usage.type;
+      var type = usage && usage.type;
       var isUndefinedProp;
       var isSpecialProp = (alias === 'Group');
       var stub;
@@ -120,7 +129,7 @@ var BaseModel = (function() {
         isUndefinedProp = !isSpecialProp;
         stub = {
           description: alias,
-          tooltip:     alias
+          tooltip: alias
         };
       }
 
@@ -128,13 +137,15 @@ var BaseModel = (function() {
       // so that the user can realize that something is wrong.
       if(!isSpecialProp) {
         if(this.isUndefined) {
-          if(type) { stub = $.extend({}, stub); }
+          if(type) {
+            stub = $.extend({}, stub);
+          }
           stub.description = "?! " + stub.description;
-          stub.tooltip     = "The component type of property '" + alias + "' is not defined.";
+          stub.tooltip = "The component type of property '" + alias + "' is not defined.";
           stub.classType = 'advanced';
         } else if(isUndefinedProp) {
           stub.description = "? " + stub.description;
-          stub.tooltip     = "Property '" + alias + "' is not defined.";
+          stub.tooltip = "Property '" + alias + "' is not defined.";
           stub.classType = 'advanced';
         }
       }
@@ -145,7 +156,7 @@ var BaseModel = (function() {
      * Creates a property instance for a given property type usage,
      * given its alias.
      * @param alias the alias of the property type usage.
-     * @return object a property instance, 
+     * @return object a property instance,
      * when the property type usage is defined, or <tt>null</tt>, otherwise.
      */
     createProperty: function(alias) {
@@ -154,23 +165,23 @@ var BaseModel = (function() {
     },
 
     /**
-     * A dictionary of the registered model classes, 
+     * A dictionary of the registered model classes,
      * indexed by their {@link MODEL} property.
      * @type object
      */
     models: {},
-    
+
     /**
-     * A dictionary of the registered model classes, 
+     * A dictionary of the registered model classes,
      * indexed by their legacy names.
      * @type object
-     */        
+     */
     modelsByLegacyName: {},
-    
+
     /**
      * Registers a {@link BaseModel} sub-class that represents a model.
      * <p>The <tt>MODEL</tt> property has the model name.</p>
-     * <p>The <tt>getStub</tt> method returns a stub 
+     * <p>The <tt>getStub</tt> method returns a stub
      * for a new component of the corresponding type.
      * </p>
      * @param {function} modelClass the model class constructor function.
@@ -178,7 +189,7 @@ var BaseModel = (function() {
      */
     registerModel: function(modelClass) {
       this.models[modelClass.MODEL] = modelClass;
-      
+
       // Index also by legacy names
       var legacyNames = modelClass.legacyNames;
       if(legacyNames) {
@@ -186,18 +197,18 @@ var BaseModel = (function() {
           this.modelsByLegacyName[legacyNames[i]] = modelClass;
         }
       }
-      
+
       if(!modelClass.getPropertyUsage) {
         $.extend(modelClass, LegacyModel);
       }
-      
+
       return modelClass;
     },
 
     /**
      * Obtains a model class given the value of its {@link MODEL} property.
      * @param string modelId the model id.
-     * @param boolean [createIfUndefined=false] indicates if 
+     * @param boolean [createIfUndefined=false] indicates if
      * an undefined model class should be created when a model with the given name exists.
      * @return function the model class, if one exists, or <tt>undefined</tt>, otherwise.
      */
@@ -205,13 +216,15 @@ var BaseModel = (function() {
       var ModelClass;
       if(modelId) {
         ModelClass = this.models[modelId];
-        
+
         // Legacy naming
         if(!ModelClass) {
           // Remove any "Model" Suffix.
           var m = /^(.+?)Model$/.exec(modelId);
-          if(m) { modelId = m[1]; }
-          
+          if(m) {
+            modelId = m[1];
+          }
+
           ModelClass = this.models[modelId];
           if(!ModelClass) {
             ModelClass = this.modelsByLegacyName[modelId];
@@ -224,79 +237,81 @@ var BaseModel = (function() {
       }
       return ModelClass;
     },
-      
+
     /**
-     * Creates and registers a {@link BaseModel} sub-class, 
+     * Creates and registers a {@link BaseModel} sub-class,
      * with appropriate static properties and methods,
      * given a model specification.
      * <p>
-     * This is a helper method that supports 
-     * CDE generated code for component definitions, 
-     * allow for mostly declarative and concise 
+     * This is a helper method that supports
+     * CDE generated code for component definitions,
+     * allow for mostly declarative and concise
      * descriptions of component types.
      * </p>
-     * @param object spec the component type specification. 
+     * @param object spec the component type specification.
      * <p>It has the following structure:</p>
      * <ul>
-     *    <li>name - the name of the component type. 
+     *    <li>name - the name of the component type.
      *        The value of the {@link BaseModel.MODEL} property of the generated sub-class.
      *        The name that component instances have in their <tt>type</tt> property.
      *    </li>
      *    <li>description - the description is the user-visible name of the component type.</li>
-     *    <li>parent - where the component type is shown in 
+     *    <li>parent - where the component type is shown in
      *        a dashboard's component tree (components' view).
      *        By default, the value of {@link IndexManager.ROOTID}.
      *    </li>
      *    <li>legacyNames - an array of legacy name strings.</li>
-     *    <li>metas - an object with meta properties and their values. 
-     *        These are properties that are named with the prefix "meta_", or, 
+     *    <li>metas - an object with meta properties and their values.
+     *        These are properties that are named with the prefix "meta_", or,
      *        possibly, named just "meta".
      *    </li>
-     *    <li>properties - an array of property usage specifications. 
+     *    <li>properties - an array of property usage specifications.
      *        See {@link PropertyTypeUsage.create} for the structure of this specification.
      *        Optional.
      *    </li>
-     *    <li>baseModelClass - the base model class 
+     *    <li>baseModelClass - the base model class
      *        from which to derive the new model class. Optional. Internal use.
      *    </li>
      * </ul>
      * @return function the custom component type model class.
      */
     create: function(spec) {
-      var modelName   = spec.name;
-      var modelDesc   = spec.description;
+      var modelName = spec.name;
+      var modelDesc = spec.description;
       var modelParent = spec.parent != null ? spec.parent : IndexManager.ROOTID;
-      var modelMetas  = spec.metas;
+      var modelMetas = spec.metas;
       var modelLegacyNames = spec.legacyNames;
-      var BaseModelClass   = spec.baseModelClass || CdeComponentModel;
+      var BaseModelClass = spec.baseModelClass || CdeComponentModel;
 
       // Extend the base BaseModelClass class.
       var ModelClass = BaseModelClass.extend({}, {
-        MODEL:       modelName,
+        MODEL: modelName,
         legacyNames: modelLegacyNames,
         description: modelDesc,
-        parent:      modelParent,
-        
+        parent: modelParent,
+
         // Store the property specs for later lazy compilation by CdeComponentModel._getPropertyUsages.
         _propertySpecs: spec.properties || [],
-        
+
         getStub: function() {
           return $.extend({
-              id:         TableManager.generateGUID(),
-              type:       modelName,
-              typeDesc:   modelDesc,
-              parent:     modelParent,
-              properties: this._getPropertyUsages().map(function(pu) { return pu.create(); })
-            }, modelMetas);
+            id: TableManager.generateGUID(),
+            type: modelName,
+            typeDesc: modelDesc,
+            parent: modelParent,
+            properties: this._getPropertyUsages().map(function(pu) {
+              return pu.create();
+            })
+          }, modelMetas);
         }
       });
-  
+
       // Register the just created model class and return it.
       return this.registerModel(ModelClass);
     },
 
     /**
-     * Creates and registers a model class for 
+     * Creates and registers a model class for
      * an undefined component type, given its name.
      * <p>Having a dynamically generated model class helps
      *    the editor preserve information of unknown component types,
@@ -304,7 +319,7 @@ var BaseModel = (function() {
      *    This can be dangerous, however, if a property alias used
      *    in the component definition is also the name of an existing global property type.
      * </p>
-     * <p>An undefined component type can result from a coding bug, or, 
+     * <p>An undefined component type can result from a coding bug, or,
      *    from a custom component not being read by CDE, generally
      *    due to a CDE configuration problem or CDE plugin installation.
      * </p>
@@ -314,20 +329,22 @@ var BaseModel = (function() {
       var description;
       switch(name) {
         case 'Label':
-        case 'Group': description = "<i>Group</i>"; break;
-        default: 
+        case 'Group':
+          description = "<i>Group</i>";
+          break;
+        default:
           // Give a clue that the component is not defined.
           description = "? " + name;
       }
 
       return this.create({
         name: name,
-        description:    description,
+        description: description,
         baseModelClass: UndefinedCdeComponentModel
       });
     }
   }); // End BaseModel
-  
+
   BM.extend = staticExtend;
 
   /**
@@ -345,22 +362,22 @@ var BaseModel = (function() {
       this._propertiesByName [propUsage.name ] = propUsage;
       return propUsage;
     },
-    
+
     /** @private */
     _addPropSpec: function(propSpec) {
       var propUsage = PropertyTypeUsage.create(propSpec, this);
       return propUsage && this._addPropertyUsage(propUsage);
     },
-    
+
     /** @private */
     _getPropertyUsages: function() {
       if(this._propertySpecs) {
         this._propertiesByAlias = {};
-        this._propertiesByName  = {};
+        this._propertiesByName = {};
         this._properties = [];
-        
+
         this._propertySpecs.forEach(this._addPropSpec, this);
-        
+
         delete this._propertySpecs;
       }
 
@@ -370,125 +387,134 @@ var BaseModel = (function() {
     /** @override */
     getPropertyUsage: function(name) {
       // Lazy init
-      if(this._propertySpecs) { this._getPropertyUsages(); }
-      
-      return this._propertiesByAlias[name] || 
-             this._propertiesByName[name]  ||
-             // Some component properties are extension properties --
-             // are not defined in the component type, 
-             // because they are deprecated or this is an undefined component model --
-             // try to find a global definition for them, anyway.
-             // If found, the property is dynamically registered in 
-             // the component type's properties.
-             this._addPropSpec({name: name, isExtension: true});
+      if(this._propertySpecs) {
+        this._getPropertyUsages();
       }
+
+      return this._propertiesByAlias[name] ||
+          this._propertiesByName[name] ||
+        // Some component properties are extension properties --
+        // are not defined in the component type,
+        // because they are deprecated or this is an undefined component model --
+        // try to find a global definition for them, anyway.
+        // If found, the property is dynamically registered in
+        // the component type's properties.
+          this._addPropSpec({name: name, isExtension: true});
+    }
   }); // End CdeComponentModel
-      
+
   var UndefinedCdeComponentModel = CdeComponentModel.extend({}, {
     isUndefined: true
   });
-      
+
   return BM;
 }());
 
 
 var CellOperations = Base.extend({
 
-    logger: {},
+  logger: {},
 
-    constructor: function(){
-      this.logger = new Logger("BaseType");
-    }
-},{
+  constructor: function() {
+    this.logger = new Logger("BaseType");
+  }
+}, {
 
-    operations: [],
+  operations: [],
 
 
-    // After defining an operation. we need to register it
-    registerOperation: function(operation){
-      this.operations.push(operation);
-    },
+  // After defining an operation. we need to register it
+  registerOperation: function(operation) {
+    this.operations.push(operation);
+  },
 
-    getOperationsByType: function(type){
-    
-      var _operations = [];
+  getOperationsByType: function(type) {
 
-      $.each(CellOperations.operations,function(i,value){
-      
-          for(var i in value.types){
-            if(value.types.hasOwnProperty(i)){
-              if(type.match("^"+value.types[i])){
-                _operations.push(value);
-              }
-            }
+    var _operations = [];
+
+    $.each(CellOperations.operations, function(i, value) {
+
+      for(var i in value.types) {
+        if(value.types.hasOwnProperty(i)) {
+          if(type.match("^" + value.types[i])) {
+            _operations.push(value);
           }
-        });
-      return _operations;
-    }
+        }
+      }
+    });
+    return _operations;
+  }
 
 });
 
 var BaseOperation = Base.extend({
 
-    id: "BASE_OPERATION",
-    types: ["TYPE"],
-    name: "Base operation",
-    description: "Base Operation description",
-    order: 20,
-    logger: {},
-    hoverIcon: null, //icon to display on hover
-    clickIcon: null, //icon while clicking
-    showInactiveIcon: false, //show icon when !canExecute
+  id: "BASE_OPERATION",
+  types: ["TYPE"],
+  name: "Base operation",
+  description: "Base Operation description",
+  order: 20,
+  logger: {},
+  hoverIcon: null, //icon to display on hover
+  clickIcon: null, //icon while clicking
+  showInactiveIcon: false, //show icon when !canExecute
 
-    execute: function(tableManager){
-      this.logger.error("Method not implemented; " + tableManager.getTableId() + "; " + tableManager.getSelectedCell());
-    },
+  execute: function(tableManager) {
+    this.logger.error("Method not implemented; " + tableManager.getTableId() + "; " + tableManager.getSelectedCell());
+  },
 
-    canExecute: function(tableModel){
-    
-      return true;
-    },
+  canExecute: function(tableManager) {
+    return true;
+  },
 
-    constructor: function(){
-      this.logger = new Logger("BaseOperation");
-    },
+  constructor: function() {
+    this.logger = new Logger("BaseOperation");
+  },
 
-    getHtml: function(tableManager,idx){
+  getHtml: function(tableManager, idx) {
 
-      var tableManagerId = tableManager.getTableId();
-      var code ='';
+    var tableManagerId = tableManager.getTableId();
+    var code = '';
 
-      if (this.canExecute(tableManager)){
-        code = '<a class="tooltip '+this.getId().toLowerCase()+' tableOperation" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\','+ idx+');">\n</a>';
-      }
+    if(this.canExecute(tableManager)) {
+      code = '<a class="tooltip ' + this.getId().toLowerCase() + ' tableOperation enabledOperation" title="' + this.getName() + '"  href="javascript:TableManager.executeOperation(\'' + tableManagerId + '\',' + idx + ');">\n</a>';
+    } else {
+      code = '<a class="tooltip ' + this.getId().toLowerCase() + ' tableOperation disabledOperation"></a>';
+    }
 
-      return code;
-    
-    },
+    return code;
+  },
 
-    getId: function(){return this.id},
-    setId: function(id){this.id = id},
-    getName: function(){return this.name},
-    setName: function(name){this.name = name},
-    getDescription: function(){return this.description},
-    setDescription: function(description){this.description = description}
-
+  getId: function() { return this.id; },
+  setId: function(id) { this.id = id; },
+  getName: function() { return this.name; },
+  setName: function(name) { this.name = name; },
+  getDescription: function() { return this.description; },
+  setDescription: function(description) { this.description = description; }
 });
 
 
 var AddRowOperation = BaseOperation.extend({
 
-    id: "ADD_ROW",
-    types: ["GenericRow"],
-    name: "New Row",
-    description: "Adds a new row to the layout on the specific position",
+  id: "ADD_ROW",
+  types: ["GenericRow"],
+  name: "New Row",
+  description: "Adds a new row to the layout on the specific position",
 
-    constructor: function(){
-      this.logger = new Logger("AddRowOperation");
+  constructor: function() {
+    this.logger = new Logger("AddRowOperation");
+  },
+
+  canExecute: function(tableManager) {
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+    if($.inArray(rowType, this.types) > -1) {
+      return true;
+    } else {
+      return false;
     }
-
+  }
 });
-
 CellOperations.registerOperation(new AddRowOperation());
 
 var DuplicateOperation = BaseOperation.extend({
@@ -501,7 +527,7 @@ var DuplicateOperation = BaseOperation.extend({
     this.logger = new Logger("DuplicateOperation");
   },
 
-  canExecute: function( tableManager ) {
+  canExecute: function(tableManager) {
     return tableManager.isSelectedCell;
   },
 
@@ -517,10 +543,9 @@ var DuplicateOperation = BaseOperation.extend({
     var cloneSuffix = "_new";
 
     var nextSibling = tableManager.getTableModel().getIndexManager().getNextSibling(rowId);
-    if (typeof nextSibling == 'undefined'){
+    if(typeof nextSibling == 'undefined') {
       toIdx = tableManager.getTableModel().getIndexManager().getLastChild(rowId).index;
-    }
-    else{
+    } else {
       toIdx = nextSibling.index - 1;
     }
 
@@ -528,7 +553,7 @@ var DuplicateOperation = BaseOperation.extend({
 
     // Build a new data array
     var _data = tableManager.getTableModel().getData();
-    var _toClone = $.extend(true, [], _data).splice(fromIdx, toIdx-fromIdx + 1);
+    var _toClone = $.extend(true, [], _data).splice(fromIdx, toIdx - fromIdx + 1);
     var _originalToNewIds = {};
 
     //Generate new names and ids for the duplicated nodes and ui nodes
@@ -541,29 +566,28 @@ var DuplicateOperation = BaseOperation.extend({
       _originalToNewIds[_oldId] = _newId;
 
       //don't need to update first node parent, because its parent id didn't change
-      if ( i != 0 ) {
+      if(i != 0) {
         node.parent = _originalToNewIds[node.parent];
       }
 
       //Update node and uiNode names
-      if( _nodeProps && _nodeProps[0].name == 'name' && _nodeProps[0].value != "" ) {
+      if(_nodeProps && _nodeProps[0].name == 'name' && _nodeProps[0].value != "") {
         node.properties[0].value += cloneSuffix;
       }
     });
 
     $.each(_toClone, function(i, row) {
-      tableManager.insertAtIdx( row, targetIdx + i );
+      tableManager.insertAtIdx(row, targetIdx + i);
     });
 
     this.collapseDuplicated(_toClone);
-    tableManager.selectCell(targetIdx,colIdx);
+    tableManager.selectCell(targetIdx, colIdx);
   },
 
-  collapseDuplicated: function( duplicatedRowsData ) {
+  collapseDuplicated: function(duplicatedRowsData) {
     // Default implementation - do nothing
   }
 });
-
 CellOperations.registerOperation(new DuplicateOperation());
 
 var MoveToOperation = BaseOperation.extend({
@@ -572,7 +596,7 @@ var MoveToOperation = BaseOperation.extend({
   name: "Move To",
   description: "Move To",
 
-  constructor: function(){
+  constructor: function() {
     this.logger = new Logger("MoveToOperation");
   },
 
@@ -602,7 +626,7 @@ var MoveToOperation = BaseOperation.extend({
     var targetIdx = dropIdx + (moveIntoDrop ? 1 : 0);
 
     var nextSibling = indexManager.getNextSibling(dragId);
-    if (typeof nextSibling == 'undefined') {
+    if(typeof nextSibling == 'undefined') {
       toIdx = indexManager.getLastChild(dragId).index;
     } else {
       toIdx = nextSibling.index - 1;
@@ -610,9 +634,9 @@ var MoveToOperation = BaseOperation.extend({
 
     var dragNodeLength = toIdx - fromIdx + 1;
     var dropNodeLength = 0;
-    if( !moveIntoDrop ) {
+    if(!moveIntoDrop) {
       var dropNextSibling = indexManager.getNextSibling(dropId);
-      if (typeof dropNextSibling == 'undefined') {
+      if(typeof dropNextSibling == 'undefined') {
         dropNodeLength = indexManager.getLastChild(dropId).index - dropIdx + 1;
       } else {
         dropNodeLength = dropNextSibling.index - dropIdx;
@@ -620,7 +644,7 @@ var MoveToOperation = BaseOperation.extend({
     }
 
     var startSplicePos = -1;
-    if( targetIdx > fromIdx ) {
+    if(targetIdx > fromIdx) {
       startSplicePos = targetIdx - dragNodeLength + dropNodeLength;
     } else {
       startSplicePos = targetIdx;
@@ -631,55 +655,55 @@ var MoveToOperation = BaseOperation.extend({
     // Build new data array
     var _data = tableManager.getTableModel().getData();
     var _toMove = _data.splice(fromIdx, dragNodeLength);
-    var _tableData = $('#'+tableManager.getTableId() + " > tbody > tr");
+    var _tableData = $('#' + tableManager.getTableId() + " > tbody > tr");
     var _uiToMove = _tableData.splice(fromIdx, dragNodeLength);
 
     //only the parent of the first moved element changes
     var selectedNode = $(_uiToMove[0]);
     selectedNode.removeClass(treeTableChildPrefix + oldParent);
-    if( newParent != IndexManager.ROOTID ) {
+    if(newParent != IndexManager.ROOTID) {
       selectedNode.addClass(treeTableChildPrefix + newParent);
     }
     _toMove[0].parent = newParent;
 
-    var _preventExpandData = this.getPreventExpandData( _uiToMove, indexManager );
+    var _preventExpandData = this.getPreventExpandData(_uiToMove, indexManager);
 
     //deploy new data arrays
-    Array().splice.apply(_data,[startSplicePos,0].concat(_toMove));
+    Array().splice.apply(_data, [startSplicePos, 0].concat(_toMove));
     tableManager.getTableModel().setData(_data);
-    Array().splice.apply(_tableData,[startSplicePos,0].concat(_uiToMove));
-    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
+    Array().splice.apply(_tableData, [startSplicePos, 0].concat(_uiToMove));
+    $('#' + tableManager.getTableId() + " > tbody").append(_tableData);
 
     //Refresh update rows display
     //padding isnt updated when ROOTID is parent of node
-    if( oldParent != IndexManager.ROOTID && newParent == IndexManager.ROOTID ) {
+    if(oldParent != IndexManager.ROOTID && newParent == IndexManager.ROOTID) {
       var rowData = _data[startSplicePos];
 
       //keep the row wrapper so that in IE8 we maintain the draggable object intact, to prevent a bug when trying to stop drag events
-      var original = $("#"+rowData.id).empty();
+      var original = $("#" + rowData.id).empty();
 
       //discard row but keep inner content to append in the original wrapper
       //new inner content has the correct paddings for the row new position
       tableManager.addRow(rowData, startSplicePos);
-      var newContent = $("#"+rowData.id + " td");
-      $("#"+rowData.id).remove();
+      var newContent = $("#" + rowData.id + " td");
+      $("#" + rowData.id).remove();
       original.append(newContent);
     }
 
-    tableManager.updateTreeTable( newParent );
+    tableManager.updateTreeTable(newParent);
     $.each(_toMove, function(i, row) {
       tableManager.updateTreeTable(row.id);
     });
-    tableManager.updateTreeTable( oldParent );
+    tableManager.updateTreeTable(oldParent);
 
-    this.preventExpand( _preventExpandData );
+    this.preventExpand(_preventExpandData);
     tableManager.selectCell(startSplicePos, 0);
   },
 
-  getPreventExpandData: function( rowList, indexManager ) {
+  getPreventExpandData: function(rowList, indexManager) {
     var _preventExpand = [];
 
-    $.each( rowList, function() {
+    $.each(rowList, function() {
       var node = $(this);
       var nodeId = node.attr('id');
       var parentId = indexManager.getIndex()[nodeId].parent;
@@ -688,312 +712,276 @@ var MoveToOperation = BaseOperation.extend({
         id: nodeId,
         isExpanded: node.hasClass('expanded'),
         isParent: node.hasClass('parent'),
-        isParentExpanded: (parentId == IndexManager.ROOTID) ? true : $( "#"+ parentId ).hasClass('expanded')
+        isParentExpanded: (parentId == IndexManager.ROOTID) ? true : $("#" + parentId).hasClass('expanded')
       });
     });
     return _preventExpand;
   },
 
-  preventExpand: function( rowData ) {
+  preventExpand: function(rowData) {
     $.each(rowData.reverse(), function(i, info) {
-      var node = $( "#" + info.id );
+      var node = $("#" + info.id);
 
-      if( info.isParent ) {
-        if( !info.isExpanded ) {
+      if(info.isParent) {
+        if(!info.isExpanded) {
           node.toggleBranch();
-        } else if( !info.isParentExpanded ) {
+        } else if(!info.isParentExpanded) {
           node.hide();
         }
-      } else if( !info.isParentExpanded ) {
+      } else if(!info.isParentExpanded) {
         node.hide();
       }
     });
   }
-
 });
-
 CellOperations.registerOperation(new MoveToOperation());
 
 var MoveUpOperation = BaseOperation.extend({
 
-    id: "MOVE_UP",
-    types: ["GenericMoveUp"],
-    name: "Move Up",
-    description: "Move up",
+  id: "MOVE_UP",
+  types: ["GenericMoveUp"],
+  name: "Move Up",
+  description: "Move up",
 
-    constructor: function(){
-      this.logger = new Logger("MoveUpOperation");
-    },
+  constructor: function() {
+    this.logger = new Logger("MoveUpOperation");
+  },
 
-    canExecute: function(tableManager){
-    
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+  canExecute: function(tableManager) {
 
-      return !tableManager.getTableModel().getIndexManager().isFirstChild(rowId);
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
-    },
+    return tableManager.isSelectedCell && !tableManager.getTableModel().getIndexManager().isFirstChild(rowId);
 
-    execute: function(tableManager){
+  },
 
-      // Move up: move the selected node and all children
-      // up to the previous item
+  execute: function(tableManager) {
 
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var colIdx = tableManager.getSelectedCell()[1];
-      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    // Move up: move the selected node and all children
+    // up to the previous item
 
-      var fromIdx = rowIdx;
-      var toIdx = -1;
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var colIdx = tableManager.getSelectedCell()[1];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
-      var nextSibling = tableManager.getTableModel().getIndexManager().getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined'){
-        toIdx = tableManager.getTableModel().getIndexManager().getLastChild(rowId).index;
-      }
-      else{
-        toIdx = nextSibling.index - 1;
-      }
-      var targetIdx = tableManager.getTableModel().getIndexManager().getPreviousSibling(rowId).index;
+    var fromIdx = rowIdx;
+    var toIdx = -1;
 
-      this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
+    var nextSibling = tableManager.getTableModel().getIndexManager().getNextSibling(rowId);
+    if(typeof nextSibling == 'undefined') {
+      toIdx = tableManager.getTableModel().getIndexManager().getLastChild(rowId).index;
+    } else {
+      toIdx = nextSibling.index - 1;
+    }
+    var targetIdx = tableManager.getTableModel().getIndexManager().getPreviousSibling(rowId).index;
 
-      // Build a new data array
-      var _data = tableManager.getTableModel().getData();
-      var _tmp = _data.splice(fromIdx, toIdx-fromIdx + 1);
+    this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
 
-      _data.splice(targetIdx,0)
-      Array().splice.apply(_data,[targetIdx,0].concat(_tmp));
-      //_data = _data.slice(0,targetIdx).concat(_tmp).concat(_data.slice(targetIdx));
-      tableManager.getTableModel().setData(_data);
+    // Build a new data array
+    var _data = tableManager.getTableModel().getData();
+    var _tmp = _data.splice(fromIdx, toIdx - fromIdx + 1);
 
-      // Now do the same on the UI
+    _data.splice(targetIdx, 0)
+    Array().splice.apply(_data, [targetIdx, 0].concat(_tmp));
+    //_data = _data.slice(0,targetIdx).concat(_tmp).concat(_data.slice(targetIdx));
+    tableManager.getTableModel().setData(_data);
 
-      // move rows id: fromIdx -> toIdx to targetIdx
-      for(var i = 0; i<= toIdx-fromIdx; i++){
-        $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (targetIdx + i) +")").before(
-          $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (fromIdx + i) +")")
-        );
-      }
+    // Now do the same on the UI
 
-      tableManager.setSelectedCell([targetIdx,colIdx]);
-      tableManager.updateOperations();
-      
-      
-      /*
-      tableManager.cleanSelections();
-      tableManager.init();
-      tableManager.selectCell(targetIdx,colIdx);
-      */
-
-      var a = [];
-      $.each(_data,function(i,row){
-        a.push(row.id);
-      })
-      this.logger.debug("Result: " + a.join(', '));
-    
+    // move rows id: fromIdx -> toIdx to targetIdx
+    for(var i = 0; i <= toIdx - fromIdx; i++) {
+      $('#' + tableManager.getTableId() + " > tbody > tr:eq(" + (targetIdx + i) + ")").before(
+          $('#' + tableManager.getTableId() + " > tbody > tr:eq(" + (fromIdx + i) + ")")
+      );
     }
 
-});
+    tableManager.setSelectedCell([targetIdx, colIdx]);
+    tableManager.updateOperations();
 
+    var a = [];
+    $.each(_data, function(i, row) {
+      a.push(row.id);
+    });
+    this.logger.debug("Result: " + a.join(', '));
+  }
+});
 CellOperations.registerOperation(new MoveUpOperation());
 
 var MoveDownOperation = BaseOperation.extend({
 
-    id: "MOVE_DOWN",
-    types: ["GenericMoveDown"],
-    name: "Move Down",
-    description: "Move down",
+  id: "MOVE_DOWN",
+  types: ["GenericMoveDown"],
+  name: "Move Down",
+  description: "Move down",
 
-    constructor: function(){
-      this.logger = new Logger("MoveDownOperation");
-    },
+  constructor: function() {
+    this.logger = new Logger("MoveDownOperation");
+  },
 
-    canExecute: function(tableManager){
-    
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+  canExecute: function(tableManager) {
 
-      return !tableManager.getTableModel().getIndexManager().isLastChild(rowId);
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
-    },
+    return tableManager.isSelectedCell && !tableManager.getTableModel().getIndexManager().isLastChild(rowId);
 
+  },
 
-    execute: function(tableManager){
+  execute: function(tableManager) {
 
-      // Move up: move the selected node and all children
-      // up to the previous item
+    // Move up: move the selected node and all children
+    // up to the previous item
 
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var colIdx = tableManager.getSelectedCell()[1];
-      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var colIdx = tableManager.getSelectedCell()[1];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
-      var fromIdx = rowIdx;
-      var toIdx = -1;
+    var fromIdx = rowIdx;
+    var toIdx = -1;
 
-      var indexManager = tableManager.getTableModel().getIndexManager();
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined'){
-        toIdx = indexManager.getLastChild(rowId).index;
-      }
-      else{
-        toIdx = nextSibling.index - 1;
-      }
-      var targetIdx = parseFloat(indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index);
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var nextSibling = indexManager.getNextSibling(rowId);
+    if(typeof nextSibling == 'undefined') {
+      toIdx = indexManager.getLastChild(rowId).index;
+    } else {
+      toIdx = nextSibling.index - 1;
+    }
+    var targetIdx = parseFloat(indexManager.getLastChild(indexManager.getNextSibling(rowId).id).index);
 
-      this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
+    this.logger.debug("Moving nodes from " + fromIdx + " to " + toIdx + " to the place of " + targetIdx);
 
-      // Build a new data array
-      var _data = tableManager.getTableModel().getData();
-      var _tmp = _data.splice(fromIdx, toIdx-fromIdx + 1);
+    // Build a new data array
+    var _data = tableManager.getTableModel().getData();
+    var _tmp = _data.splice(fromIdx, toIdx - fromIdx + 1);
 
-      Array().splice.apply(_data,[targetIdx-toIdx+fromIdx,0].concat(_tmp));
-      //_data = _data.slice(0,targetIdx-toIdx+fromIdx).concat(_tmp).concat(_data.slice(targetIdx-toIdx+fromIdx));
-      tableManager.getTableModel().setData(_data);
+    Array().splice.apply(_data, [targetIdx - toIdx + fromIdx, 0].concat(_tmp));
+    //_data = _data.slice(0,targetIdx-toIdx+fromIdx).concat(_tmp).concat(_data.slice(targetIdx-toIdx+fromIdx));
+    tableManager.getTableModel().setData(_data);
 
-      // Now do the same on the UI
+    // Now do the same on the UI
 
-      // move rows id: fromIdx -> toIdx to targetIdx
-      for(var i = 0; i<= toIdx-fromIdx; i++){
-        $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (targetIdx) +")").after(
-          $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (fromIdx) +")")
-        );
-      }
-
-      tableManager.setSelectedCell([targetIdx-toIdx+fromIdx,colIdx]);
-      tableManager.updateOperations();
-      
-      /*
-      tableManager.cleanSelections();
-      tableManager.init();
-      tableManager.selectCell(targetIdx-toIdx+fromIdx,colIdx);
-      */
-
-      var a = [];
-      $.each(_data,function(i,row){
-        a.push(row.id);
-      })
-      this.logger.debug("Result: " + a.join(', '));
-    
+    // move rows id: fromIdx -> toIdx to targetIdx
+    for(var i = 0; i <= toIdx - fromIdx; i++) {
+      $('#' + tableManager.getTableId() + " > tbody > tr:eq(" + (targetIdx) + ")").after(
+          $('#' + tableManager.getTableId() + " > tbody > tr:eq(" + (fromIdx) + ")")
+      );
     }
 
+    tableManager.setSelectedCell([targetIdx - toIdx + fromIdx, colIdx]);
+    tableManager.updateOperations();
+
+    var a = [];
+    $.each(_data, function(i, row) {
+      a.push(row.id);
+    })
+    this.logger.debug("Result: " + a.join(', '));
+
+  }
+
 });
-
 CellOperations.registerOperation(new MoveDownOperation());
-
-
 
 var DeleteOperation = BaseOperation.extend({
 
-    id: "Delete",
-    types: ["GenericDelete"],
-    name: "Delete",
-    description: "Delete",
+  id: "Delete",
+  types: ["GenericDelete"],
+  name: "Delete",
+  description: "Delete",
 
-    constructor: function(){
-      this.logger = new Logger("DeleteOperation");
-    },
+  constructor: function() {
+    this.logger = new Logger("DeleteOperation");
+  },
 
+  canExecute: function(tableManager) {
+    return tableManager.isSelectedCell;
+  },
 
-    execute: function(tableManager){
+  execute: function(tableManager) {
 
-      // Move up: move the selected node and all children
-      // up to the previous item
+    // Move up: move the selected node and all children
+    // up to the previous item
 
-      var rowIdx = tableManager.getSelectedCell()[0];
-      var colIdx = tableManager.getSelectedCell()[1];
-      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+    var rowIdx = tableManager.getSelectedCell()[0];
+    var colIdx = tableManager.getSelectedCell()[1];
+    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
 
-      var fromIdx = rowIdx;
-      var toIdx = -1;
+    var fromIdx = rowIdx;
+    var toIdx = -1;
 
-      var indexManager = tableManager.getTableModel().getIndexManager();
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined'){
-        toIdx = indexManager.getLastChild(rowId).index;
-      }
-      else{
-        toIdx = nextSibling.index - 1;
-      }
-      
-      // Store the parent to update the table
-      var _parentId = indexManager.getIndex()[rowId].parent;
-      
-      //check if last in group, except in layout
-      var deleteParent = tableManager.id != LayoutPanel.TREE &&
-                         _parentId != IndexManager.ROOTID && 
-                         indexManager.isFirstChild(rowId) && 
-                         indexManager.isLastChild(rowId);
-      if(deleteParent){
-        //start deleting in parent
-        fromIdx = indexManager.getIndex()[_parentId].index;
-        //update grandpa
-        _parentId = indexManager.getIndex()[_parentId].parent;
-      }
-      
-      this.logger.debug("Deleting nodes from " + fromIdx + " to " + toIdx );
-      
-      // Build a new data array
-      tableManager.getTableModel().getData().splice(fromIdx, toIdx-fromIdx + 1);
-      indexManager.updateIndex();
-
-
-      // Now do the same on the UI
-
-      // move rows id: fromIdx -> toIdx to targetIdx
-      for(var i = 0; i<= toIdx-fromIdx; i++){
-        $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (fromIdx) +")").remove();
-      }
-
-      tableManager.cellUnselected();
-      
-      /*
-      tableManager.cleanSelections();
-      tableManager.init();
-      tableManager.selectCell(targetIdx-toIdx+fromIdx,colIdx);
-      */
-
-      var a = [];
-      $.each(tableManager.getTableModel().getData(),function(i,row){
-        a.push(row.id);
-      })
-      this.logger.debug("Result: " + a.join(', '));
-
-      // Update treeTable:
-      tableManager.updateTreeTable(_parentId);
-    
+    var indexManager = tableManager.getTableModel().getIndexManager();
+    var nextSibling = indexManager.getNextSibling(rowId);
+    if(typeof nextSibling == 'undefined') {
+      toIdx = indexManager.getLastChild(rowId).index;
+    } else {
+      toIdx = nextSibling.index - 1;
     }
 
+    // Store the parent to update the table
+    var _parentId = indexManager.getIndex()[rowId].parent;
+
+    //check if last in group, except in layout
+    var deleteParent = tableManager.id != LayoutPanel.TREE &&
+        _parentId != IndexManager.ROOTID &&
+        indexManager.isFirstChild(rowId) &&
+        indexManager.isLastChild(rowId);
+    if(deleteParent) {
+      //start deleting in parent
+      fromIdx = indexManager.getIndex()[_parentId].index;
+      //update grandpa
+      _parentId = indexManager.getIndex()[_parentId].parent;
+    }
+
+    this.logger.debug("Deleting nodes from " + fromIdx + " to " + toIdx);
+
+    // Build a new data array
+    tableManager.getTableModel().getData().splice(fromIdx, toIdx - fromIdx + 1);
+    indexManager.updateIndex();
+
+
+    // Now do the same on the UI
+
+    // move rows id: fromIdx -> toIdx to targetIdx
+    for(var i = 0; i <= toIdx - fromIdx; i++) {
+      $('#' + tableManager.getTableId() + " > tbody > tr:eq(" + (fromIdx) + ")").remove();
+    }
+
+    tableManager.cellUnselected();
+
+    var a = [];
+    $.each(tableManager.getTableModel().getData(), function(i, row) {
+      a.push(row.id);
+    });
+    this.logger.debug("Result: " + a.join(', '));
+
+    // Update treeTable:
+    tableManager.updateTreeTable(_parentId);
+  }
 });
-
 CellOperations.registerOperation(new DeleteOperation());
-
 
 var ApplyTemplateOperation = BaseOperation.extend({
 
-    id: "APPLY_TEMPLATE",
-    types: ["GenericApplyTemplate"],
-    name: "Apply Template",
-    description: "Applies a template.",
+  id: "APPLY_TEMPLATE",
+  types: ["GenericApplyTemplate"],
+  name: "Apply Template",
+  description: "Applies a template.",
 
-    constructor: function(){
-      this.logger = new Logger("ApplyTemplateOperation");
-    }
-
+  constructor: function() {
+    this.logger = new Logger("ApplyTemplateOperation");
+  }
 });
-
 CellOperations.registerOperation(new ApplyTemplateOperation());
 
 var SaveAsTemplateOperation = BaseOperation.extend({
 
-    id: "SAVEAS_TEMPLATE",
-    types: ["GenericSaveAsTemplate"],
-    name: "Save as Template",
-    description: "Save as template.",
+  id: "SAVEAS_TEMPLATE",
+  types: ["GenericSaveAsTemplate"],
+  name: "Save as Template",
+  description: "Save as template.",
 
-    constructor: function(){
-      this.logger = new Logger("SaveAsTemplateOperation");
-    }
-
+  constructor: function() {
+    this.logger = new Logger("SaveAsTemplateOperation");
+  }
 });
-
 CellOperations.registerOperation(new SaveAsTemplateOperation());

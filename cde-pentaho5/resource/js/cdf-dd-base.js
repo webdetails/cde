@@ -222,8 +222,8 @@ var SynchronizeRequests = {
 
         cdfdd.dashboardData = SynchronizeRequests.selectTemplate.structure;
         cdfdd.layout.init();
-        cdfdd.components.initTemplate();
-        cdfdd.datasources.initTemplate();
+        cdfdd.components.initTables();
+        cdfdd.datasources.initTables();
         if( SynchronizeRequests.selectTemplate.structure.style ){ cdfdd.dashboardWcdf.style = SynchronizeRequests.selectTemplate.structure.style; }
         if( SynchronizeRequests.selectTemplate.structure.rendererType ){ cdfdd.dashboardWcdf.rendererType = SynchronizeRequests.selectTemplate.structure.rendererType; }
       }

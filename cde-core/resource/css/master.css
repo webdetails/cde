@@ -990,15 +990,20 @@ tr.ui-draggable-dragging td:last-child:after {
   background-image: url("../images/NAV/add_html.png");
 }
 
-.tableOperation:hover {
-  background-position-x: 22px;
-}
-
 .tableOperation {
   height: 22px;
   width: 22px;
   display: inline-block;
   margin: 0px 4px;
+}
+
+.tableOperation.enabledOperation:hover {
+  background-position: 22px 0px;
+}
+
+.tableOperation.disabledOperation {
+  opacity: 0.4;
+  filter: alpha(opacity=40); /* IE */
 }
 
 table#cdfddOlapMeasureSelector{
@@ -2065,10 +2070,6 @@ div.popup .button:active {
 
 .panelButton.panelButton-active a div {
    background-position: -32px 0px;
-}
-
-.tableOperation:hover {
-   background-position: 22px 0px;
 }
 
 .panelButtonClickableArea{

@@ -5,8 +5,8 @@ describe("CDF-DD-BASE tests", function() {
     beforeEach(function() {
 
       cdfdd.layout = {init: function() {}};
-      cdfdd.components = {initTemplate: function() {}};
-      cdfdd.datasources = {initTemplate: function() {}};
+      cdfdd.components = {initTables: function() {}};
+      cdfdd.datasources = {initTables: function() {}};
 
       cdfdd.dashboardData = {
         layout: { rows: ["layout_test"]},
