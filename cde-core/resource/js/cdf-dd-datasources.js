@@ -1,237 +1,230 @@
 // Global datasources array where all the new datasources are registered.
 var CDFDDDatasourcesArray = [];
 
-
 var DatasourcesPanel = Panel.extend({
 
-		name: "Datasources Panel",
-		loadingTemplate: false,
-		datasourcesPallete: {},
-		datasourcesTable: {},
-		datasourcesTableModel: {},
-		propertiesTable: {},
-		propertiesTableModel: {},
-		datasourcesArray: [],
+  name: "Datasources Panel",
+  initPallete: true,
+  datasourcesPallete: {},
+  datasourcesTable: {},
+  datasourcesTableModel: {},
+  propertiesTable: {},
+  propertiesTableModel: {},
+  datasourcesArray: [],
 
+  constructor: function(id) {
+    this.base(id);
+    this.logger = new Logger("Datasources");
+    Panel.register(this);
+  },
 
-		constructor: function(id) {
+  initTables: function() {
+    this.initPallete = false;
+    this.init();
+  },
 
-			this.base(id);
-			this.logger = new Logger("Datasources");
-			Panel.register(this);
-		
-		},
+  init: function() {
+    var panelOperations = [
+      new DatasourcesMoveUpOperation(),
+      new DatasourcesMoveDownOperation(),
+      new DatasourcesDuplicateOperation(),
+      new DatasourcesDeleteOperation()
+    ];
 
-		initTemplate: function() {
-			this.loadingTemplate = true;
-			this.init();
-		},
+    this.base();
+    this.logger.debug("Specific init");
 
-		init: function() {
+    // Pallete
+    if(this.initPallete) {
+      this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
+      this.addPalleteEntries();
+    }
+    this.datasourcesPallete.init();
 
-			this.base();
-			this.logger.debug("Specific init");
+    // Datasources
+    this.datasourcesTable = new TableManager(DatasourcesPanel.DATASOURCES);
+    this.datasourcesTable.setTitle("Datasources");
+    this.datasourcesPallete.setLinkedTableManager(this.datasourcesTable);
+    this.datasourcesTable.setOperations(panelOperations);
 
+    var datasourcesTableModel = new TableModel('datasourcesTreeTableModel');
+    datasourcesTableModel.setColumnNames(['Type', 'Name']);
+    var typeDescription = function(row) { return row.typeDesc; };
+    var rowProperties = function(row) { return CDFDDUtils.ev(row.properties[0].value); };
+    datasourcesTableModel.setColumnGetExpressions([typeDescription, rowProperties]);
+    datasourcesTableModel.setColumnTypes(['String', 'String']);
+    var rowId = function(row) { return row.id; };
+    datasourcesTableModel.setRowId(rowId);
+    var rowType = function(row) { return row.type; };
+    datasourcesTableModel.setRowType(rowType);
+    var rowParent = function(row) { return row.parent; };
+    datasourcesTableModel.setParentId(rowParent);
+    var dataSources = cdfdd.getDashboardData().datasources.rows;
+    datasourcesTableModel.setData(dataSources);
+    this.datasourcesTable.setTableModel(datasourcesTableModel);
+    this.datasourcesTable.init();
 
-			// Pallete
-			if (!this.loadingTemplate) {
-				this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
-				this.addPalleteEntries();
-			}
-			this.datasourcesPallete.init();
+    // Properties
+    this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
+    this.propertiesTable.setTitle("Properties");
+    var propertiesTableModel = new PropertiesTableModel('datasourcesPropertiesTableModel');
+    propertiesTableModel.setColumnGetExpressions([
+      function(row) { return row.description; },
+      function(row) { return CDFDDUtils.ev(row.value); }
+    ]);
 
+    // If we set the name, we need to change the name in the datasourcesTable
+    propertiesTableModel.setColumnSetExpressions([undefined,
+      function(row, value) {
+        row.value = value;
+        if(row.name == 'name') {
+          var _tableManager = TableManager.getTableManager("table-" + DatasourcesPanel.DATASOURCES);
+          this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
+          var _cell = _tableManager.getSelectedCell();
+          $("#" + _tableManager.getTableId() + " > tbody > tr:eq(" + _cell[0] + ") > td:eq(1)").text(value);
+        }
+      }
+    ]);
 
+    this.propertiesTable.setTableModel(propertiesTableModel);
+    this.propertiesTable.init();
 
-			// Datasources
+    this.datasourcesTable.setLinkedTableManager(this.propertiesTable);
+    this.datasourcesTable.setLinkedTableManagerOperation(function(row) {
+      var arr = [];
+      for(p in row.properties) {
+        if(row.properties.hasOwnProperty(p)) {
+          arr.push(row.properties[p]);
+        }
+      }
+      return arr;
+    });
+  },
 
-			this.datasourcesTable = new TableManager(DatasourcesPanel.DATASOURCES);
-			this.datasourcesTable.setTitle("Datasources");
-			this.datasourcesPallete.setLinkedTableManager(this.datasourcesTable);
+  getContent: function() {
+    return '\n' +
+        '<div id="' + DatasourcesPanel.PALLETE + '" class="span-6 accordion"></div>\n' +
+        '<div id="' + DatasourcesPanel.DATASOURCES + '" class="span-8 panel-scroll-element">Datasources</div>\n' +
+        '<div id="' + DatasourcesPanel.PROPERTIES + '" class="span-10 panel-scroll-element last">Properties</div>\n';
+  },
 
-			// this.datasourcesTable.setInitialOperations([new DatasourcesAddRowOperation()]);
+  addPalleteEntries: function() {
+    $.each(CDFDDDatasourcesArray, function(i, datasource) {
+      Panel.getPanel(DatasourcesPanel.MAIN_PANEL).getDatasourcesPallete().addEntry(datasource);
+    });
+  },
 
-			var datasourcesTableModel = new TableModel('datasourcesTreeTableModel');
-			datasourcesTableModel.setColumnNames(['Type','Name']);
-			var typeDescription = function(row){return row.typeDesc};
-			var rowProperties = function(row){return CDFDDUtils.ev(row.properties[0].value)};
-			datasourcesTableModel.setColumnGetExpressions([typeDescription,rowProperties]);
-			datasourcesTableModel.setColumnTypes(['String','String']);
-			var rowId = function(row){return row.id};
-			datasourcesTableModel.setRowId(rowId);
-			var rowType = function(row){return row.type};
-			datasourcesTableModel.setRowType(rowType);
-			var rowParent = function(row){return row.parent};
-			datasourcesTableModel.setParentId(rowParent);
-			var dataSources = cdfdd.getDashboardData().datasources.rows;
-			datasourcesTableModel.setData(dataSources);
-			this.datasourcesTable.setTableModel(datasourcesTableModel);
-			this.datasourcesTable.init();
+  // Get Datasources
+  getDatasources: function() {
+    var data = this.datasourcesTable.getTableModel().getData();
+    var output = [];
+    var myself = this;
+    $.each(data, function(i, row) {
+      if(row.type != "Label")
+        output.push(row);
+    });
+    return output;
+  },
 
+  // Get Previous jndi - iterate through all but the last one, the newly added
+  getPreviousProperty: function(prop) {
 
-			// Properties
-			this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
-			this.propertiesTable.setTitle("Properties");
-			var propertiesTableModel = new PropertiesTableModel('datasourcesPropertiesTableModel');
-			propertiesTableModel.setColumnGetExpressions([
-				function(row){return row.description},
-				function(row){return CDFDDUtils.ev(row.value)}
-				]);
+    var data = this.datasourcesTable.getTableModel().getData();
+    var output = "";
+    var myself = this;
+    $.each(data, function(i, row) {
+      if(i == data.length - 1) {
+        return false;
+      }
+      if(row.type == DatasourcesMdxModel.MODEL || row.type == DatasourcesSqlModel) {
+        output = Panel.getRowPropertyValue(row, prop);
+        return false;
+      }
+    });
 
-			// If we set the name, we need to change the name in the datasourcesTable
-			propertiesTableModel.setColumnSetExpressions([undefined,
-				function(row,value){
-					row.value = value
-					if (row.name == 'name'){
-						var _tableManager = TableManager.getTableManager("table-" + DatasourcesPanel.DATASOURCES);
-						this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
-						var _cell = _tableManager.getSelectedCell();
-						$("#" + _tableManager.getTableId() + " > tbody > tr:eq("+ _cell[0] +") > td:eq(1)" ).text(value);
-						
-					}
-				}
-				]);
+    return output;
+  },
 
-			this.propertiesTable.setTableModel(propertiesTableModel);
-			this.propertiesTable.init();
+  getPreviousJndi: function() {
+    return this.getPreviousProperty('jndi');
+  },
+  getPreviousCatalog: function() {
+    return this.getPreviousProperty('catalog');
+  },
+  getPreviousCube: function() {
+    return this.getPreviousProperty('cube');
+  },
 
-			this.datasourcesTable.setLinkedTableManager(this.propertiesTable);
-			this.datasourcesTable.setLinkedTableManagerOperation(function(row){
-					var arr = []; 
-					for (p in row.properties){
-						if(row.properties.hasOwnProperty(p)){
-							arr.push(row.properties[p]);
-						}
-					}
-					return arr;
-				});
+  setDatasourcesPallete: function(datasourcesPallete) {
+    this.datasourcesPallete = datasourcesPallete;
+  },
+  getDatasourcesPallete: function() {
+    return this.datasourcesPallete;
+  },
+  setDatasourcesArray: function(datasourcesArray) {
+    this.datasourcesArray = datasourcesArray;
+  },
+  getDatasourcesArray: function() {
+    return this.datasourcesArray;
+  }
+}, {
 
+  MAIN_PANEL: "datasourceens_panel",
+  PALLETE: "cdfdd-datasources-pallete",
+  PALLETE_ID: "cdfdd-datasources-palletePallete",
+  DATASOURCES: "cdfdd-datasources-datasources",
+  PROPERTIES: "cdfdd-datasources-properties"
+});
 
-		},
-
-		getContent: function(){
-		
-			return ' \n' +
-'			<div id="'+ DatasourcesPanel.PALLETE +'" class="span-6 accordion"></div>\n' +
-'			<div id="'+ DatasourcesPanel.DATASOURCES +'" class="span-8 panel-scroll-element">Datasources</div>\n' +
-'			<div id="'+ DatasourcesPanel.PROPERTIES + '" class="span-10 panel-scroll-element last">Properties</div>\n' +
-'			';			
-		
-		},
-
-		addPalleteEntries: function(){
-
-			$.each(CDFDDDatasourcesArray,function(i,datasource){
-					Panel.getPanel(DatasourcesPanel.MAIN_PANEL).getDatasourcesPallete().addEntry(datasource);
-				});
-		},
-
-
-		// Get Datasources
-		getDatasources: function(){
-			
-			var data = this.datasourcesTable.getTableModel().getData();
-			var output = [];
-			var myself = this;
-			$.each(data,function(i,row){
-        if(row.type != "Label")
-					output.push(row);
-				});
-			return output;
-		
-		},
-
-		// Get Previous jndi - iterate through all but the last one, the newly added
-		getPreviousProperty: function(prop){
-			
-			var data = this.datasourcesTable.getTableModel().getData();
-			var output = "";
-			var myself = this;
-			$.each(data,function(i,row){
-					if (i == data.length - 1)
-						return false;
-					if(row.type == DatasourcesMdxModel.MODEL || row.type == DatasourcesSqlModel ){
-						output = Panel.getRowPropertyValue(row, prop);
-						return false;
-					}
-				});
-			return output;
-		
-		},
-		
-		getPreviousJndi: function(){return this.getPreviousProperty('jndi')},
-		getPreviousCatalog: function(){return this.getPreviousProperty('catalog')},
-		getPreviousCube: function(){return this.getPreviousProperty('cube')},
-			
-		
-		setDatasourcesPallete: function(datasourcesPallete){this.datasourcesPallete = datasourcesPallete},
-		getDatasourcesPallete: function(){return this.datasourcesPallete},
-		setDatasourcesArray: function(datasourcesArray){this.datasourcesArray = datasourcesArray},
-		getDatasourcesArray: function(){return this.datasourcesArray}
-
-	},{
-	
-		MAIN_PANEL: "datasourceens_panel",
-		PALLETE: "cdfdd-datasources-pallete",
-		PALLETE_ID: "cdfdd-datasources-palletePallete",
-		DATASOURCES: "cdfdd-datasources-datasources",
-		PROPERTIES: "cdfdd-datasources-properties"
-
-	});
-
+/*
+  Datasources Panel Operations
+ */
 var DatasourcesDuplicateOperation = DuplicateOperation.extend({
+
   id: "DATASOURCES_DUPLICATE",
   types: ["Datasources"],
   name: "Duplicate datasource",
   description: "Insert a clone of this datasource",
 
-  constructor: function(){
+  constructor: function() {
     this.logger = new Logger("DatasourcesDuplicateOperation");
+  },
+
+  canExecute: function( tableManager ) {
+    return tableManager.isSelectedCell && !tableManager.isSelectedGroupCell;
   }
 });
-
 CellOperations.registerOperation(new DatasourcesDuplicateOperation);
 
 var DatasourcesMoveUpOperation = MoveUpOperation.extend({
 
-		id: "DATASOURCES_MOVE_UP",
-		types: ["Datasources"],
+  id: "DATASOURCES_MOVE_UP",
+  types: ["Datasources"],
 
-		constructor: function(){
-			this.logger = new Logger("DatasourcesMoveUpOperation");
-		}
-
+  constructor: function() {
+    this.logger = new Logger("DatasourcesMoveUpOperation");
+  }
 });
-
 CellOperations.registerOperation(new DatasourcesMoveUpOperation);
-
 
 var DatasourcesMoveDownOperation = MoveDownOperation.extend({
 
-		id: "DATASOURCES_MOVE_DOWN",
-		types: ["Datasources"],
+  id: "DATASOURCES_MOVE_DOWN",
+  types: ["Datasources"],
 
-		constructor: function(){
-			this.logger = new Logger("DatasourcesMoveDownOperation");
-		}
-
+  constructor: function() {
+    this.logger = new Logger("DatasourcesMoveDownOperation");
+  }
 });
-
 CellOperations.registerOperation(new DatasourcesMoveDownOperation);
-
 
 var DatasourcesDeleteOperation = DeleteOperation.extend({
 
-		id: "DATASOURCES_DELETE",
-		types: ["Datasources"],
+  id: "DATASOURCES_DELETE",
+  types: ["Datasources"],
 
-		constructor: function(){
-			this.logger = new Logger("DatasourcesDeleteOperation");
-		}
-
+  constructor: function() {
+    this.logger = new Logger("DatasourcesDeleteOperation");
+  }
 });
-
 CellOperations.registerOperation(new DatasourcesDeleteOperation);
-
-
-
-

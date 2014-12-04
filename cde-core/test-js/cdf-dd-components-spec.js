@@ -8,9 +8,9 @@ describe("CDF-DD-COMPONENTS tests", function() {
     spyOn(cp, "init").and.callFake(function() {
       alert("Components initialized");
     });
-    cp.initTemplate();
+    cp.initTables();
 
-    expect( cp.loadingTemplate ).toBeTruthy();
+    expect( cp.initPallete ).toBe(false);
 
   });
 
