@@ -146,8 +146,8 @@ var SynchronizeRequests = {
 
                                     cdfdd.dashboardData = selectTemplate.structure;
                                     cdfdd.layout.init();
-                                    cdfdd.components.initTemplate();
-                                    cdfdd.datasources.initTemplate();
+                                    cdfdd.components.initTables();
+                                    cdfdd.datasources.initTables();
                                 }
                             }
                         });

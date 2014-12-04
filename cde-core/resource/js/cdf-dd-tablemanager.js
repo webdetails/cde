@@ -6,8 +6,8 @@ var TableManager = Base.extend({
   logger: {},
   title: "Title",
   tableModel: {},
-  initialOperations:[],
   isSelectedCell: false,
+  isSelectedGroupCell: false,
   hasAdvancedProperties: false,
   selectedCell: [],
   operations: [],
@@ -16,7 +16,7 @@ var TableManager = Base.extend({
   parentTableManager: undefined,
   cellRendererPool: {},
 
-  constructor: function(id){
+  constructor: function(id) {
     this.logger = new Logger("TableManager - " + id);
     this.id = id;
     this.tableId = "table-" + id;
@@ -39,7 +39,6 @@ var TableManager = Base.extend({
     $("#"+this.id).empty();
   },
 
-
   render: function() {
     this.logger.debug("Rendering table " + this.getTableId());
 
@@ -59,11 +58,10 @@ var TableManager = Base.extend({
     // Create rows
     var data = this.getTableModel().getData() || [];
 
-    for(var i = 0; i < data.length ; i++){
+    for(var i = 0; i < data.length ; i++) {
       if(typeof(data[i]) === "object") {
         myself.addRow(data[i]);
       }
-
     }
 
     $("#"+this.getTableId()).treeTable();
@@ -71,7 +69,7 @@ var TableManager = Base.extend({
   },
 
   newTable: function(args) {
-    var table = '' +
+    var table = '\n' +
       '<div class="tableContainer">\n' +
       ' <div class="tableCaption ui-state-default">\n' +
       '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
@@ -91,8 +89,7 @@ var TableManager = Base.extend({
     return table;
   },
 
-
-  addRow: function(row,pos){
+  addRow: function(row,pos) {
     // Adds row. -1 to add to the end of the list
 
     // Merge default options here
@@ -113,7 +110,6 @@ var TableManager = Base.extend({
       this.logger.error("Error evaluating id expression " + this.getTableModel().getRowId() + ": " + e);
     }
 
-
     var _parent;
     var _parentExpression = this.getTableModel().getParentId();
     // parentId?
@@ -130,7 +126,6 @@ var TableManager = Base.extend({
       this.logger.error("Error evaluating parent expression " + _parentExpression + ": " + e);
     }
 
-
     // Add columns
     var columnExpressions = this.getTableModel().getColumnGetExpressions();
     for (var i in columnExpressions){
@@ -139,14 +134,12 @@ var TableManager = Base.extend({
       }
     }
 
-
     var selector = "table#" + this.getTableId() + " tbody";
-    if(pos < 0 || pos == undefined){
+    if(pos < 0 || pos == undefined) {
       $(selector).append(rowObj);
       //rowObj.appendTo($(selector));
       //$(selector).append(html); // TODO <<-- undefined variable !!
-    }
-    else{
+    } else {
       var _selector = $(selector + " > tr:eq(" + pos + ")");
       _selector.length == 1?_selector.before(rowObj):$(selector).append(rowObj);
     }
@@ -205,7 +198,7 @@ var TableManager = Base.extend({
       //Events
       activate: function( event, ui ) {
         var dropId = $(this).attr('id');
-        var dragId = ui.draggable.attr('id')
+        var dragId = ui.draggable.attr('id');
         if(tableManager.canMoveInto(dragId, dropId)) {
           $(this).droppable('option', 'hoverClass', 'layout_hover_dropInto');
         } else {
@@ -323,7 +316,6 @@ var TableManager = Base.extend({
       children = children.concat(rowIndex[child.id].children);
     }
     return false;
-
   },
 
   canMoveInto: function( dragId, dropId ) {
@@ -492,39 +484,29 @@ var TableManager = Base.extend({
       this.insertAtIdx(_stub,insertAtIdx);
       return insertAtIdx + 1;
 
-    }
-    else{
+    } else {
       // Append at the end
       return cat.index + cat.children.length + 1;
-
     }
-
-    
   },
 
-  updateOperations: function(){
+  updateOperations: function() {
 
-    // Add all initial operation plus row/cell specific operations
-    this.setOperations(this.getInitialOperations());
+    var operations = this.getOperations();
+    this.logger.debug("Found " + operations.length + " operations for this cell");
 
-    if(this.isSelectedCell)
-      var _ops = CellOperations.getOperationsByType(
-        this.getTableModel().getEvaluatedRowType(this.selectedCell[0])
-        );
-    this.setOperations(this.getOperations().concat(_ops));
+    if( operations.length ) {
+      var _opsNode = $("#" + this.getTableId() + "Operations");
+      _opsNode.empty();
 
-    this.logger.debug("Found " + this.getOperations().length + " operations for this cell");
-    var _opsNode = $("#"+this.getTableId()+"Operations");
-    _opsNode.empty();
-
-    var myself = this;
-    $.each(this.getOperations(),function(i,_operation){
-      if (typeof _operation != 'undefined')
-        _opsNode.append(_operation.getHtml(myself, i));
-    });
-
+      var myself = this;
+      $.each(operations, function (i, _operation) {
+        if (typeof _operation != 'undefined') {
+          _opsNode.append(_operation.getHtml(myself, i));
+        }
+      });
+    }
   },
-
 
   cellClick: function(row,col,classType){
     // Update operations
@@ -532,6 +514,11 @@ var TableManager = Base.extend({
       this.getLinkedTableManager().cellUnselected();
 
     this.isSelectedCell =  true;
+    if( this.getTableModel().getEvaluatedRowType(row) == "Label" ) {
+      this.isSelectedGroupCell = true;
+    } else {
+      this.isSelectedGroupCell = false;
+    }
     this.selectedCell = [row,col];
     this.updateOperations();
     this.fireDependencies(row,col,classType);
@@ -540,6 +527,7 @@ var TableManager = Base.extend({
 
   cellUnselected: function(){
     this.isSelectedCell = false;
+    this.isSelectedGroupCell = false;
     this.cleanSelections();
     this.updateOperations();
     this.cleanDependencies();
@@ -550,7 +538,6 @@ var TableManager = Base.extend({
   selectCell: function(row,col,classType){
 
     // Unselect
-
     this.cleanSelections();
     $('#'+this.getTableId() + " > tbody > tr:eq("+ row +")").addClass("ui-state-active");
 
@@ -564,12 +551,10 @@ var TableManager = Base.extend({
 
   cleanSelections: function(){
 
-
     $('#'+this.getTableId()).find("tr.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
 
-  // Uncomment following cells to enable td highlight
-  //$('#'+this.getTableId()).find("tr td.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
-
+    // Uncomment following cells to enable td highlight
+    //$('#'+this.getTableId()).find("tr td.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
   },
 
   fireDependencies: function(row,col,classType){
@@ -684,12 +669,6 @@ var TableManager = Base.extend({
   },
   getTableModel: function(){
     return this.tableModel;
-  },
-  setInitialOperations: function(initialOperations){
-    this.initialOperations = initialOperations;
-  },
-  getInitialOperations: function(){
-    return this.initialOperations;
   },
   setOperations: function(operations){
     this.operations = operations;
