@@ -11,5 +11,9 @@
 * the license for the specific language governing your rights and limitations.
 */
 
-requireCfg['paths']['cde'] = CONTEXT_PATH+'content/pentaho-cdf-dd/js';
+/**
+ * Configuration file for cde pentaho version 5
+ */
+
+requireCfg['paths']['cde'] = CONTEXT_PATH + 'content/pentaho-cdf-dd/js';
 
