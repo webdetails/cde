@@ -506,13 +506,15 @@ var AddRowOperation = BaseOperation.extend({
   },
 
   canExecute: function(tableManager) {
-    var rowIdx = tableManager.getSelectedCell()[0];
-    var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
-    if($.inArray(rowType, this.types) > -1) {
-      return true;
-    } else {
-      return false;
+    if( tableManager.isSelectedCell ) {
+      var rowIdx = tableManager.getSelectedCell()[0];
+      var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+      if ($.inArray(rowType, this.types) > -1) {
+        return true;
+      }
     }
+
+    return false;
   }
 });
 CellOperations.registerOperation(new AddRowOperation());
