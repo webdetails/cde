@@ -9,9 +9,9 @@ describe("CDF-DD-DATASOURCES tests", function() {
       //init datasources
     });
 
-    dsp.initTemplate();
+    dsp.initTables();
 
-    expect( dsp.loadingTemplate ).toBeTruthy();
+    expect( dsp.initPallete ).toBe(false);
 
   });
 

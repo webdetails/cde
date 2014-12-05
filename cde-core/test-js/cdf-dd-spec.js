@@ -15,7 +15,7 @@ describe("CDF-DD tests", function() {
   it("Save Settings # Change Table Component Style Property", function() {
 
     var rendererType = undefined;
-    cdfdd.components.initTemplate = function() {};
+    cdfdd.components.initTables = function() {};
     var table = {
       id: "table",
       type: "ComponentsTable",
