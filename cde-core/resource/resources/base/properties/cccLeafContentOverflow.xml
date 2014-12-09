@@ -7,7 +7,7 @@
     <Tooltip>Indicates what is to be done with content that overflows in leaf charts.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>306</Order>
+    <Order>308</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
