@@ -206,7 +206,7 @@ var TableManager = Base.extend({
           $(this).droppable('option', 'hoverClass', 'layout_hover_dropInto');
         } else {
           $(this).droppable('option', 'hoverClass', 'layout_hover_moveTo');
-        };
+        }
       },
       drop: function( event, ui ) {
         ui.helper.attr('class', '');
@@ -270,11 +270,7 @@ var TableManager = Base.extend({
 
   disableDragObj: function( row ) {
     var dragRT = row.type;
-    if ( dragRT == LayoutBootstrapPanelHeaderModel.MODEL || dragRT == LayoutBootstrapPanelBodyModel.MODEL ||
-        dragRT == LayoutBootstrapPanelFooterModel.MODEL ) {
-      return true;
-    }
-    return false;
+    return !CellOperations.isDraggable(dragRT);
   },
 
   disableDrop: function( dragId, dropId ) {
@@ -290,16 +286,16 @@ var TableManager = Base.extend({
       return true;
     }
 
+    //disable drop when dragObj cant moveInto and moveTo dropObj
+    if( !this.canMoveTo(dragId, dropId) && !this.canMoveInto(dragId,dropId) ) {
+      return true;
+    }
+
     if( dropParentId != IndexManager.ROOTID ) {
       //disable drop when dragObj cant moveInto dropObj and dropObj parent
-      if( !this.canMoveInto( dragId, dropParentId ) && !this.canMoveInto( dragId, dropId ) ) {
-        return true
-      }
+      return !this.canMoveInto( dragId, dropParentId ) && !this.canMoveInto( dragId, dropId );
     } else {
-      //disable drop when dragObj is not at top level and cant moveInto dropObj
-      if( dragParentId != IndexManager.ROOTID && !this.canMoveInto( dragId, dropId ) &&
-          dragRT != LayoutFreeFormModel.MODEL && dragRT != LayoutRowModel.MODEL &&
-          dragRT != LayoutSpaceModel.MODEL && dragRT != LayoutBootstrapPanelModel.MODEL ) {
+      if( (dragRT == LayoutImageModel.MODEL || dragRT == LayoutHtmlModel.MODEL) && !this.canMoveInto( dragId, dropId ) ) {
         return true;
       }
     }
@@ -323,56 +319,20 @@ var TableManager = Base.extend({
 
   canMoveInto: function( dragId, dropId ) {
     var rowIndex = this.getTableModel().getIndexManager().getIndex();
-    var dragParentId = rowIndex[dragId].parent;
-    var dropParentId = rowIndex[dropId].parent;
 
-    //can not move into children's of dragObj
-    if( this.isChildrenOfObj( dragId, dropId ) ) {
-      return false;
-    }
-
-    //enable move into, based on row types
     var dropRT = rowIndex[dropId].type;
     var dragRT = rowIndex[dragId].type;
 
-    switch( dropRT ) {
-      case LayoutRowModel.MODEL:
-        if ( dragRT == LayoutColumnModel.MODEL || dragRT == LayoutFreeFormModel.MODEL ||
-            dragRT == LayoutBootstrapColumnModel.MODEL || dragRT == LayoutBootstrapPanelModel.MODEL ||
-            dragRT == LayoutHtmlModel.MODEL ||  dragRT == LayoutImageModel.MODEL ) {
-          return true;
-        }
-        break;
-      case LayoutBootstrapColumnModel.MODEL:
-      //Same as LayoutColumnModel.MODEL
-      case LayoutColumnModel.MODEL:
-        if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutImageModel.MODEL ||
-            dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutHtmlModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
-          return true;
-        }
-        break;
-      case LayoutFreeFormModel.MODEL:
-        if ( dropParentId == dragParentId ) {
-          return false;
-        } else if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutHtmlModel.MODEL ||
-            dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutImageModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
-          return true;
-        }
-        break;
-      case LayoutBootstrapPanelHeaderModel.MODEL:
-      //same as LayoutBootstrapPanelFooterModel.MODEL
-      case LayoutBootstrapPanelBodyModel.MODEL:
-      //same as LayoutBootstrapPanelFooterModel.MODEL
-      case LayoutBootstrapPanelFooterModel.MODEL:
-        if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutHtmlModel.MODEL || dragRT == LayoutImageModel.MODEL/*rever*/ ||
-            dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
-          return true;
-        }
-        break;
-      default: // Html, Resources, Spacer, Image, Bootstrap Panel ...
-        return false;
-    }
-    return false;
+    return $.inArray(dropRT, CellOperations.getCanMoveInto(dragRT)) > -1;
+  },
+
+  canMoveTo: function( dragId, dropId ) {
+    var rowIndex = this.getTableModel().getIndexManager().getIndex();
+
+    var dropRT = rowIndex[dropId].type;
+    var dragRT = rowIndex[dragId].type;
+
+    return $.inArray(dropRT, CellOperations.getCanMoveTo(dragRT)) > -1;
   },
 
   renderColumn: function(tr,row,colIdx){

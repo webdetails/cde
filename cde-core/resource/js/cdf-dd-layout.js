@@ -593,6 +593,12 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
   name: "Add Resource",
   description: "Adds a resource external file or code to the dashboard",
 
+  models: [LayoutResourceFileModel.MODEL, LayoutResourceCodeModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [
+    LayoutResourceCodeModel.MODEL, LayoutResourceFileModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddResourceOperation");
   },
@@ -646,6 +652,16 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
   name: "Add Bootstrap Panel",
   description: "Adds a bootstrap panel",
 
+  models: [LayoutBootstrapPanelModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddBootstrapPanelOperation");
   },
@@ -676,12 +692,9 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
         insertAtIdx = nextSibling.index;
       }
 
-      if(rowType == LayoutSpaceModel.MODEL) {
+      if($.inArray(rowType, this.canMoveTo) > -1) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-          rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL ||
-          rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
-          rowType == LayoutFreeFormModel.MODEL) {
+      } else if($.inArray(rowType, this.canMoveInto) > -1) {
         _stub.parent = rowId;
       } else {
         insertAtIdx = tableManager.getTableModel().getData().length;
@@ -791,6 +804,16 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
   name: "Add FreeForm",
   description: "Adds a freeForm element to the template",
 
+  models: [LayoutFreeFormModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddFreeFormOperation");
   },
@@ -823,11 +846,9 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
         insertAtIdx = nextSibling.index;
       }
 
-      if(rowType == LayoutSpaceModel.MODEL || rowType == LayoutBootstrapPanelModel.MODEL) {
+      if($.inArray(rowType, this.canMoveTo) > -1) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL || rowType == LayoutFreeFormModel.MODEL ||
-          rowType == LayoutBootstrapColumnModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
-          rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
+      } else if($.inArray(rowType, this.canMoveInto) > -1) {
         _stub.parent = rowId;
       } else {
         // insert at the end
@@ -854,6 +875,16 @@ var LayoutAddRowOperation = AddRowOperation.extend({
   types: [],
   name: "Add Row",
   description: "Add a new row",
+
+  models: [LayoutRowModel.MODEL],
+  canMoveInto: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddRowOperation");
@@ -887,15 +918,13 @@ var LayoutAddRowOperation = AddRowOperation.extend({
       } else {
         insertAtIdx = nextSibling.index;
       }
+
       // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row;
       // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
       // to the end
-
-      if(rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL) {
+      if($.inArray(rowType, this.canMoveTo) > -1) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
-          rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-          rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutFreeFormModel.MODEL) {
+      } else if($.inArray(rowType, this.canMoveInto) > -1) {
         _stub.parent = rowId;
       } else {
         // insert at the end
@@ -924,6 +953,14 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
   ],
   name: "Add Columns",
   description: "Add a new column",
+
+  models: [LayoutBootstrapColumnModel.MODEL, LayoutColumnModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL
+  ],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddColumnsOperation");
@@ -955,9 +992,9 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
         insertAtIdx = nextSibling.index;
       }
 
-      if(rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL) {
+      if($.inArray(rowType, this.canMoveTo) > -1) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutRowModel.MODEL) {
+      } else if($.inArray(rowType, this.canMoveInto) > -1) {
         _stub.parent = rowId;
       } else {
         // insert at the end
@@ -986,6 +1023,16 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
   ],
   name: "Add Space",
   description: "Adds a horizontal rule",
+
+  models: [LayoutSpaceModel.MODEL],
+  canMoveInto: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutRowModel.MODEL, LayoutBootstrapPanelModel.MODEL, /*LayoutFreeFormModel.MODEL,*/
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+  ],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddSpaceOperation");
@@ -1026,6 +1073,15 @@ var LayoutAddImageOperation = AddRowOperation.extend({
   ],
   name: "Add Image",
   description: "Adds an image",
+
+  models: [LayoutImageModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+     LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL
+  ],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddImageOperation");
@@ -1071,6 +1127,15 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
   ],
   name: "Add Html",
   description: "Adds plain Html code to the template",
+
+  models: [LayoutHtmlModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL
+  ],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddHtmlOperation");
