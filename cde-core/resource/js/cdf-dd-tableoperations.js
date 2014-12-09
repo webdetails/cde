@@ -422,14 +422,12 @@ var CellOperations = Base.extend({
 
   operations: [],
 
-
   // After defining an operation. we need to register it
   registerOperation: function(operation) {
     this.operations.push(operation);
   },
 
   getOperationsByType: function(type) {
-
     var _operations = [];
 
     $.each(CellOperations.operations, function(i, value) {
@@ -443,8 +441,61 @@ var CellOperations = Base.extend({
       }
     });
     return _operations;
-  }
+  },
 
+  getOperationById: function(id) {
+    var _operation = undefined;
+    var L = CellOperations.operations.length;
+
+    for(var i = 0; i < L; i++) {
+      if(id.match("^" + CellOperations.operations[i].id)) {
+        _operation = CellOperations.operations[i];
+        break;
+      }
+    }
+    return _operation;
+  },
+
+  getOperationByModel: function(model) {
+    var _operation = undefined;
+    var L = CellOperations.operations.length;
+
+    for(var i = 0; i < L; i++) {
+      if($.inArray(model, CellOperations.operations[i].models) > -1) {
+        _operation = CellOperations.operations[i];
+        break;
+      }
+    }
+
+    return _operation;
+  },
+
+  getCanMoveInto: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.canMoveInto;
+    } else {
+      return [];
+    }
+  },
+
+  getCanMoveTo: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.canMoveTo;
+    } else {
+      return [];
+    }
+  },
+
+  isDraggable: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.draggable;
+    } else {
+      return false;
+    }
+  }
 });
 
 var BaseOperation = Base.extend({
@@ -500,6 +551,11 @@ var AddRowOperation = BaseOperation.extend({
   types: ["GenericRow"],
   name: "New Row",
   description: "Adds a new row to the layout on the specific position",
+
+  draggable: true,
+  model: [],
+  canMoveInto: [],
+  canMoveTo: [],
 
   constructor: function() {
     this.logger = new Logger("AddRowOperation");
