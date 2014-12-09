@@ -3265,6 +3265,133 @@
   </DesignerComponent>
   <DesignerComponent>
     <Header>
+      <Name>CCC Sunburst Chart</Name>
+      <IName>cccSunburstChart</IName>
+      <Description>CCC Sunburst Chart</Description>
+      <Category>CHARTS</Category>
+      <CatDescription>Charts</CatDescription>
+      <Type>PalleteEntry</Type>
+      <Version>2.0</Version>
+    </Header>
+    <Metadata>
+      <meta name="cdwSupport">true</meta>
+    </Metadata>
+    <Contents>
+      <Model>
+        <Definition name="chartDefinition">
+          <Property>dataSource</Property>
+          <Property name="width">width</Property>
+          <Property name="height">height</Property>
+          <Property name="extensionPoints">cccExtensionPoints</Property>
+          <Property name="colors">cccColors</Property>
+          <Property name="title">title</Property>
+          <Property name="animate">cccAnimate</Property>
+          <Property name="categoryRole">cccCategoryRole</Property>
+          <Property name="clearSelectionMode">cccClearSelectionMode</Property>
+          <Property name="clickable">cccClickable</Property>
+          <Property name="clickAction">cccClickAction</Property>
+          <Property name="colorMode">cccColorMode</Property>
+          <Property name="colorRole">cccColorRole</Property>
+          <Property name="colorTransform">cccColorTransform</Property>
+          <Property name="colorUnbound">cccColorUnbound</Property>
+          <Property name="compatVersion">cccCompatVersion</Property>
+          <Property name="contentMargins">cccContentMargins</Property>
+          <Property name="contentPaddings">cccContentPaddings</Property>
+          <Property name="crosstabMode">cccCrosstabMode</Property>
+          <Property name="ctrlSelectMode">cccCtrlSelectMode</Property>
+          <Property name="dataCategoriesCount">cccDataCategoriesCount</Property>
+          <Property name="dataIgnoreMetadataLabels">cccDataIgnoreMetadataLabels</Property>
+          <Property name="dataMeasuresInColumns">cccDataMeasuresInColumns</Property>
+          <Property name="dataPartRole">cccDataPartRole</Property>
+          <Property name="dataSeparator">cccDataSeparator</Property>
+          <Property name="dataWhere">cccDataWhere</Property>
+          <Property name="doubleClickAction">cccDoubleClickAction</Property>
+          <Property name="emptySlicesLabel">cccEmptySlicesLabel</Property>
+          <Property name="emptySlicesVisible">cccEmptySlicesVisible</Property>
+          <Property name="groupedLabelSep">cccGroupedLabelSep</Property>
+          <Property name="hoverable">cccHoverable</Property>
+          <Property name="ignoreNulls">cccIgnoreNulls</Property>
+          <Property name="interactive">cccInteractive</Property>
+          <Property name="isMultiValued">cccIsMultiValued</Property>
+          <Property name="margins">cccMargins</Property>
+          <Property name="measuresIndexes">cccMeasuresIndexes</Property>
+          <Property name="multiChartColumnsMax">cccMultiChartColumnsMax</Property>
+          <Property name="multiChartIndexes">cccMultiChartIndexes</Property>
+          <Property name="multiChartMax">cccMultiChartMax</Property>
+          <Property name="multiChartOverflow">cccMultiChartOverflow</Property>
+          <Property name="multiChartRole">cccMultiChartRole</Property>
+          <Property name="multiChartSingleColFillsHeight">cccMultiChartSingleColFillsHeight</Property>
+          <Property name="multiChartSingleRowFillsHeight">cccMultiChartSingleRowFillsHeight</Property>
+          <Property name="orientation">cccOrientation</Property>
+          <Property name="paddings">cccPaddings</Property>
+          <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="renderCallback">cccRenderCallback</Property>
+          <Property name="selectable">cccSelectable</Property>
+          <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
+          <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
+          <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
+          <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
+          <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
+          <Property name="sizeRole">cccSizeRole</Property>
+          <Property name="sliceOrder">cccSliceOrder</Property>
+          <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
+          <Property name="smallContentMargins">cccSmallContentMargins</Property>
+          <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
+          <Property name="smallHeight">cccSmallHeight</Property>
+          <Property name="smallMargins">cccSmallMargins</Property>
+          <Property name="smallPaddings">cccSmallPaddings</Property>
+          <Property name="smallTitleAlign">cccSmallTitleAlign</Property>
+          <Property name="smallTitleFont">cccSmallTitleFont</Property>
+          <Property name="smallTitleMargins">cccSmallTitleMargins</Property>
+          <Property name="smallTitlePaddings">cccSmallTitlePaddings</Property>
+          <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
+          <Property name="smallTitleSize">cccSmallTitleSize</Property>
+          <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallWidth">cccSmallWidth</Property>
+          <Property name="titleAlign">cccTitleAlign</Property>
+          <Property name="titleFont">cccTitleFont</Property>
+          <Property name="titleMargins">cccTitleMargins</Property>
+          <Property name="titlePaddings">cccTitlePaddings</Property>
+          <Property name="titlePosition">cccTitlePosition</Property>
+          <Property name="titleSize">cccTitleSize</Property>
+          <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
+          <Property name="tooltipClassName">cccTooltipClassName</Property>
+          <Property name="tooltipEnabled">cccTooltipEnabled</Property>
+          <Property name="tooltipFade">cccTooltipFade</Property>
+          <Property name="tooltipFollowMouse">cccTooltipFollowMouse</Property>
+          <Property name="tooltipFormat">cccTooltipFormat</Property>
+          <Property name="tooltipGravity">cccTooltipGravity</Property>
+          <Property name="tooltipHtml">cccTooltipHtml</Property>
+          <Property name="tooltipOffset">cccTooltipOffset</Property>
+          <Property name="tooltipOpacity">cccTooltipOpacity</Property>
+          <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="userSelectionAction">cccUserSelectionAction</Property>
+          <Property name="valueFormat">cccValueFormat</Property>
+          <Property name="valuesFont">cccValuesFont</Property>
+          <Property name="valuesMask">cccValuesMask</Property>
+          <Property name="valuesOptimizeLegibility">cccValuesOptimizeLegibility</Property>
+          <Property name="valuesOverflow">cccValuesOverflow</Property>
+          <Property name="valuesVisible">cccValuesVisible</Property>
+        </Definition>
+        <Property name="parameters">xActionArrayParameter</Property>
+        <Property>executeAtStart</Property>
+        <Property>preChange</Property>
+        <Property>postChange</Property>
+        <Property>postFetch</Property>
+        <Property>htmlObject</Property>
+        <Property>preExecution</Property>
+        <Property>postExecution</Property>
+        <Property>tooltip</Property>
+        <Property>listeners</Property>
+        <Property>refreshPeriod</Property>
+      </Model>
+    </Contents>
+  </DesignerComponent>
+  <DesignerComponent>
+    <Header>
       <Name>CCC Treemap Chart</Name>
       <IName>cccTreemapChart</IName>
       <Description>CCC Treemap Chart</Description>

@@ -1,0 +1,19 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSliceOrder</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>sliceOrder</Description>
+    <Tooltip>The slices' layout order.</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>455</Order>
+    <Advanced>false</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="BySizeAscending">bySizeAscending</Value>
+    <Value display="BySizeDescending">bySizeDescending</Value>
+    <Value display="None">none</Value>
+  </Values>
+</DesignerProperty>
