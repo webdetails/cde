@@ -10,6 +10,7 @@ var TableManager = Base.extend({
   isSelectedGroupCell: false,
   hasAdvancedProperties: false,
   selectedCell: [],
+  droppedOnId: "",
   operations: [],
   linkedTableManager: undefined,
   linkedTableManagerOperation: undefined,
@@ -143,6 +144,8 @@ var TableManager = Base.extend({
       var _selector = $(selector + " > tr:eq(" + pos + ")");
       _selector.length == 1?_selector.before(rowObj):$(selector).append(rowObj);
     }
+
+    this.dragAndDrop( row, _id );
 
     return _id;
 
@@ -681,6 +684,12 @@ var TableManager = Base.extend({
   },
   getSelectedCell: function(){
     return this.selectedCell;
+  },
+  setDroppedOnId: function(droppedOnId) {
+    this.droppedOnId = droppedOnId;
+  },
+  getDroppedOnId: function() {
+    return this.droppedOnId;
   },
   setLinkedTableManager: function(linkedTableManager){
     this.linkedTableManager = linkedTableManager;

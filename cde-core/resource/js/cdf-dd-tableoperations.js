@@ -560,38 +560,27 @@ var DuplicateOperation = BaseOperation.extend({
 
     //Generate new names and ids for the duplicated nodes and ui nodes
     $.each(_toClone, function(i, node) {
-      var _uiNode = $('#'+tableManager.getTableId() + " > tbody > tr:eq("+ (fromIdx + i) +")").clone(true);
-      var _uiNodeName = _uiNode.find("td").eq(1);
       var _nodeProps = node.properties;
       var _newId = TableManager.generateGUID();
       var _oldId = node.id;
 
       node.id = _newId;
-      _uiNode.attr( "id", _newId );
       _originalToNewIds[_oldId] = _newId;
 
       //don't need to update first node parent, because its parent id didn't change
       if(i != 0) {
         node.parent = _originalToNewIds[node.parent];
-        _uiNode.addClass( 'child-of-' + node.parent );
-
       }
 
       //Update node and uiNode names
       if(_nodeProps && _nodeProps[0].name == 'name' && _nodeProps[0].value != "") {
         node.properties[0].value += cloneSuffix;
-        _uiNodeName.text( node.properties[0].value );
       }
-
-      _uiToClone.push(_uiNode[0]);
     });
 
     $.each(_toClone, function(i, row) {
       tableManager.insertAtIdx(row, targetIdx + i);
     });
-    tableManager.getTableModel().setData(_data);
-    Array().splice.apply(_tableData,[targetIdx,0].concat(_uiToClone));
-    $('#'+tableManager.getTableId() + " > tbody").append(_tableData);
 
     this.collapseDuplicated(_toClone);
     tableManager.selectCell(targetIdx, colIdx);
@@ -748,7 +737,6 @@ var MoveToOperation = BaseOperation.extend({
   }
 });
 CellOperations.registerOperation(new MoveToOperation());
-
 
 var MoveUpOperation = BaseOperation.extend({
 
