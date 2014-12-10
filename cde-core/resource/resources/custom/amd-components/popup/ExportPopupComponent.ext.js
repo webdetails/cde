@@ -11,14 +11,16 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
+define([], function() {
 
-public final class CdfRunRequireJsBlueprintDashboardWriter extends CdfRunRequireJsDashboardWriter
-{
-  protected static final String TYPE = "blueprint";
-  
-  public String getType()
-  {
-    return TYPE;
-  }
-}
+  var ExportPopupComponentExt = {
+
+    getCggDrawUrl: function() {
+      return CONTEXT_PATH + "/plugin/cgg/api/services/draw";
+    }
+
+  };
+
+  return ExportPopupComponentExt;
+
+});
