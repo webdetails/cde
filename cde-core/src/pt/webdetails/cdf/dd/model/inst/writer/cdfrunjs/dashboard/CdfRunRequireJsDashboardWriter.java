@@ -29,6 +29,7 @@ import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
 import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
@@ -36,8 +37,8 @@ import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -46,8 +47,12 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
   private static final String EPILOGUE = "dashboard.init();" + NEWLINE + "return dashboard;";
   private static final String REQUIRE_START = "require(";
   private static final String REQUIRE_STOP = "});";
+  private static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
+  private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
+  private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
+  private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
 
-  private Map<String, String> componentList = new HashMap<String, String>();
+  private Map<String, String> componentList = new LinkedHashMap<String, String>();
 
   /**
    *
@@ -87,20 +92,20 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
 
     // Leave the DASHBOARD_HEADER_TAG to replace additional stuff on render.
     template = template
-      .replaceAll( CdeConstants.DASHBOARD_HEADER_TAG,
-        Matcher.quoteReplacement( header ) + CdeConstants.DASHBOARD_HEADER_TAG )
-      .replaceAll( CdeConstants.DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement( footer ) )
-      .replaceAll( CdeConstants.DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement( content ) );
+        .replaceAll(CdeConstants.DASHBOARD_HEADER_TAG,
+            Matcher.quoteReplacement(header) + CdeConstants.DASHBOARD_HEADER_TAG)
+        .replaceAll(CdeConstants.DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement( footer))
+        .replaceAll(CdeConstants.DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement( content ) );
 
     // Export
     builder
-      .setTemplate( template )
-      .setHeader( header )
-      .setLayout( layout )
-      .setComponents( components )
-      .setContent( content )
-      .setFooter( footer )
-      .setLoadedDate( ctx.getDashboard().getSourceDate() );
+        .setTemplate( template)
+        .setHeader( header)
+        .setLayout( layout)
+        .setComponents( components)
+        .setContent( content)
+        .setFooter( footer)
+        .setLoadedDate(ctx.getDashboard().getSourceDate() );
   }
 
   /**
@@ -118,11 +123,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     StringBuilder widgetsOut = new StringBuilder();
 
     // Output WCDF
-    out.append( "var wcdfSettings = " );
-    out.append( wcdf.toJSON().toString( 2 ) );
-    out.append( ';' );
-    out.append( NEWLINE );
-    out.append( NEWLINE );
+    out.append( "var wcdfSettings = " ).append( wcdf.toJSON().toString( 2 ) ).append( ';' ).append( NEWLINE );
 
     boolean isFirstComp = true;
 
@@ -137,7 +138,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     for ( Component comp : comps ) {
       if ( StringUtils.isNotEmpty( comp.getName() ) ) {
         IThingWriter writer;
-        componentClassName = getComponentClassName( comp.getMeta().getName() );
+        componentClassName = Utils.getComponentClassName( comp.getMeta().getName() );
 
         if ( !componentList.containsKey( componentClassName ) ) {
 
@@ -145,19 +146,19 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
           if ( comp instanceof PrimitiveComponent && comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
 
             // Assume it's a CDF component
-            componentPath.append( "cdf/components/" ).append( componentClassName );
+            componentPath.append( CDF_AMD_BASE_COMPONENT_PATH ).append( componentClassName );
 
           } else if ( comp instanceof CustomComponent ) {
 
             if ( comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
 
               // Assume it's a CDE component
-              componentPath.append( "cde/components/" ).append( componentClassName );
+              componentPath.append( CDE_AMD_BASE_COMPONENT_PATH ).append( componentClassName );
 
             } else if ( comp.getMeta().getOrigin() instanceof PluginRepositoryOrigin ) {
 
               // Assume it's a CDE component uploaded to the repository
-              componentPath.append( "cde/solution/components/" ).append(
+              componentPath.append( CDE_AMD_REPO_COMPONENT_PATH ).append(
                   comp.getMeta().getImplementationPath().substring(
                       0, comp.getMeta().getImplementationPath().lastIndexOf( ".js" ) ) );
 
@@ -165,7 +166,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
               
               // Assume it's a component from another plugin (e.g. sparkl)
               componentPath.append( ( ( OtherPluginStaticSystemOrigin ) comp.getMeta().getOrigin() ).getPluginId() )
-                  .append( "/components/" ).append( componentClassName );
+                  .append( PLUGIN_COMPONENT_FOLDER ).append( componentClassName );
 
             }
           } else {
@@ -213,11 +214,10 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     }
 
     if ( !isFirstAddComp ) {
-      out.append( NEWLINE );
-      out.append( "dashboard.addComponents([" );
-      out.append( addCompIds );
-      out.append( "]);" );
-      out.append( NEWLINE );
+      out.append( NEWLINE )
+          .append( "dashboard.addComponents([" )
+          .append( addCompIds )
+          .append( "]);" ).append( NEWLINE );
     }
 
     out.append( widgetsOut );
@@ -272,7 +272,10 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
   }
 
   /**
+   * Wraps the JavaScript code, contained in the input parameter, with requirejs configurations.
    *
+   * @param content Some JavaScript code to be wrapped.
+   * @return
    */
   protected String wrapRequireDefinitions( String content ) {
     StringBuilder out = new StringBuilder();
@@ -298,7 +301,7 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     }
 
     // Add component AMD modules
-    Iterator it = componentList.entrySet().iterator();
+    Iterator it = getComponentList().entrySet().iterator();
     Map.Entry pair;
     while (it.hasNext()) {
       pair = (Map.Entry)it.next();
@@ -310,49 +313,24 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
       it.remove();
     }
 
-    out.append( REQUIRE_START);
-    // Output module paths
-    out.append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE );
-    // Output module class names
-    out.append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE );
-    out.append( "var dashboard = new Dashboard();" ).append( NEWLINE );
-    out.append( content );
-    out.append( NEWLINE );
-    out.append( EPILOGUE );
-    out.append( NEWLINE );
-    out.append( REQUIRE_STOP );
+    out.append( REQUIRE_START)
+        // Output module paths
+        .append( "['" ).append( StringUtils.join( cdfRequirePaths, "', '" ) ).append( "']," ).append( NEWLINE )
+        // Output module class names
+        .append( "function(" ).append( StringUtils.join( componentClassNames, ", " ) ).append( ") {" ).append( NEWLINE )
+        .append( "var dashboard = new Dashboard();" ).append( NEWLINE )
+        .append( content ).append( NEWLINE )
+        .append( EPILOGUE ).append( NEWLINE )
+        .append( REQUIRE_STOP );
 
     return out.toString();
   }
 
-  /**
-   * Gets the name of the class of the component based on it's type.
-   *
-   * @param componentType
-   * @return
-   */
-  private String getComponentClassName( String componentType ) {
-
-    if ( !StringUtils.isNotEmpty( componentType ) ) {
-      return componentType;
-    }
-
-    StringBuilder sb = new StringBuilder();
-
-    // starts with upper case character
-    if ( !Character.isUpperCase( componentType.charAt(0) ) ) {
-      sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) );
-      sb.append( componentType.substring( 1 ) );
-    } else {
-      sb.append( componentType );
-    }
-
-    // ends with "Component"
-    if ( !componentType.endsWith( "Component" ) ) {
-      sb.append( "Component" );
-    }
-
-    return sb.toString();
+  public Map<String, String> getComponentList() {
+    return componentList;
   }
 
+  public void setComponentList( Map<String, String> componentList ) {
+    this.componentList = componentList;
+  }
 }

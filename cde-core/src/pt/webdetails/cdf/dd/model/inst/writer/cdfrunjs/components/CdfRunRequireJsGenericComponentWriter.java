@@ -28,9 +28,7 @@ import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import pt.webdetails.cdf.dd.util.Utils;
 
 public class CdfRunRequireJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
 
@@ -41,16 +39,30 @@ public class CdfRunRequireJsGenericComponentWriter extends JsWriterAbstract impl
   }
 
   public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, GenericComponent comp )
-    throws ThingWriteException {
+      throws ThingWriteException {
+
+    final String className = Utils.getComponentClassName( comp.getMeta().getName() );
+
+    this.write( out, context, comp, className );
+
+  }
+
+  public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, GenericComponent comp,
+                     String className )
+      throws ThingWriteException {
+
     GenericComponentType compType = comp.getMeta();
 
     String id = context.getId( comp );
 
-    out.append( "var " );
-    out.append( id );
-    out.append( " = new " + getComponentClassName( compType.getName() ) + "(dashboard, {" );
-    out.append( NEWLINE );
-    addJsProperty( out, "type", JsonUtils.toJsString( compType.getName() ), INDENT1, true );
+    out.append( "var " )
+        .append( id )
+        .append( " = new " )
+        .append( className )
+        .append( "(dashboard, {" )
+        .append( NEWLINE );
+
+    addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );
     addJsProperty( out, "name", JsonUtils.toJsString( id ), INDENT1, false );
 
     // Render definitions
@@ -59,9 +71,9 @@ public class CdfRunRequireJsGenericComponentWriter extends JsWriterAbstract impl
       this.writeDefinition( definitionName, out, context, comp, compType );
     }
 
-    out.append( NEWLINE );
-    out.append( "});" );
-    out.append( NEWLINE );
+    out.append( NEWLINE )
+        .append( "});" )
+        .append( NEWLINE );
   }
 
   private void writeDefinition(
@@ -136,33 +148,4 @@ public class CdfRunRequireJsGenericComponentWriter extends JsWriterAbstract impl
     }
   }
 
-    /**
-     * Gets the name of the class of the component based on it's type.
-     *
-     * @param componentType
-     * @return
-     */
-    private String getComponentClassName( String componentType ) {
-
-        if ( !StringUtils.isNotEmpty( componentType ) ) {
-            return componentType;
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        // starts with upper case character
-        if ( !Character.isUpperCase( componentType.charAt(0) ) ) {
-            sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) );
-            sb.append( componentType.substring( 1 ) );
-        } else {
-            sb.append( componentType );
-        }
-
-        // ends with "Component"
-        if ( !componentType.endsWith( "Component" ) ) {
-            sb.append( "Component" );
-        }
-
-        return sb.toString();
-    }
 }

@@ -26,11 +26,11 @@
 
   } else if(typeof CONTEXT_PATH !== "undefined") { // production vs debug
     prefix = requirePaths['cde/components'] = CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components';
-    requirePaths['cde/solution/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
+    requirePaths['cde/repo/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
   } else if(typeof FULLY_QUALIFIED_URL != "undefined") { // embedded production vs debug
     prefix = requirePaths['cde/components'] = FULLY_QUALIFIED_URL + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components';
-    requirePaths['cde/solution/components'] = FULLY_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
+    requirePaths['cde/repo/components'] = FULLY_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
   } else { // build
     prefix = requirePaths['cde/components'] = '../resources/custom/amd-components';
