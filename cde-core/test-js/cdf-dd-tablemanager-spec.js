@@ -1,7 +1,7 @@
 describe("CDF-DD-TABLEMANAGER-TESTS", function() {
   var tableManager = getTestTableManager();
   var tableModel = getTestTableModel();
-  tableModel.setData(exampleData_1);
+  tableModel.setData(_.extend([], exampleData_1));
   tableManager.setTableModel(tableModel);
 
   it("correctly formats paths upon file picking",function() {
