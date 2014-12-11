@@ -19,6 +19,7 @@ module.exports = function(config) {
       'resource/js/jquery.jeditable.js',
       'resource/js/Base.js',
       'test-js/mockDashboards.js',
+      'test-js/testUtils.js',
       'resource/js/cdf-dd-config.js',
       'resource/js/cdf-dd-tablemanager.js',
       'resource/js/cdf-dd-indexmanager.js',
