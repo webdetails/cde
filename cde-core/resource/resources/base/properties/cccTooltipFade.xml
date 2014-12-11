@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the tooltip fades in and out, after the corresponding delay has expired.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>482</Order>
+    <Order>485</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -2,9 +2,9 @@
   <Header>
     <Name>cccColorMode</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>byParent</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>colorMode</Description>
-    <Tooltip>Indicates if the color is assigned to parent nodes or to leaf nodes.</Tooltip>
+    <Tooltip>Controls how colors are drawn from the color scale to paint visual elements.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
     <Order>277</Order>
@@ -14,5 +14,7 @@
   <Values>
     <Value display="By-Parent">byParent</Value>
     <Value display="By-Self">bySelf</Value>
+    <Value display="Fan">fan</Value>
+    <Value display="Slice">slice</Value>
   </Values>
 </DesignerProperty>

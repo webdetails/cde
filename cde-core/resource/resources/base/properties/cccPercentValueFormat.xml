@@ -7,7 +7,7 @@
     <Tooltip>A function used to format non-null numeric values as percentages.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>421</Order>
+    <Order>423</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
