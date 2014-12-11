@@ -256,7 +256,7 @@ var TableManager = Base.extend({
     var indexManager = this.getTableModel().getIndexManager();
 
     row.removeClass('layout_hover_moveTo_up').removeClass('layout_hover_moveTo_down');
-    
+
     if( row.hasClass( 'parent' ) && row.hasClass( 'expanded' ) ) {
       var rowId = row.attr('id');
       while( row.hasClass( 'parent' ) && row.hasClass( 'expanded' ) ) {
