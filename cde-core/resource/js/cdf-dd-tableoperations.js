@@ -553,7 +553,7 @@ var AddRowOperation = BaseOperation.extend({
   description: "Adds a new row to the layout on the specific position",
 
   draggable: true,
-  model: [],
+  models: [],
   canMoveInto: [],
   canMoveTo: [],
 
@@ -571,6 +571,52 @@ var AddRowOperation = BaseOperation.extend({
     }
 
     return false;
+  },
+
+  addRowOperationStub: function() {
+    return {MODEL: 'GenericRow'};
+  },
+
+  execute: function(tableManager) {
+
+    var _stub = this.addRowOperationStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+
+    var rowType;
+    var insertAtIdx = -1;
+
+    if (tableManager.isSelectedCell) {
+      var rowIdx = tableManager.getSelectedCell()[0];
+      var colIdx = tableManager.getSelectedCell()[1];
+      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if (typeof nextSibling == 'undefined') {
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      } else {
+        insertAtIdx = nextSibling.index;
+      }
+
+      if ($.inArray(rowType, this.canMoveTo) > -1) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else if ($.inArray(rowType, this.canMoveInto) > -1) {
+        _stub.parent = rowId;
+      } else {
+        // insert at the end
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting " + _stub.MODEL + " after " + rowType + " at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+    // edit the new entry - we know the name is on the first line
+    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
+    }
   }
 });
 CellOperations.registerOperation(new AddRowOperation());
