@@ -98,6 +98,25 @@ var LayoutCarouselModel = BaseModel.extend({}, {
 });
 BaseModel.registerModel(LayoutCarouselModel);
 
+/* CAROUSEL ITEM */
+
+var LayoutCarouselItemModel = BaseModel.extend({}, {
+  MODEL: 'LayoutCarouselItem',
+  getStub: function () {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutCarouselItemModel.MODEL,
+      typeDesc: "Carousel Item",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("title"));
+    return _stub;
+  }
+});
+BaseModel.registerModel(LayoutCarouselItemModel);
+
 /*
  * OPERATIONS
  */
@@ -110,6 +129,10 @@ var LayoutAddFilterBlockOperation = AddRowOperation.extend({
   types: [],
   name: "Add a Filter Block",
   description: "Add a block in which to add your filters",
+
+  models: [FilterBlockModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddFilterBlockOperation");
@@ -147,6 +170,10 @@ var LayoutAddFilterRowOperation = AddRowOperation.extend({
   name: "Add Filter Row",
   description: "Add a new row for a parameter selector",
 
+  models: [FilterRowModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddFilterRowOperation");
   },
@@ -159,12 +186,12 @@ var LayoutAddFilterRowOperation = AddRowOperation.extend({
      */
     if (tableManager.isSelectedCell) {
       var indexManager = tableManager.getTableModel().getIndexManager();
-      var rowIdx, colIdx, rowId, rowType;
+      var rowIdx, colIdx, rowId, rowType, _stub;
       rowIdx = tableManager.getSelectedCell()[0];
       colIdx = tableManager.getSelectedCell()[1];
       rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-          _stub = FilterRowModel.getStub();
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+      _stub = FilterRowModel.getStub();
 
       var nextSibling = indexManager.getNextSibling(rowId);
       if(typeof nextSibling == 'undefined') {
@@ -206,6 +233,10 @@ var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
   name: "Add Filter Header",
   description: "Add a new group header for the filters panel",
 
+  models: [FilterHeaderModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddFilterHeaderOperation");
   },
@@ -218,12 +249,12 @@ var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
      */
     if (tableManager.isSelectedCell) {
       var indexManager = tableManager.getTableModel().getIndexManager();
-      var rowIdx, colIdx, rowId, rowType;
+      var rowIdx, colIdx, rowId, rowType, _stub;
       rowIdx = tableManager.getSelectedCell()[0];
       colIdx = tableManager.getSelectedCell()[1];
       rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-          _stub = FilterHeaderModel.getStub();
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+      _stub = FilterHeaderModel.getStub();
 
       var nextSibling = indexManager.getNextSibling(rowId);
       if(typeof nextSibling == 'undefined') {
@@ -266,6 +297,10 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
   types: [],
   name: "Add Carousel",
   description: "Add a new carousel that cycles between components",
+
+  models: [LayoutCarouselModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddCarouselOperation");
@@ -320,6 +355,10 @@ var LayoutAddCarouselItemOperation = AddRowOperation.extend({
   ],
   name: "Add Carousel Item",
   description: "Add a new item to a carousel",
+
+  models: [FilterBlockModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
 
   constructor: function() {
     this.logger = new Logger("LayoutAddCarouselItemOperation");
