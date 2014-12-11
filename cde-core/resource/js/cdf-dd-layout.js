@@ -593,6 +593,12 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
   name: "Add Resource",
   description: "Adds a resource external file or code to the dashboard",
 
+  models: [LayoutResourceFileModel.MODEL, LayoutResourceCodeModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [
+    LayoutResourceCodeModel.MODEL, LayoutResourceFileModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddResourceOperation");
   },
@@ -646,6 +652,16 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
   name: "Add Bootstrap Panel",
   description: "Adds a bootstrap panel",
 
+  models: [LayoutBootstrapPanelModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddBootstrapPanelOperation");
   },
@@ -676,12 +692,9 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
         insertAtIdx = nextSibling.index;
       }
 
-      if(rowType == LayoutSpaceModel.MODEL) {
+      if($.inArray(rowType, this.canMoveTo) > -1) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-          rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutRowModel.MODEL ||
-          rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
-          rowType == LayoutFreeFormModel.MODEL) {
+      } else if($.inArray(rowType, this.canMoveInto) > -1) {
         _stub.parent = rowId;
       } else {
         insertAtIdx = tableManager.getTableModel().getData().length;
@@ -791,6 +804,16 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
   name: "Add FreeForm",
   description: "Adds a freeForm element to the template",
 
+  models: [LayoutFreeFormModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddFreeFormOperation");
   },
@@ -799,51 +822,8 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
     return true;
   },
 
-  execute: function(tableManager) {
-
-    var _stub = LayoutFreeFormModel.getStub();
-    var rowIdx;
-    var colIdx = 0;
-    var rowId;
-    var rowType;
-    var insertAtIdx = -1;
-
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    if(tableManager.isSelectedCell) {
-      rowIdx = tableManager.getSelectedCell()[0];
-      colIdx = tableManager.getSelectedCell()[1];
-      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
-
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if(typeof nextSibling == 'undefined') {
-        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-      } else {
-        insertAtIdx = nextSibling.index;
-      }
-
-      if(rowType == LayoutSpaceModel.MODEL || rowType == LayoutBootstrapPanelModel.MODEL) {
-        _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutRowModel.MODEL || rowType == LayoutColumnModel.MODEL || rowType == LayoutFreeFormModel.MODEL ||
-          rowType == LayoutBootstrapColumnModel.MODEL || rowType == LayoutBootstrapPanelHeaderModel.MODEL ||
-          rowType == LayoutBootstrapPanelBodyModel.MODEL || rowType == LayoutBootstrapPanelFooterModel.MODEL) {
-        _stub.parent = rowId;
-      } else {
-        // insert at the end
-        insertAtIdx = tableManager.getTableModel().getData().length;
-      }
-    } else {
-      insertAtIdx = tableManager.getTableModel().getData().length;
-    }
-
-    this.logger.debug("Inserting row after " + rowType + " at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+  addRowOperationStub: function() {
+    return LayoutFreeFormModel.getStub();
   }
 });
 CellOperations.registerOperation(new LayoutAddFreeFormOperation());
@@ -855,6 +835,16 @@ var LayoutAddRowOperation = AddRowOperation.extend({
   name: "Add Row",
   description: "Add a new row",
 
+  models: [LayoutRowModel.MODEL],
+  canMoveInto: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddRowOperation");
   },
@@ -863,55 +853,8 @@ var LayoutAddRowOperation = AddRowOperation.extend({
     return true;
   },
 
-  execute: function(tableManager) {
-
-    // Add a row on the specified position;
-    var _stub = LayoutRowModel.getStub();
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    var rowIdx;
-    var colIdx = 0;
-    var rowId;
-    var rowType;
-    var insertAtIdx = -1;
-
-    if(tableManager.isSelectedCell) {
-      rowIdx = tableManager.getSelectedCell()[0];
-      colIdx = tableManager.getSelectedCell()[1];
-      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
-
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if(typeof nextSibling == 'undefined') {
-        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-      } else {
-        insertAtIdx = nextSibling.index;
-      }
-      // Logic: If this is a LayoutRowModel.MODEL, insert after, same parent as this layout row;
-      // if it's a LayoutColumnModel.MODEL, insert after, parent on the column; Anything else, add
-      // to the end
-
-      if(rowType == LayoutRowModel.MODEL || rowType == LayoutSpaceModel.MODEL) {
-        _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL ||
-          rowType == LayoutBootstrapPanelHeaderModel.MODEL || rowType == LayoutBootstrapPanelBodyModel.MODEL ||
-          rowType == LayoutBootstrapPanelFooterModel.MODEL || rowType == LayoutFreeFormModel.MODEL) {
-        _stub.parent = rowId;
-      } else {
-        // insert at the end
-        insertAtIdx = tableManager.getTableModel().getData().length;
-      }
-    } else {
-      insertAtIdx = tableManager.getTableModel().getData().length;
-    }
-
-    this.logger.debug("Inserting row after " + rowType + " at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+  addRowOperationStub: function() {
+    return LayoutRowModel.getStub();
   }
 });
 CellOperations.registerOperation(new LayoutAddRowOperation());
@@ -925,55 +868,22 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
   name: "Add Columns",
   description: "Add a new column",
 
+  models: [LayoutBootstrapColumnModel.MODEL, LayoutColumnModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddColumnsOperation");
   },
 
-  execute: function(tableManager) {
-
-    var _stub = (cdfdd.dashboardWcdf.rendererType == "bootstrap")
+  addRowOperationStub: function() {
+    return (cdfdd.dashboardWcdf.rendererType == "bootstrap")
         ? LayoutBootstrapColumnModel.getStub()
         : LayoutColumnModel.getStub();
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    var rowIdx;
-    var colIdx = 0;
-    var rowId;
-    var rowType;
-    var insertAtIdx = -1;
-
-    if(tableManager.isSelectedCell) {
-      rowIdx = tableManager.getSelectedCell()[0];
-      colIdx = tableManager.getSelectedCell()[1];
-      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
-
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if(typeof nextSibling == 'undefined') {
-        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-      } else {
-        insertAtIdx = nextSibling.index;
-      }
-
-      if(rowType == LayoutColumnModel.MODEL || rowType == LayoutBootstrapColumnModel.MODEL) {
-        _stub.parent = indexManager.getIndex()[rowId].parent;
-      } else if(rowType == LayoutRowModel.MODEL) {
-        _stub.parent = rowId;
-      } else {
-        // insert at the end
-        insertAtIdx = -1;
-      }
-    } else {
-      insertAtIdx = tableManager.getTableModel().getData().length;
-    }
-
-    this.logger.debug("Inserting column after " + rowType + " at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
   }
 });
 CellOperations.registerOperation(new LayoutAddColumnsOperation());
@@ -987,31 +897,22 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
   name: "Add Space",
   description: "Adds a horizontal rule",
 
+  models: [LayoutSpaceModel.MODEL],
+  canMoveInto: [
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutRowModel.MODEL, LayoutBootstrapPanelModel.MODEL,
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddSpaceOperation");
   },
 
-  execute: function(tableManager) {
-
-    var _stub = LayoutSpaceModel.getStub();
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    var rowIdx = tableManager.getSelectedCell()[0];
-    var colIdx = tableManager.getSelectedCell()[1];
-    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-    var insertAtIdx;
-
-    var nextSibling = indexManager.getNextSibling(rowId);
-    if(typeof nextSibling == 'undefined') {
-      insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-    } else {
-      insertAtIdx = nextSibling.index;
-    }
-
-    _stub.parent = indexManager.getIndex()[rowId].parent;
-
-    this.logger.debug("Inserting space after at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
+  addRowOperationStub: function() {
+    return LayoutSpaceModel.getStub();
   }
 });
 CellOperations.registerOperation(new LayoutAddSpaceOperation());
@@ -1027,36 +928,21 @@ var LayoutAddImageOperation = AddRowOperation.extend({
   name: "Add Image",
   description: "Adds an image",
 
+  models: [LayoutImageModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+     LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddImageOperation");
   },
 
-  execute: function(tableManager) {
-
-    var _stub = LayoutImageModel.getStub();
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    var rowIdx = tableManager.getSelectedCell()[0];
-    var colIdx = tableManager.getSelectedCell()[1];
-    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-    var insertAtIdx;
-
-    var nextSibling = indexManager.getNextSibling(rowId);
-    if(typeof nextSibling == 'undefined') {
-      insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-    } else {
-      insertAtIdx = nextSibling.index;
-    }
-
-    _stub.parent = rowId;
-
-    this.logger.debug("Inserting space after at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+  addRowOperationStub: function() {
+    return LayoutImageModel.getStub();
   }
 });
 CellOperations.registerOperation(new LayoutAddImageOperation());
@@ -1072,37 +958,23 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
   name: "Add Html",
   description: "Adds plain Html code to the template",
 
+  models: [LayoutHtmlModel.MODEL],
+  canMoveInto: [
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
+  ],
+  canMoveTo: [
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
+  ],
+
   constructor: function() {
     this.logger = new Logger("LayoutAddHtmlOperation");
   },
 
-  execute: function(tableManager) {
-
-    var _stub = LayoutHtmlModel.getStub();
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    var rowIdx = tableManager.getSelectedCell()[0];
-    var colIdx = tableManager.getSelectedCell()[1];
-    var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-    var insertAtIdx;
-
-    var nextSibling = indexManager.getNextSibling(rowId);
-    if(typeof nextSibling == 'undefined') {
-      insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-    } else {
-      insertAtIdx = nextSibling.index;
-    }
-
-    _stub.parent = rowId;
-
-    this.logger.debug("Inserting space after at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+  addRowOperationStub: function() {
+    return LayoutHtmlModel.getStub();
   }
+
 });
 CellOperations.registerOperation(new LayoutAddHtmlOperation());
 

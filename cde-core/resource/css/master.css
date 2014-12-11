@@ -807,7 +807,7 @@ tr.ui-droppable td:after {
 
 .panel-scroll-element .scrollContainer {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .panel-scroll-element th .tableHeader {

@@ -422,14 +422,12 @@ var CellOperations = Base.extend({
 
   operations: [],
 
-
   // After defining an operation. we need to register it
   registerOperation: function(operation) {
     this.operations.push(operation);
   },
 
   getOperationsByType: function(type) {
-
     var _operations = [];
 
     $.each(CellOperations.operations, function(i, value) {
@@ -443,8 +441,61 @@ var CellOperations = Base.extend({
       }
     });
     return _operations;
-  }
+  },
 
+  getOperationById: function(id) {
+    var _operation = undefined;
+    var L = CellOperations.operations.length;
+
+    for(var i = 0; i < L; i++) {
+      if(id.match("^" + CellOperations.operations[i].id)) {
+        _operation = CellOperations.operations[i];
+        break;
+      }
+    }
+    return _operation;
+  },
+
+  getOperationByModel: function(model) {
+    var _operation = undefined;
+    var L = CellOperations.operations.length;
+
+    for(var i = 0; i < L; i++) {
+      if($.inArray(model, CellOperations.operations[i].models) > -1) {
+        _operation = CellOperations.operations[i];
+        break;
+      }
+    }
+
+    return _operation;
+  },
+
+  getCanMoveInto: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.canMoveInto;
+    } else {
+      return [];
+    }
+  },
+
+  getCanMoveTo: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.canMoveTo;
+    } else {
+      return [];
+    }
+  },
+
+  isDraggable: function(model) {
+    var operation = this.getOperationByModel(model);
+    if(operation != undefined) {
+      return operation.draggable;
+    } else {
+      return false;
+    }
+  }
 });
 
 var BaseOperation = Base.extend({
@@ -501,6 +552,11 @@ var AddRowOperation = BaseOperation.extend({
   name: "New Row",
   description: "Adds a new row to the layout on the specific position",
 
+  draggable: true,
+  models: [],
+  canMoveInto: [],
+  canMoveTo: [],
+
   constructor: function() {
     this.logger = new Logger("AddRowOperation");
   },
@@ -515,6 +571,52 @@ var AddRowOperation = BaseOperation.extend({
     }
 
     return false;
+  },
+
+  addRowOperationStub: function() {
+    return {MODEL: 'GenericRow'};
+  },
+
+  execute: function(tableManager) {
+
+    var _stub = this.addRowOperationStub();
+    var indexManager = tableManager.getTableModel().getIndexManager();
+
+    var rowType;
+    var insertAtIdx = -1;
+
+    if (tableManager.isSelectedCell) {
+      var rowIdx = tableManager.getSelectedCell()[0];
+      var colIdx = tableManager.getSelectedCell()[1];
+      var rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if (typeof nextSibling == 'undefined') {
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      } else {
+        insertAtIdx = nextSibling.index;
+      }
+
+      if ($.inArray(rowType, this.canMoveTo) > -1) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else if ($.inArray(rowType, this.canMoveInto) > -1) {
+        _stub.parent = rowId;
+      } else {
+        // insert at the end
+        insertAtIdx = tableManager.getTableModel().getData().length;
+      }
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+    }
+
+    this.logger.debug("Inserting " + _stub.MODEL + " after " + rowType + " at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+    // edit the new entry - we know the name is on the first line
+    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
+    }
   }
 });
 CellOperations.registerOperation(new AddRowOperation());
