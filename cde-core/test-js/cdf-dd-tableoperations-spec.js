@@ -44,6 +44,7 @@ describe("Table Operations #", function() {
 
   var populate = function(tableModel, dataSet) {
     //Populate data for tableModel
+    dataSet = _.extend([], dataSet);
     tableModel.setData(dataSet);
   };
 
