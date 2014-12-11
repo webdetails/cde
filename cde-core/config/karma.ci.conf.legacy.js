@@ -26,6 +26,7 @@ module.exports = function(config) {
       'test-resources/js/underscore.js',
       'resource/js/jquery.jeditable.js',
       'resource/js/Base.js',
+      'test-js/legacy/testUtils.js',
       'test-js/legacy/mockDashboards.js',
       'resource/js/cdf-dd-config.js',
       'resource/js/jquery.treeTable.js',
