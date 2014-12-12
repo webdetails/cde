@@ -1700,7 +1700,7 @@ div.popup {
   padding: 7px;
   max-width: 75%;
   max-height: 80%;
-  min-width: 20%;
+  min-width: 10%;
   overflow-x: auto;
   transition: 0.3s;
 }

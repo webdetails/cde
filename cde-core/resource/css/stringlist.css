@@ -18,33 +18,33 @@
 }
 
 .StringList, .StringArray, .ParameterList, .GenericSelect {
-	height: 260px;
-	float:left;
-	position:relative;
-	top:10px;
-	left:10px;
+  height: 260px;
+  overflow-y: auto;
+  float:left;
+  position:relative;
+  top:15px;
+  left:10px;
 }
 
 .GenericSelect {
-	width:415px;
+  width:415px;
 }
 
 .StringList {
-	width:600px;
+  width:608px;
 }
 
-.StringArray{
-	width:220px;
+.StringArray {
+  width:238px;
 }
 
 .ParameterList {
-	width:760px;
+  width:778px;
 }
 
 .ParameterList td{
-	text-align: center;
+  text-align: center;
 }
-
 
 
 div.jqiStringList, div.jqiStringArray, div.jqiParameterList, div.jqiGenericSelect { 
@@ -80,7 +80,7 @@ div.jqiParameterList {
 	color: #999;
 	font-size: 12px;
 	position: absolute;
-	bottom: 38px;
+	bottom: 33px;
 	right: 9px;
 	width: 40px;
 }
