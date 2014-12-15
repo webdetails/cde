@@ -22,6 +22,8 @@ module.exports = function(config) {
       'test-js/testUtils.js',
       'resource/js/cdf-dd-config.js',
       'resource/js/jquery.treeTable.js',
+      'resource/resources/ace/src/ace.js',
+      'resource/js/cdf-dd-aceWrapper.js',
       'resource/js/cdf-dd-tablemanager.js',
       'resource/js/cdf-dd-indexmanager.js',
       'resource/js/cdf-dd-wizardmanager.js',
