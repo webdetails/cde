@@ -135,10 +135,14 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
     Iterable<Component> comps = dash.getRegulars();
     StringBuilder componentPath = new StringBuilder();
     String componentClassName;
+    IThingWriter writer;
     for ( Component comp : comps ) {
       if ( StringUtils.isNotEmpty( comp.getName() ) ) {
-        IThingWriter writer;
+
         componentClassName = Utils.getComponentClassName( comp.getMeta().getName() );
+
+        // "soft reset" StringBuilder
+        componentPath.setLength( 0 );
 
         if ( !componentList.containsKey( componentClassName ) ) {
 
@@ -146,39 +150,44 @@ public abstract class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWr
           if ( comp instanceof PrimitiveComponent && comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
 
             // Assume it's a CDF component
-            componentPath.append( CDF_AMD_BASE_COMPONENT_PATH ).append( componentClassName );
+            componentPath
+                .append( CDF_AMD_BASE_COMPONENT_PATH )
+                .append( componentClassName );
+            componentList.put( componentClassName, componentPath.toString() );
 
           } else if ( comp instanceof CustomComponent ) {
 
             if ( comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
 
               // Assume it's a CDE component
-              componentPath.append( CDE_AMD_BASE_COMPONENT_PATH ).append( componentClassName );
+              componentPath
+                  .append( CDE_AMD_BASE_COMPONENT_PATH )
+                  .append( componentClassName );
+              componentList.put( componentClassName, componentPath.toString() );
 
             } else if ( comp.getMeta().getOrigin() instanceof PluginRepositoryOrigin ) {
 
               // Assume it's a CDE component uploaded to the repository
-              componentPath.append( CDE_AMD_REPO_COMPONENT_PATH ).append(
-                  comp.getMeta().getImplementationPath().substring(
+              componentPath
+                  .append( CDE_AMD_REPO_COMPONENT_PATH )
+                  .append( comp.getMeta().getImplementationPath().substring(
                       0, comp.getMeta().getImplementationPath().lastIndexOf( ".js" ) ) );
+              componentList.put( componentClassName, componentPath.toString() );
 
             } else if ( comp.getMeta().getOrigin() instanceof OtherPluginStaticSystemOrigin ) {
               
               // Assume it's a component from another plugin (e.g. sparkl)
-              componentPath.append( ( ( OtherPluginStaticSystemOrigin ) comp.getMeta().getOrigin() ).getPluginId() )
-                  .append( PLUGIN_COMPONENT_FOLDER ).append( componentClassName );
+              componentPath
+                  .append( ( ( OtherPluginStaticSystemOrigin ) comp.getMeta().getOrigin() ).getPluginId() )
+                  .append( PLUGIN_COMPONENT_FOLDER )
+                  .append( componentClassName );
+              componentList.put( componentClassName, componentPath.toString() );
 
             }
-          } else {
-            // TODO: process other component types (e.g. WidgetComponent)
-            componentPath.setLength( 0 );
+          } else if ( comp instanceof WidgetComponent ) {
+            // TODO: process WidgetComponent
             continue;
           }
-
-          componentList.put( componentClassName, componentPath.toString() );
-
-          // "soft reset" StringBuilder
-          componentPath.setLength( 0 );
 
         }
 
