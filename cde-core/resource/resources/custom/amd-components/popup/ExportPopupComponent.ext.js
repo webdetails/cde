@@ -16,7 +16,7 @@ define([], function() {
   var ExportPopupComponentExt = {
 
     getCggDrawUrl: function() {
-      return CONTEXT_PATH + "/plugin/cgg/api/services/draw";
+      return CONTEXT_PATH + "plugin/cgg/api/services/draw";
     }
 
   };
