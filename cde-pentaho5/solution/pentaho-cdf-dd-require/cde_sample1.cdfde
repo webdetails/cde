@@ -842,7 +842,7 @@
      },
      {
       "name": "cccClickAction",
-      "value": "function(s,c,v){\n  /* CDF-374 TODO: Logger.log(\"Clicked on: \" + s + \", \" + c);*/\n\n  // Manually changing territory to fire both changes at once\n  //territory=s;\n dashboard.setParameter('territory', s.atoms.series.value);\n  dashboard.fireChange('productLine', s.atoms.category.value);\n} ",
+      "value": "function(scene){\n  require(['cdf/Logger'], function(Logger) { Logger.log(\"Clicked on: \" + scene.getSeries() + \", \" + scene.getCategory()); }); \n\n  // Manually changing territory to fire both changes at once\n  //territory=s;\n dashboard.setParameter('territory', scene.getSeries());\n  dashboard.fireChange('productLine', scene.getCategory());\n} ",
       "type": "JavaScript"
      },
      {
