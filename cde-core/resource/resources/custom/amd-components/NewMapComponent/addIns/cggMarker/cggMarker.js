@@ -14,15 +14,15 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard',
-  './cggMarker.ext'],
-  function(AddIn, Dashboard, CggMarkerExt) {
+  'cdf/components/CggComponent.ext'],
+  function(AddIn, Dashboard, CggComponentExt) {
   
   var cggMarker = new AddIn({
     name: "cggMarker",
     label: "CGG Marker",
     defaults: {},
     implementation: function(tgt, st, opt) {
-      var url = CggMarkerExt.getCggDrawUrl() + '?script=' + st.cggGraphName;
+      var url = CggComponentExt.getCggDrawUrl() + '?script=' + st.cggGraphName;
 
       var width = st.width;
       var height = st.height;
