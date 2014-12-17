@@ -605,10 +605,10 @@ var ExportPopupComponent = PopupComponent.extend({
     masterDiv.append(imgDiv);
     
     $.fancybox({
-      type:"html",
-      closeBtn: false,
+      type: "html",
+      closeBtn: true,
       content: masterDiv,
-      width:totalWidth ,
+      width: totalWidth ,
       height: this.chartComponent.chartDefinition.height  + 60
     });
 
