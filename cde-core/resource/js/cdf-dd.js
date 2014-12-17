@@ -750,21 +750,20 @@ var CDFDD = Base.extend({
     var cssFileRef = "./css/" + mode + ".css";
 
     $.fancybox({
-      type: "ajax",
       ajax: {
         type: "GET"
       },
-      closeBtn: false,
+      closeBtn: true,
       href: htmlHref,
-      autoScale: false,
+      autoDimensions: false,
       width: 950,
       height: 600,
       padding: 0,
       margin: 0,
-      beforeLoad: function() {
+      onStart: function() {
         addCSS(cssFileRef);
       },
-      afterClose: function() {
+      onClosed: function() {
         removeCSS(cssFileRef);
       }
     });
