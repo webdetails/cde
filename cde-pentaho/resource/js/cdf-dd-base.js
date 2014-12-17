@@ -531,19 +531,19 @@ var PreviewRequests = {
 
         var successFunction = function(result){
             var json = eval("(" + result + ")");
-                if (json.status == "true") {
+            if (json.status == "true") {
                 $.fancybox({
                     type: "iframe",
-                    closeBtn: false,
+                    closeBtn: true,
                     autoSize: false,
                     href: _href,
                     width: $(window).width(),
                     height: $(window).height()
-                    });
-                } else {
-                    $.notifyBar({
-                        jqObject: NotifyBarUtils.getNotifyBarObject(),
-                        html: "Errors saving file: " + json.result
+                });
+            } else {
+                $.notifyBar({
+                    jqObject: NotifyBarUtils.getNotifyBarObject(),
+                    html: "Errors saving file: " + json.result
                 });
             }
         };

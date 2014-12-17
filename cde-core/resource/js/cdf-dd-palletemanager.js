@@ -67,7 +67,6 @@ var PalleteManager = Base.extend({
 				_placeholder.accordion({
 					header: "h3",
 					active: false,
-					collapsible: true,
 					heightStyle: "content",
 					animated: false,
 					//event: "mouseover",
@@ -82,7 +81,6 @@ var PalleteManager = Base.extend({
 				_placeholder.accordion({
 					header: "h3",
 					active: false,
-					collapsible: true,
 					heightStyle: "content",
 					//event: "mouseover",
 					icons: {
