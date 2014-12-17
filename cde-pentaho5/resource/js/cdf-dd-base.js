@@ -596,7 +596,7 @@ var PreviewRequests = {
             if (result && result.status == "true") {
                 $.fancybox({
                     type: "iframe",
-                    closeBtn: false,
+                    closeBtn: true,
                     autoSize: false,
                     href: _href,
                     width: $(window).width(),
