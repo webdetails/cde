@@ -93,6 +93,16 @@ var MdxQueryRenderer = PromptRenderer.extend({
   }
 });
 
+var CurrentMdxQueryRenderer = PromptRenderer.extend({ 
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("CurrentMdxQueryRenderer");
+    this.logger.debug("Creating new CurrentMdxQueryRenderer");
+    this.wizard = "CURRENTMDX_EDITOR";
+  }
+});
+
 var SqlQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager) {
@@ -100,6 +110,43 @@ var SqlQueryRenderer = PromptRenderer.extend({
     this.logger = new Logger("SqlQueryRenderer");
     this.logger.debug("Creating new SqlQueryRenderer");
     this.wizard = "SQL_WIZARD";
+  }
+});
+
+var MqlQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("MqlQueryRenderer");
+    this.logger.debug("Creating new MqlQueryRenderer");
+    this.wizard = "MQL_EDITOR";
+  }
+});
+var XPathQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("XPathQueryRenderer");
+    this.logger.debug("Creating new XPathQueryRenderer");
+    this.wizard = "XPATH_EDITOR";
+  }
+});
+var ScriptableQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("ScriptableQueryRenderer");
+    this.logger.debug("Creating new ScriptableQueryRenderer");
+    this.wizard = "SCRIPTABLE_EDITOR";
+  }
+});
+var DefaultQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("DefaultQueryRenderer");
+    this.logger.debug("Creating new DefaultQueryRenderer");
+    this.wizard = "DEFAULT_EDITOR";
   }
 });
 
