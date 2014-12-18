@@ -285,6 +285,7 @@ var TableManager = Base.extend({
   },
 
   disableDrop: function(dragId, dropId) {
+    var notToRoot = [LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL]
     var indexManager = this.getTableModel().getIndexManager();
     var rowIndex = indexManager.getIndex();
 
@@ -306,7 +307,7 @@ var TableManager = Base.extend({
       //disable drop when dragObj cant moveInto dropObj and dropObj parent
       return !this.canMoveInto(dragId, dropParentId) && !this.canMoveInto(dragId, dropId);
     } else {
-      if((dragRT == LayoutImageModel.MODEL || dragRT == LayoutHtmlModel.MODEL) && !this.canMoveInto(dragId, dropId)) {
+      if($.inArray(dragRT, notToRoot) > -1 && !this.canMoveInto(dragId, dropId)) {
         return true;
       }
     }
@@ -501,11 +502,13 @@ var TableManager = Base.extend({
     this.updateOperations();
     this.fireDependencies(row, col, classType);
 
+    $('#' + this.getId()).addClass('selectedTable');
   },
 
   cellUnselected: function() {
     this.isSelectedCell = false;
     this.isSelectedGroupCell = false;
+    this.selectedCell = [];
     this.cleanSelections();
     this.updateOperations();
     this.cleanDependencies();
@@ -528,6 +531,124 @@ var TableManager = Base.extend({
 
   },
 
+  selectCellBefore: function() {
+    if(this.isSelectedCell) {
+      var tableModel = this.getTableModel();
+      var indexManager = tableModel.getIndexManager();
+      var rowIdx = this.getSelectedCell()[0];
+      var rowId = tableModel.getEvaluatedId(rowIdx);
+      var prevIdx;
+
+      if(indexManager.isRootFirstChild(rowId)) {
+        return undefined;
+      }
+
+      var prevRow = indexManager.getPreviousSibling(rowId);
+
+      if(prevRow != undefined) {
+        var id = prevRow.id;
+        while(indexManager.isParent(id) && $('#' + id).hasClass('expanded')) {
+          prevRow = indexManager.getLastChild(id, 1);
+          id = prevRow.id;
+        }
+        prevIdx = prevRow.index;
+      } else {
+        prevIdx = rowIdx - 1;
+      }
+
+      this.logger.debug('Moving row from ' + rowIdx + ' to ' + prevIdx);
+      this.selectCell(prevIdx, 0, 'simple');
+    } else if($('#' + this.getTableId() + ' tbody tr').length) {
+      this.selectCell(0, 0, 'simple');
+    }
+  },
+
+  selectCellAfter: function() {
+    if(this.isSelectedCell) {
+      var tableModel = this.getTableModel();
+      var indexManager = tableModel.getIndexManager();
+      var rowIdx = this.getSelectedCell()[0];
+      var rowId = tableModel.getEvaluatedId(rowIdx);
+      var isCollapsed = $('#' + rowId).hasClass('collapsed');
+      var isParent = indexManager.isParent(rowId);
+      var nextIdx;
+
+      if((isParent && isCollapsed && indexManager.isRootLastChild(rowId)) || tableModel.isLastRow(rowId)) {
+        return undefined;
+      }
+
+      var nextRow = indexManager.getNextSibling(rowId);
+
+      if(isParent && isCollapsed) {
+        var id = rowId;
+        while(nextRow == undefined) {
+          id = indexManager.getParent(id).id;
+          nextRow = indexManager.getNextSibling(id);
+        }
+        nextIdx = nextRow.index;
+      } else {
+        nextIdx = rowIdx + 1;
+      }
+
+      this.logger.debug('Moving row from ' + rowIdx + ' to ' + nextIdx);
+      this.selectCell(nextIdx, 0, 'simple');
+    } else if($('#' + this.getTableId() + ' tbody tr').length) {
+      this.selectCell(0, 0, 'simple');
+    }
+  },
+
+  moveCellUp: function() {
+    if(!$('#' + this.getId() + ' div[id*=properties]').length) {
+      var operation = new MoveUpOperation();
+      if (operation.canExecute(this)) {
+        operation.execute(this);
+      }
+    }
+  },
+
+  moveCellDown: function() {
+    if (!$('#' + this.getId() + ' div[id*=properties]').length) {
+      var operation = new MoveDownOperation();
+      if(operation.canExecute(this)) {
+        operation.execute(this);
+      }
+    }
+  },
+
+  expandCell: function() {
+    if(this.isSelectedCell) {
+      var rowIdx = this.getSelectedCell()[0];
+      var rowId = this.getTableModel().getEvaluatedId(rowIdx);
+
+      var row = $("#" + rowId);
+
+      if(row.hasClass('parent') && row.hasClass('collapsed')) {
+        row.toggleBranch();
+        this.logger.debug('Expanding row on position ' + rowIdx);
+      }
+
+    } else if($('#' + this.getTableId() + ' tbody tr').length) {
+      this.selectCell(0, 0, 'simple');
+    }
+  },
+
+  collapseCell: function() {
+    if(this.isSelectedCell) {
+      var rowIdx = this.getSelectedCell()[0];
+      var rowId = this.getTableModel().getEvaluatedId(rowIdx);
+
+      var row = $("#" + rowId);
+
+      if (row.hasClass('parent') && row.hasClass('expanded')) {
+        row.toggleBranch();
+        this.logger.debug('Collapsing row on position ' + rowIdx);
+      }
+
+    } else if($('#' + this.getTableId() + ' tbody tr').length) {
+        this.selectCell(0, 0, 'simple');
+    }
+  },
+
   cleanSelections: function() {
 
     $('#' + this.getTableId()).find("tr.ui-state-active").removeClass("ui-state-active"); // Deselect currently ui-state-active rows
@@ -547,7 +668,6 @@ var TableManager = Base.extend({
       tableManager.cleanSelections();
       tableManager.init();
       //tableManager.selectCell(targetIdx,colIdx);
-
     }
   },
 
@@ -632,7 +752,6 @@ var TableManager = Base.extend({
     });
   },
 
-  //
 
   // Accessors
   setId: function(id) {
@@ -846,6 +965,14 @@ var TableModel = Base.extend({
     }
   },
 
+  isFirstRow: function(rowId) {
+    return this.data[0].id == rowId;
+  },
+
+  isLastRow: function(rowId) {
+    return this.data[this.data.length - 1].id == rowId;
+  },
+
   init: function() {
     // Do nothing
   },
@@ -949,7 +1076,14 @@ var PropertiesTableModel = TableModel.extend({
     this.setColumnSizes(['40%', '60%']);
     this.setEditable([false, true]);
     this.setRowId(function(row) {
-      return TableManager.generateGUID();
+      var rowId;
+      if(row.id == null) {
+        rowId = TableManager.generateGUID();
+        row.id = rowId;
+      } else {
+        rowId = row.id;
+      }
+      return rowId;
     });
     this.setRowType(function(row) {
       return row.type;
@@ -1360,7 +1494,7 @@ var ColorRenderer = CellRenderer.extend({
 
       if($(this).is(":checked")) {
         $(inputId, _editArea).attr("disabled", false);
-        $(inputId).trigger("click");
+        $(inputId).trigger("click").focus();
       } else {
         $(inputId, _editArea).val("");
         $(inputId, _editArea).attr("disabled", true);
@@ -1377,7 +1511,7 @@ var ColorRenderer = CellRenderer.extend({
       onBeforeShow: function() {
         $(this).ColorPickerSetColor(this.value.substring(1));
       }
-    }).bind('keyup', function(evt) {
+    }).bind('keydown', function(evt) {
       $(this).ColorPickerShow();
       var fixedHex = fixHex(this.value.indexOf('#') > -1 ? this.value.substring(1) : this.value);
       $(this).ColorPickerSetColor(fixedHex);

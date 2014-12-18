@@ -95,6 +95,7 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
+    this.selectedPanelId = LayoutPanel.MAIN_PANEL;
 
     //// Enable alert when leaving page
     //this.setExitNotification(true);
@@ -106,39 +107,85 @@ var CDFDD = Base.extend({
           return;
         }
 
-        switch (e.which) {
-          case 49:
+        var activePanel = cdfdd.getActivePanel();
+        var activeTable = activePanel.getSelectedTable();
+
+        switch(e.which) {
+          case 97: //Numpad 1
+          case 49: //1
             $(".cdfdd-modes").find("a:eq(2)").click();
             break;
-          case 50:
+          case 98: //Numpad 2
+          case 50: //2
             $(".cdfdd-modes").find("a:eq(1)").click();
             break;
-          case 51:
+          case 99: //Numpad 3
+          case 51: //3
             $(".cdfdd-modes").find("a:eq(0)").click();
             break;
           case 83:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + s
               cdfdd.save();
             }
             break;
           case 80:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + p
               cdfdd.previewMode();
             }
             break;
           case 71:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + g
               cdfdd.cggDialog();
             }
             break;
-          case 191:
-            if (e.shiftKey) {
-              cdfdd.toggleHelp();
-            }
+          case 222:
+            cdfdd.toggleHelp();
             break;
           case 86:
-            if (e.shiftKey) { //shift+v
+            if(e.shiftKey) { //shift + v
               ComponentValidations.validateComponents();
+            }
+            break;
+
+          //new shortcuts
+          case 38:
+            if(e.shiftKey) { //shift + up
+              activeTable.moveCellUp();
+            } else { //up
+              activeTable.selectCellBefore();
+            }
+            break;
+          case 40:
+            if(e.shiftKey) { //shift+down
+              activeTable.moveCellDown();
+            } else { //down
+              activeTable.selectCellAfter();
+            }
+            break;
+          case 37: //left
+            activeTable.collapseCell();
+            break;
+          case 39: //right
+            activeTable.expandCell();
+            break;
+          case 9: //tab
+            e.preventDefault();
+            var nextTable = activePanel.selectNextTable();
+            if(nextTable) {
+              var row = nextTable.getSelectedCell();
+              row = !row.length ? [0,0] : row;
+              nextTable.selectCell(row[0], row[1], 'simple');
+            }
+            break;
+          case 13:
+            e.preventDefault();
+            if(e.shiftKey) { //shift + enter
+              activeTable.cellUnselected();
+            } else { //enter
+              var rowIdx = activeTable.getSelectedCell()[0];
+              var rowId = activeTable.getTableModel().getEvaluatedId(rowIdx);
+              var row = $('#' + rowId + ' td:eq(1)');
+              row.find('div, div.edit :button, form :input.colorcheck').addBack().click();
             }
             break;
         }
@@ -154,6 +201,12 @@ var CDFDD = Base.extend({
     StylesRequests.syncStyles(myself);
 
     StylesRequests.listStyleRenderers(myself);
+  },
+
+  getActivePanel: function() {
+    var panel = $('#cdfdd-panels > :visible');
+    var panelId = panel.attr('id').replace('panel-', '');
+    return Panel.getPanel(panelId);
   },
 
   initStyles: function(callback) {
@@ -1499,6 +1552,7 @@ var Panel = Base.extend({
 
   switchTo: function() {
     this.logger.debug("Switching to " + this.name);
+    CDFDD.selectedPanelId = this.id;
     $("div." + Panel.GUID).hide();
     $("div#panel-" + this.id).show();
   },
