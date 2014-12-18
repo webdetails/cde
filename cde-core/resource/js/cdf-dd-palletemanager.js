@@ -207,7 +207,10 @@ var PalleteEntry = Base.extend({
     if(_stub.typeDesc == "" || _stub.typeDesc == "" || _stub.typeDesc == "") {
       _stub.typeDesc = _stub.type;
     }
-
+    
+    if (_stub.properties){
+    	this.fixQueryProperty(_stub.properties, this.category);
+    }
     tableManager.insertAtIdx(_stub,insertAtIdx);
 
     // focus the newly created line
@@ -220,6 +223,35 @@ var PalleteEntry = Base.extend({
 
     return _stub;
   },
+	fixQueryProperty: function(props, cat) {
+		$.each(props, function(i, prop) {
+			if (prop.name == "query") {
+				switch (cat) {
+					case "MDX":
+						prop.type = "CurrentMdxQuery";
+						break;
+					case "SQL":
+						prop.type = "SqlQuery";
+						break;
+					case "OLAP4J":
+						prop.type = "CurrentMdxQuery";
+						break;
+					case "MQL":
+						prop.type = "MqlQuery";
+						break;
+					case "XPATH":
+						prop.type = "XPathQuery";
+						break;
+					case "SCRIPTING":
+						prop.type = "ScriptableQuery";
+						break;
+					default:
+						prop.type = "DefaultQuery";
+				}
+				return false;
+			}
+		});
+	},
 
   getStub: function(){
     this.logger.warn("NOT IMPLEMENTED YET");
