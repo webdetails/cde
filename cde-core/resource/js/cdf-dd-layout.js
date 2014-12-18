@@ -102,6 +102,7 @@ var LayoutPanel = Panel.extend({
     treeTableModel.setData(layoutRows);
     this.treeTable.setTableModel(treeTableModel);
     this.treeTable.init();
+    $('#' + LayoutPanel.TREE).addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(LayoutPanel.PROPERTIES);
@@ -134,6 +135,16 @@ var LayoutPanel = Panel.extend({
       }
       return arr;
     });
+
+    $('#' + LayoutPanel.TREE).click(function(e) {
+      $('#' + LayoutPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
+      $('#' + LayoutPanel.TREE).addClass('selectedTable').removeClass('unselectedTable');
+    });
+
+    $('#' + LayoutPanel.PROPERTIES).click(function(e) {
+      $('#' + LayoutPanel.TREE).addClass('unselectedTable').removeClass('selectedTable');
+      $('#' + LayoutPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    });
   },
 
   getContent: function() {
@@ -165,6 +176,24 @@ var LayoutPanel = Panel.extend({
     });
 
     return output;
+  },
+
+  getSelectedTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    return TableManager.getTableManager("table-" + selectedTableId);
+  },
+
+  selectNextTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    if(selectedTableId == LayoutPanel.TREE && this.treeTable.isSelectedCell) {
+      $('#' + LayoutPanel.PROPERTIES).click();
+      return this.propertiesTable;
+    } else if(selectedTableId == LayoutPanel.PROPERTIES) {
+      $('#' + LayoutPanel.TREE).click();
+      return this.treeTable;
+    }
   }
 }, {
 
@@ -523,13 +552,13 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
     var content = '\n' +
         '<span><h2>Save as Template</h2></span><br/><hr/>\n' +
         '<span id="fileLabel" >File Name:</span><br/>\n' +
-        '<input class="cdf_settings_input" id="fileInput" type="text" value="" style="width:100%;"></input><br/>\n' +
+        '<input class="cdf_settings_input" id="fileInput" type="text" value="" style="width:100%;"/><br/>\n' +
         '<span>Title:</span><br/>\n' +
-        '<input class="cdf_settings_input" id="titleInput" type="text" value=""style="width:100%;"></input><br>\n' +
+        '<input class="cdf_settings_input" id="titleInput" type="text" value=""style="width:100%;"/><br>\n' +
         '<span>Include Components:</span>\n' +
-        '<input type="checkbox" checked="yes" id="includeComponentsInput" value="true" />\n' +
+        '<input type="checkbox" checked="yes" id="includeComponentsInput" value="true"/>\n' +
         '&nbsp&nbsp<span>Include Datasources:</span>\n' +
-        '<input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true" />\n';
+        '<input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true"/>\n';
 
     $.prompt(content, {buttons: { Save: true, Cancel: false }, prefix: "popup",
       submit: function(v) {
@@ -538,7 +567,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
         includeComponents = $("#includeComponentsInput").attr("checked");
         includeDataSources = $("#includeDataSourcesInput").attr("checked");
 
-        var validate = true
+        var validate = true;
         if(file.length == 0) {
           $("#fileLabel").css("color", "red");
           $("#fileLabel").text("* File Name: (required)");
@@ -551,8 +580,9 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
           validate = false;
         }
 
-        if(file.indexOf(".") == -1)
+        if(file.indexOf(".") == -1) {
           file += ".cdfde";
+        }
 
         return !v || validate;
       },
@@ -668,7 +698,7 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
   models: [LayoutBootstrapPanelModel.MODEL],
   canMoveInto: [
     LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
-    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL
   ],
   canMoveTo: [
     LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
@@ -820,7 +850,7 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
   models: [LayoutFreeFormModel.MODEL],
   canMoveInto: [
     LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
-    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL,
+    LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL
   ],
   canMoveTo: [
     LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
@@ -886,7 +916,8 @@ var LayoutAddColumnsOperation = AddRowOperation.extend({
     LayoutRowModel.MODEL
   ],
   canMoveTo: [
-    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelModel.MODEL,
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutSpaceModel.MODEL
   ],
 
   constructor: function() {
@@ -917,7 +948,7 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
   ],
   canMoveTo: [
     LayoutRowModel.MODEL, LayoutBootstrapPanelModel.MODEL,
-    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL
   ],
 
   constructor: function() {

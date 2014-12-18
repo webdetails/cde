@@ -79,6 +79,7 @@ var ComponentsPanel = Panel.extend({
     componentsTableModel.setData(componentRows);
     this.componentsTable.setTableModel(componentsTableModel);
     this.componentsTable.init();
+    $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(ComponentsPanel.PROPERTIES);
@@ -114,6 +115,16 @@ var ComponentsPanel = Panel.extend({
       }
       return arr;
     });
+
+    $('#' + ComponentsPanel.COMPONENTS).click(function(e) {
+      $('#' + ComponentsPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
+      $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable').removeClass('unselectedTable');
+    });
+
+    $('#' + ComponentsPanel.PROPERTIES).click(function(e) {
+      $('#' + ComponentsPanel.COMPONENTS).addClass('unselectedTable').removeClass('selectedTable');
+      $('#' + ComponentsPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    });
   },
 
   getContent: function() {
@@ -139,6 +150,24 @@ var ComponentsPanel = Panel.extend({
       }
     });
     return output;
+  },
+
+  getSelectedTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    return TableManager.getTableManager("table-" + selectedTableId);
+  },
+
+  selectNextTable: function() {
+    var selectedTableId = $('#panel-' + this.id + '  .selectedTable').attr('id');
+
+    if(selectedTableId == ComponentsPanel.COMPONENTS && this.componentsTable.isSelectedCell) {
+      $('#' + ComponentsPanel.PROPERTIES).click();
+      return this.propertiesTable;
+    } else if(selectedTableId == ComponentsPanel.PROPERTIES) {
+      $('#' + ComponentsPanel.COMPONENTS).click();
+      return this.componentsTable;
+    }
   },
 
   //Get components

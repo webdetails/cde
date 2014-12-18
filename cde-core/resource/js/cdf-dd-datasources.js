@@ -76,6 +76,7 @@ var DatasourcesPanel = Panel.extend({
     datasourcesTableModel.setData(dataSources);
     this.datasourcesTable.setTableModel(datasourcesTableModel);
     this.datasourcesTable.init();
+    $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
@@ -111,6 +112,16 @@ var DatasourcesPanel = Panel.extend({
         }
       }
       return arr;
+    });
+
+    $('#' + DatasourcesPanel.DATASOURCES).click(function(e) {
+      $('#' + DatasourcesPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
+      $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable').removeClass('unselectedTable');
+    });
+
+    $('#' + DatasourcesPanel.PROPERTIES).click(function(e) {
+      $('#' + DatasourcesPanel.DATASOURCES).addClass('unselectedTable').removeClass('selectedTable');
+      $('#' + DatasourcesPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -156,6 +167,24 @@ var DatasourcesPanel = Panel.extend({
     });
 
     return output;
+  },
+
+  getSelectedTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    return TableManager.getTableManager("table-" + selectedTableId);
+  },
+
+  selectNextTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    if(selectedTableId == DatasourcesPanel.DATASOURCES && this.datasourcesTable.isSelectedCell) {
+      $('#' + DatasourcesPanel.PROPERTIES).click();
+      return this.propertiesTable;
+    } else if(selectedTableId == DatasourcesPanel.PROPERTIES) {
+      $('#' + DatasourcesPanel.DATASOURCES).click();
+      return this.datasourcesTable;
+    }
   },
 
   getPreviousJndi: function() {
