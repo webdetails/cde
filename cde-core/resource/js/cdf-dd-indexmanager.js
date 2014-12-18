@@ -73,19 +73,48 @@ var IndexManager = Base.extend({
     this.setIndex(idx);
   },
 
+  isParent: function(rowId) {
+    return !!this.getIndex()[rowId].children.length;
+  },
+
   isFirstChild: function(rowId) {
-    return this.getIndex()[this.getIndex()[rowId].parent].children[0].id === rowId;
+    var parentId = this.getParent(rowId).id;
+
+    return this.getIndex()[parentId].children[0].id === rowId;
+  },
+
+  isRootFirstChild: function(rowId) {
+    var parentId = this.getParent(rowId).id;
+    if(parentId === IndexManager.ROOTID) {
+      return this.isFirstChild(rowId);
+    } else {
+      return false;
+    }
   },
 
   isLastChild: function(rowId) {
-    var _brothers = this.getBrothers(rowId);
+    var parentId = this.getParent(rowId).id;
+    var _children = this.getIndex()[parentId].children;
 
-    return _brothers[_brothers.length - 1].id === rowId;
+    return _children[_children.length-1].id === rowId;
+  },
+
+  isRootLastChild: function(rowId) {
+    var parentId = this.getParent(rowId).id;
+    if(parentId === IndexManager.ROOTID) {
+      return this.isLastChild(rowId);
+    } else {
+      return false;
+    }
+  },
+
+  getParent: function(rowId) {
+    var index = this.getIndex();
+    return index[index[rowId].parent];
   },
 
   getBrothers: function(rowId) {
     return this.getIndex()[this.getIndex()[rowId].parent].children;
-
   },
 
   getChildIndex: function(rowId) {
@@ -102,13 +131,13 @@ var IndexManager = Base.extend({
     return idx;
   },
 
-  getLastChild: function(rowId) {
+  getLastChild: function(rowId, depth) {
     var _children = this.getIndex()[rowId].children;
     var _length = _children.length;
-    if(_length == 0) {
+    if(_length == 0 || depth == 0) {
       return this.getIndex()[rowId];
     } else {
-      return this.getLastChild(_children[_length - 1].id);
+      return this.getLastChild(_children[_length - 1].id, depth - 1);
     }
   },
 
