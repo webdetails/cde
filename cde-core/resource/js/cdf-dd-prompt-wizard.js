@@ -63,26 +63,22 @@ var PromptWizard = WizardManager.extend({
 
     $("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
-    var leftSectionContent = $('\n' +
-        '<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
+    var leftSectionContent = $('<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
         '</div>');
 
     if(this.hasFunctions)
-      leftSectionContent.append('\n' +
-          '<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
+      leftSectionContent.append('<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
           '	<tbody class="ui-widget-content">\n' +
           '	</tbody>\n' +
           '</table>');
 
     if(this.hasParameters)
-      leftSectionContent.append('\n' +
-          '<table id="prompt-wizard-parameters" class="">\n' +
+      leftSectionContent.append('<table id="prompt-wizard-parameters" class="">\n' +
           '	<tbody class="ui-widget-content">\n' +
           '	</tbody>\n' +
           '</table>');
 
-    var centerSectionContent = '\n' +
-        '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
+    var centerSectionContent = '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
         '	<div class="span-18">\n' +
         '		<textarea  class="prompt-wizard-textarea" >' + this.invoker.getValue() + '</textarea>\n' +
         '	</div>\n' +
@@ -191,26 +187,22 @@ var AcePromptWizard = PromptWizard.extend({
 
     $("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
-    var leftSectionContent = $('\n' +
-        '<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
+    var leftSectionContent = $('<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
         '</div>');
 
     if(this.hasFunctions)
-      leftSectionContent.append('\n' +
-          '<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
+      leftSectionContent.append('<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
           '	<tbody class="ui-widget-content">\n' +
           '	</tbody>\n' +
           '</table>');
 
     if(this.hasParameters)
-      leftSectionContent.append('\n' +
-          '<table id="prompt-wizard-parameters" class="">\n' +
+      leftSectionContent.append('<table id="prompt-wizard-parameters" class="">\n' +
           '	<tbody class="ui-widget-content">\n' +
           '	</tbody>\n' +
           '</table>');
 
-    var centerSectionContent = '\n' +
-        '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
+    var centerSectionContent = '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
         ' <div class="span-18">\n' +
         '   <pre id="' + this.EDITOR_ID + '" style="position: relative;width: 750px;height: 400px;"> </pre>\n' +
         ' </div>\n' +
@@ -266,20 +258,26 @@ var AcePromptWizard = PromptWizard.extend({
     parametersTBody.append("<tr id='parameters' class='ui-state-hover expanded'><td>Parameters</td></tr>");
     var myself = this;
     var parameterIdx = 0;
+    var paramRows = {}
     $.each(parameters, function(i, param) {
       if(myself.getPropertyValue("name") != param.properties[0].value) {
         var parameterId = "parmeter-" + (++parameterIdx);
         var parentId = "parameter-" + param.properties[1].type.replace(/ /g, "_").toLowerCase();
-        if($("#" + parentId).length == 0)
-          parametersTBody.append("<tr id='" + parentId + "' class='child-of-parameters prompt-wizard-elements small' ><td>" + param.properties[1].type + "</td></tr>");
-
+        if(!paramRows[parentId]) {
+          paramRows[parentId] = [$("<tr id='" + parentId + "' class='child-of-parameters prompt-wizard-elements small' ><td>" + param.properties[1].type + "</td></tr>")];
+        }
         var parameter = $("<td>" + param.properties[0].value + "</td>");
-        parametersTBody.append($("<tr id='" + parameterId + "' class='child-of-" + parentId + " prompt-wizard-elements small'></tr>").append(parameter));
+        paramRows[parentId].push($("<tr id='" + parameterId + "' class='child-of-" + parentId + " prompt-wizard-elements small'></tr>").append(parameter));
         parameter.click(function() {
           myself.editor.insert(myself.getParameterValue(param.properties));
           return false
         });
       }
+    });
+    $.each(paramRows, function(i, row) {
+      $.each(row, function(i, param) {
+        parametersTBody.append(param);
+      });
     });
 
     parametersTBody.parent().treeTable();
@@ -289,7 +287,11 @@ var AcePromptWizard = PromptWizard.extend({
     this.editor = new CodeEditor();
     this.editor.initEditor(this.EDITOR_ID);
     this.editor.setMode(this.mode);
-    this.editor.setContents(this.invoker.getValue());
+    var content = this.invoker.getValue();
+    if (!content && this.queryTemplate) {
+      content = this.queryTemplate;
+    }
+    this.editor.setContents(content);
   },
 
   apply: function() {
@@ -378,8 +380,7 @@ var MdxWizard = PromptWizard.extend({
 
     this.base();
 
-    $("." + PromptWizard.WIZARD_LEFT_SECTION).append('\n' +
-        '<table id="prompt-wizard-olap" class="prompt-wizard-olap">\n' +
+    $("." + PromptWizard.WIZARD_LEFT_SECTION).append('<table id="prompt-wizard-olap" class="prompt-wizard-olap">\n' +
         '	<thead>\n' +
         '	</thead>\n' +
         '	<tbody class="ui-widget-content">\n' +
@@ -458,11 +459,26 @@ var MdxWizard = PromptWizard.extend({
 });
 PromptWizardManager.register(new MdxWizard());
 
+var CurrentMdxEditor = AcePromptWizard.extend({
+  
+    wizardId: "CURRENTMDX_EDITOR",
+    title: "MDX Editor", 
+    constructor: function(){
+      this.base();
+      this.logger = new Logger("CurrentMdxEditor" );
+      this.hasFunctions = false;
+      this.queryTemplate = 'select {} ON COLUMNS,\n' +
+      '       {} ON ROWS\n' +
+      '       from []';
+    }
+
+});
+PromptWizardManager.register(new CurrentMdxEditor());
 
 var SqlWizard = AcePromptWizard.extend({
 
   wizardId: "SQL_WIZARD",
-  title: "Sql Wizard",
+  title: "Sql Editor",
   hasOlap: false,
   mode: 'sql',//TODO: unimplemented
 
@@ -472,8 +488,8 @@ var SqlWizard = AcePromptWizard.extend({
     this.functions = WizardFunctionsManager.getWizardFunctions("SqlWizard").getFunctions();
   },
 
-  getParameterValue: function(parameterProperties) {
-    return parameterProperties[0].value;
+  getParameterValue: function(parameterProperties){
+    return "${" + parameterProperties[0].value + "}";
   },
 
   getFunctionValue: function(_function) {
@@ -510,3 +526,154 @@ var CdaWizard = AcePromptWizard.extend({
 }, {
 });
 PromptWizardManager.register(new CdaWizard());
+
+var DefaultEditor = AcePromptWizard.extend({ 
+
+		wizardId: "DEFAULT_EDITOR",
+		title: "Default Editor",
+		
+		mode: 'text',
+
+		constructor: function(){
+			this.base();
+			this.logger = new Logger("DefaultEditor" );
+			this.hasFunctions = false;
+		},
+		
+		getParameterValue: function(parameterProperties){
+			return "${" + parameterProperties[0].value + "}";
+		},
+		
+		getFunctionValue: function(_function){
+			return _function.value;
+		}
+		
+	},{
+
+});
+
+PromptWizardManager.register(new DefaultEditor());
+
+var MqlEditor = AcePromptWizard.extend({ 
+
+		wizardId: "MQL_EDITOR",
+		title: "MQL Editor",
+		
+		mode: 'text',
+
+		constructor: function(){
+			this.base();
+			this.logger = new Logger("MqlEditor" );
+			this.hasFunctions = false;
+      this.queryTemplate ='<![CDATA[<?xml version="1.0" encoding="UTF-8"?>\n' +
+        '<mql>\n' +
+        ' <domain_type></domain_type>\n' +
+        ' <domain_id></domain_id>\n' +
+        ' <model_id></model_id>\n' +
+        ' <model_name></model_name>\n' +
+        ' <selections>\n' +
+        '   <!-- Example selection\n' +
+        '              <selection>\n' +
+        '     <view>CAT_ORDERS</view>\n' +
+        '     <column>BC_ORDERS_ORDERDATE</column>\n' +
+        '   </selection>\n' +
+        '     -->\n' +
+        ' </selections>\n' +
+        ' <constraints>\n' +
+        '   <!-- Example constraint\n' +
+        '   <constraint>\n' +
+        '     <operator>AND</operator>\n' +
+        '     <condition>[CAT_ORDERS.BC_ORDERDETAILS_QUANTITYORDERED] &gt;70</condition>\n' +
+        '   </constraint>\n' +
+        '   -->\n' +
+        ' </constraints>\n' +
+        ' <orders/>\n' +
+        '</mql>]]>\n';
+		},
+		
+		getParameterValue: function(parameterProperties){
+			return "${" + parameterProperties[0].value + "}";
+		},
+		
+		getFunctionValue: function(_function){
+			return _function.value;
+		}
+		
+	},{
+
+});
+
+PromptWizardManager.register(new MqlEditor());
+
+var ScriptableEditor = AcePromptWizard.extend({ 
+
+		wizardId: "SCRIPTABLE_EDITOR",
+		title: "Scriptable Editor",
+		
+		mode: 'text',
+
+		constructor: function(){
+			this.base();
+			this.logger = new Logger("ScriptableEditor" );
+			this.hasFunctions = false;
+      this.queryTemplate ='import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n' +
+        '\n' +
+        'String[] columnNames = new String[]{\n' +
+        '"value","name2"\n' +
+        '};\n' +
+        '\n' +
+        '\n' +
+        'Class[] columnTypes = new Class[]{\n' +
+        'Integer.class,\n' +
+        'String.class\n' +
+        '};\n' +
+        '\n' +
+        'TypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n' +
+        '\n' +
+        'model.addRow(new Object[]{ new Integer("0"), new String("Name") });\n' +
+        '\n' +
+        'return model;';
+    },
+		
+		getParameterValue: function(parameterProperties){
+			return "${" + parameterProperties[0].value + "}";
+		},
+		
+		getFunctionValue: function(_function){
+			return _function.value;
+		}
+		
+	},{
+
+});
+
+PromptWizardManager.register(new ScriptableEditor());
+
+var XPathEditor = AcePromptWizard.extend({ 
+
+		wizardId: "XPATH_EDITOR",
+		title: "XPath Editor",
+		
+		mode: 'text',
+
+		constructor: function(){
+			this.base();
+			this.logger = new Logger("XPathEditor" );
+			this.hasFunctions = false;
+	        this.queryTemplate = "/*/*[CUSTOMERS_CUSTOMERNUMBER=103]";
+		},
+		
+		getParameterValue: function(parameterProperties){
+			return "${" + parameterProperties[0].value + "}";
+		},
+		
+		getFunctionValue: function(_function){
+			return _function.value;
+		}
+		
+	},{
+
+});
+
+PromptWizardManager.register(new XPathEditor());
+

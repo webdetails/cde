@@ -23,6 +23,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'test-resources/js/jquery.js',
+      'resource/js/jquery.jqModal.js',
+      'resource/js/jquery.corner.js',
       'test-resources/js/underscore.js',
       'resource/js/jquery.jeditable.js',
       'resource/js/Base.js',
@@ -43,6 +45,8 @@ module.exports = function(config) {
       'resource/js/cdf-dd-layout.js',
       'resource/js/cdf-dd-components.js',
       'resource/js/cdf-dd-components-generic.js',
+      'resource/js/cdf-dd-prompt-properties.js',
+      'resource/js/cdf-dd-prompt-wizard.js',
       'resource/js/cdf-dd-datasources.js',
       'test-js/legacy/main.js',
       {pattern: 'test-js/legacy/**/*-spec.js', included: false}
