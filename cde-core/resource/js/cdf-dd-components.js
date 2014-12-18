@@ -1,3 +1,16 @@
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+*/
+
 // Global components array where all the new components are registered.
 var CDFDDComponentsArray = [];
 
@@ -66,6 +79,7 @@ var ComponentsPanel = Panel.extend({
     componentsTableModel.setData(componentRows);
     this.componentsTable.setTableModel(componentsTableModel);
     this.componentsTable.init();
+    $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(ComponentsPanel.PROPERTIES);
@@ -101,6 +115,16 @@ var ComponentsPanel = Panel.extend({
       }
       return arr;
     });
+
+    $('#' + ComponentsPanel.COMPONENTS).click(function(e) {
+      $('#' + ComponentsPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
+      $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable').removeClass('unselectedTable');
+    });
+
+    $('#' + ComponentsPanel.PROPERTIES).click(function(e) {
+      $('#' + ComponentsPanel.COMPONENTS).addClass('unselectedTable').removeClass('selectedTable');
+      $('#' + ComponentsPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    });
   },
 
   getContent: function() {
@@ -126,6 +150,24 @@ var ComponentsPanel = Panel.extend({
       }
     });
     return output;
+  },
+
+  getSelectedTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    return TableManager.getTableManager("table-" + selectedTableId);
+  },
+
+  selectNextTable: function() {
+    var selectedTableId = $('#panel-' + this.id + '  .selectedTable').attr('id');
+
+    if(selectedTableId == ComponentsPanel.COMPONENTS && this.componentsTable.isSelectedCell) {
+      $('#' + ComponentsPanel.PROPERTIES).click();
+      return this.propertiesTable;
+    } else if(selectedTableId == ComponentsPanel.PROPERTIES) {
+      $('#' + ComponentsPanel.COMPONENTS).click();
+      return this.componentsTable;
+    }
   },
 
   //Get components

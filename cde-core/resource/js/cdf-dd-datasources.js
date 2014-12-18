@@ -1,3 +1,16 @@
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 // Global datasources array where all the new datasources are registered.
 var CDFDDDatasourcesArray = [];
 
@@ -63,6 +76,7 @@ var DatasourcesPanel = Panel.extend({
     datasourcesTableModel.setData(dataSources);
     this.datasourcesTable.setTableModel(datasourcesTableModel);
     this.datasourcesTable.init();
+    $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
@@ -98,6 +112,16 @@ var DatasourcesPanel = Panel.extend({
         }
       }
       return arr;
+    });
+
+    $('#' + DatasourcesPanel.DATASOURCES).click(function(e) {
+      $('#' + DatasourcesPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
+      $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable').removeClass('unselectedTable');
+    });
+
+    $('#' + DatasourcesPanel.PROPERTIES).click(function(e) {
+      $('#' + DatasourcesPanel.DATASOURCES).addClass('unselectedTable').removeClass('selectedTable');
+      $('#' + DatasourcesPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -143,6 +167,24 @@ var DatasourcesPanel = Panel.extend({
     });
 
     return output;
+  },
+
+  getSelectedTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    return TableManager.getTableManager("table-" + selectedTableId);
+  },
+
+  selectNextTable: function() {
+    var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+
+    if(selectedTableId == DatasourcesPanel.DATASOURCES && this.datasourcesTable.isSelectedCell) {
+      $('#' + DatasourcesPanel.PROPERTIES).click();
+      return this.propertiesTable;
+    } else if(selectedTableId == DatasourcesPanel.PROPERTIES) {
+      $('#' + DatasourcesPanel.DATASOURCES).click();
+      return this.datasourcesTable;
+    }
   },
 
   getPreviousJndi: function() {

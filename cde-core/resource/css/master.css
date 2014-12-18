@@ -933,6 +933,9 @@ tr.ui-draggable-dragging td:last-child:after {
   background-position: 0 0;
 }
 
+.panel-content .unselectedTable tr.ui-state-active {
+  background: #00b5c2;
+}
 
 .tooltip.layout_saveas_template {
   background-image: url("../images/NAV/save_template.png");
