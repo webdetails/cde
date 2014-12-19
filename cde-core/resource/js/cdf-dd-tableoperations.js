@@ -530,6 +530,13 @@ var BaseOperation = Base.extend({
     return true;
   },
 
+  checkAndExecute: function(tableManager) {
+    var isPropertyTable = $('#' + tableManager.getId() + ' div[id*=properties]').length > 0;
+    if(this.canExecute(tableManager) && !isPropertyTable) {
+      this.execute(tableManager);
+    }
+  },
+
   constructor: function() {
     this.logger = new Logger("BaseOperation");
   },
@@ -574,7 +581,8 @@ var AddRowOperation = BaseOperation.extend({
   },
 
   canExecute: function(tableManager) {
-    if( tableManager.isSelectedCell ) {
+    var isLayoutTable = tableManager.getId() == LayoutPanel.TREE;
+    if(tableManager.isSelectedCell && isLayoutTable) {
       var rowIdx = tableManager.getSelectedCell()[0];
       var rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
       if ($.inArray(rowType, this.types) > -1) {

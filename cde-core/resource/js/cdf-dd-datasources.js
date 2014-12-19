@@ -169,6 +169,10 @@ var DatasourcesPanel = Panel.extend({
     return output;
   },
 
+  getDuplicateOperation: function() {
+    return DatasourcesDuplicateOperation;
+  },
+
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
 

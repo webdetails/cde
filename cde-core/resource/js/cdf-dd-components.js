@@ -152,6 +152,10 @@ var ComponentsPanel = Panel.extend({
     return output;
   },
 
+  getDuplicateOperation: function() {
+    return ComponentsDuplicateOperation;
+  },
+
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
 
