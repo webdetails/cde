@@ -13,8 +13,8 @@
   </Header>
   <Values>
     <Value display="Inner">INNER</Value>
-    <Value display="Left Outer">LEFT OUTER</Value>
-    <Value display="Right Outer">RIGHT OUTER</Value>
-    <Value display="Full Outer">FULL OUTER</Value>
+    <Value display="Left Outer">LEFT_OUTER</Value>
+    <Value display="Right Outer">RIGHT_OUTER</Value>
+    <Value display="Full Outer">FULL_OUTER</Value>
   </Values>
 </DesignerProperty>
