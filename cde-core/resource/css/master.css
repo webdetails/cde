@@ -272,9 +272,7 @@ div.cdfdd-main {
   width: 33%;
 }
 
-
-#keyboard_shortcuts_help{
-
+#keyboard_shortcuts_help {
   background-color: black;
   color: white;
   font-family: 'Open Sans', sans-serif;
@@ -292,11 +290,20 @@ div.cdfdd-main {
   color:#0091F6;
 }
 
+#keyboard_shortcuts_help .shortcutCategory h6 {
+  color: #00a7f5;
+}
+
+#keyboard_shortcuts_help .shortcutCategory {
+  margin: 1em;
+}
+
 #keyboard_shortcuts_help p span {
   clear:both;
   display:block;
   float:left;
   width:200px;
+  padding-left: 10px;
 }
 
 #keyboard_shortcuts_help span {
@@ -304,16 +311,12 @@ div.cdfdd-main {
   display:block;
 }
 
-
-
-
 #cdfdd-main-Reload img {
   padding-left: 20px;
   padding-right: 20px;
 }
 
-
- div#cdfdd-panels {
+div#cdfdd-panels {
   height: 100%;
   margin: 0px;
   padding: 40px 20px 35px;

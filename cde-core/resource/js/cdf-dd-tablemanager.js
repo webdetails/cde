@@ -82,7 +82,7 @@ var TableManager = Base.extend({
   },
 
   newTable: function(args) {
-    var table = '\n' +
+    var table = '' +
         '<div class="tableContainer">\n' +
         ' <div class="tableCaption ui-state-default">\n' +
         '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
@@ -594,24 +594,6 @@ var TableManager = Base.extend({
       this.selectCell(nextIdx, 0, 'simple');
     } else if($('#' + this.getTableId() + ' tbody tr').length) {
       this.selectCell(0, 0, 'simple');
-    }
-  },
-
-  moveCellUp: function() {
-    if(!$('#' + this.getId() + ' div[id*=properties]').length) {
-      var operation = new MoveUpOperation();
-      if (operation.canExecute(this)) {
-        operation.execute(this);
-      }
-    }
-  },
-
-  moveCellDown: function() {
-    if (!$('#' + this.getId() + ' div[id*=properties]').length) {
-      var operation = new MoveDownOperation();
-      if(operation.canExecute(this)) {
-        operation.execute(this);
-      }
     }
   },
 
