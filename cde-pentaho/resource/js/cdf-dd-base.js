@@ -120,6 +120,7 @@ var SynchronizeRequests = {
           if(v == 1 && selectTemplate != undefined) {
             var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
             var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+            var promptPrefix = 'popupTemplate';
             var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
 
             if(overwriteComponents && overwriteDatasources) {
@@ -132,7 +133,7 @@ var SynchronizeRequests = {
               message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
             }
 
-            $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: "popupTemplate",
+            $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: promptPrefix,
               callback: function(v, m, f) {
                 if(v) {
                   if(!selectTemplate.structure.components.rows.length) {
@@ -150,6 +151,8 @@ var SynchronizeRequests = {
                 }
               }
             });
+
+            $('#' + promptPrefix).css('height', '165px');
           }
         };
 
