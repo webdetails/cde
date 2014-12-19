@@ -1423,7 +1423,6 @@ var RoundCornersRenderer = SelectRenderer.extend({
 var TextAlignRenderer = SelectRenderer.extend({
 
   selectData: {
-    '': '',
     'left': 'Left',
     'center': 'Center',
     'right': 'Right'
