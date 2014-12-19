@@ -111,18 +111,9 @@ var CDFDD = Base.extend({
         var activeTable = activePanel.getSelectedTable();
 
         switch(e.which) {
-          case 97: //Numpad 1
-          case 49: //1
-            $(".cdfdd-modes").find("a:eq(2)").click();
-            break;
-          case 98: //Numpad 2
-          case 50: //2
-            $(".cdfdd-modes").find("a:eq(1)").click();
-            break;
-          case 99: //Numpad 3
-          case 51: //3
-            $(".cdfdd-modes").find("a:eq(0)").click();
-            break;
+          /*
+           * Utilities
+           */
           case 83:
             if(e.shiftKey) { //shift + s
               cdfdd.save();
@@ -138,7 +129,7 @@ var CDFDD = Base.extend({
               cdfdd.cggDialog();
             }
             break;
-          case 222:
+          case 222: //?
             cdfdd.toggleHelp();
             break;
           case 86:
@@ -146,18 +137,45 @@ var CDFDD = Base.extend({
               ComponentValidations.validateComponents();
             }
             break;
+          case 13:
+            e.preventDefault();
+            if(e.shiftKey) { //shift + enter
+              activeTable.cellUnselected();
+            } else { //enter
+              var rowIdx = activeTable.getSelectedCell()[0];
+              var rowId = activeTable.getTableModel().getEvaluatedId(rowIdx);
+              var row = $('#' + rowId + ' td:eq(1)');
+              row.find('div, div.edit :button, form :input.colorcheck').addBack().click();
+            }
+            break;
 
-          //new shortcuts
+          /*
+           * Navigation
+           */
+          case 97: //Numpad 1
+          case 49: //1
+            $(".cdfdd-modes").find("a:eq(2)").click();
+            break;
+          case 98: //Numpad 2
+          case 50: //2
+            $(".cdfdd-modes").find("a:eq(1)").click();
+            break;
+          case 99: //Numpad 3
+          case 51: //3
+            $(".cdfdd-modes").find("a:eq(0)").click();
+            break;
           case 38:
             if(e.shiftKey) { //shift + up
-              activeTable.moveCellUp();
+              var operation = new MoveUpOperation();
+              operation.checkAndExecute(activeTable);
             } else { //up
               activeTable.selectCellBefore();
             }
             break;
           case 40:
             if(e.shiftKey) { //shift+down
-              activeTable.moveCellDown();
+              var operation = new MoveDownOperation();
+              operation.checkAndExecute(activeTable);
             } else { //down
               activeTable.selectCellAfter();
             }
@@ -177,15 +195,36 @@ var CDFDD = Base.extend({
               nextTable.selectCell(row[0], row[1], 'simple');
             }
             break;
-          case 13:
+
+          /*
+           * Row Operations
+           */
+          case 82: //r
+            if(e.ctrlKey) { return; }
             e.preventDefault();
-            if(e.shiftKey) { //shift + enter
-              activeTable.cellUnselected();
-            } else { //enter
-              var rowIdx = activeTable.getSelectedCell()[0];
-              var rowId = activeTable.getTableModel().getEvaluatedId(rowIdx);
-              var row = $('#' + rowId + ' td:eq(1)');
-              row.find('div, div.edit :button, form :input.colorcheck').addBack().click();
+            var operation = new LayoutAddRowOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 67: //c
+            e.preventDefault();
+            var operation = new LayoutAddColumnsOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 72: //h
+            e.preventDefault();
+            var operation = new LayoutAddHtmlOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 88:
+            if(e.shiftKey) { //shift+x
+              var operation = new DeleteOperation();
+              operation.checkAndExecute(activeTable);
+            }
+            break;
+          case 68:
+            if(e.shiftKey) { //shift+d
+              var operation = new (activePanel.getDuplicateOperation())();
+              operation.checkAndExecute(activeTable);
             }
             break;
         }
@@ -623,7 +662,7 @@ var CDFDD = Base.extend({
 
   newDashboard: function() {
     var myself = this;
-    var content = '\n' +
+    var content = '' +
         '<h2>New Dashboard</h2>\n' +
         '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
         '<span class="description">Unsaved changes will be lost.</span>\n';
@@ -646,7 +685,7 @@ var CDFDD = Base.extend({
     var selectedTitle = this.getDashboardWcdf().title;
     var selectedDescription = this.getDashboardWcdf().description;
     var myself = this;
-    var content = '\n' +
+    var content = '' +
         '<h2>Save as:</h2><hr style="background:none;"/>\n' +
         '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
         '<span class="folderexplorerfilelabel">File Name:</span>\n' +
@@ -965,7 +1004,7 @@ var CDFDD = Base.extend({
             selected: _.contains(currentParams, val)
           };
         });
-    content = '\n' +
+    content = '' +
         '<span>' +
         ' <h2>Settings:</h2>' +
         '</span>' +
@@ -1071,7 +1110,7 @@ var CDFDD = Base.extend({
         selectedFile = "",
         selectedFolder = "";
     var myself = this;
-    var radioButtons = '\n' +
+    var radioButtons = '' +
         '<form>\n' +
         ' <table>\n' +
         '   <tr style="font-weight: normal;">\n' +
@@ -1087,7 +1126,7 @@ var CDFDD = Base.extend({
         '  </table>\n' +
         '</form>\n';
 
-    var widgetFieldContent = '\n' +
+    var widgetFieldContent = '' +
         '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">\n' +
         ' <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>\n' +
         '</div>\n' +
@@ -1098,7 +1137,7 @@ var CDFDD = Base.extend({
         '</div>\n' +
         '<hr class="filexplorerhr"/>\n';
 
-    var fileInfo = '\n' +
+    var fileInfo = '' +
         '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
         '<div style="height:25px;padding-top: 10px;">\n' +
         ' <div style="float: left; width:20%;position: relative;top: 7px;">' +
@@ -1139,7 +1178,7 @@ var CDFDD = Base.extend({
         '   </div><br>\n' +
         '</div>\n';
 
-    var content = '\n' +
+    var content = '' +
         '<h2>Save as...</h2>\n' +
         '<hr/>\n' +
         '<div style="">' + fileInfo + '</div>\n';
@@ -1562,7 +1601,7 @@ var Panel = Base.extend({
 
   getHtml: function() {
 
-    return '\n' +
+    return '' +
         '<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
         ' <div class="panel-content">' + this.getContent() + '</div>\n' +
         '</div>\n';

@@ -148,7 +148,7 @@ var LayoutPanel = Panel.extend({
   },
 
   getContent: function() {
-    return '\n' +
+    return '' +
         '<div id="' + LayoutPanel.TREE + '" class="span-12 panel-scroll-element">Tree</div>\n' +
         '<div id="' + LayoutPanel.PROPERTIES + '" class="span-12 panel-scroll-element last">Properties</div>\n';
   },
@@ -176,6 +176,10 @@ var LayoutPanel = Panel.extend({
     });
 
     return output;
+  },
+
+  getDuplicateOperation: function() {
+    return LayoutDuplicateOperation;
   },
 
   getSelectedTable: function() {
@@ -549,7 +553,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
     var includeComponents = true;
     var includeDataSources = true;
     var myself = this;
-    var content = '\n' +
+    var content = '' +
         '<span><h2>Save as Template</h2></span><br/><hr/>\n' +
         '<span id="fileLabel" >File Name:</span><br/>\n' +
         '<input class="cdf_settings_input" id="fileInput" type="text" value="" style="width:100%;"/><br/>\n' +
@@ -653,7 +657,7 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
   execute: function(tableManager) {
 
     // Add a row. This special type goes always to the beginning;
-    var content = '\n' +
+    var content = '' +
         '<h2>Add Resource</h2>\n' +
         '<hr>Resource Type:&nbsp;&nbsp;\n' +
         '<select id="resourceType">\n' +
@@ -893,7 +897,8 @@ var LayoutAddRowOperation = AddRowOperation.extend({
   },
 
   canExecute: function(tableManager) {
-    return true;
+    var isLayoutTable = tableManager.getId() == LayoutPanel.TREE;
+    return isLayoutTable;
   },
 
   addRowOperationStub: function() {
