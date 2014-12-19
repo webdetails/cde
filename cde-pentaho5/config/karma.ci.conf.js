@@ -1,5 +1,15 @@
-// Karma configuration
-// Generated on Fri Nov 15 2013 00:09:22 GMT+0000 (GMT Standard Time)
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 module.exports = function(config) {
   config.set({
@@ -14,8 +24,8 @@ module.exports = function(config) {
     files: [
 
       // CDF
-      { pattern: 'js-lib/expanded/pentaho-cdf/js/**/*.js', included: false },
-      { pattern: 'js-lib/expanded/pentaho-cdf/js/**/*.css', included: false },
+      { pattern: 'bin/test-js/cdf/js/**/*.js', included: false },
+      { pattern: 'bin/test-js/cdf/js/**/*.css', included: false },
 
       { pattern: 'test-js/**/*-spec.js', included: false },
       { pattern: 'test-js/*.js', included: true },
@@ -29,10 +39,10 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'test-js/legacy/**/*.js',
-      'js-lib/expanded/pentaho-cdf/js/cdf-module.js',
-      'js-lib/expanded/pentaho-cdf/js/*-require-cfg.js',
-      'js-lib/expanded/pentaho-cdf/js/lib/*-require-cfg.js',
-      'js-lib/expanded/pentaho-cdf/js/compressed/**/*'
+      'bin/test-js/cdf/js/cdf-module.js',
+      'bin/test-js/cdf/js/*-require-cfg.js',
+      'bin/test-js/cdf/js/lib/*-require-cfg.js',
+      'bin/test-js/cdf/js/compressed/**/*'
     ],
 
     preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
@@ -43,17 +53,17 @@ module.exports = function(config) {
 
     coverageReporter: {
       type: 'cobertura',
-      dir:  'bin/test/coverage/reports/'
+      dir:  'bin/test-reports/coverage/reports/'
     },
 
     junitReporter: {
-      outputFile: 'bin/test/test-results.xml',
+      outputFile: 'bin/test-reports/test-results.xml',
       suite:      'unit'
     },
 
     // the default configuration
     htmlReporter: {
-      outputDir:    'bin/test/karma_html',
+      outputDir:    'bin/test-reports/karma_html',
       templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
     },
 

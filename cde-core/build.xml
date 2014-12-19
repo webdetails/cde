@@ -15,8 +15,12 @@
     and works with the subfloor.xml file.
   </description>
 
+  <property name="bin.dir" value="bin"/>
+
   <!-- karma config files -->
   <property name="js.karma.ci.config.legacy" value="config/karma.ci.conf.legacy.js"/>
+  <property name="bin.test-js.dir" value="${bin.dir}/test-js" description='Karma tests js source dir' />
+  <property name="bin.test-js.cdf.dir" value="${bin.test-js.dir}/cdf" description='CDF for Karma tests' />
 
   <property file="../override.properties"
             description="Top level Properties customized for your development environment belong in this file.  This file will never be checked into the SCM." />
@@ -307,6 +311,12 @@
   </target>
 
   <target name="test-js-require" depends="subfloor-js.resolve-js">
+
+    <!-- copy CDF into bin/test-js/cdf -->
+    <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf"/>
+    </copy>
+
     <!-- run karma -->
     <antcall target="run-karma"/>
   </target>

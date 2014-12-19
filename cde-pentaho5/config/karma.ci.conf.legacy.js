@@ -1,5 +1,15 @@
-// Karma configuration
-// Generated on Fri Nov 15 2013 00:09:22 GMT+0000 (GMT Standard Time)
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 module.exports = function(config) {
   config.set({
@@ -46,17 +56,17 @@ module.exports = function(config) {
 
     coverageReporter: {
         type: 'cobertura',
-        dir:  'bin/test-legacy/coverage/reports/'
+        dir:  'bin/test-reports-legacy/coverage/reports/'
     },
 
     junitReporter: {
-      outputFile: 'bin/test-legacy/test-results.xml',
+      outputFile: 'bin/test-reports-legacy/test-results.xml',
       suite:      'unit'
     },
 
     // the default configuration
     htmlReporter: {
-      outputDir:    'bin/test-legacy/karma_html',
+      outputDir:    'bin/test-reports-legacy/karma_html',
       templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
     },
 
