@@ -5,90 +5,74 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '',
-
+    basePath: '../',
 
     // frameworks to use
     frameworks: ['jasmine', 'requirejs'],
 
-
     // list of files / patterns to load in the browser
     files: [
-      '../cde-core/resource/js/jquery.js',
-      '../cde-core/resource/js/jquery.jeditable.js',
-      '../cde-core/resource/js/jquery.notifyBar.js',
-      '../cde-core/resource/js/Base.js',
-      'test-js/mockDashboards.js',
-      '../cde-core/resource/js/cdf-dd-config.js',
-      '../cde-core/resource/js/cdf-dd-tablemanager.js',
-      '../cde-core/resource/js/cdf-dd-wizardmanager.js',
-      '../cde-core/resource/js/jquery.form.js',
-      '../cde-core/resource/js/cdf-dd.js',
-      'resource/js/cdf-dd-base.js',
-      'test-js/mock-cdf-dd-base.js',
-      '../cde-core/resource/js/cdf-dd-palletemanager.js',
-      '../cde-core/resource/js/cdf-dd-tableoperations.js',
-      '../cde-core/resource/js/cdf-dd-layout-mobile.js',
-      '../cde-core/resource/js/cdf-dd-layout.js',
-      '../cde-core/resource/js/cdf-dd-components.js',
-      '../cde-core/resource/js/cdf-dd-datasources.js',
-      'test-js/main.js',
-      {pattern: 'test-js/**/*-spec.js', included: false}
+      'resource/js/jquery.js',
+      'resource/js/jquery.jeditable.js',
+      'resource/js/Base.js',
+      'test-js/legacy/mockDashboards.js',
+      'resource/js/cdf-dd-config.js',
+      'resource/js/cdf-dd-tablemanager.js',
+      'resource/js/cdf-dd-indexmanager.js',
+      'resource/js/cdf-dd-wizardmanager.js',
+      'resource/js/cdf-dd-propertiesmanager.js',
+      'resource/js/cdf-dd.js',
+      'resource/js/cdf-dd-palletemanager.js',
+      'resource/js/cdf-dd-tableoperations.js',
+      'resource/js/cdf-dd-layout-mobile.js',
+      'resource/js/cdf-dd-layout.js',
+      'resource/js/cdf-dd-components.js',
+      'resource/js/cdf-dd-components-generic.js',
+      'resource/js/cdf-dd-datasources.js',
+      'test-js/legacy/main.js',
+      {pattern: 'test-js/legacy/**/*-spec.js', included: false}
     ],
-
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
-
-    preprocessors: {
-        "../resource/js/cdf-dd.js" : 'coverage'
-    },
+    preprocessors: {"resource/js/cdf-dd.js" : 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['progress', 'junit', 'html', 'coverage'],
 
     coverageReporter: {
-        type : 'cobertura',
-        dir : 'bin/coverage/reports/'
+      type: 'cobertura',
+      dir:  'bin/test-legacy/coverage/reports/'
     },
 
     junitReporter: {
-      outputFile: 'bin/test/test-results.xml',
-      suite: 'unit'
+      outputFile: 'bin/test-legacy/test-results.xml',
+      suite:      'unit'
     },
 
     // the default configuration
     htmlReporter: {
-      outputDir:    'bin/test/karma_html',
+      outputDir:    'bin/test-legacy/karma_html',
       templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
     },
 
-
-    // the default configuration
-    htmlReporter: {
-      outputDir:    'bin/test/karma_html',
-      templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
-    },
+    //hostname
+    hostname: ['localhost'],
 
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
-
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
+    autoWatch: false,
 
     // Start these browsers, currently available:
     // - Chrome
@@ -100,10 +84,8 @@ module.exports = function(config) {
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
     browsers: ['PhantomJS'],//, 'Firefox', 'IE', 'PhantomJS'],
 
-
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
-
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit

@@ -8,6 +8,7 @@
       <conf name="runtime"/>
       <conf name="test"/>
       <conf name="sources"/>
+      <conf name="js"/>
     </configurations>
 
     <publications>
@@ -16,7 +17,12 @@
     </publications>
     
     <dependencies defaultconf="default->default" >
-          <!--  third party dependencies -->
+      <!-- for karma testing -->
+      <dependency org="pentaho" name="pentaho-cdf" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
+        <artifact name="pentaho-cdf" type="zip" ext="zip"/>
+      </dependency>
+
+      <!--  third party dependencies -->
       <dependency org="commons-logging"              name="commons-logging"      rev="1.1"           transitive="false"/>
       <dependency org="commons-io"                   name="commons-io"           rev="1.4"           transitive="false"/>
       <dependency org="commons-lang"                 name="commons-lang"         rev="2.4"           transitive="false"/>
