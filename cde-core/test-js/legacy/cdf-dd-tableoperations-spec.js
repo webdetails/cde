@@ -4,15 +4,21 @@ describe("Table Operations #", function() {
   var tableManager = undefined;
   var tableModel = undefined;
   var indexManager = undefined;
+  var canMoveInto = false;
 
   /*Mock tableManager for testing*/
   var initTableManager = function(spyObjName) {
-    var spyOnMethods = ['getSelectedCell', 'selectCell', 'getTableModel', 'getTableId', 'updateTreeTable'];
+    var spyOnMethods = ['getSelectedCell', 'selectCell', 'getDroppedOnId', 'setDroppedOnId', 'getTableModel',
+                        'getTableId', 'updateTreeTable', 'canMoveInto', 'addRow'];
     tableManager = jasmine.createSpyObj(spyObjName, spyOnMethods);
 
+    tableManager.setDroppedOnId.and.callFake(function(id){ tableManager.droppedOnId = id; });
+    tableManager.getDroppedOnId.and.callFake(function() { return tableManager.droppedOnId; });
     tableManager.selectCell.and.callFake(function(row,col){ tableManager.selectedCell = [row,col] });
     tableManager.getSelectedCell.and.callFake(function() { return tableManager.selectedCell; });
     tableManager.getTableModel.and.callFake(function() { return tableModel; });
+    tableManager.canMoveInto.and.callFake(function(drag, drop){ return canMoveInto; });
+    tableManager.addRow.and.callFake(function() { return; });
   };
 
   /*Mock tableModel for testing*/
@@ -50,7 +56,7 @@ describe("Table Operations #", function() {
 
   //Helpers
   var getRowProperties = function( rowIndex ) { return tableModel.getData()[rowIndex].properties; };
-
+  var setCanMoveInto = function( value ) { canMoveInto = value; };
 
   beforeEach(function(done){
     initTableManager('TableManager');
@@ -64,6 +70,7 @@ describe("Table Operations #", function() {
     tableManager = undefined;
     tableModel = undefined;
     indexManager = undefined;
+    setCanMoveInto( false );
     done();
   });
 
@@ -115,5 +122,68 @@ describe("Table Operations #", function() {
     expect(getRowProperties(5)[0].value).toBe('first-child-2-child');
     expect(getRowProperties(6)[0].value).toBe('second');
   });
+
+  /**
+   * ## Table Operations # MoveTo Operation
+   */
+  it("MoveTo Operation - Move Down", function() {
+    var moveToOp = new MoveToOperation();
+    tableManager.selectCell(0,0); //select 'first' row
+    tableManager.setDroppedOnId('second');
+
+    moveToOp.execute(tableManager);
+
+    expect(getRowProperties(0)[0].value).toBe('second');
+    expect(getRowProperties(1)[0].value).toBe('first');
+    expect(getRowProperties(2)[0].value).toBe('first-child');
+    expect(getRowProperties(3)[0].value).toBe('first-child-2');
+    expect(getRowProperties(4)[0].value).toBe('first-child-2-child');
+  });
+
+  it("MoveTo Operation - Move Up", function() {
+    var moveToOp = new MoveToOperation();
+    tableManager.selectCell(2,0); //select 'first-child-2' row
+    tableManager.setDroppedOnId('first-child');
+
+    moveToOp.execute(tableManager);
+
+    expect(getRowProperties(0)[0].value).toBe('first');
+    expect(getRowProperties(1)[0].value).toBe('first-child-2');
+    expect(getRowProperties(2)[0].value).toBe('first-child-2-child');
+    expect(getRowProperties(3)[0].value).toBe('first-child');
+    expect(getRowProperties(4)[0].value).toBe('second');
+  });
+
+  it("MoveTo Operation - Move Into", function() {
+    var moveToOp = new MoveToOperation();
+    tableManager.selectCell(4,0); //select 'second' row
+    tableManager.setDroppedOnId('first-child');
+    setCanMoveInto( true );
+
+    moveToOp.execute(tableManager);
+
+    expect(getRowProperties(0)[0].value).toBe('first');
+    expect(getRowProperties(1)[0].value).toBe('first-child');
+    expect(getRowProperties(2)[0].value).toBe('second');
+    expect(getRowProperties(3)[0].value).toBe('first-child-2');
+    expect(getRowProperties(4)[0].value).toBe('first-child-2-child');
+
+
+  });
+
+  it("MoveTo Operation - Move Out", function() {
+    var moveToOp = new MoveToOperation();
+    tableManager.selectCell(3,0); //select 'first-child-2-child' row
+    tableManager.setDroppedOnId('first');
+
+    moveToOp.execute(tableManager);
+
+    expect(getRowProperties(0)[0].value).toBe('first-child-2-child');
+    expect(getRowProperties(1)[0].value).toBe('first');
+    expect(getRowProperties(2)[0].value).toBe('first-child');
+    expect(getRowProperties(3)[0].value).toBe('first-child-2');
+    expect(getRowProperties(4)[0].value).toBe('second');
+  });
+
 
 });

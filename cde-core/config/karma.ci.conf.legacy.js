@@ -27,6 +27,7 @@ module.exports = function(config) {
       'resource/js/Base.js',
       'test-js/legacy/mockDashboards.js',
       'resource/js/cdf-dd-config.js',
+      'resource/js/jquery.treeTable.js',
       'resource/js/cdf-dd-tablemanager.js',
       'resource/js/cdf-dd-indexmanager.js',
       'resource/js/cdf-dd-wizardmanager.js',
