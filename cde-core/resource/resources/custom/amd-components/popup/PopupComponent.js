@@ -12,11 +12,12 @@
  */
 
 define([
-  'cdf/Dashboard',
   'cdf/components/BaseComponent',
   'cdf/lib/jquery',
   'css!./PopupComponent'],
-  function(Dashboard, BaseComponent, $) {
+  function(BaseComponent, $) {
+
+  var duplicateIndex = 1;
 
   var PopupComponent = BaseComponent.extend({
 
@@ -58,7 +59,7 @@ define([
         if(id && id in html) {
           $e.attr("id", html[id]);
         } else {
-          $e.attr("id",id + '_' + Dashboards.duplicateIndex);
+          $e.attr("id",id + '_' + duplicateIndex++);
         }
       });
       return that;

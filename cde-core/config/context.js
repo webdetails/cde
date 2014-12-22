@@ -11,16 +11,13 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define([], function() {
+requireCfg = {
+  paths: {},
+  shim: {}
+};
 
-  var ExportPopupComponentExt = {
+var KARMA_RUN = true;
 
-    getCggDrawUrl: function() {
-      return CONTEXT_PATH + "plugin/cgg/api/services/draw";
-    }
-
-  };
-
-  return ExportPopupComponentExt;
-
-});
+var SESSION_NAME = "dummy";
+var SESSION_LOCALE = "en";
+var CONTEXT_PATH = "/pentaho/";

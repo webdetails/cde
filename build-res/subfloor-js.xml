@@ -85,9 +85,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <target name="resolve-js" depends="install-ivy, install-antcontrib">
     <delete dir="${js.module.script.agg.dir}"/>
+    <delete dir="${js.lib.dir}"/>
 
     <ivy:resolve file="ivy.xml" conf="js"/>
     <ivy:retrieve conf="js" pattern="${js.lib.dir}/[module]-[revision](-[classifier]).[ext]"/>
+
+    <if>
+      <available file="${js.lib.dir}"/>
+      <then>
+        <unzip dest="${js.expanded.lib.dir}" overwrite="true">
+          <fileset file="${js.lib.dir}/*.zip"/>
+          <patternset>
+            <exclude name="**/*.jar"/>
+            <exclude name="**/plugin*.xml"/>
+            <exclude name="**/settings.xml"/>
+            <exclude name="**/themes.xml"/>
+          </patternset>
+        </unzip>
+      </then>
+      <else>
+        <echo>No js libraries need expanding. ${js.lib.dir} does not exist.</echo>
+      </else>
+    </if>
   </target>
 
   <target name="clean-js">

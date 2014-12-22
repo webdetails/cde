@@ -22,7 +22,7 @@
 
   var prefix;
   if(typeof KARMA_RUN !== "undefined") { // test
-    prefix = requirePaths['cde/components'] = CONTEXT_PATH + '../resources/custom/amd-components';
+    prefix = requirePaths['cde/components'] = 'resource/resources/custom/amd-components';
 
   } else if(typeof CONTEXT_PATH !== "undefined") { // production vs debug
     prefix = requirePaths['cde/components'] = CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components';

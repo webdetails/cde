@@ -15,6 +15,12 @@
     and works with the subfloor.xml file.
   </description>
 
+  <property name="bin.dir" value="bin"/>
+
+  <!-- karma config files -->
+  <property name="js.karma.ci.config.legacy" value="config/karma.ci.conf.legacy.js"/>
+  <property name="bin.test-js.dir" value="${bin.dir}/test-js" description='Karma tests js source dir' />
+  <property name="bin.test-js.cdf.dir" value="${bin.test-js.dir}/cdf" description='CDF for Karma tests' />
 
   <property file="../override.properties"
             description="Top level Properties customized for your development environment belong in this file.  This file will never be checked into the SCM." />
@@ -33,18 +39,16 @@
       FOUND IN subfloor.xml.
     -->
 
-<!--
-  <target name='dist-solution'>
-    <copy todir="${solution.stage.dir}" overwrite='true'>
-      <fileset dir='solution'>
-      <include name=''>
-    </copy>
-  </target>
--->
-    <mkdir dir="${js.module.script.dir}"/>
-    <mkdir dir="${js.module.script.agg.dir}"/>
-
-
+  <!--
+    <target name='dist-solution'>
+      <copy todir="${solution.stage.dir}" overwrite='true'>
+        <fileset dir='solution'>
+        <include name=''>
+      </copy>
+    </target>
+  -->
+  <mkdir dir="${js.module.script.dir}"/>
+  <mkdir dir="${js.module.script.agg.dir}"/>
 
   <target name="compile.compile" depends="init, resolve" description="Performs the actual javac compile">
     <javac destdir="${classes.dir}"
@@ -96,8 +100,21 @@
 
   <echo>distribution.version = ${distribution.version}</echo>
 
+  <!-- overrides subfloor clean to also cleanup runtime-lib -->
+  <target name="clean" depends="subfloor.clean, subfloor-js.clean-js">
+      <echo message="Deleting... ${runtimelib.dir}"/>
+      <delete dir="${runtimelib.dir}"/>
+      <echo message="Deleting... ${js.node.node_modules.dir}"/>
+      <delete dir="${js.node.node_modules.dir}"/>
+      <echo message="Deleting RequireJS Configurations"/>
+      <delete file="build-res/requireCfg-raw.js"/>
+      <delete file="build-res/requireCfg.js"/>
+      <echo message="Deleting... build-res"/>
+      <delete dir="build-res"/>
+  </target>
 
- <!-- Overriding resolve target so we can add resolve-dev -->
+
+  <!-- Overriding resolve target so we can add resolve-dev -->
   <target name="resolve"
           depends="resolve-default, resolve-test, resolve-runtime, ivy.check-releasable"
           description="Retrieves all the dependent libraries" />
@@ -107,135 +124,210 @@
     <ivy:resolve file="ivy.xml" conf="runtime" />
     <ivy:retrieve conf="runtime" pattern="${runtimelib.dir}/[module]-[revision](-[classifier]).[ext]" />
   </target>
-	
-	
-	<!-- OVERRIDES -->
+  
+  
+  <!-- OVERRIDES -->
 
-	  <target name="publish-nojar.internal" depends="install-antcontrib,create-pom,ivy.deliver">
-	    <antcall target="maven-publish-dependencies">
-	      <param name="publish.groupId" value="${ivy.artifact.group}" />
-	      <param name="publish.artifactId" value="${ivy.artifact.id}" />
-	      <param name="publish.version" value="${project.revision}" />
-	      <param name="publish.file" value="${ivy.artifact.ivypathname}" />
-	    </antcall>
+  <target name="publish-nojar.internal" depends="install-antcontrib,create-pom,ivy.deliver">
+    <antcall target="maven-publish-dependencies">
+      <param name="publish.groupId" value="${ivy.artifact.group}" />
+      <param name="publish.artifactId" value="${ivy.artifact.id}" />
+      <param name="publish.version" value="${project.revision}" />
+      <param name="publish.file" value="${ivy.artifact.ivypathname}" />
+    </antcall>
 
-	    <if>
-	      <equals arg1="${source.publish}" arg2="true" />
-	        <then>
-	          <antcall target="maven-publish-sources">
-	            <param name="publish.groupId" value="${ivy.artifact.group}" />
-	            <param name="publish.artifactId" value="${ivy.artifact.id}" />
-	            <param name="publish.version" value="${project.revision}" />
-	            <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar" />
-	          </antcall>
-	        </then>
-	    </if>
+    <if>
+      <equals arg1="${source.publish}" arg2="true" />
+        <then>
+          <antcall target="maven-publish-sources">
+            <param name="publish.groupId" value="${ivy.artifact.group}" />
+            <param name="publish.artifactId" value="${ivy.artifact.id}" />
+            <param name="publish.version" value="${project.revision}" />
+            <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}-sources.jar" />
+          </antcall>
+        </then>
+    </if>
 
-	    <if>
-	      <equals arg1="${tests.publish}" arg2="true" />
-	      <then>
-		    <antcall target="maven-publish-artifact">
-	          <param name="publish.groupId" value="${ivy.artifact.group}" />
-	          <param name="publish.artifactId" value="${ivy.artifact.id}" />
-	          <param name="publish.version" value="${project.revision}" />
-		      <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}.jar" />
-		    </antcall>
-	      </then>
-	      <else>
-		    <antcall target="maven-publish-artifact">
-		      <param name="publish.pomFile" value="${ivy.artifact.pomfile}" />
-		      <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}.jar" />
-		    </antcall>
-	      </else>
-	    </if>
+    <if>
+      <equals arg1="${tests.publish}" arg2="true" />
+      <then>
+      <antcall target="maven-publish-artifact">
+          <param name="publish.groupId" value="${ivy.artifact.group}" />
+          <param name="publish.artifactId" value="${ivy.artifact.id}" />
+          <param name="publish.version" value="${project.revision}" />
+        <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}.jar" />
+      </antcall>
+      </then>
+      <else>
+      <antcall target="maven-publish-artifact">
+        <param name="publish.pomFile" value="${ivy.artifact.pomfile}" />
+        <param name="publish.file" value="${dist.dir}/${ivy.artifact.id}-${project.revision}.jar" />
+      </antcall>
+      </else>
+    </if>
 
-	    <antcall target="maven-publish.post"/>
-	    
-	  </target>
-	
-	
-	  <target name="maven-publish-artifact" depends="install-antcontrib">
-	    <if>
-	      <equals arg1="${tests.publish}" arg2="true" />
-	      <then>
-			    <sequential>
-			      <fail message="No file found at: ${publish.file}">
-			        <condition>
-			          <not>
-			            <available file="${publish.file}" />
-			          </not>
-			        </condition>
-			      </fail>
-			      <echo message="Publishing ${publish.file} to ${ivy.repository.publish}..." />
-			      <if>
-			        <isset property="isWindows" />
-			        <then>
-			          <exec executable="cmd" failonerror="true">
-			            <arg value="/c" />
-			            <arg value="mvn.bat" />
-			            <arg value="deploy:deploy-file" />
-			            <arg value="-DrepositoryId=${ivy.repository.id}" />
-			            <arg value="-Durl=${ivy.repository.publish}" />
-			            <arg value="-DgroupId=${publish.groupId}" />
-			            <arg value="-DartifactId=${publish.artifactId}" />
-			            <arg value="-Dversion=${publish.version}" />
-			            <arg value="-DgeneratePom=true" />
-			            <arg value="-Dfile=${publish.file}" />
-			          </exec>
-			        </then>
-			        <else>
-			          <exec executable="mvn" failonerror="true">
-			            <arg value="deploy:deploy-file" />
-			            <arg value="-DrepositoryId=${ivy.repository.id}" />
-			            <arg value="-Durl=${ivy.repository.publish}" />
-			            <arg value="-DgroupId=${publish.groupId}" />
-			            <arg value="-DartifactId=${publish.artifactId}" />
-			            <arg value="-Dversion=${publish.version}" />
-			            <arg value="-DgeneratePom=true" />
-			            <arg value="-Dfile=${publish.file}" />
-			          </exec>
-			        </else>
-			      </if>
-			    </sequential>
-	      </then>
-	      <else>
-			    <sequential>
-			      <fail message="No file found at: ${publish.file}">
-			        <condition>
-			          <not>
-			            <available file="${publish.file}" />
-			          </not>
-			        </condition>
-			      </fail>
-			      <echo message="Publishing ${publish.file} to ${ivy.repository.publish}..." />
-			      <if>
-			        <isset property="isWindows" />
-			        <then>
-			          <exec executable="cmd" failonerror="true">
-			            <arg value="/c" />
-			            <arg value="mvn.bat" />
-			            <arg value="deploy:deploy-file" />
-			            <arg value="-DrepositoryId=${ivy.repository.id}" />
-			            <arg value="-Durl=${ivy.repository.publish}" />
-			            <arg value="-DpomFile=${publish.pomFile}" />
-			            <arg value="-Dfile=${publish.file}" />
-			          </exec>
-			        </then>
-			        <else>
-			          <exec executable="mvn" failonerror="true">
-			            <arg value="deploy:deploy-file" />
-			            <arg value="-DrepositoryId=${ivy.repository.id}" />
-			            <arg value="-Durl=${ivy.repository.publish}" />
-			            <arg value="-DpomFile=${publish.pomFile}" />
-			            <arg value="-Dfile=${publish.file}" />
-			          </exec>
-			        </else>
-			      </if>
-			    </sequential>
-	       </else>
-	    </if>
-	  </target>
-	
-	
+    <antcall target="maven-publish.post"/>
+    
+  </target>
+
+
+  <target name="maven-publish-artifact" depends="install-antcontrib">
+    <if>
+      <equals arg1="${tests.publish}" arg2="true" />
+      <then>
+        <sequential>
+          <fail message="No file found at: ${publish.file}">
+            <condition>
+              <not>
+                <available file="${publish.file}" />
+              </not>
+            </condition>
+          </fail>
+          <echo message="Publishing ${publish.file} to ${ivy.repository.publish}..." />
+          <if>
+            <isset property="isWindows" />
+            <then>
+              <exec executable="cmd" failonerror="true">
+                <arg value="/c" />
+                <arg value="mvn.bat" />
+                <arg value="deploy:deploy-file" />
+                <arg value="-DrepositoryId=${ivy.repository.id}" />
+                <arg value="-Durl=${ivy.repository.publish}" />
+                <arg value="-DgroupId=${publish.groupId}" />
+                <arg value="-DartifactId=${publish.artifactId}" />
+                <arg value="-Dversion=${publish.version}" />
+                <arg value="-DgeneratePom=true" />
+                <arg value="-Dfile=${publish.file}" />
+              </exec>
+            </then>
+            <else>
+              <exec executable="mvn" failonerror="true">
+                <arg value="deploy:deploy-file" />
+                <arg value="-DrepositoryId=${ivy.repository.id}" />
+                <arg value="-Durl=${ivy.repository.publish}" />
+                <arg value="-DgroupId=${publish.groupId}" />
+                <arg value="-DartifactId=${publish.artifactId}" />
+                <arg value="-Dversion=${publish.version}" />
+                <arg value="-DgeneratePom=true" />
+                <arg value="-Dfile=${publish.file}" />
+              </exec>
+            </else>
+          </if>
+        </sequential>
+      </then>
+      <else>
+        <sequential>
+          <fail message="No file found at: ${publish.file}">
+            <condition>
+              <not>
+                <available file="${publish.file}" />
+              </not>
+            </condition>
+          </fail>
+          <echo message="Publishing ${publish.file} to ${ivy.repository.publish}..." />
+          <if>
+            <isset property="isWindows" />
+            <then>
+              <exec executable="cmd" failonerror="true">
+                <arg value="/c" />
+                <arg value="mvn.bat" />
+                <arg value="deploy:deploy-file" />
+                <arg value="-DrepositoryId=${ivy.repository.id}" />
+                <arg value="-Durl=${ivy.repository.publish}" />
+                <arg value="-DpomFile=${publish.pomFile}" />
+                <arg value="-Dfile=${publish.file}" />
+              </exec>
+            </then>
+            <else>
+              <exec executable="mvn" failonerror="true">
+                <arg value="deploy:deploy-file" />
+                <arg value="-DrepositoryId=${ivy.repository.id}" />
+                <arg value="-Durl=${ivy.repository.publish}" />
+                <arg value="-DpomFile=${publish.pomFile}" />
+                <arg value="-Dfile=${publish.file}" />
+              </exec>
+            </else>
+          </if>
+        </sequential>
+       </else>
+    </if>
+  </target>
+  
+  <target name="run-karma" depends="install-antcontrib, npm-install">
+
+    <!-- compile the require file -->
+    <echo message="Collecting RequireJS Configurations"/>
+    <delete file="build-res/requireCfg-raw.js"/>
+    <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
+      <fileset dir="js-lib/expanded/pentaho-cdf" casesensitive="yes">
+        <include name="js/*-require-js-cfg.js"/>
+        <include name="js/lib/*-require-js-cfg.js"/>
+      </fileset>
+      <fileset dir="resource/js" casesensitive="yes">
+        <include name="*-require-js-cfg.js"/>
+      </fileset>
+    </concat>
+
+    <!-- Check to see if karma is on the PATH -->
+    <available file="karma" filepath="${env.PATH}" property="karma-is-available"/>
+    <available file="karma.cmd" filepath="${nodemodules.local.dir.bin}" property="karma-is-available-windows"/>
+
+    <if>
+      <available file="${js.karma.ci.config}"/>
+      <then>
+        <!-- we have karma available, use it to run the tests -->
+          <if>
+            <isset property="isWindows"/>
+            <then>
+              <if>
+                <not>
+                  <isset property="karma-for-windows-is-available"/>
+                </not>
+                <then>
+                  <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
+                </then>
+              </if>
+              <exec executable="karma.cmd">
+                <arg value="start"/>
+                <arg value="${js.karma.ci.config}"/>
+                <!-- if we are running via ant, then assume we must 'single-run' -->
+                <arg value="--single-run"/>
+              </exec>
+            </then>
+            <else>
+              <exec executable="node_modules/karma/bin/karma">
+                <arg value="start"/>
+                <arg value="${js.karma.ci.config}"/>
+                <!-- if we are running via ant, then assume we must 'single-run' -->
+                <arg value="--single-run"/>
+              </exec>
+            </else>
+          </if>
+        </then>
+      <else>
+        <fail>There is no karma configuration file available (looking for: ${js.karma.ci.config})</fail>
+      </else>
+    </if>
+  </target>
+
+  <target name="test-js-require" depends="subfloor-js.resolve-js">
+
+    <!-- copy CDF into bin/test-js/cdf -->
+    <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf"/>
+    </copy>
+
+    <!-- run karma -->
+    <antcall target="run-karma"/>
+  </target>
+
+  <target name="test-js-legacy">
+    <antcall target="run-karma">
+        <param name="js.karma.ci.config" value="${js.karma.ci.config.legacy}"/>
+    </antcall>
+  </target>
+
+  <target name="test-js" depends="test-js-require, test-js-legacy">
+  </target>
 
 </project>
