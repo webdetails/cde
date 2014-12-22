@@ -10,6 +10,7 @@ var TableManager = Base.extend({
   isSelectedCell: false,
   hasAdvancedProperties: false,
   selectedCell: [],
+  droppedOnId: "",
   operations: [],
   linkedTableManager: undefined,
   linkedTableManagerOperation: undefined,
@@ -155,8 +156,159 @@ var TableManager = Base.extend({
       _selector.length == 1?_selector.before(rowObj):$(selector).append(rowObj);
     }
 
+    this.dragAndDrop( row, _id );
+
     return _id;
 
+  },
+
+  dragAndDrop: function( row, id ) {
+    var tableManager = TableManager.getTableManager('table-cdfdd-layout-tree');
+    var layoutTableSelector = 'table.#table-cdfdd-layout-tree tbody';
+
+    $(layoutTableSelector + ' #' + id).draggable({
+      revert: 'invalid',
+      helper: 'clone',
+      axis: 'y',
+      disabled: tableManager.disableDragObj( row ),
+      delay: 100,
+      opacity: 0.50
+
+    }).droppable({
+      accept: function( dragObj ) {
+        var dropId = $(this).attr('id');
+        var dragId = dragObj.attr('id');
+        return !tableManager.disableDrop( dragId, dropId );
+      },
+
+      //Events
+      activate: function( event, ui ) {
+        var dropId = $(this).attr('id');
+        var dragId = ui.draggable.attr('id')
+        if(tableManager.canMoveInto(dragId, dropId)) {
+          $(this).droppable('option', 'hoverClass', 'layout_hover_dropInto');
+        } else {
+          $(this).droppable('option', 'hoverClass', 'layout_hover_moveTo');
+        };
+      },
+      drop: function( event, ui ) {
+        ui.helper.attr('class', '');
+
+        var dropId = $(this).attr('id');
+        tableManager.setDroppedOnId(dropId);
+
+        var moveOperation = new MoveToOperation();
+        moveOperation.execute(tableManager);
+      }
+    });
+  },
+
+  disableDragObj: function( row ) {
+    var dragRT = row.type;
+    if ( dragRT == LayoutBootstrapPanelHeaderModel.MODEL || dragRT == LayoutBootstrapPanelBodyModel.MODEL ||
+        dragRT == LayoutBootstrapPanelFooterModel.MODEL ) {
+      return true;
+    }
+    return false;
+  },
+
+  disableDrop: function( dragId, dropId ) {
+    var indexManager = this.getTableModel().getIndexManager();
+    var rowIndex = indexManager.getIndex();
+
+    var dragParentId = rowIndex[dragId].parent;
+    var dropParentId = rowIndex[dropId].parent;
+    var dragRT = rowIndex[dragId].type;
+
+    //disable drop on (sub-)children of drag and on direct parent of drag
+    if( this.isChildrenOfObj( dragId, dropId ) || dragParentId == dropId ) {
+      return true;
+    }
+
+    if( dropParentId != IndexManager.ROOTID ) {
+      //disable drop when dragObj cant moveInto dropObj and dropObj parent
+      if( !this.canMoveInto( dragId, dropParentId ) && !this.canMoveInto( dragId, dropId ) ) {
+        return true
+      }
+    } else {
+      //disable drop when dragObj is not at top level and cant moveInto dropObj
+      if( dragParentId != IndexManager.ROOTID && !this.canMoveInto( dragId, dropId ) &&
+          dragRT != LayoutFreeFormModel.MODEL && dragRT != LayoutRowModel.MODEL &&
+          dragRT != LayoutSpaceModel.MODEL && dragRT != LayoutBootstrapPanelModel.MODEL ) {
+        return true;
+      }
+    }
+
+    return false;
+  },
+
+  isChildrenOfObj: function ( objId, dropId ) {
+    var rowIndex = this.getTableModel().getIndexManager().getIndex();
+    var children = _.extend([], rowIndex[objId].children);
+
+    while(children.length) {
+      var child = children.pop();
+      if( child.id == dropId ) {
+        return true;
+      }
+      children = children.concat(rowIndex[child.id].children);
+    }
+    return false;
+
+  },
+
+  canMoveInto: function( dragId, dropId ) {
+    var rowIndex = this.getTableModel().getIndexManager().getIndex();
+    var dragParentId = rowIndex[dragId].parent;
+    var dropParentId = rowIndex[dropId].parent;
+
+    //can not move into children's of dragObj
+    if( this.isChildrenOfObj( dragId, dropId ) ) {
+      return false;
+    }
+
+    //enable move into, based on row types
+    var dropRT = rowIndex[dropId].type;
+    var dragRT = rowIndex[dragId].type;
+
+    switch( dropRT ) {
+      case LayoutRowModel.MODEL:
+        if ( dragRT == LayoutColumnModel.MODEL || dragRT == LayoutFreeFormModel.MODEL ||
+            dragRT == LayoutBootstrapColumnModel.MODEL || dragRT == LayoutBootstrapPanelModel.MODEL ||
+            dragRT == LayoutHtmlModel.MODEL ||  dragRT == LayoutImageModel.MODEL ) {
+          return true;
+        }
+        break;
+      case LayoutBootstrapColumnModel.MODEL:
+      //Same as LayoutColumnModel.MODEL
+      case LayoutColumnModel.MODEL:
+        if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutImageModel.MODEL ||
+            dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutHtmlModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
+          return true;
+        }
+        break;
+      case LayoutFreeFormModel.MODEL:
+        if ( dropParentId == dragParentId ) {
+          return false;
+        } else if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutHtmlModel.MODEL ||
+            dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutImageModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
+          return true;
+        }
+        break;
+      case LayoutBootstrapPanelHeaderModel.MODEL:
+      //same as LayoutBootstrapPanelFooterModel.MODEL
+      case LayoutBootstrapPanelBodyModel.MODEL:
+      //same as LayoutBootstrapPanelFooterModel.MODEL
+      case LayoutBootstrapPanelFooterModel.MODEL:
+        if ( dragRT == LayoutRowModel.MODEL || dragRT == LayoutHtmlModel.MODEL || dragRT == LayoutImageModel.MODEL/*rever*/ ||
+            dragRT == LayoutFreeFormModel.MODEL || dragRT == LayoutBootstrapPanelModel.MODEL || dragRT == LayoutSpaceModel.MODEL ) {
+          return true;
+        }
+        break;
+      default: // Html, Resources, Spacer, Image, Bootstrap Panel ...
+        return false;
+    }
+    return false;
   },
 
   renderColumn: function(tr,row,colIdx){
@@ -481,6 +633,12 @@ var TableManager = Base.extend({
   },
   getSelectedCell: function(){
     return this.selectedCell;
+  },
+  setDroppedOnId: function(droppedOnId) {
+    this.droppedOnId = droppedOnId;
+  },
+  getDroppedOnId: function() {
+    return this.droppedOnId;
   },
   setLinkedTableManager: function(linkedTableManager){
     this.linkedTableManager = linkedTableManager;
