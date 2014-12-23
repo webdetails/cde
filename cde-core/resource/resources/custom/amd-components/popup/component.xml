@@ -23,6 +23,8 @@
 			<Property>listeners</Property>
       <Property>horizontalScroll</Property>
       <Property>verticalScroll</Property>
+      <Property>popupClass</Property>
+      <Property>popupOverlayClass</Property>
 		</Model>
 		<Implementation>
 			<Code src="PopupComponent.js" />
@@ -86,6 +88,34 @@
             <OutputType>Boolean</OutputType>
             <Order>82</Order>
             <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>popupClass</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Popup's custom class</Description>
+            <Tooltip>Add a css class to the popup</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>83</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>popupOverlayClass</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Popup's overlay custom class</Description>
+            <Tooltip>Add a css class to the popup overlay</Tooltip>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>83</Order>
+            <Advanced>true</Advanced>
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
