@@ -27,6 +27,9 @@ module.exports = function(config) {
       { pattern: 'bin/test-js/cdf/js/**/*.js', included: false },
       { pattern: 'bin/test-js/cdf/js/**/*.css', included: false },
 
+      //CDE
+      { pattern: 'resource/resources/custom/amd-components/**/*.js', included: false },
+
       { pattern: 'test-js/**/*-spec.js', included: false },
       { pattern: 'test-js/*.js', included: true },
       'config/context.js',
