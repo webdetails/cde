@@ -13,32 +13,30 @@
 
 define([
   'cdf/AddIn',
-  'cdf/Dashboard'],
-  function(AddIn, Dashboard) {
+  'cdf/Dashboard',
+  '../../NewMapComponentExt'],
+  function(AddIn, Dashboard, NewMapComponentExt) {
   
   var urlMarker = new AddIn({
     name: "urlMarker",
     label: "Url Marker",
     defaults: {
-      defaultUrl: '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_grey.png'
+      defaultUrl: NewMapComponentExt.getMarkerImgPath() + 'marker_grey.png',
+      imagePath:  NewMapComponentExt.getMarkerImgPath(),
+      images: [
+        'marker_grey.png',
+        'marker_blue.png',
+        'marker_grey02.png',
+        'marker_orange.png',
+        'marker_purple.png',
+      ]
     },
     implementation: function(tgt, st, opt) {
       if(st.url) {
         return st.url;
       }
       if(st.position) {
-        switch(st.position % 5) {
-          case 0:
-            return '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_grey.png';
-          case 1:
-            return '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_blue.png';
-          case 2:
-            return '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_grey02.png';
-          case 3:
-            return '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_orange.png';
-          case 4:
-            return '../pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/marker_purple.png';
-        }
+        return opt.imagePath + opt.images[st.position % opt.images.length] || opt.defaultUrl;
       }
 
       return opt.defaultUrl;

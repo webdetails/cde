@@ -11,13 +11,13 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard', 'cde/components/PopupComponent', 'cdf/lib/jquery'],
-  function(Dashboard, PopupComponent, $) {
+define(['cdf/Dashboard', 'cde/components/NewMapComponent', 'cdf/lib/jquery'],
+  function(Dashboard, NewMapComponent, $) {
 
   /**
-   * ## The Popup Component
+   * ## The New Map Component
    */
-  describe("The Popup Component #", function() {
+  describe("The New Map Component #", function() {
   
     var dashboard = new Dashboard();
 
@@ -26,40 +26,30 @@ define(['cdf/Dashboard', 'cde/components/PopupComponent', 'cdf/lib/jquery'],
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var popupComponent = new PopupComponent(dashboard, {
-      type: "PopupComponent",
-      name: "popup1",
+    var newMap = new NewMapComponent(dashboard, {
+      type: "NewMapComponent",
+      name: "newMap",
       executeAtStart: true,
       htmlObject: "sampleObject",
       parameters: [],
-      listeners: []
+      listeners: [],
+      tilesets: "mapquest"
+
     });
   
-    dashboard.addComponent(popupComponent);
+    dashboard.addComponent(newMap);
   
     /**
-     * ## The Popup Component # Update Called
+     * ## The New Map Component # Update Called
      */
     it("Update Called", function(done) {
-      spyOn(popupComponent, 'update').and.callThrough();
-      dashboard.update(popupComponent);
+      spyOn(newMap, 'update').and.callThrough();
+      dashboard.update(newMap);
       setTimeout(function() {
-        expect(popupComponent.update).toHaveBeenCalled();
+        expect(newMap.update).toHaveBeenCalled();
         done();
       }, 100);
     });
 
-    /**
-     * ## The Popup Component # can be cloned
-     */
-    it("can be cloned", function(done) {
-      spyOn(popupComponent, 'clone').and.callThrough();
-      var popupCloned = popupComponent.clone([], [], $("body"));
-      setTimeout(function() {
-        expect(popupComponent.clone).toHaveBeenCalled();
-        expect(popupCloned.ph.find("[id]").attr("id")).toEqual(popupComponent.htmlObject + "_1");
-        done();
-      }, 100);
-    });
   });
 });

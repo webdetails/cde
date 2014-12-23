@@ -11,16 +11,14 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define([], function() {
+define('cde/components/NewMapComponentExt', [], function() {
+  var NewMapComponentExt = {
 
-  var CggMarkerExt = {
-
-    getCggDrawUrl: function() {
-      return CONTEXT_PATH + "plugin/cgg/api/services/draw";
+    getMarkerImgPath: function() {
+      return 'dummy/NewMapComponent/images/';
     }
-
   };
 
-  return CggMarkerExt;
+  return NewMapComponentExt;
 
 });

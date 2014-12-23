@@ -11,15 +11,14 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cdf/components/CggComponent.ext', [], function() {
+define([], function() {
+  var NewMapComponentExt = {
 
-  var CggComponentExt = {
-
-    getCggDrawUrl: function() {
-      return CONTEXT_PATH + "plugin/cgg/api/services/draw";
-    },
-
+    getMarkerImgPath: function() {
+      return CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/images/';
+    }
   };
 
-  return CggComponentExt;
+  return NewMapComponentExt;
+
 });

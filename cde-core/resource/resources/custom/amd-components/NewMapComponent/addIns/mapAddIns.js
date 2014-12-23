@@ -15,6 +15,7 @@ define([
   './addIns/cggMarker/cggMarker',
   './addIns/geonames/geonames',
   './addIns/nominatim/nominatim',
+  './addIns/mapquest/mapquest',
   './addIns/urlMarker/urlMarker'],
   function() {
 

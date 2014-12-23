@@ -16,8 +16,8 @@ define([
   'cdf/Dashboard',
   'cdf/lib/jquery'],
   function(AddIn, Dashboard, $) {
-  
-  var nominatim = new AddIn({
+
+  var nominatim = {
     name: "openstreetmap",
     label: "OpenStreetMap",
     defaults: {
@@ -77,12 +77,23 @@ define([
         }
       };
       $.getJSON(opt.url, $.extend({}, opt.serviceParams, params), success);
-
-
     }
-  });
-  Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", nominatim);
+  };
 
-  return nominatim;
+  var mapquest = {};
+
+  $.extend(
+      true,
+      mapquest,
+      nominatim,
+      {name: "mapquest",
+      label: "MapQuest",
+      defaults: {url: "http://open.mapquestapi.com/nominatim/v1/search"}});
+
+  mapquest = new AddIn(mapquest);
+
+  Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", mapquest);
+
+  return mapquest;
 
 });

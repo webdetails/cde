@@ -39,6 +39,7 @@
             <Property>popupContentsDiv</Property>
 
             <Property>mapMode</Property>
+            <Property>locationResolver</Property>
             <Property>shapeSource</Property>
             <Property>colormap</Property>
             <Property>tilesets</Property>
@@ -438,6 +439,24 @@
                         <Order>40</Order>
                         <Version>1.0</Version>
                     </Header>
+                </DesignerProperty>
+                <DesignerProperty>
+                    <Header>
+                        <Name>locationResolver</Name>
+                        <Parent>BaseProperty</Parent>
+                        <DefaultValue>openstreetmap</DefaultValue>
+                        <Description>Location Resolver AddIn</Description>
+                        <Tooltip>AddIn used to convert a human friendly location into a latitude longitude pair</Tooltip>
+                        <Advanced>true</Advanced>
+                        <InputType type="valuelist"/>
+                        <OutputType>String</OutputType>
+                        <Order>40</Order>
+                        <Version>1.0</Version>
+                    </Header>
+                    <Values>
+                        <Value display="OpenStreetMap">openstreetmap</Value>
+                        <Value display="MapQuest">mapquest</Value>
+                    </Values>
                 </DesignerProperty>
 
 
