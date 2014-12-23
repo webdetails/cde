@@ -102,7 +102,8 @@ public class DashboardWcdfDescriptor {
     wcdf.setAuthor( Utils.getNodeText( "/cdf/author", wcdfDoc, "" ) );
     wcdf.setStyle( Utils.getNodeText( "/cdf/style", wcdfDoc, "" ) );
     wcdf.setRendererType( Utils.getNodeText( "/cdf/rendererType", wcdfDoc, "" ) );
-    wcdf.setRequire( new Boolean( Utils.getNodeText( "/cdf/require", wcdfDoc, "true" ) ) );
+    // TODO: setting default to false allows to render legacy dashboards in branch require-js, but saves new ones as non-require
+    wcdf.setRequire( new Boolean( Utils.getNodeText( "/cdf/require", wcdfDoc, "false" ) ) );
 
     String widgetParams = wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ) != null ?
       wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ).getText() : "";

@@ -905,7 +905,7 @@ var CDFDD = Base.extend({
   savePulldown: function(target, evt) {
     var myself = this,
         $pulldown = $(target);
-    $pulldown.append(templates.savePulldown());
+    $pulldown.append(Mustache.render(templates.savePulldown));
     $("body").one("click", function() {
       $pulldown.find("ul").remove();
     });
@@ -1339,7 +1339,7 @@ var CDFDD = Base.extend({
           description: selectedDescription
         },
         myself = this,
-        content = templates.saveAsWidget(options);
+        content = Mustache.render(templates.saveAsWidget, options);
 
     $.prompt(content, {
       loaded: function() {
@@ -1890,13 +1890,13 @@ $(function() {
 });
 
 templates = {};
-templates.savePulldown = Mustache.compile(
+templates.savePulldown =
         "<ul class='controlOptions'>" +
         " <li class='item popup'>Save As Dashboard</li>" +
         " <li class='item popup'>Save As Widget</li>" +
-        "</ul>");
+        "</ul>";
 
-templates.saveAsWidget = Mustache.compile(
+templates.saveAsWidget =
         '<h2>Save as Widget:</h2><hr/>\n' +
         ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
         ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"/>\n' +
@@ -1905,4 +1905,4 @@ templates.saveAsWidget = Mustache.compile(
         ' <span class="folderexplorerextralabels" >Title:</span>' +
         ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"/><br/>\n' +
         ' <span class="folderexplorerextralabels" >Description:</span>' +
-        ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"/>');
+        ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"/>';

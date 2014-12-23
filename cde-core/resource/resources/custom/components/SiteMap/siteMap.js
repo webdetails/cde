@@ -12,15 +12,11 @@ var SiteMapComponent = BaseComponent.extend({
     selected: "UNUSEDPARAM!@#$",
 
     templates: {
-      list: Mustache.compile(
-        "<ul class='siteMap siteMapLevel{{level}}' ></ul>"
-      ),
-      item: Mustache.compile(
+      list: "<ul class='siteMap siteMapLevel{{level}}' ></ul>",
+      item:
         "<li class='siteMapItem {{classes}}''>" +
         "  <a {{#link}}href='{{link}}'{{/link}}>{{name}}</a>" +
         "</li>"
-      )
-
     },
 
     update : function() {
@@ -72,14 +68,16 @@ var SiteMapComponent = BaseComponent.extend({
     renderList: function(ph, arr, level){
 
         var myself=this;
-        var list = $( myself.templates.list({level: level}) );
+        var list = $(Mustache.render(myself.templates.list, {level: level}));
 
-        $.each( arr, function(n,l){
-            var item = $( myself.templates.item({
-              name: l.name || l.id || "",
+        $.each( arr, function(n, l){
+
+            var item = $(Mustache.render(
+              myself.templates.item,
+              {name: l.name || l.id || "",
               link: l.link,
-              classes: l.classes || ""    
-            }));
+              classes: l.classes || ""}));
+
             if(!l.link && typeof l.action === "function"){ 
                 // Add a click action to this
                 item.find('a').click(function(){
