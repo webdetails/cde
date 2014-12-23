@@ -53,10 +53,8 @@ define(['cdf/Dashboard', 'cde/components/PopupComponent', 'cdf/lib/jquery'],
      * ## The Popup Component # can be cloned
      */
     it("can be cloned", function(done) {
-      debugger;
       spyOn(popupComponent, 'clone').and.callThrough();
-      var popupCloned = popupComponent.clone([], [], $("body"));//popupComponent.htmlObject)
-      debugger;
+      var popupCloned = popupComponent.clone([], [], $("body"));
       setTimeout(function() {
         expect(popupComponent.clone).toHaveBeenCalled();
         expect(popupCloned.ph.find("[id]").attr("id")).toEqual(popupComponent.htmlObject + "_1");

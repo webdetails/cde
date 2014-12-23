@@ -745,6 +745,7 @@ define([
             }
           }
         });
+
         this.on('shape:mouseout', function(event) {
           //Dashboards.log('Shape mouseout');
           var result = {};
@@ -762,7 +763,7 @@ define([
         });
 
         this.on('shape:click', function(event) {
-          if(_.isFunction(myself.shapeMouseClick)) {
+          if( _.isFunction(myself.shapeMouseClick)) {
             var result = myself.shapeMouseClick(event);
             if(result) {
               var selStyle = _.defaults(result, event.style);

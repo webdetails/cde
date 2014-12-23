@@ -8,6 +8,9 @@ var PopupComponent = BaseComponent.extend({
   content: undefined,
   cancel: undefined,
   $overlay: undefined,
+  popupClass: undefined,
+  popupOverlayClass: undefined,
+
   
   /* // Default settings
   gravity: undefined,
@@ -22,6 +25,9 @@ var PopupComponent = BaseComponent.extend({
     this.content.appendTo(this.ph);
     this.ph.hide();
     this.ph.addClass('popupComponent');
+    if (this.popupClass){
+      this.ph.addClass(this.popupClass);
+    }
     this.cancel = $("<a>&nbsp;</a>");
     this.cancel.addClass("close").click(function(){
       myself.hide();
@@ -220,6 +226,9 @@ var PopupComponent = BaseComponent.extend({
       // Define an overlay so that we can click
       if(!this.$overlay){
         this.$overlay = $('<div id="popupComponentOverlay"></div>');
+        if (this.popupOverlayClass) {
+          this.$overlay.addClass(this.popupOverlayClass);
+        }
       }
       this.$overlay.appendTo("body").click(function(event){
         event.stopPropagation();
@@ -596,9 +605,10 @@ var ExportPopupComponent = PopupComponent.extend({
     masterDiv.append(imgDiv);
     
     $.fancybox({
-      type:"html",
+      type: "html",
+      closeBtn: true,
       content: masterDiv,
-      width:totalWidth ,
+      width: totalWidth ,
       height: this.chartComponent.chartDefinition.height  + 60
     });
 

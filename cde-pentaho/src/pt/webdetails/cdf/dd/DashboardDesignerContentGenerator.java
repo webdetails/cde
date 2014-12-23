@@ -154,7 +154,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     // to keep case-insensitive methods
     logger.info( "loading exposed methods" );
     exposedMethods = getExposedMethods(
-        DashboardDesignerContentGenerator.class, true );
+      DashboardDesignerContentGenerator.class, true );
   }
 
   @Override
@@ -174,7 +174,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     return CdeEnvironment.getPluginId();
   }
 
-  @Exposed(accessLevel = AccessLevel.PUBLIC)
+  @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void syncronize( final OutputStream out ) throws Exception {
     String title = null;
     String description = null;
@@ -219,10 +219,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         boolean saveAsAccessGranted = false;
         if ( operation.equals( OPERATION_SAVE_AS ) ) {
           saveAsAccessGranted =
-              CdeEnvironment.getUserContentAccess().hasAccess( FilenameUtils.getPath( path ), FileAccess.EXECUTE );
+            CdeEnvironment.getUserContentAccess().hasAccess( FilenameUtils.getPath( path ), FileAccess.EXECUTE );
         }
         if ( !saveAsAccessGranted && ( path != null ) && ( !path.endsWith( "_tmp.cdfde" ) )
-            && ( !CdeEnvironment.getUserContentAccess().hasAccess( path, FileAccess.EXECUTE ) ) ) {
+          && ( !CdeEnvironment.getUserContentAccess().hasAccess( path, FileAccess.EXECUTE ) ) ) {
           getResponse().setStatus( 403 );
           logger.warn( "Access denied for the syncronize method: " + path );
           return;
@@ -234,7 +234,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       // Check security. Caveat: if no path is supplied, then we're in the new parameter
       if ( getRequestParameters().hasParameter( REQUEST_PARAM_PATH ) && !CdeEnvironment.getUserContentAccess()
-          .hasAccess( path, FileAccess.EXECUTE ) ) {
+        .hasAccess( path, FileAccess.EXECUTE ) ) {
         getResponse().setStatus( HttpServletResponse.SC_FORBIDDEN );
         logger.warn( "Access denied for the syncronize method: " + path );
         return;
@@ -243,15 +243,15 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       path = getRequestParameters().getStringParameter( REQUEST_PARAM_FILE, null );
       title = StringUtils.defaultIfEmpty( ( (String) getRequestParameters().getParameter( REQUEST_PARAM_TITLE ) ),
-          FilenameUtils.getBaseName( path ) );
+        FilenameUtils.getBaseName( path ) );
       description =
-          StringUtils.defaultIfEmpty( (String) getRequestParameters().getParameter( REQUEST_PARAM_DESCRIPTION ), "" );
+        StringUtils.defaultIfEmpty( (String) getRequestParameters().getParameter( REQUEST_PARAM_DESCRIPTION ), "" );
       operation = getRequestParameters().getStringParameter( REQUEST_PARAM_OPERATION, "" ).toLowerCase();
 
       // file path must exist
       if ( getRequestParameters() == null || getRequestParameters().getParameter( REQUEST_PARAM_FILE ) == null ) {
         throw new Exception(
-            Messages.getString( "SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION" ) );
+          Messages.getString( "SyncronizeCdfStructure.ERROR_002_INVALID_FILE_PARAMETER_EXCEPTION" ) );
       }
     }
 
@@ -270,7 +270,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( path, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        dashboardStructure.saveAs( path, title, description, cdfStructure );
+        boolean isPreview = ( path.indexOf( "_tmp.cdfde" ) > -1 || path.indexOf( "_tmp.wcdf" ) > -1 );
+        dashboardStructure.saveAs( path, title, description, cdfStructure, isPreview );
 
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.newfile( toHashMap( getRequestParameters() ) );
@@ -278,7 +279,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
         String file = getRequestParameters().getStringParameter( "file", null );
-        if( StringUtils.isEmpty( file ) || UNSAVED_FILE_PATH.equals( file ) ) {
+        if ( StringUtils.isEmpty( file ) || UNSAVED_FILE_PATH.equals( file ) ) {
           String msg = Messages.getString( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" );
           logger.warn( msg );
           JsonUtils.buildJsonResult( getResponse().getOutputStream(), false, msg );
@@ -329,8 +330,20 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
    * @author pdpi
    */
   @Exposed( accessLevel = AccessLevel.PUBLIC )
-  public static void refresh( final OutputStream out ) throws Exception {
-    DashboardManager.getInstance().refreshAll();
+  public void refresh( final OutputStream out ) throws Exception {
+    String msg = "Refreshed CDE Successfully";
+
+    try {
+      DashboardManager.getInstance().refreshAll();
+    } catch ( Exception re ) {
+      msg = "Method refresh failed while trying to execute.";
+
+      logger.error( msg, re );
+      writeOut( out, msg );
+      return;
+    }
+
+    writeOut( out, msg );
   }
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
@@ -377,7 +390,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       writeOut( out, result );
       logger.info( "[Timing] CDE Finished Dashboard Rendering: "
-          + Utils.ellapsedSeconds( start ) + "s" );
+        + Utils.ellapsedSeconds( start ) + "s" );
     } catch ( FileNotFoundException ex ) { // could not open cdfe
       String msg = "File not found: " + ex.getLocalizedMessage();
       logger.error( msg, ex );
@@ -389,7 +402,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
   }
 
-  @Exposed ( accessLevel = AccessLevel.PUBLIC, outputType = MimeType.CSS )
+  @Exposed( accessLevel = AccessLevel.PUBLIC, outputType = MimeType.CSS )
   public void getCssResource( final OutputStream out ) throws Exception {
     setResponseHeaders( CSS_TYPE, RESOURCE_CACHE_DURATION, null );
     getResource( out );
@@ -422,21 +435,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void getImg( final OutputStream out ) throws Exception {
     String pathString = getPathParameters().getStringParameter(
-        MethodParams.PATH, "" );
+      MethodParams.PATH, "" );
     String resource;
     if ( pathString.split( "/" ).length > 2 ) {
       resource = pathString.replaceAll( "^/.*?/", "" );
     } else {
       resource = getRequestParameters().getStringParameter(
-          MethodParams.PATH, "" );
+        MethodParams.PATH, "" );
     }
 
     resource = resource.startsWith( "/" ) ? resource : "/" + resource;
 
     String[] path = resource.split( "/" );
-    String fileName = path[path.length - 1];
+    String fileName = path[ path.length - 1 ];
     setResponseHeaders( MimeTypes.getMimeType( fileName ),
-        RESOURCE_CACHE_DURATION, null );
+      RESOURCE_CACHE_DURATION, null );
     final HttpServletResponse response = getResponse();
     // Set cache for 1 year, give or take.
     response.setHeader( "Cache-Control", "max-age=" + 60 * 60 * 24 * 365 );
@@ -469,11 +482,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     resource = StringUtils.strip( resource, "/" );
 
     String[] path = resource.split( "/" );
-    String[] fileName = path[path.length - 1].split( "\\." );
+    String[] fileName = path[ path.length - 1 ].split( "\\." );
 
     String mimeType;
     try {
-      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( fileName[fileName.length - 1].toUpperCase() );
+      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( fileName[ fileName.length - 1 ].toUpperCase() );
       mimeType = MimeTypes.getMimeType( fileType );
     } catch ( java.lang.IllegalArgumentException ex ) {
       mimeType = "";
@@ -485,7 +498,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     // Set cache for 1 year, give or take.
     response.setHeader( "Cache-Control", "max-age=" + 60 * 60 * 24 * 365 );
-    response.setHeader( "content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"" );
+    response.setHeader( "content-disposition", "inline; filename=\"" + path[ path.length - 1 ] + "\"" );
     InputStream resInput = null;
     try {
       IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
@@ -527,11 +540,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     resource = StringUtils.strip( resource, "/" );
 
     String[] path = resource.split( "/" );
-    String[] fileName = path[path.length - 1].split( "\\." );
+    String[] fileName = path[ path.length - 1 ].split( "\\." );
 
     String mimeType;
     try {
-      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( fileName[fileName.length - 1].toUpperCase() );
+      final MimeTypes.FileType fileType = MimeTypes.FileType.valueOf( fileName[ fileName.length - 1 ].toUpperCase() );
       mimeType = MimeTypes.getMimeType( fileType );
     } catch ( java.lang.IllegalArgumentException ex ) {
       mimeType = "";
@@ -544,7 +557,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       // Set cache for 1 year, give or take.
       response.setHeader( "Cache-Control", "max-age=" + 60 * 60 * 24 * 365 );
-      response.setHeader( "content-disposition", "inline; filename=\"" + path[path.length - 1] + "\"" );
+      response.setHeader( "content-disposition", "inline; filename=\"" + path[ path.length - 1 ] + "\"" );
 
       IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
       if ( file == null ) {
@@ -568,12 +581,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider pathParams = getPathParameters();
 
     boolean debugMode = requestParams.hasParameter( MethodParams.DEBUG )
-        && requestParams.getParameter( MethodParams.DEBUG ).toString().equals( "true" );
+      && requestParams.getParameter( MethodParams.DEBUG ).toString().equals( "true" );
 
     String wcdfPath = getWcdfRelativePath( requestParams );
 
     if ( requestParams.hasParameter( CdeConstants.MethodParams.PATH )
-        && !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
+      && !CdeEnvironment.getUserContentAccess().hasAccess( wcdfPath, FileAccess.WRITE ) ) {
       writeOut( out, "Access Denied" );
     }
 
@@ -600,7 +613,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       JsonUtils.buildJsonResult( out, true, result );
     } else if ( method.equals( OPERATION_SAVE ) ) {
       String file = requestParams.getStringParameter( REQUEST_PARAM_FILE, null ),
-          structure = requestParams.getStringParameter( CdeConstants.MethodParams.CDF_STRUCTURE, null );
+        structure = requestParams.getStringParameter( CdeConstants.MethodParams.CDF_STRUCTURE, null );
       cdfTemplates.save( file, structure );
       JsonUtils.buildJsonResult( out, true, null );
     }
@@ -617,13 +630,13 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void listRenderers( final OutputStream out ) throws Exception {
     writeOut( out, "{\"result\": [\""
-        + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
-        + "\",\""
-        + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
-        + "\",\""
-        + DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP.getType()
+      + DashboardWcdfDescriptor.DashboardRendererType.MOBILE.getType()
+      + "\",\""
+      + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
+      + "\",\""
+      + DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP.getType()
 
-        + "\"]}" );
+      + "\"]}" );
   }
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
@@ -667,7 +680,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         long pageStart = getRequestParameters().getLongParameter( "pageStart", 0 );
 
         result = olapUtils
-            .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
+          .getPaginatedLevelMembers( catalog, cube, level, startMember, context, searchTerm, pageSize, pageStart );
 
       }
       buildJsonResult( out, result != null, result );
@@ -716,7 +729,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     List<CdaDataSourceReader.CdaDataSource> dataSourcesList = getCdaSources( dashboard );
     CdaDataSourceReader.CdaDataSource[] dataSources =
-        dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
+      dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[ dataSourcesList.size() ] );
     String result = "[" + StringUtils.join( dataSources, "," ) + "]";
     writeOut( out, result );
   }
@@ -782,7 +795,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IUserContentAccess access = CdeEnvironment.getUserContentAccess();
 
     if ( access.hasAccess( path, FileAccess.WRITE )
-        || ( createNew && access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) ) {
+      || ( createNew && access.hasAccess( FilenameUtils.getFullPath( path ), FileAccess.WRITE ) ) ) {
 
       if ( access.saveFile( path, new ByteArrayInputStream( contents.getBytes( ENCODING ) ) ) ) {
         // saved ok
@@ -834,9 +847,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   private String getWcdfRelativePath( final IParameterProvider pathParams ) {
     final String path = "/"
-        + pathParams.getStringParameter( MethodParams.SOLUTION, null )
-        + "/" + pathParams.getStringParameter( MethodParams.PATH, null )
-        + "/" + pathParams.getStringParameter( MethodParams.FILE, null );
+      + pathParams.getStringParameter( MethodParams.SOLUTION, null )
+      + "/" + pathParams.getStringParameter( MethodParams.PATH, null )
+      + "/" + pathParams.getStringParameter( MethodParams.FILE, null );
 
     return path.replaceAll( "//+", "/" );
   }
@@ -852,23 +865,23 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void checkVersion( OutputStream out ) throws IOException,
-      JSONException {
+    JSONException {
     VersionChecker versionChecker = new CdeVersionChecker(
-        CdeSettings.getSettings() );
+      CdeSettings.getSettings() );
     writeOut( out, versionChecker.checkVersion() );
   }
 
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public void getVersion( OutputStream out ) throws IOException, JSONException {
     VersionChecker versionChecker = new CdeVersionChecker(
-        CdeSettings.getSettings() );
+      CdeSettings.getSettings() );
     writeOut( out, versionChecker.getVersion() );
   }
 
   private String getScheme( IParameterProvider pathParams ) {
     try {
       ServletRequest req = (ServletRequest) ( pathParams
-          .getParameter( "httprequest" ) );
+        .getParameter( "httprequest" ) );
       return req.getScheme();
     } catch ( Exception e ) {
       return "http";
@@ -876,39 +889,39 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard()
-      throws ThingWriteException {
+    throws ThingWriteException {
     IParameterProvider pathParams = parameterProviders.get( "path" );
     IParameterProvider requestParams = parameterProviders.get( "request" );
 
     String scheme = ( requestParams.hasParameter( "inferScheme" ) && requestParams
-        .getParameter( "inferScheme" ).equals( "false" ) ) ? ""
-        : getScheme( pathParams );
+      .getParameter( "inferScheme" ).equals( "false" ) ) ? ""
+      : getScheme( pathParams );
 
     String absRoot = requestParams.getStringParameter( "root", "" );
 
     boolean absolute = requestParams.hasParameter( "absolute" )
-        && requestParams.getParameter( "absolute" ).equals( "true" );
+      && requestParams.getParameter( "absolute" ).equals( "true" );
 
     boolean bypassCacheRead = requestParams.hasParameter( "bypassCache" )
-        && requestParams.getParameter( "bypassCache" ).equals( "true" );
+      && requestParams.getParameter( "bypassCache" ).equals( "true" );
 
     boolean debug = requestParams.hasParameter( "debug" )
-        && requestParams.getParameter( "debug" ).equals( "true" );
+      && requestParams.getParameter( "debug" ).equals( "true" );
 
     String wcdfFilePath = getWcdfRelativePath( requestParams );
 
     String style = requestParams.getStringParameter( "style", "" );
 
     CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions(
-        absolute, debug, absRoot, scheme );
+      absolute, debug, absRoot, scheme );
 
     return DashboardManager.getInstance().getDashboardCdfRunJs(
-        wcdfFilePath, options, bypassCacheRead, style );
+      wcdfFilePath, options, bypassCacheRead, style );
   }
 
   private String getCdfContext() {
     InterPluginCall cdfContext = new InterPluginCall( InterPluginCall.CDF,
-        "Context" );
+      "Context" );
     cdfContext.setRequest( getRequest() );
     cdfContext.setRequestParameters( getRequestParameters() );
     return cdfContext.callInPluginClassLoader();
@@ -933,21 +946,21 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
 
     GenericBasicFileFilter fileFilter =
-        new GenericBasicFileFilter( null, extensionsList.toArray( new String[extensionsList.size()] ), true );
+      new GenericBasicFileFilter( null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
 
     GenericFileAndDirectoryFilter fileAndDirFilter = new GenericFileAndDirectoryFilter( fileFilter );
 
     // folder filtering ( see settings.xml ) will only occur for non-admin users
-    if( !isAdministrator() ) {
+    if ( !isAdministrator() ) {
       fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
       fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
     }
 
     List<IBasicFile> fileList =
-        CdeEnvironment.getContentAccessFactory().getUserContentAccess( "/" ).listFiles( dir, fileAndDirFilter, 1, true );
+      CdeEnvironment.getContentAccessFactory().getUserContentAccess( "/" ).listFiles( dir, fileAndDirFilter, 1, true );
 
     if ( fileList != null && fileList.size() > 0 ) {
-      return fileList.toArray( new IBasicFile[fileList.size()] );
+      return fileList.toArray( new IBasicFile[ fileList.size() ] );
     }
 
     return new IBasicFile[] { };
@@ -997,6 +1010,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   /**
    * checks is the current user is administrator
+   *
    * @return true if the current user is administrator, false otherwise
    */
   protected boolean isAdministrator() {

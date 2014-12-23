@@ -1,6 +1,6 @@
 /*!
 * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-* 
+*
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
 * this file except in compliance with the license. If you need a copy of the license,
@@ -12,24 +12,26 @@
 */
 
 // Base class and general utils
-
-if (!Array.prototype.map) {
-  Array.prototype.map = function(fun /*, thisp */ ) {
+if(!Array.prototype.map) {
+  Array.prototype.map = function(fun /*, thisp */) {
     "use strict";
 
-    if (this === void 0 || this === null)
+    if(this === void 0 || this === null) {
       throw new TypeError();
+    }
 
     var t = Object(this);
     var len = t.length >>> 0;
-    if (typeof fun !== "function")
+    if(typeof fun !== "function") {
       throw new TypeError();
+    }
 
     var res = new Array(len);
     var thisp = arguments[1];
-    for (var i = 0; i < len; i++) {
-      if (i in t)
+    for(var i = 0; i < len; i++) {
+      if(i in t) {
         res[i] = fun.call(thisp, t[i], i, t);
+      }
     }
 
     return res;
@@ -78,7 +80,6 @@ var CDFDD = Base.extend({
     this.logger.info("Initializing.");
 
     // Add Panel
-
     this.layout = new LayoutPanel(LayoutPanel.MAIN_PANEL);
     this.layout.init();
 
@@ -94,92 +95,170 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
+    this.selectedPanelId = LayoutPanel.MAIN_PANEL;
 
     //// Enable alert when leaving page
     //this.setExitNotification(true);
 
     // Keyboard shortcuts
-    $(function() {
-      $(document).keydown(function(e) {
+    $(function () {
+      $(document).keydown(function (e) {
         if ($(e.target).is('input, textarea')) {
           return;
         }
-        
-        /*
-        if ($(e.target).is('input, textarea')) {
-          switch (e.which) {
-            case 38:
-              Dashboards.log("Go up");
-              break;
-            case 40:
-              Dashboards.log("Go down");
-              break;
-          }
-        }
-        */
-       
-        switch (e.which) {
-          case 49:
-            $(".cdfdd-modes").find("a:eq(2)").click();
-            break;
-          case 50:
-            $(".cdfdd-modes").find("a:eq(1)").click();
-            break;
-          case 51:
-            $(".cdfdd-modes").find("a:eq(0)").click();
-            break;
+
+        var activePanel = cdfdd.getActivePanel();
+        var activeTable = activePanel.getSelectedTable();
+
+        switch(e.which) {
+          /*
+           * Utilities
+           */
           case 83:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + s
               cdfdd.save();
             }
             break;
           case 80:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + p
               cdfdd.previewMode();
             }
             break;
           case 71:
-            if (e.shiftKey) {
+            if(e.shiftKey) { //shift + g
               cdfdd.cggDialog();
             }
             break;
-          case 191:
-            if (e.shiftKey) {
-              cdfdd.toggleHelp();
-            }
+          case 222: //?
+            cdfdd.toggleHelp();
             break;
           case 86:
-            if (e.shiftKey) { //shift+v
+            if(e.shiftKey) { //shift + v
               ComponentValidations.validateComponents();
+            }
+            break;
+          case 13:
+            e.preventDefault();
+            if(e.shiftKey) { //shift + enter
+              activeTable.cellUnselected();
+            } else { //enter
+              var rowIdx = activeTable.getSelectedCell()[0];
+              var rowId = activeTable.getTableModel().getEvaluatedId(rowIdx);
+              var row = $('#' + rowId + ' td:eq(1)');
+              row.find('div, div.edit :button, form :input.colorcheck').addBack().click();
+            }
+            break;
+
+          /*
+           * Navigation
+           */
+          case 97: //Numpad 1
+          case 49: //1
+            $(".cdfdd-modes").find("a:eq(2)").click();
+            break;
+          case 98: //Numpad 2
+          case 50: //2
+            $(".cdfdd-modes").find("a:eq(1)").click();
+            break;
+          case 99: //Numpad 3
+          case 51: //3
+            $(".cdfdd-modes").find("a:eq(0)").click();
+            break;
+          case 38:
+            if(e.shiftKey) { //shift + up
+              var operation = new MoveUpOperation();
+              operation.checkAndExecute(activeTable);
+            } else { //up
+              activeTable.selectCellBefore();
+            }
+            break;
+          case 40:
+            if(e.shiftKey) { //shift+down
+              var operation = new MoveDownOperation();
+              operation.checkAndExecute(activeTable);
+            } else { //down
+              activeTable.selectCellAfter();
+            }
+            break;
+          case 37: //left
+            activeTable.collapseCell();
+            break;
+          case 39: //right
+            activeTable.expandCell();
+            break;
+          case 9: //tab
+            e.preventDefault();
+            var nextTable = activePanel.selectNextTable();
+            if(nextTable) {
+              var row = nextTable.getSelectedCell();
+              row = !row.length ? [0,0] : row;
+              nextTable.selectCell(row[0], row[1], 'simple');
+            }
+            break;
+
+          /*
+           * Row Operations
+           */
+          case 82: //r
+            if(e.ctrlKey) { return; }
+            e.preventDefault();
+            var operation = new LayoutAddRowOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 67: //c
+            e.preventDefault();
+            var operation = new LayoutAddColumnsOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 72: //h
+            e.preventDefault();
+            var operation = new LayoutAddHtmlOperation();
+            operation.checkAndExecute(activeTable);
+            break;
+          case 88:
+            if(e.shiftKey) { //shift+x
+              var operation = new DeleteOperation();
+              operation.checkAndExecute(activeTable);
+            }
+            break;
+          case 68:
+            if(e.shiftKey) { //shift+d
+              var operation = new (activePanel.getDuplicateOperation())();
+              operation.checkAndExecute(activeTable);
             }
             break;
         }
       });
     });
 
-
     // Activate tooltips - Note: Disabled since last style change
     // $(".tooltip").tooltip({showURL: false });
 
     // Load styles list
     var myself = this;
-    
+
     StylesRequests.syncStyles(myself);
 
     StylesRequests.listStyleRenderers(myself);
   },
 
+  getActivePanel: function() {
+    var panel = $('#cdfdd-panels > :visible');
+    var panelId = panel.attr('id').replace('panel-', '');
+    return Panel.getPanel(panelId);
+  },
+
   initStyles: function(callback) {
     var myself = this;
-    if (myself.styles.length > 0) {
+    if(myself.styles.length > 0) {
       var wcdf = myself.getDashboardWcdf();
       // Default to Clean or the first available style if Clean isn't available
       var cleanStyle = myself.styles.indexOf('Clean');
-      if (!wcdf.style) {
+      if(!wcdf.style) {
         wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
       }
       var rendererType = myself.renderers.indexOf('bootstrap');
-      if (!wcdf.rendererType) {
+      if(!wcdf.rendererType) {
         wcdf.rendererType = myself.renderers[rendererType >= 0 ? rendererType : 0];
       }
       //only set style setting and renderer type (not title nor description)
@@ -191,7 +270,6 @@ var CDFDD = Base.extend({
       };
 
       StylesRequests.initStyles(saveSettingsParams, wcdf, myself, callback);
-
     }
   },
 
@@ -220,11 +298,10 @@ var CDFDD = Base.extend({
     this.dashboardData.filename = CDFDDFileName;
     var myself = this;
     _.each(this.components.getComponents(), function(w) {
-      if (w.meta_widget) {
-        w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+      if(w.meta_widget) {
+        w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
       }
     });
-    
 
     var stripArgs = {
       needsReload: false
@@ -233,17 +310,16 @@ var CDFDD = Base.extend({
     var saveParams = {
       operation: "save",
       file: CDFDDFileName,
-      // cdfstructure: JSON.toJSONString(this.dashboardData,true)
       cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1)
     };
 
-    if ( !this.isNewFile(CDFDDFileName) ) {
-      SaveRequests.saveDashboard(saveParams, stripArgs);      
+    if(!this.isNewFile(CDFDDFileName)) {
+      SaveRequests.saveDashboard(saveParams, stripArgs);
     } else {
       this.combinedSaveAs();
     }
   },
-    
+
   /*
    * Sample CDFDE JSON structure:
    * 
@@ -279,28 +355,30 @@ var CDFDD = Base.extend({
    */
   strip: function(original, keyArgs) {
     var me = this;
-    
+
     // These are the only components' properties' attributes that are kept
     var KEEP_PROP_ATTRS = {
-      type:  true, // InputType
-      name:  true, // Alias
+      type: true, // InputType
+      name: true, // Alias
       value: true, // Value...
-      url:   true  // TODO: What's this??
+      url: true  // TODO: What's this??
     };
-    
+
     var debugLevel = Dashboards.debug;
 
     // Holds the user's response to keeping properties with no defintion.
     var userKeepUndefinedProps = null; // not asked yet
     var userDeletePreviousVersionProps = null; // not asked yet
-    
+
     // Removes extra information and saves space
     var stripped = Util.clone(original); // deep clone
-    
+
     // Each SECTION
     $.each(stripped, function(i, section) {
-      if(typeof section !== 'object') { return; }
-      
+      if(typeof section !== 'object') {
+        return;
+      }
+
       // Each COMPONENT
       $.each(section.rows, function(j, comp) {
         var isSpecial = comp.type === 'Label' || comp.type === 'Group';
@@ -321,18 +399,18 @@ var CDFDD = Base.extend({
         };
 
         logComponent(debugLevel);
-        
+
         var ps = comp.properties;
         var L;
         if(ps && (L = ps.length)) {
           var compatVersion = me._getCompatVersion(ps); // null || >= 0
-          
+
           // Each PROPERTY
-          var k  = 0;
+          var k = 0;
           while(k < L) {
             var prop = ps[k];
             var name = prop.name;
-            
+
             // Had already said that he wants to keep undefineds?
             var keepProp = (userKeepUndefinedProps === true);
             if(!keepProp) {
@@ -353,57 +431,62 @@ var CDFDD = Base.extend({
 
               if(!keepProp && userKeepUndefinedProps == null) {
                 // Didn't ask the user yet.
-                keepProp = 
-                userKeepUndefinedProps =
-                !confirm("The dashboard contains components whose properties have no definition (those marked with a ?).\n" + 
-                         "Would you like to REMOVE those properties?\n" +
-                         "The dashboard will be RELOADED after the save operation.");
+                keepProp =
+                    userKeepUndefinedProps = !confirm("The dashboard contains components whose properties have no definition (those marked with a ?).\n" +
+                        "Would you like to REMOVE those properties?\n" +
+                        "The dashboard will be RELOADED after the save operation.");
 
                 if(!keepProp && keyArgs) {
                   keyArgs.needsReload = true;
                 }
               }
             }
-            
-            if(keepProp && 
-               compatVersion != null && 
-               userDeletePreviousVersionProps !== false) {
-         
+
+            if(keepProp &&
+                compatVersion != null &&
+                userDeletePreviousVersionProps !== false) {
+
               var match = CDFDD.DISCONTINUED_PROP_PATTERN.exec(prop.description);
               if(match) {
                 // Property has a last version.
                 // Check if it is lower than the current compatVersion.
                 var propLastVersion = +match[1];
                 var canDelete = propLastVersion < compatVersion;
-                
+
                 // Have asked the user if he wants to delete?
                 if(canDelete && userDeletePreviousVersionProps == null) {
-                  
+
                   canDelete =
-                  userDeletePreviousVersionProps = confirm(
-                      "The dashboard contains components with deprecated properties.\n" +
-                      "Would you like to REMOVE all the deprecated properties?\n" + 
-                      "The dashboard will be RELOADED after the save operation.");
+                      userDeletePreviousVersionProps = confirm(
+                              "The dashboard contains components with deprecated properties.\n" +
+                              "Would you like to REMOVE all the deprecated properties?\n" +
+                              "The dashboard will be RELOADED after the save operation.");
 
                   if(userDeletePreviousVersionProps && keyArgs) {
                     keyArgs.needsReload = true;
                   }
                 }
 
-                if(canDelete) { keepProp = false; }
+                if(canDelete) {
+                  keepProp = false;
+                }
               }
             }
-            
+
             // Do it - Keep or Delete
             if(keepProp) {
               // Keep property.
               // Delete unnecessary attributes.
-              $.each(prop, function(a) { if(!KEEP_PROP_ATTRS[a]) { delete prop[a]; } });
+              $.each(prop, function(a) {
+                if(!KEEP_PROP_ATTRS[a]) {
+                  delete prop[a];
+                }
+              });
               k++;
-           } else {
-             ps.splice(k, 1);
-             L--;
-           }
+            } else {
+              ps.splice(k, 1);
+              L--;
+            }
           }
         }
 
@@ -418,7 +501,7 @@ var CDFDD = Base.extend({
 
     return stripped;
   },
-  
+
   _getCompatVersion: function(ps) {
     var L;
     if(ps && (L = ps.length)) {
@@ -428,13 +511,15 @@ var CDFDD = Base.extend({
         var name = p.name;
         if(name === "cccCompatVersion" || name === "compatVersion") {
           var cv = +p.value;
-          if(!isNaN(cv) && cv >= 0) { return cv; }
+          if(!isNaN(cv) && cv >= 0) {
+            return cv;
+          }
           break;
         }
         k++;
       }
     }
-    
+
     return null;
   },
 
@@ -443,22 +528,28 @@ var CDFDD = Base.extend({
     var me = this;
     var beefed = Util.clone(original);
     var debugLevel = Dashboards.debug;
-    
+
     $.each(beefed, function(i, section) {
-      if(typeof section !== "object") { return; }
-      
-      if(debugLevel >= 3) { me.logger.info("  load/unstrip - " + i); }
-      
+      if(typeof section !== "object") {
+        return;
+      }
+
+      if(debugLevel >= 3) {
+        me.logger.info("  load/unstrip - " + i);
+      }
+
       $.each(section.rows, function(j, comp) {
-        
+
         var isSpecial = comp.type === 'Label';
         var compModel = BaseModel.getModel(comp.type, /*createIfUndefined*/true);
-        
+
         // Fix component type name over time, reducing number of legacy names around.
         comp.type = compModel.MODEL;
-        if(compModel.description) { comp.typeDesc = compModel.description; }
+        if(compModel.description) {
+          comp.typeDesc = compModel.description;
+        }
         // TODO: parent node fixing when model changes.
-        
+
         var hasUndefinedProps;
         var hasLoggedComp;
         var logComponent = function(debugLevel) {
@@ -468,18 +559,18 @@ var CDFDD = Base.extend({
               me.logger.warn("    load/unstrip - component " + me.describeComponent(comp) + " is of undefined type, and has " + comp.properties.length + " properties.");
             } else if(debugLevel >= 3) {
               hasLoggedComp = true;
-              me.logger.info("    load/unstrip - component " + me.describeComponent(comp) +  " has " + comp.properties.length + " properties.");
+              me.logger.info("    load/unstrip - component " + me.describeComponent(comp) + " has " + comp.properties.length + " properties.");
             }
           }
         };
 
         logComponent(debugLevel);
-        
+
         $.each(comp.properties, function(idx, prop) {
           try {
-            var propName  = prop.name;
+            var propName = prop.name;
             var stubAndUsage = compModel.getPropertyStubAndUsage(propName);
-            var propStub  = stubAndUsage[0];
+            var propStub = stubAndUsage[0];
             var propUsage = stubAndUsage[1];
             if(!propUsage) {
               if(propName !== "Group") {
@@ -493,7 +584,7 @@ var CDFDD = Base.extend({
               // Normalize name -> alias
               prop.name = propUsage.alias;
             }
-            
+
             // Add own attributes of Stub to property, 
             // if it doesn't have them already.
             for(var attr in propStub) {
@@ -507,18 +598,18 @@ var CDFDD = Base.extend({
                 }
               }
             }
-          } catch (e) {
+          } catch(e) {
             Dashboards.log(prop.name + ": " + e);
           }
         });
-        
+
         if(!isSpecial && (compModel.isUndefined || hasUndefinedProps)) {
           // This is removed later upon save, in strip.
           comp.typeDesc = (compModel.isUndefined ? "?? " : "?  ") + comp.typeDesc;
         }
       });
     });
-    
+
     return beefed;
   },
 
@@ -528,21 +619,21 @@ var CDFDD = Base.extend({
 
     // In principle, any type could be upgraded to an array,
     // but it's safer to treat only known types.
-    if (newType === 'Array' &&
-      ['String', 'Float', 'Integer', 'Boolean']
-      .indexOf(oldType) === 0) {
+    if(newType === 'Array' &&
+        ['String', 'Float', 'Integer', 'Boolean']
+            .indexOf(oldType) === 0) {
       var value = p.value;
-      if (value == null || value === '') {
+      if(value == null || value === '') {
         value = '[]';
       } else {
         // Ensure string
         value = '' + value;
 
         // Ensure within brackets
-        if (value.indexOf('[') !== 0) {
+        if(value.indexOf('[') !== 0) {
 
           // Ensure we have a string
-          if (value.indexOf('"') !== 0 && value.indexOf("'") !== 0) {
+          if(value.indexOf('"') !== 0 && value.indexOf("'") !== 0) {
             value = '"' + value + '"';
           }
 
@@ -550,7 +641,7 @@ var CDFDD = Base.extend({
         }
       }
 
-      p.type  = newType;
+      p.type = newType;
       p.value = value;
     }
   },
@@ -564,21 +655,25 @@ var CDFDD = Base.extend({
     var name = this.getComponentName(comp);
     return (name ? (name + " ") : "") + "[" + comp.type + "]";
   },
-  
+
   toggleHelp: function() {
     $("#keyboard_shortcuts_help").toggle();
   },
 
   newDashboard: function() {
     var myself = this;
-    $.prompt('<h2>New Dashboard</h2><hr/>Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>', {
+    var content = '' +
+        '<h2>New Dashboard</h2>\n' +
+        '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
+        '<span class="description">Unsaved changes will be lost.</span>\n';
+    $.prompt(content, {
       buttons: {
         Ok: true,
         Cancel: false
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if (v) myself.saveAs(true);
+        if(v) myself.saveAs(true);
       }
     });
   },
@@ -590,14 +685,17 @@ var CDFDD = Base.extend({
     var selectedTitle = this.getDashboardWcdf().title;
     var selectedDescription = this.getDashboardWcdf().description;
     var myself = this;
-    var content = '<h2>Save as:</h2><hr style="background:none;"/>\n' +
-      '               <div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-      '                 <span class="folderexplorerfilelabel">File Name:</span>\n' +
-      '                 <span class="folderexplorerfileinput"><input id="fileInput"  type="text"></input></span>\n' +
-      '               <hr class="filexplorerhr"/>\n' +
-      '               <span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-      '                 <span class="folderexplorerextralabels" >Title:</span><input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '"></input>\n' +
-      '                 <br/><span class="folderexplorerextralabels" >Description:</span><input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '"></input>';
+    var content = '' +
+        '<h2>Save as:</h2><hr style="background:none;"/>\n' +
+        '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+        '<span class="folderexplorerfilelabel">File Name:</span>\n' +
+        '<span class="folderexplorerfileinput"><input id="fileInput"  type="text"/></span>\n' +
+        '<hr class="filexplorerhr"/>\n' +
+        '<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
+        '<span class="folderexplorerextralabels" >Title:</span>\n' +
+        '<input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '"></input><br/>\n' +
+        '<span class="folderexplorerextralabels" >Description:</span>\n' +
+        '<input id="descriptionInput" class="folderexplorerdescinput" type="text" value="' + selectedDescription + '"></input>';
 
     $.prompt(content, {
       loaded: function() {
@@ -612,12 +710,12 @@ var CDFDD = Base.extend({
         });
         $('#container_id').fileTree({
           root: '/',
-          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions=.wcdf&access=create",
+          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=.wcdf&access=create",
           expandSpeed: 1000,
           collapseSpeed: 1000,
           multiFolder: false,
           folderClick: function(obj, folder) {
-            if ($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
+            if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
             $("#fileInput").val("");
@@ -634,29 +732,28 @@ var CDFDD = Base.extend({
       opacity: 0.2,
       prefix: 'popup',
       callback: function(v, m, f) {
-        if (v) {
+        if(v) {
 
-          if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5))
+          if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
             $.prompt('Invalid file extension. Must be .wcdf', {
               prefix: "popup"
             });
-          else if (selectedFolder.length == 0)
+          } else if(selectedFolder.length == 0) {
             $.prompt('Please choose destination folder.', {
               prefix: "popup"
             });
-          else if (selectedFile.length == 0)
+          } else if(selectedFile.length == 0) {
             $.prompt('Please enter the file name.', {
               prefix: "popup"
             });
-
-          else if (selectedFile.length > 0) {
-            if (selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
+          } else if(selectedFile.length > 0) {
+            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
 
             CDFDDFileName = selectedFolder + selectedFile;
             myself.dashboardData.filename = CDFDDFileName;
             _.each(myself.components.getComponents(), function(w) {
-              if (w.meta_widget) {
-                w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+              if(w.meta_widget) {
+                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
               }
             });
 
@@ -668,7 +765,7 @@ var CDFDD = Base.extend({
               //cdfstructure: JSON.stringify(myself.dashboardData, null, 1) // TODO: shouldn't it strip, like save does?
               cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1)
             };
-            
+
             SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
           }
         }
@@ -686,7 +783,7 @@ var CDFDD = Base.extend({
       getInfo: function(url) {
         var versionInfo = '';
         $.get(url, function(result) {
-          if (!result) {
+          if(!result) {
             Dashboards.log('CDFF-DD: ' + url + ' error');
             return;
           }
@@ -710,7 +807,7 @@ var CDFDD = Base.extend({
 
         versionCheckInfo = JSON.parse(versionCheckInfo);
 
-        switch (versionCheckInfo.result) {
+        switch(versionCheckInfo.result) {
           case 'update':
             msg = 'You are currently running an outdated version. Please update to the new version <a href="' + versionCheckInfo.downloadUrl + '">here</a>';
             break;
@@ -729,30 +826,30 @@ var CDFDD = Base.extend({
     };
 
 
-
     var addCSS = function(fileRef) {
       var fileref = document.createElement("link");
       fileref.setAttribute("rel", "stylesheet");
       fileref.setAttribute("type", "text/css");
       fileref.setAttribute("href", fileRef);
       document.getElementsByTagName("head")[0].appendChild(fileref);
-    }
+    };
 
     var removeCSS = function(fileRef) {
       var allCtrl = document.getElementsByTagName('link');
-      for (var i = allCtrl.length; i >= 0; i--) {
-        if (allCtrl[i] && allCtrl[i].getAttribute('href') != null && allCtrl[i].getAttribute('href').indexOf(fileRef) != -1)
+      for(var i = allCtrl.length; i >= 0; i--) {
+        if(allCtrl[i] && allCtrl[i].getAttribute('href') != null && allCtrl[i].getAttribute('href').indexOf(fileRef) != -1)
           allCtrl[i].parentNode.removeChild(allCtrl[i]);
       }
-    }
+    };
 
-    var htmlHref = "static/" + mode + ".html";
-    var cssFileRef = "css/" + mode + ".css";
+    var htmlHref = "./static/" + mode + ".html";
+    var cssFileRef = "./css/" + mode + ".css";
 
     $.fancybox({
       ajax: {
-          type: "GET"
+        type: "GET"
       },
+      closeBtn: true,
       href: htmlHref,
       autoDimensions: false,
       width: 950,
@@ -767,16 +864,15 @@ var CDFDD = Base.extend({
       }
     });
 
-    if (mode == 'about.fancybox') {
+    if(mode == 'about.fancybox') {
       $('#fancybox-content .version').html(version.getVersion());
       $('#fancybox-content .message').html(version.checkVersion());
     }
-
   },
 
-  previewMode: function(){
+  previewMode: function() {
 
-    if (this.isNewFile(CDFDDFileName)) {
+    if(this.isNewFile(CDFDDFileName)) {
       $.notifyBar({
         html: "Need to save an initial dashboard before previews are available."
       });
@@ -787,8 +883,6 @@ var CDFDD = Base.extend({
     var solution = fullPath[1];
     var path = fullPath.slice(2, fullPath.length - 1).join("/");
     var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.wcdf");
-
-    var style = this.getDashboardWcdf().style;
 
     this.logger.info("Saving temporary dashboard...");
 
@@ -804,15 +898,14 @@ var CDFDD = Base.extend({
       cdfstructure: serializedDashboard
     };
 
-    PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl( solution, path, file, style ));
+    PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl(solution, path, file));
   },
-
 
 
   savePulldown: function(target, evt) {
     var myself = this,
-      $pulldown = $(target);
-    $pulldown.append(templates.savePulldown());
+        $pulldown = $(target);
+    $pulldown.append(Mustache.render(templates.savePulldown));
     $("body").one("click", function() {
       $pulldown.find("ul").remove();
     });
@@ -835,7 +928,7 @@ var CDFDD = Base.extend({
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if (v) window.location.reload();
+        if(v) window.location.reload();
       }
     });
   },
@@ -851,37 +944,39 @@ var CDFDD = Base.extend({
     var ready = true;
 
     function sCallback() {
-      if (myself.styles.length > 0 && myself.renderers.length > 0) {
+      if(myself.styles.length > 0 && myself.renderers.length > 0) {
         myself.saveSettingsCallback();
       }
     }
-    if (this.styles.length == 0) {
+
+    if(this.styles.length == 0) {
       ready = false;
 
       StylesRequests.syncStyles(myself);
       sCallback();
 
-    };
-    if (this.renderers.length == 0) {
+    }
+
+    if(this.renderers.length == 0) {
       ready = false;
-      
+
       StylesRequests.listStyleRenderers(myself);
       sCallback();
 
-    };
-    if (ready) {
-      this.saveSettingsCallback();
     }
 
+    if(ready) {
+      this.saveSettingsCallback();
+    }
   },
 
   saveSettingsCallback: function() {
     var wcdf = $.extend({}, this.getDashboardWcdf()),
-      settingsData = $.extend({
-        widgetParameters: []
-      }, wcdf),
-      myself = this,
-      content;
+        settingsData = $.extend({
+          widgetParameters: []
+        }, wcdf),
+        myself = this,
+        content;
 
     settingsData.styles = [];
     _.each(this.styles, function(obj) {
@@ -900,63 +995,63 @@ var CDFDD = Base.extend({
     /* Generate a list of the parameter names */
     var currentParams = cdfdd.getDashboardWcdf().widgetParameters;
     settingsData.parameters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters()
-      .map(function(e) {
-      var val = e.properties.filter(function(i) {
-        return i.description == "Name";
-      })[0].value;
-      return {
-        parameter: val,
-        selected: _.contains(currentParams, val)
-      };
-    });
-    content = '\n' +
-      '<span>'+
-      ' <h2>Settings:</h2>'+
-      '</span>'+
-      '<hr style="background: none;"/>\n' +
-      '<span class="title">Title:</span>'+
-      '<br/>'+
-      '<input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"></input>'+
-      '<br/>\n' +
-      '{{#widget}}' +
-          '<span class="title">Widget Name:</span>'+
-          '<br/>'+
-          '<input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"></input>'+
-          '<br/>\n' +
-      '{{/widget}}' +
-      '<span class="title">Author:</span>'+
-      '<br/>'+
-      '<input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"></input>'+
-      '<span class="title">Description:</span>'+
-      '<br/>'+
-      '<textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
-      '<span class="title">Style:</span>'+
-      '<br/>'+
-      '<select class="cdf_settings_input" id="styleInput">\n' +
-      '{{#styles}}' +
-      '<option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
-      '{{/styles}}' +
-      '</select>' +
-      '<hr style="background:none;"/>'+
-      '<span class="title">Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
-      '{{#renderers}}' +
-      '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
-      '{{/renderers}}' +
-      '</select>' +
-      '{{#widget}}' +
-      '<span>'+
-      '  <br>'+
-      '  <b>Widget Parameters:</b>'+
-      '</span>'+
-      '<br>'+
-      '<span id="widgetParameters">' +
-      ' <div style=" max-height: 110px; overflow: auto; ">'+
-      ' {{#parameters}}' +
-      '     <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}} style=" position: relative; top: 4px; "><span>{{parameter}}</span><br>\n' +
-      ' {{/parameters}}' +
-      '</span>' +
-      ' </div>'+
-      '{{/widget}}';
+        .map(function(e) {
+          var val = e.properties.filter(function(i) {
+            return i.description == "Name";
+          })[0].value;
+          return {
+            parameter: val,
+            selected: _.contains(currentParams, val)
+          };
+        });
+    content = '' +
+        '<span>' +
+        ' <h2>Settings:</h2>' +
+        '</span>' +
+        '<hr style="background: none;"/>\n' +
+        '<span class="title">Title:</span>' +
+        '<br/>' +
+        '<input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"/>' +
+        '<br/>\n' +
+        '{{#widget}}' +
+        '<span class="title">Widget Name:</span>' +
+        '<br/>' +
+        '<input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"/>' +
+        '<br/>\n' +
+        '{{/widget}}' +
+        '<span class="title">Author:</span>' +
+        '<br/>' +
+        '<input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"/>' +
+        '<span class="title">Description:</span>' +
+        '<br/>' +
+        '<textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
+        '<span class="title">Style:</span>' +
+        '<br/>' +
+        '<select class="cdf_settings_input" id="styleInput">\n' +
+        '{{#styles}}' +
+        '<option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
+        '{{/styles}}' +
+        '</select>' +
+        '<hr style="background:none;"/>' +
+        '<span class="title">Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
+        '{{#renderers}}' +
+        '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
+        '{{/renderers}}' +
+        '</select>' +
+        '{{#widget}}' +
+        '<span>' +
+        '  <br>' +
+        '  <b>Widget Parameters:</b>' +
+        '</span>' +
+        '<br>' +
+        '<span id="widgetParameters">' +
+        ' <div style=" max-height: 110px; overflow: auto; ">' +
+        ' {{#parameters}}' +
+        '     <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}} style=" position: relative; top: 4px; "><span>{{parameter}}</span><br>\n' +
+        ' {{/parameters}}' +
+        '</span>' +
+        ' </div>' +
+        '{{/widget}}';
 
     content = Mustache.render(content, settingsData);
     $.prompt(content, {
@@ -974,23 +1069,22 @@ var CDFDD = Base.extend({
         wcdf.rendererType = $("#rendererInput").val();
         wcdf.widgetParameters = [];
         $("#widgetParameters input[type='checkbox']:checked")
-          .each(function(i, e) {
-          wcdf.widgetParameters.push(e.value);
-        });
+            .each(function(i, e) {
+              wcdf.widgetParameters.push(e.value);
+            });
       },
       callback: function(v, m, f) {
-        if (v) {
-
+        if(v) {
           /* Validations */
           var validInputs = true;
-          if (wcdf.widget) {
-            if (!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName)) {
+          if(wcdf.widget) {
+            if(!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName)) {
               $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {
                 prefix: "popup"
               });
               validInputs = false;
-            } else if (wcdf.widgetName.length == 0) {
-              if (wcdf.title.length == 0) {
+            } else if(wcdf.widgetName.length == 0) {
+              if(wcdf.title.length == 0) {
                 $.prompt('No widget name provided. Tried to use title instead but title is empty.', {
                   prefix: "popup"
                 });
@@ -1001,7 +1095,7 @@ var CDFDD = Base.extend({
             }
           }
 
-          if (validInputs) {
+          if(validInputs) {
             myself.saveSettingsRequest(wcdf);
           }
         }
@@ -1012,76 +1106,82 @@ var CDFDD = Base.extend({
   combinedSaveAs: function(fromScratch) {
 
     var selectedTitle = "",
-      selectedDescription = "",
-      selectedFile = "",
-      selectedFolder = "";
+        selectedDescription = "",
+        selectedFile = "",
+        selectedFolder = "";
     var myself = this;
-    var radioButtons = '<form>' + 
-    '                     <table>'+
-    '                       <tr  style="font-weight: normal;">'+
-    '                         <td style="width:50%;margin: 0;padding: 0;">'+
-    '                           <div style=" width: 15px; padding: 0; margin: 0; float: left; "><input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" style="width:100%;" checked></div>'+
-    '                           <div style="width:80%; float: right;padding: 0;margin: 0;"><span style="top: -2px; width: 20%;">Dashboard</span></div>'+
-    '                         </td>' + 
-    '                         <td style="width:50%;margin: 0;padding: 0;">'+
-    '                           <div style="width:15px; float:left;"><input type="radio" name="saveAsRadio" value="widget" id="widgetRadio" style="width:100%;"></div>'+
-    '                           <div style="width:80%; float: right;"><span style="top: -2px; width: 20%;">Widget</span></div>'+
-    '                         </td>'+
-    '                       </tr>' +
-    '                     </table>'+ 
-    '                   </form>';
+    var radioButtons = '' +
+        '<form>\n' +
+        ' <table>\n' +
+        '   <tr style="font-weight: normal;">\n' +
+        '     <td style="width:50%;margin: 0;padding: 0;">\n' +
+        '       <div style=" width: 15px; padding: 0; margin: 0; float: left; "><input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" style="width:100%;" checked></div>\n' +
+        '       <div style="width:80%; float: right;padding: 0;margin: 0;"><span style="top: -2px; width: 20%;">Dashboard</span></div>\n' +
+        '     </td>\n' +
+        '     <td style="width:50%;margin: 0;padding: 0;">\n' +
+        '       <div style="width:15px; float:left;"><input type="radio" name="saveAsRadio" value="widget" id="widgetRadio" style="width:100%;"></div>\n' +
+        '       <div style="width:80%; float: right;"><span style="top: -2px; width: 20%;">Widget</span></div>\n' +
+        '     </td>\n' +
+        '   </tr>\n' +
+        '  </table>\n' +
+        '</form>\n';
 
-    var widgetFieldContent = '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">' +
-      '                               <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>' +
-      '                             </div>\n' +
-      '                             <div style="width:80%;float:right;">' +
-      '                               <span style="top:0; left: 0; "><input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
-      '                             </div>\n' +
-      '                             <hr class="filexplorerhr"/>\n';
+    var widgetFieldContent = '' +
+        '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">\n' +
+        ' <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>\n' +
+        '</div>\n' +
+        '<div style="width:80%;float:right;">\n' +
+        ' <span style="top:0; left: 0; ">\n' +
+        '   <input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"/>\n' +
+        ' </span>\n' +
+        '</div>\n' +
+        '<hr class="filexplorerhr"/>\n';
 
-    var fileInfo = '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-      '                   <div style="height:25px;padding-top: 10px;">' +
-      '                       <div style="float: left; width:20%;position: relative;top: 7px;">' +
-      '                         <span class="folderexplorerfilelabel" style="float: left;width: 100%; left:0;">File Name: *</span>' +
-      '                       </div>\n' +
-      '                       <div style="float: right;width:80%;">' +
-      '                         <table>'+
-      '                           <tr>'+
-      '                             <td style="padding:0;">'+
-      '                               <span style=" top: 0px; left:0;"><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"></input></span>' +
-      '                             </td>'+
-      '                             <td style="width:200px;">'+
-                                      radioButtons+
-      '                             </td>'+
-      '                           </tr>'+
-      '                         </table>'+
-      '                       </div>' +
-      '                   </div>\n' +
-      '                   <br>\n' +
-      '                   <div class="widgetField">' +
-      '                   </div>' +
-      '                   <hr class="saveHr"'+
-      '                   <span class="folderexplorerextralabel" style="left:0px;">- Extra Information -</span><br/>\n' +
-      '                   <div>' +
-      '                       <div style="float:left; width:20%;">' +
-      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Title:</span>' +
-      '                       </div>' +
-      '                       <div style="float:right; width:80%;">' +
-      '                         <input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
-      '                       </div>' +
-      '                   </div>\n' +
-      '                   <hr>' +
-      '                   <div>' +
-      '                       <div style="float:left; width:20%;">' +
-      '                         <span class="folderexplorerextralabels" style="font-weight: normal;">Description:</span>' +
-      '                       </div>' +
-      '                       <div style="float:right; width:80%;">' +
-      '                         <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>' +
-      '                       </div>' +
-      '                       <br>' +
-      '                   </div>';
+    var fileInfo = '' +
+        '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
+        '<div style="height:25px;padding-top: 10px;">\n' +
+        ' <div style="float: left; width:20%;position: relative;top: 7px;">' +
+        '   <span class="folderexplorerfilelabel" style="float: left;width: 100%; left:0;">File Name: *</span>' +
+        ' </div>\n' +
+        ' <div style="float: right;width:80%;">' +
+        '   <table>' +
+        '     <tr>' +
+        '       <td style="padding:0;">' +
+        '         <span style=" top: 0px; left:0;"><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"/></span>' +
+        '       </td>' +
+        '       <td style="width:200px;">' +
+        radioButtons +
+        '       </td>' +
+        '     </tr>' +
+        '   </table>' +
+        ' </div>' +
+        '</div>\n' +
+        '<br>\n' +
+        '<div class="widgetField"></div>\n' +
+        '<hr class="saveHr">' +
+        '<span class="folderexplorerextralabel" style="left:0px;">- Extra Information -</span><br/>\n' +
+        '<div>\n' +
+        ' <div style="float:left; width:20%;">\n' +
+        '   <span class="folderexplorerextralabels" style="font-weight: normal;">Title:</span>\n' +
+        ' </div>\n' +
+        ' <div style="float:right; width:80%;">\n' +
+        '   <input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>\n' +
+        '  </div>\n' +
+        '</div>\n' +
+        '<hr>' +
+        ' <div>\n' +
+        '   <div style="float:left; width:20%;">' +
+        '     <span class="folderexplorerextralabels" style="font-weight: normal;">Description:</span>\n' +
+        '   </div>\n' +
+        '   <div style="float:right; width:80%;">' +
+        '     <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>\n' +
+        '   </div><br>\n' +
+        '</div>\n';
 
-    var content = "<h2>Save as...</h2><hr/><div style=''>" + fileInfo + "</div>";
+    var content = '' +
+        '<h2>Save as...</h2>\n' +
+        '<hr/>\n' +
+        '<div style="">' + fileInfo + '</div>\n';
 
     $.prompt(content, {
       prefix: "popup",
@@ -1097,12 +1197,12 @@ var CDFDD = Base.extend({
 
         $('#container_id').fileTree({
           root: '/',
-          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl)+ "?fileExtensions=.wcdf&access=create",
+          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=.wcdf&access=create",
           expandSpeed: 1000,
           collapseSpeed: 1000,
           multiFolder: false,
           folderClick: function(obj, folder) {
-            if ($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
+            if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
             $("#fileInput").val("");
@@ -1123,49 +1223,45 @@ var CDFDD = Base.extend({
         });
       },
       submit: function(v, m, f) {
-        if (v == 1) {
-
-          function isValidField(field){
-            return (field != null && field != undefined);            
+        if(v == 1) {
+          function isValidField(field) {
+            return (field != null && field != undefined);
           }
-          function isValidFieldNotEmpty(field){
+
+          function isValidFieldNotEmpty(field) {
             return (field != null && field != undefined && field != "");
-            
           }
 
           /*In case of Dashboards
-              the propper means will be used
-          */
-          if ($('input[name=saveAsRadio]:checked').val() == "dashboard") {
-
-
+           the propper means will be used
+           */
+          if($('input[name=saveAsRadio]:checked').val() == "dashboard") {
 
             selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
 
-            if (selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
+            if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
               $.prompt('Invalid file extension. Must be .wcdf', {
                 prefix: "popup"
               });
-            } else if (selectedFolder.length == 0) {
+            } else if(selectedFolder.length == 0) {
               $.prompt('Please choose destination folder.', {
                 prefix: "popup"
               });
-            } else if (selectedFile.length == 0) {
+            } else if(selectedFile.length == 0) {
               $.prompt('Please enter the file name.', {
                 prefix: "popup"
               });
             }
 
-            if (selectedFile.indexOf(".wcdf") == -1) selectedFile += ".wcdf";
+            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
 
             CDFDDFileName = selectedFolder + selectedFile;
             cdfdd.dashboardData.filename = CDFDDFileName;
             var stripArgs = {
               needsReload: false
             };
-        
 
             var saveAsParams = {
               operation: fromScratch ? "newFile" : "saveas",
@@ -1177,34 +1273,33 @@ var CDFDD = Base.extend({
             };
 
             SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
-
           }
           /*In case of Widgets
-              the propper means will be used
-            */
-          else if ($('input[name=saveAsRadio]:checked').val() == "widget") {
+           the propper means will be used
+           */
+          else if($('input[name=saveAsRadio]:checked').val() == "widget") {
             selectedFolder = wd.helpers.repository.getWidgetsLocation();
             selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
             var selectedWidgetName = $("#componentInput").val();
-            /* Validations */
 
+            /* Validations */
             var validInputs = true;
-            if (!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.',{prefix:"popup"});
+            if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
+              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
               validInputs = false;
-            } else if (selectedWidgetName.length == 0) {
-              if (selectedTitle.length == 0) {
-                $.prompt('No widget name provided. Tried to use title instead but title is empty.',{prefix:"popup"});
+            } else if(selectedWidgetName.length == 0) {
+              if(selectedTitle.length == 0) {
+                $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
                 validInputs = false;
               } else {
                 selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
               }
             }
 
-            if (validInputs) {
-              if (selectedFile.indexOf(".wcdf") == -1) {
+            if(validInputs) {
+              if(selectedFile.indexOf(".wcdf") == -1) {
                 selectedFile += ".wcdf";
               }
 
@@ -1235,16 +1330,16 @@ var CDFDD = Base.extend({
   saveAsWidget: function(fromScratch) {
 
     var selectedFolder = wd.helpers.repository.getWidgetsLocation(),
-      selectedFile = "",
-      selectedTitle = this.getDashboardWcdf().title,
-      selectedDescription = this.getDashboardWcdf().description,
-      selectedWidgetName = "",
-      options = {
-        title: selectedTitle,
-        description: selectedDescription
-      },
-      myself = this,
-      content = templates.saveAsWidget(options);
+        selectedFile = "",
+        selectedTitle = this.getDashboardWcdf().title,
+        selectedDescription = this.getDashboardWcdf().description,
+        selectedWidgetName = "",
+        options = {
+          title: selectedTitle,
+          description: selectedDescription
+        },
+        myself = this,
+        content = Mustache.render(templates.saveAsWidget, options);
 
     $.prompt(content, {
       loaded: function() {
@@ -1266,41 +1361,41 @@ var CDFDD = Base.extend({
         Ok: true,
         Cancel: false
       },
-      prefix:"popup",
+      prefix: "popup",
       opacity: 0.2,
       classes: 'save-as-widget',
       callback: function(v, m, f) {
-        if (v) {
+        if(v) {
 
           /* Validations */
           var validInputs = true;
-          if (selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)) {
-            $.prompt('Invalid file extension. Must be .wcdf',{prefix:"popup"});
+          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)) {
+            $.prompt('Invalid file extension. Must be .wcdf', {prefix: "popup"});
             validInputs = false;
-          } else if (!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.',{prefix:"popup"});
+          } else if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
+            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
             validInputs = false;
-          } else if (selectedWidgetName.length == 0) {
-            if (selectedTitle.length == 0) {
-              $.prompt('No widget name provided. Tried to use title instead but title is empty.',{prefix:"popup"});
+          } else if(selectedWidgetName.length == 0) {
+            if(selectedTitle.length == 0) {
+              $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
               validInputs = false;
             } else {
               selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
             }
-          } else if (selectedFile.length <= 0) {
+          } else if(selectedFile.length <= 0) {
             validInputs = false;
           }
 
-          if (validInputs) {
-            if (selectedFile.indexOf(".wcdf") == -1) {
+          if(validInputs) {
+            if(selectedFile.indexOf(".wcdf") == -1) {
               selectedFile += ".wcdf";
             }
 
             CDFDDFileName = selectedFolder + selectedFile;
             myself.dashboardData.filename = CDFDDFileName;
             _.each(myself.components.getComponents(), function(w) {
-              if (w.meta_widget) {
-                w.meta_wcdf = window[w.type+"Model"].getStub().meta_wcdf;
+              if(w.meta_widget) {
+                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
               }
             });
 
@@ -1328,6 +1423,46 @@ var CDFDD = Base.extend({
       operation: "saveSettings",
       file: CDFDDFileName.replace(".cdfde", ".wcdf")
     }, wcdf);
+
+    var newRenderer = saveSettingsParams.rendererType;
+    var oldRenderer = cdfdd.getDashboardWcdf().rendererType;
+    var toUpdate = [];
+
+    //if the renderer type changed, then check for the existence of Table Components
+    //that needs to update the style property
+    if(newRenderer != oldRenderer) {
+      var components = cdfdd.getDashboardData().components.rows;
+      _.each(components, function(comp, i) {
+        if(comp.parent == "OTHERCOMPONENTS" && comp.type == "ComponentsTable") {
+          _.each(comp.properties, function(prop, j) {
+            if(prop.name == "tableStyle") {
+              if(( newRenderer != "bootstrap" && prop.value == "bootstrap" ) ||
+                  ( newRenderer == "bootstrap" && prop.value != "bootstrap" )) {
+                toUpdate.push(prop);
+                return;
+              }
+            }
+          });
+        }
+      });
+    }
+
+    if(toUpdate.length) {
+      var message = Dashboards.i18nSupport.prop('SaveSettings.INFO_UPDATE_TABLE_STYLE_PROP') + '\n' +
+          Dashboards.i18nSupport.prop('SaveSettings.CONFIRMATION_UPDATE_TABLE_STYLE_PROP');
+      var updateStyle = confirm(message);
+
+      if(updateStyle) {
+        _.each(toUpdate, function(prop, index) {
+          if(newRenderer == "bootstrap") {
+            prop.value = "bootstrap";
+          } else {
+            prop.value = "themeroller";
+          }
+        });
+        cdfdd.components.initTables();
+      }
+    }
 
     SaveRequests.saveSettings(saveSettingsParams, cdfdd, wcdf, myself);
 
@@ -1368,14 +1503,12 @@ var CDFDD = Base.extend({
     var ph = $('#cggDialog');
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
 
-
     // cgg url:
     var cggUrl = Cgg.getCggDrawUrl() + "?script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/";
 
     ph.empty();
-
     ph.append("<h3>Choose what charts to render as CGG</h3>" +
-      "<p>CDE can generate CGG scripts to allow charts to be exported. Choose the ones you want, and files will be generated when you save the dashboard</p>");
+        "<p>CDE can generate CGG scripts to allow charts to be exported. Choose the ones you want, and files will be generated when you save the dashboard</p>");
     cggCandidates.map(function(e) {
 
       var section = $("<div/>");
@@ -1387,11 +1520,11 @@ var CDFDD = Base.extend({
       });
 
       var componentName = '',
-        title = '';
+          title = '';
       e.properties.map(function(p) {
-        if (p.name == 'title') {
+        if(p.name == 'title') {
           title = p.value;
-        } else if (p.name == 'name') {
+        } else if(p.name == 'name') {
           componentName = p.value;
         }
       });
@@ -1412,9 +1545,7 @@ var CDFDD = Base.extend({
       var scriptFileName = CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] + '_' + componentName + ".js";
 
       $("<div class='urlPreviewer collapsed'><input type='text' value = '" + cggUrl + scriptFileName + "&outputType=png" + "'></input></div>").appendTo(section);
-
       section.appendTo(ph);
-
     });
 
     var $close = $("<div class='cggDialogClose'><button>Close</button></div>");
@@ -1423,7 +1554,6 @@ var CDFDD = Base.extend({
     });
     ph.append($close);
     ph.jqmShow();
-
   }
 }, {
   LAYOUT: function() {
@@ -1432,14 +1562,13 @@ var CDFDD = Base.extend({
   PANELS: function() {
     return $("#cdfdd-panels");
   },
-  
+
   // The captured number is the last version where the property was defined.
   DISCONTINUED_PROP_PATTERN: /^V(\d+)\s*-/
 });
 
 
 // Panel
-
 var Panel = Base.extend({
 
   id: "",
@@ -1454,13 +1583,14 @@ var Panel = Base.extend({
   init: function() {
     this.logger.info("Initializing panel " + name);
 
-    if ($("#panel-" + this.id).length == 0) {
+    if($("#panel-" + this.id).length == 0) {
       CDFDD.PANELS().append(this.getHtml());
     }
   },
 
   switchTo: function() {
     this.logger.debug("Switching to " + this.name);
+    CDFDD.selectedPanelId = this.id;
     $("div." + Panel.GUID).hide();
     $("div#panel-" + this.id).show();
   },
@@ -1471,15 +1601,13 @@ var Panel = Base.extend({
 
   getHtml: function() {
 
-    return '\n' +
-      '     <div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
-      '     <div class="panel-content">' + this.getContent() + '</div> \n' +
-      '     </div>';
-    //'<h2 class="panel-title">'+this.name+'</h2> '
+    return '' +
+        '<div id="panel-' + this.id + '" class="span-24 last ' + Panel.GUID + '">\n' +
+        ' <div class="panel-content">' + this.getContent() + '</div>\n' +
+        '</div>\n';
   },
 
   getContent: function() {
-
     return '<span class="highlight">Not done yet</span>';
   },
 
@@ -1489,8 +1617,6 @@ var Panel = Base.extend({
   getId: function() {
     return this.id;
   }
-
-
 
 }, {
   GUID: "cdfdd-panel",
@@ -1507,7 +1633,7 @@ var Panel = Base.extend({
   getRowPropertyValue: function(row, propertyName) {
     var output = "";
     $.each(row.properties, function(i, property) {
-      if (property.name == propertyName) {
+      if(property.name == propertyName) {
         output = property.value;
         return false;
       }
@@ -1527,19 +1653,18 @@ var Panel = Base.extend({
     var a = $(doc);
     var myIdx = a.prevAll("a").length;
     a.parent().find("img").each(function(i, x) {
-      if (i == myIdx) {
+      if(i == myIdx) {
         $(x).attr("src", $(x).attr("src").replace(/(.*)\/X?(.*)/, "$1/X$2"));
       }
     });
   },
-
 
   setHover: function(comp) {
     var el = $(comp);
     var src = el.attr("src");
 
     var xPos = src.search("/X");
-    if (xPos != -1) { //only hover disabled
+    if(xPos != -1) { //only hover disabled
       src = src.slice(0, xPos) + "/" + src.slice(xPos + 2); //"/X".length
       el.attr("src", src.slice(0, src.length - ".png".length) + "_mouseover.png");
     }
@@ -1550,7 +1675,7 @@ var Panel = Base.extend({
     var src = el.attr("src");
 
     var hPos = src.search("_mouseover");
-    if (hPos != -1) { //back to disabled if on hover
+    if(hPos != -1) { //back to disabled if on hover
       //set disabled (X)
       src = src.replace(/(.*)\/X?(.*)/, "$1/X$2");
       //remove _hover
@@ -1562,7 +1687,6 @@ var Panel = Base.extend({
 
 
 // Logger
-
 var Logger = Base.extend({
 
   ERROR: 0,
@@ -1578,7 +1702,7 @@ var Logger = Base.extend({
   },
 
   log: function(level, str) {
-    if (cdfddLogEnabled && level <= cdfddLogLevel && typeof console != 'undefined') {
+    if(cdfddLogEnabled && level <= cdfddLogLevel && typeof console != 'undefined') {
       console.log(" - [" + this.name + "] " + this.logDescription[level] + ": " + str);
     }
   },
@@ -1594,35 +1718,34 @@ var Logger = Base.extend({
   debug: function(str) {
     this.log(this.DEBUG, str);
   }
-
 });
 
 
 // Utility functions
-
 var CDFDDUtils = Base.extend({}, {
-    ev: function(v) {
-      return (typeof v === 'function' ? v() : v);
-    },
-            
-    getProperty: function(stub, name) {
-      var result;
-      if(!stub.properties) { return null; }
+  ev: function(v) {
+    return (typeof v === 'function' ? v() : v);
+  },
 
-      $.each(stub.properties,function(i, p) {
-        if(p.name === name){
-          result = p;
-          return false;
-        }
-      });
-      
-      return result;
+  getProperty: function(stub, name) {
+    var result;
+    if(!stub.properties) {
+      return null;
     }
+
+    $.each(stub.properties, function(i, p) {
+      if(p.name === name) {
+        result = p;
+        return false;
+      }
+    });
+
+    return result;
+  }
 });
 
 var cdfdd;
 $(function() {
-
 
   cdfdd = new CDFDD();
   cdfdd.load();
@@ -1633,40 +1756,40 @@ $(function() {
   // wizard.init();
 
   // Extend jeditable
-    /*
-     * Jeditable - jQuery in place edit plugin
-     *
-     * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
-     *
-     * Licensed under the MIT license:
-     *   http://www.opensource.org/licenses/mit-license.php
-     *
-     * Project home:
-     *   http://www.appelsiini.net/projects/jeditable
-     *
-     * Based on editable by Dylan Verheul <dylan_at_dyve.net>:
-     *    http://www.dyve.net/jquery/?editable
-     *
-     * The MIT License (MIT)
-     * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
-     * Permission is hereby granted, free of charge, to any person obtaining a copy
-     * of this software and associated documentation files (the "Software"), to deal
-     * in the Software without restriction, including without limitation the rights
-     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-     * copies of the Software, and to permit persons to whom the Software is
-     * furnished to do so, subject to the following conditions:
-     
-     * The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software.
-        
-     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-     * THE SOFTWARE.
-     */
+  /*
+   * Jeditable - jQuery in place edit plugin
+   *
+   * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
+   *
+   * Licensed under the MIT license:
+   *   http://www.opensource.org/licenses/mit-license.php
+   *
+   * Project home:
+   *   http://www.appelsiini.net/projects/jeditable
+   *
+   * Based on editable by Dylan Verheul <dylan_at_dyve.net>:
+   *    http://www.dyve.net/jquery/?editable
+   *
+   * The MIT License (MIT)
+   * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul
+   * Permission is hereby granted, free of charge, to any person obtaining a copy
+   * of this software and associated documentation files (the "Software"), to deal
+   * in the Software without restriction, including without limitation the rights
+   * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   * copies of the Software, and to permit persons to whom the Software is
+   * furnished to do so, subject to the following conditions:
+
+   * The above copyright notice and this permission notice shall be included in
+   * all copies or substantial portions of the Software.
+
+   * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   * THE SOFTWARE.
+   */
   $.editable.types.selectMulti = {
     element: function(settings, original) {
       var select = $('<select multiple="multiple" />');
@@ -1675,17 +1798,17 @@ $(function() {
     },
     content: function(data, settings, original) {
       // If it is string assume it is an array.
-      if (String == data.constructor) {
+      if(String == data.constructor) {
         eval('var json = ' + data);
       } else {
         // Otherwise assume it is a hash already.
         var json = data;
       }
-      for (var key in json) {
-        if (!json.hasOwnProperty(key)) {
+      for(var key in json) {
+        if(!json.hasOwnProperty(key)) {
           continue;
         }
-        if ('selected' == key) {
+        if('selected' == key) {
           continue;
         }
         var option = $('<option />').val(key).append(json[key]);
@@ -1699,30 +1822,31 @@ $(function() {
         _selectedHash[val] = true
       });
       $('select', this).children().each(function() {
-        if (_selectedHash[$(this).val()] ||
-          $(this).text() == $.trim(original.revert)) {
+        if(_selectedHash[$(this).val()] ||
+            $(this).text() == $.trim(original.revert)) {
           $(this).attr('selected', 'selected');
         }
       });
       $('select', this).multiSelect({
         oneOrMoreSelected: "*"
-      }, function() {});
+      }, function() {
+      });
     }
   };
 
-    /* End Jeditable attribution */
-    /*!
-     * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-     * 
-     * This software was developed by Webdetails and is provided under the terms
-     * of the Mozilla Public License, Version 2.0, or any later version. You may not use
-     * this file except in compliance with the license. If you need a copy of the license,
-     * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-     *
-     * Software distributed under the Mozilla Public License is distributed on an "AS IS"
-     * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-     * the license for the specific language governing your rights and limitations.
-    */
+  /* End Jeditable attribution */
+  /*!
+   * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+   * 
+   * This software was developed by Webdetails and is provided under the terms
+   * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+   * this file except in compliance with the license. If you need a copy of the license,
+   * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+   *
+   * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+   * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+   * the license for the specific language governing your rights and limitations.
+   */
 
   // Remove bug in position() of multipleselect
   $.extend($.fn, {
@@ -1739,11 +1863,10 @@ $(function() {
       // Position it
       // The following line overrides the default
       //var offset = $(this).closes("td").position();
-      var offset = []
+      var offset = [];
       ph.css({
         top: offset.top + t.outerHeight() + 'px'
-      })
-        .css({
+      }).css({
         left: offset.left + 'px'
       });
 
@@ -1766,21 +1889,20 @@ $(function() {
 
 });
 
-
 templates = {};
-templates.savePulldown = Mustache.compile(
-  "<ul class='controlOptions'>" +
-  " <li class='item popup'>Save As Dashboard</li>" +
-  " <li class='item popup'>Save As Widget</li>" +
-  "</ul>");
+templates.savePulldown =
+        "<ul class='controlOptions'>" +
+        " <li class='item popup'>Save As Dashboard</li>" +
+        " <li class='item popup'>Save As Widget</li>" +
+        "</ul>";
 
-templates.saveAsWidget = Mustache.compile(
-  '<h2>Save as Widget:</h2><hr/>\n' +
-  ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
-  ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"></input>\n' +
-  ' <hr class="filexplorerhr"/>\n' +
-  ' <span class="folderexplorerextralabel" >-Extra Information-</span><br/>\n' +
-  ' <span class="folderexplorerextralabels" >Title:</span>' +
-  ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"></input><br/>\n' +
-  ' <span class="folderexplorerextralabels" >Description:</span>' +
-  ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"></input>');
+templates.saveAsWidget =
+        '<h2>Save as Widget:</h2><hr/>\n' +
+        ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
+        ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"/>\n' +
+        ' <hr class="filexplorerhr"/>\n' +
+        ' <span class="folderexplorerextralabel" >-Extra Information-</span><br/>\n' +
+        ' <span class="folderexplorerextralabels" >Title:</span>' +
+        ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"/><br/>\n' +
+        ' <span class="folderexplorerextralabels" >Description:</span>' +
+        ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"/>';

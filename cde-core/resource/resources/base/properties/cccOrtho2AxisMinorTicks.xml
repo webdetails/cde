@@ -7,7 +7,7 @@
     <Tooltip>Indicates if minor ticks are shown between major ticks (applies to continuous axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>355</Order>
+    <Order>357</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -30,11 +30,21 @@ PreviewRequests = {
   }
 };
 
+SaveRequests = {
+  saveSettings: function() {}
+};
+
 pluginUrl = "/pentaho/plugin/pentaho-cdf-dd/api";
 
 CDFDDFileName = "test.cdfde";
 
-Dashboards = {};
+Dashboards = {
+    i18nSupport: {
+      prop: function(name) {
+        return name;
+      }
+    }
+};
 
 Mustache = {
   compile: function () {}

@@ -273,6 +273,7 @@ var NewMapComponent = (function (){
     ph: undefined, //perhaps this is not needed
     mapEngine: undefined, // points to one instance of a MapEngine object
     values: undefined,
+    locationResolver: undefined, // addIn used to process location
     API_KEY: false, // API KEY for map services such as Google Maps
     // Properies defined in CDE
     //shapeDefinition: undefined,
@@ -713,24 +714,30 @@ var NewMapComponent = (function (){
           }
         }
       });
-      this.on('shape:mouseout', function(event){
-        // Dashboards.log('Shape mouseout');
-        if ( _.isFunction(myself.shapeMouseOut) ){
-          var result = myself.shapeMouseOut(event);
-          if (result){
-            event.draw(_.defaults(result, event.style) );
-          } else {
-            event.draw( event.style );
-          }
-        } else if (myself.shapeMouseOver){
-          event.draw( event.style ); // restore original style
+
+      this.on('shape:mouseout', function(event) {
+        //Dashboards.log('Shape mouseout');
+        var result = {};
+        if (_.isFunction(myself.shapeMouseOut)) {
+          result = myself.shapeMouseOut(event);
         }
+        if (event.feature == event.feature.layer.selectedFeatures[0]) {
+          event.draw(_.defaults(result, event.raw.feature.attributes.clickSelStyle));
+        } else if (_.size(result) > 0) {
+          event.draw(_.defaults(result, event.style));
+        } else if (myself.shapeMouseOver) {
+          event.draw(event.style);
+        }
+
       });
+
       this.on('shape:click', function(event){
         if ( _.isFunction(myself.shapeMouseClick) ){
           var result = myself.shapeMouseClick(event);
           if (result){
-            event.draw( _.defaults(result, event.style) );
+            var selStyle = _.defaults(result, event.style);
+            event.raw.feature.attributes.clickSelStyle = selStyle;
+            event.draw( selStyle );
           }
         }
       });
@@ -917,7 +924,7 @@ var NewMapComponent = (function (){
       state.continuationFunction = function (location) {
         myself.renderMarker(location, data, mapping, position);
       };
-      addIn.call(target, state, this.getAddInOptions("LocationResolver",addIn.name));
+      addIn.call(target, state, this.getAddInOptions("LocationResolver", addIn.getName()));
     },
 
     getMapping: function(values) {

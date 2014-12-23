@@ -26,6 +26,8 @@ define([
     content: undefined,
     cancel: undefined,
     $overlay: undefined,
+    popupClass: undefined,
+    popupOverlayClass: undefined,
     
     /* // Default settings
     gravity: undefined,
@@ -40,6 +42,9 @@ define([
       this.content.appendTo(this.ph);
       this.ph.hide();
       this.ph.addClass('popupComponent');
+      if(this.popupClass) {
+        this.ph.addClass(this.popupClass);
+      }
       this.cancel = $("<a>&nbsp;</a>");
       this.cancel.addClass("close").click(function(){
         myself.hide();
@@ -238,6 +243,9 @@ define([
         // Define an overlay so that we can click
         if(!this.$overlay){
           this.$overlay = $('<div id="popupComponentOverlay"></div>');
+          if(this.popupOverlayClass) {
+            this.$overlay.addClass(this.popupOverlayClass);
+          }
         }
         this.$overlay.appendTo("body").click(function(event){
           event.stopPropagation();

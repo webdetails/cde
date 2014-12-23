@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccEmptySlicesLabel</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>emptySlicesLabel</Description>
+    <Tooltip>Defines a label to use for empty slices.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>298</Order>
+    <Advanced>false</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -42,17 +42,10 @@ describe("Table Operations #", function() {
     //indexManager.setIndex(rowIndex);
   };
 
-  var populate = function(tableModel) {
+  var populate = function(tableModel, dataSet) {
     //Populate data for tableModel
-    var rowData = [
-      { 'id': 'first', 'parent': "UnIqEiD", 'type': "LayoutRow", properties: [{ 'name': "name", 'value': "first" }] },
-      { 'id': 'first-child', 'parent': "first", 'type': "LayoutColumn", properties: [{ 'name': "name", 'value': "first-child" }] },
-      { 'id': 'first-child-2', 'parent': "first", 'type': "LayoutColumn", properties: [{ 'name': "name", 'value': "first-child-2" }] },
-      { 'id': 'first-child-2-child', 'parent': "first-child-2", 'type': "LayoutRow", properties: [{ 'name': "name", 'value': "first-child-2-child" }] },
-      { 'id': 'second', 'parent': "UnIqEiD", 'type': "LayoutRow", properties: [{ 'name': "name", 'value': "second" }] }
-    ];
-    tableModel.setData(rowData);
-
+    dataSet = _.extend([], dataSet);
+    tableModel.setData(dataSet);
   };
 
   //Helpers
@@ -63,7 +56,7 @@ describe("Table Operations #", function() {
     initTableManager('TableManager');
     initTableModel('TableModel');
     initIndexManager(tableModel);
-    populate(tableModel, indexManager);
+    populate(tableModel, exampleData_2);
     done();
   });
 

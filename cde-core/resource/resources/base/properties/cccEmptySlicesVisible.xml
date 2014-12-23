@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccEmptySlicesVisible</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>emptySlicesVisible</Description>
+    <Tooltip>Indicates if empty slices should be shown.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>299</Order>
+    <Advanced>false</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

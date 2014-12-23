@@ -354,10 +354,11 @@ define([
       masterDiv.append(imgDiv);
       
       $.fancybox({
-        type:"html",
+        type: "html",
+        closeBtn: true,
         content: masterDiv,
-        width:totalWidth ,
-        height: this.chartComponent.chartDefinition.height  + 60
+        width: totalWidth,
+        height: this.chartComponent.chartDefinition.height + 60
       });
 
     }

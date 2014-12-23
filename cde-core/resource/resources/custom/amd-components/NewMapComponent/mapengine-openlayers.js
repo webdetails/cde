@@ -117,9 +117,10 @@ define([
     },
 
     wrapEvent: function(event, featureType) {
-      var coords = this.map.getLonLatFromPixel(
-        this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy)
-            .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326'));
+      var lastXy = this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy || {x: undefined, y: undefined};
+      var coords = this.map.getLonLatFromPixel(lastXy)
+          .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326'));
+
       var feature = event.feature.layer.getFeatureById(event.feature.id);
       var myself = this;
       return {
@@ -361,16 +362,60 @@ define([
         renderIntent: "temporary",
         eventListeners: {
           featurehighlighted: event_relay,
-          featureunhighlighted:  event_relay,
+          featureunhighlighted: event_relay,
           featureselected: event_relay
+        },
+        // this version of OpenLayers has issues with the outFeature function
+        // this version of the function patches those issues
+        // code from -> http://osgeo-org.1560.x6.nabble.com/SelectFeature-outFeature-method-tt3890333.html#a4988237
+        outFeature: function(feature) {
+          if(this.hover) {
+            if(this.highlightOnly) {
+              // we do nothing if we're not the last highlighter of the 
+              // feature 
+              if(feature._lastHighlighter == this.id) {
+                // if another select control had highlighted the feature before 
+                // we did it ourself then we use that control to highlight the 
+                // feature as it was before we highlighted it, else we just 
+                // unhighlight it 
+                if(feature._prevHighlighter &&
+                  feature._prevHighlighter != this.id) {
+
+                  delete feature._lastHighlighter;
+
+                  var control = this.map
+                    .getControl(feature._prevHighlighter);
+
+                  if(control) {
+                    control.highlight(feature);
+                    // THIS IS ADDED BY ME 
+                    this.events.triggerEvent(
+                      "featureunhighlighted",
+                      {feature: feature});
+                  }
+                } else {
+                  this.unhighlight(feature);
+                }
+              } else {
+                // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME                
+                this.events.triggerEvent(
+                  "featureunhighlighted",
+                  {feature: feature});
+              }
+            } else {
+              this.unselect(feature);
+            }
+          }
         }
       });
+
       this.map.addControl(hoverCtrl);
       hoverCtrl.activate();
 
-      var clickCtrl = new OpenLayers.Control.SelectFeature([this.markers, this.shapes], {
-        clickout: false
-      });
+      var clickCtrl = new OpenLayers.Control.SelectFeature(
+        [this.markers, this.shapes],
+        {clickout: false});
+
       this.map.addControl(clickCtrl);
       clickCtrl.activate();
 
@@ -386,8 +431,6 @@ define([
       });
 
       this.shapes.events.on({
-        featurehighlighted: function(e) {myself.mapComponent.trigger('shape:mouseover', myself.wrapEvent(e));},
-        featureunhighlighted:  function(e) {myself.mapComponent.trigger('shape:mouseout', myself.wrapEvent(e));},
         featureselected: function(e) {myself.mapComponent.trigger('shape:click', myself.wrapEvent(e));}
       });
 

@@ -1,3 +1,16 @@
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 /*********************
  * FILTER OPERATIONS *
  *********************/
@@ -11,7 +24,7 @@
 var FilterBlockModel = BaseModel.extend({}, {
   MODEL: 'FilterBlock',
 
-  getStub: function () {
+  getStub: function() {
 
     var _stub = {
       id: TableManager.generateGUID(),
@@ -54,10 +67,10 @@ BaseModel.registerModel(FilterRowModel);
 
 /* Filter Header */
 
-var FilterHeaderModel= BaseModel.extend({}, {
+var FilterHeaderModel = BaseModel.extend({}, {
   MODEL: 'FilterHeader',
 
-  getStub: function () {
+  getStub: function() {
 
     var _stub = {
       id: TableManager.generateGUID(),
@@ -75,173 +88,12 @@ var FilterHeaderModel= BaseModel.extend({}, {
 });
 BaseModel.registerModel(FilterHeaderModel);
 
-/*
- * OPERATIONS
- */
-
-/*Filter Block */
-
-var LayoutAddFilterBlockOperation = AddRowOperation.extend({
-
-  id: "LAYOUT_ADD_FILTER_BLOCK_MODEL",
-  types: [],
-  name: "Add a Filter Block",
-  description: "Add a block in which to add your filters",
-
-  constructor: function () {
-    this.logger = new Logger("LayoutAddFilterBlockOperation");
-  },
-
-  execute: function (tableManager) {
-    var _stub = FilterBlockModel.getStub();
-    					
-    var indexManager = tableManager.getTableModel().getIndexManager();
-    
-    var insertAtIdx = 0;
-    
-    tableManager.insertAtIdx(_stub,insertAtIdx);
-    
-    // edit the new entry - we know the name is on the first line
-    if( typeof tableManager.getLinkedTableManager() != 'undefined' ){
-      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
-    }
-  }
-});
-
-CellOperations.registerOperation(new LayoutAddFilterBlockOperation());
-
-/* Filter Row */
-
-var LayoutAddFilterRowOperation = AddRowOperation.extend({
-
-  id: "LAYOUT_ADD_PARAMETER_ROW",
-  types: [FilterBlockModel.MODEL,FilterHeaderModel.MODEL,FilterRowModel.MODEL],
-  name: "Add Filter Row",
-  description: "Add a new row for a parameter selector",
-
-  constructor: function () {
-    this.logger = new Logger("LayoutAddFilterRowOperation");
-  },
-
-  execute: function (tableManager) {
-    var insertAtIdx;
-    
-    /* If a cell is selected, we want to insert the carousel immediately after that cell.
-     * If not, we'll append it at the of the list.
-     */
-    if (tableManager.isSelectedCell) {
-      var indexManager = tableManager.getTableModel().getIndexManager();
-      var rowIdx, colIdx, rowId, rowType;
-      rowIdx = tableManager.getSelectedCell()[0];
-      colIdx = tableManager.getSelectedCell()[1];
-      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-      _stub = FilterRowModel.getStub();
-
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined') {
-        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-      } else {
-        insertAtIdx = nextSibling.index;
-      }
-
-      if(rowType == FilterHeaderModel.MODEL || rowType == FilterRowModel.MODEL) {
-        _stub.parent = indexManager.getIndex()[rowId].parent;
-      }
-      else if (rowType == FilterBlockModel.MODEL) {
-	_stub.parent = rowId;
-      }
-      else{
-        // insert at the end
-	insertAtIdx = -1;
-      }
-    } else {
-      insertAtIdx = tableManager.getTableModel().getData().length;
-
-    }
-    this.logger.debug("Inserting row at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
-  }
-});
-
-CellOperations.registerOperation(new LayoutAddFilterRowOperation());
-
-/* Filter Header */
-
-var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
-
-  id: "LAYOUT_ADD_FILTER_HEADER",
-  types: [FilterBlockModel.MODEL,FilterHeaderModel.MODEL,FilterRowModel.MODEL],
-  name: "Add Filter Header",
-  description: "Add a new group header for the filters panel",
-
-  constructor: function () {
-    this.logger = new Logger("LayoutAddFilterHeaderOperation");
-  },
-
-  execute: function (tableManager) {
-     var insertAtIdx;
-    
-    /* If a cell is selected, we want to insert the carousel immediately after that cell.
-     * If not, we'll append it at the of the list.
-     */
-    if (tableManager.isSelectedCell) {
-      var indexManager = tableManager.getTableModel().getIndexManager();
-      var rowIdx, colIdx, rowId, rowType;
-      rowIdx = tableManager.getSelectedCell()[0];
-      colIdx = tableManager.getSelectedCell()[1];
-      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
-      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-      _stub = FilterHeaderModel.getStub();
-
-      var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined') {
-        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
-      } else {
-        insertAtIdx = nextSibling.index;
-      }
-
-      if(rowType == FilterHeaderModel.MODEL || rowType == FilterRowModel.MODEL) {
-        _stub.parent = indexManager.getIndex()[rowId].parent;
-      }
-      else if (rowType == FilterBlockModel.MODEL) {
-	_stub.parent = rowId;
-      }
-      else{
-        // insert at the end
-	insertAtIdx = -1;
-      }
-    } else {
-      insertAtIdx = tableManager.getTableModel().getData().length;
-
-    }
-    this.logger.debug("Inserting row at " + insertAtIdx);
-    tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
-  }
-});
-
-CellOperations.registerOperation(new LayoutAddFilterHeaderOperation());
-
-/***********************
- * CAROUSEL OPERATIONS *
- ***********************/
-
-/*
- * CAROUSEL
- */
+/* CAROUSEL */
 
 var LayoutCarouselModel = BaseModel.extend({}, {
   MODEL: 'LayoutCarousel',
 
-  getStub: function () {
+  getStub: function() {
 
     var _stub = {
       id: TableManager.generateGUID(),
@@ -259,6 +111,198 @@ var LayoutCarouselModel = BaseModel.extend({}, {
 });
 BaseModel.registerModel(LayoutCarouselModel);
 
+/* CAROUSEL ITEM */
+
+var LayoutCarouselItemModel = BaseModel.extend({}, {
+  MODEL: 'LayoutCarouselItem',
+  getStub: function () {
+    var _stub = {
+      id: TableManager.generateGUID(),
+      type: LayoutCarouselItemModel.MODEL,
+      typeDesc: "Carousel Item",
+      parent: IndexManager.ROOTID,
+      properties: []
+    };
+    _stub.properties.push(PropertiesManager.getProperty("name"));
+    _stub.properties.push(PropertiesManager.getProperty("title"));
+    return _stub;
+  }
+});
+BaseModel.registerModel(LayoutCarouselItemModel);
+
+/*
+ * OPERATIONS
+ */
+
+/*Filter Block */
+
+var LayoutAddFilterBlockOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_FILTER_BLOCK_MODEL",
+  types: [],
+  name: "Add a Filter Block",
+  description: "Add a block in which to add your filters",
+
+  models: [FilterBlockModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
+  constructor: function() {
+    this.logger = new Logger("LayoutAddFilterBlockOperation");
+  },
+
+  canExecute: function(tableManager) {
+    return true;
+  },
+
+  execute: function(tableManager) {
+    var _stub = FilterBlockModel.getStub();
+
+    var indexManager = tableManager.getTableModel().getIndexManager();
+
+    var insertAtIdx = 0;
+
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+
+    // edit the new entry - we know the name is on the first line
+    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
+    }
+  }
+});
+CellOperations.registerOperation(new LayoutAddFilterBlockOperation());
+
+/* Filter Row */
+
+var LayoutAddFilterRowOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_PARAMETER_ROW",
+  types: [
+    FilterBlockModel.MODEL, FilterHeaderModel.MODEL, FilterRowModel.MODEL
+  ],
+  name: "Add Filter Row",
+  description: "Add a new row for a parameter selector",
+
+  models: [FilterRowModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
+  constructor: function() {
+    this.logger = new Logger("LayoutAddFilterRowOperation");
+  },
+
+  execute: function(tableManager) {
+    var insertAtIdx;
+
+    /* If a cell is selected, we want to insert the carousel immediately after that cell.
+     * If not, we'll append it at the of the list.
+     */
+    if (tableManager.isSelectedCell) {
+      var indexManager = tableManager.getTableModel().getIndexManager();
+      var rowIdx, colIdx, rowId, rowType, _stub;
+      rowIdx = tableManager.getSelectedCell()[0];
+      colIdx = tableManager.getSelectedCell()[1];
+      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+      _stub = FilterRowModel.getStub();
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if(typeof nextSibling == 'undefined') {
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      } else {
+        insertAtIdx = nextSibling.index;
+      }
+
+      if(rowType == FilterHeaderModel.MODEL || rowType == FilterRowModel.MODEL) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else if(rowType == FilterBlockModel.MODEL) {
+        _stub.parent = rowId;
+      } else {
+        // insert at the end
+        insertAtIdx = -1;
+      }
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+
+    }
+    this.logger.debug("Inserting row at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+    // edit the new entry - we know the name is on the first line
+    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
+    }
+  }
+});
+CellOperations.registerOperation(new LayoutAddFilterRowOperation());
+
+/* Filter Header */
+
+var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
+
+  id: "LAYOUT_ADD_FILTER_HEADER",
+  types: [
+    FilterBlockModel.MODEL, FilterHeaderModel.MODEL, FilterRowModel.MODEL
+  ],
+  name: "Add Filter Header",
+  description: "Add a new group header for the filters panel",
+
+  models: [FilterHeaderModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
+  constructor: function() {
+    this.logger = new Logger("LayoutAddFilterHeaderOperation");
+  },
+
+  execute: function(tableManager) {
+    var insertAtIdx;
+
+    /* If a cell is selected, we want to insert the carousel immediately after that cell.
+     * If not, we'll append it at the of the list.
+     */
+    if (tableManager.isSelectedCell) {
+      var indexManager = tableManager.getTableModel().getIndexManager();
+      var rowIdx, colIdx, rowId, rowType, _stub;
+      rowIdx = tableManager.getSelectedCell()[0];
+      colIdx = tableManager.getSelectedCell()[1];
+      rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
+      rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
+      _stub = FilterHeaderModel.getStub();
+
+      var nextSibling = indexManager.getNextSibling(rowId);
+      if(typeof nextSibling == 'undefined') {
+        insertAtIdx = indexManager.getLastChild(rowId).index + 1;
+      } else {
+        insertAtIdx = nextSibling.index;
+      }
+
+      if(rowType == FilterHeaderModel.MODEL || rowType == FilterRowModel.MODEL) {
+        _stub.parent = indexManager.getIndex()[rowId].parent;
+      } else if(rowType == FilterBlockModel.MODEL) {
+        _stub.parent = rowId;
+      } else {
+        // insert at the end
+        insertAtIdx = -1;
+      }
+    } else {
+      insertAtIdx = tableManager.getTableModel().getData().length;
+
+    }
+    this.logger.debug("Inserting row at " + insertAtIdx);
+    tableManager.insertAtIdx(_stub, insertAtIdx);
+    // edit the new entry - we know the name is on the first line
+    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
+      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
+    }
+  }
+});
+CellOperations.registerOperation(new LayoutAddFilterHeaderOperation());
+
+/***********************
+ * CAROUSEL OPERATIONS *
+ ***********************/
+
+/* CAROUSEL */
 
 var LayoutAddCarouselOperation = AddRowOperation.extend({
 
@@ -267,17 +311,25 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
   name: "Add Carousel",
   description: "Add a new carousel that cycles between components",
 
-  constructor: function () {
+  models: [LayoutCarouselModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
+  constructor: function() {
     this.logger = new Logger("LayoutAddCarouselOperation");
   },
 
-  execute: function (tableManager) {
+  canExecute: function(tableManager) {
+    return true;
+  },
+
+  execute: function(tableManager) {
     var insertAtIdx;
-    
+
     /* If a cell is selected, we want to insert the carousel immediately after that cell.
      * If not, we'll append it at the of the list.
      */
-    if (tableManager.isSelectedCell) {
+    if(tableManager.isSelectedCell) {
       var indexManager = tableManager.getTableModel().getIndexManager();
       var rowIdx, colIdx, rowId, rowType;
       rowIdx = tableManager.getSelectedCell()[0];
@@ -286,7 +338,7 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
       rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx);
 
       var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined') {
+      if(typeof nextSibling == 'undefined') {
         insertAtIdx = indexManager.getLastChild(rowId).index + 1;
       } else {
         insertAtIdx = nextSibling.index;
@@ -299,68 +351,49 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
     // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
+    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
       $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
     }
   }
 });
-
 CellOperations.registerOperation(new LayoutAddCarouselOperation());
 
-/*
- * CAROUSEL ITEM
- */
-
-var LayoutCarouselItemModel = BaseModel.extend({}, {
-  MODEL: 'LayoutCarouselItem',
-
-  getStub: function () {
-
-    var _stub = {
-      id: TableManager.generateGUID(),
-      type: LayoutCarouselItemModel.MODEL,
-      typeDesc: "Carousel Item",
-      parent: IndexManager.ROOTID,
-      properties: []
-    };
-
-    _stub.properties.push(PropertiesManager.getProperty("name"));
-    _stub.properties.push(PropertiesManager.getProperty("title"));
-
-    return _stub;
-  }
-});
-BaseModel.registerModel(LayoutCarouselItemModel);
-
+/* CAROUSEL ITEM */
 
 var LayoutAddCarouselItemOperation = AddRowOperation.extend({
 
   id: "LAYOUT_ADD_CAROUSEL_ITEM",
-  types: [LayoutCarouselModel.MODEL],
+  types: [
+    LayoutCarouselModel.MODEL
+  ],
   name: "Add Carousel Item",
   description: "Add a new item to a carousel",
 
-  constructor: function () {
+  models: [FilterBlockModel.MODEL],
+  canMoveInto: [],
+  canMoveTo: [],
+
+  constructor: function() {
     this.logger = new Logger("LayoutAddCarouselItemOperation");
   },
 
-  execute: function (tableManager) {
+  execute: function(tableManager) {
     var insertAtIdx;
-    
+
     /* If a cell is selected, we want to insert the carousel immediately after that cell.
      * If not, we'll append it at the of the list.
      */
-    if (tableManager.isSelectedCell) {
+    if(tableManager.isSelectedCell) {
       var indexManager = tableManager.getTableModel().getIndexManager();
       var rowIdx, colIdx, rowId, rowType;
       rowIdx = tableManager.getSelectedCell()[0];
       colIdx = tableManager.getSelectedCell()[1];
       rowId = tableManager.getTableModel().getEvaluatedId(rowIdx);
       rowType = tableManager.getTableModel().getEvaluatedRowType(rowIdx),
-      _stub = LayoutCarouselItemModel.getStub();
+          _stub = LayoutCarouselItemModel.getStub();
 
       var nextSibling = indexManager.getNextSibling(rowId);
-      if (typeof nextSibling == 'undefined') {
+      if(typeof nextSibling == 'undefined') {
         insertAtIdx = indexManager.getLastChild(rowId).index + 1;
       } else {
         insertAtIdx = nextSibling.index;
@@ -368,26 +401,23 @@ var LayoutAddCarouselItemOperation = AddRowOperation.extend({
 
       if(rowType == LayoutCarouselItemModel.MODEL) {
         _stub.parent = indexManager.getIndex()[rowId].parent;
-      }
-      else if (rowType == LayoutCarouselModel.MODEL) {
-	_stub.parent = rowId;
-      }
-      else{
+      } else if (rowType == LayoutCarouselModel.MODEL) {
+        _stub.parent = rowId;
+      } else {
         // insert at the end
-	insertAtIdx = -1;
+        insertAtIdx = -1;
       }
     } else {
       insertAtIdx = tableManager.getTableModel().getData().length;
-
     }
+
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
     // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
+    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
       $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
     }
   }
 });
-
 CellOperations.registerOperation(new LayoutAddCarouselItemOperation());
 

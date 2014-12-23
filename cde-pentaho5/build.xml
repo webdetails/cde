@@ -31,6 +31,9 @@
   <!-- Import subfloor.xml which contains all the default tasks -->
   <import file="../build-res/subfloor-pkg.xml" id="subfloor-pkg"/>
   <import file="../build-res/subfloor-js.xml"/>
+  
+  <mkdir dir="${js.module.script.dir}"/>
+  <mkdir dir="${js.module.script.agg.dir}"/>
 
   <!--
       AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
@@ -168,6 +171,7 @@
     <copy todir='${stage.dir}/${plugin.name}'>
       <fileset dir='${core-resource.dir}'>
         <exclude name="${includes.name}"/>
+        <exclude name="**/OlapSelector/test/**"/>
       </fileset>
     </copy>
 
@@ -231,8 +235,10 @@
       <fileset dir="${stage.dir}/${plugin.name}"/>
     </copy>
 
-    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled" 
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled"
           tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml" overwrite="true"/>
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml.disabled"
+          tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml" overwrite="true"/>
 
 
     <!-- create a zip file -->

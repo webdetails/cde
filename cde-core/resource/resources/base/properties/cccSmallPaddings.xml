@@ -7,7 +7,7 @@
     <Tooltip>The paddings of a small chart.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>458</Order>
+    <Order>461</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

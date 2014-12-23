@@ -5,4 +5,5 @@
         <description>@DASBOARD_DESCRIPTION@</description>
         <icon></icon>
 		<style></style>
+		<rendererType>bootstrap</rendererType>
 </cdf>
