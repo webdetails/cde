@@ -67,8 +67,8 @@ define([
         this.ph.remove();
       }
       
-      this.chartComponent = window["render_"+this.chartExportComponent];
-      this.dataComponent = window["render_"+this.dataExportComponent];
+      this.chartComponent = this.dashboard.getComponentByName("render_" + this.chartExportComponent);
+      this.dataComponent = this.dashboard.getComponentByName("render_" + this.dataExportComponent);
           
       this.ph = $('<div>');
       $("#" + this.htmlObject).empty();
