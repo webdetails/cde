@@ -50,4 +50,6 @@
 
   requirePaths['cde/components/ExportButtonComponent'] = prefix + '/exportButton/ExportButtonComponent';
 
+  requirePaths['cde/components/AjaxRequestComponent'] = prefix + '/AjaxRequestComponent/AjaxRequestComponent';
+
 })();

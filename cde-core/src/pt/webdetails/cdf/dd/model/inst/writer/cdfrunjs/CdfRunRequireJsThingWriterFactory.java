@@ -88,7 +88,7 @@ public class CdfRunRequireJsThingWriterFactory extends CdfRunJsThingWriterFactor
           return new CdfRunJsDateParameterComponentWriter();
         }
         if ( typeName.equals( "javascriptparameter" ) ) {
-          return new CdfRunJsExpressionParameterComponentWriter();
+          return new CdfRunRequireJsExpressionParameterComponentWriter();
         }
       }
 
