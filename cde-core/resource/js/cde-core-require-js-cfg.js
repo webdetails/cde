@@ -48,4 +48,6 @@
   requirePaths['cde/components/GoogleMapEngine'] = prefix + '/NewMapComponent/mapengine-google';
   requirePaths['cde/components/OpenLayersEngine'] = prefix + '/NewMapComponent/mapengine-openlayers';
 
+  requirePaths['cde/components/ExportButtonComponent'] = prefix + '/exportButton/ExportButtonComponent';
+
 })();
