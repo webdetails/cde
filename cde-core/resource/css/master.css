@@ -195,7 +195,6 @@ div.padder {
   padding: 5px;
 }
 
-
 div.cdfdd-toolbar-logo {
      background-image: url("../images/NAV/CDE_Header_Logo.png");
      font-size: 30px;
@@ -211,8 +210,6 @@ div.cdfdd-toolbar-logo {
 div.cdfdd-toolbar {
   text-align: center;
   height: 40px;
-  /*  padding-top:5px;*/
-  /*padding-bottom: 5px;*/
   position: fixed;
   top: 0;
   z-index: 1;
@@ -225,52 +222,59 @@ div.cdfdd-toolbar {
   min-width: 950px;
 }
 
-#cde-header.source-image {
-  width: 100%;
-  height: 100%;
-  /*position: absolute;*/
-  /*  top: 0;
-  left: 0;*/
+div.cdfdd-main, div.cdfdd-title-container,
+div.cdfdd-title, div.cdfdd-title-status {
+  float: left;
 }
 
-#cde-header {
-  z-index: -1;
-}
-
-div.cdfdd-preview, div.cdfdd-main, div.cdfdd-modes, div.cdfdd-logo {
-  /*background:#E2F0B7;*/
-  /*  padding-top:5px;*/
-  /*padding-bottom: 5px;*/
-  /* margin-top:31px;*/
-  /*  top:0;*/
-  /*  position: absolute;*/
-  top:31px;
-}
-
-
+div.cdfdd-modes-container, div.cdfdd-modes,
 div.cdfdd-preview {
-    float:right;
-    width: 102px;
-    position: relative;
-    top: 0;
-    right: 0;
-    left: 0;
+  float: right;
 }
 
-div.cdfdd-modes {
-  margin-right: 0;
-  position: relative;
-  top: 0;
-  right: 0;
-  min-width: 305px!important;
-  width: 305px;
+div.cdfdd-main, div.cdfdd-title, div.cdfdd-title-status {
+  margin-top:9px;
 }
 
 div.cdfdd-main {
-  margin-top:9px;
-  min-width: 440px;
-  width: 33%;
+  width: 335px;
 }
+
+div.cdfdd-title-container {
+  margin: 0 25px;
+  padding-left: 25px;
+  border-left: 1px solid #dddddd;
+  height: 100%;
+}
+
+div.cdfdd-title {
+  font-family: 'Open Sans Ligh', sans-serif;
+
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.cdfdd-title, div.cdfdd-title-status:after {
+  font-size: 13pt;
+  color: #7e7e7e;
+}
+
+div.cdfdd-title-status.dirtyStatus:after {
+  font-family: 'Open Sans Semibold', sans-serif;
+  content: '*';
+}
+
+div.cdfdd-modes-container {
+  min-width:260px;
+  height: 100%;
+}
+
+div.cdfdd-preview {
+  margin-left: 40px;
+}
+
 
 #keyboard_shortcuts_help {
   background-color: black;
@@ -1593,7 +1597,7 @@ h6 {font-size:1em;font-weight:bold;}
   position: relative;
   top: -17px;
   text-align: left;
-  width: 500px;
+  min-width: 350px;
 }
 
 .headerLinks .buttonImage {

@@ -227,7 +227,9 @@ var TableManager = Base.extend({
         tableManager.setDroppedOnId(dropId);
 
         var moveOperation = new MoveToOperation();
-        moveOperation.execute(tableManager);
+        var command = new RowOperationCommand(moveOperation, tableManager);
+
+        Commands.executeCommand(command);
       },
       over: function(event, ui) {
         tableManager.addExtraHoverStyles(ui.draggable, $(this));
@@ -356,8 +358,6 @@ var TableManager = Base.extend({
       _type = "Label";
     }
 
-    var _setExpression = tm.getColumnSetExpressions()[colIdx];
-
     var renderer = this.cellRendererPool[_type];
     if(!renderer) {
       var RendererClass = window[_type + "Renderer"];
@@ -386,9 +386,13 @@ var TableManager = Base.extend({
     }
 
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value) {
-      _setExpression.apply(myself, [row, value]);
+      var oldValue = row.value;
+      if(oldValue != value) {
+        var command = new ChangePropertyCommand(myself, row, value);
+        Commands.executeCommand(command);
+      }
 
-      // Rerender this column
+      // Renderer this column
       tr.find("td:eq(" + colIdx + ")").remove();
       myself.renderColumn(tr, row, colIdx);
     }, options);
@@ -806,7 +810,10 @@ var TableManager = Base.extend({
   executeOperation: function(tableManagerId, idx) {
 
     var tableManager = TableManager.getTableManager(tableManagerId);
-    tableManager.getOperations()[idx].execute(tableManager);
+    var operation = tableManager.getOperations()[idx];
+    var command = new RowOperationCommand(operation, tableManager);
+
+    Commands.executeCommand(command);
   },
 
   globalInit: function() {

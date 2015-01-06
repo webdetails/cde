@@ -31,6 +31,7 @@ module.exports = function(config) {
       'resource/js/cdf-dd-wizardmanager.js',
       'resource/js/cdf-dd-propertiesmanager.js',
       'resource/js/cdf-dd.js',
+      'resource/js/cdf-dd-commands.js',
       'resource/js/cdf-dd-palletemanager.js',
       'resource/js/cdf-dd-tableoperations.js',
       'resource/js/cdf-dd-layout-mobile.js',
