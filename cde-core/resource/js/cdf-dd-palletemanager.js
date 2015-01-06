@@ -172,11 +172,12 @@ var PalleteManager = Base.extend({
 		executeEntry: function(palleteManagerId,id){
 			
 			var palleteManager = PalleteManager.getPalleteManager(palleteManagerId);
-			palleteManager.getEntries()[id].execute(palleteManager);
+			var entry = palleteManager.getEntries()[id];
+			var command = new EntryCommand(entry, palleteManager);
+
+			Commands.executeCommand(command);
 		}
-	});
-
-
+});
 
 var PalleteEntry = Base.extend({
 
