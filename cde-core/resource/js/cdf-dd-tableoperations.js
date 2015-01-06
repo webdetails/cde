@@ -532,9 +532,12 @@ var BaseOperation = Base.extend({
 
   checkAndExecute: function(tableManager) {
     var isPropertyTable = $('#' + tableManager.getId() + ' div[id*=properties]').length > 0;
-    if(this.canExecute(tableManager) && !isPropertyTable) {
+    var isExecutable = this.canExecute(tableManager) && !isPropertyTable;
+    if(isExecutable) {
       this.execute(tableManager);
     }
+
+    return isExecutable;
   },
 
   constructor: function() {
@@ -725,7 +728,7 @@ var MoveToOperation = BaseOperation.extend({
   },
 
   canExecute: function(tableManager) {
-    return false;
+    return true;
   },
 
   execute: function(tableManager) {

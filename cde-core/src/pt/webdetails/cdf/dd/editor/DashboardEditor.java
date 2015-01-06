@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.editor;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -77,6 +78,7 @@ public class DashboardEditor {
     tokens.put( CdeConstants.DESIGNER_HEADER_TAG, cdeDeps );
     tokens.put( CdeConstants.DESIGNER_STYLES_TAG, styleDeps );
     tokens.put( CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps );
+    tokens.put( CdeConstants.DASHBOARD_TITLE_TAG, getDashboardTitle( wcdfPath ) );
 
     try {
       final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "blueprint", debugMode, false, null, scheme );
@@ -165,5 +167,21 @@ public class DashboardEditor {
           + CdeEngine.getInstance().getEnvironment().getPluginId() + "/" );
     }
     return resource;
+  }
+
+  private static String getDashboardTitle( String wcdfPath ) throws IOException {
+    String title;
+
+    if ( wcdfPath.isEmpty() ) {
+      title = "New Dashboard";
+    } else {
+      DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );
+      if ( wcdf == null ) {
+        throw new FileNotFoundException( wcdfPath );
+      }
+      title = wcdf.getTitle();
+    }
+
+    return title;
   }
 }

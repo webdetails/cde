@@ -414,6 +414,8 @@ var SaveRequests = {
       try {
         if(result && result.status == "true") {
           myself.setDashboardWcdf(wcdf);
+          var title = wcdf.title;
+          $("div.cdfdd-title").empty().text(title).attr('title', title);
           // We need to reload the layout engine in case the rendererType changed
           cdfdd.layout.init();
           $.notifyBar({
@@ -444,6 +446,7 @@ var SaveRequests = {
         if(stripArgs.needsReload) {
           window.location.reload();
         } else {
+          CDFDDUtils.markAsClean();
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
             html: Dashboards.i18nSupport.prop("SaveDashboard.SAVE_SUCCESSFUL"),

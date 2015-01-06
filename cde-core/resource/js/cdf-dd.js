@@ -167,7 +167,9 @@ var CDFDD = Base.extend({
           case 38:
             if(e.shiftKey) { //shift + up
               var operation = new MoveUpOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //up
               activeTable.selectCellBefore();
             }
@@ -175,7 +177,9 @@ var CDFDD = Base.extend({
           case 40:
             if(e.shiftKey) { //shift+down
               var operation = new MoveDownOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //down
               activeTable.selectCellAfter();
             }
@@ -203,28 +207,38 @@ var CDFDD = Base.extend({
             if(e.ctrlKey) { return; }
             e.preventDefault();
             var operation = new LayoutAddRowOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 67: //c
             e.preventDefault();
             var operation = new LayoutAddColumnsOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 72: //h
             e.preventDefault();
             var operation = new LayoutAddHtmlOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 88:
             if(e.shiftKey) { //shift+x
               var operation = new DeleteOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
           case 68:
             if(e.shiftKey) { //shift+d
               var operation = new (activePanel.getDuplicateOperation())();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
         }
@@ -1768,6 +1782,17 @@ var CDFDDUtils = Base.extend({}, {
     });
 
     return result;
+  },
+
+  markAsClean: function() {
+    $('div.cdfdd-title-status').removeClass('dirtyStatus');
+    //$('div.cdfdd-title').removeClass('dirtyStatus');
+    Commands.cleanExecutedCommands();
+  },
+
+  markAsDirty: function() {
+    $('div.cdfdd-title-status').addClass('dirtyStatus');
+    //$('div.cdfdd-title').addClass('dirtyStatus');
   }
 });
 

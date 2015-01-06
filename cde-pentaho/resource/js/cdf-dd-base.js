@@ -345,6 +345,8 @@ var StylesRequests = {
       var json = eval("(" + result + ")");
       if(json.status == "true") {
         myself.setDashboardWcdf(wcdf);
+        var title = wcdf.title;
+        $("div.cdfdd-title").empty().text(title).attr('title', title);
         callback();
       } else {
         $.notifyBar({
@@ -394,6 +396,7 @@ var SaveRequests = {
         if(stripArgs.needsReload) {
           window.location.reload();
         } else {
+          CDFDDUtils.markAsClean();
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
             html: "Dashboard saved successfully",
