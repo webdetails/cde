@@ -26,29 +26,6 @@
     ]
    },
    {
-    "id": "55291303-7ccc-8404-9694-82a427f612a8",
-    "type": "LayoutResourceCode",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "AddInDefaults",
-      "type": "Id"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
-      "name": "resourceCode",
-      "value": "Dashboards.setAddInDefaults(\"Table\",\"colType\",\"sparkline\",\n{\n    fillColor:\"#aaaaaa\",\n    width: \"150\"\n}\n);",
-      "type": "Resource"
-     }
-    ]
-   },
-   {
     "id": "03a83220-159d-d841-c40d-0a04044f3e51",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
@@ -519,7 +496,7 @@
      },
      {
       "name": "html",
-      "value": "&nbsp;var render_ajaxRequest1 = new AjaxRequestComponent(dashboard, {<br>\n&nbsp;&nbsp;&nbsp;type: \"AjaxRequestComponent\",<br>\n&nbsp;&nbsp;&nbsp;name: \"render_ajaxRequest1\",<br>\n&nbsp;&nbsp;&nbsp;priority: 5,<br>\n&nbsp;&nbsp;&nbsp;url: \"http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic[...]ajaxRequest.cda&dataAccessId=sampleQuery\",<br>\n&nbsp;&nbsp;&nbsp;ajaxRequestType: \"json\",<br>\n&nbsp;&nbsp;&nbsp;executeAtStart: true,<br>\n&nbsp;&nbsp;&nbsp;asyncCall: true,<br>\n&nbsp;&nbsp;&nbsp;resultvar: \"param1\",<br>\n&nbsp;&nbsp;&nbsp;htmlObject: \"column1\",<br>\n&nbsp;&nbsp;&nbsp;parameters: [],<br>\n&nbsp;&nbsp;&nbsp;listeners: []<br>\n&nbsp;});<br>\n<br>\n ",
+      "value": "&nbsp;var render_ajaxRequest1 = {<br>\n&nbsp;&nbsp;&nbsp;type: \"AjaxRequestComponent\",<br>\n&nbsp;&nbsp;&nbsp;name: \"render_ajaxRequest1\",<br>\n&nbsp;&nbsp;&nbsp;priority: 5,<br>\n&nbsp;&nbsp;&nbsp;url: \"http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic[...]ajaxRequest.cda&dataAccessId=sampleQuery\",<br>\n&nbsp;&nbsp;&nbsp;ajaxRequestType: \"json\",<br>\n&nbsp;&nbsp;&nbsp;executeAtStart: true,<br>\n&nbsp;&nbsp;&nbsp;asyncCall: true,<br>\n&nbsp;&nbsp;&nbsp;resultvar: \"param1\",<br>\n&nbsp;&nbsp;&nbsp;htmlObject: \"column1\",<br>\n&nbsp;&nbsp;&nbsp;parameters: [],<br>\n&nbsp;&nbsp;&nbsp;listeners: []<br>\n&nbsp;};<br>\n<br>\n ",
       "type": "Html"
      },
      {
@@ -1014,13 +991,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
