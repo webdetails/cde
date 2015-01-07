@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-        <title>Ajax Request Reference</title>
-        <author></author>
-        <description></description>
-        <icon/>
-		<style>WDDocs</style>
-<rendererType>blueprint</rendererType></cdf>
+  <title>Ajax Request Reference</title>
+  <author></author>
+  <description></description>
+  <icon/>
+  <style>WDDocs</style>
+  <rendererType>blueprint</rendererType>
+</cdf>
