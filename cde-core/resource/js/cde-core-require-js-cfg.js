@@ -55,4 +55,6 @@
   requirePaths['cde/components/CggComponent'] = prefix + '/cgg/CggComponent';
   requirePaths['cde/components/CggDialComponent'] = prefix + '/cgg/CggDialComponent';
 
+  requirePaths['cde/components/DuplicateComponent'] = prefix + '/Duplicate/DuplicateComponent';
+
 })();
