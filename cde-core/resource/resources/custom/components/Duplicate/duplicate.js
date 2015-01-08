@@ -85,6 +85,6 @@ var DuplicateComponent = BaseComponent.extend({
   },
 
   clone: function(parameterRemap,componentRemap,htmlRemap) {
-    Dashboards.error("This function is deprecated. Please use targetComponent.clone(...), see BaseComponent in CDF (core.js) for more details.");
+    Dashboards.log("This function is deprecated. Please use targetComponent.clone(...), see BaseComponent in CDF (core.js) for more details.", "warn");
   }
 });
