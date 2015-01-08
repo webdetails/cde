@@ -84,7 +84,19 @@ var DuplicateComponent = BaseComponent.extend({
     }
   },
 
-  clone: function(parameterRemap,componentRemap,htmlRemap) {
+  clone: function(parameterRemap, componentRemap, htmlRemap) {
     Dashboards.log("This function is deprecated. Please use targetComponent.clone(...), see BaseComponent in CDF (core.js) for more details.", "warn");
+    var that = this.base(parameterRemap, componentRemap, htmlRemap);
+    that.targetHtmlObject = htmlRemap[that.targetHtmlObject];
+    if(that.parameters) {
+      that.parameters = that.parameters.map(function(param) {
+        if(param in parameterRemap) {
+          return parameterRemap[param];
+        } else {
+          return param;
+        }
+      });
+    }
+    return that;
   }
 });
