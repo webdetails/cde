@@ -52,4 +52,7 @@
 
   requirePaths['cde/components/AjaxRequestComponent'] = prefix + '/AjaxRequestComponent/AjaxRequestComponent';
 
+  requirePaths['cde/components/CggComponent'] = prefix + '/cgg/CggComponent';
+  requirePaths['cde/components/CggDialComponent'] = prefix + '/cgg/CggDialComponent';
+
 })();
