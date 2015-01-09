@@ -57,4 +57,6 @@
 
   requirePaths['cde/components/DuplicateComponent'] = prefix + '/Duplicate/DuplicateComponent';
 
+  requirePaths['cde/components/NewSelectorComponent'] = prefix + '/NewSelector/NewSelectorComponent';
+
 })();
