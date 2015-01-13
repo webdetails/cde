@@ -1,6 +1,6 @@
 /*
  * Selector Model describes the behaviour for the selector
- * as a whole. 
+ * as a whole.
  */
 
 var wd = wd || {};
@@ -33,7 +33,7 @@ var OlapSelectorModel = Backbone.Model.extend({
     },
 
     initialize: function() {
-      
+
       var values = new Backbone.Collection();
       this.set("values",values);
       values.comparator = function(left, right) {
@@ -58,7 +58,7 @@ var OlapSelectorModel = Backbone.Model.extend({
       this.setupEvents();
       this.preSelectValues();
     },
-    
+
     preSelectValues: function() {
       var myself = this,
           olapUtils = this.get("olapUtils"),
@@ -78,7 +78,7 @@ var OlapSelectorModel = Backbone.Model.extend({
           var toChange = myself.processPreSelectValues(v.members, defaultSelect);
 
           myself.addPreSelectValues(toChange, myself);
-   
+
         });
       }
     },
@@ -87,7 +87,7 @@ var OlapSelectorModel = Backbone.Model.extend({
       var values = [],
           selectedLevelDepth = this.getSelectedLevels().at(0).get("depth"),
           memberDepth;
-          
+
       if(!defaultVals.length)  {
         return members;
       }
@@ -115,10 +115,11 @@ var OlapSelectorModel = Backbone.Model.extend({
 
       for (c = 0; c < toChange.length; c++) {
         var newValue = toChange[c], depth;
-              
-        depth = (newValue.qualifiedName.split(".").length - 2);
+
+        depth = newValue.qualifiedName.match(/(\[[^\]]+]\.?)/g).length - 2;
+
         newValue.level = myself.get("levels").at(depth).id;
-              
+
         values.add(newValue, {
           silent: true
         });
@@ -130,9 +131,9 @@ var OlapSelectorModel = Backbone.Model.extend({
     updateLevels: function(){
       var olapUtils = this.get("olapUtils"),
       h = olapUtils.getHierarchy();
-      
+
       if (h.hasAll){
-          
+
           var allMember = {
               name: h.defaultMember,
               qualifiedName: h.defaultMemberQualifiedName,
@@ -140,20 +141,20 @@ var OlapSelectorModel = Backbone.Model.extend({
           }
           this.get("levels").add(allMember);
       }
-      
+
       this.get("levels").add(olapUtils.getLevels(),{
           silent:true
       });
     },
-    
+
     processLevelSelection: function(evt){
       // Make sure there's one and only one selected
       if(this.getSelectedLevels().length == 0){
-          
+
           if(evt == null){
               this.get("levels").at(0).set({
                   "selected":true
-              });                    
+              });
           }
           else{
               evt.set({
@@ -162,9 +163,9 @@ var OlapSelectorModel = Backbone.Model.extend({
           }
           return; // we'll be back
       }
-      
+
       if(this.getSelectedLevels().size() > 1){
-          
+
           _(this.getSelectedLevels().without(evt)).each(function(f){
               f.set({
                   selected:false
@@ -232,7 +233,7 @@ var OlapSelectorModel = Backbone.Model.extend({
         defaultQualified = olapUtils.getHierarchy().defaultMemberQualifiedName,
         atTopLevel,
         selectedLevel = levels.where({selected:true})[0],
-        qualifiedName = selectedLevel.get("qualifiedName"), 
+        qualifiedName = selectedLevel.get("qualifiedName"),
         idx = levels.indexOf(selectedLevel);
       selectedLevel.set("selected",false);
       atTopLevel =  qualifiedName == defaultQualified;
@@ -288,7 +289,7 @@ var OlapSelectorModel = Backbone.Model.extend({
       if(breadcrumb && breadcrumb.length) {
         var l = breadcrumb.length - 1;
         options.startMember = breadcrumb[l].get("qualifiedName");
-      } 
+      }
       level = selectedLevel ? selectedLevel.get("name") : "";
       if(!level || level == olapUtils.getHierarchy().defaultMember) {
         options.level = olapUtils.getLevels()[0].name;
@@ -320,7 +321,7 @@ var OlapSelectorModel = Backbone.Model.extend({
         values = this.get("values");
         for(v = 0; v < newValues.length;v++) {
           var newValue = newValues[v],
-              found;  
+              found;
           newValue.level = this.getSelectedLevels().at(0).get("qualifiedName");
           found = values.detect(function(model){
             return model.get("level") == newValue.level &&
@@ -366,13 +367,13 @@ var OlapSelectorModel = Backbone.Model.extend({
     lastPage: function() {
         var total = this.get("totalRecords"),
         size = this.get("pageSize");
-        this.set("pageStart", total - total % size);   
+        this.set("pageStart", total - total % size);
       this.trigger("page");
     },
 
     goToPage: function(page) {
       var size = this.get("pageSize");
-      this.set("pageStart", page * size);   
+      this.set("pageStart", page * size);
       this.trigger("page");
     },
 
@@ -400,7 +401,7 @@ var OlapSelectorModel = Backbone.Model.extend({
             if(!isMultiselect) {
               other.set("selected",false);
             }
-            /* Chosing both an element and its children can cause double-counting 
+            /* Chosing both an element and its children can cause double-counting
              * issues so we should deselect the child elements if the option for
              * deselectDescendants is set on the component.
              */
@@ -447,7 +448,7 @@ var OlapSelectorModel = Backbone.Model.extend({
 
 /*
  * Option Model describes the behaviour for each individual
- * option within the selector.  
+ * option within the selector.
  */
 var OptionModel = Backbone.Model.extend({
     defaults: {
@@ -465,11 +466,11 @@ var OptionModel = Backbone.Model.extend({
 });
 
 var LevelModel = OptionModel.extend({
-   
+
     defaults: {},
-    
+
     initialize: function(o){
-    
+
         // Bind changing qualifiedName to id and name to value
         this.on("change:qualifiedName change:name",function(o){
             wd.log("Detected changes");
@@ -478,9 +479,9 @@ var LevelModel = OptionModel.extend({
         });
         this.set("id",this.get("qualifiedName"));
         this.set("label",this.get("name"));
-        
+
     }
-    
+
 });
 
 
@@ -513,7 +514,7 @@ var OlapSelectorView = Backbone.View.extend({
     },
 
     initialize: function() {
-    
+
         this.initializeOptions();
         this.configureListeners();
         this.levelViews = [];
@@ -549,11 +550,11 @@ var OlapSelectorView = Backbone.View.extend({
                 this._selectedViewsOut.push(new SelectionViewOut({
                     model:m
                 }));
-            } 
+            }
         }, this);
 
     },
-    
+
     updateSearch: function(evt) {
         this.model.set("searchterm", evt.target.value);
     },
@@ -632,7 +633,7 @@ var OlapSelectorView = Backbone.View.extend({
         drillVisible = drillTerm == null || model.get("qualifiedName").indexOf(drillTerm.get("qualifiedName")) > -1;
       return levelVisible && searchVisible && drillVisible;
     },
-  
+
     highlightParents: function() {
       var parentModel = this.model,
           selectedMembers = parentModel.get("values").where({selected:true}).map(function(m){return m.get("qualifiedName");});
@@ -642,8 +643,8 @@ var OlapSelectorView = Backbone.View.extend({
             .without(v.model.get("qualifiedName"))
             .filter(function(m){return m.indexOf(name) > -1;})
             .value();
-        /* 
-         * childrenSelected will always have at least the 
+        /*
+         * childrenSelected will always have at least the
          * member itself, so we need to check that length > 1
          */
         v.$el.toggleClass("highlight",childrenSelected.length > 0);
@@ -663,7 +664,7 @@ var OlapSelectorView = Backbone.View.extend({
             });
             this.$el.find(".leftArea .selection").append(vInner.render().el);
             this._selectedViews.push(vInner);
-         
+
             vOuter = new SelectionViewOut({
                 model:m
             });
@@ -707,7 +708,7 @@ var OlapSelectorView = Backbone.View.extend({
     },
 
     updateCollapsed: function() {
-  
+
         $('.olapSelectorComponent').addClass('collapsed').removeClass('expanded');
         if (this.model.get("collapsed")) {
             this.$el.find('.olapSelectorComponent').addClass('collapsed').removeClass('expanded');
@@ -764,11 +765,11 @@ var OptionView = Backbone.View.extend({
         this.setTemplate();
         this.model.on("change:selected",this.updateSelectionDisplay,this);
     },
-    
+
     setTemplate: function(){
         this.template = templates.olapSelector.option
     },
-    
+
     drillDown: function() {
       var val = this.model.get("drill");
       this.model.set("drill", !val);
@@ -776,7 +777,7 @@ var OptionView = Backbone.View.extend({
 
     render: function() {
         this.$el.html(Mustache.render(this.template, this.model.toJSON()));
-        this.$el.addClass('item');  
+        this.$el.addClass('item');
         this.updateSelectionDisplay();
         this.delegateEvents();
         return this;
@@ -801,7 +802,7 @@ var LevelView = OptionView.extend({
 
     tagName: "span",
     template: null,
-    
+
     setTemplate: function(){
         this.template = templates.olapSelector.level;
     }
@@ -843,7 +844,7 @@ var SelectionViewOut = SelectionView.extend({
     }
 });
 
-/* 
+/*
  * TEMPLATES
  */
 
@@ -856,14 +857,14 @@ templates.olapSelector.main =
     "     <div class='optionList'>"+
     "       <div class='leftArea'>" +
     "         <div class='header'>Select Level</div>" +
-    "         <div class='levels'></div>" + 
+    "         <div class='levels'></div>" +
     "         <div class='selectionPanel'>" +
     "           <div class='label'>Selected Filters</div>" +
     "           <ul class='selection'></ul>" +
-    "         </div>" + 
+    "         </div>" +
     "       </div>" +
-    "       <div class='rightArea {{#paginate}}paginate{{/paginate}}'>" + 
-    "         <div class='header'>" + 
+    "       <div class='rightArea {{#paginate}}paginate{{/paginate}}'>" +
+    "         <div class='header'>" +
     /* Don't touch the indentation! Indentating this
      * would create some pretty annoying text nodes
      */
@@ -914,7 +915,7 @@ templates.olapSelector.level =
     "<div class='target'>" +
     "  <span class='name' title='{{label}}'>{{label}}</span>" +
     "</div>";
-    
+
 
 templates.olapSelector.crumbtrail =
   "<span class='level'>{{level}}</span>" +
