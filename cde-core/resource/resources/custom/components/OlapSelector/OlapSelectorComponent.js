@@ -78,7 +78,9 @@ var OlapSelectorComponent = BaseComponent.extend({
     var paramValue = Dashboards.getParameterValue(param),
         values = [];
 
-    if(typeof paramValue !== 'undefined') {
+    if(typeof paramValue !== 'undefined'
+      && paramValue.length > 0) {
+      
       values = JSON.parse(paramValue);
       if(!this.multiSelect) {
         values = new Array(values[0]);
