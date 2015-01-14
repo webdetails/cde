@@ -42,22 +42,7 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
   @Override
   public void loaded() throws PluginLifecycleException {
     super.loaded();
-    //CdeEngine.getInstance().ensureBasicDirs();
-
-    /**
-     * IMPORTANT: ensureBasicDirs() functionality was working in 5.0.1 but stopped working in 5.1.0;
-     *
-     * This is because in 5.1.0 's pentaho-solutions/system/systemListeners.xml
-     * bean SecuritySystemListener (responsible for booting up AuthenticationProvider)
-     * is being declared AFTER pluginSystemListener.
-     *
-     * Therefore, if by any chance a plugin desires to access the repository ON STARTUP using a login such as
-     * SecurityHelper.getInstance().runAsSystem(), it will be faced with a InvalidLoginCredentials exception
-     *
-     * Dev/Testing solution:
-     *
-     * in pentaho-solutions/system/systemListeners.xml place bean SecuritySystemListener BEFORE pluginSystemListener
-     */
+    CdeEngine.getInstance().ensureBasicDirs();
   }
 
 
