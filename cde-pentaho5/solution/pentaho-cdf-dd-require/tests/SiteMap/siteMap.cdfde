@@ -3,19 +3,19 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
-    "id": "4996fa5f-09f0-cd60-77e7-5772215aeb51",
+    "id": "1a506cb6-b24c-c11b-d9f1-a12864ecde5b",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "template",
+      "value": "templateCSS",
       "type": "Id"
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${solution:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -26,19 +26,19 @@
     ]
    },
    {
-    "id": "03a83220-159d-d841-c40d-0a04044f3e51",
+    "id": "9657518a-5535-12d1-2ff3-95525f706312",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "css",
+      "value": "referenceCSS",
       "type": "Id"
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${solution:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -49,52 +49,14 @@
     ]
    },
    {
-    "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
+    "id": "151383e3-f3e3-82c8-49c8-913f96718050",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
     "properties": [
      {
       "name": "name",
-      "value": "Spacer",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "20",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "23974863-0f28-ff9c-62f8-30c632ba973d",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "Title",
+      "value": "Headers",
       "type": "Id"
      },
      {
@@ -125,111 +87,7 @@
     ]
    },
    {
-    "id": "9e153dff-b071-01a0-54dd-3666a857debe",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "23974863-0f28-ff9c-62f8-30c632ba973d",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "Ajax Request Reference ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "18",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "2d99f333-9735-6b03-85d5-93d4a0142d07",
-    "type": "LayoutRow",
-    "typeDesc": "Row",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "DescriptionBody",
-      "type": "Id"
-     },
-     {
-      "name": "height",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
-     },
-     {
-      "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "46e27ef7-a339-d5fb-0d0f-728bdaec0476",
-    "type": "LayoutHtml",
-    "typeDesc": "Html",
-    "parent": "2d99f333-9735-6b03-85d5-93d4a0142d07",
-    "properties": [
-     {
-      "name": "name",
-      "value": "",
-      "type": "Id"
-     },
-     {
-      "name": "html",
-      "value": "<p>Ajax Request Component provides a way to build an <i>Ajax</i> request. Given an <i>url</i>, \na <i>response type</i> and list of <i>parameters</i> it's possible to build an jQuery ajax call,\nwhich its result will be stored in the <i>resultvar</i>.</p>\n\n\n<div class=\"WDh2\">Component Parameters</div>\n\n<p>\nThe Component definition supports the following arguments:\n\n<dl>\n    <dd> <b>Url:</b> Describes the url used in the Ajax request call. </dt>\n    <dd> <b>Request Type:</b> Defines the file format of the desired file. </dt>\n    <dd> <b>Async Call:</b> Defines if the ajax call is asynchronus or not. </dt>\n    <dd> <b>Result Var:</b> Variable where the response is stored. </dt>\n    <dd> <b>Parameters:</b> List of parameters used in the ajax call. </dt>\n</dl>\n\n</p>\n\n<div class=\"WDh2\">Default values</div>\n\n<p>\n <blockquote><pre>\n    defaults: {\n      ajaxRequestType: json,\n      asyncCall: true\n    }\n </pre></blockquote>\n </p>\n\n ",
-      "type": "Html"
-     },
-     {
-      "name": "fontSize",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "color",
-      "value": "",
-      "type": "Color"
-     },
-     {
-      "name": "cssClass",
-      "value": "",
-      "type": "String"
-     }
-    ]
-   },
-   {
-    "id": "85d4b41a-992a-e121-9f35-44dab8fe9d70",
+    "id": "e9323c6f-f014-946d-bb3d-067fe35470a3",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
@@ -267,10 +125,10 @@
     ]
    },
    {
-    "id": "c9b074c0-b4fc-9809-4cdf-23e3a3729633",
+    "id": "b4535e82-0f89-fc43-2eb7-baadc39313bf",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "85d4b41a-992a-e121-9f35-44dab8fe9d70",
+    "parent": "e9323c6f-f014-946d-bb3d-067fe35470a3",
     "properties": [
      {
       "name": "name",
@@ -340,10 +198,10 @@
     ]
    },
    {
-    "id": "01a041c6-d67a-2c90-0e5d-48aab26b5bcd",
+    "id": "4ddb4a60-e415-53b1-0ca9-c25f028654f8",
     "type": "LayoutHtml",
     "typeDesc": "Html",
-    "parent": "c9b074c0-b4fc-9809-4cdf-23e3a3729633",
+    "parent": "b4535e82-0f89-fc43-2eb7-baadc39313bf",
     "properties": [
      {
       "name": "name",
@@ -352,7 +210,7 @@
      },
      {
       "name": "html",
-      "value": "Ajax Request Component sample ",
+      "value": "Site Map Component ",
       "type": "Html"
      },
      {
@@ -373,7 +231,7 @@
     ]
    },
    {
-    "id": "699b3087-f199-0780-9add-fad401819ed1",
+    "id": "0fb40524-f305-7953-4135-89e9f277068a",
     "type": "LayoutRow",
     "typeDesc": "Row",
     "parent": "UnIqEiD",
@@ -411,10 +269,10 @@
     ]
    },
    {
-    "id": "5ec3422d-a879-774c-76c5-c4e8150590cc",
+    "id": "2cb7c80b-e5a2-2828-8f2f-5501a44db3e0",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "699b3087-f199-0780-9add-fad401819ed1",
+    "parent": "0fb40524-f305-7953-4135-89e9f277068a",
     "properties": [
      {
       "name": "name",
@@ -484,10 +342,121 @@
     ]
    },
    {
-    "id": "172380b8-d42b-752e-6396-768211063e51",
+    "id": "77696558-efa3-1e04-be55-b9934ac4e402",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "2cb7c80b-e5a2-2828-8f2f-5501a44db3e0",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "30",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "1fab8976-d88a-789d-7add-fa5e11dfe44e",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "77696558-efa3-1e04-be55-b9934ac4e402",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "a5278543-416f-b937-8115-ef995bf65504",
     "type": "LayoutHtml",
     "typeDesc": "Html",
-    "parent": "5ec3422d-a879-774c-76c5-c4e8150590cc",
+    "parent": "1fab8976-d88a-789d-7add-fa5e11dfe44e",
     "properties": [
      {
       "name": "name",
@@ -496,7 +465,7 @@
      },
      {
       "name": "html",
-      "value": "&nbsp;var render_ajaxRequest1 = {<br>\n&nbsp;&nbsp;&nbsp;type: \"AjaxRequestComponent\",<br>\n&nbsp;&nbsp;&nbsp;name: \"render_ajaxRequest1\",<br>\n&nbsp;&nbsp;&nbsp;priority: 5,<br>\n&nbsp;&nbsp;&nbsp;url: \"http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic[...]ajaxRequest.cda&dataAccessId=sampleQuery\",<br>\n&nbsp;&nbsp;&nbsp;ajaxRequestType: \"json\",<br>\n&nbsp;&nbsp;&nbsp;executeAtStart: true,<br>\n&nbsp;&nbsp;&nbsp;asyncCall: true,<br>\n&nbsp;&nbsp;&nbsp;resultvar: \"param1\",<br>\n&nbsp;&nbsp;&nbsp;htmlObject: \"column1\",<br>\n&nbsp;&nbsp;&nbsp;parameters: [],<br>\n&nbsp;&nbsp;&nbsp;listeners: []<br>\n&nbsp;};<br>\n<br>\n ",
+      "value": "&nbsp;Site map using a custom parameter: ",
       "type": "Html"
      },
      {
@@ -517,10 +486,10 @@
     ]
    },
    {
-    "id": "650cb478-c5a4-9175-c770-c9fe32d9ab8b",
+    "id": "10e09591-e7a5-b238-4fce-90bfe79f049a",
     "type": "LayoutRow",
     "typeDesc": "Row",
-    "parent": "UnIqEiD",
+    "parent": "2cb7c80b-e5a2-2828-8f2f-5501a44db3e0",
     "properties": [
      {
       "name": "name",
@@ -549,16 +518,16 @@
      },
      {
       "name": "cssClass",
-      "value": "WDdataCellBody",
+      "value": "",
       "type": "String"
      }
     ]
    },
    {
-    "id": "6542e414-13cf-2a07-e32d-9ac43f9b41e2",
+    "id": "76e89f86-bced-7d47-5d94-a402ccd9faf3",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "650cb478-c5a4-9175-c770-c9fe32d9ab8b",
+    "parent": "10e09591-e7a5-b238-4fce-90bfe79f049a",
     "properties": [
      {
       "name": "name",
@@ -628,10 +597,10 @@
     ]
    },
    {
-    "id": "65a2a756-5dec-3914-46c4-3c2ea3294250",
+    "id": "e2370f09-707c-072d-526a-a22a2ee42d9b",
     "type": "LayoutHtml",
     "typeDesc": "Html",
-    "parent": "6542e414-13cf-2a07-e32d-9ac43f9b41e2",
+    "parent": "76e89f86-bced-7d47-5d94-a402ccd9faf3",
     "properties": [
      {
       "name": "name",
@@ -640,7 +609,7 @@
      },
      {
       "name": "html",
-      "value": "result:<br><br> ",
+      "value": "&nbsp; ",
       "type": "Html"
      },
      {
@@ -661,10 +630,10 @@
     ]
    },
    {
-    "id": "e5db0c44-c1db-3466-5ab3-116f7d593295",
+    "id": "bcaeeb34-bf4f-a783-02fa-a56f78e3f123",
     "type": "LayoutColumn",
     "typeDesc": "Column",
-    "parent": "650cb478-c5a4-9175-c770-c9fe32d9ab8b",
+    "parent": "10e09591-e7a5-b238-4fce-90bfe79f049a",
     "properties": [
      {
       "name": "name",
@@ -752,30 +721,20 @@
     ]
    },
    {
-    "id": "652a2002-caf7-7183-903a-dba0bfd64752",
-    "type": "ComponentsAjaxRequestComponent",
-    "typeDesc": "AjaxRequestComponent",
+    "id": "0d80a2d8-9f9b-a422-cb62-6be59d7a9f4f",
+    "type": "ComponentssiteMap",
+    "typeDesc": "Site Map links",
     "parent": "CUSTOMCOMPONENTS",
     "properties": [
      {
       "name": "name",
-      "value": "ajaxRequest1",
+      "value": "siteMap1",
       "type": "Id"
-     },
-     {
-      "name": "url",
-      "value": "http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Ftests%2FajaxRequest.cda&dataAccessId=sampleQuery",
-      "type": "String"
      },
      {
       "name": "listeners",
       "value": "[]",
       "type": "Listeners"
-     },
-     {
-      "name": "resultvar",
-      "value": "${p:param1}",
-      "type": "Result"
      },
      {
       "name": "parameters",
@@ -788,24 +747,24 @@
       "type": "Integer"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
+      "name": "siteMapParameter",
+      "value": "${p:param1}",
+      "type": "Parameter"
      },
      {
-      "name": "ajaxRequestType",
-      "value": "json",
-      "type": "ajaxRequestTypeCustom"
+      "name": "ajaxUrl",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "siteMapSelectedParameter",
+      "value": "",
+      "type": "Parameter"
      },
      {
       "name": "htmlObject",
       "value": "${p:column1}",
       "type": "HtmlObject"
-     },
-     {
-      "name": "asyncCall",
-      "value": "true",
-      "type": "Boolean"
      },
      {
       "name": "executeAtStart",
@@ -821,26 +780,6 @@
       "name": "postExecution",
       "value": "",
       "type": "JavaScript"
-     },
-     {
-      "name": "postFetch",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "preChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postChange",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
      }
     ]
    },
@@ -859,9 +798,9 @@
     ]
    },
    {
-    "id": "ed9f3acd-64ee-5093-68d7-70eee969af45",
-    "type": "ComponentsParameter",
-    "typeDesc": "Simple parameter",
+    "id": "98423b08-c07c-6371-3a7c-a8b677443bce",
+    "type": "ComponentsJavascriptParameter",
+    "typeDesc": "Custom parameter",
     "parent": "GENERIC",
     "properties": [
      {
@@ -870,9 +809,9 @@
       "type": "Id"
      },
      {
-      "name": "propertyValue",
-      "value": "",
-      "type": "String"
+      "name": "javaScript",
+      "value": "[\n    {\"name\": \"Pentaho\", \"link\": \"http://www.pentaho.com/\"},\n    {\"name\": \"Pentaho Community\", \"link\": \"http://community.pentaho.com/\"},\n    {\n        \"name\": \"Webdetails\",\n        \"link\": \"http://www.webdetails.pt/\",\n        \"sublinks\": [\n            {\"name\": \"CTools\", \"link\": \"http://www.webdetails.pt/ctools/\"},\n            {\"name\": \"Showcase\", \"link\": \"http://www.webdetails.pt/showcase/\"}\n        ]    \n    }\n] ",
+      "type": "JavaScript"
      },
      {
       "name": "parameterViewRole",
@@ -885,169 +824,11 @@
       "type": "Boolean"
      }
     ]
-   },
-   {
-    "id": "OTHERCOMPONENTS",
-    "name": "Others",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "Others",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "68f356bf-f4a2-b791-0926-349542029f6b",
-    "type": "ComponentstextComponent",
-    "typeDesc": "Text Component",
-    "parent": "OTHERCOMPONENTS",
-    "properties": [
-     {
-      "name": "name",
-      "value": "textComp",
-      "type": "Id"
-     },
-     {
-      "name": "listeners",
-      "value": "['${p:param1}']",
-      "type": "Listeners"
-     },
-     {
-      "name": "expression",
-      "value": "function f() {\n    return JSON.stringify(this.dashboard.getParameterValue('param1')); \n} ",
-      "type": "JavaScript"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "htmlObject",
-      "value": "${p:column1}",
-      "type": "HtmlObject"
-     },
-     {
-      "name": "executeAtStart",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
-      "name": "preExecution",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "postExecution",
-      "value": "",
-      "type": "JavaScript"
-     },
-     {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     }
-    ]
    }
   ]
  },
  "datasources": {
-  "rows": [
-   {
-    "id": "SCRIPTING",
-    "name": "SCRIPTING Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "SCRIPTING Queries",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "509ef380-c804-e7e2-ea71-87dc23ae677f",
-    "type": "Componentsscriptable_scripting",
-    "typeDesc": "scriptable over scripting",
-    "meta": "CDA",
-    "meta_conntype": "scripting.scripting",
-    "meta_datype": "scriptable",
-    "parent": "SCRIPTING",
-    "properties": [
-     {
-      "name": "name",
-      "value": "sampleQuery",
-      "type": "Id"
-     },
-     {
-      "name": "initscript",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "language",
-      "value": "beanshell",
-      "type": "String"
-     },
-     {
-      "name": "access",
-      "value": "public",
-      "type": "Access"
-     },
-     {
-      "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Caitlyn\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Vayne\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Ashe\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Lucian\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Tristana\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Kog'Maw\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kog'Maw\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Fizz\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Tristana\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Lux\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kassadin\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"LeBlanc\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Mundo\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Shen\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Warwick\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Hecarim\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Braum\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Leona\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Soraka\"), new Integer(\"7\") });\n\nreturn model;",
-      "type": "SqlQuery"
-     },
-     {
-      "name": "parameters",
-      "value": "[]",
-      "type": "CdaParameters"
-     },
-     {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
-     },
-     {
-      "name": "cdacolumns",
-      "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "output",
-      "value": "[]",
-      "type": "IndexArray"
-     },
-     {
-      "name": "cacheDuration",
-      "value": 3600,
-      "type": "Integer"
-     },
-     {
-      "name": "cache",
-      "value": "true",
-      "type": "Boolean"
-     }
-    ]
-   }
-  ]
+  "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/ajaxRequest.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/SiteMap/siteMap.cdfde"
 }

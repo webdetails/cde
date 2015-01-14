@@ -11,11 +11,12 @@
  * the license for the specific language governing your rights and limitations.
  */
 
- /**
+/**
  * Configuration file for cde core
  */
 
 (function() {
+
   var requirePaths = requireCfg.paths;
 
   requireCfg.urlArgs = "ts=" + (new Date()).getTime();
@@ -65,5 +66,7 @@
   requirePaths['cde/components/RaphaelComponent'] = prefix + '/Raphael/RaphaelComponent';
 
   requirePaths['cde/components/RelatedContentComponent'] = prefix + '/RelatedContent/RelatedContentComponent';
+
+  requirePaths['cde/components/SiteMapComponent'] = prefix + '/SiteMap/SiteMapComponent';
 
 })();
