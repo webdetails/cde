@@ -64,4 +64,6 @@
 
   requirePaths['cde/components/RaphaelComponent'] = prefix + '/Raphael/RaphaelComponent';
 
+  requirePaths['cde/components/RelatedContentComponent'] = prefix + '/RelatedContent/RelatedContentComponent';
+
 })();
