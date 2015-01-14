@@ -62,4 +62,6 @@
   requirePaths['cde/components/OlapSelectorComponent'] = prefix + '/OlapSelector/OlapSelectorComponent';
   requirePaths['cde/components/OlapSelectorComponentExt'] = prefix + '/OlapSelector/OlapSelectorComponent.ext';
 
+  requirePaths['cde/components/RaphaelComponent'] = prefix + '/Raphael/RaphaelComponent';
+
 })();
