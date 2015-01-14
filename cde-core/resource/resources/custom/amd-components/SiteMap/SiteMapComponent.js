@@ -1,12 +1,33 @@
-/**
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
  *
- * SiteMapComponent
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
- * Generates a nested structure of ul's based on a parameter
- *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
  */
 
-var SiteMapComponent = BaseComponent.extend({
+define([
+  'cdf/components/BaseComponent',
+  'cdf/lib/jquery',
+  'cdf/lib/underscore',
+  'cdf/lib/mustache',
+  'cdf/dashboard/Utils'],
+  function(BaseComponent, $, _, Mustache, Utils) {
+
+  /**
+   *
+   * SiteMapComponent
+   *
+   * Generates a nested structure of ul's based on a parameter
+   *
+   */
+
+  var SiteMapComponent = BaseComponent.extend({
 
     ph: undefined,
     selected: "UNUSEDPARAM!@#$",
@@ -23,7 +44,7 @@ var SiteMapComponent = BaseComponent.extend({
           myself = this;
 
       if(typeof myself.siteMapSelectedParameter !== "undefined" && myself.siteMapSelectedParameter != "") {
-        myself.selected = Dashboards.getParameterValue(myself.siteMapSelectedParameter);
+        myself.selected = myself.dashboard.getParameterValue(myself.siteMapSelectedParameter);
       }
 
       myself.ph = $("#" + myself.htmlObject).empty();
@@ -32,14 +53,14 @@ var SiteMapComponent = BaseComponent.extend({
         var opts = {url: myself.ajaxUrl};
 
         if(_.isEmpty(myself.parameters)) {
-          opts.data = Dashboards.propertiesArrayToObject(myself.ajaxData);
+          opts.data = Utils.propertiesArrayToObject(myself.ajaxData);
         }
         myself.fetchItems(opts, function(items) {
           myself.renderList(myself.ph, items, 0);
         });
       } else {
         if(myself.siteMapParameter) {
-          myself.renderList(myself.ph, Dashboards.getParameterValue(myself.siteMapParameter), 0);
+          myself.renderList(myself.ph, myself.dashboard.getParameterValue(myself.siteMapParameter), 0);
         }
       }
 
@@ -86,7 +107,7 @@ var SiteMapComponent = BaseComponent.extend({
             $(this).parents(".siteMapItem").addClass("siteMapSelected");
 
             if(!_.isEmpty(lid)) {
-              Dashboards.fireChange(myself.siteMapSelectedParameter, lid);
+              myself.dashboard.fireChange(myself.siteMapSelectedParameter, lid);
             }
           });
         }
@@ -105,61 +126,65 @@ var SiteMapComponent = BaseComponent.extend({
 
     }
 
-/*
-  ,
-  siteMapParameter: [
-  {
-    name: "Link1",
-    link: "http://www.webdetails.pt",
-    sublinks: []
-  },
-  {
-    name: "Link2",
-    link: undefined,
-    sublinks: [
+  /*
+    ,
+    siteMapParameter: [
     {
-      name: "Sublink 1",
-      link: "www.google.com"
+      name: "Link1",
+      link: "http://www.webdetails.pt",
+      sublinks: []
     },
     {
-      name: "Sublink 2",
-      link: "www.mozilla.com"
-    }
-    ]
-  },
-  {
-    name: "Link3",
-    link: undefined,
-    sublinks: [
-    {
-      name: "Sublink 31",
+      name: "Link2",
+      link: undefined,
       sublinks: [
       {
-        name: "Subsublink 311",
-        link: "http://www.google.com"
+        name: "Sublink 1",
+        link: "www.google.com"
       },
       {
-        name: "Sublink 312",
-        link: "http://www.mozilla.com"
+        name: "Sublink 2",
+        link: "www.mozilla.com"
       }
       ]
     },
     {
-      name: "Sublink 32",
-      link: "http://www.google.com",
+      name: "Link3",
+      link: undefined,
       sublinks: [
       {
-        name: "Subsublink 321",
-        link: "http://www.google.com"
+        name: "Sublink 31",
+        sublinks: [
+        {
+          name: "Subsublink 311",
+          link: "http://www.google.com"
+        },
+        {
+          name: "Sublink 312",
+          link: "http://www.mozilla.com"
+        }
+        ]
       },
       {
-        name: "Sublink 322",
-        link: "http://www.mozilla.com"
-      }
-      ]
-    },
+        name: "Sublink 32",
+        link: "http://www.google.com",
+        sublinks: [
+        {
+          name: "Subsublink 321",
+          link: "http://www.google.com"
+        },
+        {
+          name: "Sublink 322",
+          link: "http://www.mozilla.com"
+        }
+        ]
+      },
 
-    ]
-  }
-  ]*/
+      ]
+    }
+    ]*/
+  });
+
+  return SiteMapComponent;
+
 });
