@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -1504,7 +1504,7 @@ var CDFDD = Base.extend({
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
 
     // cgg url:
-    var cggUrl = Cgg.getCggDrawUrl() + "?script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/";
+    var cggUrl = Cgg.getCggDrawUrl() + "?";
 
     ph.empty();
     ph.append("<h3>Choose what charts to render as CGG</h3>" +
@@ -1521,11 +1521,29 @@ var CDFDD = Base.extend({
 
       var componentName = '',
           title = '';
+
+      var isCggDialComponent = e.type == "ComponentscggDial";
+      var dialProperties = {};
       e.properties.map(function(p) {
-        if(p.name == 'title') {
-          title = p.value;
-        } else if(p.name == 'name') {
-          componentName = p.value;
+        switch(p.name) {
+          case 'title':
+            title = p.value;
+            break;
+          case 'name':
+            componentName = p.value;
+            break;
+          case 'intervals':
+            dialProperties.paramscale = $.parseJSON(p.value);
+            break;
+          case 'colors':
+            dialProperties.paramcolors = $.parseJSON(p.value);
+            break;
+          case 'width':
+            dialProperties.width = p.value;
+            break;
+          case 'height':
+            dialProperties.height = p.value;
+            break;
         }
       });
       var label = "<span class='label'>" + (title !== '' ? title : componentName) + "</span>";
@@ -1541,10 +1559,19 @@ var CDFDD = Base.extend({
       });
       section.append(showUrlButton).append("<br />");
 
-      // append dashboard name with component name and extension (.js)
-      var scriptFileName = CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] + '_' + componentName + ".js";
+      var fullCggUrl = '';
+      if(isCggDialComponent) {
+        fullCggUrl = cggUrl + 'script=/system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js&'
+            + $.param(dialProperties);
+      } else {
+        // append dashboard name with component name and extension (.js)
+        var script = "script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/"
+            + CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] + '_' + componentName + ".js";
+        fullCggUrl = cggUrl + script;
+      }
+      fullCggUrl += "&outputType=png";
 
-      $("<div class='urlPreviewer collapsed'><input type='text' value = '" + cggUrl + scriptFileName + "&outputType=png" + "'></input></div>").appendTo(section);
+      $("<div class='urlPreviewer collapsed'><input type='text' value = '" + fullCggUrl + "'></input></div>").appendTo(section);
       section.appendTo(ph);
     });
 
