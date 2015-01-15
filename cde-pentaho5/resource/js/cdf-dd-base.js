@@ -103,11 +103,14 @@ var SynchronizeRequests = {
         if(result && result.status == "true") {
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Template saved successfully", delay: 100 });
+            html: Dashboards.i18nSupport.prop("SynchronizeRequests.TEMPLATE_SAVE_SUCESSFUL"),
+            delay: 100
+          });
         } else {
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Errors saving template: " + result });
+            html: Dashboards.i18nSupport.prop("SynchronizeRequests.TEMPLATE_SAVE_ERROR", [result])
+          });
         }
       }
     });
@@ -378,7 +381,6 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "renderer/listRenderers", {
     }, function(json) {
       myself.renderers = json.result;
-
     });
   },
 
@@ -391,7 +393,7 @@ var StylesRequests = {
       } else {
         $.notifyBar({
           jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors initializing settings: " + result.result
+          html: Dashboards.i18nSupport.prop("StylesRequests.INIT_STYLES_ERROR", [result.result])
         });
       }
     });
@@ -400,13 +402,11 @@ var StylesRequests = {
 
 
 var SaveRequests = {
-
   saveRequestParams: {
     selectedFolder: null,
     selectedFile: null,
     myself: null
   },
-
 
   saveSettings: function(saveSettingsParams, cdfdd, wcdf, myself) {
 
@@ -418,7 +418,7 @@ var SaveRequests = {
           cdfdd.layout.init();
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard Settings saved successfully",
+            html: Dashboards.i18nSupport.prop("SaveSettings.SAVE_SUCCESSFUL"),
             delay: 1000
           });
         } else {
@@ -427,7 +427,7 @@ var SaveRequests = {
       } catch (e) {
         $.notifyBar({
           jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving settings: " + e
+          html: Dashboards.i18nSupport.prop("SaveSettings.SAVE_ERROR", [e])
         });
       }
     });
@@ -446,14 +446,14 @@ var SaveRequests = {
         } else {
           $.notifyBar({
             jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard saved successfully",
+            html: Dashboards.i18nSupport.prop("SaveDashboard.SAVE_SUCCESSFUL"),
             delay: 1000
           });
         }
       } else {
         $.notifyBar({
           jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
+          html: Dashboards.i18nSupport.prop("SaveDashboard.SAVE_ERROR", [result.result])
         });
       }
     };
@@ -493,10 +493,17 @@ var SaveRequests = {
       } else {
         $.notifyBar({
           jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
+          html: Dashboard.i18nSupport.prop("SaveAsDashboard.SAVE_ERROR", [result.result])
         });
       }
     };
+
+    // inform user that the save as will create a require dashboard
+    if( !myself.getDashboardWcdf().require ) {
+      if(!confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
+        return;
+      }
+    }
 
     // CDF-271 $.browser is depricated
     var rv;
@@ -506,7 +513,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      console.log(Dashboards.i18nSupport.prop("SaveAsDashboard.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -534,7 +541,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      console.log(Dashboards.i18nSupport.prop("SaveAsWidget.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, this.saveAsWidgetCallback);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -574,7 +581,7 @@ var SaveRequests = {
     } else {
       $.notifyBar({
         jqObject: NotifyBarUtils.getNotifyBarObject(),
-        html: "Errors saving file: " + result.result
+        html: Dashboards.i18nSupport.prop("SaveAsWidget.SAVE_ERROR", [result.result])
       });
     }
   },
@@ -622,7 +629,7 @@ var PreviewRequests = {
       } else {
         $.notifyBar({
           jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
+          html: Dashboards.i18nSupport.prop("PreviewRequests.SAVE_ERROR", [result.result])
         });
       }
     };
@@ -635,7 +642,7 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      console.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
