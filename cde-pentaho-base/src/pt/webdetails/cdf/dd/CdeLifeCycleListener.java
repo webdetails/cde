@@ -12,25 +12,14 @@
 */
 package pt.webdetails.cdf.dd;
 
-//import java.io.IOException;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.engine.IPlatformReadyListener;
 import org.pentaho.platform.api.engine.PluginLifecycleException;
-//import org.pentaho.platform.repository.hibernate.HibernateUtil;
-
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.SimpleLifeCycleListener;
-import pt.webdetails.cpf.Util;
-import pt.webdetails.cpf.repository.api.IRWAccess;
-import pt.webdetails.cpf.repository.api.IReadAccess;
 
-public class CdeLifeCycleListener extends SimpleLifeCycleListener {
+public class CdeLifeCycleListener extends SimpleLifeCycleListener implements IPlatformReadyListener {
 
   static Log logger = LogFactory.getLog( CdeLifeCycleListener.class );
 
@@ -42,10 +31,12 @@ public class CdeLifeCycleListener extends SimpleLifeCycleListener {
   @Override
   public void loaded() throws PluginLifecycleException {
     super.loaded();
-    CdeEngine.getInstance().ensureBasicDirs();
   }
 
-
+  @Override public void ready() throws PluginLifecycleException {
+    logger.debug( "Ready Event for CDE" );
+    CdeEngine.getInstance().ensureBasicDirs();
+  }
 
   @Override
   public void unLoaded() throws PluginLifecycleException {
