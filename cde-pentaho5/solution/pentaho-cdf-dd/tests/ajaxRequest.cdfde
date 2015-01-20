@@ -764,7 +764,7 @@
      },
      {
       "name": "url",
-      "value": "http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd-require%2Ftests%2FAjaxRequest%2FajaxRequest.cda&dataAccessId=sampleQuery",
+      "value": "http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Ftests%2FajaxRequest.cda&dataAccessId=sampleQuery",
       "type": "String"
      },
      {
