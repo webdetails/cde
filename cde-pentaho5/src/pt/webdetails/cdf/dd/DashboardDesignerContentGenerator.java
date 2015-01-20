@@ -50,9 +50,10 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider pathParams = parameterProviders.get( MethodParams.PATH );
 
     String solution = getRequestParameterAsString( MethodParams.SOLUTION, "" ),
-           path = getRequestParameterAsString( MethodParams.PATH, "" ),
-           file = getRequestParameterAsString( MethodParams.FILE, "" );
-    String root = getRequestParameterAsString( MethodParams.ROOT, "" );
+      path = getRequestParameterAsString( MethodParams.PATH, "" ),
+      file = getRequestParameterAsString( MethodParams.FILE, "" ),
+      root = getRequestParameterAsString( MethodParams.ROOT, "" ),
+      scheme = getRequestParameterAsString( MethodParams.SCHEME, "" );
 
     String viewId = getRequestParameterAsString( MethodParams.VIEWID, "" );
 
@@ -94,8 +95,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse() );
 
     } else {
-      String result = renderer
-          .render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest() );
+      String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, scheme,
+        viewId, style, getRequest() );
       getResponse().setContentType( MimeTypes.HTML );
 
       IOUtils.write( result, getResponse().getOutputStream() );
@@ -129,6 +130,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String VIEWID = "viewId";
     public static final String COMMAND = "cmd";
     public static final String STYLE = "style";
+    public static final String SCHEME = "scheme";
 
 
     public static final String DATA = "data";
