@@ -79,14 +79,18 @@ public class RenderApi {
                             @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "false" ) boolean absolute,
                             @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -101,14 +105,18 @@ public class RenderApi {
                             @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
                             @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -123,11 +131,15 @@ public class RenderApi {
                         @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
                         @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                         @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                        @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                         @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
     IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
@@ -146,7 +158,7 @@ public class RenderApi {
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
-        loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
+        loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
       String result =
         dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
 
@@ -314,6 +326,7 @@ public class RenderApi {
     public static final String DEBUG = "debug";
     public static final String VIEWID = "viewId";
     public static final String STYLE = "style";
+    public static final String SCHEME = "scheme";
   }
 
 }
