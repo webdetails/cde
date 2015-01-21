@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -10,6 +10,7 @@
 * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
 * the license for the specific language governing your rights and limitations.
 */
+
 package pt.webdetails.cdf.dd;
 
 import java.io.IOException;
@@ -100,13 +101,13 @@ public class CdeEngine {
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
-          sysPluginSamples, "widget.cdfde" );
+            sysPluginSamples, "widget.cdfde" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
-          "widget.wcdf" );
+            "widget.wcdf" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
-          "widget.cda" );
+            "widget.cda" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
-          sysPluginSamples, "widget.xml" );
+            sysPluginSamples, "widget.xml" );
       }
     }
 
