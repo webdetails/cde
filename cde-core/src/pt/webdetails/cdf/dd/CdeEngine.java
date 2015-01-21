@@ -28,15 +28,15 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 
 public class CdeEngine {
 
-  private static CdeEngine instance;
+  protected static CdeEngine instance;
   protected static Log logger = LogFactory.getLog( CdeEngine.class );
-  private ICdeEnvironment cdeEnv;
+  protected ICdeEnvironment cdeEnv;
 
-  private CdeEngine() {
+  protected CdeEngine() {
     logger.debug( "Starting ElementEngine" );
   }
 
-  private CdeEngine( ICdeEnvironment environment ) {
+  protected CdeEngine( ICdeEnvironment environment ) {
     this();
     this.cdeEnv = environment;
   }
@@ -44,7 +44,11 @@ public class CdeEngine {
   public static CdeEngine getInstance() {
 
     if ( instance == null ) {
-      instance = new CdeEngine();
+      synchronized ( CdeEngine.class ) {
+        if ( instance == null ) {
+          instance = new CdeEngine();
+        }
+      }
       try {
         initialize();
       } catch ( Exception ex ) {

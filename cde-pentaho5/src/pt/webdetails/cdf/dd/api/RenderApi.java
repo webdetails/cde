@@ -39,6 +39,7 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
@@ -52,13 +53,14 @@ import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.repository.util.RepositoryHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
+
   private static final Log logger = LogFactory.getLog( RenderApi.class );
   //  private static final String MIME_TYPE = "text/html";
+  protected ICdeEnvironment privateEnviroment;
 
   @GET
   @Path( "/getComponentDefinitions" )
@@ -167,7 +169,7 @@ public class RenderApi {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
         result = new MessageBundlesHelper(  msgDir, readAccess, CdeEnvironment.getPluginSystemWriter() ,
-          CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
+          getEnv().getLocale(), getEnv().getExtApi().getPluginStaticBaseUrl() )
           .replaceParameters( result, null );
       }
 
@@ -244,7 +246,7 @@ public class RenderApi {
     String msg = "Refreshed CDE Successfully";
 
     try {
-      DashboardManager.getInstance().refreshAll();
+      getDashboardManager().refreshAll();
     } catch ( Exception re ) {
       msg = "Method refresh failed while trying to execute.";
 
@@ -261,7 +263,11 @@ public class RenderApi {
 
     CdfRunJsDashboardWriteOptions options =
       new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
-    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style );
+    return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
+  }
+
+  protected DashboardManager getDashboardManager() {
+    return DashboardManager.getInstance();
   }
 
 
@@ -308,12 +314,18 @@ public class RenderApi {
 
       String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
       result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ) ,
-        CdeEnvironment.getPluginSystemWriter() , CdeEngine.getEnv().getLocale(),
-        CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
+        CdeEnvironment.getPluginSystemWriter() , getEnv().getLocale(),
+        getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
     return result;
   }
+
+  private ICdeEnvironment getEnv() {
+    if (this.privateEnviroment != null) return this.privateEnviroment;
+    return CdeEngine.getEnv();
+  }
+
 
   private class MethodParams {
     public static final String SOLUTION = "solution";
