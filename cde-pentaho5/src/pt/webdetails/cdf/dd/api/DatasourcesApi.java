@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -41,7 +41,7 @@ public class DatasourcesApi {
 
       List<CdaDataSourceReader.CdaDataSource> dataSourcesList = getCdaDataSources( dashboard );
       CdaDataSourceReader.CdaDataSource[] dataSources =
-        dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[dataSourcesList.size()] );
+        dataSourcesList.toArray( new CdaDataSourceReader.CdaDataSource[ dataSourcesList.size() ] );
       return "[" + StringUtils.join( dataSources, "," ) + "]";
     }
   }

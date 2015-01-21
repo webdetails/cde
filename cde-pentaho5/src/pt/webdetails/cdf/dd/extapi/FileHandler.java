@@ -46,7 +46,7 @@ public class FileHandler implements IFileHandler {
       wcdfFile = Utils.getSystemOrUserRWAccess( wcdfPath ).getFileInputStream( wcdfPath );
     } else {
       wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(
-          DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+        DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
 
       // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
       if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
@@ -130,7 +130,8 @@ public class FileHandler implements IFileHandler {
    * @param isHidden if directory should be hidden
    * @return operation success
    */
-  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath, final boolean isHidden ) {
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath,
+                                            final boolean isHidden ) {
 
     if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;
