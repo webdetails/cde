@@ -102,6 +102,10 @@ public class MockResourceLoader implements IResourceLoader {
         return false;
       }
 
+      @Override public boolean createFolder( String path, boolean isHidden ) {
+        return false;
+      }
+
       @Override public InputStream getFileInputStream( String s ) throws IOException {
         return null;
       }
