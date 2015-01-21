@@ -36,6 +36,7 @@ public interface IFileHandler {
    *
    * @param access             repositoryAccessor
    * @param relativeFolderPath name of the basic CDE folder ( styles, templates, components, wigdets )
+   * @param isHidden indicates if the folder is hidden
    * @return operation success
    */
   public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath, boolean isHidden );

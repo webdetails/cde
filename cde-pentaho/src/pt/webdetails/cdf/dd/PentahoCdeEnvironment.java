@@ -127,7 +127,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute,
-    String absRoot, String scheme ) throws Exception {
+                                String absRoot, String scheme ) throws Exception {
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absolute, absRoot, scheme );
   }
 
@@ -150,13 +150,14 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
-      boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options ) {
+                                                                         boolean bypassCacheRead, Dashboard dash,
+                                                                         CdfRunJsDashboardWriteOptions options ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-      String indent ) {
+                                                                         String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
   }
 
@@ -173,7 +174,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public IUrlProvider getUrlProvider() {
     return new PentahoUrlProvider( getPluginId() ) {
       @Override
-      public String getResourcesBasePath(){
+      public String getResourcesBasePath() {
         return getExtApi().getResourcesBasePath();
       }
     };

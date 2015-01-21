@@ -103,15 +103,14 @@ public class CdeEngine {
         logger.error( "Couldn't find or create CDE widgets dir." );
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
-          sysPluginSamples, "widget.cdfde" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ),
-          sysPluginSamples,
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ), sysPluginSamples,
+          "widget.cdfde" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ),sysPluginSamples,
           "widget.wcdf" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
-            "widget.cda" );
+          "widget.cda" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
-            sysPluginSamples, "widget.xml" );
+          sysPluginSamples, "widget.xml" );
       }
     }
 
