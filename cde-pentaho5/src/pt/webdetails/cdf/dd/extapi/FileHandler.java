@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -127,9 +127,10 @@ public class FileHandler implements IFileHandler {
    * @see org.pentaho.platform.engine.security.SecurityHelper#runAsSystem()
    * @param access repositoryAccessor
    * @param relativeFolderPath name of the basic CDE folder ( styles, templates, components, wigdets )
+   * @param isHidden if directory should be hidden
    * @return operation success
    */
-  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ) {
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath, final boolean isHidden ) {
 
     if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;
@@ -144,7 +145,7 @@ public class FileHandler implements IFileHandler {
 
           @Override
           public Boolean call() throws Exception {
-            return access.createFolder( relativeFolderPath );
+            return access.createFolder( relativeFolderPath, isHidden );
           }
         } );
       } catch ( Exception e ) {

@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -78,7 +78,7 @@ public class LegacyFileHandler implements IFileHandler {
   }
 
   @Override
-  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath ) {
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath, boolean isHidden ) {
 
     if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;
@@ -86,7 +86,7 @@ public class LegacyFileHandler implements IFileHandler {
 
     // skip creation if dir already exists
     if ( !access.fileExists( relativeFolderPath ) ) {
-      access.createFolder( relativeFolderPath );
+      access.createFolder( relativeFolderPath, isHidden );
     }
 
     return true;
