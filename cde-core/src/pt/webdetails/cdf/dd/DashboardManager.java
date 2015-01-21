@@ -62,12 +62,13 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
-public final class DashboardManager {
+public class DashboardManager {
   private static final Log _logger = LogFactory.getLog( DashboardManager.class );
 
-  private static final DashboardManager _instance = new DashboardManager();
+  private static DashboardManager _instance;
 
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
@@ -79,24 +80,24 @@ public final class DashboardManager {
 
   private final Map<String, Dashboard> _dashboardsByCdfdeFilePath;
 
-  private DashboardManager() {
+  protected DashboardManager() {
     // The eh-cache holds
     // CdfRunJsDashboardWriteResult objects indexed by DashboardCacheKey
     // Both these types are serializable.
-    // 
-    // CdfRunJsDashboardWriteResult objects are 
+    //
+    // CdfRunJsDashboardWriteResult objects are
     // an almost-final render of a given Dashboard and options.
-    // 
-    // Dashboard objects allow rendering a dashboard 
+    //
+    // Dashboard objects allow rendering a dashboard
     // multiple times, with different options.
-    // 
-    // A Dashboard object is re-built from disk 
+    //
+    // A Dashboard object is re-built from disk
     // whenever the corresponding WCDF and/or CDE files have changed.
 
     // INIT EH-CACHE for CdfRunJsDashboardWriteResult objects
     _ehCacheManager = createWriteResultCacheManager();
 
-    // TODO: Not sure we need to check existence of the cache, 
+    // TODO: Not sure we need to check existence of the cache,
     // since the cache manager is newly created.
     if ( !_ehCacheManager.cacheExists( CACHE_NAME ) ) {
       _ehCacheManager.addCache( CACHE_NAME );
@@ -110,6 +111,13 @@ public final class DashboardManager {
   }
 
   public static DashboardManager getInstance() {
+    if ( _instance == null ) {
+      synchronized ( DashboardManager.class ) {
+        if ( _instance == null ) {
+          _instance = new DashboardManager();
+        }
+      }
+    }
     return _instance;
   }
 
@@ -181,7 +189,7 @@ public final class DashboardManager {
 
     DashboardCacheKey cacheKey = new DashboardCacheKey(
       cdeFilePath,
-      CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( wcdf.getStyle() ),
+      getPluginResourceLocationManager().getStyleResourceLocation( wcdf.getStyle() ),
       options.isDebug(),
       options.isAbsolute(),
       options.getSchemedRoot(),
@@ -232,6 +240,10 @@ public final class DashboardManager {
 
     // 6. Cache the dashboard write
     return this.replaceDashboardWriteResultInCache( cacheKey, dashWrite );
+  }
+
+  protected IPluginResourceLocationManager getPluginResourceLocationManager() {
+    return CdeEnvironment.getPluginResourceLocationManager();
   }
 
   public Dashboard getDashboard(
@@ -339,9 +351,9 @@ public final class DashboardManager {
     }
 
     // clear i18n messages.properties cache dir
-    if( CdeEnvironment.getPluginSystemWriter().fileExists( MessageBundlesHelper.BASE_CACHE_DIR ) ){
+    if( getPluginSystemWriter().fileExists( MessageBundlesHelper.BASE_CACHE_DIR ) ){
 
-      List<IBasicFile> cacheFiles = CdeEnvironment.getPluginSystemWriter().listFiles( MessageBundlesHelper.BASE_CACHE_DIR,
+      List<IBasicFile> cacheFiles = getPluginSystemWriter().listFiles( MessageBundlesHelper.BASE_CACHE_DIR,
         new IBasicFileFilter() {
           @Override public boolean accept( IBasicFile file ) {
             return true; // accept everything
@@ -350,10 +362,14 @@ public final class DashboardManager {
 
       if( cacheFiles != null ){
         for( IBasicFile file : cacheFiles ){
-          CdeEnvironment.getPluginSystemWriter().deleteFile( file.getPath() );
+          getPluginSystemWriter().deleteFile( file.getPath() );
         }
       }
     }
+  }
+
+  protected IRWAccess getPluginSystemWriter() {
+    return CdeEnvironment.getPluginSystemWriter();
   }
 
   private void collectWidgetsToInvalidate(
@@ -512,7 +528,7 @@ public final class DashboardManager {
 
     CdfRunJsDashboardWriteResult dashWrite = (CdfRunJsDashboardWriteResult) cacheElement.getValue();
 
-    // 3. Get the template file 
+    // 3. Get the template file
     String templPath = cacheKey.getTemplate();
 
     // 4. Check if cache item has expired
@@ -594,6 +610,10 @@ public final class DashboardManager {
     System.setProperty( CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY, "true" );
 
     return cacheMgr;
+  }
+
+  protected IReadAccess getPluginSystemReader() {
+    return CdeEnvironment.getPluginSystemReader();
   }
 
   private Dashboard getDashboardFromCache( String cdeFullPath ) {
