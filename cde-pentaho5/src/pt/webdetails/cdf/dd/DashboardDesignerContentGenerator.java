@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -50,22 +50,23 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     IParameterProvider pathParams = parameterProviders.get( MethodParams.PATH );
 
     String solution = getRequestParameterAsString( MethodParams.SOLUTION, "" ),
-           path = getRequestParameterAsString( MethodParams.PATH, "" ),
-           file = getRequestParameterAsString( MethodParams.FILE, "" );
-    String root = getRequestParameterAsString( MethodParams.ROOT, "" );
+        path = getRequestParameterAsString( MethodParams.PATH, "" ),
+        file = getRequestParameterAsString( MethodParams.FILE, "" ),
+        root = getRequestParameterAsString( MethodParams.ROOT, "" ),
+        scheme = getRequestParameterAsString( MethodParams.SCHEME, "" );
 
     String viewId = getRequestParameterAsString( MethodParams.VIEWID, "" );
 
     String filePath = getPathParameterAsString( MethodParams.PATH, "" );
 
     boolean inferScheme = requestParams.hasParameter( MethodParams.INFER_SCHEME )
-      && getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
+        && getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
     boolean absolute = requestParams.hasParameter( MethodParams.ABSOLUTE )
-      && getRequestParameterAsString( MethodParams.ABSOLUTE, "" ).equals( "true" );
+        && getRequestParameterAsString( MethodParams.ABSOLUTE, "" ).equals( "true" );
     boolean bypassCacheRead = requestParams.hasParameter( MethodParams.BYPASS_CACHE )
-      && getRequestParameterAsString( MethodParams.BYPASS_CACHE, "" ).equals( "true" );
+        && getRequestParameterAsString( MethodParams.BYPASS_CACHE, "" ).equals( "true" );
     boolean debug = requestParams.hasParameter( MethodParams.DEBUG )
-      && getRequestParameterAsString( MethodParams.DEBUG, "" ).equals( "true" );
+        && getRequestParameterAsString( MethodParams.DEBUG, "" ).equals( "true" );
 
     String style = getRequestParameterAsString( MethodParams.STYLE, "" );
 
@@ -73,7 +74,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     long start = System.currentTimeMillis();
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(),
-      this.userSession, this, requestParams );
+        this.userSession, this, requestParams );
 
     if ( create ) {
       String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
@@ -94,8 +95,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse() );
 
     } else {
-      String result = renderer
-          .render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, viewId, style, getRequest() );
+      String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, scheme,
+          viewId, style, getRequest() );
       getResponse().setContentType( MimeTypes.HTML );
 
       IOUtils.write( result, getResponse().getOutputStream() );
@@ -104,7 +105,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     long end = System.currentTimeMillis();
     CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(), this.userSession,
-      this, start, uuid, end );
+        this, start, uuid, end );
   }
 
   @Override
@@ -129,6 +130,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String VIEWID = "viewId";
     public static final String COMMAND = "cmd";
     public static final String STYLE = "style";
+    public static final String SCHEME = "scheme";
 
 
     public static final String DATA = "data";

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		@HEADER@
+	</head>
+	<body>
+		<script language="javascript">
+			// Init jQuery i18n plugin
+			loadMessageBundles = function(lang) {
+				jQuery.i18n.properties({
+					name:'#{GLOBAL_MESSAGE_SET_NAME}',
+					path:'#{GLOBAL_MESSAGE_SET_PATH}',
+					mode:'both',
+					language:(lang == 'browser' ? jQuery.i18n.browserLang() : lang),
+					callback: function() {
+						#{GLOBAL_MESSAGE_SET}
+					}
+				});
+				Dashboards.setI18nSupport('#{LANGUAGE_CODE}', jQuery.i18n);
+			}
+
+			$(document).ready(function(){
+				// Initialize jquery.i18n plugin - load message files
+				var userLocale = '#{LANGUAGE_CODE}';
+				loadMessageBundles(userLocale);
+			});
+		</script>
+	
+		@CONTENT@
+		
+		@FOOTER@
+	</body>
+</html>
+
+
