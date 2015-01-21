@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -86,13 +86,13 @@ public class RenderApi {
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -112,13 +112,13 @@ public class RenderApi {
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -139,7 +139,7 @@ public class RenderApi {
                         @Context HttpServletRequest request ) throws IOException {
 
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
     String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
@@ -155,20 +155,20 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+        iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
-        loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
+          loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
       String result =
-        dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
+          dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) ) {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
-        result = new MessageBundlesHelper(  msgDir, readAccess, CdeEnvironment.getPluginSystemWriter() ,
+        result = new MessageBundlesHelper( msgDir, readAccess, CdeEnvironment.getPluginSystemWriter(),
           getEnv().getLocale(), getEnv().getExtApi().getPluginStaticBaseUrl() )
           .replaceParameters( result, null );
       }
@@ -177,7 +177,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+          this.getPentahoSession(), iLogger, start, uuid, end );
 
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
@@ -186,7 +186,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+          this.getPentahoSession(), iLogger, start, uuid, end );
       return msg;
     }
   }
@@ -194,14 +194,13 @@ public class RenderApi {
   @GET
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
-  public String edit(
-    @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-    @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-    @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-    @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-    @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
-    @Context HttpServletRequest request,
-    @Context HttpServletResponse response ) throws Exception {
+  public String edit( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+                      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+                      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                      @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
+                      @Context HttpServletRequest request,
+                      @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
     if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
@@ -262,7 +261,7 @@ public class RenderApi {
     throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-      new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
+        new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
@@ -313,8 +312,8 @@ public class RenderApi {
       /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
 
       String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
-      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ) ,
-        CdeEnvironment.getPluginSystemWriter() , getEnv().getLocale(),
+      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
+        CdeEnvironment.getPluginSystemWriter(), getEnv().getLocale(),
         getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
@@ -322,7 +321,9 @@ public class RenderApi {
   }
 
   private ICdeEnvironment getEnv() {
-    if (this.privateEnviroment != null) return this.privateEnviroment;
+    if ( this.privateEnviroment != null ) {
+      return this.privateEnviroment;
+    }
     return CdeEngine.getEnv();
   }
 
