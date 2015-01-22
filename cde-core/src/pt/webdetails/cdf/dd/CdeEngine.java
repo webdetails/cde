@@ -84,30 +84,33 @@ public class CdeEngine {
   public void ensureBasicDirs() {
     IRWAccess repoBase = CdeEnvironment.getPluginRepositoryWriter();
     // TODO: better error messages
-    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS ) ) {
+    if ( !ensureDirExists( repoBase, ".", true ) ) {
+      logger.error( "Couldn't find or create CDE base dir." );
+    }
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.COMPONENTS, false ) ) {
       logger.error( "Couldn't find or create CDE components dir." );
     }
-    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.STYLES ) ) {
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.STYLES, false ) ) {
       logger.error( "Couldn't find or create CDE styles dir." );
     }
-    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES ) ) {
+    if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES, false ) ) {
       logger.error( "Couldn't find or create CDE templates dir." );
     }
 
     // special case for widgets: copy widget samples into dir if creating dir for the first time
     if ( !repoBase.fileExists( CdeConstants.SolutionFolders.WIDGETS ) ) {
-      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS ) ) {
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.WIDGETS, false ) ) {
         logger.error( "Couldn't find or create CDE widgets dir." );
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ),
-            sysPluginSamples, "widget.cdfde" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
-            "widget.wcdf" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ), sysPluginSamples,
+          "widget.cdfde" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ),sysPluginSamples,
+          "widget.wcdf" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
-            "widget.cda" );
+          "widget.cda" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
-            sysPluginSamples, "widget.xml" );
+          sysPluginSamples, "widget.xml" );
       }
     }
 
@@ -126,8 +129,8 @@ public class CdeEngine {
     return false;
   }
 
-  private boolean ensureDirExists( IRWAccess access, String relPath ) {
-    return getEnv().getFileHandler().createBasicDirIfNotExists( access, relPath );
+  private boolean ensureDirExists( IRWAccess access, String relPath, boolean isHidden ) {
+    return getEnv().getFileHandler().createBasicDirIfNotExists( access, relPath, isHidden );
   }
 
   public static ICdeEnvironment getEnv() {
