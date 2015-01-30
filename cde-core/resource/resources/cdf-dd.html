@@ -206,6 +206,8 @@
   $(document).ready(function(){
     // Initialize jquery.i18n plugin - load message files
     var userLocale = '#{LANGUAGE_CODE}';
+    var formProvider = cdo.format.language(userLocale);
+    cdo.format.language(formProvider);
     loadMessageBundles(userLocale);
   });
 </script>
