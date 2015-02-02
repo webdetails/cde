@@ -106,7 +106,7 @@
         <loadproperties srcFile="/home/tomcat/sonar.properties"/>
     </target>
 
-    <target name="sonar" depends='read-sonar-props'>
+    <target name="ctools-sonar" depends='read-sonar-props'>
         <!-- list of mandatories Sonar properties -->
         <property name="sonar.sources" value="${src.dir}"/>
         <!-- list of optional Sonar properties -->
