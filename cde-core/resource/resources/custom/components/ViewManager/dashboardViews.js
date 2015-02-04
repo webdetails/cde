@@ -1,127 +1,146 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 var wd = wd || {}
 wd.cdf = wd.cdf || {};
 wd.cdf.views = wd.cdf.views || {};
-var templates = templates || {};
-templates.dashboardViews = templates.dashboardViews || {}; 
 
-wd.cdf.views.getUrl = function() {
-  return wd.helpers.views.getUrl(this.solution, this.path, this.file, this.name);
-};
-
-wd.cdf.views.DashboardView = Backbone.Model.extend({
+wd.cdf.views.ViewModel = Backbone.Model.extend({
   defaults: {
-    "id": "",
-    "name": "",
-    "description": "",
-    "key": null,
-    "params": {},
-    "unbound": [],
-    "user": "",
-    "solution": "",
-    "path": "",
-    "file": "",
-    "url": wd.cdf.views.getUrl,
-    "timestamp": 0
+    name: "Unsaved",
+    description: "",
+    id: null,
+    params: {},
+    unbound: [],
+    user: "",
+    solution: "",
+    path: "",
+    file: "",
+    timestamp: 0
   },
 
-  /*
-   * Test Whether the DashboardView is synced with the dashboard
-   */
-  isSynced: function() {
-    var modelParams = this.get("parameters"),
-        dashboardParams = Dashboards.getViewParameters();
-    /* If the two parameter lists have mismatched sizes, then they're definitely different */
-    if(Object.keys(modelParams).length !== Object.keys(dashboardParams).length) {
-      return false;
-    }
-    /* Search for mismatched keys, or similar keys with mismatched values */
-    for(p in modelParams) if (modelParams.hasOwnProperty(p)){
-      if (!dashboardParams.hasOwnProperty(p) || dashboardParams[p] !== modelParams[p]) {
-        return false;
-      }
-    }
-    /* Same size, and we matched all keys and values -- they're the same,
-     * so the object is synced with the dashboard state
-     */
-    return true;
-  },
-
-  /*
-   * Sync DashboardView with the dashboard parameters
-   */
-  syncWithDashboard: function() {
-    this.set("parameters", Dashboards.getViewParameters());
+  constructor: function() {
+    Backbone.Model.apply(this, arguments);
   }
 });
 
-wd.cdf.views.Report = Backbone.Model.extend({
-  defaults: {
-    "name": "",
-    "label": "",
-    "dashboardView": null,
-    "params": {},
-    "user": "",
-    "timestamp": 0
-  }
-});
-
-wd.cdf.views.newDashboardView = function(name,description) {
-  var m = {
-    id: name,
-    name: name,
-    description: description,
-    params: Dashboards.getViewParameters(),
-    unbound: Dashboards.getUnboundParameters(),
-    user: Dashboards.context.user,
-    solution: Dashboards.context.solution,
-    path: Dashboards.context.path,
-    file: Dashboards.context.file,
-    timestamp: (new Date()).getTime()
-  };
-  return new wd.cdf.views.DashboardView(m);
-};
-
-/**************************
- * View Manager Component *
- **************************/
-
-wd.cdf.views.ViewManager = Backbone.Model.extend({
-  defaults: {
-    "currentView": "Unsaved View",
-    "views": null,
-    "viewCount": 0
-  },
-
-  initViews: function(views) {
-    if(Dashboards.view) {
-      this.set("currentView",Dashboards.view.name,{silent:true});
+wd.cdf.views.ViewCollection = Backbone.Collection.extend({
+  url: function() { return webAppPath + wd.helpers.views.getViewsEndpoint(); },
+  model: wd.cdf.views.ViewModel,
+  parse: function(response) {
+    if(response.status === "error") {
+      Dashboards.log(response.result, "warn");
+      return;
     }
-    var viewCollection = new Backbone.Collection();
-    viewCollection.model = wd.cdf.views.DashboardView;
-    viewCollection.reset(views);
-    this.set("views",viewCollection,{silent:true});
-    this.set("viewCount",viewCollection.size(),{silent:true});
-    this.change();
+    return response.result;
   }
 });
 
 wd.cdf.views.ViewManagerView = Backbone.View.extend({
 
+  model: wd.cdf.views.ViewModel,
+
+  collection: wd.cdf.views.ViewCollection,
+
   events: {
     'click .tab': "clickTab",
     'click .manage-views, .save-panel .cancel': "toggleViewManager",
-    'click .view-item .delete': "deleteView",
+    'click .view-item .delete': "delete",
     'click .save-panel .save': "save"
   },
 
   tabs: [
-    {label: "List", selector: ".list-panel", template:"viewListPanel"},
-    /*{label: "Subscribe", selector: ".subscrition-panel", template: "viewSubscriptionPanel"},*/
+    {label: "List", selector: ".list-panel", template: "viewListPanel"},
     {label: "Save", selector: ".save-panel", template: "viewSavePanel"}
   ],
 
   initialize: function() {
-    this.configureListeners();
+    this.collection = new wd.cdf.views.ViewCollection();
+    this.collection.on("add change sync remove", this.render, this);
+    // fetch data from server
+    this.collection.fetch();
+  },
+
+  render: function() {
+    //check if Dashboards.view exists and if there is a model saved with the same name
+    var viewName = Dashboards.view ? Dashboards.view.name : undefined,
+        viewDesc = Dashboards.view ? Dashboards.view.description : undefined;
+
+    if(viewName) {
+      var model = this.collection.filter(function(model) { return model.get("name") == viewName; })[0];
+      if(model) {
+        viewName = model.get("name");
+        viewDesc = model.get("description");
+      } else {
+        viewName = "Unsaved";
+        viewDesc = "";
+      }
+    } else {
+      viewName = "Unsaved";
+      viewDesc = "";
+    }
+
+    this.$el.html(templates.viewManager({
+      currentView: viewName,
+      views: this.collection,
+      viewCount: this.collection.size()
+    }));
+    this.renderTabs(viewName, viewDesc);
+    this.renderViewList();
+    this.$(".view-manager").hide();
+  },
+
+  renderTabs: function(viewName, viewDesc) {
+    var tabs = this.$(".tabs").empty(),
+        tabContents =  this.$(".tab-contents").empty();
+
+    _(this.tabs).each(function(tab) {
+      /* Render the tab */
+      tabs.append(templates.viewManagerTab(tab));
+      /* Render the panel corresponding to the tab */
+      if(tab.template === "viewListPanel") {
+        tabContents.append(templates[tab.template]({
+          "views": this.collection,
+          "viewCount": this.collection.size()
+        }));
+      } else if(tab.template === "viewSavePanel") {
+        tabContents.append(templates[tab.template]({
+          "currentView": viewName,
+          "description": viewDesc
+        }));
+      }
+    }, this);
+
+    tabs.children().slice(0, 1).addClass('selected');
+    tabContents.children().slice(1).hide();
+  },
+
+  renderViewList: function() {
+    var $views = this.$(".list-panel .views").empty();
+
+    this.collection.each(function(model) {
+      var $view = $(templates.viewListItem({
+        name: model.get("name"),
+        viewUrl: wd.helpers.views.getUrl(
+          model.get("solution"),
+          model.get("path"),
+          model.get("file"),
+          model.get("name"))}));
+
+      $view.data("model", model);
+
+      $views.append($view);
+    });
   },
 
   clickTab: function(evt) {
@@ -135,152 +154,164 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     this.$(selector).show();
   },
 
-  configureListeners: function() {
-    this.model.on("change",this.render,this);
-  },
-
-  renderTabs: function() {
-    var tabs = this.$(".tabs").empty(),
-        tabContents =  this.$(".tab-contents").empty();
-    _(this.tabs).each(function(t){
-      /* Render the tab */
-      tabs.append(Mustache.render(templates.viewManagerTab, t));
-      /* Render the panel corresponding to the tab */
-      tabContents.append(templates[t.template](this.model.toJSON()));
-    },this);
-    tabs.children().slice(0,1).addClass('selected');
-    tabContents.children().slice(1).hide();
-    /* */
-  },
-
-  renderViewList: function() {
-    var $views = this.$(".list-panel .views").empty();
-    this.model.get("views").each(function(e){
-      var $view = $(Mustache.render(templates.viewListItem, e.toJSON()));
-      $view.data("model",e);
-      $views.append($view);
-    });
-    
-  },
-  toggleViewManager: function(){
+  toggleViewManager: function() {
     this.$('.manage-views').toggleClass("active");
     this.$('.view-manager').toggle();
   },
 
-  render: function() {
-    this.$el.html(Mustache.render(templates.viewManager, this.model.toJSON()));
-    this.renderTabs();
-    this.renderViewList();
-    this.$(".view-manager").hide();
-  },
-
   save: function() {
-    var name = this.$(".save-properties .name").val(),
-        desc = this.$(".save-properties .description").val(),
-        view = wd.cdf.views.newDashboardView(name, desc).toJSON(),
-        args;
-        view.params = Base64.encode(JSON.stringify(view.params)),
-        old = this.model.get("views").filter(function(m){return m.get("name") == name})[0];
+    var myself = this,
+        name = myself.$(".save-properties .name").val().trim(),
+        desc = myself.$(".save-properties .description").val();
 
-    if(old) {
-      view.key = old.get("key");
+    if(!name || !name.length || name === "Unsaved") {
+      Dashboards.log("Failed to save a dashboard view with no name or with the reserved name 'Unsaved'", "warn");
+      return;
     }
-    args = {
-      view: JSON.stringify(view)
-    };
-    var myself = this;
-    $.post(webAppPath + wd.helpers.views.getSaveViewsEndpoint(),$.param(args),function(){
-      Dashboards.view = view;
-      myself.model.set("currentView",name);
-      myself.model.trigger("update");
-    });
+
+    var tmpModel = Dashboards.view
+      ? new wd.cdf.views.ViewModel(Dashboards.view)
+      : new wd.cdf.views.ViewModel();
+
+    tmpModel.set("name", name, {silent: true});
+    tmpModel.set("description", desc, {silent: true});
+    // OrientDB needs param to be base64 encoded
+    tmpModel.set("params", Base64.encode(JSON.stringify(Dashboards.getViewParameters())), {silent: true});
+    tmpModel.set("unbound", Dashboards.getUnboundParameters(), {silent: true});
+    tmpModel.set("user", Dashboards.context.user, {silent: true});
+    tmpModel.set("solution", Dashboards.context.solution, {silent: true});
+    tmpModel.set("path", Dashboards.context.path, {silent: true});
+    tmpModel.set("file", Dashboards.context.file, {silent: true});
+    tmpModel.set("timestamp", (new Date()).getTime(), {silent: true});
+
+    //if it's an update, use the same id (key) value, HTTP PUT is idempotent
+    var filtered = myself.collection.filter(function(model) { return model.get("name") == name; });
+    if($.isArray(filtered) && filtered.length > 0) {
+      tmpModel.set("id", filtered[0].get("id"), {silent: true});
+    }
+
+    tmpModel.sync(
+      'update',
+      tmpModel,
+      {
+        url: webAppPath + wd.helpers.views.getViewsEndpoint(name),
+        contentType: 'application/json',
+        dataType: 'json',
+        processData: false,
+        data: "view=" + JSON.stringify(tmpModel.toJSON()),
+        success: function(response) {
+          if(response.status === "error") {
+            Dashboards.log(response.message, "warn");
+            return;
+          }
+
+          Dashboards.view = response.result;
+
+          Dashboards.restoreView();
+
+          myself.collection.add(Dashboards.view, {merge: true, silent: false});
+        },
+        cache: false
+      }
+    );
   },
 
-  deleteView: function(evt) {
-    var view = $(evt.target).parent().data("model"),
-        args = {
-          name: view.get("name")
-        };
-    var myself = this;
-    $.post(webAppPath + wd.helpers.views.getDeleteViewsEndpoint(),$.param(args),function(){
-      myself.model.get("views").remove(view);
-      myself.model.trigger("update");
-    });
-  }
+  delete: function(evt) {
+    var myself = this,
+        name = $(evt.target).parent().data("model").get("name").trim(),
+        tmpModel;
 
+    if(!name || !name.length) {
+      Dashboards.log("Failed to delete a dashboard view with no name", "warn");
+      return;
+    }
+
+    var filtered = myself.collection.filter(function(model) { return model.get("name") == name; })[0];
+    if(filtered) {
+      tmpModel = filtered;
+    }
+
+    // sync with server
+    tmpModel.sync(
+      'delete',
+      tmpModel,
+      {
+        url: webAppPath + wd.helpers.views.getViewsEndpoint(name),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+          if(response.status === "error") {
+            Dashboards.log(response.message, "warn");
+            return;
+          }
+          myself.collection.remove(tmpModel, {silent: false});
+          // if we just deleted the current Dashboards.view previously saved
+          // we need to remove the id so an update on a deleted view is not triggered
+          if(Dashboards.view && Dashboards.view.name === name) {
+            Dashboards.view.id = null;
+          }
+        },
+        cache: false
+      }
+    );
+  }
 });
 
-templates.viewManager =
-  "<div class='view-manager-component'>" +
-  " <div class='current-view'>" + 
-  "   <span class='label'>Current View: </span>" +
-  "   <span class='value'>{{currentView}}</span>" +
-  " </div>" +
-  " <div class='big-button manage-views'>Manage Views</div>" +
-  " <div class='view-manager'>" +
-  "   <div class='tabs'></div>" +
-  "   <div class='tab-contents'></div>" +
-  " </div>" +
-  "</div>";
+// Treat underscore templates as if they had a mustache
+// http://underscorejs.org/#template 
+_.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
-templates.viewManagerTab =
-  "<div class='tab' data-target='{{selector}}'>" +
-  "   {{label}}" + 
-  "</div>";
+var templates = {
+  viewManager: _.template(
+    "<div class='view-manager-component'>" +
+    "  <div class='current-view'>" +
+    "    <span class='label'>Current View: </span>" +
+    "    <span class='value'>{{currentView}}</span>" +
+    "  </div>" +
+    "  <div class='big-button manage-views'>Manage Views</div>" +
+    "  <div class='view-manager'>" +
+    "    <div class='tabs'></div>" +
+    "    <div class='tab-contents'></div>" +
+    "  </div>" +
+    "</div>"),
 
-templates.viewListPanel =
-  "<div class='list-panel panel'>" +
-  " <div class='total-views'>" + 
-  "   <span class='label'>Total Views: </span>" +
-  "   <span class='value'>{{viewCount}}</span>" +
-  " </div>" +
-  " <div class='views'></div>" +
-  " <div class='view-all'>" +
-  "   <span class='label'>View All</span>" +
-  "   <span class='description'>(go to View Manager)</span>" +
-  " </div>" + 
-  "</div>";
- 
-templates.viewListItem =
-  "<div class='view-item'>" +
-  " <a class='name' href='{{url}}'>{{name}}</a>" +
-  " <span class='delete'></span>" +
-  "</div>";
+  viewManagerTab: _.template(
+    "<div class='tab' data-target='{{selector}}'>" +
+    "  {{label}}" +
+    "</div>"),
 
-templates.viewSubscriptionPanel =
-  "<div class='subscrition-panel panel'>" +
-  " <div class='current-view'>" +
-  "   <span class='label'>Current View:</span>" + 
-  "   <span class='value'></span>" + 
-  " </div>" +
-  " <div class='unsaved'>"+
-  "   <div>Your current view is not saved. To subscribe," +
-  "     you must first save it. Do you wish to proceed?" +
-  "   </div>" +
-  "   <div class='button save'>Save</div>" + 
-  "   <div class='button cancel'>Cancel</div>" + 
-  " </div>" +
-  " <div class='subscription-properties'>" +
-  "   <span class='label'></span>" +
-  "   <input type='radio'>" +
-  " </div>" + 
-  "</div>";
+  viewListPanel: _.template(
+    "<div class='list-panel panel'>" +
+    "  <div class='total-views'>" +
+    "    <span class='label'>Total Views: </span>" +
+    "    <span class='value'>{{viewCount}}</span>" +
+    "  </div>" +
+    "  <div class='views'></div>" +
+    "  <div class='view-all'>" +
+    "    <span class='label'>View All</span>" +
+    "    <span class='description'>(go to View Manager)</span>" +
+    "  </div>" +
+    "</div>"),
 
-templates.viewSavePanel =
-  "<div class='save-panel panel'>" +
-  " <div class='current-view'>" +
-  "   <span class='label'>Current View:</span>" + 
-  "   <span class='value'>{{currentView}}</span>" + 
-  " </div>" +
-  " <div class='save-properties'>" +
-  "   <div><span class='label'>Title</span><input type='text' class='name' value='{{currentView}}'></div>" + 
-  "   <div><span class='label'>Description</span><textarea class='description' placeholder='Enter a description'>{{description}}</textarea></div>" + 
-  " </div>" + 
-  " <div class='save-actions'>" +
-  "   <div class='big-button active save'>Save</div>" + 
-  "   <div class='big-button cancel'>Cancel</div>" + 
-  " </div>" + 
-  "</div>";
-/*
- * 
- */
+  viewListItem: _.template(
+    "<div class='view-item'>" +
+    "  <a class='name' href='{{viewUrl}}'>{{name}}</a>" +
+    "  <span class='delete'></span>" +
+    "</div>"),
+
+  viewSavePanel: _.template(
+    "<div class='save-panel panel'>" +
+    "  <div class='current-view'>" +
+    "    <span class='label'>Current View:</span>" +
+    "    <span class='value'>{{currentView}}</span>" +
+    "  </div>" +
+    "  <div class='save-properties'>" +
+    "    <div><span class='label'>Name</span><input type='text' class='name' value='{{currentView}}'></div>" +
+    "    <div><span class='label'>Description</span><textarea class='description' placeholder='Enter a description'>{{description}}</textarea></div>" +
+    "  </div>" +
+    "  <div class='save-actions'>" +
+    "    <div class='big-button active save'>Save</div>" +
+    "    <div class='big-button cancel'>Cancel</div>" +
+    "  </div>" +
+    "</div>")
+};

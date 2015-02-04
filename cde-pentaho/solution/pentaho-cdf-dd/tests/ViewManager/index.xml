@@ -1,0 +1,7 @@
+<index>
+  <name>View Manager</name>
+  <description>View Manager</description>
+  <icon>reporting.png</icon>
+  <visible>true</visible>
+  <display-type>list</display-type>
+</index>
