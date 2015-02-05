@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.api;
 
@@ -37,7 +37,9 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
+import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
+import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
@@ -56,8 +58,10 @@ import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
+
   private static final Log logger = LogFactory.getLog( RenderApi.class );
   //  private static final String MIME_TYPE = "text/html";
+  protected ICdeEnvironment privateEnviroment;
 
   @GET
   @Path( "/getComponentDefinitions" )
@@ -78,14 +82,18 @@ public class RenderApi {
                             @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "false" ) boolean absolute,
                             @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -100,14 +108,18 @@ public class RenderApi {
                             @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
                             @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                             @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                            @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, null );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -122,11 +134,15 @@ public class RenderApi {
                         @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
                         @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                         @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                        @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
                         @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
 
-    String scheme = inferScheme ? "" : request.getScheme();
+    String schemeToUse = "";
+    if (!inferScheme) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    }
     String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
     IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
@@ -145,7 +161,7 @@ public class RenderApi {
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
-        loadDashboard( filePath, scheme, root, absolute, bypassCache, debug, style );
+        loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
       String context = dashboardWcdf.isRequire() ? InterPluginBroker.getCdfRequireContext( filePath )
@@ -231,7 +247,7 @@ public class RenderApi {
     String msg = "Refreshed CDE Successfully";
 
     try {
-      DashboardManager.getInstance().refreshAll();
+      getDashboardManager().refreshAll();
     } catch ( Exception re ) {
       msg = "Method refresh failed while trying to execute.";
 
@@ -248,7 +264,11 @@ public class RenderApi {
 
     CdfRunJsDashboardWriteOptions options =
       new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
-    return DashboardManager.getInstance().getDashboardCdfRunJs( filePath, options, bypassCache, style );
+    return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
+  }
+
+  protected DashboardManager getDashboardManager() {
+    return DashboardManager.getInstance();
   }
 
 
@@ -297,6 +317,11 @@ public class RenderApi {
     return result;
   }
 
+  private ICdeEnvironment getEnv() {
+    if (this.privateEnviroment != null) return this.privateEnviroment;
+    return CdeEngine.getEnv();
+  }
+
   private class MethodParams {
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
@@ -308,6 +333,7 @@ public class RenderApi {
     public static final String DEBUG = "debug";
     public static final String VIEWID = "viewId";
     public static final String STYLE = "style";
+    public static final String SCHEME = "scheme";
   }
 
 }

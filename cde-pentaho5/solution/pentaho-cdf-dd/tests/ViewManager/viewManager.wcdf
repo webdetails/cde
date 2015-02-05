@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>viewManager</title>
+  <description>View Manager Component sample</description>
+  <author></author>
+  <widget>false</widget>
+  <widgetName></widgetName>
+  <widgetParameters></widgetParameters>
+  <style>WDDocs</style>
+  <rendererType>blueprint</rendererType>
+</cdf>

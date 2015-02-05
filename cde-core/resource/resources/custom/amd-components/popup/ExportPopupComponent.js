@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -43,9 +43,9 @@ define([
       }
       if(chartComponent) {
           this.chartComponent = chartComponent;
-        var truncated = /render_(.*)/.test(chartComponent.name) ?
-          chartComponent.name.match(/render_(.*)/)[1] :
-          null;
+        var truncated = /render_(.*)/.test(chartComponent.name)
+          ? chartComponent.name.match(/render_(.*)/)[1]
+          : null;
         if(componentRemap[chartComponent.name]) {
           that.chartComponent = this.dashboard.getComponentByName(componentRemap[chartComponent.name]);
           that.chartExportComponent = componentRemap[chartComponent.name];
@@ -214,8 +214,8 @@ define([
       var myself = this;
       var masterDiv = $('<div class="exportChartMasterDiv">');
       //Style later
-      var totalWidth = Math.max(700, this.chartComponent.chartDefinition.width);
-      var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" + totalWidth + "px'>");
+      var totalWidth = Math.max(800, this.chartComponent.chartDefinition.width);
+      var popupButtonsDiv = $("<div class='exportChartPopupButtons'>");
       masterDiv.append(popupButtonsDiv);
      
       var titleDiv = $("<div class='exportChartTitle'>Export Options</div>");
@@ -351,13 +351,16 @@ define([
       imgDiv.append(img);
       imgDiv.append("&nbsp;");
       masterDiv.append(imgDiv);
-      
+      var holderDiv = $('<div class="exportChartMasterDivHolder">');
+      holderDiv.append(masterDiv);
+
       $.fancybox({
         type: "html",
         closeBtn: true,
-        content: masterDiv,
+        content: holderDiv,
         width: totalWidth,
-        height: this.chartComponent.chartDefinition.height + 60
+        height: this.chartComponent.chartDefinition.height + 60,
+        autoDimensions: false
       });
 
     }

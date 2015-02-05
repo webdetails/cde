@@ -1,3 +1,16 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 describe("CDF-DD-TABLEMANAGER-TESTS", function() {
   var tableManager = getTestTableManager();
   var tableModel = getTestTableModel();
@@ -222,5 +235,49 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
       expect(tableManager.disableDrop('html', 'space')).toBe(true);
       expect(tableManager.disableDrop('row', 'freeForm')).toBe(false);
     })
+  });
+
+  /*
+   * CellRenderer Tests
+   */
+  describe("Testing CellRenderers #", function() {
+
+    /*
+     * ChartComponentToExportRenderer
+     */
+    describe("ChartComponentToExportRenderer #", function() {
+      var mockComponent_1 = {
+        meta_cdwSupport: "true",
+        meta_cdwRender: "false",
+        properties: [{value: "mockComponent_1"}]
+      };
+
+      var mockComponent_2 = {
+        meta_cdwSupport: "true",
+        meta_cdwRender: "false",
+        properties: [{value: "mockComponent_2"}]
+      };
+
+      cdfdd.dashboardData.components = {
+        rows: [mockComponent_1, mockComponent_2]
+      };
+
+      var renderer = new ChartComponentToExportRenderer();
+
+
+      it("getData", function() {
+        expect(renderer.getData()).toEqual({mockComponent_1: "mockComponent_1", mockComponent_2: "mockComponent_2"});
+      });
+
+      it("postChange", function() {
+        expect(renderer.prevSelectedValue).toEqual("");
+        renderer.postChange("mockComponent_1");
+        expect(mockComponent_1.meta_cdwRender).toEqual("true");
+
+        expect(renderer.prevSelectedValue).toEqual("mockComponent_1");
+        renderer.postChange("");
+        expect(mockComponent_1.meta_cdwRender).toEqual("false");
+      })
+    });
   });
 });

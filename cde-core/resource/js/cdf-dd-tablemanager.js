@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -9,7 +9,7 @@
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 
 var TableManager = Base.extend({
 
@@ -1338,6 +1338,49 @@ var SelectRenderer = CellRenderer.extend({
   }
 });
 
+var ComponentToExportRenderer = SelectRenderer.extend({
+
+  isAutoComplete: true,
+
+  getData: function() {
+    var data = _.extend({}, this.selectData);
+    var components = cdfdd.dashboardData.components.rows;
+
+    var validComponents = components.filter(function(comp) {
+      return comp.meta_cdwSupport == 'true';
+    });
+
+    validComponents.map(function(comp) {
+      var compName = comp.properties[0].value;
+      data[compName] = compName;
+    });
+
+    return data;
+  }
+});
+
+var ChartComponentToExportRenderer = ComponentToExportRenderer.extend({
+
+  prevSelectedValue: '',
+
+  postChange: function(componentName) {
+    var components = cdfdd.dashboardData.components.rows;
+    var myself = this;
+
+    if(this.prevSelectedValue != componentName) {
+      components.map(function(comp) {
+        if(comp.properties[0].value == componentName) {
+          comp.meta_cdwRender = 'true';
+        }
+
+        if(comp.properties[0].value == myself.prevSelectedValue) {
+          comp.meta_cdwRender = 'false';
+        }
+      });
+      this.prevSelectedValue = componentName;
+    }
+  }
+});
 
 var BooleanRenderer = SelectRenderer.extend({
 
@@ -2236,4 +2279,3 @@ var ResourceFileRenderer = CellRenderer.extend({
     return true;
   }
 });
-
