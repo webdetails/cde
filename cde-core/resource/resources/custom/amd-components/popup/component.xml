@@ -185,7 +185,7 @@
             <DefaultValue/>
             <Description>Data Component to Export</Description>
             <Tooltip>Id for Data Component to Export</Tooltip>
-            <InputType>String</InputType>
+            <InputType>ComponentToExport</InputType>
             <OutputType>String</OutputType>
             <Order>40</Order>
             <Version>1.0</Version>
@@ -240,7 +240,7 @@
             <DefaultValue/>
             <Description>Chart Component to Export</Description>
             <Tooltip>Id for Chart Component to Export</Tooltip>
-            <InputType>String</InputType>
+            <InputType>ChartComponentToExport</InputType>
             <OutputType>String</OutputType>
             <Order>40</Order>
             <Version>1.0</Version>
