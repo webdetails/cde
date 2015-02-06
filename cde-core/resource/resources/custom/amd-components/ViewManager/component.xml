@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Name>View Manager Component</Name>
+    <IName>viewManagerComponent</IName>
+    <Description>View Manager Component</Description>
+    <Category>CDF</Category>
+    <CatDescription>CDF Core Functionality</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property type="boolean">executeAtStart</Property>
+      <Property type="function">preChange</Property>
+      <Property type="function">postChange</Property>
+      <Property type="function">postFetch</Property>
+      <Property type="string">htmlObject</Property>
+      <Property type="function">preExecution</Property>
+      <Property type="function">postExecution</Property>
+      <Property type="number">listeners</Property>
+    </Model>
+    <Implementation>
+      <Code src="ViewManagerComponent.js"/>
+      <Styles>
+        <Style version="1.0" src="ViewManagerComponent.css">Views</Style>
+      </Styles>
+      <Dependencies>
+        <Dependency src="ViewModel.js" version="1.0">View Model</Dependency>
+        <Dependency src="ViewCollection.js" version="1.0">View Collection</Dependency>
+        <Dependency src="ViewManagerView.js" version="1.0">View Manager View</Dependency>
+        <Dependency src="ViewManagerModel.js" version="1.0">View Manager Model</Dependency>
+      </Dependencies>
+      <CustomProperties>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

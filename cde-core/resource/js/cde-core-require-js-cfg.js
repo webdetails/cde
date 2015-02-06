@@ -77,5 +77,8 @@
   requirePaths['cde/components/GMapsOverlayComponentExt'] = prefix + '/gmapsoverlay/GMapsOverlayComponent.ext';
   requirePaths['cde/components/GMapEngine'] = prefix + '/gmapsoverlay/GMapEngine';
   requirePaths['cde/components/GMapComponentAsyncLoader'] = prefix + '/gmapsoverlay/GMapComponentAsyncLoader';
+
+  requirePaths['cde/components/ViewManagerComponent'] = prefix + '/ViewManager/ViewManagerComponent';
+  requirePaths['cde/components/ViewManagerComponentExt'] = prefix + '/ViewManager/ViewManagerComponent.ext';
   
 })();
