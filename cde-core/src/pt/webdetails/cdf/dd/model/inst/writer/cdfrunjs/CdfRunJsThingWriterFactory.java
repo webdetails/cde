@@ -13,9 +13,6 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs;
 
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.*;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.*;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.*;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -27,6 +24,17 @@ import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsDateParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsExpressionParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsGenericComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsWidgetComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsCdaDataSourcePropertyBindingWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsDataSourcePropertyBindingWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsGenericPropertyBindingWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsJFreeChartDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 
@@ -39,15 +47,7 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
     DashboardWcdfDescriptor wcdf = dashboard.getWcdf();
     DashboardRendererType rendererType = wcdf.getParsedRendererType();
 
-    if ( rendererType == DashboardRendererType.MOBILE ) {
-      return new CdfRunJsMobileDashboardWriter();
-    }
-
-    if ( rendererType == DashboardRendererType.BOOTSTRAP ) {
-      return wcdf.isWidget() ? new CdfRunJsBootstrapWidgetWriter() : new CdfRunJsBootstrapDashboardWriter();
-    }
-
-    return wcdf.isWidget() ? new CdfRunJsBlueprintWidgetWriter() : new CdfRunJsBlueprintDashboardWriter();
+    return new CdfRunJsDashboardWriter( rendererType, wcdf.isWidget() );
   }
 
   public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {

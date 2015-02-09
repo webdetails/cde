@@ -10,10 +10,16 @@ import org.apache.commons.lang.StringUtils;
  * @author dcleao
  */
 public abstract class JsWriterAbstract {
-  protected static final String INDENT1 = "\t";
-  protected static final String INDENT2 = "\t\t";
-  protected static final String INDENT3 = "\t\t\t";
-  protected static final String INDENT4 = "\t\t\t\t";
+  protected static final String INDENT1 = "  ";
+  protected static final String INDENT2 = "    ";
+  protected static final String INDENT3 = "      ";
+  protected static final String INDENT4 = "        ";
+  protected static final String INDENT5 = "          ";
+  protected static final String INDENT6 = "            ";
+
+  protected static final String TITLE = INDENT1 + "<title>{0}</title>";
+  protected static final String SCRIPT = INDENT1 + "<script language=\"javascript\" type=\"text/javascript\" src=\"{0}\"></script>";
+  protected static final String STYLE = INDENT1 + "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
 
   protected static final String NEWLINE = System.getProperty( "line.separator" ); //TODO: do we really want this?
 

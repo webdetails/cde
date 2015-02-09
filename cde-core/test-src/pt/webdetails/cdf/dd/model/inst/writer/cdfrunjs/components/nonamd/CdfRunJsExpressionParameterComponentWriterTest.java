@@ -11,13 +11,14 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsExpressionParameterComponentWriter;
 
 public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
 

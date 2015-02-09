@@ -19,8 +19,11 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.render.Renderer;
 import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
+import java.text.MessageFormat;
 
 public abstract class Render {
+  private static final String PROPERTY_VALUE = "properties/value[../name=''{0}'']";
+  
   private JXPathContext node;
   protected static final Log logger = LogFactory.getLog( Render.class );
   private PropertyBag propertyBag;
