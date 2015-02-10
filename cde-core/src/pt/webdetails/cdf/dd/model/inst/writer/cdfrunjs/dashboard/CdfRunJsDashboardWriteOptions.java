@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * @author dcleao
  */
-public final class CdfRunJsDashboardWriteOptions implements Serializable
+public class CdfRunJsDashboardWriteOptions implements Serializable
 {
   private static final long serialVersionUID = 1L;
   

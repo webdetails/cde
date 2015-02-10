@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import org.apache.commons.lang.StringUtils;
@@ -28,23 +28,41 @@ import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cdf.dd.util.Utils;
 
-public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
+public class CdfRunRequireJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
+
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
+
     this.write( (StringBuilder) output, (CdfRunJsDashboardWriteContext) context, (GenericComponent) t );
+
   }
 
   public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, GenericComponent comp )
-    throws ThingWriteException {
+      throws ThingWriteException {
+
+    final String className = Utils.getComponentClassName( comp.getMeta().getName() );
+
+    this.write( out, context, comp, className );
+
+  }
+
+  public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, GenericComponent comp,
+                     String className )
+      throws ThingWriteException {
+
     GenericComponentType compType = comp.getMeta();
 
     String id = context.getId( comp );
 
-    out.append( "var " );
-    out.append( id );
-    out.append( " = {" );
-    out.append( NEWLINE );
-    addJsProperty( out, "type", JsonUtils.toJsString( compType.getName() ), INDENT1, true );
+    out.append( "var " )
+        .append( id )
+        .append( " = new " )
+        .append( className )
+        .append( "(dashboard, {" )
+        .append( NEWLINE );
+
+    addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );
     addJsProperty( out, "name", JsonUtils.toJsString( id ), INDENT1, false );
 
     // Render definitions
@@ -53,9 +71,9 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
       this.writeDefinition( definitionName, out, context, comp, compType );
     }
 
-    out.append( NEWLINE );
-    out.append( "};" );
-    out.append( NEWLINE );
+    out.append( NEWLINE )
+        .append( "});" )
+        .append( NEWLINE );
   }
 
   private void writeDefinition(
@@ -129,4 +147,5 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
       out.append( "}" );
     }
   }
+
 }

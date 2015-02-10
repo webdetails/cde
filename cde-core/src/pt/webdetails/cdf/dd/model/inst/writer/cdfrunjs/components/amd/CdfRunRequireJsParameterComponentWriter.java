@@ -1,8 +1,17 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
@@ -13,10 +22,7 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
-/**
- * @author dcleao
- */
-public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implements IThingWriter {
+public class CdfRunRequireJsParameterComponentWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (StringBuilder) output, (CdfRunJsDashboardWriteContext) context, (ParameterComponent) t );
   }
@@ -36,7 +42,7 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   }
 
   protected static void addSetParameterAssignment( StringBuilder out, String name, String value ) {
-    out.append( "Dashboards.addParameter(" );
+    out.append( "dashboard.addParameter(" );
     out.append( name );
     out.append( ", " );
     out.append( value );
@@ -45,7 +51,7 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   }
 
   protected static void addViewMode( StringBuilder out, String name, String viewRole ) {
-    out.append( "Dashboards.setParameterViewMode(" );
+    out.append( "dashboard.setParameterViewMode(" );
     out.append( name );
     out.append( ", " );
     out.append( viewRole );
@@ -54,7 +60,7 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   }
 
   protected static void addBookmarkable( StringBuilder out, String name ) {
-    out.append( "Dashboards.setBookmarkable(" );
+    out.append( "dashboard.setBookmarkable(" );
     out.append( name );
     out.append( ");" );
     out.append( NEWLINE );

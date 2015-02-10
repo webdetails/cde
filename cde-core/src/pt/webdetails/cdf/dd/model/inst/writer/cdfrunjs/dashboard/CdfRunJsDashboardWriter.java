@@ -33,12 +33,19 @@ import pt.webdetails.cpf.packager.StringFilter;
 /**
  * @author dcleao
  */
-public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
-  private static final Log logger = LogFactory.getLog( CdfRunJsDashboardWriter.class );
+public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
+  protected static final Log logger = LogFactory.getLog( CdfRunJsDashboardWriter.class );
 
   private static final String EPILOGUE = wrapJsScriptTags( "Dashboards.init();" );
 
-  // ------------
+  private DashboardWcdfDescriptor.DashboardRendererType type;
+  private boolean isWidget;
+
+  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
+    super();
+    this.type = type;
+    this.isWidget = isWidget;
+  }
 
   protected static String readStyleTemplateOrDefault( String styleName ) throws IOException {
     if ( StringUtils.isNotEmpty( styleName ) ) {
@@ -83,20 +90,15 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       (Dashboard) t );
   }
 
-  // -----------------
+  public DashboardWcdfDescriptor.DashboardRendererType getType() {
+    return this.type;
+  }
 
-  public abstract String getType();
-
-  public void write(
-    CdfRunJsDashboardWriteResult.Builder builder,
-    CdfRunJsDashboardWriteContext ctx,
-    Dashboard dash )
+  public void write( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx, Dashboard dash )
     throws ThingWriteException {
     assert dash == ctx.getDashboard();
 
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
-
-    // ------------
 
     String template;
     try {
@@ -107,8 +109,6 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
     template = ctx.replaceTokens( template );
 
-    // ------------
-
     String footer;
     try {
       footer =
@@ -116,8 +116,6 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     } catch ( IOException ex ) {
       throw new ThingWriteException( "Could not read footer file.", ex );
     }
-
-    // ------------
 
     String layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
     String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
@@ -142,21 +140,15 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
       .setLoadedDate( ctx.getDashboard().getSourceDate() );
   }
 
-  // -----------------
-
   protected String readTemplate( DashboardWcdfDescriptor wcdf ) throws IOException {
     return readStyleTemplateOrDefault( wcdf.getStyle() );
   }
 
-  // -----------------
-
   protected String writeLayout( CdfRunJsDashboardWriteContext context, Dashboard dash ) {
-    // TODO: HACK: uses pass-through XPath node...
     if ( dash.getLayoutCount() == 1 ) {
       JXPathContext docXP = dash.getLayout( "TODO" ).getLayoutXPContext();
       try {
-        return getLayoutRenderer( docXP, context )
-          .render( context.getOptions().getAliasPrefix() );
+        return getLayoutRenderer( docXP, context ).render( context.getOptions().getAliasPrefix() );
       } catch ( Exception ex ) {
         logger.error( "Error rendering layout", ex );
       }
@@ -164,8 +156,6 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
     return "";
   }
-
-  // -----------------
 
   protected Renderer getLayoutRenderer( JXPathContext docXP, CdfRunJsDashboardWriteContext context ) {
     return new RenderLayout( docXP, context );
@@ -178,10 +168,7 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     StringBuilder widgetsOut = new StringBuilder();
 
     // Output WCDF
-    out.append( "wcdfSettings = " );
-    out.append( wcdf.toJSON().toString( 2 ) );
-    out.append( ';' );
-    out.append( NEWLINE );
+    addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
     out.append( NEWLINE );
 
     boolean isFirstComp = true;
@@ -228,7 +215,9 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
     if ( !isFirstAddComp ) {
       out.append( NEWLINE );
-      out.append( "Dashboards.addComponents([" ); out.append( addCompIds ); out.append( "]);" );
+      out.append( "Dashboards.addComponents([" );
+      out.append( addCompIds );
+      out.append( "]);" );
       out.append( NEWLINE );
     }
 
@@ -237,20 +226,19 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     return out.toString();
   }
 
-  protected String writeHeaders(
-    String contents,
-    CdfRunJsDashboardWriteContext context ) {
+  protected String writeHeaders( String contents, CdfRunJsDashboardWriteContext context ) {
     CdfRunJsDashboardWriteOptions options = context.getOptions();
 
     DashboardWcdfDescriptor wcdf = context.getDashboard().getWcdf();
 
-    final String title = "<title>" + wcdf.getTitle() + "</title>";
+    final String title = MessageFormat.format( TITLE, wcdf.getTitle() );
 
     // Get CDF headers
     String cdfDeps;
     try {
-      cdfDeps = CdeEngine.getEnv().getCdfIncludes( contents, this.getType(), options.isDebug(), options.isAbsolute(),
-        options.getAbsRoot(), options.getScheme() );
+      cdfDeps =
+        CdeEngine.getEnv().getCdfIncludes( contents, this.getType().getType(), options.isDebug(), options.isAbsolute(),
+          options.getAbsRoot(), options.getScheme() );
     } catch ( Exception ex ) {
       logger.error( "Failed to get cdf includes" );
       cdfDeps = "";
@@ -265,29 +253,21 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
 
     StringFilter cssFilter = new StringFilter() {
       public String filter( String input ) {
-        return String.format(
-          "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
+        return filter( input, baseUrl );
       }
 
       public String filter( String input, String baseUrl ) {
-        return String.format(
-          "\t\t<link href=\"%s%s\" rel=\"stylesheet\" type=\"text/css\" />\n",
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
+        return MessageFormat.format( STYLE, joinUrls( baseUrl, input ) );
       }
     };
 
     StringFilter jsFilter = new StringFilter() {
       public String filter( String input ) {
-        return String.format(
-          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
+        return filter( input, baseUrl );
       }
 
       public String filter( String input, String baseUrl ) {
-        return String.format(
-          "\t\t<script language=\"javascript\" type=\"text/javascript\" src=\"%s%s\"></script>\n",
-          baseUrl, baseUrl.endsWith( "/" ) && input.startsWith( "/" ) ? input.replaceFirst( "/", "" ) : input );
+        return MessageFormat.format( SCRIPT, joinUrls( baseUrl, input ) );
       }
     };
 
@@ -298,6 +278,10 @@ public abstract class CdfRunJsDashboardWriter extends JsWriterAbstract implement
     String rawDeps = depMgr.getPackage( StdPackages.COMPONENT_SNIPPETS ).getRawDependencies( false );
 
     return title + cdfDeps + rawDeps + scriptDeps + styleDeps;
+  }
+
+  protected String joinUrls( String baseUrl, String url ) {
+    return baseUrl + ( ( baseUrl.endsWith( "/" ) && url.startsWith( "/" ) ) ? url.replaceFirst( "/", "" ) : url );
   }
 
   private String writeContent( String layout, String components ) {

@@ -16,6 +16,12 @@ package pt.webdetails.cdf.dd.render.layout;
 import org.apache.commons.jxpath.JXPathContext;
 
 public class ResourceFileRender extends ResourceRender {
+  protected static final String LINK = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{0}\" />";
+  protected static final String SCRIPT_FILE =
+    "<script language=\"javascript\" type=\"text/javascript\" src=\"{0}\"></script>";
+
+  protected static final String RESOURCE_FILE = "resourceFile";
+
   public ResourceFileRender( JXPathContext context ) {
     super( context );
   }

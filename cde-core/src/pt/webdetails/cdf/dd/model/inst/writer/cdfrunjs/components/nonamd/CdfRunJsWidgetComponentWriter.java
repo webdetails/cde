@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -26,9 +26,9 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 /**
  * @author dcleao
  */
-public class CdfRunRequireJsWidgetComponentWriter extends JsWriterAbstract implements IThingWriter
+public class CdfRunJsWidgetComponentWriter extends JsWriterAbstract implements IThingWriter
 {
-  private static final Log _logger = LogFactory.getLog(CdfRunRequireJsWidgetComponentWriter.class);
+  private static final Log _logger = LogFactory.getLog(CdfRunJsWidgetComponentWriter.class);
   
   public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
   {
@@ -118,7 +118,7 @@ public class CdfRunRequireJsWidgetComponentWriter extends JsWriterAbstract imple
   {
     String widgetProp = Component.composeIds(aliasPrefix, widgetLocalProp);
 
-    out.append("dashboard.syncParametersOnInit(");
+    out.append("Dashboards.syncParametersOnInit(");
     out.append(JsonUtils.toJsString(dashParam));
     out.append(", ");
     out.append(JsonUtils.toJsString(widgetProp));

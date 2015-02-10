@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.*;
 
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class CdfRunRequireJsGenericComponentWriterTest extends TestCase {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
-  private static final String INDENT = "\t";
+  private static final String INDENT = "  ";
 
   private static CdfRunRequireJsGenericComponentWriter genericComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
