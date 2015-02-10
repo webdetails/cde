@@ -175,7 +175,7 @@ var SynchronizeRequests = {
                 callback: SynchronizeRequests.callbackLoadTemplate
               });
 
-              $('#' + promptPrefix).css('height', '165px');
+              $('#' + promptPrefix).addClass('warningPopupTemplate');
             }
           };
 
