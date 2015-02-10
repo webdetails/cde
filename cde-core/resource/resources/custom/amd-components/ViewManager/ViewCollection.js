@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,13 +11,25 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-requireCfg = {
-  paths: {},
-  shim: {}
-};
+define([
+  'cdf/Logger',
+  'cdf/lib/backbone',
+  './ViewModel',
+  '../ViewManagerComponentExt'],
+  function(Logger, Backbone, ViewModel, ViewManagerComponentExt) {
 
-var KARMA_RUN = true;
+  var ViewCollection = Backbone.Collection.extend({
+    url: function() { return ViewManagerComponentExt.getViewsEndpoint(); },
+    model: ViewModel,
+    parse: function(response) {
+      if(response.status === "error") {
+        Logger.warn(response.result);
+        return;
+      }
+      return response.result;
+    }
+  });
 
-var SESSION_NAME = "dummy";
-var SESSION_LOCALE = "en-US";
-var CONTEXT_PATH = "/pentaho/";
+  return ViewCollection;
+
+});
