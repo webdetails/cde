@@ -152,7 +152,7 @@ var SynchronizeRequests = {
               }
             });
 
-            $('#' + promptPrefix).css('height', '165px');
+            $('#' + promptPrefix).addClass('warningPopupTemplate');
           }
         };
 
