@@ -163,7 +163,7 @@ a.prev, a.next {
 	margin-top:118px;	
 }
 
-.popupTemplate{
+.popupTemplate {
   width: 725px;
   height:510px;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
@@ -179,7 +179,7 @@ a.prev, a.next {
   overflow-x:auto;
 }
 
-div.popupTemplate .popupTemplateclose{
+div.popupTemplate .popupTemplateclose {
   font-weight: bold;
   border: 2px solid #bbb;
   height: 20px;
@@ -203,12 +203,13 @@ div.popupTemplate .popupTemplateclose{
   top: -10px;
 }
 
-div.popupTemplate .popupTemplatebuttons{ 
+div.popupTemplate .popupTemplatebuttons {
   text-align: right; 
   padding: 5px 0 5px 0;  
   background-color: #eaedee;
 }
-div.popupTemplate button{ 
+
+div.popupTemplate button {
 	padding: 3px 10px;
 	background-color: #eaedee;
 	border: solid 2px #bbb;
@@ -220,15 +221,28 @@ div.popupTemplate button{
 	margin-left: 5px;
 	top: auto!important;
 }
-div.popupTemplate button:hover{ 
+div.popupTemplate button:hover {
   background-color: #bbb!important;
 }
-div.popupTemplate button.popupTemplatedefaultbutton{ 
+
+div.popupTemplate button.popupTemplatedefaultbutton {
   /*background-color: #8DC05B;*/
   background-color: #eaedee;
 }
 
+div.warningPopupTemplate {
+  height:165px;
+}
 
+div.warningPopupTemplate .popupTemplatebuttons {
+  position: absolute;
+  right: 8px;
+  bottom: 0px;
+}
+
+div.warningPopupTemplate button {
+  bottom: auto;
+}
 
 /* single item */
 #thumbs div {
