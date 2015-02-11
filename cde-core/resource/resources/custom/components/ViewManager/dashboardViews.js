@@ -55,8 +55,8 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   events: {
     'click .tab': "clickTab",
     'click .manage-views, .save-panel .cancel': "toggleViewManager",
-    'click .view-item .delete': "delete",
-    'click .save-panel .save': "save"
+    'click .view-item .delete': "deleteView",
+    'click .save-panel .save': "saveView"
   },
 
   tabs: [
@@ -159,7 +159,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     this.$('.view-manager').toggle();
   },
 
-  save: function() {
+  saveView: function() {
     var myself = this,
         name = myself.$(".save-properties .name").val().trim(),
         desc = myself.$(".save-properties .description").val();
@@ -216,7 +216,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     );
   },
 
-  delete: function(evt) {
+  deleteView: function(evt) {
     var myself = this,
         name = $(evt.target).parent().data("model").get("name").trim(),
         tmpModel;

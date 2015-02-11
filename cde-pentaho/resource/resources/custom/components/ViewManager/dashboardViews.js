@@ -134,7 +134,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     'click .tab': "clickTab",
     'click .manage-views, .save-panel .cancel': "toggleViewManager",
     'click .view-item .delete': "deleteView",
-    'click .save-panel .save': "save"
+    'click .save-panel .save': "saveView"
   },
 
   tabs: [
@@ -197,7 +197,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
     this.$(".view-manager").hide();
   },
 
-  save: function() {
+  saveView: function() {
     var myself = this,
         name = this.$(".save-properties .name").val(),
         desc = this.$(".save-properties .description").val(),
