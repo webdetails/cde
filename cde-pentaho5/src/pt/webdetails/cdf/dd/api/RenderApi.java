@@ -205,7 +205,7 @@ public class RenderApi {
     @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
-    if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
+    if ( Utils.getSystemOrUserRWAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
