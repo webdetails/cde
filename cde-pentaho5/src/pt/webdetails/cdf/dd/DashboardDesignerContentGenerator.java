@@ -59,6 +59,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     String filePath = getPathParameterAsString( MethodParams.PATH, "" );
 
+    String auditPath = filePath.length() > 0 ? filePath : "newDashboard";
+
     boolean inferScheme = requestParams.hasParameter( MethodParams.INFER_SCHEME )
         && getRequestParameterAsString( MethodParams.INFER_SCHEME, "" ).equals( "false" );
     boolean absolute = requestParams.hasParameter( MethodParams.ABSOLUTE )
@@ -73,7 +75,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     RenderApi renderer = new RenderApi();
 
     long start = System.currentTimeMillis();
-    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(),
+    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), auditPath, getObjectName(),
         this.userSession, this, requestParams );
 
     if ( create ) {
@@ -104,7 +106,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     }
 
     long end = System.currentTimeMillis();
-    CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(), this.userSession,
+    CpfAuditHelper.endAudit( getPluginName(), auditPath, getObjectName(), this.userSession,
         this, start, uuid, end );
   }
 
