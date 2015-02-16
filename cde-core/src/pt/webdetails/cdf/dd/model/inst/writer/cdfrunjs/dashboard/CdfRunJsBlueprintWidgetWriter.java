@@ -9,7 +9,7 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
  */
 public final class CdfRunJsBlueprintWidgetWriter extends CdfRunJsDashboardWriter
 {
-  protected static final String TYPE = "BlueprintWidget";
+  protected static final String TYPE = "blueprint";
   
   public String getType()
   {
