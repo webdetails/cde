@@ -83,8 +83,6 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
-
-
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
 
@@ -110,7 +108,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
-      HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
+      HashMap<String, Object> params = new HashMap<String, Object>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
       if ( !author.isEmpty() ) {

@@ -525,6 +525,7 @@ var SaveRequests = {
       selectedFile: selectedFile,
       myself: myself
     });
+    var saveAsWidgetCallback = this.saveAsWidgetCallback;
 
     // CDF-271 $.browser is depricated
     var rv;
@@ -535,19 +536,23 @@ var SaveRequests = {
 
     if(rv && rv < 10) {
       console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, this.saveAsWidgetCallback);
+      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function(result){
+        saveAsWidgetCallback(result, saveAsParams.widgetName);
+      });
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
       $uploadForm.ajaxForm({
         data: saveAsParams,
-        success: this.saveAsWidgetCallback
+        success: function(result){
+          saveAsWidgetCallback(result, saveAsParams.widgetName);
+        }
       });
       $uploadForm.submit();
     }
 
   },
 
-  saveAsWidgetCallback: function(result) {
+  saveAsWidgetCallback: function(result, widgetName) {
     if(result && result.status == "true") {
 
       var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
@@ -558,7 +563,10 @@ var SaveRequests = {
         selectedFolder = selectedFolder.substring(1, selectedFolder.length);
       }
 
-      var updateParams = { widget: true };
+      var updateParams = { 
+        widget: true,
+        widgetName: widgetName
+      };
       // TODO: dashboard is being saved twice. This also needs to be fixed..
       var wcdf = myself.getDashboardWcdf();
       var cleanStyle = myself.styles.indexOf('Clean');
