@@ -9,7 +9,7 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
  */
 public final class CdfRunJsBootstrapWidgetWriter extends CdfRunJsDashboardWriter
 {
-  protected static final String TYPE = "BootstrapWidget";
+  protected static final String TYPE = "bootstrap";
   
   public String getType()
   {
