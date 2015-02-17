@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 public class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
@@ -404,14 +405,17 @@ public class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
   
   protected String getFileResourcesRequirePaths() {
     StringBuffer out = new StringBuffer(  );
-    
-    for ( Map.Entry<String, String> resource : getRequireResourcesList().entrySet() ) {
-      out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, resource.getKey(), resource.getValue() ) )
-        .append( NEWLINE );
+
+    Set<Map.Entry<String, String>> requireResourcesList = getRequireResourcesList().entrySet();
+    if ( requireResourcesList.size() > 0 ) {
+      for ( Map.Entry<String, String> resource : requireResourcesList ) {
+        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, resource.getKey(), resource.getValue() ) )
+          .append( NEWLINE );
+      }
+
+      out.append( REQUIRE_CONFIG ).append( NEWLINE );
     }
 
-    out.append( REQUIRE_CONFIG ).append( NEWLINE );
-    
     return out.toString();
   }
 
