@@ -138,14 +138,17 @@ public class RenderApi {
                         @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
-
     String schemeToUse = "";
     if (!inferScheme) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
-    String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
-    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
 
+    String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
+    if ( StringUtils.isEmpty( filePath ) ) {
+      return "No path provided.";
+    }
+
+    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
     if ( readAccess == null ) {
       return "Access Denied or File Not Found.";
     }
@@ -205,7 +208,7 @@ public class RenderApi {
     @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
-    if ( Utils.getSystemOrUserReadAccess( wcdfPath ) == null ) {
+    if ( Utils.getSystemOrUserRWAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 

@@ -402,13 +402,13 @@ public class Utils {
       rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
-      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
         rwAccess = CdeEnvironment.getUserContentAccess();
       } else {
         return null;
       }
     } else if ( CdeEnvironment.getUserContentAccess()
-      .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.EXECUTE ) ) {
+      .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
       // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself;
       // it should be checked against destination folder
       rwAccess = CdeEnvironment.getUserContentAccess();

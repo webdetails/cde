@@ -88,8 +88,8 @@ define([
     events: {
       'click .tab': "clickTab",
       'click .manage-views, .save-panel .cancel': "toggleViewManager",
-      'click .view-item .delete': "delete",
-      'click .save-panel .save': "save"
+      'click .view-item .delete': "deleteView",
+      'click .save-panel .save': "saveView"
     },
 
     tabs: [
@@ -192,7 +192,7 @@ define([
       this.$('.view-manager').toggle();
     },
 
-    save: function() {
+    saveView: function() {
       var myself = this,
           name = myself.$(".save-properties .name").val().trim(),
           desc = myself.$(".save-properties .description").val(),
@@ -252,7 +252,7 @@ define([
       );
     },
 
-    delete: function(evt) {
+    deleteView: function(evt) {
       var myself = this,
           name = $(evt.target).parent().data("model").get("name").trim(),
           dashboard = myself.model.get('dashboard'),

@@ -81,4 +81,6 @@
   requirePaths['cde/components/ViewManagerComponent'] = prefix + '/ViewManager/ViewManagerComponent';
   requirePaths['cde/components/ViewManagerComponentExt'] = prefix + '/ViewManager/ViewManagerComponent.ext';
   
+  requirePaths['cde/components/GoogleAnalyticsComponent'] = prefix + '/googleAnalytics/GoogleAnalyticsComponent';
+
 })();

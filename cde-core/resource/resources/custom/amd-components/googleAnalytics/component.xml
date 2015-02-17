@@ -21,10 +21,6 @@
       <Property>listeners</Property>
     </Model>
     <Implementation>
-      <Code src="ga-implementation.js" />
-      <Dependencies>
-        <Dependency src="jquery.ga.js" version="2.0.0">ga</Dependency>
-      </Dependencies>
       <CustomProperties>
         <DesignerProperty>
           <Header>
