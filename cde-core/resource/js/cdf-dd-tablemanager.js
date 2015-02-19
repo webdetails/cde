@@ -1143,7 +1143,6 @@ var CellRenderer = Base.extend({
   getTableManager: function() {
     return this.tableManager;
   }
-
 });
 
 
