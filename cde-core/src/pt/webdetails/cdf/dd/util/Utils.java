@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -35,6 +35,7 @@ import org.xml.sax.EntityResolver;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
+import pt.webdetails.cpf.impl.SimpleSessionUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -387,7 +388,7 @@ public class Utils {
   public static IReadAccess getSystemOrUserReadAccess( String filePath ) {
     IReadAccess readAccess = null;
     if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-      .endsWith( ".cdfde" ) ) ) {
+        .endsWith( ".cdfde" ) ) ) {
       readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
@@ -397,8 +398,8 @@ public class Utils {
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
     IRWAccess rwAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-      .endsWith( ".cdfde" ) ) ) {
+    if ( new SimpleSessionUtils().getCurrentSession().isAdministrator() && ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+        .endsWith( ".cdfde" ) ) ) ) {
       rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
@@ -408,7 +409,7 @@ public class Utils {
         return null;
       }
     } else if ( CdeEnvironment.getUserContentAccess()
-      .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
+        .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
       // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself;
       // it should be checked against destination folder
       rwAccess = CdeEnvironment.getUserContentAccess();
@@ -441,7 +442,7 @@ public class Utils {
     StringBuilder sb = new StringBuilder();
 
     // starts with upper case character
-    if ( !Character.isUpperCase( componentType.charAt(0) ) ) {
+    if ( !Character.isUpperCase( componentType.charAt( 0 ) ) ) {
       sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) )
           .append( componentType.substring( 1 ) );
     } else {

@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -17,9 +17,7 @@ import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-import org.pentaho.platform.engine.security.SecurityHelper;
 import org.pentaho.platform.util.messages.LocaleHelper;
 import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
@@ -167,25 +165,29 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
-      boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options ) {
+                                                                         boolean bypassCacheRead, Dashboard dash,
+                                                                         CdfRunJsDashboardWriteOptions options ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-      String indent ) {
+                                                                         String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
   }
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( IThingWriterFactory factory,
-      String indent, boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options ) {
+                                                                                String indent, boolean bypassCacheRead,
+                                                                                Dashboard dash,
+                                                                                CdfRunJsDashboardWriteOptions options
+  ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent, bypassCacheRead, dash, options );
   }
 
   @Override
   public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-      String indent ) {
+                                                                                String indent ) {
     return new PentahoCdfRunJsDashboardWriteContext( factory, indent );
   }
 
@@ -203,15 +205,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public IUrlProvider getUrlProvider() {
     return new PentahoUrlProvider( getPluginId() ) {
       @Override
-      public String getResourcesBasePath(){
+      public String getResourcesBasePath() {
         return getExtApi().getResourcesBasePath();
       }
     };
-  }
-
-  @Override
-  protected boolean systemWriteAuthorized(){
-    return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
   }
 
 }
