@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -28,6 +28,7 @@ import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import pt.webdetails.cpf.session.IUserSession;
 
 
 public interface ICdeEnvironment {
@@ -81,10 +82,14 @@ public interface ICdeEnvironment {
   public IFileHandler getFileHandler();
 
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
-      boolean bypassCacheRead, Dashboard dash, CdfRunJsDashboardWriteOptions options );
+                                                                         boolean bypassCacheRead, Dashboard dash,
+                                                                         CdfRunJsDashboardWriteOptions options );
 
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-      String indent );
+                                                                         String indent );
 
   public IBasicFile getCdeXml();
+
+  public IUserSession getUserSession();
+
 }
