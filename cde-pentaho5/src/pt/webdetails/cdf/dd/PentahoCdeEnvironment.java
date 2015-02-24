@@ -37,6 +37,8 @@ import pt.webdetails.cpf.PentahoUrlProvider;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
+import pt.webdetails.cpf.session.IUserSession;
+import pt.webdetails.cpf.session.PentahoSessionUtils;
 
 public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements ICdeEnvironmentExtended {
 
@@ -194,6 +196,11 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
         return getExtApi().getResourcesBasePath();
       }
     };
+  }
+
+  @Override
+  public IUserSession getUserSession() {
+    return new PentahoSessionUtils().getCurrentSession();
   }
 
 }

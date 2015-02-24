@@ -30,6 +30,7 @@ import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
+import pt.webdetails.cpf.session.IUserSession;
 
 import java.util.Locale;
 
@@ -177,4 +178,9 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
     return null;
   }
 
+  @Override
+  public IUserSession getUserSession() {
+    return null;
+  }
 }
+
