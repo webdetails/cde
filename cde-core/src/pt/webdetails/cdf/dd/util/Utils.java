@@ -35,12 +35,12 @@ import org.xml.sax.EntityResolver;
 
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
+import pt.webdetails.cpf.impl.SimpleSessionUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-
 
 public class Utils {
 
@@ -397,8 +397,8 @@ public class Utils {
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
     IRWAccess rwAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-      .endsWith( ".cdfde" ) ) ) {
+    if ( new SimpleSessionUtils().getCurrentSession().isAdministrator() && (filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+      .endsWith( ".cdfde" ) ) ) ) {
       rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
