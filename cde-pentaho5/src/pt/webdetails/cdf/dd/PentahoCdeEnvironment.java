@@ -209,9 +209,4 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     };
   }
 
-  @Override
-  protected boolean systemWriteAuthorized(){
-    return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
-  }
-
 }
