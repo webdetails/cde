@@ -21,23 +21,22 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 
 import static org.mockito.Mockito.when;
 
-public class CdfRunRequireJsParameterComponentWriterTest extends TestCase {
+public class CdfRunJsParameterComponentWriterTest extends TestCase {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
   private static final String INDENT = "\t";
 
-  private static CdfRunRequireJsParameterComponentWriter parameterComponentWriter;
+  private static CdfRunJsParameterComponentWriter parameterComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
   private static ParameterComponent parameterComponent;
 
   @Before
   public void setUp() throws Exception {
-    parameterComponentWriter = new CdfRunRequireJsParameterComponentWriter();
+    parameterComponentWriter = new CdfRunJsParameterComponentWriter();
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
     parameterComponent = Mockito.mock( ParameterComponent.class );
   }

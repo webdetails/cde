@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +27,9 @@ import pt.webdetails.cdf.dd.model.inst.PrimitiveComponent;
 import pt.webdetails.cdf.dd.model.inst.CustomComponent;
 import pt.webdetails.cdf.dd.model.inst.VisualComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.render.RenderResources;
@@ -50,7 +53,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
-public class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
+public class CdfRunJsDashboardWriter
+    extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
 
   private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
   private static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard();";
@@ -67,7 +71,7 @@ public class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
   protected StringBuffer jsCodeSnippets = new StringBuffer();
   private Map<String, String> componentList = new LinkedHashMap<String, String>();
 
-  public CdfRunRequireJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
+  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
     super( type, isWidget );
   }
 
@@ -370,14 +374,10 @@ public class CdfRunRequireJsDashboardWriter extends CdfRunJsDashboardWriter {
       it.remove();
     }
 
-
-
     componentClassNames.addAll( getRequireResourcesList().keySet() );
     cdfRequirePaths.addAll( getRequireResourcesList().keySet() );
 
-    out.append( getFileResourcesRequirePaths() );
-
-    out
+    out.append( getFileResourcesRequirePaths() )
       // Output module paths and module class names
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) ).append( " {" ).append( NEWLINE )

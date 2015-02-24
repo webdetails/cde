@@ -1,4 +1,4 @@
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy;
 
 import junit.framework.Assert;
 import org.junit.BeforeClass;
@@ -21,7 +21,7 @@ public class CdfRunJsParameterComponentWriterTest {
 
   @BeforeClass
   public static void setUp() throws Exception {
-    writer = new CdfRunJsParameterComponentWriter();
+    writer = new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsParameterComponentWriter();
     context = Mockito.mock( PentahoCdfRunJsDashboardWriteContext.class );
 
   }

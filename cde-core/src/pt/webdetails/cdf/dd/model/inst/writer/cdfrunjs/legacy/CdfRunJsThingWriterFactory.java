@@ -11,12 +11,13 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy;
 
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.CodeComponent;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
@@ -25,12 +26,11 @@ import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsDateParameterComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsExpressionParameterComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsGenericComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsParameterComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsWidgetComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunRequireJsDashboardWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsExpressionParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsGenericComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsWidgetComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsCdaDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsGenericPropertyBindingWriter;
@@ -38,20 +38,18 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsJFreeC
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 
-public class CdfRunRequireJsThingWriterFactory extends CdfRunJsThingWriterFactory {
+/**
+ * @author dcleao
+ */
+public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
 
-  /**
-   * @param dashboard
-   * @return
-   */
-  @Override
   public CdfRunJsDashboardWriter getDashboardWriter( Dashboard dashboard ) {
     DashboardWcdfDescriptor wcdf = dashboard.getWcdf();
     DashboardRendererType rendererType = wcdf.getParsedRendererType();
-    return new CdfRunRequireJsDashboardWriter( rendererType, wcdf.isRequire() );
+
+    return new CdfRunJsDashboardWriter( rendererType, wcdf.isWidget() );
   }
 
-  @Override
   public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {
     if ( t == null ) {
       throw new IllegalArgumentException( "t" );
@@ -64,23 +62,23 @@ public class CdfRunRequireJsThingWriterFactory extends CdfRunJsThingWriterFactor
 
       if ( GenericComponent.class.isAssignableFrom( compClass ) ) {
         if ( WidgetComponent.class.isAssignableFrom( compClass ) ) {
-          return new CdfRunRequireJsWidgetComponentWriter();
+          return new CdfRunJsWidgetComponentWriter();
         }
 
-        return new CdfRunRequireJsGenericComponentWriter();
+        return new CdfRunJsGenericComponentWriter();
       }
 
       if ( ParameterComponent.class.isAssignableFrom( compClass ) ) {
         ParameterComponent paramComp = (ParameterComponent) t;
         String typeName = paramComp.getMeta().getName().toLowerCase();
         if ( typeName.equals( "parameter" ) || typeName.equals( "olapparameter" ) ) {
-          return new CdfRunRequireJsParameterComponentWriter();
+          return new CdfRunJsParameterComponentWriter();
         }
         if ( typeName.equals( "dateparameter" ) ) {
           return new CdfRunJsDateParameterComponentWriter();
         }
         if ( typeName.equals( "javascriptparameter" ) ) {
-          return new CdfRunRequireJsExpressionParameterComponentWriter();
+          return new CdfRunJsExpressionParameterComponentWriter();
         }
       }
 
@@ -92,7 +90,7 @@ public class CdfRunRequireJsThingWriterFactory extends CdfRunJsThingWriterFactor
       String propName = propBind.getName().toLowerCase();
 
       if ( propName.equals( "datasource" ) ) {
-        return new CdfRunJsDataSourcePropertyBindingWriter(); //ToDo
+        return new CdfRunJsDataSourcePropertyBindingWriter();
       }
       if ( propName.equals( "cdadatasource" ) ) {
         return new CdfRunJsCdaDataSourcePropertyBindingWriter();

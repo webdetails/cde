@@ -21,25 +21,24 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunRequireJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.*;
 
 import static org.mockito.Mockito.when;
 
-public class CdfRunRequireJsGenericComponentWriterTest extends TestCase {
+public class CdfRunJsGenericComponentWriterTest extends TestCase {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
   private static final String INDENT = "  ";
 
-  private static CdfRunRequireJsGenericComponentWriter genericComponentWriter;
+  private static CdfRunJsGenericComponentWriter genericComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
   private static GenericComponent genericComponent;
   private static GenericComponentType genericComponentType;
 
   @Before
   public void setUp() throws Exception {
-    genericComponentWriter = new CdfRunRequireJsGenericComponentWriter();
+    genericComponentWriter = new CdfRunJsGenericComponentWriter();
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
     genericComponent = Mockito.mock( GenericComponent.class );
     genericComponentType = Mockito.mock( GenericComponentType.class );

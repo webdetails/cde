@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -22,9 +22,10 @@ import org.junit.Before;
 import org.junit.Test;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.LayoutComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.render.RenderResources;
 import pt.webdetails.cdf.dd.render.ResourceMap;
-import pt.webdetails.cdf.dd.render.layout.ResourceRender;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
 import java.util.ArrayList;
@@ -33,11 +34,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class CdfRunRequireJsDashboardWriterTest extends TestCase {
+public class CdfRunJsDashboardWriterTest extends TestCase {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
   private static final String INDENT = "\t";
@@ -51,13 +50,13 @@ public class CdfRunRequireJsDashboardWriterTest extends TestCase {
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
-  private static CdfRunRequireJsDashboardWriter dashboardWriter;
-  private static CdfRunRequireJsDashboardWriter dashboardWriterSpy;
+  private static CdfRunJsDashboardWriter dashboardWriter;
+  private static CdfRunJsDashboardWriter dashboardWriterSpy;
 
   @Before
   public void setUp() throws Exception {
     dashboardWriter =
-      new CdfRunRequireJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
     dashboardWriterSpy = spy( dashboardWriter );
   }
 
@@ -92,7 +91,6 @@ public class CdfRunRequireJsDashboardWriterTest extends TestCase {
     StringBuilder dashboardResult = new StringBuilder();
 
     dashboardResult
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( REQUIRE_START )
       .append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE )
       .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
@@ -101,20 +99,20 @@ public class CdfRunRequireJsDashboardWriterTest extends TestCase {
       .append( EPILOGUE ).append( NEWLINE )
       .append( REQUIRE_STOP );
 
-    Assert.assertEquals( out, dashboardResult.toString() );
+    Assert.assertEquals( dashboardResult.toString(), out );
 
   }
   
   @Test
   public void testDashboardType() {
     dashboardWriter =
-      new CdfRunRequireJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
     assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Blueprint");
     dashboardWriter =
-      new CdfRunRequireJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP, false );
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP, false );
     assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Bootstrap");
     dashboardWriter =
-      new CdfRunRequireJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE, false );
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE, false );
     assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Mobile");
   }
   

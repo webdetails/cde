@@ -177,18 +177,4 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
     return null;
   }
 
-  @Override
-  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( IThingWriterFactory factory,
-                                                                                String indent,
-                                                                                boolean bypassCacheRead,
-                                                                                Dashboard dash,
-                                                                                CdfRunJsDashboardWriteOptions options ) {
-    return null;
-  }
-
-  @Override
-  public CdfRunJsDashboardWriteContext getCdfRunRequireJsDashboardWriteContext( CdfRunJsDashboardWriteContext factory,
-                                                                                String indent ) {
-    return null;
-  }
 }

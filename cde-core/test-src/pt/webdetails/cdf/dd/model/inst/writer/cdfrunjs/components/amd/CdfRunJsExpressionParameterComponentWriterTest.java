@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -11,14 +11,13 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.nonamd.CdfRunJsExpressionParameterComponentWriter;
 
 public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
 
@@ -39,7 +38,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterSimpleValue() {
     String customParamValue = "value;       ";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value"+NEWLINE+"}()";
+    String expectedReturnValue = "function() { return value" + NEWLINE + "}()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
@@ -47,7 +46,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterMultipleLineValue() {
     String customParamValue = "value;" + NEWLINE + "//comment";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value;" + NEWLINE + "//comment"+NEWLINE+"}()";
+    String expectedReturnValue = "function() { return value;" + NEWLINE + "//comment" + NEWLINE + "}()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
