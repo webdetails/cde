@@ -57,6 +57,10 @@ public class CdeRunJsModelWriter extends JsWriterAbstract implements IThingWrite
     // Components output their own properties
     for(ComponentType comp : model.getComponentTypes())
     {
+      // check if component can be used in Legacy dashboards
+      if ( !comp.supportsLegacy() ) {
+        continue;
+      }
       IThingWriter compWriter;
       try
       {

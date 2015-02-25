@@ -24,6 +24,7 @@ public class CdeConstants {
   public static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
   public static final String DASHBOARD_TITLE_TAG = "@DASBOARD_TITLE@";
   public static final String DASHBOARD_DESCRIPTION_TAG = "@DASBOARD_DESCRIPTION@";
+  public static final String DASHBOARD_SUPPORT_TAG = "@SUPPORT_TYPE@";
   public static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
   public static final String DESIGNER_RESOURCE_DEFAULT = "resources/cdf-dd-default.html";
   public static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
@@ -44,12 +45,23 @@ public class CdeConstants {
     public static final String SOLUTION = "solution";
     public static final String PATH = "path";
     public static final String FILE = "file";
+    public static final String INFERSCHEME = "inferScheme";
+    public static final String ABSOLUTE = "absolute";
+    public static final String BYPASSCACHE = "bypassCache";
+    public static final String VIEWID = "viewId";
+    public static final String STYLE = "style";
+    public static final String SCHEME = "scheme";
+    public static final String SUPPORTS = "supports";
     /**
      * JSON structure
      */
     public static final String CDF_STRUCTURE = "cdfstructure";
 
     public static final String DATA = "data";
+  }
+  public static class DashboardSupportedTypes {
+    public static final String AMD = "amd";
+    public static final String LEGACY = "legacy";
   }
   public static class Tags {
     public static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";

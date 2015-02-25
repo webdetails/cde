@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -59,7 +59,7 @@ public class CdfRunJsDashboardWriter
   private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
   private static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard();";
   private static final String EPILOGUE = "dashboard.init();" + NEWLINE + "return dashboard;";
-  private static final String REQUIRE_START = "require([''{0}''],"+  NEWLINE + "function({1})";
+  private static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1})";
   private static final String REQUIRE_STOP = "});";
   private static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
@@ -135,7 +135,7 @@ public class CdfRunJsDashboardWriter
       JXPathContext docXP = dash.getLayout( "TODO" ).getLayoutXPContext();
       try {
         ResourceMap resources =
-          getResourceRenderer( docXP, context ).renderResources( context.getOptions().getAliasPrefix() );
+            getResourceRenderer( docXP, context ).renderResources( context.getOptions().getAliasPrefix() );
 
         List<ResourceMap.Resource> cssResources = resources.getCssResources();
         List<ResourceMap.Resource> javascriptResources = resources.getJavascriptResources();
@@ -144,7 +144,7 @@ public class CdfRunJsDashboardWriter
         for ( ResourceMap.Resource jsResource : javascriptResources ) {
           if ( jsResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
             addRequireResource( jsResource.getResourceName(),
-              context.replaceTokensAndAlias( jsResource.getResourcePath() ) );
+                context.replaceTokensAndAlias( jsResource.getResourcePath() ) );
           } else {
             addJsCodeSnippet( jsResource.getProcessedResource() + NEWLINE );
           }
@@ -182,121 +182,151 @@ public class CdfRunJsDashboardWriter
     componentList.clear();
 
     StringBuilder out = new StringBuilder();
-    StringBuilder widgetsOut = new StringBuilder();
 
     // Output WCDF
     addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
     out.append( NEWLINE );
 
-    boolean isFirstComp = true;
-
     StringBuilder addCompIds = new StringBuilder();
-    boolean isFirstAddComp = true;
-
     IThingWriterFactory factory = context.getFactory();
 
     Iterable<Component> comps = dash.getRegulars();
-    StringBuilder componentPath = new StringBuilder();
-    String componentClassName;
-    IThingWriter writer;
     for ( Component comp : comps ) {
-      if ( StringUtils.isNotEmpty( comp.getName() ) ) {
-
-        componentClassName = Utils.getComponentClassName( comp.getMeta().getName() );
-
-        // "soft reset" StringBuilder
-        componentPath.setLength( 0 );
-
-        if ( !componentList.containsKey( componentClassName ) ) {
-
-          //Store component "class" name and AMD module path
-          if ( comp instanceof PrimitiveComponent && comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
-
-            // Assume it's a CDF component
-            componentPath
-              .append( CDF_AMD_BASE_COMPONENT_PATH )
-              .append( componentClassName );
-            componentList.put( componentClassName, componentPath.toString() );
-
-          } else if ( comp instanceof CustomComponent ) {
-
-            if ( comp.getMeta().getOrigin() instanceof StaticSystemOrigin ) {
-
-              // Assume it's a CDE component
-              componentPath
-                .append( CDE_AMD_BASE_COMPONENT_PATH )
-                .append( componentClassName );
-              componentList.put( componentClassName, componentPath.toString() );
-
-            } else if ( comp.getMeta().getOrigin() instanceof PluginRepositoryOrigin ) {
-
-              // Assume it's a CDE component uploaded to the repository
-              componentPath
-                .append( CDE_AMD_REPO_COMPONENT_PATH )
-                .append( comp.getMeta().getImplementationPath().substring(
-                  0, comp.getMeta().getImplementationPath().lastIndexOf( ".js" ) ) );
-              componentList.put( componentClassName, componentPath.toString() );
-
-            } else if ( comp.getMeta().getOrigin() instanceof OtherPluginStaticSystemOrigin ) {
-
-              // Assume it's a component from another plugin (e.g. sparkl)
-              componentPath
-                .append( ( (OtherPluginStaticSystemOrigin) comp.getMeta().getOrigin() ).getPluginId() )
-                .append( PLUGIN_COMPONENT_FOLDER )
-                .append( componentClassName );
-              componentList.put( componentClassName, componentPath.toString() );
-
-            }
-          } else if ( comp instanceof WidgetComponent ) {
-            // TODO: process WidgetComponent
-            continue;
-          }
-
-        }
-
+      if ( StringUtils.isNotEmpty( getComponentName( comp ) ) ) {
+        IThingWriter writer;
         try {
           writer = factory.getWriter( comp );
         } catch ( UnsupportedThingException ex ) {
           throw new ThingWriteException( ex );
         }
 
-        boolean isWidget = comp instanceof WidgetComponent;
+        // custom primitive widget (generic components) & layout component
+        if ( isVisualComponent( comp ) ) {
+          if ( isCustomComponent( comp ) || isPrimitiveComponent( comp ) ) {
+            String componentClassName = getComponentClassName( comp );
 
-        StringBuilder out2 = isWidget ? widgetsOut : out;
-        if ( !isFirstComp ) {
-          out2.append( NEWLINE );
-        }
-
-        // NOTE: Widgets don't really exist at runtime,
-        // only their (leaf-)content does.
-        if ( comp instanceof VisualComponent && !( comp instanceof WidgetComponent ) ) {
-          if ( isFirstAddComp ) {
-            isFirstAddComp = false;
-          } else {
-            addCompIds.append( ", " );
+            if ( !componentList.containsKey( componentClassName ) ) {
+              String componentPath = getComponentPath( comp, componentClassName );
+              if ( StringUtils.isEmpty( componentPath ) ) {
+                continue;
+              }
+              componentList.put( componentClassName, componentPath );
+            }
           }
 
-          addCompIds.append( context.getId( comp ) );
+          if ( addCompIds.length() > 0 ) {
+            addCompIds.append( ", " );
+          }
+          addCompIds.append( getComponentIdFromContext( context, comp ) );
         }
 
-        writer.write( out2, context, comp );
+        writer.write( out, context, comp );
 
-        isFirstComp = false;
       }
     }
 
-    if ( !isFirstAddComp ) {
+    if ( componentList.size() > 0 ) {
       out.append( NEWLINE )
         .append( "dashboard.addComponents([" )
         .append( addCompIds )
         .append( "]);" ).append( NEWLINE );
     }
 
-    out.append( widgetsOut );
-
     return out.toString();
   }
 
+  protected String getComponentIdFromContext( CdfRunJsDashboardWriteContext context, Component comp ) {
+    return context.getId( comp );
+  }
+
+  protected String getComponentName( Component comp ) {
+    return comp.getName();
+  }
+
+  protected String getComponentPath( Component comp, String componentClassName ) {
+    StringBuilder componentPath = new StringBuilder();
+
+    if ( isPrimitiveComponent( comp ) && isComponentStaticSystemOrigin( comp ) ) {
+      // Assume it's a CDF component
+      componentPath
+        .append( CDF_AMD_BASE_COMPONENT_PATH )
+        .append( componentClassName );
+
+    } else if ( isCustomComponent( comp ) ) {
+
+      if ( isComponentStaticSystemOrigin( comp ) ) {
+
+        // Assume it's a CDE component
+        componentPath
+          .append( CDE_AMD_BASE_COMPONENT_PATH )
+          .append( componentClassName );
+
+      } else if ( isComponentPluginRepositoryOrigin( comp ) ) {
+
+        String compImplPath = getComponentImplementationPath( comp );
+
+        if ( StringUtils.isEmpty( compImplPath ) ) {
+          logger.error( "Missing an implementation code source path for component "
+              + componentClassName );
+          return "";
+        }
+
+        // Assume it's a CDE component uploaded to the repository
+        componentPath
+          .append( CDE_AMD_REPO_COMPONENT_PATH )
+          .append( compImplPath.substring(0, compImplPath.lastIndexOf( ".js" ) ) );
+
+      } else if ( isComponentOtherPluginStaticSystemOrigin( comp ) ) {
+
+        // Assume it's a component from another plugin (e.g. sparkl)
+        componentPath
+          .append( getPluginIdFromOrigin( comp ) )
+          .append( PLUGIN_COMPONENT_FOLDER )
+          .append( componentClassName );
+      }
+    } else if ( comp instanceof WidgetComponent ) {
+      // TODO: process WidgetComponent
+      return "";
+    }
+
+    return componentPath.toString();
+  }
+
+  protected String getComponentClassName( Component comp ) {
+    return Utils.getComponentClassName( comp.getMeta().getName() );
+  }
+
+  protected boolean isPrimitiveComponent( Component comp ) {
+    return comp instanceof PrimitiveComponent;
+  }
+
+  protected boolean isCustomComponent( Component comp ) {
+    return comp instanceof CustomComponent;
+  }
+
+  protected boolean isVisualComponent( Component comp ) {
+    return comp instanceof VisualComponent;
+  }
+
+  protected boolean isComponentStaticSystemOrigin( Component comp ) {
+    return comp.getMeta().getOrigin() instanceof StaticSystemOrigin;
+  }
+
+  protected boolean isComponentPluginRepositoryOrigin( Component comp ) {
+    return comp.getMeta().getOrigin() instanceof PluginRepositoryOrigin;
+  }
+
+  protected boolean isComponentOtherPluginStaticSystemOrigin( Component comp ) {
+    return comp.getMeta().getOrigin() instanceof OtherPluginStaticSystemOrigin;
+  }
+
+  protected String getComponentImplementationPath( Component comp ) {
+    return comp.getMeta().getImplementationPath();
+  }
+
+  protected String getPluginIdFromOrigin( Component comp ) {
+    return ( (OtherPluginStaticSystemOrigin) comp.getMeta().getOrigin() ).getPluginId();
+  }
   /**
    * @param contents
    * @param context
@@ -312,10 +342,10 @@ public class CdfRunJsDashboardWriter
 
     // Get CDE headers
     final String baseUrl = ( options.isAbsolute()
-      ? ( !StringUtils.isEmpty( options.getAbsRoot() )
-      ? options.getSchemedRoot() + "/"
-      : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
-      : "" );
+        ? ( !StringUtils.isEmpty( options.getAbsRoot() )
+          ? options.getSchemedRoot() + "/"
+          : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
+        : "" );
 
     DependenciesManager depMgr = DependenciesManager.getInstance();
 
@@ -354,7 +384,7 @@ public class CdfRunJsDashboardWriter
 
 
     ArrayList<String> cdfRequirePaths = new ArrayList<String>(), // AMD module paths
-      componentClassNames = new ArrayList<String>(); // AMD module class names (except Dashboard module))
+        componentClassNames = new ArrayList<String>(); // AMD module class names (except Dashboard module))
 
     // Add main Dashboard module class name
     componentClassNames.add( "Dashboard" );
@@ -370,8 +400,6 @@ public class CdfRunJsDashboardWriter
       cdfRequirePaths.add( (String) pair.getValue() );
       // Add component AMD module class name
       componentClassNames.add( (String) pair.getKey() );
-      // Avoid exceptions
-      it.remove();
     }
 
     componentClassNames.addAll( getRequireResourcesList().keySet() );
@@ -389,7 +417,7 @@ public class CdfRunJsDashboardWriter
 
     return out.toString();
   }
-  
+
   protected String getDashboardRequireModule() {
     DashboardWcdfDescriptor.DashboardRendererType dashboardType = this.getType();
     if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) ) {
@@ -402,9 +430,9 @@ public class CdfRunJsDashboardWriter
       return "cdf/Dashboard";
     }
   }
-  
+
   protected String getFileResourcesRequirePaths() {
-    StringBuffer out = new StringBuffer(  );
+    StringBuffer out = new StringBuffer();
 
     Set<Map.Entry<String, String>> requireResourcesList = getRequireResourcesList().entrySet();
     if ( requireResourcesList.size() > 0 ) {

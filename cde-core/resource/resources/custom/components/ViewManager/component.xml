@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
     <Name>View Manager Component</Name>
@@ -20,7 +20,7 @@
       <Property type="function">postExecution</Property>
       <Property type="number">listeners</Property>
     </Model>
-    <Implementation>
+    <Implementation supportsLegacy="true" supportsAMD="true">
       <Code src="viewManager-implementation.js"/>
       <Styles>
         <Style version="1.0" src="views.css">Views</Style>

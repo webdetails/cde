@@ -37,6 +37,8 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
+import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
+import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
@@ -65,9 +67,15 @@ public class RenderApi {
   @GET
   @Path( "/getComponentDefinitions" )
   @Produces( MimeTypes.JAVASCRIPT )
-  public String getComponentDefinitions( @Context HttpServletResponse response ) throws IOException {
+  public String getComponentDefinitions(
+      @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
+      @Context HttpServletResponse response ) throws IOException {
     // Get and output the definitions
-    return MetaModelManager.getInstance().getJsDefinition();
+    if ( !StringUtils.isEmpty( supports ) && supports.equals( DashboardSupportedTypes.AMD ) ) {
+      return MetaModelManager.getInstance().getAmdJsDefinition();
+    } else {
+      return MetaModelManager.getInstance().getJsDefinition();
+    }
   }
 
   @GET
@@ -212,7 +220,13 @@ public class RenderApi {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
-    return getEditor( wcdfPath, debug, request.getScheme(), isDefault, response );
+    return getEditor(
+      wcdfPath,
+      debug,
+      request.getScheme(),
+      isDefault,
+      response,
+      DashboardWcdfDescriptor.load( wcdfPath ).isRequire() );
   }
 
   @GET
@@ -227,7 +241,7 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
-    return getEditor( path, debug, request.getScheme(), isDefault, response );
+    return getEditor( path, debug, request.getScheme(), isDefault, response, true );
   }
 
   @GET
@@ -307,9 +321,9 @@ public class RenderApi {
   }
 
   private String getEditor( String path, boolean debug, String scheme, boolean isDefault,
-                            HttpServletResponse response ) throws Exception {
+                            HttpServletResponse response, boolean isRequire ) throws Exception {
     response.setContentType( MimeTypes.HTML );
-    String result = DashboardEditor.getEditor( path, debug, scheme, isDefault );
+    String result = DashboardEditor.getEditor( path, debug, scheme, isDefault, isRequire );
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
@@ -325,20 +339,6 @@ public class RenderApi {
       return this.privateEnviroment;
     }
     return CdeEngine.getEnv();
-  }
-
-  private class MethodParams {
-    public static final String SOLUTION = "solution";
-    public static final String PATH = "path";
-    public static final String FILE = "file";
-    public static final String INFERSCHEME = "inferScheme";
-    public static final String ABSOLUTE = "absolute";
-    public static final String ROOT = "root";
-    public static final String BYPASSCACHE = "bypassCache";
-    public static final String DEBUG = "debug";
-    public static final String VIEWID = "viewId";
-    public static final String STYLE = "style";
-    public static final String SCHEME = "scheme";
   }
 
 }

@@ -50,6 +50,7 @@ public final class MetaModelManager {
   private final Object lock = new Object();
   private MetaModel model;
   private String jsDefinition;
+  private String amdJsDefinition;
 
   private MetaModelManager() {
     long start = System.currentTimeMillis();
@@ -75,6 +76,15 @@ public final class MetaModelManager {
     }
   }
 
+  public String getAmdJsDefinition() {
+    synchronized ( lock ) {
+      if ( this.amdJsDefinition == null && this.model != null ) {
+        this.amdJsDefinition = writeAmdJsDefinition( this.model );
+      }
+      return this.amdJsDefinition;
+    }
+  }
+
   public void refresh() {
     this.refresh( true );
   }
@@ -94,6 +104,7 @@ public final class MetaModelManager {
       synchronized ( lock ) {
         this.model = model;
         this.jsDefinition = null;
+        this.amdJsDefinition = null;
       }
     }
 
@@ -139,6 +150,30 @@ public final class MetaModelManager {
 
   private String writeJsDefinition( MetaModel model ) {
     IThingWriterFactory factory = new CdeRunJsThingWriterFactory();
+    IThingWriter writer;
+
+    try {
+      writer = factory.getWriter( model );
+    } catch ( UnsupportedThingException ex ) {
+      logger.error( "Error while obtaining the model writer from the factory.", ex );
+      return null;
+    }
+
+    StringBuilder out = new StringBuilder();
+    IThingWriteContext context = new DefaultThingWriteContext( factory, false );
+    try {
+      writer.write( out, context, model );
+    } catch ( ThingWriteException ex ) {
+      logger.error( "Error while writing the model to JS.", ex );
+      return null;
+    }
+
+    return out.toString();
+  }
+
+  private String writeAmdJsDefinition( MetaModel model ) {
+    IThingWriterFactory factory =
+        new pt.webdetails.cdf.dd.model.meta.writer.cderunjs.amd.CdeRunJsThingWriterFactory();
     IThingWriter writer;
 
     try {

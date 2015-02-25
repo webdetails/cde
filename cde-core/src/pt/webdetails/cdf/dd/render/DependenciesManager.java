@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
+import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -79,8 +80,8 @@ public final class DependenciesManager {
     manager.registerPackage( StdPackages.COMPONENT_STYLES, PackageType.CSS );
     manager.registerPackage( StdPackages.COMPONENT_DEF_SCRIPTS, PackageType.JS );
     manager.registerPackage(
-      StdPackages.COMPONENT_SNIPPETS,
-      new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider ) );// TODO change
+        StdPackages.COMPONENT_SNIPPETS,
+        new DependenciesPackage( StdPackages.COMPONENT_SNIPPETS, PackageType.JS, factory, urlProvider ) ); // TODO change
     manager.registerPackage( StdPackages.CDFDD, PackageType.JS );
 
     //read include.properties
@@ -135,6 +136,10 @@ public final class DependenciesManager {
     DependenciesPackage ddScripts = depMgr.getPackage( StdPackages.CDFDD );
 
     for ( ComponentType compType : metaModel.getComponentTypes() ) {
+      // Custom components that support legacy dashboards must register resources.
+      if ( compType instanceof CustomComponentType && !compType.supportsLegacy() ) {
+        continue;
+      }
       // General Resources
       for ( Resource res : compType.getResources() ) {
         Resource.Type resType = res.getType();

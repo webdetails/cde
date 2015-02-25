@@ -48,6 +48,9 @@ public abstract class ComponentType extends MetaObject {
 
   private PathOrigin origin;
 
+  private final boolean supportsLegacy;
+  private final boolean supportsAMD;
+
   protected ComponentType( Builder builder, final IPropertyTypeSource propSource ) throws ValidationException {
     super( builder );
 
@@ -188,6 +191,9 @@ public abstract class ComponentType extends MetaObject {
       this._resourcesByKey = null;
     }
     this.origin = builder.origin;
+
+    this.supportsLegacy = builder.supportsLegacy;
+    this.supportsAMD = builder.supportsAMD;
   }
 
   @Override
@@ -320,6 +326,13 @@ public abstract class ComponentType extends MetaObject {
     return this._resourcesByKey != null ? this._resourcesByKey.size() : 0;
   }
 
+  public boolean supportsLegacy() {
+    return this.supportsLegacy;
+  }
+  public boolean supportsAMD() {
+    return this.supportsAMD;
+  }
+
   /**
    * Class to create and modify ComponentType instances.
    */
@@ -333,13 +346,18 @@ public abstract class ComponentType extends MetaObject {
     private List<Resource.Builder> _resources;
     private PathOrigin origin;
 
+    // default values
+    private boolean supportsLegacy = true;
+    private boolean supportsAMD = false;
+
     public Builder() {
       super();
       _propertyUsages.add( new PropertyTypeUsage.Builder().setName( "name" ) );
     }
 
-    public void setOrigin( PathOrigin pathOrigin ) {
+    public Builder setOrigin( PathOrigin pathOrigin ) {
       this.origin = pathOrigin;
+      return this;
     }
 
     public String getImplementationPath() {
@@ -457,6 +475,22 @@ public abstract class ComponentType extends MetaObject {
 
     public int getResourceCount() {
       return this._resources != null ? this._resources.size() : 0;
+    }
+
+    public void setSupportsLegacy( boolean supportsLegacy ) {
+      this.supportsLegacy = supportsLegacy;
+    }
+
+    public void setSupportsAMD( boolean supportsAMD ) {
+      this.supportsAMD = supportsAMD;
+    }
+
+    public boolean isSupportsLegacy() {
+      return this.supportsLegacy;
+    }
+
+    public boolean isSupportsAMD() {
+      return this.supportsAMD;
     }
 
     public abstract ComponentType build( IPropertyTypeSource propSource )

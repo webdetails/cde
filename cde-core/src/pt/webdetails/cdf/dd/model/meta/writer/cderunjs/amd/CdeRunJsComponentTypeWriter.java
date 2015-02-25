@@ -33,6 +33,10 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     ComponentType comp = (ComponentType) t;
 
+    if ( !comp.supportsAMD() ) {
+      return;
+    }
+
     StringBuilder out = (StringBuilder) output;
 
     Attribute cdeModelIgnoreAttr = comp.tryGetAttribute( "cdeModelIgnore" );

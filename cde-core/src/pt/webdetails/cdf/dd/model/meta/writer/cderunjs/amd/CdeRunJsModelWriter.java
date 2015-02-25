@@ -58,7 +58,10 @@ public class CdeRunJsModelWriter extends JsWriterAbstract implements IThingWrite
     // COMPONENTS
     // Components output their own properties
     for ( ComponentType comp : model.getComponentTypes() ) {
-
+      // check if component can be used in AMD dashboards
+      if ( !comp.supportsAMD() ) {
+        continue;
+      }
       IThingWriter compWriter;
       try {
         compWriter = factory.getWriter( comp );

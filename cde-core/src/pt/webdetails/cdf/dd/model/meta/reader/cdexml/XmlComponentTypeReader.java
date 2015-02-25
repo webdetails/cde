@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs.XmlFsPluginThingReaderFactory;
@@ -46,6 +47,8 @@ public abstract class XmlComponentTypeReader {
 
     readResourceDependencies( builder, elem, compDir, componentName );
 
+    readComponentSupportType( builder, elem );
+
     String srcPath = Utils.getNodeText( "Contents/Implementation/Code/@src", elem );
     if ( StringUtils.isNotEmpty( srcPath ) ) {
       builder.setImplementationPath( Utils.joinPath( compDir, srcPath ) );
@@ -63,6 +66,33 @@ public abstract class XmlComponentTypeReader {
     }
   }
 
+  protected void readComponentSupportType( ComponentType.Builder builder, Element elem ) {
+    // When loading custom components we need to be able to define if they
+    // support legacy dashboards or/and new AMD ones.
+    // Any other component type is supported in both dashboard versions.
+    if ( builder instanceof CustomComponentType.Builder ) {
+      boolean supportsLegacy = Boolean.valueOf(
+        Utils.getNodeText( "Contents/Implementation/@supportsLegacy", elem ) ).booleanValue();
+      boolean supportsAMD = Boolean.valueOf(
+        Utils.getNodeText( "Contents/Implementation/@supportsAMD", elem ) ).booleanValue();
+      // At least one value must be true
+      if ( supportsAMD ) {
+        builder.setSupportsAMD( true );
+        if ( supportsLegacy ) {
+          builder.setSupportsLegacy( true );
+        } else {
+          builder.setSupportsLegacy( false );
+        }
+      } else {
+        // set default values, assume it's a legacy dashboard
+        builder.setSupportsAMD( false );
+        builder.setSupportsLegacy( true );
+      }
+    } else {
+      builder.setSupportsLegacy( true );
+      builder.setSupportsAMD( true );
+    }
+  }
 
   private void readModel( ComponentType.Builder builder, Element elem ) {
     String cdeModelIgnoreText = Utils.getNodeText( "Contents/Model/@ignore", elem );

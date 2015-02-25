@@ -21,7 +21,7 @@ public class CdfRunJsParameterComponentWriterTest {
 
   @BeforeClass
   public static void setUp() throws Exception {
-    writer = new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsParameterComponentWriter();
+    writer = new CdfRunJsParameterComponentWriter();
     context = Mockito.mock( PentahoCdfRunJsDashboardWriteContext.class );
 
   }
