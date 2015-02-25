@@ -69,7 +69,6 @@
 
   requirePaths['cde/components/TextEditorComponent'] = prefix + '/TextEditor/TextEditorComponent';
   requirePaths['cde/components/TextEditorComponentExt'] = prefix + '/TextEditor/TextEditorComponent.ext';
-  requirePaths['cde/components/PopupTextEditorComponent'] = prefix + '/TextEditor/PopupTextEditorComponent';
 
   requirePaths['cde/components/GMapsOverlayComponent'] = prefix + '/gmapsoverlay/GMapsOverlayComponent';
   requirePaths['cde/components/GMapsOverlayComponentExt'] = prefix + '/gmapsoverlay/GMapsOverlayComponent.ext';

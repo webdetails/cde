@@ -59,7 +59,8 @@
 			isAdmin = "{isAdmin}";
 			isLoggedIn = "{isLoggedIn}";
 // * ToDo CDE-374
-			require(['cdf/Dashboard.Blueprint', 'cdf/lib/CCC/cdo', 'cdf/lib/jquery', 'cdf/lib/cdf.jquery.i18n'], function(Dashboard, cdo, $) {
+			require(['cdf/Dashboard.Blueprint', 'cdf/lib/moment', 'cdf/lib/CCC/cdo', 'cdf/lib/jquery', 'cdf/lib/cdf.jquery.i18n'],
+			function(Dashboard, moment, cdo, $) {
 
 				// Init jQuery i18n plugin
 				loadMessageBundles = function(lang) {
@@ -82,6 +83,7 @@
 					var userLocale = '#{LANGUAGE_CODE}';
 					var formProvider = cdo.format.language(userLocale);
 					cdo.format.language(formProvider);
+					moment.locale(userLocale);
 					loadMessageBundles(userLocale);
 				});
 			});
