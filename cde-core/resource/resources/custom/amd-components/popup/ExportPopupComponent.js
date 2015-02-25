@@ -17,6 +17,7 @@ define([
   'cdf/dashboard/Utils',
   'cdf/Logger',
   'cdf/lib/jquery',
+  'cdf/lib/jquery.fancybox',
   'css!./ExportPopupComponent'],
   function(PopupComponent, CggComponentExt, Utils, Logger, $) {
 
