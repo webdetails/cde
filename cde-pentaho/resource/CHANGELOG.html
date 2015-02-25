@@ -1,5 +1,97 @@
 <html>
 
+
+<h1>
+        Release Notes - Community Dashboard Editor - Version 15.02.26
+</h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-269'>CDE-269</a>] -         Running dashboards from absolute paths does not build correct paths
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-273'>CDE-273</a>] -         CDE folder structure creation in not being triggered at startup, but only upon first CDE Environment instantiation
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-286'>CDE-286</a>] -         CGG Dial Componente - Bug while trying do see using URL
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-303'>CDE-303</a>] -         Bootstrap Widgets showing error messages in logs
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-393'>CDE-393</a>] -         Upgrade jquery mobile version in CDE
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-406'>CDE-406</a>] -         Drag and drop / reorder doesn&#39;t work for teh freeform layout
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-417'>CDE-417</a>] -          Layout issue in Export Chart window
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-432'>CDE-432</a>] -         Pressing down in property &#39;Text Align&#39; doesn&#39;t go to the first option
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-437'>CDE-437</a>] -         AjaxRequestComponent fails to trigger components that are listening to the updated parameter
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-438'>CDE-438</a>] -         CggComponent fails to process parameters
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-439'>CDE-439</a>] -         DuplicateComponent fails when duplicating the HTML object for the new duplicated component
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-440'>CDE-440</a>] -         Olap selector component&#39;s addPreSelectValues function fails to calculate depth when a qualifiedName contains the &#39;.&#39; char
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-442'>CDE-442</a>] -         The CDE folder that gets created under public should be hidden
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-445'>CDE-445</a>] -         CDE audit logging causing Pentaho Operations Mart ETL to fail
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-446'>CDE-446</a>] -         When creating a Kettle over kettleTransFromFile datasource the path is changed and doesn&#39;t work
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-447'>CDE-447</a>] -         ViewManager custom component fails to save/load views
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-452'>CDE-452</a>] -         Users without Write access to the dashboard file should not be able to view the file in Edit Mode
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-453'>CDE-453</a>] -         Creating new Widget, it&#39;s not available on the Components pallete
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDA-110'>CDA-110</a>] -         CDA error using Full Outer join in CDE
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/BISERVER-11865'>BISERVER-11865</a>] -         CDE folder creation mechanism (on plugin boot-up) does not work in 5.1.0
+</li> 
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-149'>CDE-149</a>] -         CSS issue when we are editing a list of parameters (only noticed with more than 5 rows)
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-403'>CDE-403</a>] -          Edit/Add fields doesn&#39;t change focus
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-410'>CDE-410</a>] -         Add navigation shortcut keys to CDE layout and tables
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-412'>CDE-412</a>] -         &quot;Sql Wizard&quot; editor used for all types of Queries
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-418'>CDE-418</a>] -         PopupComponent: As a developer I would like to customize the popup&#39;s overlay
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-421'>CDE-421</a>] -         Add an option to close the preview window
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-422'>CDE-422</a>] -         Warning window to big when apply template
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-424'>CDE-424</a>] -         ExportPopupComponent - alternative to shift+g
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-425'>CDE-425</a>] -         Add shortcut keys to CDE Operations
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-406'>CDF-406</a>] -         Sunburst - Add documentation, site examples and create the CDE component
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-149'>CDF-149</a>] -         Add Support for Stacked CCC Bar Charts to display as a percentage of the total stack
+</li>
+
+<li>[<a href='http://jira.pentaho.com/browse/CDF-458'>CDF-458</a>] -         Build capability to format numbers into CDF
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-355'>CDF-355</a>] -         As a dashboard developer, I'd like CDF to provide a date formatting library more powerful than the default Date object
+
+</li>
+
+
+</ul>
+                                    
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-447'>CDF-447</a>] -         - Downgrade fancybox.jquery to version 1.3.5 
+</li>
+</ul>
+
 <h1>
 
         Release Notes - Community Dashboard Editor - Version 14.12.10
