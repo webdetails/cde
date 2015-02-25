@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *                
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -15,6 +15,8 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,10 +26,9 @@ import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.util.JsonUtils;
+import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.repository.util.RepositoryHelper;
 
-/**
- * @author dcleao
- */
 public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBindingWriter {
   protected static final Log logger = LogFactory.getLog( CdfRunJsDataSourcePropertyBindingWriter.class );
 
@@ -124,11 +125,15 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
       : context.getDashboard().tryGetDataSource( dataSourceName );
   }
 
-  protected void renderCdaDatasource(
-    StringBuilder out,
-    CdfRunJsDashboardWriteContext context,
-    DataSourceComponent dataSourceComp,
-    String dataAccessId ) {
+  protected void renderCdaDatasource( StringBuilder out, CdfRunJsDashboardWriteContext context,
+                                      DataSourceComponent dataSourceComp,String dataAccessId ) {
+    String dashPath = context.getDashboard().getSourcePath();
+    this.renderCdaDatasource( out, context, dataSourceComp, dataAccessId, dashPath );
+
+  }
+
+  protected void renderCdaDatasource( StringBuilder out, CdfRunJsDashboardWriteContext context,
+                                      DataSourceComponent dataSourceComp,String dataAccessId, String dashPath ) {
     String indent = context.getIndent();
 
     addJsProperty( out, PropertyName.DATA_ACCESS_ID, buildJsStringValue( dataAccessId ),
@@ -145,6 +150,11 @@ public class CdfRunJsDataSourcePropertyBindingWriter extends CdfRunJsPropertyBin
     // Check if we have a cdaFile
     String cdaPath = dataSourceComp.tryGetPropertyValue( "cdaPath", null );
     if ( cdaPath != null ) {
+      // Check if path is relative
+      if(!cdaPath.startsWith( "/" )) {
+        dashPath = FilenameUtils.getPath( dashPath );
+        cdaPath = RepositoryHelper.normalize( Util.joinPath( dashPath, cdaPath ) );
+      }
       addJsProperty( out, PropertyName.PATH, buildJsStringValue( cdaPath ), indent, false );
     } else {
       // legacy
