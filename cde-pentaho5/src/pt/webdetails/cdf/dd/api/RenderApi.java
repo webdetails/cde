@@ -37,6 +37,8 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
+import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
+import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
@@ -45,7 +47,6 @@ import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
-import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
@@ -66,9 +67,15 @@ public class RenderApi {
   @GET
   @Path( "/getComponentDefinitions" )
   @Produces( MimeTypes.JAVASCRIPT )
-  public String getComponentDefinitions( @Context HttpServletResponse response ) throws IOException {
+  public String getComponentDefinitions(
+      @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
+      @Context HttpServletResponse response ) throws IOException {
     // Get and output the definitions
-    return MetaModelManager.getInstance().getJsDefinition();
+    if ( !StringUtils.isEmpty( supports ) && supports.equals( DashboardSupportedTypes.AMD ) ) {
+      return MetaModelManager.getInstance().getAmdJsDefinition();
+    } else {
+      return MetaModelManager.getInstance().getJsDefinition();
+    }
   }
 
   @GET
@@ -87,13 +94,13 @@ public class RenderApi {
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -113,13 +120,13 @@ public class RenderApi {
                             @Context HttpServletResponse response ) throws IOException, ThingWriteException {
 
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -139,7 +146,7 @@ public class RenderApi {
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
     String schemeToUse = "";
-    if (!inferScheme) {
+    if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
 
@@ -159,16 +166,17 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+        iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
       CdfRunJsDashboardWriteResult dashboard =
-        loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
+          loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
-      String context = dashboardWcdf.isRequire() ? InterPluginBroker.getCdfRequireContext( filePath )
-        : InterPluginBroker.getCdfContext( filePath, "", viewId );
+      String context = dashboardWcdf.isRequire()
+          ? InterPluginBroker.getCdfRequireContext( filePath )
+          : InterPluginBroker.getCdfContext( filePath, "", viewId );
       String result = dashboard.render( context );
 
       //i18n token replacement
@@ -181,7 +189,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+          this.getPentahoSession(), iLogger, start, uuid, end );
 
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
@@ -190,7 +198,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+          this.getPentahoSession(), iLogger, start, uuid, end );
       return msg;
     }
   }
@@ -199,20 +207,26 @@ public class RenderApi {
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
   public String edit(
-    @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-    @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-    @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-    @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-    @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
-    @Context HttpServletRequest request,
-    @Context HttpServletResponse response ) throws Exception {
+      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+      @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
+      @Context HttpServletRequest request,
+      @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
     if ( Utils.getSystemOrUserRWAccess( wcdfPath ) == null ) {
       return "Access Denied to file " + wcdfPath; //TODO: keep html?
     }
 
-    return getEditor( wcdfPath, debug, request.getScheme(), isDefault, response );
+    return getEditor(
+      wcdfPath,
+      debug,
+      request.getScheme(),
+      isDefault,
+      response,
+      DashboardWcdfDescriptor.load( wcdfPath ).isRequire() );
   }
 
   @GET
@@ -227,7 +241,7 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
-    return getEditor( path, debug, request.getScheme(), isDefault, response );
+    return getEditor( path, debug, request.getScheme(), isDefault, response, true );
   }
 
   @GET
@@ -266,7 +280,7 @@ public class RenderApi {
     throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-      new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
+        new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
@@ -307,9 +321,9 @@ public class RenderApi {
   }
 
   private String getEditor( String path, boolean debug, String scheme, boolean isDefault,
-                            HttpServletResponse response ) throws Exception {
+                            HttpServletResponse response, boolean isRequire ) throws Exception {
     response.setContentType( MimeTypes.HTML );
-    String result = DashboardEditor.getEditor( path, debug, scheme, isDefault );
+    String result = DashboardEditor.getEditor( path, debug, scheme, isDefault, isRequire );
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
@@ -321,22 +335,10 @@ public class RenderApi {
   }
 
   private ICdeEnvironment getEnv() {
-    if (this.privateEnviroment != null) return this.privateEnviroment;
+    if ( this.privateEnviroment != null ) {
+      return this.privateEnviroment;
+    }
     return CdeEngine.getEnv();
-  }
-
-  private class MethodParams {
-    public static final String SOLUTION = "solution";
-    public static final String PATH = "path";
-    public static final String FILE = "file";
-    public static final String INFERSCHEME = "inferScheme";
-    public static final String ABSOLUTE = "absolute";
-    public static final String ROOT = "root";
-    public static final String BYPASSCACHE = "bypassCache";
-    public static final String DEBUG = "debug";
-    public static final String VIEWID = "viewId";
-    public static final String STYLE = "style";
-    public static final String SCHEME = "scheme";
   }
 
 }

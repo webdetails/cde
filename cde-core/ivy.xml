@@ -45,6 +45,7 @@
 
       <dependency org="org.mockito"   name="mockito-all"   rev="1.8.4" conf="test, default->default"/>
       <dependency org="junit"         name="junit"         rev='4.10'  conf="test->default" />
+      <dependency org="jaxen"         name="jaxen"         rev="1.1"   conf="test->default" />
       <dependency org="xmlunit"       name="xmlunit"       rev="1.3"   conf="test->default"/>
 
       <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"  conf="test->default" />

@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
     <Name>SiteMap</Name>
@@ -21,10 +21,10 @@
       <Property>postExecution</Property>
       <Property>listeners</Property>
     </Model>
-    <Implementation>
+    <Implementation supportsLegacy="true" supportsAMD="true">
       <Code src="siteMap.js" />
       <Dependencies>
-				<!--<Dependency src="jquery.ceebox.js" version="2.1.5.1">Ceebox</Dependency>-->
+        <!-- <Dependency src="jquery.ceebox.js" version="2.1.5.1">Ceebox</Dependency> -->
       </Dependencies>
       <Styles>
         <Style src="siteMap.css" version="1.0">SiteMap</Style>
@@ -58,7 +58,7 @@
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
-          <DesignerProperty>
+        <DesignerProperty>
           <Header>
             <Name>ajaxUrl</Name>
             <Parent>BaseProperty</Parent>
