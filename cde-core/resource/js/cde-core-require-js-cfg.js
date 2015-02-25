@@ -19,8 +19,6 @@
 
   var requirePaths = requireCfg.paths;
 
-  requireCfg.urlArgs = "ts=" + (new Date()).getTime();
-
   var prefix;
   if(typeof KARMA_RUN !== "undefined") { // test
     prefix = requirePaths['cde/components'] = 'resource/resources/custom/amd-components';

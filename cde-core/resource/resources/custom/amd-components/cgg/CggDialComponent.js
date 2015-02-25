@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,7 +14,7 @@
 define(['cde/components/CggComponent'], function(CggComponent) {
 
   var CggDialComponent = CggComponent.extend({
-    script: "system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js",
+    script: "system/pentaho-cdf-dd/resources/custom/amd-components/cgg/charts/dial.js",
     
     getScriptUrl: function() {
       return this.script;
