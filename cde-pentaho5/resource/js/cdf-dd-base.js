@@ -466,7 +466,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -513,7 +513,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log(Dashboards.i18nSupport.prop("SaveAsDashboard.MULTIPART_ERROR"));
+      Dashboards.log(Dashboards.i18nSupport.prop("SaveAsDashboard.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -542,7 +542,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function(result) {
         saveAsWidgetCallback(result, saveAsParams.widgetName);
       });
@@ -650,7 +650,7 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
+      Dashboards.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
