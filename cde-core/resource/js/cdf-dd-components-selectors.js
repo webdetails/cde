@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,40 +14,40 @@
 // Parameter
 var ParameterRenderer = SelectRenderer.extend({
 
-  getData: function(){
-
+  getData: function() {
     var r = {};
-    _.each(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(),function(o){
+    _.each(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function(o) {
       var p = o.properties[0].value;
       r["${p:" + p + "}"] = p;
     });
-   return r;
+    return r;
   }
 });
-
 
 // Listeners
 var ListenersRenderer = SelectMultiRenderer.extend({
 
-  getData: function(){
+  getData: function() {
     var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
     var _str = "{";
-    $.each(data,function(i,val){
-      _str += "'" + val.properties[0].value + "': '" + val.properties[0].value + "',"  ;
+    $.each(data, function(i, val) {
+      _str += "'" + val.properties[0].value + "': '" + val.properties[0].value + "',";
     });
 
-    _str+=" 'selected':" + (this.value.replace(/\$\{p:(.+?)\}/g,'$1')) + "}";
+    _str += " 'selected':" + (this.value.replace(/\$\{p:(.+?)\}/g, '$1')) + "}";
     return _str;
   },
 
   postProcessValue: function(val) {
-    var processed = val.split(", ").map(function(v){if (v.indexOf('Dashboards.storage') == 0) return v; else return "${p:"+v+"}";}).join(", ");
+    var processed = val.split(", ").map(function(v) {
+      if(v.indexOf('Dashboards.storage') == 0) return v; else return "${p:" + v + "}";
+    }).join(", ");
     return processed;
   },
 
-  getFormattedValue: function(value){
-    var v = value.replace(/','/g,"', '").replace(/\$\{p:(.+?)\}/g,'$1');
-    if(v.length > 20 ) v = v.substring(0,20) + " (...)";
+  getFormattedValue: function(value) {
+    var v = value.replace(/','/g, "', '").replace(/\$\{p:(.+?)\}/g, '$1');
+    if(v.length > 20) v = v.substring(0, 20) + " (...)";
     return v;
   }
 });
@@ -56,35 +56,33 @@ var ArrayParameterRenderer = ListenersRenderer.extend({});
 
 var DatasourceRenderer = SelectRenderer.extend({
 
-  getData: function(){
+  getData: function() {
 
-    return Panel.getPanel(DatasourcesPanel.MAIN_PANEL).getDatasources().map(function(o){
+    return Panel.getPanel(DatasourcesPanel.MAIN_PANEL).getDatasources().map(function(o) {
       return o.properties[0].value;
     });
   }
 
 });
 
-
-
 var HtmlObjectRenderer = SelectRenderer.extend({
 
-  getData: function(){
+  getData: function() {
     var r = {};
-    _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(),function(o){
+    _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(), function(o) {
       var p = o.properties[0].value;
       r["${p:" + p + "}"] = p
     });
-   return r;
+    return r;
   }
 });
-	
+
 var MatchTypeRenderer = SelectRenderer.extend({
 
-	isAutoComplete: false,
+  isAutoComplete: false,
 
   selectData: {
-    'fromStart':'From Start',
-    'all':'All'
+    'fromStart': 'From Start',
+    'all':       'All'
   }
 });

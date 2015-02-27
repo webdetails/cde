@@ -1786,13 +1786,11 @@ var CDFDDUtils = Base.extend({}, {
 
   markAsClean: function() {
     $('div.cdfdd-title-status').removeClass('dirtyStatus');
-    //$('div.cdfdd-title').removeClass('dirtyStatus');
     Commands.cleanExecutedCommands();
   },
 
   markAsDirty: function() {
     $('div.cdfdd-title-status').addClass('dirtyStatus');
-    //$('div.cdfdd-title').addClass('dirtyStatus');
   }
 });
 
