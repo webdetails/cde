@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.editor;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -60,6 +61,7 @@ public class DashboardEditor {
     DependenciesManager depMgr = DependenciesManager.getInstance();
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
+
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     final String scriptDeps = debugMode
       ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_SCRIPTS_RESOURCE )
@@ -73,6 +75,7 @@ public class DashboardEditor {
     tokens.put( CdeConstants.DESIGNER_HEADER_TAG, cdeDeps );
     tokens.put( CdeConstants.DESIGNER_STYLES_TAG, styleDeps );
     tokens.put( CdeConstants.DESIGNER_SCRIPTS_TAG, scriptDeps );
+    tokens.put( CdeConstants.DASHBOARD_TITLE_TAG, getDashboardTitle( wcdfPath ) );
 
     try {
       final String cdfDeps = CdeEngine.getEnv().getCdfIncludes( "empty", "blueprint", debugMode, false, null, scheme );
@@ -143,5 +146,21 @@ public class DashboardEditor {
           + CdeEngine.getInstance().getEnvironment().getPluginId() + "/" );
     }
     return resource;
+  }
+
+  private static String getDashboardTitle(String wcdfPath) throws IOException {
+      String title;
+
+      if ( wcdfPath.isEmpty()) {
+        title = "New Dashboard";
+      } else {
+        DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );
+        if ( wcdf == null ) {
+          throw new FileNotFoundException( wcdfPath );
+        }
+        title = wcdf.getTitle();
+      }
+
+      return title;
   }
 }
