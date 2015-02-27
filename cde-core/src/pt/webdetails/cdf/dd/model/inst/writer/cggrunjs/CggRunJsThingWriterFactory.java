@@ -33,9 +33,13 @@ public class CggRunJsThingWriterFactory implements IThingWriterFactory {
     if ( KnownThingKind.Component.equals( kind ) ) {
       if ( ( t instanceof GenericComponent ) && !( t instanceof WidgetComponent ) ) {
         GenericComponent comp = (GenericComponent) t;
-        if ( comp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" )
-          && !comp.getMeta().getId().equals( "cggDial" ) ) {
-          return new CggRunJsGenericComponentWriter();
+        if ( comp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" ) ) {
+          boolean canWrite = true;
+          if ( getId( comp ).equals( "cggDial" ) ) {
+            canWrite = false;
+          }
+
+          return new CggRunJsGenericComponentWriter( canWrite );
         }
       } else if ( t instanceof DataSourceComponent ) {
         return new CggRunJsDataSourceComponentWriter();
@@ -45,5 +49,9 @@ public class CggRunJsThingWriterFactory implements IThingWriterFactory {
     }
 
     throw new UnsupportedThingException( kind, t.getId() );
+  }
+
+  protected String getId( GenericComponent comp ) {
+    return comp.getMeta().getId();
   }
 }
