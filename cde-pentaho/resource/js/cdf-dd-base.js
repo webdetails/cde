@@ -416,7 +416,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
@@ -457,7 +457,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
@@ -504,7 +504,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
@@ -568,7 +568,7 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'Syncronize" method="post" enctype="multipart/form-data">');
