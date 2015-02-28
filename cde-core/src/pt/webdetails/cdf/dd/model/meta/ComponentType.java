@@ -346,9 +346,10 @@ public abstract class ComponentType extends MetaObject {
     private List<Resource.Builder> _resources;
     private PathOrigin origin;
 
-    // default values
+    // By default, all components (e.g. DataSourceComponent) should support legacy and AMD dashboards.
+    // CustomComponents might only support one kind of dashboard.
     private boolean supportsLegacy = true;
-    private boolean supportsAMD = false;
+    private boolean supportsAMD = true;
 
     public Builder() {
       super();
