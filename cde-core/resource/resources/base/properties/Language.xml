@@ -2,7 +2,7 @@
 <Header>
 	<Name>Language</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue></DefaultValue>
+	<DefaultValue>beanshell</DefaultValue>
 	<Description>Language</Description>
 	<Tooltip>Language the script is written in</Tooltip>
 	<InputType>String</InputType>
