@@ -1347,14 +1347,13 @@ var SelectRenderer = CellRenderer.extend({
 
 var ComponentToExportRenderer = SelectRenderer.extend({
 
-  isAutoComplete: true,
-
   getData: function() {
     var data = _.extend({}, this.selectData);
     var components = cdfdd.dashboardData.components.rows;
 
     var validComponents = components.filter(function(comp) {
-      return comp.meta_cdwSupport == 'true';
+      var nameProperty = comp.properties && comp.properties[0];
+      return comp.meta_cdwSupport === 'true' && nameProperty && nameProperty.value !== "";
     });
 
     validComponents.map(function(comp) {
