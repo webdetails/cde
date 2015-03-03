@@ -27,6 +27,11 @@ var PromptRenderer = CellRenderer.extend({
   render: function(placeholder, value, callback) {
 
     var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
+    var wizard = PromptWizardManager.getWizard(this.wizard);
+
+    if(!value && wizard.queryTemplate) {
+      value = wizard.queryTemplate;
+    }
 
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
@@ -34,7 +39,6 @@ var PromptRenderer = CellRenderer.extend({
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click", function() {
 
       // Storing the var for later use when render() is not called again
-      var wizard = PromptWizardManager.getWizard(myself.wizard);
       wizard.setInvoker(myself);
       myself.callback = callback;
       myself.editArea = _editArea;
@@ -43,7 +47,6 @@ var PromptRenderer = CellRenderer.extend({
     }).appendTo($("div.edit", _editArea));
 
     _editArea.appendTo(placeholder);
-
   },
 
   validate: function(settings, original) {
