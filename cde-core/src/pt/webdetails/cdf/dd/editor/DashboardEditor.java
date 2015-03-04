@@ -151,7 +151,7 @@ public class DashboardEditor {
   private static String getDashboardTitle(String wcdfPath) throws IOException {
       String title;
 
-      if ( wcdfPath.isEmpty()) {
+      if ( wcdfPath.isEmpty() || wcdfPath.equals(CdeConstants.LEGACY_UNSAVED_FILE_PATH) ) {
         title = "New Dashboard";
       } else {
         DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );

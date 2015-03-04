@@ -100,14 +100,14 @@ var SynchronizeRequests = {
       dataType: 'json',
       url: wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeTemplates",
       success: function(result) {
-        if(result && result.status == "true") {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Template saved successfully", delay: 100 });
-        } else {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Errors saving template: " + result });
+        try {
+          if(result && result.status === "true") {
+            NotifyBarUtils.successNotifyBar("Template saved successfully");
+          } else {
+            throw result && result.result;
+          }
+        } catch(e) {
+          NotifyBarUtils.errorNotifyBar("Errors saving template", e);
         }
       }
     });
@@ -121,93 +121,95 @@ var SynchronizeRequests = {
       dataType: 'json',
       url: wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeTemplates",
       success: function(result) {
-
-        if(result && result.status == "true") {
-          templates = result.result;
-          SynchronizeRequests.selectTemplate = undefined;
-          var myTemplatesCount = 0;
-          var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          for(var v in templates) {
-            if(templates.hasOwnProperty(v)) {
-              if(templates[v].type == "default") {
-                _templates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-              } else if(templates[v].type == "custom") {
-                _myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-                myTemplatesCount++;
-              }
-            }
-          }
-          _templates += '</div></div><a class="next"></a></div>';
-          _myTemplates += '</div></div><a class="next"></a></div>';
-          var loaded = function() {
+        try {
+          if(result && result.status === "true") {
+            templates = result.result;
             SynchronizeRequests.selectTemplate = undefined;
-            $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
-            $(function() {
-              $("div.scrollable:eq(0) div.thumbs div").bind('click', function() {
-                SynchronizeRequests.selectTemplate = templates[$(this).find("img").attr("id")];
-              });
-            });
-          };
-
-          var callback = function(v, m, f) {
-            var selectTemplate = SynchronizeRequests.selectTemplate;
-            if(v == 1 && selectTemplate != undefined) {
-              var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
-              var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
-              var promptPrefix = 'popupTemplate';
-              var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
-
-              if(overwriteComponents && overwriteDatasources) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
-              } else if(overwriteComponents) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
-              } else if(overwriteDatasources) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
-              } else {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+            var myTemplatesCount = 0;
+            var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+            var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+            for(var v in templates) {
+              if(templates.hasOwnProperty(v)) {
+                if(templates[v].type == "default") {
+                  _templates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+                } else if(templates[v].type == "custom") {
+                  _myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+                  myTemplatesCount++;
+                }
               }
-
-              $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: promptPrefix,
-                callback: SynchronizeRequests.callbackLoadTemplate
+            }
+            _templates += '</div></div><a class="next"></a></div>';
+            _myTemplates += '</div></div><a class="next"></a></div>';
+            var loaded = function() {
+              SynchronizeRequests.selectTemplate = undefined;
+              $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
+              $(function() {
+                $("div.scrollable:eq(0) div.thumbs div").bind('click', function() {
+                  SynchronizeRequests.selectTemplate = templates[$(this).find("img").attr("id")];
+                });
               });
+            };
 
-              $('#' + promptPrefix).addClass('warningPopupTemplate');
-            }
-          };
+            var callback = function(v, m, f) {
+              var selectTemplate = SynchronizeRequests.selectTemplate;
+              if(v == 1 && selectTemplate != undefined) {
+                var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
+                var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+                var promptPrefix = 'popupTemplate';
+                var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
 
-          var promptTemplates = {
-            loaded: loaded,
-            buttons: myTemplatesCount > 0 ? { MyTemplates: 2, Ok: 1, Cancel: 0 } : {Ok: 1, Cancel: 0},
-            opacity: 0.2,
-            prefix: 'popupTemplate',
-            callback: callback,
-            submit: function(v, m, f) {
-              if(v != 2) return true;
-              $.prompt.close();
-              $.prompt(_myTemplates, promptMyTemplates, {prefix: "popupTemplate"});
-            }
-          };
+                if(overwriteComponents && overwriteDatasources) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
+                } else if(overwriteComponents) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
+                } else if(overwriteDatasources) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
+                } else {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+                }
 
-          var promptMyTemplates = {
-            loaded: loaded,
-            buttons: { Back: 2, Ok: 1, Cancel: 0 },
-            opacity: 0.2,
-            prefix: 'popupTemplate',
-            callback: callback,
-            submit: function(v, m, f) {
-              if(v != 2) return true;
-              $.prompt.close();
-              $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
-            }
-          };
+                $.prompt(message, {
+                  buttons: {Ok: true, Cancel: false}, prefix: promptPrefix,
+                  callback: SynchronizeRequests.callbackLoadTemplate
+                });
 
-          $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
-        } else {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Error loading templates: " + json.result
-          });
+                $('#' + promptPrefix).addClass('warningPopupTemplate');
+              }
+            };
+
+            var promptTemplates = {
+              loaded: loaded,
+              buttons: myTemplatesCount > 0 ? {MyTemplates: 2, Ok: 1, Cancel: 0} : {Ok: 1, Cancel: 0},
+              opacity: 0.2,
+              prefix: 'popupTemplate',
+              callback: callback,
+              submit: function(v, m, f) {
+                if(v != 2) return true;
+                $.prompt.close();
+                $.prompt(_myTemplates, promptMyTemplates, {prefix: "popupTemplate"});
+              }
+            };
+
+            var promptMyTemplates = {
+              loaded: loaded,
+              buttons: {Back: 2, Ok: 1, Cancel: 0},
+              opacity: 0.2,
+              prefix: 'popupTemplate',
+              callback: callback,
+              submit: function(v, m, f) {
+                if(v != 2) return true;
+                $.prompt.close();
+                $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+              }
+            };
+
+            $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+
+          } else {
+            throw result && result.result;
+          }
+        } catch(e) {
+          NotifyBarUtils.errorNotifyBar("Error loading templates", e);
         }
       }
     });
@@ -385,14 +387,15 @@ var StylesRequests = {
   initStyles: function(saveSettingsParams, wcdf, myself, callback) {
 
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
-      if(result && result.status == "true") {
-        myself.setDashboardWcdf(wcdf);
-        callback();
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors initializing settings: " + result.result
-        });
+      try {
+        if(result && result.status === "true") {
+          myself.setDashboardWcdf(wcdf);
+          callback();
+        } else {
+          throw result && result.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
       }
     });
   }
@@ -418,19 +421,12 @@ var SaveRequests = {
           $("div.cdfdd-title").empty().text(title).attr('title', title);
           // We need to reload the layout engine in case the rendererType changed
           cdfdd.layout.init();
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard Settings saved successfully",
-            delay: 1000
-          });
+          NotifyBarUtils.successNotifyBar("Dashboard Settings saved successfully");
         } else {
-          throw result.result;
+          throw result && result.result;
         }
       } catch (e) {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving settings: " + e
-        });
+        NotifyBarUtils.errorNotifyBar("Errors saving settings", e);
       }
     });
   },
@@ -441,23 +437,19 @@ var SaveRequests = {
       saveParams.file = wd.cde.endpoints.getFilePathFromUrl();
     }
     var successFunction = function(result) {
-
-      if(result && result.status == "true") {
-        if(stripArgs.needsReload) {
-          window.location.reload();
+      try {
+        if(result && result.status == "true") {
+          if(stripArgs.needsReload) {
+            window.location.reload();
+          } else {
+            CDFDDUtils.markAsClean();
+            NotifyBarUtils.successNotifyBar("Dashboard saved successfully");
+          }
         } else {
-          CDFDDUtils.markAsClean();
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard saved successfully",
-            delay: 1000
-          });
+          throw result && result.result;
         }
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
 
@@ -485,19 +477,20 @@ var SaveRequests = {
   saveAsDashboard: function(saveAsParams, selectedFolder, selectedFile, myself) {
 
     var successFunction = function(result) {
-      if(result && result.status == "true") {
-        if(selectedFolder[0] == "/") {
-          selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+      try {
+        if(result && result.status === "true") {
+          if(selectedFolder[0] === "/") {
+            selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+          }
+          var solutionPath = selectedFolder.split("/");
+          myself.initStyles(function() {
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+          });
+        } else {
+          throw result && result.result;
         }
-        var solutionPath = selectedFolder.split("/");
-        myself.initStyles(function() {
-          window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
-        });
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
 
@@ -556,37 +549,38 @@ var SaveRequests = {
   },
 
   saveAsWidgetCallback: function(result, widgetName) {
-    if(result && result.status == "true") {
+    try {
+      if(result && result.status === "true") {
 
-      var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
-      var selectedFile = SaveRequests.saveRequestParams.selectedFile;
-      var myself = SaveRequests.saveRequestParams.myself;
+        var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
+        var selectedFile = SaveRequests.saveRequestParams.selectedFile;
+        var myself = SaveRequests.saveRequestParams.myself;
 
-      if(selectedFolder[0] == "/") {
-        selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+        if(selectedFolder[0] === "/") {
+          selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+        }
+
+        var updateParams = {
+          widget: true,
+          widgetName: widgetName
+        };
+        // TODO: dashboard is being saved twice. This also needs to be fixed..
+        var wcdf = myself.getDashboardWcdf();
+        var cleanStyle = myself.styles.indexOf('Clean');
+        if(!wcdf.style) {
+          updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+        }
+
+        myself.saveSettingsRequest(updateParams);
+
+        //redirect to new widget
+        SaveRequests.redirect(selectedFolder, selectedFile);
+
+      } else {
+        throw result && result.result;
       }
-
-      var updateParams = { 
-        widget: true,
-        widgetName: widgetName
-      };
-      // TODO: dashboard is being saved twice. This also needs to be fixed..
-      var wcdf = myself.getDashboardWcdf();
-      var cleanStyle = myself.styles.indexOf('Clean');
-      if(!wcdf.style) {
-        updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
-      }
-
-      myself.saveSettingsRequest(updateParams);
-
-      //redirect to new widget
-      SaveRequests.redirect(selectedFolder, selectedFile);
-
-    } else {
-      $.notifyBar({
-        jqObject: NotifyBarUtils.getNotifyBarObject(),
-        html: "Errors saving file: " + result.result
-      });
+    } catch(e) {
+      NotifyBarUtils.errorNotifyBar("Errors saving file", e);
     }
   },
 
@@ -606,7 +600,7 @@ var LoadRequests = {
     }
 
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", loadParams, function(result) {
-      if(result && result.status == "true") {
+      if(result && result.status === "true") {
         myself.setDashboardData(myself.unstrip(result.result.data));
         myself.setDashboardWcdf(result.result.wcdf);
         myself.init();
@@ -621,20 +615,21 @@ var PreviewRequests = {
 
   previewDashboard: function(saveParams, _href) {
     var successFunction = function(result) {
-      if(result && result.status == "true") {
-        $.fancybox({
-          type: "iframe",
-          closeBtn: true,
-          autoSize: false,
-          href: _href,
-          width: $(window).width(),
-          height: $(window).height()
-        });
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      try {
+        if(result && result.status === "true") {
+          $.fancybox({
+            type: "iframe",
+            closeBtn: true,
+            autoSize: false,
+            href: _href,
+            width: $(window).width(),
+            height: $(window).height()
+          });
+        } else {
+          throw result && result.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
 
@@ -672,7 +667,6 @@ var SolutionTreeRequests = {
     return wd.cde.endpoints.getPluginUrl() + "resources/explore";
   }
 };
-
 
 var PluginRequests = {
 
@@ -715,13 +709,11 @@ var ExternalEditor = {
   }
 };
 
-
 var OlapUtils = {
   getOlapCubesUrl: function() {
     return wd.cde.endpoints.getPluginUrl() + "olap/getCubes";
   }
 };
-
 
 var Cgg = {
   getCggDrawUrl: function() {
@@ -729,8 +721,3 @@ var Cgg = {
   }
 };
 
-var NotifyBarUtils = {
-  getNotifyBarObject: function() {
-    return $("#notifyBar").length ? $("#notifyBar") : undefined;
-  }
-};
