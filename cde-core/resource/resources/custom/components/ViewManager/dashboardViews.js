@@ -261,7 +261,8 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
 // http://underscorejs.org/#template 
 _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
-var templates = {
+var templates = templates || {};
+_.extend(templates, {
   viewManager: _.template(
     "<div class='view-manager-component'>" +
     "  <div class='current-view'>" +
@@ -314,4 +315,4 @@ var templates = {
     "    <div class='big-button cancel'>Cancel</div>" +
     "  </div>" +
     "</div>")
-};
+});
