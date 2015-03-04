@@ -275,6 +275,58 @@ div.cdfdd-preview {
   margin-left: 40px;
 }
 
+div.notify-bar, div.notify-bar, div.notify-bar {
+  font-family: 'Open Sans Regular', sans-serif;
+  font-size: 16pt;
+  text-align: center;
+
+  position: fixed;
+  top: 40px;
+  left: 0;
+  z-index: 9999;
+
+  width: 100%;
+  padding: 20px;
+}
+
+div.notify-bar .notify-bar-icon {
+  float: left;
+  width: 35px;
+  height: 35px;
+}
+
+div.notify-bar .notify-bar-message {
+  float: left;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+div.notify-bar-success {
+  color: #3c7f2b;
+  background-color: #b3dead;
+}
+
+div.notify-bar-success .notify-bar-icon {
+  background: url('../images/success_icon.png') no-repeat;
+}
+
+div.notify-bar-error {
+  color: #af0e1a;
+  background-color: #df9fa3;
+}
+
+div.notify-bar-error .notify-bar-icon {
+  background: url('../images/error_icon.png') no-repeat;
+}
+
+div.notify-bar-info {
+  color: #008ea5;
+  background-color: #b5dce9;
+}
+
+div.notify-bar-info .notify-bar-icon {
+  background: url('../images/info_icon.png') no-repeat;
+}
 
 #keyboard_shortcuts_help {
   background-color: black;

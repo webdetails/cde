@@ -887,9 +887,7 @@ var CDFDD = Base.extend({
   previewMode: function() {
 
     if(this.isNewFile(CDFDDFileName)) {
-      $.notifyBar({
-        html: "Need to save an initial dashboard before previews are available."
-      });
+      NotifyBarUtils.infoNotifyBar("Need to save an initial dashboard before previews are available.");
       return;
     }
 
@@ -1793,6 +1791,61 @@ var CDFDDUtils = Base.extend({}, {
     $('div.cdfdd-title-status').addClass('dirtyStatus');
   }
 });
+
+
+var NotifyBarUtils = {
+  successNotifyBar: function(message) {
+    this.notifyBar(message, 'success');
+  },
+
+  errorNotifyBar: function(message, error) {
+    if(!error) {
+      message += ": " + error;
+    }
+
+    this.notifyBar(message, 'error');
+  },
+
+  infoNotifyBar: function(message) {
+    this.notifyBar(message, 'info');
+  },
+
+  notifyBar: function(message, type) {
+    var notifyObject = $("#notifyBar");
+    var notifyHtml = '<div class="notify-bar-icon"></div><div class="notify-bar-message">' + message + '</div>';
+
+    if(!notifyObject.length) {
+      notifyObject = $('<div id="notifyBar" class="notify-bar"></div>');
+    } else {
+      this.cleanStatus();
+    }
+
+    switch(type) {
+      case 'success':
+        notifyObject.addClass('notify-bar-success');
+        break;
+      case 'error':
+        notifyObject.addClass('notify-bar-error');
+        break;
+      case 'info':
+        notifyObject.addClass('notify-bar-info');
+        break;
+    }
+
+    $.notifyBar({
+      jqObject: notifyObject,
+      html: notifyHtml,
+      delay: 1500
+    });
+  },
+
+  cleanStatus: function() {
+    $("#notifyBar")
+        .removeClass('notify-bar-success')
+        .removeClass('notify-bar-error')
+        .removeClass('notify-bar-info')
+  }
+};
 
 var cdfdd;
 $(function() {
