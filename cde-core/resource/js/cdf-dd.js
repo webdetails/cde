@@ -732,7 +732,6 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("");
           }
         }, function(file) {
           $("#fileInput").val(file.replace(selectedFolder, ""));
@@ -1217,7 +1216,6 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("");
           }
         }, function(file) {
           $("#fileInput").val(file.replace(selectedFolder, ""));
