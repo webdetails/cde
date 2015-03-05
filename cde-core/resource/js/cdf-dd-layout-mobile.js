@@ -164,10 +164,7 @@ var LayoutAddFilterBlockOperation = AddRowOperation.extend({
 
     tableManager.insertAtIdx(_stub, insertAtIdx);
 
-    // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddFilterBlockOperation());
@@ -227,10 +224,8 @@ var LayoutAddFilterRowOperation = AddRowOperation.extend({
     }
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddFilterRowOperation());
@@ -290,10 +285,8 @@ var LayoutAddFilterHeaderOperation = AddRowOperation.extend({
     }
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddFilterHeaderOperation());
@@ -350,10 +343,8 @@ var LayoutAddCarouselOperation = AddRowOperation.extend({
     var _stub = LayoutCarouselModel.getStub();
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddCarouselOperation());
@@ -413,10 +404,8 @@ var LayoutAddCarouselItemOperation = AddRowOperation.extend({
 
     this.logger.debug("Inserting row at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddCarouselItemOperation());

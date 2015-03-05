@@ -525,7 +525,9 @@ var TableManager = Base.extend({
 
     // Unselect
     this.cleanSelections();
-    $('#' + this.getTableId() + " > tbody > tr:eq(" + row + ")").addClass("ui-state-active");
+    var $table = $('#' + this.getTableId());
+    $table.click();
+    $table.find("tbody > tr:eq(" + row + ")").addClass("ui-state-active");
 
     // Uncomment following cells to enable td highlight
     //$('#'+this.getTableId() + " > tbody > tr:eq("+ row +") > td:eq("+ col + ")").addClass("ui-state-active");
