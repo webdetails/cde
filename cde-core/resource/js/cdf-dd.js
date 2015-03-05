@@ -103,9 +103,11 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
-        if ($(e.target).is('input, textarea')) {
+        if($(e.target).is('input, textarea') || e.ctrlKey) {
           return;
         }
+
+        e.preventDefault();
 
         var activePanel = cdfdd.getActivePanel();
         var activeTable = activePanel.getSelectedTable();
@@ -138,7 +140,6 @@ var CDFDD = Base.extend({
             }
             break;
           case 13:
-            e.preventDefault();
             if(e.shiftKey) { //shift + enter
               activeTable.cellUnselected();
             } else { //enter
@@ -191,7 +192,6 @@ var CDFDD = Base.extend({
             activeTable.expandCell();
             break;
           case 9: //tab
-            e.preventDefault();
             var nextTable = activePanel.selectNextTable();
             if(nextTable) {
               var row = nextTable.getSelectedCell();
@@ -204,22 +204,18 @@ var CDFDD = Base.extend({
            * Row Operations
            */
           case 82: //r
-            if(e.ctrlKey) { return; }
-            e.preventDefault();
             var operation = new LayoutAddRowOperation();
             var command = new RowOperationCommand(operation, activeTable);
 
             Commands.executeCommand(command);
             break;
           case 67: //c
-            e.preventDefault();
             var operation = new LayoutAddColumnsOperation();
             var command = new RowOperationCommand(operation, activeTable);
 
             Commands.executeCommand(command);
             break;
           case 72: //h
-            e.preventDefault();
             var operation = new LayoutAddHtmlOperation();
             var command = new RowOperationCommand(operation, activeTable);
 
