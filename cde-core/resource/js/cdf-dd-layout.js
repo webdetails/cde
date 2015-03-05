@@ -681,10 +681,7 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
           var insertAtIdx = 0;
           tableManager.insertAtIdx(_stub, insertAtIdx);
 
-          // edit the new entry - we know the name is on the first line
-          if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-            $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-          }
+          this.selectFirstProperty(tableManager);
         }
       }
     });
@@ -758,10 +755,8 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
     footer.execute(tableManager);
 
     tableManager.selectCell(insertAtIdx, colIdx);
-    // edit the new entry - we know the name is on the first line
-    if(typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new LayoutAddBootstrapPanelOperation());

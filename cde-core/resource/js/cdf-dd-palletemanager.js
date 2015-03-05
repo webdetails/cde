@@ -230,10 +230,12 @@ var PalleteEntry = Base.extend({
     // focus the newly created line
     //atableManager.selectCell(insertAtIdx,colIdx);
 
-    // edit the new entry - we know the name is on the first line
-    if( typeof tableManager.getLinkedTableManager() != 'undefined' ) {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+		// edit the new entry - we know the name is on the first line
+		var linkedTableManager = tableManager.getLinkedTableManager();
+		if (typeof linkedTableManager != 'undefined') {
+			linkedTableManager.selectCell(0,0, 'simple');
+			$('table#' + linkedTableManager.getTableId() + ' > tbody > tr:first > td:eq(1)').click();
+		}
 
     return _stub;
   },
