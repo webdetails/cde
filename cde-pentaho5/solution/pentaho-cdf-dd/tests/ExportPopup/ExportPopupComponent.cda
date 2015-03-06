@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDADescriptor>
    <DataSources>
-      <Connection id="sampleQuery" type="scripting.scripting">
+      <Connection id="ThreeColumns" type="scripting.scripting">
          <Initscript></Initscript>
          <Language>beanshell</Language>
       </Connection>
-      <Connection id="sqlQuery" type="sql.jndi">
+      <Connection id="localSampleData" type="sql.jndi">
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sampleQuery"
-               id="sampleQuery"
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ThreeColumns"
+               id="ThreeColumns"
                type="scriptable">
       <Columns/>
       <Parameters/>
@@ -58,21 +58,16 @@ model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer
 
 return model;</Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sqlQuery"
-               id="sqlQuery"
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="localSampleData"
+               id="localSampleData"
                type="sql">
       <Columns/>
-      <Parameters>
-         <Parameter default="Classic Cars" name="productLine" type="String"/>
-         <Parameter default="APAC" name="territory" type="String"/>
-      </Parameters>
+      <Parameters/>
       <Query>SELECT
 c.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total
 FROM ORDERFACT f
 inner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )
 inner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)
-where p.PRODUCTLINE=${productLine}
-and c.TERRITORY=${territory}
 group by c.CUSTOMERNAME
 order by total desc</Query>
    </DataAccess>
