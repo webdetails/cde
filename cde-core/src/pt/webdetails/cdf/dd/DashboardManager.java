@@ -16,6 +16,7 @@ package pt.webdetails.cdf.dd;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -629,5 +630,133 @@ public class DashboardManager {
       this._dashboardsByCdfdeFilePath.put( cdeFullPath, newDash );
       return newDash;
     }
+  }
+
+  public CdfRunJsDashboardWriteResult getDashboardModule(
+      String wcdfFilePath, CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead, String style, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    if ( wcdfFilePath == null ) {
+      throw new IllegalArgumentException( "wcdfFilePath" );
+    }
+
+    // Figure out what dashboard we should be handling: load its wcdf descriptor.
+    DashboardWcdfDescriptor wcdf;
+    if ( !wcdfFilePath.isEmpty() && wcdfFilePath.endsWith( ".wcdf" ) ) {
+      try {
+        wcdf = DashboardWcdfDescriptor.load( wcdfFilePath );
+      } catch ( IOException ex ) {
+        // TODO: User has no permission to WCDF falls here?
+        throw new ThingWriteException( "While accessing the WCDF file.", ex );
+      }
+
+      if ( wcdf == null ) {
+        // Doesn't exist
+        // TODO: Explain or fix, why create a (totally) empty one?
+        wcdf = new DashboardWcdfDescriptor();
+      }
+    } else {
+      // We didn't receive a valid path. We're in preview mode.
+      // TODO: Support mobile preview mode (must remove dependency on setStyle())
+      wcdf = getPreviewWcdf( wcdfFilePath );
+      bypassCacheRead = true; // no cache for preview
+    }
+
+    if ( StringUtils.isNotEmpty( style ) ) {
+      wcdf.setStyle( style );
+    }
+
+    return this.getDashboardModule( wcdf, options, bypassCacheRead, alias );
+  }
+
+  public CdfRunJsDashboardWriteResult getDashboardModule(
+      DashboardWcdfDescriptor wcdf,
+      CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    // 1. Build the cache key.
+    String cdeFilePath = Utils.sanitizeSlashesInPath( wcdf.getStructurePath() );
+
+    DashboardCacheKey cacheKey = new DashboardCacheKey(
+        cdeFilePath,
+        getPluginResourceLocationManager().getStyleResourceLocation( wcdf.getStyle() ),
+        options.isDebug(),
+        options.isAbsolute(),
+        options.getSchemedRoot(),
+        options.getAliasPrefix() );
+
+    // 2. Check existence and permissions to the original CDFDE file
+    // NOTE: the cache is shared by all users.
+    // The current user may not have access to a cache item previously
+    // created by another user.
+    if ( !Utils.getSystemOrUserReadAccess( wcdf.getPath() ).fileExists( cdeFilePath ) ) {
+      throw new ThingWriteException( new FileNotFoundException( cdeFilePath ) );
+    }
+
+    // 3. Reading from the cache?
+    CdfRunJsDashboardWriteResult dashWrite;
+    if ( !bypassCacheRead ) {
+      try {
+        dashWrite = getDashboardWriteResultFromCache( cacheKey, cdeFilePath );
+      } catch ( FileNotFoundException ex ) {
+        // Is in cache but:
+        // * file doesn't exist (anymore)
+        // * user has insufficient permissions to access the cdfde file
+        throw new ThingWriteException( ex );
+      }
+
+      if ( dashWrite != null ) {
+        // Return cached write result
+        return dashWrite;
+      }
+
+      // Not in cache or cache item expired/invalidated
+    } else {
+      _logger.info( "Bypassing dashboard render cache, rendering." );
+    }
+
+    // 4. Get the Dashboard object
+    Dashboard dash;
+    try {
+      dash = this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
+    } catch ( ThingReadException ex ) {
+      throw new ThingWriteException( ex );
+    }
+
+    // 5. Obtain a Writer for the CdfRunJs format
+    dashWrite = this.writeDashboardModule( dash, options, bypassCacheRead, alias );
+
+    // 6. Cache the dashboard write
+    return this.replaceDashboardWriteResultInCache( cacheKey, dashWrite );
+  }
+
+  /**
+   * @param dash
+   * @param options
+   * @param bypassCacheRead
+   * @return
+   * @throws ThingWriteException
+   */
+  private CdfRunJsDashboardWriteResult writeDashboardModule(
+      Dashboard dash, CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+
+    // 1. Obtain a Writer for the CdfRunJs format
+    CdfRunJsThingWriterFactory factory =
+        new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.amd.CdfRunJsThingWriterFactory();
+
+    CdfRunJsDashboardWriter writer = factory.getDashboardWriter( dash );
+
+    // 2. Write it
+    CdfRunJsDashboardWriteContext writeContext = CdeEngine.getInstance().getEnvironment()
+        .getCdfRunJsDashboardWriteContext( factory, /*indent*/"", bypassCacheRead, dash, options );
+
+    CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder =
+        new CdfRunJsDashboardWriteResult.Builder();
+
+    writer.writeModule( dashboardWriteBuilder, writeContext, dash, alias );
+
+    return dashboardWriteBuilder.build();
   }
 }

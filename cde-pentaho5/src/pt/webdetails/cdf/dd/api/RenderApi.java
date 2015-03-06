@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -204,6 +205,77 @@ public class RenderApi {
   }
 
   @GET
+  @Path( "/getDashboard" )
+  @Produces( MimeTypes.HTML )
+  public String getDashboard( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                        @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
+                        @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
+                        @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
+                        @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                        @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                        @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
+                        @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+                        @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
+                        @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
+                        @Context HttpServletRequest request ) throws IOException {
+    final String schemeToUse;
+    if ( !inferScheme ) {
+      schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
+    } else {
+      schemeToUse = "";
+    }
+
+    if ( StringUtils.isEmpty( path ) ) {
+      logger.warn( "No path provided." );
+      return "No path provided.";
+    }
+
+    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( path );
+    if ( readAccess == null ) {
+      logger.warn( "Access Denied or File Not Found." );
+      return "Access Denied or File Not Found.";
+    }
+
+    long start = System.currentTimeMillis();
+    long end;
+    ILogger iLogger = getAuditLogger();
+    IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
+
+    UUID uuid = CpfAuditHelper.startAudit( getPluginName(), path, getObjectName(), this.getPentahoSession(),
+        iLogger, requestParams );
+
+    try {
+      logger.info( "[Timing] CDE Starting Dashboard Rendering" );
+      CdfRunJsDashboardWriteResult dashboard =
+          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
+
+      String result = dashboard.getContent();
+
+      //i18n token replacement
+      if ( !StringUtils.isEmpty( result ) ) {
+        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( path ) );
+        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+      }
+
+      logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
+
+      end = System.currentTimeMillis();
+      CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
+          this.getPentahoSession(), iLogger, start, uuid, end );
+
+      return result;
+    } catch ( Exception ex ) { //TODO: better error handling?
+      String msg = "Could not load dashboard: " + ex.getMessage();
+      logger.error( msg, ex );
+
+      end = System.currentTimeMillis();
+      CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
+          this.getPentahoSession(), iLogger, start, uuid, end );
+      return msg;
+    }
+  }
+
+  @GET
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
   public String edit(
@@ -284,10 +356,28 @@ public class RenderApi {
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
+  private CdfRunJsDashboardWriteResult getDashboardModule( String path, String scheme, String root,
+                                                           boolean absolute, boolean bypassCache, boolean debug,
+                                                           String style, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    /*
+    final String dashboardAlias;
+    if ( StringUtils.isEmpty( alias ) ) {
+      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
+    } else {
+      dashboardAlias = alias + "_" + FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
+    }
+    */
+
+    CdfRunJsDashboardWriteOptions options =
+        new CdfRunJsDashboardWriteOptions( true, absolute, debug, root, scheme );
+
+    return getDashboardManager().getDashboardModule( path, options, bypassCache, style, alias );
+  }
+
   protected DashboardManager getDashboardManager() {
     return DashboardManager.getInstance();
   }
-
 
   private String getWcdfRelativePath( String solution, String path, String file ) {
     //TODO: change to use path instead of file

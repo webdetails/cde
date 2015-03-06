@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -55,11 +55,14 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     String id = context.getId( comp );
 
+    // when writing a dashboard as an AMD module, we want to refer to "this" instead of "dashboard"
+    final String targetDash = context.getOptions().isAmdModule() ? "this" : "dashboard";
+
     out.append( "var " )
         .append( id )
         .append( " = new " )
         .append( className )
-        .append( "(dashboard, {" )
+        .append( "(" ).append( targetDash ).append( ", {" )
         .append( NEWLINE );
 
     addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );

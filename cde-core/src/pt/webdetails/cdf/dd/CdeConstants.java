@@ -52,6 +52,7 @@ public class CdeConstants {
     public static final String STYLE = "style";
     public static final String SCHEME = "scheme";
     public static final String SUPPORTS = "supports";
+    public static final String ALIAS = "alias";
     /**
      * JSON structure
      */

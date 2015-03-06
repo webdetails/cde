@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -32,37 +32,43 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
     String name = JsonUtils.toJsString( context.getId( comp ) );
     String value = JsonUtils.toJsString( comp.tryGetPropertyValue( "propertyValue", "" ) );
     String viewRole = JsonUtils.toJsString( comp.tryGetPropertyValue( "parameterViewRole", "unused" ) );
-    Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue( "bookmarkable", null ) );
+    Boolean isBookmarkable = Boolean.valueOf( comp.tryGetPropertyValue( "bookmarkable", null ) );
 
-    addSetParameterAssignment( out, name, value );
+    // when writing a dashboard as an AMD module, we want to refer to "this" instead of "dashboard"
+    final String targetDash = context.getOptions().isAmdModule() ? "this" : "dashboard";
+
+    addSetParameterAssignment( out, name, value, targetDash );
     if ( isBookmarkable ) {
-      addBookmarkable( out, name );
+      addBookmarkable( out, name, targetDash );
     }
-    addViewMode( out, name, viewRole );
+    addViewMode( out, name, viewRole, targetDash );
   }
 
-  protected static void addSetParameterAssignment( StringBuilder out, String name, String value ) {
-    out.append( "dashboard.addParameter(" );
-    out.append( name );
-    out.append( ", " );
-    out.append( value );
-    out.append( ");" );
-    out.append( NEWLINE );
+  protected static void addSetParameterAssignment( StringBuilder out, String name, String value, String targetDash ) {
+    out.append( targetDash )
+        .append( ".addParameter(" )
+        .append( name )
+        .append( ", " )
+        .append( value )
+        .append( ");" )
+        .append( NEWLINE );
   }
 
-  protected static void addViewMode( StringBuilder out, String name, String viewRole ) {
-    out.append( "dashboard.setParameterViewMode(" );
-    out.append( name );
-    out.append( ", " );
-    out.append( viewRole );
-    out.append( ");" );
-    out.append( NEWLINE );
+  protected static void addViewMode( StringBuilder out, String name, String viewRole, String targetDash ) {
+    out.append( targetDash )
+        .append( ".setParameterViewMode(" )
+        .append( name )
+        .append( ", " )
+        .append( viewRole )
+        .append( ");" )
+        .append( NEWLINE );
   }
 
-  protected static void addBookmarkable( StringBuilder out, String name ) {
-    out.append( "dashboard.setBookmarkable(" );
-    out.append( name );
-    out.append( ");" );
-    out.append( NEWLINE );
+  protected static void addBookmarkable( StringBuilder out, String name, String targetDash ) {
+    out.append( targetDash )
+        .append( ".setBookmarkable(" )
+        .append( name )
+        .append( ");" )
+        .append( NEWLINE );
   }
 }

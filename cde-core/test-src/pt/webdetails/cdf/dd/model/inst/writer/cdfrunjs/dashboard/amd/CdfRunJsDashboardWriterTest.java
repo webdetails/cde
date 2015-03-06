@@ -88,11 +88,19 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     List<String> componentClassNames = Arrays.asList(
       "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
       "TestComponent1",
       "TestComponent2",
       "TestComponent3" );
     List<String> cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3" );
@@ -130,12 +138,20 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     componentClassNames = Arrays.asList(
       "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
       "TestComponent1",
       "TestComponent2",
       "TestComponent3",
       "TestResource1");
     cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
@@ -160,13 +176,13 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   public void testDashboardType() {
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
-    assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Blueprint");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Blueprint");
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP, false );
-    assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Bootstrap");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Bootstrap");
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE, false );
-    assertEquals( dashboardWriter.getDashboardRequireModule(), "cdf/Dashboard.Mobile");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Mobile");
   }
   
   @Test

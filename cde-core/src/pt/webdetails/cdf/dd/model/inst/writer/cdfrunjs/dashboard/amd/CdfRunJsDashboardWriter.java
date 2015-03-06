@@ -14,10 +14,13 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
+import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
@@ -44,6 +47,7 @@ import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,9 +62,25 @@ public class CdfRunJsDashboardWriter
 
   private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
   private static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard();";
-  private static final String EPILOGUE = "dashboard.init();" + NEWLINE + "return dashboard;";
+  private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
   private static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1})";
-  private static final String REQUIRE_STOP = "});";
+  private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
+  private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
+  private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
+  private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
+      + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
+  //private static final String DASHBOARD_MODULE_NAME = INDENT1 + "name: ''{0}''," + NEWLINE;
+  private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
+      + INDENT2 + "if(!$('#' + targetId).length) { return; };" + NEWLINE
+      + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
+      + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
+      + INDENT2 + "this._processComponents(); },";
+  private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
+      INDENT1 + "_processComponents: function() '{'" + NEWLINE
+      + INDENT2 + "{0}" + NEWLINE
+      + INDENT1 + "'}'" + NEWLINE;
+  private static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
   private static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
   private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
@@ -235,6 +255,64 @@ public class CdfRunJsDashboardWriter
     return out.toString();
   }
 
+  protected String writeModuleComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
+    componentList.clear();
+
+    StringBuilder out = new StringBuilder();
+
+    // Output WCDF
+    //addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    //out.append( NEWLINE );
+
+    StringBuilder addCompIds = new StringBuilder();
+    IThingWriterFactory factory = context.getFactory();
+
+    Iterable<Component> comps = dash.getRegulars();
+    for ( Component comp : comps ) {
+      if ( StringUtils.isNotEmpty( getComponentName( comp ) ) ) {
+        IThingWriter writer;
+        try {
+          writer = factory.getWriter( comp );
+        } catch ( UnsupportedThingException ex ) {
+          throw new ThingWriteException( ex );
+        }
+
+        // custom primitive widget (generic components) & layout component
+        if ( isVisualComponent( comp ) ) {
+          if ( isCustomComponent( comp ) || isPrimitiveComponent( comp ) ) {
+            String componentClassName = getComponentClassName( comp );
+
+            if ( !componentList.containsKey( componentClassName ) ) {
+              String componentPath = getComponentPath( comp, componentClassName );
+              if ( StringUtils.isEmpty( componentPath ) ) {
+                continue;
+              }
+              componentList.put( componentClassName, componentPath );
+            }
+          }
+
+          if ( addCompIds.length() > 0 ) {
+            addCompIds.append( ", " );
+          }
+          addCompIds.append( getComponentIdFromContext( context, comp ) );
+        }
+
+        writer.write( out, context, comp );
+
+      }
+    }
+
+    if ( componentList.size() > 0 ) {
+      out.append( NEWLINE )
+        .append( "this.addComponents([" )
+        .append( addCompIds )
+        .append( "]);" ).append( NEWLINE );
+    }
+
+    return out.toString();
+  }
+
   protected String getComponentIdFromContext( CdfRunJsDashboardWriteContext context, Component comp ) {
     return context.getId( comp );
   }
@@ -388,8 +466,16 @@ public class CdfRunJsDashboardWriter
 
     // Add main Dashboard module class name
     componentClassNames.add( "Dashboard" );
+    componentClassNames.add( "Logger" );
+    componentClassNames.add( "$" );
+    componentClassNames.add( "_" );
+    componentClassNames.add( "moment" );
     // Add main Dashboard module path
-    cdfRequirePaths.add( getDashboardRequireModule() );
+    cdfRequirePaths.add( getDashboardRequireModuleId() );
+    cdfRequirePaths.add( "cdf/Logger" );
+    cdfRequirePaths.add( "cdf/lib/jquery" );
+    cdfRequirePaths.add( "amd!cdf/lib/underscore" );
+    cdfRequirePaths.add( "cdf/lib/moment" );
 
     // Add component AMD modules
     Iterator it = getComponentList().entrySet().iterator();
@@ -412,13 +498,13 @@ public class CdfRunJsDashboardWriter
       .append( DASHBOARD_DECLARATION ).append( NEWLINE )
       .append( getJsCodeSnippets().toString() )
       .append( content ).append( NEWLINE )
-      .append( EPILOGUE ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 
     return out.toString();
   }
 
-  protected String getDashboardRequireModule() {
+  protected String getDashboardRequireModuleId() {
     DashboardWcdfDescriptor.DashboardRendererType dashboardType = this.getType();
     if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) ) {
       return "cdf/Dashboard.Blueprint";
@@ -469,5 +555,103 @@ public class CdfRunJsDashboardWriter
 
   public void addJsCodeSnippet( String jsCodeSnippet ) {
     this.jsCodeSnippets.append( jsCodeSnippet );
+  }
+
+  @Override
+  public void writeModule( Object output, IThingWriteContext context, Thing t, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    this.writeModule( (CdfRunJsDashboardWriteResult.Builder) output,
+        (CdfRunJsDashboardWriteContext) context,
+        (Dashboard) t, alias );
+  }
+
+  @Override
+  public void writeModule( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx,
+                           Dashboard dash, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    assert dash == ctx.getDashboard();
+
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
+
+
+    final String layout;
+    final String components;
+    if ( ctx.getOptions().isAmdModule() ) {
+      // we need to make sure each dashboard module has unique html element ids in it's layout
+      layout = ctx.replaceAliasH( ctx.replaceTokens( this.writeLayout( ctx, dash ) ), alias );
+      components = ctx.replaceAliasH( ctx.replaceTokens( this.writeModuleComponents( ctx, dash ) ), alias );
+    } else {
+      layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
+      components = ctx.replaceTokensAndAlias( this.writeModuleComponents( ctx, dash ) );
+    }
+    final String content = this.wrapRequireModuleDefinitions( components, layout );
+
+    // Export
+    builder
+      .setTemplate( "" )
+      .setHeader( "" )
+      .setLayout( layout )
+      .setComponents( components )
+      .setContent( content )
+      .setFooter( "" )
+      .setLoadedDate( ctx.getDashboard().getSourceDate() );
+  }
+
+  /**
+   * Wraps the JavaScript code, contained in the input parameter, as a requirejs module.
+   *
+   * @param content Some JavaScript code to be wrapped.
+   * @return
+   */
+  protected String wrapRequireModuleDefinitions( String content, String layout )
+    throws UnsupportedEncodingException {
+    StringBuilder out = new StringBuilder();
+
+
+    ArrayList<String> cdfRequirePaths = new ArrayList<String>(), // AMD module ids
+        componentClassNames = new ArrayList<String>(); // AMD module class names
+
+    // Add main Dashboard module class name
+    componentClassNames.add( "Dashboard" );
+    componentClassNames.add( "Logger" );
+    componentClassNames.add( "$" );
+    componentClassNames.add( "_" );
+    componentClassNames.add( "moment" );
+    // Add main Dashboard module id
+    cdfRequirePaths.add( getDashboardRequireModuleId() );
+    cdfRequirePaths.add( "cdf/Logger" );
+    cdfRequirePaths.add( "cdf/lib/jquery" );
+    cdfRequirePaths.add( "amd!cdf/lib/underscore" );
+    cdfRequirePaths.add( "cdf/lib/moment" );
+
+    // Add component AMD modules
+    Iterator it = getComponentList().entrySet().iterator();
+    Map.Entry pair;
+    while ( it.hasNext() ) {
+      pair = (Map.Entry) it.next();
+      // Add component AMD module id/path
+      cdfRequirePaths.add( (String) pair.getValue() );
+      // Add component AMD module class name
+      componentClassNames.add( (String) pair.getKey() );
+    }
+
+    componentClassNames.addAll( getRequireResourcesList().keySet() );
+    cdfRequirePaths.addAll( getRequireResourcesList().keySet() );
+
+    out.append( getFileResourcesRequirePaths() )
+      // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( getJsCodeSnippets().toString() )
+      .append( DASHBOARD_MODULE_START )
+      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
+        StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, content ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    return out.toString();
   }
 }

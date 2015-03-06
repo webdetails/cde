@@ -22,6 +22,7 @@ import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 import static org.mockito.Mockito.when;
 
@@ -32,12 +33,14 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
 
   private static CdfRunJsParameterComponentWriter parameterComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
+  private static CdfRunJsDashboardWriteOptions options;
   private static ParameterComponent parameterComponent;
 
   @Before
   public void setUp() throws Exception {
     parameterComponentWriter = new CdfRunJsParameterComponentWriter();
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
+    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
     parameterComponent = Mockito.mock( ParameterComponent.class );
   }
 
@@ -45,6 +48,7 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
   public void tearDown() throws Exception {
     parameterComponentWriter = null;
     context = null;
+    options = null;
     parameterComponent = null;
   }
 
@@ -56,6 +60,9 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
     when( parameterComponent.tryGetPropertyValue( "bookmarkable", null ) ).thenReturn( "true" );
 
     when( context.getId( parameterComponent ) ).thenReturn( "param1" );
+
+    when( options.getAliasPrefix() ).thenReturn( "" );
+    when( context.getOptions() ).thenReturn( options );
 
     StringBuilder out = new StringBuilder();
 

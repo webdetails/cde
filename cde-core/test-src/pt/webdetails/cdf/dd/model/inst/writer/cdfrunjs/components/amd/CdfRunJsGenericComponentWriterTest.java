@@ -22,6 +22,7 @@ import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.meta.*;
 
 import static org.mockito.Mockito.when;
@@ -33,6 +34,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
 
   private static CdfRunJsGenericComponentWriter genericComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
+  private static CdfRunJsDashboardWriteOptions options;
   private static GenericComponent genericComponent;
   private static GenericComponentType genericComponentType;
 
@@ -40,6 +42,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
   public void setUp() throws Exception {
     genericComponentWriter = new CdfRunJsGenericComponentWriter();
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
+    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
     genericComponent = Mockito.mock( GenericComponent.class );
     genericComponentType = Mockito.mock( GenericComponentType.class );
   }
@@ -48,6 +51,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
   public void tearDown() throws Exception {
     genericComponentWriter = null;
     context = null;
+    options = null;
     genericComponent = null;
     genericComponentType = null;
   }
@@ -59,6 +63,9 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
 
     when( genericComponent.getMeta() ).thenReturn( genericComponentType );
     when( context.getId( genericComponent ) ).thenReturn( "test" );
+
+    when( options.getAliasPrefix() ).thenReturn( "" );
+    when( context.getOptions() ).thenReturn( options );
 
     try {
 
