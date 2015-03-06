@@ -10,12 +10,12 @@
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "pretty",
       "type": "Id"
      },
      {
       "name": "resourceFile",
-      "value": "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js",
+      "value": "https://google-code-prettify.googlecode.com/svn/loader/run_prettify",
       "type": "ResourceFile"
      },
      {
@@ -1933,9 +1933,9 @@
       "type": "String"
      },
      {
-      "name": "popupWidth",
-      "value": 250,
-      "type": "Integer"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupHeight",
@@ -1956,6 +1956,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": 250,
+      "type": "Integer"
      },
      {
       "name": "dataSource",
@@ -2106,9 +2111,9 @@
       "type": "String"
      },
      {
-      "name": "popupWidth",
-      "value": "250",
-      "type": "Integer"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupHeight",
@@ -2129,6 +2134,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": "250",
+      "type": "Integer"
      },
      {
       "name": "dataSource",
@@ -2279,9 +2289,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "function() {\n  require(['cdf/Logger'], function(Logger) { Logger.log(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked'); });\n}",
-      "type": "JavaScript"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2302,6 +2312,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "function() {\n  require(['cdf/Logger'], function(Logger) { Logger.log(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked'); });\n}",
+      "type": "JavaScript"
      },
      {
       "name": "dataSource",
@@ -2452,9 +2467,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "\"function() {alert(dashboard.getParameterValue('CustomerNameParameter');}\"",
-      "type": "String"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2474,6 +2489,11 @@
      {
       "name": "markerCggGraph",
       "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "\"function() {alert(dashboard.getParameterValue('CustomerNameParameter');}\"",
       "type": "String"
      },
      {
@@ -2625,9 +2645,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "function() {\n    alert(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked');\n}",
-      "type": "JavaScript"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2648,6 +2668,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "function() {\n    alert(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked');\n}",
+      "type": "JavaScript"
      },
      {
       "name": "dataSource",
@@ -3129,13 +3154,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3200,13 +3225,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -3271,13 +3296,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
