@@ -2397,11 +2397,6 @@
       "type": "JavaScript"
      },
      {
-      "name": "parameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "colHeaders",
       "value": "[\"Series\",\"Category\",\"Value\"]",
       "type": "Array"
@@ -2425,6 +2420,11 @@
       "name": "colSortable",
       "value": "[]",
       "type": "Array"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "expandParameters",
@@ -2482,14 +2482,14 @@
       "type": "Datasource"
      },
      {
-      "name": "sortBy",
-      "value": "[]",
-      "type": "SortByArray"
-     },
-     {
       "name": "sDom",
       "value": "",
       "type": "JavaScript"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "priority",
@@ -3012,11 +3012,6 @@
       "type": "JavaScript"
      },
      {
-      "name": "parameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "colHeaders",
       "value": "[\"Customer\",\"Total\"]",
       "type": "Array"
@@ -3040,6 +3035,11 @@
       "name": "colSortable",
       "value": "[]",
       "type": "Array"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "expandParameters",
@@ -3097,14 +3097,14 @@
       "type": "Datasource"
      },
      {
-      "name": "sortBy",
-      "value": "[]",
-      "type": "SortByArray"
-     },
-     {
       "name": "sDom",
       "value": "",
       "type": "JavaScript"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "priority",
@@ -3234,11 +3234,6 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "350",
-      "type": "Integer"
-     },
-     {
       "name": "height",
       "value": "200",
       "type": "Integer"
@@ -3246,6 +3241,11 @@
      {
       "name": "refreshPeriod",
       "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "width",
+      "value": "350",
       "type": "Integer"
      },
      {
@@ -3324,6 +3324,36 @@
       "type": "Float"
      },
      {
+      "name": "baseAxisBandSize",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "baseAxisBandSizeMax",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "baseAxisBandSizeMin",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "baseAxisBandSpacing",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "baseAxisBandSpacingMax",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "baseAxisBandSpacingMin",
+      "value": "",
+      "type": "Float"
+     },
+     {
       "name": "baseAxisClickAction",
       "value": "",
       "type": "JavaScript"
@@ -3367,6 +3397,11 @@
       "name": "baseAxisSizeMax",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "baseAxisTickFormatter",
+      "value": "",
+      "type": "JavaScript"
      },
      {
       "name": "baseAxisTicks",
@@ -3819,6 +3854,21 @@
       "type": "Boolean"
      },
      {
+      "name": "ortho2AxisTickUnit",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "ortho2AxisTickUnitMax",
+      "value": "Infinity",
+      "type": "String"
+     },
+     {
+      "name": "ortho2AxisTickUnitMin",
+      "value": "0",
+      "type": "String"
+     },
+     {
       "name": "ortho2AxisTitle",
       "value": "",
       "type": "String"
@@ -3947,6 +3997,21 @@
       "name": "orthoAxisTicks",
       "value": true,
       "type": "Boolean"
+     },
+     {
+      "name": "orthoAxisTickUnit",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "orthoAxisTickUnitMax",
+      "value": "Infinity",
+      "type": "String"
+     },
+     {
+      "name": "orthoAxisTickUnitMin",
+      "value": "0",
+      "type": "String"
      },
      {
       "name": "orthoAxisTitle",
@@ -4389,6 +4454,11 @@
       "type": "String"
      },
      {
+      "name": "valuesNormalized",
+      "value": false,
+      "type": "Boolean"
+     },
+     {
       "name": "valuesOptimizeLegibility",
       "value": "",
       "type": "Boolean"
@@ -4507,13 +4577,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -4523,7 +4593,7 @@
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Caitlyn\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Vayne\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Ashe\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Lucian\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Tristana\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Kog'Maw\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kog'Maw\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Fizz\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Tristana\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Lux\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kassadin\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"LeBlanc\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Mundo\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Shen\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Warwick\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Hecarim\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Braum\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Leona\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Soraka\"), new Integer(\"7\") });\n\nreturn model;",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Red\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Green\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Yellow\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Black\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"White\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Red\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Green\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Yellow\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Black\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"White\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Red\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Blue\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Red\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Blue\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Red\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Blue\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Green\"), new Integer(\"7\") });\n\nreturn model;",
       "type": "SqlQuery"
      },
      {
