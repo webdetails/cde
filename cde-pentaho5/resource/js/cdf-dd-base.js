@@ -614,6 +614,16 @@ var LoadRequests = {
 var PreviewRequests = {
 
   previewDashboard: function(saveParams, _href) {
+
+    var syncUrl = wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard";
+    var deletePreviewFiles = function() {
+      var deleteData = {
+        operation: "deletepreview",
+        file: cdfdd.getDashboardData().filename
+      };
+      $.post(syncUrl, deleteData);
+    };
+
     var successFunction = function(result) {
       try {
         if(result && result.status === "true") {
@@ -623,7 +633,9 @@ var PreviewRequests = {
             autoSize: false,
             href: _href,
             width: $(window).width(),
-            height: $(window).height()
+            height: $(window).height(),
+            onClosed: deletePreviewFiles,
+            onError: deletePreviewFiles
           });
         } else {
           throw result && result.result;
@@ -642,7 +654,7 @@ var PreviewRequests = {
 
     if(rv && rv < 10) {
       Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
+      $.post(syncUrl, saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
       $uploadForm.ajaxForm({
