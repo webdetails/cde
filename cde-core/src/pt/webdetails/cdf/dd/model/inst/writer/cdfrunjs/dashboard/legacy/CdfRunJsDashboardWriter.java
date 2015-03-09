@@ -5,6 +5,7 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
 
@@ -15,11 +16,18 @@ import org.apache.commons.logging.LogFactory;
 
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
-import pt.webdetails.cdf.dd.model.core.*;
-import pt.webdetails.cdf.dd.model.core.writer.*;
-import pt.webdetails.cdf.dd.model.core.writer.js.*;
-import pt.webdetails.cdf.dd.model.inst.*;
 
+import pt.webdetails.cdf.dd.model.core.Thing;
+import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
+import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
+import pt.webdetails.cdf.dd.model.inst.Component;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.VisualComponent;
+import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -55,6 +63,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       try {
         return readStyleTemplate( styleName );
       } catch ( IOException ex ) {
+        logger.debug( ex.getMessage() );
       }
     }
 
@@ -89,8 +98,8 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (CdfRunJsDashboardWriteResult.Builder) output,
-      (CdfRunJsDashboardWriteContext) context,
-      (Dashboard) t );
+        (CdfRunJsDashboardWriteContext) context,
+        (Dashboard) t );
   }
 
   public DashboardWcdfDescriptor.DashboardRendererType getType() {
@@ -249,10 +258,10 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     // Get CDE headers
     final String baseUrl = ( options.isAbsolute()
-      ? ( !StringUtils.isEmpty( options.getAbsRoot() )
-      ? options.getSchemedRoot() + "/"
-      : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
-      : "" );
+        ? ( !StringUtils.isEmpty( options.getAbsRoot() )
+          ? options.getSchemedRoot() + "/"
+          : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
+        : "" );
 
     StringFilter cssFilter = new StringFilter() {
       public String filter( String input ) {
@@ -297,5 +306,19 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     out.append( EPILOGUE );
 
     return out.toString();
+  }
+
+  // while amd extends legacy this needs to be here and be overriden by the amd writer class
+  public void writeModule( Object output, IThingWriteContext context, Thing t, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+    return;
+  }
+
+  // while amd extends legacy this needs to be here and be overriden by the amd writer class
+  public void writeModule( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx,
+                           Dashboard dash, String alias )
+    throws ThingWriteException, UnsupportedEncodingException {
+
+    return;
   }
 }

@@ -1,0 +1,19 @@
+<div class="container">
+<div class="span-24">
+  <h1>Dashboard Module Sample</h1></div>
+
+  <p>Require dashboards as AMD modules using RequireJS.</p>
+  <div id="content1" class="content"></div>
+
+</div>
+
+<script language="javascript" type="text/javascript">
+  require([
+    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Fpentaho-cdf-dd-require%2Ftests%2FRaphael%2Fraphael.wcdf'],
+    function(RaphaelDash) {
+
+    var raphaelDash = new RaphaelDash();
+    raphaelDash.render("content1");
+    raphaelDash.init();
+  });
+</script>

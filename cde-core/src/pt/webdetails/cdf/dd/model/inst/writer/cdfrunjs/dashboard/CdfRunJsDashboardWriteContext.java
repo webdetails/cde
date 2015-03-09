@@ -63,11 +63,11 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   protected final CdfRunJsDashboardWriteOptions _options;
 
   public CdfRunJsDashboardWriteContext(
-    IThingWriterFactory factory,
-    String indent,
-    boolean bypassCacheRead,
-    Dashboard dash, // Current Dashboard/Widget
-    CdfRunJsDashboardWriteOptions options ) {
+      IThingWriterFactory factory,
+      String indent,
+      boolean bypassCacheRead,
+      Dashboard dash, // Current Dashboard/Widget
+      CdfRunJsDashboardWriteOptions options ) {
     super( factory, true );
 
     if ( dash == null ) {
@@ -85,8 +85,8 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   }
 
   protected CdfRunJsDashboardWriteContext(
-    CdfRunJsDashboardWriteContext other,
-    String indent ) {
+      CdfRunJsDashboardWriteContext other,
+      String indent ) {
     super( other.getFactory(), other.getBreakOnError() );
 
     this._indent = StringUtils.defaultIfEmpty( indent, "" );
@@ -159,5 +159,27 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( SHORT_P_TAG, aliasAndName )
       .replaceAll( LONG_H_TAG, aliasAndName )
       .replaceAll( LONG_P_TAG, aliasAndName );
+  }
+
+  // Special treatment for generating unique html element ids, according to the value of alias
+  public String replaceAliasH( String content, String alias ) {
+    if ( content == null ) {
+      return "";
+    }
+
+    String _alias = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" );
+
+    String aliasPrefixAndName = ( StringUtils.isNotEmpty( this._options.getAliasPrefix() )
+        ? this._options.getAliasPrefix() + "_$1" : "$1" );
+
+    _alias = _alias + aliasPrefixAndName;
+
+    return content
+      .replaceAll( SHORT_H_TAG, _alias )
+      .replaceAll( LONG_H_TAG, _alias )
+      .replaceAll( SHORT_C_TAG, COMPONENT_PREFIX + aliasPrefixAndName )
+      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + aliasPrefixAndName )
+      .replaceAll( SHORT_P_TAG, aliasPrefixAndName )
+      .replaceAll( LONG_P_TAG, aliasPrefixAndName );
   }
 }
