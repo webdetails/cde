@@ -634,7 +634,7 @@ public class DashboardManager {
 
   public CdfRunJsDashboardWriteResult getDashboardModule(
       String wcdfFilePath, CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead, String style, String alias )
+      boolean bypassCacheRead, String style )
     throws ThingWriteException, UnsupportedEncodingException {
     if ( wcdfFilePath == null ) {
       throw new IllegalArgumentException( "wcdfFilePath" );
@@ -666,13 +666,13 @@ public class DashboardManager {
       wcdf.setStyle( style );
     }
 
-    return this.getDashboardModule( wcdf, options, bypassCacheRead, alias );
+    return this.getDashboardModule( wcdf, options, bypassCacheRead );
   }
 
   public CdfRunJsDashboardWriteResult getDashboardModule(
       DashboardWcdfDescriptor wcdf,
       CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead, String alias )
+      boolean bypassCacheRead )
     throws ThingWriteException, UnsupportedEncodingException {
     // 1. Build the cache key.
     String cdeFilePath = Utils.sanitizeSlashesInPath( wcdf.getStructurePath() );
@@ -724,7 +724,7 @@ public class DashboardManager {
     }
 
     // 5. Obtain a Writer for the CdfRunJs format
-    dashWrite = this.writeDashboardModule( dash, options, bypassCacheRead, alias );
+    dashWrite = this.writeDashboardModule( dash, options, bypassCacheRead );
 
     // 6. Cache the dashboard write
     return this.replaceDashboardWriteResultInCache( cacheKey, dashWrite );
@@ -739,7 +739,7 @@ public class DashboardManager {
    */
   private CdfRunJsDashboardWriteResult writeDashboardModule(
       Dashboard dash, CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead, String alias )
+      boolean bypassCacheRead )
     throws ThingWriteException, UnsupportedEncodingException {
 
     // 1. Obtain a Writer for the CdfRunJs format
@@ -755,7 +755,7 @@ public class DashboardManager {
     CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder =
         new CdfRunJsDashboardWriteResult.Builder();
 
-    writer.writeModule( dashboardWriteBuilder, writeContext, dash, alias );
+    writer.write( dashboardWriteBuilder, writeContext, dash );
 
     return dashboardWriteBuilder.build();
   }

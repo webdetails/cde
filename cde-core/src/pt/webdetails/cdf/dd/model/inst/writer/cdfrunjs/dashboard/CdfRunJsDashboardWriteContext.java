@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
@@ -23,9 +23,6 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 
-/**
- * @author dcleao
- */
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
   protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
 
@@ -159,27 +156,5 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( SHORT_P_TAG, aliasAndName )
       .replaceAll( LONG_H_TAG, aliasAndName )
       .replaceAll( LONG_P_TAG, aliasAndName );
-  }
-
-  // Special treatment for generating unique html element ids, according to the value of alias
-  public String replaceAliasH( String content, String alias ) {
-    if ( content == null ) {
-      return "";
-    }
-
-    String _alias = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" );
-
-    String aliasPrefixAndName = ( StringUtils.isNotEmpty( this._options.getAliasPrefix() )
-        ? this._options.getAliasPrefix() + "_$1" : "$1" );
-
-    _alias = _alias + aliasPrefixAndName;
-
-    return content
-      .replaceAll( SHORT_H_TAG, _alias )
-      .replaceAll( LONG_H_TAG, _alias )
-      .replaceAll( SHORT_C_TAG, COMPONENT_PREFIX + aliasPrefixAndName )
-      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + aliasPrefixAndName )
-      .replaceAll( SHORT_P_TAG, aliasPrefixAndName )
-      .replaceAll( LONG_P_TAG, aliasPrefixAndName );
   }
 }

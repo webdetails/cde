@@ -16,12 +16,14 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
@@ -39,6 +41,7 @@ import pt.webdetails.cdf.dd.render.RenderResources;
 import pt.webdetails.cdf.dd.render.ResourceMap;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -50,30 +53,53 @@ import static org.mockito.Mockito.*;
 public class CdfRunJsDashboardWriterTest extends TestCase {
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
-  private static final String INDENT = "\t";
+  private static final String INDENT1 = "  ";
+  private static final String INDENT2 = "    ";
 
-  private static final String EPILOGUE = "dashboard.init();" + NEWLINE + "return dashboard;";
+  private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
   private static final String REQUIRE_START = "require(";
-  private static final String REQUIRE_STOP = "});";
+  private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
+  private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
+  private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
+  private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
+    + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
+  private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
+    + INDENT2 + "if(!$('#' + targetId).length) { return; };" + NEWLINE
+    + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
+    + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
+    + INDENT2 + "this._processComponents(); },";
+  private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
+    INDENT1 + "_processComponents: function() '{'" + NEWLINE
+      + INDENT2 + "{0}" + NEWLINE
+      + INDENT1 + "'}'" + NEWLINE;
+  private static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
   private static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
   private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
+  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = ''{1}'';";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
   private static CdfRunJsDashboardWriter dashboardWriter;
   private static CdfRunJsDashboardWriter dashboardWriterSpy;
+  private static CdfRunJsDashboardWriteContext context;
+  private static CdfRunJsDashboardWriteOptions options;
 
   @Before
   public void setUp() throws Exception {
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
     dashboardWriterSpy = spy( dashboardWriter );
+    context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
+    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
   }
 
   @After
   public void tearDown() throws Exception {
     dashboardWriter = null;
+    context = null;
+    options = null;
   }
 
   @Test
@@ -115,7 +141,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
       .append( "var dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
-      .append( EPILOGUE ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 
     Assert.assertEquals( out, dashboardResult.toString() );
@@ -165,7 +191,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
       .append( "var dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
-      .append( EPILOGUE ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 
     Assert.assertEquals( dashboardResult.toString(), out );
@@ -201,8 +227,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
   @Test
   public void testWriteResources() throws Exception {
-    CdfRunJsDashboardWriteContext context = mock( CdfRunJsDashboardWriteContext.class );
-    CdfRunJsDashboardWriteOptions options = mock( CdfRunJsDashboardWriteOptions.class );
     doReturn( "" ).when( options ).getAliasPrefix();
     doReturn( options ).when( context ).getOptions();
     Dashboard dash = mock( Dashboard.class );
@@ -303,7 +327,9 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   public void testWriteComponents() throws ValidationException, UnsupportedThingException, ThingWriteException,
     JSONException {
 
-    CdfRunJsDashboardWriteContext context = mock( CdfRunJsDashboardWriteContext.class );
+    when( options.isAmdModule() ).thenReturn( false );
+    when( context.getOptions() ).thenReturn( options );
+
     Dashboard dash = mock( Dashboard.class );
     DashboardWcdfDescriptor dashboardWcdfDescriptor = mock( DashboardWcdfDescriptor.class );
     CdeRunJsThingWriterFactory factory = mock( CdeRunJsThingWriterFactory.class );
@@ -370,6 +396,118 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
 
+    // when writing parameters for dashboard AMD modules, refer to this instead of dashboard
+    when( options.isAmdModule() ).thenReturn( true );
+
+    Assert.assertEquals(
+      NEWLINE + "this.addComponents([comp1, comp2, comp3]);" + NEWLINE,
+      dashboardWriterSpy.writeComponents( context, dash ) );
+
+    Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
+
   }
 
+  @Test
+  public void testWrapRequireModuleDefinitions() {
+
+    Map testComponentList = new LinkedHashMap<String, String>();
+    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
+    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+
+    dashboardWriter.setComponentList( testComponentList );
+
+    List<String> componentClassNames = Arrays.asList(
+      "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
+      "TestComponent1",
+      "TestComponent2",
+      "TestComponent3" );
+    List<String> cdfRequirePaths = Arrays.asList(
+      "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
+      "cdf/components/TestComponent1",
+      "cdf/components/TestComponent2",
+      "cdf/components/TestComponent3" );
+
+    String out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout" );
+
+    StringBuilder dashboardResult = new StringBuilder();
+
+    dashboardResult
+      // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( "" )
+      .append( DASHBOARD_MODULE_START )
+      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+
+
+    // test with additional require configurations
+
+    testComponentList = new LinkedHashMap<String, String>();
+    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
+    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+
+    dashboardWriter.setComponentList( testComponentList );
+
+    dashboardWriter.addRequireResource( "TestResource1", "TestResourcePath1" );
+
+    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout" );
+
+    dashboardResult = new StringBuilder();
+
+    componentClassNames = Arrays.asList(
+      "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
+      "TestComponent1",
+      "TestComponent2",
+      "TestComponent3",
+      "TestResource1");
+    cdfRequirePaths = Arrays.asList(
+      "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
+      "cdf/components/TestComponent1",
+      "cdf/components/TestComponent2",
+      "cdf/components/TestComponent3",
+      "TestResource1");
+
+    dashboardResult
+      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
+        + REQUIRE_CONFIG + NEWLINE )
+      // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( "" )
+      .append( DASHBOARD_MODULE_START )
+      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+
+  }
 }

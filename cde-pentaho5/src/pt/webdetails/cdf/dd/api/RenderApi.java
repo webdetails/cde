@@ -360,19 +360,18 @@ public class RenderApi {
                                                            boolean absolute, boolean bypassCache, boolean debug,
                                                            String style, String alias )
     throws ThingWriteException, UnsupportedEncodingException {
-    /*
+
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
     } else {
       dashboardAlias = alias + "_" + FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
     }
-    */
 
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( true, absolute, debug, root, scheme );
+        new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme );
 
-    return getDashboardManager().getDashboardModule( path, options, bypassCache, style, alias );
+    return getDashboardManager().getDashboardModule( path, options, bypassCache, style );
   }
 
   protected DashboardManager getDashboardManager() {
