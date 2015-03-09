@@ -44,6 +44,7 @@ import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
 import pt.webdetails.cdf.dd.InterPluginBroker;
+import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
@@ -158,7 +159,7 @@ public class RenderApi {
 
     IReadAccess readAccess = Utils.getSystemOrUserReadAccess( filePath );
     if ( readAccess == null ) {
-      return "Access Denied or File Not Found.";
+      return Messages.getString( "XmlStructure.ERROR_011_READ_WRITE_ACCESS_EXCEPTION" );
     }
 
     long start = System.currentTimeMillis();

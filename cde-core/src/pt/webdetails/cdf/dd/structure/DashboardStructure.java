@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.structure;
 
@@ -81,6 +81,19 @@ public class DashboardStructure implements IDashboardStructure {
     }
   }
 
+  public void deletePreviewFiles( String cdeFilePath ) throws DashboardStructureException {
+    IRWAccess access = Utils.getSystemOrUserRWAccess( cdeFilePath );
+
+    if( access == null ) {
+      throw new DashboardStructureException(
+        Messages.getString( "XmlStructure.ERROR_011_READ_WRITE_ACCESS_EXCEPTION" ) );
+    }
+
+    access.deleteFile( cdeFilePath.replace( ".cdfde", "_tmp.cdfde" ) );
+    access.deleteFile( cdeFilePath.replace( ".cdfde", "_tmp.wcdf" ) );
+    access.deleteFile( cdeFilePath.replace( ".cdfde", "_tmp.cda" ) );
+  }
+
   /**
    * @returns a standard json result obj (?)
    */
@@ -149,37 +162,18 @@ public class DashboardStructure implements IDashboardStructure {
   public HashMap<String, String> save( String cdeFilePath, String cdfdeJsText ) throws Exception {
     final HashMap<String, String> result = new HashMap<String, String>();
 
-    // 1. Get CDE file parameters
-
-
     logger.info( "Saving File:" + cdeFilePath );
 
-    // 2. If not the CDE temp file, delete the temp file, if one exists
     IRWAccess access = Utils.getSystemOrUserRWAccess( cdeFilePath );
+    boolean isPreview = cdeFilePath.contains( "_tmp.cdfde" );
 
-
-    // TODO: 
-    boolean isPreview = cdeFilePath.indexOf( "_tmp.cdfde" ) >= 0;
-    if ( !isPreview ) {
-      String cdeTempFilePath = cdeFilePath.replace( ".cdfde", "_tmp.cdfde" );
-      access.deleteFile( cdeTempFilePath );
-
-      String cdaTempFilePath = cdeFilePath.replace( ".cdfde", "_tmp.cda" );
-      access.deleteFile( cdaTempFilePath );
-
-      String wcdfTempFilePath = cdeFilePath.replace( ".cdfde", "_tmp.wcdf" );
-      access.deleteFile( wcdfTempFilePath );
-    }
-
-    // 3. CDE
-
-
+    // 1. CDE
     if ( !access.saveFile( cdeFilePath, new ByteArrayInputStream( safeGetEncodedBytes( cdfdeJsText ) ) ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION" ) );
     }
 
-    // 3. CDA
+    // 2. CDA
     CdaRenderer cdaRenderer = new CdaRenderer( cdfdeJsText );
 
     String cdaFileName = cdeFilePath.replace( ".cdfde", ".cda" );
@@ -200,14 +194,14 @@ public class DashboardStructure implements IDashboardStructure {
     if ( !isPreview ) {
       String wcdfFilePath = cdeFilePath.replace( ".cdfde", ".wcdf" );
 
-      // 4. When the component is a widget,
+      // 3. When the component is a widget,
       //    and its internal "structure" has changed,
       //    Then any dashboard where it is used and 
       //    whose render result is cached 
       //    must be invalidated.
       DashboardManager.getInstance().invalidateDashboard( wcdfFilePath );
 
-      // 5. CGG (requires an updated Dashboard instance)
+      // 4. CGG (requires an updated Dashboard instance)
       this.saveCgg( access, wcdfFilePath );
     }
 
