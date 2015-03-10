@@ -9,7 +9,7 @@ var render_salesGraphForMarker = {
 	listeners: [],
 	chartDefinition:  {
 		dataAccessId: "salesGraphQuery",
-		path: "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/FullMapTest.cda",
+		path: "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/FullMapTest.cda",
 		width: 75,
 		height: 75,
 		extensionPoints: [],
