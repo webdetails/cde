@@ -427,7 +427,7 @@
      },
      {
       "name": "mapName",
-      "value": "/public/plugin-samples/pentaho-cdf-dd-require/tests/GMapsOverlay/map-def/chicago_beats.js",
+      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/GMapsOverlay/map-def/chicago_beats.js",
       "type": "String"
      },
      {
@@ -512,13 +512,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -573,5 +573,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/GMapsOverlay/gMapsOverlay.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/GMapsOverlay/gMapsOverlay.cdfde"
 }

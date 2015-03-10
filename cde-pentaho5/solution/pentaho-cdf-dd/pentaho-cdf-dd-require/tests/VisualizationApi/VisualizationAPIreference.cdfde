@@ -20,7 +20,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "/* http://jira.pentaho.com/browse/CDE-374 */ require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n   require([\n    'twelveDaysViz/pentaho/viz/index/index',\n    'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(Index, Def){\n        // The \"app\" dependency is passed in as \"App\"\n        render_IndexChart.update();\n    })\n});",
+      "value": "/* http://jira.pentaho.com/browse/CDE-374 */ require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n   require([\n    'twelveDaysViz/pentaho/viz/index/Index',\n    'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(Index, Def){\n        // The \"app\" dependency is passed in as \"App\"\n        render_IndexChart.update();\n    })\n}); ",
       "type": "Resource"
      }
     ]
@@ -38,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -61,7 +61,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -857,5 +857,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/VisualizationAPIreference.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/VisualizationApi/VisualizationAPIreference.cdfde"
 }

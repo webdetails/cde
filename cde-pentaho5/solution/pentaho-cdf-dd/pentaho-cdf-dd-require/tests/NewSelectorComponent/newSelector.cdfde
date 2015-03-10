@@ -971,13 +971,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -987,7 +987,7 @@
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"id\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nInteger.class,\nString.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Integer(\"1\"), new String(\"Caitlyn\") });\nmodel.addRow(new Object[]{ new Integer(\"2\"), new String(\"Vayne\") });\nmodel.addRow(new Object[]{ new Integer(\"3\"), new String(\"Ashe\") });\nmodel.addRow(new Object[]{ new Integer(\"4\"), new String(\"Lucian\") });\nmodel.addRow(new Object[]{ new Integer(\"5\"), new String(\"Tristana\") });\nmodel.addRow(new Object[]{ new Integer(\"6\"), new String(\"Kog'Maw\") });\n\nreturn model;",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"id\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nInteger.class,\nString.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Integer(\"1\"), new String(\"Cars\") });\nmodel.addRow(new Object[]{ new Integer(\"2\"), new String(\"Bikes\") });\nmodel.addRow(new Object[]{ new Integer(\"3\"), new String(\"Boats\") });\nmodel.addRow(new Object[]{ new Integer(\"4\"), new String(\"Planes\") });\nmodel.addRow(new Object[]{ new Integer(\"5\"), new String(\"Trains\") });\nmodel.addRow(new Object[]{ new Integer(\"6\"), new String(\"Unknown\") });\n\nreturn model;",
       "type": "SqlQuery"
      },
      {
@@ -1032,5 +1032,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/NewSelectorComponent/newSelector.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewSelectorComponent/newSelector.cdfde"
 }

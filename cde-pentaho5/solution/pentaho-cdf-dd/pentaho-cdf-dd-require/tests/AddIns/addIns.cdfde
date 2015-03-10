@@ -15,7 +15,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -61,7 +61,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -2986,22 +2986,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -3021,19 +3016,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -3056,9 +3051,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -3066,9 +3066,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -3081,9 +3081,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -3091,14 +3091,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -3121,12 +3126,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -3151,7 +3156,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -3184,22 +3189,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -3219,19 +3219,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -3254,9 +3254,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -3264,9 +3269,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -3279,9 +3284,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -3289,14 +3294,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -3319,12 +3329,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -3349,7 +3359,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -3382,22 +3392,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -3417,19 +3422,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -3452,9 +3457,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -3462,9 +3472,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -3477,9 +3487,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -3487,14 +3497,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -3517,12 +3532,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -3547,7 +3562,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -3580,23 +3595,18 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
       "value": "[null,null,\"%.2f\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
-      "value": "[]",
       "type": "Array"
      },
      {
@@ -3615,19 +3625,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -3650,9 +3660,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -3660,9 +3675,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -3675,9 +3690,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -3685,14 +3700,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -3715,12 +3735,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -3745,7 +3765,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -3778,22 +3798,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -3813,19 +3828,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -3848,9 +3863,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -3858,9 +3878,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -3873,9 +3893,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -3883,14 +3903,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -3913,12 +3938,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -3943,7 +3968,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -3976,22 +4001,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -4011,19 +4031,19 @@
       "type": "Array"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -4046,9 +4066,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -4056,9 +4081,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -4071,9 +4096,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -4081,14 +4106,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -4111,12 +4141,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -4141,7 +4171,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -4174,22 +4204,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -4209,19 +4234,19 @@
       "type": "ColType"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -4244,9 +4269,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -4254,9 +4284,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -4269,9 +4299,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -4279,14 +4309,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -4309,12 +4344,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -4339,7 +4374,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -4372,23 +4407,18 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
       "value": "[null,\"%.2f%%\"]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
-      "value": "[]",
       "type": "Array"
      },
      {
@@ -4407,19 +4437,19 @@
       "type": "ColType"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -4442,9 +4472,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -4452,9 +4487,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -4467,9 +4502,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -4477,14 +4512,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -4507,12 +4547,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -4537,7 +4577,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -4570,22 +4610,17 @@
       "type": "JavaScript"
      },
      {
-      "name": "colHeaders",
-      "value": "[]",
-      "type": "Array"
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
      },
      {
-      "name": "xActionArrayParameter",
+      "name": "parameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
       "name": "colFormats",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "colWidths",
       "value": "[]",
       "type": "Array"
      },
@@ -4605,19 +4640,19 @@
       "type": "ColType"
      },
      {
-      "name": "expandOnClick",
-      "value": "false",
-      "type": "Boolean"
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colWidths",
+      "value": "[]",
+      "type": "Array"
      },
      {
       "name": "paginate",
       "value": "false",
       "type": "Boolean"
-     },
-     {
-      "name": "displayLength",
-      "value": "",
-      "type": "Integer"
      },
      {
       "name": "lengthChange",
@@ -4640,9 +4675,14 @@
       "type": "Boolean"
      },
      {
-      "name": "colSearchable",
-      "value": "[]",
-      "type": "Array"
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
      },
      {
       "name": "drawCallback",
@@ -4650,9 +4690,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "sortBy",
+      "name": "colSearchable",
       "value": "[]",
-      "type": "SortByArray"
+      "type": "Array"
      },
      {
       "name": "dataSource",
@@ -4665,9 +4705,9 @@
       "type": "JavaScript"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
      },
      {
       "name": "refreshPeriod",
@@ -4675,14 +4715,19 @@
       "type": "Integer"
      },
      {
-      "name": "paginationType",
-      "value": "two_button",
-      "type": "PaginationType"
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
      },
      {
       "name": "tableStyle",
       "value": "classic",
       "type": "TableStyle"
+     },
+     {
+      "name": "paginationType",
+      "value": "two_button",
+      "type": "PaginationType"
      },
      {
       "name": "htmlObject",
@@ -4705,12 +4750,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -4735,7 +4780,7 @@
       "type": "OptionArray"
      },
      {
-      "name": "cccClickAction",
+      "name": "clickAction",
       "value": "",
       "type": "JavaScript"
      }
@@ -4774,13 +4819,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -4845,13 +4890,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -4916,13 +4961,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -4987,13 +5032,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -5058,13 +5103,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -5129,13 +5174,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -5200,13 +5245,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -5271,13 +5316,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -5329,5 +5374,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/addIns.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/AddIns/addIns.cdfde"
 }
