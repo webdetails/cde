@@ -38,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -61,7 +61,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -3154,13 +3154,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -3225,13 +3225,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3296,13 +3296,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -3354,5 +3354,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/maps.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/maps.cdfde"
 }

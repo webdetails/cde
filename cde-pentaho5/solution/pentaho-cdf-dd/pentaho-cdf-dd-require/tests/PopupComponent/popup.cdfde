@@ -15,7 +15,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -38,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -1533,6 +1533,16 @@
       "type": "Boolean"
      },
      {
+      "name": "popupClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "popupOverlayClass",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "htmlObject",
       "value": "popupContent1",
       "type": "HtmlObject"
@@ -1611,6 +1621,16 @@
       "type": "Boolean"
      },
      {
+      "name": "popupClass",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "popupOverlayClass",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "htmlObject",
       "value": "popupContent2",
       "type": "HtmlObject"
@@ -1684,8 +1704,8 @@
       "value": "chartQuery"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "width",
+      "value": "230",
       "type": "Integer"
      },
      {
@@ -1694,13 +1714,13 @@
       "type": "Integer"
      },
      {
-      "name": "width",
-      "value": "230",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -1724,12 +1744,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
@@ -2909,6 +2929,11 @@
       "type": "String"
      },
      {
+      "name": "valuesNormalized",
+      "value": false,
+      "type": "Boolean"
+     },
+     {
       "name": "valuesOptimizeLegibility",
       "value": "",
       "type": "Boolean"
@@ -3021,5 +3046,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/popup.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/PopupComponent/popup.cdfde"
 }

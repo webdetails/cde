@@ -1058,7 +1058,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "public/plugin-samples/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar2.js",
+      "value": "public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar2.js",
       "type": "CggPath"
      },
      {
@@ -1136,8 +1136,8 @@
       "type": "Datasource"
      },
      {
-      "name": "height",
-      "value": "300",
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -1146,13 +1146,13 @@
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "300",
       "type": "Integer"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -2359,6 +2359,11 @@
       "name": "valuesMask",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "valuesNormalized",
+      "value": false,
+      "type": "Boolean"
      },
      {
       "name": "valuesOptimizeLegibility",
@@ -2411,8 +2416,8 @@
       "type": "Datasource"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "300",
       "type": "Integer"
      },
      {
@@ -2421,13 +2426,13 @@
       "type": "Integer"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "300",
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -3636,6 +3641,11 @@
       "type": "String"
      },
      {
+      "name": "valuesNormalized",
+      "value": false,
+      "type": "Boolean"
+     },
+     {
       "name": "valuesOptimizeLegibility",
       "value": "",
       "type": "Boolean"
@@ -3672,7 +3682,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "public/plugin-samples/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar1.js",
+      "value": "public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent_bar1.js",
       "type": "CggPath"
      },
      {
@@ -3767,7 +3777,7 @@
      },
      {
       "name": "query",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Caitlyn\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Vayne\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Ashe\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Lucian\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Tristana\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"ADC\"), new String(\"Kog'Maw\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kog'Maw\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Fizz\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Tristana\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Lux\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"Kassadin\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"APC\"), new String(\"LeBlanc\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Mundo\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Tank\"), new String(\"Shen\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Warwick\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Jungler\"), new String(\"Hecarim\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Braum\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Leona\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Support\"), new String(\"Soraka\"), new Integer(\"7\") });\n\nreturn model;",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"series\",\n\"category\",\n\"value\"\n};\n\n\nClass[] columnTypes = new Class[]{\nString.class,\nString.class,\nInteger.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Red\"), new Integer(\"10\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Green\"), new Integer(\"30\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Yellow\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"Black\"), new Integer(\"25\") });\nmodel.addRow(new Object[]{ new String(\"Car\"), new String(\"White\"), new Integer(\"7\") });\n\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Red\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Blue\"), new Integer(\"20\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Green\"), new Integer(\"40\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Yellow\"), new Integer(\"80\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"Black\"), new Integer(\"1\") });\nmodel.addRow(new Object[]{ new String(\"Bike\"), new String(\"White\"), new Integer(\"23\") });\n\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Red\"), new Integer(\"2\") });\nmodel.addRow(new Object[]{ new String(\"Ship\"), new String(\"Blue\"), new Integer(\"7\") });\n\n\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Red\"), new Integer(\"5\") });\nmodel.addRow(new Object[]{ new String(\"Plane\"), new String(\"Blue\"), new Integer(\"4\") });\n\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Red\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Blue\"), new Integer(\"50\") });\nmodel.addRow(new Object[]{ new String(\"Train\"), new String(\"Green\"), new Integer(\"7\") });\n\nreturn model;",
       "type": "SqlQuery"
      },
      {
@@ -3889,5 +3899,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/CggComponent/cggComponent.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/CggComponent/cggComponent.cdfde"
 }

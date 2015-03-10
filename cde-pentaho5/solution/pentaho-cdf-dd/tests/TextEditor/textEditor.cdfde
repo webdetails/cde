@@ -747,7 +747,7 @@
      },
      {
       "name": "listeners",
-      "value": "[]",
+      "value": "['${p:param1}']",
       "type": "Listeners"
      },
      {

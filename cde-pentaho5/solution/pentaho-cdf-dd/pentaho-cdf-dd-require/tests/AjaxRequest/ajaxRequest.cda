@@ -28,30 +28,30 @@ Integer.class
 
 TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
 
-model.addRow(new Object[]{ new String("ADC"), new String("Caitlyn"), new Integer("10") });
-model.addRow(new Object[]{ new String("ADC"), new String("Vayne"), new Integer("20") });
-model.addRow(new Object[]{ new String("ADC"), new String("Ashe"), new Integer("30") });
-model.addRow(new Object[]{ new String("ADC"), new String("Lucian"), new Integer("5") });
-model.addRow(new Object[]{ new String("ADC"), new String("Tristana"), new Integer("25") });
-model.addRow(new Object[]{ new String("ADC"), new String("Kog'Maw"), new Integer("7") });
+model.addRow(new Object[]{ new String("Car"), new String("Red"), new Integer("10") });
+model.addRow(new Object[]{ new String("Car"), new String("Blue"), new Integer("20") });
+model.addRow(new Object[]{ new String("Car"), new String("Green"), new Integer("30") });
+model.addRow(new Object[]{ new String("Car"), new String("Yellow"), new Integer("5") });
+model.addRow(new Object[]{ new String("Car"), new String("Black"), new Integer("25") });
+model.addRow(new Object[]{ new String("Car"), new String("White"), new Integer("7") });
 
-model.addRow(new Object[]{ new String("APC"), new String("Kog'Maw"), new Integer("20") });
-model.addRow(new Object[]{ new String("APC"), new String("Fizz"), new Integer("20") });
-model.addRow(new Object[]{ new String("APC"), new String("Tristana"), new Integer("40") });
-model.addRow(new Object[]{ new String("APC"), new String("Lux"), new Integer("80") });
-model.addRow(new Object[]{ new String("APC"), new String("Kassadin"), new Integer("1") });
-model.addRow(new Object[]{ new String("APC"), new String("LeBlanc"), new Integer("23") });
+model.addRow(new Object[]{ new String("Bike"), new String("Red"), new Integer("20") });
+model.addRow(new Object[]{ new String("Bike"), new String("Blue"), new Integer("20") });
+model.addRow(new Object[]{ new String("Bike"), new String("Green"), new Integer("40") });
+model.addRow(new Object[]{ new String("Bike"), new String("Yellow"), new Integer("80") });
+model.addRow(new Object[]{ new String("Bike"), new String("Black"), new Integer("1") });
+model.addRow(new Object[]{ new String("Bike"), new String("White"), new Integer("23") });
 
-model.addRow(new Object[]{ new String("Tank"), new String("Mundo"), new Integer("2") });
-model.addRow(new Object[]{ new String("Tank"), new String("Shen"), new Integer("7") });
+model.addRow(new Object[]{ new String("Ship"), new String("Red"), new Integer("2") });
+model.addRow(new Object[]{ new String("Ship"), new String("Blue"), new Integer("7") });
 
 
-model.addRow(new Object[]{ new String("Jungler"), new String("Warwick"), new Integer("5") });
-model.addRow(new Object[]{ new String("Jungler"), new String("Hecarim"), new Integer("4") });
+model.addRow(new Object[]{ new String("Plane"), new String("Red"), new Integer("5") });
+model.addRow(new Object[]{ new String("Plane"), new String("Blue"), new Integer("4") });
 
-model.addRow(new Object[]{ new String("Support"), new String("Braum"), new Integer("50") });
-model.addRow(new Object[]{ new String("Support"), new String("Leona"), new Integer("50") });
-model.addRow(new Object[]{ new String("Support"), new String("Soraka"), new Integer("7") });
+model.addRow(new Object[]{ new String("Train"), new String("Red"), new Integer("50") });
+model.addRow(new Object[]{ new String("Train"), new String("Blue"), new Integer("50") });
+model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer("7") });
 
 return model;</Query>
    </DataAccess>
