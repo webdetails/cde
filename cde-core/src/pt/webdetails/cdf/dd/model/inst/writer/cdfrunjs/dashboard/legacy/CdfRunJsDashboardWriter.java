@@ -1,11 +1,19 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
 
@@ -41,9 +49,6 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.packager.StringFilter;
 
-/**
- * @author dcleao
- */
 public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
   protected static final Log logger = LogFactory.getLog( CdfRunJsDashboardWriter.class );
 
@@ -306,19 +311,5 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     out.append( EPILOGUE );
 
     return out.toString();
-  }
-
-  // while amd extends legacy this needs to be here and be overriden by the amd writer class
-  public void writeModule( Object output, IThingWriteContext context, Thing t, String alias )
-    throws ThingWriteException, UnsupportedEncodingException {
-    return;
-  }
-
-  // while amd extends legacy this needs to be here and be overriden by the amd writer class
-  public void writeModule( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx,
-                           Dashboard dash, String alias )
-    throws ThingWriteException, UnsupportedEncodingException {
-
-    return;
   }
 }

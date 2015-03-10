@@ -1163,8 +1163,8 @@ var IdRenderer = StringRenderer.extend({
   },
 
   validate: function(value) {
-    // the special wrapper ${h:id} (e.g. ${h:column1}) can be used by widgets in legacy dashboards, and by new AMD dashboards.
-    if(cdfdd.dashboardWcdf.widget || cdfdd.dashboardWcdf.require) {
+
+    if(cdfdd.dashboardWcdf.widget) {
       if(!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
         $.prompt('Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.', {prefix: "popup"});
         return false;

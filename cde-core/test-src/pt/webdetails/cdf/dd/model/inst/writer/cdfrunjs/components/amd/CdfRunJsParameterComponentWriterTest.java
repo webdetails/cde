@@ -82,6 +82,26 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
 
     Assert.assertEquals( out.toString(), dashboardResult.toString() );
 
+    // when writing parameters for dashboard AMD modules, refer to this instead of dashboard
+    when( options.isAmdModule() ).thenReturn( true );
+
+    out.setLength( 0 );
+
+    try {
+
+      parameterComponentWriter.write( out, context, parameterComponent );
+
+    } catch ( ThingWriteException e ) {
+      e.printStackTrace();
+    }
+
+    dashboardResult.setLength( 0 );
+    dashboardResult.append( "this.addParameter(\"param1\", \"1\");" ).append( NEWLINE )
+      .append( "this.setBookmarkable(\"param1\");" ).append( NEWLINE )
+      .append( "this.setParameterViewMode(\"param1\", \"unused\");" ).append( NEWLINE );
+
+    Assert.assertEquals( out.toString(), dashboardResult.toString() );
+
   }
 
 }

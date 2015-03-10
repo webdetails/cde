@@ -18,9 +18,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
-import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
-import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
@@ -33,7 +31,6 @@ import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
-import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.render.RenderResources;
 import pt.webdetails.cdf.dd.render.Renderer;
@@ -47,7 +44,6 @@ import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
 import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,7 +65,6 @@ public class CdfRunJsDashboardWriter
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
       + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
-  //private static final String DASHBOARD_MODULE_NAME = INDENT1 + "name: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
       + INDENT2 + "if(!$('#' + targetId).length) { return; };" + NEWLINE
@@ -105,6 +100,11 @@ public class CdfRunJsDashboardWriter
   public void write( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx, Dashboard dash )
     throws ThingWriteException {
     assert dash == ctx.getDashboard();
+
+    if ( ctx.getOptions().isAmdModule() ) {
+      writeModule( builder, ctx, dash );
+      return;
+    }
 
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
 
@@ -202,10 +202,16 @@ public class CdfRunJsDashboardWriter
     componentList.clear();
 
     StringBuilder out = new StringBuilder();
+    final String targetDash;
 
-    // Output WCDF
-    addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
-    out.append( NEWLINE );
+    if ( context.getOptions().isAmdModule() ) {
+      targetDash = "this";
+    } else {
+      targetDash = "dashboard";
+      // Output WCDF
+      addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+      out.append( NEWLINE );
+    }
 
     StringBuilder addCompIds = new StringBuilder();
     IThingWriterFactory factory = context.getFactory();
@@ -247,65 +253,7 @@ public class CdfRunJsDashboardWriter
 
     if ( componentList.size() > 0 ) {
       out.append( NEWLINE )
-        .append( "dashboard.addComponents([" )
-        .append( addCompIds )
-        .append( "]);" ).append( NEWLINE );
-    }
-
-    return out.toString();
-  }
-
-  protected String writeModuleComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
-    DashboardWcdfDescriptor wcdf = dash.getWcdf();
-    componentList.clear();
-
-    StringBuilder out = new StringBuilder();
-
-    // Output WCDF
-    //addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
-    //out.append( NEWLINE );
-
-    StringBuilder addCompIds = new StringBuilder();
-    IThingWriterFactory factory = context.getFactory();
-
-    Iterable<Component> comps = dash.getRegulars();
-    for ( Component comp : comps ) {
-      if ( StringUtils.isNotEmpty( getComponentName( comp ) ) ) {
-        IThingWriter writer;
-        try {
-          writer = factory.getWriter( comp );
-        } catch ( UnsupportedThingException ex ) {
-          throw new ThingWriteException( ex );
-        }
-
-        // custom primitive widget (generic components) & layout component
-        if ( isVisualComponent( comp ) ) {
-          if ( isCustomComponent( comp ) || isPrimitiveComponent( comp ) ) {
-            String componentClassName = getComponentClassName( comp );
-
-            if ( !componentList.containsKey( componentClassName ) ) {
-              String componentPath = getComponentPath( comp, componentClassName );
-              if ( StringUtils.isEmpty( componentPath ) ) {
-                continue;
-              }
-              componentList.put( componentClassName, componentPath );
-            }
-          }
-
-          if ( addCompIds.length() > 0 ) {
-            addCompIds.append( ", " );
-          }
-          addCompIds.append( getComponentIdFromContext( context, comp ) );
-        }
-
-        writer.write( out, context, comp );
-
-      }
-    }
-
-    if ( componentList.size() > 0 ) {
-      out.append( NEWLINE )
-        .append( "this.addComponents([" )
+        .append( targetDash ).append( ".addComponents([" )
         .append( addCompIds )
         .append( "]);" ).append( NEWLINE );
     }
@@ -424,8 +372,6 @@ public class CdfRunJsDashboardWriter
           ? options.getSchemedRoot() + "/"
           : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
         : "" );
-
-    DependenciesManager depMgr = DependenciesManager.getInstance();
 
     return title + NEWLINE + webcontext;
   }
@@ -557,33 +503,14 @@ public class CdfRunJsDashboardWriter
     this.jsCodeSnippets.append( jsCodeSnippet );
   }
 
-  @Override
-  public void writeModule( Object output, IThingWriteContext context, Thing t, String alias )
-    throws ThingWriteException, UnsupportedEncodingException {
-    this.writeModule( (CdfRunJsDashboardWriteResult.Builder) output,
-        (CdfRunJsDashboardWriteContext) context,
-        (Dashboard) t, alias );
-  }
+  public void writeModule(
+      CdfRunJsDashboardWriteResult.Builder builder,
+      CdfRunJsDashboardWriteContext ctx,
+      Dashboard dash )
+    throws ThingWriteException {
 
-  @Override
-  public void writeModule( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx,
-                           Dashboard dash, String alias )
-    throws ThingWriteException, UnsupportedEncodingException {
-    assert dash == ctx.getDashboard();
-
-    DashboardWcdfDescriptor wcdf = dash.getWcdf();
-
-
-    final String layout;
-    final String components;
-    if ( ctx.getOptions().isAmdModule() ) {
-      // we need to make sure each dashboard module has unique html element ids in it's layout
-      layout = ctx.replaceAliasH( ctx.replaceTokens( this.writeLayout( ctx, dash ) ), alias );
-      components = ctx.replaceAliasH( ctx.replaceTokens( this.writeModuleComponents( ctx, dash ) ), alias );
-    } else {
-      layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
-      components = ctx.replaceTokensAndAlias( this.writeModuleComponents( ctx, dash ) );
-    }
+    final String layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
+    final String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
     final String content = this.wrapRequireModuleDefinitions( components, layout );
 
     // Export
@@ -598,13 +525,12 @@ public class CdfRunJsDashboardWriter
   }
 
   /**
-   * Wraps the JavaScript code, contained in the input parameter, as a requirejs module.
+   * Wraps the JavaScript code, contained in the input parameters, as a requirejs module.
    *
    * @param content Some JavaScript code to be wrapped.
    * @return
    */
-  protected String wrapRequireModuleDefinitions( String content, String layout )
-    throws UnsupportedEncodingException {
+  protected String wrapRequireModuleDefinitions( String content, String layout ) {
     StringBuilder out = new StringBuilder();
 
 
