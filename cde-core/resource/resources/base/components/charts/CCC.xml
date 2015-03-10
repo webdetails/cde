@@ -3372,6 +3372,7 @@
           <Property name="clickAction">cccClickAction</Property>
           <Property name="colorMode">cccColorMode</Property>
           <Property name="colorRole">cccColorRole</Property>
+          <Property name="colorSliceBrightnessFactor">cccColorSliceBrightnessFactor</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
           <Property name="compatVersion">cccCompatVersion</Property>

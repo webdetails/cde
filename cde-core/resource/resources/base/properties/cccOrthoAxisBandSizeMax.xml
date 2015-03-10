@@ -7,7 +7,7 @@
     <Tooltip>The maximum size, in pixels, of the bands used to represent the discrete domain values (applies to discrete axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>380</Order>
+    <Order>381</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
