@@ -106,6 +106,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   private static final String OPERATION_LOAD = "load";
   private static final String OPERATION_DELETE = "delete";
+  private static final String OPERATION_DELETE_PREVIEW = "deletepreview";
   private static final String OPERATION_SAVE = "save";
   private static final String OPERATION_SAVE_AS = "saveas";
   private static final String OPERATION_NEW_FILE = "newfile";
@@ -267,11 +268,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         return;
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( toHashMap( getRequestParameters() ) );
-
+      } else if( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
+        dashboardStructure.deletePreviewFiles( path );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( path, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        boolean isPreview = ( path.indexOf( "_tmp.cdfde" ) > -1 || path.indexOf( "_tmp.wcdf" ) > -1 );
+        boolean isPreview = ( path.contains( "_tmp.cdfde" ) || path.contains( "_tmp.wcdf" ) );
         dashboardStructure.saveAs( path, title, description, cdfStructure, isPreview );
 
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
