@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/components/BaseComponent'], function(BaseComponent) {
+define(['cdf/components/BaseComponent', 'cdf/lib/jquery'], function(BaseComponent, $) {
 
   var RelatedContentComponent = BaseComponent.extend({
     update : function() {

@@ -76,7 +76,7 @@ define([
   'cdf/components/UnmanagedComponent',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   './MapComponentAsyncLoader',
   './GoogleMapEngine',
   './OpenLayersEngine',

@@ -14,8 +14,8 @@
 define([
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
-  'cdf/lib/backbone',
+  'amd!cdf/lib/underscore',
+  'amd!cdf/lib/backbone',
   'cdf/lib/base64',
   './ViewModel',
   './ViewCollection',
@@ -24,6 +24,7 @@ define([
 
   // Treat underscore templates as if they had a mustache
   // http://underscorejs.org/#template 
+  var _TemplateSettings = _.templateSettings;
   _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
   var templates = {
@@ -80,6 +81,7 @@ define([
       "  </div>" +
       "</div>")
   };
+  _.templateSettings = _TemplateSettings;
 
   var ViewManagerView = Backbone.View.extend({
 

@@ -14,9 +14,10 @@
 define([
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/backbone',
+  'amd!cdf/lib/backbone',
+  'amd!cdf/lib/underscore',
   'cdf/lib/mustache'],
-  function(Logger, $, Backbone, Mustache) {
+  function(Logger, $, Backbone, _, Mustache) {
 
   /*
    * Selector View displays the selector model

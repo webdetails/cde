@@ -15,7 +15,7 @@ define([
   'cdf/components/UnmanagedComponent',
   'cdf/dashboard/Utils',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   './NewSelector/views',
   './NewSelector/models',
   'css!./NewSelectorComponent'],

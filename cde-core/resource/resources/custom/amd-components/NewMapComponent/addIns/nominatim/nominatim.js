@@ -14,8 +14,9 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard',
-  'cdf/lib/jquery'],
-  function(AddIn, Dashboard, $) {
+  'cdf/lib/jquery',
+  'amd!cdf/lib/underscore'],
+  function(AddIn, Dashboard, $, _) {
   
   var nominatim = new AddIn({
     name: "openstreetmap",

@@ -18,8 +18,9 @@
 
 define([
   'cdf/lib/jquery',
-  'cdf/lib/backbone'],
-  function($, Backbone) {
+  'amd!cdf/lib/backbone',
+  'amd!cdf/lib/underscore'],
+  function($, Backbone, _) {
 
   var models = models || {};
   models.pagingSelector = {};

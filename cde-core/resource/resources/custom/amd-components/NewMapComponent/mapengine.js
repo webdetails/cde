@@ -15,7 +15,7 @@ define([
   'cdf/lib/Base',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore'],
+  'amd!cdf/lib/underscore'],
   function(Base, Logger, $, _) {
     
   var MapEngine = Base.extend({

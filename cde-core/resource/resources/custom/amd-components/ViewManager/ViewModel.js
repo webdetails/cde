@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/lib/backbone'], function(Backbone) {
+define(['amd!cdf/lib/backbone'], function(Backbone) {
 
   var ViewModel = Backbone.Model.extend({
     defaults: {

@@ -17,9 +17,10 @@
 
 define([
   'cdf/lib/jquery',
-  'cdf/lib/backbone',
+  'amd!cdf/lib/backbone',
+  'amd!cdf/lib/underscore',
   'cdf/lib/mustache'],
-  function($, Backbone, Mustache) {
+  function($, Backbone, _, Mustache) {
 
   var views = views || {};
   views.pagingSelector = {};

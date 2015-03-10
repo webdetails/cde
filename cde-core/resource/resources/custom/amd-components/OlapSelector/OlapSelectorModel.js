@@ -13,8 +13,9 @@
 
 define([
   'cdf/Logger',
-  'cdf/lib/backbone'],
-  function(Logger, Backbone) {
+  'amd!cdf/lib/backbone',
+  'amd!cdf/lib/underscore'],
+  function(Logger, Backbone, _) {
 
   /*
    * Selector Model describes the behaviour for the selector

@@ -14,7 +14,7 @@
 define([
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   './MapEngine',
   './MapComponentAsyncLoader'],
   function(Logger, $, _, MapEngine, MapComponentAsyncLoader) {

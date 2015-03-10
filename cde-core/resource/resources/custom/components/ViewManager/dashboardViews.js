@@ -259,59 +259,61 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
 
 // Treat underscore templates as if they had a mustache
 // http://underscorejs.org/#template 
-_.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
+var _TemplateSettings = _.templateSettings;
+  _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
-var templates = {
-  viewManager: _.template(
-    "<div class='view-manager-component'>" +
-    "  <div class='current-view'>" +
-    "    <span class='label'>Current View: </span>" +
-    "    <span class='value'>{{currentView}}</span>" +
-    "  </div>" +
-    "  <div class='big-button manage-views'>Manage Views</div>" +
-    "  <div class='view-manager'>" +
-    "    <div class='tabs'></div>" +
-    "    <div class='tab-contents'></div>" +
-    "  </div>" +
-    "</div>"),
+var templates = templates || {};
+templates.viewManager = _.template(
+  "<div class='view-manager-component'>" +
+  "  <div class='current-view'>" +
+  "    <span class='label'>Current View: </span>" +
+  "    <span class='value'>{{currentView}}</span>" +
+  "  </div>" +
+  "  <div class='big-button manage-views'>Manage Views</div>" +
+  "  <div class='view-manager'>" +
+  "    <div class='tabs'></div>" +
+  "    <div class='tab-contents'></div>" +
+  "  </div>" +
+  "</div>");
 
-  viewManagerTab: _.template(
-    "<div class='tab' data-target='{{selector}}'>" +
-    "  {{label}}" +
-    "</div>"),
+templates.viewManagerTab = _.template(
+  "<div class='tab' data-target='{{selector}}'>" +
+  "  {{label}}" +
+  "</div>");
 
-  viewListPanel: _.template(
-    "<div class='list-panel panel'>" +
-    "  <div class='total-views'>" +
-    "    <span class='label'>Total Views: </span>" +
-    "    <span class='value'>{{viewCount}}</span>" +
-    "  </div>" +
-    "  <div class='views'></div>" +
-    "  <div class='view-all'>" +
-    "    <span class='label'>View All</span>" +
-    "    <span class='description'>(go to View Manager)</span>" +
-    "  </div>" +
-    "</div>"),
+templates.viewListPanel = _.template(
+  "<div class='list-panel panel'>" +
+  "  <div class='total-views'>" +
+  "    <span class='label'>Total Views: </span>" +
+  "    <span class='value'>{{viewCount}}</span>" +
+  "  </div>" +
+  "  <div class='views'></div>" +
+  "  <div class='view-all'>" +
+  "    <span class='label'>View All</span>" +
+  "    <span class='description'>(go to View Manager)</span>" +
+  "  </div>" +
+  "</div>");
 
-  viewListItem: _.template(
-    "<div class='view-item'>" +
-    "  <a class='name' href='{{viewUrl}}'>{{name}}</a>" +
-    "  <span class='delete'></span>" +
-    "</div>"),
+templates.viewListItem = _.template(
+  "<div class='view-item'>" +
+  "  <a class='name' href='{{viewUrl}}'>{{name}}</a>" +
+  "  <span class='delete'></span>" +
+  "</div>");
 
-  viewSavePanel: _.template(
-    "<div class='save-panel panel'>" +
-    "  <div class='current-view'>" +
-    "    <span class='label'>Current View:</span>" +
-    "    <span class='value'>{{currentView}}</span>" +
-    "  </div>" +
-    "  <div class='save-properties'>" +
-    "    <div><span class='label'>Name</span><input type='text' class='name' value='{{currentView}}'></div>" +
-    "    <div><span class='label'>Description</span><textarea class='description' placeholder='Enter a description'>{{description}}</textarea></div>" +
-    "  </div>" +
-    "  <div class='save-actions'>" +
-    "    <div class='big-button active save'>Save</div>" +
-    "    <div class='big-button cancel'>Cancel</div>" +
-    "  </div>" +
-    "</div>")
-};
+templates.viewSavePanel = _.template(
+  "<div class='save-panel panel'>" +
+  "  <div class='current-view'>" +
+  "    <span class='label'>Current View:</span>" +
+  "    <span class='value'>{{currentView}}</span>" +
+  "  </div>" +
+  "  <div class='save-properties'>" +
+  "    <div><span class='label'>Name</span><input type='text' class='name' value='{{currentView}}'></div>" +
+  "    <div><span class='label'>Description</span><textarea class='description' placeholder='Enter a description'>{{description}}</textarea></div>" +
+  "  </div>" +
+  "  <div class='save-actions'>" +
+  "    <div class='big-button active save'>Save</div>" +
+  "    <div class='big-button cancel'>Cancel</div>" +
+  "  </div>" +
+  "</div>");
+
+_.templateSettings = _TemplateSettings;
