@@ -7,7 +7,7 @@
     <Tooltip>A function that filters datums being loaded.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>294</Order>
+    <Order>295</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

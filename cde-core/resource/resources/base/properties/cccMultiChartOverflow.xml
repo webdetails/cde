@@ -7,7 +7,7 @@
     <Tooltip>The strategy to follow when the resulting multi-chart layout does not fit entirely in the initial chart size.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>343</Order>
+    <Order>344</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
