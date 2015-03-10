@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccTrendOrthoAxis</Name>
+    <Name>cccColorSliceBrightnessFactor</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>1</DefaultValue>
-    <Description>trendOrthoAxis</Description>
-    <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
+    <Description>colorSliceBrightnessFactor</Description>
+    <Tooltip>How much a last sibling slice will be brighter than a first sibling slice.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>502</Order>
+    <Order>281</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

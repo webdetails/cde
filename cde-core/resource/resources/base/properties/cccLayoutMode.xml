@@ -7,7 +7,7 @@
     <Tooltip>The placement of boxes within the same category band.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>307</Order>
+    <Order>308</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
