@@ -13,7 +13,7 @@
 
 define([
   'cdf/Logger',
-  'cdf/lib/backbone',
+  'amd!cdf/lib/backbone',
   './ViewModel',
   '../ViewManagerComponentExt'],
   function(Logger, Backbone, ViewModel, ViewManagerComponentExt) {

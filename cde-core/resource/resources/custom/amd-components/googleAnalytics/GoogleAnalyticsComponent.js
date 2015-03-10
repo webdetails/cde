@@ -18,20 +18,21 @@
  * compatible with AMD.
  *
  */
-require.config({
-  config: {
-    "amd": {
-      shim: {
-        "cde/components/googleAnalytics/lib/jquery.ga": {
-          exports: "$",        
-          deps: {
-            "jQuery": "cdf/lib/jquery"
-          }
+
+var requireConfig = requireCfg.config;
+
+if (!requireConfig['amd']){
+  requireConfig['amd'] = {};
+} 
+if (!requireConfig['amd']['shim']) {
+  requireConfig['amd']['shim'] = {};
+}
+requireConfig['amd']['shim']["cde/components/googleAnalytics/lib/jquery.ga"] = {
+  exports: "jQuery",        
+        deps: {
+          "cdf/lib/jquery": "jQuery"
         }
-      }
-    }
-  }
-});
+};
 
 define([
   'cdf/components/BaseComponent',
@@ -41,7 +42,7 @@ define([
   var GoogleAnalyticsComponent = BaseComponent.extend({
 
     update: function() {
-      $.globalEval('$(document).ready( function() { $.ga.load("' + this.gaTrackingId + '"); } );');
+      $.globalEval('var $ = require(\'cdf/lib/jquery\'); $(document).ready( function() { $.ga.load("' + this.gaTrackingId + '"); } );');
     }
 
   });

@@ -20,7 +20,7 @@ define([
   './MapComponentAsyncLoader',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   'cdf/lib/OpenLayers',
   'cdf/lib/OpenStreetMap'],
   function(MapEngine, MapComponentAsyncLoader, Logger, $, _, OpenLayers) {

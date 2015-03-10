@@ -15,7 +15,7 @@ define([
   'cdf/components/BaseComponent',
   'cdf/dashboard/Utils',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   './OlapSelector/OlapSelectorView',
   './OlapSelector/OlapSelectorModel',
   './OlapSelector/lib/OlapUtils',

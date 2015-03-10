@@ -14,7 +14,7 @@
 define([
   'cdf/components/BaseComponent',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   'cdf/lib/mustache',
   'cdf/dashboard/Utils'],
   function(BaseComponent, $, _, Mustache, Utils) {

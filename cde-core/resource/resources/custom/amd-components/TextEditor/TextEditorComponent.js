@@ -15,7 +15,7 @@ define([
   'cdf/components/BaseComponent',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/lib/underscore',
+  'amd!cdf/lib/underscore',
   'cdf/lib/mustache',
   './TextEditorComponentExt',
   'css!./TextEditorComponent'],
