@@ -27,6 +27,7 @@ module.exports = function(config) {
       'resource/js/jquery.corner.js',
       'test-resources/js/underscore.js',
       'resource/js/jquery.jeditable.js',
+      'resource/js/jquery.impromptu.js',
       'resource/js/Base.js',
       'test-js/legacy/testUtils.js',
       'test-js/legacy/mockDashboards.js',
