@@ -34,15 +34,18 @@ requireConfig['amd']['shim']["cde/components/googleAnalytics/lib/jquery.ga"] = {
         }
 };
 
+requirejs.config(requireCfg);
+
 define([
   'cdf/components/BaseComponent',
+  'cdf/lib/jquery',
   'amd!./googleAnalytics/lib/jquery.ga'],
   function(BaseComponent, $) {
 
   var GoogleAnalyticsComponent = BaseComponent.extend({
 
     update: function() {
-      $.globalEval('var $ = require(\'cdf/lib/jquery\'); $(document).ready( function() { $.ga.load("' + this.gaTrackingId + '"); } );');
+      $.ga.load(this.gaTrackingId);
     }
 
   });

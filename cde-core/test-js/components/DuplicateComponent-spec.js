@@ -12,7 +12,7 @@
  */
 
 define([
-  'cdf/Dashboard',
+  'cdf/Dashboard.Clean',
   'cde/components/CggDialComponent',
   'cde/components/DuplicateComponent',
   'cdf/lib/jquery'],

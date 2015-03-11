@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard', 'cde/components/ExportButtonComponent', 'cdf/lib/jquery'],
+define(['cdf/Dashboard.Clean', 'cde/components/ExportButtonComponent', 'cdf/lib/jquery'],
   function(Dashboard, ExportButtonComponent, $) {
 
   /**

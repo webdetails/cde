@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard', 'cde/components/ExportPopupComponent'],
+define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
   function(Dashboard, ExportPopupComponent) {
 
   /**

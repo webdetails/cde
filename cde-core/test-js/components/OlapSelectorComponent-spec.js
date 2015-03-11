@@ -12,7 +12,7 @@
  */
 
 define([
-  'cdf/Dashboard',
+  'cdf/Dashboard.Clean',
   'cde/components/OlapSelectorComponent',
   'cdf/lib/jquery'],
   function(Dashboard, OlapSelectorComponent, $) {
@@ -53,7 +53,7 @@ define([
      */
     it("Update Called", function(done) {
 
-      var ajax = spyOn(jQuery, "ajax").and.callFake(function(options) {
+      var ajax = spyOn($, "ajax").and.callFake(function(options) {
         options.success({
           "result": {
             "catalogs": [{"cubes": [{"id": "Quadrant Analysis","name": "Quadrant Analysis"}], "jndi": "SampleData", "name": "SampleData", "schema": "mondrian:/SampleData"},{"cubes": [{"id": "SteelWheelsSales","name": "SteelWheelsSales"}], "jndi": "SampleData", "name": "SteelWheels", "schema": "mondrian:/SteelWheels"}],
