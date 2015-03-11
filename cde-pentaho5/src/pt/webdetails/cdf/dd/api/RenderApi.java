@@ -166,7 +166,7 @@ public class RenderApi {
       CdfRunJsDashboardWriteResult dashboard =
           loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
       String result =
-          dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId ) ); // TODO: check new interplugin call
+          dashboard.render( InterPluginBroker.getCdfContext( filePath, "", viewId, requestParams ) ); // TODO: check new interplugin call
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) ) {
