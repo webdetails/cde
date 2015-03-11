@@ -177,8 +177,8 @@ public class RenderApi {
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
       String context = dashboardWcdf.isRequire()
-          ? InterPluginBroker.getCdfRequireContext( filePath )
-          : InterPluginBroker.getCdfContext( filePath, "", viewId );
+          ? InterPluginBroker.getCdfRequireContext( filePath, requestParams )
+          : InterPluginBroker.getCdfContext( filePath, "", viewId, requestParams );
       String result = dashboard.render( context );
 
       //i18n token replacement
