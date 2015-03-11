@@ -235,9 +235,13 @@ var NewMapComponent = (function (){
     },
     getColorMap: function() {
 
-      var colorMap = this.colormap;
-      if(colorMap == null || (_.isArray(colorMap) && !colorMap.length)) {
+      var colorMap = [];
+      if(this.colormap == null || (_.isArray(this.colormap) && !this.colormap.length)) {
         colorMap = [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]]; //RGBA
+      } else {
+        for(var k = 0, L = this.colormap.length; k < L; k++) {
+          colorMap.push(JSON.parse(this.colormap[k]))
+        }
       }
 
       var interpolate = function(a, b, n) {
@@ -258,7 +262,7 @@ var NewMapComponent = (function (){
         return d;
       };
       var cmap = [];
-      for(var k = 1, L = colorMap.length; k < L; k++) {
+      for(k = 1, L = colorMap.length; k < L; k++) {
         cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
       }
       return _.map( cmap, function (v) {
