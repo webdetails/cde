@@ -657,6 +657,7 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
   execute: function(tableManager) {
 
     // Add a row. This special type goes always to the beginning;
+    var myself = this;
     var content = '' +
         '<h2>Add Resource</h2>\n' +
         '<hr>Resource Type:&nbsp;&nbsp;\n' +
@@ -670,22 +671,25 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
         '</select>\n';
     $.prompt(content, { buttons: { Ok: true, Cancel: false }, prefix: "popup",
       submit: function(v) {
-        if(v) {
-          var resourceType = $("#resourceType").val();
-          var resourceSource = $("#resourceSource").val();
-
-          var _stub = (resourceSource == 'file') ? LayoutResourceFileModel.getStub() : LayoutResourceCodeModel.getStub();
-          _stub.properties[1].value = resourceType;
-
-          var indexManager = tableManager.getTableModel().getIndexManager();
-          var insertAtIdx = 0;
-          tableManager.insertAtIdx(_stub, insertAtIdx);
-
-          this.selectFirstProperty(tableManager);
-        }
+        myself.resourceSubmit(v, tableManager);
       }
     });
-  }
+  },
+  resourceSubmit: function(status, tableManager) {
+    if(status) {
+      var resourceType = $("#resourceType").val();
+      var resourceSource = $("#resourceSource").val();
+
+      var _stub = (resourceSource === 'file') ? LayoutResourceFileModel.getStub() : LayoutResourceCodeModel.getStub();
+      _stub.properties[1].value = resourceType;
+
+      var indexManager = tableManager.getTableModel().getIndexManager();
+      var insertAtIdx = 0;
+      tableManager.insertAtIdx(_stub, insertAtIdx);
+
+      this.selectFirstProperty(tableManager);
+    }
+}
 });
 CellOperations.registerOperation(new LayoutAddResourceOperation());
 
