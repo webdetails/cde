@@ -73,6 +73,7 @@ public class CdfRunJsDashboardWriter
       + INDENT2 + "this._processComponents(); },";
   private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
       INDENT1 + "_processComponents: function() '{'" + NEWLINE
+      + INDENT2 + "var dashboard = this;" + NEWLINE
       + INDENT2 + "{0}" + NEWLINE
       + INDENT1 + "'}'" + NEWLINE;
   private static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
@@ -202,16 +203,10 @@ public class CdfRunJsDashboardWriter
     componentList.clear();
 
     StringBuilder out = new StringBuilder();
-    final String targetDash;
 
-    if ( context.getOptions().isAmdModule() ) {
-      targetDash = "this";
-    } else {
-      targetDash = "dashboard";
-      // Output WCDF
-      addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
-      out.append( NEWLINE );
-    }
+    // Output WCDF
+    addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    out.append( NEWLINE );
 
     StringBuilder addCompIds = new StringBuilder();
     IThingWriterFactory factory = context.getFactory();
@@ -253,7 +248,7 @@ public class CdfRunJsDashboardWriter
 
     if ( componentList.size() > 0 ) {
       out.append( NEWLINE )
-        .append( targetDash ).append( ".addComponents([" )
+        .append( "dashboard.addComponents([" )
         .append( addCompIds )
         .append( "]);" ).append( NEWLINE );
     }
