@@ -26,12 +26,9 @@ public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParamete
     String value = sanitizeExpression( comp.tryGetPropertyValue( "javaScript", "" ) );
     Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue( "bookmarkable", null ) );
 
-    // when writing a dashboard as a javascript AMD module, use "this" instead of the "dashboard" object
-    final String targetDash = context.getOptions().isAmdModule() ? "this" : "dashboard";
-
-    addSetParameterAssignment( out, name, value, targetDash );
+    addSetParameterAssignment( out, name, value );
     if ( isBookmarkable ) {
-      addBookmarkable( out, name, targetDash );
+      addBookmarkable( out, name );
     }
   }
 

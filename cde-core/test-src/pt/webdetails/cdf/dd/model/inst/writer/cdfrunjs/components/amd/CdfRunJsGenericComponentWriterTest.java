@@ -83,28 +83,6 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
 
     Assert.assertEquals( out.toString(), expectedReturnValue.toString() );
 
-
-    // when writing components for dashboard AMD modules, refer to this instead of dashboard
-    when( options.isAmdModule() ).thenReturn( true );
-
-    out.setLength( 0 );
-
-    try {
-
-      genericComponentWriter.write( out, context, genericComponent, "TestComponent" );
-
-    } catch ( ThingWriteException e ) {
-      e.printStackTrace();
-    }
-
-    expectedReturnValue.setLength( 0 );
-    expectedReturnValue.append( "var test = new TestComponent(this, {" ).append( NEWLINE )
-      .append( INDENT ).append( "type: \"TestComponent\"," ).append( NEWLINE )
-      .append( INDENT ).append( "name: \"test\"" ).append( NEWLINE )
-      .append( "});" ).append( NEWLINE );
-
-    Assert.assertEquals( out.toString(), expectedReturnValue.toString() );
-
   }
 
 }

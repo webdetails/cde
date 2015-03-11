@@ -34,19 +34,15 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
     String viewRole = JsonUtils.toJsString( comp.tryGetPropertyValue( "parameterViewRole", "unused" ) );
     Boolean isBookmarkable = Boolean.valueOf( comp.tryGetPropertyValue( "bookmarkable", null ) );
 
-    // when writing a dashboard as an AMD module, we want to refer to "this" instead of "dashboard"
-    final String targetDash = context.getOptions().isAmdModule() ? "this" : "dashboard";
-
-    addSetParameterAssignment( out, name, value, targetDash );
+    addSetParameterAssignment( out, name, value );
     if ( isBookmarkable ) {
-      addBookmarkable( out, name, targetDash );
+      addBookmarkable( out, name );
     }
-    addViewMode( out, name, viewRole, targetDash );
+    addViewMode( out, name, viewRole );
   }
 
-  protected static void addSetParameterAssignment( StringBuilder out, String name, String value, String targetDash ) {
-    out.append( targetDash )
-        .append( ".addParameter(" )
+  protected static void addSetParameterAssignment( StringBuilder out, String name, String value ) {
+    out.append( "dashboard.addParameter(" )
         .append( name )
         .append( ", " )
         .append( value )
@@ -54,9 +50,8 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
         .append( NEWLINE );
   }
 
-  protected static void addViewMode( StringBuilder out, String name, String viewRole, String targetDash ) {
-    out.append( targetDash )
-        .append( ".setParameterViewMode(" )
+  protected static void addViewMode( StringBuilder out, String name, String viewRole ) {
+    out.append( "dashboard.setParameterViewMode(" )
         .append( name )
         .append( ", " )
         .append( viewRole )
@@ -64,9 +59,8 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
         .append( NEWLINE );
   }
 
-  protected static void addBookmarkable( StringBuilder out, String name, String targetDash ) {
-    out.append( targetDash )
-        .append( ".setBookmarkable(" )
+  protected static void addBookmarkable( StringBuilder out, String name ) {
+    out.append( "dashboard.setBookmarkable(" )
         .append( name )
         .append( ");" )
         .append( NEWLINE );

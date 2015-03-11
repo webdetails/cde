@@ -71,6 +71,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     + INDENT2 + "this._processComponents(); },";
   private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
     INDENT1 + "_processComponents: function() '{'" + NEWLINE
+      + INDENT2 + "var dashboard = this;" + NEWLINE
       + INDENT2 + "{0}" + NEWLINE
       + INDENT1 + "'}'" + NEWLINE;
   private static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
@@ -390,18 +391,9 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( componentList ).when( dash ).getRegulars();
 
     Assert.assertEquals(
-      "wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
+      "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
         + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
       dashboardWriterSpy.writeComponents( context, dash ));
-
-    Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
-
-    // when writing parameters for dashboard AMD modules, refer to this instead of dashboard
-    when( options.isAmdModule() ).thenReturn( true );
-
-    Assert.assertEquals(
-      NEWLINE + "this.addComponents([comp1, comp2, comp3]);" + NEWLINE,
-      dashboardWriterSpy.writeComponents( context, dash ) );
 
     Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
 

@@ -55,14 +55,11 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     String id = context.getId( comp );
 
-    // when writing a dashboard as an AMD module, we want to refer to "this" instead of "dashboard"
-    final String targetDash = context.getOptions().isAmdModule() ? "this" : "dashboard";
-
     out.append( "var " )
         .append( id )
         .append( " = new " )
         .append( className )
-        .append( "(" ).append( targetDash ).append( ", {" )
+        .append( "(dashboard, {" )
         .append( NEWLINE );
 
     addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );
