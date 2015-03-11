@@ -22,6 +22,7 @@ wd.cde.endpoints = {
   imageResourceUrl: "getResource?resource=",
   jsResourceUrl: "getJsResource?resource=",
   saikuUiPluginUrl: "/content/saiku-ui/index.html?biplugin=true",
+  newDashboardUrl: "NewDashboard",
 
   //The webAppPath is defined at the start of Dashboards.js
   getWebappBasePath: function() {
@@ -62,6 +63,10 @@ wd.cde.endpoints = {
 
   getSaikuUiPluginUrl: function() {
     return this.getWebappBasePath() + this.saikuUiPluginUrl;
+  },
+
+  getNewDashboardUrl: function() {
+    return this.getPluginUrl() + this.newDashboardUrl;
   }
 };
 
