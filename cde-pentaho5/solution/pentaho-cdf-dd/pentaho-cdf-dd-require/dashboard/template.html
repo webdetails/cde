@@ -14,16 +14,23 @@
 
 <script language="javascript" type="text/javascript">
   require([
-    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Fpentaho-cdf-dd-require%2Ftests%2FRaphael%2Fraphael.wcdf',
-    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Fpentaho-cdf-dd-require%2Ftests%2FRaphael%2Fraphael.wcdf&alias=foo'],
-    function(RaphaelDash, RaphaelDashFoo) {
+    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Fpentaho-cdf-dd-require%2Fcde_sample1.wcdf',
+    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Fpentaho-cdf-dd-require%2Fcde_sample1.wcdf&alias=foo'],
+   function(SampleDash, SampleDashFoo) {
 
-    var raphaelDash = new RaphaelDash();
-    raphaelDash.render("content1");
-    raphaelDash.init();
+    var sampleDash = new SampleDash();
+    sampleDash.render("content1");
+    sampleDash.init();
     
-    var raphaelDashFoo = new RaphaelDashFoo();
-    raphaelDashFoo.render("content2");
-    raphaelDashFoo.init();
-  });
+    var sampleDashFoo = new SampleDashFoo();
+    sampleDashFoo.render("content2");
+    sampleDashFoo.init();
+        
+    //Linking a fireChange in one dashboard to a setParameter on the other
+//    sampleDash.on("cdf productLine:fireChange", function (evt) {
+//            sampleDashFoo.fireChange("productLine", evt.value);
+//        });    
+    
+    
+ });
 </script>
