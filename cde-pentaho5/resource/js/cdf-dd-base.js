@@ -23,6 +23,7 @@ wd.cde.endpoints = {
   imageResourceUrl: "resources/get?resource=",
   jsResourceUrl: "resources/getJs?resource=",
   saikuUiPluginUrl: "/content/saiku-ui/index.html?biplugin5=true",
+  newDashboardUrl: "/wcdf/new",
 
   //The webAppPath is defined at the start of Dashboards.js
   getWebappBasePath: function() {
@@ -59,6 +60,10 @@ wd.cde.endpoints = {
 
   getJsResourceUrl: function() {
     return this.getWebappBasePath() + this.pluginUrl + this.jsResourceUrl;
+  },
+
+  getNewDashboardUrl: function() {
+    return this.getStaticResUrl() + this.newDashboardUrl;
   },
 
   isEmptyFilePath: function(filePath) {
@@ -585,8 +590,9 @@ var SaveRequests = {
   },
 
   redirect: function(selectedFolder, selectedFile) {
-    window.location = window.location.protocol + "//" + window.location.host +
-        wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    var path = wd.cde.endpoints.getStaticResUrl() +
+        '/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    location.assign(location.origin + path);
   }
 
 };

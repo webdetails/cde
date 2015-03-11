@@ -1251,60 +1251,6 @@ a:active > .buttonImage {
   background-image: url(../images/down_onclick.png);
 }
 
-/*ul*/
-ul.controlOptions {
-  list-style: none;
-  color: #999;
-  position: absolute;
-  top: 20px;
-  background: #222;
-  border: 2px #12a2d8 solid;
-  top: 25px;
-  display: none;
-  z-index: 10;
-}
-
-ul.controlOptions li {
-  padding: 5px 10px;  
-}
-
-ul.controlOptions li.jqiIcon {
-  background-image: url(../images/jqi.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.jqiIcon:hover {
-  background-image: url(../images/jqi_mouseover.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.jqiIcon:active {
-  background-image: url(../images/jqi_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.separator {
-  border-top: 1px #12a2d8 solid;
-}
-
-/*ul.controlOptions li:nth-last-child(2) {
-  background: #111;
-  border-top: 1px #12a2d8 solid;
-}*/
-
-ul.controlOptions li:hover {
-  background-color: #12a2d8;
-  color: #222;
-  cursor: pointer;
-}
-
-ul.controlOptions li:active {
-  color: #fff;
-}
-
 /* impromptu starts here*/
 div.jqi {
   width: auto!important;/*Had to use a "hammer here because of IE9"*/

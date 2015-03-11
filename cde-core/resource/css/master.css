@@ -1695,61 +1695,6 @@ a:active {
   color: #fff;
 }
 
-
-/*ul*/
-ul.controlOptions {
-  list-style: none;
-  color: #999;
-  background: #fff;
-  border: 1px #ccc solid;
-  top: 25px!important;
-  display: none;
-  height: 0;
-  transition: 0.3s;
-  position: absolute;
-}
-
-ul.controlOptions li {
-  padding: 5px 10px;  
-}
-
-ul.controlOptions li.popupIcon {
-  background-image: url(../images/popup.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:hover {
-  background-image: url(../images/popup_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:active {
-  background-image: url(../images/popup_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.separator {
-  border-top: 1px #ccc solid;
-}
-
-/*ul.controlOptions li:nth-last-child(2) {
-  background: #111;
-  border-top: 1px #12a2d8 solid;
-}*/
-
-ul.controlOptions li:hover {
-  background-color: #0098c4;
-  color: #fff;
-  cursor: pointer;
-}
-
-ul.controlOptions li:active {
-  color: #fff;
-}
-
 /* impromptu starts here*/
 div.popup {
   width: auto;
