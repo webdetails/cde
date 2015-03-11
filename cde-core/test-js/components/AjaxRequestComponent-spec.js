@@ -45,7 +45,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/j
     it("Update Called", function(done) {
       var ajax = spyOn($, "ajax").and.callFake(function(options) {
         options.complete(
-          { responseText: "{ queryInfo: { totalRows: 1}, resultset: [\"row1\", [1,2,3,4,5]]}"},
+          { responseText: "{\"queryInfo\": {\"totalRows\": 1}, \"resultset\": [\"row1\", [1,2,3,4,5]]}"},
           "finished faking");
       });
       spyOn(ajaxRequestComponent, 'update').and.callThrough();
