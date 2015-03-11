@@ -46,7 +46,7 @@ module.exports = function(config) {
       'bin/test-js/cdf/js/compressed/**/*'
     ],
 
-    //preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
+    preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'

@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard', 'cde/components/TextEditorComponent', 'cdf/lib/jquery'],
+define(['cdf/Dashboard.Clean', 'cde/components/TextEditorComponent', 'cdf/lib/jquery'],
   function(Dashboard, TextEditorComponent, $) {
 
   /**

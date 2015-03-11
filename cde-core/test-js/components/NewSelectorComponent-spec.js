@@ -12,7 +12,7 @@
  */
 
 define([
-  'cdf/Dashboard',
+  'cdf/Dashboard.Clean',
   'cde/components/NewSelectorComponent',
   'cdf/lib/jquery'],
   function(Dashboard, NewSelectorComponent, $) {

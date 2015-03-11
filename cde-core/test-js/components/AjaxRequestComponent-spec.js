@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard', 'cde/components/AjaxRequestComponent', 'cdf/lib/jquery'],
+define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/jquery'],
   function(Dashboard, AjaxRequestComponent, $) {
 
   /**
@@ -43,9 +43,9 @@ define(['cdf/Dashboard', 'cde/components/AjaxRequestComponent', 'cdf/lib/jquery'
      * ## The Ajax Request Component # Update Called
      */
     it("Update Called", function(done) {
-      var ajax = spyOn(jQuery, "ajax").and.callFake(function(options) {
+      var ajax = spyOn($, "ajax").and.callFake(function(options) {
         options.complete(
-          {"responseText": '{"queryInfo": {"totalRows": 1}, "resultset": ["row1", [1,2,3,4,5]]}'},
+          { responseText: "{ queryInfo: { totalRows: 1}, resultset: [\"row1\", [1,2,3,4,5]]}"},
           "finished faking");
       });
       spyOn(ajaxRequestComponent, 'update').and.callThrough();
