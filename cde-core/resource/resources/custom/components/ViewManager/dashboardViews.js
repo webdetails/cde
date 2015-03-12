@@ -259,6 +259,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
 
 // Treat underscore templates as if they had a mustache
 // http://underscorejs.org/#template 
+var _TemplateSettings = _.templateSettings;
 _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
 
 var templates = templates || {};
@@ -316,3 +317,5 @@ _.extend(templates, {
     "  </div>" +
     "</div>")
 });
+
+_.templateSettings = _TemplateSettings;
