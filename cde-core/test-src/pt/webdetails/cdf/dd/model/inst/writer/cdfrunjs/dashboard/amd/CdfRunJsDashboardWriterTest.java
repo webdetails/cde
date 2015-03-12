@@ -65,7 +65,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
-    + INDENT2 + "if(!$('#' + targetId).length) { return; };" + NEWLINE
+    + INDENT2 + "if(!$('#' + targetId).length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
     + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
     + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
     + INDENT2 + "this._processComponents(); },";
