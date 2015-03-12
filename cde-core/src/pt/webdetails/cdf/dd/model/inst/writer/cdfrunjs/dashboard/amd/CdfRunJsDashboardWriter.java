@@ -57,7 +57,8 @@ public class CdfRunJsDashboardWriter
     extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
 
   private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
-  private static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard();";
+  // make the dashboard variable available in the global scope to facilitate debugging
+  private static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard();";
   private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
   private static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1})";
   private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";

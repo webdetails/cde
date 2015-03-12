@@ -140,7 +140,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( REQUIRE_START )
       .append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE )
       .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
-      .append( "var dashboard = new Dashboard();" ).append( NEWLINE )
+      .append( "window.dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
@@ -190,7 +190,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( REQUIRE_START )
       .append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE )
       .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
-      .append( "var dashboard = new Dashboard();" ).append( NEWLINE )
+      .append( "window.dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
