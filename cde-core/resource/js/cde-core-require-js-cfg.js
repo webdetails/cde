@@ -19,16 +19,20 @@
 
   var requirePaths = requireCfg.paths;
 
+  var isDebug = typeof document == "undefined" || document.location.href.indexOf("debug=true") > 0;
+
   var prefix;
   if(typeof KARMA_RUN !== "undefined") { // test
     prefix = requirePaths['cde/components'] = 'resource/resources/custom/amd-components';
 
   } else if(typeof CONTEXT_PATH !== "undefined") { // production vs debug
-    prefix = requirePaths['cde/components'] = CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components';
+    prefix = requirePaths['cde/components'] = CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/'
+      + (isDebug ? '/amd-components' : 'amd-components-compressed');
     requirePaths['cde/repo/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
   } else if(typeof FULLY_QUALIFIED_URL != "undefined") { // embedded production vs debug
-    prefix = requirePaths['cde/components'] = FULLY_QUALIFIED_URL + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components';
+    prefix = requirePaths['cde/components'] = FULLY_QUALIFIED_URL + 'api/repos/pentaho-cdf-dd/resources/custom'
+      + (isDebug ? '/amd-components' : '/amd-components-compressed');
     requirePaths['cde/repo/components'] = FULLY_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
   } else { // build

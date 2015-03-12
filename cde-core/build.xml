@@ -47,8 +47,6 @@
       </copy>
     </target>
   -->
-  <mkdir dir="${js.module.script.dir}"/>
-  <mkdir dir="${js.module.script.agg.dir}"/>
 
   <target name="compile.compile" depends="init, resolve" description="Performs the actual javac compile">
     <javac destdir="${classes.dir}"
@@ -254,7 +252,6 @@
   </target>
   
   <target name="run-karma" depends="install-antcontrib, npm-install">
-
     <!-- compile the require file -->
     <echo message="Collecting RequireJS Configurations"/>
     <delete file="build-res/requireCfg-raw.js"/>
@@ -268,42 +265,45 @@
       </fileset>
     </concat>
 
-    <!-- Check to see if karma is on the PATH -->
-    <available file="karma" filepath="${env.PATH}" property="karma-is-available"/>
-    <available file="karma.cmd" filepath="${nodemodules.local.dir.bin}" property="karma-is-available-windows"/>
-
     <if>
       <available file="${js.karma.ci.config}"/>
       <then>
-        <!-- we have karma available, use it to run the tests -->
-          <if>
-            <isset property="isWindows"/>
-            <then>
-              <if>
-                <not>
-                  <isset property="karma-for-windows-is-available"/>
-                </not>
-                <then>
-                  <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
-                </then>
-              </if>
-              <exec executable="karma.cmd">
-                <arg value="start"/>
-                <arg value="${js.karma.ci.config}"/>
-                <!-- if we are running via ant, then assume we must 'single-run' -->
-                <arg value="--single-run"/>
-              </exec>
-            </then>
-            <else>
-              <exec executable="node_modules/karma/bin/karma">
-                <arg value="start"/>
-                <arg value="${js.karma.ci.config}"/>
-                <!-- if we are running via ant, then assume we must 'single-run' -->
-                <arg value="--single-run"/>
-              </exec>
-            </else>
-          </if>
-        </then>
+        <if>
+          <isset property="isWindows"/>
+          <then>
+            <if>
+              <not>
+                <isset property="karma-is-available-windows"/>
+              </not>
+              <then>
+                <fail>Karma is not available, make sure Node.js is installed. Unit tests could not run.</fail>
+              </then>
+            </if>
+            <exec executable="${js.node.node_modules.bin.dir}\karma.cmd">
+              <arg value="start"/>
+              <arg value="${js.karma.ci.config}"/>
+              <!-- if we are running via ant, then assume we must 'single-run' -->
+              <arg value="--single-run"/>
+            </exec>
+          </then>
+          <else>
+            <if>
+              <not>
+                <isset property="karma-is-available"/>
+              </not>
+              <then>
+                <fail>Make sure Node.js is installed and run 'npm install -g karma-cli' [adds karma to the command line]</fail>
+              </then>
+            </if>
+            <exec executable="karma">
+              <arg value="start"/>
+              <arg value="${js.karma.ci.config}"/>
+              <!-- if we are running via ant, then assume we must 'single-run' -->
+              <arg value="--single-run"/>
+            </exec>
+          </else>
+        </if>
+      </then>
       <else>
         <fail>There is no karma configuration file available (looking for: ${js.karma.ci.config})</fail>
       </else>
