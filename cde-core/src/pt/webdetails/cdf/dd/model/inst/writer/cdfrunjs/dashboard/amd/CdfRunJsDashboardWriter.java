@@ -57,7 +57,8 @@ public class CdfRunJsDashboardWriter
     extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
 
   private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
-  private static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard();";
+  // make the dashboard variable available in the global scope to facilitate debugging
+  private static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard();";
   private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
   private static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1})";
   private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
@@ -67,7 +68,7 @@ public class CdfRunJsDashboardWriter
       + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
-      + INDENT2 + "if(!$('#' + targetId).length) { return; };" + NEWLINE
+      + INDENT2 + "if(!$('#' + targetId).length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
       + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
       + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
       + INDENT2 + "this._processComponents(); },";
