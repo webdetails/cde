@@ -131,7 +131,7 @@ public class DashboardStructure implements IDashboardStructure {
       result.put( "wcdf", wcdfData );
       result.put( "data", cdeData );
       return JsonUtils.getJsonResult( true, result );
-    } catch ( Throwable t ) {
+    } catch ( Exception t ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_003_LOAD_READING_FILE_EXCEPTION" ) );
     } finally {
