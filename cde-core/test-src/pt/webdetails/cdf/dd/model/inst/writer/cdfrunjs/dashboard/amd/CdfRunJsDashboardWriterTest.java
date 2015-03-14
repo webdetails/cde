@@ -64,11 +64,16 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
     + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
+  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(targetId) {" + NEWLINE
     + INDENT2 + "if(!$('#' + targetId).length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
     + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
     + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
-    + INDENT2 + "this._processComponents(); },";
+    + " },";
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
+    + INDENT2 + "this.setupDOM(targetId);" + NEWLINE
+    + INDENT2 + "this._processComponents();" + NEWLINE
+    + INDENT2 + "this.init();" + NEWLINE
+    + "},";
   private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
     INDENT1 + "_processComponents: function() '{'" + NEWLINE
       + INDENT2 + "var dashboard = this;" + NEWLINE
@@ -441,6 +446,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( DASHBOARD_MODULE_START )
       .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
@@ -495,6 +501,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( DASHBOARD_MODULE_START )
       .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
