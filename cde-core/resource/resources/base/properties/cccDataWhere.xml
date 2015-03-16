@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>dataWhere</Description>
-    <Tooltip>A function that filters datums being loaded.</Tooltip>
+    <Tooltip>A function that filters datums as they are being loading.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
     <Order>295</Order>
