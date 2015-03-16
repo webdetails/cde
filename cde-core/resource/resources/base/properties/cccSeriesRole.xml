@@ -7,7 +7,7 @@
     <Tooltip>The series visual role is a plot-level visual role that represents a series of connected data points.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>450</Order>
+    <Order>451</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

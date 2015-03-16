@@ -7,7 +7,7 @@
     <Tooltip>Indicates if value labels are shown next to the visual elements.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>509</Order>
+    <Order>510</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

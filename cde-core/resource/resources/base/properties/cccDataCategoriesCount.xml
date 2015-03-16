@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>dataCategoriesCount</Description>
-    <Tooltip>The number of category-like columns that are present in a data source.</Tooltip>
+    <Tooltip>The number of columns of the "categories" physical group that the data source contains.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
     <Order>290</Order>

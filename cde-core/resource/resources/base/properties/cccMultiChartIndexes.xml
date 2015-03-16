@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>multiChartIndexes</Description>
-    <Tooltip>The indexes of the data source's virtual item columns that are to feed the default multiChart, multiChart2, .</Tooltip>
+    <Tooltip>The indexes of columns of the logical table that are to feed the default multiChart, multiChart2, .</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
     <Order>342</Order>
