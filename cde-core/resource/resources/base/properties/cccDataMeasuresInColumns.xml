@@ -2,9 +2,9 @@
   <Header>
     <Name>cccDataMeasuresInColumns</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>false</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>dataMeasuresInColumns</Description>
-    <Tooltip>In the cross-tab format, indicates if, a column exists for each series value and measure dimension.</Tooltip>
+    <Tooltip>Indicates if multiple measures "are in" columns or in rows (applies to crosstab data format).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>292</Order>

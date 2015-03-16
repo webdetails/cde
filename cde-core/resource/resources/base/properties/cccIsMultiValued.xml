@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
     <Description>isMultiValued</Description>
-    <Tooltip>Indicates if the data source has multiple value and dimensions.</Tooltip>
+    <Tooltip>Indicates if the data source contains multiple columns of the "measures" physical group.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>307</Order>

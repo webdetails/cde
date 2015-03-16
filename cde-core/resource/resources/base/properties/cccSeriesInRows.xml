@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
     <Description>seriesInRows</Description>
-    <Tooltip>Indicates if, in the data source, the "series" data is in the rows, instead of, as is more usual, in the columns.</Tooltip>
+    <Tooltip>Swaps the columns of the "series" and "categories" physical groups.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>449</Order>
+    <Order>450</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>
