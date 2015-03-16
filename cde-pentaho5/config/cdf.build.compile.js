@@ -33,7 +33,7 @@
   //If this option is specified, then all the files from the app directory
   //will be copied to the dir: output area, and baseUrl will assume to be
   //a relative path under this directory.
-  appDir: "module-scripts",
+  appDir: "../build-res/module-scripts",
 
   //Introduced in 2.1.3: Some situations do not throw and stop the optimizer
   //when an error occurs. However, you may want to have the optimizer stop
@@ -53,9 +53,7 @@
   //http: URL when running in the browser and during an optimization that
   //file should be skipped because it has no dependencies.
   paths: {
-    'requireLib': 'require',
-    //'common-ui': '../../js-lib/expanded/common-ui',                     TODO REMOVE
-    //'dojo': '../../js-lib/expanded/common-ui/dojo/dojo'            TODO REMOVE
+    'requireLib': 'require'
   },
 
   //By default all the configuration for optimization happens from the command
@@ -68,7 +66,7 @@
   //or require.config({}) call found in that file will be used.
   //As of 2.1.10, mainConfigFile can be an array of values, with the last
   //value's config take precedence over previous values in the array.
-  mainConfigFile: 'requireCfg.js',
+  mainConfigFile: '../build-res/requireCfg.js',
 
   //If using UglifyJS2 for script optimization, these config options can be
   //used to pass configuration values to UglifyJS2.

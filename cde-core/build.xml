@@ -100,15 +100,10 @@
 
   <!-- overrides subfloor clean to also cleanup runtime-lib -->
   <target name="clean" depends="subfloor.clean, subfloor-js.clean-js">
-      <echo message="Deleting... ${runtimelib.dir}"/>
-      <delete dir="${runtimelib.dir}"/>
-      <echo message="Deleting... ${js.node.node_modules.dir}"/>
-      <delete dir="${js.node.node_modules.dir}"/>
-      <echo message="Deleting RequireJS Configurations"/>
-      <delete file="build-res/requireCfg-raw.js"/>
-      <delete file="build-res/requireCfg.js"/>
-      <echo message="Deleting... build-res"/>
-      <delete dir="build-res"/>
+      <delete dir="${runtimelib.dir}" verbose="true"/>
+      <delete dir="${js.node.node_modules.dir}" verbose="true"/>
+      <delete dir="${package.resdir}" verbose="true"/>
+      <delete dir="build-res" verbose="true"/>
   </target>
 
 
