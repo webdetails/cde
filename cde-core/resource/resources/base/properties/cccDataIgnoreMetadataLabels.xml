@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>false</DefaultValue>
     <Description>dataIgnoreMetadataLabels</Description>
-    <Tooltip>Indicates if the data source translation should not use the column labels provided in the data source's metadata as defaults for the labels of dimensions that are directly bound to those columns.</Tooltip>
+    <Tooltip>Indicates if the data source translation should ignore the column labels present in the data source's metadata as defaults for the labels of dimensions that are directly loaded from those columns.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
     <Order>291</Order>

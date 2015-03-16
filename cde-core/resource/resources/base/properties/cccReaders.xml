@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccMeasuresIndexes</Name>
+    <Name>cccReaders</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>measuresIndexes</Description>
-    <Tooltip>The indexes of columns of the "measures" physical group (applies to relational data format).</Tooltip>
+    <Description>readers</Description>
+    <Tooltip>A list of dimension names to load from corresponding logical table columns.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>338</Order>
+    <Order>444</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
