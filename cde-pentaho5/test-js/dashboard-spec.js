@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard'],
+define(['cdf/Dashboard.Clean'],
   function(Dashboard) {
 
   /**

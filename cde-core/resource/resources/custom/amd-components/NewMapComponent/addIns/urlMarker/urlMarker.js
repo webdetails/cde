@@ -13,7 +13,7 @@
 
 define([
   'cdf/AddIn',
-  'cdf/Dashboard',
+  'cdf/Dashboard.Clean',
   '../../NewMapComponentExt'],
   function(AddIn, Dashboard, NewMapComponentExt) {
   

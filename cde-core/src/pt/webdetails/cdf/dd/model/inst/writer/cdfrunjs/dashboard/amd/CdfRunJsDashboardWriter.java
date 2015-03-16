@@ -460,7 +460,7 @@ public class CdfRunJsDashboardWriter
     } else if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.MOBILE ) ) {
       return "cdf/Dashboard.Mobile";
     } else {
-      return "cdf/Dashboard";
+      return "cdf/Dashboard.Clean";
     }
   }
 

@@ -13,7 +13,7 @@
 
 define([
   'cdf/AddIn',
-  'cdf/Dashboard',
+  'cdf/Dashboard.Clean',
   'cdf/lib/jquery'],
   function(AddIn, Dashboard, $) {
 
