@@ -417,12 +417,16 @@ public class CdfRunJsDashboardWriter
     componentClassNames.add( "$" );
     componentClassNames.add( "_" );
     componentClassNames.add( "moment" );
+    componentClassNames.add( "cdo" );
+    componentClassNames.add( "Utils" );
     // Add main Dashboard module path
     cdfRequirePaths.add( getDashboardRequireModuleId() );
     cdfRequirePaths.add( "cdf/Logger" );
     cdfRequirePaths.add( "cdf/lib/jquery" );
     cdfRequirePaths.add( "amd!cdf/lib/underscore" );
     cdfRequirePaths.add( "cdf/lib/moment" );
+    cdfRequirePaths.add( "cdf/lib/CCC/cdo" );
+    cdfRequirePaths.add( "cdf/dashboard/Utils" );
 
     // Add component AMD modules
     Iterator it = getComponentList().entrySet().iterator();

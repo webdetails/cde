@@ -42,6 +42,11 @@ import pt.webdetails.cdf.dd.model.meta.Resource;
 public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
   private static final Log _logger = LogFactory.getLog( CggRunJsGenericComponentWriter.class );
   private static final String CGG_EXTENSION = ".js";
+  private boolean writeScript = true;
+
+  public CggRunJsGenericComponentWriter( boolean canWrite ) {
+    this.writeScript = canWrite;
+  }
 
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (IUserContentAccess) output, (CggRunJsDashboardWriteContext) context, (GenericComponent) t );
@@ -49,6 +54,10 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
   public void write( IUserContentAccess access, CggRunJsDashboardWriteContext context, GenericComponent comp )
     throws ThingWriteException {
+    if ( !this.canWrite() ) {
+      return;
+    }
+
     String dashboardFilePath = context.getDashboard().getSourcePath();
     String dashboardFileDir = FilenameUtils.getFullPath( dashboardFilePath );
     String dashboardFileName = FilenameUtils.getName( dashboardFilePath );
@@ -201,5 +210,9 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       CggRunJsComponentWriteContext compContext = new CggRunJsComponentWriteContext( factory, dash, comp );
       dsWriter.write( out, compContext, dsComp );
     }
+  }
+
+  public boolean canWrite() {
+    return this.writeScript;
   }
 }

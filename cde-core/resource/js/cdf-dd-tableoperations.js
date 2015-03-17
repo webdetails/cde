@@ -532,9 +532,12 @@ var BaseOperation = Base.extend({
 
   checkAndExecute: function(tableManager) {
     var isPropertyTable = $('#' + tableManager.getId() + ' div[id*=properties]').length > 0;
-    if(this.canExecute(tableManager) && !isPropertyTable) {
+    var isExecutable = this.canExecute(tableManager) && !isPropertyTable;
+    if(isExecutable) {
       this.execute(tableManager);
     }
+
+    return isExecutable;
   },
 
   constructor: function() {
@@ -553,6 +556,15 @@ var BaseOperation = Base.extend({
     }
 
     return code;
+  },
+
+  selectFirstProperty: function(tableManager) {
+    // edit the new entry - we know the name is on the first line
+    var linkedTableManager = tableManager.getLinkedTableManager();
+    if (typeof linkedTableManager != 'undefined') {
+      linkedTableManager.selectCell(0,0, 'simple');
+      $('table#' + linkedTableManager.getTableId() + ' > tbody > tr:first > td:eq(1)').click();
+    }
   },
 
   getId: function() { return this.id; },
@@ -633,10 +645,7 @@ var AddRowOperation = BaseOperation.extend({
     this.logger.debug("Inserting " + _stub.MODEL + " after " + rowType + " at " + insertAtIdx);
     tableManager.insertAtIdx(_stub, insertAtIdx);
 
-    // edit the new entry - we know the name is on the first line
-    if (typeof tableManager.getLinkedTableManager() != 'undefined') {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() + " > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+    this.selectFirstProperty(tableManager);
   }
 });
 CellOperations.registerOperation(new AddRowOperation());
@@ -725,7 +734,7 @@ var MoveToOperation = BaseOperation.extend({
   },
 
   canExecute: function(tableManager) {
-    return false;
+    return true;
   },
 
   execute: function(tableManager) {

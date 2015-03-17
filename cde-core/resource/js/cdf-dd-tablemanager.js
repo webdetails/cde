@@ -227,7 +227,9 @@ var TableManager = Base.extend({
         tableManager.setDroppedOnId(dropId);
 
         var moveOperation = new MoveToOperation();
-        moveOperation.execute(tableManager);
+        var command = new RowOperationCommand(moveOperation, tableManager);
+
+        Commands.executeCommand(command);
       },
       over: function(event, ui) {
         tableManager.addExtraHoverStyles(ui.draggable, $(this));
@@ -356,8 +358,6 @@ var TableManager = Base.extend({
       _type = "Label";
     }
 
-    var _setExpression = tm.getColumnSetExpressions()[colIdx];
-
     var renderer = this.cellRendererPool[_type];
     if(!renderer) {
       var RendererClass = window[_type + "Renderer"];
@@ -386,9 +386,13 @@ var TableManager = Base.extend({
     }
 
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value) {
-      _setExpression.apply(myself, [row, value]);
+      var oldValue = row.value;
+      if(oldValue != value) {
+        var command = new ChangePropertyCommand(myself, row, value);
+        Commands.executeCommand(command);
+      }
 
-      // Rerender this column
+      // Renderer this column
       tr.find("td:eq(" + colIdx + ")").remove();
       myself.renderColumn(tr, row, colIdx);
     }, options);
@@ -521,7 +525,9 @@ var TableManager = Base.extend({
 
     // Unselect
     this.cleanSelections();
-    $('#' + this.getTableId() + " > tbody > tr:eq(" + row + ")").addClass("ui-state-active");
+    var $table = $('#' + this.getTableId());
+    $table.click();
+    $table.find("tbody > tr:eq(" + row + ")").addClass("ui-state-active");
 
     // Uncomment following cells to enable td highlight
     //$('#'+this.getTableId() + " > tbody > tr:eq("+ row +") > td:eq("+ col + ")").addClass("ui-state-active");
@@ -806,7 +812,10 @@ var TableManager = Base.extend({
   executeOperation: function(tableManagerId, idx) {
 
     var tableManager = TableManager.getTableManager(tableManagerId);
-    tableManager.getOperations()[idx].execute(tableManager);
+    var operation = tableManager.getOperations()[idx];
+    var command = new RowOperationCommand(operation, tableManager);
+
+    Commands.executeCommand(command);
   },
 
   globalInit: function() {
@@ -1340,14 +1349,13 @@ var SelectRenderer = CellRenderer.extend({
 
 var ComponentToExportRenderer = SelectRenderer.extend({
 
-  isAutoComplete: true,
-
   getData: function() {
     var data = _.extend({}, this.selectData);
     var components = cdfdd.dashboardData.components.rows;
 
     var validComponents = components.filter(function(comp) {
-      return comp.meta_cdwSupport == 'true';
+      var nameProperty = comp.properties && comp.properties[0];
+      return comp.meta_cdwSupport === 'true' && nameProperty && nameProperty.value !== "";
     });
 
     validComponents.map(function(comp) {
@@ -2168,21 +2176,21 @@ var ResourceFileRenderer = CellRenderer.extend({
   formatSelection: function(file) {
     var isSystem = false;
     var finalPath = "";
+    var dashFile = CDFDDFileName;
 
     if(file.charAt(0) != '/') {
       file = "/" + file;
     }
 
-    if(CDFDDFileName != undefined && CDFDDFileName.indexOf("/system") == 0) {
+    if(dashFile != null && dashFile.indexOf("/system") == 0) {
       var systemDir = "system";
-      var pluginDir = CDFDDFileName.split('/')[2];
-      file = "/" + systemDir + "/" + pluginDir + file
+      var pluginDir = dashFile.split('/')[2];
+      file = "/" + systemDir + "/" + pluginDir + file;
       isSystem = true;
     }
 
     var common = true;
     var splitFile = file.split("/");
-    var dashFile = CDFDDFileName;
     if(dashFile == "") {
       //the path is forced to start by slash because the cde editor is called without name in the context of
       //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
@@ -2204,11 +2212,17 @@ var ResourceFileRenderer = CellRenderer.extend({
       finalPath += "../";
     });
 
-    finalPath += splitFile.slice(i - 1).join('/');
+    finalPath += splitFile.slice(i - 1).join('/').replace(/\/+/g, "/");
+
+    return this.giveContext(isSystem, finalPath);
+
+  },
+
+  giveContext: function(isSystem, path) {
     if(isSystem) {
-      return "${system:" + finalPath.replace(/\/+/g, "/") + "}";
+      return "${system:" + path + "}";
     } else {
-      return "${solution:" + finalPath.replace(/\/+/g, "/") + "}";
+      return "${solution:" + path + "}";
     }
   },
 
@@ -2219,14 +2233,14 @@ var ResourceFileRenderer = CellRenderer.extend({
       fileName = settings.replace(toReplace, '').replace('}', '');
 
       if(fileName.charAt(0) != '/') { //relative path, append dashboard location
-        fileName = this.getRelativeFileName(fileName);
+        fileName = this.getAbsoluteFileName(fileName);
       }
 
     } else if(settings.indexOf('${system:') > -1) {
       fileName = settings.replace('${system:', '').replace('}', '');
 
       if(fileName.charAt(0) != '/') { //relative path, append dashboard location
-        fileName = this.getRelativeFileName(fileName);
+        fileName = this.getAbsoluteFileName(fileName);
       } else {
         fileName = "/system/" + CDFDDFileName.split('/')[2] + fileName;
       }
@@ -2242,16 +2256,17 @@ var ResourceFileRenderer = CellRenderer.extend({
     return fileName;
   },
 
-  getRelativeFileName: function(fileName) {
+  getAbsoluteFileName: function(fileName) {
+
     var basePath = CDFDDFileName;
     if(basePath == null) {
       this.fileName = null;
       return;
     }
+
     var lastSep = basePath.lastIndexOf('/');
     basePath = basePath.substring(0, lastSep);
-
-    if(fileName.indexOf('..') > -1) { //resolve
+    if(fileName.indexOf('..') > -1) {
       var base = basePath.split('/');
       var file = fileName.split('/');
       var baseEnd = base.length;
@@ -2260,11 +2275,11 @@ var ResourceFileRenderer = CellRenderer.extend({
         fileStart++;
         baseEnd--;
       }
-      return base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
-
+      fileName = base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
     } else {
-      return basePath + '/' + fileName;
+      fileName = basePath + '/' + fileName;
     }
+    return fileName.replace(/\/+/g, "/");
   },
 
   setFileName: function(settings) { //set .fileName if possible

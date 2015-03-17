@@ -103,9 +103,11 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
-        if ($(e.target).is('input, textarea')) {
+        if($(e.target).is('input, textarea') || e.ctrlKey) {
           return;
         }
+
+        e.preventDefault();
 
         var activePanel = cdfdd.getActivePanel();
         var activeTable = activePanel.getSelectedTable();
@@ -138,7 +140,6 @@ var CDFDD = Base.extend({
             }
             break;
           case 13:
-            e.preventDefault();
             if(e.shiftKey) { //shift + enter
               activeTable.cellUnselected();
             } else { //enter
@@ -167,7 +168,9 @@ var CDFDD = Base.extend({
           case 38:
             if(e.shiftKey) { //shift + up
               var operation = new MoveUpOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //up
               activeTable.selectCellBefore();
             }
@@ -175,7 +178,9 @@ var CDFDD = Base.extend({
           case 40:
             if(e.shiftKey) { //shift+down
               var operation = new MoveDownOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //down
               activeTable.selectCellAfter();
             }
@@ -187,7 +192,6 @@ var CDFDD = Base.extend({
             activeTable.expandCell();
             break;
           case 9: //tab
-            e.preventDefault();
             var nextTable = activePanel.selectNextTable();
             if(nextTable) {
               var row = nextTable.getSelectedCell();
@@ -200,31 +204,37 @@ var CDFDD = Base.extend({
            * Row Operations
            */
           case 82: //r
-            if(e.ctrlKey) { return; }
-            e.preventDefault();
             var operation = new LayoutAddRowOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 67: //c
-            e.preventDefault();
             var operation = new LayoutAddColumnsOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 72: //h
-            e.preventDefault();
             var operation = new LayoutAddHtmlOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 88:
             if(e.shiftKey) { //shift+x
               var operation = new DeleteOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
           case 68:
             if(e.shiftKey) { //shift+d
               var operation = new (activePanel.getDuplicateOperation())();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
         }
@@ -718,7 +728,6 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("");
           }
         }, function(file) {
           $("#fileInput").val(file.replace(selectedFolder, ""));
@@ -873,9 +882,7 @@ var CDFDD = Base.extend({
   previewMode: function() {
 
     if(this.isNewFile(CDFDDFileName)) {
-      $.notifyBar({
-        html: "Need to save an initial dashboard before previews are available."
-      });
+      NotifyBarUtils.infoNotifyBar("Need to save an initial dashboard before previews are available.");
       return;
     }
 
@@ -1205,7 +1212,6 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("");
           }
         }, function(file) {
           $("#fileInput").val(file.replace(selectedFolder, ""));
@@ -1768,8 +1774,72 @@ var CDFDDUtils = Base.extend({}, {
     });
 
     return result;
+  },
+
+  markAsClean: function() {
+    $('div.cdfdd-title-status').removeClass('dirtyStatus');
+    Commands.cleanExecutedCommands();
+  },
+
+  markAsDirty: function() {
+    $('div.cdfdd-title-status').addClass('dirtyStatus');
   }
 });
+
+
+var NotifyBarUtils = {
+  successNotifyBar: function(message) {
+    this.notifyBar(message, 'success');
+  },
+
+  errorNotifyBar: function(message, error) {
+    if(!error) {
+      message += ": " + error;
+    }
+
+    this.notifyBar(message, 'error');
+  },
+
+  infoNotifyBar: function(message) {
+    this.notifyBar(message, 'info');
+  },
+
+  notifyBar: function(message, type) {
+    var notifyObject = $("#notifyBar");
+    var notifyHtml = '<div class="notify-bar-icon"></div><div class="notify-bar-message">' + message + '</div>';
+
+    if(!notifyObject.length) {
+      notifyObject = $('<div id="notifyBar" class="notify-bar"></div>');
+    } else {
+      this.cleanStatus();
+    }
+
+    switch(type) {
+      case 'success':
+        notifyObject.addClass('notify-bar-success');
+        break;
+      case 'error':
+        notifyObject.addClass('notify-bar-error');
+        break;
+      case 'info':
+        notifyObject.addClass('notify-bar-info');
+        break;
+    }
+
+    $.notifyBar({
+      jqObject: notifyObject,
+      html: notifyHtml,
+      delay: 1500
+    });
+  },
+
+  cleanStatus: function() {
+    $("#notifyBar")
+        .removeClass('notify-bar-success')
+        .removeClass('notify-bar-error')
+        .removeClass('notify-bar-info')
+  }
+};
 
 var cdfdd;
 $(function() {

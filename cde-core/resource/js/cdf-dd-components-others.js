@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -12,114 +12,115 @@
  */
 
 var ResultRenderer = ParameterRenderer.extend({});
+
 var PaginationTypeRenderer = SelectRenderer.extend({
 
-    selectData: {
-        'simple':'Simple',
-        'simple_numbers':'Simple Numbers',
-        'full':'Full',
-        'full_numbers':'Full Numbers',
-        'two_button':'Two buttons'
-    }
+  selectData: {
+    'simple':         'Simple',
+    'simple_numbers': 'Simple Numbers',
+    'full':           'Full',
+    'full_numbers':   'Full Numbers',
+    'two_button':     'Two buttons'
+  }
+
 });
 var AccessRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'public':'Public',
-			'private':'Private'
-		}
+  selectData: {
+    'public':  'Public',
+    'private': 'Private'
+  }
 });
 
 var GravityRenderer = SelectRenderer.extend({
 
-		selectData: {
-                    'N': 'Top',
-                    'S': 'Bottom',
-                    'W': 'Left',
-                    'E': 'Right'
-		}
+  selectData: {
+    'N': 'Top',
+    'S': 'Bottom',
+    'W': 'Left',
+    'E': 'Right'
+  }
 });
 
 var OutputModeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'include':'Include',
-			'exclude':'Exclude'
-		}
+  selectData: {
+    'include': 'Include',
+    'exclude': 'Exclude'
+  }
 });
 
 var BandedModeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'compact':'Compact',
-			'classic':'Classic'
-		}
+  selectData: {
+    'compact': 'Compact',
+    'classic': 'Classic'
+  }
 });
 var TableStyleRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'themeroller':'New',
-			'classic':'Classic',
-			'bootstrap':'Bootstrap'
-		}
+  selectData: {
+    'themeroller': 'New',
+    'classic':     'Classic',
+    'bootstrap':   'Bootstrap'
+  }
 });
 
 var MenuModeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'horizontal':'Horizontal',
-			'vertical':'Vertical'
-		}
+  selectData: {
+    'horizontal': 'Horizontal',
+    'vertical':   'Vertical'
+  }
 });
 
 
 var AnchorRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'top':'Top',
-			'bottom':'Bottom',
-			'left':'Left',
-			'right':'Right'
-		}
+  selectData: {
+    'top':    'Top',
+    'bottom': 'Bottom',
+    'left':   'Left',
+    'right':  'Right'
+  }
 });
 
 var AnchorCenterRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'center':'Center',
-      'top':'Top',
-			'bottom':'Bottom',
-			'left':'Left',
-			'right':'Right'
-		}
+  selectData: {
+    'center': 'Center',
+    'top':    'Top',
+    'bottom': 'Bottom',
+    'left':   'Left',
+    'right':  'Right'
+  }
 });
 
 
 var SquareAlignRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'left':'Left',
-			'center':'Center',
-			'right':'Right',
-      'top':'Top',
-			'middle':'Middle',
-      'bottom':'Bottom'
-		}
+  selectData: {
+    'left':   'Left',
+    'center': 'Center',
+    'right':  'Right',
+    'top':    'Top',
+    'middle': 'Middle',
+    'bottom': 'Bottom'
+  }
 });
 
 var LeftRightRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'left':'Left',
-			'right':'Right'
-		}
+  selectData: {
+    'left':  'Left',
+    'right': 'Right'
+  }
 });
-
 
 var TopBottomRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'top':'Top',
-			'bottom':'Bottom'
-		}
+  selectData: {
+    'top':    'Top',
+    'bottom': 'Bottom'
+  }
 });

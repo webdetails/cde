@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -39,6 +39,7 @@ module.exports = function(config) {
       'resource/js/cdf-dd-wizardmanager.js',
       'resource/js/cdf-dd-propertiesmanager.js',
       'resource/js/cdf-dd.js',
+      'resource/js/cdf-dd-commands.js',
       'resource/js/cdf-dd-palletemanager.js',
       'resource/js/cdf-dd-tableoperations.js',
       'resource/js/cdf-dd-layout-mobile.js',

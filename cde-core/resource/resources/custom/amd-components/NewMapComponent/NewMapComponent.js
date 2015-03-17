@@ -257,7 +257,6 @@ define([
       /** Mixin for handling color maps
        This should probably be elevated to a proper class with a nice database of colormaps
        */
-      colormap: [[0, 102, 0, 255], [255, 255, 0, 255], [255, 0, 0, 255]], //RGBA
       colormaps: {
         'jet': [],
         'gray': [[0, 0, 0, 255], [255, 255, 255, 255]],
@@ -265,30 +264,33 @@ define([
       },
       getColorMap: function() {
 
+        var colorMap = this.colormap;
+        if(colorMap == null || (_.isArray(colorMap) && !colorMap.length)) {
+          colorMap = [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]]; //RGBA
+        }
+
         var interpolate = function(a, b, n) {
-          var c = [], d = [];
+          var c = [], d=[];
           var k, kk, step;
           for(k = 0; k < a.length; k++){
             c[k] = [];
-            for(kk = 0, step = (b[k] - a[k]) / n; kk < n; kk++) {
-              c[k][kk] = a[k] + kk * step;
+            for(kk = 0, step = (b[k] - a[k])/n; kk < n; kk++) {
+              c[k][kk] = a[k] + kk*step;
             }
           }
-          for(k=0; k<c[0].length; k++) {
+          for(k = 0; k < c[0].length; k++) {
             d[k] = [];
             for(kk = 0; kk < c.length; kk++) {
-              d[k][kk] =  Math.round(c[kk][k]);
+              d[k][kk] = Math.round(c[kk][k]);
             }
           }
           return d;
         };
         var cmap = [];
-        // convert string representation of arrays into array of arrays
-        this.colormap = _.map(this.colormap, JSON.parse);
-        for(k = 1; k < this.colormap.length; k++) {
-          cmap = cmap.concat(interpolate(this.colormap[k - 1], this.colormap[k], 32));
+        for(var k = 1, L = colorMap.length; k < L; k++) {
+          cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
         }
-        return _.map(cmap, function(v) {
+        return _.map( cmap, function (v) {
           return 'rgba('+ v.join(',') +')';
         });
       },

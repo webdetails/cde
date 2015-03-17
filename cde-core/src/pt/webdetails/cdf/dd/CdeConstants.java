@@ -30,6 +30,8 @@ public class CdeConstants {
   public static final String DESIGNER_STYLES_RESOURCE = "resources/styles.html";
   public static final String DESIGNER_SCRIPTS_RESOURCE = "resources/scripts.html";
 
+  public static final String LEGACY_UNSAVED_FILE_PATH = "/null/null/null";
+
   /**
    * Inner paths relative to plugin repository dir
    */

@@ -17,53 +17,61 @@
     <div class="container">
       <div class="cdfdd-toolbar-logo"></div>
       <div class="cdfdd-toolbar span-24 last">
-      <div id = "header" class="span-11 cdfdd-main prepend-2">
-        <div id = "headerLinks" class="headerLinks">
+        <div id = "header" class="cdfdd-main prepend-2">
+          <div id = "headerLinks" class="headerLinks">
 
-          <div class="headerButton">
-            <a onclick="cdfdd.newDashboard()" class="headerButton">
-              New
-            </a>
-          </div>
-          <div class="headerButton">
-            <a onclick="cdfdd.save()" class="headerButton">
-              Save
-            </a>
-          </div>
-          <div class="headerButton">
-            <a class="headerButton" id="SaveAs" onclick="cdfdd.combinedSaveAs()">Save as...</a>
-          </div>
-          <div class="headerButton">
-            <a id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()" class="headerButton">
-              Reload
-            </a>
-          </div>
-          <div class="headerButton">
-            <a onclick="cdfdd.saveSettings()" class="headerButton">
-              Settings
-            </a>
+            <div class="headerButton">
+              <a class="headerButton" onclick="cdfdd.newDashboard()">
+                New
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="Save" onclick="cdfdd.save()">
+                Save
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="SaveAs" onclick="cdfdd.combinedSaveAs()">Save as...</a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" id="cdfdd-main-Reload" href="javascript:Panel.enableThisButton(this);cdfdd.reload()">
+                Reload
+              </a>
+            </div>
+            <div class="headerButton">
+              <a class="headerButton" onclick="cdfdd.saveSettings()">
+                Settings
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-        <!---->
+
+        <div class="cdfdd-title-container">
+          <div class="cdfdd-title" title="@DASBOARD_TITLE@">@DASBOARD_TITLE@</div><div class="cdfdd-title-status"></div>
+        </div>
+
         <!-- Modes -->
-        <div style=" display: inline-block; position: absolute; right: 0; ">
-          <div class="span-9 cdfdd-modes" style="min-width:380px;">
-            <div class="panelButton" title="Datasources Panel">
-            <a onclick="window.cdfdd &amp;&amp; cdfdd.datasources &amp;&amp; (Panel.enableThisButton(this), cdfdd.datasources.switchTo())" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
-            </div>
-            <div class="panelButton" title="Components Panel">
-            <a onclick="window.cdfdd &amp;&amp; cdfdd.components &amp;&amp; (Panel.enableThisButton(this),cdfdd.components.switchTo())" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
-            </div>
-            <div class="panelButton panelButton-active" title="Layout Panel">
-            <a onclick="window.cdfdd &amp;&amp; cdfdd.layout &amp;&amp; (Panel.enableThisButton(this), cdfdd.layout.switchTo())" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
-            </div>
-          </div>
-          <div class="span-2 cdfdd-preview last last">
+        <div class="cdfdd-modes-container">
+          <div class="cdfdd-preview last">
             <div class="panelButton" title="Preview your Dashboard" style="width: 40px;">
               <a onclick="cdfdd.previewMode()" class="tooltip panelButtonClickableArea"><div id="previewButton"></div></a>
             </div>
           </div>
+
+          <div class="cdfdd-modes">
+
+            <div class="panelButton" title="Datasources Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.datasources &amp;&amp; (Panel.enableThisButton(this), cdfdd.datasources.switchTo())" class="tooltip panelButtonClickableArea"><div class="datasourcesPanelButton"></div></a>
+            </div>
+            <div class="panelButton" title="Components Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.components &amp;&amp; (Panel.enableThisButton(this),cdfdd.components.switchTo())" class="tooltip panelButtonClickableArea"><div class="componentsPanelButton"></div></a>
+            </div>
+            <div class="panelButton panelButton-active" title="Layout Panel">
+              <a onclick="window.cdfdd &amp;&amp; cdfdd.layout &amp;&amp; (Panel.enableThisButton(this), cdfdd.layout.switchTo())" class="tooltip panelButtonClickableArea"><div class="layoutPanelButton"></div></a>
+            </div>
+          </div>
+
+
         </div>
       </div>
       <hr class="hr-hidden">

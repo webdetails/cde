@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -90,17 +90,28 @@ var MdxEntryBase = PalleteEntry.extend({
 
 var QueryRenderer = TextAreaRenderer.extend({});
 
-var CdaPathRenderer = ResourceFileRenderer.extend({
-  getFileExtensions: function(){
+var NoContextPathRenderer = ResourceFileRenderer.extend({
+
+  giveContext: function(isSystem, path) {
+    return path;
+  },
+
+  getFileName: function(filename) {
+    if(filename.charAt(0) !== '/') {
+      filename = this.getAbsoluteFileName(filename);
+    }
+
+    return filename;
+  }
+});
+
+var CdaPathRenderer = NoContextPathRenderer.extend({
+  getFileExtensions: function() {
     return ".cda";
   },
 	
-	getResourceType: function(){
-		return 'cda';
-	},
-
-  formatSelection: function(file){
-    return file.substring(0,1) == "/" ? file : "/" + file;
+  getResourceType: function() {
+    return 'cda';
   }
 });
 
@@ -152,40 +163,13 @@ var CggPathRenderer = ResourceFileRenderer.extend({
   }
 });
 
-var KtrPathRenderer = ResourceFileRenderer.extend({
+var KtrPathRenderer = NoContextPathRenderer.extend({
 
   //disallow selecting a folder for new file creation
   createNew: false,
 
   getFileExtensions: function(){
     return ".ktr";
-  },
-
-  formatSelection: function(file){
-    if (file.charAt(0) != '/') {
-      file = "/"+ file;
-    }
-    var common = true;
-    var splitFile = file.split("/");
-    var dashFile = cdfdd.getDashboardData().filename;
-    if(dashFile == null) {
-     return file;
-    }
-    splitPath = dashFile.split("/"),
-    finalPath = "",
-    i = 0;
-    while (common){
-      if (splitFile[i] !== splitPath[i]) {
-        common = false;
-      }
-      i += 1;
-    }
-       
-    $.each(splitPath.slice(i),function(i,j){
-      finalPath+="../";
-    });
-    finalPath += splitFile.slice(i - 1).join('/');
-    return finalPath.replace(/\/+/g, "/");
   }
 });
 
