@@ -14,6 +14,10 @@
 describe("Datasources Editor Test #", function() {
 
 	var tableManager = new TableManager('test-tableManager');
+	var tableModel = new TableModel('test-tableModel');
+	tableManager.setTableModel(tableModel);
+
+	spyOn(tableModel, 'getColumnSetExpressions').and.callFake(function() {return [function(){}, function(){}]});
 
 	$("<div id='wizardDialog'></div>").appendTo('body');
 	$("<div class='cdfdd-wizard-title'></div>").appendTo('body');
@@ -22,17 +26,20 @@ describe("Datasources Editor Test #", function() {
 	var mdxPh = $("<div></div>");
 	var mqlPh = $("<div></div>");
 	var scriptablePh = $("<div></div>");
+	var jsonScriptablePh = $("<div></div>");
 	var xPathPh = $("<div></div>");
 
 	new CurrentMdxQueryRenderer(tableManager).render(mdxPh, "");
 	new MqlQueryRenderer(tableManager).render(mqlPh, "");
 	new ScriptableQueryRenderer(tableManager).render(scriptablePh, "");
+	new JsonScriptableQueryRenderer(tableManager).render(jsonScriptablePh, "");
 	new XPathQueryRenderer(tableManager).render(xPathPh, "");
 
 	var buttons = [
 		mdxPh.find("button"),
 		mqlPh.find("button"),
 		scriptablePh.find("button"),
+		jsonScriptablePh.find("button"),
 		xPathPh.find("button")
 	];
 
@@ -71,6 +78,13 @@ describe("Datasources Editor Test #", function() {
 	it("Scriptable editor has the correct query template", function(done) {
 		var result = $(".ace_line").text().replace(/\s/g, "");
 		var expected = 'importorg.pentaho.reporting.engine.classic.core.util.TypedTableModel;String[]columnNames=newString[]{"value","name2"};Class[]columnTypes=newClass[]{Integer.class,String.class};TypedTableModelmodel=newTypedTableModel(columnNames,columnTypes);model.addRow(newObject[]{newInteger("0"),newString("Name")});returnmodel;';
+		expect(result).toBe(expected);
+		done();
+	});
+
+	it("JsonScriptable editor has the correct query template", function(done) {
+		var result = $(".ace_line").text().replace(/\s/g, "");
+		var expected = '{"resultset":[["Name",0]],"metadata":[{"colIndex":0,"colType":"String","colName":"value"},{"colIndex":1,"colType":"Integer","colName":"name2"}]}';
 		expect(result).toBe(expected);
 		done();
 	});

@@ -616,7 +616,19 @@ var ScriptableEditor = AcePromptWizard.extend({
 			this.base();
 			this.logger = new Logger("ScriptableEditor" );
 			this.hasFunctions = false;
-      this.queryTemplate ='import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n' +
+      this.applyTemplate();
+    },
+		
+		getParameterValue: function(parameterProperties){
+			return "${" + parameterProperties[0].value + "}";
+		},
+		
+		getFunctionValue: function(_function){
+			return _function.value;
+		},
+
+    applyTemplate: function() {
+      this.queryTemplate = 'import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n' +
         '\n' +
         'String[] columnNames = new String[]{\n' +
         '"value","name2"\n' +
@@ -633,21 +645,39 @@ var ScriptableEditor = AcePromptWizard.extend({
         'model.addRow(new Object[]{ new Integer("0"), new String("Name") });\n' +
         '\n' +
         'return model;';
-    },
-		
-		getParameterValue: function(parameterProperties){
-			return "${" + parameterProperties[0].value + "}";
-		},
-		
-		getFunctionValue: function(_function){
-			return _function.value;
-		}
-		
+    }
 	},{
-
 });
 
 PromptWizardManager.register(new ScriptableEditor());
+
+var JsonScriptableEditor = ScriptableEditor.extend({
+
+  wizardId: "JSON_SCRIPTABLE_EDITOR",
+
+  constructor: function(){
+    this.base();
+    this.logger = new Logger("JsonScriptableEditor" );
+    this.hasFunctions = false;
+    this.applyTemplate();
+  },
+
+  applyTemplate: function() {
+    this.queryTemplate = '' +
+    '{\n' +
+    '   "resultset":[\n' +
+    '      ["Name", 0]\n' +
+    '   ],\n\n' +
+    '   "metadata":[\n' +
+    '      {"colIndex":0,"colType":"String","colName":"value"},\n' +
+    '      {"colIndex":1,"colType":"Integer","colName":"name2"}\n' +
+    '   ]\n' +
+    '}';
+  }
+}, {
+});
+
+PromptWizardManager.register(new JsonScriptableEditor());
 
 var XPathEditor = AcePromptWizard.extend({ 
 

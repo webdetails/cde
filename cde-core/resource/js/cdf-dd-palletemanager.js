@@ -223,7 +223,7 @@ var PalleteEntry = Base.extend({
     }
     
     if (_stub.properties){
-    	this.fixQueryProperty(_stub.properties, this.category);
+    	this.fixQueryProperty(_stub, this.category);
     }
     tableManager.insertAtIdx(_stub,insertAtIdx);
 
@@ -239,7 +239,10 @@ var PalleteEntry = Base.extend({
 
     return _stub;
   },
-	fixQueryProperty: function(props, cat) {
+	fixQueryProperty: function(stub, cat) {
+		var props = stub.properties;
+		var type = stub.type;
+
 		$.each(props, function(i, prop) {
 			if (prop.name == "query") {
 				switch (cat) {
@@ -259,7 +262,11 @@ var PalleteEntry = Base.extend({
 						prop.type = "XPathQuery";
 						break;
 					case "SCRIPTING":
-						prop.type = "ScriptableQuery";
+						if(type === "ComponentsjsonScriptable_scripting") {
+							prop.type = "JsonScriptableQuery";
+						} else {
+							prop.type = "ScriptableQuery";
+						}
 						break;
 					default:
 						prop.type = "DefaultQuery";
