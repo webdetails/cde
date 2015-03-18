@@ -680,7 +680,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "testWithGeoLocalization",
+      "value": "${h:testWithGeoLocalization}",
       "type": "HtmlObject"
      },
      {
@@ -840,7 +840,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "HiddenContentCol",
+      "value": "${h:HiddenContentCol}",
       "type": "HtmlObject"
      },
      {

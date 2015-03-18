@@ -1348,7 +1348,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "example1Obj",
+      "value": "${h:example1Obj}",
       "type": "HtmlObject"
      },
      {
@@ -1446,7 +1446,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "example2Obj",
+      "value": "${h:example2Obj}",
       "type": "HtmlObject"
      },
      {
@@ -1544,7 +1544,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "popupContent1",
+      "value": "${h:popupContent1}",
       "type": "HtmlObject"
      },
      {
@@ -1632,7 +1632,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "popupContent2",
+      "value": "${h:popupContent2}",
       "type": "HtmlObject"
      },
      {
@@ -1730,7 +1730,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "chart",
+      "value": "${h:chart}",
       "type": "HtmlObject"
      },
      {

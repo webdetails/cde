@@ -843,7 +843,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:barChart}",
+      "value": "${h:barChart}",
       "type": "HtmlObject"
      },
      {
@@ -2052,7 +2052,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:LineChart}",
+      "value": "${h:LineChart}",
       "type": "HtmlObject"
      },
      {
@@ -3266,7 +3266,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:pieChart}",
+      "value": "${h:pieChart}",
       "type": "HtmlObject"
      },
      {

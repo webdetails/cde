@@ -950,7 +950,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:column1}",
+      "value": "${h:column1}",
       "type": "HtmlObject"
      },
      {
@@ -1061,7 +1061,7 @@
      },
      {
       "name": "targetHtmlObject",
-      "value": "column3",
+      "value": "${h:column3}",
       "type": "String"
      },
      {
@@ -1071,7 +1071,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "column2",
+      "value": "${h:column2}",
       "type": "HtmlObject"
      },
      {
@@ -1134,7 +1134,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:column4}",
+      "value": "${h:column4}",
       "type": "HtmlObject"
      },
      {

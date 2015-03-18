@@ -24,6 +24,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
@@ -61,16 +62,32 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
   private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
+  private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
+    "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+      + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
+      + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
+      + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
+      + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
+      + "'}'," + NEWLINE;
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
     + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(targetId) {" + NEWLINE
-    + INDENT2 + "if(!$('#' + targetId).length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
-    + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
-    + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
+  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(element) {" + NEWLINE
+    + INDENT2 + "var target;" + NEWLINE
+    + INDENT2 + "if (typeof element ===\"string\") {" + NEWLINE
+    + INDENT2 + "target = $('#' + element);" + NEWLINE
+    + INDENT2 + "} else {" + NEWLINE
+    + INDENT2 + " target = element[0] ? $(element[0]) : $(element);" + NEWLINE
+    + INDENT2 + "} " + NEWLINE
+    + INDENT2 + "if(!target.length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
+    + INDENT2 + "target.empty();" + NEWLINE
+    + INDENT2 + "target.html(this.layout);" + NEWLINE
     + " },";
-  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
-    + INDENT2 + "this.setupDOM(targetId);" + NEWLINE
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function(element) {" + NEWLINE
+    + INDENT2 + "this.setupDOM(element);" + NEWLINE
+    + INDENT2 + "this.renderDashboard();" + NEWLINE
+    + INDENT1 + "}," + NEWLINE
+    + INDENT2 + "renderDashboard: function() {" + NEWLINE
     + INDENT2 + "this._processComponents();" + NEWLINE
     + INDENT2 + "this.init();" + NEWLINE
     + "},";
@@ -363,7 +380,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Component comp3 = mock( CustomComponent.class );
 
     componentList.add( comp1 );
-    doReturn( "comp1" ).when( dashboardWriterSpy ).getComponentIdFromContext( context, comp1 );
+    doReturn( "comp1" ).when( comp1 ).getId();
     doReturn( "comp1" ).when( dashboardWriterSpy).getComponentName( comp1 );
     doReturn( true ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp1 );
     doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp1 );
@@ -372,7 +389,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "fake1/path" ).when( dashboardWriterSpy).getComponentPath( comp1, "Fake1Component" );
 
     componentList.add( comp2 );
-    doReturn( "comp2" ).when( dashboardWriterSpy ).getComponentIdFromContext( context, comp2 );
+    doReturn( "comp2" ).when( comp2 ).getId();
     doReturn( "comp2" ).when( dashboardWriterSpy).getComponentName( comp2 );
     doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp2 );
     doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp2 );
@@ -381,7 +398,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "fake2/path" ).when( dashboardWriterSpy).getComponentPath( comp2, "Fake2Component" );
 
     componentList.add( invalidComp );
-    doReturn( "invalidComponent" ).when( dashboardWriterSpy ).getComponentIdFromContext( context, invalidComp );
+    doReturn( "invalidComponent" ).when( invalidComp ).getId();
     doReturn( "invalidComponent" ).when( dashboardWriterSpy).getComponentName( invalidComp );
     doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( invalidComp );
     doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( invalidComp );
@@ -392,7 +409,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "" ).when( dashboardWriterSpy).getComponentPath( invalidComp, "InvalidComponent" );
 
     componentList.add( comp3 );
-    doReturn( "comp3" ).when( dashboardWriterSpy ).getComponentIdFromContext( context, comp3 );
+    doReturn( "comp3" ).when( comp3 ).getId();
     doReturn( "comp3" ).when( dashboardWriterSpy).getComponentName( comp3 );
     doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp3 );
     doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp3 );
@@ -441,7 +458,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3" );
 
-    String out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout" );
+    String out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
     StringBuilder dashboardResult = new StringBuilder();
 
@@ -473,7 +490,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     dashboardWriter.addRequireResource( "TestResource1", "TestResourcePath1" );
 
-    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout" );
+    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
     dashboardResult = new StringBuilder();
 
@@ -516,5 +533,29 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( dashboardResult.toString(), out );
 
+    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", true );
+
+    dashboardResult = new StringBuilder();
+    dashboardResult
+      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
+        + REQUIRE_CONFIG + NEWLINE )
+        // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( "" )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, "fakeLayout" ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+
   }
+
+
+
+
 }

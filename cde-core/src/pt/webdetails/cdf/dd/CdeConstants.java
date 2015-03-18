@@ -84,4 +84,6 @@ public class CdeConstants {
   public static final String DASHBOARD_HEADER_TAG  = "\\@HEADER\\@";
   public static final String DASHBOARD_CONTENT_TAG = "\\@CONTENT\\@";
   public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
+
+  public static final String DASHBOARD_ALIAS_TAG = "@ALIAS@";
 }

@@ -852,7 +852,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:chart}",
+      "value": "${h:chart}",
       "type": "HtmlObject"
      },
      {
@@ -2235,7 +2235,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:table}",
+      "value": "${h:table}",
       "type": "HtmlObject"
      },
      {
@@ -2323,7 +2323,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:legend}",
+      "value": "${h:legend}",
       "type": "HtmlObject"
      },
      {

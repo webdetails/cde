@@ -38,6 +38,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
 import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
 import pt.webdetails.cdf.dd.CdeEngine;
@@ -364,11 +365,11 @@ public class RenderApi {
 
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
-      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
+      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
-      dashboardAlias = alias + "_" + FilenameUtils.removeExtension( FilenameUtils.getName( path ) );
-    }
+      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
 
+    }
     CdfRunJsDashboardWriteOptions options =
         new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme );
 

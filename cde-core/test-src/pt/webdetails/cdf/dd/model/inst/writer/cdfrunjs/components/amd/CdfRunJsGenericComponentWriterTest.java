@@ -62,7 +62,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
     StringBuilder out = new StringBuilder();
 
     when( genericComponent.getMeta() ).thenReturn( genericComponentType );
-    when( context.getId( genericComponent ) ).thenReturn( "test" );
+    when( genericComponent.getId() ).thenReturn( "test" );
 
     when( options.getAliasPrefix() ).thenReturn( "" );
     when( context.getOptions() ).thenReturn( options );

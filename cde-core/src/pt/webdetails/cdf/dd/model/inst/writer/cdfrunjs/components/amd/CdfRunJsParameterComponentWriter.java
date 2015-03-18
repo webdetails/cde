@@ -29,7 +29,7 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
 
   public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp )
     throws ThingWriteException {
-    String name = JsonUtils.toJsString( context.getId( comp ) );
+    String name = JsonUtils.toJsString( comp.getId() );
     String value = JsonUtils.toJsString( comp.tryGetPropertyValue( "propertyValue", "" ) );
     String viewRole = JsonUtils.toJsString( comp.tryGetPropertyValue( "parameterViewRole", "unused" ) );
     Boolean isBookmarkable = Boolean.valueOf( comp.tryGetPropertyValue( "bookmarkable", null ) );

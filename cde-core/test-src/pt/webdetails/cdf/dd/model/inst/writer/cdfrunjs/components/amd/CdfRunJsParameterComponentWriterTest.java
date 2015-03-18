@@ -59,7 +59,7 @@ public class CdfRunJsParameterComponentWriterTest extends TestCase {
     when( parameterComponent.tryGetPropertyValue( "parameterViewRole", "unused" ) ).thenReturn( "unused" );
     when( parameterComponent.tryGetPropertyValue( "bookmarkable", null ) ).thenReturn( "true" );
 
-    when( context.getId( parameterComponent ) ).thenReturn( "param1" );
+    when( parameterComponent.getId() ).thenReturn( "param1" );
 
     when( options.getAliasPrefix() ).thenReturn( "" );
     when( context.getOptions() ).thenReturn( options );

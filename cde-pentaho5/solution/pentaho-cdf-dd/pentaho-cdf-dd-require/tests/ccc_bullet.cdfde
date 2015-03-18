@@ -718,7 +718,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "obj1",
+      "value": "${h:obj1}",
       "type": "HtmlObject"
      },
      {
@@ -1097,7 +1097,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "obj2",
+      "value": "${h:obj2}",
       "type": "HtmlObject"
      },
      {
@@ -1476,7 +1476,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "obj3",
+      "value": "${h:obj3}",
       "type": "HtmlObject"
      },
      {
@@ -1855,7 +1855,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "obj4",
+      "value": "${h:obj4}",
       "type": "HtmlObject"
      },
      {
@@ -2234,7 +2234,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "obj5",
+      "value": "${h:obj5}",
       "type": "HtmlObject"
      },
      {

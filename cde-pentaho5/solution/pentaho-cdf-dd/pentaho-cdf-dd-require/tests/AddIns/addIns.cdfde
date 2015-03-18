@@ -3107,7 +3107,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "SparklineObj",
+      "value": "${h:SparklineObj}",
       "type": "HtmlObject"
      },
      {
@@ -3310,7 +3310,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "DataBarObj",
+      "value": "${h:DataBarObj}",
       "type": "HtmlObject"
      },
      {
@@ -3513,7 +3513,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "groupHeadersObj",
+      "value": "${h:groupHeadersObj}",
       "type": "HtmlObject"
      },
      {
@@ -3716,7 +3716,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "TrendArrowObj",
+      "value": "${h:TrendArrowObj}",
       "type": "HtmlObject"
      },
      {
@@ -3919,7 +3919,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "HyperlinkObj",
+      "value": "${h:HyperlinkObj}",
       "type": "HtmlObject"
      },
      {
@@ -4122,7 +4122,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "PvSparklineObj",
+      "value": "${h:PvSparklineObj}",
       "type": "HtmlObject"
      },
      {
@@ -4325,7 +4325,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "CircleObj",
+      "value": "${h:CircleObj}",
       "type": "HtmlObject"
      },
      {
@@ -4528,7 +4528,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "textFormatObj",
+      "value": "${h:textFormatObj}",
       "type": "HtmlObject"
      },
      {
@@ -4731,7 +4731,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "bulletChartObj",
+      "value": "${h:bulletChartObj}",
       "type": "HtmlObject"
      },
      {

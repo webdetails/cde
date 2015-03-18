@@ -2232,7 +2232,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:ChartExportPNGExporting}",
+      "value": "${h:ChartExportPNGExporting}",
       "type": "HtmlObject"
      },
      {
@@ -2335,7 +2335,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "ChartExportSVGExporting",
+      "value": "${h:ChartExportSVGExporting}",
       "type": "HtmlObject"
      },
      {
@@ -2641,7 +2641,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:DataExportCSVExporting}",
+      "value": "${h:DataExportCSVExporting}",
       "type": "HtmlObject"
      },
      {
@@ -2744,7 +2744,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:DataExportXLSExporting}",
+      "value": "${h:DataExportXLSExporting}",
       "type": "HtmlObject"
      },
      {
@@ -2847,7 +2847,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:DataExportJSONExporting}",
+      "value": "${h:DataExportJSONExporting}",
       "type": "HtmlObject"
      },
      {
@@ -2950,7 +2950,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:DataExportXMLExporting}",
+      "value": "${h:DataExportXMLExporting}",
       "type": "HtmlObject"
      },
      {
@@ -3128,7 +3128,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:TheTable}",
+      "value": "${h:TheTable}",
       "type": "HtmlObject"
      },
      {
@@ -3255,7 +3255,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:TheChart}",
+      "value": "${h:TheChart}",
       "type": "HtmlObject"
      },
      {
