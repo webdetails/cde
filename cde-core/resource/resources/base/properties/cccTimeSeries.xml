@@ -7,7 +7,7 @@
     <Tooltip>Indicates that dimensions whose name is "category1", "category2", etc, have a Date value type, by default.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>475</Order>
+    <Order>478</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>
