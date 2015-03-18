@@ -164,8 +164,6 @@ a.prev, a.next {
 }
 
 .popupTemplate {
-  width: 725px;
-  height:510px;
   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
   position: absolute; 
   background-color: #eaedee; 
@@ -175,7 +173,8 @@ a.prev, a.next {
   padding: 7px;
   max-width: 75%;
   max-height: 75%;
-  min-width: 27%;
+  min-width: 725px;
+  min-height: 450px;
   overflow-x:auto;
 }
 
@@ -207,6 +206,9 @@ div.popupTemplate .popupTemplatebuttons {
   text-align: right; 
   padding: 5px 0 5px 0;  
   background-color: #eaedee;
+  position: absolute;
+  right: 8px;
+  bottom: 0;
 }
 
 div.popupTemplate button {
@@ -217,7 +219,7 @@ div.popupTemplate button {
 	font-size: 12px;
 	float: right;
 	position: relative;
-	bottom: -100px;
+	bottom: auto;
 	margin-left: 5px;
 	top: auto!important;
 }
@@ -231,17 +233,7 @@ div.popupTemplate button.popupTemplatedefaultbutton {
 }
 
 div.warningPopupTemplate {
-  height:165px;
-}
-
-div.warningPopupTemplate .popupTemplatebuttons {
-  position: absolute;
-  right: 8px;
-  bottom: 0px;
-}
-
-div.warningPopupTemplate button {
-  bottom: auto;
+  min-height:165px;
 }
 
 /* single item */
@@ -276,9 +268,4 @@ div.warningPopupTemplate button {
 #thumbs h3 em {
 	font-style:normal;
 	color:yellow;
-}
-
-.templates {
-	position: relative;
-	top:30px;
 }
