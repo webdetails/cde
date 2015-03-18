@@ -7,7 +7,7 @@
     <Tooltip>A tick formatter function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>366</Order>
+    <Order>367</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

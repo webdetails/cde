@@ -7,7 +7,7 @@
     <Tooltip>The values mask used to build the text of value labels.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>517</Order>
+    <Order>519</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

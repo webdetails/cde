@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the heat-grid uses as visual elements dot-shapes, within each grid cell.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>511</Order>
+    <Order>513</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

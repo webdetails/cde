@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>measuresIndexes</Description>
-    <Tooltip>The indexes of the data source's virtual item columns that are to feed the default dimensions value, value2, etc.</Tooltip>
+    <Tooltip>The indexes of columns of the "measures" physical group (applies to relational data format).</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>337</Order>
+    <Order>338</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

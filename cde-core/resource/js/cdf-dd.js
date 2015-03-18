@@ -675,7 +675,8 @@ var CDFDD = Base.extend({
     var content = '' +
         '<h2>New Dashboard</h2>\n' +
         '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
-        '<span class="description">Unsaved changes will be lost.</span>\n';
+        '<span class="description">Unsaved changes will be lost.</span>';
+
     $.prompt(content, {
       buttons: {
         Ok: true,
@@ -683,100 +684,10 @@ var CDFDD = Base.extend({
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if(v) myself.saveAs(true);
-      }
-    });
-  },
-
-  saveAs: function(fromScratch) {
-
-    var selectedFolder = "";
-    var selectedFile = "";
-    var selectedTitle = this.getDashboardWcdf().title;
-    var selectedDescription = this.getDashboardWcdf().description;
-    var myself = this;
-    var content = '' +
-        '<h2>Save as:</h2><hr style="background:none;"/>\n' +
-        '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-        '<span class="folderexplorerfilelabel">File Name:</span>\n' +
-        '<span class="folderexplorerfileinput"><input id="fileInput"  type="text"/></span>\n' +
-        '<hr class="filexplorerhr"/>\n' +
-        '<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-        '<span class="folderexplorerextralabels" >Title:</span>\n' +
-        '<input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '"></input><br/>\n' +
-        '<span class="folderexplorerextralabels" >Description:</span>\n' +
-        '<input id="descriptionInput" class="folderexplorerdescinput" type="text" value="' + selectedDescription + '"></input>';
-
-    $.prompt(content, {
-      loaded: function() {
-        $('#fileInput').change(function() {
-          selectedFile = this.value;
-        });
-        $('#titleInput').change(function() {
-          selectedTitle = this.value;
-        });
-        $('#descriptionInput').change(function() {
-          selectedDescription = this.value;
-        });
-        $('#container_id').fileTree({
-          root: '/',
-          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=.wcdf&access=create",
-          expandSpeed: 1000,
-          collapseSpeed: 1000,
-          multiFolder: false,
-          folderClick: function(obj, folder) {
-            if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
-            $(obj).attr("class", "selectedFolder");
-            selectedFolder = folder;
-          }
-        }, function(file) {
-          $("#fileInput").val(file.replace(selectedFolder, ""));
-          selectedFile = $("#fileInput").val();
-        });
-      },
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      opacity: 0.2,
-      prefix: 'popup',
-      callback: function(v, m, f) {
         if(v) {
-
-          if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
-            $.prompt('Invalid file extension. Must be .wcdf', {
-              prefix: "popup"
-            });
-          } else if(selectedFolder.length == 0) {
-            $.prompt('Please choose destination folder.', {
-              prefix: "popup"
-            });
-          } else if(selectedFile.length == 0) {
-            $.prompt('Please enter the file name.', {
-              prefix: "popup"
-            });
-          } else if(selectedFile.length > 0) {
-            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
-
-            CDFDDFileName = selectedFolder + selectedFile;
-            myself.dashboardData.filename = CDFDDFileName;
-            _.each(myself.components.getComponents(), function(w) {
-              if(w.meta_widget) {
-                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
-              }
-            });
-
-            var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1) // TODO: shouldn't it strip, like save does?
-              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1)
-            };
-
-            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
-          }
+          var path = wd.cde.endpoints.getNewDashboardUrl();
+          var timestamp = (new Date()).getTime();
+          location.assign(location.origin + path + '?ts=' + timestamp);
         }
       }
     });
@@ -906,23 +817,6 @@ var CDFDD = Base.extend({
     };
 
     PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl(solution, path, file));
-  },
-
-
-  savePulldown: function(target, evt) {
-    var myself = this,
-        $pulldown = $(target);
-    $pulldown.append(Mustache.render(templates.savePulldown));
-    $("body").one("click", function() {
-      $pulldown.find("ul").remove();
-    });
-    $pulldown.find(".save-as-dashboard").click(function() {
-      myself.saveAs();
-    });
-    $pulldown.find(".save-as-widget").click(function() {
-      myself.saveAsWidget();
-    });
-    evt.stopPropagation();
   },
 
   reload: function() {
@@ -1110,7 +1004,7 @@ var CDFDD = Base.extend({
     });
   },
 
-  combinedSaveAs: function(fromScratch) {
+  combinedSaveAs: function() {
 
     var selectedTitle = "",
         selectedDescription = "",
@@ -1270,7 +1164,7 @@ var CDFDD = Base.extend({
             };
 
             var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
+              operation: "saveas",
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
@@ -1313,7 +1207,7 @@ var CDFDD = Base.extend({
               myself.dashboardData.filename = CDFDDFileName;
 
               var saveAsParams = {
-                operation: fromScratch ? "newFile" : "saveas",
+                operation: "saveas",
                 file: selectedFolder + selectedFile,
                 title: selectedTitle,
                 description: selectedDescription,
@@ -1332,94 +1226,6 @@ var CDFDD = Base.extend({
       }
     });
 
-  },
-  saveAsWidget: function(fromScratch) {
-
-    var selectedFolder = wd.helpers.repository.getWidgetsLocation(),
-        selectedFile = "",
-        selectedTitle = this.getDashboardWcdf().title,
-        selectedDescription = this.getDashboardWcdf().description,
-        selectedWidgetName = "",
-        options = {
-          title: selectedTitle,
-          description: selectedDescription
-        },
-        myself = this,
-        content = Mustache.render(templates.saveAsWidget, options);
-
-    $.prompt(content, {
-      loaded: function() {
-        $(this).addClass('save-as-widget');
-        $('#fileInput').change(function() {
-          selectedFile = this.value;
-        });
-        $('#titleInput').change(function() {
-          selectedTitle = this.value;
-        });
-        $('#descriptionInput').change(function() {
-          selectedDescription = this.value;
-        });
-        $('#componentInput').change(function() {
-          selectedWidgetName = this.value;
-        });
-      },
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      prefix: "popup",
-      opacity: 0.2,
-      classes: 'save-as-widget',
-      callback: function(v, m, f) {
-        if(v) {
-
-          /* Validations */
-          var validInputs = true;
-          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)) {
-            $.prompt('Invalid file extension. Must be .wcdf', {prefix: "popup"});
-            validInputs = false;
-          } else if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
-            validInputs = false;
-          } else if(selectedWidgetName.length == 0) {
-            if(selectedTitle.length == 0) {
-              $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
-              validInputs = false;
-            } else {
-              selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
-            }
-          } else if(selectedFile.length <= 0) {
-            validInputs = false;
-          }
-
-          if(validInputs) {
-            if(selectedFile.indexOf(".wcdf") == -1) {
-              selectedFile += ".wcdf";
-            }
-
-            CDFDDFileName = selectedFolder + selectedFile;
-            myself.dashboardData.filename = CDFDDFileName;
-            _.each(myself.components.getComponents(), function(w) {
-              if(w.meta_widget) {
-                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
-              }
-            });
-
-            var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
-              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
-              widgetName: selectedWidgetName
-            };
-
-            SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-          }
-        }
-      }
-    });
   },
 
   saveSettingsRequest: function(wcdf) {
@@ -1983,23 +1789,4 @@ $(function() {
 
     }
   })
-
 });
-
-templates = {};
-templates.savePulldown =
-        "<ul class='controlOptions'>" +
-        " <li class='item popup'>Save As Dashboard</li>" +
-        " <li class='item popup'>Save As Widget</li>" +
-        "</ul>";
-
-templates.saveAsWidget =
-        '<h2>Save as Widget:</h2><hr/>\n' +
-        ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
-        ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"/>\n' +
-        ' <hr class="filexplorerhr"/>\n' +
-        ' <span class="folderexplorerextralabel" >-Extra Information-</span><br/>\n' +
-        ' <span class="folderexplorerextralabels" >Title:</span>' +
-        ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"/><br/>\n' +
-        ' <span class="folderexplorerextralabels" >Description:</span>' +
-        ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"/>';

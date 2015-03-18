@@ -23,6 +23,7 @@ wd.cde.endpoints = {
   imageResourceUrl: "resources/get?resource=",
   jsResourceUrl: "resources/getJs?resource=",
   saikuUiPluginUrl: "/content/saiku-ui/index.html?biplugin5=true",
+  newDashboardUrl: "/wcdf/new",
 
   //The webAppPath is defined at the start of Dashboards.js
   getWebappBasePath: function() {
@@ -59,6 +60,10 @@ wd.cde.endpoints = {
 
   getJsResourceUrl: function() {
     return this.getWebappBasePath() + this.pluginUrl + this.jsResourceUrl;
+  },
+
+  getNewDashboardUrl: function() {
+    return this.getStaticResUrl() + this.newDashboardUrl;
   },
 
   isEmptyFilePath: function(filePath) {
@@ -589,8 +594,9 @@ var SaveRequests = {
   },
 
   redirect: function(selectedFolder, selectedFile) {
-    window.location = window.location.protocol + "//" + window.location.host +
-        wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    var path = wd.cde.endpoints.getStaticResUrl() +
+        '/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    location.assign(location.origin + path);
   }
 
 };
@@ -618,6 +624,16 @@ var LoadRequests = {
 var PreviewRequests = {
 
   previewDashboard: function(saveParams, _href) {
+
+    var syncUrl = wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard";
+    var deletePreviewFiles = function() {
+      var deleteData = {
+        operation: "deletepreview",
+        file: cdfdd.getDashboardData().filename
+      };
+      $.post(syncUrl, deleteData);
+    };
+
     var successFunction = function(result) {
       try {
         if(result && result.status === "true") {
@@ -627,7 +643,9 @@ var PreviewRequests = {
             autoSize: false,
             href: _href,
             width: $(window).width(),
-            height: $(window).height()
+            height: $(window).height(),
+            onClosed: deletePreviewFiles,
+            onError: deletePreviewFiles
           });
         } else {
           throw result && result.result;
@@ -646,7 +664,7 @@ var PreviewRequests = {
 
     if(rv && rv < 10) {
       Dashboards.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
+      $.post(syncUrl, saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
       $uploadForm.ajaxForm({

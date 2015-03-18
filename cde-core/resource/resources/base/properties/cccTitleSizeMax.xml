@@ -7,7 +7,7 @@
     <Tooltip>The maximum size of the panel, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>482</Order>
+    <Order>484</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

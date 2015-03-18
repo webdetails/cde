@@ -238,6 +238,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -507,6 +508,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -747,6 +749,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -858,6 +861,7 @@
           <Property name="orientation">cccOrientation</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="rangeRole">cccRangeRole</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
@@ -1102,6 +1106,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -1295,6 +1300,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -1553,6 +1559,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -1779,6 +1786,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -2010,6 +2018,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -2284,6 +2293,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -2445,6 +2455,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -2713,6 +2724,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -2991,6 +3003,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -3269,6 +3282,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -3372,6 +3386,7 @@
           <Property name="clickAction">cccClickAction</Property>
           <Property name="colorMode">cccColorMode</Property>
           <Property name="colorRole">cccColorRole</Property>
+          <Property name="colorSliceBrightnessFactor">cccColorSliceBrightnessFactor</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
           <Property name="compatVersion">cccCompatVersion</Property>
@@ -3406,6 +3421,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
@@ -3550,6 +3566,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="rootCategoryLabel">cccRootCategoryLabel</Property>
@@ -3760,6 +3777,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>

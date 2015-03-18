@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>~</DefaultValue>
     <Description>dataSeparator</Description>
-    <Tooltip>The separator character with which multiple values in a cross-tab format data source were joined, and also, used to build composite keys for multiple level groupings.</Tooltip>
+    <Tooltip>The separator character used to join multiple values in the crosstab format, and to build composite keys for multiple level groupings.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>293</Order>
+    <Order>294</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

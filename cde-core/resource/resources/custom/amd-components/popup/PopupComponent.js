@@ -28,6 +28,8 @@ define([
     $overlay: undefined,
     popupClass: undefined,
     popupOverlayClass: undefined,
+    horizontalScroll: undefined,
+    verticalScroll: undefined,
     
     /* // Default settings
     gravity: undefined,
@@ -35,13 +37,15 @@ define([
     closeOnClickOutside: false,
     */ 
 
-    update: function(){
+    update: function() {
       var myself = this;
+
       this.content = $("#" + this.htmlObject).detach();
       this.ph = this.ph ? this.ph.empty() : $('<div>').appendTo($('body'));
       this.content.appendTo(this.ph);
       this.ph.hide();
       this.ph.addClass('popupComponent');
+
       if(this.popupClass) {
         this.ph.addClass(this.popupClass);
       }
@@ -252,6 +256,7 @@ define([
           myself.hide();
         })
       }
+      $('body').addClass('draggable-popup-fix');
       
     },
 
@@ -261,8 +266,8 @@ define([
       if(this.$overlay){
         this.$overlay.unbind('click');
         this.$overlay.detach();
-        
       }
+      $('body').removeClass('draggable-popup-fix');
     },
 
     /* Given the size (width/height) for a target and a placeholder element,
