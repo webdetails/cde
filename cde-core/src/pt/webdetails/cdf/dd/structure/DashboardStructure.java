@@ -29,7 +29,6 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -84,7 +83,7 @@ public class DashboardStructure implements IDashboardStructure {
   public void deletePreviewFiles( String cdeFilePath ) throws DashboardStructureException {
     IRWAccess access = Utils.getSystemOrUserRWAccess( cdeFilePath );
 
-    if( access == null ) {
+    if ( access == null ) {
       throw new DashboardStructureException(
         Messages.getString( "XmlStructure.ERROR_011_READ_WRITE_ACCESS_EXCEPTION" ) );
     }
@@ -310,7 +309,7 @@ public class DashboardStructure implements IDashboardStructure {
     // Save to repository
     String wcdfText = wcdf.toXml().asXML();
     if ( !Utils.getSystemOrUserRWAccess( wcdfFilePath )
-      .saveFile( wcdfFilePath, new ByteArrayInputStream( safeGetEncodedBytes( wcdfText ) ) ) ) {
+        .saveFile( wcdfFilePath, new ByteArrayInputStream( safeGetEncodedBytes( wcdfText ) ) ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION" ) );
     }

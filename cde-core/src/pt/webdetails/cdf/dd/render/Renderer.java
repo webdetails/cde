@@ -48,7 +48,7 @@ public abstract class Renderer {
    */
   protected final Map<String, CdfRunJsDashboardWriteResult> getWidgets( String aliasPrefix ) {
     Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId =
-      new HashMap<String, CdfRunJsDashboardWriteResult>();
+        new HashMap<String, CdfRunJsDashboardWriteResult>();
 
     Dashboard dashboard = this.getContext().getDashboard();
     if ( dashboard.getRegularCount() > 0 ) {
@@ -102,7 +102,7 @@ public abstract class Renderer {
   }
 
   protected final String getIndent( int indent ) {
-    switch( indent ) {
+    switch ( indent ) {
       case 0:
         return "";
       case 1:
