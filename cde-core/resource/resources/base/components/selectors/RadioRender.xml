@@ -19,6 +19,7 @@
 			<Property>postFetch</Property>
 			<Property>valuesArray</Property>
 			<Property>valueAsId</Property>
+			<Property>defaultIfEmpty</Property>
 			<Property>separator</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
