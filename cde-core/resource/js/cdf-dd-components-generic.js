@@ -27,11 +27,9 @@ var PromptRenderer = CellRenderer.extend({
   render: function(placeholder, value, callback) {
 
     var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
-    var wizard = PromptWizardManager.getWizard(this.wizard);
 
-    if(!value && wizard.queryTemplate) {
-      value = wizard.queryTemplate;
-    }
+    var wizard = PromptWizardManager.getWizard(this.wizard);
+    value = this.getQueryTemplateValue(wizard, value);
 
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
@@ -47,6 +45,22 @@ var PromptRenderer = CellRenderer.extend({
     }).appendTo($("div.edit", _editArea));
 
     _editArea.appendTo(placeholder);
+  },
+
+  getQueryTemplateValue: function(wizard, value) {
+
+    if(!value && wizard.queryTemplate) {
+      value = wizard.queryTemplate;
+
+      var tableModel = this.tableManager.getTableModel();
+      var _setExpression = tableModel.getColumnSetExpressions()[1];
+      var colIdx = tableModel.getRowIndexByName('query');
+      var property = tableModel.getData()[colIdx];
+
+      _setExpression.apply(this.tableManager, [property, value]);
+    }
+
+    return value;
   },
 
   validate: function(settings, original) {
@@ -141,6 +155,16 @@ var ScriptableQueryRenderer = PromptRenderer.extend({
     this.logger = new Logger("ScriptableQueryRenderer");
     this.logger.debug("Creating new ScriptableQueryRenderer");
     this.wizard = "SCRIPTABLE_EDITOR";
+  }
+});
+
+var JsonScriptableQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("JsonScriptableQueryRenderer");
+    this.logger.debug("Creating new JsonScriptableQueryRenderer");
+    this.wizard = "JSON_SCRIPTABLE_EDITOR";
   }
 });
 var DefaultQueryRenderer = PromptRenderer.extend({
