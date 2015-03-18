@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>defaultIfEmpty</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"false"</DefaultValue>
+    <Description>Default If Empty</Description>
+    <Tooltip>If true, the first possible value is selected, otherwise, nothing is selected</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>42</Order>
+    <Advanced>true</Advanced>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
