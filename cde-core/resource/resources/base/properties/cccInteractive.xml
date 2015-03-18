@@ -7,7 +7,7 @@
     <Tooltip>Indicates if chart interaction is enabled.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>306</Order>
+    <Order>307</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
