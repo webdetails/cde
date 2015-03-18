@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccSmallMargins</Name>
+    <Name>cccBaseAxisFont</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>2%</DefaultValue>
-    <Description>smallMargins</Description>
-    <Tooltip>The margins of a small chart.</Tooltip>
+    <DefaultValue></DefaultValue>
+    <Description>baseAxisFont</Description>
+    <Tooltip>The font used by the panel.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>466</Order>
+    <Order>223</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
