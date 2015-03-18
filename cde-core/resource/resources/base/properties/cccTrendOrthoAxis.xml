@@ -7,7 +7,7 @@
     <Tooltip>The index of the orthogonal cartesian axis to use for the plot.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>503</Order>
+    <Order>506</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
