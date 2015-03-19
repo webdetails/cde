@@ -65,7 +65,7 @@ public class CdfRunJsDashboardWriter
   private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
   private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
-    "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+      "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
       + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
       + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
       + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
@@ -528,8 +528,7 @@ public class CdfRunJsDashboardWriter
 
     final String layout = ctx.replaceTokens( this.writeLayout( ctx, dash ) );
     final String components = replaceAliasTagWithAlias(
-      ctx.replaceHtmlAlias(
-        ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
+        ctx.replaceHtmlAlias( ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
 
     boolean emptyAlias = ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG );
     final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias );
@@ -598,10 +597,10 @@ public class CdfRunJsDashboardWriter
 
     if ( emptyAlias ) {
       out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,
-        StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     } else {
       out.append( DASHBOARD_MODULE_START )
-        .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
+          .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     }
 

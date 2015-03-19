@@ -365,7 +365,8 @@ public class RenderApi {
 
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
-      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
+      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_"
+        + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
 

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -16,7 +16,6 @@ package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -63,36 +62,36 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
   private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
-    "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
-      + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
-      + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
-      + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
-      + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
-      + "'}'," + NEWLINE;
+      "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+        + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
+        + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
+        + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
+        + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
+        + "'}'," + NEWLINE;
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
-    + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
+      + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(element) {" + NEWLINE
-    + INDENT2 + "var target;" + NEWLINE
-    + INDENT2 + "if (typeof element ===\"string\") {" + NEWLINE
-    + INDENT2 + "target = $('#' + element);" + NEWLINE
-    + INDENT2 + "} else {" + NEWLINE
-    + INDENT2 + " target = element[0] ? $(element[0]) : $(element);" + NEWLINE
-    + INDENT2 + "} " + NEWLINE
-    + INDENT2 + "if(!target.length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
-    + INDENT2 + "target.empty();" + NEWLINE
-    + INDENT2 + "target.html(this.layout);" + NEWLINE
-    + " },";
+      + INDENT2 + "var target;" + NEWLINE
+      + INDENT2 + "if (typeof element ===\"string\") {" + NEWLINE
+      + INDENT2 + "target = $('#' + element);" + NEWLINE
+      + INDENT2 + "} else {" + NEWLINE
+      + INDENT2 + " target = element[0] ? $(element[0]) : $(element);" + NEWLINE
+      + INDENT2 + "} " + NEWLINE
+      + INDENT2 + "if(!target.length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
+      + INDENT2 + "target.empty();" + NEWLINE
+      + INDENT2 + "target.html(this.layout);" + NEWLINE
+      + " },";
   private static final String DASHBOARD_MODULE_RENDERER = "render: function(element) {" + NEWLINE
-    + INDENT2 + "this.setupDOM(element);" + NEWLINE
-    + INDENT2 + "this.renderDashboard();" + NEWLINE
-    + INDENT1 + "}," + NEWLINE
-    + INDENT2 + "renderDashboard: function() {" + NEWLINE
-    + INDENT2 + "this._processComponents();" + NEWLINE
-    + INDENT2 + "this.init();" + NEWLINE
-    + "},";
+      + INDENT2 + "this.setupDOM(element);" + NEWLINE
+      + INDENT2 + "this.renderDashboard();" + NEWLINE
+      + INDENT1 + "}," + NEWLINE
+      + INDENT2 + "renderDashboard: function() {" + NEWLINE
+      + INDENT2 + "this._processComponents();" + NEWLINE
+      + INDENT2 + "this.init();" + NEWLINE
+      + "},";
   private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
-    INDENT1 + "_processComponents: function() '{'" + NEWLINE
+      INDENT1 + "_processComponents: function() '{'" + NEWLINE
       + INDENT2 + "var dashboard = this;" + NEWLINE
       + INDENT2 + "{0}" + NEWLINE
       + INDENT1 + "'}'" + NEWLINE;
@@ -136,27 +135,27 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardWriter.setComponentList( testComponentList );
 
     List<String> componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3" );
+        "Dashboard",
+        "Logger",
+        "$",
+        "_",
+        "moment",
+        "cdo",
+        "Utils",
+        "TestComponent1",
+        "TestComponent2",
+        "TestComponent3" );
     List<String> cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3" );
+        "cdf/Dashboard.Blueprint",
+        "cdf/Logger",
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/lib/moment",
+        "cdf/lib/CCC/cdo",
+        "cdf/dashboard/Utils",
+        "cdf/components/TestComponent1",
+        "cdf/components/TestComponent2",
+        "cdf/components/TestComponent3" );
 
     String out = dashboardWriter.wrapRequireDefinitions( "fakeContent" );
 
@@ -200,7 +199,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "TestComponent1",
       "TestComponent2",
       "TestComponent3",
-      "TestResource1");
+      "TestResource1" );
     cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
       "cdf/Logger",
@@ -212,7 +211,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
-      "TestResource1");
+      "TestResource1" );
 
     dashboardResult
       .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" ).append( NEWLINE )
@@ -228,28 +227,28 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Assert.assertEquals( dashboardResult.toString(), out );
 
   }
-  
+
   @Test
   public void testDashboardType() {
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Blueprint");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Blueprint" );
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Bootstrap");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Bootstrap" );
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Mobile");
+    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Mobile" );
   }
-  
+
   @Test
   public void testGetFileResourcesRequirePaths() {
     dashboardWriter.addRequireResource( "myResource1", "/myResource1.js" );
     dashboardWriter.addRequireResource( "myResource2", "/myResource2.js" );
     dashboardWriter.addRequireResource( "myResource3", "/myResource3.js" );
-    
+
     String fileResources = dashboardWriter.getFileResourcesRequirePaths();
-    
+
     assertEquals( fileResources, "requireCfg['paths']['myResource1'] = '/myResource1.js';\n"
         + "requireCfg['paths']['myResource2'] = '/myResource2.js';\n"
         + "requireCfg['paths']['myResource3'] = '/myResource3.js';\n"
@@ -278,7 +277,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     cssResources.add( cssResource );
     List<ResourceMap.Resource> jsResources = new ArrayList<ResourceMap.Resource>();
     ResourceMap.Resource jsResource1 = mock( ResourceMap.Resource.class ),
-      jsResource2 = mock( ResourceMap.Resource.class );
+        jsResource2 = mock( ResourceMap.Resource.class );
 
     doReturn( ResourceMap.ResourceType.FILE ).when( jsResource1 ).getResourceType();
     doReturn( ResourceMap.ResourceType.CODE ).when( jsResource2 ).getResourceType();
@@ -312,46 +311,46 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Component invalidComp = mock( CustomComponent.class );
     Component customComp3 = mock( CustomComponent.class );
 
-    doReturn( true ).when( dashboardWriterSpy).isPrimitiveComponent( primitiveComp );
-    doReturn( true ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( primitiveComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( primitiveComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( primitiveComp );
+    doReturn( true ).when( dashboardWriterSpy ).isPrimitiveComponent( primitiveComp );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( primitiveComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( primitiveComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( primitiveComp );
     Assert.assertEquals(
-      CDF_AMD_BASE_COMPONENT_PATH + "FakePrimitiveComponent",
-      dashboardWriterSpy.getComponentPath( primitiveComp, "FakePrimitiveComponent" ));
+        CDF_AMD_BASE_COMPONENT_PATH + "FakePrimitiveComponent",
+        dashboardWriterSpy.getComponentPath( primitiveComp, "FakePrimitiveComponent" ) );
 
-    doReturn( true ).when( dashboardWriterSpy).isCustomComponent( customComp1 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( customComp1 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( customComp1 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( customComp1 );
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp1 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp1 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp1 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp1 );
     Assert.assertEquals(
-      CDE_AMD_BASE_COMPONENT_PATH + "Custom1Component",
-      dashboardWriterSpy.getComponentPath( customComp1, "Custom1Component" ));
+        CDE_AMD_BASE_COMPONENT_PATH + "Custom1Component",
+        dashboardWriterSpy.getComponentPath( customComp1, "Custom1Component" ) );
 
-    doReturn( true ).when( dashboardWriterSpy).isCustomComponent( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( customComp2 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( customComp2 );
-    doReturn( "fakePath/Custom2Component.js" ).when( dashboardWriterSpy).getComponentImplementationPath( customComp2 );
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
+    doReturn( "fakePath/Custom2Component.js" ).when( dashboardWriterSpy ).getComponentImplementationPath( customComp2 );
     Assert.assertEquals(
-      CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
-      dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ));
+        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
+        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
 
-    doReturn( true ).when( dashboardWriterSpy).isCustomComponent( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( invalidComp );
-    doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( invalidComp );
-    doReturn( "" ).when( dashboardWriterSpy).getComponentImplementationPath( invalidComp );
-    Assert.assertEquals( "", dashboardWriterSpy.getComponentPath( invalidComp, "InvalidComponent" ));
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( invalidComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( invalidComp );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( invalidComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( invalidComp );
+    doReturn( "" ).when( dashboardWriterSpy ).getComponentImplementationPath( invalidComp );
+    Assert.assertEquals( "", dashboardWriterSpy.getComponentPath( invalidComp, "InvalidComponent" ) );
 
-    doReturn( true ).when( dashboardWriterSpy).isCustomComponent( customComp3 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( customComp3 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( customComp3 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( customComp3 );
-    doReturn( "sparkl" ).when( dashboardWriterSpy).getPluginIdFromOrigin( customComp3 );
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp3 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp3 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp3 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp3 );
+    doReturn( "sparkl" ).when( dashboardWriterSpy ).getPluginIdFromOrigin( customComp3 );
     Assert.assertEquals(
-      "sparkl" + PLUGIN_COMPONENT_FOLDER + "Custom3Component",
-      dashboardWriterSpy.getComponentPath( customComp3, "Custom3Component" ));
+        "sparkl" + PLUGIN_COMPONENT_FOLDER + "Custom3Component",
+        dashboardWriterSpy.getComponentPath( customComp3, "Custom3Component" ) );
   }
 
   @Test
@@ -369,10 +368,10 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( factory ).when( context ).getFactory();
     doReturn( writer ).when( factory ).getWriter( any( Thing.class ) );
 
-    doReturn( JSONObject.fromObject("{}") ).when( dashboardWcdfDescriptor ).toJSON();
+    doReturn( JSONObject.fromObject( "{}" ) ).when( dashboardWcdfDescriptor ).toJSON();
     doReturn( dashboardWcdfDescriptor ).when( dash ).getWcdf();
 
-    List<Component> componentList = new ArrayList<Component>(  );
+    List<Component> componentList = new ArrayList<Component>();
 
     Component comp1 = mock( CustomComponent.class );
     Component comp2 = mock( CustomComponent.class );
@@ -381,49 +380,49 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     componentList.add( comp1 );
     doReturn( "comp1" ).when( comp1 ).getId();
-    doReturn( "comp1" ).when( dashboardWriterSpy).getComponentName( comp1 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp1 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp1 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( comp1 );
-    doReturn( "Fake1Component" ).when( dashboardWriterSpy).getComponentClassName( comp1 );
-    doReturn( "fake1/path" ).when( dashboardWriterSpy).getComponentPath( comp1, "Fake1Component" );
+    doReturn( "comp1" ).when( dashboardWriterSpy ).getComponentName( comp1 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp1 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp1 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp1 );
+    doReturn( "Fake1Component" ).when( dashboardWriterSpy ).getComponentClassName( comp1 );
+    doReturn( "fake1/path" ).when( dashboardWriterSpy ).getComponentPath( comp1, "Fake1Component" );
 
     componentList.add( comp2 );
     doReturn( "comp2" ).when( comp2 ).getId();
-    doReturn( "comp2" ).when( dashboardWriterSpy).getComponentName( comp2 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp2 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp2 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( comp2 );
-    doReturn( "Fake2Component" ).when( dashboardWriterSpy).getComponentClassName( comp2 );
-    doReturn( "fake2/path" ).when( dashboardWriterSpy).getComponentPath( comp2, "Fake2Component" );
+    doReturn( "comp2" ).when( dashboardWriterSpy ).getComponentName( comp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp2 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp2 );
+    doReturn( "Fake2Component" ).when( dashboardWriterSpy ).getComponentClassName( comp2 );
+    doReturn( "fake2/path" ).when( dashboardWriterSpy ).getComponentPath( comp2, "Fake2Component" );
 
     componentList.add( invalidComp );
     doReturn( "invalidComponent" ).when( invalidComp ).getId();
-    doReturn( "invalidComponent" ).when( dashboardWriterSpy).getComponentName( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( invalidComp );
-    doReturn( true ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( invalidComp );
+    doReturn( "invalidComponent" ).when( dashboardWriterSpy ).getComponentName( invalidComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( invalidComp );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( invalidComp );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( invalidComp );
     doReturn( "InvalidComponent" ).when( dashboardWriterSpy ).getComponentClassName( invalidComp );
     // custom components in the repository must contain an implementation path or will be ignored
     // it is needed for AMD path configuration purposes
-    doReturn( "" ).when( dashboardWriterSpy).getComponentPath( invalidComp, "InvalidComponent" );
+    doReturn( "" ).when( dashboardWriterSpy ).getComponentPath( invalidComp, "InvalidComponent" );
 
     componentList.add( comp3 );
     doReturn( "comp3" ).when( comp3 ).getId();
-    doReturn( "comp3" ).when( dashboardWriterSpy).getComponentName( comp3 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentStaticSystemOrigin( comp3 );
-    doReturn( false ).when( dashboardWriterSpy).isComponentPluginRepositoryOrigin( comp3 );
-    doReturn( true ).when( dashboardWriterSpy).isComponentOtherPluginStaticSystemOrigin( comp3 );
+    doReturn( "comp3" ).when( dashboardWriterSpy ).getComponentName( comp3 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp3 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp3 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp3 );
     doReturn( "sparkl" ).when( dashboardWriterSpy ).getPluginIdFromOrigin( comp3 );
-    doReturn( "Fake3Component" ).when( dashboardWriterSpy).getComponentClassName( comp3 );
-    doReturn( "sparkl/fake3/component" ).when( dashboardWriterSpy).getComponentPath( comp3, "Fake3Component" );
+    doReturn( "Fake3Component" ).when( dashboardWriterSpy ).getComponentClassName( comp3 );
+    doReturn( "sparkl/fake3/component" ).when( dashboardWriterSpy ).getComponentPath( comp3, "Fake3Component" );
 
     doReturn( componentList ).when( dash ).getRegulars();
 
     Assert.assertEquals(
-      "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
+        "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
         + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
-      dashboardWriterSpy.writeComponents( context, dash ));
+        dashboardWriterSpy.writeComponents( context, dash ) );
 
     Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
 
@@ -440,23 +439,23 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardWriter.setComponentList( testComponentList );
 
     List<String> componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3" );
+        "Dashboard",
+        "Logger",
+        "$",
+        "_",
+        "moment",
+        "TestComponent1",
+        "TestComponent2",
+        "TestComponent3" );
     List<String> cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3" );
+        "cdf/Dashboard.Blueprint",
+        "cdf/Logger",
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/lib/moment",
+        "cdf/components/TestComponent1",
+        "cdf/components/TestComponent2",
+        "cdf/components/TestComponent3" );
 
     String out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
@@ -503,7 +502,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "TestComponent1",
       "TestComponent2",
       "TestComponent3",
-      "TestResource1");
+      "TestResource1" );
     cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
       "cdf/Logger",
@@ -513,12 +512,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
-      "TestResource1");
+      "TestResource1" );
 
     dashboardResult
       .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
         + REQUIRE_CONFIG + NEWLINE )
-      // Output module paths and module class names
+        // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
@@ -554,8 +553,5 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Assert.assertEquals( dashboardResult.toString(), out );
 
   }
-
-
-
 
 }
