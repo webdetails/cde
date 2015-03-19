@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the tooltip shows an arrow pointing to the visual element's anchor point.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>485</Order>
+    <Order>488</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

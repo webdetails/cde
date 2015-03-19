@@ -70,6 +70,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -165,6 +166,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -194,6 +196,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -348,6 +351,7 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -433,6 +437,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -462,6 +467,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -618,6 +624,7 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -710,6 +717,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -939,6 +947,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -1033,6 +1042,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -1062,6 +1072,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -1213,6 +1224,7 @@
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisComposite">cccBaseAxisComposite</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -1277,6 +1289,7 @@
           <Property name="orthoAxisClickAction">cccOrthoAxisClickAction</Property>
           <Property name="orthoAxisComposite">cccOrthoAxisComposite</Property>
           <Property name="orthoAxisDoubleClickAction">cccOrthoAxisDoubleClickAction</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
@@ -1392,6 +1405,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -1486,6 +1500,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -1515,6 +1530,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -1662,6 +1678,7 @@
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -1758,6 +1775,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -1894,6 +1912,7 @@
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -1990,6 +2009,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -2133,6 +2153,7 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -2218,6 +2239,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -2247,6 +2269,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -2556,6 +2579,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -2651,6 +2675,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -2680,6 +2705,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -2836,6 +2862,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -2930,6 +2957,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -2959,6 +2987,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -3115,6 +3144,7 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
@@ -3209,6 +3239,7 @@
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
+          <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
           <Property name="ortho2AxisGrid">cccOrtho2AxisGrid</Property>
           <Property name="ortho2AxisLabelSpacingMin">cccOrtho2AxisLabelSpacingMin</Property>
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
@@ -3238,6 +3269,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
@@ -3669,6 +3701,7 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -3747,6 +3780,7 @@
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
+          <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>

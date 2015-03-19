@@ -7,7 +7,7 @@
     <Tooltip>The default bullet sub-title.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>258</Order>
+    <Order>259</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
