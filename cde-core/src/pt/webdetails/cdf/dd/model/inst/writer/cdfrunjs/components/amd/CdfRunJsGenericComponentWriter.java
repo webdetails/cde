@@ -53,7 +53,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     GenericComponentType compType = comp.getMeta();
 
-    String id = context.getId( comp );
+    String id = comp.getId();
 
     out.append( "var " )
         .append( id )

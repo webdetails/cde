@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -62,7 +62,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
     StringBuilder out = new StringBuilder();
 
     when( genericComponent.getMeta() ).thenReturn( genericComponentType );
-    when( context.getId( genericComponent ) ).thenReturn( "test" );
+    when( genericComponent.getId() ).thenReturn( "test" );
 
     when( options.getAliasPrefix() ).thenReturn( "" );
     when( context.getOptions() ).thenReturn( options );

@@ -636,7 +636,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:ChartObj}",
+      "value": "${h:ChartObj}",
       "type": "HtmlObject"
      },
      {

@@ -659,7 +659,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:column1}",
+      "value": "${h:column1}",
       "type": "HtmlObject"
      },
      {
@@ -756,7 +756,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:column2}",
+      "value": "${h:column2}",
       "type": "HtmlObject"
      },
      {

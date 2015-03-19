@@ -64,16 +64,32 @@ public class CdfRunJsDashboardWriter
   private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
   private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
+  private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
+      "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+      + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
+      + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
+      + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
+      + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
+      + "'}'," + NEWLINE;
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
       + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(targetId) {" + NEWLINE
-      + INDENT2 + "if(!$('#' + targetId).length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
-      + INDENT2 + "$('#' + targetId).empty();" + NEWLINE
-      + INDENT2 + "$('#' + targetId).html(this.layout);" + NEWLINE
+  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(element) {" + NEWLINE
+      + INDENT2 + "var target;" + NEWLINE
+      + INDENT2 + "if (typeof element ===\"string\") {" + NEWLINE
+      + INDENT2 + "target = $('#' + element);" + NEWLINE
+      + INDENT2 + "} else {" + NEWLINE
+      + INDENT2 + " target = element[0] ? $(element[0]) : $(element);" + NEWLINE
+      + INDENT2 + "} " + NEWLINE
+      + INDENT2 + "if(!target.length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
+      + INDENT2 + "target.empty();" + NEWLINE
+      + INDENT2 + "target.html(this.layout);" + NEWLINE
       + " },";
-  private static final String DASHBOARD_MODULE_RENDERER = "render: function(targetId) {" + NEWLINE
-      + INDENT2 + "this.setupDOM(targetId);" + NEWLINE
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function(element) {" + NEWLINE
+      + INDENT2 + "this.setupDOM(element);" + NEWLINE
+      + INDENT2 + "this.renderDashboard();" + NEWLINE
+      + INDENT1 + "}," + NEWLINE
+      + INDENT2 + "renderDashboard: function() {" + NEWLINE
       + INDENT2 + "this._processComponents();" + NEWLINE
       + INDENT2 + "this.init();" + NEWLINE
       + "},";
@@ -244,7 +260,7 @@ public class CdfRunJsDashboardWriter
           if ( addCompIds.length() > 0 ) {
             addCompIds.append( ", " );
           }
-          addCompIds.append( getComponentIdFromContext( context, comp ) );
+          addCompIds.append( comp.getId() );
         }
 
         writer.write( out, context, comp );
@@ -260,10 +276,6 @@ public class CdfRunJsDashboardWriter
     }
 
     return out.toString();
-  }
-
-  protected String getComponentIdFromContext( CdfRunJsDashboardWriteContext context, Component comp ) {
-    return context.getId( comp );
   }
 
   protected String getComponentName( Component comp ) {
@@ -514,9 +526,12 @@ public class CdfRunJsDashboardWriter
       Dashboard dash )
     throws ThingWriteException {
 
-    final String layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
-    final String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
-    final String content = this.wrapRequireModuleDefinitions( components, layout );
+    final String layout = ctx.replaceTokens( this.writeLayout( ctx, dash ) );
+    final String components = replaceAliasTagWithAlias(
+        ctx.replaceHtmlAlias( ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
+
+    boolean emptyAlias = ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG );
+    final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias );
 
     // Export
     builder
@@ -529,13 +544,17 @@ public class CdfRunJsDashboardWriter
       .setLoadedDate( ctx.getDashboard().getSourceDate() );
   }
 
+  protected String replaceAliasTagWithAlias( String content ) {
+    return content.replaceAll( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias +\"" );
+  }
+
   /**
    * Wraps the JavaScript code, contained in the input parameters, as a requirejs module.
    *
    * @param content Some JavaScript code to be wrapped.
    * @return
    */
-  protected String wrapRequireModuleDefinitions( String content, String layout ) {
+  protected String wrapRequireModuleDefinitions( String content, String layout, boolean emptyAlias ) {
     StringBuilder out = new StringBuilder();
 
 
@@ -574,11 +593,18 @@ public class CdfRunJsDashboardWriter
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
-      .append( getJsCodeSnippets().toString() )
-      .append( DASHBOARD_MODULE_START )
-      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-        StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( getJsCodeSnippets().toString() );
+
+    if ( emptyAlias ) {
+      out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,
+          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+    } else {
+      out.append( DASHBOARD_MODULE_START )
+          .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
+          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+    }
+
+    out.append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, content ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )

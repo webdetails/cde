@@ -157,4 +157,22 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( LONG_H_TAG, aliasAndName )
       .replaceAll( LONG_P_TAG, aliasAndName );
   }
+
+  public String replaceHtmlAlias( String content ) {
+    if ( content == null ) {
+      return "";
+    }
+
+    String alias = this._options.getAliasPrefix();
+
+    String aliasAndName = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" ) + "$1";
+
+    return content
+      .replaceAll( SHORT_C_TAG, COMPONENT_PREFIX + "$1" )
+      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + "$1")
+      .replaceAll( SHORT_H_TAG, aliasAndName )
+      .replaceAll( SHORT_P_TAG, "$1" )
+      .replaceAll( LONG_H_TAG, aliasAndName )
+      .replaceAll( LONG_P_TAG, "$1" );
+  }
 }
