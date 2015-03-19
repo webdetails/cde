@@ -1,0 +1,13 @@
+<DesignerProperty>
+  <Header>
+    <Name>cacheKeys</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"[]"</DefaultValue>
+    <Description>Cache Keys</Description>
+    <Tooltip>Cache Keys</Tooltip>
+    <InputType>CacheKeysValues</InputType>
+    <OutputType>Array</OutputType>
+    <Order>45</Order>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>

@@ -215,80 +215,61 @@ public class CdaRenderer
     }
 
     @SuppressWarnings("unchecked")
-    Iterator<Pointer> params = conn.iteratePointers("*");
-    while (params.hasNext())
-    {
+    Iterator<Pointer> params = conn.iteratePointers( "*" );
+    while ( params.hasNext() ) {
       Pointer pointer = params.next();
-      String paramName = pointer.asPath().replaceAll(".*name='(.*?)'.*", "$1");
-      String placement = ((String) conn.getValue(pointer.asPath() + "/placement", String.class)).toLowerCase();
+      String paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
+      String placement = ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) ).toLowerCase();
 
-      if (placement.equals("attrib"))
-      {
-        if (paramName.equals("id") || paramName.equals("connection"))
-        {
+      if ( placement.equals( "attrib" ) ) {
+        if ( paramName.equals( "id" ) || paramName.equals( "connection" ) || paramName.equals( "cacheDuration" ) ) {
           continue;
+        } else {
+          String value = (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class );
+          dataAccess.setAttribute( paramName, value );
         }
-        else
-        {
-          String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
-          dataAccess.setAttribute(paramName, value);
-        }
-      }
-      else if (paramName.equals("parameters"))
-      {
-        renderProperty(new Parameters(), context, paramName, dataAccess);
-      }
-      else if (paramName.equals("output"))
-      {
-        Output output = new Output();
-        output.setContext(context);
-        renderProperty(output, context, paramName, dataAccess);
-      }
-      else if (paramName.equals("variables"))
-      {        
-        Variables vars = new Variables();
-        vars.setContext(context);
-        renderProperty(vars, context, paramName, dataAccess);
-      }
-      else if (paramName.equals("outputMode"))
-      {
+      } else if ( paramName.equals( "parameters" ) ) {
+        renderProperty( new Parameters(), context, paramName, dataAccess );
+      } else if ( paramName.equals( "output" ) ) {
+        Output output = new Output( context );
+        renderProperty( output, context, paramName, dataAccess );
+      } else if ( paramName.equals( "variables" ) ) {
+        Variables vars = new Variables( context );
+        renderProperty( vars, context, paramName, dataAccess );
+      } else if ( paramName.equals( "outputMode" ) ) {
         // Skip over outputMode, it's handled by output.
-        break;
-      }
-      else if (paramName.equals("columns"))
-      {
-        Element cols = dataAccess.getOwnerDocument().createElement("Columns");
-        renderProperty(new Columns(), context, "cdacolumns", cols);
-        renderProperty(new CalculatedColumns(), context, "cdacalculatedcolumns", cols);
-        dataAccess.appendChild(cols);
-      }
-      else if (paramName.equals("top") || paramName.equals("bottom")
-              || paramName.equals("left") || paramName.equals("right"))
-      {
-        Element compoundElem = dataAccess.getOwnerDocument().createElement(Utils.toFirstUpperCase(paramName));
-        
-        renderProperty(new CompoundComponent(), context, paramName, compoundElem);
-        
-        dataAccess.appendChild(compoundElem);
-        if (paramName.equals("left"))
-        {
-          renderProperty(new Keys(), context, "leftkeys", compoundElem);
+        continue;
+      } else if ( paramName.equals( "cacheKeys" ) ) {
+        // Skip over cacheKeys, it's handled by cache.
+        continue;
+      } else if ( paramName.equals( "cache" ) ) {
+        Cache cache = new Cache( context );
+        renderProperty( cache, context, paramName, dataAccess );
+      } else if ( paramName.equals( "columns" ) ) {
+        Element cols = dataAccess.getOwnerDocument().createElement( "Columns" );
+        renderProperty( new Columns(), context, "cdacolumns", cols );
+        renderProperty( new CalculatedColumns(), context, "cdacalculatedcolumns", cols );
+        dataAccess.appendChild( cols );
+      } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
+        || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
+        Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
+
+        renderProperty( new CompoundComponent(), context, paramName, compoundElem );
+
+        dataAccess.appendChild( compoundElem );
+        if ( paramName.equals( "left" ) ) {
+          renderProperty( new Keys(), context, "leftkeys", compoundElem );
+        } else if ( paramName.equals( "right" ) ) {
+          renderProperty( new Keys(), context, "rightkeys", compoundElem );
         }
-        else if (paramName.equals("right"))
-        {
-          renderProperty(new Keys(), context, "rightkeys", compoundElem);
-        }
-      }
-      else
-      {
-        String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
-        if (paramName.equals("query"))
-        {
+      } else {
+        String value = (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class );
+        if ( paramName.equals( "query" ) ) {
           value = value.trim();
         }
-        Element child = doc.createElement(Utils.toFirstUpperCase(paramName));
-        child.appendChild(doc.createTextNode(value));
-        dataAccess.appendChild(child);
+        Element child = doc.createElement( Utils.toFirstUpperCase( paramName ) );
+        child.appendChild( doc.createTextNode( value ) );
+        dataAccess.appendChild( child );
       }
     }
     return dataAccess;
