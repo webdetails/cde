@@ -20,6 +20,13 @@ public class Variables implements CdaElementRenderer
   private JSONObject definition;
   private JXPathContext context;
 
+  public Variables() {
+  }
+
+  public Variables( JXPathContext context ) {
+    this.context = context;
+  }
+
   public void renderInto(Element dataAccess)
   {
     JSONArray vars = JSONArray.fromObject(definition.getString("value"));
