@@ -701,6 +701,11 @@ var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
   argTitle: 'Option'
 });
 
+var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
+  argTitle: 'Key',
+  valTitle: 'Value'
+});
+
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
   cssPrefix: "ParameterList",
   argTitle: 'Name',
