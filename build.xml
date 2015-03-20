@@ -135,8 +135,9 @@
     <ant dir="${core.project}" antfile="build.xml" target="resolve" inheritAll="false" />
     <ant dir="${core.project}" antfile="build.xml" target="publish" inheritAll="false"/>  
     <!-- Now publish all modules -->
-    <antcall target="clean-all resolve publish"/>
-        
+    <antcall target="clean-all"/>
+    <antcall target="resolve"/> 
+    <antcall target="publish"/>        
   </target>
   
 	
