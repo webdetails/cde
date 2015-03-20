@@ -76,17 +76,14 @@
 
     <tstamp/>
 
-    <!-- Build the project.revision property -->
-    <property name="distribution.version" value="${project.stage}-${project.version}"/>
-
-    <echo>distribution.version = ${distribution.version}</echo>
+    <echo>project.revision = ${project.revision}</echo>
 
     <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,dist-solution"/>
     <target name="dist-compile" depends="jar,dist-plugin"/>
 
     <property name="plugin.artifact.id" value="${plugin.name}"/>
-    <property name="plugin.zipfile" value="${plugin.artifact.id}-${distribution.version}.zip"/>
-    <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${distribution.version}.zip"/>
+    <property name="plugin.zipfile" value="${plugin.artifact.id}-${project.revision}.zip"/>
+    <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${project.revision}.zip"/>
 
     <target name="check-sonar-props">
         <available file="/home/tomcat/sonar.properties" property="sonar.props"/>
@@ -103,14 +100,14 @@
         <property name="sonar.sources" value="${src.dir}"/>
         <!-- list of optional Sonar properties -->
         <property name="sonar.binaries" value="${classes.dir}"/>
-        <sonar:sonar key="pt.webdetails:CDE" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>
+        <sonar:sonar key="pt.webdetails:CDE" version="${project.revision}" xmlns:sonar="antlib:org.sonar.ant"/>
     </target>
 
     <target name="sonar-js" depends="read-sonar-props">
         <property name="sonar.language" value="js"/>
         <property name="sonar.dynamicAnalysis" value="false"/>
         <property name="sonar.sources" value="${resource.dir}/js"/>
-        <sonar:sonar key="pt.webdetails:CDE-js" version="${distribution.version}" xmlns:sonar="antlib:org.sonar.ant"/>
+        <sonar:sonar key="pt.webdetails:CDE-js" version="${project.revision}" xmlns:sonar="antlib:org.sonar.ant"/>
     </target>
 
     <!-- Overriding resolve target so we can add resolve-dev -->
@@ -190,7 +187,7 @@
         <tstamp/>
         <property name="sequential.build.id" value="manual-${DSTAMP}"/>
         <echo file="${stage.dir}/${plugin.name}/version.xml"
-              message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${distribution.version}&lt;/version>"/>
+              message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${project.revision}&lt;/version>"/>
 
 
         <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
@@ -208,7 +205,7 @@
 
     <echo file="${dist.dir}/marketplace.xml">      &lt;version&gt;
         &lt;branch&gt;${project.stage}&lt;/branch&gt;
-        &lt;version&gt;${distribution.version}&lt;/version&gt;
+        &lt;version&gt;${project.revision}&lt;/version&gt;
         &lt;name&gt;${marketplace.metadata.name}&lt;/name&gt;
         &lt;package_url&gt;
           ${marketplace.metadata.package_url}
