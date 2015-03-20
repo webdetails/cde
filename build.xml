@@ -128,5 +128,16 @@
       <param name="projects" value="${projects.list}"/>
     </antcall>
   </target>
+  
+  
+  <target name="continuous">
+    <!-- First publish core -->
+    <ant dir="${core.project}" antfile="build.xml" target="resolve" inheritAll="false" />
+    <ant dir="${core.project}" antfile="build.xml" target="publish" inheritAll="false"/>  
+    <!-- Now publish all modules -->
+    <antcall target="clean-all resolve publish"/>
+        
+  </target>
+  
 	
 </project>
