@@ -144,6 +144,7 @@
             <fileset dir='${core-resource.dir}'>
                 <exclude name="${includes.name}"/>
                 <exclude name="**/OlapSelector/test/**"/>
+                <exclude name="**/amd-components/**"/>
             </fileset>
         </copy>
 

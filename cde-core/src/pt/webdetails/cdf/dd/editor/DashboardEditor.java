@@ -38,6 +38,15 @@ public class DashboardEditor {
 
   private static  final String WEBAPP_PATH = "#{WEBAPP_PATH}";
 
+  public static String getEditor(
+      String wcdfPath,
+      boolean debugMode,
+      String scheme,
+      boolean isDefault) throws Exception {
+
+    return getEditor( wcdfPath, debugMode, scheme, isDefault, false );
+
+  }
 
   public static String getEditor(
       String wcdfPath,
