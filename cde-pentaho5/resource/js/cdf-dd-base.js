@@ -377,7 +377,21 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", {
     }, function(json) {
       myself.styles = json.result;
-    });
+      myself._legacyStyles = [];
+      myself._requireStyles = [];
+      var pattern = /(.+)Require$/;
+      if (myself.styles) {
+        for (var i = 0; i < myself.styles.length; i++) {
+          var style = json.result[i];
+          var reqStyle = pattern.exec(style)
+          if(reqStyle) {
+              myself._requireStyles.push(reqStyle[1]);
+            } else {
+              myself._legacyStyles.push(style);
+            }
+          }
+        }
+      });    
   },
 
   listStyleRenderers: function(myself) {
@@ -497,7 +511,7 @@ var SaveRequests = {
     };
 
     // inform user that the save as will create a require dashboard
-    if( !myself.getDashboardWcdf().require ) {
+    if( myself.getDashboardWcdf().require ) {
       if(!confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
         return;
       }
@@ -743,3 +757,35 @@ var Cgg = {
   }
 };
 
+var SettingsHelper = {
+  getExtraPromptContent: function(){
+    return '<hr style="background:none;"/>' +
+  '<span title="Asynchronous module definition support" class="title">RequireJS Support ' +
+  '<input type="checkbox" name="require_checkbox" {{#require}}checked{{/require}}></span>';
+  },
+    
+  callExtraContentSubmit: function(myself, wcdf){
+    var isRequire = $('input[name="require_checkbox"]:checked').length > 0;
+    var style = $("#styleInput").val();
+    if(isRequire && myself._requireStyles.indexOf(style) > - 1){
+      wcdf.style = style + "Require";
+    } else {
+      wcdf.style = style;
+    }
+    wcdf.require = isRequire;
+  },
+
+  getStyles: function(wcdf, myself){
+    return wcdf.require ? myself._requireStyles : myself._legacyStyles;
+  },
+
+  getSelectedStyle: function(wcdf){
+    var matchedStyle = /(.+)Require$/.exec(wcdf.style);
+    if (matchedStyle) {
+      return matchedStyle[1];
+    } else {
+      return wcdf.style;
+    }
+  }
+
+};

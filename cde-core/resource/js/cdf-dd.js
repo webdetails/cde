@@ -263,7 +263,7 @@ var CDFDD = Base.extend({
     if(myself.styles.length > 0) {
       var wcdf = myself.getDashboardWcdf();
       // Default to Clean or the first available style if Clean isn't available
-      var cleanStyle = myself.styles.indexOf('CleanRequire');
+      var cleanStyle = myself.styles.indexOf('Clean');
       if(!wcdf.style) {
         wcdf.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
       }
@@ -880,10 +880,12 @@ var CDFDD = Base.extend({
         content;
 
     settingsData.styles = [];
+    this.styles = SettingsHelper.getStyles(wcdf, this);
+    var selectedStyle = SettingsHelper.getSelectedStyle(wcdf);
     _.each(this.styles, function(obj) {
       settingsData.styles.push({
         style: obj,
-        selected: wcdf.style == obj
+        selected: selectedStyle == obj
       });
     });
     settingsData.renderers = [];
@@ -905,6 +907,9 @@ var CDFDD = Base.extend({
             selected: _.contains(currentParams, val)
           };
         });
+
+    var extraOptions = SettingsHelper.getExtraPromptContent();
+        
     content = '' +
         '<span>' +
         ' <h2>Settings:</h2>' +
@@ -939,6 +944,7 @@ var CDFDD = Base.extend({
         '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
         '{{/renderers}}' +
         '</select>' +
+        extraOptions +
         '{{#widget}}' +
         '<span>' +
         '  <br>' +
@@ -961,18 +967,21 @@ var CDFDD = Base.extend({
         Cancel: false
       },
       prefix: "popup",
-      submit: function() {
-        wcdf.title = $("#titleInput").val();
-        wcdf.author = $("#authorInput").val();
-        wcdf.description = $("#descriptionInput").val();
-        wcdf.style = $("#styleInput").val();
-        wcdf.widgetName = $("#widgetNameInput").val();
-        wcdf.rendererType = $("#rendererInput").val();
-        wcdf.widgetParameters = [];
-        $("#widgetParameters input[type='checkbox']:checked")
-            .each(function(i, e) {
-              wcdf.widgetParameters.push(e.value);
-            });
+      submit: function(save) {
+        if (save) {
+          wcdf.title = $("#titleInput").val();
+          wcdf.author = $("#authorInput").val();
+          wcdf.description = $("#descriptionInput").val();
+          wcdf.style = $("#styleInput").val();
+          wcdf.widgetName = $("#widgetNameInput").val();
+          wcdf.rendererType = $("#rendererInput").val();
+          wcdf.widgetParameters = [];
+          $("#widgetParameters input[type='checkbox']:checked")
+              .each(function(i, e) {
+                wcdf.widgetParameters.push(e.value);
+              });
+          SettingsHelper.callExtraContentSubmit(myself, wcdf);
+        }
       },
       callback: function(v, m, f) {
         if(v) {

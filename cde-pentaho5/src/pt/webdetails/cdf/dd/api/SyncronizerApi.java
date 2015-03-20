@@ -84,6 +84,7 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
+                            @FormParam( MethodParams.REQUIRE ) boolean require,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
 
@@ -112,6 +113,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       HashMap<String, Object> params = new HashMap<String, Object>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
+      params.put( MethodParams.REQUIRE, String.valueOf( require ) );
       if ( !author.isEmpty() ) {
         params.put( MethodParams.AUTHOR, author );
       }
@@ -217,6 +219,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
+    private static final String REQUIRE = "require";
   }
 
   @POST
