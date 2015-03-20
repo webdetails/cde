@@ -21,6 +21,12 @@ public class Output implements CdaElementRenderer
   private JSONObject definition;
   private JXPathContext context;
 
+  public Output() {
+  }
+  public Output( JXPathContext context ) {
+    this.context = context;
+  }
+
   public void renderInto(Element dataAccess)
   {
     JSONArray columns = JSONArray.fromObject(definition.getString("value"));
