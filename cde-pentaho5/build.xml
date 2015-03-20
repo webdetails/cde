@@ -420,6 +420,6 @@
    </target>
 
 
-	<target name="publish" depends="subfloor.publish, test-js"/>
+	<target name="continuous" depends="subfloor.continuous, test-js"/>
 
 </project>
