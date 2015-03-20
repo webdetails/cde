@@ -90,11 +90,8 @@
 
   <tstamp/>
 
-  <!-- Build the project.revision property -->
-  <property name="distribution.version" value="${project.stage}-${project.version}"/>
 
-
-  <echo>distribution.version = ${distribution.version}</echo>
+  <echo>project.revision = ${project.revision}</echo>
 
 
  <!-- Overriding resolve target so we can add resolve-dev -->
@@ -110,6 +107,7 @@
 	
 	
 	<!-- OVERRIDES -->
+	<target name="publish" depends="subfloor.publish, test-js"/>
 
 	  <target name="publish-nojar.internal" depends="install-antcontrib,create-pom,ivy.deliver">
 	    <antcall target="maven-publish-dependencies">
