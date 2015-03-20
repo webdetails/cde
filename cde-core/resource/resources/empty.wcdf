@@ -6,5 +6,5 @@
   <icon></icon>
   <style></style>
   <rendererType>bootstrap</rendererType>
-  <require>true</require>
+  <require>false</require>
 </cdf>

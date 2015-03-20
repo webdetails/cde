@@ -315,7 +315,7 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
-    return getEditor( path, debug, request.getScheme(), isDefault, response, true );
+    return getEditor( path, debug, request.getScheme(), isDefault, response, false );
   }
 
   @GET
