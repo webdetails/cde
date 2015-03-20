@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.render;
 
@@ -25,9 +34,9 @@ public class RenderMobileLayout extends Renderer {
     try {
       final Iterator<Pointer> rootRows = doc.iteratePointers( MessageFormat.format( XPATH_FILTER, UNIQUEID ) );
 
-      layout.append( NEWLINE + getIndent( 2 ) + "<div class='container'>" );
+      layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "<div class='container'>" );
       renderRows( doc, rootRows, layout, 4 );
-      layout.append( NEWLINE + getIndent( 2 ) + "</div>" );
+      layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "</div>" );
     } catch ( RenderException e ) {
       layout = new StringBuffer( e.getMessage() );
     }
@@ -36,7 +45,7 @@ public class RenderMobileLayout extends Renderer {
   }
 
   private void renderRows( final JXPathContext doc, final Iterator<Pointer> nodeIterator, final StringBuffer layout,
-    final int ident ) throws Exception {
+                           final int ident ) throws Exception {
     while ( nodeIterator.hasNext() ) {
       final Pointer pointer = nodeIterator.next();
       final JXPathContext context = doc.getRelativeContext( pointer );
@@ -45,13 +54,13 @@ public class RenderMobileLayout extends Renderer {
 
       renderer.processProperties();
 
-      layout.append( NEWLINE + getIndent( ident ) );
+      layout.append( NEWLINE ).append( getIndent( ident ) );
       layout.append( renderer.renderStart() );
 
       // Render Child Rows
       renderRows( context, context.iteratePointers( MessageFormat.format( XPATH_FILTER, rowId ) ), layout, ident + 2 );
 
-      layout.append( NEWLINE + getIndent( ident ) );
+      layout.append( NEWLINE ).append( getIndent( ident ) );
       layout.append( renderer.renderClose() );
     }
   }
