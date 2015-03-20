@@ -107,7 +107,7 @@
 	
 	
 	<!-- OVERRIDES -->
-	<target name="publish" depends="subfloor.publish, test-js"/>
+	<target name="continuous" depends="subfloor.continuous, test-js"/>
 
 	  <target name="publish-nojar.internal" depends="install-antcontrib,create-pom,ivy.deliver">
 	    <antcall target="maven-publish-dependencies">
