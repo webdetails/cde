@@ -167,9 +167,9 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
         tabContents =  this.$(".tab-contents").empty();
     _(this.tabs).each(function(t) {
       /* Render the tab */
-      tabs.append(templates.viewManagerTab(t));
+      tabs.append(Mustache.render(templates.dashboardViews.viewManagerTab, t));
       /* Render the panel corresponding to the tab */
-      tabContents.append(templates[t.template](this.model.toJSON()));
+      tabContents.append(Mustache.render(templates.dashboardViews[t.template], this.model.toJSON()));
     }, this);
     tabs.children().slice(0, 1).addClass('selected');
     tabContents.children().slice(1).hide();
@@ -179,7 +179,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   renderViewList: function() {
     var $views = this.$(".list-panel .views").empty();
     this.model.get("views").each(function(e) {
-      var $view = $(templates.viewListItem(e.toJSON()));
+      var $view = $(Mustache.render(templates.dashboardViews.viewListItem, e.toJSON()));
       $view.data("model", e);
       $views.append($view);
     });
@@ -191,7 +191,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(templates.viewManager(this.model.toJSON()));
+    this.$el.html(Mustache.render(templates.dashboardViews.viewManager, this.model.toJSON()));
     this.renderTabs();
     this.renderViewList();
     this.$(".view-manager").hide();
@@ -277,7 +277,7 @@ wd.cdf.views.ViewManagerView = Backbone.View.extend({
 
 });
 
-templates.viewManager =  Mustache.compile(
+templates.dashboardViews.viewManager =
   "<div class='view-manager-component'>" +
   " <div class='current-view'>" + 
   "   <span class='label'>Current View: </span>" +
@@ -288,14 +288,14 @@ templates.viewManager =  Mustache.compile(
   "   <div class='tabs'></div>" +
   "   <div class='tab-contents'></div>" +
   " </div>" +
-  "</div>");
+  "</div>";
 
-templates.viewManagerTab = Mustache.compile(
+templates.dashboardViews.viewManagerTab =
   "<div class='tab' data-target='{{selector}}'>" +
   "{{label}}" + 
-  "</div>");
+  "</div>";
 
-templates.viewListPanel =  Mustache.compile(
+templates.dashboardViews.viewListPanel =
   "<div class='list-panel panel'>" +
   " <div class='total-views'>" + 
   "   <span class='label'>Total Views: </span>" +
@@ -306,15 +306,15 @@ templates.viewListPanel =  Mustache.compile(
   "   <span class='label'>View All</span>" +
   "   <span class='description'>(go to View Manager)</span>" +
   " </div>" + 
-  "</div>");
+  "</div>";
  
-templates.viewListItem =  Mustache.compile(
+templates.dashboardViews.viewListItem =
   "<div class='view-item'>" +
   " <a class='name' href='{{url}}'>{{name}}</a>" +
   " <span class='delete'></span>" +
-  "</div>");
+  "</div>";
 
-templates.viewSubscriptionPanel =  Mustache.compile(
+templates.dashboardViews.viewSubscriptionPanel =
   "<div class='subscrition-panel panel'>" +
   " <div class='current-view'>" +
   "   <span class='label'>Current View:</span>" + 
@@ -331,9 +331,9 @@ templates.viewSubscriptionPanel =  Mustache.compile(
   "   <span class='label'></span>" +
   "   <input type='radio'>" +
   " </div>" + 
-  "</div>");
+  "</div>";
 
-templates.viewSavePanel =  Mustache.compile(
+templates.dashboardViews.viewSavePanel =
   "<div class='save-panel panel'>" +
   " <div class='current-view'>" +
   "   <span class='label'>Current View:</span>" + 
@@ -347,4 +347,4 @@ templates.viewSavePanel =  Mustache.compile(
   "   <div class='big-button active save'>Save</div>" + 
   "   <div class='big-button cancel'>Cancel</div>" + 
   " </div>" + 
-  "</div>");
+  "</div>";
