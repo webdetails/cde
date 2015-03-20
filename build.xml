@@ -74,6 +74,24 @@
     <ant dir="${core.project}" antfile="build.xml" target="resolve" inheritAll="false" />
     <ant dir="${core.project}" antfile="build.xml" target="publish-local" inheritAll="false"/>
   </target>
+
+  <target name="publish-projects">
+    <antcall target="call">
+      <param name="target" value="clean-all"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+    <antcall target="call">
+      <param name="target" value="resolve"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+    <antcall target="call">
+      <param name="target" value="publish"/>
+      <param name="projects" value="${projects.list}"/>
+    </antcall>
+    
+  </target>
+
+
   <target name="resolve-projects">
     <antcall target="call">
       <param name="target" value="resolve"/>
@@ -135,9 +153,7 @@
     <ant dir="${core.project}" antfile="build.xml" target="resolve" inheritAll="false" />
     <ant dir="${core.project}" antfile="build.xml" target="publish" inheritAll="false"/>  
     <!-- Now publish all modules -->
-    <antcall target="clean-all"/>
-    <antcall target="resolve"/> 
-    <antcall target="publish"/>        
+    <antcall target="publish-projects"/>
   </target>
   
 	
