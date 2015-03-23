@@ -1933,9 +1933,9 @@
       "type": "String"
      },
      {
-      "name": "popupWidth",
-      "value": 250,
-      "type": "Integer"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupHeight",
@@ -1956,6 +1956,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": 250,
+      "type": "Integer"
      },
      {
       "name": "dataSource",
@@ -2106,9 +2111,9 @@
       "type": "String"
      },
      {
-      "name": "popupWidth",
-      "value": "250",
-      "type": "Integer"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupHeight",
@@ -2129,6 +2134,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "popupWidth",
+      "value": "250",
+      "type": "Integer"
      },
      {
       "name": "dataSource",
@@ -2279,9 +2289,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "function() {\n    Dashboards.log(CustomerNameParameter + ' has  been clicked');\n}",
-      "type": "JavaScript"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2302,6 +2312,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "function() {\n    Dashboards.log(CustomerNameParameter + ' has  been clicked');\n}",
+      "type": "JavaScript"
      },
      {
       "name": "dataSource",
@@ -2452,9 +2467,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "\"function() {alert (CustomerNameParameter);}\"",
-      "type": "String"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2474,6 +2489,11 @@
      {
       "name": "markerCggGraph",
       "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "\"function() {alert (CustomerNameParameter);}\"",
       "type": "String"
      },
      {
@@ -2625,9 +2645,9 @@
       "type": "String"
      },
      {
-      "name": "markerClickFunction",
-      "value": "function() {\n    alert(CustomerNameParameter + ' has  been clicked');\n}",
-      "type": "JavaScript"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "popupWidth",
@@ -2648,6 +2668,11 @@
       "name": "markerCggGraph",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "markerClickFunction",
+      "value": "function() {\n    alert(CustomerNameParameter + ' has  been clicked');\n}",
+      "type": "JavaScript"
      },
      {
       "name": "dataSource",
@@ -2691,7 +2716,7 @@
      },
      {
       "name": "shapeMouseOver",
-      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if (event.feature == event.feature.layer.selectedFeatures[0]) {\n        var clickedStyle = event.raw.feature.attributes.clickSelStyle\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
+      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if (event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
       "type": "JavaScript"
      },
      {
@@ -3129,13 +3154,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3174,6 +3199,11 @@
       "type": "IndexArray"
      },
      {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
@@ -3200,13 +3230,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -3245,6 +3275,11 @@
       "type": "IndexArray"
      },
      {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
@@ -3271,13 +3306,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3314,6 +3349,11 @@
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
