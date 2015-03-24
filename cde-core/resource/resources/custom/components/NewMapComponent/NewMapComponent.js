@@ -728,8 +728,8 @@ var NewMapComponent = (function (){
         if (_.isFunction(myself.shapeMouseOut)) {
           result = myself.shapeMouseOut(event);
         }
-        if (event.feature == event.feature.layer.selectedFeatures[0]) {
-          event.draw(_.defaults(result, event.raw.feature.attributes.clickSelStyle));
+        if(event.isSelected()) {
+          event.draw(_.defaults(result, event.getSelectedStyle()));
         } else if (_.size(result) > 0) {
           event.draw(_.defaults(result, event.style));
         } else if (myself.shapeMouseOver) {
@@ -743,7 +743,7 @@ var NewMapComponent = (function (){
           var result = myself.shapeMouseClick(event);
           if (result){
             var selStyle = _.defaults(result, event.style);
-            event.raw.feature.attributes.clickSelStyle = selStyle;
+            event.setSelectedStyle(selStyle);
             event.draw( selStyle );
           }
         }

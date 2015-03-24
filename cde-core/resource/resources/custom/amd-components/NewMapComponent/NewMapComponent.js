@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -758,8 +758,8 @@ define([
           if(_.isFunction(myself.shapeMouseOut)) {
             result = myself.shapeMouseOut(event);
           }
-          if(event.feature == event.feature.layer.selectedFeatures[0]) {
-            event.draw(_.defaults(result, event.raw.feature.attributes.clickSelStyle));
+          if(event.isSelected()) {
+            event.draw(_.defaults(result, event.getSelectedStyle()));
           } else if(_.size(result) > 0) {
             event.draw(_.defaults(result, event.style));
           } else if(myself.shapeMouseOver) {
@@ -773,7 +773,7 @@ define([
             var result = myself.shapeMouseClick(event);
             if(result) {
               var selStyle = _.defaults(result, event.style);
-              event.raw.feature.attributes.clickSelStyle = selStyle;
+              event.setSelectedStyle(selStyle);
               event.draw(selStyle);
             }
           }
