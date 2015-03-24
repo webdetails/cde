@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -137,9 +137,15 @@ define([
           var validStyle = myself.toNativeStyle(style);
           event.feature.layer.drawFeature(feature, validStyle);
         },
-        // isSelected: false &&  _.some(_.map(event.feature.layer.selectedFeatures, function(el){
-          // return (el.id == event.feature.id);
-        // })),
+        setSelectedStyle: function(style) {
+          event.feature.attributes.clickSelStyle = style;
+        },
+        getSelectedStyle: function() {
+          return event.feature.attributes.clickSelStyle;
+        },
+        isSelected: function() {
+          return event.feature == event.feature.layer.selectedFeatures[0];
+        },
         raw: event
       };
     },

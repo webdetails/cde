@@ -102,9 +102,15 @@ var OpenLayersEngine = MapEngine.extend({
         var validStyle = myself.toNativeStyle(style);
         event.feature.layer.drawFeature(feature, validStyle);
       },
-      // isSelected: false &&  _.some(_.map(event.feature.layer.selectedFeatures, function(el){
-        // return (el.id == event.feature.id);
-      // })),
+      setSelectedStyle: function(style) {
+        event.feature.attributes.clickSelStyle = style;
+      },
+      getSelectedStyle: function() {
+        return event.feature.attributes.clickSelStyle;
+      },
+      isSelected: function() {
+        return event.feature == event.feature.layer.selectedFeatures[0];
+      },
       raw: event
     };
   },
@@ -361,7 +367,7 @@ var OpenLayersEngine = MapEngine.extend({
               // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME                
               this.events.triggerEvent("featureunhighlighted", {
                 feature: feature
-              });;
+              });
             }
           } else {
             this.unselect(feature);
