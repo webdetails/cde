@@ -13,7 +13,9 @@
 
 /**
  * Configuration file for cde pentaho version 5
+ * Added in [PDB-1555]: Ability to include CDE dashboards in PDB
  */
 
-requireCfg['paths']['cde'] = CONTEXT_PATH + 'content/pentaho-cdf-dd/js';
-
+if(typeof CONTEXT_PATH !== "undefined") { // production
+  requireCfg['paths']['cde'] = CONTEXT_PATH + 'content/pentaho-cdf-dd/js';
+}
