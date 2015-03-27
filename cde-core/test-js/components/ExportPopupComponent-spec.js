@@ -23,7 +23,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
 
     dashboard.init();
 
-    var exportPopupComponent = new ExportPopupComponent(dashboard, {
+    var exportPopupComponent = new ExportPopupComponent({
       type: "ExportPopupComponent",
       name: "popup1",
       executeAtStart: true,

@@ -23,7 +23,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/GoogleAnalyticsComponent'],
 
     dashboard.init();
 
-    var googleAnalyticsComponent = new GoogleAnalyticsComponent(dashboard, {
+    var googleAnalyticsComponent = new GoogleAnalyticsComponent({
       type: "GoogleAnalyticsComponent",
       name: "googleAnalyticsComponent",
       priority: 5,

@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var gMapsOverlayComponent = new GMapsOverlayComponent(dashboard, {
+    var gMapsOverlayComponent = new GMapsOverlayComponent({
       type: "GMapsOverlayComponent",
       name: "gMapsOverlayComponent",
       priority: 5,

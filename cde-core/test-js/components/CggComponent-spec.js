@@ -29,7 +29,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggComponent', 'cdf/lib/jquery'],
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var cggComponent = new CggComponent(dashboard, {
+    var cggComponent = new CggComponent({
       type: "CggComponent",
       name: "cggComponent",
       priority: 5,

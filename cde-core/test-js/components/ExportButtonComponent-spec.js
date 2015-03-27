@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportButtonComponent', 'cdf/lib/
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var exportButtonComponent = new ExportButtonComponent(dashboard, {
+    var exportButtonComponent = new ExportButtonComponent({
       type: "ExportButtonComponent",
       name: "expButton1",
       executeAtStart: true,

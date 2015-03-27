@@ -76,7 +76,7 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
     }
 
     StringBuilder expectedReturnValue = new StringBuilder();
-    expectedReturnValue.append( "var test = new TestComponent(dashboard, {" ).append( NEWLINE )
+    expectedReturnValue.append( "var test = new TestComponent({" ).append( NEWLINE )
         .append( INDENT ).append( "type: \"TestComponent\"," ).append( NEWLINE )
         .append( INDENT ).append( "name: \"test\"" ).append( NEWLINE )
         .append( "});" ).append( NEWLINE );

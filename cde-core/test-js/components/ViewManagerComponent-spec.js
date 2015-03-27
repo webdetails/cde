@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ViewManagerComponent', 'cdf/lib/j
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var viewManagerComponent = new ViewManagerComponent(dashboard, {
+    var viewManagerComponent = new ViewManagerComponent({
       type: "ViewManagerComponent",
       name: "viewManagerComponent",
       htmlObject: "sampleObject",
