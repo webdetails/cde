@@ -17,11 +17,12 @@
 			<icon-url>plugin/pentaho-cdf-dd/api/resources/get?resource=/resources/wcdfFileType.png</icon-url>
             <meta-provider>pt.webdetails.cdf.dd.DashboardDesignerFileInfoGenerator</meta-provider>
             <operations>
-  <!--              <operation>
+    <!--              
+                <operation>
                     <id>EDIT</id>
                     <perspective>wcdf.edit</perspective>
                 </operation>
-                -->
+    -->
                 <operation>
                     <id>RUN</id>
                 </operation>
@@ -33,5 +34,21 @@
 	</content-types>
 
 
+    <!--
+    <overlays>
+        <overlay id="launch" resourcebundle="content/pentaho-cdf-dd/lang/messages">
+            <button id="launch_new_cde" label="${Launcher.CDE}" command="Home.openFile('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'api/repos/wcdf/new');$('#btnCreateNew').popover('hide');"/>
+        </overlay>
+        <overlay id="startup.cde_dashboard"  resourcebundle="content/pentaho-cdf-dd/lang/messages" priority="1">
+            <menubar id="newmenu">
+                <menuitem id="new-cde_dashboard" label="${Launcher.CDE}" command="mantleXulHandler.openUrl('${Launcher.CDE}','${Launcher.CDE_TOOLTIP}','api/repos/wcdf/new')" />
+            </menubar>
+        </overlay>
+	</overlays>
+    -->
+
+    <external-resources>
+          <file context="requirejs">content/pentaho-cdf-dd/js/cde-require-js-cfg.js</file>
+    </external-resources>
 
 </plugin>
