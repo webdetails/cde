@@ -31,7 +31,7 @@ define([
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var olapSelectorComponent = new OlapSelectorComponent(dashboard, {
+    var olapSelectorComponent = new OlapSelectorComponent({
       type: "OlapSelectorComponent",
       name: "olapSelectorComponent",
       title: "Olap Selector",

@@ -28,7 +28,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggDialComponent', 'cdf/lib/jquer
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var cggDialComponent = new CggDialComponent(dashboard, {
+    var cggDialComponent = new CggDialComponent({
       type: "CggDialComponent",
       name: "cggDialComponent",
       executeAtStart: true,

@@ -59,7 +59,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
         .append( id )
         .append( " = new " )
         .append( className )
-        .append( "(dashboard, {" )
+        .append( "({" )
         .append( NEWLINE );
 
     addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );

@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/NewMapComponent', 'cdf/lib/jquery
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var newMap = new NewMapComponent(dashboard, {
+    var newMap = new NewMapComponent({
       type: "NewMapComponent",
       name: "newMap",
       executeAtStart: true,

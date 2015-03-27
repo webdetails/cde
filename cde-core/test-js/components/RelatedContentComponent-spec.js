@@ -23,7 +23,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/RelatedContentComponent'],
 
     dashboard.init();
 
-    var relatedContentComponent = new RelatedContentComponent(dashboard, {
+    var relatedContentComponent = new RelatedContentComponent({
       type: "RelatedContentComponent",
       name: "relatedContentComponent",
       priority: 5,

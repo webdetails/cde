@@ -32,7 +32,7 @@ define([
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var newSelectorComponent = new NewSelectorComponent(dashboard, {
+    var newSelectorComponent = new NewSelectorComponent({
       type: "NewSelectorComponent",
       name: "newSelectorComponent",
       parameter: "param1",

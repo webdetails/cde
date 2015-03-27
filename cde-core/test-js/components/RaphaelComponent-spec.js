@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/RaphaelComponent', 'cdf/lib/jquer
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var raphaelComponent = new RaphaelComponent(dashboard, {
+    var raphaelComponent = new RaphaelComponent({
       type: "RaphaelComponent",
       name: "raphaelComponent",
       priority: 5,

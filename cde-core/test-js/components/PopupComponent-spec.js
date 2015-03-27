@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var popupComponent = new PopupComponent(dashboard, {
+    var popupComponent = new PopupComponent({
       type: "PopupComponent",
       name: "popup1",
       executeAtStart: true,

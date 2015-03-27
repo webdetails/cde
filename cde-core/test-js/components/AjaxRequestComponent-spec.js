@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/j
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var ajaxRequestComponent = new AjaxRequestComponent(dashboard, {
+    var ajaxRequestComponent = new AjaxRequestComponent({
       type: "AjaxRequestComponent",
       name: "ajaxRequest",
       executeAtStart: true,

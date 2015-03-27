@@ -40,7 +40,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/SiteMapComponent', 'cdf/lib/jquer
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var siteMapComponent = new SiteMapComponent(dashboard, {
+    var siteMapComponent = new SiteMapComponent({
       type: "SiteMapComponent",
       name: "siteMapComponent",
       priority: 5,

@@ -519,7 +519,7 @@
      },
      {
       "name": "html",
-      "value": "var render_ajaxRequest1 = new AjaxRequestComponent(dashboard, {<br>\n&nbsp;&nbsp;type: \"AjaxRequestComponent\",<br>\n&nbsp;&nbsp;name: \"render_ajaxRequest1\",<br>\n&nbsp;&nbsp;priority: 5,<br>\n&nbsp;&nbsp;url: \"http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic[...]ajaxRequest.cda&dataAccessId=sampleQuery\",<br>\n&nbsp;&nbsp;ajaxRequestType: \"json\",<br>\n&nbsp;&nbsp;executeAtStart: true,<br>\n&nbsp;&nbsp;asyncCall: true,<br>\n&nbsp;&nbsp;resultvar: \"param1\",<br>\n&nbsp;&nbsp;htmlObject: \"column1\",<br>\n&nbsp;&nbsp;parameters: [],<br>\n&nbsp;&nbsp;listeners: []<br>\n});<br>\n<br>\n ",
+      "value": "var render_ajaxRequest1 = new AjaxRequestComponent({<br>\n&nbsp;&nbsp;type: \"AjaxRequestComponent\",<br>\n&nbsp;&nbsp;name: \"render_ajaxRequest1\",<br>\n&nbsp;&nbsp;priority: 5,<br>\n&nbsp;&nbsp;url: \"http://localhost:8080/pentaho/plugin/cda/api/doQuery?path=%2Fpublic[...]ajaxRequest.cda&dataAccessId=sampleQuery\",<br>\n&nbsp;&nbsp;ajaxRequestType: \"json\",<br>\n&nbsp;&nbsp;executeAtStart: true,<br>\n&nbsp;&nbsp;asyncCall: true,<br>\n&nbsp;&nbsp;resultvar: \"param1\",<br>\n&nbsp;&nbsp;htmlObject: \"column1\",<br>\n&nbsp;&nbsp;parameters: [],<br>\n&nbsp;&nbsp;listeners: []<br>\n});<br>\n<br>\n ",
       "type": "Html"
      },
      {

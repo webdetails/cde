@@ -26,7 +26,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/TextEditorComponent', 'cdf/lib/jq
     // inject sampleObject div
     $("body").append($("<div>").attr("id", "sampleObject"));
 
-    var textEditorComponent = new TextEditorComponent(dashboard, {
+    var textEditorComponent = new TextEditorComponent({
       type: "TextEditorComponent",
       name: "textEditorComponent",
       priority: 5,

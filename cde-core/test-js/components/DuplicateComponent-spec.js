@@ -35,7 +35,7 @@ define([
     $("body").append($("<div>").attr("id", "sampleObject2"));
     $("body").append($("<div>").attr("id", "sampleObject3"));
   
-    var render_cggDial1 = new CggDialComponent(dashboard, {
+    var render_cggDial1 = new CggDialComponent({
       type: "CggDialComponent",
       name: "render_cggDial1",
       priority: 5,
@@ -49,7 +49,7 @@ define([
       height: 300
     });
 
-    var duplicateComponent = new DuplicateComponent(dashboard, {
+    var duplicateComponent = new DuplicateComponent({
       type: "DuplicateComponent",
       name: "duplicateComponent",
       priority: 5,
