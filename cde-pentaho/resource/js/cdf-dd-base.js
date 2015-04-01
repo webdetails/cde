@@ -353,13 +353,20 @@ var StylesRequests = {
 
   initStyles: function(saveSettingsParams, wcdf, myself, callback) {
 
+    var refreshTitle = function(title) {
+      var content = title + '<div class="cdfdd-title-status"></div>';
+      $("div.cdfdd-title")
+          .empty()
+          .html(content)
+          .attr('title', title);
+    };
+
     $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function(result) {
       try {
         var json = eval("(" + result + ")");
         if(json.status == "true") {
           myself.setDashboardWcdf(wcdf);
-          var title = wcdf.title;
-          $("div.cdfdd-title").empty().text(title).attr('title', title);
+          refreshTitle(wcdf.title);
           callback();
         } else {
           throw json.result;
