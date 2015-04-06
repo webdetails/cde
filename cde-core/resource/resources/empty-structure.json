@@ -1,15 +1,15 @@
 {
-	layout: {
-		title: "CDF - Sample structure",
-		rows: [
-		]
-	},
-	components: {
-		rows: [
-		]
-	},
-	"datasources": {
-		rows: [
-		]
-	}
+  layout: {
+    title: "CDF - Sample structure",
+    rows: [
+    ]
+  },
+  components: {
+    rows: [
+    ]
+  },
+  datasources: {
+    rows: [
+    ]
+  }
 }

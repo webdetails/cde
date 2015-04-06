@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
     <Name>Widget</Name>
@@ -18,6 +18,6 @@
       <Property>path</Property>
       <Property name="parameters">xActionArrayParameter</Property>
     </Model>
-    <Implementation />
+    <Implementation supportsLegacy="true" supportsAMD="false"/>
   </Contents>
 </DesignerComponent>

@@ -46,6 +46,7 @@ public class SynchronizerApiTest {
     String style = "MOCK_STYLE";
     String widgetName = "MOCK_WIDGET_NAME";
     boolean widget = false;
+    boolean require = false;
     String rendererType = "MOCK_RENDERED_TYPE";
     List<String> widgetParams = new ArrayList<String>();
     String cdfStructure = "MOCK_CDF_STRUCTURE";
@@ -59,7 +60,7 @@ public class SynchronizerApiTest {
 
     String result = new SynchronizerApiForTesting()
       .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
-        cdfStructure, operation, mockRequest, mockResponse );
+        cdfStructure, operation, require , mockRequest, mockResponse );
 
     JSONObject jsonObj = JSONObject.fromObject( result );
 

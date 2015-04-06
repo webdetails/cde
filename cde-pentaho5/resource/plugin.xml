@@ -42,7 +42,8 @@
 	</overlays>
 
     <external-resources>
-          <file context="requirejs">content/pentaho-cdf-dd/js/cde-require-js-cfg.js</file>
+        <file context="requirejs">content/pentaho-cdf-dd/js/cde-core-require-js-cfg.js</file>
+        <file context="requirejs">content/pentaho-cdf-dd/js/cde-pentaho-require-js-cfg.js</file>
     </external-resources>
 
 </plugin>

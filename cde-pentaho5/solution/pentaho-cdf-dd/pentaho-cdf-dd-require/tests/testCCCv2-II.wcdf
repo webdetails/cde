@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>CCC V2 ShowCase</title>
+  <author>Webdetails</author>
+  <description>CCC V2 ShowCase</description>
+  <icon/>
+  <widget>false</widget>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
+</cdf>

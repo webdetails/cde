@@ -12,96 +12,96 @@ var SiteMapComponent = BaseComponent.extend({
     selected: "UNUSEDPARAM!@#$",
 
     templates: {
-      list: Mustache.compile(
-        "<ul class='siteMap siteMapLevel{{level}}' ></ul>"
-      ),
-      item: Mustache.compile(
-        "<li class='siteMapItem {{classes}}''>" +
-        "  <a {{#link}}href='{{link}}'{{/link}}>{{name}}</a>" +
-        "</li>"
-      )
-
+      list: "<ul class='siteMap siteMapLevel{{level}}'></ul>",
+      item:
+        "<li class='siteMapItem {{classes}}'>" +
+        "<a href='{{link}}'>{{name}}</a></li>"
     },
 
     update : function() {
-        var items = [],
-            myself = this;
+      var items = [],
+          myself = this;
 
-        if(typeof this.siteMapSelectedParameter !== "undefined" && this.siteMapSelectedParameter != ""){
-            this.selected = Dashboards.getParameterValue( this.siteMapSelectedParameter )
+      if(typeof myself.siteMapSelectedParameter !== "undefined" && myself.siteMapSelectedParameter != "") {
+        myself.selected = Dashboards.getParameterValue(myself.siteMapSelectedParameter);
+      }
+
+      myself.ph = $("#" + myself.htmlObject).empty();
+
+      if(myself.ajaxUrl) {
+        var opts = {url: myself.ajaxUrl};
+
+        if(_.isEmpty(myself.parameters)) {
+          opts.data = Dashboards.propertiesArrayToObject(myself.ajaxData);
         }
-
-        // Dashboards.log("Sitemap structure length: " + siteMapParameter.length + "; Selected: " + this.selected);
-        this.ph = $("#" + this.htmlObject).empty();
-
-        if (this.ajaxUrl){
-          var opts = { 
-            url: this.ajaxUrl
-          }
-          if ( _.isEmpty( this.parameters) ){
-            opts.data = Dashboards.propertiesArrayToObject(this.ajaxData);
-          }
-          myself.fetchItems( opts, function (items){
-            myself.renderList( myself.ph, items, 0);
-          });
-        } else if (this.siteMapParameter){
-          this.renderList( this.ph, Dashboards.getParameterValue( this.siteMapParameter ) , 0 );
+        myself.fetchItems(opts, function(items) {
+          myself.renderList(myself.ph, items, 0);
+        });
+      } else {
+        if(myself.siteMapParameter) {
+          myself.renderList(myself.ph, Dashboards.getParameterValue(myself.siteMapParameter), 0);
         }
+      }
 
-        // mark as selected all ancestors
-        this.ph.find(".siteMapItem.siteMapSelected").parents(".siteMapItem").addClass("siteMapSelected");
-        this.ph.find(".siteMapItem.siteMapInitial").parents(".siteMapItem").addClass("siteMapInitial");
+      // mark as selected all ancestors
+      myself.ph.find(".siteMapItem.siteMapSelected").parents(".siteMapItem").addClass("siteMapSelected");
+      myself.ph.find(".siteMapItem.siteMapInitial").parents(".siteMapItem").addClass("siteMapInitial");
 
     },
 
-    fetchItems: function (overrides, callback){
+    fetchItems: function (overrides, callback) {
       var myself = this;
       overrides = overrides || {};
       var ajaxOpts = {
         type: 'GET',
-        success: function(json) {
-          callback(json);
-        }, 
+        success: function(json) {callback(json);},
         dataType: 'json',
         async: true
       };
-      ajaxOpts = _.extend( {}, ajaxOpts, overrides);
-      $.ajax( ajaxOpts );
+      ajaxOpts = _.extend({}, ajaxOpts, overrides);
+      $.ajax(ajaxOpts);
     },
 
-    renderList: function(ph, arr, level){
+    renderList: function(ph, arr, level) {
 
-        var myself=this;
-        var list = $( myself.templates.list({level: level}) );
+      var myself = this;
+      var list = $(Mustache.render(myself.templates.list, {level: level}));
 
-        $.each( arr, function(n,l){
-            var item = $( myself.templates.item({
-              name: l.name || l.id || "",
-              link: l.link,
-              classes: l.classes || ""    
-            }));
-            if(!l.link && typeof l.action === "function"){ 
-                // Add a click action to this
-                item.find('a').click(function(){
-                    l.action(item);
-                    // Now: Remove all previous selected classes and add this
-                    myself.ph.find(".siteMapItem.siteMapSelected").removeClass("siteMapSelected");
-                    $(this).parents(".siteMapItem").addClass("siteMapSelected");
-                    Dashboards.fireChange(myself.siteMapSelectedParameter,typeof l.id !== "undefined"?l.id:l.name);
-                });
+      for(var i = -1, len = arr.length; ++i < len;) {
+
+        var l = arr[i];
+        var lname = l.name || l.id || "";
+        var lid = l.id || l.name;
+
+        var item = $(Mustache.render(
+          myself.templates.item,
+          {name: lname, link: l.link, classes: l.classes || ""}));
+
+        if(!l.link && typeof l.action === "function") {
+          // Add a click action to this
+          item.find('a').click(function() {
+            l.action(item);
+            // Now: Remove all previous selected classes and add this
+            myself.ph.find(".siteMapItem.siteMapSelected").removeClass("siteMapSelected");
+            $(this).parents(".siteMapItem").addClass("siteMapSelected");
+
+            if(!_.isEmpty(lid)) {
+              Dashboards.fireChange(myself.siteMapSelectedParameter, lid);
             }
-                
-            // Is this one selected? Later we'll also need to mark all ancestor with a class
-            if(typeof(l.id) !== "undefined"? l.id == myself.selected: l.name == myself.selected){
-                item.addClass("siteMapSelected siteMapInitial");
-            }
+          });
+        }
 
-            if(l.sublinks && l.sublinks.length > 0)
-                myself.renderList(item, l.sublinks, level + 1);
+        // Is this one selected? Later we'll also need to mark all ancestor with a class
+        if(lid == myself.selected) {
+          item.addClass("siteMapSelected siteMapInitial");
+        }
 
-            item.appendTo(list);
-        });
-        list.appendTo(ph);
+        if(l.sublinks && l.sublinks.length > 0) {
+          myself.renderList(item, l.sublinks, ++level);
+        }
+        item.appendTo(list);
+      }
+      list.appendTo(ph);
 
     }
 
@@ -163,4 +163,3 @@ var SiteMapComponent = BaseComponent.extend({
   }
   ]*/
 });
-

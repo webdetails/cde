@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 var wd = (typeof wd !== 'undefined') ? wd : {};
 wd.cde = wd.cde || {};
@@ -377,7 +377,21 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", {
     }, function(json) {
       myself.styles = json.result;
-    });
+      myself._legacyStyles = [];
+      myself._requireStyles = [];
+      var pattern = /(.+)Require$/;
+      if (myself.styles) {
+        for (var i = 0; i < myself.styles.length; i++) {
+          var style = json.result[i];
+          var reqStyle = pattern.exec(style)
+          if(reqStyle) {
+              myself._requireStyles.push(reqStyle[1]);
+            } else {
+              myself._legacyStyles.push(style);
+            }
+          }
+        }
+      });    
   },
 
   listStyleRenderers: function(myself) {
@@ -385,7 +399,6 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "renderer/listRenderers", {
     }, function(json) {
       myself.renderers = json.result;
-
     });
   },
 
@@ -408,13 +421,11 @@ var StylesRequests = {
 
 
 var SaveRequests = {
-
   saveRequestParams: {
     selectedFolder: null,
     selectedFile: null,
     myself: null
   },
-
 
   saveSettings: function(saveSettingsParams, cdfdd, wcdf, myself) {
 
@@ -499,6 +510,13 @@ var SaveRequests = {
       }
     };
 
+    // inform user that the save as will create a require dashboard
+    if( myself.getDashboardWcdf().require ) {
+      if(!confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
+        return;
+      }
+    }
+
     // CDF-271 $.browser is depricated
     var rv;
     var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
@@ -507,7 +525,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log(Dashboards.i18nSupport.prop("SaveAsDashboard.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -537,7 +555,7 @@ var SaveRequests = {
 
     if(rv && rv < 10) {
       Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function(result){
+      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function(result) {
         saveAsWidgetCallback(result, saveAsParams.widgetName);
       });
     } else {
@@ -659,7 +677,7 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
       $.post(syncUrl, saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -739,3 +757,35 @@ var Cgg = {
   }
 };
 
+var SettingsHelper = {
+  getExtraPromptContent: function(){
+    return '<hr style="background:none;"/>' +
+  '<span title="Asynchronous module definition support" class="title">RequireJS Support ' +
+  '<input type="checkbox" name="require_checkbox" {{#require}}checked{{/require}}></span>';
+  },
+    
+  callExtraContentSubmit: function(myself, wcdf){
+    var isRequire = $('input[name="require_checkbox"]:checked').length > 0;
+    var style = $("#styleInput").val();
+    if(isRequire && myself._requireStyles.indexOf(style) > - 1){
+      wcdf.style = style + "Require";
+    } else {
+      wcdf.style = style;
+    }
+    wcdf.require = isRequire;
+  },
+
+  getStyles: function(wcdf, myself){
+    return wcdf.require ? myself._requireStyles : myself._legacyStyles;
+  },
+
+  getSelectedStyle: function(wcdf){
+    var matchedStyle = /(.+)Require$/.exec(wcdf.style);
+    if (matchedStyle) {
+      return matchedStyle[1];
+    } else {
+      return wcdf.style;
+    }
+  }
+
+};

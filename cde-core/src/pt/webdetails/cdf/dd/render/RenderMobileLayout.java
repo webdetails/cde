@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.render;
 
+import java.text.MessageFormat;
 import java.util.Iterator;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -26,12 +27,12 @@ public class RenderMobileLayout extends Renderer {
     super( doc, context );
   }
 
+  @Override
   public String render( String alias ) throws Exception {
     StringBuffer layout = new StringBuffer( "" );
 
     try {
-      @SuppressWarnings( "unchecked" )
-      final Iterator<Pointer> rootRows = doc.iteratePointers( "/layout/rows[parent='UnIqEiD']" );
+      final Iterator<Pointer> rootRows = doc.iteratePointers( MessageFormat.format( XPATH_FILTER, UNIQUEID ) );
 
       layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "<div class='container'>" );
       renderRows( doc, rootRows, layout, 4 );
@@ -43,30 +44,21 @@ public class RenderMobileLayout extends Renderer {
     return layout.toString();
   }
 
-  private void renderRows(
-    final JXPathContext doc,
-    final Iterator<Pointer> nodeIterator,
-    final StringBuffer layout,
-    final int ident )
-    throws Exception {
+  private void renderRows( final JXPathContext doc, final Iterator<Pointer> nodeIterator, final StringBuffer layout,
+                           final int ident ) throws Exception {
     while ( nodeIterator.hasNext() ) {
       final Pointer pointer = nodeIterator.next();
       final JXPathContext context = doc.getRelativeContext( pointer );
-
       final String rowId = (String) context.getValue( "id" );
-
       final Render renderer = (Render) getRender( context );
+
       renderer.processProperties();
 
       layout.append( NEWLINE ).append( getIndent( ident ) );
       layout.append( renderer.renderStart() );
 
       // Render Child Rows
-      renderRows(
-        context,
-        context.iteratePointers( "/layout/rows[parent='" + rowId + "']" ),
-        layout,
-        ident + 2 );
+      renderRows( context, context.iteratePointers( MessageFormat.format( XPATH_FILTER, rowId ) ), layout, ident + 2 );
 
       layout.append( NEWLINE ).append( getIndent( ident ) );
       layout.append( renderer.renderClose() );

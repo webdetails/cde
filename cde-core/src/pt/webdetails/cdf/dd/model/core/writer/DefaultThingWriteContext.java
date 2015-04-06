@@ -20,8 +20,7 @@ public class DefaultThingWriteContext implements IThingWriteContext
     this._breakOnError = breakOnError;
   }
 
-  public final IThingWriterFactory getFactory()
-  {
+  public IThingWriterFactory getFactory() {
     return this._factory;
   }
 

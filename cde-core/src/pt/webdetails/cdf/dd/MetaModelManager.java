@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
@@ -31,7 +31,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
-import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.legacy.CdeRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 
@@ -50,6 +50,7 @@ public final class MetaModelManager {
   private final Object lock = new Object();
   private MetaModel model;
   private String jsDefinition;
+  private String amdJsDefinition;
 
   private MetaModelManager() {
     long start = System.currentTimeMillis();
@@ -75,6 +76,15 @@ public final class MetaModelManager {
     }
   }
 
+  public String getAmdJsDefinition() {
+    synchronized ( lock ) {
+      if ( this.amdJsDefinition == null && this.model != null ) {
+        this.amdJsDefinition = writeAmdJsDefinition( this.model );
+      }
+      return this.amdJsDefinition;
+    }
+  }
+
   public void refresh() {
     this.refresh( true );
   }
@@ -94,6 +104,7 @@ public final class MetaModelManager {
       synchronized ( lock ) {
         this.model = model;
         this.jsDefinition = null;
+        this.amdJsDefinition = null;
       }
     }
 
@@ -103,7 +114,7 @@ public final class MetaModelManager {
   private MetaModel readModel() {
     // Read Components from the FS
     XmlFsPluginThingReaderFactory factory =
-      new XmlFsPluginThingReaderFactory( CdeEnvironment.getContentAccessFactory() );
+        new XmlFsPluginThingReaderFactory( CdeEnvironment.getContentAccessFactory() );
     XmlFsPluginModelReader metaModelReader = factory.getMetaModelReader();
     try {
       // read component and property definitions
@@ -160,4 +171,27 @@ public final class MetaModelManager {
     return out.toString();
   }
 
+  private String writeAmdJsDefinition( MetaModel model ) {
+    IThingWriterFactory factory =
+        new pt.webdetails.cdf.dd.model.meta.writer.cderunjs.amd.CdeRunJsThingWriterFactory();
+    IThingWriter writer;
+
+    try {
+      writer = factory.getWriter( model );
+    } catch ( UnsupportedThingException ex ) {
+      logger.error( "Error while obtaining the model writer from the factory.", ex );
+      return null;
+    }
+
+    StringBuilder out = new StringBuilder();
+    IThingWriteContext context = new DefaultThingWriteContext( factory, false );
+    try {
+      writer.write( out, context, model );
+    } catch ( ThingWriteException ex ) {
+      logger.error( "Error while writing the model to JS.", ex );
+      return null;
+    }
+
+    return out.toString();
+  }
 }

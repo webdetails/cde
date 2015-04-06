@@ -69,9 +69,9 @@ var HtmlObjectRenderer = SelectRenderer.extend({
 
   getData: function() {
     var r = {};
-    _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(), function(o) {
-      var p = o.properties[0].value;
-      r["${p:" + p + "}"] = p
+    _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(),function(o){
+      var h = o.properties[0].value;
+      r["${h:" + h + "}"] = h;
     });
     return r;
   }
