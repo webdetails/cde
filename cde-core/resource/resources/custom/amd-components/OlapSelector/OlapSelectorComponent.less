@@ -1,0 +1,511 @@
+/*
+ * Global Definitions
+ */
+
+@selectorBlue: #047eca;
+@selectorGrey: #969b9e;
+
+.grey-gradient () {
+  background: -moz-linear-gradient(top,  #f8f9fa 0%,#dee4e6 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f9fa), color-stop(100%,#dee4e6)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #f8f9fa 0%,#dee4e6 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #f8f9fa 0%, #dee4e6 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #f8f9fa 0%,#dee4e6 100%); /* IE10+ */
+  background: linear-gradient(top,  #f8f9fa 0%,#dee4e6 100%); /* W3C */
+  background-color: #ecedef;
+}
+
+.box-shadow (@x: 0, @y: 0, @blur: 1px, @spread: 0px, @color: #000) {
+  box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+}
+
+/*
+ * Style
+ */
+.olapSelectorComponent {
+  font-family: Trebuchet, Helvetica, Arial, sans-serif;
+
+  &.collapsed {
+    .optionList {
+      height: 0px;
+      display: none;
+
+      .options, .search {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &.expanded {
+    .selection {
+      height: 0px;
+      overflow-y: hidden;
+    }
+  }
+
+  .pulldown {
+    width: 180px;
+    position: relative;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #969b9e;
+
+    .optionList {
+      width: 800px;
+      position: absolute;
+      top: -2px;
+      left: 182px;
+      overflow: hidden;
+      background-color: white;
+      border: 2px solid @selectorBlue;
+      .box-shadow(0, 0, 10px, 5px, rgba(0, 0, 0, 0.3));
+      z-index: 1000;
+
+      .header {
+        height: 50px;
+        border-bottom: 2px solid @selectorBlue;
+        text-align: center;
+        line-height: 50px;
+        .grey-gradient;
+
+        > * {
+          height: 50px;
+          line-height: 50px;
+        }
+      }
+
+      .footer {
+        border-top: 2px solid @selectorBlue;
+        margin-top: 5px;
+        padding:10px;
+        text-align: center;
+        height:40px;
+        .grey-gradient;
+      }
+
+      .leftArea {
+        float:left;
+        width: 198px;
+        height: 583px;
+        border-right: 2px solid @selectorBlue;
+
+        .levels .item {
+          width:200px;
+          height:30px;
+          margin: 0;
+          line-height: 30px;
+          background: none;
+          float:none;
+
+          &.selected {
+            background: @selectorBlue;
+            color: white;
+          }
+        }
+        .selectionPanel {
+          .label {
+            margin-top: 15px;
+            font-size: 80%;
+            color: @selectorBlue;
+            border-bottom: 2px solid @selectorBlue;
+            text-align: center;
+          }
+          .selection {
+            height: auto;
+            font-size: 80%;
+          }
+        }
+      }
+
+      .rightArea {
+        float: left;
+        width: 600px;
+
+        .search {
+          width: 250px;
+          float: left;
+          position: relative;
+          margin-bottom: 5px;
+          height:45px;
+
+          &:after {
+            content: url('img/search.png');
+            position:absolute;
+            right: 12px;
+            top: 12px;
+          }
+          input {
+            width: 230px;
+            height: 25px;
+            margin: 10px;
+            margin-top: 13px;
+            border: 1px solid silver;
+            border-radius: 4px;
+            position: relative;
+
+            &:hover {
+              border: solid 1px @selectorBlue;
+            }
+            &:-moz-placeholder {
+              padding-left: 10px;
+              width: 230px;
+            }
+
+            &::-webkit-input-placeholder {
+              padding-left: 10px;
+              font-size: 110%;
+            }
+          }
+        }
+
+        .breadcrumb {
+          display: inline-block;
+          width: 335px;
+          float: left;
+          text-align: left;
+          padding-left: 15px;
+
+          .separator {
+            display: inline-block;
+            height: 24px;
+            width: 24px;
+            background-image: url("img/arrow_bread.png");
+            position: relative;
+            top: 7px;
+          }
+
+          .name {
+            color: @selectorBlue;
+          }
+        }
+
+        .paginationContainer {
+          height: 41px;
+
+          .pagination {
+            border-top: 1px solid silver;
+            display: inline-block;
+            color:black;
+            text-align: center;
+
+            div {
+              display: inline-block;
+              cursor: pointer;
+            }
+
+            .paginateButton {
+              display: inline-block;
+              width:290px;
+              padding: 5px;
+              border: none;
+              margin: 0;
+              height: 35px;
+              line-height: 35px;
+              float: left;
+              position:relative;
+              text-size: 90%;
+              .grey-gradient;
+
+              &.prev {
+                width: 289px;
+                border-right: 1px solid silver;
+                .arrow {
+                  background-image: url("img/leftarrow.png");
+                  left: 10px;
+                }
+              }
+
+              &.next {
+                .arrow {
+                  background-image: url("img/rightarrow.png");
+                  right: 10px;
+                }
+              }
+
+              .arrow {
+                width:57px;
+                height:56px;
+                position: absolute;
+                top: -5px;
+              }
+              &:hover {
+                color: @selectorBlue;
+                background: white;
+                .arrow {
+                  background-position: 58px 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .selection {
+    margin-top: 5px;
+    width:282px;
+    overflow: hidden;
+  }
+
+  ul {
+      -webkit-margin-before: 0;
+      padding: 0;
+      margin: 0;
+  }
+
+  li {
+      list-style: none;
+  }
+}
+
+.olapSelectorComponent .optionList .leftArea .levels .item.selected {
+  background: @selectorBlue;
+  color: white;
+}
+
+.olapSelectorComponent .optionList .rightArea .item:not(:hover).highlight .drill-down {
+  background: @selectorBlue;
+  color: white;
+  visibility: visible;
+  background-image: none;
+}
+
+.olapSelectorComponent .optionList .rightArea .item:hover .drill-down .label {
+  display: none;
+}
+
+.olapSelectorComponent .leftArea li {
+    list-style: none;
+    position: relative;
+}
+.olapSelectorComponent .leftArea li .remove {
+  background-image:url("img/cross.png");
+}
+
+.olapSelectorComponent .leftArea li .target {
+  height: 30px;
+  padding-left: 8px;
+  position: relative;
+  width: 180px;
+  line-height: 30px;
+  background: @selectorBlue;
+  margin: 4px;
+  color: white;
+}
+.olapSelectorComponent .optionList .rightArea .options {
+    /*  -moz-column-width:210px;
+      -moz-column-gap:0;*/
+    -webkit-column-width:200px;
+    -webkit-column-gap:0;
+    column-width:200px;
+    column-gap:0;
+    width: 600px;
+    height: 420px;
+}
+
+
+.olapSelectorComponent .item {
+    position: relative;
+    margin: 2px 2px;
+    display: inline-block;
+    float:left;
+    height: 26px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 190px;
+    cursor:pointer;
+}
+
+.olapSelectorComponent .selection .item{
+    margin: 2px 0px;
+}
+
+.olapSelectorComponent .optionList .item{
+    width:190px;
+    font-size:12px;
+    border-radius:0px;
+    font-weight:400;
+}
+
+.olapSelectorComponent .optionList .rightArea .item {
+  width: 180px;
+  margin-left:12px;
+}
+
+.olapSelectorComponent .optionList .item .target,
+.olapSelectorComponent .optionList .item .drill-down {
+  display: inline-block;
+  width: 25px;
+}
+
+.olapSelectorComponent .options .selected.item .drill-down {
+  background-position: -27px 1px;
+}
+
+.olapSelectorComponent .options .selected.item:hover .drill-down {
+  background-position: 2px 1px;
+}
+
+.olapSelectorComponent .optionList .item .target{
+  width: 142px;
+  height:26px;
+  line-height: 26px;
+  position: relative;
+}
+
+.olapSelectorComponent .optionList .item .drill-down {
+  visibility: hidden;
+  text-align: center;
+  width: 30px;
+  margin-left: 10px;
+  height: 26px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-image: url("img/drill.png");
+  background-repeat: no-repeat;
+  background-position: 2px 1px;
+}
+
+.no-svg .olapSelectorComponent .item {
+    width: 200px;
+}
+
+.olapSelectorComponent .rightArea .item.selected .name {
+    width: 113px;
+}
+.olapSelectorComponent .item .name {
+    display: inline-block;
+    width:132px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+    white-space: nowrap;
+}
+
+.olapSelectorComponent .selected.item {
+    border-color: #b6b5b5;
+}
+
+.olapSelectorComponent .options .item:hover .target,
+.olapSelectorComponent .options .selected.item .drill-down,
+.olapSelectorComponent .options .selected.item .target {
+  background-color: @selectorBlue;
+  color:white;
+  visibility: visible;
+}
+
+.olapSelectorComponent .rightArea .options .item:hover .drill-down,
+.olapSelectorComponent .rightArea .options .item:hover .target {
+  visibility: visible;
+  background-color: #e5eff3;
+  color: inherit;
+}
+
+.olapSelectorComponent .item.selected .check {
+    background-image: url('img/cross.png');
+    display: inline-block;
+    height:25px;
+    width:29px;
+    margin: 0px;
+    padding: 0;
+    position: absolute;
+    right: -3px;
+    top: 0px;
+}
+
+.olapSelectorComponent .selection .item {
+    border: 1px solid rgba(255,255,255,0.7);
+    margin-bottom: 2px;
+    width: 280px;
+}
+.olapSelectorComponent .remove {
+    background-image: url('img/cross.png');
+    display: inline-block;
+    width: 25px;
+    height: 23px;
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    cursor: pointer;
+}
+
+.olapSelectorComponent .item span {
+    line-height: 25px;
+}
+
+.olapSelectorComponent.collapsed .pulldown div.title {
+    width: 163px;
+    height: 25px;
+    line-height: 23px;
+
+}
+
+.olapSelectorComponent .pulldown div.title {
+    width:162px;
+    height: 25px;
+    line-height: 23px;
+    position: relative;
+    vertical-align: center;
+    padding: 0px;
+    padding-left:15px;
+    cursor:pointer;
+}
+.no-svg .olapSelectorComponent .pulldown div.title {
+    width:164px;
+    min-width:164px;
+    z-index: 50;
+
+}
+
+
+.olapSelectorComponent .pulldown div.title:after {
+    background-image: url('img/selectorArrows.png');
+    background-position: 0 -51px;
+    background-repeat: no-repeat;
+    content: '\0000a0';
+    width: 20px;
+    position:absolute;
+    right: 5px;
+    top: 0px;
+}
+.no-svg .olapSelectorComponent .pulldown div.title:after {
+    right: 18px;
+}
+
+.olapSelectorComponent.expanded .pulldown div.title:hover:after,
+.olapSelectorComponent.expanded .pulldown div.title:after {
+    background-position: 1px -51px;
+
+}
+
+.olapSelectorComponent.expanded div.title {
+    border-color: #848382;
+}
+
+.olapSelectorComponent .button {
+  position:absolute;
+  display:block;
+  cursor:pointer;
+  background: none;
+  height: 30px;
+  border: 1px solid silver;
+  border-radius: 0;
+  font-weight: 350;
+  font-size: 90%;
+  line-height: 30px;
+  .grey-gradient;
+  &.validate {
+    width: 200px;
+    right: 15px;
+    bottom: 15px;
+  }
+  &.cancel {
+    width: 90px;
+    right: 230px;
+    bottom: 15px;
+  }
+}

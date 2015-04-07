@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="ForMapWithMarkers" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="ForMapWithGeo" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="ForMapWithShapes" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600"
+               connection="ForMapWithMarkers"
+               id="ForMapWithMarkers"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Longitude",
+"Latitude",
+"Description"
+};
+
+Class[] columnTypes = new Class[]{
+Float.class
+,Float.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new Float(3), new Float(45.45), new String("Atelier Graphique")});
+model.addRow(new Object[]{ new Float(12), new Float(45.45), new String("Australian Collectors, Co.")});
+model.addRow(new Object[]{ new Float(14), new Float(45.45), new String("Signal Gift Stores")});
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
+               id="ForMapWithGeo"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"City",
+"Description"
+};
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new String("Nantes"), new String("Atelier Graphique")});
+model.addRow(new Object[]{ new String("Melbourne"), new String("Australian Collectors, Co.")});
+model.addRow(new Object[]{ new String("Las Vegas"), new String("Signal Gift Stores")});
+model.addRow(new Object[]{ new String("Paris"), new String("La Rochelle Gifts")});
+model.addRow(new Object[]{ new String("Stavern"), new String("Baane Mini Imports")});
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithShapes"
+               id="ForMapWithShapes"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"key",
+"value"
+};
+
+Class[] columnTypes = new Class[]{
+String.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+/* Population density pop/km2*/
+model.addRow(new Object[]{ new String("Bangladesh"), new Float(988.38)});
+model.addRow(new Object[]{ new String("Taiwan"), new Float(646)});
+model.addRow(new Object[]{ new String("South Korea"), new Float(505)});
+model.addRow(new Object[]{ new String("Rwanda"), new Float(416)});
+model.addRow(new Object[]{ new String("Netherlands"), new Float(405.2)});
+model.addRow(new Object[]{ new String("India"), new Float(377.4)});
+model.addRow(new Object[]{ new String("Haiti"), new Float(385)});
+model.addRow(new Object[]{ new String("Israel"), new Float(369)});
+model.addRow(new Object[]{ new String("Belgium"), new Float(366)});
+model.addRow(new Object[]{ new String("Burundi"), new Float(365)});
+model.addRow(new Object[]{ new String("Japan"), new Float(337)});
+model.addRow(new Object[]{ new String("Philippines"), new Float(330.53)});
+model.addRow(new Object[]{ new String("Sri Lanka"), new Float(309)});
+model.addRow(new Object[]{ new String("Vietnam"), new Float(268)});
+model.addRow(new Object[]{ new String("United Kingdom"), new Float(262)});
+model.addRow(new Object[]{ new String("Pakistan"), new Float(230.98)});
+model.addRow(new Object[]{ new String("Germany"), new Float(226)});
+model.addRow(new Object[]{ new String("Italy"), new Float(199)});
+model.addRow(new Object[]{ new String("Dominican Republic"), new Float(197)});
+model.addRow(new Object[]{ new String("North Korea"), new Float(196)});
+model.addRow(new Object[]{ new String("Switzerland"), new Float(196)});
+model.addRow(new Object[]{ new String("Nigeria"), new Float(188)});
+model.addRow(new Object[]{ new String("Nepal"), new Float(180)});
+model.addRow(new Object[]{ new String("Guatemala"), new Float(142)});
+model.addRow(new Object[]{ new String("China"), new Float(141.37)});
+model.addRow(new Object[]{ new String("Uganda"), new Float(141)});
+model.addRow(new Object[]{ new String("Czech Republic"), new Float(133)});
+model.addRow(new Object[]{ new String("Thailand"), new Float(128)});
+model.addRow(new Object[]{ new String("Indonesia"), new Float(124)});
+model.addRow(new Object[]{ new String("Poland"), new Float(123)});
+model.addRow(new Object[]{ new String("Malawi"), new Float(121)});
+model.addRow(new Object[]{ new String("France"), new Float(118)});
+model.addRow(new Object[]{ new String("Syria"), new Float(115)});
+model.addRow(new Object[]{ new String("Portugal"), new Float(115)});
+model.addRow(new Object[]{ new String("Hungary"), new Float(106)});
+model.addRow(new Object[]{ new String("Azerbaijan"), new Float(109)});
+model.addRow(new Object[]{ new String("Ghana"), new Float(103)});
+model.addRow(new Object[]{ new String("Cuba"), new Float(102)});
+model.addRow(new Object[]{ new String("Austria"), new Float(101)});
+model.addRow(new Object[]{ new String("Turkey"), new Float(100)});
+model.addRow(new Object[]{ new String("United Arab Emirates"), new Float(99)});
+model.addRow(new Object[]{ new String("Spain"), new Float(93)});
+model.addRow(new Object[]{ new String("Serbia"), new Float(93)});
+model.addRow(new Object[]{ new String("Benin"), new Float(92)});
+model.addRow(new Object[]{ new String("Malaysia"), new Float(91)});
+model.addRow(new Object[]{ new String("Egypt"), new Float(85.78)});
+model.addRow(new Object[]{ new String("Romania"), new Float(84)});
+model.addRow(new Object[]{ new String("Greece"), new Float(82)});
+model.addRow(new Object[]{ new String("Ethiopia"), new Float(81)});
+model.addRow(new Object[]{ new String("Burma"), new Float(79)});
+model.addRow(new Object[]{ new String("Iraq"), new Float(77)});
+model.addRow(new Object[]{ new String("Ukraine"), new Float(75)});
+model.addRow(new Object[]{ new String("Honduras"), new Float(75)});
+model.addRow(new Object[]{ new String("Morocco"), new Float(75)});
+model.addRow(new Object[]{ new String("Cambodia"), new Float(74)});
+model.addRow(new Object[]{ new String("Ivory Coast"), new Float(72)});
+model.addRow(new Object[]{ new String("Senegal"), new Float(69)});
+model.addRow(new Object[]{ new String("Kenya"), new Float(66)});
+model.addRow(new Object[]{ new String("Uzbekistan"), new Float(67)});
+model.addRow(new Object[]{ new String("Tunisia"), new Float(66)});
+model.addRow(new Object[]{ new String("Bulgaria"), new Float(66)});
+model.addRow(new Object[]{ new String("Burkina Faso"), new Float(64)});
+model.addRow(new Object[]{ new String("Ecuador"), new Float(61)});
+model.addRow(new Object[]{ new String("Mexico"), new Float(60)});
+model.addRow(new Object[]{ new String("Tajikistan"), new Float(56)});
+model.addRow(new Object[]{ new String("Yemen"), new Float(54)});
+model.addRow(new Object[]{ new String("Tanzania"), new Float(51)});
+model.addRow(new Object[]{ new String("Iran"), new Float(47)});
+model.addRow(new Object[]{ new String("Belarus"), new Float(46)});
+model.addRow(new Object[]{ new String("Guinea"), new Float(44)});
+model.addRow(new Object[]{ new String("Cameroon"), new Float(44)});
+model.addRow(new Object[]{ new String("South Africa"), new Float(43)});
+model.addRow(new Object[]{ new String("Colombia"), new Float(42)});
+model.addRow(new Object[]{ new String("Afghanistan"), new Float(39)});
+model.addRow(new Object[]{ new String("Madagascar"), new Float(35)});
+model.addRow(new Object[]{ new String("United States"), new Float(32.32)});
+model.addRow(new Object[]{ new String("Zimbabwe"), new Float(33)});
+model.addRow(new Object[]{ new String("Venezuela"), new Float(32)});
+model.addRow(new Object[]{ new String("Mozambique"), new Float(30)});
+model.addRow(new Object[]{ new String("Democratic Republic of the Congo"), new Float(29)});
+model.addRow(new Object[]{ new String("Peru"), new Float(24)});
+model.addRow(new Object[]{ new String("Brazil"), new Float(24)});
+model.addRow(new Object[]{ new String("Sweden"), new Float(23)});
+model.addRow(new Object[]{ new String("Chile"), new Float(22)});
+model.addRow(new Object[]{ new String("South Sudan"), new Float(18)});
+model.addRow(new Object[]{ new String("Zambia"), new Float(17)});
+model.addRow(new Object[]{ new String("Sudan"), new Float(17)});
+model.addRow(new Object[]{ new String("Angola"), new Float(17)});
+model.addRow(new Object[]{ new String("Algeria"), new Float(16)});
+model.addRow(new Object[]{ new String("Somalia"), new Float(15)});
+model.addRow(new Object[]{ new String("Argentina"), new Float(14)});
+model.addRow(new Object[]{ new String("Niger"), new Float(14)});
+model.addRow(new Object[]{ new String("Saudi Arabia"), new Float(14)});
+model.addRow(new Object[]{ new String("Mali"), new Float(12)});
+model.addRow(new Object[]{ new String("Bolivia"), new Float(9)});
+model.addRow(new Object[]{ new String("Chad"), new Float(9)});
+model.addRow(new Object[]{ new String("Russia"), new Float(8)});
+model.addRow(new Object[]{ new String("Kazakhstan"), new Float(6)});
+model.addRow(new Object[]{ new String("Canada"), new Float(3.55)});
+model.addRow(new Object[]{ new String("Australia"), new Float(3)});
+
+return model;</Query>
+   </DataAccess>
+</CDADescriptor>

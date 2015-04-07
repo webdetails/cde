@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="value1" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="value2" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="value3" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="value4" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="value1"
+               id="value1"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>select  top 1 65 from customers</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="value2"
+               id="value2"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT CUSTOMERNAME,CREDITLIMIT FROM CUSTOMERS where CUSTOMERNUMBER between 100 and 130;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="value3"
+               id="value3"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT CUSTOMERNAME,CREDITLIMIT, rand()*2*CREDITLIMIT FROM CUSTOMERS where CUSTOMERNUMBER between 100 and 110;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="value4"
+               id="value4"
+               type="sql">
+      <Columns/>
+      <Parameters/>
+      <Query>SELECT CUSTOMERNAME, CONTACTFIRSTNAME || ' ' || CONTACTLASTNAME as name ,CREDITLIMIT, rand()*2*CREDITLIMIT, 10000,20000,30000 FROM CUSTOMERS where CUSTOMERNUMBER between 100 and 110;</Query>
+   </DataAccess>
+</CDADescriptor>

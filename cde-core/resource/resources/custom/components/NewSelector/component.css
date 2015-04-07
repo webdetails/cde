@@ -76,7 +76,7 @@
 
 .no-svg .selectorComponent .pulldown .search{
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424142', endColorstr='#555553',GradientType=0 ); /* IE6-8 */
-} 
+}
 
 
 
@@ -133,7 +133,7 @@
   column-width:210px;
   column-gap:0;
   width: 639px;
-  height: 540px;
+  height: 150px;
   max-height:540px;
 }
 
@@ -153,7 +153,7 @@
 }
 
 .selectorComponent .selection .item{
-  margin: 2px 0px;  
+  margin: 2px 0px;
 }
 
 .selectorComponent .optionList .item{
@@ -255,7 +255,7 @@
   height: 25px;
   padding-left: 16px;
   line-height: 23px;
-  
+
 }
 
 .selectorComponent .pulldown div.title {
@@ -293,7 +293,7 @@ z-index: 50;
 
   background-image: url('img/selector-normal.png');
   background-repeat: no-repeat;
-  background-position: 142px center;    
+  background-position: 142px center;
 
 }
 
@@ -314,7 +314,7 @@ z-index: 50;
 
 .selectorComponent.expanded .pulldown div.title:hover,
 .selectorComponent.expanded .pulldown div.title {
-	border: 2px solid #E67A2C;      
+	border: 2px solid #E67A2C;
   background: #d9ddde; /* Old browsers */
 }
 
@@ -344,7 +344,7 @@ z-index: 50;
 .selectorComponent.expanded .pulldown div.title:hover:after,
 .selectorComponent.expanded .pulldown div.title:after {
   background-position: 1px -51px;
-  
+
 }
 
 .selectorComponent .pulldown div.title:hover:after {
@@ -417,7 +417,7 @@ z-index: 50;
   -moz-border-radius: 4px;
   border-radius: 4px;
 
-  background: #42A409;;    
+  background: #42A409;;
 }
 .svg .selectorComponent .validate {
 /* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -428,7 +428,7 @@ z-index: 50;
   background: -o-linear-gradient(top,  #55dd10 0%,#55dd10 40%,#42a409 60%,#42a409 100%); /* Opera 11.10+ */
   background: -ms-linear-gradient(top,  #55dd10 0%,#55dd10 40%,#42a409 60%,#42a409 100%); /* IE10+ */
   background: linear-gradient(to bottom,  #55dd10 0%,#55dd10 40%,#42a409 60%,#42a409 100%); /* W3C */
-  
+
 }
 .no-svg .selectorComponent .validate {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#55dd10', endColorstr='#42a409',GradientType=0 ); /* IE6-8 */
@@ -436,7 +436,7 @@ z-index: 50;
 .selectorComponent .validate:hover,
 .svg .selectorComponent .validate:hover,
 .no-svg .selectorComponent .validate:hover {
-  background: #55dd10;  
+  background: #55dd10;
 }
 
 .selectorComponent .validate .image{
@@ -445,16 +445,3 @@ z-index: 50;
   display:block;
   background: url('img/v.png') 50% 50% no-repeat transparent;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

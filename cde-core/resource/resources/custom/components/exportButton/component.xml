@@ -1,37 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
-	<Header>
-		<Name>Export Button</Name>
-		<IName>exportButton</IName>
-		<Description>Export Button Component</Description>
-		<Category>OTHERCOMPONENTS</Category>
-		<CatDescription>Others</CatDescription>
-		<Type>PalleteEntry</Type>
-		<Version>1.0</Version>
-	</Header>
-	<Contents>
-		<Model>
-			<Property>executeAtStart</Property>
-			<Property>label</Property>
-			<Property>htmlObject</Property>
-			<Property>componentName</Property>
-			<Property name="parameters">xActionArrayParameter</Property>
-			<Property>outputType</Property>
-			<!--Property>csvFieldSeparator</Property-->
-			<!--Property>filename</Property-->
-			<Property>preExecution</Property>
-			<Property>postExecution</Property>
-			<Property>tooltip</Property>
-			<Property>refreshPeriod</Property>
-			<Property>listeners</Property>
-		</Model>
-		<Implementation>
-			<Code src="exportButton.js" />
-			<Styles>
-				<Style version="1.0" src="exportButton.css">
-					Export Button
-				</Style>
-			</Styles>
-			<Dependencies/>
+  <Header>
+    <Name>Export Button</Name>
+    <IName>exportButton</IName>
+    <Description>Export Button Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>label</Property>
+      <Property>htmlObject</Property>
+      <Property>componentName</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Property>outputType</Property>
+      <!--Property>csvFieldSeparator</Property-->
+      <!--Property>filename</Property-->
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>tooltip</Property>
+      <Property>refreshPeriod</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="exportButton.js" />
+      <Styles>
+        <Style version="1.0" src="exportButton.css">
+          Export Button
+        </Style>
+      </Styles>
+      <Dependencies/>
       <CustomProperties>
         <DesignerProperty>
           <Header>
@@ -91,5 +92,5 @@
         </DesignerProperty>
       </CustomProperties>
     </Implementation>
-	</Contents>
+  </Contents>
 </DesignerComponent>

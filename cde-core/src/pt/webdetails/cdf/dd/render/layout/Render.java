@@ -21,6 +21,8 @@ import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public abstract class Render {
+  private static final String PROPERTY_VALUE = "properties/value[../name=''{0}'']";
+
   private JXPathContext node;
   protected static final Log logger = LogFactory.getLog( Render.class );
   private PropertyBag propertyBag;

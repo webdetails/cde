@@ -2,8 +2,7 @@
   "name": "CDE",
   "version": "1.0.0",
   "description": "Community Dashboard Editor",
-  "directories": {
-  },
+  "directories": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,7 +19,6 @@
   "bugs": {
     "url": "http://jira.pentaho.com/browse/CDE"
   },
-
   "devDependencies": {
     "karma": "~0.12",
     "karma-cli": "0.0.x",
@@ -31,6 +29,9 @@
     "karma-jasmine-html-reporter": "0.1.x",
     "karma-coverage": "0.2.x",
     "karma-phantomjs-launcher": "0.1.x",
-    "karma-chrome-launcher": "0.1.x"
+    "karma-chrome-launcher": "0.1.x",
+    "karma-firefox-launcher": "~0.1",
+    "requirejs": "~2.1.9",
+    "csso": "1.3.11"
   }
 }

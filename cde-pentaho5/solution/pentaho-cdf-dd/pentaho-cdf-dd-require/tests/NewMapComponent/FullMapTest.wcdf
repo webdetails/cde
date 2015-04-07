@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>Map Component Full Test</title>
+  <author></author>
+  <description>Tests Map Component with Graph</description>
+  <icon/>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
+</cdf>

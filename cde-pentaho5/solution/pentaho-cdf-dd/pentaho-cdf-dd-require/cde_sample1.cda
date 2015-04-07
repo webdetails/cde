@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="mdxQuery" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="sqlQuery" type="sql.jndi">
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="mdxQuery"
+               id="mdxQuery"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>select NON EMPTY [Markets].[All Markets].Children ON COLUMNS,
+  NON EMPTY [Product].[All Products].Children ON ROWS
+from [SteelWheelsSales]</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sqlQuery"
+               id="sqlQuery"
+               type="sql">
+      <Columns/>
+      <Parameters>
+         <Parameter default="Classic Cars" name="productLine" type="String"/>
+         <Parameter default="APAC" name="territory" type="String"/>
+      </Parameters>
+      <Query>SELECT
+c.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total
+FROM ORDERFACT f
+inner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )
+inner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)
+where p.PRODUCTLINE=${productLine}
+and c.TERRITORY=${territory}
+group by c.CUSTOMERNAME
+order by total desc</Query>
+   </DataAccess>
+</CDADescriptor>

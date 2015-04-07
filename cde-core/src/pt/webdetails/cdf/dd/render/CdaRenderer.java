@@ -207,7 +207,6 @@ public class CdaRenderer {
       Pointer pointer = params.next();
       String paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
       String placement = ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) ).toLowerCase();
-
       if ( placement.equals( "attrib" ) ) {
         if ( paramName.equals( "id" ) || paramName.equals( "connection" ) || paramName.equals( "cacheDuration" ) ) {
           continue;
@@ -240,9 +239,7 @@ public class CdaRenderer {
       } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
         || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
         Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
-
         renderProperty( new CompoundComponent(), context, paramName, compoundElem );
-
         dataAccess.appendChild( compoundElem );
         if ( paramName.equals( "left" ) ) {
           renderProperty( new Keys(), context, "leftkeys", compoundElem );

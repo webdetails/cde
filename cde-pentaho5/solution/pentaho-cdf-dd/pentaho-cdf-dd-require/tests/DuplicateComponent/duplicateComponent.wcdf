@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>duplicateComponent</title>
+  <description></description>
+  <author></author>
+  <widget>false</widget>
+  <widgetName></widgetName>
+  <widgetParameters></widgetParameters>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
+</cdf>

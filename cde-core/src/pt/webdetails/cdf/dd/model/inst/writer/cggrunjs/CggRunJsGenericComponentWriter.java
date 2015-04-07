@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
 
@@ -30,7 +30,7 @@ import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -89,14 +89,14 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   }
 
   private void writeFile(
-    IUserContentAccess access,
-    String chartScript,
-    String dashboardFileDir,
-    String chartName,
-    String dashboadFilName ) {
+      IUserContentAccess access,
+      String chartScript,
+      String dashboardFileDir,
+      String chartName,
+      String dashboadFilName ) {
     try {
       String prefix =
-        dashboadFilName == null ? "" : dashboadFilName.substring( 0, dashboadFilName.lastIndexOf( '.' ) ) + '_';
+          dashboadFilName == null ? "" : dashboadFilName.substring( 0, dashboadFilName.lastIndexOf( '.' ) ) + '_';
       String fileName = prefix + chartName + CGG_EXTENSION;
 
       byte[] content = chartScript.getBytes( CharsetHelper.getEncoding() );
@@ -110,15 +110,15 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
   }
 
   private void renderChart(
-    StringBuilder out,
-    CggRunJsDashboardWriteContext context,
-    GenericComponent comp,
-    String dashDir ) throws ThingWriteException {
+      StringBuilder out,
+      CggRunJsDashboardWriteContext context,
+      GenericComponent comp,
+      String dashDir ) throws ThingWriteException {
     ComponentType compType = comp.getMeta();
 
     for ( Resource resource : compType.getResources() ) {
       Resource.Type resType = resource.getType();
-      switch( resType ) {
+      switch ( resType ) {
         case RAW:
           out.append( NEWLINE );
           out.append( resource.getSource() );
@@ -162,12 +162,12 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     // Idem
     CdfRunJsDashboardWriteContext writeContext =
-      CdeEngine.getInstance().getEnvironment().getCdfRunJsDashboardWriteContext(
-        writerFactory,
-            /*indent*/"",
-            /*bypassCacheRead*/true,
-        context.getDashboard(),
-        options );
+        CdeEngine.getInstance().getEnvironment().getCdfRunJsDashboardWriteContext(
+          writerFactory,
+              /*indent*/"",
+              /*bypassCacheRead*/true,
+          context.getDashboard(),
+          options );
 
     compWriter.write( out, writeContext, comp );
   }

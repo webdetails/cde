@@ -1,0 +1,41 @@
+#featurePopup_GroupDiv {}
+
+#testComponent, #testComponent2, #testComponent3 {width:700px; height:500px;}
+
+
+#MapOverlay {
+    background-color: white;
+    z-index:0;
+}
+
+
+.olPopupCloseBox {
+    background: url("images/close.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 28px !important;
+    width: 28px !important;
+    top: 1px !important;
+    right: 1px !important;
+}
+
+
+
+#featurePopup394246 {
+	border: 3px solid #394246 !important;
+}
+
+#featurePopup11b4eb {
+	border: 3px solid #11b4eb !important;
+}
+
+#featurePopup7a879a {
+	border: 3px solid #7a879a !important;
+}
+
+#featurePopupe35c15 {
+	border: 3px solid #e35c15 !important;
+}
+
+#featurePopup674f73 {
+	border: 3px solid #674f73 !important;
+}
