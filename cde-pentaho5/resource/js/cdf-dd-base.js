@@ -429,12 +429,19 @@ var SaveRequests = {
 
   saveSettings: function(saveSettingsParams, cdfdd, wcdf, myself) {
 
+    var refreshTitle = function(title) {
+      var content = title + '<div class="cdfdd-title-status"></div>';
+      $("div.cdfdd-title")
+          .empty()
+          .html(content)
+          .attr('title', title);
+    };
+
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
       try {
         if(result && result.status == "true") {
           myself.setDashboardWcdf(wcdf);
-          var title = wcdf.title;
-          $("div.cdfdd-title").empty().text(title).attr('title', title);
+          refreshTitle(wcdf.title);
           // We need to reload the layout engine in case the rendererType changed
           cdfdd.layout.init();
           NotifyBarUtils.successNotifyBar("Dashboard Settings saved successfully");
