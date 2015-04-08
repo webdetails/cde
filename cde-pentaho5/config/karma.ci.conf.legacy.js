@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -48,15 +48,15 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [],
 
-    preprocessors: {'resource/js/cdf-dd.js' : 'coverage'},
+    preprocessors: {'resource/js/cdf-dd.js': 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['progress', 'junit', 'html', 'coverage'],
 
     coverageReporter: {
-        type: 'cobertura',
-        dir:  'bin/test-reports-legacy/coverage/reports/'
+      type: 'cobertura',
+      dir:  'bin/test-reports-legacy/coverage/reports/'
     },
 
     junitReporter: {
@@ -99,8 +99,19 @@ module.exports = function(config) {
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
 
+    //browserNoActivityTimeout: 20000,
+
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: true
+    singleRun: true,
+
+    plugins: [
+      'karma-jasmine',
+      'karma-requirejs',
+      'karma-junit-reporter',
+      'karma-html-reporter',
+      'karma-coverage',
+      'karma-phantomjs-launcher'
+    ]
   });
 };
