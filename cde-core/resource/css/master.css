@@ -233,6 +233,7 @@ div.cdfdd-main {
 div.cdfdd-title {
   box-sizing: border-box;
   position: relative;
+  float: left;
 
   padding-left: 25px;
   padding-right: 10px;
@@ -1809,7 +1810,9 @@ div.popup .popupclose:hover{
   background-color: #bbb;
 }
 
-div.popup .popupmessage{ 
+div.popup .popupmessage {
+  min-width: 160px;
+  min-height: 25px;
   padding: 10px; 
   line-height: 20px; 
   color: #555;

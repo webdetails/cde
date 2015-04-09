@@ -408,7 +408,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
   addParameterValue: function() {
     var id = this.id;
     var content = '<div id="parameterList" class="StringListParameterContainer">';
-    var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
+      return filter.properties[0].value;
+    });
     var isWidget = cdfdd.getDashboardWcdf().widget;
 
     if(filters.length == 0) {
