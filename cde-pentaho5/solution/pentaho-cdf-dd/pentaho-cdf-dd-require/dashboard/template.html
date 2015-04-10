@@ -22,16 +22,16 @@
     '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'],
    function(SampleDash) {
     
-    var sampleDash = new SampleDash();
-    sampleDash.render("content1");
+    var sampleDash = new SampleDash("content1");
+    sampleDash.render();
     
     //We are instantiating the SampleDash again, internally it will make sure to use different ids for the htmlObjects
     //NOTE: this is only possible because the dashboard was required without an alias
-    var sampleDash2 = new SampleDash(); //we could also define an alias at this point: new SampleDash("alias")
-    sampleDash2.render("content2");
+    var sampleDash2 = new SampleDash("content2"); //we could also define an alias at this point: new SampleDash("elementId", "alias")
+    sampleDash2.render();
     
-    var sampleDash3 = new SampleDash("sampleDash3");
-    sampleDash3.render("content3");
+    var sampleDash3 = new SampleDash("content3", "sampleDash3");
+    sampleDash3.render();
         
     //Linking a fireChange in one dashboard to a setParameter on the other
 //    sampleDash.on("cdf productLine:fireChange", function (evt) {
