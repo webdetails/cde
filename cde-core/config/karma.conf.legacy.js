@@ -95,6 +95,9 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
+    // The configuration setting tells Karma how long to wait (in milliseconds) after any changes have occurred before starting the test process again.
+    autoWatchBatchDelay: 250,
+
     // Start these browsers, currently available:
     // - Chrome
     // - ChromeCanary
@@ -108,7 +111,7 @@ module.exports = function(config) {
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
 
-    //browserNoActivityTimeout: 20000,
+    browserNoActivityTimeout: 600000,
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
