@@ -153,7 +153,7 @@ public class RenderApi {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
     }
 
-    String filePath = getWcdfRelativePath( solution, path, file ); //FIXME Util.joinPath
+    String filePath = getWcdfRelativePath( solution, path, file );
     if ( StringUtils.isEmpty( filePath ) ) {
       return "No path provided.";
     }
@@ -183,9 +183,13 @@ public class RenderApi {
       String result = dashboard.render( context );
 
       //i18n token replacement
-      if ( !StringUtils.isEmpty( result ) ) {
+      if ( !StringUtils.isEmpty( result ) && !dashboardWcdf.isRequire() ) {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
-        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+        msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
+
+        result = new MessageBundlesHelper( msgDir, Utils.getAppropriateReadAccess( msgDir ),
+            CdeEnvironment.getPluginSystemWriter(), getEnv().getLocale(),
+            getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
       }
 
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
@@ -253,11 +257,8 @@ public class RenderApi {
 
       String result = dashboard.getContent();
 
+      //TODO: how to process i18n for a required dashboard
       //i18n token replacement
-      if ( !StringUtils.isEmpty( result ) ) {
-        String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( path ) );
-        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
-      }
 
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
 
@@ -419,8 +420,13 @@ public class RenderApi {
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
-      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( path ) );
-      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+
+      /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
+
+      String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
+      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
+        CdeEnvironment.getPluginSystemWriter(), getEnv().getLocale(),
+        getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
     return result;
