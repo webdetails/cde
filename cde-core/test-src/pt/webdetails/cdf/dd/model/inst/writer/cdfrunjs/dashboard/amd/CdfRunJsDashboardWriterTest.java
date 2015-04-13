@@ -55,6 +55,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String NEWLINE = System.getProperty( "line.separator" );
   private static final String INDENT1 = "  ";
   private static final String INDENT2 = "    ";
+  private static final String INDENT3 = "      ";
+  private static final String INDENT4 = "        ";
 
   private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
   private static final String REQUIRE_START = "require(";
@@ -63,27 +65,38 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
   private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
       "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
-        + INDENT1 + "constructor: function(alias) '{' this.base.apply(this, arguments);" + NEWLINE
-        + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
-        + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
-        + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
-        + "'}'," + NEWLINE;
+      + INDENT1 + "constructor: function(element, alias) '{'" + NEWLINE
+      + INDENT2 + " this.base.apply(this, arguments);" + NEWLINE
+      + INDENT2 + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
+      + INDENT2 + " this.phElement = element;" + NEWLINE
+      + INDENT2 + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
+      + INDENT2 + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
+      + INDENT1 + "'}'," + NEWLINE;
   private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
-      + INDENT1 + "constructor: function() { this.base.apply(this, arguments); }," + NEWLINE;
+      + INDENT1 + "constructor: function(element) { " + NEWLINE
+      + INDENT2 + "this.phElement = element; " + NEWLINE
+      + INDENT2 + "this.base.apply(this, arguments); }," + NEWLINE;
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function(element) {" + NEWLINE
-      + INDENT2 + "var target;" + NEWLINE
-      + INDENT2 + "if (typeof element ===\"string\") {" + NEWLINE
-      + INDENT2 + "target = $('#' + element);" + NEWLINE
+  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
+      + INDENT2 + "var target, isId;" + NEWLINE
+      + INDENT2 + "if (typeof this.phElement ===\"string\") {" + NEWLINE
+      + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
+      + INDENT3 + "isId = true;" + NEWLINE
       + INDENT2 + "} else {" + NEWLINE
-      + INDENT2 + " target = element[0] ? $(element[0]) : $(element);" + NEWLINE
+      + INDENT3 + "target = this.phElement && this.phElement[0] ? $(this.phElement[0]) : $(this.phElement);" + NEWLINE
       + INDENT2 + "} " + NEWLINE
-      + INDENT2 + "if(!target.length) { Logger.warn('Invalid html target element id'); return; };" + NEWLINE
+      + INDENT2 + "if(!target.length) { " + NEWLINE
+      + INDENT3 + "if(isId){" + NEWLINE
+      + INDENT4 + "Logger.warn('Invalid target element id: ' + this.phElement);" + NEWLINE
+      + INDENT3 + "} else {" + NEWLINE
+      + INDENT4 + "Logger.warn('Target DOM object empty');" + NEWLINE
+      + INDENT3 + "} " + NEWLINE
+      + INDENT2 + "return;} " + NEWLINE
       + INDENT2 + "target.empty();" + NEWLINE
       + INDENT2 + "target.html(this.layout);" + NEWLINE
       + " },";
-  private static final String DASHBOARD_MODULE_RENDERER = "render: function(element) {" + NEWLINE
-      + INDENT2 + "this.setupDOM(element);" + NEWLINE
+  private static final String DASHBOARD_MODULE_RENDERER = "render: function() {" + NEWLINE
+      + INDENT2 + "this.setupDOM();" + NEWLINE
       + INDENT2 + "this.renderDashboard();" + NEWLINE
       + INDENT1 + "}," + NEWLINE
       + INDENT2 + "renderDashboard: function() {" + NEWLINE
