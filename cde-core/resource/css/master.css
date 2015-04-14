@@ -1706,11 +1706,11 @@ div.popup {
   max-width: 75%;
   max-height: 80%;
   min-width: 10%;
-  overflow-x: auto;
+  overflow: visible;
   transition: 0.3s;
 }
 
-.popupfade{
+.popupfade {
   opacity: 0.6;
   background: #fff;
 }

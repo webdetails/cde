@@ -1353,10 +1353,7 @@ var ComponentToExportRenderer = SelectRenderer.extend({
     var data = _.extend({}, this.selectData);
     var components = cdfdd.dashboardData.components.rows;
 
-    var validComponents = components.filter(function(comp) {
-      var nameProperty = comp.properties && comp.properties[0];
-      return comp.meta_cdwSupport === 'true' && nameProperty && nameProperty.value !== "";
-    });
+    var validComponents = this.filterComponents(components);
 
     validComponents.map(function(comp) {
       var compName = comp.properties[0].value;
@@ -1364,12 +1361,31 @@ var ComponentToExportRenderer = SelectRenderer.extend({
     });
 
     return data;
+  },
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+      var isTableComponent = comp.type === 'ComponentsTable';
+
+      return (hasCdwSupport || isTableComponent) && !isNameEmpty;
+    });
   }
 });
 
 var ChartComponentToExportRenderer = ComponentToExportRenderer.extend({
 
   prevSelectedValue: '',
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+
+      return hasCdwSupport && !isNameEmpty;
+    });
+  },
 
   postChange: function(componentName) {
     var components = cdfdd.dashboardData.components.rows;
