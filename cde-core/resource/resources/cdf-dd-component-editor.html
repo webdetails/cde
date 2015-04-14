@@ -73,7 +73,7 @@ var componentName;
 function updateStatus(editor){
 	var info = editor.fileName + (editor.editor.isReadOnly()? ' (readonly)' : '') + (editor.dirty? '*' : '');
     $('#' + editor.parentId + 'infoArea').text(info);
-};
+}
 
 
 	function save(editorW){
@@ -87,13 +87,13 @@ function updateStatus(editor){
               }
             }
           );
-        };
+        }
 
 
 function setDirty (editorW, dirty){
             editorW.dirty = dirty;
             updateStatus(editorW);
-        };
+        }
         
         
 function drawEditor(containerDiv, file, extension, parent) {
@@ -221,7 +221,7 @@ function chooseFileLoader(fileExtension, containerDiv){
             }
           }
         }
-      }
+      };
       
       $.prompt(openOrNew,{
         opacity: '0.2',
@@ -299,7 +299,7 @@ doc.close();
 }
 
 function saveAll() {
-  for (editor in editors) {
+  for (var editor in editors) {
     save(editors[editor]);
   }
 }
@@ -461,7 +461,7 @@ var expandedMode = false;
 
 function toggleView() {
 
-expandedMode = !expandedMode
+expandedMode = !expandedMode;
 
 $(['#scriptTab', '#htmlTab',  '#cssTab', '#resultTab']).each(function (i, elt) {
 	$(elt).toggleClass('contentTab contentTabExpanded');

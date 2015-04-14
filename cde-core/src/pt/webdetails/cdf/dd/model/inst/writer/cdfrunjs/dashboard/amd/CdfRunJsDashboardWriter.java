@@ -56,7 +56,7 @@ import java.util.regex.Matcher;
 public class CdfRunJsDashboardWriter
     extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
 
-  private static final String WEBCONTEXT = "webcontext.js?context={0}&requireJsOnly={1}";
+  private static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
   // make the dashboard variable available in the global scope to facilitate debugging
   private static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard();";
   private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
