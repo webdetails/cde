@@ -674,7 +674,8 @@ var ColTypesArrayRender = ArrayRenderer.extend({
     var data = this.selectData || {};
     _.extend(data, {
       string: 'string',
-      numeric: 'numeric'
+      numeric: 'numeric',
+      hidden: 'hidden'
     });
     return data;
   }
