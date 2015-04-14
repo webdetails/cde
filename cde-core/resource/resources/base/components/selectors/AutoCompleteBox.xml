@@ -22,7 +22,7 @@
 			<Property>showApplyButton</Property>
 			<Property>externalApplyButtonId</Property>
 			<Property>matchType</Property>
-			<Property>minTextLenght</Property>
+			<Property>minTextLength</Property>
 			<Property>scrollHeight</Property>
 			<Property>selectMulti</Property>
 			<Property>addTextElements</Property>
