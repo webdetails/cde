@@ -71,10 +71,10 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
 
     it("# getData", function() {
       ctar.selectData = {};
-      expect(ctar.getData()).toEqual({string: 'string', numeric: 'numeric'});
+      expect(ctar.getData()).toEqual({string: 'string', numeric: 'numeric', hidden: 'hidden'});
 
       ctar.selectData = { preData: 'value' };
-      expect(ctar.getData()).toEqual({ preData: 'value', string: 'string', numeric: 'numeric' });
+      expect(ctar.getData()).toEqual({preData: 'value', string: 'string', numeric: 'numeric', hidden: 'hidden'});
     });
   });
 
