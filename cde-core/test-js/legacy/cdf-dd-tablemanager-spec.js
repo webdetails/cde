@@ -243,41 +243,97 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
   describe("Testing CellRenderers #", function() {
 
     /*
-     * ChartComponentToExportRenderer
+     * ComponentToExportRenderer
      */
-    describe("ChartComponentToExportRenderer #", function() {
-      var mockComponent_1 = {
-        meta_cdwSupport: "true",
-        meta_cdwRender: "false",
-        properties: [{value: "mockComponent_1"}]
-      };
+    describe("ComponentToExportRenderer #", function() {
+      var mockComponent_1, mockComponent_2, mockComponent_3, cteRenderer;
 
-      var mockComponent_2 = {
-        meta_cdwSupport: "true",
-        meta_cdwRender: "false",
-        properties: [{value: "mockComponent_2"}]
-      };
+      beforeEach(function() {
+        mockComponent_1 = {
+          meta_cdwSupport: "true",
+          meta_cdwRender: "false",
+          properties: [{value: "mockComponent_1"}]
+        };
 
-      cdfdd.dashboardData.components = {
-        rows: [mockComponent_1, mockComponent_2]
-      };
+        mockComponent_2 = {
+          meta_cdwSupport: "true",
+          meta_cdwRender: "false",
+          properties: [{value: ""}]
+        };
 
-      var renderer = new ChartComponentToExportRenderer();
+        mockComponent_3 = {
+          type: "ComponentsTable",
+          properties: [{value: "mockComponent_3"}]
+        };
+
+        cdfdd.dashboardData.components = {
+          rows: [mockComponent_1, mockComponent_2, mockComponent_3]
+        };
+
+        cteRenderer = new ComponentToExportRenderer();
+      });
+
+      afterEach(function() {
+        mockComponent_1 = undefined;
+        mockComponent_2 = undefined;
+        cteRenderer = undefined;
+        cdfdd.dashboardData.components = {};
+      });
 
 
       it("getData", function() {
-        expect(renderer.getData()).toEqual({mockComponent_1: "mockComponent_1", mockComponent_2: "mockComponent_2"});
+        expect(cteRenderer.getData()).toEqual({mockComponent_1: "mockComponent_1", mockComponent_3: "mockComponent_3"});
+      });
+    });
+
+    /*
+     * ChartComponentToExportRenderer
+     */
+    describe("ChartComponentToExportRenderer #", function() {
+      var mockComponent_1, mockComponent_2, cctoRenderer;
+
+      beforeEach(function() {
+        mockComponent_1 = {
+          meta_cdwSupport: "true",
+          meta_cdwRender: "false",
+          properties: [{value: "mockComponent_1"}]
+        };
+
+        mockComponent_2 = {
+          meta_cdwSupport: "true",
+          meta_cdwRender: "false",
+          properties: [{value: "mockComponent_2"}]
+        };
+
+        cdfdd.dashboardData.components = {
+          rows: [mockComponent_1, mockComponent_2]
+        };
+
+       cctoRenderer = new ChartComponentToExportRenderer();
+      });
+
+      afterEach(function() {
+        mockComponent_1 = undefined;
+        mockComponent_2 = undefined;
+        cctoRenderer = undefined;
+        cdfdd.dashboardData.components = {};
+      });
+
+      it("getData", function() {
+        expect(cctoRenderer.getData()).toEqual({mockComponent_1: "mockComponent_1", mockComponent_2: "mockComponent_2"});
       });
 
       it("postChange", function() {
-        expect(renderer.prevSelectedValue).toEqual("");
-        renderer.postChange("mockComponent_1");
+        expect(cctoRenderer.prevSelectedValue).toEqual("");
+        cctoRenderer.postChange("mockComponent_1");
         expect(mockComponent_1.meta_cdwRender).toEqual("true");
 
-        expect(renderer.prevSelectedValue).toEqual("mockComponent_1");
-        renderer.postChange("");
+        expect(cctoRenderer.prevSelectedValue).toEqual("mockComponent_1");
+        cctoRenderer.postChange("");
         expect(mockComponent_1.meta_cdwRender).toEqual("false");
       })
     });
+
+
   });
 });
