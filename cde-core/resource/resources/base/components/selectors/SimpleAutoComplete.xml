@@ -18,7 +18,7 @@
 			</Definition>
 			<Property>searchParam</Property>
 			<Property>maxResults</Property>
-			<Property name='minTextLength'>minTextLenght</Property>
+			<Property name='minTextLength'>minTextLength</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
