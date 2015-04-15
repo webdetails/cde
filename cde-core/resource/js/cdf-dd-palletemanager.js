@@ -50,47 +50,42 @@ var PalleteManager = Base.extend({
 			return _container;
 		},
 
-
 		render: function(){
 
 			this.logger.debug("Rendering pallete " + this.getPalleteId());
-			var _placeholder = $("#"+this.getPalleteId());
+			var palleteSelector = '#' + this.getPalleteId(),
+			    _placeholder = $(palleteSelector),
+			    headerSelector = 'h3';
 
 			// Accordion
 			// CDF-271 $.browser is depricated
 			var rv;
 			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-			if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
-
-			if(rv && rv < 9) {
-				
-				_placeholder.accordion({
-					header: "h3",
-					active: false,
-					heightStyle: "content",
-					animated: false,
-					//event: "mouseover",
-					icons: {
-						header: "ui-icon-triangle-1-e",
-						headerSelected: "ui-icon-triangle-1-s"
-					},
-					collapsible: true
-				});
-			} else {
-
-				_placeholder.accordion({
-					header: "h3",
-					active: false,
-					heightStyle: "content",
-					//event: "mouseover",
-					icons: {
-						header: "ui-icon-triangle-1-e",
-						headerSelected: "ui-icon-triangle-1-s"
-					},
-					collapsible: true
-				});
+			if(re.exec(navigator.userAgent) != null) {
+				rv = parseFloat(RegExp.$1);
 			}
 
+			var accordionOptions = {
+			  header: headerSelector,
+			  active: false,
+			  heightStyle: "content",
+			  icons: {
+			    header: "ui-icon-triangle-1-e",
+			    activeHeader: "ui-icon-triangle-1-s"
+			  },
+			  collapsible: true
+			};
+
+			if(rv && rv < 9) {
+				accordionOptions.animated = false;
+			}
+
+			_placeholder
+			  .accordion(accordionOptions)
+			  .find(headerSelector).off('keydown')
+			  .click(function() {
+			    $(palleteSelector + ' ' + headerSelector).blur();
+			  });
 		},
 
 		exists: function(object, array){
