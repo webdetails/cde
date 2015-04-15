@@ -95,7 +95,6 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
-    this.selectedPanelId = LayoutPanel.MAIN_PANEL;
 
     //// Enable alert when leaving page
     //this.setExitNotification(true);

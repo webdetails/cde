@@ -109,7 +109,49 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
         .toBe(systemCtx + file3);
   });
 
+  describe("Testing Table Scroll #", function() {
+    var table;
+    beforeEach(function() {
+      table = $('<div id="test-tableManager" style="height: 75px; width: 100px;">' +
+      '  <div class="scrollContainer" style="max-height: 75px; overflow: scroll;">' +
+      '    <table id="table-test-tableManager">' +
+      '      <tbody>' +
+      '        <tr id="freeForm" style="height: 30px;"><td>a</td></tr>' +
+      '        <tr id="col" style="height: 30px;"><td>b</td></tr>' +
+      '        <tr id="col-2" style="height: 30px;"><td>c</td></tr>' +
+      '      </tobdy>' +
+      '    </table>' +
+      '  </div>' +
+      '</div>');
+      table.appendTo('body');
+    });
 
+    afterEach(function() {
+      $('#test-tableManager').remove();
+    });
+
+    it("scrollTo - going down", function() {
+      var $scroll = $('#test-tableManager .scrollContainer');
+      spyOn(tableModel, 'getEvaluatedId').and.callFake(function(idx) {
+        return table.find('tr:eq(' + idx + ')').attr('id');
+      });
+      expect($scroll.scrollTop()).toEqual(0);
+      tableManager.scrollTo(2);
+      expect($scroll.scrollTop()).toEqual(30);
+    });
+
+    it("scrollTo - going up", function() {
+      var $scroll = $('#test-tableManager .scrollContainer');
+      spyOn(tableModel, 'getEvaluatedId').and.callFake(function(idx) {
+        return table.find('tr:eq(' + idx + ')').attr('id');
+      });
+      $scroll.scrollTop(30);
+      expect($scroll.scrollTop()).toEqual(30);
+      tableManager.scrollTo(0);
+      expect($scroll.scrollTop()).toEqual(0);
+    });
+  });
+  
   /*
    * Drag And Drop Tests
    */
