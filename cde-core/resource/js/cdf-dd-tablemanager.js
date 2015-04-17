@@ -1383,6 +1383,22 @@ var SelectRenderer = CellRenderer.extend({
   }
 });
 
+var ChartExportTypeRenderer = SelectRenderer.extend({
+  selectData: {
+    'png': 'png',
+    'svg': 'svg'
+  }
+});
+
+var DataExportTypeRenderer = SelectRenderer.extend({
+  selectData: {
+    'xls': 'xls',
+    'csv': 'csv',
+    'xml': 'xml',
+    'json': 'json'
+  }
+});
+
 var ComponentToExportRenderer = SelectRenderer.extend({
 
   getData: function() {

@@ -376,6 +376,18 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
       })
     });
 
+    describe("ChartExportTypeRenderer #", function() {
+      var cetRenderer = new ChartExportTypeRenderer();
+      it("getData", function() {
+        expect(cetRenderer.getData()).toEqual({png: "png", svg: "svg"});
+      })
+    });
 
+    describe("DataExportTypeRenderer #", function() {
+      var detRenderer = new DataExportTypeRenderer();
+      it("getData", function() {
+        expect(detRenderer.getData()).toEqual({'xls': 'xls', 'csv': 'csv', 'xml': 'xml', 'json': 'json'});
+      })
+    });
   });
 });
