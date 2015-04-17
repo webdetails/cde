@@ -174,44 +174,53 @@ define([
         filename: this.dataExportAttachmentName + "." + effectiveExportType
       });
     },
-    
-    exportChart: function(cet) {
 
-      var effectiveExportType = cet == undefined ? this.chartExportType : cet;   
-
-      // Get query
-      Logger.log("Exporting to " + effectiveExportType);
-
-      var parameters = this.chartComponent.parameters;
-      var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
-      var path = this.chartComponent.chartDefinition.path;
-
+    getExportChartOptions: function() {
       //4.x has fullPath and 5.0 has path, this can go away when cdf gets refactored
       var loc = (this.dashboard.context.fullPath) ?
-        this.dashboard.context.fullPath.replace(/[^\/]+$/, "") :
-        this.dashboard.context.path.replace(/[^\/]+$/, "");
+          this.dashboard.context.fullPath.replace(/[^\/]+$/, "") :
+          this.dashboard.context.path.replace(/[^\/]+$/, "");
 
-      var url = CggComponentExt.getCggDrawUrl() + "?script=" +
-        loc + this.chartExportComponent + ".js&outputType=" + effectiveExportType;
-      
-      var param;
+      var options = {
+        outputType: this.chartExportType,
+        script: loc + this.chartExportComponent + '.js'
+      };
+
+      var parameters = this.chartComponent.parameters;
+
       // Get parameter values; metadata is a special parameter, carries important
       // info for dashboard operation but has no data so isn't exported
-      for(var i = 0; i < parameters.length; i++) {
-        param = Utils.ev(this.dashboard.getParameterValue(parameters[i][1]));
-        if(param !== undefined) {
-          url += "&param" + parameters[i][0] + "=" +
-          (parameters[i][0] != 'metadata' ? encodeURIComponent( param ) : 'false');
+      for(var i = 0, L = parameters.length; i < L; i++) {
+        var name = parameters[i][0];
+        var param = parameters[i][1];
+        var value = Utils.ev(this.dashboard.getParameterValue(param));
+
+        if(value !== undefined) {
+          options['param' + name] = name != 'metadata' ? value : 'false';
         }
       }
 
       // Check debug level and pass as parameter
       var level = Logger.debug;
       if(level > 1) {
-        url += "&paramdebug=true";
-        url += "&paramdebugLevel=" + level;
+        options['paramdebug'] = true;
+        options['paramdebugLevel'] = level;
       }
 
+      return options;
+    },
+
+    getExportChartUrl: function(options) {
+      return CggComponentExt.getCggDrawUrl() + '?' + $.param(options);
+    },
+
+    exportChart: function() {
+      var options = this.getExportChartOptions();
+
+      // Get query
+      Logger.log("Exporting to " + options.outputType);
+
+      var url = this.getExportChartUrl(options);
       var myself = this;
       var masterDiv = $('<div class="exportChartMasterDiv">');
       //Style later
@@ -226,7 +235,7 @@ define([
       smallButton.click(function() {
         $('.exportChartPopupButtonClicked').each(function(i, elt) {
           $(elt).removeClass('exportChartPopupButtonClicked');
-        })
+        });
         $(this).addClass('exportChartPopupButtonClicked');      
         $('#width').attr('disabled', true); 
         $('#height').attr('disabled', true); 
@@ -243,7 +252,7 @@ define([
        
         $('.exportChartPopupButtonClicked').each(function(i, elt) {
           $(elt).removeClass('exportChartPopupButtonClicked')
-        })
+        });
         $(this).addClass('exportChartPopupButtonClicked'); 
       
         $('#width').attr('disabled', true); 
@@ -256,7 +265,7 @@ define([
      
       mediumButton.getComponentData = function() {
         return [(myself.chartComponent.chartDefinition.width), (myself.chartComponent.chartDefinition.height)];
-      }
+      };
      
       popupButtonsDiv.append(mediumButton);
      
@@ -264,7 +273,7 @@ define([
       largeButton.click(function() {
         $('.exportChartPopupButtonClicked').each(function(i, elt) {
           $(elt).removeClass('exportChartPopupButtonClicked');
-        })
+        });
         $(this).addClass('exportChartPopupButtonClicked');      
       
         $('#width').attr('disabled', true); 
