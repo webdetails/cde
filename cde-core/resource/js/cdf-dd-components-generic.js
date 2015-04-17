@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -28,13 +28,15 @@ var PromptRenderer = CellRenderer.extend({
 
     var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
 
+    var wizard = PromptWizardManager.getWizard(this.wizard);
+    value = this.getQueryTemplateValue(wizard, value);
+
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
 
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click", function() {
 
       // Storing the var for later use when render() is not called again
-      var wizard = PromptWizardManager.getWizard(myself.wizard);
       wizard.setInvoker(myself);
       myself.callback = callback;
       myself.editArea = _editArea;
@@ -43,7 +45,22 @@ var PromptRenderer = CellRenderer.extend({
     }).appendTo($("div.edit", _editArea));
 
     _editArea.appendTo(placeholder);
+  },
 
+  getQueryTemplateValue: function(wizard, value) {
+
+    if(!value && wizard.queryTemplate) {
+      value = wizard.queryTemplate;
+
+      var tableModel = this.tableManager.getTableModel();
+      var _setExpression = tableModel.getColumnSetExpressions()[1];
+      var colIdx = tableModel.getRowIndexByName('query');
+      var property = tableModel.getData()[colIdx];
+
+      _setExpression.apply(this.tableManager, [property, value]);
+    }
+
+    return value;
   },
 
   validate: function(settings, original) {
@@ -138,6 +155,16 @@ var ScriptableQueryRenderer = PromptRenderer.extend({
     this.logger = new Logger("ScriptableQueryRenderer");
     this.logger.debug("Creating new ScriptableQueryRenderer");
     this.wizard = "SCRIPTABLE_EDITOR";
+  }
+});
+
+var JsonScriptableQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("JsonScriptableQueryRenderer");
+    this.logger.debug("Creating new JsonScriptableQueryRenderer");
+    this.wizard = "JSON_SCRIPTABLE_EDITOR";
   }
 });
 var DefaultQueryRenderer = PromptRenderer.extend({
@@ -381,7 +408,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
   addParameterValue: function() {
     var id = this.id;
     var content = '<div id="parameterList" class="StringListParameterContainer">';
-    var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
+      return filter.properties[0].value;
+    });
     var isWidget = cdfdd.getDashboardWcdf().widget;
 
     if(filters.length == 0) {
@@ -645,7 +674,8 @@ var ColTypesArrayRender = ArrayRenderer.extend({
     var data = this.selectData || {};
     _.extend(data, {
       string: 'string',
-      numeric: 'numeric'
+      numeric: 'numeric',
+      hidden: 'hidden'
     });
     return data;
   }
@@ -672,6 +702,11 @@ var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
 //used by ExtraOptions
 var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
   argTitle: 'Option'
+});
+
+var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
+  argTitle: 'Key',
+  valTitle: 'Value'
 });
 
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
@@ -767,11 +802,8 @@ var CdaQueryRenderer = PromptRenderer.extend({
 var MondrianCatalogRenderer = SelectRenderer.extend({
 
   logger: null,
-  selectData: {
-    '': ''
-  },
+  selectData: {},
   catalogs: [],
-
 
   getDataInit: function() {
 
@@ -821,9 +853,8 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
 var JndiRenderer = SelectRenderer.extend({
 
   logger: null,
-  selectData: [''],
+  selectData: [],
   catalogs: [],
-
 
   getDataInit: function() {
 

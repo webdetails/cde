@@ -1,0 +1,174 @@
+/* @media print { */
+/*     html, body { */
+/*         height: auto; */
+/*     } */
+/*     #map_canvas { */
+/*         height: 650px; */
+/*     } */
+/* } */
+
+/* Remove X */
+img[src="http://maps.gstatic.com/mapfiles/api-3/images/mapcnt3.png"] {
+    display: none;
+}
+
+.gm-style div div img
+{
+/* display: none; */
+}
+.gmapsoverlay-legend
+{
+    background-color:white;
+    padding: 5px;
+    border: solid 1px #000;
+	border-radius: 5px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+	margin-bottom: 12px;
+}
+.gmapsoverlay-legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.gmapsoverlay-legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+}
+
+.gmapsoverlay-legend-scale ul li {
+    display: block;
+    float: left;
+    width: 40px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    /* background-color:white; */
+}
+
+ul.gmapsoverlay-legend-labels li .gmapsoverlay-legend-cell,
+ul.gmapsoverlay-legend-labels li .gmapsoverlay-legend-label
+{
+    display: block;
+    /* float: left; */
+    height: 15px;
+    width: 40px;
+}
+ul.gmapsoverlay-legend-labels li .gmapsoverlay-legend-label
+{
+    /* background: transparent; */
+}
+
+.gmapsoverlay-legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+	margin-top: 20px;
+}
+
+.gmapsoverlay-latLngText {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+	text-align: right;
+}
+
+.gmapsoverlay-legend-scale
+/* .gmapsoverlay-legend-source */
+{
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwNjYwMCIgc3RvcC1vcGFjaXR5PSIwLjM1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmZmYwMCIgc3RvcC1vcGFjaXR5PSIwLjM1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjAwMDAiIHN0b3Atb3BhY2l0eT0iMC4zNSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(left,  rgba(0,102,0,0.35) 0%, rgba(255,255,0,0.35) 50%, rgba(255,0,0,0.35) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,102,0,0.35)), color-stop(50%,rgba(255,255,0,0.35)), color-stop(100%,rgba(255,0,0,0.35))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  rgba(0,102,0,0.35) 0%,rgba(255,255,0,0.35) 50%,rgba(255,0,0,0.35) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  rgba(0,102,0,0.35) 0%,rgba(255,255,0,0.35) 50%,rgba(255,0,0,0.35) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  rgba(0,102,0,0.35) 0%,rgba(255,255,0,0.35) 50%,rgba(255,0,0,0.35) 100%); /* IE10+ */
+background: linear-gradient(to right,  rgba(0,102,0,0.35) 0%,rgba(255,255,0,0.35) 50%,rgba(255,0,0,0.35) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#59006600', endColorstr='#59ff0000',GradientType=1 ); /* IE6-8 */
+
+/* opacity: 0.45; */
+
+    width: 90%;
+    display: block;
+    height: 15px;
+    position: relative;
+    border: 1px solid black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.gmapsoverlay-legend-label
+{
+    opacity: 1;
+    padding-top: 5px;
+    border-left: 1px solid black;
+}
+.gmapsoverlay-legend-label div
+{
+    left: -50%;
+    position: relative;
+    top: 15px;
+
+
+}
+.gmapsoverlay-legend-scale-range ul {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+}
+
+.gmapsoverlay-legend-scale-range ul li {
+	display: block;
+	float: left;
+	width: 50px;
+	margin-bottom: 6px;
+	text-align: center;
+	font-size: 80%;
+	list-style: none;
+}
+
+ul.gmapsoverlay-legend-labels-range li span {
+	display: block;
+	float: left;
+	height: 15px;
+	width: 50px;
+}
+
+.gmapsoverlay-tooltip
+{
+    width: 200px;
+}
+
+.gmapsoverlay-button {
+    background: -moz-linear-gradient(center top , #3E779D, #65A9D7) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    border-top: 1px solid #96D1F8;
+    box-shadow: 0 1px 0 #000000;
+    color: #FFFFFF;
+    font-family: Georgia,serif;
+    font-size: 14px;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    vertical-align: middle;
+}
+.gmapsoverlay-button:hover {
+    background: none repeat scroll 0 0 #28597A;
+    border-top-color: #28597A;
+    color: #CCCCCC;
+}
+.gmapsoverlay-button:active {
+    background: none repeat scroll 0 0 #1B435E;
+    border-top-color: #1B435E;
+}
+
+a.gmapsoverlay-button {
+	color: #FFFFFF;
+}

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -14,75 +14,60 @@
 // JFreeChart
 var ChartTypeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'BarChart':'Bar Chart',
-			'PieChart':'Pie Chart', 
-			'LineChart':'Line Chart',
-			'AreaChart':'Area Chart'
-		}
+  selectData: {
+    'BarChart':  'Bar Chart',
+    'PieChart':  'Pie Chart',
+    'LineChart': 'Line Chart',
+    'AreaChart': 'Area Chart'
+  }
 });
-
-
-
-
 
 var DomainPeriodTypeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'Year':'Year',
-			'Quarter':'Quarter', 
-			'Month':'Month',
-			'Week':'Week',
-			'Day':'Day',
-			'Hour':'Hour',
-			'Minute':'Minute',
-			'Second':'Second',
-			'Millisecond':'Millisecond'
-		}
+  selectData: {
+    'Year':        'Year',
+    'Quarter':     'Quarter',
+    'Month':       'Month',
+    'Week':        'Week',
+    'Day':         'Day',
+    'Hour':        'Hour',
+    'Minute':      'Minute',
+    'Second':      'Second',
+    'Millisecond': 'Millisecond'
+  }
 });
-
 
 var OrientationRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'vertical':'Vertical',
-			'horizontal':'Horizontal'
-		}
-		
+  selectData: {
+    'vertical':   'Vertical',
+    'horizontal': 'Horizontal'
+  }
 });
-
-
 
 var DomainLabelRotationRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'up':'Clockwise',
-			'down':'CounterClockWise'
-		}
+  selectData: {
+    'up':   'Clockwise',
+    'down': 'CounterClockWise'
+  }
 });
-
-
-
-
-
 
 var DatasetTypeRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'CategoryDataset':'Category Dataset',
-			'TimeSeriesCollection':'TimeSeries Collection'
-		}
+  selectData: {
+    'CategoryDataset':      'Category Dataset',
+    'TimeSeriesCollection': 'TimeSeries Collection'
+  }
 });
-
 
 var TopCountAxisRenderer = SelectRenderer.extend({
 
-		selectData: {
-			'rows':'Rows',
-			'columns ':'Columns '
-		}
+  selectData: {
+    'rows':     'Rows',
+    'columns ': 'Columns'
+  }
 });
-
 
 var UrlTemplateRenderer = CellRenderer.extend({
 

@@ -36,4 +36,9 @@
     </hidden-folders>
   </file-picker>
 
+
+<!--
+  <new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
+-->  
+
 </settings>

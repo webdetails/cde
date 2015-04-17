@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -21,6 +21,8 @@ import pt.webdetails.cdf.dd.util.PropertyBag;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public abstract class Render {
+  private static final String PROPERTY_VALUE = "properties/value[../name=''{0}'']";
+
   private JXPathContext node;
   protected static final Log logger = LogFactory.getLog( Render.class );
   private PropertyBag propertyBag;

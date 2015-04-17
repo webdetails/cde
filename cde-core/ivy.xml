@@ -8,6 +8,7 @@
       <conf name="runtime"/>
       <conf name="test"/>
       <conf name="sources"/>
+      <conf name="js"/>
     </configurations>
 
     <publications>
@@ -16,7 +17,12 @@
     </publications>
     
     <dependencies defaultconf="default->default" >
-          <!--  third party dependencies -->
+      <!-- for karma testing -->
+      <dependency org="pentaho" name="pentaho-cdf" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
+        <artifact name="pentaho-cdf" type="zip" ext="zip"/>
+      </dependency>
+
+      <!--  third party dependencies -->
       <dependency org="commons-logging"              name="commons-logging"      rev="1.1"           transitive="false"/>
       <dependency org="commons-io"                   name="commons-io"           rev="1.4"           transitive="false"/>
       <dependency org="commons-lang"                 name="commons-lang"         rev="2.4"           transitive="false"/>
@@ -39,6 +45,7 @@
 
       <dependency org="org.mockito"   name="mockito-all"   rev="1.8.4" conf="test, default->default"/>
       <dependency org="junit"         name="junit"         rev='4.10'  conf="test->default" />
+      <dependency org="jaxen"         name="jaxen"         rev="1.1"   conf="test->default" />
       <dependency org="xmlunit"       name="xmlunit"       rev="1.3"   conf="test->default"/>
 
       <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.1"  conf="test->default" />

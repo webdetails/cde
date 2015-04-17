@@ -56,6 +56,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   private static final String OPERATION_LOAD = "load";
   private static final String OPERATION_DELETE = "delete";
+  private static final String OPERATION_DELETE_PREVIEW = "deletepreview";
   private static final String OPERATION_SAVE = "save";
   private static final String OPERATION_SAVE_AS = "saveas";
   private static final String OPERATION_NEW_FILE = "newfile";
@@ -83,8 +84,7 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
-
-
+                            @FormParam( MethodParams.REQUIRE ) boolean require,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
 
@@ -96,7 +96,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       String fileDir =
         file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
-      isPreview = ( file.indexOf( "_tmp.cdfde" ) > -1 || file.indexOf( "_tmp.wcdf" ) > -1 );
+      isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
       IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
 
@@ -110,9 +110,10 @@ public class SyncronizerApi { //TODO: synchronizer?
     try {
       final DashboardStructure dashboardStructure = new DashboardStructure();
       Object result = null;
-      HashMap<String, Object> params = new HashMap<String, Object>( request.getParameterMap() );
+      HashMap<String, Object> params = new HashMap<String, Object>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
+      params.put( MethodParams.REQUIRE, String.valueOf( require ) );
       if ( !author.isEmpty() ) {
         params.put( MethodParams.AUTHOR, author );
       }
@@ -142,6 +143,8 @@ public class SyncronizerApi { //TODO: synchronizer?
         return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
+      } else if( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
+        dashboardStructure.deletePreviewFiles( wcdfdeFile );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( file, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
@@ -216,6 +219,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
+    private static final String REQUIRE = "require";
   }
 
   @POST
@@ -241,9 +245,9 @@ public class SyncronizerApi { //TODO: synchronizer?
       String fileDir =
         file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
-      isPreview = ( file.indexOf( "_tmp.cdfde" ) > -1 || file.indexOf( "_tmp.wcdf" ) > -1 );
+      isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
-      IReadAccess rwAccess = null;
+      IReadAccess rwAccess;
       if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) && !isPreview ) {
         rwAccess = Utils.getSystemOrUserRWAccess( fileDir );
       } else {

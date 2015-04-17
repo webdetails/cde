@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -9,7 +9,7 @@
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 
 var TableManager = Base.extend({
 
@@ -227,7 +227,9 @@ var TableManager = Base.extend({
         tableManager.setDroppedOnId(dropId);
 
         var moveOperation = new MoveToOperation();
-        moveOperation.execute(tableManager);
+        var command = new RowOperationCommand(moveOperation, tableManager);
+
+        Commands.executeCommand(command);
       },
       over: function(event, ui) {
         tableManager.addExtraHoverStyles(ui.draggable, $(this));
@@ -356,8 +358,6 @@ var TableManager = Base.extend({
       _type = "Label";
     }
 
-    var _setExpression = tm.getColumnSetExpressions()[colIdx];
-
     var renderer = this.cellRendererPool[_type];
     if(!renderer) {
       var RendererClass = window[_type + "Renderer"];
@@ -386,9 +386,13 @@ var TableManager = Base.extend({
     }
 
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value) {
-      _setExpression.apply(myself, [row, value]);
+      var oldValue = row.value;
+      if(oldValue != value) {
+        var command = new ChangePropertyCommand(myself, row, value);
+        Commands.executeCommand(command);
+      }
 
-      // Rerender this column
+      // Renderer this column
       tr.find("td:eq(" + colIdx + ")").remove();
       myself.renderColumn(tr, row, colIdx);
     }, options);
@@ -493,11 +497,7 @@ var TableManager = Base.extend({
     }
 
     this.isSelectedCell = true;
-    if(this.getTableModel().getEvaluatedRowType(row) == "Label") {
-      this.isSelectedGroupCell = true;
-    } else {
-      this.isSelectedGroupCell = false;
-    }
+    this.isSelectedGroupCell = this.getTableModel().getEvaluatedRowType(row) === 'Label';
     this.selectedCell = [row, col];
     this.updateOperations();
     this.fireDependencies(row, col, classType);
@@ -521,7 +521,10 @@ var TableManager = Base.extend({
 
     // Unselect
     this.cleanSelections();
-    $('#' + this.getTableId() + " > tbody > tr:eq(" + row + ")").addClass("ui-state-active");
+    var $table = $('#' + this.getTableId());
+    $table.click();
+    $table.find("tbody > tr:eq(" + row + ")").addClass("ui-state-active");
+    this.scrollTo(row);
 
     // Uncomment following cells to enable td highlight
     //$('#'+this.getTableId() + " > tbody > tr:eq("+ row +") > td:eq("+ col + ")").addClass("ui-state-active");
@@ -529,6 +532,40 @@ var TableManager = Base.extend({
     // Fire cellClicked; get id
     this.cellClick(row, col, classType);
 
+  },
+
+  scrollTo: function(row) {
+    function getPosition(element) {
+      var top = element.position().top;
+      var bottom = top + element.outerHeight(true);
+
+      return {top: top, bottom: bottom};
+    }
+
+    var rowId = this.getTableModel().getEvaluatedId(row),
+        $row = $('#' + rowId),
+        $scroll = $('#' + this.getId() + ' .scrollContainer'),
+        needScrollDown = true,
+        needScrollUp = true;
+
+    while(needScrollDown || needScrollUp) {
+      var scrollTo = $scroll.scrollTop(),
+          $row_position = getPosition($row),
+          $scroll_position = getPosition($scroll);
+
+      needScrollDown = $row_position.bottom > $scroll_position.bottom;
+      needScrollUp = $row_position.top < $scroll_position.top;
+
+      if(needScrollDown) {
+        scrollTo += $row.outerHeight(true);
+      }
+
+      if(needScrollUp) {
+        scrollTo -= $row.outerHeight(true);
+      }
+
+      $scroll.scrollTop(scrollTo);
+    }
   },
 
   selectCellBefore: function() {
@@ -540,6 +577,7 @@ var TableManager = Base.extend({
       var prevIdx;
 
       if(indexManager.isRootFirstChild(rowId)) {
+        this.selectCell(0, 0, 'simple');
         return undefined;
       }
 
@@ -573,7 +611,12 @@ var TableManager = Base.extend({
       var isParent = indexManager.isParent(rowId);
       var nextIdx;
 
-      if((isParent && isCollapsed && indexManager.isRootLastChild(rowId)) || tableModel.isLastRow(rowId)) {
+      if((isParent && isCollapsed && indexManager.isRootLastChild(rowId))) {
+        return undefined;
+      }
+
+      if(tableModel.isLastRow(rowId)) {
+        this.selectCell(rowIdx, 0, 'simple');
         return undefined;
       }
 
@@ -649,7 +692,6 @@ var TableManager = Base.extend({
       tableManager.getTableModel().setData(data);
       tableManager.cleanSelections();
       tableManager.init();
-      //tableManager.selectCell(targetIdx,colIdx);
     }
   },
 
@@ -806,7 +848,10 @@ var TableManager = Base.extend({
   executeOperation: function(tableManagerId, idx) {
 
     var tableManager = TableManager.getTableManager(tableManagerId);
-    tableManager.getOperations()[idx].execute(tableManager);
+    var operation = tableManager.getOperations()[idx];
+    var command = new RowOperationCommand(operation, tableManager);
+
+    Commands.executeCommand(command);
   },
 
   globalInit: function() {
@@ -1338,6 +1383,64 @@ var SelectRenderer = CellRenderer.extend({
   }
 });
 
+var ComponentToExportRenderer = SelectRenderer.extend({
+
+  getData: function() {
+    var data = _.extend({}, this.selectData);
+    var components = cdfdd.dashboardData.components.rows;
+
+    var validComponents = this.filterComponents(components);
+
+    validComponents.map(function(comp) {
+      var compName = comp.properties[0].value;
+      data[compName] = compName;
+    });
+
+    return data;
+  },
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+      var isTableComponent = comp.type === 'ComponentsTable';
+
+      return (hasCdwSupport || isTableComponent) && !isNameEmpty;
+    });
+  }
+});
+
+var ChartComponentToExportRenderer = ComponentToExportRenderer.extend({
+
+  prevSelectedValue: '',
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+
+      return hasCdwSupport && !isNameEmpty;
+    });
+  },
+
+  postChange: function(componentName) {
+    var components = cdfdd.dashboardData.components.rows;
+    var myself = this;
+
+    if(this.prevSelectedValue != componentName) {
+      components.map(function(comp) {
+        if(comp.properties[0].value == componentName) {
+          comp.meta_cdwRender = 'true';
+        }
+
+        if(comp.properties[0].value == myself.prevSelectedValue) {
+          comp.meta_cdwRender = 'false';
+        }
+      });
+      this.prevSelectedValue = componentName;
+    }
+  }
+});
 
 var BooleanRenderer = SelectRenderer.extend({
 
@@ -2125,21 +2228,21 @@ var ResourceFileRenderer = CellRenderer.extend({
   formatSelection: function(file) {
     var isSystem = false;
     var finalPath = "";
+    var dashFile = CDFDDFileName;
 
     if(file.charAt(0) != '/') {
       file = "/" + file;
     }
 
-    if(CDFDDFileName != undefined && CDFDDFileName.indexOf("/system") == 0) {
+    if(dashFile != null && dashFile.indexOf("/system") == 0) {
       var systemDir = "system";
-      var pluginDir = CDFDDFileName.split('/')[2];
-      file = "/" + systemDir + "/" + pluginDir + file
+      var pluginDir = dashFile.split('/')[2];
+      file = "/" + systemDir + "/" + pluginDir + file;
       isSystem = true;
     }
 
     var common = true;
     var splitFile = file.split("/");
-    var dashFile = CDFDDFileName;
     if(dashFile == "") {
       //the path is forced to start by slash because the cde editor is called without name in the context of
       //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
@@ -2161,11 +2264,17 @@ var ResourceFileRenderer = CellRenderer.extend({
       finalPath += "../";
     });
 
-    finalPath += splitFile.slice(i - 1).join('/');
+    finalPath += splitFile.slice(i - 1).join('/').replace(/\/+/g, "/");
+
+    return this.giveContext(isSystem, finalPath);
+
+  },
+
+  giveContext: function(isSystem, path) {
     if(isSystem) {
-      return "${system:" + finalPath.replace(/\/+/g, "/") + "}";
+      return "${system:" + path + "}";
     } else {
-      return "${solution:" + finalPath.replace(/\/+/g, "/") + "}";
+      return "${solution:" + path + "}";
     }
   },
 
@@ -2176,14 +2285,14 @@ var ResourceFileRenderer = CellRenderer.extend({
       fileName = settings.replace(toReplace, '').replace('}', '');
 
       if(fileName.charAt(0) != '/') { //relative path, append dashboard location
-        fileName = this.getRelativeFileName(fileName);
+        fileName = this.getAbsoluteFileName(fileName);
       }
 
     } else if(settings.indexOf('${system:') > -1) {
       fileName = settings.replace('${system:', '').replace('}', '');
 
       if(fileName.charAt(0) != '/') { //relative path, append dashboard location
-        fileName = this.getRelativeFileName(fileName);
+        fileName = this.getAbsoluteFileName(fileName);
       } else {
         fileName = "/system/" + CDFDDFileName.split('/')[2] + fileName;
       }
@@ -2199,16 +2308,17 @@ var ResourceFileRenderer = CellRenderer.extend({
     return fileName;
   },
 
-  getRelativeFileName: function(fileName) {
+  getAbsoluteFileName: function(fileName) {
+
     var basePath = CDFDDFileName;
     if(basePath == null) {
       this.fileName = null;
       return;
     }
+
     var lastSep = basePath.lastIndexOf('/');
     basePath = basePath.substring(0, lastSep);
-
-    if(fileName.indexOf('..') > -1) { //resolve
+    if(fileName.indexOf('..') > -1) {
       var base = basePath.split('/');
       var file = fileName.split('/');
       var baseEnd = base.length;
@@ -2217,11 +2327,11 @@ var ResourceFileRenderer = CellRenderer.extend({
         fileStart++;
         baseEnd--;
       }
-      return base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
-
+      fileName = base.slice(0, baseEnd).concat(file.slice(fileStart)).join('/');
     } else {
-      return basePath + '/' + fileName;
+      fileName = basePath + '/' + fileName;
     }
+    return fileName.replace(/\/+/g, "/");
   },
 
   setFileName: function(settings) { //set .fileName if possible
@@ -2236,4 +2346,3 @@ var ResourceFileRenderer = CellRenderer.extend({
     return true;
   }
 });
-

@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 var wd = (typeof wd !== 'undefined') ? wd : {};
 wd.cde = wd.cde || {};
@@ -23,6 +23,7 @@ wd.cde.endpoints = {
   imageResourceUrl: "resources/get?resource=",
   jsResourceUrl: "resources/getJs?resource=",
   saikuUiPluginUrl: "/content/saiku-ui/index.html?biplugin5=true",
+  newDashboardUrl: "/wcdf/new",
 
   //The webAppPath is defined at the start of Dashboards.js
   getWebappBasePath: function() {
@@ -59,6 +60,10 @@ wd.cde.endpoints = {
 
   getJsResourceUrl: function() {
     return this.getWebappBasePath() + this.pluginUrl + this.jsResourceUrl;
+  },
+
+  getNewDashboardUrl: function() {
+    return this.getStaticResUrl() + this.newDashboardUrl;
   },
 
   isEmptyFilePath: function(filePath) {
@@ -100,14 +105,14 @@ var SynchronizeRequests = {
       dataType: 'json',
       url: wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeTemplates",
       success: function(result) {
-        if(result && result.status == "true") {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Template saved successfully", delay: 100 });
-        } else {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Errors saving template: " + result });
+        try {
+          if(result && result.status === "true") {
+            NotifyBarUtils.successNotifyBar("Template saved successfully");
+          } else {
+            throw result && result.result;
+          }
+        } catch(e) {
+          NotifyBarUtils.errorNotifyBar("Errors saving template", e);
         }
       }
     });
@@ -121,93 +126,95 @@ var SynchronizeRequests = {
       dataType: 'json',
       url: wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeTemplates",
       success: function(result) {
-
-        if(result && result.status == "true") {
-          templates = result.result;
-          SynchronizeRequests.selectTemplate = undefined;
-          var myTemplatesCount = 0;
-          var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          for(var v in templates) {
-            if(templates.hasOwnProperty(v)) {
-              if(templates[v].type == "default") {
-                _templates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-              } else if(templates[v].type == "custom") {
-                _myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-                myTemplatesCount++;
-              }
-            }
-          }
-          _templates += '</div></div><a class="next"></a></div>';
-          _myTemplates += '</div></div><a class="next"></a></div>';
-          var loaded = function() {
+        try {
+          if(result && result.status === "true") {
+            templates = result.result;
             SynchronizeRequests.selectTemplate = undefined;
-            $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
-            $(function() {
-              $("div.scrollable:eq(0) div.thumbs div").bind('click', function() {
-                SynchronizeRequests.selectTemplate = templates[$(this).find("img").attr("id")];
-              });
-            });
-          };
-
-          var callback = function(v, m, f) {
-            var selectTemplate = SynchronizeRequests.selectTemplate;
-            if(v == 1 && selectTemplate != undefined) {
-              var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
-              var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
-              var promptPrefix = 'popupTemplate';
-              var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
-
-              if(overwriteComponents && overwriteDatasources) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
-              } else if(overwriteComponents) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
-              } else if(overwriteDatasources) {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
-              } else {
-                message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+            var myTemplatesCount = 0;
+            var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+            var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
+            for(var v in templates) {
+              if(templates.hasOwnProperty(v)) {
+                if(templates[v].type == "default") {
+                  _templates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+                } else if(templates[v].type == "custom") {
+                  _myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
+                  myTemplatesCount++;
+                }
               }
-
-              $.prompt(message, { buttons: { Ok: true, Cancel: false}, prefix: promptPrefix,
-                callback: SynchronizeRequests.callbackLoadTemplate
+            }
+            _templates += '</div></div><a class="next"></a></div>';
+            _myTemplates += '</div></div><a class="next"></a></div>';
+            var loaded = function() {
+              SynchronizeRequests.selectTemplate = undefined;
+              $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
+              $(function() {
+                $("div.scrollable:eq(0) div.thumbs div").bind('click', function() {
+                  SynchronizeRequests.selectTemplate = templates[$(this).find("img").attr("id")];
+                });
               });
+            };
 
-              $('#' + promptPrefix).css('height', '165px');
-            }
-          };
+            var callback = function(v, m, f) {
+              var selectTemplate = SynchronizeRequests.selectTemplate;
+              if(v == 1 && selectTemplate != undefined) {
+                var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
+                var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
+                var promptPrefix = 'popupTemplate';
+                var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
 
-          var promptTemplates = {
-            loaded: loaded,
-            buttons: myTemplatesCount > 0 ? { MyTemplates: 2, Ok: 1, Cancel: 0 } : {Ok: 1, Cancel: 0},
-            opacity: 0.2,
-            prefix: 'popupTemplate',
-            callback: callback,
-            submit: function(v, m, f) {
-              if(v != 2) return true;
-              $.prompt.close();
-              $.prompt(_myTemplates, promptMyTemplates, {prefix: "popupTemplate"});
-            }
-          };
+                if(overwriteComponents && overwriteDatasources) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP_DS');
+                } else if(overwriteComponents) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_COMP');
+                } else if(overwriteDatasources) {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT_DS');
+                } else {
+                  message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
+                }
 
-          var promptMyTemplates = {
-            loaded: loaded,
-            buttons: { Back: 2, Ok: 1, Cancel: 0 },
-            opacity: 0.2,
-            prefix: 'popupTemplate',
-            callback: callback,
-            submit: function(v, m, f) {
-              if(v != 2) return true;
-              $.prompt.close();
-              $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
-            }
-          };
+                $.prompt(message, {
+                  buttons: {Ok: true, Cancel: false}, prefix: promptPrefix,
+                  callback: SynchronizeRequests.callbackLoadTemplate
+                });
 
-          $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
-        } else {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Error loading templates: " + json.result
-          });
+                $('#' + promptPrefix).addClass('warningPopupTemplate');
+              }
+            };
+
+            var promptTemplates = {
+              loaded: loaded,
+              buttons: myTemplatesCount > 0 ? {MyTemplates: 2, Ok: 1, Cancel: 0} : {Ok: 1, Cancel: 0},
+              opacity: 0.2,
+              prefix: 'popupTemplate',
+              callback: callback,
+              submit: function(v, m, f) {
+                if(v != 2) return true;
+                $.prompt.close();
+                $.prompt(_myTemplates, promptMyTemplates, {prefix: "popupTemplate"});
+              }
+            };
+
+            var promptMyTemplates = {
+              loaded: loaded,
+              buttons: {Back: 2, Ok: 1, Cancel: 0},
+              opacity: 0.2,
+              prefix: 'popupTemplate',
+              callback: callback,
+              submit: function(v, m, f) {
+                if(v != 2) return true;
+                $.prompt.close();
+                $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+              }
+            };
+
+            $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+
+          } else {
+            throw result && result.result;
+          }
+        } catch(e) {
+          NotifyBarUtils.errorNotifyBar("Error loading templates", e);
         }
       }
     });
@@ -370,7 +377,21 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeStyles", {
     }, function(json) {
       myself.styles = json.result;
-    });
+      myself._legacyStyles = [];
+      myself._requireStyles = [];
+      var pattern = /(.+)Require$/;
+      if (myself.styles) {
+        for (var i = 0; i < myself.styles.length; i++) {
+          var style = json.result[i];
+          var reqStyle = pattern.exec(style)
+          if(reqStyle) {
+              myself._requireStyles.push(reqStyle[1]);
+            } else {
+              myself._legacyStyles.push(style);
+            }
+          }
+        }
+      });    
   },
 
   listStyleRenderers: function(myself) {
@@ -378,21 +399,21 @@ var StylesRequests = {
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "renderer/listRenderers", {
     }, function(json) {
       myself.renderers = json.result;
-
     });
   },
 
   initStyles: function(saveSettingsParams, wcdf, myself, callback) {
 
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
-      if(result && result.status == "true") {
-        myself.setDashboardWcdf(wcdf);
-        callback();
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors initializing settings: " + result.result
-        });
+      try {
+        if(result && result.status === "true") {
+          myself.setDashboardWcdf(wcdf);
+          callback();
+        } else {
+          throw result && result.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
       }
     });
   }
@@ -400,35 +421,35 @@ var StylesRequests = {
 
 
 var SaveRequests = {
-
   saveRequestParams: {
     selectedFolder: null,
     selectedFile: null,
     myself: null
   },
 
-
   saveSettings: function(saveSettingsParams, cdfdd, wcdf, myself) {
+
+    var refreshTitle = function(title) {
+      var content = title + '<div class="cdfdd-title-status"></div>';
+      $("div.cdfdd-title")
+          .empty()
+          .html(content)
+          .attr('title', title);
+    };
 
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
       try {
         if(result && result.status == "true") {
           myself.setDashboardWcdf(wcdf);
+          refreshTitle(wcdf.title);
           // We need to reload the layout engine in case the rendererType changed
           cdfdd.layout.init();
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard Settings saved successfully",
-            delay: 1000
-          });
+          NotifyBarUtils.successNotifyBar("Dashboard Settings saved successfully");
         } else {
-          throw result.result;
+          throw result && result.result;
         }
       } catch (e) {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving settings: " + e
-        });
+        NotifyBarUtils.errorNotifyBar("Errors saving settings", e);
       }
     });
   },
@@ -439,22 +460,19 @@ var SaveRequests = {
       saveParams.file = wd.cde.endpoints.getFilePathFromUrl();
     }
     var successFunction = function(result) {
-
-      if(result && result.status == "true") {
-        if(stripArgs.needsReload) {
-          window.location.reload();
+      try {
+        if(result && result.status == "true") {
+          if(stripArgs.needsReload) {
+            window.location.reload();
+          } else {
+            CDFDDUtils.markAsClean();
+            NotifyBarUtils.successNotifyBar("Dashboard saved successfully");
+          }
         } else {
-          $.notifyBar({
-            jqObject: NotifyBarUtils.getNotifyBarObject(),
-            html: "Dashboard saved successfully",
-            delay: 1000
-          });
+          throw result && result.result;
         }
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
 
@@ -466,7 +484,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -482,21 +500,29 @@ var SaveRequests = {
   saveAsDashboard: function(saveAsParams, selectedFolder, selectedFile, myself) {
 
     var successFunction = function(result) {
-      if(result && result.status == "true") {
-        if(selectedFolder[0] == "/") {
-          selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+      try {
+        if(result && result.status === "true") {
+          if(selectedFolder[0] === "/") {
+            selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+          }
+          var solutionPath = selectedFolder.split("/");
+          myself.initStyles(function() {
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+          });
+        } else {
+          throw result && result.result;
         }
-        var solutionPath = selectedFolder.split("/");
-        myself.initStyles(function() {
-          window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
-        });
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
+
+    // inform user that the save as will create a require dashboard
+    if( myself.getDashboardWcdf().require ) {
+      if(!confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
+        return;
+      }
+    }
 
     // CDF-271 $.browser is depricated
     var rv;
@@ -506,7 +532,7 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      Dashboards.log(Dashboards.i18nSupport.prop("SaveAsDashboard.MULTIPART_ERROR"));
       $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
@@ -525,6 +551,7 @@ var SaveRequests = {
       selectedFile: selectedFile,
       myself: myself
     });
+    var saveAsWidgetCallback = this.saveAsWidgetCallback;
 
     // CDF-271 $.browser is depricated
     var rv;
@@ -534,54 +561,63 @@ var SaveRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, this.saveAsWidgetCallback);
+      Dashboards.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
+      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveAsParams, function(result) {
+        saveAsWidgetCallback(result, saveAsParams.widgetName);
+      });
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
       $uploadForm.ajaxForm({
         data: saveAsParams,
-        success: this.saveAsWidgetCallback
+        success: function(result){
+          saveAsWidgetCallback(result, saveAsParams.widgetName);
+        }
       });
       $uploadForm.submit();
     }
 
   },
 
-  saveAsWidgetCallback: function(result) {
-    if(result && result.status == "true") {
+  saveAsWidgetCallback: function(result, widgetName) {
+    try {
+      if(result && result.status === "true") {
 
-      var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
-      var selectedFile = SaveRequests.saveRequestParams.selectedFile;
-      var myself = SaveRequests.saveRequestParams.myself;
+        var selectedFolder = SaveRequests.saveRequestParams.selectedFolder;
+        var selectedFile = SaveRequests.saveRequestParams.selectedFile;
+        var myself = SaveRequests.saveRequestParams.myself;
 
-      if(selectedFolder[0] == "/") {
-        selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+        if(selectedFolder[0] === "/") {
+          selectedFolder = selectedFolder.substring(1, selectedFolder.length);
+        }
+
+        var updateParams = {
+          widget: true,
+          widgetName: widgetName
+        };
+        // TODO: dashboard is being saved twice. This also needs to be fixed..
+        var wcdf = myself.getDashboardWcdf();
+        var cleanStyle = myself.styles.indexOf('Clean');
+        if(!wcdf.style) {
+          updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
+        }
+
+        myself.saveSettingsRequest(updateParams);
+
+        //redirect to new widget
+        SaveRequests.redirect(selectedFolder, selectedFile);
+
+      } else {
+        throw result && result.result;
       }
-
-      var updateParams = { widget: true };
-      // TODO: dashboard is being saved twice. This also needs to be fixed..
-      var wcdf = myself.getDashboardWcdf();
-      var cleanStyle = myself.styles.indexOf('Clean');
-      if(!wcdf.style) {
-        updateParams.style = myself.styles[cleanStyle >= 0 ? cleanStyle : 0];
-      }
-
-      myself.saveSettingsRequest(updateParams);
-
-      //redirect to new widget
-      SaveRequests.redirect(selectedFolder, selectedFile);
-
-    } else {
-      $.notifyBar({
-        jqObject: NotifyBarUtils.getNotifyBarObject(),
-        html: "Errors saving file: " + result.result
-      });
+    } catch(e) {
+      NotifyBarUtils.errorNotifyBar("Errors saving file", e);
     }
   },
 
   redirect: function(selectedFolder, selectedFile) {
-    window.location = window.location.protocol + "//" + window.location.host +
-        wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    var path = wd.cde.endpoints.getStaticResUrl() +
+        '/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+    location.assign(location.origin + path);
   }
 
 };
@@ -595,7 +631,7 @@ var LoadRequests = {
     }
 
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", loadParams, function(result) {
-      if(result && result.status == "true") {
+      if(result && result.status === "true") {
         myself.setDashboardData(myself.unstrip(result.result.data));
         myself.setDashboardWcdf(result.result.wcdf);
         myself.init();
@@ -609,21 +645,34 @@ var LoadRequests = {
 var PreviewRequests = {
 
   previewDashboard: function(saveParams, _href) {
+
+    var syncUrl = wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard";
+    var deletePreviewFiles = function() {
+      var deleteData = {
+        operation: "deletepreview",
+        file: cdfdd.getDashboardData().filename
+      };
+      $.post(syncUrl, deleteData);
+    };
+
     var successFunction = function(result) {
-      if(result && result.status == "true") {
-        $.fancybox({
-          type: "iframe",
-          closeBtn: true,
-          autoSize: false,
-          href: _href,
-          width: $(window).width(),
-          height: $(window).height()
-        });
-      } else {
-        $.notifyBar({
-          jqObject: NotifyBarUtils.getNotifyBarObject(),
-          html: "Errors saving file: " + result.result
-        });
+      try {
+        if(result && result.status === "true") {
+          $.fancybox({
+            type: "iframe",
+            closeBtn: true,
+            autoSize: false,
+            href: _href,
+            width: $(window).width(),
+            height: $(window).height(),
+            onClosed: deletePreviewFiles,
+            onError: deletePreviewFiles
+          });
+        } else {
+          throw result && result.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
 
@@ -635,8 +684,8 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      console.log("Dashboard can't be saved using multipart/form-data, it will not save large Dashboards");
-      $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveParams, successFunction);
+      Dashboards.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
+      $.post(syncUrl, saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
       $uploadForm.ajaxForm({
@@ -661,7 +710,6 @@ var SolutionTreeRequests = {
     return wd.cde.endpoints.getPluginUrl() + "resources/explore";
   }
 };
-
 
 var PluginRequests = {
 
@@ -704,13 +752,11 @@ var ExternalEditor = {
   }
 };
 
-
 var OlapUtils = {
   getOlapCubesUrl: function() {
     return wd.cde.endpoints.getPluginUrl() + "olap/getCubes";
   }
 };
-
 
 var Cgg = {
   getCggDrawUrl: function() {
@@ -718,8 +764,35 @@ var Cgg = {
   }
 };
 
-var NotifyBarUtils = {
-  getNotifyBarObject: function() {
-    return $("#notifyBar").length ? $("#notifyBar") : undefined;
+var SettingsHelper = {
+  getExtraPromptContent: function(){
+    return '<hr style="background:none;"/>' +
+  '<span title="Asynchronous module definition support" class="title">RequireJS Support ' +
+  '<input type="checkbox" name="require_checkbox" {{#require}}checked{{/require}}></span>';
+  },
+    
+  callExtraContentSubmit: function(myself, wcdf){
+    var isRequire = $('input[name="require_checkbox"]:checked').length > 0;
+    var style = $("#styleInput").val();
+    if(isRequire && myself._requireStyles.indexOf(style) > - 1){
+      wcdf.style = style + "Require";
+    } else {
+      wcdf.style = style;
+    }
+    wcdf.require = isRequire;
+  },
+
+  getStyles: function(wcdf, myself){
+    return wcdf.require ? myself._requireStyles : myself._legacyStyles;
+  },
+
+  getSelectedStyle: function(wcdf){
+    var matchedStyle = /(.+)Require$/.exec(wcdf.style);
+    if (matchedStyle) {
+      return matchedStyle[1];
+    } else {
+      return wcdf.style;
+    }
   }
+
 };

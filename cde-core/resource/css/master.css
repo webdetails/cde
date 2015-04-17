@@ -62,31 +62,27 @@ a {
     color: #555;
 }
 
-.headerButton{
-  -moz-transition: all 0.5s ease 0s;
+.headerButton {
+  float: left;
   color: #222222;
   cursor: pointer;
   font-size: 13px;
   font-style: normal;
   font-weight: 100;
   letter-spacing: 0.07em;
-  line-height: 20px;
-  margin-top: 9px;
   text-align: center;
   text-decoration: none;
-  vertical-align: middle;
   font-family: 'Open Sans', sans-serif;
-  position: relative;
   padding-left: 10px;
-  display: inline-block;
   transition: 0.3s;
+  -moz-transition: all 0.5s ease 0s;
 }
 
-.headerButton a:link,.headerButton  a:visited{
+.headerButton a:link,.headerButton  a:visited {
   color: #222;
 }
 
-.headerButton a:hover, .headerButton a:active{
+.headerButton a:hover, .headerButton a:active {
   color:#0098C4;
   transition: 0.3s;
 }
@@ -111,9 +107,7 @@ li a {
 }
 
 div.outside {
-
-  padding:0px;
-  
+  padding:0;
 
   background: #f2f2f2;
   height: 100%;
@@ -195,7 +189,6 @@ div.padder {
   padding: 5px;
 }
 
-
 div.cdfdd-toolbar-logo {
      background-image: url("../images/NAV/CDE_Header_Logo.png");
      font-size: 30px;
@@ -210,9 +203,8 @@ div.cdfdd-toolbar-logo {
 
 div.cdfdd-toolbar {
   text-align: center;
+  line-height: 40px;
   height: 40px;
-  /*  padding-top:5px;*/
-  /*padding-bottom: 5px;*/
   position: fixed;
   top: 0;
   z-index: 1;
@@ -223,53 +215,122 @@ div.cdfdd-toolbar {
   display: inline;
   max-height: 40px;
   min-width: 950px;
-}
 
-#cde-header.source-image {
-  width: 100%;
-  height: 100%;
-  /*position: absolute;*/
-  /*  top: 0;
-  left: 0;*/
-}
-
-#cde-header {
-  z-index: -1;
-}
-
-div.cdfdd-preview, div.cdfdd-main, div.cdfdd-modes, div.cdfdd-logo {
-  /*background:#E2F0B7;*/
-  /*  padding-top:5px;*/
-  /*padding-bottom: 5px;*/
-  /* margin-top:31px;*/
-  /*  top:0;*/
-  /*  position: absolute;*/
-  top:31px;
-}
-
-
-div.cdfdd-preview {
-    float:right;
-    width: 102px;
-    position: relative;
-    top: 0;
-    right: 0;
-    left: 0;
-}
-
-div.cdfdd-modes {
-  margin-right: 0;
-  position: relative;
-  top: 0;
-  right: 0;
-  min-width: 305px!important;
-  width: 305px;
+  box-sizing: border-box;
+  padding-left: 440px;
+  padding-right: 295px;
 }
 
 div.cdfdd-main {
-  margin-top:9px;
-  min-width: 440px;
-  width: 33%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 335px;
+  height: 100%;
+}
+
+div.cdfdd-title {
+  box-sizing: border-box;
+  position: relative;
+  float: left;
+
+  padding-left: 25px;
+  padding-right: 10px;
+  border-left: 1px solid #dddddd;
+
+  font-family: 'Open Sans Ligh', sans-serif;
+
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.cdfdd-title, div.cdfdd-title-status:after {
+  font-size: 13pt;
+  color: #7e7e7e;
+}
+
+div.cdfdd-title-status.dirtyStatus:after {
+  position: absolute;
+  top: -2px;
+  right: 0;
+
+  font-family: 'Open Sans Semibold', sans-serif;
+  content: '*';
+}
+
+div.cdfdd-modes-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  min-width:260px;
+  height: 100%;
+}
+
+div.cdfdd-modes {
+  float: left;
+}
+
+div.cdfdd-preview {
+  float: right;
+  margin-left: 40px;
+}
+
+div.notify-bar, div.notify-bar, div.notify-bar {
+  font-family: 'Open Sans Regular', sans-serif;
+  font-size: 16pt;
+  text-align: center;
+
+  position: fixed;
+  top: 40px;
+  left: 0;
+  z-index: 9999;
+
+  width: 100%;
+  padding: 20px;
+}
+
+div.notify-bar .notify-bar-icon {
+  float: left;
+  width: 35px;
+  height: 35px;
+}
+
+div.notify-bar .notify-bar-message {
+  float: left;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+div.notify-bar-success {
+  color: #3c7f2b;
+  background-color: #b3dead;
+}
+
+div.notify-bar-success .notify-bar-icon {
+  background: url('../images/success_icon.png') no-repeat;
+}
+
+div.notify-bar-error {
+  color: #af0e1a;
+  background-color: #df9fa3;
+}
+
+div.notify-bar-error .notify-bar-icon {
+  background: url('../images/error_icon.png') no-repeat;
+}
+
+div.notify-bar-info {
+  color: #008ea5;
+  background-color: #b5dce9;
+}
+
+div.notify-bar-info .notify-bar-icon {
+  background: url('../images/info_icon.png') no-repeat;
 }
 
 #keyboard_shortcuts_help {
@@ -1548,7 +1609,7 @@ div.treeTableNewJqi button {
 
 
 
-html {margin:0;padding:0;border:0; overflow-y:scroll; overflow-x: auto;}
+html {margin:0;padding:0;border:0; overflow: auto;}
 body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:middle;}
 article, aside, dialog, figure, footer, header, hgroup, nav, section {display:block;}
 body {background:white;}
@@ -1576,13 +1637,6 @@ h6 {font-size:1em;font-weight:bold;}
     min-width: 960px;
 }
 
-/*.header {
-  background: url(../images/CDE_Header_Background.png);
-  width: 100%;
-  height: 106px;
-  font: Helvetica, Arial, sans-serif;
-}*/
-
 .headerLogo {
   float: left;  
   height: 106px;
@@ -1590,10 +1644,10 @@ h6 {font-size:1em;font-weight:bold;}
 }
 
 .headerLinks {
-  position: relative;
-  top: -17px;
+  float: left;
   text-align: left;
-  width: 500px;
+  min-width: 350px;
+  height: 100%;
 }
 
 .headerLinks .buttonImage {
@@ -1639,61 +1693,6 @@ a:active {
   color: #fff;
 }
 
-
-/*ul*/
-ul.controlOptions {
-  list-style: none;
-  color: #999;
-  background: #fff;
-  border: 1px #ccc solid;
-  top: 25px!important;
-  display: none;
-  height: 0;
-  transition: 0.3s;
-  position: absolute;
-}
-
-ul.controlOptions li {
-  padding: 5px 10px;  
-}
-
-ul.controlOptions li.popupIcon {
-  background-image: url(../images/popup.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:hover {
-  background-image: url(../images/popup_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.popupIcon:active {
-  background-image: url(../images/popup_onclick.png);
-  background-position: 95%;
-  background-repeat: no-repeat; 
-}
-
-ul.controlOptions li.separator {
-  border-top: 1px #ccc solid;
-}
-
-/*ul.controlOptions li:nth-last-child(2) {
-  background: #111;
-  border-top: 1px #12a2d8 solid;
-}*/
-
-ul.controlOptions li:hover {
-  background-color: #0098c4;
-  color: #fff;
-  cursor: pointer;
-}
-
-ul.controlOptions li:active {
-  color: #fff;
-}
-
 /* impromptu starts here*/
 div.popup {
   width: auto;
@@ -1707,11 +1706,11 @@ div.popup {
   max-width: 75%;
   max-height: 80%;
   min-width: 10%;
-  overflow-x: auto;
+  overflow: visible;
   transition: 0.3s;
 }
 
-.popupfade{
+.popupfade {
   opacity: 0.6;
   background: #fff;
 }
@@ -1811,7 +1810,9 @@ div.popup .popupclose:hover{
   background-color: #bbb;
 }
 
-div.popup .popupmessage{ 
+div.popup .popupmessage {
+  min-width: 160px;
+  min-height: 25px;
   padding: 10px; 
   line-height: 20px; 
   color: #555;

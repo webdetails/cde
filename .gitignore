@@ -48,3 +48,8 @@ cde-pentaho5/test-lib
 
 cde-core/node_modules
 npm-debug.log
+cde-pentaho5/build-res/module-scripts
+cde-pentaho5/build-res/pentaho-js-build
+pentaho-js-build.zip
+requireCfg.js
+requireCfg-raw.js

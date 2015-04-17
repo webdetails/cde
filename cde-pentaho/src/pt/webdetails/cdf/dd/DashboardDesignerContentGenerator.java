@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
@@ -106,6 +106,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
   private static final String OPERATION_LOAD = "load";
   private static final String OPERATION_DELETE = "delete";
+  private static final String OPERATION_DELETE_PREVIEW = "deletepreview";
   private static final String OPERATION_SAVE = "save";
   private static final String OPERATION_SAVE_AS = "saveas";
   private static final String OPERATION_NEW_FILE = "newfile";
@@ -267,11 +268,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         return;
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( toHashMap( getRequestParameters() ) );
-
+      } else if( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
+        dashboardStructure.deletePreviewFiles( path );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( path, cdfStructure );
       } else if ( OPERATION_SAVE_AS.equalsIgnoreCase( operation ) ) {
-        boolean isPreview = ( path.indexOf( "_tmp.cdfde" ) > -1 || path.indexOf( "_tmp.wcdf" ) > -1 );
+        boolean isPreview = ( path.contains( "_tmp.cdfde" ) || path.contains( "_tmp.wcdf" ) );
         dashboardStructure.saveAs( path, title, description, cdfStructure, isPreview );
 
       } else if ( OPERATION_NEW_FILE.equalsIgnoreCase( operation ) ) {
@@ -388,9 +390,9 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         IReadAccess readAccess = Utils.getSystemOrUserReadAccess( relativePath );
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( relativePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
-        result = new MessageBundlesHelper(  msgDir, readAccess, CdeEnvironment.getPluginSystemWriter() ,
-          CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
-          .replaceParameters( result, null );
+        result = new MessageBundlesHelper( msgDir, readAccess, CdeEnvironment.getPluginSystemWriter(),
+                CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
+                .replaceParameters( result, null );
       }
 
       writeOut( out, result );
@@ -599,12 +601,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
-       /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
+      /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
 
-      String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
-      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ) ,
-        CdeEnvironment.getPluginSystemWriter() , CdeEngine.getEnv().getLocale(),
-        CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
+      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
+              CdeEnvironment.getPluginSystemWriter(), CdeEngine.getEnv().getLocale(),
+              CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
     writeOut( out, result );
@@ -772,7 +774,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     if ( access.fileExists( path ) ) {
       writeOut( out, "already exists: " + path );
     } else {
-      if ( access.createFolder( path ) ) {
+      if ( access.createFolder( path, false ) ) {
         writeOut( out, path + "created ok" );
       } else {
         writeOut( out, "error creating folder " + path );

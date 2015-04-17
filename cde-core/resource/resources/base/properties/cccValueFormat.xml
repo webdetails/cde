@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>valueFormat</Description>
-    <Tooltip>A function that formats the non-null numeric values of dimensions.</Tooltip>
+    <Tooltip>A function that formats the non-null values of numeric dimensions.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>511</Order>
+    <Order>517</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>Percentage of occupied space over total space in a discrete axis band.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>422</Order>
+    <Order>426</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -228,7 +228,6 @@ var NewMapComponent = (function (){
     /** Mixin for handling color maps
      This should probably be elevated to a proper class with a nice database of colormaps
      */
-    colormap: [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]], //RGBA
     colormaps: {
       'jet': [],
       'gray': [[0,0,0,255],[255,255,255,255]],
@@ -236,36 +235,44 @@ var NewMapComponent = (function (){
     },
     getColorMap: function() {
 
-      var interpolate = function(a, b, n){
+      var colorMap = [];
+      if(this.colormap == null || (_.isArray(this.colormap) && !this.colormap.length)) {
+        colorMap = [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]]; //RGBA
+      } else {
+        for(var k = 0, L = this.colormap.length; k < L; k++) {
+          colorMap.push(JSON.parse(this.colormap[k]))
+        }
+      }
+
+      var interpolate = function(a, b, n) {
         var c = [], d=[];
         var k, kk, step;
-        for (k=0; k<a.length; k++){
+        for(k = 0; k < a.length; k++){
           c[k] = [];
-          for (kk=0, step = (b[k]-a[k])/n; kk<n; kk++){
+          for(kk = 0, step = (b[k] - a[k])/n; kk < n; kk++) {
             c[k][kk] = a[k] + kk*step;
           }
         }
-        for (k=0; k<c[0].length; k++){
+        for(k = 0; k < c[0].length; k++) {
           d[k] = [];
-          for (kk=0; kk<c.length; kk++){
-            d[k][kk] =  Math.round(c[kk][k]);
+          for(kk = 0; kk < c.length; kk++) {
+            d[k][kk] = Math.round(c[kk][k]);
           }
         }
         return d;
       };
       var cmap = [];
-      for (k=1; k<this.colormap.length; k++)
-      {
-        cmap = cmap.concat(interpolate(this.colormap[k-1], this.colormap[k], 32));
+      for(k = 1, L = colorMap.length; k < L; k++) {
+        cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
       }
       return _.map( cmap, function (v) {
         return 'rgba('+ v.join(',') +')';
       });
     },
-    mapColor: function (value, minValue, maxValue, colormap){
+    mapColor: function(value, minValue, maxValue, colormap) {
       var n = colormap.length;
-      var level =  (value-minValue) / (maxValue - minValue);
-      return colormap[Math.floor( level * (n-1)) ];
+      var level = (value-minValue) / (maxValue - minValue);
+      return colormap[Math.floor( level * (n-1))];
     }
   };
 
@@ -721,8 +728,8 @@ var NewMapComponent = (function (){
         if (_.isFunction(myself.shapeMouseOut)) {
           result = myself.shapeMouseOut(event);
         }
-        if (event.feature == event.feature.layer.selectedFeatures[0]) {
-          event.draw(_.defaults(result, event.raw.feature.attributes.clickSelStyle));
+        if(event.isSelected()) {
+          event.draw(_.defaults(result, event.getSelectedStyle()));
         } else if (_.size(result) > 0) {
           event.draw(_.defaults(result, event.style));
         } else if (myself.shapeMouseOver) {
@@ -736,7 +743,7 @@ var NewMapComponent = (function (){
           var result = myself.shapeMouseClick(event);
           if (result){
             var selStyle = _.defaults(result, event.style);
-            event.raw.feature.attributes.clickSelStyle = selStyle;
+            event.setSelectedStyle(selStyle);
             event.draw( selStyle );
           }
         }

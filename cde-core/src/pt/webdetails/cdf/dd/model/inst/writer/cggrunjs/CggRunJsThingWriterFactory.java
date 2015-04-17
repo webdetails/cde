@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
 
@@ -13,37 +22,36 @@ import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 
-/**
- * @author dcleao
- */
-public class CggRunJsThingWriterFactory implements IThingWriterFactory
-{
-  public IThingWriter getWriter(Thing t) throws UnsupportedThingException
-  {
-    if(t == null) { throw new IllegalArgumentException("t"); }
+public class CggRunJsThingWriterFactory implements IThingWriterFactory {
+  public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {
+    if ( t == null ) {
+      throw new IllegalArgumentException( "t" );
+    }
 
     String kind = t.getKind();
-    
-    if(KnownThingKind.Component.equals(kind))
-    {
-      if((t instanceof GenericComponent) && !(t instanceof WidgetComponent))
-      {
-        GenericComponent comp = (GenericComponent)t;
-        if(comp.getMeta().tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true"))
-        {
-          return new CggRunJsGenericComponentWriter();
+
+    if ( KnownThingKind.Component.equals( kind ) ) {
+      if ( ( t instanceof GenericComponent ) && !( t instanceof WidgetComponent ) ) {
+        GenericComponent comp = (GenericComponent) t;
+        if ( comp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" ) ) {
+          boolean canWrite = true;
+          if ( getId( comp ).equals( "cggDial" ) ) {
+            canWrite = false;
+          }
+
+          return new CggRunJsGenericComponentWriter( canWrite );
         }
-      }
-      else if(t instanceof DataSourceComponent)
-      {
+      } else if ( t instanceof DataSourceComponent ) {
         return new CggRunJsDataSourceComponentWriter();
       }
-    }
-    else if(KnownThingKind.Dashboard.equals(kind))
-    {
+    } else if ( KnownThingKind.Dashboard.equals( kind ) ) {
       return new CggRunJsDashboardWriter();
     }
-    
-    throw new UnsupportedThingException(kind, t.getId());
+
+    throw new UnsupportedThingException( kind, t.getId() );
+  }
+
+  protected String getId( GenericComponent comp ) {
+    return comp.getMeta().getId();
   }
 }

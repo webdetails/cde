@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -95,7 +95,6 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
-    this.selectedPanelId = LayoutPanel.MAIN_PANEL;
 
     //// Enable alert when leaving page
     //this.setExitNotification(true);
@@ -103,9 +102,11 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
-        if ($(e.target).is('input, textarea')) {
+        if($(e.target).is('input, textarea') || e.ctrlKey) {
           return;
         }
+
+        e.preventDefault();
 
         var activePanel = cdfdd.getActivePanel();
         var activeTable = activePanel.getSelectedTable();
@@ -138,7 +139,6 @@ var CDFDD = Base.extend({
             }
             break;
           case 13:
-            e.preventDefault();
             if(e.shiftKey) { //shift + enter
               activeTable.cellUnselected();
             } else { //enter
@@ -167,7 +167,9 @@ var CDFDD = Base.extend({
           case 38:
             if(e.shiftKey) { //shift + up
               var operation = new MoveUpOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //up
               activeTable.selectCellBefore();
             }
@@ -175,7 +177,9 @@ var CDFDD = Base.extend({
           case 40:
             if(e.shiftKey) { //shift+down
               var operation = new MoveDownOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             } else { //down
               activeTable.selectCellAfter();
             }
@@ -187,7 +191,6 @@ var CDFDD = Base.extend({
             activeTable.expandCell();
             break;
           case 9: //tab
-            e.preventDefault();
             var nextTable = activePanel.selectNextTable();
             if(nextTable) {
               var row = nextTable.getSelectedCell();
@@ -200,31 +203,37 @@ var CDFDD = Base.extend({
            * Row Operations
            */
           case 82: //r
-            if(e.ctrlKey) { return; }
-            e.preventDefault();
             var operation = new LayoutAddRowOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 67: //c
-            e.preventDefault();
             var operation = new LayoutAddColumnsOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 72: //h
-            e.preventDefault();
             var operation = new LayoutAddHtmlOperation();
-            operation.checkAndExecute(activeTable);
+            var command = new RowOperationCommand(operation, activeTable);
+
+            Commands.executeCommand(command);
             break;
           case 88:
             if(e.shiftKey) { //shift+x
               var operation = new DeleteOperation();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
           case 68:
             if(e.shiftKey) { //shift+d
               var operation = new (activePanel.getDuplicateOperation())();
-              operation.checkAndExecute(activeTable);
+              var command = new RowOperationCommand(operation, activeTable);
+
+              Commands.executeCommand(command);
             }
             break;
         }
@@ -665,7 +674,8 @@ var CDFDD = Base.extend({
     var content = '' +
         '<h2>New Dashboard</h2>\n' +
         '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
-        '<span class="description">Unsaved changes will be lost.</span>\n';
+        '<span class="description">Unsaved changes will be lost.</span>';
+
     $.prompt(content, {
       buttons: {
         Ok: true,
@@ -673,101 +683,10 @@ var CDFDD = Base.extend({
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if(v) myself.saveAs(true);
-      }
-    });
-  },
-
-  saveAs: function(fromScratch) {
-
-    var selectedFolder = "";
-    var selectedFile = "";
-    var selectedTitle = this.getDashboardWcdf().title;
-    var selectedDescription = this.getDashboardWcdf().description;
-    var myself = this;
-    var content = '' +
-        '<h2>Save as:</h2><hr style="background:none;"/>\n' +
-        '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-        '<span class="folderexplorerfilelabel">File Name:</span>\n' +
-        '<span class="folderexplorerfileinput"><input id="fileInput"  type="text"/></span>\n' +
-        '<hr class="filexplorerhr"/>\n' +
-        '<span class="folderexplorerextralabel" >Extra Information:</span><br/>\n' +
-        '<span class="folderexplorerextralabels" >Title:</span>\n' +
-        '<input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '"></input><br/>\n' +
-        '<span class="folderexplorerextralabels" >Description:</span>\n' +
-        '<input id="descriptionInput" class="folderexplorerdescinput" type="text" value="' + selectedDescription + '"></input>';
-
-    $.prompt(content, {
-      loaded: function() {
-        $('#fileInput').change(function() {
-          selectedFile = this.value;
-        });
-        $('#titleInput').change(function() {
-          selectedTitle = this.value;
-        });
-        $('#descriptionInput').change(function() {
-          selectedDescription = this.value;
-        });
-        $('#container_id').fileTree({
-          root: '/',
-          script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=.wcdf&access=create",
-          expandSpeed: 1000,
-          collapseSpeed: 1000,
-          multiFolder: false,
-          folderClick: function(obj, folder) {
-            if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
-            $(obj).attr("class", "selectedFolder");
-            selectedFolder = folder;
-            $("#fileInput").val("");
-          }
-        }, function(file) {
-          $("#fileInput").val(file.replace(selectedFolder, ""));
-          selectedFile = $("#fileInput").val();
-        });
-      },
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      opacity: 0.2,
-      prefix: 'popup',
-      callback: function(v, m, f) {
         if(v) {
-
-          if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
-            $.prompt('Invalid file extension. Must be .wcdf', {
-              prefix: "popup"
-            });
-          } else if(selectedFolder.length == 0) {
-            $.prompt('Please choose destination folder.', {
-              prefix: "popup"
-            });
-          } else if(selectedFile.length == 0) {
-            $.prompt('Please enter the file name.', {
-              prefix: "popup"
-            });
-          } else if(selectedFile.length > 0) {
-            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
-
-            CDFDDFileName = selectedFolder + selectedFile;
-            myself.dashboardData.filename = CDFDDFileName;
-            _.each(myself.components.getComponents(), function(w) {
-              if(w.meta_widget) {
-                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
-              }
-            });
-
-            var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1) // TODO: shouldn't it strip, like save does?
-              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1)
-            };
-
-            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
-          }
+          var path = wd.cde.endpoints.getNewDashboardUrl();
+          var timestamp = (new Date()).getTime();
+          location.assign(location.origin + path + '?ts=' + timestamp);
         }
       }
     });
@@ -873,9 +792,7 @@ var CDFDD = Base.extend({
   previewMode: function() {
 
     if(this.isNewFile(CDFDDFileName)) {
-      $.notifyBar({
-        html: "Need to save an initial dashboard before previews are available."
-      });
+      NotifyBarUtils.infoNotifyBar("Need to save an initial dashboard before previews are available.");
       return;
     }
 
@@ -899,23 +816,6 @@ var CDFDD = Base.extend({
     };
 
     PreviewRequests.previewDashboard(saveParams, PreviewRequests.getPreviewUrl(solution, path, file));
-  },
-
-
-  savePulldown: function(target, evt) {
-    var myself = this,
-        $pulldown = $(target);
-    $pulldown.append(templates.savePulldown());
-    $("body").one("click", function() {
-      $pulldown.find("ul").remove();
-    });
-    $pulldown.find(".save-as-dashboard").click(function() {
-      myself.saveAs();
-    });
-    $pulldown.find(".save-as-widget").click(function() {
-      myself.saveAsWidget();
-    });
-    evt.stopPropagation();
   },
 
   reload: function() {
@@ -979,10 +879,12 @@ var CDFDD = Base.extend({
         content;
 
     settingsData.styles = [];
+    this.styles = SettingsHelper.getStyles(wcdf, this);
+    var selectedStyle = SettingsHelper.getSelectedStyle(wcdf);
     _.each(this.styles, function(obj) {
       settingsData.styles.push({
         style: obj,
-        selected: wcdf.style == obj
+        selected: selectedStyle == obj
       });
     });
     settingsData.renderers = [];
@@ -1004,6 +906,9 @@ var CDFDD = Base.extend({
             selected: _.contains(currentParams, val)
           };
         });
+
+    var extraOptions = SettingsHelper.getExtraPromptContent();
+        
     content = '' +
         '<span>' +
         ' <h2>Settings:</h2>' +
@@ -1038,6 +943,7 @@ var CDFDD = Base.extend({
         '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
         '{{/renderers}}' +
         '</select>' +
+        extraOptions +
         '{{#widget}}' +
         '<span>' +
         '  <br>' +
@@ -1060,18 +966,21 @@ var CDFDD = Base.extend({
         Cancel: false
       },
       prefix: "popup",
-      submit: function() {
-        wcdf.title = $("#titleInput").val();
-        wcdf.author = $("#authorInput").val();
-        wcdf.description = $("#descriptionInput").val();
-        wcdf.style = $("#styleInput").val();
-        wcdf.widgetName = $("#widgetNameInput").val();
-        wcdf.rendererType = $("#rendererInput").val();
-        wcdf.widgetParameters = [];
-        $("#widgetParameters input[type='checkbox']:checked")
-            .each(function(i, e) {
-              wcdf.widgetParameters.push(e.value);
-            });
+      submit: function(save) {
+        if (save) {
+          wcdf.title = $("#titleInput").val();
+          wcdf.author = $("#authorInput").val();
+          wcdf.description = $("#descriptionInput").val();
+          wcdf.style = $("#styleInput").val();
+          wcdf.widgetName = $("#widgetNameInput").val();
+          wcdf.rendererType = $("#rendererInput").val();
+          wcdf.widgetParameters = [];
+          $("#widgetParameters input[type='checkbox']:checked")
+              .each(function(i, e) {
+                wcdf.widgetParameters.push(e.value);
+              });
+          SettingsHelper.callExtraContentSubmit(myself, wcdf);
+        }
       },
       callback: function(v, m, f) {
         if(v) {
@@ -1103,7 +1012,7 @@ var CDFDD = Base.extend({
     });
   },
 
-  combinedSaveAs: function(fromScratch) {
+  combinedSaveAs: function() {
 
     var selectedTitle = "",
         selectedDescription = "",
@@ -1205,7 +1114,6 @@ var CDFDD = Base.extend({
             if($(".selectedFolder").length > 0) $(".selectedFolder").attr("class", "");
             $(obj).attr("class", "selectedFolder");
             selectedFolder = folder;
-            $("#fileInput").val("");
           }
         }, function(file) {
           $("#fileInput").val(file.replace(selectedFolder, ""));
@@ -1264,7 +1172,7 @@ var CDFDD = Base.extend({
             };
 
             var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
+              operation: "saveas",
               file: selectedFolder + selectedFile,
               title: selectedTitle,
               description: selectedDescription,
@@ -1307,7 +1215,7 @@ var CDFDD = Base.extend({
               myself.dashboardData.filename = CDFDDFileName;
 
               var saveAsParams = {
-                operation: fromScratch ? "newFile" : "saveas",
+                operation: "saveas",
                 file: selectedFolder + selectedFile,
                 title: selectedTitle,
                 description: selectedDescription,
@@ -1326,94 +1234,6 @@ var CDFDD = Base.extend({
       }
     });
 
-  },
-  saveAsWidget: function(fromScratch) {
-
-    var selectedFolder = wd.helpers.repository.getWidgetsLocation(),
-        selectedFile = "",
-        selectedTitle = this.getDashboardWcdf().title,
-        selectedDescription = this.getDashboardWcdf().description,
-        selectedWidgetName = "",
-        options = {
-          title: selectedTitle,
-          description: selectedDescription
-        },
-        myself = this,
-        content = templates.saveAsWidget(options);
-
-    $.prompt(content, {
-      loaded: function() {
-        $(this).addClass('save-as-widget');
-        $('#fileInput').change(function() {
-          selectedFile = this.value;
-        });
-        $('#titleInput').change(function() {
-          selectedTitle = this.value;
-        });
-        $('#descriptionInput').change(function() {
-          selectedDescription = this.value;
-        });
-        $('#componentInput').change(function() {
-          selectedWidgetName = this.value;
-        });
-      },
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      prefix: "popup",
-      opacity: 0.2,
-      classes: 'save-as-widget',
-      callback: function(v, m, f) {
-        if(v) {
-
-          /* Validations */
-          var validInputs = true;
-          if(selectedFile.indexOf(".") > -1 && !/\.wcdf$/.test(selectedFile)) {
-            $.prompt('Invalid file extension. Must be .wcdf', {prefix: "popup"});
-            validInputs = false;
-          } else if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-            $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
-            validInputs = false;
-          } else if(selectedWidgetName.length == 0) {
-            if(selectedTitle.length == 0) {
-              $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
-              validInputs = false;
-            } else {
-              selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
-            }
-          } else if(selectedFile.length <= 0) {
-            validInputs = false;
-          }
-
-          if(validInputs) {
-            if(selectedFile.indexOf(".wcdf") == -1) {
-              selectedFile += ".wcdf";
-            }
-
-            CDFDDFileName = selectedFolder + selectedFile;
-            myself.dashboardData.filename = CDFDDFileName;
-            _.each(myself.components.getComponents(), function(w) {
-              if(w.meta_widget) {
-                w.meta_wcdf = window[w.type + "Model"].getStub().meta_wcdf;
-              }
-            });
-
-            var saveAsParams = {
-              operation: fromScratch ? "newFile" : "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
-              cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
-              widgetName: selectedWidgetName
-            };
-
-            SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-          }
-        }
-      }
-    });
   },
 
   saveSettingsRequest: function(wcdf) {
@@ -1504,7 +1324,7 @@ var CDFDD = Base.extend({
     ph = ph.length > 0 ? ph : $("<div id='cggDialog' style='display:none'></div>").appendTo($("body")).jqm();
 
     // cgg url:
-    var cggUrl = Cgg.getCggDrawUrl() + "?script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/";
+    var cggUrl = Cgg.getCggDrawUrl() + "?";
 
     ph.empty();
     ph.append("<h3>Choose what charts to render as CGG</h3>" +
@@ -1521,11 +1341,29 @@ var CDFDD = Base.extend({
 
       var componentName = '',
           title = '';
+
+      var isCggDialComponent = e.type == "ComponentscggDial";
+      var dialProperties = {};
       e.properties.map(function(p) {
-        if(p.name == 'title') {
-          title = p.value;
-        } else if(p.name == 'name') {
-          componentName = p.value;
+        switch(p.name) {
+          case 'title':
+            title = p.value;
+            break;
+          case 'name':
+            componentName = p.value;
+            break;
+          case 'intervals':
+            dialProperties.paramscale = $.parseJSON(p.value);
+            break;
+          case 'colors':
+            dialProperties.paramcolors = $.parseJSON(p.value);
+            break;
+          case 'width':
+            dialProperties.width = p.value;
+            break;
+          case 'height':
+            dialProperties.height = p.value;
+            break;
         }
       });
       var label = "<span class='label'>" + (title !== '' ? title : componentName) + "</span>";
@@ -1541,10 +1379,19 @@ var CDFDD = Base.extend({
       });
       section.append(showUrlButton).append("<br />");
 
-      // append dashboard name with component name and extension (.js)
-      var scriptFileName = CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] + '_' + componentName + ".js";
+      var fullCggUrl = '';
+      if(isCggDialComponent) {
+        fullCggUrl = cggUrl + 'script=/system/pentaho-cdf-dd/resources/custom/components/cgg/charts/dial.js&'
+            + $.param(dialProperties);
+      } else {
+        // append dashboard name with component name and extension (.js)
+        var script = "script=" + CDFDDFileName.substring(0, CDFDDFileName.lastIndexOf("/")) + "/"
+            + CDFDDFileName.replace(/^.*[\\\/]/, '').split('.')[0] + '_' + componentName + ".js";
+        fullCggUrl = cggUrl + script;
+      }
+      fullCggUrl += "&outputType=png";
 
-      $("<div class='urlPreviewer collapsed'><input type='text' value = '" + cggUrl + scriptFileName + "&outputType=png" + "'></input></div>").appendTo(section);
+      $("<div class='urlPreviewer collapsed'><input type='text' value = '" + fullCggUrl + "'></input></div>").appendTo(section);
       section.appendTo(ph);
     });
 
@@ -1741,8 +1588,72 @@ var CDFDDUtils = Base.extend({}, {
     });
 
     return result;
+  },
+
+  markAsClean: function() {
+    $('div.cdfdd-title-status').removeClass('dirtyStatus');
+    Commands.cleanExecutedCommands();
+  },
+
+  markAsDirty: function() {
+    $('div.cdfdd-title-status').addClass('dirtyStatus');
   }
 });
+
+
+var NotifyBarUtils = {
+  successNotifyBar: function(message) {
+    this.notifyBar(message, 'success');
+  },
+
+  errorNotifyBar: function(message, error) {
+    if(!error) {
+      message += ": " + error;
+    }
+
+    this.notifyBar(message, 'error');
+  },
+
+  infoNotifyBar: function(message) {
+    this.notifyBar(message, 'info');
+  },
+
+  notifyBar: function(message, type) {
+    var notifyObject = $("#notifyBar");
+    var notifyHtml = '<div class="notify-bar-icon"></div><div class="notify-bar-message">' + message + '</div>';
+
+    if(!notifyObject.length) {
+      notifyObject = $('<div id="notifyBar" class="notify-bar"></div>');
+    } else {
+      this.cleanStatus();
+    }
+
+    switch(type) {
+      case 'success':
+        notifyObject.addClass('notify-bar-success');
+        break;
+      case 'error':
+        notifyObject.addClass('notify-bar-error');
+        break;
+      case 'info':
+        notifyObject.addClass('notify-bar-info');
+        break;
+    }
+
+    $.notifyBar({
+      jqObject: notifyObject,
+      html: notifyHtml,
+      delay: 1500
+    });
+  },
+
+  cleanStatus: function() {
+    $("#notifyBar")
+        .removeClass('notify-bar-success')
+        .removeClass('notify-bar-error')
+        .removeClass('notify-bar-info')
+  }
+};
 
 var cdfdd;
 $(function() {
@@ -1886,23 +1797,4 @@ $(function() {
 
     }
   })
-
 });
-
-templates = {};
-templates.savePulldown = Mustache.compile(
-        "<ul class='controlOptions'>" +
-        " <li class='item popup'>Save As Dashboard</li>" +
-        " <li class='item popup'>Save As Widget</li>" +
-        "</ul>");
-
-templates.saveAsWidget = Mustache.compile(
-        '<h2>Save as Widget:</h2><hr/>\n' +
-        ' <span class="folderexplorerfilelabel">File Name:</span>\n' +
-        ' <input id="fileInput" class="folderexplorerfileinput" type="text" style="width:100%;"/>\n' +
-        ' <hr class="filexplorerhr"/>\n' +
-        ' <span class="folderexplorerextralabel" >-Extra Information-</span><br/>\n' +
-        ' <span class="folderexplorerextralabels" >Title:</span>' +
-        ' <input id="titleInput" class="folderexplorertitleinput" type="text" value="{{title}}"/><br/>\n' +
-        ' <span class="folderexplorerextralabels" >Description:</span>' +
-        ' <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="{{description}}"/>');

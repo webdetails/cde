@@ -1,97 +1,120 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.render;
 
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.layout.Render;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
-public class RenderLayout extends Renderer
-{
-  public RenderLayout(JXPathContext doc, CdfRunJsDashboardWriteContext context)
-  {
-    super(doc, context);
+public class RenderLayout extends Renderer {
+  private static final String RESOURCES = "and type!='LayoutResourceFile' and type!='LayoutResourceCode'";
+
+  boolean includeResources;
+
+  public RenderLayout( JXPathContext doc, CdfRunJsDashboardWriteContext context ) {
+    super( doc, context );
+    this.includeResources = true;
   }
-  
-  public String render(String alias) throws Exception
-  {
-    try
-    {
-      @SuppressWarnings("unchecked")
-      final Iterator<Pointer> rootRows = doc.iteratePointers("/layout/rows[parent='UnIqEiD']");
-      
-      StringBuffer layout = new StringBuffer();
-      
-      layout.append(NEWLINE + getIndent(2) + "<div class='container'>");
-      
-      Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId = getWidgets(alias);
-      
-      renderRows(doc, rootRows, widgetsByContainerId, alias, layout, 4);
-      
-      layout.append(NEWLINE + getIndent(2) + "</div>");
-      
+
+  public RenderLayout( JXPathContext doc, CdfRunJsDashboardWriteContext context, boolean includeResources ) {
+    super( doc, context );
+    this.includeResources = includeResources;
+  }
+
+  public String render( String alias ) throws Exception {
+    try {
+      String filter = MessageFormat.format( XPATH_FILTER, UNIQUEID, !includeResources ? RESOURCES : "" );
+      final Iterator layoutRows = doc.iteratePointers( filter );
+
+      StringBuffer layout = new StringBuffer( );
+
+      if ( getContext().getDashboard().getWcdf().isRequire() ) {
+
+        layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "<div class='" )
+          .append( StringUtils.isEmpty( alias ) ? "container'>" : alias + "_container'>" );
+        // setting indent to -1 prevents NEWLINE and indentation to be appended to layout
+        renderRows( doc, layoutRows, null, alias, layout, -1 );
+        layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "</div>" );
+
+      } else {
+
+        layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "<div class='container'>" );
+        renderRows( doc, layoutRows, getWidgets( alias ), alias, layout, 4 );
+        layout.append( NEWLINE ).append( getIndent( 2 ) ).append( "</div>" );
+
+      }
+
       return layout.toString();
-    }
-    catch(RenderException ex)
-    {
+    } catch ( RenderException ex ) {
       return ex.getMessage();
     }
   }
 
-  private void renderRows(
-          final JXPathContext doc, 
-          final Iterator<Pointer> nodeIterator, 
-          final Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId, 
-          final String alias, 
-          final StringBuffer layout, 
-          final int indent) throws Exception
-  {
-    while (nodeIterator.hasNext())
-    {
+  private void renderRows( final JXPathContext doc, final Iterator nodeIterator,
+                           final Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId, final String alias,
+                           final StringBuffer layout, final int indent ) throws Exception {
+    while ( nodeIterator.hasNext() ) {
       final Pointer pointer = (Pointer) nodeIterator.next();
-      final JXPathContext context = doc.getRelativeContext(pointer);
+      final JXPathContext context = doc.getRelativeContext( pointer );
 
-      final String rowId   = (String)context.getValue("id");
-      final String rowName = XPathUtils.getStringValue(context, "properties[name='name']/value");
-      
-      @SuppressWarnings("unchecked")
-      final Render renderer = (Render)getRender(context);
+      final String rowId = (String) context.getValue( "id" );
+      final String rowName = XPathUtils.getStringValue( context, "properties[name='name']/value" );
+
+      final Render renderer = (Render) getRender( context );
       renderer.processProperties();
-      renderer.aliasId(alias);
-      layout.append(NEWLINE + getIndent(indent));
-      layout.append(renderer.renderStart());
-      
-      if(widgetsByContainerId.containsKey(rowName))
-      {
-        CdfRunJsDashboardWriteResult widgetResult = widgetsByContainerId.get(rowName);
-        layout.append(widgetResult.getLayout());
+      renderer.aliasId( alias );
+      // when rendering rows for the layout of a dashboard AMD module, skip NEWLINE and indentation
+      if ( indent > -1 ) {
+        layout
+          .append( NEWLINE )
+          .append( getIndent( indent ) )
+          .append( renderer.renderStart() );
+        if ( widgetsByContainerId != null && widgetsByContainerId.containsKey( rowName ) ) {
+          CdfRunJsDashboardWriteResult widgetResult = widgetsByContainerId.get( rowName );
+          layout.append( widgetResult.getLayout() );
+        } else {
+          renderRows( context, context.iteratePointers( MessageFormat.format( XPATH_FILTER, rowId, "" ) ),
+              widgetsByContainerId, alias, layout, indent + 2 );
+        }
+        layout
+          .append( NEWLINE )
+          .append( getIndent( indent ) )
+          .append( renderer.renderClose() );
+      } else {
+        layout.append( renderer.renderStart() );
+        if ( widgetsByContainerId != null && widgetsByContainerId.containsKey( rowName ) ) {
+          CdfRunJsDashboardWriteResult widgetResult = widgetsByContainerId.get( rowName );
+          layout.append( widgetResult.getLayout() );
+        } else {
+          renderRows( context, context.iteratePointers( MessageFormat.format( XPATH_FILTER, rowId, "" ) ),
+              widgetsByContainerId, alias, layout, -1 );
+        }
+        layout.append( renderer.renderClose() );
       }
-      else
-      {
-        renderRows(
-            context, 
-            context.iteratePointers("/layout/rows[parent='" + rowId + "']"), 
-            widgetsByContainerId, 
-            alias, 
-            layout, 
-            indent + 2);
-      }
-      
-      layout.append(NEWLINE + getIndent(indent));
-      layout.append(renderer.renderClose());
     }
   }
 
   @Override
-  protected String getRenderClassName(final String type)
-  {
-    return "pt.webdetails.cdf.dd.render.layout." + type.replace("Layout", "") + "Render";
+  protected String getRenderClassName( final String type ) {
+    return "pt.webdetails.cdf.dd.render.layout." + type.replace( "Layout", "" ) + "Render";
   }
 }

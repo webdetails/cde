@@ -7,7 +7,7 @@
     <Tooltip>Half the space between legend items, in pixel units.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>315</Order>
+    <Order>317</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

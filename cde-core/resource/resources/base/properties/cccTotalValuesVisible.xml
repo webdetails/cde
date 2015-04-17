@@ -7,7 +7,7 @@
     <Tooltip>Indicates if value labels are shown above or below the water line showing the accumulated value.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>494</Order>
+    <Order>500</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

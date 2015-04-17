@@ -111,7 +111,7 @@ var CggComponent = BaseComponent.extend({
     return data;
   },
 
-  _processParametersCore: function(params) {
+  _processParametersCore: function(data) {
     var dash = this.dashboard;
     var params = this.parameters;
     for (var i = 0, L = params.length ; i < L ; i ++) {

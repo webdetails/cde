@@ -144,8 +144,10 @@ var DatasourcesPanel = Panel.extend({
     var output = [];
     var myself = this;
     $.each(data, function(i, row) {
-      if(row.type != "Label")
+      var nameProperty = row.properties && row.properties[0];
+      if(row.type !== "Label" && nameProperty && nameProperty.value !== "") {
         output.push(row);
+      }
     });
     return output;
   },

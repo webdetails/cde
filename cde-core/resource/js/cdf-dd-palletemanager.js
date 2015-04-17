@@ -50,47 +50,42 @@ var PalleteManager = Base.extend({
 			return _container;
 		},
 
-
 		render: function(){
 
 			this.logger.debug("Rendering pallete " + this.getPalleteId());
-			var _placeholder = $("#"+this.getPalleteId());
+			var palleteSelector = '#' + this.getPalleteId(),
+			    _placeholder = $(palleteSelector),
+			    headerSelector = 'h3';
 
 			// Accordion
 			// CDF-271 $.browser is depricated
 			var rv;
 			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-			if(re.exec(navigator.userAgent) != null) { rv = parseFloat(RegExp.$1); }
-
-			if(rv && rv < 9) {
-				
-				_placeholder.accordion({
-					header: "h3",
-					active: false,
-					heightStyle: "content",
-					animated: false,
-					//event: "mouseover",
-					icons: {
-						header: "ui-icon-triangle-1-e",
-						headerSelected: "ui-icon-triangle-1-s"
-					},
-					collapsible: true
-				});
-			} else {
-
-				_placeholder.accordion({
-					header: "h3",
-					active: false,
-					heightStyle: "content",
-					//event: "mouseover",
-					icons: {
-						header: "ui-icon-triangle-1-e",
-						headerSelected: "ui-icon-triangle-1-s"
-					},
-					collapsible: true
-				});
+			if(re.exec(navigator.userAgent) != null) {
+				rv = parseFloat(RegExp.$1);
 			}
 
+			var accordionOptions = {
+			  header: headerSelector,
+			  active: false,
+			  heightStyle: "content",
+			  icons: {
+			    header: "ui-icon-triangle-1-e",
+			    activeHeader: "ui-icon-triangle-1-s"
+			  },
+			  collapsible: true
+			};
+
+			if(rv && rv < 9) {
+				accordionOptions.animated = false;
+			}
+
+			_placeholder
+			  .accordion(accordionOptions)
+			  .find(headerSelector).off('keydown')
+			  .click(function() {
+			    $(palleteSelector + ' ' + headerSelector).blur();
+			  });
 		},
 
 		exists: function(object, array){
@@ -172,11 +167,12 @@ var PalleteManager = Base.extend({
 		executeEntry: function(palleteManagerId,id){
 			
 			var palleteManager = PalleteManager.getPalleteManager(palleteManagerId);
-			palleteManager.getEntries()[id].execute(palleteManager);
+			var entry = palleteManager.getEntries()[id];
+			var command = new EntryCommand(entry, palleteManager);
+
+			Commands.executeCommand(command);
 		}
-	});
-
-
+});
 
 var PalleteEntry = Base.extend({
 
@@ -222,21 +218,26 @@ var PalleteEntry = Base.extend({
     }
     
     if (_stub.properties){
-    	this.fixQueryProperty(_stub.properties, this.category);
+    	this.fixQueryProperty(_stub, this.category);
     }
     tableManager.insertAtIdx(_stub,insertAtIdx);
 
     // focus the newly created line
     //atableManager.selectCell(insertAtIdx,colIdx);
 
-    // edit the new entry - we know the name is on the first line
-    if( typeof tableManager.getLinkedTableManager() != 'undefined' ) {
-      $("table#" + tableManager.getLinkedTableManager().getTableId() +" > tbody > tr:first > td:eq(1)").trigger('click');
-    }
+		// edit the new entry - we know the name is on the first line
+		var linkedTableManager = tableManager.getLinkedTableManager();
+		if (typeof linkedTableManager != 'undefined') {
+			linkedTableManager.selectCell(0,0, 'simple');
+			$('table#' + linkedTableManager.getTableId() + ' > tbody > tr:first > td:eq(1)').click();
+		}
 
     return _stub;
   },
-	fixQueryProperty: function(props, cat) {
+	fixQueryProperty: function(stub, cat) {
+		var props = stub.properties;
+		var type = stub.type;
+
 		$.each(props, function(i, prop) {
 			if (prop.name == "query") {
 				switch (cat) {
@@ -256,7 +257,11 @@ var PalleteEntry = Base.extend({
 						prop.type = "XPathQuery";
 						break;
 					case "SCRIPTING":
-						prop.type = "ScriptableQuery";
+						if(type === "ComponentsjsonScriptable_scripting") {
+							prop.type = "JsonScriptableQuery";
+						} else {
+							prop.type = "ScriptableQuery";
+						}
 						break;
 					default:
 						prop.type = "DefaultQuery";

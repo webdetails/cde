@@ -10,22 +10,25 @@ var PopupComponent = BaseComponent.extend({
   $overlay: undefined,
   popupClass: undefined,
   popupOverlayClass: undefined,
+  horizontalScroll: undefined,
+  verticalScroll: undefined,
 
-  
   /* // Default settings
   gravity: undefined,
   draggable: true,
   closeOnClickOutside: false,
   */ 
 
-  update: function(){
+  update: function() {
     var myself = this;
+
     this.content = $("#" + this.htmlObject).detach();
     this.ph = this.ph ? this.ph.empty() : $('<div>').appendTo($('body'));
     this.content.appendTo(this.ph);
     this.ph.hide();
     this.ph.addClass('popupComponent');
-    if (this.popupClass){
+
+    if(this.popupClass) {
       this.ph.addClass(this.popupClass);
     }
     this.cancel = $("<a>&nbsp;</a>");
@@ -235,7 +238,7 @@ var PopupComponent = BaseComponent.extend({
         myself.hide();
       })
     }
-    
+    $('body').addClass('draggable-popup-fix');
   },
 
   hide: function() {
@@ -244,8 +247,8 @@ var PopupComponent = BaseComponent.extend({
     if(this.$overlay){
       this.$overlay.unbind('click');
       this.$overlay.detach();
-      
     }
+    $('body').removeClass('draggable-popup-fix');
   },
 
   /* Given the size (width/height) for a target and a placeholder element,
@@ -466,8 +469,8 @@ var ExportPopupComponent = PopupComponent.extend({
     var myself = this;
     var masterDiv = $('<div class="exportChartMasterDiv">');
     //Style later
-    var totalWidth = Math.max(700, this.chartComponent.chartDefinition.width);
-    var popupButtonsDiv = $("<div class='exportChartPopupButtons' style='width:" +totalWidth + "px'>");
+    var totalWidth = Math.max(800, this.chartComponent.chartDefinition.width);
+    var popupButtonsDiv = $("<div class='exportChartPopupButtons'>");
     masterDiv.append(popupButtonsDiv);
    
     var titleDiv = $("<div class='exportChartTitle'>Export Options</div>");
@@ -603,13 +606,16 @@ var ExportPopupComponent = PopupComponent.extend({
     imgDiv.append(img);
     imgDiv.append("&nbsp;");
     masterDiv.append(imgDiv);
-    
+    var holderDiv = $('<div class="exportChartMasterDivHolder">');
+    holderDiv.append(masterDiv);
+
     $.fancybox({
       type: "html",
       closeBtn: true,
-      content: masterDiv,
+      content: holderDiv,
       width: totalWidth ,
-      height: this.chartComponent.chartDefinition.height  + 60
+      height: this.chartComponent.chartDefinition.height  + 60,
+      autoDimensions: false
     });
 
   }

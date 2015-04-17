@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
   <Header>
     <Name>Text Editor</Name>
@@ -25,17 +25,17 @@
       <Property>tooltip</Property>
       <Property>listeners</Property>
     </Model>
-    <Implementation>
+    <Implementation supportsLegacy="true" supportsAMD="true">
       <Code src="TextEditorComponent.js"/>
       <Styles>
         <Style version="1.0" src="component.css">textEditor</Style>
       </Styles>
       <Dependencies>
-        <!--<Dependency src="lib/underscore.js" version="1.0">Underscore</Dependency>
+        <!-- <Dependency src="lib/underscore.js" version="1.0">Underscore</Dependency>
         <Dependency src="lib/backbone.js" version="2.0">Backbone</Dependency> -->
       </Dependencies>
-      <CustomProperties>          	    
-	  </CustomProperties>
+      <CustomProperties>                
+      </CustomProperties>
     </Implementation>
   </Contents>
 </DesignerComponent>

@@ -21,6 +21,7 @@ var GoogleMapEngine = MapEngine.extend({
   centered: false,
   overlays: [],
   API_KEY: false,
+  selectedFeature: undefined,
   init: function(mapComponent, tilesets) {
     this.tilesets = tilesets;
     this.mapComponent = mapComponent;
@@ -143,7 +144,15 @@ var GoogleMapEngine = MapEngine.extend({
         feature.setVisible(false);
         feature.setVisible(_.has(style, 'visible') ? !!style.visible : true);
       },
-      //isSelected: undefined, //will eventually say if this item is selected
+      setSelectedStyle: function(style) {
+        feature.selStyle = style;
+      },
+      getSelectedStyle: function() {
+        return feature.selStyle;
+      },
+      isSelected: function() {
+        return myself.selectedFeature && myself.selectedFeature[0] === data.key;
+      },
       raw: event
     };
   },
@@ -167,6 +176,7 @@ var GoogleMapEngine = MapEngine.extend({
 
       // We'll have to use a trick to emulate the multipolygons...
       google.maps.event.addListener(shape, 'click', function (event) {
+        myself.unselectPrevShape(data.key, shapes, shapeStyle);
         _.each(shapes, function (s){
           myself.mapComponent.trigger('shape:click', myself.wrapEvent(event, s, 'shape',  shapeStyle, data));
         });
@@ -185,6 +195,22 @@ var GoogleMapEngine = MapEngine.extend({
   },
 
   postSetShapes: function (){},
+
+  unselectPrevShape: function(key, shapes, shapeStyle) {
+    var myself = this;
+    var prevSelected = this.selectedFeature;
+    if(prevSelected && prevSelected[0] !== key) {
+      var prevShapes = prevSelected[1];
+      var prevStyle = prevSelected[2];
+      _.each(prevShapes, function (s) {
+        var validStyle = myself.toNativeStyle(prevStyle);
+        s.setOptions(validStyle);
+        s.setVisible(false);
+        s.setVisible(_.has(prevStyle, 'visible') ? !!prevStyle.visible : true);
+      });
+    }
+    this.selectedFeature = [key, shapes, shapeStyle];
+  },
 
   setMarker: function(lon, lat, icon, description, data, markerWidth, markerHeight, markerInfo) {
     var myLatLng = new google.maps.LatLng(lat,lon);

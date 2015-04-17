@@ -1,48 +1,51 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.render.cda;
 
 import java.util.HashMap;
+
 import net.sf.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- *
- * @author pdpi
- */
-public class Olap4jProperties implements CdaElementRenderer
-{
+public class Olap4jProperties implements CdaElementRenderer {
 
   private JSONObject definition;
   private String paramName = "";
 
-  private HashMap<String,String> names;
-  public Olap4jProperties(String paramName)
-  {
+  private HashMap<String, String> names;
+
+  public Olap4jProperties( String paramName ) {
     this.paramName = paramName;
-    names = new HashMap<String,String>();
-    names.put("olap4juser","JdbcUser");
-    names.put("olap4jpass","JdbcPassword");
-    names.put("olap4jurl","Jdbc");
-    names.put("olap4jcatalog","Catalog");
-    names.put("olap4jdriver","JdbcDrivers");
+    names = new HashMap<String, String>();
+    names.put( "olap4juser", "JdbcUser" );
+    names.put( "olap4jpass", "JdbcPassword" );
+    names.put( "olap4jurl", "Jdbc" );
+    names.put( "olap4jcatalog", "Catalog" );
+    names.put( "olap4jdriver", "JdbcDrivers" );
   }
 
-  public void renderInto(Element dataAccess)
-  {
+  public void renderInto( Element dataAccess ) {
     Document doc = dataAccess.getOwnerDocument();
 
-    Element prop = doc.createElement("Property");
-    prop.setAttribute("name",names.get(paramName));
-    prop.appendChild(doc.createTextNode((String) definition.get("value")));
-    dataAccess.appendChild(prop);
+    Element prop = doc.createElement( "Property" );
+    prop.setAttribute( "name", names.get( paramName ) );
+    prop.appendChild( doc.createTextNode( (String) definition.get( "value" ) ) );
+    dataAccess.appendChild( prop );
   }
 
-  public void setDefinition(JSONObject definition)
-  {
+  public void setDefinition( JSONObject definition ) {
     this.definition = definition;
 
   }

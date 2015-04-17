@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.util;
 
@@ -387,7 +387,7 @@ public class Utils {
   public static IReadAccess getSystemOrUserReadAccess( String filePath ) {
     IReadAccess readAccess = null;
     if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-      .endsWith( ".cdfde" ) ) ) {
+        .endsWith( ".cdfde" ) ) ) {
       readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
@@ -397,18 +397,19 @@ public class Utils {
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
     IRWAccess rwAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-      .endsWith( ".cdfde" ) ) ) {
+    if ( CdeEngine.getEnv().getUserSession().isAdministrator() && (
+        filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
+        .endsWith( ".cdfde" ) ) ) ) {
       rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
-      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
+      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
         rwAccess = CdeEnvironment.getUserContentAccess();
       } else {
         return null;
       }
     } else if ( CdeEnvironment.getUserContentAccess()
-      .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.EXECUTE ) ) {
+        .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
       // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself;
       // it should be checked against destination folder
       rwAccess = CdeEnvironment.getUserContentAccess();
@@ -424,6 +425,36 @@ public class Utils {
     } catch ( JSONException e ) {
       return false;
     }
+  }
+
+  /**
+   * Gets the name of the class of the component based on it's type.
+   *
+   * @param componentType
+   * @return
+   */
+  public static String getComponentClassName( String componentType ) {
+
+    if ( !StringUtils.isNotEmpty( componentType ) ) {
+      return componentType;
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    // starts with upper case character
+    if ( !Character.isUpperCase( componentType.charAt( 0 ) ) ) {
+      sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) )
+          .append( componentType.substring( 1 ) );
+    } else {
+      sb.append( componentType );
+    }
+
+    // ends with "Component"
+    if ( !componentType.endsWith( "Component" ) ) {
+      sb.append( "Component" );
+    }
+
+    return sb.toString();
   }
 
   public static ICdeEnvironment getCdeEnvironment() {

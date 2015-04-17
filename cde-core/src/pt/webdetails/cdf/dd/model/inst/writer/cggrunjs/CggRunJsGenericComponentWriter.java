@@ -1,8 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
+
 import java.io.ByteArrayInputStream;
 
 import org.apache.commons.io.FilenameUtils;
@@ -20,7 +30,7 @@ import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -29,111 +39,110 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 
-/**
- * @author dcleao
- */
-public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter
-{
-  private static final Log    _logger = LogFactory.getLog(CggRunJsGenericComponentWriter.class);
+public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
+  private static final Log _logger = LogFactory.getLog( CggRunJsGenericComponentWriter.class );
   private static final String CGG_EXTENSION = ".js";
+  private boolean writeScript = true;
 
-  public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
-  {
-    this.write((IUserContentAccess) output, (CggRunJsDashboardWriteContext)context, (GenericComponent)t);
+  public CggRunJsGenericComponentWriter( boolean canWrite ) {
+    this.writeScript = canWrite;
   }
 
-  public void write(IUserContentAccess access, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
-  {
+  public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
+    this.write( (IUserContentAccess) output, (CggRunJsDashboardWriteContext) context, (GenericComponent) t );
+  }
+
+  public void write( IUserContentAccess access, CggRunJsDashboardWriteContext context, GenericComponent comp )
+    throws ThingWriteException {
+    if ( !this.canWrite() ) {
+      return;
+    }
+
     String dashboardFilePath = context.getDashboard().getSourcePath();
-    String dashboardFileDir  = FilenameUtils.getFullPath(dashboardFilePath);
-    String dashboardFileName = FilenameUtils.getName(dashboardFilePath);
+    String dashboardFileDir = FilenameUtils.getFullPath( dashboardFilePath );
+    String dashboardFileName = FilenameUtils.getName( dashboardFilePath );
 
     StringBuilder out = new StringBuilder();
 
-    out.append("lib('cdf-env.js');")
-       .append(NEWLINE)
-       .append(NEWLINE);
+    out.append( "lib('cdf-env.js');" )
+      .append( NEWLINE )
+      .append( NEWLINE );
 
-    this.renderChart(out, context, comp, dashboardFileDir);
-    out.append(NEWLINE);
+    this.renderChart( out, context, comp, dashboardFileDir );
+    out.append( NEWLINE );
 
-    this.renderDatasource(out, context, comp);
-    out.append(NEWLINE)
-       .append(NEWLINE);
+    this.renderDatasource( out, context, comp );
+    out.append( NEWLINE )
+      .append( NEWLINE );
 
     String chartName = comp.getName();
     String compVarName = "render_" + chartName;
 
-    out.append("cgg.render(").append(compVarName).append(");")
-       .append(NEWLINE);
+    out.append( "cgg.render(" ).append( compVarName ).append( ");" )
+      .append( NEWLINE );
 
     String chartScript = out.toString();
 
-    writeFile(access, chartScript, dashboardFileDir, chartName, dashboardFileName);
+    writeFile( access, chartScript, dashboardFileDir, chartName, dashboardFileName );
     // Legacy support requires to keep generating dashboard unqualified scripts as well
-    writeFile(access, chartScript, dashboardFileDir, chartName,  null);
+    writeFile( access, chartScript, dashboardFileDir, chartName, null );
   }
 
-   private void writeFile(
-		   IUserContentAccess access,
-           String chartScript,
-           String dashboardFileDir,
-           String chartName,
-           String dashboadFilName)
-  {
-    try
-    {
-      String prefix   = dashboadFilName == null ? "" : dashboadFilName.substring(0, dashboadFilName.lastIndexOf('.')) + '_';
+  private void writeFile(
+      IUserContentAccess access,
+      String chartScript,
+      String dashboardFileDir,
+      String chartName,
+      String dashboadFilName ) {
+    try {
+      String prefix =
+          dashboadFilName == null ? "" : dashboadFilName.substring( 0, dashboadFilName.lastIndexOf( '.' ) ) + '_';
       String fileName = prefix + chartName + CGG_EXTENSION;
 
-      byte[] content = chartScript.getBytes(CharsetHelper.getEncoding());
+      byte[] content = chartScript.getBytes( CharsetHelper.getEncoding() );
 
-      if(!access.saveFile(Utils.joinPath(dashboardFileDir, fileName), new ByteArrayInputStream(content))) {
-        _logger.error("Failed to write CGG script file for chart '" + chartName + "'.");
+      if ( !access.saveFile( Utils.joinPath( dashboardFileDir, fileName ), new ByteArrayInputStream( content ) ) ) {
+        _logger.error( "Failed to write CGG script file for chart '" + chartName + "'." );
       }
-    } catch(Exception ex) {
-      _logger.error("Failed to write script file for '" + chartName + "': " + ex.getCause().getMessage());
+    } catch ( Exception ex ) {
+      _logger.error( "Failed to write script file for '" + chartName + "': " + ex.getCause().getMessage() );
     }
   }
 
   private void renderChart(
-          StringBuilder out,
-          CggRunJsDashboardWriteContext context,
-          GenericComponent comp,
-          String dashDir) throws ThingWriteException
-  {
+      StringBuilder out,
+      CggRunJsDashboardWriteContext context,
+      GenericComponent comp,
+      String dashDir ) throws ThingWriteException {
     ComponentType compType = comp.getMeta();
 
-    for(Resource resource : compType.getResources())
-    {
+    for ( Resource resource : compType.getResources() ) {
       Resource.Type resType = resource.getType();
-      switch(resType)
-      {
+      switch ( resType ) {
         case RAW:
-          out.append(NEWLINE);
-          out.append(resource.getSource());
-          out.append(NEWLINE);
+          out.append( NEWLINE );
+          out.append( resource.getSource() );
+          out.append( NEWLINE );
           break;
 
         case SCRIPT:
-          out.append(NEWLINE);
-          out.append("load('");
-          out.append(makeDashRelative(resource.getSource(), dashDir));
-          out.append("');");
-          out.append(NEWLINE);
+          out.append( NEWLINE );
+          out.append( "load('" );
+          out.append( makeDashRelative( resource.getSource(), dashDir ) );
+          out.append( "');" );
+          out.append( NEWLINE );
           break;
       }
     }
 
     // Implementation
     String srcImpl = compType.getImplementationPath();
-    if(StringUtils.isNotEmpty(srcImpl))
-    {
-      out.append(NEWLINE);
-      out.append("load('");
-      out.append(makeDashRelative(srcImpl, dashDir));
-      out.append("');");
-      out.append(NEWLINE);
+    if ( StringUtils.isNotEmpty( srcImpl ) ) {
+      out.append( NEWLINE );
+      out.append( "load('" );
+      out.append( makeDashRelative( srcImpl, dashDir ) );
+      out.append( "');" );
+      out.append( NEWLINE );
     }
 
     // ---------------
@@ -141,74 +150,69 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     // Should this be done differently?
     IThingWriterFactory writerFactory = new CdfRunJsThingWriterFactory();
     IThingWriter compWriter;
-    try
-    {
-      compWriter = writerFactory.getWriter(comp);
-    }
-    catch(UnsupportedThingException ex)
-    {
-      throw new ThingWriteException("Error while obtaining a writer for rendering the generic component.", ex);
+    try {
+      compWriter = writerFactory.getWriter( comp );
+    } catch ( UnsupportedThingException ex ) {
+      throw new ThingWriteException( "Error while obtaining a writer for rendering the generic component.", ex );
     }
 
     // Options are kind of irrelevant in this context,
     // as we're only rendering one component, not a dashboard (and not a widget component).
-    CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions(false, false, "", "");
+    CdfRunJsDashboardWriteOptions options = new CdfRunJsDashboardWriteOptions( false, false, "", "" );
 
     // Idem
     CdfRunJsDashboardWriteContext writeContext =
         CdeEngine.getInstance().getEnvironment().getCdfRunJsDashboardWriteContext(
-            writerFactory,
-            /*indent*/"",
-            /*bypassCacheRead*/true,
-            context.getDashboard(),
-            options);
+          writerFactory,
+              /*indent*/"",
+              /*bypassCacheRead*/true,
+          context.getDashboard(),
+          options );
 
-    compWriter.write(out, writeContext, comp);
+    compWriter.write( out, writeContext, comp );
   }
 
   // Both are solution dir relative.
-  private static String makeDashRelative(String path, String dashDir)
-  {
+  private static String makeDashRelative( String path, String dashDir ) {
     // resource -> system/pentaho-cdf-dd/resources/custom/components/InteractiveCosmos/interactiveCosmos.js
     // dashDir  -> cde/ <dashboard-is-here>
     // resource must be found relative to dashDir:
     // -> ../system/pentaho-cdf-dd/...
     // Find how many times to go back
     // Remove leading and trailing /
-    dashDir = dashDir.replaceAll("^[/\\\\]*(.*?)[/\\\\]*$", "$1");
+    dashDir = dashDir.replaceAll( "^[/\\\\]*(.*?)[/\\\\]*$", "$1" );
 
-    if(!dashDir.isEmpty())
-    {
-      int count = dashDir.split("[/\\\\]").length;
-      for(int i = 0 ; i < count ; i++)
-      {
+    if ( !dashDir.isEmpty() ) {
+      int count = dashDir.split( "[/\\\\]" ).length;
+      for ( int i = 0; i < count; i++ ) {
         path = "../" + path;
       }
     }
 
     return path;
   }
-  private void renderDatasource(StringBuilder out, CggRunJsDashboardWriteContext context, GenericComponent comp) throws ThingWriteException
-  {
+
+  private void renderDatasource( StringBuilder out, CggRunJsDashboardWriteContext context, GenericComponent comp )
+    throws ThingWriteException {
     Dashboard dash = context.getDashboard();
-    String dataSourceName = comp.tryGetPropertyValue("dataSource", null);
-    if(StringUtils.isNotEmpty(dataSourceName))
-    {
-      DataSourceComponent dsComp = dash.getDataSource(dataSourceName);
+    String dataSourceName = comp.tryGetPropertyValue( "dataSource", null );
+    if ( StringUtils.isNotEmpty( dataSourceName ) ) {
+      DataSourceComponent dsComp = dash.getDataSource( dataSourceName );
 
       IThingWriterFactory factory = context.getFactory();
       IThingWriter dsWriter;
-      try
-      {
-        dsWriter = factory.getWriter(dsComp);
-      }
-      catch (UnsupportedThingException ex)
-      {
-        throw new ThingWriteException(ex);
+      try {
+        dsWriter = factory.getWriter( dsComp );
+      } catch ( UnsupportedThingException ex ) {
+        throw new ThingWriteException( ex );
       }
 
-      CggRunJsComponentWriteContext compContext = new CggRunJsComponentWriteContext(factory, dash, comp);
-      dsWriter.write(out, compContext, dsComp);
+      CggRunJsComponentWriteContext compContext = new CggRunJsComponentWriteContext( factory, dash, comp );
+      dsWriter.write( out, compContext, dsComp );
     }
+  }
+
+  public boolean canWrite() {
+    return this.writeScript;
   }
 }

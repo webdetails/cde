@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccColorSliceBrightnessFactor</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>1</DefaultValue>
+    <Description>colorSliceBrightnessFactor</Description>
+    <Tooltip>How much a last sibling slice will be brighter than a first sibling slice.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>282</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -1,8 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+*
+* This software was developed by Webdetails and is provided under the terms
+* of the Mozilla Public License, Version 2.0, or any later version. You may not use
+* this file except in compliance with the license. If you need a copy of the license,
+* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+*
+* Software distributed under the Mozilla Public License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+* the license for the specific language governing your rights and limitations.
+*/
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
+
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -17,43 +27,32 @@ import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
-/**
- * @author dcleao
- */
-public class CggRunJsDashboardWriter implements IThingWriter
-{
-  public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
-  {
-    this.write((IRWAccess)output, (CggRunJsDashboardWriteContext)context, (Dashboard)t);
+public class CggRunJsDashboardWriter implements IThingWriter {
+  public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
+    this.write( (IRWAccess) output, (CggRunJsDashboardWriteContext) context, (Dashboard) t );
   }
-  
-  public void write(IRWAccess access, CggRunJsDashboardWriteContext context, Dashboard dash) throws ThingWriteException
-  {
+
+  public void write( IRWAccess access, CggRunJsDashboardWriteContext context, Dashboard dash )
+    throws ThingWriteException {
     assert context.getDashboard() == dash;
-    
+
     IThingWriterFactory factory = context.getFactory();
     Iterable<Component> comps = dash.getRegulars();
-    for(Component comp : comps)
-    {
-      if(StringUtils.isNotEmpty(comp.getName()) && 
-         (comp instanceof GenericComponent) && 
-         !(comp instanceof WidgetComponent))
-      {
-        GenericComponent genComp = (GenericComponent)comp;
-        if(genComp.getMeta().tryGetAttributeValue("cdwSupport", "false").equalsIgnoreCase("true") &&
-           genComp.tryGetAttributeValue("cdwRender", "false").equalsIgnoreCase("true"))
-        {
+    for ( Component comp : comps ) {
+      if ( StringUtils.isNotEmpty( comp.getName() ) &&
+        ( comp instanceof GenericComponent ) &&
+        !( comp instanceof WidgetComponent ) ) {
+        GenericComponent genComp = (GenericComponent) comp;
+        if ( genComp.getMeta().tryGetAttributeValue( "cdwSupport", "false" ).equalsIgnoreCase( "true" ) &&
+          genComp.tryGetAttributeValue( "cdwRender", "false" ).equalsIgnoreCase( "true" ) ) {
           IThingWriter writer;
-          try
-          {
-            writer = factory.getWriter(genComp);
+          try {
+            writer = factory.getWriter( genComp );
+          } catch ( UnsupportedThingException ex ) {
+            throw new ThingWriteException( ex );
           }
-          catch (UnsupportedThingException ex)
-          {
-            throw new ThingWriteException(ex);
-          }
-          
-          writer.write(access, context, comp);
+
+          writer.write( access, context, comp );
         }
       }
     }

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccValuesNormalized</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>valuesNormalized</Description>
+    <Tooltip>Normalize the domain of bars' values by category.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>523</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -7,7 +7,7 @@
     <Tooltip>Controls if and how the selection can be cleared by the user.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>262</Order>
+    <Order>263</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

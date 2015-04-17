@@ -116,7 +116,7 @@ var AjaxRequestComponent = BaseComponent.extend({
           }
     
           if (object.resultvar != undefined){
-            Dashboards.setParameter(object.resultvar, values);
+            Dashboards.fireChange(object.resultvar, values);
           }
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {

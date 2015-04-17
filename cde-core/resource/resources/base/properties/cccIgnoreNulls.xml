@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>true</DefaultValue>
     <Description>ignoreNulls</Description>
-    <Tooltip>Indicates if datums whose value of all measure dimensions is null should be ignored.</Tooltip>
+    <Tooltip>Indicates if datums whose value in every measure dimension is null are ignored.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>304</Order>
+    <Order>306</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
