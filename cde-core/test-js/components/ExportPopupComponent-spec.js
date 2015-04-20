@@ -21,12 +21,18 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
   
     var dashboard = new Dashboard();
 
+    dashboard.addParameter("array", ["one", "two"]);
+    dashboard.addParameter("funcArray", function() {return ["funcOne", "funcTwo"]});
+    dashboard.addParameter("string", "stringOne;stringTwo");
+
     dashboard.init();
 
     var exportPopupComponent = new ExportPopupComponent({
       type: "ExportPopupComponent",
       name: "popup1",
       executeAtStart: true,
+      chartExportType: 'png',
+      chartExportComponent: 'chart',
       htmlObject: "sampleObject",
       parameters: [],
       listeners: []
@@ -44,6 +50,52 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
         expect(exportPopupComponent.update).toHaveBeenCalled();
         done();
       }, 100);
+    });
+
+    /**
+     * ## The ExportPopup Component # Export Chart Options
+     */
+    it("Export Chart Options", function() {
+      dashboard.context = {
+        path: 'fakePath/dashboard.wcdf'
+      };
+      exportPopupComponent.chartComponent = {
+        parameters: [
+          ['array', 'array'],
+          ['funcArray', 'funcArray'],
+          ['string', 'string']
+        ]
+      };
+      var expectedResult = {
+        outputType: 'png',
+        script: 'fakePath/chart.js',
+        paramarray: ['one', 'two'],
+        paramfuncArray: ['funcOne', 'funcTwo'],
+        paramstring: 'stringOne;stringTwo'
+      };
+
+      expect(exportPopupComponent.getExportChartOptions()).toEqual(expectedResult);
+    });
+
+    /**
+     * ## The ExportPopup Component # Export Chart URL
+     */
+    it("Export Chart URL", function() {
+      var options = {
+        outputType: 'png',
+        script: 'fakePath/chart.js',
+        paramarray: ['one', 'two'],
+        paramfuncArray: ['funcOne', 'funcTwo'],
+        paramstring: 'stringOne;stringTwo'
+      };
+
+      var expectedResult = "/pentaho/plugin/cgg/api/services/draw?" +
+          "outputType=png&script=fakePath%2Fchart.js" +
+          "&paramarray=one&paramarray=two" +
+          "&paramfuncArray=funcOne&paramfuncArray=funcTwo" +
+          "&paramstring=stringOne%3BstringTwo";
+
+      expect(exportPopupComponent.getExportChartUrl(options)).toEqual(expectedResult);
     });
   });
 });
