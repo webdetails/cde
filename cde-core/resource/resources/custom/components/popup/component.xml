@@ -127,9 +127,9 @@
 
   <DesignerComponent>
     <Header>
-      <Name>ExportPopupComponent</Name>
+      <Name>Export Popup Component</Name>
       <IName>ExportPopupComponent</IName>
-      <Description>ExportPopupComponent</Description>
+      <Description>Export Popup Component</Description>
       <Category>OTHERCOMPONENTS</Category>
       <CatDescription>Others</CatDescription>
       <Type>PalleteEntry</Type>
@@ -196,10 +196,10 @@
               <Parent>BaseProperty</Parent>
               <DefaultValue>xls</DefaultValue>
               <Description>Data Export Type</Description>
-              <Tooltip>can be csv or xls</Tooltip>
-              <InputType>String</InputType>
+              <Tooltip>Type for Data File to Export</Tooltip>
+              <InputType>DataExportType</InputType>
               <OutputType>String</OutputType>
-              <Order>40</Order>
+              <Order>41</Order>
               <Advanced>true</Advanced>
               <Version>1.0</Version>
             </Header>
@@ -213,7 +213,7 @@
               <Tooltip>Label to appear in popup</Tooltip>
               <InputType>String</InputType>
               <OutputType>String</OutputType>
-              <Order>40</Order>
+              <Order>41</Order>
               <Version>1.0</Version>
               <Advanced>true</Advanced>
             </Header>
@@ -223,11 +223,11 @@
               <Name>dataExportAttachmentName</Name>
               <Parent>BaseProperty</Parent>
               <DefaultValue>export</DefaultValue>
-              <Description>Name for table Export attachment</Description>
-              <Tooltip>Name for table export attachment</Tooltip>
+              <Description>Name for Data Export attachment</Description>
+              <Tooltip>Name for Data Export attachment</Tooltip>
               <InputType>String</InputType>
               <OutputType>String</OutputType>
-              <Order>40</Order>
+              <Order>41</Order>
               <Advanced>true</Advanced>
               <Version>1.0</Version>
             </Header>
@@ -251,8 +251,8 @@
               <Parent>BaseProperty</Parent>
               <DefaultValue>png</DefaultValue>
               <Description>Chart Export Type</Description>
-              <Tooltip>can be png or svg</Tooltip>
-              <InputType>String</InputType>
+              <Tooltip>Type for Chart Image to Export</Tooltip>
+              <InputType>ChartExportType</InputType>
               <OutputType>String</OutputType>
               <Order>40</Order>
               <Advanced>true</Advanced>
