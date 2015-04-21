@@ -692,23 +692,23 @@
       "value": ""
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
       "name": "height",
       "value": "70",
       "type": "Integer"
      },
      {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "width",
       "value": "400",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -768,7 +768,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": 100,
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -917,7 +917,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1071,23 +1081,23 @@
       "value": "value1"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
       "name": "height",
       "value": "70",
       "type": "Integer"
      },
      {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "width",
       "value": "400",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1147,7 +1157,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "100",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -1296,7 +1306,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1450,23 +1470,23 @@
       "value": "value2"
      },
      {
+      "name": "height",
+      "value": "800",
+      "type": "Integer"
+     },
+     {
       "name": "refreshPeriod",
       "value": "",
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
-      "name": "height",
-      "value": "250",
-      "type": "Integer"
-     },
-     {
       "name": "width",
       "value": "950",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1526,7 +1546,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "30",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -1675,7 +1695,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1829,23 +1859,23 @@
       "value": "value3"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
       "name": "height",
       "value": "70",
       "type": "Integer"
      },
      {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "width",
       "value": "600",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1905,7 +1935,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "150",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -2054,7 +2084,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -2208,23 +2248,23 @@
       "value": "value4"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
-      "type": "Integer"
-     },
-     {
-      "name": "priority",
-      "value": 5,
-      "type": "Integer"
-     },
-     {
       "name": "height",
       "value": "70",
       "type": "Integer"
      },
      {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
       "name": "width",
       "value": "600",
+      "type": "Integer"
+     },
+     {
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -2284,7 +2324,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "150",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -2433,7 +2473,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -2627,6 +2677,11 @@
       "type": "IndexArray"
      },
      {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
@@ -2691,6 +2746,11 @@
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -2759,6 +2819,11 @@
       "type": "IndexArray"
      },
      {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
       "name": "cacheDuration",
       "value": 3600,
       "type": "Integer"
@@ -2823,6 +2888,11 @@
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
