@@ -149,6 +149,13 @@
   border-radius: 4px;
   position: relative;
 }
+
+.olapSelectorComponent .pulldown .optionList .rightArea .search input::-ms-clear {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 .olapSelectorComponent .pulldown .optionList .rightArea .search input:hover {
   border: solid 1px #047eca;
 }
@@ -359,6 +366,18 @@
   background-repeat: no-repeat;
   background-position: 2px 1px;
 }
+
+.olapSelectorComponent .rightArea .options .item .drill-down-disabled,
+.olapSelectorComponent .rightArea .options .item:hover .drill-down.drill-down-disabled,
+.olapSelectorComponent .rightArea .options .selected.item .drill-down-disabled,
+.olapSelectorComponent .rightArea .options .selected.item:hover .drill-down-disabled {
+  cursor: default;
+  opacity: 0.4;
+  filter: alpha(opacity=40); /* IE */
+  background-color: #eaedee;
+  background-position: 2px 1px;
+}
+
 .no-svg .olapSelectorComponent .item {
   width: 200px;
 }

@@ -125,14 +125,16 @@ define([
 
     addPreSelectValues: function(toChange, myself) {
       var newValue,
-          values = myself.get("values");
+          depth,
+          values = myself.get("values"),
+          maxLevel = this.get("levels").length - 1;
 
-      for(c = 0; c < toChange.length; c++) {
-        var newValue = toChange[c], depth;
-
+      for(var c = 0; c < toChange.length; c++) {
+        newValue = toChange[c];
         depth = newValue.qualifiedName.match(/(\[[^\]]+]\.?)/g).length - 2;
 
         newValue.level = myself.get("levels").at(depth).id;
+        newValue.canDrillDown = depth < maxLevel;
 
         values.add(newValue, {silent: true});
       }
