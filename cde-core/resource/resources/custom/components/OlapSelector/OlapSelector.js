@@ -111,14 +111,16 @@ var OlapSelectorModel = Backbone.Model.extend({
 
     addPreSelectValues: function(toChange, myself) {
       var newValue,
-          values = myself.get("values");
+          depth,
+          values = myself.get("values"),
+          maxLevel = this.get("levels").length - 1;
 
-      for (c = 0; c < toChange.length; c++) {
-        var newValue = toChange[c], depth;
-
+      for(var c = 0; c < toChange.length; c++) {
+        newValue = toChange[c];
         depth = newValue.qualifiedName.match(/(\[[^\]]+]\.?)/g).length - 2;
 
         newValue.level = myself.get("levels").at(depth).id;
+        newValue.canDrillDown = depth < maxLevel;
 
         values.add(newValue, {
           silent: true
@@ -759,7 +761,7 @@ var OptionView = Backbone.View.extend({
     template: null,
     events: {
         "click .target": "toggleSelection",
-        "click .drill-down": "drillDown"
+        "click .drill-down-enabled": "drillDown"
     },
     initialize: function() {
         this.setTemplate();
@@ -898,7 +900,9 @@ templates.olapSelector.option =
     " <span class='name' title='{{name}}'>{{name}}</span>" +
     " <span class='check'>&nbsp;</span>"+
     "</div>" +
-    "<div class='drill-down'><span class='label'>&nbsp;</span></div>";
+    "{{#canDrillDown}}<div class='drill-down drill-down-enabled'>{{/canDrillDown}}" +
+    "{{^canDrillDown}}<div class='drill-down drill-down-disabled'>{{/canDrillDown}}" +
+    "<span class='label'>&nbsp;</span></div>";
 
 templates.olapSelector.picked =
     "<div class='target'>" +
