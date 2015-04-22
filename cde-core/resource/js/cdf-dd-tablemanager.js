@@ -772,7 +772,8 @@ var TableManager = Base.extend({
 
       // Order
       return p1.order < p2.order ? -1 :
-              p1.order > p2.order ? 1 : 0;
+              p1.order > p2.order ? 1 :
+                p1.name.localeCompare(p2.name);
     });
   },
 
