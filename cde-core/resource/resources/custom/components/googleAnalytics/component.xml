@@ -23,6 +23,7 @@
     <Implementation supportsLegacy="true" supportsAMD="true">
       <Code src="ga-implementation.js" />
       <Dependencies>
+        <Dependency src="semicolon.js" version="1.0">Semicolon</Dependency>
         <Dependency src="jquery.ga.js" version="2.0.0">ga</Dependency>
       </Dependencies>
       <CustomProperties>
