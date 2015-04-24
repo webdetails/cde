@@ -3,18 +3,8 @@
 .GenericSelectContainer,
 .StringArrayContainer,
 .ParameterListContainer {
-	height:300px;
-	background-color: #eaedee;
-}
-
-.StringListContainer{
-	width:620px;
-}
-.StringArrayContainer {
-	width:240px;
-}
-.ParameterListContainer {
-	width:780px;
+  height:300px;
+  background-color: #eaedee;
 }
 
 .StringList, .StringArray, .ParameterList, .GenericSelect {
@@ -34,15 +24,11 @@
   width:608px;
 }
 
-.StringArray {
-  width:238px;
-}
-
 .ParameterList {
   width:778px;
 }
 
-.ParameterList td{
+.ParameterList td {
   text-align: center;
 }
 
@@ -161,6 +147,123 @@ div.jqiParameterList {
 	font-size: 12px;
 }
 
+.StringListRemove, .StringArrayRemove, .GenericSelectRemove, .GenericSelectRemove, .ParameterListRemove {
+  width: 12px;
+}
+
+.StringListParameterHolder, .StringArrayParameterHolder {
+  height: 37px;
+}
+
+/* String Array - Single Value Popup */
+
+.StringArrayContainer {
+	height: 320px;
+}
+
+.StringArray {
+	width:250px;
+	height: 280px;
+}
+
+.StringArrayParameterHolder {
+	position: relative;
+	width: 168px;
+	height: 24px;
+	padding-left: 12px;
+	padding-right: 50px;
+	margin-bottom: 2px;
+	background-color: #FFFFFF;
+	border: 1px solid #BBBBBB;
+}
+
+.popupSortableHolder {
+	width: 230px;
+	height: 24px;
+	margin-bottom: 2px;
+	border: 1px dashed #0072CE;
+}
+
+.StringArrayParameterHolder.StringArrayFocus {
+	border: 1px solid #000000;
+}
+
+.StringArrayParameterHolder .StringArrayRemove {
+	float: left;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	height: 24px;
+	border: none;
+	border-right: 1px solid #bbb;
+}
+
+.StringArrayParameterHolder .StringArrayText {
+	margin: 0;
+	border: none;
+	height: 24px;
+	padding-left: 10px;
+	border-right: solid 2px #eaedee;
+}
+
+.StringArrayParameterHolder:before {
+	height: 24px;
+	width: 100px;
+	border: dashed 1px blue;
+}
+
+.StringArrayParameterHolder .StringArrayText:focus {
+	border-right: solid 1px #eaedee;
+}
+
+.StringArrayParameterHolder .StringArrayDragIcon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50px;
+	height: 24px;
+}
+
+.StringArrayParameterHolder .StringArrayDragIcon:hover {
+	background-color: #0072CE;
+}
+
+.StringArrayParameterHolder.ui-sortable-helper .StringArrayDragIcon {
+	background-color: #005CA7;
+}
+
+.StringArrayParameterHolder .StringArrayDragIcon span {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 20px;
+	height: 20px;
+	margin: 2px 10px  2px 20px;
+	background-image: url("../images/drag-icon.svg");
+	background-position: -20px 0;
+}
+
+div.ui-sortable .StringArrayDragIcon {
+	cursor: move; /* fallback if grab cursor is unsupported */
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
+div.ui-sortable-helper,
+div.ui-sortable:active .StringArrayDragIcon {
+	cursor: move !important; /* fallback if grab cursor is unsupported */
+	cursor: grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: -webkit-grabbing !important;
+}
+
+.StringArrayParameterHolder.ui-sortable-helper .StringArrayDragIcon span,
+.StringArrayParameterHolder .StringArrayDragIcon:hover span {
+	background-position: 0 0;
+}
+
 ul.StringListParameter li div, ul.GenericSelectParameter li div, ul.ParameterListParameter li div {
 	padding-left: 10px;
 	width: 100%;
@@ -188,10 +291,6 @@ ul.StringListParameter li div, ul.GenericSelectParameter li div, ul.ParameterLis
 	float:left;
 	width:220px;
 }
-/*.StringListVal, .StringArrayVal {
-	width: 150px;
-	float:left;
-}*/
 
 .ParameterListValues {
 	display:block;
@@ -203,21 +302,6 @@ ul.StringListParameter li div, ul.GenericSelectParameter li div, ul.ParameterLis
 	float:left;
 	width:220px;
 }
-
-.StringArrayArgs{
-	display:block;
-	float:left;
-	width:160px;
-}
-.StringArrayText{
-	width: 120px!important;
-}
-
-/*.StringListArgs, .StringArrayArgs, .ParameterListArgs {
-	display:block;
-	float:left;
-	width:180px;
-}*/
 
 .jqiStringListfade, .jqiGenericSelectfade, .jqiStringArrayfade{
 	position: absolute; 

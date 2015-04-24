@@ -139,6 +139,7 @@ var MqlQueryRenderer = PromptRenderer.extend({
     this.wizard = "MQL_EDITOR";
   }
 });
+
 var XPathQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -148,6 +149,7 @@ var XPathQueryRenderer = PromptRenderer.extend({
     this.wizard = "XPATH_EDITOR";
   }
 });
+
 var ScriptableQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -167,6 +169,7 @@ var JsonScriptableQueryRenderer = PromptRenderer.extend({
     this.wizard = "JSON_SCRIPTABLE_EDITOR";
   }
 });
+
 var DefaultQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -206,7 +209,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     _editArea.click(function() {
 
       var arrayValue = value;
-      var content = $('\n' +
+      var content = $(
           '<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\n' +
           ' <div class="' + myself.cssPrefix + '"></div>\n' +
           ' <input class="' + myself.cssPrefix + 'AddButton" type="button" value="Add"></input>\n' +
@@ -269,10 +272,16 @@ var ValuesArrayRenderer = CellRenderer.extend({
         }
       });
 
-      for(var i = 0; i < vals.length; i++) {
+      for(i = 0; i < vals.length; i++) {
         myself.addAutoComplete(i);
+        myself.addFocusEvent(i);
       }
 
+      $('.' + myself.cssPrefix + 'Container #arg_0').focus();
+
+      if(!myself.multiDimensionArray) {
+        myself.dragAndDrop();
+      }
     });
 
     _editArea.appendTo(placeholder);
@@ -298,6 +307,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       }
     } else {
       this.addParameters(i, values, "null", container);
+      this.addFocusEvent(i);
     }
   },
 
@@ -313,7 +323,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
 
     var row =
-        '<div id="parameters_' + i + '" >\n' +
+        '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' +
         argInput +
         (this.multiDimensionArray ?
             ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
@@ -323,6 +333,10 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var subContainer = container.find('.' + this.cssPrefix);
     subContainer.append(row);
     subContainer.find('#parameters_' + i + ' input:eq(0)').focus();
+  },
+
+  addFocusEvent: function(index) {
+    //default does nothing
   },
 
   addTypedParameters: function(i, arg, val, type, container) {//ToDo: should be refactored with addParameters, currently not used
@@ -373,6 +387,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getParameterButton: function(i) {
     return '<input id="parameter_button_' + i + '" class="' + this.cssPrefix + 'Parameter" type="button" value="..."></input>\n';
   },
+
   getRemoveButton: function(i) {
     return '<input id="remove_button_' + i + '" class="' + this.cssPrefix + 'Remove" type="button" value="-" ></input>\n';
   },
@@ -399,7 +414,6 @@ var ValuesArrayRenderer = CellRenderer.extend({
     return '<div class="' + cssClass + '"> <input id="' + id + '" type="checkbox" value="private" ' + (checked ? 'checked="checked"' : '' ) + ' /></div>';
   },
   //parameters field generation (end)
-
 
   removeParameter: function() {
     $("#" + this.id.replace("remove_button_", "parameters_")).remove();
@@ -476,8 +490,16 @@ var ValuesArrayRenderer = CellRenderer.extend({
     add($.grep(results, function(elt, i) {
       return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
     }));
-  }
+  },
 
+  dragAndDrop: function(index) {
+    var myself = this;
+    $('div.popupcontainer .' + this.cssPrefix).sortable({
+      axis: 'y',
+      cursor: 'auto',
+      placeholder: 'popupSortableHolder'
+    });
+  }
 }, {
   setParameterValue: function(id, value) {
     $("#" + id.replace("parameter_button_", "val_")).val(value);
@@ -504,7 +526,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
     _editArea.click(function() {
 
       var arrayValue = value;
-      var content = $("\n" +
+      var content = $(
           "<div id='" + myself.cssPrefix + "' class='" + myself.cssPrefix + "Container'>" +
           "  <div class='" + myself.cssPrefix + "'></div>\n" +
           "    <input class='" + myself.cssPrefix + "AddButton' type='button' value='Add'></input>");
@@ -540,7 +562,6 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
         loaded: function() { //button bindings
           $('.popup').css("width", "630px");
-
           $('.' + myself.cssPrefix + 'AddButton').click(function() {
             myself.addParameters(index, "", "", $("#" + myself.cssPrefix));
 
@@ -609,8 +630,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
     var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
     var valDiv = this.getValueDiv(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
-
-    var row = "<div id='parameters_" + i + "'>\n" + argInput +
+    var row = "<div id='parameters_" + i + "' class='" + this.cssPrefix + "ParameterHolder'>\n" + argInput +
         "<div class='" + this.cssPrefix + "Values'>" + valDiv + parameterButton + removeButton + "</div><br />" +
         "</div>\n";
 
@@ -666,6 +686,41 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
     this.base(tableManager);
     this.logger = new Logger("ArrayRenderer");
     this.logger.debug("Creating new ArrayRenderer");
+  },
+
+  getTextInput: function(value, i) {
+    return '<input  id="arg_' + i + '" class="' + this.cssPrefix + 'Text" type="text" value="' + value + '"></input>';
+  },
+
+  addParameters: function(i, arg, val, container) {
+
+    if(val) {
+      val = val.replace(/["]/g, '&quot;');
+    }//for output only, will come back ok
+
+    var myself = this;
+    var removeButton = this.getRemoveButton(i);
+    var argInput = this.getTextInput(arg, i);
+
+    var row = '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">' +
+        removeButton + argInput + '<div class="' + this.cssPrefix + 'DragIcon"><span/></div></div>\n';
+
+    var subContainer = container.find('.' + this.cssPrefix);
+    subContainer.append(row);
+  },
+
+  addFocusEvent: function(index) {
+    var parameterInput = $('.' + this.cssPrefix + 'Container #arg_' + index);
+    var myself = this;
+    parameterInput
+        .focus(function(e) {
+          $(this).parent().addClass(myself.cssPrefix + 'Focus');
+        })
+        .blur(function(e) {
+          $(this).parent().removeClass(myself.cssPrefix + 'Focus');
+        });
+
+    parameterInput.focus();
   }
 });
 
@@ -684,7 +739,6 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 var IndexArrayRenderer = ArrayRenderer.extend({
   argTitle: 'Index'
 });
-
 
 //arg, value, no param button, //TODO: own css
 var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
