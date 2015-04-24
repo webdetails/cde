@@ -31,6 +31,7 @@ import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -118,7 +119,6 @@ public class RenderApiTest {
 
     renderApi = new RenderApiForTesting( cdeEnvironmentForTests );
     new CdeEngineForTests( cdeEnvironmentForTests );
-
   }
 
   @Test
@@ -151,6 +151,16 @@ public class RenderApiTest {
     Assert.assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
     Assert.assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
         && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
+  }
+
+  @Test
+  public void testGetDashboardParameters() throws IOException {
+    HttpServletRequest request = mock( HttpServletRequest.class );
+
+    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, request );
+    String expected = "{\"parameters\":[\"dummyComponent\"]}";
+    Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
+        expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
   }
 
   private String doCase( String root,

@@ -13,14 +13,34 @@
 
 package pt.webdetails.cdf.dd.testUtils;
 
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import pt.webdetails.cdf.dd.api.RenderApiTest;
+import pt.webdetails.cpf.repository.api.IBasicFile;
+import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+
 public class ContentAccessFactoryForTests implements IContentAccessFactory {
   private IUserContentAccess mockedContentAccess;
   private IReadAccess mockedReadAccess;
+  private static final String USER_DIR = System.getProperty( "user.dir" );
+  private static final String TEST_RESOURCES = USER_DIR + File.separator + "test-resources";
+  private static final String LIST_COMPONENTS = "resources" + File.separator + "base" + File.separator + "components";
 
   public ContentAccessFactoryForTests( IUserContentAccess mockedContentAccess, IReadAccess mockedReadAccess ) {
     this.mockedContentAccess = mockedContentAccess;
@@ -44,7 +64,23 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
 
   @Override
   public IReadAccess getPluginSystemReader( String s ) {
-    return mockedReadAccess;
+    if ( s == null || !s.equals( LIST_COMPONENTS ) ) {
+      return mockedReadAccess;
+    }
+    IReadAccess readAccess = mock( IReadAccess.class );
+    when( readAccess.listFiles( anyString(), any( IBasicFileFilter.class ), anyInt() ) )
+      .thenReturn( listBasicFiles( TEST_RESOURCES + File.separator + s ) );
+    try {
+      when( readAccess.getFileInputStream( anyString() ) ).thenAnswer( new Answer<InputStream>() {
+        @Override
+        public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
+          return RenderApiTest.getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
+        }
+      } );
+    } catch ( IOException e ) {
+      e.printStackTrace();
+    }
+    return readAccess;
   }
 
   @Override
@@ -61,4 +97,18 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
   public IRWAccess getOtherPluginSystemWriter( String s, String s2 ) {
     return null;
   }
+
+  private List<IBasicFile> listBasicFiles( String path ) {
+    File files = new File( path );
+    List<IBasicFile> basicFiles = new ArrayList<IBasicFile>();
+    for ( File file : files.listFiles() ) {
+      if ( file.isDirectory() ) {
+        basicFiles.addAll( listBasicFiles( file.getAbsolutePath() ) );
+      } else {
+        basicFiles.add( RenderApiTest.getBasicFileFromFile( file ) );
+      }
+    }
+    return basicFiles;
+  }
+
 }

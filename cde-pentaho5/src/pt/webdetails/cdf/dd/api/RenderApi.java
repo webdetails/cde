@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,6 +50,8 @@ import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.inst.Component;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
@@ -169,7 +172,7 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-        iLogger, requestParams );
+      iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
@@ -251,7 +254,7 @@ public class RenderApi {
         iLogger, requestParams );
 
     try {
-      logger.info( "[Timing] CDE Starting Dashboard Rendering" );
+      logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
       CdfRunJsDashboardWriteResult dashboard =
           getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
 
@@ -260,7 +263,7 @@ public class RenderApi {
       //TODO: how to process i18n for a required dashboard
       //i18n token replacement
 
-      logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
+      logger.info( "[Timing] CDE Finished Generating Dashboard AMD Module: " + Utils.ellapsedSeconds( start ) + "s" );
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
@@ -274,6 +277,32 @@ public class RenderApi {
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
           this.getPentahoSession(), iLogger, start, uuid, end );
+      return msg;
+    }
+  }
+
+  @GET
+  @Path( "/getDashboardParameters" )
+  @Produces( MimeTypes.JSON )
+  public String getDashboardParameters( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                              @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                              @Context HttpServletRequest request ) throws IOException {
+    if ( StringUtils.isEmpty( path ) ) {
+      logger.warn( "No path provided." );
+      return "No path provided.";
+    }
+
+    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( path );
+    if ( readAccess == null ) {
+      logger.warn( "Access Denied or File Not Found." );
+      return "Access Denied or File Not Found.";
+    }
+
+    try {
+      return getDashboardManager().getDashboardParameters( path, bypassCache );
+    } catch ( Exception ex ) { //TODO: better error handling?
+      String msg = "Could not load dashboard parameters: " + ex.getMessage();
+      logger.error( msg, ex );
       return msg;
     }
   }

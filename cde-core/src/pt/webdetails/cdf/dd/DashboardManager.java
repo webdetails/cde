@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,6 +74,7 @@ public class DashboardManager {
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
+  private static final String[] MAP_PARAMETERS = {"Parameter", "JavascriptParameter", "DateParameter"};
 
   private final CacheManager _ehCacheManager;
   private final Cache _ehCache;
@@ -290,6 +293,26 @@ public class DashboardManager {
 
     // 2. Get the Dashboard object
     return this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
+  }
+
+  public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead ) throws ThingReadException {
+    Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
+    ArrayList<String> parameters = new ArrayList<String>();
+    for ( Component component : dashboard.getRegulars() ) {
+      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
+        parameters.add( component.getName() );
+      }
+    }
+    String result = "{";
+    if ( parameters.size() > 0 ) {
+      String params = "\n\"parameters\": [";
+      for ( String parameter : parameters ) {
+        params += "," + "\"" + parameter + "\"";
+      }
+      result += params.replaceFirst( ",", "" ) + "]";
+    }
+    return result + "\n}";
+
   }
 
   /**

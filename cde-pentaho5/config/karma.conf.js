@@ -34,6 +34,7 @@ module.exports = function(config) {
       { pattern: 'test-js/*.js', included: true },
       'config/context.js',
       { pattern: 'test-js/**/*.ext.js', included: true },
+      { pattern: 'test-resources/getDashboard/*.js', included: true },
       'build-res/requireCfg-raw.js',
       'config/require-config.js'
 

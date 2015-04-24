@@ -414,6 +414,7 @@ ul.ParameterListParameter li {
 }
 
 ul.StringListParameter li  div:hover,
+ul.StringListParameter li  div.selected,
 ul.GenericSelectParameter li div:hover,
 ul.ParameterListParameter li  div:hover {
 	background-color: #12a2d8;
