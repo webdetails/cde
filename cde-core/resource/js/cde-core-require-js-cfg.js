@@ -84,4 +84,7 @@
   
   requirePaths['cde/components/GoogleAnalyticsComponent'] = prefix + '/googleAnalytics/GoogleAnalyticsComponent';
 
+  requirePaths['cde/components/DashboardComponent'] = prefix + '/DashboardComponent/DashboardComponent';
+  requirePaths['cde/components/DashboardComponentExt'] = prefix + '/DashboardComponent/DashboardComponent.ext';
+
 })();
