@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponents>
   <DesignerComponent>
     <Header>
@@ -25,7 +25,7 @@
         <Property>width</Property>
         <Property>height</Property>
       </Model>
-      <Implementation>
+      <Implementation supportsLegacy="true" supportsAMD="true">
         <Code src="cgg-implementation.js" />
         <CustomProperties>
           <DesignerProperty>
@@ -63,7 +63,7 @@
         <Property>executeAtStart</Property>
         <Property name="parameter">parameter</Property>
         <Property name="colors">colors</Property>
-	      <Property name="intervals">intervals</Property>
+        <Property name="intervals">intervals</Property>
         <Property>htmlObject</Property>
         <Property>preExecution</Property>
         <Property>postExecution</Property>
@@ -71,7 +71,7 @@
         <Property>width</Property>
         <Property>height</Property>
       </Model>
-      <Implementation>
+      <Implementation supportsLegacy="true" supportsAMD="true">
         <Code src="cgg-implementation.js" />
       </Implementation>
     </Contents>

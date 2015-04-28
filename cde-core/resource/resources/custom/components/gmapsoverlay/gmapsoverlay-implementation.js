@@ -92,8 +92,13 @@ var gMapsOverlayComponent = UnmanagedComponent.extend({
     _getMapDefinition : function(myself, callback){
 
 		if (!!myself.mapName & !myself.mapDefinition){
-			$.getJSON(wd.helpers.repository.getRsourceUrl()+wd.helpers.repository.getBaseSolutionPluginRoot()+
-					"cde/components/gmapsoverlay/map-def/" + myself.mapName + ".js", function(json, callback) {
+			var url = (/\.[a-zA-Z]+$/).test(myself.mapName)
+				// allow the map definition file to be in the sample folder
+				? wd.helpers.repository.getRsourceUrl()+myself.mapName
+				: wd.helpers.repository.getRsourceUrl()+wd.helpers.repository.getBaseSolutionPluginRoot()+
+					"cde/components/gmapsoverlay/map-def/" + myself.mapName + ".js"; 
+			
+			$.getJSON(url, function(json, callback) {
 				if (json)  {
 					myself.mapDefinition = json;
 				}
