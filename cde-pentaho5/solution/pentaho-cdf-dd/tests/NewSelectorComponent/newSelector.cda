@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="Char2Col" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="Char2Col"
+               id="Char2Col"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"id",
+"value"
+};
+
+
+Class[] columnTypes = new Class[]{
+Integer.class,
+String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new Integer("1"), new String("Cars") });
+model.addRow(new Object[]{ new Integer("2"), new String("Bikes") });
+model.addRow(new Object[]{ new Integer("3"), new String("Boats") });
+model.addRow(new Object[]{ new Integer("4"), new String("Planes") });
+model.addRow(new Object[]{ new Integer("5"), new String("Trains") });
+model.addRow(new Object[]{ new Integer("6"), new String("Unknown") });
+
+return model;</Query>
+   </DataAccess>
+</CDADescriptor>

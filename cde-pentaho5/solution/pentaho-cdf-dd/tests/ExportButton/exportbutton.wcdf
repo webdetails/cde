@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>Export Button</title>
+  <description>Export Button sample</description>
+  <author></author>
+  <style>WDDocs</style>
+  <rendererType>blueprint</rendererType>
+  <require>false</require>
+</cdf>

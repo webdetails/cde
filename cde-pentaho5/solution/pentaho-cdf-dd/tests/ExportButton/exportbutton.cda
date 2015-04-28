@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="Char3Col" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="Char3Col"
+               id="Char3Col"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"series",
+"category",
+"value"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class,
+String.class,
+Integer.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new String("Car"), new String("Red"), new Integer("10") });
+model.addRow(new Object[]{ new String("Car"), new String("Blue"), new Integer("20") });
+model.addRow(new Object[]{ new String("Car"), new String("Green"), new Integer("30") });
+model.addRow(new Object[]{ new String("Car"), new String("Yellow"), new Integer("5") });
+model.addRow(new Object[]{ new String("Car"), new String("Black"), new Integer("25") });
+model.addRow(new Object[]{ new String("Car"), new String("White"), new Integer("7") });
+
+model.addRow(new Object[]{ new String("Bike"), new String("Red"), new Integer("20") });
+model.addRow(new Object[]{ new String("Bike"), new String("Blue"), new Integer("20") });
+model.addRow(new Object[]{ new String("Bike"), new String("Green"), new Integer("40") });
+model.addRow(new Object[]{ new String("Bike"), new String("Yellow"), new Integer("80") });
+model.addRow(new Object[]{ new String("Bike"), new String("Black"), new Integer("1") });
+model.addRow(new Object[]{ new String("Bike"), new String("White"), new Integer("23") });
+
+model.addRow(new Object[]{ new String("Ship"), new String("Red"), new Integer("2") });
+model.addRow(new Object[]{ new String("Ship"), new String("Blue"), new Integer("7") });
+
+
+model.addRow(new Object[]{ new String("Plane"), new String("Red"), new Integer("5") });
+model.addRow(new Object[]{ new String("Plane"), new String("Blue"), new Integer("4") });
+
+model.addRow(new Object[]{ new String("Train"), new String("Red"), new Integer("50") });
+model.addRow(new Object[]{ new String("Train"), new String("Blue"), new Integer("50") });
+model.addRow(new Object[]{ new String("Train"), new String("Green"), new Integer("7") });
+
+return model;</Query>
+   </DataAccess>
+</CDADescriptor>

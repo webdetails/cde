@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>Popup component</title>
+  <author></author>
+  <description></description>
+  <icon/>
+  <style>WDDocsRequire</style>
+  <rendererType>blueprint</rendererType>
+  <require>true</require>
+</cdf>

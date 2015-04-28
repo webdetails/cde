@@ -3,52 +3,6 @@
   "title": "CDF - Sample structure",
   "rows": [
    {
-    "id": "8073c592-d3d9-5258-5f45-69e03e2e9b44",
-    "type": "LayoutResourceCode",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "requireDefineOverride",
-      "type": "Id"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
-      "name": "resourceCode",
-      "value": "delete define;\ndelete require; ",
-      "type": "Resource"
-     }
-    ]
-   },
-   {
-    "id": "cb31c630-ac40-192f-6a10-4130a5ae070e",
-    "type": "LayoutResourceFile",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "webcontext",
-      "type": "Id"
-     },
-     {
-      "name": "resourceFile",
-      "value": "webcontext.js?context=mantle&requireJsOnly=true",
-      "type": "ResourceFile"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     }
-    ]
-   },
-   {
     "id": "c40e9b90-96ec-451c-f068-0698ad452e4c",
     "type": "LayoutResourceCode",
     "typeDesc": "Resource",
@@ -66,7 +20,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n   require([\n    'twelveDaysViz/pentaho/viz/index/Index',\n    'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(Index, Def){\n        // The \"app\" dependency is passed in as \"App\"\n        render_IndexChart.update();\n    })\n}); ",
+      "value": "/* http://jira.pentaho.com/browse/CDE-374 */ require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n   require([\n    'twelveDaysViz/pentaho/viz/index/Index',\n    'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(Index, Def){\n        // The \"app\" dependency is passed in as \"App\"\n        render_IndexChart.update();\n    })\n}); ",
       "type": "Resource"
      }
     ]
@@ -84,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -107,7 +61,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -682,7 +636,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:ChartObj}",
+      "value": "${h:ChartObj}",
       "type": "HtmlObject"
      },
      {
@@ -903,5 +857,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/VisualizationAPIreference.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/VisualizationApi/VisualizationAPIreference.cdfde"
 }
