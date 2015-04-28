@@ -53,7 +53,6 @@ import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
-import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -67,10 +66,12 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
+import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.VersionChecker;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
+import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.olap.OlapUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -386,8 +387,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) ) {
+        IReadAccess readAccess = Utils.getSystemOrUserReadAccess( relativePath );
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( relativePath ) );
-        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+        msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
+        result = new MessageBundlesHelper( msgDir, readAccess, CdeEnvironment.getPluginSystemWriter(),
+                CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
+                .replaceParameters( result, null );
       }
 
       writeOut( out, result );
@@ -596,8 +601,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
+      /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
+
       String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
-      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
+      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
+              CdeEnvironment.getPluginSystemWriter(), CdeEngine.getEnv().getLocale(),
+              CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
     writeOut( out, result );
