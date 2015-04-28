@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -222,15 +222,15 @@ public class ResourcesApi {
 
     if ( isSystem ) {
       // folder filtering ( see settings.xml ) will only occur for non-admin users
-      if ( !isAdministrator() ) {
+      if( !isAdministrator() ) {
         fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.STATIC ) );
         fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
       }
-      fileList = access.listFiles( dir, fileAndDirFilter, 1, true, false );
+      fileList = access.listFiles( dir, fileAndDirFilter , 1, true, false );
       fileList.remove( 0 ); //remove the first because the root is being added
     } else {
       // folder filtering ( see settings.xml ) will only occur for non-admin users
-      if ( !isAdministrator() ) {
+      if( !isAdministrator() ) {
         fileAndDirFilter.setDirectories( CdeSettings.getFilePickerHiddenFolderPaths( CdeSettings.FolderType.REPO ) );
         fileAndDirFilter.setFilterType( GenericFileAndDirectoryFilter.FilterType.FILTER_OUT ); // act as a black-list
       }
@@ -251,10 +251,10 @@ public class ResourcesApi {
     throws IOException {
 
     String[] splitPath = path.split( "/" );
-    String pluginId = splitPath[ 0 ];
+    String pluginId = splitPath[0];
     String resource = "";
     for ( int i = 1; i < splitPath.length; i++ ) {
-      resource += "/" + splitPath[ i ];
+      resource += "/" + splitPath[i];
     }
 
     IPluginManager pluginManager = PentahoSystem.get( IPluginManager.class );
@@ -281,7 +281,6 @@ public class ResourcesApi {
 
   /**
    * checks is the current user is administrator
-   *
    * @return true if the current user is administrator, false otherwise
    */
   protected boolean isAdministrator() {

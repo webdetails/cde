@@ -1,15 +1,6 @@
-/*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package pt.webdetails.cdf.dd.cdf;
 
@@ -56,7 +47,7 @@ public class CdfStyles {
     styles.add( style );
 
     PluginsAnalyzer pluginsAnalyzer =
-      new PluginsAnalyzer( CdeEnvironment.getContentAccessFactory(), PentahoSystem.get( IPluginManager.class ) );
+        new PluginsAnalyzer( CdeEnvironment.getContentAccessFactory(), PentahoSystem.get( IPluginManager.class ) );
     pluginsAnalyzer.refresh();
 
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities( "/cde-styles" );
@@ -75,9 +66,8 @@ public class CdfStyles {
       // * system/<plugin>/styles
       // * /system/<plugin>/styles - no need to clear start info
       // * styles
-      if ( finalPath.startsWith( "system/" + pluginId + "/" ) ) {
-        finalPath = finalPath.substring( ( "system/" + pluginId + "/" ).length() );
-      }
+      if (finalPath.startsWith("system/" + pluginId + "/"))
+        finalPath = finalPath.substring(("system/" + pluginId + "/").length());
 
       if ( access.fileExists( finalPath ) && access.fetchFile( finalPath ).isDirectory() ) {
         style = new Style( access, finalPath, pluginId );
@@ -104,17 +94,17 @@ public class CdfStyles {
 
   public String getResourceLocation( String style ) {
     String stylePath = null;
-
-    if ( StringUtils.isEmpty( style ) ) {
-      style = DEFAULTSTYLE;
-    }
-
+    
+    if(StringUtils.isEmpty(style)){
+		  style = DEFAULTSTYLE;
+	}
+    
     String styleFilename;
     String[] split = style.split( " - " );
     if ( split.length > 1 ) {
-      String pluginId = split[ 1 ].replace( "(", "" ).replace( ")", "" );
+      String pluginId = split[1].replace( "(", "" ).replace( ")", "" );
 
-      styleFilename = split[ 0 ] + ".html";
+      styleFilename = split[0] + ".html";
 
       PluginsAnalyzer pluginsAnalizer = new PluginsAnalyzer();
       pluginsAnalizer.refresh();

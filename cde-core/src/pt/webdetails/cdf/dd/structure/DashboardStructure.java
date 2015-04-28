@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.structure;
 
@@ -29,7 +29,6 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -84,7 +83,7 @@ public class DashboardStructure implements IDashboardStructure {
   public void deletePreviewFiles( String cdeFilePath ) throws DashboardStructureException {
     IRWAccess access = Utils.getSystemOrUserRWAccess( cdeFilePath );
 
-    if( access == null ) {
+    if ( access == null ) {
       throw new DashboardStructureException(
         Messages.getString( "XmlStructure.ERROR_011_READ_WRITE_ACCESS_EXCEPTION" ) );
     }
@@ -310,7 +309,7 @@ public class DashboardStructure implements IDashboardStructure {
     // Save to repository
     String wcdfText = wcdf.toXml().asXML();
     if ( !Utils.getSystemOrUserRWAccess( wcdfFilePath )
-      .saveFile( wcdfFilePath, new ByteArrayInputStream( safeGetEncodedBytes( wcdfText ) ) ) ) {
+        .saveFile( wcdfFilePath, new ByteArrayInputStream( safeGetEncodedBytes( wcdfText ) ) ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION" ) );
     }

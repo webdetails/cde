@@ -1,4 +1,4 @@
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy;
 
 import junit.framework.Assert;
 import org.junit.BeforeClass;

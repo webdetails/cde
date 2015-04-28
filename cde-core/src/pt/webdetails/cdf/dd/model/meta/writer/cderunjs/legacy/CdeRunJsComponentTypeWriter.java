@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd.model.meta.writer.cderunjs;
+package pt.webdetails.cdf.dd.model.meta.writer.cderunjs.legacy;
 
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
@@ -17,6 +17,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
+import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsHelper;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
 /**
@@ -36,7 +37,7 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
     String name = comp.getName();
     
     // the name in cdefdejs/components/rows/type
-    String modelPrefix  = CdeRunJsHelper.getComponentTypeModelPrefix(comp);
+    String modelPrefix  = CdeRunJsHelper.getComponentTypeModelPrefix( comp );
     String modelName    = CdeRunJsHelper.getComponentTypeModelId(comp, modelPrefix);
     String modelVarName = modelName + "Model";
     

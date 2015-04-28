@@ -10,6 +10,7 @@
 * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
 * the license for the specific language governing your rights and limitations.
 */
+
 package pt.webdetails.cdf.dd.render.cda;
 
 import java.util.Iterator;

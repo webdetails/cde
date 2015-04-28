@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
@@ -53,6 +53,7 @@ import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.editor.DashboardEditor;
+import pt.webdetails.cdf.dd.localization.MessageBundlesHelper;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
@@ -66,12 +67,10 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.InterPluginCall;
 import pt.webdetails.cpf.SimpleContentGenerator;
-import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.VersionChecker;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
 import pt.webdetails.cpf.annotations.Exposed;
-import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.olap.OlapUtils;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -387,12 +386,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) ) {
-        IReadAccess readAccess = Utils.getSystemOrUserReadAccess( relativePath );
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( relativePath ) );
-        msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
-        result = new MessageBundlesHelper( msgDir, readAccess, CdeEnvironment.getPluginSystemWriter(),
-          CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
-          .replaceParameters( result, null );
+        result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
       }
 
       writeOut( out, result );
@@ -601,12 +596,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
-       /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
-
-      String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
-      result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
-        CdeEnvironment.getPluginSystemWriter(), CdeEngine.getEnv().getLocale(),
-        CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
+      result = new MessageBundlesHelper( msgDir, null ).replaceParameters( result, null );
     }
 
     writeOut( out, result );

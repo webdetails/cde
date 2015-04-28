@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.meta.DashboardType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;

@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -84,6 +84,7 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
+                            @FormParam( MethodParams.REQUIRE ) boolean require,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
 
@@ -112,6 +113,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       HashMap<String, Object> params = new HashMap<String, Object>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
+      params.put( MethodParams.REQUIRE, String.valueOf( require ) );
       if ( !author.isEmpty() ) {
         params.put( MethodParams.AUTHOR, author );
       }
@@ -155,7 +157,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
 
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
-        if ( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
+        if( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
@@ -217,6 +219,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
+    private static final String REQUIRE = "require";
   }
 
   @POST
@@ -284,7 +287,7 @@ public class SyncronizerApi { //TODO: synchronizer?
   }
 
   //useful to mock message bundle when unit testing SyncronizerApi
-  protected String getMessage( String key ) {
+  protected String getMessage( String key ){
     return Messages.getString( key );
   }
 

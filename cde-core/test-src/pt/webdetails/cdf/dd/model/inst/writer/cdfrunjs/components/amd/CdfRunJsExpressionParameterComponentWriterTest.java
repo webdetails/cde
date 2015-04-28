@@ -1,19 +1,18 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -39,7 +38,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterSimpleValue() {
     String customParamValue = "value;       ";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value"+NEWLINE+"}()";
+    String expectedReturnValue = "function() { return value" + NEWLINE + "}()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
@@ -47,7 +46,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterMultipleLineValue() {
     String customParamValue = "value;" + NEWLINE + "//comment";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value;" + NEWLINE + "//comment"+NEWLINE+"}()";
+    String expectedReturnValue = "function() { return value;" + NEWLINE + "//comment" + NEWLINE + "}()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 

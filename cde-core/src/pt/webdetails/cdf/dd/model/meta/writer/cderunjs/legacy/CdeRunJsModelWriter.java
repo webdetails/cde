@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package pt.webdetails.cdf.dd.model.meta.writer.cderunjs;
+package pt.webdetails.cdf.dd.model.meta.writer.cderunjs.legacy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +57,10 @@ public class CdeRunJsModelWriter extends JsWriterAbstract implements IThingWrite
     // Components output their own properties
     for(ComponentType comp : model.getComponentTypes())
     {
+      // check if component can be used in Legacy dashboards
+      if ( !comp.supportsLegacy() ) {
+        continue;
+      }
       IThingWriter compWriter;
       try
       {

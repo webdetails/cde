@@ -17,7 +17,7 @@ import pt.webdetails.cdf.dd.model.meta.MetaModel;
  * Until RenderLayout can be transformed to this model, if anytime.
  * @author dcleao
  */
-public final class LayoutComponent extends VisualComponent<LayoutComponentType>
+public class LayoutComponent extends VisualComponent<LayoutComponentType>
 {
   private final JXPathContext _layoutXP;
   
@@ -39,7 +39,7 @@ public final class LayoutComponent extends VisualComponent<LayoutComponentType>
     return super.getMeta();
   }
   
-  public final JXPathContext getLayoutXPContext()
+  public JXPathContext getLayoutXPContext()
   {
     return this._layoutXP;
   }

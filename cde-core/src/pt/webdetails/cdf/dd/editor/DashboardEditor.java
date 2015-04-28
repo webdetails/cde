@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.editor;
 
@@ -38,16 +38,29 @@ public class DashboardEditor {
 
   private static  final String WEBAPP_PATH = "#{WEBAPP_PATH}";
 
+  public static String getEditor(
+      String wcdfPath,
+      boolean debugMode,
+      String scheme,
+      boolean isDefault) throws Exception {
 
-  public static String getEditor( String wcdfPath, boolean debugMode, String scheme, boolean isDefault )
-    throws Exception {
+    return getEditor( wcdfPath, debugMode, scheme, isDefault, false );
+
+  }
+
+  public static String getEditor(
+      String wcdfPath,
+      boolean debugMode,
+      String scheme,
+      boolean isDefault,
+      boolean isRequire ) throws Exception {
 
     ResourceManager resMgr = ResourceManager.getInstance();
     IReadAccess sysReader = CdeEnvironment.getPluginSystemReader();
 
     final HashMap<String, String> tokens = buildReplacementTokenMap( wcdfPath, scheme, debugMode, resMgr, sysReader );
 
-    return getProcessedEditor( wcdfPath, resMgr, tokens, sysReader, isDefault );
+    return getProcessedEditor( wcdfPath, resMgr, tokens, sysReader, isDefault, isRequire );
 
   }
 
@@ -61,15 +74,14 @@ public class DashboardEditor {
     DependenciesManager depMgr = DependenciesManager.getInstance();
     final HashMap<String, String> tokens = new HashMap<String, String>();
 
-
     // Decide whether we're in debug mode (full-size scripts) or normal mode (minified scripts)
     final String scriptDeps = debugMode
-      ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_SCRIPTS_RESOURCE )
-      : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_JS_INCLUDES ).getDependencies( true );
+        ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_SCRIPTS_RESOURCE )
+        : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_JS_INCLUDES ).getDependencies( true );
 
     final String styleDeps = debugMode
-      ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_STYLES_RESOURCE )
-      : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_CSS_INCLUDES ).getDependencies( true );
+        ? getResource( resMgr, sysReader, CdeConstants.DESIGNER_STYLES_RESOURCE )
+        : depMgr.getPackage( DependenciesManager.StdPackages.EDITOR_CSS_INCLUDES ).getDependencies( true );
 
     final String cdeDeps = depMgr.getPackage( DependenciesManager.StdPackages.CDFDD ).getDependencies( debugMode );
     tokens.put( CdeConstants.DESIGNER_HEADER_TAG, cdeDeps );
@@ -98,8 +110,13 @@ public class DashboardEditor {
   }
 
 
-  private static String getProcessedEditor( String wcdfPath, ResourceManager resMgr,
-      final HashMap<String, String> tokens, IReadAccess sysReader, boolean isDefault ) throws IOException {
+  private static String getProcessedEditor(
+      String wcdfPath,
+      ResourceManager resMgr,
+      final HashMap<String, String> tokens,
+      IReadAccess sysReader,
+      boolean isDefault,
+      boolean isRequire ) throws IOException {
     String cacheKey = ResourceManager.buildCacheKey( wcdfPath, tokens );
     String editorPage;
     if ( resMgr.existsInCache( cacheKey ) ) {
@@ -113,6 +130,8 @@ public class DashboardEditor {
       } else {
         editorPage = Util.toString( sysReader.getFileInputStream( CdeConstants.DESIGNER_RESOURCE ) );
       }
+
+      editorPage = processDashboardSupportTag( editorPage, isRequire );
 
       if ( tokens != null && tokens.size() > 0 ) {
         for ( final String key : tokens.keySet() ) {
@@ -128,6 +147,17 @@ public class DashboardEditor {
     return editorPage;
   }
 
+  protected static String processDashboardSupportTag( String editorPage, boolean isRequire ) {
+    if ( isRequire ) {
+      return editorPage.replaceFirst(
+        CdeConstants.DASHBOARD_SUPPORT_TAG,
+        CdeConstants.DashboardSupportedTypes.AMD );
+    } else {
+      return editorPage.replaceFirst(
+        CdeConstants.DASHBOARD_SUPPORT_TAG,
+        CdeConstants.DashboardSupportedTypes.LEGACY );
+    }
+  }
 
   private static String getResource( ResourceManager resMgr, IReadAccess sysReader, String path ) throws IOException {
     final String resource;
@@ -148,19 +178,19 @@ public class DashboardEditor {
     return resource;
   }
 
-  private static String getDashboardTitle(String wcdfPath) throws IOException {
-      String title;
+  private static String getDashboardTitle( String wcdfPath ) throws IOException {
+    String title;
 
-      if ( wcdfPath.isEmpty() || wcdfPath.equals(CdeConstants.LEGACY_UNSAVED_FILE_PATH) ) {
-        title = "New Dashboard";
-      } else {
-        DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );
-        if ( wcdf == null ) {
-          throw new FileNotFoundException( wcdfPath );
-        }
-        title = wcdf.getTitle();
+    if ( wcdfPath.isEmpty() || wcdfPath.equals( CdeConstants.LEGACY_UNSAVED_FILE_PATH ) ) {
+      title = "New Dashboard";
+    } else {
+      DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );
+      if ( wcdf == null ) {
+        throw new FileNotFoundException( wcdfPath );
       }
+      title = wcdf.getTitle();
+    }
 
-      return title;
+    return title;
   }
 }

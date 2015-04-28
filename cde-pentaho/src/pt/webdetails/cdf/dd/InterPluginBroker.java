@@ -1,5 +1,5 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
 *
 * This software was developed by Webdetails and is provided under the terms
 * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -28,7 +28,7 @@ import pt.webdetails.cpf.plugin.CorePlugin;
 public class InterPluginBroker {
 
   public static String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute,
-                                       String absRoot, String scheme ) throws Exception {
+    String absRoot, String scheme ) throws Exception {
 
     Map<String, Object> params = new HashMap<String, Object>();
     params.put( "dashboardContent", dashboard );
@@ -41,7 +41,7 @@ public class InterPluginBroker {
       params.put( "root", absRoot );
     }
     params.put( "absolute", absolute );
-    PentahoLegacyInterPluginCall pluginCall = new PentahoLegacyInterPluginCall();
+    PentahoLegacyInterPluginCall pluginCall = new PentahoLegacyInterPluginCall( );
     pluginCall.init( CorePlugin.CDF, "GetHeaders", params );
 
     return pluginCall.call();
