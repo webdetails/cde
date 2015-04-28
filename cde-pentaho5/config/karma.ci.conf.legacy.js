@@ -22,49 +22,51 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-
-      // CDF
-      { pattern: 'bin/test-js/cdf/js/**/*.js', included: false },
-      { pattern: 'bin/test-js/cdf/js/**/*.css', included: false },
-      
-      { pattern: 'resource/resources/custom/amd-components/**/*.css', included: false },
-      { pattern: 'resource/resources/custom/amd-components/**/*.js', included: false },
-      { pattern: 'test-js/**/*-spec.js', included: false },
-      { pattern: 'test-js/*.js', included: true },
-      'config/context.js',
-      { pattern: 'test-js/**/*.ext.js', included: true },
-      'build-res/requireCfg-raw.js',
-      'config/require-config.js'
+      '../cde-core/test-resources/js/jquery.js',
+      '../cde-core/resource/js/jquery.jeditable.js',
+      '../cde-core/resource/js/jquery.notifyBar.js',
+      '../cde-core/resource/js/Base.js',
+      'test-js/legacy/mockDashboards.js',
+      '../cde-core/resource/js/cdf-dd-config.js',
+      '../cde-core/resource/js/cdf-dd-tablemanager.js',
+      '../cde-core/resource/js/cdf-dd-wizardmanager.js',
+      '../cde-core/resource/js/jquery.form.js',
+      '../cde-core/resource/js/cdf-dd.js',
+      'resource/js/cdf-dd-base.js',
+      'test-js/legacy/mock-cdf-dd-base.js',
+      '../cde-core/resource/js/cdf-dd-palletemanager.js',
+      '../cde-core/resource/js/cdf-dd-tableoperations.js',
+      '../cde-core/resource/js/cdf-dd-layout-mobile.js',
+      '../cde-core/resource/js/cdf-dd-layout.js',
+      '../cde-core/resource/js/cdf-dd-components.js',
+      '../cde-core/resource/js/cdf-dd-datasources.js',
+      'test-js/legacy/main.js',
+      {pattern: 'test-js/legacy/**/*-spec.js', included: false}
     ],
+
 
     // list of files to exclude
-    exclude: [
-      'test-js/legacy/**/*.js',
-      'bin/test-js/cdf/js/cdf-module.js',
-      'bin/test-js/cdf/js/*-require-cfg.js',
-      'bin/test-js/cdf/js/lib/*-require-cfg.js',
-      'bin/test-js/cdf/js/compressed/**/*'
-    ],
+    exclude: [],
 
-    preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
+    preprocessors: {'resource/js/cdf-dd.js' : 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['progress', 'junit', 'html', 'coverage'],
 
     coverageReporter: {
-      type: 'cobertura',
-      dir:  'bin/test-reports/coverage/reports/'
+        type: 'cobertura',
+        dir:  'bin/test-reports-legacy/coverage/reports/'
     },
 
     junitReporter: {
-      outputFile: 'bin/test-reports/test-results.xml',
+      outputFile: 'bin/test-reports-legacy/test-results.xml',
       suite:      'unit'
     },
 
     // the default configuration
     htmlReporter: {
-      outputDir:    'bin/test-reports/karma_html',
+      outputDir:    'bin/test-reports-legacy/karma_html',
       templatePath: 'node_modules/karma-html-reporter/jasmine_template.html'
     },
 
@@ -82,7 +84,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
     // Start these browsers, currently available:
     // - Chrome
@@ -92,26 +94,13 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome'],//, 'Firefox', 'IE', 'PhantomJS'],
+    browsers: ['PhantomJS'],//, 'Firefox', 'IE', 'PhantomJS'],
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
 
-    //browserNoActivityTimeout: 1200000,
-
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false,
-
-    plugins: [
-      'karma-jasmine',
-      'karma-requirejs',
-      'karma-junit-reporter',
-      'karma-html-reporter',
-      'karma-coverage',
-      'karma-phantomjs-launcher',
-      'karma-chrome-launcher',
-      'karma-firefox-launcher'
-    ]
+    singleRun: true
   });
 };

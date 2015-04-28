@@ -83,10 +83,8 @@
     <antcall target="call">
       <param name="target" value="publish"/>
       <param name="projects" value="${projects.list}"/>
-    </antcall>
-    
+    </antcall>  
   </target>
-
 
   <target name="resolve-projects">
     <antcall target="call">

@@ -676,3 +676,20 @@ var Cgg = {
     return window.location.href.substring(0, window.location.href.indexOf("content") - 1) + wd.cde.endpoints.getUnbasedCggPluginUrl() + "Draw";
   }
 };
+
+var SettingsHelper = {
+  getExtraPromptContent: function(){
+    return '';
+  },
+
+  callExtraContentSubmit: function(){
+  },
+
+  getStyles: function(wcdf, myself){
+    return myself.styles;
+  },
+
+  getSelectedStyle: function(wcdf){
+    return wcdf.style;
+  }
+};
