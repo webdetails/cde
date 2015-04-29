@@ -692,13 +692,13 @@
       "value": ""
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "70",
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "70",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -752,14 +752,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -768,7 +768,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": 100,
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -917,7 +917,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1071,13 +1081,13 @@
       "value": "value1"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "70",
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "70",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1131,14 +1141,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[[\"bulletRuleLabel_font\",\"8pt serif italic\"],[\"bulletMarker_shape\",\"triangle\"]]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1147,7 +1157,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "100",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -1296,7 +1306,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1450,13 +1470,13 @@
       "value": "value2"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "770",
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "250",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1510,14 +1530,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[[\"bulletRuleLabel_font\",\"7pt sans\"]]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1526,7 +1546,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "30",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -1675,7 +1695,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -1829,13 +1859,13 @@
       "value": "value3"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "70",
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "70",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -1889,14 +1919,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -1905,7 +1935,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "150",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -2054,7 +2084,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -2208,13 +2248,13 @@
       "value": "value4"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "height",
+      "value": "70",
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "70",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
@@ -2268,14 +2308,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extensionPoints",
       "value": "[]",
       "type": "ValuesArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      },
      {
       "name": "axisDoubleClickAction",
@@ -2284,7 +2324,7 @@
      },
      {
       "name": "bulletMargin",
-      "value": "150",
+      "value": "160",
       "type": "Integer"
      },
      {
@@ -2433,7 +2473,17 @@
       "type": "String"
      },
      {
+      "name": "readers",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
       "name": "renderCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "renderedCallback",
       "value": "",
       "type": "JavaScript"
      },
@@ -2607,9 +2657,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2617,14 +2667,19 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -2673,9 +2728,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2683,14 +2738,19 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -2739,9 +2799,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2749,14 +2809,19 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -2805,9 +2870,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -2815,14 +2880,19 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -2838,5 +2908,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/ccc_bullet.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/ccc_bullet.cdfde"
 }
