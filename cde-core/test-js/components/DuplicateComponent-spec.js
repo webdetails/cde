@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -22,19 +22,13 @@ define([
    * ## The Duplicate Component
    */
   describe("The Duplicate Component #", function() {
-  
     var dashboard = new Dashboard();
+
+    dashboard.init();
 
     dashboard.addParameter("param1", "30");
     dashboard.setParameterViewMode("param1", "unused");
 
-    dashboard.init();
-
-    // inject sampleObject div
-    $("body").append($("<div>").attr("id", "sampleObject1"));
-    $("body").append($("<div>").attr("id", "sampleObject2"));
-    $("body").append($("<div>").attr("id", "sampleObject3"));
-  
     var render_cggDial1 = new CggDialComponent({
       type: "CggDialComponent",
       name: "render_cggDial1",
@@ -62,17 +56,32 @@ define([
     });
 
     dashboard.addComponents([render_cggDial1, duplicateComponent]);
-  
+
+    // inject sampleObject div
+    $htmlObject1 = $('<div>').attr('id', render_cggDial1.htmlObject);
+    $htmlObject2 = $('<div>').attr('id', duplicateComponent.htmlObject);
+    $htmlObject3 = $('<div>').attr('id', duplicateComponent.targetHtmlObject);
+
     /**
-     * ## The Duplicate Component # Update Called
+     * ## The Duplicate Component # allows a dashboard to execute update
      */
-    it("Update Called", function(done) {
+    it("allows a dashboard to execute update", function(done) {
+      $('body').append($htmlObject1)
+               .append($htmlObject2)
+               .append($htmlObject3);
+
       spyOn(duplicateComponent, 'update').and.callThrough();
-      dashboard.update(duplicateComponent);
-      setTimeout(function() {
+
+      // listen to cdf:postExecution event
+      duplicateComponent.once("cdf:postExecution", function() {
         expect(duplicateComponent.update).toHaveBeenCalled();
+        $htmlObject1.remove();
+        $htmlObject2.remove();
+        $htmlObject3.remove();
         done();
-      }, 100);
+      });
+
+      dashboard.update(duplicateComponent);
     });
   });
 });

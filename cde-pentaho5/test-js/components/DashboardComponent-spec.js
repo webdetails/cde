@@ -21,15 +21,11 @@ define([
    * ## The Dashboard Component
    */
   describe("The Dashboard Component #", function() {
-
     var dashboard = new Dashboard();
-
-    dashboard.addParameter("param1", "");
 
     dashboard.init();
 
-    // inject sampleObject div
-    $("body").append($("<div>").attr("id", "sampleObject"));
+    dashboard.addParameter("param1", "");
 
     var dashboardComponent = new DashboardComponent({
       type: "DashboardComponent",
