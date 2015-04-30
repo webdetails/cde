@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -24,17 +24,22 @@ module.exports = function(config) {
     files: [
 
       // CDF
-      { pattern: 'bin/test-js/cdf/js/**/*.js', included: false },
-      { pattern: 'bin/test-js/cdf/js/**/*.css', included: false },
+      {pattern: 'bin/test-js/cdf/js/**/*.js', included: false},
+      {pattern: 'bin/test-js/cdf/js/**/*.css', included: false},
       
-      { pattern: 'resource/resources/custom/amd-components/**/*.css', included: false },
-      { pattern: 'resource/resources/custom/amd-components/**/*.js', included: false },
-      { pattern: 'test-js/**/*-spec.js', included: false },
-      { pattern: 'test-js/*.js', included: true },
+      {pattern: 'resource/resources/custom/amd-components/**/*.css', included: false},
+      {pattern: 'resource/resources/custom/amd-components/**/*.js', included: false},
+      {pattern: 'test-js/**/*-spec.js', included: false},
+      {pattern: 'test-js/*.js', included: true},
       'config/context.js',
-      { pattern: 'test-js/**/*.ext.js', included: true },
+      {pattern: 'test-js/**/*.ext.js', included: true},
       'build-res/requireCfg-raw.js',
-      'config/require-config.js'
+      'config/require-config.js',
+      // fix 404 messages
+      {pattern: 'resource/resources/custom/amd-components/**/*.png', watched: false, included: false, served: true},
+      {pattern: 'resource/resources/custom/amd-components/**/*.gif', watched: false, included: false, served: true},
+      {pattern: 'bin/test-js/cdf/js/**/*.png', watched: false, included: false, served: true},
+      {pattern: 'bin/test-js/cdf/js/**/*.gif', watched: false, included: false, served: true}
 
     ],
 
