@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -18,13 +18,9 @@ define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/
    * ## The Google Maps Overlay Component
    */
   describe("The Google Maps Overlay Component #", function() {
-  
     var dashboard = new Dashboard();
 
     dashboard.init();
-
-    // inject sampleObject div
-    $("body").append($("<div>").attr("id", "sampleObject"));
 
     var gMapsOverlayComponent = new GMapsOverlayComponent({
       type: "GMapsOverlayComponent",
@@ -36,7 +32,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/
       preExecution: [],
       postExecution: [],
       parameters: [],
-      mapName: "/fake/path/file.js",
+      mapName: "/fake/path/test.js",
       mapWidth: 750,
       mapHeight: 500,
       centerLatitude: 41.875696,
@@ -50,19 +46,27 @@ define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/
         path: "/fake/path/file.cda"
       }
     });
-  
+
     dashboard.addComponent(gMapsOverlayComponent);
-  
+
     /**
-     * ## The Google Maps Overlay Component # Update Called
+     * ## The Google Maps Overlay Component # allows a dashboard to execute update
      */
-    it("Update Called", function(done) {
+    it("allows a dashboard to execute update", function(done) {
       spyOn(gMapsOverlayComponent, 'update').and.callThrough();
-      dashboard.update(gMapsOverlayComponent);
-      setTimeout(function() {
+      spyOn($, "ajax").and.callFake(function(params) {
+        if(params.success) {
+          params.success({"queryInfo":{"totalRows":"2"},"resultset":[["1011",257],["1012",177]],"metadata":[{"colIndex":0,"colType":"String","colName":"beat"},{"colIndex":1,"colType":"Numeric","colName":"counts"}]});
+        }
+      });
+
+      // listen to cdf:postExecution event
+      gMapsOverlayComponent.once("cdf:postExecution", function() {
         expect(gMapsOverlayComponent.update).toHaveBeenCalled();
         done();
-      }, 100);
+      });
+
+      dashboard.update(gMapsOverlayComponent);
     });
   });
 });

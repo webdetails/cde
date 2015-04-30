@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -18,13 +18,9 @@ define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/j
    * ## The Ajax Request Component
    */
   describe("The Ajax Request Component #", function() {
-  
     var dashboard = new Dashboard();
 
     dashboard.init();
-
-    // inject sampleObject div
-    $("body").append($("<div>").attr("id", "sampleObject"));
 
     var ajaxRequestComponent = new AjaxRequestComponent({
       type: "AjaxRequestComponent",
@@ -32,28 +28,31 @@ define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/j
       executeAtStart: true,
       htmlObject: "sampleObject",
       parameters: [],
-      url: 'dummy/fake',
+      url: 'test/fake',
       ajaxRequestType: 'json',
       asyncCall: true
     });
-  
+
     dashboard.addComponent(ajaxRequestComponent);
-  
+
     /**
-     * ## The Ajax Request Component # Update Called
+     * ## The Ajax Request Component # allows a dashboard to execute update
      */
-    it("Update Called", function(done) {
-      var ajax = spyOn($, "ajax").and.callFake(function(options) {
-        options.complete(
-          { responseText: "{\"queryInfo\": {\"totalRows\": 1}, \"resultset\": [\"row1\", [1,2,3,4,5]]}"},
-          "finished faking");
-      });
+    it("allows a dashboard to execute update", function(done) {
       spyOn(ajaxRequestComponent, 'update').and.callThrough();
-      dashboard.update(ajaxRequestComponent);
-      setTimeout(function() {
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.complete(
+          {responseText: "{\"queryInfo\": {\"totalRows\": 1}, \"resultset\": [\"row1\", [3,4]]}"}
+        );
+      });
+
+      // listen to cdf:postExecution event
+      ajaxRequestComponent.once("cdf:postExecution", function() {
         expect(ajaxRequestComponent.update).toHaveBeenCalled();
         done();
-      }, 100);
+      });
+
+      dashboard.update(ajaxRequestComponent);
     });
   });
 });

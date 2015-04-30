@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -18,11 +18,10 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
    * ## The ExportPopup Component
    */
   describe("The ExportPopup Component #", function() {
-  
     var dashboard = new Dashboard();
 
     dashboard.addParameter("array", ["one", "two"]);
-    dashboard.addParameter("funcArray", function() {return ["funcOne", "funcTwo"]});
+    dashboard.addParameter("funcArray", function() { return ["funcOne", "funcTwo"]; });
     dashboard.addParameter("string", "stringOne;stringTwo");
 
     dashboard.init();
@@ -37,34 +36,34 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
       parameters: [],
       listeners: []
     });
-  
+
     dashboard.addComponent(exportPopupComponent);
-  
+
     /**
-     * ## The ExportPopup Component # Update Called
+     * ## The ExportPopup Component # allows a dashboard to execute update
      */
-    it("Update Called", function(done) {
+    it("allows a dashboard to execute update", function(done) {
       spyOn(exportPopupComponent, 'update').and.callThrough();
-      dashboard.update(exportPopupComponent);
-      setTimeout(function() {
+
+      // listen to cdf:postExecution event
+      exportPopupComponent.once("cdf:postExecution", function() {
         expect(exportPopupComponent.update).toHaveBeenCalled();
         done();
-      }, 100);
+      });
+
+      dashboard.update(exportPopupComponent);
     });
 
     /**
-     * ## The ExportPopup Component # Export Chart Options
+     * ## The ExportPopup Component # sets the export chart options
      */
-    it("Export Chart Options", function() {
-      dashboard.context = {
-        path: 'fakePath/dashboard.wcdf'
-      };
+    it("sets the export chart options", function() {
+      dashboard.context = {path: 'fakePath/dashboard.wcdf'};
+
       exportPopupComponent.chartComponent = {
-        parameters: [
-          ['array', 'array'],
-          ['funcArray', 'funcArray'],
-          ['string', 'string']
-        ]
+        parameters: [['array', 'array'],
+                     ['funcArray', 'funcArray'],
+                     ['string', 'string']]
       };
       var expectedResult = {
         outputType: 'png',
@@ -78,9 +77,9 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
     });
 
     /**
-     * ## The ExportPopup Component # Export Chart URL
+     * ## The ExportPopup Component # builds the export chart URL
      */
-    it("Export Chart URL", function() {
+    it("builds the export chart URL", function() {
       var options = {
         outputType: 'png',
         script: 'fakePath/chart.js',
@@ -90,10 +89,10 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
       };
 
       var expectedResult = "/pentaho/plugin/cgg/api/services/draw?" +
-          "outputType=png&script=fakePath%2Fchart.js" +
-          "&paramarray=one&paramarray=two" +
-          "&paramfuncArray=funcOne&paramfuncArray=funcTwo" +
-          "&paramstring=stringOne%3BstringTwo";
+                           "outputType=png&script=fakePath%2Fchart.js" +
+                           "&paramarray=one&paramarray=two" +
+                           "&paramfuncArray=funcOne&paramfuncArray=funcTwo" +
+                           "&paramstring=stringOne%3BstringTwo";
 
       expect(exportPopupComponent.getExportChartUrl(options)).toEqual(expectedResult);
     });

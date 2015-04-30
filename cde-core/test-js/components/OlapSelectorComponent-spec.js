@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -21,15 +21,11 @@ define([
    * ## The Olap Selector Component
    */
   describe("The Olap Selector Component #", function() {
-
     var dashboard = new Dashboard();
-
-    dashboard.addParameter("param1", "");
 
     dashboard.init();
 
-    // inject sampleObject div
-    $("body").append($("<div>").attr("id", "sampleObject"));
+    dashboard.addParameter("param1", "");
 
     var olapSelectorComponent = new OlapSelectorComponent({
       type: "OlapSelectorComponent",
@@ -49,12 +45,12 @@ define([
     dashboard.addComponent(olapSelectorComponent);
 
     /**
-     * ## The Olap Selector Component # Update Called
+     * ## The Olap Selector Component # allows a dashboard to execute update
      */
-    it("Update Called", function(done) {
-
-      var ajax = spyOn($, "ajax").and.callFake(function(options) {
-        options.success({
+    it("allows a dashboard to execute update", function(done) {
+      spyOn(olapSelectorComponent, 'update').and.callThrough();
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.success({
           "result": {
             "catalogs": [{"cubes": [{"id": "Quadrant Analysis","name": "Quadrant Analysis"}], "jndi": "SampleData", "name": "SampleData", "schema": "mondrian:/SampleData"},{"cubes": [{"id": "SteelWheelsSales","name": "SteelWheelsSales"}], "jndi": "SampleData", "name": "SteelWheels", "schema": "mondrian:/SteelWheels"}],
             "dimensions": [{"caption":"Markets","hierarchies":[{"caption":"Markets","defaultMember":"All Markets","defaultMemberQualifiedName":"[Markets].[All Markets]","levels":[{"caption":"Territory","depth":1,"name":"Territory","qualifiedName":"[Markets].[Territory]","type":"level"},{"caption":"Country","depth":2,"name":"Country","qualifiedName":"[Markets].[Country]","type":"level"},{"caption":"State Province","depth":3,"name":"State Province","qualifiedName":"[Markets].[State Province]","type":"level"},{"caption":"City","depth":4,"name":"City","qualifiedName":"[Markets].[City]","type":"level"}],"name":"Markets","qualifiedName":"[Markets]","type":"hierarchy"}],"name":"Markets","type":"StandardDimension"},{"caption":"Customers","hierarchies":[{"caption":"Customers","defaultMember":"All Customers","defaultMemberQualifiedName":"[Customers].[All Customers]","levels":[{"caption":"Customer","depth":1,"name":"Customer","qualifiedName":"[Customers].[Customer]","type":"level"}],"name":"Customers","qualifiedName":"[Customers]","type":"hierarchy"}],"name":"Customers","type":"StandardDimension"},{"caption":"Product","hierarchies":[{"caption":"Product","defaultMember":"All Products","defaultMemberQualifiedName":"[Product].[All Products]","levels":[{"caption":"Line","depth":1,"name":"Line","qualifiedName":"[Product].[Line]","type":"level"},{"caption":"Vendor","depth":2,"name":"Vendor","qualifiedName":"[Product].[Vendor]","type":"level"},{"caption":"Product","depth":3,"name":"Product","qualifiedName":"[Product].[Product]","type":"level"}],"name":"Product","qualifiedName":"[Product]","type":"hierarchy"}],"name":"Product","type":"StandardDimension"},{"caption":"Time","hierarchies":[{"caption":"Time","defaultMember":"All Years","defaultMemberQualifiedName":"[Time].[All Years]","levels":[{"caption":"Years","depth":1,"name":"Years","qualifiedName":"[Time].[Years]","type":"level"},{"caption":"Quarters","depth":2,"name":"Quarters","qualifiedName":"[Time].[Quarters]","type":"level"},{"caption":"Months","depth":3,"name":"Months","qualifiedName":"[Time].[Months]","type":"level"}],"name":"Time","qualifiedName":"[Time]","type":"hierarchy"}],"name":"Time","type":"TimeDimension"},{"caption":"Order Status","hierarchies":[{"caption":"Order Status","defaultMember":"All Status Types","defaultMemberQualifiedName":"[Order Status].[All Status Types]","levels":[{"caption":"Type","depth":1,"name":"Type","qualifiedName":"[Order Status].[Type]","type":"level"}],"name":"Order Status","qualifiedName":"[Order Status]","type":"hierarchy"}],"name":"Order Status","type":"StandardDimension"}],"measures":[{"caption":"Quantity","memberType":"MEASURE","name":"Quantity","qualifiedName":"[Measures].[Quantity]","type":"measure"},{"caption":"Sales","memberType":"MEASURE","name":"Sales","qualifiedName":"[Measures].[Sales]","type":"measure"},{"caption":"Fact Count","memberType":"MEASURE","name":"Fact Count","qualifiedName":"[Measures].[Fact Count]","type":"measure"}],
@@ -65,13 +61,13 @@ define([
         });
       });
 
-      spyOn(olapSelectorComponent, 'update').and.callThrough();
-      dashboard.update(olapSelectorComponent);
-      setTimeout(function() {
+      // listen to cdf:postExecution event
+      olapSelectorComponent.once("cdf:postExecution", function() {
         expect(olapSelectorComponent.update).toHaveBeenCalled();
         done();
-      }, 100);
-    });
+      });
 
+      dashboard.update(olapSelectorComponent);
+    });
   });
 });
