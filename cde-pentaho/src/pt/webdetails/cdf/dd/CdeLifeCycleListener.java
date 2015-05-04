@@ -13,8 +13,6 @@
 
 package pt.webdetails.cdf.dd;
 
-//import java.io.IOException;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,7 +20,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.PluginLifecycleException;
-//import org.pentaho.platform.repository.hibernate.HibernateUtil;
 
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.PluginEnvironment;

@@ -18,7 +18,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.SAXReader;
 import org.pentaho.platform.api.engine.IFileInfo;
-//import org.pentaho.platform.api.engine.IFileInfoGenerator;
 import org.pentaho.platform.api.engine.ILogger;
 import org.pentaho.platform.api.engine.ISolutionFile;
 import org.pentaho.platform.api.engine.ISolutionFileMetaProvider;
