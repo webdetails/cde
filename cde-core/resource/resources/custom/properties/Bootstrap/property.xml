@@ -3,7 +3,7 @@
     <Header>
       <Name>bootstrapExtraSmall</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
+      <DefaultValue>12</DefaultValue>
       <Description>Extra Small Devices</Description>
       <Tooltip>Bootstrap Extra Small Devices Property</Tooltip>
       <InputType>String</InputType>
@@ -17,7 +17,7 @@
     <Header>
       <Name>bootstrapSmall</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
+      <DefaultValue/>
       <Description>Small Devices</Description>
       <Tooltip>Bootstrap Small Devices Property</Tooltip>
       <InputType>String</InputType>
@@ -31,7 +31,7 @@
     <Header>
       <Name>bootstrapMedium</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
+      <DefaultValue/>
       <Description>Medium Devices</Description>
       <Tooltip>Bootstrap Medium Devices Property</Tooltip>
       <InputType>String</InputType>
@@ -45,7 +45,7 @@
     <Header>
       <Name>bootstrapLarge</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
+      <DefaultValue/>
       <Description>Large Devices</Description>
       <Tooltip>Bootstrap Large Devices Property</Tooltip>
       <InputType>String</InputType>
@@ -59,7 +59,7 @@
     <Header>
       <Name>bootstrapCssClass</Name>
       <Parent>BaseProperty</Parent>
-      <DefaultValue></DefaultValue>
+      <DefaultValue/>
       <Description>Bootstrap Css Class</Description>
       <Tooltip>Bootstrap Css Class to be used when this element is rendered</Tooltip>
       <InputType>String</InputType>

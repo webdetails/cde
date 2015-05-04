@@ -102,7 +102,9 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
-        if($(e.target).is('input, textarea') || e.ctrlKey) {
+        var target = $(e.target);
+        var hasPopup = (target.find('.popup:visible').length || target.find('.jqmWindow:visible').length) > 0 ;
+        if(target.is('input, select, textarea') || hasPopup || e.ctrlKey) {
           return;
         }
 

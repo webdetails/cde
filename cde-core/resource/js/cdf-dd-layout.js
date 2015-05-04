@@ -702,11 +702,11 @@ var LayoutAddBootstrapPanelOperation = AddRowOperation.extend({
 
   models: [LayoutBootstrapPanelModel.MODEL],
   canMoveInto: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
     LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL
   ],
   canMoveTo: [
-    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
     LayoutBootstrapPanelModel.MODEL
   ],
 
@@ -852,11 +852,11 @@ var LayoutAddFreeFormOperation = AddRowOperation.extend({
 
   models: [LayoutFreeFormModel.MODEL],
   canMoveInto: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutFreeFormModel.MODEL,
     LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL
   ],
   canMoveTo: [
-    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL,
     LayoutBootstrapPanelModel.MODEL
   ],
 
@@ -940,7 +940,7 @@ var LayoutAddSpaceOperation = AddRowOperation.extend({
 
   id: "LAYOUT_ADD_SPACE",
   types: [
-    LayoutRowModel.MODEL
+    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL
   ],
   name: "Add Space",
   description: "Adds a horizontal rule",
@@ -969,7 +969,7 @@ var LayoutAddImageOperation = AddRowOperation.extend({
 
   id: "LAYOUT_ADD_IMAGE",
   types: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
     LayoutFreeFormModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
     LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL
   ],
@@ -978,11 +978,11 @@ var LayoutAddImageOperation = AddRowOperation.extend({
 
   models: [LayoutImageModel.MODEL],
   canMoveInto: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
     LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
   ],
   canMoveTo: [
-     LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
   ],
 
   constructor: function() {
@@ -999,7 +999,7 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 
   id: "LAYOUT_ADD_HTML",
   types: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
     LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
     LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
   ],
@@ -1008,11 +1008,11 @@ var LayoutAddHtmlOperation = AddRowOperation.extend({
 
   models: [LayoutHtmlModel.MODEL],
   canMoveInto: [
-    LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
+    LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL,
     LayoutBootstrapPanelBodyModel.MODEL, LayoutBootstrapPanelFooterModel.MODEL, LayoutFreeFormModel.MODEL
   ],
   canMoveTo: [
-    LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
+    LayoutRowModel.MODEL, LayoutSpaceModel.MODEL, LayoutHtmlModel.MODEL, LayoutImageModel.MODEL, LayoutBootstrapPanelModel.MODEL
   ],
 
   constructor: function() {
