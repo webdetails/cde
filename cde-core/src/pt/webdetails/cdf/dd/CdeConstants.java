@@ -86,4 +86,6 @@ public class CdeConstants {
   public static final String DASHBOARD_FOOTER_TAG  = "\\@FOOTER\\@";
 
   public static final String DASHBOARD_ALIAS_TAG = "@ALIAS@";
+
+  public static final String CUSTOM_COMPONENT_CONFIG_FILENAME = "component.xml";
 }
