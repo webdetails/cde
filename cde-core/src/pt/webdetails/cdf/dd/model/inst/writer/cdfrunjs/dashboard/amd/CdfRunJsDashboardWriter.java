@@ -297,7 +297,8 @@ public class CdfRunJsDashboardWriter
     StringBuilder componentPath = new StringBuilder();
 
     if ( isPrimitiveComponent( comp ) && isComponentStaticSystemOrigin( comp ) ) {
-      // Assume it's a CDF component
+
+      // CDF component with a static system origin
       componentPath
         .append( CDF_AMD_BASE_COMPONENT_PATH )
         .append( componentClassName );
@@ -306,7 +307,7 @@ public class CdfRunJsDashboardWriter
 
       if ( isComponentStaticSystemOrigin( comp ) ) {
 
-        // Assume it's a CDE component
+        // CDE custom component with a static system origin
         componentPath
           .append( CDE_AMD_BASE_COMPONENT_PATH )
           .append( componentClassName );
@@ -315,20 +316,35 @@ public class CdfRunJsDashboardWriter
 
         String compImplPath = getComponentImplementationPath( comp );
 
+        // if both versions are supported or no implementation path is provided
+        // build AMD module using source path and component class name
+        if ( supportsLegacy( comp ) || StringUtils.isEmpty( compImplPath ) ) {
+
+          // assume that the AMD implementation file is in the same folder as component.xml
+          // and that it has the same name as the component's class
+          compImplPath = getComponentSourcePath( comp ).split( CdeConstants.CUSTOM_COMPONENT_CONFIG_FILENAME )[0]
+              + componentClassName;
+
+        } else {
+
+          // if it only supports AMD and an implementation path is provided, use it
+          compImplPath = compImplPath.substring( 0, compImplPath.lastIndexOf( ".js" ) );
+        }
+
+        // validate component's AMD module implementation path
         if ( StringUtils.isEmpty( compImplPath ) ) {
-          logger.error( "Missing an implementation code source path for component "
-              + componentClassName );
+          logger.error( "Missing an implementation code source path for component " + componentClassName );
           return "";
         }
 
-        // Assume it's a CDE component uploaded to the repository
+        // CDE custom component uploaded to the repository
         componentPath
           .append( CDE_AMD_REPO_COMPONENT_PATH )
-          .append( compImplPath.substring(0, compImplPath.lastIndexOf( ".js" ) ) );
+          .append( compImplPath );
 
       } else if ( isComponentOtherPluginStaticSystemOrigin( comp ) ) {
 
-        // Assume it's a component from another plugin (e.g. sparkl)
+        // custom component from another plugin (e.g. sparkl)
         componentPath
           .append( getPluginIdFromOrigin( comp ) )
           .append( PLUGIN_COMPONENT_FOLDER )
@@ -370,8 +386,16 @@ public class CdfRunJsDashboardWriter
     return comp.getMeta().getOrigin() instanceof OtherPluginStaticSystemOrigin;
   }
 
+  protected boolean supportsLegacy( Component comp ) {
+    return comp.getMeta().supportsLegacy();
+  }
+
   protected String getComponentImplementationPath( Component comp ) {
     return comp.getMeta().getImplementationPath();
+  }
+
+  protected String getComponentSourcePath( Component comp ) {
+    return comp.getMeta().getSourcePath();
   }
 
   protected String getPluginIdFromOrigin( Component comp ) {

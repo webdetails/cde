@@ -321,7 +321,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Component primitiveComp = mock( CustomComponent.class );
     Component customComp1 = mock( CustomComponent.class );
     Component customComp2 = mock( CustomComponent.class );
-    Component invalidComp = mock( CustomComponent.class );
     Component customComp3 = mock( CustomComponent.class );
 
     doReturn( true ).when( dashboardWriterSpy ).isPrimitiveComponent( primitiveComp );
@@ -340,21 +339,41 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         CDE_AMD_BASE_COMPONENT_PATH + "Custom1Component",
         dashboardWriterSpy.getComponentPath( customComp1, "Custom1Component" ) );
 
+    // AMD only with implementation path, custom component uploaded to the repository
     doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
     doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
     doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
     doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
     doReturn( "fakePath/Custom2Component.js" ).when( dashboardWriterSpy ).getComponentImplementationPath( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
     Assert.assertEquals(
         CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
         dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
 
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( invalidComp );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( invalidComp );
-    doReturn( "" ).when( dashboardWriterSpy ).getComponentImplementationPath( invalidComp );
-    Assert.assertEquals( "", dashboardWriterSpy.getComponentPath( invalidComp, "InvalidComponent" ) );
+    // AMD only without implementation path, custom component uploaded to the repository
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
+    doReturn( "" ).when( dashboardWriterSpy ).getComponentImplementationPath( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
+    doReturn( "fakePath/component.xml" ).when( dashboardWriterSpy ).getComponentSourcePath( customComp2 );
+    Assert.assertEquals(
+        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
+        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
+
+    // AMD and legacy with implementation path, custom component uploaded to the repository
+    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
+    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
+    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
+    doReturn( "fakeIgnoredPath/Custom2Component.js" ).when( dashboardWriterSpy ).getComponentImplementationPath(
+        customComp2 );
+    doReturn( true ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
+    doReturn( "fakePath/component.xml" ).when( dashboardWriterSpy ).getComponentSourcePath( customComp2 );
+    Assert.assertEquals(
+        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
+        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
 
     doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp3 );
     doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp3 );
