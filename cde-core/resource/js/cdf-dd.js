@@ -670,13 +670,14 @@ var CDFDD = Base.extend({
   },
 
   newDashboard: function() {
-    var myself = this;
-    var content = '' +
-        '<h2>New Dashboard</h2>\n' +
-        '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
-        '<span class="description">Unsaved changes will be lost.</span>';
+    var url = location.origin + wd.cde.endpoints.getNewDashboardUrl() + '?ts=' + (new Date()).getTime();
 
-    $.prompt(content, {
+    if(!$("div.cdfdd-title-status").hasClass("dirtyStatus") || Commands.executedCommands.length === 0) {
+      location.assign(url);
+      return;
+    }
+
+    $.prompt('<h2>New Dashboard</h2><hr/>Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
         Ok: true,
         Cancel: false
@@ -684,9 +685,7 @@ var CDFDD = Base.extend({
       prefix: "popup",
       callback: function(v, m, f) {
         if(v) {
-          var path = wd.cde.endpoints.getNewDashboardUrl();
-          var timestamp = (new Date()).getTime();
-          location.assign(location.origin + path + '?ts=' + timestamp);
+          location.assign(url);
         }
       }
     });
@@ -819,7 +818,13 @@ var CDFDD = Base.extend({
   },
 
   reload: function() {
-    this.logger.warn("Reloading dashboard... ");
+    var self = this;
+
+    if(!$("div.cdfdd-title-status").hasClass("dirtyStatus") || Commands.executedCommands.length === 0) {
+      self.logger.warn("Reloading dashboard... ");
+      window.location.reload();
+      return;
+    }
 
     $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
@@ -828,7 +833,10 @@ var CDFDD = Base.extend({
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if(v) window.location.reload();
+        if(v) {
+          self.logger.warn("Reloading dashboard... ");
+          window.location.reload();
+        }
       }
     });
   },
