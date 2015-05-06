@@ -215,7 +215,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
           ' <input class="' + myself.cssPrefix + 'AddButton" type="button" value="Add"></input>\n' +
           '</div>');
 
-      var vals = JSON.parse(arrayValue);
+      var vals = myself.getInitialValue(arrayValue);
 
       for(var i = 0; i < vals.length; i++) {
         myself.addParameter(i, vals[i], content);
@@ -269,7 +269,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
           var array = [];
           for(var i = 0; i < index; i++) {
             var paramVal = myself.getParameterValues(i);
-            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push(paramVal); //don't attempt to add deleted lines
+            if(!myself.isParameterEmpty(paramVal)) {
+              array.push(paramVal); //don't attempt to add deleted lines
+            }
           }
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
@@ -291,7 +293,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
   },
 
-  onPopupLoad: function(){
+  onPopupLoad: function() {
     //custom renderers may want to do something on popup load, this is here just as a hook 
   },
 
@@ -299,11 +301,34 @@ var ValuesArrayRenderer = CellRenderer.extend({
     return true;
   },
 
+  getInitialValue: function(value) {
+    var initialValue = JSON.parse(value);
+
+    if(!initialValue.length) {
+      initialValue = this.multiDimensionArray ? [["", "", ""]] : [""];
+    }
+
+    return initialValue;
+  },
+
+  isParameterEmpty: function(param) {
+    if(param == null || _.isEmpty(param)) {
+      return true;
+    }
+
+    if(this.multiDimensionArray) {
+      return  _.isEmpty(param[0]) && _.isEmpty(param[1]);
+    }
+
+    return false;
+  },
+
   /**
    * @param i line number
-   * @param values {Array}
+   * @param values {Array|String}
+   * @param container
    **/
-  addParameter: function(i, values, container) {//TODO: still not done
+  addParameter: function(i, values, container) { //TODO: still not done
     if(this.multiDimensionArray) {
       if(this.hasTypedValues) {
         var val = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
@@ -540,7 +565,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
           "  <div class='" + myself.cssPrefix + "'></div>\n" +
           "    <input class='" + myself.cssPrefix + "AddButton' type='button' value='Add'></input>");
 
-      var vals = JSON.parse(value);
+      var vals = myself.getInitialValue(value);
       cdfdd.arrayValue = vals;
       var index = vals.length;
 
@@ -594,7 +619,9 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
           var array = [];
           for(var i = 0; i < index; i++) {
             var paramVal = myself.getParameterValues(i);
-            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push(paramVal); //don't attempt to add deleted lines
+            if(!myself.isParameterEmpty(paramVal)) {
+              array.push(paramVal); //don't attempt to add deleted lines
+            }
           }
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
