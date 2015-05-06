@@ -15,7 +15,12 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
   var tableManager = new TableManager('test-tableManager');
 
   describe("Testing ValuesArrayRenderer #", function() {
-    var valueAr = new ValuesArrayRenderer(tableManager);
+    var valueAr, arrayRenderer;
+
+    beforeEach(function() {
+      valueAr = new ValuesArrayRenderer(tableManager);
+      arrayRenderer = new ArrayRenderer(tableManager);
+    });
 
     it("# Object Initial Values", function() {
       expect(valueAr.multiDimensionArray).toBe(true);
@@ -53,6 +58,30 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     it("# getParameterValues", function() {
       //it is a multi dimensional array without typed values
       expect( valueAr.getParameterValues(0).length ).toEqual(2)
+    });
+
+    it("# getInitialValue", function() {
+      expect(valueAr.getInitialValue("[]")).toEqual([["", "", ""]]);
+      expect(valueAr.getInitialValue("[\"arg1\", \"arg2\"]")).toEqual(["arg1", "arg2"]);
+      expect(valueAr.getInitialValue("[[\"arg1\", \"value1\"]]")).toEqual([["arg1", "value1"]]);
+
+      expect(arrayRenderer.getInitialValue("[]")).toEqual([""]);
+      expect(arrayRenderer.getInitialValue("[\"arg1\"]")).toEqual(["arg1"]);
+
+    });
+
+    it("# isParameterEmpty", function() {
+      expect(valueAr.isParameterEmpty(undefined)).toBe(true);
+      expect(valueAr.isParameterEmpty(null)).toBe(true);
+      expect(valueAr.isParameterEmpty([])).toBe(true);
+      expect(valueAr.isParameterEmpty("")).toBe(true);
+      expect(valueAr.isParameterEmpty([undefined, undefined])).toBe(true);
+      expect(valueAr.isParameterEmpty(["", ""])).toBe(true);
+
+      expect(valueAr.isParameterEmpty("arg1")).toBe(false);
+      expect(valueAr.isParameterEmpty(["arg1", ""])).toBe(false);
+      expect(valueAr.isParameterEmpty(["", "value1"])).toBe(false);
+      expect(valueAr.isParameterEmpty(["arg1", "value1"])).toBe(false);
     });
   });
 
