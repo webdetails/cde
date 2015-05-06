@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Name>Template Component</Name>
+    <IName>TemplateComponent</IName>
+    <Description>Template Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Definition name="chartDefinition">
+        <Property type="query">dataSource</Property>
+      </Definition>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>postFetch</Property>
+      <Property>tooltip</Property>
+      <Property>listeners</Property>
+
+      <Property>modelHandler</Property>
+      <Property>template</Property>
+      <Property>templateType</Property>
+      <Property>formatters</Property>
+      <Property>events</Property>
+      <Property>rootElement</Property>
+      <Property>extendableOptions</Property>
+    </Model>
+  </Contents>
+</DesignerComponent>
