@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>caption</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"[]"</DefaultValue>
+	<Description>Caption</Description>
+	<Tooltip>Caption</Tooltip>
+	<Advanced>true</Advanced>
+	<InputType>String</InputType>
+	<OutputType>Array</OutputType>
+	<Order>1</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

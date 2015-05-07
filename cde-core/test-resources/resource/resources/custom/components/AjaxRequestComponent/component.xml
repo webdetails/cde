@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>AjaxRequestComponent</Name>
+    <IName>AjaxRequestComponent</IName>
+    <Description>AjaxRequestComponent</Description>
+    <Category>CUSTOMCOMPONENTS</Category>
+    <CatDescription>Custom</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>url</Property>
+      <Property>ajaxRequestType</Property>
+      <Property>executeAtStart</Property>
+      <Property>asyncCall</Property>
+      <Property>resultvar</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>postFetch</Property>
+      <Property>refreshPeriod</Property>
+      <Property>htmlObject</Property>
+      <Property>tooltip</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="AjaxRequestComponent.js" />
+      <Dependencies/>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>asyncCall</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Asynchronous Call</Description>
+            <Tooltip>Asynchronous Call?</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>91</Order>
+            <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

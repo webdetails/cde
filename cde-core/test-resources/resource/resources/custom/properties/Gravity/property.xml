@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>gravity</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>S</DefaultValue>
+	<Description>Gravity Parameter</Description>
+	<Tooltip>Direction from which the popup is attached to its target</Tooltip>
+	<InputType>Gravity</InputType>
+	<OutputType>String</OutputType>
+	<Order>28</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

@@ -1,0 +1,35 @@
+<DesignerComponent>
+	<Header>
+		<Name>Auto complete component</Name>
+		<IName>AutocompleteBox</IName>
+		<Description>Auto-Complete Box</Description>
+		<Category>SELECTORS</Category>
+		<CatDescription>Selects</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>htmlObject</Property>
+			<Property>parameter</Property>
+			<Property>listeners</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Definition name="queryDefinition">
+				<Property>dataSource</Property>
+			</Definition>
+			<Property>maxResults</Property>
+			<Property>showApplyButton</Property>
+			<Property>externalApplyButtonId</Property>
+			<Property>matchType</Property>
+			<Property>minTextLength</Property>
+			<Property>scrollHeight</Property>
+			<Property>selectMulti</Property>
+			<Property>addTextElements</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>
