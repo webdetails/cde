@@ -1008,6 +1008,14 @@ var CDFDD = Base.extend({
                 validInputs = false;
               } else {
                 wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
+
+                if(wcdf.widgetName.length == 0) {
+
+                  $.prompt('No widget name provided. Unable to use the title, too many invalid characters.', {
+                    prefix: "popup"
+                  });
+                  validInputs = false;
+                }
               }
             }
           }
@@ -1148,76 +1156,101 @@ var CDFDD = Base.extend({
             return (field != null && field != undefined && field != "");
           }
 
-          /*In case of Dashboards
-           the propper means will be used
+          // validation flag
+          var validationFlag = true,
+              validationMsg = '';
+
+          // remove leading and trailing white spaces
+          selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
+
+          // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
+          // TODO: use webcontext when it becomes available, include the colon char
+          if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
+
+            validationMsg += '<br>Please insert a valid file name.';
+            validationFlag = false;
+
+          } else if(!/(\.wcdf)$/.test(selectedFile)) {
+
+            // append file extension
+            selectedFile += ".wcdf";
+          }
+
+          /**
+           * Save as Dashboard
            */
           if($('input[name=saveAsRadio]:checked').val() == "dashboard") {
 
-            selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
 
-            if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
-              $.prompt('Invalid file extension. Must be .wcdf', {
-                prefix: "popup"
-              });
-            } else if(selectedFolder.length == 0) {
-              $.prompt('Please choose destination folder.', {
-                prefix: "popup"
-              });
-            } else if(selectedFile.length == 0) {
-              $.prompt('Please enter the file name.', {
-                prefix: "popup"
-              });
+            // Validate Folder Name
+            if(selectedFolder.length == 0) {
+
+              validationMsg += '<br>Please choose destination folder.';
+              validationFlag = false;
             }
 
-            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
+            if(validationFlag) {
 
-            CDFDDFileName = selectedFolder + selectedFile;
-            cdfdd.dashboardData.filename = CDFDDFileName;
-            var stripArgs = {
-              needsReload: false
-            };
+              CDFDDFileName = selectedFolder + selectedFile;
+              cdfdd.dashboardData.filename = CDFDDFileName;
+              var stripArgs = {
+                needsReload: false
+              };
 
-            var saveAsParams = {
-              operation: "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 1) // TODO: shouldn't it strip, like save does?
-              cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
-            };
+              var saveAsParams = {
+                operation: "saveas",
+                file: selectedFolder + selectedFile,
+                title: selectedTitle,
+                description: selectedDescription,
+                cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
+              };
 
-            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
+              SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
+
+            } else {
+
+              $.prompt(validationMsg, {prefix: "popup"});
+            }
           }
-          /*In case of Widgets
-           the propper means will be used
+          /**
+           * Save as Widget
            */
           else if($('input[name=saveAsRadio]:checked').val() == "widget") {
+
             selectedFolder = wd.helpers.repository.getWidgetsLocation();
-            selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
             var selectedWidgetName = $("#componentInput").val();
 
-            /* Validations */
-            var validInputs = true;
+            // Validate Widget Name
             if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
-              validInputs = false;
+
+              validationMsg += '<br>Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
+              validationFlag = false;
+
             } else if(selectedWidgetName.length == 0) {
+
+              // Try to use title
               if(selectedTitle.length == 0) {
-                $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
-                validInputs = false;
+
+                validationMsg += '<br>No widget name provided. Unable to use empty title.';
+                validationFlag = false;
+
               } else {
+
                 selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+
+                if(selectedWidgetName.length == 0) {
+
+                  validationMsg += "<br>No widget name provided. Unable to use the title, too many invalid characters.";
+                  validationFlag = false;
+                }
               }
             }
 
-            if(validInputs) {
-              if(selectedFile.indexOf(".wcdf") == -1) {
-                selectedFile += ".wcdf";
-              }
+            if(validationFlag) {
 
               CDFDDFileName = selectedFolder + selectedFile;
               myself.dashboardData.filename = CDFDDFileName;
@@ -1227,21 +1260,22 @@ var CDFDD = Base.extend({
                 file: selectedFolder + selectedFile,
                 title: selectedTitle,
                 description: selectedDescription,
-                //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
                 cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
                 widgetName: selectedWidgetName
               };
 
               SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-            }
 
+            } else {
+
+              $.prompt(validationMsg, {prefix: "popup"});
+            }
           }
 
           return false;
         }
       }
     });
-
   },
 
   saveSettingsRequest: function(wcdf) {
