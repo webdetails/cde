@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Google Maps Overlay Component</Name>
+    <IName>gMapsOverlayComponent</IName>
+    <Description>Google Maps Overlay Component (By Kleyson Rios)</Description>
+    <Category>COMMUNITYCOMPONENTS</Category>
+    <CatDescription>Community Contributions</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>2.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property name="width" type="number">width</Property>
+      <Property name="height" type="number">height</Property>
+      <Property type="boolean">executeAtStart</Property>
+      <Property type="string">htmlObject</Property>
+      <Property type="number">listeners</Property>
+      <Property type="function">postFetch</Property>
+      <Property type="function">preExecution</Property>
+      <Property type="function">postExecution</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Definition name="queryDefinition">
+        <Property type="query">dataSource</Property>
+      </Definition>
+      <Property>mapName</Property>
+      <Property>mapWidth</Property>
+      <Property>mapHeight</Property>
+      <Property>centerLatitude</Property>
+      <Property>centerLongitude</Property>
+      <Property>defaultColor</Property>
+      <Property>defaultZoomLevel</Property>
+      <Property>legend</Property>
+      <Property>legendText</Property>
+      <Property>sourceText</Property>
+      <Property>search</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="gmapsoverlay-implementation.js" />
+      <Dependencies>
+        <Dependency src="GMapComponentAsyncLoader.js" version="1.1">GMapComponentAsyncLoader</Dependency>
+      </Dependencies>
+      <Styles>
+        <Style src="gmapsoverlay.css">gMapsOverlayComponent</Style>
+      </Styles>
+      <CustomProperties>
+        <DesignerProperty>
+          <Header>
+            <Name>mapName</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Map Name</Description>
+            <Tooltip>This is the region descriptor file name that must be placed at cde/components/gmapsoverlay/map-def</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>mapHeight</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Map Height</Description>
+            <Tooltip></Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Integer</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>mapWidth</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Map Width</Description>
+            <Tooltip></Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Integer</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>centerLatitude</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Center Latitude</Description>
+            <Tooltip> Center latitude for map</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Float</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>centerLongitude</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Center Longitude</Description>
+            <Tooltip>Center Longitude for Map</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Float</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>defaultColor</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Default Color</Description>
+            <Tooltip>Default color for the map</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>defaultZoomLevel</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>6</DefaultValue>
+            <Description>Default zoom Level</Description>
+            <Tooltip></Tooltip>
+            <InputType>Integer</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Advanced>false</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>legend</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"[]"</DefaultValue>
+            <Description>Range for Lengend</Description>
+            <Tooltip></Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>ValuesArray</InputType>
+            <OutputType>Array</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>legendText</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>Legend</DefaultValue>
+            <Description>Legend Text</Description>
+            <Tooltip></Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>sourceText</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Source Text</Description>
+            <Tooltip></Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>search</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Search</Description>
+            <Tooltip> Enable Search Box</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

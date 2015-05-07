@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>Text Editor</Name>
+    <IName>TextEditorComponent</IName>
+    <Description>Text Editor</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property name="parameters">xActionArrayParameter</Property>
+      <Definition name="chartDefinition">
+      </Definition>
+      <Property>parameter</Property>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>postFetch</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+      <Property>tooltip</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="TextEditorComponent.js"/>
+      <Styles>
+        <Style version="1.0" src="component.css">textEditor</Style>
+      </Styles>
+      <Dependencies>
+        <!-- <Dependency src="lib/underscore.js" version="1.0">Underscore</Dependency>
+        <Dependency src="lib/backbone.js" version="2.0">Backbone</Dependency> -->
+      </Dependencies>
+      <CustomProperties>                
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>

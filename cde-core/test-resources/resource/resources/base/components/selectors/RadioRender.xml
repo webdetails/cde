@@ -1,0 +1,33 @@
+<DesignerComponent>
+	<Header>
+		<Name>Radiobutton Component</Name>
+		<IName>radio</IName>
+		<Description>Radio button Component</Description>
+		<Category>SELECTORS</Category>
+		<CatDescription>Selects</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>parameter</Property>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Property name="parameters">xActionArrayParameter</Property>
+			<Definition name="queryDefinition">
+				<Property>dataSource</Property>
+			</Definition>
+			<Property>postFetch</Property>
+			<Property>valuesArray</Property>
+			<Property>valueAsId</Property>
+			<Property>defaultIfEmpty</Property>
+			<Property>separator</Property>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

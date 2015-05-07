@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>xmiFile</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>XMI File</Description>
+	<Tooltip>XMI Metadata file</Tooltip>
+	<InputType>String</InputType>
+	<OutputType>String</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

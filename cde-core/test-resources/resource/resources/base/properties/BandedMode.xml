@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>BandedMode</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>compact</DefaultValue>
+	<Description>Banded Mode</Description>
+	<Tooltip>Banded Mode</Tooltip>
+	<InputType>BandedMode</InputType>
+	<OutputType>String</OutputType>
+	<Order>40</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

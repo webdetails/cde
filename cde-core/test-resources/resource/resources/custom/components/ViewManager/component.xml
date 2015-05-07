@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DesignerComponent>
+  <Header>
+    <Name>View Manager Component</Name>
+    <IName>viewManagerComponent</IName>
+    <Description>View Manager Component</Description>
+    <Category>CDF</Category>
+    <CatDescription>CDF Core Functionality</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property type="boolean">executeAtStart</Property>
+      <Property type="function">preChange</Property>
+      <Property type="function">postChange</Property>
+      <Property type="function">postFetch</Property>
+      <Property type="string">htmlObject</Property>
+      <Property type="function">preExecution</Property>
+      <Property type="function">postExecution</Property>
+      <Property type="number">listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="viewManager-implementation.js"/>
+      <Styles>
+        <Style version="1.0" src="views.css">Views</Style>
+      </Styles>
+      <Dependencies>
+        <Dependency src="dashboardViews.js" version="1.0">Dashboard Views</Dependency>
+      </Dependencies>
+      <CustomProperties>
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>
