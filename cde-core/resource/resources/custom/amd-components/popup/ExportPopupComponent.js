@@ -315,7 +315,7 @@ define([
 
       popupButtonsDiv.append(inputsHeightDiv);   
       var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
-      okButton.click(function() {    
+      okButton.click(function() {
         var dimensions, size;
         
         switch($('.exportChartPopupButtonClicked').text()) {
@@ -344,7 +344,7 @@ define([
         var _exportIframe = $('<iframe style="display:none">');
         _exportIframe.detach();
         _exportIframe[0].src = url + "&attachmentName=" +
-          myself.dataExportAttachmentName + "." + effectiveExportType +
+          myself.dataExportAttachmentName + "." + myself.chartExportType +
           "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
         _exportIframe.appendTo($('body'));     
       
