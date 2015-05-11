@@ -26,12 +26,6 @@
       <Property>listeners</Property>
       <Property>refreshPeriod</Property>
     </Model>
-    <Implementation>
-      <Dependencies>
-        <Dependency src="../../../../../common-ui/resources/web/vizapi/VizController.js" version="1">VizController</Dependency>
-        <Dependency src="../../../../../common-ui/resources/web/vizapi/DataTable.js" version="1">DataTable</Dependency>
-        <Dependency src="../../../../../common-ui/resources/web/vizapi/Events.js" version="1">Events</Dependency>
-      </Dependencies>
-    </Implementation>
+    <Implementation />
   </Contents>
 </DesignerComponent>
