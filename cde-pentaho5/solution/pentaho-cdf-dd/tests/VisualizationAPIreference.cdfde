@@ -49,29 +49,6 @@
     ]
    },
    {
-    "id": "c40e9b90-96ec-451c-f068-0698ad452e4c",
-    "type": "LayoutResourceCode",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "startupModules",
-      "type": "Id"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
-      "name": "resourceCode",
-      "value": "require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n   require([\n    'twelveDaysViz/pentaho/viz/index/Index',\n    'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(Index, Def){\n        // The \"app\" dependency is passed in as \"App\"\n        render_IndexChart.update();\n    })\n}); ",
-      "type": "Resource"
-     }
-    ]
-   },
-   {
     "id": "6b92846b-526c-cb97-0949-4551f920ae12",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
@@ -601,7 +578,7 @@
      },
      {
       "name": "html",
-      "value": "\n12 days of Visualization uses require.js to expose the visualizations<p>\nSince CDF/CDE does not use require.js at the moment, we've had to include some extra resources in the dashboard<p>\n\n<ul>\n    <li>Resource <i>requireDefineOverride</i> deletes a custom CDF implementation for the require/define methods</li>\n    <li>Resource <i>webcontext</i> brings in the Pentaho webcontext.js exposing the require.js configurations</li>\n    <li>Finally, Resource <i>startupModules</i> imports the modules that define the IndexChart visualization and register it in the Visualization API.</li>\n</ul> ",
+      "value": "\n12 days of Visualization uses require.js to expose the visualizations<p>\nSince CDF/CDE does not use require.js at the moment, we've had to include some extra resources in the dashboard<p>\n\n<ul>\n    <li>Resource <i>requireDefineOverride</i> deletes a custom CDF implementation for the require/define methods, and</li>\n    <li>Resource <i>webcontext</i> brings in the Pentaho webcontext.js exposing the require.js configurations</li>\n</ul> ",
       "type": "Html"
      },
      {
@@ -755,13 +732,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -798,6 +775,11 @@
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -885,6 +867,11 @@
       "name": "bandedMode",
       "value": "compact",
       "type": "BandedMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
