@@ -589,7 +589,7 @@ var ExportPopupComponent = PopupComponent.extend({
     
       var _exportIframe =  $('<iframe style="display:none">');
       _exportIframe.detach();
-      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + effectiveExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
+      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
       _exportIframe.appendTo($('body'));     
     
     
