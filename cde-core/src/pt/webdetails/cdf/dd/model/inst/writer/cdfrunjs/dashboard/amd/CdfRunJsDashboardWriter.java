@@ -17,7 +17,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.CdeConstants;
-import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
@@ -29,7 +28,6 @@ import pt.webdetails.cdf.dd.model.inst.CustomComponent;
 import pt.webdetails.cdf.dd.model.inst.VisualComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.render.RenderResources;
@@ -80,14 +78,14 @@ public class CdfRunJsDashboardWriter
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
       + INDENT2 + "var target, isId;" + NEWLINE
-      + INDENT2 + "if (typeof this.phElement ===\"string\") {" + NEWLINE
+      + INDENT2 + "if(typeof this.phElement === \"string\") {" + NEWLINE
       + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
       + INDENT3 + "isId = true;" + NEWLINE
       + INDENT2 + "} else {" + NEWLINE
       + INDENT3 + "target = this.phElement && this.phElement[0] ? $(this.phElement[0]) : $(this.phElement);" + NEWLINE
       + INDENT2 + "} " + NEWLINE
       + INDENT2 + "if(!target.length) { " + NEWLINE
-      + INDENT3 + "if(isId){" + NEWLINE
+      + INDENT3 + "if(isId) {" + NEWLINE
       + INDENT4 + "Logger.warn('Invalid target element id: ' + this.phElement);" + NEWLINE
       + INDENT3 + "} else {" + NEWLINE
       + INDENT4 + "Logger.warn('Target DOM object empty');" + NEWLINE
@@ -160,11 +158,12 @@ public class CdfRunJsDashboardWriter
       throw new ThingWriteException( "Could not read footer file.", ex );
     }
 
-    String resources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
-    String layout = ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
-    String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
-    String content = writeContent( resources + layout, components );
-    String header = ctx.replaceTokens( writeHeaders( content, ctx ) );
+    final String cssResources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
+    // Prepend the CSS (<style> and <link>) code to the HTML layout
+    final String layout = cssResources + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
+    final String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
+    final String content = writeContent( layout, components );
+    final String header = ctx.replaceTokens( writeHeaders( content, ctx ) );
 
     // Leave the DASHBOARD_HEADER_TAG to replace additional stuff on render.
     template = template
@@ -177,13 +176,18 @@ public class CdfRunJsDashboardWriter
     builder
       .setTemplate( template )
       .setHeader( header )
-      .setLayout( resources + layout )
+      .setLayout( layout )
       .setComponents( components )
       .setContent( content )
       .setFooter( footer )
       .setLoadedDate( ctx.getDashboard().getSourceDate() );
   }
 
+  /**
+   * @param context
+   * @param dash
+   * @returns A String containing the <style> and <link> CSS resources
+   */
   protected String writeResources( CdfRunJsDashboardWriteContext context, Dashboard dash ) {
     if ( dash.getLayoutCount() == 1 ) {
       JXPathContext docXP = dash.getLayout( "TODO" ).getLayoutXPContext();
@@ -204,7 +208,7 @@ public class CdfRunJsDashboardWriter
           }
         }
         for ( ResourceMap.Resource cssResource : cssResources ) {
-          buffer.append( cssResource.getProcessedResource() + NEWLINE );
+          buffer.append( cssResource.getProcessedResource() ).append( NEWLINE );
         }
 
         return buffer.toString();
@@ -407,21 +411,9 @@ public class CdfRunJsDashboardWriter
    * @return
    */
   protected String writeHeaders( String contents, CdfRunJsDashboardWriteContext context ) {
-    CdfRunJsDashboardWriteOptions options = context.getOptions();
 
-    DashboardWcdfDescriptor wcdf = context.getDashboard().getWcdf();
-
-    final String title = MessageFormat.format( TITLE, wcdf.getTitle() );
-    final String webcontext = MessageFormat.format( SCRIPT, writeWebcontext( "cdf", true ) );
-
-    // Get CDE headers
-    final String baseUrl = ( options.isAbsolute()
-        ? ( !StringUtils.isEmpty( options.getAbsRoot() )
-          ? options.getSchemedRoot() + "/"
-          : CdeEngine.getInstance().getEnvironment().getUrlProvider().getWebappContextRoot() )
-        : "" );
-
-    return title + NEWLINE + webcontext;
+    return MessageFormat.format( TITLE, context.getDashboard().getWcdf().getTitle() )
+        + NEWLINE + MessageFormat.format( SCRIPT, writeWebcontext( "cdf", true ) );
   }
 
   protected String writeWebcontext( String context, boolean requireJsOnly ) {
@@ -561,7 +553,9 @@ public class CdfRunJsDashboardWriter
       Dashboard dash )
     throws ThingWriteException {
 
-    final String layout = ctx.replaceTokens( this.writeLayout( ctx, dash ) );
+    final String cssResources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
+    // Prepend the CSS (<style> and <link>) code to the HTML layout
+    final String layout = cssResources + ctx.replaceTokens( this.writeLayout( ctx, dash ) );
     final String components = replaceAliasTagWithAlias(
         ctx.replaceHtmlAlias( ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
 
@@ -624,11 +618,10 @@ public class CdfRunJsDashboardWriter
     cdfRequirePaths.addAll( getRequireResourcesList().keySet() );
 
     out.append( getFileResourcesRequirePaths() )
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( getJsCodeSnippets().toString() );
+        // Output module paths and module class names
+        .append( MessageFormat.format( DEFINE_START,
+          StringUtils.join( cdfRequirePaths, "', '" ),
+          StringUtils.join( componentClassNames, ", " ) ) );
 
     if ( emptyAlias ) {
       out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,
@@ -636,12 +629,15 @@ public class CdfRunJsDashboardWriter
     } else {
       out.append( DASHBOARD_MODULE_START )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+            StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     }
+
+    final String jsCodeSnippets = getJsCodeSnippets().toString();
 
     out.append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, content ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
+        jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + content : content ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
 
