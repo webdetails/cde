@@ -560,9 +560,9 @@ var ExportPopupComponent = PopupComponent.extend({
    
     popupButtonsDiv.append(customButton);
 
-    var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width'  disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
+    var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width' disabled='true' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
     popupButtonsDiv.append(inputsWidthDiv);   
-    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
+    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
     popupButtonsDiv.append(inputsHeightDiv);   
     var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
     okButton.click(function() {    
