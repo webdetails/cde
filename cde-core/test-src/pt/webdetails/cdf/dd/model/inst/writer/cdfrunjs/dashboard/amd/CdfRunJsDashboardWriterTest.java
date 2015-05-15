@@ -79,14 +79,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
   private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
       + INDENT2 + "var target, isId;" + NEWLINE
-      + INDENT2 + "if (typeof this.phElement ===\"string\") {" + NEWLINE
+      + INDENT2 + "if(typeof this.phElement === \"string\") {" + NEWLINE
       + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
       + INDENT3 + "isId = true;" + NEWLINE
       + INDENT2 + "} else {" + NEWLINE
       + INDENT3 + "target = this.phElement && this.phElement[0] ? $(this.phElement[0]) : $(this.phElement);" + NEWLINE
       + INDENT2 + "} " + NEWLINE
       + INDENT2 + "if(!target.length) { " + NEWLINE
-      + INDENT3 + "if(isId){" + NEWLINE
+      + INDENT3 + "if(isId) {" + NEWLINE
       + INDENT4 + "Logger.warn('Invalid target element id: ' + this.phElement);" + NEWLINE
       + INDENT3 + "} else {" + NEWLINE
       + INDENT4 + "Logger.warn('Target DOM object empty');" + NEWLINE
@@ -523,7 +523,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
-    dashboardResult = new StringBuilder();
+    dashboardResult.setLength( 0 );
 
     componentClassNames = Arrays.asList(
       "Dashboard",
@@ -564,9 +564,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( dashboardResult.toString(), out );
 
+    // test with empty alias
+
     out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", true );
 
-    dashboardResult = new StringBuilder();
+    dashboardResult.setLength( 0 );
+
     dashboardResult
       .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
         + REQUIRE_CONFIG + NEWLINE )
@@ -584,6 +587,47 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( dashboardResult.toString(), out );
 
-  }
+    // test with additional JS snippet
 
+    StringBuffer jsCodeSnippet = new StringBuffer( "(function(){return;})()" );
+
+    doReturn( jsCodeSnippet ).when( dashboardWriterSpy ).getJsCodeSnippets();
+
+    out = dashboardWriterSpy.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
+
+    componentClassNames = Arrays.asList(
+      "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
+      "TestResource1" );
+    cdfRequirePaths = Arrays.asList(
+      "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
+      "TestResource1" );
+
+    dashboardResult.setLength( 0 );
+
+    dashboardResult
+      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
+        + REQUIRE_CONFIG + NEWLINE )
+        // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( DASHBOARD_MODULE_START )
+      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
+        jsCodeSnippet.toString() + NEWLINE + "fakeContent" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+  }
 }
