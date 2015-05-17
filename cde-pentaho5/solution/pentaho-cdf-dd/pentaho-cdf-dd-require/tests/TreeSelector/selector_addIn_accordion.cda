@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="getData_IdValue" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="getData_IdValue_IdGroup" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="getData_IdValue" id="getData_IdValue"
+               type="scriptable">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Output indexes="0,1" mode="include"/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    			
+String[] columnNames = new String[]{				
+	"id",	"label",	"group"	
+};				
+Class[] columnTypes = new Class[]{				
+	Float.class,	String.class,	String.class	
+};				
+				
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);				
+			
+				
+model.addRow(new Object[]{	new Float(1.1),	new String ("One"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.2),	new String ("Two"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.3),	new String ("Three"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.4),	new String ("Four"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.5),	new String ("Five"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.6),	new String ("Six"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.7),	new String ("Seven"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.8),	new String ("Eight"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(1.9),	new String ("Nine"),	new String ("Ones")	});
+model.addRow(new Object[]{	new Float(2),	new String ("Zero"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.1),	new String ("One"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.2),	new String ("Two"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.3),	new String ("Three"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.4),	new String ("Four"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.5),	new String ("Five"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.6),	new String ("Six"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.7),	new String ("Seven"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.8),	new String ("Eight"),	new String ("Twos")	});
+model.addRow(new Object[]{	new Float(2.9),	new String ("Nine"),	new String ("Twos")	});
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" connection="getData_IdValue_IdGroup"
+               id="getData_IdValue_IdGroup"
+               type="scriptable">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    				
+String[] columnNames = new String[]{					
+	"id",	"name",	"parentid",	"parentname"	
+};					
+Class[] columnTypes = new Class[]{					
+	Float.class,	String.class,	String.class,	String.class	
+};					
+					
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);					
+					
+model.addRow(new Object[]{    new String ("[Zeroes].[One]"),	new String ("One"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Two]"),	new String ("Two"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Three]"),	new String ("Three"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Four]"),	new String ("Four"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Five]"),	new String ("Five"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Six]"),	new String ("Six"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Seven]"),	new String ("Seven"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Eight]"),	new String ("Eight"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Zeroes].[Nine]"),	new String ("Nine"),	new String ("[Zeroes]"),	new String ("Zeroes")	});
+model.addRow(new Object[]{	new String ("[Ones].[Ten]"),	new String ("Ten"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Eleven]"),	new String ("Eleven"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Twelve]"),	new String ("Twelve"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Thirteen]"),	new String ("Thirteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Fourteen]"),	new String ("Fourteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Fifteen]"),	new String ("Fifteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Sixteen]"),	new String ("Sixteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Seventeen]"),	new String ("Seventeen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Eighteen]"),	new String ("Eighteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Ones].[Nineteen]"),	new String ("Nineteen"),	new String ("[Ones]"),	new String ("Ones")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty]"),	new String ("Twenty"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-one]"),	new String ("Twenty-one"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-two]"),	new String ("Twenty-two"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-three]"),	new String ("Twenty-three"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-four]"),	new String ("Twenty-four"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-five]"),	new String ("Twenty-five"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-six]"),	new String ("Twenty-six"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-seven]"),	new String ("Twenty-seven"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-eight]"),	new String ("Twenty-eight"),	new String ("[Twos]"),	new String ("Twos")	});
+model.addRow(new Object[]{	new String ("[Twos].[Twenty-nine]"),	new String ("Twenty-nine"),	new String ("[Twos]"),	new String ("Twos")	});
+
+return model;</Query>
+   </DataAccess>
+</CDADescriptor>

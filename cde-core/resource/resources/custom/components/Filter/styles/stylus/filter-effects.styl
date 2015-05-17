@@ -1,0 +1,15 @@
+
+/*
+ * Effects
+ */
+ 
+
+.filter-root-container.collapsed
+  transition z-index 10ms cubic-bezier(0.25, 0.25, 0.75, 0.75) .3s
+    
+.filter-root-container.collapsed > .filter-root-body
+  transition max-height .3s cubic-bezier(0.42, 0, 0.58, 1)
+  
+.filter-root-container.expanded > .filter-root-body
+  transition max-height .3s cubic-bezier(0.42, 0, 0.58, 1)
+

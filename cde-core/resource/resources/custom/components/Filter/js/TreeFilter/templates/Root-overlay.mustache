@@ -1,0 +1,9 @@
+  {{#useOverlay}}
+<div class="filter-overlay
+            {{^alwaysExpanded}}
+            {{#isCollapsed}} collapsed{{/isCollapsed}}
+            {{^isCollapsed}} expanded {{/isCollapsed}}
+            {{/alwaysExpanded}}
+            {{#alwaysExpanded}} always-expanded{{/alwaysExpanded}}
+            " />
+{{/useOverlay}}

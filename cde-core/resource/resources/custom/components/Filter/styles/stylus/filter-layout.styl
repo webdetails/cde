@@ -1,0 +1,568 @@
+$theme-background = #FFFFFF
+$theme-border-normal = #C6C6C6
+$theme-border-hover = #005CA7
+$theme-border-selected = #005CA7
+
+$theme-background-controls = #F2F2F2
+$theme-icon-size = 14px
+$theme-item-hover = #E6E6E6
+$theme-item-selected = #F4F4F4
+
+$theme-item-icon-normal = #C6C6C6
+$theme-item-icon-hover = #005CA7
+$theme-item-icon-selected = #005CA7
+
+$theme-title-color = #4D4D4D
+$theme-title-font-size = 10px
+$theme-text-color = #616161
+
+$theme-header-font-size = 14px
+$theme-content-font-size = 13px
+
+$theme-button-text = #FFFFFF
+$theme-button-background-normal = #616161
+$theme-button-border-normal = #616161
+$theme-button-background-hover = #7E7E7E
+$theme-button-border-hover = #7E7E7E
+$theme-button-text-disabled = #CECECE
+$theme-button-background-disabled = #EFEFEF
+$theme-button-border-disabled = #E7E7E7
+
+user-select(x)
+  -webkit-touch-callout x
+  -webkit-user-select x
+  -khtml-user-select x
+  -moz-user-select x
+  -ms-user-select x
+  user-select x
+
+box-sizing(x)
+  -webkit-box-sizing x
+  -moz-box-sizing x
+  box-sizing x
+
+border-radius(x)
+  -webkit-border-radius x
+  -moz-border-radius x
+  border-radius x
+
+/*
+ * Layout, positioning
+ */
+ 
+.filter-root-container
+  position relative
+
+.filter-root-container
+  z-index 10
+  &.expanded
+    z-index 1000
+
+.filter-overlay
+  // background orange
+  // opacity 0.3
+.filter-overlay.expanded
+  position fixed
+  top 0
+  left 0
+  height 100%
+  width 100%
+  background #FFFFFF
+  opacity 0.2
+  
+.filter-overlay.collapsed
+  display none
+  
+.filter-title
+  font-size $theme-title-font-size
+  color $theme-text-color
+  margin-bottom 5px
+  
+.filter-root-header
+  position relative
+  cursor pointer
+  user-select none
+  font-size $theme-header-font-size
+  
+.filter-root-container.disabled .filter-root-header
+  cursor default
+  
+.filter-root-header-label
+  padding 5px 0 5px 10px
+  line-height 22px
+  margin-right 30px
+  .filter-root-info-selected-items 
+    white-space nowrap
+    overflow hidden
+    text-overflow ellipsis
+    display block
+
+  
+
+  
+.filter-collapse-icon
+  position absolute
+  bottom 0
+  top 0
+  margin auto 0
+  right 10px
+  background  url("../images/filter-arrow.svg") no-repeat left center
+  width 10px
+  height 10px
+  
+.no-svg .filter-collapse-icon
+  background  url("../images/filter-arrow.png") no-repeat left center
+  
+.filter-collapse-icon.collapsed
+  background-position left center
+  
+.filter-root-header:hover  > .filter-collapse-icon.collapsed
+//.filter-group-header:hover > .filter-collapse-icon.collapsed
+.filter-collapse-icon.collapsed:hover
+  background-position -10px center
+  
+.filter-collapse-icon.expanded
+  background-position -20px center
+  
+.filter-root-header:hover  > .filter-collapse-icon.expanded
+//.filter-group-header:hover > .filter-collapse-icon.expanded
+.filter-collapse-icon.expanded:hover
+  background-position -30px center
+  
+.filter-collapse-icon.always-expanded
+.filter-collapse-icon.disabled
+  display none
+  
+
+  
+.filter-root-body
+  // margin-top 1px
+  position absolute
+  box-sizing border-box
+  // background #ffffff
+  width 100%
+  padding-bottom 0
+  font-size $theme-content-font-size
+  // -webkit-box-shadow 2px 2px 2px 0 rgba(0,0,0,0.3) 
+  // box-shadow 2px 2px 2px 0 rgba(0,0,0,0.3)
+  
+.filter-root-container.always-expanded > .filter-root-body
+  position relative
+.filter-root-container.disabled > .filter-root-body
+  display none
+.filter-root-container.collapsed > .filter-root-body
+  max-height 0
+  overflow hidden
+  border-bottom none
+  
+.filter-root-container.expanded > .filter-root-body
+  max-height 600px
+  overflow hidden
+  
+.filter-root-control
+  width 100%
+.filter-controls
+  position relative
+  padding 15px
+  
+  .filter-control-buttons
+    padding-bottom 15px
+    position relative
+  .filter-control-button
+    width 50%
+    position relative
+    display inline-block
+    &:first-child
+      width 40%
+      padding 0 7px 0 0
+    &:last-child
+      width 60%
+      padding 0 0 0 7px
+  .filter-control-button > .pristine
+    cursor default 
+  .filter-control-button > .dirty
+    cursor pointer
+  .filter-btn-cancel,
+  .filter-btn-apply
+    padding 4px 0
+    outline none
+    width 100%
+    font-size 10px
+  .filter-btn-cancel
+  .filter-btn-apply.dirty
+    background $theme-button-background-normal
+    border 1px solid $theme-button-border-normal
+    color $theme-button-text
+    &:hover
+      background $theme-button-background-hover
+      border 1px solid $theme-button-border-hover
+      cursor pointer
+  .filter-btn-apply.pristine
+    background $theme-button-background-disabled
+    border 1px solid $theme-button-border-disabled
+    color $theme-button-text-disabled
+    cursor default
+
+    
+  .filter-filter
+    position relative
+    //margin 10px
+    .filter-filter-input
+      box-sizing border-box
+      padding: 0 30px;
+      width: 100%;
+      line-height: 22px;
+    .filter-filter-icon
+    .filter-filter-clear
+      position absolute
+      top 0
+      bottom 0
+      margin: auto 0
+    .filter-filter-icon
+      width 12px
+      height 12px
+      pointer-events none
+      left 10px
+      background  url("../images/search-icon.svg") no-repeat center center
+    .no-svg .filter-filter-icon
+      background  url("../images/search-icon.png") no-repeat center center
+    .filter-filter-clear
+      width 10px
+      height 10px
+      cursor pointer
+      right 10px
+      background  url("../images/close-icon.svg")
+      background-repeat no-repeat
+      background-position left center
+      &:hover
+        background-position right center
+    .no-svg .filter-filter-clear
+      background  url("../images/close-icon.png")
+
+.filter-root-selection
+  position relative
+.multi-select .filter-root-selection
+  padding 7px 10px
+  margin-right 20px
+  user-select none
+  margin-top 10px
+  
+.filter-selected-items
+  padding 10px
+.filter-selected-item
+  padding 5px 10px
+  background $theme-item-selected
+  border 1px solid $theme-border-selected
+  margin 5px
+  border-radius 10px
+  
+    
+.filter-group-container
+  //padding-left 20px
+  .filter-group-header,
+  .filter-group-footer
+    position relative
+    // margin 10px
+  .filter-group-title
+    font-size 16px
+    padding 10px 5px
+  .filter-btn-more-data
+    padding 10px
+    width 100%
+  .filter-group-selection
+    padding 5px 10px
+    
+.filter-item-container
+  padding 0
+.filter-item-body
+  position relative
+  padding 7px 10px  
+  user-select none
+  cursor pointer
+.single-select .filter-item-container.all-selected .filter-item-body 
+  cursor default
+.filter-root-selection-label
+.filter-group-label
+.filter-item-label
+  margin 0 ($theme-icon-size + 15px)
+  line-height 18px
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+.filter-root-selection-label
+.filter-group-label
+  font-weight 600
+.filter-item-only-this
+.filter-item-value
+  position absolute
+  top 0
+  bottom 0
+  margin auto 0
+  height 22px
+  line-height 22px
+  font-size 10px
+.filter-item-value
+  right 30px
+  
+.filter-root-selection-value
+.filter-group-selection-value
+  position absolute
+  right 40px
+  bottom 0
+  line-height 18px
+  font-weight 600
+.filter-item-only-this
+  color gray
+  right 15px
+  visibility hidden
+.filter-item-container:hover .filter-item-only-this
+  color $theme-border-hover
+  visibility visible
+.filter-item-only-this:hover
+  text-decoration underline
+  cursor pointer
+
+/****************************
+* Item shading
+*/
+.filter-item-container:hover,
+.filter-item-container.all-selected:hover
+  background $theme-item-hover
+
+.filter-root-control .filter-root-selection:hover
+.filter-group-header .filter-group-selection:hover
+.filter-item-container:hover 
+  background $theme-item-hover
+  cursor pointer
+
+.filter-root-control.some-selected .filter-root-selection
+.filter-group-header.some-selected .filter-group-selection
+.filter-item-container.some-selected
+.filter-root-control.all-selected .filter-root-selection
+.filter-group-header.all-selected .filter-group-selection
+.filter-item-container.all-selected
+  background $theme-item-selected
+  color $theme-border-hover
+  &:hover
+    background $theme-item-hover
+
+    
+/*
+ * Checkboxes
+ */
+.filter-root-selection-icon
+.filter-group-selection-icon
+.filter-item-selection-icon
+  float left
+  width $theme-icon-size
+  height $theme-icon-size
+  cursor pointer
+  border 1px solid $theme-border-normal
+  position absolute
+  left 15px
+  top 0
+  bottom 0
+  margin auto 0
+
+.filter-root-container:hover .filter-root-selection-icon
+.filter-group-container:hover .filter-group-selection-icon
+.filter-item-container:hover .filter-item-selection-icon
+  border-color $theme-border-hover
+    
+.filter-root-selection-icon.all-selected    
+.filter-group-selection-icon.all-selected
+.filter-item-container.all-selected .filter-item-selection-icon
+  border-color $theme-border-selected 
+
+  
+.filter-root-container.multi-select    
+  .filter-root-selection-icon
+  .filter-group-selection-icon
+  .filter-item-selection-icon
+    border-radius 0
+    background-color #FFFFFF 
+    background-image url("../images/checkbox-sprite.svg") 
+    background-repeat no-repeat 
+    background-position left center
+  
+  .filter-root-selection-icon.all-selected
+  .filter-group-selection-icon.all-selected
+  .filter-item-container.all-selected .filter-item-selection-icon
+    background-color $theme-border-hover
+    background-position center center
+
+  .filter-root-selection-icon.some-selected
+  .filter-group-selection-icon.some-selected
+  .filter-item-container.some-selected .filter-item-selection-icon
+    background-position right center
+  
+.no-svg .filter-root-container.multi-select    
+  .filter-root-selection-icon
+  .filter-group-selection-icon
+  .filter-item-selection-icon
+    background-image url("../images/checkbox-sprite.png") 
+
+    
+.filter-root-container.single-select
+  .filter-root-selection-icon
+  .filter-group-selection-icon
+  .filter-item-container .filter-item-selection-icon
+    border-radius 100%
+    border 1px solid $theme-border-normal
+
+    
+.filter-root-container.single-select
+  .filter-item-container:hover .filter-item-selection-icon
+    border 1px solid $theme-border-hover
+  .filter-item-container.all-selected .filter-item-selection-icon
+    border 1px solid $theme-border-normal !important
+
+
+    
+  .filter-root-selection-icon.none-selected
+  .filter-group-selection-icon.none-selected
+  .filter-item-container.none-selected .filter-item-selection-icon
+    background #ffffff
+    
+  .filter-root-selection-icon.all-selected
+  .filter-group-selection-icon.all-selected
+  .filter-item-container.all-selected .filter-item-selection-icon
+    //background $theme-border-selected
+    
+  .filter-root-selection-icon.all-selected > div
+  .filter-group-selection-icon.all-selected > div
+  .filter-item-container.all-selected .filter-item-selection-icon > div
+    width 6px
+    height 6px
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+    margin auto
+    border-radius 100%
+    background $theme-border-selected
+  
+  .filter-root-selection-icon.some-selected
+  .filter-group-selection-icon.some-selected
+  .filter-item-container.some-selected .filter-item-selection-icon
+    background url("../images/24px/collapse.png") no-repeat 50% 50%
+    background-position -24px 50%
+    background $theme-border-selected
+/***************************
+ * Colors
+ */
+.filter-root-container
+  background $theme-background
+  
+.filter-root-header
+  border 1px solid $theme-border-normal
+  &:hover
+    border-color $theme-border-hover
+    
+.always-expanded .filter-root-header
+.always-expanded .filter-root-header:hover
+.disabled .filter-root-header
+.disabled .filter-root-header:hover
+  border-color $theme-border-normal
+  cursor default
+
+.filter-root-body
+  background $theme-background
+  border 1px solid $theme-border-normal
+  border-top none
+  
+.filter-controls
+  background $theme-background-controls
+  .filter-filter
+    .filter-filter-input
+      outline none
+      border 1px solid $theme-border-normal
+    .filter-filter-input:hover
+    .filter-filter-input:focus
+      border-color $theme-border-hover
+
+.filter-group-container .filter-controls
+  display none
+
+    
+.filter-root-notification
+  padding 20px
+  border-top 1px solid gray
+
+.filter-root-info-number-selected-items
+  color #333333
+.filter-root-info-number-items
+  color #aaaaaa
+.filter-item-container
+  font-size $theme-content-font-size
+
+  
+// .filter-group-collapse
+//   width 20px
+//   height 20px
+//   background blue
+//   float right
+
+/************************
+ *  Scrollbar 
+ *****/
+
+.filter-root-items-container.mCustomScrollbar
+  height 200px
+  padding 10px 0
+  .mCSB_inside > .mCSB_container 
+    margin-right 20px
+  .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar 
+    width 6px
+  
+    
+/************************  
+ *  Notifications
+ */
+ 
+.filter-root-footer > .filter-busy
+  //margin-top -100px
+  height 100px
+  width 100%
+  background  url("../images/waiting.gif") no-repeat 50% 50%
+  background-position -140px -100px
+  // position absolute
+  // bottom 0
+  // z-index 1001
+
+  
+.filter-root-notification
+  background lightyellow
+  padding 20px
+  border-top 1px solid gray
+
+/**
+ * Preserve filter length, at the cost of hiding items
+ */
+// .filter-root-notification 
+//   position absolute
+//   bottom 0
+//   z-index 1001
+  
+.filter-notification-highlight
+  color: red
+
+
+/************************
+ * Custom
+ */
+ 
+// .filter
+//   width 300px
+
+
+// Hide group collapse icons
+// .filter-group-container .filter-collapse-icon
+//   display none
+
+// Hide values 
+.filter-root-selection-value
+.filter-group-selection-value
+.filter-item-value
+  //display none

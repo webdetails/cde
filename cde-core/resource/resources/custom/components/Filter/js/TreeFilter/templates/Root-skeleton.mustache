@@ -1,0 +1,43 @@
+<div class="filter-title">{{{strings.title}}}</div>
+<div class="filter-root-container
+            {{#className}} {{className}}{{/className}}
+            {{#styles}} {{.}} {{/styles}}
+            {{#isDisabled}} disabled{{/isDisabled}}
+            ">
+  {{#useOverlay}}
+<div class="filter-overlay
+            {{^alwaysExpanded}}
+            {{#isCollapsed}} collapsed{{/isCollapsed}}
+            {{^isCollapsed}} expanded {{/isCollapsed}}
+            {{/alwaysExpanded}}
+            {{#alwaysExpanded}} always-expanded{{/alwaysExpanded}}
+            " />
+{{/useOverlay}}
+  <div class="filter-root-header
+              {{#isPartiallySelected}} some-selected{{/isPartiallySelected}}
+              {{^isPartiallySelected}}
+              {{#isSelected}} all-selected{{/isSelected}}
+              {{^isSelected}} none-selected{{/isSelected}}
+              {{/isPartiallySelected}}
+
+              {{^alwaysExpanded}}
+              {{#isCollapsed}} collapsed{{/isCollapsed}}
+              {{^isCollapsed}} expanded {{/isCollapsed}}
+              {{/alwaysExpanded}}
+              {{#alwaysExpanded}} always-expanded{{/alwaysExpanded}}
+              ">
+    <div class="filter-root-header-label">
+      {{{header}}}
+    </div>
+    <div class="filter-root-collapse-icon" />
+  </div>
+
+  <div class="filter-root-body" >
+    <div class="filter-root-control" />
+    <div class="filter-root-items-container">
+      <div class="filter-root-items" />
+    </div>
+    <div class="filter-root-footer"> {{{footer}}} </div>
+  </div>
+
+</div>
