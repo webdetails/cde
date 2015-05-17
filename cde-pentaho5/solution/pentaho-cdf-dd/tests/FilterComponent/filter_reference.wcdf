@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+	<title>filter_reference</title>
+	<description>filter</description>
+	<author></author>
+	<style>WDDocs</style>
+  	<rendererType>blueprint</rendererType>
+	<widget>false</widget>
+	<widgetName></widgetName>
+	<widgetParameters></widgetParameters>
+</cdf>
