@@ -58,7 +58,7 @@ wd.cde.endpoints = {
   },
 
   isEmptyFilePath: function(filePath) {
-    return (!filePath || "/null/null/null" == filePath);
+    return (!filePath || "/null/null/null" == filePath || encodeURIComponent("/null/null/null") == filePath );
   },
 
   getSaikuUiPluginUrl: function() {
@@ -453,7 +453,7 @@ var SaveRequests = {
           var solutionPath = selectedFolder.split("/");
           myself.initStyles(function() {
             //cdfdd.setExitNotification(false);
-            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
         } else {
           throw json.result;
@@ -501,7 +501,7 @@ var SaveRequests = {
           wcdf.widget = true;
           myself.saveSettingsRequest(wcdf);
           myself.initStyles(function() {
-            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
         } else {
           throw json.result;

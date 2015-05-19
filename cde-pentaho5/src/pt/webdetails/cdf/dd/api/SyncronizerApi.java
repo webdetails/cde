@@ -47,6 +47,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/syncronizer" )
@@ -91,6 +92,8 @@ public class SyncronizerApi { //TODO: synchronizer?
     boolean isPreview = false;
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
 
       // check access to path folder
       String fileDir =
@@ -235,7 +238,10 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     boolean isPreview = false;
 
-    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+    if ( !file.isEmpty() &&
+        !( file.equals( UNSAVED_FILE_PATH ) || Utils.getURLDecoded( file ).equals( UNSAVED_FILE_PATH ) ) ){
+
+      file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
 
       if ( StringUtils.isEmpty( title ) ) {
         title = FilenameUtils.getBaseName( file );

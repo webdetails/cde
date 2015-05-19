@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,7 +41,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class Utils {
 
@@ -388,7 +389,7 @@ public class Utils {
     IReadAccess readAccess = null;
     if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
         .endsWith( ".cdfde" ) ) ) {
-      readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
+      readAccess = getSystemReadAccess( filePath.split( "/" )[2], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
     }
@@ -400,7 +401,7 @@ public class Utils {
     if ( CdeEngine.getEnv().getUserSession().isAdministrator() && (
         filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
         .endsWith( ".cdfde" ) ) ) ) {
-      rwAccess = getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
+      rwAccess = getSystemRWAccess( filePath.split( "/" )[2], null );
     } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
 
       if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
@@ -459,6 +460,21 @@ public class Utils {
 
   public static ICdeEnvironment getCdeEnvironment() {
     return CdeEngine.getInstance().getEnvironment();
+  }
+
+  public static String getURLDecoded( String s ){
+    return getURLDecoded( s , CharsetHelper.getEncoding() );
+  }
+
+  public static String getURLDecoded( String s, String enc ){
+    if( s != null ){
+      try {
+        return URLDecoder.decode( s, ( enc != null ? enc : CharsetHelper.getEncoding() ) );
+      } catch ( Exception e ){
+        /* do nothing, assume this value as-is */
+      }
+    }
+    return s;
   }
 
 }
