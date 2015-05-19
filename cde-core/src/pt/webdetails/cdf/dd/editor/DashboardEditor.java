@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.editor;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class DashboardEditor {
 
@@ -95,7 +97,8 @@ public class DashboardEditor {
     } catch ( Exception e ) {
       logger.fatal( "Unable to get CDF dependencies", e );
     }
-    tokens.put( CdeConstants.FILE_NAME_TAG, DashboardWcdfDescriptor.toStructurePath( wcdfPath ) );
+    tokens.put( CdeConstants.FILE_NAME_TAG,
+        URLEncoder.encode( DashboardWcdfDescriptor.toStructurePath( wcdfPath ), CharsetHelper.getEncoding() ) );
 
     IUrlProvider urlProvider = CdeEngine.getEnv().getPluginEnv().getUrlProvider();
     final String apiPath = urlProvider.getPluginBaseUrl();
