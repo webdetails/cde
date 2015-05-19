@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/syncronizer" )
@@ -91,6 +93,12 @@ public class SyncronizerApi { //TODO: synchronizer?
     boolean isPreview = false;
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      try {
+        file = URLDecoder.decode( file, CharsetHelper.getEncoding() );
+      } catch ( Exception e ){
+        /* do nothing */
+      }
 
       // check access to path folder
       String fileDir =
@@ -236,6 +244,12 @@ public class SyncronizerApi { //TODO: synchronizer?
     boolean isPreview = false;
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      try {
+        file = URLDecoder.decode( file, CharsetHelper.getEncoding() );
+      } catch ( Exception e ){
+        /* do nothing */
+      }
 
       if ( StringUtils.isEmpty( title ) ) {
         title = FilenameUtils.getBaseName( file );

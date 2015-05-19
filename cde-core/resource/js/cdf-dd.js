@@ -795,9 +795,11 @@ var CDFDD = Base.extend({
       return;
     }
 
-    var fullPath = CDFDDFileName.split("/");
+    var separator = CDFDDFileName.indexOf( '%2F' ) != -1 ? '%2F' /* separator in a uri encoded path */ : '/' /*  default non encoded path */ ;
+
+    var fullPath = CDFDDFileName.split( separator );
     var solution = fullPath[1];
-    var path = fullPath.slice(2, fullPath.length - 1).join("/");
+    var path = fullPath.slice(2, fullPath.length - 1).join( separator );
     var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.wcdf");
 
     this.logger.info("Saving temporary dashboard...");

@@ -507,7 +507,7 @@ var SaveRequests = {
           }
           var solutionPath = selectedFolder.split("/");
           myself.initStyles(function() {
-            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") + selectedFile + '/edit';
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") +  encodeURIComponent( selectedFile ) + '/edit';
           });
         } else {
           throw result && result.result;
