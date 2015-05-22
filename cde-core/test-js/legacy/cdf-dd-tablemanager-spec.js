@@ -220,9 +220,7 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
 
     it("canMoveInto", function() {
       var testCanMoveInto = function(dragIds, dropId, expectedResult) {
-        var L = dragIds.length;
-        alert(dropId)
-        for (var i = 0; i < L; i++) {
+        for (var i = 0, L = dragIds.length; i < L; i++) {
           expect(tableManager.canMoveInto(dragIds[i], dropId)).toBe(expectedResult);
         }
       }
@@ -230,8 +228,8 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
       testCanMoveInto(['row', 'html', 'image', 'space', 'freeForm', 'bootstrapPanel'], 'freeForm', true);
       testCanMoveInto(['resource', 'col', 'col-2'], 'freeForm', false);
 
-      testCanMoveInto(['col', 'col-2', 'html', 'image', 'freeForm', 'bootstrapPanel'], 'row', true);
-      testCanMoveInto(['resource', 'row', 'space'], 'row', false);
+      testCanMoveInto(['col', 'col-2'], 'row', true);
+      testCanMoveInto(['html', 'image', 'freeForm', 'bootstrapPanel', 'resource', 'row', 'space'], 'row', false);
 
       testCanMoveInto(['row', 'html', 'image', 'space', 'freeForm', 'bootstrapPanel'], 'col', true);
       testCanMoveInto(['resource', 'col', 'col-2'], 'col', false);
@@ -254,8 +252,8 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
 
       testCanMoveTo(['resource', 'row', 'col', 'col-2', 'html', 'image', 'space', 'freeForm', 'bootstrapPanel'], 'freeForm', false);
 
-      testCanMoveTo(['resource', 'col', 'col-2', 'html', 'image', 'freeForm', 'bootstrapPanel'], 'row', false);
-      testCanMoveTo(['row', 'space'], 'row', true);
+      testCanMoveTo(['resource', 'col', 'col-2'], 'row', false);
+      testCanMoveTo(['row', 'space', 'html', 'image', 'freeForm', 'bootstrapPanel'], 'row', true);
 
       testCanMoveTo(['resource', 'row', 'html', 'image', 'space', 'freeForm', 'bootstrapPanel'], 'col', false);
       testCanMoveTo(['col', 'col-2'], 'col', true);

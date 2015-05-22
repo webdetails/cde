@@ -18,9 +18,11 @@ import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.Mockito.mock;
 
 public class BootstrapColumnRenderTest extends TestCase {
 
@@ -28,11 +30,16 @@ public class BootstrapColumnRenderTest extends TestCase {
 
   private class BootstrapColumnRenderForTest extends BootstrapColumnRender {
 
-    private String bootstrapCss;
+    private Map<String, String> properties = new HashMap<String, String>();
 
-    public BootstrapColumnRenderForTest( JXPathContext context ) {
+    public BootstrapColumnRenderForTest( JXPathContext context) {
       super( context );
-      this.bootstrapCss = "";
+    }
+
+    @Override
+    protected String getPropertyString( String prop ) {
+      String value = this.properties.get( prop );
+      return value != null ? value : "";
     }
 
     @Override
@@ -40,13 +47,8 @@ public class BootstrapColumnRenderTest extends TestCase {
       return false;
     }
 
-    @Override
-    protected String getBootstrapClassString() {
-      return this.bootstrapCss;
-    }
-
-    private void setBootstrapCss( String css ) {
-      this.bootstrapCss = " class='" + css + "'";
+    private void addProperty( String prop, String value ) {
+      this.properties.put( prop, value );
     }
 
     private void setPropertyBagClass( String css ) {
@@ -56,7 +58,7 @@ public class BootstrapColumnRenderTest extends TestCase {
 
   @Before
   public void setUp() throws Exception {
-    JXPathContext context = Mockito.mock( JXPathContext.class );
+    JXPathContext context = mock( JXPathContext.class );
     renderForTest = new BootstrapColumnRenderForTest( context );
   }
 
@@ -65,14 +67,14 @@ public class BootstrapColumnRenderTest extends TestCase {
     renderForTest.processProperties();
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div><div >", div );
+    Assert.assertEquals( "<div class='col-xs-12'><div >", div );
 
   }
 
   @Test
   public void testRenderStartWithBootstrapCss() {
 
-    renderForTest.setBootstrapCss( "col-xs-5" );
+    renderForTest.addProperty( "bootstrapExtraSmall", "5" );
     renderForTest.processProperties();
 
     String div = renderForTest.renderStart();
@@ -88,14 +90,14 @@ public class BootstrapColumnRenderTest extends TestCase {
 
     String div = renderForTest.renderStart();
 
-    Assert.assertEquals( "<div><div  class='span-6 ' >", div );
+    Assert.assertEquals( "<div class='col-xs-12'><div  class='span-6 ' >", div );
   }
 
   @Test
   public void testRenderStartWithAll() {
 
     renderForTest.setPropertyBagClass( "span-6" );
-    renderForTest.setBootstrapCss( "col-xs-5" );
+    renderForTest.addProperty( "bootstrapExtraSmall", "5" );
     renderForTest.processProperties();
 
     String div = renderForTest.renderStart();

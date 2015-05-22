@@ -59,6 +59,8 @@ public class BootstrapColumnRender extends DivRender {
 
     if ( !getPropertyString( "bootstrapExtraSmall" ).equals( "" ) ) {
       css += "col-xs-" + getPropertyString( "bootstrapExtraSmall" );
+    } else {
+      css += "col-xs-12";
     }
     if ( !getPropertyString( "bootstrapSmall" ).equals( "" ) ) {
       css += " col-sm-" + getPropertyString( "bootstrapSmall" );
@@ -75,7 +77,6 @@ public class BootstrapColumnRender extends DivRender {
     if ( lastColumn() ) {
       css += " last";
     }
-
 
     return ( css.equals( "" ) ? css : " class='" + css + "'" );
   }
