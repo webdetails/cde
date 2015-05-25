@@ -95,7 +95,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   public CdfRunJsDashboardWriteContext withIndent( String indent ) {
     return CdeEngine.getInstance().getEnvironment()
-      .getCdfRunJsDashboardWriteContext( this, indent );
+      .getCdfRunJsDashboardWriteContext( getFactory(), indent, _bypassCacheRead, _dash, _options );
   }
 
   public String getIndent() {
@@ -169,7 +169,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
     return content
       .replaceAll( SHORT_C_TAG, COMPONENT_PREFIX + "$1" )
-      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + "$1")
+      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + "$1" )
       .replaceAll( SHORT_H_TAG, aliasAndName )
       .replaceAll( SHORT_P_TAG, "$1" )
       .replaceAll( LONG_H_TAG, aliasAndName )

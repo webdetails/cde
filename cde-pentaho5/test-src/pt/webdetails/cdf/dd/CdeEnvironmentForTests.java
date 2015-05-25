@@ -21,7 +21,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.PentahoCdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.testUtils.ContentAccessFactoryForTests;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.context.api.IUrlProvider;
