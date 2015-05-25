@@ -11,27 +11,18 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
-import org.apache.commons.lang.StringUtils;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 
 public class PentahoCdfRunJsDashboardWriteContextForTesting extends PentahoCdfRunJsDashboardWriteContext {
   public PentahoCdfRunJsDashboardWriteContextForTesting(
-      IThingWriterFactory factory,
-      String indent, boolean bypassCacheRead, Dashboard dash,
-      CdfRunJsDashboardWriteOptions options ) {
+    IThingWriterFactory factory,
+    String indent, boolean bypassCacheRead, Dashboard dash,
+    CdfRunJsDashboardWriteOptions options ) {
     super( factory, indent, bypassCacheRead, dash, options );
-  }
-
-  @Override
-  protected String getRoot() {
-    return this._options.isAbsolute() ?
-      ( !StringUtils.isEmpty( this._options.getAbsRoot() ) ?
-        ( this._options.getSchemedRoot() + "/pentaho/plugin/pentaho-cdf-dd/" )
-        : "/pentaho/plugin/pentaho-cdf-dd/")
-      : "/pentaho/plugin/pentaho-cdf-dd/";
   }
 
   @Override
