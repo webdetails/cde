@@ -34,7 +34,8 @@ public class EmbeddedHeadersGenerator {
   private final String CDF_LIB_PATH = "content/pentaho-cdf/js/lib/cdf-lib-require-js-cfg.js";
   private final String CDF_PATH = "content/pentaho-cdf/js/cdf-require-js-cfg.js";
 
-  private final String CDE_PATH = "content/pentaho-cdf-dd/js/cde-pentaho-require-js-cfg.js";
+  private final String CDE_CORE_PATH = "content/pentaho-cdf-dd/js/cde-core-require-js-cfg.js";
+  private final String CDE_PENTAHO_PATH = "content/pentaho-cdf-dd/js/cde-pentaho-require-js-cfg.js";
 
   private final String REQUIRE_PATH = "content/common-ui/resources/web/require.js";
   private final String REQUIRE_START_PATH = "content/common-ui/resources/web/require-cfg.js";
@@ -84,7 +85,9 @@ public class EmbeddedHeadersGenerator {
       .append( "document.write(\"<script language='javascript' type='text/javascript' src='" )
       .append( fullQualifiedURL ).append( CDF_LIB_PATH ).append( "'></script>\");\n" )
       .append( "document.write(\"<script language='javascript' type='text/javascript' src='" )
-      .append( fullQualifiedURL ).append( CDE_PATH ).append( "'></script>\");\n" )
+      .append( fullQualifiedURL ).append( CDE_CORE_PATH ).append( "'></script>\");\n" )
+      .append( "document.write(\"<script language='javascript' type='text/javascript' src='" )
+      .append( fullQualifiedURL ).append( CDE_PENTAHO_PATH ).append( "'></script>\");\n" )
       .append( "document.write(\"<script language='javascript' type='text/javascript' src='" )
       .append( fullQualifiedURL ).append( COMMON_UI_START_PATH ).append( "'></script>\");\n" )
       .append( "document.write(\"<script language='javascript' type='text/javascript' src='" )
