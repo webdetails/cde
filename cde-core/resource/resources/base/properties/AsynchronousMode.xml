@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>asynchronousMode</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>"true"</DefaultValue>
+    <Description>Asynchronous Mode</Description>
+    <Tooltip>Fetch query data with a asynchronous call if true, synchronous otherwise</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>44</Order>
+    <Advanced>true</Advanced>
+    <Version>1.0</Version>
+  </Header>
+</DesignerProperty>
