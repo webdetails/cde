@@ -113,7 +113,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
   private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
-  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = ''{1}'';";
+  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
+    + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
   private static CdfRunJsDashboardWriter dashboardWriter;
@@ -176,8 +177,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     dashboardResult
       .append( REQUIRE_START )
-      .append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE )
-      .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
+      .append( "['" ).append( StringUtils.join( cdfRequirePaths, "', '" ) ).append( "']," ).append( NEWLINE )
+      .append( "function(" ).append( StringUtils.join( componentClassNames, ", " ) ).append( ") {" ).append( NEWLINE )
       .append( "window.dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -185,8 +186,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( out, dashboardResult.toString() );
 
-
-    // test with additional require configurations
+    // test with additional requireJS configurations
 
     testComponentList = new LinkedHashMap<String, String>();
     testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
@@ -195,7 +195,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     dashboardWriter.setComponentList( testComponentList );
 
-    dashboardWriter.addRequireResource( "TestResource1", "TestResourcePath1" );
+    dashboardWriter.addRequireJsResource( "cde/resources/TestResource1", "/TestResourcePath1" );
 
     out = dashboardWriter.wrapRequireDefinitions( "fakeContent" );
 
@@ -224,14 +224,71 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
-      "TestResource1" );
+      "cde/resources/TestResource1" );
 
     dashboardResult
-      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" ).append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] =" )
+      .append( " CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( REQUIRE_START )
-      .append( "['" + StringUtils.join( cdfRequirePaths, "', '" ) + "']" + "," ).append( NEWLINE )
-      .append( "function(" + StringUtils.join( componentClassNames, ", " ) + ") {" ).append( NEWLINE )
+      .append( "['" ).append( StringUtils.join( cdfRequirePaths, "', '" ) ).append( "']," ).append( NEWLINE )
+      .append( "function(" ).append( StringUtils.join( componentClassNames, ", " ) ).append( ") {" ).append( NEWLINE )
+      .append( "window.dashboard = new Dashboard();" ).append( NEWLINE )
+      .append( "fakeContent" ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
+      .append( REQUIRE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+
+    // test with additional JS and CSS external file using amd! and css! requireJS loader plugins
+
+    testComponentList = new LinkedHashMap<String, String>();
+    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
+    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+
+    dashboardWriter.setComponentList( testComponentList );
+
+    dashboardWriter.addRequireCssResource( "css!cde/resources/TestResourceCSS", "/TestResourceCSSPath" );
+
+    out = dashboardWriter.wrapRequireDefinitions( "fakeContent" );
+
+    dashboardResult.setLength( 0 );
+
+    componentClassNames = Arrays.asList(
+      "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
+      "cdo",
+      "Utils",
+      "TestComponent1",
+      "TestComponent2",
+      "TestComponent3",
+      "TestResource1" );
+    cdfRequirePaths = Arrays.asList(
+      "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
+      "cdf/lib/CCC/cdo",
+      "cdf/dashboard/Utils",
+      "cdf/components/TestComponent1",
+      "cdf/components/TestComponent2",
+      "cdf/components/TestComponent3",
+      "cde/resources/TestResource1",
+      "css!cde/resources/TestResourceCSS" );
+
+    dashboardResult
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      // plugin css! should have been stripped from module id
+      .append( "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
+      .append( REQUIRE_START )
+      .append( "['" ).append( StringUtils.join( cdfRequirePaths, "', '" ) ).append( "']," ).append( NEWLINE )
+      .append( "function(" ).append( StringUtils.join( componentClassNames, ", " ) ).append( ") {" ).append( NEWLINE )
       .append( "window.dashboard = new Dashboard();" ).append( NEWLINE )
       .append( "fakeContent" ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -256,15 +313,15 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
   @Test
   public void testGetFileResourcesRequirePaths() {
-    dashboardWriter.addRequireResource( "myResource1", "/myResource1.js" );
-    dashboardWriter.addRequireResource( "myResource2", "/myResource2.js" );
-    dashboardWriter.addRequireResource( "myResource3", "/myResource3.js" );
+    dashboardWriter.addRequireJsResource( "myResource1", "/myResource1.js" );
+    dashboardWriter.addRequireJsResource( "myResource2", "/myResource2.js" );
+    dashboardWriter.addRequireJsResource( "myResource3", "/myResource3.js" );
 
     String fileResources = dashboardWriter.getFileResourcesRequirePaths();
 
-    assertEquals( fileResources, "requireCfg['paths']['myResource1'] = '/myResource1.js';\n"
-        + "requireCfg['paths']['myResource2'] = '/myResource2.js';\n"
-        + "requireCfg['paths']['myResource3'] = '/myResource3.js';\n"
+    assertEquals( fileResources, "requireCfg['paths']['cde/resources/myResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource1.js';\n"
+        + "requireCfg['paths']['cde/resources/myResource2'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource2.js';\n"
+        + "requireCfg['paths']['cde/resources/myResource3'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource3.js';\n"
         + REQUIRE_CONFIG + NEWLINE );
   }
 
@@ -283,17 +340,25 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     List<ResourceMap.Resource> cssResources = new ArrayList<ResourceMap.Resource>();
 
-    ResourceMap.Resource cssResource = mock( ResourceMap.Resource.class );
-    doReturn( "" ).when( cssResource ).getProcessedResource();
-    cssResources.add( cssResource );
-    cssResources.add( cssResource );
-    cssResources.add( cssResource );
+    ResourceMap.Resource cssResource1 = mock( ResourceMap.Resource.class ),
+      cssResource2 = mock( ResourceMap.Resource.class );
+    doReturn( ResourceMap.ResourceType.FILE ).when( cssResource1 ).getResourceType();
+    doReturn( "/fakePath" ).when( cssResource1 ).getResourcePath();
+    doReturn( ResourceMap.ResourceType.CODE ).when( cssResource2 ).getResourceType();
+
+    doReturn( "" ).when( cssResource1 ).getProcessedResource();
+    doReturn( "" ).when( cssResource2 ).getProcessedResource();
+    cssResources.add( cssResource1 );
+    cssResources.add( cssResource2 );
+
     List<ResourceMap.Resource> jsResources = new ArrayList<ResourceMap.Resource>();
     ResourceMap.Resource jsResource1 = mock( ResourceMap.Resource.class ),
         jsResource2 = mock( ResourceMap.Resource.class );
 
     doReturn( ResourceMap.ResourceType.FILE ).when( jsResource1 ).getResourceType();
+    doReturn( "/fakePath" ).when( jsResource1 ).getResourcePath();
     doReturn( ResourceMap.ResourceType.CODE ).when( jsResource2 ).getResourceType();
+    doReturn( "(function(){ return true; })" ).when( jsResource2 ).getProcessedResource();
 
     jsResources.add( jsResource1 );
     jsResources.add( jsResource2 );
@@ -307,11 +372,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( resourceRender ).when( dashboardWriterSpy ).getResourceRenderer( jxPathContext, context );
 
     dashboardWriterSpy.writeResources( context, dash );
-    verify( cssResource, times( 3 ) ).getProcessedResource();
-    verify( dashboardWriterSpy, times( 1 ) ).addRequireResource( anyString(), anyString() );
+    verify( cssResource2, times( 1 ) ).getProcessedResource();
+    verify( dashboardWriterSpy, times( 1 ) ).addRequireCssResource( anyString(), anyString() );
+    verify( dashboardWriterSpy, times( 1 ) ).addRequireJsResource( anyString(), anyString() );
     verify( dashboardWriterSpy, times( 1 ) ).addJsCodeSnippet( anyString() );
     verify( jsResource1, times( 1 ) ).getResourceType();
-    verify( jsResource1, times( 1 ) ).getResourcePath();
+    verify( jsResource1, times( 2 ) ).getResourcePath();
     verify( jsResource2, times( 1 ) ).getProcessedResource();
   }
 
@@ -476,6 +542,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         "$",
         "_",
         "moment",
+        "cdo",
+        "Utils",
         "TestComponent1",
         "TestComponent2",
         "TestComponent3" );
@@ -485,6 +553,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
         "cdf/lib/moment",
+        "cdf/lib/CCC/cdo",
+        "cdf/dashboard/Utils",
         "cdf/components/TestComponent1",
         "cdf/components/TestComponent2",
         "cdf/components/TestComponent3" );
@@ -509,8 +579,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     Assert.assertEquals( dashboardResult.toString(), out );
 
-
-    // test with additional require configurations
+    // test with additional requireJS configurations for JS external resource
 
     testComponentList = new LinkedHashMap<String, String>();
     testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
@@ -519,7 +588,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     dashboardWriter.setComponentList( testComponentList );
 
-    dashboardWriter.addRequireResource( "TestResource1", "TestResourcePath1" );
+    dashboardWriter.addRequireJsResource( "cde/resources/TestResource1", "/TestResourcePath1" );
 
     out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
@@ -531,6 +600,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "$",
       "_",
       "moment",
+      "cdo",
+      "Utils",
       "TestComponent1",
       "TestComponent2",
       "TestComponent3",
@@ -541,14 +612,16 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/lib/jquery",
       "amd!cdf/lib/underscore",
       "cdf/lib/moment",
+      "cdf/lib/CCC/cdo",
+      "cdf/dashboard/Utils",
       "cdf/components/TestComponent1",
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
-      "TestResource1" );
+      "cde/resources/TestResource1" );
 
     dashboardResult
-      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
-        + REQUIRE_CONFIG + NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
         // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
@@ -571,8 +644,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardResult.setLength( 0 );
 
     dashboardResult
-      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
-        + REQUIRE_CONFIG + NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
         // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
@@ -601,6 +674,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "$",
       "_",
       "moment",
+      "cdo",
+      "Utils",
       "TestResource1" );
     cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
@@ -608,13 +683,15 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/lib/jquery",
       "amd!cdf/lib/underscore",
       "cdf/lib/moment",
-      "TestResource1" );
+      "cdf/lib/CCC/cdo",
+      "cdf/dashboard/Utils",
+      "cde/resources/TestResource1" );
 
     dashboardResult.setLength( 0 );
 
     dashboardResult
-      .append( "requireCfg['paths']['TestResource1'] = 'TestResourcePath1';" + NEWLINE
-        + REQUIRE_CONFIG + NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
         // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
@@ -625,6 +702,67 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
         jsCodeSnippet.toString() + NEWLINE + "fakeContent" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals( dashboardResult.toString(), out );
+
+    // test with additional JS and CSS external file using amd! and css! requireJS loader plugins
+
+    testComponentList = new LinkedHashMap<String, String>();
+    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
+    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+
+    dashboardWriter.setComponentList( testComponentList );
+
+    dashboardWriter.addRequireCssResource( "css!cde/resources/TestResourceCSS", "/TestResourceCSSPath" );
+
+    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
+
+    dashboardResult.setLength( 0 );
+
+    componentClassNames = Arrays.asList(
+      "Dashboard",
+      "Logger",
+      "$",
+      "_",
+      "moment",
+      "cdo",
+      "Utils",
+      "TestComponent1",
+      "TestComponent2",
+      "TestComponent3",
+      "TestResource1" );
+    cdfRequirePaths = Arrays.asList(
+      "cdf/Dashboard.Blueprint",
+      "cdf/Logger",
+      "cdf/lib/jquery",
+      "amd!cdf/lib/underscore",
+      "cdf/lib/moment",
+      "cdf/lib/CCC/cdo",
+      "cdf/dashboard/Utils",
+      "cdf/components/TestComponent1",
+      "cdf/components/TestComponent2",
+      "cdf/components/TestComponent3",
+      "cde/resources/TestResource1",
+      "css!cde/resources/TestResourceCSS" );
+
+    dashboardResult
+      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      // plugin css! should have been stripped from module id
+      .append( "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
+      // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) )
+      .append( "" )
+      .append( DASHBOARD_MODULE_START )
+      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
 

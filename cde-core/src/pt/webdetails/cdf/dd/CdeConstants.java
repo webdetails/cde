@@ -88,4 +88,20 @@ public class CdeConstants {
   public static final String DASHBOARD_ALIAS_TAG = "@ALIAS@";
 
   public static final String CUSTOM_COMPONENT_CONFIG_FILENAME = "component.xml";
+
+  public enum REQUIREJS_PLUGIN {
+    CSS( "css!" ), NONAMD( "amd!" );
+
+    private final String plugin;
+
+    REQUIREJS_PLUGIN( String plugin ) {
+      this.plugin = plugin;
+    }
+
+    public String toString() {
+      return this.plugin;
+    }
+  }
+
+  public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
 }
