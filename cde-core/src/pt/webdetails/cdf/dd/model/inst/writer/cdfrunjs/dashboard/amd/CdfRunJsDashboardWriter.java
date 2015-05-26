@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CdfRunJsDashboardWriter
     extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
@@ -114,11 +115,13 @@ public class CdfRunJsDashboardWriter
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
   private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
       + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
+  private static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
   protected Map<String, String> requireJsResourcesList = new LinkedHashMap<String, String>();
   protected Map<String, String> requireCssResourcesList = new LinkedHashMap<String, String>();
   protected StringBuffer jsCodeSnippets = new StringBuffer();
   private Map<String, String> componentList = new LinkedHashMap<String, String>();
+  private static final Pattern schemePattern = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
 
   public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
     super( type, isWidget );
@@ -205,7 +208,7 @@ public class CdfRunJsDashboardWriter
           if ( jsResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
             addRequireJsResource( CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + jsResource.getResourceName(),
                 context.replaceTokensAndAlias( jsResource.getResourcePath().startsWith( "/" )
-                  ? jsResource.getResourcePath().replaceFirst( "/", "" ) : jsResource.getResourcePath() ) );
+                ? jsResource.getResourcePath().replaceFirst( "/", "" ) : jsResource.getResourcePath() ) );
           } else {
             addJsCodeSnippet( jsResource.getProcessedResource() + NEWLINE );
           }
@@ -216,7 +219,7 @@ public class CdfRunJsDashboardWriter
             addRequireCssResource( CdeConstants.REQUIREJS_PLUGIN.CSS
                 + CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + cssResource.getResourceName(),
                 context.replaceTokensAndAlias( cssResource.getResourcePath().startsWith( "/" )
-                  ? cssResource.getResourcePath().replaceFirst( "/", "" ) : cssResource.getResourcePath() ) );
+                ? cssResource.getResourcePath().replaceFirst( "/", "" ) : cssResource.getResourcePath() ) );
           } else {
             buffer.append( cssResource.getProcessedResource() ).append( NEWLINE );
           }
@@ -337,8 +340,8 @@ public class CdfRunJsDashboardWriter
 
           // assume that the AMD implementation file is in the same folder as component.xml
           // and that it has the same name as the component's class
-          compImplPath = getComponentSourcePath( comp ).split( CdeConstants.CUSTOM_COMPONENT_CONFIG_FILENAME )[0]
-              + componentClassName;
+          compImplPath = getComponentSourcePath( comp ).split( CdeConstants.CUSTOM_COMPONENT_CONFIG_FILENAME )[ 0 ]
+            + componentClassName;
 
         } else {
 
@@ -416,6 +419,7 @@ public class CdfRunJsDashboardWriter
   protected String getPluginIdFromOrigin( Component comp ) {
     return ( (OtherPluginStaticSystemOrigin) comp.getMeta().getOrigin() ).getPluginId();
   }
+
   /**
    * @param contents
    * @param context
@@ -424,7 +428,7 @@ public class CdfRunJsDashboardWriter
   protected String writeHeaders( String contents, CdfRunJsDashboardWriteContext context ) {
 
     return MessageFormat.format( TITLE, context.getDashboard().getWcdf().getTitle() )
-        + NEWLINE + MessageFormat.format( SCRIPT, writeWebcontext( "cdf", true ) );
+      + NEWLINE + MessageFormat.format( SCRIPT, writeWebcontext( "cdf", true ) );
   }
 
   protected String writeWebcontext( String context, boolean requireJsOnly ) {
@@ -525,16 +529,20 @@ public class CdfRunJsDashboardWriter
     Set<Map.Entry<String, String>> requireResourcesList = getRequireJsResourcesList().entrySet();
     if ( requireResourcesList.size() > 0 ) {
       for ( Map.Entry<String, String> resource : requireResourcesList ) {
-        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
-          + getRequireFilteredClassName( resource.getKey() ), resource.getValue() ) ).append( NEWLINE );
+        out.append( MessageFormat.format(
+          schemePattern.matcher( resource.getValue() ).find() ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
+          CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + getRequireFilteredClassName( resource.getKey() ),
+          resource.getValue() ) ).append( NEWLINE );
       }
     }
 
     requireResourcesList = getRequireCssResourcesList().entrySet();
     if ( requireResourcesList.size() > 0 ) {
       for ( Map.Entry<String, String> resource : requireResourcesList ) {
-        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
-          + getRequireFilteredClassName( resource.getKey() ), resource.getValue() ) ).append( NEWLINE );
+        out.append( MessageFormat.format(
+          schemePattern.matcher( resource.getValue() ).find() ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
+          CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + getRequireFilteredClassName( resource.getKey() ),
+          resource.getValue() ) ).append( NEWLINE );
       }
     }
 
@@ -581,7 +589,7 @@ public class CdfRunJsDashboardWriter
       CdfRunJsDashboardWriteResult.Builder builder,
       CdfRunJsDashboardWriteContext ctx,
       Dashboard dash )
-    throws ThingWriteException {
+      throws ThingWriteException {
 
     final String cssResources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
     // Prepend the CSS (<style> and <link>) code to the HTML layout
@@ -653,10 +661,10 @@ public class CdfRunJsDashboardWriter
     cdfRequirePaths.addAll( getRequireCssResourcesList().keySet() );
 
     out.append( getFileResourcesRequirePaths() )
-        // Output module paths and module class names
+      // Output module paths and module class names
         .append( MessageFormat.format( DEFINE_START,
-          StringUtils.join( cdfRequirePaths, "', '" ),
-          StringUtils.join( componentClassNames, ", " ) ) );
+        StringUtils.join( cdfRequirePaths, "', '" ),
+        StringUtils.join( componentClassNames, ", " ) ) );
 
     if ( emptyAlias ) {
       out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,
@@ -664,7 +672,7 @@ public class CdfRunJsDashboardWriter
     } else {
       out.append( DASHBOARD_MODULE_START )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-            StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     }
 
     final String jsCodeSnippets = getJsCodeSnippets().toString();
@@ -680,8 +688,8 @@ public class CdfRunJsDashboardWriter
   }
 
   /**
-   * Filters AMD module class names, removing any prepended requireJS loader plugin references from them
-   * and excluding CSS resources.
+   * Filters AMD module class names, removing any prepended requireJS loader plugin references from them and excluding
+   * CSS resources.
    *
    * @return ArrayList containing the filtered AMD module ids/class names.
    */

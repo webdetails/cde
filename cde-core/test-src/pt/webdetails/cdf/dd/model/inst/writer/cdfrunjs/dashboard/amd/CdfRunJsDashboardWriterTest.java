@@ -113,8 +113,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
   private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
-  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
-    + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
   private static CdfRunJsDashboardWriter dashboardWriter;
@@ -282,9 +280,15 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "css!cde/resources/TestResourceCSS" );
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append(
+      NEWLINE )
       // plugin css! should have been stripped from module id
-      .append( "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" )
+      .append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( REQUIRE_START )
       .append( "['" ).append( StringUtils.join( cdfRequirePaths, "', '" ) ).append( "']," ).append( NEWLINE )
@@ -319,9 +323,13 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     String fileResources = dashboardWriter.getFileResourcesRequirePaths();
 
-    assertEquals( fileResources, "requireCfg['paths']['cde/resources/myResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource1.js';\n"
-        + "requireCfg['paths']['cde/resources/myResource2'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource2.js';\n"
-        + "requireCfg['paths']['cde/resources/myResource3'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/myResource3.js';\n"
+    assertEquals( fileResources,
+        "requireCfg['paths']['cde/resources/myResource1'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/myResource1.js';\n"
+        + "requireCfg['paths']['cde/resources/myResource2'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/myResource2.js';\n"
+        + "requireCfg['paths']['cde/resources/myResource3'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/myResource3.js';\n"
         + REQUIRE_CONFIG + NEWLINE );
   }
 
@@ -341,7 +349,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     List<ResourceMap.Resource> cssResources = new ArrayList<ResourceMap.Resource>();
 
     ResourceMap.Resource cssResource1 = mock( ResourceMap.Resource.class ),
-      cssResource2 = mock( ResourceMap.Resource.class );
+        cssResource2 = mock( ResourceMap.Resource.class );
     doReturn( ResourceMap.ResourceType.FILE ).when( cssResource1 ).getResourceType();
     doReturn( "/fakePath" ).when( cssResource1 ).getResourcePath();
     doReturn( ResourceMap.ResourceType.CODE ).when( cssResource2 ).getResourceType();
@@ -620,9 +628,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cde/resources/TestResource1" );
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
+      .append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
-        // Output module paths and module class names
+      // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
@@ -644,9 +655,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardResult.setLength( 0 );
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
+      .append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
-        // Output module paths and module class names
+      // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
@@ -690,9 +704,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardResult.setLength( 0 );
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
+      .append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
-        // Output module paths and module class names
+      // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
@@ -718,6 +735,11 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     dashboardWriter.addRequireCssResource( "css!cde/resources/TestResourceCSS", "/TestResourceCSSPath" );
 
+    //testing cases which may use a full url as a resource
+    dashboardWriter
+      .addRequireCssResource( "css!cde/resources/TestResourceCSSFullUrl", "http://TestResourceCSSFullUrl" );
+    dashboardWriter.addRequireJsResource( "cde/resources/TestResourceJSFullUrl", "http://TestResourceJSFullUrl" );
+
     out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false );
 
     dashboardResult.setLength( 0 );
@@ -733,7 +755,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "TestComponent1",
       "TestComponent2",
       "TestComponent3",
-      "TestResource1" );
+      "TestResource1",
+      "TestResourceJSFullUrl" );
     cdfRequirePaths = Arrays.asList(
       "cdf/Dashboard.Blueprint",
       "cdf/Logger",
@@ -746,12 +769,24 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       "cdf/components/TestComponent2",
       "cdf/components/TestComponent3",
       "cde/resources/TestResource1",
-      "css!cde/resources/TestResourceCSS" );
+      "cde/resources/TestResourceJSFullUrl",
+      "css!cde/resources/TestResourceCSS",
+      "css!cde/resources/TestResourceCSSFullUrl" );
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
+      .append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/TestResourceJSFullUrl'] = 'http://TestResourceJSFullUrl'" ).append(
+      NEWLINE )
       // plugin css! should have been stripped from module id
-      .append( "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + "
+          + "'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
+      .append(
+        "requireCfg['paths']['cde/resources/TestResourceCSSFullUrl'] = 'http://TestResourceCSSFullUrl'" )
+      .append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
       // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
