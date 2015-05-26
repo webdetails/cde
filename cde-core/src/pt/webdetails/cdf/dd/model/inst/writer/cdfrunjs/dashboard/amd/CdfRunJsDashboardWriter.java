@@ -112,9 +112,11 @@ public class CdfRunJsDashboardWriter
   private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
   private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
   private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
-  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = ''{1}'';";
+  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
+      + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
   private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
-  protected Map<String, String> requireResourcesList = new LinkedHashMap<String, String>();
+  protected Map<String, String> requireJsResourcesList = new LinkedHashMap<String, String>();
+  protected Map<String, String> requireCssResourcesList = new LinkedHashMap<String, String>();
   protected StringBuffer jsCodeSnippets = new StringBuffer();
   private Map<String, String> componentList = new LinkedHashMap<String, String>();
 
@@ -201,14 +203,23 @@ public class CdfRunJsDashboardWriter
         StringBuffer buffer = new StringBuffer();
         for ( ResourceMap.Resource jsResource : javascriptResources ) {
           if ( jsResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
-            addRequireResource( jsResource.getResourceName(),
-                context.replaceTokensAndAlias( jsResource.getResourcePath() ) );
+            addRequireJsResource( CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + jsResource.getResourceName(),
+                context.replaceTokensAndAlias( jsResource.getResourcePath().startsWith( "/" )
+                  ? jsResource.getResourcePath().replaceFirst( "/", "" ) : jsResource.getResourcePath() ) );
           } else {
             addJsCodeSnippet( jsResource.getProcessedResource() + NEWLINE );
           }
         }
         for ( ResourceMap.Resource cssResource : cssResources ) {
-          buffer.append( cssResource.getProcessedResource() ).append( NEWLINE );
+          if ( cssResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
+            // Use the css! requireJS loader plugin for CSS external resource loading
+            addRequireCssResource( CdeConstants.REQUIREJS_PLUGIN.CSS
+                + CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + cssResource.getResourceName(),
+                context.replaceTokensAndAlias( cssResource.getResourcePath().startsWith( "/" )
+                  ? cssResource.getResourcePath().replaceFirst( "/", "" ) : cssResource.getResourcePath() ) );
+          } else {
+            buffer.append( cssResource.getProcessedResource() ).append( NEWLINE );
+          }
         }
 
         return buffer.toString();
@@ -441,7 +452,7 @@ public class CdfRunJsDashboardWriter
    * Wraps the JavaScript code, contained in the input parameter, with requirejs configurations.
    *
    * @param content Some JavaScript code to be wrapped.
-   * @return
+   * @return The JS code wrapped with requirejs configuration
    */
   protected String wrapRequireDefinitions( String content ) {
     StringBuilder out = new StringBuilder();
@@ -462,7 +473,7 @@ public class CdfRunJsDashboardWriter
     cdfRequirePaths.add( getDashboardRequireModuleId() );
     cdfRequirePaths.add( "cdf/Logger" );
     cdfRequirePaths.add( "cdf/lib/jquery" );
-    cdfRequirePaths.add( "amd!cdf/lib/underscore" );
+    cdfRequirePaths.add( CdeConstants.REQUIREJS_PLUGIN.NONAMD + "cdf/lib/underscore" );
     cdfRequirePaths.add( "cdf/lib/moment" );
     cdfRequirePaths.add( "cdf/lib/CCC/cdo" );
     cdfRequirePaths.add( "cdf/dashboard/Utils" );
@@ -478,8 +489,9 @@ public class CdfRunJsDashboardWriter
       componentClassNames.add( (String) pair.getKey() );
     }
 
-    componentClassNames.addAll( getRequireResourcesList().keySet() );
-    cdfRequirePaths.addAll( getRequireResourcesList().keySet() );
+    componentClassNames.addAll( getRequireFilteredClassNames() );
+    cdfRequirePaths.addAll( getRequireJsResourcesList().keySet() );
+    cdfRequirePaths.addAll( getRequireCssResourcesList().keySet() );
 
     out.append( getFileResourcesRequirePaths() )
       // Output module paths and module class names
@@ -510,13 +522,23 @@ public class CdfRunJsDashboardWriter
   protected String getFileResourcesRequirePaths() {
     StringBuffer out = new StringBuffer();
 
-    Set<Map.Entry<String, String>> requireResourcesList = getRequireResourcesList().entrySet();
+    Set<Map.Entry<String, String>> requireResourcesList = getRequireJsResourcesList().entrySet();
     if ( requireResourcesList.size() > 0 ) {
       for ( Map.Entry<String, String> resource : requireResourcesList ) {
-        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, resource.getKey(), resource.getValue() ) )
-          .append( NEWLINE );
+        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
+          + getRequireFilteredClassName( resource.getKey() ), resource.getValue() ) ).append( NEWLINE );
       }
+    }
 
+    requireResourcesList = getRequireCssResourcesList().entrySet();
+    if ( requireResourcesList.size() > 0 ) {
+      for ( Map.Entry<String, String> resource : requireResourcesList ) {
+        out.append( MessageFormat.format( REQUIRE_PATH_CONFIG, CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
+          + getRequireFilteredClassName( resource.getKey() ), resource.getValue() ) ).append( NEWLINE );
+      }
+    }
+
+    if ( out.length() > 0 ) {
       out.append( REQUIRE_CONFIG ).append( NEWLINE );
     }
 
@@ -531,12 +553,20 @@ public class CdfRunJsDashboardWriter
     this.componentList = componentList;
   }
 
-  public Map<String, String> getRequireResourcesList() {
-    return requireResourcesList;
+  public Map<String, String> getRequireJsResourcesList() {
+    return requireJsResourcesList;
   }
 
-  public void addRequireResource( String resourceName, String resourcePath ) {
-    this.requireResourcesList.put( resourceName, resourcePath );
+  public void addRequireJsResource( String resourceName, String resourcePath ) {
+    this.requireJsResourcesList.put( resourceName, resourcePath );
+  }
+
+  public Map<String, String> getRequireCssResourcesList() {
+    return requireCssResourcesList;
+  }
+
+  public void addRequireCssResource( String resourceName, String resourcePath ) {
+    this.requireCssResourcesList.put( resourceName, resourcePath );
   }
 
   public StringBuffer getJsCodeSnippets() {
@@ -578,10 +608,10 @@ public class CdfRunJsDashboardWriter
   }
 
   /**
-   * Wraps the JavaScript code, contained in the input parameters, as a requirejs module.
+   * Wraps the JavaScript code, contained in the input parameters, as a requirejs module definition.
    *
    * @param content Some JavaScript code to be wrapped.
-   * @return
+   * @return A string containing an AMD module definition.
    */
   protected String wrapRequireModuleDefinitions( String content, String layout, boolean emptyAlias ) {
     StringBuilder out = new StringBuilder();
@@ -596,12 +626,16 @@ public class CdfRunJsDashboardWriter
     componentClassNames.add( "$" );
     componentClassNames.add( "_" );
     componentClassNames.add( "moment" );
+    componentClassNames.add( "cdo" );
+    componentClassNames.add( "Utils" );
     // Add main Dashboard module id
     cdfRequirePaths.add( getDashboardRequireModuleId() );
     cdfRequirePaths.add( "cdf/Logger" );
     cdfRequirePaths.add( "cdf/lib/jquery" );
-    cdfRequirePaths.add( "amd!cdf/lib/underscore" );
+    cdfRequirePaths.add( CdeConstants.REQUIREJS_PLUGIN.NONAMD + "cdf/lib/underscore" );
     cdfRequirePaths.add( "cdf/lib/moment" );
+    cdfRequirePaths.add( "cdf/lib/CCC/cdo" );
+    cdfRequirePaths.add( "cdf/dashboard/Utils" );
 
     // Add component AMD modules
     Iterator it = getComponentList().entrySet().iterator();
@@ -614,8 +648,9 @@ public class CdfRunJsDashboardWriter
       componentClassNames.add( (String) pair.getKey() );
     }
 
-    componentClassNames.addAll( getRequireResourcesList().keySet() );
-    cdfRequirePaths.addAll( getRequireResourcesList().keySet() );
+    componentClassNames.addAll( getRequireFilteredClassNames() );
+    cdfRequirePaths.addAll( getRequireJsResourcesList().keySet() );
+    cdfRequirePaths.addAll( getRequireCssResourcesList().keySet() );
 
     out.append( getFileResourcesRequirePaths() )
         // Output module paths and module class names
@@ -642,5 +677,38 @@ public class CdfRunJsDashboardWriter
       .append( DEFINE_STOP );
 
     return out.toString();
+  }
+
+  /**
+   * Filters AMD module class names, removing any prepended requireJS loader plugin references from them
+   * and excluding CSS resources.
+   *
+   * @return ArrayList containing the filtered AMD module ids/class names.
+   */
+  protected ArrayList<String> getRequireFilteredClassNames() {
+    ArrayList<String> classNames = new ArrayList<String>( getRequireJsResourcesList().size() );
+    // Filter and remove known RequireJS Loader plugin from class names
+    for ( String className : getRequireJsResourcesList().keySet() ) {
+
+      classNames.add( getRequireFilteredClassName( className ) );
+    }
+
+    return classNames;
+  }
+
+  /**
+   * Filters a AMD module class name, removing any prepended requireJS loader plugin references from it.
+   *
+   * @param className The unfiltered module id/class name.
+   * @return String containing the filtered AMD module id/class name.
+   */
+  protected String getRequireFilteredClassName( String className ) {
+    // remove prepended requireJS loader plugins from class name
+    for ( CdeConstants.REQUIREJS_PLUGIN plugin : CdeConstants.REQUIREJS_PLUGIN.values() ) {
+      className = className.replace( plugin.toString(), "" ).replace(
+        CdeConstants.RESOURCE_AMD_NAMESPACE + "/", "" );
+    }
+
+    return className;
   }
 }
