@@ -10,12 +10,12 @@
     "properties": [
      {
       "name": "name",
-      "value": "barChart",
+      "value": "myModule",
       "type": "Id"
      },
      {
       "name": "resourceFile",
-      "value": "${solution:/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/BarChart.js}",
+      "value": "${solution:/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/myModule.js}",
       "type": "ResourceFile"
      },
      {
