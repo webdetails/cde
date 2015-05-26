@@ -19,12 +19,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,16 +28,12 @@ import org.pentaho.platform.engine.core.system.PentahoRequestContextHolder;
 import pt.webdetails.cdf.dd.embed.EmbeddedHeadersGenerator;
 import pt.webdetails.cpf.utils.PluginIOUtils;
 
-@Path( "pentaho-cdf-dd/api" )
 public class CdeApi {
 
   private static final Log logger = LogFactory.getLog( CdeApi.class );
 
-  @GET
-  @Path( "/cde-embed.js" )
-  @Produces( "text/javascript" )
-  public void getCdeEmbeddedContext( @Context HttpServletRequest servletRequest,
-                                     @Context HttpServletResponse servletResponse ) throws Exception {
+  public void getCdeEmbeddedContext( HttpServletRequest servletRequest,
+                                     HttpServletResponse servletResponse ) throws Exception {
     try {
       EmbeddedHeadersGenerator embeddedHeadersGenerator =
           new EmbeddedHeadersGenerator( buildFullServerUrl( servletRequest ) );
