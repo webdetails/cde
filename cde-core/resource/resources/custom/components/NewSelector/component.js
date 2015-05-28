@@ -287,7 +287,7 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
           offset = bottomEdge <= bottomLimit ? 0 : bottomLimit - bottomEdge - minimumMargin;
 
       offset = topEdge - offset >= topLimit ? offset : topLimit - topEdge + minimumMargin;
-      // console.log("Offset is " + offset + " after correction");
+      // Dashboards.log("Offset is " + offset + " after correction");
       optionList.css("top", (optionList.position().top + offset) + "px");
     }
   },

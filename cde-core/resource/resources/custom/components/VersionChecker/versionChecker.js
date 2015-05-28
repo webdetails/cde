@@ -52,7 +52,7 @@ var VersionCheckComponent = BaseComponent.extend({
       
       try {
         result = JSON.parse(result);
-        console.log("[VERSION CHECK COMPONENT] ### json parsed with no errors ###");
+        Dashboards.log("[VERSION CHECK COMPONENT] ### json parsed with no errors ###");
       } catch (e) {
           alert(e.message);
       }
