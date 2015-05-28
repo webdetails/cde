@@ -174,7 +174,7 @@ define([
         offset = bottomEdge <= bottomLimit ? 0 : bottomLimit - bottomEdge - minimumMargin;
 
         offset = topEdge - offset >= topLimit ? offset : topLimit - topEdge + minimumMargin;
-        // Dashboards.log("Offset is " + offset + " after correction");
+
         optionList.css("top", (optionList.position().top + offset) + "px");
       }
     },
