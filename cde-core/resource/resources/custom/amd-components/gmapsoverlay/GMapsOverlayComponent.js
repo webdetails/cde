@@ -72,7 +72,7 @@ define([
   
       var cmap = [];
   
-      for(k = 1; k < this.colormap.length; k++) {
+      for(var k = 1; k < this.colormap.length; k++) {
         cmap = cmap.concat(interpolate(this.colormap[k - 1], this.colormap[k], 512));
       }
   
@@ -113,10 +113,10 @@ define([
       myself.isContinuousMapColor = $.isEmptyObject(myself.legend);
       var nrCols = values.metadata.length;
       
-      for(i in values.resultset) {
+      for(var i in values.resultset) {
         var item = values.resultset[i];
         
-        var value;
+        var value, color;
         if(nrCols < 3) { // DataSet onde a legenda é baseada no valor
           value = parseFloat(item[1]);
           color = "";
@@ -200,7 +200,7 @@ define([
   
     update: function() {
 
-      myself = this;
+      var myself = this;
 
       if($.isEmptyObject(myself.queryDefinition))  {  
         Logger.error("GMaps - Datasource not defined.");

@@ -61,7 +61,7 @@ define([
 
     initialize: function() {
 
-      Logger.log("Initializing TextEditorComponent")
+      Logger.log("Initializing TextEditorComponent");
       this.isInitialized = true;
 
       // Do we have an htmlObject? if no, create one. If yes, setup placeholder
@@ -104,7 +104,7 @@ define([
         var idx = $this.prevAll("button").length;
 
         buttons[idx].callback(arguments);
-      })
+      });
 
       if(myself.file) {
         myself.loadFile();
@@ -118,7 +118,7 @@ define([
       var _extraButtons = myself.extraButtons || [];
       _.chain(myself.defaultButtons).each(function(b) {
         b.callback = _.bind(b.callback, myself);
-      })
+      });
       return myself.defaultButtons.concat(_extraButtons);
 
     },
@@ -153,7 +153,7 @@ define([
         editorEnv.listeners.onStatusUpdate = myself.setDirty;
         editorEnv.listeners.notify = function(msg, type) {
           myself.notify(msg);
-        }
+        };
 
         $('#notifications').hide();
       });

@@ -83,7 +83,7 @@ define([
           levelsArray = myself.get("levels");
 
       for(var i = 0; i < levelsArray.length; i++) {
-        options = {
+        var options = {
           pageSize: this.get("pageSize"),
           pageStart: this.get("pageStart"),
           searchTerm: this.get("searchterm"),
@@ -107,7 +107,7 @@ define([
       }
 
       for(var c = 0; c < members.length; c++) {
-        level = members[c];
+        var level = members[c];
         memberDepth = (level.qualifiedName.split(".").length - 1);
         for(var p = 0; p < defaultVals.length; p++) {
           if(level.qualifiedName === defaultVals[p]) {
@@ -150,7 +150,7 @@ define([
             name: h.defaultMember,
             qualifiedName: h.defaultMemberQualifiedName,
             allMember: true
-        }
+        };
         this.get("levels").add(allMember);
       }
 
@@ -297,11 +297,11 @@ define([
         options.level = level;
       }
 
-      paramArray = this.get("parameters");
+      var paramArray = this.get("parameters");
       if(paramArray.length > 0) {
         var nameArray = _.keys(paramArray);
 
-        for(pos = 0; pos < paramArray.length; pos++) {
+        for(var pos = 0; pos < paramArray.length; pos++) {
           options[nameArray[pos]] = paramArray[nameArray[pos]];
         }
       }
@@ -314,23 +314,23 @@ define([
     },
 
     addPage: function(newValues) {
-        var v,
-        newValue,
-        idx = this.get("pageStart");
-        values = this.get("values");
-        for(v = 0; v < newValues.length;v++) {
-          var newValue = newValues[v], found;
-          newValue.level = this.getSelectedLevels().at(0).get("qualifiedName");
-          found = values.detect(function(model) {
-            return model.get("level") == newValue.level &&
-              model.get("qualifiedName") == newValue.qualifiedName;
-          });
+      var v,
+          newValue,
+          idx = this.get("pageStart"),
+          values = this.get("values");
+      for(v = 0; v < newValues.length;v++) {
+        var newValue = newValues[v], found;
+        newValue.level = this.getSelectedLevels().at(0).get("qualifiedName");
+        found = values.detect(function(model) {
+          return model.get("level") == newValue.level &&
+            model.get("qualifiedName") == newValue.qualifiedName;
+        });
 
-          if(!found) {
-            values.add(newValue, {silent: true});
-          }
+        if(!found) {
+          values.add(newValue, {silent: true});
         }
-        values.trigger("add");
+      }
+      values.trigger("add");
     },
 
     nextPage: function() {

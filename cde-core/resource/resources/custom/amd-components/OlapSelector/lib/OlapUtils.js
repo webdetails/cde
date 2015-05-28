@@ -53,16 +53,16 @@ define([
         myself.initCatalogs();
         isInitialized = true;
       }
-    }
+    };
       
     myself.setOptions = function(_args) {
       myself.options = $.extend(myself.options,_args);
-    }
+    };
 
     myself.setCatalog = function (catalog) {
       myself.catalog = catalog;
       myself.options.catalog = catalog;
-    }
+    };
 
     myself.initCatalogs = function() {
       Logger.debug("Getting info from cube");
@@ -74,7 +74,7 @@ define([
       catalogs = res.catalogs;
 
       Logger.info("[OlapUtils] Successfully got catalog information");
-    }
+    };
       
     myself.resetCubeStructure = function(_args) {
     
@@ -89,11 +89,11 @@ define([
       }
       
       return true;
-    }
+    };
       
     myself.getCatalogs = function() {
       return catalogs;
-    }
+    };
       
     myself.getCubes = function(_args) {
       var catalog = myself.getSelectedCatalogName(_args);
@@ -102,7 +102,7 @@ define([
       });
           
       return entry ? entry.cubes : null;
-    }
+    };
 
     myself.getCubeStructure = function(_args) {
       var catalog = myself.getSelectedCatalogName(_args);
@@ -130,16 +130,16 @@ define([
       
       cubeStructureCache[cacheKey] = result; 
       return result;
-    }
+    };
 
     myself.getCube = function(_args) {
       return myself.getCubeStructure(_args);
-    }
+    };
 
     myself.getDimensions = function(_args) {
       var cubeStructure = myself.getCubeStructure(_args);
       return cubeStructure != null ? cubeStructure.dimensions : null;
-    }
+    };
       
     myself.getDimension = function(_args) {
       var dimension = myself.getSelectedDimensionName(_args);
@@ -148,12 +148,12 @@ define([
         return d.name == dimension;
       });
       return d;
-    }
+    };
 
     myself.getHierarchies = function(_args) {
       var d = myself.getDimension(_args);
       return d != null ? d.hierarchies : null;
-    }
+    };
 
     myself.getHierarchy = function(_args) {
       var hierarchyName = myself.getSelectedHierarchyName(_args);
@@ -161,12 +161,12 @@ define([
         return hier.name == hierarchyName;
       });
       return h;
-    }
+    };
 
     myself.getLevels = function(_args) {
       var h = myself.getHierarchy(_args);
       return h != null ? h.levels : null;
-    }
+    };
     
     myself.getLevel = function(_args) {
       var levelName = myself.getSelectedLevelName(_args);
@@ -174,7 +174,7 @@ define([
         return level.name == levelName;
       });
       return l;
-    }
+    };
 
     myself.getPaginatedLevelMembers = function(_args, callback) {
       var defaults = {
@@ -184,7 +184,7 @@ define([
         pageSize: 100,
         searchTerm: "",
         context: ""
-      } 
+      };
 
       var params = $.extend({}, defaults, _args);
       

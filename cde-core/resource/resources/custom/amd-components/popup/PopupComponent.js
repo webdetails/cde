@@ -63,7 +63,7 @@ define([
       that.ph.insertAfter(this.ph);
       that.ph.hide();
       that.ph.find("[id]").each(function(i,e){
-        $e = $(e);
+        var $e = $(e);
         var id = $e.attr("id");
         if(id && id in html) {
           $e.attr("id", html[id]);
@@ -214,10 +214,9 @@ define([
         }
       };
       $(document).keydown(escHandler);
-      var dragHandler;
-      dragHandler = function() {
+      var dragHandler = function() {
         myself.arrow.hide();
-      }
+      };
       this.ph.bind('drag',dragHandler);
       
       if(draggable){

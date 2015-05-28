@@ -57,7 +57,7 @@ define([
         comps[c] = comp;
       });
       
-      for(c in myself.components) {
+      for(var c in myself.components) {
         var cName = myself.components[c];
         cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
         var component = myself.dashboard.getComponent(cName);
@@ -70,7 +70,7 @@ define([
           var newPh = $("#" + component.htmlObject).clone();
           newPh.attr("id", component.htmlObject + suffix);
           newPh.find("[id]").each(function(i, e) {
-            $e = $(e);
+            var $e = $(e);
             $e.attr("id", $e.attr("id") + suffix);  
           });
 

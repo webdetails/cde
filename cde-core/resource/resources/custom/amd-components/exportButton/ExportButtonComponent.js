@@ -40,7 +40,7 @@ define([
       var overrideParameters = Utils.propertiesArrayToObject(myself.parameters);    
       bar.text(myself.label).click(function() {
         var foundQuery = false;
-        for(n in myself.queryObjectNames) {
+        for(var n in myself.queryObjectNames) {
           if(comp[n]) {
             comp[n].exportData(myself.outputType, overrideParameters, myself.getFilterSettings(comp));
             foundQuery = true;

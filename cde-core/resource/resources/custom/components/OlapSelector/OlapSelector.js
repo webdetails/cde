@@ -475,7 +475,7 @@ var LevelModel = OptionModel.extend({
 
         // Bind changing qualifiedName to id and name to value
         this.on("change:qualifiedName change:name",function(o){
-            wd.log("Detected changes");
+            Dashboards.log("Detected changes");
             this.set("id",o.get("qualifiedName"));
             this.set("label",o.get("name"));
         });
@@ -727,7 +727,7 @@ var OlapSelectorView = Backbone.View.extend({
             offset = bottomEdge <= bottomLimit ? 0 : bottomLimit - bottomEdge - minimumMargin;
 
             offset = topEdge - offset >= topLimit ? offset : topLimit - topEdge + minimumMargin;
-            console.log("Offset is " + offset + " after correction");
+
             optionList.css("top", (optionList.position().top + offset) + "px");
         }
     },
@@ -925,13 +925,3 @@ templates.olapSelector.crumbtrail =
   "<span class='level'>{{level}}</span>" +
   "<span class='separator'>&nbsp;</span>" +
   "<span class='name'>{{name}}</span>";
-
-
-
-// Shims
-if (typeof console === "undefined"){
-    console={};
-    console.log = function(){
-        return;
-    }
-}

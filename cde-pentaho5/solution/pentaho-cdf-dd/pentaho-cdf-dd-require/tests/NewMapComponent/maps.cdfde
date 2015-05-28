@@ -2696,7 +2696,7 @@
      },
      {
       "name": "preExecution",
-      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //console.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n         require(['cdf/Logger'], function(Logger) { Logger.log(beat); });\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
+      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //Logger.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n         require(['cdf/Logger'], function(Logger) { Logger.log(beat); });\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
       "type": "JavaScript"
      },
      {
