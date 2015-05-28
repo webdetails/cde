@@ -25,7 +25,7 @@ define(['cdf/components/BaseComponent', 'cdf/lib/jquery'], function(BaseComponen
 
         var contentString = '<div id="relatedContentMainDiv"><p>Related content</p><ul>';
 
-        for(key in relatedContent) {
+        for(var key in relatedContent) {
           var relation = relatedContent[key];
           if(relatedContent.hasOwnProperty(key) && key != null && key != undefined) {
             contentString +=

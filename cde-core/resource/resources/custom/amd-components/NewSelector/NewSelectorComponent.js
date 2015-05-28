@@ -128,17 +128,18 @@ define([
     },
 
     handleSelectionChange: function(evt) {
+      var myself = this;
       if(!evt.changed.selected && this.selectorModel.get("collapsed")) {
         /* Wrap the processChange in a setTimeout so that consecutive
          * selection removals only trigger a single parameter change
          */
-        if(this.timeout !== 0) {
+        if(myself.timeout !== 0) {
           clearTimeout(this.timetimeout);
         };
-        var myself = this;
-        this.timeout = setTimeout(function() {
+
+        myself.timeout = setTimeout(function() {
           myself.dashboard.processChange(myself.name);
-          timeout = 0;
+          myself.timeout = 0;
         }, 1500);
       }
     },

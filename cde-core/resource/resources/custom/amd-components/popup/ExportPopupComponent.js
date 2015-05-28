@@ -78,7 +78,7 @@ define([
       link.click(function(e) {
         myself.popup(link);
         e.stopPropagation();
-      })
+      });
       $("#" + myself.htmlObject).append(link);
       
       if(myself.chartComponent) {
@@ -291,7 +291,7 @@ define([
       customButton.click(function() {
         $('.exportChartPopupButtonClicked').each(function(i, elt) {
           $(elt).removeClass('exportChartPopupButtonClicked')
-        })
+        });
         $(this).addClass('exportChartPopupButtonClicked'); 
         $('#width').removeAttr('disabled'); 
         $('#height').removeAttr('disabled'); 

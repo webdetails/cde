@@ -17,10 +17,9 @@ var scale  = params.get("scale"),
     maxPrecision = 5;
 
 function decimalPlaces(number) {
-  n_str = Math.abs(number).toString();
-  lastPoint = (n_str.lastIndexOf('.') != -1) ? n_str.lastIndexOf('.') : 0; 
-  decimalDigits = n_str.length - lastPoint - 1;
-  return decimalDigits;
+  var n_str = Math.abs(number).toString(),
+      lastPoint = (n_str.lastIndexOf('.') != -1) ? n_str.lastIndexOf('.') : 0;
+  return n_str.length - lastPoint - 1;
 }
 
 /*
@@ -51,9 +50,10 @@ var w = 600,
     h = 300,
     r = .75 * h,
     a = pv.Scale.linear(min, max).range(0, Math.PI),
-    ticks = a.ticks();
+    ticks = a.ticks(),
     start = -Math.PI,
-    localMax = 0;
+    localMax = 0,
+    decimals;
 
 /* Fix ticks decimal values*/
 for(i = 0; i < ticks.length; i++) {
@@ -110,4 +110,4 @@ vis.add(pv.Wedge)
 vis.render();
 
 var rotation = (value - min )/(max - min) * 180;
-document.getElementById("ponteiro").setAttribute("transform","rotate("+ rotation + ",300,275)")
+document.getElementById("ponteiro").setAttribute("transform","rotate("+ rotation + ",300,275)");

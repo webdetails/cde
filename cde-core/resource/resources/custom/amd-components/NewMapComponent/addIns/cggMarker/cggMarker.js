@@ -31,6 +31,7 @@ define([
       if(st.height) {cggParameters.height = st.height;}
 
       cggParameters.noChartBg = true;
+      var parameter;
 
       for(parameter in st.parameters) {
         cggParameters[parameter] = st.parameters[parameter];

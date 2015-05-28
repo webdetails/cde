@@ -62,7 +62,7 @@ define([
       this.model.on("change:collapsed", this.updateCollapsed, this);
       this.model.on("page", this.renderPages, this);
       var values = this.model.get("values");
-      values.on("add remove reset",this.updateOptions, this)
+      values.on("add remove reset",this.updateOptions, this);
       values.on("select", this.updateOptions, this);
       values.on("notify", this.notifyUpdate, this);
     },

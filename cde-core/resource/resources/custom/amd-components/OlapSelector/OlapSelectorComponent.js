@@ -75,7 +75,7 @@ define([
         if(v) {
           myself.dashboard.processChange(myself.name);
         }
-      })
+      });
       myself.view.render();
 
       myself.parameters = myself.getParamValues(myself.parameters);
@@ -90,10 +90,10 @@ define([
 
 
     getParamValues: function(overrides) {
-      params = ( overrides instanceof Array)
+      var params = ( overrides instanceof Array)
         ? Utils.propertiesArrayToObject(overrides)
         : ( overrides || {} );
-      paramValues = {};
+      var paramValues = {};
 
       _.each( params , function (value, name) {
         value = this.dashboard.getParameterValue(value);
