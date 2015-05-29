@@ -20,10 +20,6 @@ define(['cde/components/CggComponent'], function(CggComponent) {
       return this.script;
     },
 
-    getOutputType: function() {
-      return 'svg';
-    },
-
     _processParametersCore: function(data) {
       data.paramvalue  = this.dashboard.getParameterValue(this.parameter);
       data.paramcolors = this.colors;

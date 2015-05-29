@@ -1073,12 +1073,12 @@
      },
      {
       "name": "width",
-      "value": "400",
+      "value": "300",
       "type": "Integer"
      },
      {
       "name": "height",
-      "value": "400",
+      "value": "300",
       "type": "Integer"
      },
      {
@@ -3697,12 +3697,12 @@
      },
      {
       "name": "width",
-      "value": "400",
+      "value": "300",
       "type": "Integer"
      },
      {
       "name": "height",
-      "value": "400",
+      "value": "300",
       "type": "Integer"
      },
      {
