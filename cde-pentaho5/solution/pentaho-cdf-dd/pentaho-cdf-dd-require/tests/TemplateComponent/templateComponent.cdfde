@@ -1,0 +1,3726 @@
+{
+ "layout": {
+  "title": "CDF - Sample structure",
+  "rows": [
+   {
+    "id": "4287a994-67e5-710d-3e2b-9794aab22e2f",
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "resourceFile",
+      "value": "${solution:../../template.css}",
+      "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "c72327e7-860b-a5b4-9038-75a6190124cc",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "sampleCss",
+      "type": "Id"
+     },
+     {
+      "name": "resourceCode",
+      "value": ".sectionTitle {\n    padding: 10px;\n    border: 1px solid #4D658D;\n    background: #4D658D;\n    color: #e5e5e5;\n    font-weight: bold;\n    text-transform: uppercase;\n    border-radius: 4px;\n    margin-top: 40px;\n    margin-bottom: 10px;\n}\n\n.sectionTitle .description {\n    text-transform: none;\n    font-weight: normal;\n    color: white;\n} \n\n/* TABLE */\n\n.table {\n  table-layout:fixed;\n}\n\n.table td {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.message.ellipsis {\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    overflow: hidden;\n    width: 520px;\n    height: 18px;\n}\n.message {\n    white-space: normal;\n    text-align: justify;\n}\n\n.toggleEllipsis {\n    font-size: 10px;\n    float: right;\n    cursor: pointer;\n} \n\n.clickInfo {\n    padding-left: 20px;\n    padding-top: 10px;\n    font-weight: bold;\n} ",
+      "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "78a5042d-3a87-1128-5f4a-3284e6efa297",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "e2a73e8e-f35f-9e07-13f6-032ef7424b3b",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "78a5042d-3a87-1128-5f4a-3284e6efa297",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "ca448880-dea5-ee73-24aa-7ea6d96a8a63",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "e2a73e8e-f35f-9e07-13f6-032ef7424b3b",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Mustache Template </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f61328d2-39ef-49ed-a1c6-bb6ab00d6725",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "e2a73e8e-f35f-9e07-13f6-032ef7424b3b",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> Example of using a simple mustache template </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "364c25d1-74be-280b-56d8-6bd464fc69f2",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "78a5042d-3a87-1128-5f4a-3284e6efa297",
+    "properties": [
+     {
+      "name": "name",
+      "value": "mustacheTemplate",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "aa97acd3-2398-0adc-dc53-60a627f12a25",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "a92494e5-c6ee-b73a-cda6-f3bc5b5b6628",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "aa97acd3-2398-0adc-dc53-60a627f12a25",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "effabd5f-9ad7-867b-9573-ce69903b5423",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "a92494e5-c6ee-b73a-cda6-f3bc5b5b6628",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Underscore Template </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "28f6ef77-7a66-bdb5-2372-9b2d05165e25",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "a92494e5-c6ee-b73a-cda6-f3bc5b5b6628",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> Example of using a simple underscore template </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "e3f10b68-9566-18f7-6d3c-5ea62d611fb8",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "aa97acd3-2398-0adc-dc53-60a627f12a25",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreTemplate",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "8b906856-7f59-2af2-c305-35f6a95bb5f2",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b2524714-33a7-ef50-c295-9bdc561085c1",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8b906856-7f59-2af2-c305-35f6a95bb5f2",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "75ceff6f-3c1a-3572-3385-8fda79d89263",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "b2524714-33a7-ef50-c295-9bdc561085c1",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Clickable Underscore Template</div> \n ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "3fb5ee47-de08-d8fd-a7cb-d6ec0f91916f",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "b2524714-33a7-ef50-c295-9bdc561085c1",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> Handling events for templates. Click on each element to do a fireChange. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "fa5d168e-c9e5-649a-8db7-0a4f2eef8788",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8b906856-7f59-2af2-c305-35f6a95bb5f2",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreClick",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "ed528f87-d74c-7224-1eb3-4251ad4003be",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8b906856-7f59-2af2-c305-35f6a95bb5f2",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clicked",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "20",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "clickInfo",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "aab22453-7ca0-56be-5bed-65b3be340e52",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f41b6919-41e6-51be-25c5-2f23dd6e463b",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "aab22453-7ca0-56be-5bed-65b3be340e52",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "afe27e7b-2b3d-6502-fec1-58b76eb8fb78",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f41b6919-41e6-51be-25c5-2f23dd6e463b",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Underscore template with fomatted model values</div> \n ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "df979a94-211b-c621-3149-59e0ebcf05ab",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f41b6919-41e6-51be-25c5-2f23dd6e463b",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> We can apply functions to format the fields of the model on the template. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "fb7c15df-a502-78e0-5da5-7c271c85c14e",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "aab22453-7ca0-56be-5bed-65b3be340e52",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreFormatted",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "e66767fb-8f3d-56d1-9b36-8d16ce276592",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "5103bd77-096b-821a-05c3-ef95b19bf483",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "e66767fb-8f3d-56d1-9b36-8d16ce276592",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "5312e18f-1c4c-2eb6-ddfd-9d8f0a84c811",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "5103bd77-096b-821a-05c3-ef95b19bf483",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Empty Template </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "97832066-f983-1133-9a8f-882dfbdb3f90",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "5103bd77-096b-821a-05c3-ef95b19bf483",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> It's also possible to extend the template options and for example change the text of error handling. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "605ddcc5-d528-c3ec-f20c-7f0eae9b8b8e",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "e66767fb-8f3d-56d1-9b36-8d16ce276592",
+    "properties": [
+     {
+      "name": "name",
+      "value": "emptyTemplate",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "2d63bb1d-60f2-0776-9360-954d5da16a41",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "0e1fbf0c-630a-7edb-7f59-31241881daf3",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "2d63bb1d-60f2-0776-9360-954d5da16a41",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "ddd0356c-b96e-cff6-d2b7-cdd8bcc80691",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "0e1fbf0c-630a-7edb-7f59-31241881daf3",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Template usage with underscore </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "b32ff491-ed99-3106-f5f2-e7788939cc2c",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "0e1fbf0c-630a-7edb-7f59-31241881daf3",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> This is using a template that is defined on the html and not like a string. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "debbdd3b-6ea0-859d-75e5-6b281b9f75cd",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "0e1fbf0c-630a-7edb-7f59-31241881daf3",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<script type=\"text/template\" id=\"underscoreHtmlTemplate\">\n    <div class=\"templateWrapper\">\n    <% _.each(items, function(elem) { %>\n           <div class=\"templateRow\">\n               <div class=\"title\"> <%=elem[0]%> </div>\n               <div class=\"desc\"> <%=elem[1]%> </div>\n               <div class=\"value\">\n                   <div class=\"number\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>\n               </div>\n           </div>\n    <% }); %>\n    </div>\n</script> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "e50a447a-076f-9e89-96e9-b9bb19de047d",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "2d63bb1d-60f2-0776-9360-954d5da16a41",
+    "properties": [
+     {
+      "name": "name",
+      "value": "htmlTemplate",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "8a1967d4-bb16-8404-0530-7ef2b969840a",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "f5379d62-af92-8808-d3bd-cea24fdcb161",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8a1967d4-bb16-8404-0530-7ef2b969840a",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "a98ad213-a4ce-5e4f-4d49-4550bda3211b",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f5379d62-af92-8808-d3bd-cea24fdcb161",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div>Underscore templates and addins on template component</div> \n ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "cfc6742f-ff5b-bb10-0720-03376d98a832",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "f5379d62-af92-8808-d3bd-cea24fdcb161",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\"> The compoent also allows the use of addins inside the template. It allows to build addins that can be easly reused. Apply formarting and error handling it's also possible on the addins. Bellow clicking on the gray or yellow area you will get diferent notifications. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "d3a40866-ba0e-c853-f8d9-7a5a7322e645",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8a1967d4-bb16-8404-0530-7ef2b969840a",
+    "properties": [
+     {
+      "name": "name",
+      "value": "addinsOnTemplateComp",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "8d87d769-6c0d-36d9-04f8-01a761207c34",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "8a1967d4-bb16-8404-0530-7ef2b969840a",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clickedWithAddin",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "20",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "clickInfo",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "04e5f3a4-89d0-5a67-282c-63c7548f8ae5",
+    "type": "LayoutRow",
+    "typeDesc": "Row",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "section",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "d9927e25-8dc1-d1a2-869b-7246631c5d78",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "04e5f3a4-89d0-5a67-282c-63c7548f8ae5",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "sectionTitle",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "e8356bc6-b2f6-475a-75e8-2d51bf3e2d1b",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "d9927e25-8dc1-d1a2-869b-7246631c5d78",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div> Html template usage with underscore </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "259e994b-6a93-2756-8846-bce63451d4c6",
+    "type": "LayoutHtml",
+    "typeDesc": "Html",
+    "parent": "d9927e25-8dc1-d1a2-869b-7246631c5d78",
+    "properties": [
+     {
+      "name": "name",
+      "value": "",
+      "type": "Id"
+     },
+     {
+      "name": "html",
+      "value": "<div class=\"description\">There is also a template addIn for the table component. \nThis allows the use of templates on each cell of a table. \nIt's possible to apply formatting and event handling. \nThe firts 3 columns are using template addins. Click on the links to see some action. </div> ",
+      "type": "Html"
+     },
+     {
+      "name": "fontSize",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "color",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "cssClass",
+      "value": "description",
+      "type": "String"
+     }
+    ]
+   },
+   {
+    "id": "5b1395b2-178a-027b-b954-9ac6d8106174",
+    "type": "LayoutColumn",
+    "typeDesc": "Column",
+    "parent": "04e5f3a4-89d0-5a67-282c-63c7548f8ae5",
+    "properties": [
+     {
+      "name": "name",
+      "value": "addinTemplateTable",
+      "type": "Id"
+     },
+     {
+      "name": "columnSpan",
+      "value": "24",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrepend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnAppend",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "columnPrependTop",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnAppendBottom",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "columnBigBorder",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "height",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "backgroundColor",
+      "value": "",
+      "type": "Color"
+     },
+     {
+      "name": "roundCorners",
+      "value": "",
+      "type": "RoundCorners"
+     },
+     {
+      "name": "textAlign",
+      "value": "",
+      "type": "TextAlign"
+     },
+     {
+      "name": "cssClass",
+      "value": "",
+      "type": "String"
+     }
+    ]
+   }
+  ]
+ },
+ "components": {
+  "rows": [
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Generic",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "35991c96-5b33-29c7-7699-d73c04688fe7",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clickParam",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "Click on a Card",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "1cb647ae-68aa-88c4-7903-f6ea35d6e9e2",
+    "type": "ComponentsParameter",
+    "typeDesc": "Simple parameter",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clickParamWithAddin",
+      "type": "Id"
+     },
+     {
+      "name": "propertyValue",
+      "value": "Click on a Card",
+      "type": "String"
+     },
+     {
+      "name": "parameterViewRole",
+      "value": "unused",
+      "type": "parameterViewRoleCustom"
+     },
+     {
+      "name": "bookmarkable",
+      "value": "false",
+      "type": "Boolean"
+     }
+    ]
+   },
+   {
+    "id": "OTHERCOMPONENTS",
+    "name": "Others",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "Others",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "55260558-733d-33ae-e878-c1c7ed768203",
+    "type": "ComponentstextComponent",
+    "typeDesc": "Text Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clicked",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "['${p:clickParam}']",
+      "type": "Listeners"
+     },
+     {
+      "name": "expression",
+      "value": "function() {\n    return this.dashboard.getParameterValue('${p:clickParam}')\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:clicked}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     }
+    ]
+   },
+   {
+    "id": "709810cc-1ea2-7a3b-afc7-1322b4f897d3",
+    "type": "ComponentstextComponent",
+    "typeDesc": "Text Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "clickedWithAddin",
+      "type": "Id"
+     },
+     {
+      "name": "listeners",
+      "value": "['${p:clickParamWithAddin}']",
+      "type": "Listeners"
+     },
+     {
+      "name": "expression",
+      "value": "function() {\n    return this.dashboard.getParameterValue('${p:clickParamWithAddin}')\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:clickedWithAddin}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     }
+    ]
+   },
+   {
+    "id": "fbdae4d9-f087-82f7-124e-558c0f310497",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "mustacheSimple",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:mustacheTemplate}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "function() {\n    return \"aa\";\n    } ",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    var template = ''+\n    '<div class=\"templateWrapper\">'+\n    '   {{#items}} '+\n    '       <div class=\"templateRow\">'+\n    '           <div class=\"title\"> {{0 | formatter : \"none\"}} </div>'+\n    '           <div class=\"desc\"> {{1}} </div>'+\n    '           <div class=\"number\"> {{2}} </div>'+\n    '       </div>'+\n    '   {{/items}} '+\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "mustache",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"none\",\"function(value) { return value; }\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "7646f63b-0fe3-2948-714f-554dd44257d3",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreSimple",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:underscoreTemplate}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    var template = ''+\n    '<div class=\"templateWrapper\">'+\n    '<% _.each(items, function(elem) { %> ' +\n    '       <div class=\"templateRow\">'+\n    '           <div class=\"title\"> <%=elem[0]%> </div>'+\n    '           <div class=\"desc\"> <%=elem[1]%> </div>'+\n    '           <div class=\"number\"> <%=elem[2]%> </div>'+\n    '       </div>'+\n    '<% }); %>'\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "647f1951-2274-8ccf-246c-5525bdebf466",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreClick",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:underscoreClick}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "\"aa\" ",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    var template = ''+\n    '<% var getTrend = function(elem, key) {if (elem < 0) {return \"down icon-arrow-circle-o-down\"} else {return \"up icon-arrow-circle-o-up\"} } %>' + \n    '<div class=\"templateWrapper\">'+\n    '<% _.each(items, function(elem) { %> ' +\n    '       <div class=\"templateRow clickable\" data-click=\"<%=elem[0]%>\">'+\n    '           <div class=\"title\"> <%=elem[0]%> </div>'+\n    '           <div class=\"desc\"> <%=elem[1]%> </div>'+\n    '           <div class=\"value\"> <%=elem[2]%> </div>'+\n    '       </div>'+\n    '<% }); %>'\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[[\"click .templateRow\",\"function(event){\\n    var $this = $(\\\".templateRow\\\").has(event.target);\\n    var selected = \\\"You have clicked on: \\\" + $this.attr('data-click');\\n    this.dashboard.fireChange('${p:clickParam}', selected);\\n    Logger.log(selected, 'info');\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"floatFormatter\",\"function(value){\\n    return Utils.numberFormat(value, '0.0')\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "98400823-3aed-2213-e660-469f11b3a058",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "underscoreFormatted",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:underscoreFormatted}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    var template = ''+\n    '<div class=\"templateWrapper\">'+\n    '<% _.each(items, function(elem) { %> ' +\n    '       <div class=\"templateRow\">'+\n    '           <div class=\"title\"> <%=elem[0]%> </div>'+\n    '           <div class=\"desc\"> <%=elem[1]%> </div>'+\n    '           <div class=\"value\">'+\n    '               <div class=\"number\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>'+\n    '           </div>'+\n    '       </div>'+\n    '<% }); %>'\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"floatFormatter\",\"function(value){\\n    return Utils.numberFormat(value, '0.0')\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "ded52fd7-95b0-7ec9-998c-65090a1c1bd4",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "addinsOnTemplateComp",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:addinsOnTemplateComp}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f() {\n    var templateOpts = {\n        templateType: 'mustache', \n        template:   '<div class=\"addinOnAddin\"> ' +\n                    '   <div> This is an addin inside the component, click me to see an alert message! </div>' +\n                    '   <div> You are looking to the {{items}} </div>' +\n                    '</div>',\n        rootElement: 'items',\n        formatters: { },\n        events: [\n            ['click .addinOnAddin', function(event) {\n                event.stopPropagation();\n                var selected = \"You have clicked on the addIn for: \" + event.data.status.model.items;\n                dashboard.fireChange('${p:clickParamWithAddin}', selected);\n                Logger.log(selected, 'info');\n            }]\n        ]\n    };\n\n    this.setAddInOptions(\"templateType\",\"template\", templateOpts);\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n\n    var template = ''+ \n    '<div class=\"templateWrapper templateWithAddIn\">'+\n    '<% _.each(items, function(elem) { %> ' +\n    '       <div class=\"templateRow clickable\" data-click=\"<%=elem[0]%>\">'+\n    '           <div class=\"title\"> <%=elem[0]%> </div>'+\n    '           <div class=\"desc\"> <%=elem[1]%> </div>'+\n    '           <div class=\"value\">'+\n    '               <div class=\"number\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>'+\n    '               <div class=\"addin clearfix\"> <%=addin(elem[1], \"template\")%> </div>'+\n    '           </div>'+\n    '       </div>'+\n    '<% }); %>';\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[[\"click .templateRow\",\"function(event) {\\n    event.stopPropagation();\\n    var $this = $(\\\".templateRow\\\").has(event.target);\\n    var selected = \\\"You have clicked on: \\\" + $this.attr('data-click');\\n    this.dashboard.fireChange('${p:clickParamWithAddin}', selected);\\n    Logger.log(selected, 'info');\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"floatFormatter\",\"function(value){\\n    return Utils.numberFormat(value, '0.0');\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "cc854b58-a814-c552-6379-0a47efe05513",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "extendedProperties",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "emptyTemplateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:emptyTemplate}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    var template = ''+\n    '<div class=\"templateWrapper\">'+\n    '<% _.each(items, function(elem) { %> ' +\n    '       <div class=\"templateRow\">'+\n    '           <div class=\"templateCol0\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>'+\n    '           <div class=\"templateCol1\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>'+\n    '           <div class=\"templateCol2\"> <%=formatter(elem[2], \"floatFormatter\")%> </div>'+\n    '       </div>'+\n    '<% }); %>'\n    '</div>';\n    return template;\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"floatFormatter\",\"function(value){\\n    return Dashboards.numberFormat(value, '0.0')\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        messages: {\n            error: {\n                noData: \"No data available on this component. You can customize this messages!\",\n                invalidTemplate: \"Invalid template.\",\n                invalidTemplateType: \"Invalid template type.\",\n                generic: \"Invalid options defined. Please check the template component properties.\"\n            }\n        }\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "32b0162a-0ffe-593d-0a9c-4f95f2f15f72",
+    "type": "ComponentsTemplateComponent",
+    "typeDesc": "Template Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "htmlTemplate",
+      "type": "Id"
+     },
+     {
+      "name": "title",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "dataSource",
+      "value": "templateQuery",
+      "type": "Datasource"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:htmlTemplate}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "modelHandler",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "template",
+      "value": "function() {\n    return $('#underscoreHtmlTemplate').html();\n}\n ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "templateType",
+      "value": "underscore",
+      "type": "templateTypeCustom"
+     },
+     {
+      "name": "events",
+      "value": "[]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "formatters",
+      "value": "[[\"floatFormatter\",\"function(value){\\n    return Utils.numberFormat(value, '0.0')\\n}\"]]",
+      "type": "EditorValuesArray"
+     },
+     {
+      "name": "rootElement",
+      "value": "items",
+      "type": "String"
+     },
+     {
+      "name": "extendableOptions",
+      "value": "function() {\n    var opts = {\n        extendedProperty: \"this is sample extend property\"\n    };\n    return opts;\n}\n    ",
+      "type": "JavaScript"
+     }
+    ]
+   },
+   {
+    "id": "53ef8c54-5b2f-2ecd-432c-f1c8a66ac010",
+    "type": "ComponentsTable",
+    "typeDesc": "table Component",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "value": "addinTemplateTable",
+      "type": "Id"
+     },
+     {
+      "name": "expandContainerObject",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "listeners",
+      "value": "[]",
+      "type": "Listeners"
+     },
+     {
+      "name": "oLanguage",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "language",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "colFormats",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colHeaders",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colSortable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "colTypes",
+      "value": "[\"template\",\"template\",\"template\",\"numeric\",\"numeric\"]",
+      "type": "colTypesCustom"
+     },
+     {
+      "name": "colWidths",
+      "value": "[\"20%\",\"10%\",\"56%\",\"8%\",\"8%\"]",
+      "type": "Array"
+     },
+     {
+      "name": "expandParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "displayLength",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "expandOnClick",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "filter",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "info",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "lengthChange",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginate",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "sort",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "colSearchable",
+      "value": "[]",
+      "type": "Array"
+     },
+     {
+      "name": "drawCallback",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "dataSource",
+      "value": "githubStats",
+      "type": "Datasource"
+     },
+     {
+      "name": "sDom",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "sortBy",
+      "value": "[]",
+      "type": "SortByArray"
+     },
+     {
+      "name": "priority",
+      "value": 5,
+      "type": "Integer"
+     },
+     {
+      "name": "refreshPeriod",
+      "value": "",
+      "type": "Integer"
+     },
+     {
+      "name": "paginationType",
+      "value": "simple",
+      "type": "PaginationType"
+     },
+     {
+      "name": "tableStyle",
+      "value": "classic",
+      "type": "TableStyle"
+     },
+     {
+      "name": "htmlObject",
+      "value": "${h:addinTemplateTable}",
+      "type": "HtmlObject"
+     },
+     {
+      "name": "executeAtStart",
+      "value": "true",
+      "type": "Boolean"
+     },
+     {
+      "name": "paginateServerside",
+      "value": "false",
+      "type": "Boolean"
+     },
+     {
+      "name": "preExecution",
+      "value": "function f() {\n    var templateOptsInfo = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '  <div> {{items.name}} </div>'+\n                    '  <div> <a href=\"mailto:{{items.email}}\"> {{items.email}} </a> </div>'+\n                    '  <div class=\"fa fa-clock-o\"> {{items.date.date}} </div>'+\n                    '  <div class=\"fa fa-calendar\"> {{items.date.time}} </div>'+\n                    '</div>',\n        rootElement: 'items',\n        formatters: {\n            date: function(value){\n                var result = {\n                    date: moment(value).format('YYYY-MM-DD'),\n                    time: moment(value).format('hh:mm:ss')\n                };\n                return result;\n            }\n        }\n    };\n    var templateOptsLink = {\n        templateType: 'mustache', \n        template:   '<div class=\"fa fa-external-link\"> <a target=\"_blank\" href=\"{{value}}\"> Details </a> </div>',\n        rootElement: 'value',\n        formatters: {\n        }\n    };\n    var templateOptsExpandClick = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '   <div class=\"message ellipsis\"> {{value}} </div>'+\n                    '   <a class=\"toggleEllipsis\"> Click me to expand/collapse </a>'+\n                    '</div>',\n        rootElement: 'value',\n        formatters: {\n        },\n        events: [\n            ['click .toggleEllipsis', function(event) {\n                $(event.data.target).find('.message').toggleClass('ellipsis');\n            }]\n        ]\n    };\n    \n    this.setAddInOptions(\"colType\",\"template\", function(state){\n        var opts = {};\n        switch(state.colIdx) {\n            case 0: \n                opts =  templateOptsInfo;\n                break;\n            case 1: \n                opts =  templateOptsLink;\n                break;\n            case 2: \n                opts =  templateOptsExpandClick;\n                break;\n            default: \n                opts = {};\n                break;\n        }\n        return opts;\n    });\n} ",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postExecution",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postFetch",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "extraOptions",
+      "value": "[]",
+      "type": "OptionArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
+     },
+     {
+      "name": "clickAction",
+      "value": "",
+      "type": "JavaScript"
+     }
+    ]
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "SCRIPTING",
+    "name": "SCRIPTING Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "SCRIPTING Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "3f51747f-d9fd-f8c2-2b54-da88225be139",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "emptyTemplateQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    \nString[] columnNames = new String[]{\t\t\t\t\t\t\t\t\t\t\t\n\t\"Name\",\t\"Description\",\t\"Latitude\",\t\"Longitude\", \"enabled\",\t\"date\",\t\"bullet\",\t\"v1\",\t\"v2\",\t\"v3\"\t\n};\t\t\t\t\t\t\t\t\t\t\t\nClass[] columnTypes = new Class[]{\t\t\t\t\t\t\t\t\t\t\t\n\tString.class,\tString.class,\tFloat.class,\tFloat.class,\tBoolean.class,\tString.class,\tString.class,\tFloat.class,\tFloat.class,\tFloat.class\t\n};\t\t\t\t\t\t\t\t\t\t\t\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\t\t\t\t\t\t\t\t\t\t\t\n\nreturn model;",
+      "type": "ScriptableQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ],
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable"
+   },
+   {
+    "id": "01ca0e79-4e7c-a543-6a61-6925692ac8f9",
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "value": "templateQuery",
+      "type": "Id"
+     },
+     {
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    \nString[] columnNames = new String[]{\t\t\t\t\t\t\t\t\t\t\t\n\t\"Name\",\t\"Description\",\t\"Latitude\",\t\"Longitude\",\t\"enabled\",\t\"date\",\t\"bullet\",\t\"v1\",\t\"v2\",\t\"v3\"\t\n};\t\t\t\t\t\t\t\t\t\t\t\nClass[] columnTypes = new Class[]{\t\t\t\t\t\t\t\t\t\t\t\n\tString.class,\tString.class,\tFloat.class,\tFloat.class,\tBoolean.class,\tString.class,\tString.class,\tFloat.class,\tFloat.class,\tFloat.class\t\n};\t\t\t\t\t\t\t\t\t\t\t\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\t\t\t\t\t\t\t\t\t\t\t\nmodel.addRow(new Object[]{\tnew String (\"CDA\"),\tnew String (\"Data Access\"),\tnew Float(43.12404151),\tnew Float(17.07182076),\tnew Boolean(true),\tnew String(\"2014-12-24\"),\tnew String (\"54.35075125,22.41322006,75.05981995\"),\tnew Float(54.35075125),\tnew Float(22.41322006),\tnew Float(75.05981995)\t});\nmodel.addRow(new Object[]{\tnew String (\"CDE\"),\tnew String (\"Dashboard Editor\"),\tnew Float(-17.41839566),\tnew Float(119.7625068),\tnew Boolean(true),\tnew String(\"2014-12-25\"),\tnew String (\"46.52281945,54.51525158,52.79385679\"),\tnew Float(46.52281945),\tnew Float(54.51525158),\tnew Float(52.79385679)\t});\nmodel.addRow(new Object[]{\tnew String (\"CDF\"),\tnew String (\"Dashboard Framework\"),\tnew Float(-17.84303697),\tnew Float(-96.72580186),\tnew Boolean(true),\tnew String(\"2014-12-26\"),\tnew String (\"45.03409699,0.02939752151,86.2054509\"),\tnew Float(45.03409699),\tnew Float(0.02939752151),\tnew Float(86.2054509)\t});\nmodel.addRow(new Object[]{\tnew String (\"CCC\"),\tnew String (\"Charts Components\"),\tnew Float(-28.65016157),\tnew Float(-24.05256525),\tnew Boolean(true),\tnew String(\"2014-12-27\"),\tnew String (\"35.89925775,51.4782757,84.2320869\"),\tnew Float(35.89925775),\tnew Float(51.4782757),\tnew Float(84.2320869)\t});\nmodel.addRow(new Object[]{\tnew String (\"CGG\"),\tnew String (\"Graphics Generator\"),\tnew Float(-80.45989423),\tnew Float(135.234683),\tnew Boolean(true),\tnew String(\"2014-12-28\"),\tnew String (\"98.93216741,11.45434722,81.46034629\"),\tnew Float(98.93216741),\tnew Float(11.45434722),\tnew Float(81.46034629)\t});\nmodel.addRow(new Object[]{\tnew String (\"CPK\"),\tnew String (\"Plugin Kickstarter\"),\tnew Float(-22.06705617),\tnew Float(29.63033197),\tnew Boolean(false),\tnew String(\"2014-12-29\"),\tnew String (\"80.76432443,35.17587706,73.72982155\"),\tnew Float(80.76432443),\tnew Float(35.17587706),\tnew Float(73.72982155)\t});\nmodel.addRow(new Object[]{\tnew String (\"CFR\"),\tnew String (\"File Repository\"),\tnew Float(-64.86836197),\tnew Float(-62.77248056),\tnew Boolean(false),\tnew String(\"2014-12-30\"),\tnew String (\"13.51558242,14.6513744,97.66532517\"),\tnew Float(13.51558242),\tnew Float(14.6513744),\tnew Float(97.66532517)\t});\nmodel.addRow(new Object[]{\tnew String (\"CDG\"),\tnew String (\"Data Generator\"),\tnew Float(-88.20733418),\tnew Float(-72.48848486),\tnew Boolean(false),\tnew String(\"2015-01-01\"),\tnew String (\"1.954412768,83.66806352,31.52089382\"),\tnew Float(1.954412768),\tnew Float(83.66806352),\tnew Float(31.52089382)\t});\nmodel.addRow(new Object[]{\tnew String (\"CBF\"),\tnew String (\"Build Framework\"),\tnew Float(10.75148192),\tnew Float(-175.6339215),\tnew Boolean(true),\tnew String(\"2015-01-02\"),\tnew String (\"23.42902329,36.18434318,63.00424021\"),\tnew Float(23.42902329),\tnew Float(36.18434318),\tnew Float(63.00424021)\t});\nreturn model;",
+      "type": "ScriptableQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ],
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable"
+   },
+   {
+    "id": "KETTLE",
+    "name": "KETTLE Queries",
+    "type": "Label",
+    "typeDesc": "<i>Group</i>",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "value": "KETTLE Queries",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "c47188ae-84cf-d08c-08b1-5b6e5fa82357",
+    "type": "Componentskettle_kettleTransFromFile",
+    "typeDesc": "kettle over kettleTransFromFile",
+    "parent": "KETTLE",
+    "properties": [
+     {
+      "name": "name",
+      "value": "githubStats",
+      "type": "Id"
+     },
+     {
+      "name": "ktrFile",
+      "value": "githubStats.ktr",
+      "type": "KtrPath"
+     },
+     {
+      "name": "access",
+      "value": "public",
+      "type": "Access"
+     },
+     {
+      "name": "query",
+      "value": "OUTPUT",
+      "type": "DefaultQuery"
+     },
+     {
+      "name": "parameters",
+      "value": "[[\"ONWER\",\"webdetails\",\"String\",\"\"],[\"REPO\",\"cde\",\"String\",\"\"],[\"SHA\",\"master\",\"String\",\"\"]]",
+      "type": "CdaParameters"
+     },
+     {
+      "name": "variables",
+      "value": "[[\"OWNER\",\"OWNER\"],[\"REPO\",\"REPO\"],[\"SHA\",\"SHA\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
+      "name": "output",
+      "value": "[\"0\",\"1\",\"2\"]",
+      "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "exclude",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
+     },
+     {
+      "name": "cacheDuration",
+      "value": 3600,
+      "type": "Integer"
+     },
+     {
+      "name": "cache",
+      "value": "true",
+      "type": "Boolean"
+     }
+    ],
+    "meta": "CDA",
+    "meta_conntype": "kettle.TransFromFile",
+    "meta_datype": "kettle"
+   }
+  ]
+ },
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/TemplateComponent/templateComponent.cdfde"
+}
