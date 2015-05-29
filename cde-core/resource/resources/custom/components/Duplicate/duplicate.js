@@ -50,31 +50,31 @@ var DuplicateComponent = BaseComponent.extend({
       var comp =  c + suffix; 
       comps[c] = comp;
     });
-    
+
+    // clone target HTML element and it's content
+    var htmlRemap = {};
+    htmlRemap[myself.targetHtmlObject] = (myself.targetHtmlObject + suffix).replace(/([^\\])\$/g, '$1\\$');
+    var newPh = $("#" + myself.targetHtmlObject).clone();
+    newPh.attr("id", newPh.attr("id") + suffix);  
+    newPh.find("[id]").each(function(i, e) {
+      var $e = $(e);
+      $e.attr("id", $e.attr("id") + suffix);  
+    });
+
+    // append cloned HTML to target container, or after target HTML element
+    if(myself.targetContainer) {
+      newPh.appendTo("#" + myself.targetContainer);  
+    } else {
+      newPh.insertAfter("#" + myself.targetHtmlObject);
+    }
+
+    // clone target components, add to dashboard and execute update
     for(c in myself.components) {
       var cName = myself.components[c];
       cName = RegExp("^"+ cdePrefix).test(cName) ? cName : cdePrefix + cName;
       var component = Dashboards.getComponent(cName);
       if(component) {
-        // map component's htmlObject to the new HTML object (newPh)
-        // e.g. htmlRemap['column1'] = 'column1_1'
-        //    Were 'column1' is the component's HTML object
-        //    'column1_1' is the duplicate component's HTML object
-        var htmlRemap = {};
-        var newPh = $("#" + component.htmlObject).clone();
-        newPh.attr("id", component.htmlObject + suffix);
-        newPh.find("[id]").each(function(i, e) {
-          $e = $(e);
-          $e.attr("id", $e.attr("id") + suffix);  
-        });
-
-        if(myself.targetContainer) {
-          newPh.appendTo('#' + myself.targetContainer);  
-        } else {
-          newPh.insertAfter('#' + myself.targetHtmlObject);
-        }
-
-        htmlRemap[component.htmlObject] = newPh.attr('id').replace(/([^\\])\$/g, '$1\\$');
+        htmlRemap[component.htmlObject] = (component.htmlObject + suffix).replace(/([^\\])\$/g,'$1\\$');
         var clone = component.clone(params, comps, htmlRemap);
         clone.name = clone.name + suffix;
         window[clone.name] = clone;
