@@ -64,7 +64,7 @@
             <InputType>String</InputType>
             <OutputType>String</OutputType>
             <Order>51</Order>
-            <Advanced>true</Advanced>
+            <Advanced>false</Advanced>
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
