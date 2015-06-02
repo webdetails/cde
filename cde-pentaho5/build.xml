@@ -339,10 +339,6 @@
         <include name="**/*"/>
       </fileset>
     </copy>
-
-    <get src="http://127.0.0.1:8080/pentaho/Publish?publish=now&amp;class=org.pentaho.platform.plugin.services.pluginmgr.PluginAdapter&amp;userid=${plugin.local.install.user}&amp;password=${plugin.local.install.pass}"
-         dest="${stage.dir}/blah.html"/>
-
   </target>
 
   <target name="write-properties" depends="make-stage">
