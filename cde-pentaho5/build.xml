@@ -94,8 +94,8 @@
 
   <echo>project.revision = ${project.revision}</echo>
 
-  <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,dist-solution"/>
-  <target name="dist-compile" depends="jar,dist-plugin"/>
+  <target name="dist" depends="clean, resolve, jar, write-properties, write-patches, dist-plugin, dist-solution"/>
+  <target name="dist-compile" depends="jar, dist-plugin"/>
 
   <property name="plugin.artifact.id" value="${plugin.name}"/>
   <property name="plugin.zipfile" value="${plugin.artifact.id}-${project.revision}.zip"/>
@@ -119,7 +119,7 @@
   Creates a distribution of this project's plugin zip
   ====================================================================-->
   <target name="make-stage">
-    <!-- Make dirs-->
+    <!-- Make dirs -->
     <mkdir dir="${stage.dir}"/>
     <mkdir dir="${stage.dir}/${plugin.name}"/>
     <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
@@ -128,8 +128,7 @@
 
   <target name="dist-plugin" depends="jar, make-stage, check-pentaho-js-build-downloaded, subfloor-js.resolve-js" description="Creates a distribution">
 
-    <!-- delete the compressed build output dir -->
-    <delete dir="${js.build.output.dir}"/>
+    <!-- delete the dir that contains the sources to be optimized -->
     <delete dir="${js.module.script.agg.dir}"/>
     <echo message="js.module.script.agg.dir: ${js.module.script.agg.dir}"/>
     <mkdir dir="${js.module.script.agg.dir}"/>
@@ -161,7 +160,6 @@
     </copy>
     <!-- copy cde-pentaho-base resources to tmp dir -->
     <!-- copy cde-pentaho5 resources to tmp dir -->
-    <echo message="Copying core amd-components files"/>
     <copy todir='${js.module.script.agg.dir}/amd-components'>
       <fileset dir='${resource.dir}/resources/custom/amd-components/'/>
     </copy>
@@ -317,7 +315,7 @@
 
     <mkdir dir="${solution.stage.dir}"/>
 
-    <!-- copy over all the xactions within the cdf folder -->
+    <!-- copy all solution files to the solution stage dir -->
     <copy todir="${solution.stage.dir}" overwrite="true">
       <fileset dir="./solution">
         <include name="pentaho-cdf-dd/**/*"/>
@@ -327,8 +325,7 @@
     <zip zipfile="${dist.dir}/${plugin.solution.zipfile}"
          basedir="${solution.stage.dir}"
          includes="**/*"
-         excludes="**/Thumbs.db"
-            />
+         excludes="**/Thumbs.db"/>
 
     <!-- copy AMD solution folder to stage dir -->
     <copy todir="${solution.stage.dir}" overwrite="true">

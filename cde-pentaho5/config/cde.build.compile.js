@@ -7,6 +7,14 @@
   //The directory path to save the output. All relative paths are relative to the build file.
   dir: "../bin/scriptOutput",
 
+  //As of RequireJS 2.0.2, the dir above will be deleted before the
+  //build starts again. If you have a big build and are not doing
+  //source transforms with onBuildRead/onBuildWrite, then you can
+  //set keepBuildDir to true to keep the previous dir. This allows for
+  //faster rebuilds, but it could lead to unexpected errors if the
+  //built code is transformed in some way.
+  keepBuildDir: false,
+
   //By default, all modules are located relative to this path. If appDir is set, then
   //baseUrl should be specified as relative to the appDir.
   baseUrl: ".",
@@ -139,7 +147,6 @@
   //Sets up a map of module IDs to other module IDs. For more details, see
   //the http://requirejs.org/docs/api.html#config-map docs.
   //map: {},
-
 
   //List the modules that will be optimized. All their immediate and deep
   //dependencies will be included in the module's file when the build is

@@ -16,52 +16,52 @@ define([
   './DashboardComponentExt'],
   function(UnmanagedComponent, DashboardComponentExt) { 
 
-    var DashboardComponent = UnmanagedComponent.extend({
+  var DashboardComponent = UnmanagedComponent.extend({
 
-      update: function() {
-        if (!this.preExec()) {
-          return false;
-        }
-        var myself = this;
-        require([DashboardComponentExt.getDashboardUrl(this.dashboardPath)], function(Dashboard) {
-          myself.requiredDashboard = new Dashboard(myself.htmlObject);
-          myself.mapParameters();
-          myself.requiredDashboard.render();
-          myself.postExec();
-        });
-      },
+    update: function() {
+      if(!this.preExec()) {
+        return false;
+      }
+      var myself = this;
+      require([DashboardComponentExt.getDashboardUrl(this.dashboardPath)], function(Dashboard) {
+        myself.requiredDashboard = new Dashboard(myself.htmlObject);
+        myself.mapParameters();
+        myself.requiredDashboard.render();
+        myself.postExec();
+      });
+    },
 
-      mapParameters: function() {
-        var reqDash = this.requiredDashboard;
+    mapParameters: function() {
+      var reqDash = this.requiredDashboard;
 
-        if(this.registeredEvents) {
-          for(var evts in this.registeredEvents) {
-            for(var i = 0; i < this.registeredEvents[evts].length; i++) {
-              this.dashboard.off(evts, this.registeredEvents[evts][i]);
-            }
+      if(this.registeredEvents) {
+        for(var evts in this.registeredEvents) {
+          for(var i = 0; i < this.registeredEvents[evts].length; i++) {
+            this.dashboard.off(evts, this.registeredEvents[evts][i]);
           }
-        }
-        
-        this.registeredEvents = {};
-
-        for(var i = 0; i < this.parameterMapping.length; i++) {
-          var otherParamName = this.parameterMapping[i][1];
-          var eventName = this.parameterMapping[i][0] + ":fireChange";
-          var fun = function(evt) {
-            reqDash.fireChange(otherParamName, evt.value);
-          };
-          this.dashboard.on(eventName, fun);
-
-          if(!this.registeredEvents[eventName]) {
-            this.registeredEvents[eventName] = [];
-          }
-
-          this.registeredEvents[eventName].push(fun);
         }
       }
       
-    });
+      this.registeredEvents = {};
 
-    return DashboardComponent;
+      for(var i = 0; i < this.parameterMapping.length; i++) {
+        var otherParamName = this.parameterMapping[i][1];
+        var eventName = this.parameterMapping[i][0] + ":fireChange";
+        var fun = function(evt) {
+          reqDash.fireChange(otherParamName, evt.value);
+        };
+        this.dashboard.on(eventName, fun);
+
+        if(!this.registeredEvents[eventName]) {
+          this.registeredEvents[eventName] = [];
+        }
+
+        this.registeredEvents[eventName].push(fun);
+      }
+    }
+    
+  });
+
+  return DashboardComponent;
 
 });

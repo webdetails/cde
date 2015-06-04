@@ -14,7 +14,7 @@
 define(['cdf/components/BaseComponent', 'cdf/lib/jquery'], function(BaseComponent, $) {
 
   var RelatedContentComponent = BaseComponent.extend({
-    update : function() {
+    update: function() {
 
       var relatedContent = this.relatedContent;
 

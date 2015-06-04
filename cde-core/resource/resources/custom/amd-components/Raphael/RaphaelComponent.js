@@ -17,13 +17,11 @@ define([
   function(BaseComponent, Raphael) {
 
   var RaphaelComponent = BaseComponent.extend({
-    update : function() {
+    update: function() {
       var myself = this,
           parameters = myself.parameters;
 
-      myself
-        .customfunction
-        .apply(myself, parameters ? parameters : []);
+      myself.customfunction.apply(myself, parameters ? parameters : []);
     }
   });
 
