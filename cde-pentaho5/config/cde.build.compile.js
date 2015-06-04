@@ -7,6 +7,14 @@
   //The directory path to save the output. All relative paths are relative to the build file.
   dir: "../bin/scriptOutput",
 
+  //As of RequireJS 2.0.2, the dir above will be deleted before the
+  //build starts again. If you have a big build and are not doing
+  //source transforms with onBuildRead/onBuildWrite, then you can
+  //set keepBuildDir to true to keep the previous dir. This allows for
+  //faster rebuilds, but it could lead to unexpected errors if the
+  //built code is transformed in some way.
+  keepBuildDir: false,
+
   //By default, all modules are located relative to this path. If appDir is set, then
   //baseUrl should be specified as relative to the appDir.
   baseUrl: ".",
@@ -53,7 +61,22 @@
   //http: URL when running in the browser and during an optimization that
   //file should be skipped because it has no dependencies.
   paths: {
-    'requireLib': 'require'
+    'requireLib': 'require',
+    'common-ui/util/URLEncoder': 'empty:', // NewMapComponent
+
+    // map cdf dependencies to empty files, skipping these
+    'cdf/components/BaseComponent': 'empty:',
+    'cdf/components/UnmanagedComponent': 'empty:',
+    'cdf/dashboard/Utils': 'empty:',
+    'cdf/AddIn': 'empty:',
+    'cdf/Dashboard.Clean': 'empty:',
+    'cdf/Logger': 'empty:',
+    'cdf/lib/Base': 'empty:',
+    'cdf/lib/base64': 'empty:',
+    'cdf/lib/jquery': 'empty:',
+    'cdf/lib/mustache': 'empty:',
+    'cdf/lib/OpenLayers': 'empty:',
+    'cdf/lib/OpenStreetMap': 'empty:'
   },
 
   //By default all the configuration for optimization happens from the command
@@ -119,16 +142,241 @@
   exclude: [
     //According to https://github.com/guybedford/require-css#basic-usage
     'cdf/lib/require-css/normalize'
-  ]
+  ],
 
   //Sets up a map of module IDs to other module IDs. For more details, see
   //the http://requirejs.org/docs/api.html#config-map docs.
   //map: {},
 
-
   //List the modules that will be optimized. All their immediate and deep
   //dependencies will be included in the module's file when the build is
   //done. If that module or any of its dependencies includes i18n bundles,
   //only the root bundles will be included unless the locale: section is set above.
-  //modules: []
+  modules: [
+    //Just specifying a module name means that module will be converted into
+    //a built file that contains all of its dependencies. If that module or any
+    //of its dependencies includes i18n bundles, they may not be included in the
+    //built file unless the locale: section is set above.
+    {
+      name: "cde/components/AjaxRequestComponent",
+      //create: true can be used to create the module layer at the given
+      //name, if it does not already exist in the source location. If
+      //there is a module at the source location with this name, then
+      //create: true is superfluous.
+      //create: true,
+
+      //Also combines all the dependencies of the modules listed below
+      //and any of their dependencies into one file.
+      include: [],
+
+      //Exclude the modules listed bellow and their dependencies from the built file. If you want
+      //to exclude a module that is also another module being optimized, it is more
+      //efficient if you define that module optimization entry before using it
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent",
+        "cdf/Logger",
+        "cdf/dashboard/Utils"
+      ]
+    },
+    {
+      name: "cde/components/CggComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/UnmanagedComponent"
+      ]
+    },
+    {
+      name: "cde/components/CggDialComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/UnmanagedComponent"
+      ]
+    },
+    {
+      name: "cde/components/DashboardComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/components/UnmanagedComponent"
+      ]
+    },
+    {
+      name: "cde/components/DuplicateComponent",
+      exclude: [
+        // CDF libs / components / utils
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent",
+        "cdf/Logger"
+      ]
+    },
+    {
+      name: "cde/components/ExportButtonComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/ExportButtonComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent",
+        "cdf/Logger",
+        "cdf/dashboard/Utils"
+      ]
+    },
+    {
+      name: "cde/components/GMapsOverlayComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/GMapsOverlayComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/components/UnmanagedComponent",
+        "cdf/Logger"
+      ]
+    },
+    {
+      name: "cde/components/GoogleAnalyticsComponent",
+      exclude: [
+        // exclude resources that depend on requirejs loader plugins,
+        // this avoids including requirejs loader plugins from CDF into the output module
+        "amd!cde/components/googleAnalytics/lib/jquery.ga",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/NewMapComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/NewMapComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/components/UnmanagedComponent",
+        "cdf/Logger",
+        // mapengine
+        "cdf/lib/Base",
+        // mapengine-openlayers
+        "cdf/lib/OpenLayers",
+        "cdf/lib/OpenStreetMap",
+        // map addIns
+        "cdf/AddIn",
+        "cdf/Dashboard.Clean"
+      ]
+    },
+    {
+      name: "cde/components/NewSelectorComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/NewSelectorComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "amd!cdf/lib/backbone",
+        "cdf/components/UnmanagedComponent",
+        "cdf/dashboard/Utils",
+        // views
+        "cdf/lib/mustache"
+      ]
+    },
+    {
+      name: "cde/components/OlapSelectorComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/OlapSelectorComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/components/BaseComponent",
+        "cdf/dashboard/Utils",
+        // OlapSelectorView / OlapSelectorModel
+        "cdf/Logger",
+        "cdf/lib/mustache",
+        "amd!cdf/lib/backbone"
+      ]
+    },
+    {
+      name: "cde/components/PopupComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/PopupComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/ExportPopupComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/ExportPopupComponent",
+        "css!cde/components/PopupComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/jquery.fancybox",
+        "cdf/Logger",
+        "cdf/dashboard/Utils",
+        // PopupComponent dependency
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/RaphaelComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        //"cdf/lib/raphael", // don't exclude raphael
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/RelatedContentComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/SiteMapComponent",
+      exclude: [
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/lib/mustache",
+        "cdf/dashboard/Utils",
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/TextEditorComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/TextEditorComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "amd!cdf/lib/underscore",
+        "cdf/lib/mustache",
+        "cdf/Logger",
+        "cdf/components/BaseComponent"
+      ]
+    },
+    {
+      name: "cde/components/ViewManagerComponent",
+      exclude: [
+        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
+        "css!cde/components/ViewManagerComponent",
+        // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
+        "cdf/components/BaseComponent",
+        // ViewManagerModel / ViewManagerView
+        "amd!cdf/lib/backbone",
+        "amd!cdf/lib/underscore",
+        "cdf/lib/base64",
+        "cdf/Logger"
+      ]
+    }
+  ]
 })

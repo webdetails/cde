@@ -40,7 +40,7 @@
     requirePaths['cde/resources'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources';
 
   } else { // build
-    prefix = requirePaths['cde/components'] = '../resources/custom/amd-components';
+    prefix = requirePaths['cde/components'] = 'amd-components';
   }
 
   requirePaths['cde/components/PopupComponent'] = prefix + '/popup/PopupComponent';

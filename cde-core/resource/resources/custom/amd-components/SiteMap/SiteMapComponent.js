@@ -34,12 +34,10 @@ define([
 
     templates: {
       list: "<ul class='siteMap siteMapLevel{{level}}'></ul>",
-      item:
-        "<li class='siteMapItem {{classes}}'>" +
-        "<a href='{{link}}'>{{name}}</a></li>"
+      item: "<li class='siteMapItem {{classes}}'><a href='{{link}}'>{{name}}</a></li>"
     },
 
-    update : function() {
+    update: function() {
       var items = [],
           myself = this;
 
@@ -70,12 +68,12 @@ define([
 
     },
 
-    fetchItems: function (overrides, callback) {
+    fetchItems: function(overrides, callback) {
       var myself = this;
       overrides = overrides || {};
       var ajaxOpts = {
         type: 'GET',
-        success: function(json) {callback(json);},
+        success: function(json) { callback(json); },
         dataType: 'json',
         async: true
       };

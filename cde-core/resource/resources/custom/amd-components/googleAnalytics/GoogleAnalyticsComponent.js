@@ -21,17 +21,17 @@
 
 var requireConfig = requireCfg.config;
 
-if (!requireConfig['amd']){
+if(!requireConfig['amd']) {
   requireConfig['amd'] = {};
 } 
-if (!requireConfig['amd']['shim']) {
+if(!requireConfig['amd']['shim']) {
   requireConfig['amd']['shim'] = {};
 }
 requireConfig['amd']['shim']["cde/components/googleAnalytics/lib/jquery.ga"] = {
   exports: "jQuery",        
-        deps: {
-          "cdf/lib/jquery": "jQuery"
-        }
+  deps: {
+    "cdf/lib/jquery": "jQuery"
+  }
 };
 
 requirejs.config(requireCfg);
