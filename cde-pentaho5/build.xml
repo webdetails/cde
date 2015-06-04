@@ -126,7 +126,7 @@
     <mkdir dir="${stage.dir}/${plugin.name}/resources"/>                
   </target>
 
-  <target name="dist-plugin" depends="jar,make-stage,check-pentaho-js-build-downloaded" description="Creates a distribution">
+  <target name="dist-plugin" depends="jar, make-stage, check-pentaho-js-build-downloaded, subfloor-js.resolve-js" description="Creates a distribution">
 
     <!-- delete the compressed build output dir -->
     <delete dir="${js.build.output.dir}"/>
@@ -134,8 +134,27 @@
     <echo message="js.module.script.agg.dir: ${js.module.script.agg.dir}"/>
     <mkdir dir="${js.module.script.agg.dir}"/>
 
+    <!-- copy requirejs loader plugins & other CDF dependencies -->
+    <copy todir='${js.module.script.agg.dir}/cdf/js' overwrite='true'>
+      <fileset dir='${js.expanded.lib.dir}/pentaho-cdf/js'>
+        <!-- including only required dependencies makes the optimization much faster -->
+        <include name="lib/require-css/**/*"/>
+        <include name="lib/require-amd/**/*"/>
+        <include name="lib/require-text/**/*"/>
+        <include name="lib/Raphael/raphael.js"/>
+        <include name="lib/jQuery/jquery.js"/>
+        <include name="lib/jquery-migrate-1.2.1.js"/>
+        <include name="lib/fancybox/jquery.fancybox.css"/>
+        <include name="lib/fancybox/jquery.fancybox.js"/>
+        <include name="components/CggComponent.ext.js"/>
+        <include name="lib/backbone/backbone.js"/>
+        <include name="lib/underscore/underscore.js"/>
+        <include name="lib/OpenMap/OpenLayers/theme/default/style.css"/>
+      </fileset>
+    </copy>
+
     <!-- copy AMD custom components to tmp dir -->
-    <echo message="Copying AMD custom components files"/>
+    <echo message="Copying AMD custom components files to ${js.module.script.agg.dir}/amd-components"/>
     <!-- copy cde-core resources to tmp dir -->
     <copy todir='${js.module.script.agg.dir}/amd-components'>
       <fileset dir='${core-resource.dir}/resources/custom/amd-components/'/>
@@ -152,9 +171,14 @@
     <delete file="build-res/requireCfg.js" />
     <echo message="var requireCfg={paths:{},shim:{}};" file="build-res/requireCfg-raw.js" force="true" append="false"/>
     <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
+      <!-- cdf requirejs cfg files -->
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf/js" casesensitive="yes">
+        <include name="*-require-js-cfg.js"/>
+        <include name="lib/*-require-js-cfg.js"/>
+      </fileset>
       <!-- cde require-js cfg files -->
-      <fileset dir="${js.module.script.agg.dir}" casesensitive="yes">
-        <include name="../resource/js/cde-core-require-js-cfg.js"/>
+      <fileset dir="${core-resource.dir}/js" casesensitive="yes">
+        <include name="cde-core-require-js-cfg.js"/>
       </fileset>
     </concat>
     <echo message="require(requireCfg);" append="false" file="build-res/requireCfg.js"/>
