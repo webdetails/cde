@@ -310,32 +310,21 @@
     </echo>
   </target>
 
-
   <target name="dist-solution" depends="init">
-
+    <!-- create solution stage dir -->
     <mkdir dir="${solution.stage.dir}"/>
-
     <!-- copy all solution files to the solution stage dir -->
     <copy todir="${solution.stage.dir}" overwrite="true">
       <fileset dir="./solution">
         <include name="pentaho-cdf-dd/**/*"/>
       </fileset>
     </copy>
-
+    <!-- compress the solution stage dir -->
     <zip zipfile="${dist.dir}/${plugin.solution.zipfile}"
          basedir="${solution.stage.dir}"
          includes="**/*"
          excludes="**/Thumbs.db"/>
-
-    <!-- copy AMD solution folder to stage dir -->
-    <copy todir="${solution.stage.dir}" overwrite="true">
-      <fileset dir="./solution">
-        <include name="pentaho-cdf-dd-require/**/*"/>
-      </fileset>
-    </copy>
-
   </target>
-
 
   <!--=======================================================================
         install-plugin
