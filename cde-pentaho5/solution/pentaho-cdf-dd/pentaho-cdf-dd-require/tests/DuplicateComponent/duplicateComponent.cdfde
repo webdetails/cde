@@ -2724,7 +2724,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "textInUserCol",
+      "value": "${h:textInUserCol}",
       "type": "HtmlObject"
      },
      {
@@ -2802,7 +2802,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "textInPassCol",
+      "value": "${h:textInPassCol}",
       "type": "HtmlObject"
      },
      {
