@@ -5,6 +5,6 @@
   <description>Dashboard AMD Module sample</description>
   <icon></icon>
   <template>template.html</template>
-  <style>require</style>
+  <style>mantle</style>
   <require>true</require>
 </cdf>
