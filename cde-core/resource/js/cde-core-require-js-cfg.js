@@ -17,7 +17,17 @@
 
 (function() {
 
-  var requirePaths = requireCfg.paths;
+  var requirePaths = requireCfg.paths,
+      requireShims = requireCfg.shim,
+      requireConfig = requireCfg.config;
+
+  if(!requireConfig['amd']) {
+    requireConfig['amd'] = {};
+  }
+  if(!requireConfig['amd']['shim']) {
+    requireConfig['amd']['shim'] = {};
+  }
+  var amdShim = requireConfig['amd']['shim'];
 
   var isDebug = typeof document == "undefined" || document.location.href.indexOf("debug=true") > 0;
 
@@ -91,4 +101,28 @@
   requirePaths['cde/components/DashboardComponent'] = prefix + '/DashboardComponent/DashboardComponent';
   requirePaths['cde/components/DashboardComponentExt'] = prefix + '/DashboardComponent/DashboardComponent.ext';
 
+  requirePaths['cde/components/FilterComponent'] = prefix + '/Filter/FilterComponent';
+  requirePaths['cde/components/Filter/lib/backbone.treemodel'] = prefix + '/Filter/lib/backbone.treemodel';
+  
+  // backbone.treeModel external lib
+  amdShim["cde/components/Filter/lib/backbone.treemodel"] = {
+     exports: "Backbone",
+     deps: {
+       "amd!cdf/lib/underscore" : "_",
+       "amd!cdf/lib/backbone" : "Backbone"
+     },
+     prescript: "var root = { Backbone: Backbone, _: _ };\n"+
+     "(function() {\n",
+     postscript: "}.call(root));\n"
+     + "return root.Backbone;"
+  };
+
+  // jQuery.mCustomScrollbar.concat.min.js external lib
+  amdShim["cde/components/Filter/lib/jquery.mCustomScrollbar.concat.min"] = {
+     exports: "jQuery",
+     deps: {
+       "cdf/lib/jquery": "jQuery"
+     }
+  };
+  
 })();

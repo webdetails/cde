@@ -51,6 +51,7 @@ module.exports = function(config) {
       'resource/js/cdf-dd-prompt-wizard.js',
       'resource/js/cdf-dd-datasources.js',
       'test-js/legacy/main.js',
+      
       {pattern: 'test-js/legacy/**/*-spec.js', included: false}
     ],
 

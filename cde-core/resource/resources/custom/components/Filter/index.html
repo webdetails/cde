@@ -1,0 +1,95 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>TreeFilter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <!-- build:css styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+        <!-- build:css styles/tree-filter.css -->
+        <link rel="stylesheet" href="styles/tree-filter.css">
+        <!-- endbuild -->
+    </head>
+
+
+    <body>
+
+        <div class="filter" id="filter1"> </div>
+        <div>Hello</div>
+        <div class="filter" id="filter2"> </div>
+
+        <!-- build:js js/vendor.js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <!-- <script src="bower_components/lodash/dist/lodash.compat.js"></script> -->
+        <script src="bower_components/underscore/underscore.js"></script>
+        <script src="bower_components/backbone/backbone.js"></script>
+        <script src="bower_components/mustache/mustache.js"></script>
+        <script src="bower_components/Base/index.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js lib/basebone.js -->
+        <script src="lib/basebone.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- build:js lib/backbone.treemodel.js -->
+        <script src="bower_components/backbone.treemodel/src/backbone.treemodel.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js lib/jquery.optiscroll.js -->
+        <script src="bower_components/optiscroll/dist/jquery.optiscroll.js"></script>
+        <!-- endbuild -->
+        <!-- build:css lib/optiscroll.css -->
+        <link rel="stylesheet" href="bower_components/optiscroll/dist/optiscroll.css"></link>
+        <!-- endbuild -->
+
+        <!-- build:js(.tmp) js/TreeFilter.js -->
+        <script src="js/TreeFilter/TreeFilter.js"></script>
+        <script src="js/TreeFilter/Logger.js"></script>
+
+        <script src="js/TreeFilter/models/Tree.js"></script>
+        <script src="js/TreeFilter/models/SelectionTree.js"></script>
+
+        <script src="js/TreeFilter/templates.js"></script>
+        <script src="js/TreeFilter/views/Abstract.js"></script>
+        <script src="js/TreeFilter/views/Root.js"></script>
+        <script src="js/TreeFilter/views/Group.js"></script>
+        <script src="js/TreeFilter/views/Item.js"></script>
+
+        <script src="js/TreeFilter/controllers/Manager.js"></script>
+        <script src="js/TreeFilter/controllers/RootCtrl.js"></script>
+        <script src="js/TreeFilter/logic/AbstractSelect.js"></script>
+        <script src="js/TreeFilter/logic/MultiSelect.js"></script>
+        <script src="js/TreeFilter/logic/SingleSelect.js"></script>
+
+        <script src="js/TreeFilter/extensions/renderers.js"></script>
+        <script src="js/TreeFilter/extensions/sorters.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js(.tmp) js/dataHandlers.js -->
+        <script src="js/TreeFilter/data-handlers/InputDataHandler.js"></script>
+        <script src="js/TreeFilter/data-handlers/OutputDataHandler.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- build:js(.tmp) js/main.js -->
+        <script src="js/main.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js(.tmp) js/filter.js -->
+        <!--[if lt IE 1]>
+        <script src="js/TreeFilter/filter.js"></script>
+        <![endif]-->
+        <!-- endbuild -->
+        <!-- build:js(.tmp) js/filter-addIns.js -->
+        <!--[if lt IE 1]>
+        <script src="js/TreeFilter/addIns/addIns.js"></script>
+        <![endif]-->
+        <!-- endbuild -->
+    </body>
+</html>

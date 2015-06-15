@@ -1,0 +1,13 @@
+<div class="filter-root-footer">
+
+  {{#isBusy}}
+    <div class="filter-busy" />
+  {{/isBusy}}
+  {{#reachedSelectionLimit}}
+    <div class="filter-root-notification">
+      The selection limit (
+      <span class="filter-notification-highlight">{{selectionStrategy.limit}}</span>
+      ) for specific items has been reached.
+    </div>
+  {{/reachedSelectionLimit}}
+    </div>

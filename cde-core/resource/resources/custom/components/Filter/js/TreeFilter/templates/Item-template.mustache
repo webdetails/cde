@@ -1,0 +1,47 @@
+<div class="filter-item-container
+            {{#isPartiallySelected}} some-selected{{/isPartiallySelected}}
+            {{^isPartiallySelected}}
+            {{#isSelected}} all-selected{{/isSelected}}
+            {{^isSelected}} none-selected{{/isSelected}}
+            {{/isPartiallySelected}}
+            ">
+
+  {{#header}}
+  <div class="filter-item-header"> {{{header}}} </div>
+  {{/header}}
+
+  <div class="filter-item-body">
+    <!-- <label class="filter-item-label"> -->
+    <!-- <input type="checkbox" {{#isSelected}}checked="true"{{/isSelected}} /> -->
+    <!-- {{{label}}} -->
+    <!-- </label> -->
+    {{{item}}}
+
+    <div class="filter-item-selection-icon">
+      <div />
+    </div>
+
+    {{#showButtonOnlyThis}}
+    <span class="filter-item-only-this">
+      {{{strings.btnOnlyThis}}}
+    </span>
+    {{/showButtonOnlyThis}}
+
+    <div class="filter-item-label"
+         title="{{{label}}}"
+         >
+      {{{label}}}
+    </div>
+
+    {{#showValue}}
+    <div class="filter-item-value">
+      {{{value}}}
+    </div>
+    {{/showValue}}
+  </div>
+
+  {{#footer}}
+  <div class="filter-item-footer"> {{{footer}}} </div>
+  {{/footer}}
+
+</div>
