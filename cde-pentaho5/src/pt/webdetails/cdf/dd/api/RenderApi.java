@@ -170,7 +170,7 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+        iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
@@ -250,7 +250,7 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), path, getObjectName(), this.getPentahoSession(),
-      iLogger, requestParams );
+        iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
@@ -276,7 +276,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
-        this.getPentahoSession(), iLogger, start, uuid, end );
+          this.getPentahoSession(), iLogger, start, uuid, end );
       return msg;
     }
   }

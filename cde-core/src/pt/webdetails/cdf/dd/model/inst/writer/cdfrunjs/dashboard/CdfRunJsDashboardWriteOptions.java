@@ -51,13 +51,13 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
   }
 
   public CdfRunJsDashboardWriteOptions(
-    String  aliasPrefix,
-    boolean amdModule,
-    boolean absolute,
-    boolean debug,
-    String absRoot,
-    String scheme,
-    String config ) {
+      String  aliasPrefix,
+      boolean amdModule,
+      boolean absolute,
+      boolean debug,
+      String absRoot,
+      String scheme,
+      String config ) {
     this._aliasPrefix = aliasPrefix;
     this._amdModule   = amdModule;
     this._absolute    = absolute;

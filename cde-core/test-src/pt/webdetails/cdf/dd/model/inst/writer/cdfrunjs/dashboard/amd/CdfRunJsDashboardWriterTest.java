@@ -53,15 +53,15 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 public class CdfRunJsDashboardWriterTest extends TestCase {
 
   private static final String CONTEXT_CONFIGURATION = "{" + NEWLINE
-    + INDENT1 + "context: {" + NEWLINE
-    + INDENT2 + "fakeContext: fakeContext" + NEWLINE
-    + INDENT1 + "}" + NEWLINE
-    + INDENT1 + "storage: {" + NEWLINE
-    + INDENT2 + "fakeStorage: fakeStorage" + NEWLINE
-    + INDENT1 + "}" + NEWLINE
-    + INDENT1 + "view: {" + NEWLINE
-    + INDENT2 + "fakeView: fakeView" + NEWLINE
-    + INDENT1 + "}" + NEWLINE;
+      + INDENT1 + "context: {" + NEWLINE
+      + INDENT2 + "fakeContext: fakeContext" + NEWLINE
+      + INDENT1 + "}" + NEWLINE
+      + INDENT1 + "storage: {" + NEWLINE
+      + INDENT2 + "fakeStorage: fakeStorage" + NEWLINE
+      + INDENT1 + "}" + NEWLINE
+      + INDENT1 + "view: {" + NEWLINE
+      + INDENT2 + "fakeView: fakeView" + NEWLINE
+      + INDENT1 + "}" + NEWLINE;
 
   private static CdfRunJsDashboardWriter dashboardWriter;
   private static CdfRunJsDashboardWriter dashboardWriterSpy;
@@ -350,7 +350,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( primitiveComp );
     doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( primitiveComp );
     Assert.assertEquals(
-      CDF_AMD_BASE_COMPONENT_PATH + "FakePrimitiveComponent",
+        CDF_AMD_BASE_COMPONENT_PATH + "FakePrimitiveComponent",
         dashboardWriterSpy.getComponentPath( primitiveComp, "FakePrimitiveComponent" ) );
 
     doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp1 );
@@ -525,7 +525,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
       .append( "" )
-      .append( MessageFormat.format(DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
@@ -586,7 +586,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
       .append( "" )
-      .append( MessageFormat.format(DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
@@ -613,7 +613,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
       .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,CONTEXT_CONFIGURATION, "fakeLayout" ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
@@ -661,7 +661,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( cdfRequirePaths, "', '" ),
         StringUtils.join( componentClassNames, ", " ) ) )
-      .append( MessageFormat.format(DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
