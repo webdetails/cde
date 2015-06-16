@@ -15,10 +15,12 @@ define([], function() {
   var DashboardComponentExt = {
 
     getDashboardUrl: function(path) {
+      // full endpoint URL already provided
       if(path.indexOf("getDashboard?path=") > 0) {
         return path;
       }
-      return CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=' + path;
+      // use dashboard! requirejs loader plugin
+      return "dashboard!" + path;
     }
   };
 

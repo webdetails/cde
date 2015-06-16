@@ -16,7 +16,6 @@
       <dd>The url for the server endpoint that injects the CDE dependencies</dd>
     </dl>
     
-
     <br>
     <p>To demonstrate the embedding capabilities of CDE, we have an embedded.html file (located in the same folder), which is is capable of embedding CDE.<br>
     This is done by simply including a javascript resource, which will make sure to embed the necessary files.<br>
@@ -31,37 +30,41 @@
     <p>We can then assume we are in a Pentaho CDE environment, we are embedded!</p>
     <p>ln54:</p>
     <pre>
-        require(['cdf/Dashboard.Blueprint', 'cdf/components/SelectComponent', 'myModule', "cdf/Logger",
-            'http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.wcdf'],
-          function(Dashboard, SelectComponent, m, Logger, SampleDash) {
+      require([
+        'cdf/Dashboard.Blueprint',
+        'cdf/components/SelectComponent',
+        'myModule',
+        'cdf/Logger',
+        'dashboard!/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.wcdf'
+      ], function(Dashboard, SelectComponent, myModule, Logger, SampleDash) {
 
-            Logger.log("MODULE getString() " + m.getString());
-            m.writeOnElement("#myModuleText", "Text written by a custom module defined in myModule.js");
+        Logger.log("MODULE getString() " + myModule.getString());
+        myModule.writeOnElement("#myModuleText", "Text written by a custom module defined in myModule.js");
 
-            var myDashboard = new Dashboard();
+        var myDashboard = new Dashboard();
 
-            myDashboard.addParameter("region", "1");
+        myDashboard.addParameter("region", "1");
 
-            var selectComponent = new SelectComponent({
-              name: "regionSelector",
-              type: "select",
-              parameters: [],
-              valuesArray: [["1","Lisbon"],["2","Dusseldorf"]],
-              parameter: "region",
-              valueAsId: false,
-              htmlObject: "sampleObject",
-              executeAtStart: true,
-              postChange: function() {
-                alert("You chose: " + myDashboard.getParameterValue(this.parameter));
-              }
-            });
-
-            myDashboard.addComponent(selectComponent);
-            myDashboard.init();
-
-            var sampleDash = new SampleDash("content1");
-            sampleDash.render();
+        var selectComponent = new SelectComponent({
+          name: "regionSelector",
+          type: "select",
+          parameters: [],
+          valuesArray: [["1", "Lisbon"], ["2", "Dusseldorf"]],
+          parameter: "region",
+          valueAsId: false,
+          htmlObject: "sampleObject",
+          executeAtStart: true,
+          postChange: function() {
+            alert("You chose: " + myDashboard.getParameterValue(this.parameter));
+          }
         });
+
+        myDashboard.addComponent(selectComponent);
+        myDashboard.init();
+
+        var sampleDash = new SampleDash("content1");
+        sampleDash.render();
+      });
     </pre>
     <p>Note that myModule is not configured in CDF or CDE, hence requireJS will try to get its definition from a file named myModule.js in the same path as the embedded.html file.</p>
     <p>In order to properly check this sample, please download the following file from the Pentaho Repository.</p>
