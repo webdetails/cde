@@ -540,7 +540,7 @@ public class CdfRunJsDashboardWriter
 
     boolean emptyAlias = ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG );
     final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias,
-      ctx.getOptions().getContextConfiguration() );
+        ctx.getOptions().getContextConfiguration() );
 
     // Export
     builder
@@ -611,7 +611,7 @@ public class CdfRunJsDashboardWriter
       out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, config,
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     } else {
-      out.append( MessageFormat.format(DASHBOARD_MODULE_START, config) )
+      out.append( MessageFormat.format( DASHBOARD_MODULE_START, config ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     }
