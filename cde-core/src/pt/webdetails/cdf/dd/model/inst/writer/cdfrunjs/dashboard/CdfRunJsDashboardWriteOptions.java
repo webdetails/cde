@@ -21,6 +21,7 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
 
   private final boolean _absolute, _debug, _amdModule;
   private final String  _absRoot, _scheme, _aliasPrefix;
+  private String _contextConfiguration;
 
   public CdfRunJsDashboardWriteOptions(
       boolean absolute,
@@ -46,12 +47,24 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
       boolean debug,
       String absRoot,
       String scheme ) {
+    this( aliasPrefix, amdModule, absolute, debug, absRoot, scheme, "" );
+  }
+
+  public CdfRunJsDashboardWriteOptions(
+    String  aliasPrefix,
+    boolean amdModule,
+    boolean absolute,
+    boolean debug,
+    String absRoot,
+    String scheme,
+    String config ) {
     this._aliasPrefix = aliasPrefix;
     this._amdModule   = amdModule;
     this._absolute    = absolute;
     this._debug       = debug;
     this._absRoot     = absRoot;
     this._scheme      = scheme;
+    this._contextConfiguration = config;
   }
 
   public CdfRunJsDashboardWriteOptions addAliasPrefix( String aliasPrefix ) {
@@ -95,4 +108,9 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
   public boolean isAmdModule() {
     return this._amdModule;
   }
+
+  public String getContextConfiguration() {
+    return this._contextConfiguration;
+  }
+
 }
