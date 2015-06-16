@@ -52,71 +52,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdfRunJsDashboardWriter
     extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
 
   private static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
-  // make the dashboard variable available in the global scope to facilitate debugging
-  private static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard();";
-  private static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
-  private static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1})";
-  private static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
-  private static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
-  private static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
-  private static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
-      "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
-      + INDENT1 + "constructor: function(element, alias) '{'" + NEWLINE
-      + INDENT2 + " this.base.apply(this, arguments);" + NEWLINE
-      + INDENT2 + " CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
-      + INDENT2 + " this.phElement = element;" + NEWLINE
-      + INDENT2 + " this._alias = alias ? alias : \"alias\" + CustomDashboard.aliasCounter;" + NEWLINE
-      + INDENT2 + " this.layout = ''{0}''.replace(/" + CdeConstants.DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
-      + INDENT1 + "'}'," + NEWLINE;
-  private static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend({" + NEWLINE
-      + INDENT1 + "constructor: function(element) { " + NEWLINE
-      + INDENT2 + "this.phElement = element; " + NEWLINE
-      + INDENT2 + "this.base.apply(this, arguments); }," + NEWLINE;
-  private static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-  private static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
-      + INDENT2 + "var target, isId;" + NEWLINE
-      + INDENT2 + "if(typeof this.phElement === \"string\") {" + NEWLINE
-      + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
-      + INDENT3 + "isId = true;" + NEWLINE
-      + INDENT2 + "} else {" + NEWLINE
-      + INDENT3 + "target = this.phElement && this.phElement[0] ? $(this.phElement[0]) : $(this.phElement);" + NEWLINE
-      + INDENT2 + "} " + NEWLINE
-      + INDENT2 + "if(!target.length) { " + NEWLINE
-      + INDENT3 + "if(isId) {" + NEWLINE
-      + INDENT4 + "Logger.warn('Invalid target element id: ' + this.phElement);" + NEWLINE
-      + INDENT3 + "} else {" + NEWLINE
-      + INDENT4 + "Logger.warn('Target DOM object empty');" + NEWLINE
-      + INDENT3 + "} " + NEWLINE
-      + INDENT2 + "return;} " + NEWLINE
-      + INDENT2 + "target.empty();" + NEWLINE
-      + INDENT2 + "target.html(this.layout);" + NEWLINE
-      + " },";
-  private static final String DASHBOARD_MODULE_RENDERER = "render: function() {" + NEWLINE
-      + INDENT2 + "this.setupDOM();" + NEWLINE
-      + INDENT2 + "this.renderDashboard();" + NEWLINE
-      + INDENT1 + "}," + NEWLINE
-      + INDENT2 + "renderDashboard: function() {" + NEWLINE
-      + INDENT2 + "this._processComponents();" + NEWLINE
-      + INDENT2 + "this.init();" + NEWLINE
-      + "},";
-  private static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
-      INDENT1 + "_processComponents: function() '{'" + NEWLINE
-      + INDENT2 + "var dashboard = this;" + NEWLINE
-      + INDENT2 + "{0}" + NEWLINE
-      + INDENT1 + "'}'" + NEWLINE;
-  private static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
-  private static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
-  private static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
-  private static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
-  private static final String PLUGIN_COMPONENT_FOLDER = "/components/";
-  private static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
-      + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
-  private static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
-  private static final String REQUIRE_CONFIG = "require.config(requireCfg);";
   protected Map<String, String> requireJsResourcesList = new LinkedHashMap<String, String>();
   protected Map<String, String> requireCssResourcesList = new LinkedHashMap<String, String>();
   protected StringBuffer jsCodeSnippets = new StringBuffer();
@@ -167,7 +108,7 @@ public class CdfRunJsDashboardWriter
     // Prepend the CSS (<style> and <link>) code to the HTML layout
     final String layout = cssResources + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
     final String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
-    final String content = writeContent( layout, components );
+    final String content = writeContent( layout, components, ctx.getOptions().getContextConfiguration() );
     final String header = ctx.replaceTokens( writeHeaders( content, ctx ) );
 
     // Leave the DASHBOARD_HEADER_TAG to replace additional stuff on render.
@@ -440,14 +381,14 @@ public class CdfRunJsDashboardWriter
    * @param components
    * @return
    */
-  private String writeContent( String layout, String components ) {
+  private String writeContent( String layout, String components, String config ) {
     StringBuilder out = new StringBuilder();
 
     out.append( layout );
 
     //do the encapsulation stuff here
 
-    wrapJsScriptTags( out, wrapRequireDefinitions( components ) );
+    wrapJsScriptTags( out, wrapRequireDefinitions( components, config ) );
 
     return out.toString();
   }
@@ -458,7 +399,7 @@ public class CdfRunJsDashboardWriter
    * @param content Some JavaScript code to be wrapped.
    * @return The JS code wrapped with requirejs configuration
    */
-  protected String wrapRequireDefinitions( String content ) {
+  protected String wrapRequireDefinitions( String content, String config ) {
     StringBuilder out = new StringBuilder();
 
 
@@ -500,8 +441,8 @@ public class CdfRunJsDashboardWriter
     out.append( getFileResourcesRequirePaths() )
       // Output module paths and module class names
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) ).append( " {" ).append( NEWLINE )
-      .append( DASHBOARD_DECLARATION ).append( NEWLINE )
+        StringUtils.join( componentClassNames, ", " ) ) ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION, config ) ).append( NEWLINE )
       .append( getJsCodeSnippets().toString() )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -598,7 +539,8 @@ public class CdfRunJsDashboardWriter
         ctx.replaceHtmlAlias( ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
 
     boolean emptyAlias = ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG );
-    final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias );
+    final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias,
+      ctx.getOptions().getContextConfiguration() );
 
     // Export
     builder
@@ -621,9 +563,8 @@ public class CdfRunJsDashboardWriter
    * @param content Some JavaScript code to be wrapped.
    * @return A string containing an AMD module definition.
    */
-  protected String wrapRequireModuleDefinitions( String content, String layout, boolean emptyAlias ) {
+  protected String wrapRequireModuleDefinitions( String content, String layout, boolean emptyAlias, String config ) {
     StringBuilder out = new StringBuilder();
-
 
     ArrayList<String> cdfRequirePaths = new ArrayList<String>(), // AMD module ids
         componentClassNames = new ArrayList<String>(); // AMD module class names
@@ -667,10 +608,10 @@ public class CdfRunJsDashboardWriter
         StringUtils.join( componentClassNames, ", " ) ) );
 
     if ( emptyAlias ) {
-      out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS,
+      out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, config,
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     } else {
-      out.append( DASHBOARD_MODULE_START )
+      out.append( MessageFormat.format(DASHBOARD_MODULE_START, config) )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
     }

@@ -104,4 +104,82 @@ public class CdeConstants {
   }
 
   public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
+
+  public static class Writer {
+    public static final String NEWLINE = System.getProperty( "line.separator" );
+    public static final String INDENT1 = "  ";
+    public static final String INDENT2 = "    ";
+    public static final String INDENT3 = "      ";
+    public static final String INDENT4 = "        ";
+    // make the dashboard variable available in the global scope to facilitate debugging
+    public static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard({0});";
+    public static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
+    public static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1}) '{'";
+    public static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
+    public static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
+    public static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
+    public static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
+      "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+        + INDENT1 + "constructor: function(element, opts) '{'" + NEWLINE
+        + INDENT2 + "var alias;" + NEWLINE
+        + INDENT2 + "if(typeof opts === \"string\") '{'" + NEWLINE
+        + INDENT3 + "alias = opts;" + NEWLINE
+        + INDENT2 + "'}'" + NEWLINE
+        + INDENT2 + "var extendedOpts = '{}';" + NEWLINE
+        + INDENT2 + "$.extend(extendedOpts, {0}, opts);" + NEWLINE
+        + INDENT2 + "this.base.apply(this, [extendedOpts]);" + NEWLINE
+        + INDENT2 + "CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
+        + INDENT2 + "this.phElement = element;" + NEWLINE
+        + INDENT2 + "this._alias = alias ? alias : " + NEWLINE
+        + INDENT3 + "(opts.alias ? opts.alias : \"alias\" + CustomDashboard.aliasCounter);" + NEWLINE
+        + INDENT2 + "this.layout = ''{1}''.replace(/" + DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
+        + INDENT1 + "'}'," + NEWLINE;
+    public static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
+      + INDENT1 + "constructor: function(element, opts) '{'" + NEWLINE
+      + INDENT2 + "this.phElement = element; " + NEWLINE
+      + INDENT2 + "var extendedOpts = '{}';" + NEWLINE
+      + INDENT2 + "$.extend(extendedOpts, {0}, opts);" + NEWLINE
+      + INDENT2 + "this.base.apply(this, [extendedOpts]); '}'," + NEWLINE;
+    public static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
+    public static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
+      + INDENT2 + "var target, isId;" + NEWLINE
+      + INDENT2 + "if(typeof this.phElement === \"string\") {" + NEWLINE
+      + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
+      + INDENT3 + "isId = true;" + NEWLINE
+      + INDENT2 + "} else {" + NEWLINE
+      + INDENT3 + "target = this.phElement && this.phElement[0] ? $(this.phElement[0]) : $(this.phElement);" + NEWLINE
+      + INDENT2 + "} " + NEWLINE
+      + INDENT2 + "if(!target.length) { " + NEWLINE
+      + INDENT3 + "if(isId) {" + NEWLINE
+      + INDENT4 + "Logger.warn('Invalid target element id: ' + this.phElement);" + NEWLINE
+      + INDENT3 + "} else {" + NEWLINE
+      + INDENT4 + "Logger.warn('Target DOM object empty');" + NEWLINE
+      + INDENT3 + "} " + NEWLINE
+      + INDENT2 + "return;} " + NEWLINE
+      + INDENT2 + "target.empty();" + NEWLINE
+      + INDENT2 + "target.html(this.layout);" + NEWLINE
+      + " },";
+    public static final String DASHBOARD_MODULE_RENDERER = "render: function() {" + NEWLINE
+      + INDENT2 + "this.setupDOM();" + NEWLINE
+      + INDENT2 + "this.renderDashboard();" + NEWLINE
+      + INDENT1 + "}," + NEWLINE
+      + INDENT2 + "renderDashboard: function() {" + NEWLINE
+      + INDENT2 + "this._processComponents();" + NEWLINE
+      + INDENT2 + "this.init();" + NEWLINE
+      + "},";
+    public static final String DASHBOARD_MODULE_PROCESS_COMPONENTS =
+      INDENT1 + "_processComponents: function() '{'" + NEWLINE
+        + INDENT2 + "var dashboard = this;" + NEWLINE
+        + INDENT2 + "{0}" + NEWLINE
+        + INDENT1 + "'}'" + NEWLINE;
+    public static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
+    public static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
+    public static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
+    public static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
+    public static final String PLUGIN_COMPONENT_FOLDER = "/components/";
+    public static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
+      + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
+    public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
+    public static final String REQUIRE_CONFIG = "require.config(requireCfg);";
+  }
 }
