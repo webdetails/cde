@@ -17,9 +17,17 @@
 </div>
 
 <script language="javascript" type="text/javascript">
+  
   require([
-    '/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'],
-   function(SampleDash) {
+
+    // There are two ways to require a dashboard.
+    // Directly point to the getDashboard endpoint:
+    //'/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'
+
+    // or use the dashboard! requirejs loader plugin:
+    'dashboard!/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'
+
+  ], function(SampleDash) {
 
     var sampleDash = new SampleDash("content1");
     sampleDash.render();

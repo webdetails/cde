@@ -15,7 +15,32 @@
  * Configuration file for cde pentaho version 5
  * Added in [PDB-1555]: Ability to include CDE dashboards in PDB
  */
-
 if(typeof CONTEXT_PATH !== "undefined") { // production
   requireCfg['paths']['cde'] = CONTEXT_PATH + 'content/pentaho-cdf-dd/js';
 }
+
+
+(function() {
+
+  requireCfg.config = requireCfg.config || {};
+
+  var prefix;
+  if(typeof KARMA_RUN !== "undefined") { // unit tests
+    // TODO: is this necessary?
+
+  } else if(typeof CONTEXT_PATH !== "undefined") { // production
+    prefix = CONTEXT_PATH;
+
+  } else if(typeof FULL_QUALIFIED_URL != "undefined") { // embedded
+    prefix = FULL_QUALIFIED_URL;
+
+  } else { // build
+    // TODO: is this necessary?
+  }
+
+  // configure the CDE endpoint to be used by the dashboard! loader plugin
+  requireCfg.config['dashboard'] = {
+    'endpoint': prefix + 'plugin/pentaho-cdf-dd/api/renderer/getDashboard?path='
+  };
+
+})();
