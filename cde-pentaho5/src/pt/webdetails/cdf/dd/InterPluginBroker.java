@@ -86,6 +86,7 @@ public class InterPluginBroker {
    * @param dashboard
    * @param action
    * @param viewId
+   * @param requestParams
    * @return
    * @throws Exception
    */
@@ -122,6 +123,7 @@ public class InterPluginBroker {
   /**
    *
    * @param dashboard
+   * @param requestParams
    * @return
    * @throws Exception
    */
@@ -149,6 +151,40 @@ public class InterPluginBroker {
     }
 
     IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "context", "get" );
+    return pluginCall.call( params.getParameters() );
+  }
+
+  /**
+   *
+   * @param dashboard
+   * @param requestParams
+   * @return
+   * @throws Exception
+   */
+  public static String getCdfRequireConfig( String dashboard, IParameterProvider requestParams ) throws Exception {
+    CallParameters params = new CallParameters();
+    params.put( "path", dashboard );
+
+    if ( requestParams != null ) {
+      Iterator<String> iterator = requestParams.getParameterNames();
+
+      while ( iterator.hasNext() ) {
+        String paramName = iterator.next();
+        if ( StringUtils.isEmpty( paramName ) ) {
+          continue;
+        }
+        if ( requestParams.hasParameter( paramName ) ) {
+          Object paramValue = requestParams.getParameter( paramName );
+          if ( paramValue == null ) {
+            continue;
+          }
+
+          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+        }
+      }
+    }
+
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "context", "getConfig" );
     return pluginCall.call( params.getParameters() );
   }
 }

@@ -104,7 +104,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null, "" );
     return dashboardWrite.getContent();
   }
 
@@ -130,7 +130,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
+        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null, "" );
     return dashboardWrite.getHeader();
   }
 
@@ -174,8 +174,9 @@ public class RenderApi {
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
+      String config = InterPluginBroker.getCdfRequireConfig( filePath, requestParams );
       CdfRunJsDashboardWriteResult dashboard =
-          loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
+          loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style, config );
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
       String context = dashboardWcdf.isRequire()
@@ -253,8 +254,9 @@ public class RenderApi {
 
     try {
       logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
+      String config = InterPluginBroker.getCdfRequireConfig( path, requestParams );
       CdfRunJsDashboardWriteResult dashboard =
-          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
+          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias, config );
 
       String result = dashboard.getContent();
 
@@ -386,17 +388,17 @@ public class RenderApi {
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
-                                                      boolean bypassCache, boolean debug, String style )
+                                                      boolean bypassCache, boolean debug, String style, String config )
     throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( absolute, debug, root, scheme );
+        new CdfRunJsDashboardWriteOptions( "", false, absolute, debug, root, scheme, config );
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
   private CdfRunJsDashboardWriteResult getDashboardModule( String path, String scheme, String root,
                                                            boolean absolute, boolean bypassCache, boolean debug,
-                                                           String style, String alias )
+                                                           String style, String alias, String config )
     throws ThingWriteException, UnsupportedEncodingException {
 
     final String dashboardAlias;
@@ -408,9 +410,10 @@ public class RenderApi {
 
     }
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme );
+        new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme, config );
 
     return getDashboardManager().getDashboardModule( path, options, bypassCache, style );
+
   }
 
   protected DashboardManager getDashboardManager() {
