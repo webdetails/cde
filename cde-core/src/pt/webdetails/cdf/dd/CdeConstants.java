@@ -136,7 +136,7 @@ public class CdeConstants {
         + INDENT2 + "CustomDashboard.aliasCounter = (CustomDashboard.aliasCounter || 0 ) + 1;" + NEWLINE
         + INDENT2 + "this.phElement = element;" + NEWLINE
         + INDENT2 + "this._alias = alias ? alias : " + NEWLINE
-        + INDENT3 + "(opts.alias ? opts.alias : \"alias\" + CustomDashboard.aliasCounter);" + NEWLINE
+        + INDENT3 + "((opts && opts.alias) ? opts.alias : \"alias\" + CustomDashboard.aliasCounter);" + NEWLINE
         + INDENT2 + "this.layout = ''{1}''.replace(/" + DASHBOARD_ALIAS_TAG + "/g, this._alias);" + NEWLINE
         + INDENT1 + "'}'," + NEWLINE;
     public static final String DASHBOARD_MODULE_START = "var CustomDashboard = Dashboard.extend('{'" + NEWLINE

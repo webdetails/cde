@@ -86,6 +86,7 @@ public class InterPluginBroker {
    * @param dashboard
    * @param action
    * @param viewId
+   * @param requestParams
    * @return
    * @throws Exception
    */
@@ -122,6 +123,7 @@ public class InterPluginBroker {
   /**
    *
    * @param dashboard
+   * @param requestParams
    * @return
    * @throws Exception
    */
@@ -155,6 +157,7 @@ public class InterPluginBroker {
   /**
    *
    * @param dashboard
+   * @param requestParams
    * @return
    * @throws Exception
    */
