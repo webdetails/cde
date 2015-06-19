@@ -139,6 +139,7 @@
         <!-- including only required dependencies makes the optimization much faster -->
         <include name="lib/require-css/**/*"/>
         <include name="lib/require-amd/**/*"/>
+        <include name="lib/require-dashboard/**/*"/>
         <include name="lib/require-text/**/*"/>
         <include name="lib/Raphael/raphael.js"/>
         <include name="lib/jQuery/jquery.js"/>

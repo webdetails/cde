@@ -19,8 +19,8 @@ define([], function() {
       if(path.indexOf("getDashboard?path=") > 0) {
         return path;
       }
-      // use dashboard! requirejs loader plugin
-      return "dashboard!" + path;
+      // use the dash! requirejs loader plugin
+      return "dash!" + path;
     }
   };
 

@@ -38,8 +38,8 @@ if(typeof CONTEXT_PATH !== "undefined") { // production
     // TODO: is this necessary?
   }
 
-  // configure the CDE endpoint to be used by the dashboard! loader plugin
-  requireCfg.config['dashboard'] = {
+  // configure the CDE endpoint to be used by the dash! loader plugin
+  requireCfg.config['dash'] = {
     'endpoint': prefix + 'plugin/pentaho-cdf-dd/api/renderer/getDashboard?path='
   };
 
