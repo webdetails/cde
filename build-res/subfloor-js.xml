@@ -58,6 +58,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
   <property name="js.build.file" value="build-res/javascript.build.js"/>
+  
+  <property name="js.build.failonerror" value="true" description="Fail the build if r.js build fails"/>
+  
   <property name="js.script.package.dest" value="${stage.dir}/${package.root.dir}/scripts"/>
 
   <property name="css.build.file" value="build-res/css.build.js"/>
@@ -73,8 +76,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <property name="js.karma.config" value="config/karma.conf.js"/>
   <property name="js.karma.ci.config" value="config/karma.ci.conf.js"/>
   <property name="js.node.node_modules.dir" value="node_modules"/>
-  <property name="js.node.node_modules.bin.dir" value="${js.node.node_modules.dir}\.bin"/>
-
+  
+  <property name="js.karma.failonerror" value="true" description="Fail the build if a JS test fails"/>
+  
   <property environment="env"/>
 
   <target name="js.clean"
@@ -86,28 +90,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <target name="resolve-js" depends="install-ivy, install-antcontrib">
     <delete dir="${js.module.script.agg.dir}"/>
-    <delete dir="${js.lib.dir}"/>
 
     <ivy:resolve file="ivy.xml" conf="js"/>
     <ivy:retrieve conf="js" pattern="${js.lib.dir}/[module]-[revision](-[classifier]).[ext]"/>
-
-    <if>
-      <available file="${js.lib.dir}"/>
-      <then>
-        <unzip dest="${js.expanded.lib.dir}" overwrite="true">
-          <fileset file="${js.lib.dir}/*.zip"/>
-          <patternset>
-            <exclude name="**/*.jar"/>
-            <exclude name="**/plugin*.xml"/>
-            <exclude name="**/settings.xml"/>
-            <exclude name="**/themes.xml"/>
-          </patternset>
-        </unzip>
-      </then>
-      <else>
-        <echo>No js libraries need expanding. ${js.lib.dir} does not exist.</echo>
-      </else>
-    </if>
   </target>
 
   <target name="clean-js">
@@ -195,7 +180,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <if>
       <equals arg1="true" arg2="${node-is-available}"/>
       <then>
-        <exec command="node">
+        <exec command="node" failonerror="${js.build.failonerror}">
           <arg value="build-res/pentaho-js-build/r.js"/>
           <arg value="-o"/>
           <arg value="${js.build.file}"/>
@@ -206,12 +191,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <java classname="org.mozilla.javascript.tools.shell.Main"
               fork="true"
               classpathref="build.classpath"
-              args="build-res/pentaho-js-build/r.js -o ${js.build.file} optimize=${js.build.optimizer}">
+              args="build-res/pentaho-js-build/r.js -o ${js.build.file} optimize=${js.build.optimizer}"
+              failonerror="${js.build.failonerror}">
         </java>
       </else>
     </if>
-
-
   </target>
 
   <target name="dist-js">
@@ -342,48 +326,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </target>
 
   <!-- Check to see if karma is on the PATH -->
-  <available file="karma" filepath="${env.PATH}" property="karma-is-available"/>
-  <available file="karma.cmd" filepath="${js.node.node_modules.bin.dir}" property="karma-is-available-windows"/>
+  <available file="karma.cmd" filepath="${env.PATH}" property="karma-for-windows-is-available"/>
 
   <target name="test-js" depends="install-antcontrib, npm-install, extract-source-and-build-require-js-profile">
     <if>
       <available file="${js.karma.ci.config}"/>
       <then>
-        <if>
-          <isset property="isWindows"/>
-          <then>
-            <if>
-              <not>
-                <isset property="karma-is-available-windows"/>
-              </not>
-              <then>
-                <fail>Karma is not available, make sure Node.js is installed. Unit tests could not run.</fail>
-              </then>
-            </if>
-            <exec executable="${js.node.node_modules.bin.dir}\karma.cmd">
-              <arg value="start"/>
-              <arg value="${js.karma.ci.config}"/>
-              <!-- if we are running via ant, then assume we must 'single-run' -->
-              <arg value="--single-run"/>
-            </exec>
-          </then>
-          <else>
-            <if>
-              <not>
-                <isset property="karma-is-available"/>
-              </not>
-              <then>
-                <fail>Make sure Node.js is installed and run 'npm install -g karma-cli' [adds karma to the command line]</fail>
-              </then>
-            </if>
-            <exec executable="karma">
-              <arg value="start"/>
-              <arg value="${js.karma.ci.config}"/>
-              <!-- if we are running via ant, then assume we must 'single-run' -->
-              <arg value="--single-run"/>
-            </exec>
-          </else>
-        </if>
+        <!-- we have karma available, use it to run the tests -->
+          <if>
+            <isset property="isWindows"/>
+            <then>
+              <if>
+                <not>
+                  <isset property="karma-for-windows-is-available"/>
+                </not>
+                <then>
+                  <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
+                </then>
+              </if>
+              <exec executable="karma.cmd" failonerror="${js.karma.failonerror}">
+                <arg value="start"/>
+                <arg value="${js.karma.ci.config}"/>
+                <!-- if we are running via ant, then assume we must 'single-run' -->
+                <arg value="--single-run"/>
+              </exec>
+            </then>
+            <else>
+              <exec executable="node_modules/karma/bin/karma" failonerror="${js.karma.failonerror}">
+                <arg value="start"/>
+                <arg value="${js.karma.ci.config}"/>
+                <!-- if we are running via ant, then assume we must 'single-run' -->
+                <arg value="--single-run"/>
+              </exec>
+            </else>
+          </if>
       </then>
       <else>
         <fail>There is no karma configuration file available (looking for: ${js.karma.ci.config})</fail>
@@ -405,10 +381,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           <then>
             <if>
               <not>
-                <isset property="karma-is-available-windows"/>
+                <isset property="karma-for-windows-is-available"/>
               </not>
               <then>
-                <fail>Run 'npm.cmd install -g karma-cli' [adds karma.cmd to the command line]</fail>
+                <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
               </then>
             </if>
             <exec executable="karma.cmd">
@@ -417,15 +393,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             </exec>
           </then>
           <else>
-            <if>
-              <not>
-                <isset property="karma-is-available"/>
-              </not>
-              <then>
-                <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
-              </then>
-            </if>
-            <exec executable="karma">
+            <exec executable="node_modules/karma/bin/karma">
               <arg value="start"/>
               <arg value="${js.karma.config}"/>
             </exec>
@@ -433,6 +401,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </if>
       </else>
     </if>
+
   </target>
 
 </project>
