@@ -4,6 +4,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.junit.Before;
 import org.junit.Test;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.render.layout.ResourceCodeRender;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class RenderResourcesTest {
@@ -52,8 +52,8 @@ public class RenderResourcesTest {
     
     String type = "LayoutResourceFile",
       rowName = "myCssFile",
-      rowKind = "Css",
-      rowPath = "/"+rowName,
+      rowKind = CdeConstants.CSS,
+      rowPath = "/" + rowName,
       rowProcessedResource = "";
       
     JXPathContext jXPathContext = mock( JXPathContext.class );
@@ -79,13 +79,13 @@ public class RenderResourcesTest {
     ResourceCodeRender resourceCodeRender = mock( ResourceCodeRender.class );
     doReturn( resourceCodeRender ).when( renderResourcesSpy ).getRender( any( JXPathContext.class ) );
     
-    doReturn( "Javascript" ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
+    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
     doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( any( JXPathContext.class ) );
     renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
     verify( renderResourcesSpy, times( 1 ) ).getResourceType( any( JXPathContext.class ) );
     verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
 
-    doReturn( "Css" ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
+    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
     renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
     verify( renderResourcesSpy, times( 2 ) ).getResourceType( any( JXPathContext.class ) );
     verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
@@ -98,13 +98,13 @@ public class RenderResourcesTest {
     doReturn( resourceFileRender ).when( renderResourcesSpy ).getRender( any( JXPathContext.class ) );
     doReturn( true ).when( dashboardWcdfDescriptor ).isRequire();
 
-    doReturn( "Javascript" ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
+    doReturn( CdeConstants.JAVASCRIPT ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
     doReturn( "" ).when( renderResourcesSpy ).getResourceCodeContent( any( JXPathContext.class ) );
     renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
     verify( renderResourcesSpy, times( 3 ) ).getResourceType( any( JXPathContext.class ) );
     verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );
 
-    doReturn( "Css" ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
+    doReturn( CdeConstants.CSS ).when( renderResourcesSpy ).getResourceType( any( JXPathContext.class ) );
     renderResourcesSpy.processResource( any( JXPathContext.class ), anyString(), anyInt() );
     verify( renderResourcesSpy, times( 4 ) ).getResourceType( any( JXPathContext.class ) );
     verify( renderResourcesSpy, times( 1 ) ).getResourceCodeContent( any( JXPathContext.class ) );

@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.render;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.render.layout.Render;
 import pt.webdetails.cdf.dd.render.layout.ResourceCodeRender;
@@ -47,18 +48,18 @@ public class RenderResources extends Renderer {
 
     while ( resourceRows.hasNext() ) {
       JXPathContext context = getRelativeContext( (Pointer) resourceRows.next() );
-      String rowName = getResourceName( context ),
-        rowKind = getResourceType( context );
+      String rowName = getResourceName( context );
+      String rowKind = getResourceType( context );
 
       String type = (String) context.getValue( "type" );
-      String processedResource = processResource( context, alias, 4 ),
-        resourcePath = getResourcePath( context );
+      String processedResource = processResource( context, alias, 4 );
+      String resourcePath = getResourcePath( context );
 
-      ResourceMap.ResourceKind resourceKind = rowKind.equals( "Javascript" ) ?
-        ResourceMap.ResourceKind.JAVASCRIPT : ResourceMap.ResourceKind.CSS;
+      ResourceMap.ResourceKind resourceKind = rowKind.equals( CdeConstants.JAVASCRIPT )
+          ? ResourceMap.ResourceKind.JAVASCRIPT : ResourceMap.ResourceKind.CSS;
 
-      ResourceMap.ResourceType resourceType = type.equals( "LayoutResourceFile" ) ?
-        ResourceMap.ResourceType.FILE : ResourceMap.ResourceType.CODE;
+      ResourceMap.ResourceType resourceType = type.equals( "LayoutResourceFile" )
+          ? ResourceMap.ResourceType.FILE : ResourceMap.ResourceType.CODE;
 
       resources.add( resourceKind, resourceType, rowName, resourcePath, processedResource );
     }
@@ -75,7 +76,7 @@ public class RenderResources extends Renderer {
   }
 
   protected String processResource( JXPathContext context, final String alias, final int indent ) throws Exception {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
 
     Render renderer = (Render) getRender( context );
     renderer.processProperties();
@@ -83,7 +84,7 @@ public class RenderResources extends Renderer {
     buffer.append( NEWLINE ).append( getIndent( indent ) );
     if ( getContext().getDashboard().getWcdf().isRequire() ) {
       String resourceType = getResourceType( context );
-      if ( renderer instanceof ResourceCodeRender && resourceType.equals( "Javascript" ) ) {
+      if ( renderer instanceof ResourceCodeRender && resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
         buffer.append( getResourceCodeContent( context ) );
       } else {
         buffer.append( renderer.renderStart() );
