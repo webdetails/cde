@@ -65,7 +65,10 @@ var WizardMeasureObject = WizardOlapObject.extend({
 	},
 	
 	render: function(container){
-		this.htmlObject = $('<div class="cdfdd-olap-measures">' + this.olapObject.caption+ '</div>');
+		this.htmlObject = $('' +
+			'<div class="cdfdd-olap-measures">' +
+			'  <div class="cdfdd-olap-measures-label">' + this.olapObject.caption + '</div>' +
+			'</div>');
 		container.append(this.htmlObject);
 		return this.htmlObject;
 	},
@@ -82,7 +85,7 @@ var WizardDimensionObject = WizardOlapObject.extend({
 		
 		this.memberDepth = 0;
 		this.member = olapObject.hierarchy.defaultMemberQualifiedName;
-		this.catalog = olapObject.catalog
+		this.catalog = olapObject.catalog;
 		this.cube = olapObject.cube;
 		this.membersArray = [{name:olapObject.hierarchy.defaultMember,qualifiedName:olapObject.hierarchy.defaultMemberQualifiedName}];
 		
@@ -139,7 +142,7 @@ var WizardDimensionObject = WizardOlapObject.extend({
 	buildSelector: function(){
 		var myself = this;
 		var selector = $('<select class="cdfdd-olap-dimensions-input" ></select>');
-		for(m in this.membersArray){
+		for(var m in this.membersArray){
 			if(this.membersArray.hasOwnProperty(m)){
 				if(m != undefined && m != null){
 					selector.append($('<option value="'+ this.membersArray[m].qualifiedName +'">'+ this.membersArray[m].name + '</option>'));
@@ -175,7 +178,10 @@ var WizardDimensionObject = WizardOlapObject.extend({
 var WizardFilterObject = WizardOlapObject.extend({
 
 	render: function(container){
-		this.htmlObject = $('<div class="cdfdd-olap-measures">' + this.getId() + '</div>');
+		this.htmlObject = $('' +
+		'<div class="cdfdd-olap-measures">' +
+		'  <div class="cdfdd-olap-measures-label">' + this.getId() + '</div>' +
+		'</div>');
 		container.append(this.htmlObject);
 		return this.htmlObject;
 	},

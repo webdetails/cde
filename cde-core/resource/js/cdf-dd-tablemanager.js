@@ -1728,7 +1728,13 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click", function() {
-      var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      var _inner = '' +
+          '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">Edit</div>\n' +
+          '</div>\n' +
+          '<div class="popup-body-container">\n' +
+          '  <pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n' +
+          '</div>';
       // Store what we need in a global var
       cdfdd.textarea = [myself, placeholder, myself.value, callback];
       $.prompt(_inner, {
@@ -1737,6 +1743,10 @@ var CodeRenderer = CellRenderer.extend({
           Cancel: false
         },
         loaded: function() {
+          var $popup = $(this);
+
+          $popup.addClass('edit-popup')
+          CDFDDUtils.movePopupButtons($popup);
 
           //editor
           myself.editor = new CodeEditor();
@@ -1744,9 +1754,6 @@ var CodeRenderer = CellRenderer.extend({
           myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
           myself.editor.setMode(myself.getCodeType());
           myself.editor.setContents(myself.value);
-          $('.popup').css("width", "820px");
-          $('.popup').css('min-height', '500px');
-          $('.popup').css('min-width', '820px');
         },
 
         callback: myself.callback,
@@ -1808,7 +1815,13 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
     }
 
     var myself = this;
-    var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px;height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+    var _inner = '' +
+        '<div class="popup-header-container">\n' +
+        '  <div class="popup-title-container">Edit</div>\n' +
+        '</div>\n' +
+        '<div class="popup-body-container">\n' +
+        '  <pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n' +
+        '</div>';
     // Store what we need in a global var
     cdfdd.textarea = [myself, callback];
     var prompt = $.prompt(_inner, {
@@ -1817,16 +1830,17 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
         Cancel: false
       },
       loaded: function() {
+        var $popup = $(this);
+
+        $popup.addClass('edit-popup')
+        CDFDDUtils.movePopupButtons($popup);
+
         //editor
         myself.editor = new CodeEditor();
         myself.editor.initEditor("codeArea");
         myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
         myself.editor.setMode(myself.getCodeType());
         myself.editor.setContents(myself.value);
-
-        $('.popup:has(#codeArea)').css("width", "820px");
-        $('.popup:has(#codeArea)').css('min-height', '500px');
-        $('.popup:has(#codeArea)').css('min-width', '820px');
       },
 
       callback: myself.callback,
@@ -2027,18 +2041,32 @@ var ResourceFileRenderer = CellRenderer.extend({
       var url = ExternalEditor.getEditorUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
+      var contentWrapper = '' +
+          '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">Edit</div>\n' +
+          '</div>\n' +
+          '<div class="popup-body-container">\n' + _inner + '</div>';
+
+      var confirmWrapper = '' +
+          '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">Confirm</div>\n' +
+          '</div>\n' +
+          '<div class="popup-body-container">\n' +
+          '  <div ><span>Any unsaved changes will be lost. Continue anyway?</span></div>' +
+          '</div>';
+
       // Store what we need in a global var
       var action;
       var extEditor = {
 
         edit: {// external editor
-          html: _inner,
+          html: contentWrapper,
           buttons: {
             'Open File in new Tab/Window': 'newtab',
             'Close': 'close'
           },
           opacity: 0.2,
-          top: '5%',
+          top: '40px',
           prefix: 'brownJqi',
           submit: function(val, msg, form) {
             action = val;
@@ -2057,7 +2085,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         },
 
         confirm: {//confirm exit //TODO: style elsewhere
-          html: '<div height="100%" width="100%" style="text-align:center;font-size:15px;"> <br> <br> <span>Any unsaved changes will be lost. Continue anyway?</span> <br> <br> </div>',
+          html: confirmWrapper,
           buttons: { Yes: true, Cancel: false },
           submit: function(val, msg, form) {
             if(val) {
@@ -2078,9 +2106,12 @@ var ResourceFileRenderer = CellRenderer.extend({
         //opacity: 0.2,
         prefix: 'popup',
         loaded: function() {
-          $('.popup').css("width", "810px");
+          var $popup = $(this);
+          $popup.addClass('external-editor-popup');
+          CDFDDUtils.movePopupButtons($popup.find('#popup_state_edit'));
+          CDFDDUtils.movePopupButtons($popup.find('#popup_state_confirm'));
         },
-        top: '5%'
+        top: '40px'
 
       });
     });
@@ -2128,14 +2159,33 @@ var ResourceFileRenderer = CellRenderer.extend({
     var fileExtensions = this.getFileExtensions();
     _fileExplorer.bind('click', function() {
 
-      var fileExplorercontent = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one:' : ':');
-      fileExplorercontent += '<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var fileExplorerLabel = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one' : '');
+      var fileExplorerContent = '' +
+        '<div class="popup-header-container">\n' +
+        '  <div class="popup-title-container"></div>\n' +
+        '</div>\n' +
+        '<div class="popup-body-container">\n' +
+        '  <div class="popup-label">' + fileExplorerLabel + '</div>\n' +
+        '  <div id="container_id" class="urltargetfolderexplorer"></div>\n' +
+        '</div>';
+
+      var newFileContent = '' +
+          '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">Create File</div>\n' +
+          '</div>\n' +
+          '<div class="popup-body-container layout-popup">\n' +
+          '  <div class="popup-input-container bottom">\n' +
+          '    <div class="popup-label">New File</div>\n' +
+          '    <input class="popup-text-input" name="fileName"/>' +
+          '  </div>\n' +
+          '</div>';
+
       var selectedFile = "";
       var selectedFolder = "";
 
       var openOrNew = {
         browse: {// file explorer
-          html: fileExplorercontent,
+          html: fileExplorerContent,
           buttons: {
             Ok: true,
             Cancel: false
@@ -2161,7 +2211,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         },
 
         newFile: {// new file prompt when folder selected
-          html: '<div> New File: <input name="fileName"/></div>',
+          html: newFileContent,
           buttons: {
             Ok: true,
             Cancel: false
@@ -2201,6 +2251,12 @@ var ResourceFileRenderer = CellRenderer.extend({
         prefix: "popup",
         loaded: function() {
           selectedFile = "";
+
+          var $this = $(this);
+          $this.addClass('choose-file-popup');
+          CDFDDUtils.movePopupButtons($this.find('#popup_state_browse'));
+          CDFDDUtils.movePopupButtons($this.find('#popup_state_newFile'));
+
           $('#container_id').fileTree({
                 root: '/',
                 script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=" + fileExtensions + "&showHiddenFiles=true" + (CDFDDFileName != "" ? "&dashboardPath=" + CDFDDFileName : ""),
