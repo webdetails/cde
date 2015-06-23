@@ -187,4 +187,19 @@ public class CdeConstants {
     public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
     public static final String REQUIRE_CONFIG = "require.config(requireCfg);";
   }
+
+  // Resource Render
+  public static final String RESOURCE_TYPE = "resourceType";
+  public static final String CSS = "Css";
+  public static final String JAVASCRIPT = "Javascript";
+  // Resource Code Render
+  public static final String RESOURCE_CODE = "resourceCode";
+  public static final String STYLE = "<style>\n<!--\n{0}\n-->\n</style>";
+  public static final String SCRIPT_SOURCE =
+      "<script language=\"javascript\" type=\"text/javascript\">\n{0}\n</script>";
+  // Resource File Render
+  public static final String RESOURCE_FILE = "resourceFile";
+  public static final String LINK = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{0}\" />";
+  public static final String SCRIPT_FILE =
+      "<script language=\"javascript\" type=\"text/javascript\" src=\"{0}\"></script>";
 }

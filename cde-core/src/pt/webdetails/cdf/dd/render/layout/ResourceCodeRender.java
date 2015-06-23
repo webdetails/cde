@@ -13,16 +13,11 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import org.apache.commons.jxpath.JXPathContext;
-
 import java.text.MessageFormat;
+import org.apache.commons.jxpath.JXPathContext;
+import pt.webdetails.cdf.dd.CdeConstants;
 
 public class ResourceCodeRender extends ResourceRender {
-  private static final String STYLE = "<style>\n<!--\n{0}\n-->\n</style>";
-  private static final String SCRIPT_SOURCE =
-    "<script language=\"javascript\" type=\"text/javascript\">\n{0}\n</script>";
-
-  private static final String RESOURCE_CODE = "resourceCode";
 
   public ResourceCodeRender( JXPathContext context ) {
     super( context );
@@ -30,12 +25,12 @@ public class ResourceCodeRender extends ResourceRender {
 
   @Override
   public String renderStart() {
-    String resourceType = getPropertyString( RESOURCE_TYPE );
+    final String resourceType = getPropertyString( CdeConstants.RESOURCE_TYPE );
 
-    if ( resourceType.equals( CSS ) ) {
-      return MessageFormat.format( STYLE, getPropertyString( RESOURCE_CODE ) );
-    } else if ( resourceType.equals( JAVASCRIPT ) ) {
-      return MessageFormat.format( SCRIPT_SOURCE, getPropertyString( RESOURCE_CODE ) );
+    if ( resourceType.equals( CdeConstants.CSS ) ) {
+      return MessageFormat.format( CdeConstants.STYLE, getPropertyString( CdeConstants.RESOURCE_CODE ) );
+    } else if ( resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
+      return MessageFormat.format( CdeConstants.SCRIPT_SOURCE, getPropertyString( CdeConstants.RESOURCE_CODE ) );
     }
 
     logger.error( "Resource not rendered" );
