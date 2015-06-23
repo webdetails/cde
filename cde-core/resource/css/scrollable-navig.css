@@ -27,26 +27,29 @@ div.greyJqi .greyJqicontainer{
 	border: solid 1px #5F5D5A;
 	color: #000000;
 }
-div.greyJqi .greyJqimessage{
+div.greyJqi .greyJqimessage {
 	position: relative;
 	background-color: #DBDBDB;
 	border-top: solid 1px #C6B8AE;
 	border-bottom: solid 1px #C6B8AE;
 	height:350px;
 }
-div.greyJqi .greyJqimessage h3{.popup h2 {
-  float: left;
-  color: #12a2d8;
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: bold;
-  position: relative;
-  top: -10px;
-}
+div.greyJqi .greyJqimessage h3 {
 	margin: 0;
 	padding: 7px 0 7px 15px;
 	color: #4D4A47;
 }
+
+.popup h2 {
+	float: left;
+	color: #12a2d8;
+	line-height: 20px;
+	font-size: 15px;
+	font-weight: bold;
+	position: relative;
+	top: -10px;
+}
+
 div.greyJqi .greyJqimessage p{
 	padding: 10px;
 	color: #777777;
@@ -161,79 +164,6 @@ div.scrollable {
 /* custom positioning for navigational links */
 a.prev, a.next {
 	margin-top:118px;	
-}
-
-.popupTemplate {
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-  position: absolute; 
-  background-color: #eaedee; 
-  font-size: 11px; 
-  text-align: left; 
-  border: solid 2px #bbb;
-  padding: 7px;
-  max-width: 75%;
-  max-height: 75%;
-  min-width: 725px;
-  min-height: 450px;
-  overflow-x:auto;
-}
-
-div.popupTemplate .popupTemplateclose {
-  font-weight: bold;
-  border: 2px solid #bbb;
-  height: 20px;
-  width: 20px;
-  text-align: center; 
-  background: url(../images/close.png);
-  z-index: 100;
-  color: #222;
-  font-size: 0px;
-  position: absolute;
-  right: 8px;
-}
-
-.popupTemplate h2 {
-  float: left;
-  color: #555;
-  line-height: 20px;
-  font-size: 15px;
-  font-weight: bold;
-  position: relative;
-  top: -10px;
-}
-
-div.popupTemplate .popupTemplatebuttons {
-  text-align: right; 
-  padding: 5px 0 5px 0;  
-  background-color: #eaedee;
-  position: absolute;
-  right: 8px;
-  bottom: 0;
-}
-
-div.popupTemplate button {
-	padding: 3px 10px;
-	background-color: #eaedee;
-	border: solid 2px #bbb;
-	color: #444;
-	font-size: 12px;
-	float: right;
-	position: relative;
-	bottom: auto;
-	margin-left: 5px;
-	top: auto!important;
-}
-div.popupTemplate button:hover {
-  background-color: #bbb!important;
-}
-
-div.popupTemplate button.popupTemplatedefaultbutton {
-  /*background-color: #8DC05B;*/
-  background-color: #eaedee;
-}
-
-div.warningPopupTemplate {
-  min-height:165px;
 }
 
 /* single item */
