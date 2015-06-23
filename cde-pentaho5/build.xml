@@ -133,6 +133,13 @@
     <echo message="js.module.script.agg.dir: ${js.module.script.agg.dir}"/>
     <mkdir dir="${js.module.script.agg.dir}"/>
 
+    <!-- unzip CDF into js-lib/expanded/pentaho-cdf -->
+    <unzip dest="${js.expanded.lib.dir}" overwrite="true">
+      <fileset dir=".">
+        <include name="${js.lib.dir}/pentaho-cdf*.zip"/>
+      </fileset>
+    </unzip>
+
     <!-- copy requirejs loader plugins & other CDF dependencies -->
     <copy todir='${js.module.script.agg.dir}/cdf/js' overwrite='true'>
       <fileset dir='${js.expanded.lib.dir}/pentaho-cdf/js'>
@@ -472,13 +479,13 @@
           <then>
             <if>
               <not>
-                <isset property="karma-is-available-windows"/>
+                <isset property="karma-for-windows-is-available"/>
               </not>
               <then>
-                <fail>Karma is not available, make sure Node.js is installed. Unit tests could not run.</fail>
+                <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
               </then>
             </if>
-            <exec executable="${js.node.node_modules.bin.dir}\karma.cmd">
+            <exec executable="karma.cmd" failonerror="${js.karma.failonerror}">
               <arg value="start"/>
               <arg value="${js.karma.ci.config}"/>
               <!-- if we are running via ant, then assume we must 'single-run' -->
@@ -486,15 +493,7 @@
             </exec>
           </then>
           <else>
-            <if>
-              <not>
-                <isset property="karma-is-available"/>
-              </not>
-              <then>
-                <fail>Make sure Node.js is installed and run 'npm install -g karma-cli' [adds karma to the command line]</fail>
-              </then>
-            </if>
-            <exec executable="karma">
+            <exec executable="node_modules/karma/bin/karma" failonerror="${js.karma.failonerror}">
               <arg value="start"/>
               <arg value="${js.karma.ci.config}"/>
               <!-- if we are running via ant, then assume we must 'single-run' -->
@@ -510,6 +509,13 @@
   </target>
 
   <target name="test-js-require" depends="subfloor-js.resolve-js">
+
+    <!-- unzip CDF into js-lib/expanded/pentaho-cdf -->
+    <unzip dest="${js.expanded.lib.dir}" overwrite="true">
+      <fileset dir=".">
+        <include name="${js.lib.dir}/pentaho-cdf*.zip"/>
+      </fileset>
+    </unzip>
 
     <!-- copy CDF into bin/test-js/cdf -->
     <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
