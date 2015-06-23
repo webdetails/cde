@@ -73,17 +73,35 @@ describe("Table Operations #", function() {
 
   describe("LayoutAddResourceOperation", function() {
     var addResource = new LayoutAddResourceOperation();
+
     var content = '' +
-        '<h2>Add Resource</h2>\n' +
-        '<hr>Resource Type:&nbsp;&nbsp;\n' +
-        '<select id="resourceType">\n' +
-        ' <option value="Css">Css</option>\n' +
-        ' <option value="Javascript">Javascript</option>\n' +
-        '</select>\n' +
-        '<select id="resourceSource">\n' +
-        ' <option value="file">External File</option>\n' +
-        ' <option value="code">Code Snippet</option>\n' +
-        '</select>\n';
+        '<div class="clearfix">\n' +
+
+        '  <div class="popup-input-container bottom">\n' +
+        '    <span class="popup-label">Resource Type</span>\n' +
+        '    <select id="resourceType" class="popup-select">\n' +
+        '      <option value=""></option>\n' +
+        '      <option value="Css">Css</option>\n' +
+        '      <option value="Javascript">Javascript</option>\n' +
+        '    </select>\n' +
+        '  </div>\n' +
+
+        '  <div class="popup-input-container bottom last">\n' +
+        '    <span class="popup-label">Resource Source</span>\n' +
+        '    <select id="resourceSource" class="popup-select">\n' +
+        '      <option value=""></option>\n' +
+        '      <option value="file">External File</option>\n' +
+        '      <option value="code">Code Snippet</option>\n' +
+        '    </select>\n' +
+        '  </div>\n' +
+
+        '</div>\n';
+
+    var contentWrapper = '' +
+        '<div class="popup-header-container">\n' +
+        '  <div class="popup-title-container">Add Resource</div>\n' +
+        '</div>\n' +
+        '<div class="popup-body-container layout-popup resource-popup">\n' + content + '</div>';
 
     var buttons = {
       Ok: true,
@@ -96,7 +114,7 @@ describe("Table Operations #", function() {
 
       addResource.execute(tableManager);
 
-      expect($.prompt.calls.mostRecent().args[0]).toEqual(content);
+      expect($.prompt.calls.mostRecent().args[0]).toEqual(contentWrapper);
       expect($.prompt.calls.mostRecent().args[1].buttons).toEqual(buttons);
       expect($.prompt.calls.mostRecent().args[1].prefix).toEqual(prefix);
       expect(typeof $.prompt.calls.mostRecent().args[1].submit).toEqual('function');

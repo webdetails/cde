@@ -33,7 +33,7 @@ var WizardManager = Base.extend({
     this.initWizard();
 
     // Initialize jqModal
-    $("#" + WizardManager.MAIN_DIALOG).jqm({modal: true });
+    $("#" + WizardManager.MAIN_DIALOG).jqm({modal: true});
 
   },
 
@@ -69,25 +69,28 @@ var WizardManager = Base.extend({
 
   initWizard: function() {
     var wizard = '\n' +
-        '<div class="container">  \n' +
-        '	<div class="span-24 last round cdfdd-wizard-title"><h1>' + this.getTitle() + '</h1></div>\n' +
-        '	<div id="wizardDialogBody">\n' +
-        '   <form onsubmit="return false">\n' +
-        '	    <div id="wizardDialogLeftSection" class="cdfdd-wizard-left span-5 round"></div>\n' +
-        '			<div id="wizardDialogCenterSection" class="cdfdd-wizard-center span-19 last round"></div>\n' +
-        '		</form>\n' +
-        '	</div>\n' +
-        '	<!-- buttons -->\n' +
-        '	<div class="clear span-15" >&nbsp;</div>\n' +
-        '	<div class="cdfdd-wizard-buttons span-9 last round">\n' +
-        '	  <form onsubmit="return false;">\n' +
-        '			<input id="cdfdd-wizard-button-ok" type="button" disabled onclick="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').buttonOk()" value="Ok"></input> \n' +
-        '			<input id="cdfdd-wizard-button-cancel" type="button" onclick="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').buttonCancel()" value="Cancel"></input>\n' +
-        '		</form>\n' +
-        '</div>\n';
+        '<div class="">\n' + //container
+        '  <div class="popup-header-container">\n' +
+        '	   <div class="popup-title-container">' + this.getTitle() + '</div>\n' +
+        '	 <div class="cdfdd-wizard-buttons">\n' +
+        '    <form onsubmit="return false;">\n' +
+        '			 <input id="cdfdd-wizard-button-ok" type="button" disabled onclick="WizardManager.getWizardManager(\'' +
+        this.getWizardId() + '\').buttonOk()" value="Ok"></input> \n' +
+        '			 <input id="cdfdd-wizard-button-cancel" type="button" onclick="WizardManager.getWizardManager(\'' +
+        this.getWizardId() + '\').buttonCancel()" value="Cancel"></input>\n' +
+        '		 </form>\n' +
+        '  </div>\n' +
+        '  </div>\n' +
+        '	 <div id="wizardDialogBody" class="popup-body-container clearfix">\n' +
+        '    <form onsubmit="return false">\n' +
+        '      <div id="wizardDialogCenterSection" class="cdfdd-wizard-center clearfix"></div>\n' +
+        '	     <div id="wizardDialogLeftSection" class="cdfdd-wizard-left clearfix"></div>\n' +
+        '      <div id="wizardDialogRightSection" class="cdfdd-wizard-right clearfix last"></div>\n' +
+        '		 </form>\n' +
+        '	 </div>\n' +
+        '</div>';
 
     $("#" + WizardManager.MAIN_DIALOG).append(wizard);
-    $(".cdfdd-wizard-title").corner();
   },
 
 
@@ -230,8 +233,8 @@ var SaikuOlapWizard = WizardManager.extend({
     window.getSaikuMdx();
   }
 });
-var wizard = new SaikuOlapWizard();
 
+var wizard = new SaikuOlapWizard();
 
 var OlapWizard = WizardManager.extend({
 
@@ -257,54 +260,73 @@ var OlapWizard = WizardManager.extend({
 
   renderWizard: function() {
 
-
-    var leftSectionContent = '\n' +
-        '<div class="cdfdd-wizard-olap-cubes span-5 round last">\n' +
-        '	<h3>Cube:</h3>\n' +
-        ' <div id="cdfddOlapCubeSelector" class="centeredText"></div>\n' +
-        '</div>\n' +
-        '<div class="cdfdd-wizard-olap-dimensions span-5 round last">\n' +
-        '	<div id="cdfddOlapDimensionDiv" class="centeredText">\n' +
-        '		<table id="cdfddOlapDimensionSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
-        '			<caption class="ui-state-hover">Dimensions</caption>\n' +
-        '			<thead></thead>\n' +
-        '			<tbody class="ui-widget-content"></tbody>\n' +
-        '		</table>\n' +
-        '		<table id="cdfddOlapMeasureSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
-        '			<caption class="ui-state-hover">Measures</caption>\n' +
-        '			<thead></thead>\n' +
-        '			<tbody class="ui-widget-content"></tbody>\n' +
-        '		</table>\n' +
-        '		<table id="cdfddOlapFilterSelector" class="cdfdd small ui-reset ui-clearfix ui-component ui-hover-state">\n' +
-        '		  <caption class="ui-state-hover">Filters</caption>\n' +
-        '		  <thead></thead>\n' +
-        '			<tbody class="ui-widget-content"></tbody>\n' +
-        '		</table>\n' +
-        '	</div>\n' +
-        '</div>\n';
-
     var centerSectionContent = '\n' +
-        '<div class="span-19 round last">\n' +
-        '	<div class="span-13">\n' +
-        '		<div id="cdfdd-olap-preview" >\n' +
-        '		  <i>Preview Area:</i>\n' +
-        '     <input id="cdfdd-olap-enable-preview" type="checkbox" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" value="true" checked="checked"></input>\n' +
-        '			<div id="cdfdd-olap-preview-area"></div>\n' +
-        '		</div>\n' +
-        '		<div id="cdfdd-olap-rows" class="cdfdd-olap-droppable round"><i>Rows: </i><br/><span class="options"></span></div>\n' +
-        '		<div id="cdfdd-olap-columns" class="cdfdd-olap-droppable round"><i>Columns: </i><br/><span class="options"></span></div>\n' +
-        '		<div id="cdfdd-olap-filters" class="cdfdd-olap-droppable round"><i>Filters: </i><br/><span class="options"></span></div>\n' +
-        '	</div>\n' +
-        '	<div id="cdfdd-component-options" class="span-6 cdfdd-wizard-components-options last round"></div>\n' +
+        '<div class="popup-input-container" id="cdfddOlapCatalogSelector"></div>\n' +
+        '<div class="popup-input-container" id="cdfddOlapCubeSelector"></div>\n' +
+        '<div class="popup-input-container">\n' +
+        '  <div class="popup-label">Name</div>\n' +
+        '  <input id="cdfdd-olap-parameter-name" class="popup-text-input" type="text" placeholder="Insert Text..." onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" ></input>\n' +
+        '</div>\n' +
+        '<div class="popup-input-container last">' +
+        '  <div class="popup-label">Html Object</div>' +
+        '  <select id="cdfdd-olap-parameter-htmlobject" class="popup-select" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()"></select>' +
         '</div>';
 
-    $("#" + WizardManager.WIZARD_LEFT_SECTION).append(leftSectionContent);
+    var leftSectionContent = '\n' +
+        '<div class="cdfdd-wizard-olap-dimensions">\n' +
+        '	<div id="cdfddOlapDimensionDiv" class="">\n' +
+
+        '  <div id="cdfddOlapDimensionSelector" class="prompt-accordion-container collapsed">' +
+        '    <div class="prompt-wizard-caption disabled">' +
+        '      <span>Dimensions</span>' +
+        '      <span class="prompt-caption-more-less"/>' +
+        '    </div>' +
+        '  </div>' +
+
+        '  <div id="cdfddOlapMeasureSelector" class="prompt-accordion-container collapsed">' +
+        '    <div class="prompt-wizard-caption disabled">' +
+        '      <span>Measures</span>' +
+        '      <span class="prompt-caption-more-less"/>' +
+        '    </div>' +
+        '  </div>' +
+
+        '  <div id="cdfddOlapFilterSelector" class="prompt-accordion-container collapsed">' +
+        '    <div class="prompt-wizard-caption disabled">' +
+        '      <span>Filters</span>' +
+        '      <span class="prompt-caption-more-less"/>' +
+        '    </div>' +
+        '  </div>' +
+
+        '	</div>\n' +
+        '</div>';
+
+    var rightSectionContent = '\n' +
+        '<div class="">\n' +
+        '  <div id="cdfdd-olap-preview-container">' +
+
+        '    <div class="preview-area-header">' +
+        '    <div class="popup-input-container preview-label">' +
+        '      <span class="popup-label">Preview Area</span>' +
+        '    </div>' +
+
+        '    <div class="preview-options-container"></div>' +
+
+        '    <span class="preview-refresh-button"/>' +
+        '  </div>' +
+        '  <div id="cdfdd-olap-preview-area"></div>\n' +
+        '	</div>\n' +
+        '	<div id="cdfdd-olap-rows" class="cdfdd-olap-droppable"><i>Rows</i><span class="remove-all-options"></span><br/><span class="options"></span></div>\n' +
+        '	<div id="cdfdd-olap-columns" class="cdfdd-olap-droppable"><i>Columns</i><span class="remove-all-options"></span><br/><span class="options"></span></div>\n' +
+        '	<div id="cdfdd-olap-filters" class="cdfdd-olap-droppable"><i>Filters</i><span class="remove-all-options"></span><br/><span class="options"></span></div>\n' +
+        '	<div id="cdfdd-component-options" style="display: none" class="span-6 cdfdd-wizard-components-options last round"></div>\n' +
+        '</div>';
+
     $("#" + WizardManager.WIZARD_CENTER_SECTION).append(centerSectionContent);
+    $("#" + WizardManager.WIZARD_LEFT_SECTION).append(leftSectionContent);
+    $("#" + WizardManager.WIZARD_RIGHT_SECTION).append(rightSectionContent);
 
     this.renderMainOlapArea();
     this.renderCubeSelector();
-
-    $(".round", "#" + WizardManager.WIZARD_BODY).corner();
 
     // Accept droppable
     var myself = this;
@@ -355,6 +377,14 @@ var OlapWizard = WizardManager.extend({
     var myself = this;
 
     OlapWizardRequests.olapManager({}, myself);
+
+    var data = Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects();
+    var htmlObject = $("#cdfdd-olap-parameter-htmlobject");
+    CDFDDUtils.buildPopupSelect(htmlObject, {});
+
+    $.each(data, function(i, val) {
+      htmlObject.append('<option value="' + val.properties[0].value + '" : >' + val.properties[0].value + '</option>');
+    });
   },
 
   renderDimensions: function() {
@@ -366,16 +396,31 @@ var OlapWizard = WizardManager.extend({
     var selectedCatalog = this.getCatalog();
 
     var cubes = selectedCatalog.cubes;
-    $("select#cdfddOlapCubeSelect", _selector).empty();
+    var cubeSelector = $("select#cdfddOlapCubeSelect", _selector);
+    cubeSelector
+        .empty()
+        .prop("disabled", false);
+
     $.each(cubes, function(i, cube) {
-      $("select#cdfddOlapCubeSelect", _selector).append("<option id=\"" + cube.id + "\">" + cube.name + "</option>");
+      cubeSelector.append('<option id="' + cube.id + '" value="' + cube.name + '">' + cube.name + '</option>');
     });
+
+    var selectedCube = cubeSelector.children(":selected").attr("id") || "";
+    cubeSelector.val(selectedCube).trigger('change');
+
     this.cubeSelected();
   },
 
   cubeSelected: function() {
     var selectedCatalog = $("#cdfddOlapCatalogSelect").val();
-    var selectedCube = $("#cdfddOlapCubeSelect").children(":selected").attr("id");
+    var cubeSelector = $("#cdfddOlapCubeSelect");
+    var selectedCube = cubeSelector.children(":selected").attr("id") || "";
+
+    if(selectedCube === "") {
+      cubeSelector.prop("disabled", true);
+      return;
+    }
+
     this.logger.debug("Cube Selected: " + selectedCube);
 
     this.resetOlapObjects();
@@ -393,23 +438,57 @@ var OlapWizard = WizardManager.extend({
 
   getAvailableFilters: function() {
     var myself = this;
+    var filterIdx = 0;
+    var filterSelect = $('#cdfddOlapFilterSelector');
     var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
-    var filterTBody = $("#cdfddOlapFilterSelector > tbody");
-    filterTBody.empty();
+    var filtersHolder = $('<div id="prompt-filters-accordion" class="prompt-wizard-accordion"><div><ul></ul></div></div>');
+
+    $('#prompt-filters-accordion').remove();
+    filterSelect
+        .append(filtersHolder);
+
     $.each(filters, function(i, filter) {
       if(filter.dimension != undefined) {
-        filterTBody.append("<tr class='olapObject'><td class='draggableFilter'\">" + filter.properties[0].value + "</td></tr>");
+        var name = filter.properties[0].value;
+        var id = '' + filterIdx;
+        filtersHolder.find('ul').append('<li id="' + id + '" class="draggableFilter olapObject prompt-wizard-elements">' + name + '</li>');
         myself.addOlapObject(WizardOlapObjectManager.FILTER, filter);
+        filterIdx++;
       }
     });
-    filterTBody.parent().treeTable();
-    $("td.draggableFilter", filterTBody).draggable({helper: 'clone'});
+
+    $("li.draggableFilter", filtersHolder).draggable({
+      helper: 'clone',
+      type: "Filter",
+
+      start: function(event, ui) {
+        var originalRow = $(this);
+        var dragObjElements = ui.helper;
+
+        originalRow.addClass('dragging-element');
+      },
+
+      stop: function(event, ui) {
+        var originalRow = $(this);
+
+        originalRow.removeClass('dragging-element');
+      }
+    });
+
+    $('.prompt-wizard-caption', filterSelect)
+        .removeClass('disabled')
+        .off()
+        .click(function(event) {
+          $(this).parent().toggleClass('collapsed');
+          event.stopPropagation();
+    });
   },
 
   processDroppable: function(type, drop, drag) {
     var myself = this;
-    var levelIdx = drag.parent().prevAll("tr.olapObject").length;
     var wizardObjectType = drag.attr("class").replace(/draggable/, "").split(" ")[0];
+    var levelIdx = drag.attr('id').replace(wizardObjectType + '-', '');
+
 
     //1. Add selected olap Object
     var wizardObject = this.addSelectedWizardObject(type, wizardObjectType, this.getOlapObject(wizardObjectType, levelIdx));
@@ -426,7 +505,7 @@ var OlapWizard = WizardManager.extend({
       clearButtonContainer.remove();
       myself.processChange();
     });
-    container.append(clearButtonContainer.append(clearButton));
+    htmlWizardObject.append(clearButtonContainer.append(clearButton));
 
     this.processChange();
   },
@@ -497,7 +576,7 @@ var OlapWizard = WizardManager.extend({
 
   getSelectedRowsValue: function(preview) {
     var rows = [];
-    for(o in this.selectedWizardObjects.rows) {
+    for(var o in this.selectedWizardObjects.rows) {
       if(this.selectedWizardObjects.rows.hasOwnProperty(o)) {
         rows.push(this.selectedWizardObjects.rows[o].getValue(preview));
       }
@@ -507,7 +586,7 @@ var OlapWizard = WizardManager.extend({
 
   getSelectedColumnsValue: function(preview) {
     var columns = [];
-    for(o in this.selectedWizardObjects.columns) {
+    for(var o in this.selectedWizardObjects.columns) {
       if(this.selectedWizardObjects.columns.hasOwnProperty(o)) {
         columns.push(this.selectedWizardObjects.columns[o].getValue(preview));
       }
@@ -614,7 +693,7 @@ var OlapWizard = WizardManager.extend({
     var conditions = [];
     var isFirstColumnMeasure = columnsArr.length > 0 && this.getSelectedWizardObject("columns", 0).olapObject.type == 'measure';
 
-    for(o in this.selectedWizardObjects.filters) {
+    for(var o in this.selectedWizardObjects.filters) {
       if(this.selectedWizardObjects.filters.hasOwnProperty(o)) {
         conditions.push(this.getFilterValue(this.selectedWizardObjects.filters[o], preview));
       }
@@ -679,82 +758,88 @@ var OlapParameterWizard = OlapWizard.extend({
   },
 
   renderMainOlapArea: function() {
+    var myself = this;
     var content = $('\n' +
-        '<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" ></input></div>\n' +
-        '<hr/>\n' +
-        '<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\n' +
-        '<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\n' +
-        '<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\n');
+        '<div class="popup-input-container cdfdd-component-options-label type-option">' +
+        '  <span class="popup-label">Type</span>' +
+        '  <select class="popup-select cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select>' +
+        '</div>\n' +
+        '<div class="popup-input-container cdfdd-component-options-label top-count-option">' +
+        '  <span class="popup-label">Top Count</span>' +
+        '  <select class="popup-select cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select>' +
+        '</div>\n');
 
-    var olapMain = $("#cdfdd-component-options");
+    var olapMain = $('.preview-options-container');
     var selector = $("#cdfdd-olap-parameter-type", content);
     selector.append('<option value="selectComponent">Select</option>');
     selector.append('<option value="radioComponent">Radio Box</option>');
     selector.append('<option value="multiButtonComponent">Multiple Buttons</option>');
     var topCountSelector = $("#cdfdd-olap-parameter-topcount", content);
     var topCounts = ["", 5, 10, 15, 20, 25, 50, 100];
-    for(t in topCounts)
+    for(var t in topCounts)
       if(topCounts.hasOwnProperty(t)) {
         topCountSelector.append('<option value="' + topCounts[t] + '">' + topCounts[t] + '</option>');
       }
 
     topCountSelector.val(50);
 
-    var data = Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects();
-    var htmlObject = $("#cdfdd-olap-parameter-htmlobject", content);
-    $.each(data, function(i, val) {
-      htmlObject.append('<option value="' + val.properties[0].value + '" : >' + val.properties[0].value + '</option>');
+    olapMain.html(content);
+
+    CDFDDUtils.buildPopupSelect(selector, {});
+    CDFDDUtils.buildPopupSelect(topCountSelector, {});
+
+    $('.preview-refresh-button').click(function() {
+      myself.processChange();
     });
 
-    olapMain.html(content);
+    $('.remove-all-options').click(function() {
+      var container = $(this).parent();
+      container.find('.cdfdd-olap-clearButton a').trigger('click');
+    }).hover(function() {
+      var container = $(this).parent();
+      container.addClass('remove-all-hover');
+    }, function() {
+      var container = $(this).parent();
+      container.removeClass('remove-all-hover');
+    });
   },
 
   getDroppableRows: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return ".draggableDimension, .draggableMeasure, .draggableFilter";
   },
 
   getDroppableColumns: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return ".draggableDimension, .draggableMeasure, .draggableFilter";
   },
 
   getDroppableFilters: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return ".draggableDimension, .draggableMeasure, .draggableFilter";
   },
 
   processChange: function() {
     // Clean preview
     $("#cdfdd-olap-preview-area").empty();
-    var preview = $("#cdfdd-olap-enable-preview:checked").length > 0;
     var catalog = this.getCatalog();
     var valid = this.selectedWizardObjects.rows.length > 0 && catalog != undefined;
     var topCount = $("#cdfdd-olap-parameter-topcount").val();
+    var name = $("#cdfdd-olap-parameter-name").val();
 
-    $("#cdfdd-olap-preview").removeClass('disabled');//enable preview area, will be disabled if unchecked
-    if(!preview) {
-      $("#cdfdd-olap-preview").addClass('disabled');
-    }
-
-    if(valid & preview) {
-      this.getSelectedOptions().name = $("#cdfdd-olap-parameter-name").val();
+    if(valid) {
+      this.getSelectedOptions().name = name;
       this.getSelectedOptions().type = $("#cdfdd-olap-parameter-type").val();
       this.getSelectedOptions().jndi = catalog.jndi;
       this.getSelectedOptions().schema = catalog.schema;
       this.getSelectedOptions().cube = this.getCube();
       this.getSelectedOptions().topCount = topCount;
-
-      var topCount = this.getSelectedOptions().topCount;
       this.getSelectedOptions().query = this.buildQuery(true, topCount.length > 0 ? topCount : undefined);
 
       this.preview();
     }
 
     // Name
-    var name = $("#cdfdd-olap-parameter-name").val();
     if(name.length > 0) {
-      $("#cdfdd-olap-parameter-name").removeClass("invalid");
-      valid = valid & true;
+      valid = valid && true;
     } else {
-      $("#cdfdd-olap-parameter-name").addClass("invalid");
       valid = false;
     }
 
@@ -829,7 +914,7 @@ var OlapParameterWizard = OlapWizard.extend({
     componentsTableManager.insertAtIdx(parameterStub, insertAtIdx);
 
     // 3 - Add selector to components
-    var type = this.getSelectedOptions().type;
+    //var type = this.getSelectedOptions().type;
     var model = "";
     var entry = null;
 
@@ -905,25 +990,26 @@ var OlapChartWizard = OlapWizard.extend({
   },
 
   renderMainOlapArea: function() {
-
+    var myself = this;
     var content = $('\n' +
-        '<div class="cdfdd-component-options-label">Name: <input id="cdfdd-olap-parameter-name" class="invalid" type="text" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" ></input></div>\n' +
-        '<hr/>\n' +
-        '<div class="cdfdd-component-options-label">Title: <input id="cdfdd-olap-parameter-title" type="text" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-title" name="cdfdd-olap-parameter-title"></input></div>\n' +
-        '<div class="cdfdd-component-options-label">Type:<select class="cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select></div>\n' +
-        '<div class="cdfdd-component-options-label">Html Object:<select class="cdfdd-component-options-htmlobject" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-htmlobject" name="cdfdd-olap-parameter-htmlobject"></select></div>\n' +
-        '<div class="cdfdd-component-options-label">Orientation:<select class="cdfdd-component-options-orientation" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-orientation" name="cdfdd-olap-parameter-orientation"></select></div>\n' +
-        '<div class="cdfdd-component-options-label">Top Count:<select class="cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select></div>\n');
+        '<div class="popup-input-container cdfdd-component-options-label chart-type-option">' +
+        '  <span class="popup-label">Chart Type</span>' +
+        '  <select class="popup-select cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select>' +
+        '</div>\n' +
+        '<div class="popup-input-container cdfdd-component-options-label top-count-option">' +
+        '  <span class="popup-label">Top Count</span>' +
+        '  <select class="popup-select cdfdd-component-options-topCount" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-topcount" name="cdfdd-olap-parameter-topcount"></select>' +
+        '</div>\n');
 
     var appendOption = function(obj, options) {
-      for(v in options) {
+      for(var v in options) {
         if(options.hasOwnProperty(v) && v != undefined && v != null) {
           obj.append('<option value="' + options[v][0] + '">' + options[v][1] + '</option>');
         }
       }
     };
 
-    var componentOptions = $("#cdfdd-component-options");
+    var componentOptions = $('.preview-options-container');
     var typeSelector = $("#cdfdd-olap-parameter-type", content);
     appendOption(typeSelector, [
       ["BarChart", "Bar Chart"],
@@ -950,18 +1036,36 @@ var OlapChartWizard = OlapWizard.extend({
     $.each(data, function(i, val) {
       htmlObject.append('<option value="' + val.properties[0].value + '" : >' + val.properties[0].value + '</option>');
     });
+
+    CDFDDUtils.buildPopupSelect(typeSelector, {});
+    CDFDDUtils.buildPopupSelect(topCountSelector, {});
+
+    $('.preview-refresh-button').click(function() {
+      myself.processChange();
+    });
+
+    $('.remove-all-options').click(function() {
+      var container = $(this).parent();
+      container.find('.cdfdd-olap-clearButton a').trigger('click');
+    }).hover(function() {
+      var container = $(this).parent();
+      container.addClass('remove-all-hover');
+    }, function() {
+      var container = $(this).parent();
+      container.removeClass('remove-all-hover');
+    });
   },
 
   getDroppableRows: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return "li.draggableDimension, li.draggableMeasure, li.draggableFilter";
   },
 
   getDroppableColumns: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return "li.draggableDimension, li.draggableMeasure, li.draggableFilter";
   },
 
   getDroppableFilters: function() {
-    return "td.draggableDimension, td.draggableMeasure, td.draggableFilter";
+    return "li.draggableDimension, li.draggableMeasure, li.draggableFilter";
   },
 
   processChange: function() {
@@ -970,15 +1074,10 @@ var OlapChartWizard = OlapWizard.extend({
     var preview = $("#cdfdd-olap-enable-preview:checked").length > 0;
     var catalog = this.getCatalog();
     var valid = this.selectedWizardObjects.rows.length > 0 && this.selectedWizardObjects.columns.length > 0 && catalog != undefined;
-    ;
+    var name = $("#cdfdd-olap-parameter-name").val();
 
-    $("#cdfdd-olap-preview").removeClass('disabled');//enable preview area, will be disabled if unchecked
-    if(!preview) {
-      $("#cdfdd-olap-preview").addClass('disabled');
-    }
-
-    if(valid & preview) {
-      this.getSelectedOptions().name = $("#cdfdd-olap-parameter-name").val();
+    if(valid) {
+      this.getSelectedOptions().name = name;
       this.getSelectedOptions().title = $("#cdfdd-olap-parameter-title").val();
       this.getSelectedOptions().type = $("#cdfdd-olap-parameter-type").val();
       this.getSelectedOptions().topCount = $("#cdfdd-olap-parameter-topcount").val();
@@ -993,21 +1092,16 @@ var OlapChartWizard = OlapWizard.extend({
       this.preview();
     }
 
-
     // Name
-    var name = $("#cdfdd-olap-parameter-name").val();
     if(name.length > 0) {
-      $("#cdfdd-olap-parameter-name").removeClass("invalid");
-      valid = valid & true;
+      valid = valid && true;
     } else {
-      $("#cdfdd-olap-parameter-name").addClass("invalid");
       valid = false;
     }
 
     if(valid) {
       $("#cdfdd-wizard-button-ok").removeAttr("disabled");
     } else {
-
       $("#cdfdd-wizard-button-ok").attr("disabled", "disabled");
     }
 
