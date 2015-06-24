@@ -267,12 +267,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
         submit: function(v, m, f) {
           var array = [];
-          for(var i = 0; i < index; i++) {
-            var paramVal = myself.getParameterValues(i);
+          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
+            var index = $(this).attr('id').replace('parameters_', '');
+            var paramVal = myself.getParameterValues(index);
             if(!myself.isParameterEmpty(paramVal)) {
               array.push(paramVal); //don't attempt to add deleted lines
             }
-          }
+          });
+
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
       });
@@ -319,7 +321,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     if(this.multiDimensionArray) {
       return  _.isEmpty(param[0]) && _.isEmpty(param[1]);
     }
-
+    
     return false;
   },
 
@@ -617,12 +619,15 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
         submit: function(v, m, f) {
           var array = [];
-          for(var i = 0; i < index; i++) {
-            var paramVal = myself.getParameterValues(i);
+
+          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
+            var index = $(this).attr('id').replace('parameters_', '');
+            var paramVal = myself.getParameterValues(index);
             if(!myself.isParameterEmpty(paramVal)) {
               array.push(paramVal); //don't attempt to add deleted lines
             }
-          }
+          });
+
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
       });
