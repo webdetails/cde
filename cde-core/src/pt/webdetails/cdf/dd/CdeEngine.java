@@ -20,10 +20,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import pt.webdetails.cdf.dd.bean.factory.CoreBeanFactory;
-import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.Util;
+import pt.webdetails.cpf.bean.IBeanFactory;
+import pt.webdetails.cpf.bean.AbstractBeanFactory;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
@@ -67,7 +67,10 @@ public class CdeEngine {
   private static void initialize() throws InitializationException {
     if ( instance.cdeEnv == null ) {
 
-      ICdeBeanFactory factory = new CoreBeanFactory();
+      IBeanFactory factory = new AbstractBeanFactory(){
+        @Override
+        public String getSpringXMLFilename(){ return "cde.spring.xml"; }
+      };
 
       // try to get the environment from the configuration
       ICdeEnvironment env = instance.getConfiguredEnvironment( factory );
@@ -137,10 +140,10 @@ public class CdeEngine {
     return getInstance().getEnvironment();
   }
 
-  protected synchronized ICdeEnvironment getConfiguredEnvironment( ICdeBeanFactory factory )
+  protected synchronized ICdeEnvironment getConfiguredEnvironment( IBeanFactory factory )
     throws InitializationException {
 
-    Object obj = new CoreBeanFactory().getBean( ICdeEnvironment.class.getSimpleName() );
+    Object obj = factory.getBean( ICdeEnvironment.class.getSimpleName() );
 
     if ( obj != null && obj instanceof ICdeEnvironment ) {
       return (ICdeEnvironment) obj;
