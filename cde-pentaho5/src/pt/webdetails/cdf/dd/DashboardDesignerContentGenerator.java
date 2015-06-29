@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -24,6 +23,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cpf.SimpleContentGenerator;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
+import pt.webdetails.cpf.utils.PluginIOUtils;
 
 import java.util.UUID;
 
@@ -79,12 +79,14 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       this.userSession, this, requestParams );
 
     if ( create ) {
-      String result = renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() );
-      IOUtils.write( result, getResponse().getOutputStream() );
+
+      PluginIOUtils.writeOutAndFlush( getResponse().getOutputStream(),
+          renderer.newDashboard( filePath, debug, true, getRequest(), getResponse() ) );
+
     } else if ( edit ) {
-      //TODO: file to path
-      String result = renderer.edit( "", "", filePath, debug, true, getRequest(), getResponse() );
-      IOUtils.write( result, getResponse().getOutputStream() );
+
+      PluginIOUtils.writeOutAndFlush( getResponse().getOutputStream(),
+          renderer.edit( "", "", filePath, debug, true, getRequest(), getResponse() ) );
 
     } else if ( resource ) {
       // TODO review later if there is a viable solution to making resources being
@@ -97,12 +99,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       new ResourcesApi().getResource( pathParams.getStringParameter( MethodParams.COMMAND, "" ), getResponse() );
 
     } else {
-      String result = renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, scheme,
-        viewId, style, getRequest() );
+
       getResponse().setContentType( MimeTypes.HTML );
 
-      IOUtils.write( result, getResponse().getOutputStream() );
-      getResponse().getOutputStream().flush();
+      PluginIOUtils.writeOutAndFlush( getResponse().getOutputStream(),
+        renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, scheme,
+          viewId, style, getRequest() ) );
     }
 
     long end = System.currentTimeMillis();
