@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd;
 
-import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.extapi.IFileHandler;
@@ -24,6 +23,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.PentahoCdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.testUtils.ContentAccessFactoryForTests;
 import pt.webdetails.cpf.PluginEnvironment;
+import pt.webdetails.cpf.bean.IBeanFactory;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -65,7 +65,7 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
   }
 
   @Override
-  public void init( ICdeBeanFactory factory ) throws InitializationException {
+  public void init( IBeanFactory factory ) throws InitializationException {
 
   }
 

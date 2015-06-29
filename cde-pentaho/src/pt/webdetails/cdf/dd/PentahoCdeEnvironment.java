@@ -20,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.util.messages.LocaleHelper;
 
-import pt.webdetails.cdf.dd.bean.factory.ICdeBeanFactory;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
@@ -35,6 +34,7 @@ import pt.webdetails.cdf.dd.plugin.resource.PluginResourceLocationManager;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PentahoPluginEnvironment;
 import pt.webdetails.cpf.PentahoUrlProvider;
+import pt.webdetails.cpf.bean.IBeanFactory;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.resources.IResourceLoader;
@@ -50,14 +50,14 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private static final String CONTENT = "content";
   private static final String CDE_XML = "cde.xml";
 
-  private ICdeBeanFactory factory;
+  private IBeanFactory factory;
   private IResourceLoader resourceLoader;
   private LegacyApiPathProvider apiPaths;
   private IFileHandler fileHandler;
 
   private IPluginResourceLocationManager pluginResourceLocationManager;
 
-  public void init( ICdeBeanFactory factory ) throws InitializationException {
+  public void init( IBeanFactory factory ) throws InitializationException {
     this.factory = factory;
 
     pluginResourceLocationManager = new PluginResourceLocationManager();
