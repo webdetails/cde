@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
 import pt.webdetails.cdf.dd.render.cda.*;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 /**
  * Creates the .CDA file XML. TODO: this should be changed to a ThingWriter of DataSourceComponents?
@@ -101,7 +102,7 @@ public class CdaRenderer {
     Transformer transformer = tFactory.newTransformer();
 
     DOMSource source = new DOMSource( cdaFile );
-    StreamResult res = new StreamResult( new OutputStreamWriter( result, "UTF-8" ) );
+    StreamResult res = new StreamResult( new OutputStreamWriter( result, CharsetHelper.getEncoding() ) );
     transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
     transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "2" );
     transformer.transform( source, res );

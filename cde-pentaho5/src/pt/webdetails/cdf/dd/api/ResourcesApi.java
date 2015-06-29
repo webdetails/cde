@@ -29,7 +29,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,6 +51,7 @@ import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
+import pt.webdetails.cpf.utils.PluginIOUtils;
 
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
@@ -90,10 +90,7 @@ public class ResourcesApi {
         response.setHeader( "Cache-Control", "max-age=" + maxAge );
       }
 
-      byte[] contents = IOUtils.toByteArray( file.getContents() );
-
-      IOUtils.write( contents, response.getOutputStream() );
-      response.getOutputStream().flush();
+      PluginIOUtils.writeOutAndFlush( response.getOutputStream(), file.getContents() );
     } catch ( SecurityException e ) {
       response.sendError( HttpServletResponse.SC_FORBIDDEN );
     }
