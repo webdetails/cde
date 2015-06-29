@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+	<title>selector_visual_guide</title>
+	<description>Selector Component Visual Guide</description>
+	<author></author>
+	<style>WDDocsRequire</style>
+  	<rendererType>blueprint</rendererType>
+  	<require>true</require>
+	<widget>false</widget>
+	<widgetName></widgetName>
+	<widgetParameters></widgetParameters>
+</cdf>

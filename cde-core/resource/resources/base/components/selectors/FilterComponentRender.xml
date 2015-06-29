@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<DesignerComponent>
+  <Header>
+    <Name>Filter Component</Name>
+    <IName>FilterComponent</IName>
+    <Description>Filter Component</Description>
+    <Category>SELECTORS</Category>
+    <CatDescription>Selects</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <!-- Standard CDE properties -->
+      <Property>executeAtStart</Property>
+      <Property>htmlObject</Property>
+      <Property>listeners</Property>
+      <Property>preExecution</Property>
+      <Property>postFetch</Property>
+      <Property>postExecution</Property>
+
+      <Property>parameter</Property>
+      <Property>preChange</Property>
+      <Property>postChange</Property>
+
+
+      <!--  Query parameters, as needed by UnmanagedComponent -->
+      <Definition name="queryDefinition">
+        <Property type="query">dataSource</Property>
+        <Property>pageSize</Property>
+      </Definition>
+      <Property name="parameters">xActionArrayParameter</Property>
+
+      <!-- ENDOF Standard CDE properties -->
+
+      <Definition name="componentInput">
+        <Property>valueAsId</Property>
+        <Property>valuesArray</Property>
+        <Property>inputParameter</Property>
+      </Definition>
+
+      <Definition name="componentOutput">
+        <Property>outputFormat</Property>
+      </Definition>
+
+      <Definition name="componentDefinition">
+        <Property>title</Property>
+        <Property>alwaysExpanded</Property>
+        <Property>multiselect</Property>
+        <Property>selectionLimit</Property>
+        <Property>showIcons</Property>
+        <Property>showButtonOnlyThis</Property>
+        <Property>useOverlay</Property>
+        <Property>showFilter</Property>
+      </Definition>
+
+      <Definition name="addIns">
+        <Property>postUpdate</Property>
+        <Property>renderRootHeader</Property>
+        <Property>renderRootSelection</Property>
+        <Property>renderRootFooter</Property>
+        <Property>renderGroupSelection</Property>
+        <Property>renderItemSelection</Property>
+        <Property>sortGroup</Property>
+        <Property>sortItem</Property>
+      </Definition>
+      <Property>options</Property>
+
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+
+      <CustomProperties>
+
+        <DesignerProperty>
+          <Header>
+            <Name>outputFormat</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>lowestID</DefaultValue>
+            <Description>Output Format</Description>
+            <Tooltip>Defines what will be written to the parameter</Tooltip>
+            <InputType type="valuelist"/>
+            <OutputType>String</OutputType>
+            <Order>42</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+          <Values>
+            <Value display="Group and Item Ids">highestID</Value>
+            <Value display="Item Ids">lowestID</Value>
+          </Values>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>alwaysExpanded</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>Always Expanded</Description>
+            <Tooltip>If true, the selector is permanently open and cannot be collapsed</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>60</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>multiselect</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Multiple Selection</Description>
+            <Tooltip>Define if selector allows multi select or not</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>61</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>selectionLimit</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>200</DefaultValue>
+            <Description>Selection Limit</Description>
+            <Tooltip>Defines a maximum for the number of selected elements</Tooltip>
+            <InputType>Integer</InputType>
+            <OutputType>Number</OutputType>
+            <Order>62</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>pageSize</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Page Length</Description>
+            <Tooltip>The number of rows per page</Tooltip>
+            <Advanced>true</Advanced>
+            <InputType>Integer</InputType>
+            <OutputType>Number</OutputType>
+            <Order>63</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+
+        <DesignerProperty>
+          <Header>
+            <Name>showIcons</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Show Icons</Description>
+            <Tooltip>Shows icons (symbols such as radio-buttons or input boxes) next to each item</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>64</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>showButtonOnlyThis</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Show &quot;Only&quot; Button</Description>
+            <Tooltip>If set to True, when Multiple Selection is active, shows a button next to each item that allows the user to select only that item</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>65</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>useOverlay</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Show Overlay</Description>
+            <Tooltip>Optionally uses an overlay when the selector is expanded</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>66</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>showFilter</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"true"</DefaultValue>
+            <Description>Show Search Filter</Description>
+            <Tooltip>Enables filtering of items via a search box</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
+            <Order>67</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+
+        <!-- <DesignerProperty> -->
+        <!--   <Header> -->
+        <!--     <Name>inputParameter</Name> -->
+        <!--     <Parent>BaseProperty</Parent> -->
+        <!--     <DefaultValue></DefaultValue> -->
+        <!--     <Description>Input Values Parameter</Description> -->
+        <!--     <Tooltip>Parameter containing a CDA result set with the list of options</Tooltip> -->
+        <!--     <InputType>Parameter</InputType> -->
+        <!--     <OutputType>String</OutputType> -->
+        <!--     <Order>12</Order> -->
+        <!--     <Advanced>true</Advanced> -->
+        <!--     <Version>1.0</Version> -->
+        <!--   </Header> -->
+        <!-- </DesignerProperty> -->
+
+
+
+        <DesignerProperty>
+          <Header>
+            <Name>postUpdate</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>PostUpdate AddIns</Description>
+            <Tooltip>List of addIns to be invoked after the component's data model is updated </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>99</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>renderRootHeader</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Root Header AddIns</Description>
+            <Tooltip>List of add-ins to be invoked when the header of the component's root is rendered </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>100</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>renderRootSelection</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Root Selection AddIns</Description>
+            <Tooltip>List of add-ins to be invoked when the selection area of the component's root is rendered </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>101</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>renderRootFooter</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Root Footer AddIns</Description>
+            <Tooltip>List of add-ins to be invoked when the footer of the component's root is rendered </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>102</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+
+        <DesignerProperty>
+          <Header>
+            <Name>renderGroupSelection</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Group Selection AddIns</Description>
+            <Tooltip>List of add-ins to be invoked when the selection area of a group of the component is rendered </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>103</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>renderItemSelection</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Item Selection AddIns</Description>
+            <Tooltip>List of add-ins to be invoked when the selection area of an item of the component is rendered </Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>104</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>sortGroup</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Group Sorting AddIns</Description>
+            <Tooltip>List of addIns that will be used to sort the groups of items</Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>105</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>sortItem</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Item Sorting AddIns</Description>
+            <Tooltip>List of addIns that will be used to sort the items</Tooltip>
+            <InputType>Array</InputType>
+            <OutputType>Array</OutputType>
+            <Order>106</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+        <DesignerProperty>
+          <Header>
+            <Name>options</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"function options(){\n    return {};\n}"</DefaultValue>
+            <Description>Advanced Settings</Description>
+            <Tooltip>Advanced settings. Please consult the component's documentation.</Tooltip>
+            <InputType>JavaScript</InputType>
+            <OutputType>Function</OutputType>
+            <Order>200</Order>
+            <Advanced>true</Advanced>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+
+      </CustomProperties>
+    </Implementation>
+  </Contents>
+</DesignerComponent>
