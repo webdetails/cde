@@ -101,6 +101,10 @@
 	margin-top: 7px;
 }
 
+.exportChartInput input#width, .exportChartInput input#height {
+  width: 50px;
+}
+
 
 .exportChartMasterDiv {
   -webkit-border-radius: 7px;

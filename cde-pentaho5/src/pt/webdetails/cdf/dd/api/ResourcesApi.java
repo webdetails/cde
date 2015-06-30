@@ -1,22 +1,21 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -30,8 +29,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,10 +37,8 @@ import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.api.engine.IPluginResourceLoader;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
-
 import org.pentaho.platform.engine.security.SecurityHelper;
 import org.pentaho.platform.web.http.api.resources.PluginResource;
-
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.CdeSettings;
@@ -56,8 +51,7 @@ import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
-import pt.webdetails.cpf.utils.MimeTypes;
-
+import pt.webdetails.cpf.utils.PluginIOUtils;
 
 @Path( "pentaho-cdf-dd/api/resources" )
 public class ResourcesApi {
@@ -96,10 +90,7 @@ public class ResourcesApi {
         response.setHeader( "Cache-Control", "max-age=" + maxAge );
       }
 
-      byte[] contents = IOUtils.toByteArray( file.getContents() );
-
-      IOUtils.write( contents, response.getOutputStream() );
-      response.getOutputStream().flush();
+      PluginIOUtils.writeOutAndFlush( response.getOutputStream(), file.getContents() );
     } catch ( SecurityException e ) {
       response.sendError( HttpServletResponse.SC_FORBIDDEN );
     }
@@ -191,7 +182,7 @@ public class ResourcesApi {
 
     if ( extensions != null ) {
       for ( String extension : extensions ) {
-        // For some reason, in 4.5 filebased rep started to report a leading dot in extensions
+        // For some reason, in 4.5 file-based rep started to report a leading dot in extensions
         // Adding both just to be sure we don't break stuff
         extensionsList.add( "." + extension );
         extensionsList.add( extension );
@@ -204,7 +195,7 @@ public class ResourcesApi {
     }
 
     GenericBasicFileFilter fileFilter =
-      new GenericBasicFileFilter( null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
+        new GenericBasicFileFilter( null, extensionsList.toArray( new String[ extensionsList.size() ] ), true );
 
     //check if it is a system dashboard
     List<IBasicFile> fileList;

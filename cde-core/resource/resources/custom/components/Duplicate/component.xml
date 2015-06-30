@@ -1,29 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <DesignerComponent>
-	<Header>
-		<Name>Duplicate Component</Name>
-		<IName>duplicate</IName>
-		<Description>Duplicate Component</Description>
-		<Category>OTHERCOMPONENTS</Category>
-		<CatDescription>Others</CatDescription>
-		<Type>PalleteEntry</Type>
-		<Version>1.0</Version>
-	</Header>
-	<Contents>
-		<Model>
-			<Property>executeAtStart</Property>
-			<Property name='components'>componentList</Property>
-			<Property name='parameters'>parameterList</Property>
-			<Property>htmlObject</Property>
-			<Property>targetHtmlObject</Property>
+  <Header>
+    <Name>Duplicate Component</Name>
+    <IName>duplicate</IName>
+    <Description>Duplicate Component</Description>
+    <Category>OTHERCOMPONENTS</Category>
+    <CatDescription>Others</CatDescription>
+    <Type>PalleteEntry</Type>
+    <Version>1.0</Version>
+  </Header>
+  <Contents>
+    <Model>
+      <Property>executeAtStart</Property>
+      <Property name='components'>componentList</Property>
+      <Property name='parameters'>parameterList</Property>
+      <Property>htmlObject</Property>
+      <Property>targetHtmlObject</Property>
       <Property>targetContainer</Property>
-			<Property>preExecution</Property>
-			<Property>postExecution</Property>
-			<Property>listeners</Property>
-		</Model>
-		<Implementation>
-			<Code src="duplicate.js" />
-			<Styles/>
-			<Dependencies/>
+      <Property>preExecution</Property>
+      <Property>postExecution</Property>
+      <Property>listeners</Property>
+    </Model>
+    <Implementation supportsLegacy="true" supportsAMD="true">
+      <Code src="duplicate.js" />
+      <Styles/>
+      <Dependencies/>
       <CustomProperties>
         <DesignerProperty>
           <Header>
@@ -63,7 +64,7 @@
             <InputType>String</InputType>
             <OutputType>String</OutputType>
             <Order>51</Order>
-            <Advanced>true</Advanced>
+            <Advanced>false</Advanced>
             <Version>1.0</Version>
           </Header>
         </DesignerProperty>
@@ -83,5 +84,5 @@
         </DesignerProperty>
       </CustomProperties>
     </Implementation>
-	</Contents>
+  </Contents>
 </DesignerComponent>

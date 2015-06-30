@@ -1,15 +1,15 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
-*/
+ */
 
 var TableManager = Base.extend({
 
@@ -497,11 +497,7 @@ var TableManager = Base.extend({
     }
 
     this.isSelectedCell = true;
-    if(this.getTableModel().getEvaluatedRowType(row) == "Label") {
-      this.isSelectedGroupCell = true;
-    } else {
-      this.isSelectedGroupCell = false;
-    }
+    this.isSelectedGroupCell = this.getTableModel().getEvaluatedRowType(row) === 'Label';
     this.selectedCell = [row, col];
     this.updateOperations();
     this.fireDependencies(row, col, classType);
@@ -528,6 +524,7 @@ var TableManager = Base.extend({
     var $table = $('#' + this.getTableId());
     $table.click();
     $table.find("tbody > tr:eq(" + row + ")").addClass("ui-state-active");
+    this.scrollTo(row);
 
     // Uncomment following cells to enable td highlight
     //$('#'+this.getTableId() + " > tbody > tr:eq("+ row +") > td:eq("+ col + ")").addClass("ui-state-active");
@@ -535,6 +532,40 @@ var TableManager = Base.extend({
     // Fire cellClicked; get id
     this.cellClick(row, col, classType);
 
+  },
+
+  scrollTo: function(row) {
+    function getPosition(element) {
+      var top = element.position().top;
+      var bottom = top + element.outerHeight(true);
+
+      return {top: top, bottom: bottom};
+    }
+
+    var rowId = this.getTableModel().getEvaluatedId(row),
+        $row = $('#' + rowId),
+        $scroll = $('#' + this.getId() + ' .scrollContainer'),
+        needScrollDown = true,
+        needScrollUp = true;
+
+    while(needScrollDown || needScrollUp) {
+      var scrollTo = $scroll.scrollTop(),
+          $row_position = getPosition($row),
+          $scroll_position = getPosition($scroll);
+
+      needScrollDown = $row_position.bottom > $scroll_position.bottom;
+      needScrollUp = $row_position.top < $scroll_position.top;
+
+      if(needScrollDown) {
+        scrollTo += $row.outerHeight(true);
+      }
+
+      if(needScrollUp) {
+        scrollTo -= $row.outerHeight(true);
+      }
+
+      $scroll.scrollTop(scrollTo);
+    }
   },
 
   selectCellBefore: function() {
@@ -546,6 +577,7 @@ var TableManager = Base.extend({
       var prevIdx;
 
       if(indexManager.isRootFirstChild(rowId)) {
+        this.selectCell(0, 0, 'simple');
         return undefined;
       }
 
@@ -579,7 +611,12 @@ var TableManager = Base.extend({
       var isParent = indexManager.isParent(rowId);
       var nextIdx;
 
-      if((isParent && isCollapsed && indexManager.isRootLastChild(rowId)) || tableModel.isLastRow(rowId)) {
+      if((isParent && isCollapsed && indexManager.isRootLastChild(rowId))) {
+        return undefined;
+      }
+
+      if(tableModel.isLastRow(rowId)) {
+        this.selectCell(rowIdx, 0, 'simple');
         return undefined;
       }
 
@@ -655,7 +692,6 @@ var TableManager = Base.extend({
       tableManager.getTableModel().setData(data);
       tableManager.cleanSelections();
       tableManager.init();
-      //tableManager.selectCell(targetIdx,colIdx);
     }
   },
 
@@ -736,7 +772,8 @@ var TableManager = Base.extend({
 
       // Order
       return p1.order < p2.order ? -1 :
-              p1.order > p2.order ? 1 : 0;
+              p1.order > p2.order ? 1 :
+                p1.name.localeCompare(p2.name);
     });
   },
 
@@ -1106,7 +1143,6 @@ var CellRenderer = Base.extend({
   getTableManager: function() {
     return this.tableManager;
   }
-
 });
 
 
@@ -1347,16 +1383,29 @@ var SelectRenderer = CellRenderer.extend({
   }
 });
 
+var ChartExportTypeRenderer = SelectRenderer.extend({
+  selectData: {
+    'png': 'png',
+    'svg': 'svg'
+  }
+});
+
+var DataExportTypeRenderer = SelectRenderer.extend({
+  selectData: {
+    'xls': 'xls',
+    'csv': 'csv',
+    'xml': 'xml',
+    'json': 'json'
+  }
+});
+
 var ComponentToExportRenderer = SelectRenderer.extend({
 
   getData: function() {
     var data = _.extend({}, this.selectData);
     var components = cdfdd.dashboardData.components.rows;
 
-    var validComponents = components.filter(function(comp) {
-      var nameProperty = comp.properties && comp.properties[0];
-      return comp.meta_cdwSupport === 'true' && nameProperty && nameProperty.value !== "";
-    });
+    var validComponents = this.filterComponents(components);
 
     validComponents.map(function(comp) {
       var compName = comp.properties[0].value;
@@ -1364,12 +1413,31 @@ var ComponentToExportRenderer = SelectRenderer.extend({
     });
 
     return data;
+  },
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+      var isTableComponent = comp.type === 'ComponentsTable';
+
+      return (hasCdwSupport || isTableComponent) && !isNameEmpty;
+    });
   }
 });
 
 var ChartComponentToExportRenderer = ComponentToExportRenderer.extend({
 
   prevSelectedValue: '',
+
+  filterComponents: function(components) {
+    return components.filter(function(comp) {
+      var isNameEmpty = comp.properties && comp.properties[0].value === "";
+      var hasCdwSupport = comp.meta_cdwSupport === 'true';
+
+      return hasCdwSupport && !isNameEmpty;
+    });
+  },
 
   postChange: function(componentName) {
     var components = cdfdd.dashboardData.components.rows;

@@ -1,4 +1,100 @@
 <h1>
+
+        Release Notes - Community Dashboard Editor - Version 15.06.30
+    </h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-397'>CDE-397</a>] -         It is possible to save a dashboard with no name
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-454'>CDE-454</a>] -         CDA datasources are created referencing the cda file&#39;s complete path
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-509'>CDE-509</a>] -         When using up and down arrows to navigate chart&#39;s advanced properties view doesn&#39;t scroll along with selected property
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-510'>CDE-510</a>] -         When using up and down arrows to navigate Components Panel it also scrolls the accordion
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-514'>CDE-514</a>] -         As a developers, when I&#39;m using the ExportPopupComponent, I don&#39;t get all the options on the &#39;Data/Chart Component to Export&#39; property
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-517'>CDE-517</a>] -         Sample CGG Component doesn&#39;t display any image
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-519'>CDE-519</a>] -         Review Olap Selector sample
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-520'>CDE-520</a>] -         Bullet Chart doesn&#39;t render all charts
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-521'>CDE-521</a>] -         Bullet Chart (requirejs) doesn&#39;t display charts
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-524'>CDE-524</a>] -         Minification order causes errors to appear because of missing semicolons in some javascripts statements
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-529'>CDE-529</a>] -         Opening component parameter popup does not block use of arrow keys to navigate properties
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-536'>CDE-536</a>] -         Fails to save a dashboard with the char &#39;$&#39; in the Title or Description
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-538'>CDE-538</a>] -         ExportPopupComponent fails to export PNG and SVG charts
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-542'>CDE-542</a>] -         When requiring a dashboard, using the getDashboard endpoint, inline resources and external resources are not being included.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-543'>CDE-543</a>] -         CSS external resources should be included using the css! requireJS plugin
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-550'>CDE-550</a>] -         Missing requireJS config for embedding CDE dashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-551'>CDE-551</a>] -         Creating a table with Sparkline column, it&#39;s tooltips are not well formatted
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-554'>CDE-554</a>] -         DuplicateComponent fails to duplicate the target HTML element&#39;s content
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-559'>CDE-559</a>] -         CCC - Bar Chart - Bars overflow when !stacked, !orthoAxisOriginIsZero and only positive values
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-563'>CDE-563</a>] -         CDE is not reading legacy Css resources
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-565'>CDE-565</a>] -         Japanese characters on chart title render as &quot;??&quot; when opening the dashboard
+</li>
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-287'>CDE-287</a>] -         Confirmation box without any previous changes
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-430'>CDE-430</a>] -         ExportPopupComponent - pressing down show list available options
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-435'>CDE-435</a>] -         Add ExportPopupComponent reference to CDE reference
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-450'>CDE-450</a>] -         TableComponent: Drag-and-drop on Column Headers/Types/Formats/Widths popups
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-488'>CDE-488</a>] -         Review Style loading mechanism
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-497'>CDE-497</a>] -         Custom component files should be bundled into a single file
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-504'>CDE-504</a>] -         As a user, I&#39;d like the dashboard title to use the available area between actions and tabs.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-505'>CDE-505</a>] -         As a user, when adding parameters to a component, I&#39;d like the dashboard parameter list to be sorted alphabetically.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-507'>CDE-507</a>] -         Table Component Column Type: Add hidden
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-516'>CDE-516</a>] -         CDE should save the .cdfde content sorted
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-527'>CDE-527</a>] -         As a user, I want bootstrap layout elements without an assigned xs span value to fall back to col-xs-12
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-528'>CDE-528</a>] -         As a user, I want bootstrap layout rows to only allow bootstrap layout column elements as children.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-534'>CDE-534</a>] -         As a dashboard developer I would like that CDE parameters popups were created with a empty entry already added
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-562'>CDE-562</a>] -         Create a requirejs loader plugin for loading dashboard modules
+</li>
+</ul>
+    
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-371'>CDE-371</a>] -         Add support for Require js in CDE
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-479'>CDE-479</a>] -         Include the &quot;unmanagedQueryComponent&quot; as a standard CDE component
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-515'>CDE-515</a>] -         Create a new component that is capable of requiring another dashboard
+</li>
+</ul>
+                                    
+
+<h1>
         Release Notes - Community Dashboard Editor - Version 15.04.16
     </h1>
 <h2>        Bug

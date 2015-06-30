@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.api;
 
@@ -47,6 +47,7 @@ import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/syncronizer" )
@@ -84,12 +85,15 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.WIDGET_PARAMETERS ) List<String> widgetParams,
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
+                            @FormParam( MethodParams.REQUIRE ) boolean require,
                             @Context HttpServletRequest request,
                             @Context HttpServletResponse response ) throws Exception {
 
     boolean isPreview = false;
 
     if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+
+      file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
 
       // check access to path folder
       String fileDir =
@@ -112,6 +116,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       HashMap<String, Object> params = new HashMap<String, Object>();
       params.put( MethodParams.FILE, file );
       params.put( MethodParams.WIDGET, String.valueOf( widget ) );
+      params.put( MethodParams.REQUIRE, String.valueOf( require ) );
       if ( !author.isEmpty() ) {
         params.put( MethodParams.AUTHOR, author );
       }
@@ -155,7 +160,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
 
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
-        if ( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
+        if( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
@@ -217,6 +222,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     private static final String WIDGET_NAME = "widgetName";
     private static final String WIDGET_PARAMETERS = "widgetParameters";
     private static final String DASHBOARD_STRUCTURE = "cdfstructure";
+    private static final String REQUIRE = "require";
   }
 
   @POST
@@ -232,7 +238,10 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     boolean isPreview = false;
 
-    if ( !file.isEmpty() && !file.equals( UNSAVED_FILE_PATH ) ) {
+    if ( !file.isEmpty() &&
+        !( file.equals( UNSAVED_FILE_PATH ) || Utils.getURLDecoded( file ).equals( UNSAVED_FILE_PATH ) ) ){
+
+      file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
 
       if ( StringUtils.isEmpty( title ) ) {
         title = FilenameUtils.getBaseName( file );
@@ -284,7 +293,7 @@ public class SyncronizerApi { //TODO: synchronizer?
   }
 
   //useful to mock message bundle when unit testing SyncronizerApi
-  protected String getMessage( String key ) {
+  protected String getMessage( String key ){
     return Messages.getString( key );
   }
 

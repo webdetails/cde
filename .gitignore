@@ -32,6 +32,7 @@ nbproject/private/
 
 .ant-targets-build.xml
 
+
 cde-core/bin
 cde-pentaho/bin
 cde-pentaho5/bin
@@ -46,4 +47,13 @@ cde-pentaho/test-lib
 cde-pentaho5/test-lib
 
 cde-core/node_modules
+cde-core/build-res/pentaho-js-build
+cde-core/js-lib
 npm-debug.log
+cde-pentaho5/build-res/module-scripts
+cde-pentaho5/build-res/pentaho-js-build
+cde-pentaho5/js-lib
+cde-pentaho5/node_modules
+pentaho-js-build.zip
+requireCfg.js
+requireCfg-raw.js

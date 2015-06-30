@@ -1,0 +1,284 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
+div.view-manager-component {
+  width: 180px;
+  padding: 3px;
+  color: #3e3938;
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  position: relative;
+}
+
+.no-svg div.container div.view-manager-component *,
+.no-svg div.view-manager-component *,
+div.view-manager-component * {
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+}
+
+.view-manager-component > .current-view {
+  font-size: 90%;
+  text-align: center;
+  margin-bottom: 2px;
+  padding: 6px 0;
+}
+
+.view-manager-component > .current-view .label{
+  font-weight: bold
+}
+
+.view-manager {
+  display: block;
+  position: absolute;
+  top: 29px;
+  left: 185px;
+  width: 180px;
+  z-index: 10000;
+  background-color: rgb(232, 241, 243);
+  padding: 4px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 2px solid rgb(230, 122, 44);
+  box-shadow: rgba(0, 0, 0, 0.292969) 0px 0px 10px 5px;
+}
+
+/***************
+ * BIG BUTTONS *
+ ***************/
+
+.view-manager-component .big-button {
+  background-image: url('img/gray-gradient.png');
+  background-repeat: repeat-x;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 2px;
+
+  color: white;
+  font-weight: bold;
+  line-height: 22px;
+  text-align: center;
+
+  height: 22px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.view-manager-component .big-button.active {
+  background-image: url('img/orange-gradient.png');
+}
+
+/********
+ * TABS *
+ ********/
+
+.view-manager .tabs {
+ /* border-bottom: 1px solid black;*/
+  border-radius: 4px 4px 0 0;
+  padding-bottom: 6px;
+  background-image: url('img/gradient.png');
+  background-repeat: repeat-x;
+  background-color: #e8f1f3;
+  background-position: bottom;
+}
+
+.view-manager .tab {
+  display: inline-block;
+  /* TODO: re-enable when the subscription panel is activated */
+  /* width: 58px; */
+  width: 88px;
+  margin: 0;
+  padding: 8px 0px;
+  background: #cbe0e5;
+  text-align: center;
+  font-size: 95%;
+  cursor: pointer;
+  border-top: 1px solid rgba(0,0,0,0.03);
+}
+
+.view-manager .tab:first-child {
+  border-radius: 2px 0 0 0;
+  border-left: 1px solid rgba(0,0,0,0.03);
+}
+
+.view-manager .tab:last-child {
+  border-radius: 0 2px 0 0;
+  border-right: 1px solid rgba(0,0,0,0.03);
+}
+
+.view-manager .tab:not(:last-child):not(:first-child) {
+  width: 62px;
+}
+
+.view-manager .tab:not(:last-child) {
+  /* TODO: re-enable when the subscription panel is activated */
+  /*border-right: 1px solid white; */
+  border-right: 2px solid white;
+}
+
+.view-manager .tab.selected:first-child {
+  border-right: none;
+  padding-right: 6px;
+  margin-right: -4px;
+  background-image: url("img/gradient_right.png");
+  background-repeat: repeat-y;
+  background-position: right;
+}
+
+.view-manager .tab.selected:last-child {
+  padding-left: 6px;
+  margin-left: -6px;
+  background-image: url("img/gradient_left.png");
+  background-repeat: repeat-y;
+  background-position: left;
+}
+
+.view-manager .tab.selected:not(:first-child):not(:last-child) {
+  border-right: none;
+  padding-right: 6px;
+  margin-right: -4px;
+  padding-left: 6px;
+  margin-left: -6px;
+  background-image: url("img/gradient_left.png"), url("img/gradient_right.png");
+  background-repeat: repeat-y, repeat-y;
+  background-position: left, right;
+}
+
+.view-manager .tab.selected {
+  background: #e8f1f3;
+  color: #0069b9;
+  font-weight: bold;
+}
+
+.view-manager .tab-contents {
+  background: #e8f1f3;
+  border-radius: 0 0 4px 4px;
+  padding: 3px;
+  padding-top:0px;
+}
+
+/***********
+ * HEADERS *
+ ***********/
+
+.view-manager .list-panel .total-views,
+.view-manager .save-panel .current-view {
+  padding: 8px 4px;
+  border-bottom: 1px solid #d0dfe3;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+.view-manager .list-panel .total-views .label,
+.view-manager .save-panel .current-view .label {
+  color: #0069b9;
+}
+
+.view-manager .list-panel .total-views .value,
+.view-manager .save-panel .current-view .value {
+  float: right;
+  font-weight: bold;
+}
+
+/*************
+ * VIEW LIST *
+ *************/
+
+.view-manager .list-panel .views .view-item {
+  padding: 8px 4px;
+  border-bottom: 1px solid #d0dfe3;
+  height: 17px;
+}
+
+/* TODO: Remove this when Dashboard manager goes live */
+.view-manager .list-panel .views .view-item:last-child {
+  border-bottom: none;
+}
+
+.view-manager .list-panel .views .view-item .name {
+  cursor: pointer;
+  line-height: 17px;
+  color: #3e3938;
+  text-decoration: none;
+  font-size: 95%;
+  font-weight: bold;
+}
+
+.view-manager .list-panel .views .view-item .name:hover {
+  color: #0069b9;
+}
+
+.view-manager .list-panel .views .view-item .delete {
+  width: 17px;
+  height: 17px;
+  float: right;
+  background: url('img/trash.png');
+  cursor: pointer;
+}
+
+.view-manager .list-panel .view-all {
+  padding: 10px 0;
+  /* TODO: Remove this when Dashboard manager goes live */
+  display: none;
+}
+
+.view-manager .list-panel .view-all span {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.view-manager .list-panel .view-all .label {
+  font-size: 120%;
+}
+
+.view-manager .list-panel .view-all .description {
+  font-size: 95%;
+}
+
+/**************
+ * SAVE PANEL *
+ **************/
+
+.view-manager .save-panel .save-properties .label {
+  font-size: 90%;
+  font-weight: bold;
+  margin-left: 7px;
+}
+
+.view-manager .save-panel input, 
+.view-manager .save-panel textarea {
+  width: 164px;
+  padding: 5px;
+  border-radius: 3px;
+  border: none;
+  margin: 4px 0;
+  background: white;
+}
+
+.view-manager .save-panel textarea {
+  resize: none;
+  height: 100px;
+}
+
+.view-manager .save-panel .big-button:first-child {
+  margin-right: 11px;
+}
+
+.view-manager .save-panel .big-button {
+  width: 78px;
+  display:inline-block;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Community Dashboard Designer</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+
+
+  <link rel="stylesheet" type="text/css" href="template.css"/>
+  <!-- change your server url here -->
+  <script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"></script>
+</head>
+
+<body>
+
+<div class="webdetailsWrapper">
+  <div class="webdetailsPanelsContainerWrapper">
+    <div class="webdetailsPanelsContainer">
+      <div class="panelContainer selectedPanel">
+        <div class="webdetailsPanelContainerLeft"></div>
+        <div class="webdetailsPanelContainerCenter">
+          <div id="content" class="webdetailsMainContent">
+            <div class="shadow">
+
+              <div class="contents">
+
+                <h2>CDE Embedded Example</h2>
+
+                <h3>Description</h3>
+
+                <p>A simple html page which will load the CDE require configs from a Pentaho server and render a new Dashboard with a Select Component and a custom module.</p>
+
+                <h3>Configurations</h3>
+                <p>The only real configuration needed is to include the embed file, done by simply calling an endpoint CDE provides</p>
+                <dl class="documentation">
+
+                  <dt>script tag</dt>
+                  <dd>&lt;script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</dd>
+
+                </dl>
+
+                <h3>Sample</h3>
+
+                <div id="example">
+                  <div id="sample">
+                    <div id="sampleObject"></div>
+                    <div id="myModuleText"></div>
+                    <div id="content1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+              require([
+                'cdf/Dashboard.Blueprint',
+                'cdf/components/SelectComponent',
+                'myModule',
+                'cdf/Logger',
+                'dash!/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.wcdf'
+              ], function(Dashboard, SelectComponent, myModule, Logger, SampleDash) {
+
+                Logger.log("MODULE getString() " + myModule.getString());
+                myModule.writeOnElement("#myModuleText", "Text written by a custom module defined in myModule.js");
+
+                var myDashboard = new Dashboard();
+
+                myDashboard.addParameter("region", "1");
+
+                var selectComponent = new SelectComponent({
+                  name: "regionSelector",
+                  type: "select",
+                  parameters: [],
+                  valuesArray: [["1", "Lisbon"], ["2", "Dusseldorf"]],
+                  parameter: "region",
+                  valueAsId: false,
+                  htmlObject: "sampleObject",
+                  executeAtStart: true,
+                  postChange: function() {
+                    alert("You chose: " + myDashboard.getParameterValue(this.parameter));
+                  }
+                });
+
+                myDashboard.addComponent(selectComponent);
+                myDashboard.init();
+
+                var sampleDash = new SampleDash("content1");
+                sampleDash.render();
+              });
+            </script>
+
+          </div>
+        </div>
+        <div class="webdetailsPanelContainerRight">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

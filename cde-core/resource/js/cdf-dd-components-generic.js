@@ -1,13 +1,13 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
  * this file except in compliance with the license. If you need a copy of the license,
- * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
  * Software distributed under the Mozilla Public License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
@@ -139,6 +139,7 @@ var MqlQueryRenderer = PromptRenderer.extend({
     this.wizard = "MQL_EDITOR";
   }
 });
+
 var XPathQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -148,6 +149,7 @@ var XPathQueryRenderer = PromptRenderer.extend({
     this.wizard = "XPATH_EDITOR";
   }
 });
+
 var ScriptableQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -167,6 +169,7 @@ var JsonScriptableQueryRenderer = PromptRenderer.extend({
     this.wizard = "JSON_SCRIPTABLE_EDITOR";
   }
 });
+
 var DefaultQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -206,13 +209,13 @@ var ValuesArrayRenderer = CellRenderer.extend({
     _editArea.click(function() {
 
       var arrayValue = value;
-      var content = $('\n' +
+      var content = $(
           '<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\n' +
           ' <div class="' + myself.cssPrefix + '"></div>\n' +
           ' <input class="' + myself.cssPrefix + 'AddButton" type="button" value="Add"></input>\n' +
           '</div>');
 
-      var vals = JSON.parse(arrayValue);
+      var vals = myself.getInitialValue(arrayValue);
 
       for(var i = 0; i < vals.length; i++) {
         myself.addParameter(i, vals[i], content);
@@ -239,55 +242,95 @@ var ValuesArrayRenderer = CellRenderer.extend({
           }
         },
 
-        loaded: function() { //button bindings
-          if(myself.cssPrefix == "StringList") {
-            $('.popup').css("width", "630px");//Since some objects extend from this one this is just to confirm we're resizing the right popup.
-          }
-          $('.' + myself.cssPrefix + 'AddButton').bind('click', function() {
-            if(myself.multiDimensionArray) {
-              myself.addParameter(index, ["", "", ""], $("#" + myself.cssPrefix));
+        loaded: function() {
+            //button bindings
+            myself.onPopupLoad();
+            if(myself.cssPrefix == "StringList") {
+              $('.popup').css("width", "630px");//Since some objects extend from this one this is just to confirm we're resizing the right popup.
             }
-            else {
-              myself.addParameter(index, "", $("#" + myself.cssPrefix));
-            }
-            $("#remove_button_" + index).bind('click', myself.removeParameter);
-            $("#parameter_button_" + index).bind('click', myself.addParameterValue);
-            myself.addAutoComplete(index);
-            index++;
-          });
-          $('.' + myself.cssPrefix + 'Remove').bind('click', myself.removeParameter);
-          $('.' + myself.cssPrefix + 'Parameter').bind('click', myself.addParameterValue);
+            var addParamVal = _.bind(myself.addParameterValue, myself);
+            $('.' + myself.cssPrefix + 'AddButton').bind('click', function() {
+              if(myself.multiDimensionArray) {
+                myself.addParameter(index, ["", "", ""], $("#" + myself.cssPrefix));
+              }
+              else {
+                myself.addParameter(index, "", $("#" + myself.cssPrefix));
+              }
+              $("#remove_button_" + index).bind('click', myself.removeParameter);
+              $("#parameter_button_" + index).bind('click', function(){addParamVal(this.id);});
+              myself.addAutoComplete(index);
+              index++;
+            });
+            $('.' + myself.cssPrefix + 'Remove').bind('click', myself.removeParameter);
+            $('.' + myself.cssPrefix + 'Parameter').bind('click', function(){addParamVal(this.id);});
         },
 
         submit: function(v, m, f) {
           var array = [];
-          for(var i = 0; i < index; i++) {
-            var paramVal = myself.getParameterValues(i);
-            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push(paramVal); //don't attempt to add deleted lines
-          }
+          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
+            var index = $(this).attr('id').replace('parameters_', '');
+            var paramVal = myself.getParameterValues(index);
+            if(!myself.isParameterEmpty(paramVal)) {
+              array.push(paramVal); //don't attempt to add deleted lines
+            }
+          });
+
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
       });
 
-      for(var i = 0; i < vals.length; i++) {
+      for(i = 0; i < vals.length; i++) {
         myself.addAutoComplete(i);
+        myself.addFocusEvent(i);
       }
 
+      $('.' + myself.cssPrefix + 'Container #arg_0').focus();
+
+      if(!myself.multiDimensionArray) {
+        myself.dragAndDrop();
+      }
     });
 
     _editArea.appendTo(placeholder);
 
   },
 
+  onPopupLoad: function() {
+    //custom renderers may want to do something on popup load, this is here just as a hook 
+  },
+
   validate: function(settings, original) {
     return true;
   },
 
+  getInitialValue: function(value) {
+    var initialValue = JSON.parse(value);
+
+    if(!initialValue.length) {
+      initialValue = this.multiDimensionArray ? [["", "", ""]] : [""];
+    }
+
+    return initialValue;
+  },
+
+  isParameterEmpty: function(param) {
+    if(param == null || _.isEmpty(param)) {
+      return true;
+    }
+
+    if(this.multiDimensionArray) {
+      return  _.isEmpty(param[0]) && _.isEmpty(param[1]);
+    }
+    
+    return false;
+  },
+
   /**
    * @param i line number
-   * @param values {Array}
+   * @param values {Array|String}
+   * @param container
    **/
-  addParameter: function(i, values, container) {//TODO: still not done
+  addParameter: function(i, values, container) { //TODO: still not done
     if(this.multiDimensionArray) {
       if(this.hasTypedValues) {
         var val = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
@@ -298,6 +341,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       }
     } else {
       this.addParameters(i, values, "null", container);
+      this.addFocusEvent(i);
     }
   },
 
@@ -312,17 +356,24 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
     var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
 
-    var row =
-        '<div id="parameters_' + i + '" >\n' +
-        argInput +
-        (this.multiDimensionArray ?
-            ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
-            removeButton) +
-        '</div>\n';
+    var row = this.getParameterRow(i, argInput, valInput, parameterButton, removeButton);
 
     var subContainer = container.find('.' + this.cssPrefix);
     subContainer.append(row);
     subContainer.find('#parameters_' + i + ' input:eq(0)').focus();
+  },
+
+  addFocusEvent: function(index) {
+    //default does nothing
+  },
+
+  getParameterRow: function(i, argInput, valInput, parameterButton, removeButton){
+    return '<div id="parameters_' + i + '" >\n' +
+              argInput +
+              (this.multiDimensionArray ?
+                  ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
+                  removeButton) +
+              '</div>\n';
   },
 
   addTypedParameters: function(i, arg, val, type, container) {//ToDo: should be refactored with addParameters, currently not used
@@ -339,7 +390,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
     var typeSelect = this.getTypeSelector('Type', type, 'type_' + i);
     var row =
-        '<did id="parameters_' + i + '" >\n' +
+        '<div id="parameters_' + i + '" >\n' +
         argInput +
         '<div class="' + this.cssPrefix + 'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix + 'Types">' + typeSelect + parameterButton + removeButton + '<br /></div>\n';
     container.find('.' + this.cssPrefix).append(row);
@@ -373,6 +424,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getParameterButton: function(i) {
     return '<input id="parameter_button_' + i + '" class="' + this.cssPrefix + 'Parameter" type="button" value="..."></input>\n';
   },
+
   getRemoveButton: function(i) {
     return '<input id="remove_button_' + i + '" class="' + this.cssPrefix + 'Remove" type="button" value="-" ></input>\n';
   },
@@ -400,15 +452,15 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
   //parameters field generation (end)
 
-
   removeParameter: function() {
     $("#" + this.id.replace("remove_button_", "parameters_")).remove();
   },
 
-  addParameterValue: function() {
-    var id = this.id;
+  addParameterValue: function(id) {
     var content = '<div id="parameterList" class="StringListParameterContainer">';
-    var filters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
+      return filter.properties[0].value;
+    });
     var isWidget = cdfdd.getDashboardWcdf().widget;
 
     if(filters.length == 0) {
@@ -474,8 +526,16 @@ var ValuesArrayRenderer = CellRenderer.extend({
     add($.grep(results, function(elt, i) {
       return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
     }));
-  }
+  },
 
+  dragAndDrop: function(index) {
+    var myself = this;
+    $('div.popupcontainer .' + this.cssPrefix).sortable({
+      axis: 'y',
+      cursor: 'auto',
+      placeholder: 'popupSortableHolder'
+    });
+  }
 }, {
   setParameterValue: function(id, value) {
     $("#" + id.replace("parameter_button_", "val_")).val(value);
@@ -502,12 +562,12 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
     _editArea.click(function() {
 
       var arrayValue = value;
-      var content = $("\n" +
+      var content = $(
           "<div id='" + myself.cssPrefix + "' class='" + myself.cssPrefix + "Container'>" +
           "  <div class='" + myself.cssPrefix + "'></div>\n" +
           "    <input class='" + myself.cssPrefix + "AddButton' type='button' value='Add'></input>");
 
-      var vals = JSON.parse(value);
+      var vals = myself.getInitialValue(value);
       cdfdd.arrayValue = vals;
       var index = vals.length;
 
@@ -538,7 +598,6 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
         loaded: function() { //button bindings
           $('.popup').css("width", "630px");
-
           $('.' + myself.cssPrefix + 'AddButton').click(function() {
             myself.addParameters(index, "", "", $("#" + myself.cssPrefix));
 
@@ -560,10 +619,15 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
         submit: function(v, m, f) {
           var array = [];
-          for(var i = 0; i < index; i++) {
-            var paramVal = myself.getParameterValues(i);
-            if(paramVal != null && paramVal.length > 0 && paramVal[0] != null) array.push(paramVal); //don't attempt to add deleted lines
-          }
+
+          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
+            var index = $(this).attr('id').replace('parameters_', '');
+            var paramVal = myself.getParameterValues(index);
+            if(!myself.isParameterEmpty(paramVal)) {
+              array.push(paramVal); //don't attempt to add deleted lines
+            }
+          });
+
           arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
         }
       });
@@ -607,8 +671,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
     var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
     var valDiv = this.getValueDiv(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
-
-    var row = "<div id='parameters_" + i + "'>\n" + argInput +
+    var row = "<div id='parameters_" + i + "' class='" + this.cssPrefix + "ParameterHolder'>\n" + argInput +
         "<div class='" + this.cssPrefix + "Values'>" + valDiv + parameterButton + removeButton + "</div><br />" +
         "</div>\n";
 
@@ -664,6 +727,41 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
     this.base(tableManager);
     this.logger = new Logger("ArrayRenderer");
     this.logger.debug("Creating new ArrayRenderer");
+  },
+
+  getTextInput: function(value, i) {
+    return '<input  id="arg_' + i + '" class="' + this.cssPrefix + 'Text" type="text" value="' + value + '"></input>';
+  },
+
+  addParameters: function(i, arg, val, container) {
+
+    if(val) {
+      val = val.replace(/["]/g, '&quot;');
+    }//for output only, will come back ok
+
+    var myself = this;
+    var removeButton = this.getRemoveButton(i);
+    var argInput = this.getTextInput(arg, i);
+
+    var row = '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">' +
+        removeButton + argInput + '<div class="' + this.cssPrefix + 'DragIcon"><span/></div></div>\n';
+
+    var subContainer = container.find('.' + this.cssPrefix);
+    subContainer.append(row);
+  },
+
+  addFocusEvent: function(index) {
+    var parameterInput = $('.' + this.cssPrefix + 'Container #arg_' + index);
+    var myself = this;
+    parameterInput
+        .focus(function(e) {
+          $(this).parent().addClass(myself.cssPrefix + 'Focus');
+        })
+        .blur(function(e) {
+          $(this).parent().removeClass(myself.cssPrefix + 'Focus');
+        });
+
+    parameterInput.focus();
   }
 });
 
@@ -672,7 +770,8 @@ var ColTypesArrayRender = ArrayRenderer.extend({
     var data = this.selectData || {};
     _.extend(data, {
       string: 'string',
-      numeric: 'numeric'
+      numeric: 'numeric',
+      hidden: 'hidden'
     });
     return data;
   }
@@ -681,7 +780,6 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 var IndexArrayRenderer = ArrayRenderer.extend({
   argTitle: 'Index'
 });
-
 
 //arg, value, no param button, //TODO: own css
 var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
@@ -869,4 +967,126 @@ var JndiRenderer = SelectRenderer.extend({
       }
     });
   }
+});
+
+var ParameterMappingRenderer = ValuesArrayRenderer.extend({
+  argTitle: '',
+  valTitle: '',
+  onPopupLoad: function() {
+    var myself = this;
+    var getParametersUrl = wd.helpers.editor.getDashboardParametersUrl();
+    var tableData = this.tableManager.getTableModel().data;
+    for (var i = 0; i < tableData.length; i++) {
+      if (tableData[i].name == "dashboardPath") {
+        this.dashboardPath = tableData[i].value;
+        break;
+      }
+    }
+    $.ajax({
+      async: true,
+      method: "get",
+      dataType: "json",
+      url: getParametersUrl + this.dashboardPath,
+      success: function(data) {
+        myself.otherDashboardParameters = data ? data.parameters || [] : [];
+      },
+      error: function(){
+        myself.otherDashboardParameters = [];
+      }
+    });
+  }, 
+
+  constructor: function(tableManager) {
+    this.base(tableManager);
+    this.logger = new Logger("ParameterMappingRenderer");
+    this.logger.debug("Creating new ParameterMappingRenderer");
+  },
+
+  addParameterValue: function(id) {
+    var leftContent = '<div id="parameterListLeft" class="StringListParameterContainer" style="float:left;">';
+    var rightContent = '<div id="parameterListRight" class="StringListParameterContainer" style="float:left;">';
+
+    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
+      return filter.properties[0].value;
+    });
+
+    rightContent += '<p>Map to other dashboard:</p><ul class="StringListParameter">';
+    if (this.otherDashboardParameters.length == 0) {
+      rightContent += '<li><div><p>No Parameters!<p></div></li>';
+    } else {
+      for (var i = 0; i < this.otherDashboardParameters.length; i++) {
+        rightContent += '<li><div onClick="ParameterMappingRenderer.preRegisterValue(this, false, \'' + this.otherDashboardParameters[i] + '\')">' + this.otherDashboardParameters[i] + '</div></li>';
+      }
+    }
+    rightContent += '</ul></div>';
+
+    leftContent += '<p>Map from this dashboard:</p><ul class="StringListParameter">';
+    if(filters.length == 0) {
+      leftContent += '<li><div><p>No Parameters!<p></div></li>';
+    } else {
+      $.each(filters, function(i, filter) {
+        var value = filter.properties[0].value;
+          leftContent += '<li><div onClick="ParameterMappingRenderer.preRegisterValue( this, true, \'' + value + '\')">' + value + '</div></li>';
+        });
+    }
+    leftContent += '</ul></div>';
+
+    var content = leftContent + rightContent;
+
+    cdfdd.impromptu = $.prompt(content, {
+      buttons: {
+        Ok: true,
+        Cancel: false
+      },
+      prefix: 'popup',
+      focus: 1,
+      submit: _.bind(function(e,v,m,f){
+        if (e) {
+          $("#" + id.replace("parameter_button_", "arg_")).val(ParameterMappingRenderer.thisParam || "");
+          $("#" + id.replace("parameter_button_", "val_")).val(ParameterMappingRenderer.otherParam || "");
+        }
+        ParameterMappingRenderer.thisParam = undefined;
+        ParameterMappingRenderer.otherParam = undefined;
+      }, this)
+    });
+    
+    
+  },
+
+  getParameterRow: function(i, argInput, valInput, parameterButton, removeButton) {
+    var parameterRow = '<div id="parameters_' + i + '" >\n' + argInput +
+              (this.multiDimensionArray ?
+                ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
+                removeButton) + '</div>\n';
+
+    if ( ($("#StringList").length > 0 && $("#paramMappHeader").length === 0) || i === 0 ) {
+      return '<div id="paramMappHeader">' +
+              '<div class="StringListArgs">Map from this dashboard</div>' +
+              '<div class="StringListValues">Map to other dashboard</div>' +
+            '</div>' + parameterRow;
+    }
+    return parameterRow;
+  },
+
+  removeParameter: function() {
+    var paramMappTitle = $("#paramMappHeader");
+    $("#" + this.id.replace("remove_button_", "parameters_")).remove();
+    if(paramMappTitle && paramMappTitle.siblings().length === 0) {
+      paramMappTitle.remove();
+    }
+  }
+},{
+    preRegisterValue: function(elem, left, val) {
+      if (left) {
+        ParameterMappingRenderer.thisParam = val;
+      } else {
+        ParameterMappingRenderer.otherParam = val;
+      }
+      $(elem)
+        .parentsUntil(".StringListParameter")
+          .parent()
+            .find("li div")
+              .removeClass('selected');
+      $(elem).addClass('selected');
+    }
 });

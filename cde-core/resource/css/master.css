@@ -62,31 +62,27 @@ a {
     color: #555;
 }
 
-.headerButton{
-  -moz-transition: all 0.5s ease 0s;
+.headerButton {
+  float: left;
   color: #222222;
   cursor: pointer;
   font-size: 13px;
   font-style: normal;
   font-weight: 100;
   letter-spacing: 0.07em;
-  line-height: 20px;
-  margin-top: 9px;
   text-align: center;
   text-decoration: none;
-  vertical-align: middle;
   font-family: 'Open Sans', sans-serif;
-  position: relative;
   padding-left: 10px;
-  display: inline-block;
   transition: 0.3s;
+  -moz-transition: all 0.5s ease 0s;
 }
 
-.headerButton a:link,.headerButton  a:visited{
+.headerButton a:link,.headerButton  a:visited {
   color: #222;
 }
 
-.headerButton a:hover, .headerButton a:active{
+.headerButton a:hover, .headerButton a:active {
   color:#0098C4;
   transition: 0.3s;
 }
@@ -111,9 +107,7 @@ li a {
 }
 
 div.outside {
-
-  padding:0px;
-  
+  padding:0;
 
   background: #f2f2f2;
   height: 100%;
@@ -209,6 +203,7 @@ div.cdfdd-toolbar-logo {
 
 div.cdfdd-toolbar {
   text-align: center;
+  line-height: 40px;
   height: 40px;
   position: fixed;
   top: 0;
@@ -220,37 +215,34 @@ div.cdfdd-toolbar {
   display: inline;
   max-height: 40px;
   min-width: 950px;
-}
 
-div.cdfdd-main, div.cdfdd-title-container,
-div.cdfdd-title, div.cdfdd-title-status {
-  float: left;
-}
-
-div.cdfdd-modes-container, div.cdfdd-modes,
-div.cdfdd-preview {
-  float: right;
-}
-
-div.cdfdd-main, div.cdfdd-title, div.cdfdd-title-status {
-  margin-top:9px;
+  box-sizing: border-box;
+  padding-left: 440px;
+  padding-right: 295px;
 }
 
 div.cdfdd-main {
-  width: 335px;
-}
+  position: absolute;
+  top: 0;
+  left: 0;
 
-div.cdfdd-title-container {
-  margin: 0 25px;
-  padding-left: 25px;
-  border-left: 1px solid #dddddd;
+  width: 335px;
   height: 100%;
 }
 
 div.cdfdd-title {
+  box-sizing: border-box;
+  position: relative;
+  float: left;
+
+  padding-left: 25px;
+  padding-right: 10px;
+  border-left: 1px solid #dddddd;
+
   font-family: 'Open Sans Ligh', sans-serif;
 
-  max-width: 190px;
+  max-width: 100%;
+  height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -262,16 +254,29 @@ div.cdfdd-title, div.cdfdd-title-status:after {
 }
 
 div.cdfdd-title-status.dirtyStatus:after {
+  position: absolute;
+  top: -2px;
+  right: 0;
+
   font-family: 'Open Sans Semibold', sans-serif;
   content: '*';
 }
 
 div.cdfdd-modes-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+
   min-width:260px;
   height: 100%;
 }
 
+div.cdfdd-modes {
+  float: left;
+}
+
 div.cdfdd-preview {
+  float: right;
   margin-left: 40px;
 }
 
@@ -1632,13 +1637,6 @@ h6 {font-size:1em;font-weight:bold;}
     min-width: 960px;
 }
 
-/*.header {
-  background: url(../images/CDE_Header_Background.png);
-  width: 100%;
-  height: 106px;
-  font: Helvetica, Arial, sans-serif;
-}*/
-
 .headerLogo {
   float: left;  
   height: 106px;
@@ -1646,10 +1644,10 @@ h6 {font-size:1em;font-weight:bold;}
 }
 
 .headerLinks {
-  position: relative;
-  top: -17px;
+  float: left;
   text-align: left;
   min-width: 350px;
+  height: 100%;
 }
 
 .headerLinks .buttonImage {
@@ -1708,11 +1706,11 @@ div.popup {
   max-width: 75%;
   max-height: 80%;
   min-width: 10%;
-  overflow-x: auto;
+  overflow: visible;
   transition: 0.3s;
 }
 
-.popupfade{
+.popupfade {
   opacity: 0.6;
   background: #fff;
 }
@@ -1812,7 +1810,9 @@ div.popup .popupclose:hover{
   background-color: #bbb;
 }
 
-div.popup .popupmessage{ 
+div.popup .popupmessage {
+  min-width: 160px;
+  min-height: 25px;
   padding: 10px; 
   line-height: 20px; 
   color: #555;

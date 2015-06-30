@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 // Base class and general utils
 if(!Array.prototype.map) {
@@ -95,7 +95,6 @@ var CDFDD = Base.extend({
 
     // Show layout panel
     this.layout.switchTo();
-    this.selectedPanelId = LayoutPanel.MAIN_PANEL;
 
     //// Enable alert when leaving page
     //this.setExitNotification(true);
@@ -103,7 +102,9 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
-        if($(e.target).is('input, textarea') || e.ctrlKey) {
+        var target = $(e.target);
+        var hasPopup = (target.find('.popup:visible').length || target.find('.jqmWindow:visible').length) > 0 ;
+        if(target.is('input, select, textarea') || hasPopup || e.ctrlKey) {
           return;
         }
 
@@ -671,13 +672,14 @@ var CDFDD = Base.extend({
   },
 
   newDashboard: function() {
-    var myself = this;
-    var content = '' +
-        '<h2>New Dashboard</h2>\n' +
-        '<hr/>Are you sure you want to start a new dashboard?<br/>\n' +
-        '<span class="description">Unsaved changes will be lost.</span>';
+    var url = location.origin + wd.cde.endpoints.getNewDashboardUrl() + '?ts=' + (new Date()).getTime();
 
-    $.prompt(content, {
+    if(!$("div.cdfdd-title-status").hasClass("dirtyStatus") || Commands.executedCommands.length === 0) {
+      location.assign(url);
+      return;
+    }
+
+    $.prompt('<h2>New Dashboard</h2><hr/>Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
         Ok: true,
         Cancel: false
@@ -685,9 +687,7 @@ var CDFDD = Base.extend({
       prefix: "popup",
       callback: function(v, m, f) {
         if(v) {
-          var path = wd.cde.endpoints.getNewDashboardUrl();
-          var timestamp = (new Date()).getTime();
-          location.assign(location.origin + path + '?ts=' + timestamp);
+          location.assign(url);
         }
       }
     });
@@ -797,9 +797,11 @@ var CDFDD = Base.extend({
       return;
     }
 
-    var fullPath = CDFDDFileName.split("/");
+    var separator = CDFDDFileName.indexOf( '%2F' ) != -1 ? '%2F' /* separator in a uri encoded path */ : '/' /*  default non encoded path */ ;
+
+    var fullPath = CDFDDFileName.split( separator );
     var solution = fullPath[1];
-    var path = fullPath.slice(2, fullPath.length - 1).join("/");
+    var path = fullPath.slice(2, fullPath.length - 1).join( separator );
     var file = fullPath[fullPath.length - 1].replace(".cdfde", "_tmp.wcdf");
 
     this.logger.info("Saving temporary dashboard...");
@@ -820,7 +822,13 @@ var CDFDD = Base.extend({
   },
 
   reload: function() {
-    this.logger.warn("Reloading dashboard... ");
+    var self = this;
+
+    if(!$("div.cdfdd-title-status").hasClass("dirtyStatus") || Commands.executedCommands.length === 0) {
+      self.logger.warn("Reloading dashboard... ");
+      window.location.reload();
+      return;
+    }
 
     $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>', {
       buttons: {
@@ -829,7 +837,10 @@ var CDFDD = Base.extend({
       },
       prefix: "popup",
       callback: function(v, m, f) {
-        if(v) window.location.reload();
+        if(v) {
+          self.logger.warn("Reloading dashboard... ");
+          window.location.reload();
+        }
       }
     });
   },
@@ -880,10 +891,12 @@ var CDFDD = Base.extend({
         content;
 
     settingsData.styles = [];
+    this.styles = SettingsHelper.getStyles(wcdf, this);
+    var selectedStyle = SettingsHelper.getSelectedStyle(wcdf);
     _.each(this.styles, function(obj) {
       settingsData.styles.push({
         style: obj,
-        selected: wcdf.style == obj
+        selected: selectedStyle == obj
       });
     });
     settingsData.renderers = [];
@@ -905,6 +918,9 @@ var CDFDD = Base.extend({
             selected: _.contains(currentParams, val)
           };
         });
+
+    var extraOptions = SettingsHelper.getExtraPromptContent();
+        
     content = '' +
         '<span>' +
         ' <h2>Settings:</h2>' +
@@ -939,6 +955,7 @@ var CDFDD = Base.extend({
         '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
         '{{/renderers}}' +
         '</select>' +
+        extraOptions +
         '{{#widget}}' +
         '<span>' +
         '  <br>' +
@@ -961,18 +978,21 @@ var CDFDD = Base.extend({
         Cancel: false
       },
       prefix: "popup",
-      submit: function() {
-        wcdf.title = $("#titleInput").val();
-        wcdf.author = $("#authorInput").val();
-        wcdf.description = $("#descriptionInput").val();
-        wcdf.style = $("#styleInput").val();
-        wcdf.widgetName = $("#widgetNameInput").val();
-        wcdf.rendererType = $("#rendererInput").val();
-        wcdf.widgetParameters = [];
-        $("#widgetParameters input[type='checkbox']:checked")
-            .each(function(i, e) {
-              wcdf.widgetParameters.push(e.value);
-            });
+      submit: function(save) {
+        if (save) {
+          wcdf.title = $("#titleInput").val();
+          wcdf.author = $("#authorInput").val();
+          wcdf.description = $("#descriptionInput").val();
+          wcdf.style = $("#styleInput").val();
+          wcdf.widgetName = $("#widgetNameInput").val();
+          wcdf.rendererType = $("#rendererInput").val();
+          wcdf.widgetParameters = [];
+          $("#widgetParameters input[type='checkbox']:checked")
+              .each(function(i, e) {
+                wcdf.widgetParameters.push(e.value);
+              });
+          SettingsHelper.callExtraContentSubmit(myself, wcdf);
+        }
       },
       callback: function(v, m, f) {
         if(v) {
@@ -992,6 +1012,14 @@ var CDFDD = Base.extend({
                 validInputs = false;
               } else {
                 wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
+
+                if(wcdf.widgetName.length == 0) {
+
+                  $.prompt('No widget name provided. Unable to use the title, too many invalid characters.', {
+                    prefix: "popup"
+                  });
+                  validInputs = false;
+                }
               }
             }
           }
@@ -1132,76 +1160,101 @@ var CDFDD = Base.extend({
             return (field != null && field != undefined && field != "");
           }
 
-          /*In case of Dashboards
-           the propper means will be used
+          // validation flag
+          var validationFlag = true,
+              validationMsg = '';
+
+          // remove leading and trailing white spaces
+          selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
+
+          // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
+          // TODO: use webcontext when it becomes available, include the colon char
+          if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
+
+            validationMsg += '<br>Please insert a valid file name.';
+            validationFlag = false;
+
+          } else if(!/(\.wcdf)$/.test(selectedFile)) {
+
+            // append file extension
+            selectedFile += ".wcdf";
+          }
+
+          /**
+           * Save as Dashboard
            */
           if($('input[name=saveAsRadio]:checked').val() == "dashboard") {
 
-            selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
 
-            if(selectedFile.indexOf(".") != -1 && (selectedFile.length < 5 || selectedFile.lastIndexOf(".wcdf") != selectedFile.length - 5)) {
-              $.prompt('Invalid file extension. Must be .wcdf', {
-                prefix: "popup"
-              });
-            } else if(selectedFolder.length == 0) {
-              $.prompt('Please choose destination folder.', {
-                prefix: "popup"
-              });
-            } else if(selectedFile.length == 0) {
-              $.prompt('Please enter the file name.', {
-                prefix: "popup"
-              });
+            // Validate Folder Name
+            if(selectedFolder.length == 0) {
+
+              validationMsg += '<br>Please choose destination folder.';
+              validationFlag = false;
             }
 
-            if(selectedFile.indexOf(".wcdf") == -1) { selectedFile += ".wcdf"; }
+            if(validationFlag) {
 
-            CDFDDFileName = selectedFolder + selectedFile;
-            cdfdd.dashboardData.filename = CDFDDFileName;
-            var stripArgs = {
-              needsReload: false
-            };
+              CDFDDFileName = selectedFolder + selectedFile;
+              cdfdd.dashboardData.filename = CDFDDFileName;
+              var stripArgs = {
+                needsReload: false
+              };
 
-            var saveAsParams = {
-              operation: "saveas",
-              file: selectedFolder + selectedFile,
-              title: selectedTitle,
-              description: selectedDescription,
-              //cdfstructure: JSON.stringify(cdfdd.dashboardData, "", 1) // TODO: shouldn't it strip, like save does?
-              cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
-            };
+              var saveAsParams = {
+                operation: "saveas",
+                file: selectedFolder + selectedFile,
+                title: selectedTitle,
+                description: selectedDescription,
+                cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
+              };
 
-            SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
+              SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
+
+            } else {
+
+              $.prompt(validationMsg, {prefix: "popup"});
+            }
           }
-          /*In case of Widgets
-           the propper means will be used
+          /**
+           * Save as Widget
            */
           else if($('input[name=saveAsRadio]:checked').val() == "widget") {
+
             selectedFolder = wd.helpers.repository.getWidgetsLocation();
-            selectedFile = $('#fileInput').val();
             selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
             selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
             var selectedWidgetName = $("#componentInput").val();
 
-            /* Validations */
-            var validInputs = true;
+            // Validate Widget Name
             if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {prefix: "popup"});
-              validInputs = false;
+
+              validationMsg += '<br>Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
+              validationFlag = false;
+
             } else if(selectedWidgetName.length == 0) {
+
+              // Try to use title
               if(selectedTitle.length == 0) {
-                $.prompt('No widget name provided. Tried to use title instead but title is empty.', {prefix: "popup"});
-                validInputs = false;
+
+                validationMsg += '<br>No widget name provided. Unable to use empty title.';
+                validationFlag = false;
+
               } else {
+
                 selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+
+                if(selectedWidgetName.length == 0) {
+
+                  validationMsg += "<br>No widget name provided. Unable to use the title, too many invalid characters.";
+                  validationFlag = false;
+                }
               }
             }
 
-            if(validInputs) {
-              if(selectedFile.indexOf(".wcdf") == -1) {
-                selectedFile += ".wcdf";
-              }
+            if(validationFlag) {
 
               CDFDDFileName = selectedFolder + selectedFile;
               myself.dashboardData.filename = CDFDDFileName;
@@ -1211,21 +1264,22 @@ var CDFDD = Base.extend({
                 file: selectedFolder + selectedFile,
                 title: selectedTitle,
                 description: selectedDescription,
-                //cdfstructure: JSON.stringify(myself.dashboardData, null, 1),
                 cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
                 widgetName: selectedWidgetName
               };
 
               SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-            }
 
+            } else {
+
+              $.prompt(validationMsg, {prefix: "popup"});
+            }
           }
 
           return false;
         }
       }
     });
-
   },
 
   saveSettingsRequest: function(wcdf) {
@@ -1738,16 +1792,17 @@ $(function() {
   };
 
   /* End Jeditable attribution */
+  
   /*!
-   * Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-   * 
+   * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+   *
    * This software was developed by Webdetails and is provided under the terms
    * of the Mozilla Public License, Version 2.0, or any later version. You may not use
    * this file except in compliance with the license. If you need a copy of the license,
-   * please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+   * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
    *
    * Software distributed under the Mozilla Public License is distributed on an "AS IS"
-   * basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
+   * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
    * the license for the specific language governing your rights and limitations.
    */
 

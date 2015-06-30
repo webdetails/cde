@@ -10,15 +10,10 @@
 <project name="Community Dashboard Editor" basedir="." default="dist"
          xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <description>
-        This build file is used to create the Dashboard Designer project
-        and works with the subfloor.xml file.
-    </description>
-
-
-    <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
-        <classpath path="sonar-ant-task-1.3.jar"/>
-    </taskdef>
+  <description>
+    This build file is used to create the Dashboard Designer project
+    and works with the subfloor.xml file.
+  </description>
 
  
   <property file="../override.properties"
@@ -32,203 +27,275 @@
   <import file="../build-res/subfloor-pkg.xml" id="subfloor-pkg"/>
   <import file="../build-res/subfloor-js.xml"/>
 
+  <!--
+      AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
+      THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
+      FOUND IN subfloor.xml.
+    -->
 
-  <mkdir dir="${js.module.script.dir}"/>
-  <mkdir dir="${js.module.script.agg.dir}"/>
+  <!-- Global properties -->
+  <property name='pentaho-base.dir' value='../cde-pentaho-base' description="Name of pentaho base dir"/>
+  <property name='core.dir' value='../cde-core' description="Name of core dir"/>
+  <property name="plugin.name" value="pentaho-cdf-dd" description="Name of the plugin"/>
+  <property name="resource.dir" value="resource" description="Name of the resource directory"/>
+  <property name="includes.name" value="editor.includes.properties"/>
+  <property name="stage.dir" value="${bin.dir}/stage" description="Name of the resource directory"/>
+  <property name="solution.stage.dir" value="${bin.dir}/stage-solution" description="Name of the resource directory"/>
 
+  <!-- Resources location -->
+  <property name='core-resource.dir' value='${core.dir}/${resource.dir}'/>
+  <property name='pentaho-base-resource.dir' value='${pentaho-base.dir}/${resource.dir}'/>
+  <!-- Extra Source Dir Locations -->
+  <property name='pentaho-base-src.dir' value='${pentaho-base.dir}/src'/>
+  <!-- Properties for includes -->
+  <property file='../cde-core/resource/editor.includes.properties'/>
+  <property file='${pentaho-base-resource.dir}/${includes.name}'/>
+  <property file='resource/editor.includes.properties'/>
+  <property name='includes.path' value='${stage.dir}/${plugin.name}/${includes.name}'/>
 
-    <!--
-        AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
-        THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
-        FOUND IN subfloor.xml.
-      -->
+  <!-- karma config files -->
+  <property name="js.karma.ci.config.legacy" value="config/karma.ci.conf.legacy.js"/>
+  <property name="bin.test-js.dir" value="${bin.dir}/test-js" description='Karma tests js source dir' />
+  <property name="bin.test-js.cdf.dir" value="${bin.test-js.dir}/cdf" description='CDF for Karma tests' />
 
-    <!-- Global properties -->
-    <property name='pentaho-base.dir' value='../cde-pentaho-base' description="Name of pentaho base dir"/>
-    <property name='core.dir' value='../cde-core' description="Name of core dir"/>
-    <property name="plugin.name" value="pentaho-cdf-dd" description="Name of the plugin"/>
-    <property name="resource.dir" value="resource" description="Name of the resource directory"/>
-    <property name="includes.name" value="editor.includes.properties"/>
-    <property name="stage.dir" value="${bin.dir}/stage" description="Name of the resource directory"/>
-    <property name="solution.stage.dir" value="${bin.dir}/stage-solution" description="Name of the resource directory"/>
+  <!-- compilation/minification -->
+  <property name="build.js.path" value="config/cde.build.compile.js" description="cde.build.compile.js location"/>
 
-    <!-- Resources location -->
-    <property name='core-resource.dir' value='${core.dir}/${resource.dir}'/>
-    <property name='pentaho-base-resource.dir' value='${pentaho-base.dir}/${resource.dir}'/>
-    <!-- Extra Source Dir Locations -->
-    <property name='pentaho-base-src.dir' value='${pentaho-base.dir}/src'/>
-    <!-- Properties for includes -->
-    <property file='../cde-core/resource/editor.includes.properties'/>
-    <property file='${pentaho-base-resource.dir}/${includes.name}'/>
-    <property file='resource/editor.includes.properties'/>
-    <property name='includes.path' value='${stage.dir}/${plugin.name}/${includes.name}'/>
+  <property name="runtimelib.dir" value="${basedir}/runtime-lib"
+          description="Directory that hosts Jar files required to run project source.  (IVY will populate this directory with required jars)"/>
 
-    <target name="compile.compile" depends="init" description="Performs the actual javac compile">
-        <javac destdir="${classes.dir}"
-               debug="${javac.debug}"
-               deprecation="${javac.deprecation}"
-               fork="true"
-               source="${javac.source}"
-               target="${javac.target}">
-            <classpath>
-                <path refid="classpath"/>
-                <fileset dir="runtime-lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
-            <src path="${src.dir}"/>
-            <src path="../cde-pentaho-base/src"/>
-        </javac>
-    </target>
+  <target name="compile.compile" depends="init" description="Performs the actual javac compile">
+    <javac destdir="${classes.dir}"
+           debug="${javac.debug}"
+           deprecation="${javac.deprecation}"
+           fork="true"
+           source="${javac.source}"
+           target="${javac.target}">
+      <classpath>
+        <path refid="classpath"/>
+        <fileset dir="runtime-lib">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+      <src path="${src.dir}"/>
+      <src path="../cde-pentaho-base/src"/>
+    </javac>
+  </target>
 
-    <tstamp/>
+  <!-- overrides subfloor clean to also cleanup runtime-lib -->
+  <target name="clean" depends="subfloor.clean, subfloor-js.clean-js">
+    <delete dir="${runtimelib.dir}" verbose="true"/>
+    <delete dir="${js.node.node_modules.dir}" verbose="true"/>
+    <delete dir="${package.resdir}" verbose="true"/>
+    <delete dir="build-res" verbose="true"/>
+  </target>
 
+  <tstamp/>
 
-    <echo>project.revision = ${project.revision}</echo>
+  <echo>project.revision = ${project.revision}</echo>
 
-    <target name="dist" depends="clean, resolve,jar,write-properties,write-patches,dist-plugin,dist-solution"/>
-    <target name="dist-compile" depends="jar,dist-plugin"/>
+  <target name="dist" depends="clean, resolve, jar, write-properties, write-patches, dist-plugin, dist-solution"/>
+  <target name="dist-compile" depends="jar, dist-plugin"/>
 
-    <property name="plugin.artifact.id" value="${plugin.name}"/>
-    <property name="plugin.zipfile" value="${plugin.artifact.id}-${project.revision}.zip"/>
-    <property name="plugin.disabled.zipfile" value="${plugin.artifact.id}-disabled-${project.revision}.zip"/>
-    <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${project.revision}.zip"/>
+  <property name="plugin.artifact.id" value="${plugin.name}"/>
+  <property name="plugin.zipfile" value="${plugin.artifact.id}-${project.revision}.zip"/>
+  <property name="plugin.disabled.zipfile" value="${plugin.artifact.id}-disabled-${project.revision}.zip"/>
+  <property name="plugin.solution.zipfile" value="${plugin.artifact.id}-solution-${project.revision}.zip"/>
 
-    <target name="check-sonar-props">
-        <available file="/home/tomcat/sonar.properties" property="sonar.props"/>
-        <echo>${sonar.props}</echo>
-    </target>
+  <!-- Overriding resolve target so we can add resolve-dev -->
+  <target name="resolve"
+          depends="resolve-default, resolve-test, resolve-runtime, ivy.check-releasable"
+          description="Retrieves all the dependent libraries"/>
 
-    <target name="read-sonar-props" depends="check-sonar-props" if="sonar.props">
-        <echo>Prop file exists</echo>
-        <loadproperties srcFile="/home/tomcat/sonar.properties"/>
-    </target>
-
-    <target name="sonar" depends='read-sonar-props'>
-        <!-- list of mandatories Sonar properties -->
-        <property name="sonar.sources" value="${src.dir}"/>
-        <!-- list of optional Sonar properties -->
-        <property name="sonar.binaries" value="${classes.dir}"/>
-        <sonar:sonar key="pt.webdetails:CDE" version="${project.revision}" xmlns:sonar="antlib:org.sonar.ant"/>
-    </target>
-
-    <target name="sonar-js" depends="read-sonar-props">
-        <property name="sonar.language" value="js"/>
-        <property name="sonar.dynamicAnalysis" value="false"/>
-        <property name="sonar.sources" value="${resource.dir}/js"/>
-        <sonar:sonar key="pt.webdetails:CDE-js" version="${project.revision}" xmlns:sonar="antlib:org.sonar.ant"/>
-    </target>
-
-    <!-- Overriding resolve target so we can add resolve-dev -->
-    <target name="resolve"
-            depends="resolve-default, resolve-test, resolve-runtime, ivy.check-releasable"
-            description="Retrieves all the dependent libraries"/>
-
-    <target name="resolve-runtime" depends="resolve-init">
-        <ivy:resolve file="ivy.xml" conf="runtime"/>
-        <ivy:retrieve conf="runtime" pattern="runtime-lib/[module]-[revision](-[classifier]).[ext]"/>
-    </target>
+  <target name="resolve-runtime" depends="resolve-init">
+    <ivy:resolve file="ivy.xml" conf="runtime"/>
+    <ivy:retrieve conf="runtime" pattern="runtime-lib/[module]-[revision](-[classifier]).[ext]"/>
+  </target>
 
 
-    <!--=======================================================================
+  <!--=======================================================================
   dist
 
   Creates a distribution of this project's plugin zip
   ====================================================================-->
-    <target name="make-stage">
-        <!-- Make dirs-->
-        <mkdir dir="${stage.dir}"/>
-        <mkdir dir="${stage.dir}/${plugin.name}"/>
-        <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
-        <mkdir dir="${stage.dir}/${plugin.name}/resources"/>                
-    </target>
-  
-    <target name="dist-plugin" depends="jar,make-stage" description="Creates a distribution">
+  <target name="make-stage">
+    <!-- Make dirs -->
+    <mkdir dir="${stage.dir}"/>
+    <mkdir dir="${stage.dir}/${plugin.name}"/>
+    <mkdir dir="${stage.dir}/${plugin.name}/lib"/>
+    <mkdir dir="${stage.dir}/${plugin.name}/resources"/>                
+  </target>
 
-        <!-- Copy core resources -->
-        <copy todir='${stage.dir}/${plugin.name}'>
-            <fileset dir='${core-resource.dir}'>
-                <exclude name="${includes.name}"/>
-                <exclude name="**/OlapSelector/test/**"/>
-            </fileset>
-        </copy>
+  <target name="dist-plugin" depends="jar, make-stage, check-pentaho-js-build-downloaded, subfloor-js.resolve-js" description="Creates a distribution">
 
-        <!-- Copy pentaho-base resources -->
-        <copy todir='${stage.dir}/${plugin.name}' overwrite='true'>
-            <fileset dir='${pentaho-base-resource.dir}'>
-                <exclude name="${includes.name}"/>
-            </fileset>
+    <!-- delete the dir that contains the sources to be optimized -->
+    <delete dir="${js.module.script.agg.dir}"/>
+    <echo message="js.module.script.agg.dir: ${js.module.script.agg.dir}"/>
+    <mkdir dir="${js.module.script.agg.dir}"/>
 
-        </copy>
+    <!-- unzip CDF into js-lib/expanded/pentaho-cdf -->
+    <unzip dest="${js.expanded.lib.dir}" overwrite="true">
+      <fileset dir=".">
+        <include name="${js.lib.dir}/pentaho-cdf*.zip"/>
+      </fileset>
+    </unzip>
 
-        <!-- Copy pentaho resources -->
-        <copy todir='${stage.dir}/${plugin.name}' overwrite='true'>
-            <fileset dir='${resource.dir}'>
-                <exclude name="${includes.name}"/>
-            </fileset>
-        </copy>
+    <!-- copy requirejs loader plugins & other CDF dependencies -->
+    <copy todir='${js.module.script.agg.dir}/cdf/js' overwrite='true'>
+      <fileset dir='${js.expanded.lib.dir}/pentaho-cdf/js'>
+        <!-- including only required dependencies makes the optimization much faster -->
+        <include name="lib/require-css/**/*"/>
+        <include name="lib/require-amd/**/*"/>
+        <include name="lib/require-dashboard/**/*"/>
+        <include name="lib/require-text/**/*"/>
+        <include name="lib/Raphael/raphael.js"/>
+        <include name="lib/jQuery/jquery.js"/>
+        <include name="lib/jquery-migrate-1.2.1.js"/>
+        <include name="lib/fancybox/jquery.fancybox.css"/>
+        <include name="lib/fancybox/jquery.fancybox.js"/>
+        <include name="components/CggComponent.ext.js"/>
+        <include name="lib/backbone/backbone.js"/>
+        <include name="lib/underscore/underscore.js"/>
+        <include name="lib/OpenMap/OpenLayers/theme/default/style.css"/>
+      </fileset>
+    </copy>
 
-        <antcall target="replace-ext-editor-labels"/>
-        <antcall target="replace-editor-labels"/>
+    <!-- copy AMD custom components to tmp dir -->
+    <echo message="Copying AMD custom components files to ${js.module.script.agg.dir}/amd-components"/>
+    <!-- copy cde-core resources to tmp dir -->
+    <copy todir='${js.module.script.agg.dir}/amd-components'>
+      <fileset dir='${core-resource.dir}/resources/custom/amd-components/'/>
+    </copy>
+    <!-- copy cde-pentaho-base resources to tmp dir -->
+    <!-- copy cde-pentaho5 resources to tmp dir -->
+    <copy todir='${js.module.script.agg.dir}/amd-components'>
+      <fileset dir='${resource.dir}/resources/custom/amd-components/'/>
+    </copy>
 
-        <!-- copy the plugin jar to the plugin dist lib folder -->
-        <copy todir="${stage.dir}/${plugin.name}/lib" overwrite="true">
-            <fileset dir="${dist.dir}">
-                <include name="${ivy.artifact.id}-${project.revision}.jar"/>
-            </fileset>
-            <fileset dir="${devlib.dir}">
-                <include name="**/*.jar"/>
-            </fileset>
-            <fileset dir="runtime-lib">
-                <include name="cpf-*.jar"/>
-                <include name="cde-*.jar"/>
+    <!-- merge require-js configuration files -->
+    <delete file="build-res/requireCfg-raw.js" />
+    <delete file="build-res/requireCfg.js" />
+    <echo message="var requireCfg={paths:{},shim:{}};" file="build-res/requireCfg-raw.js" force="true" append="false"/>
+    <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
+      <!-- cdf requirejs cfg files -->
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf/js" casesensitive="yes">
+        <include name="*-require-js-cfg.js"/>
+        <include name="lib/*-require-js-cfg.js"/>
+      </fileset>
+      <!-- cde require-js cfg files -->
+      <fileset dir="${core-resource.dir}/js" casesensitive="yes">
+        <include name="cde-core-require-js-cfg.js"/>
+      </fileset>
+    </concat>
+    <echo message="require(requireCfg);" append="false" file="build-res/requireCfg.js"/>
 
-                <!-- PTEIXEIRA, 10-09-2013, decurring of cde core-refactor -->
-                <!-- not happy with this, could use some re-thinking -->
-                <include name="json-*.jar"/>
-                <include name="ezmorph-*.jar"/>
-            </fileset>
-        </copy>
+    <path id="build.classpath">
+      <fileset dir="build-res/pentaho-js-build/libs"> <!-- temporary until core build files in artifactory -->
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <java classname="org.mozilla.javascript.tools.shell.Main"
+          fork="true"
+          classpathref="build.classpath">
+      <arg value="build-res/pentaho-js-build/profileBuilder.js"/>
+    </java>
+
+    <!-- run js compilation -->
+    <exec executable="node" failonerror="true">
+      <arg value="build-res/pentaho-js-build/r.js"/>
+      <arg value="-o"/>
+      <arg value="${build.js.path}"/>
+    </exec>
+
+    <!-- copy compressed/minified files from bin/scriptOutput to compressed folder -->
+    <copy todir="${stage.dir}/${plugin.name}/resources/custom/amd-components-compressed" >
+      <fileset dir="${js.build.output.dir}/amd-components"/>
+    </copy>
+
+    <!-- Copy core resources -->
+    <copy todir='${stage.dir}/${plugin.name}'>
+      <fileset dir='${core-resource.dir}'>
+        <exclude name="${includes.name}"/>
+        <exclude name="**/OlapSelector/test/**"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy pentaho-base resources -->
+    <copy todir='${stage.dir}/${plugin.name}' overwrite='true'>
+      <fileset dir='${pentaho-base-resource.dir}'>
+        <exclude name="${includes.name}"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy pentaho resources -->
+    <copy todir='${stage.dir}/${plugin.name}' overwrite='true'>
+      <fileset dir='${resource.dir}'>
+        <exclude name="${includes.name}"/>
+      </fileset>
+    </copy>
+
+    <antcall target="replace-ext-editor-labels"/>
+    <antcall target="replace-editor-labels"/>
+
+    <!-- copy the plugin jar to the plugin dist lib folder -->
+    <copy todir="${stage.dir}/${plugin.name}/lib" overwrite="true">
+      <fileset dir="${dist.dir}">
+        <include name="${ivy.artifact.id}-${project.revision}.jar"/>
+      </fileset>
+      <fileset dir="${devlib.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+      <fileset dir="runtime-lib">
+        <include name="cpf-*.jar"/>
+        <include name="cde-*.jar"/>
+
+        <!-- PTEIXEIRA, 10-09-2013, decurring of cde core-refactor -->
+        <!-- not happy with this, could use some re-thinking -->
+        <include name="json-*.jar"/>
+        <include name="ezmorph-*.jar"/>
+      </fileset>
+    </copy>
 
 
-        <!-- create the version file -->
-        <tstamp/>
-        <property name="sequential.build.id" value="manual-${DSTAMP}"/>
-        <echo file="${stage.dir}/${plugin.name}/version.xml"
-              message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${project.revision}&lt;/version>"/>
+    <!-- create the version file -->
+    <tstamp/>
+    <property name="sequential.build.id" value="manual-${DSTAMP}"/>
+    <echo file="${stage.dir}/${plugin.name}/version.xml"
+          message="&lt;version branch='${project.stage}'  buildId='${sequential.build.id}'>${project.revision}&lt;/version>"/>
 
 
-        <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
-            <fileset dir="${basedir}">
-                <include name="readme.txt"/>
-            </fileset>
-        </copy>
+    <copy todir="${stage.dir}/${plugin.name}" overwrite="true">
+      <fileset dir="${basedir}">
+        <include name="readme.txt"/>
+      </fileset>
+    </copy>
 
-        <!-- create a zip file -->
-        <zip zipfile="${dist.dir}/${plugin.zipfile}"
-             basedir="${stage.dir}"
-             includes="${plugin.artifact.id}/**/*"
-             excludes="**/Thumbs.db"/>
+    <!-- create a zip file -->
+    <zip zipfile="${dist.dir}/${plugin.zipfile}"
+         basedir="${stage.dir}"
+         includes="${plugin.artifact.id}/**/*"
+         excludes="**/Thumbs.db"/>
 
-        <copy todir="${stage.dir}/${plugin.name}-disabled/${plugin.name}" overwrite="true">
-            <fileset dir="${stage.dir}/${plugin.name}"/>
-        </copy>
+    <copy todir="${stage.dir}/${plugin.name}-disabled/${plugin.name}" overwrite="true">
+      <fileset dir="${stage.dir}/${plugin.name}"/>
+    </copy>
 
-        <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled" 
-              tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml" overwrite="true"/>
-        <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml.disabled" 
-              tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml" overwrite="true"/>
-
-
-
-        <!-- create a zip file -->
-        <zip zipfile="${dist.dir}/${plugin.disabled.zipfile}"
-             basedir="${stage.dir}/${plugin.name}-disabled"
-             includes="${plugin.artifact.id}/**/*"
-             excludes="**/Thumbs.db"/>
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml.disabled"
+          tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/plugin.xml" overwrite="true"/>
+    <copy file="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml.disabled"
+          tofile="${stage.dir}/${plugin.name}-disabled/${plugin.name}/settings.xml" overwrite="true"/>
 
 
-    <echo file="${dist.dir}/marketplace.xml">      &lt;version&gt;
+    <!-- create a zip file -->
+    <zip zipfile="${dist.dir}/${plugin.disabled.zipfile}"
+         basedir="${stage.dir}/${plugin.name}-disabled"
+         includes="${plugin.artifact.id}/**/*"
+         excludes="**/Thumbs.db"/>
+
+
+    <echo file="${dist.dir}/marketplace.xml">
+      &lt;version&gt;
         &lt;branch&gt;${project.stage}&lt;/branch&gt;
         &lt;version&gt;${project.revision}&lt;/version&gt;
         &lt;name&gt;${marketplace.metadata.name}&lt;/name&gt;
@@ -247,179 +314,245 @@
           &lt;lane&gt;${marketplace.metadata.development_stage.lane}&lt;/lane&gt;
           &lt;phase&gt;${marketplace.metadata.development_stage.phase}&lt;/phase&gt;
         &lt;/development_stage&gt;
-      &lt;/version&gt;</echo>
+      &lt;/version&gt;
+    </echo>
+  </target>
 
-    </target>
+  <target name="dist-solution" depends="init">
+    <!-- create solution stage dir -->
+    <mkdir dir="${solution.stage.dir}"/>
+    <!-- copy all solution files to the solution stage dir -->
+    <copy todir="${solution.stage.dir}" overwrite="true">
+      <fileset dir="./solution">
+        <include name="pentaho-cdf-dd/**/*"/>
+      </fileset>
+    </copy>
+    <!-- compress the solution stage dir -->
+    <zip zipfile="${dist.dir}/${plugin.solution.zipfile}"
+         basedir="${solution.stage.dir}"
+         includes="**/*"
+         excludes="**/Thumbs.db"/>
+  </target>
 
+  <!--=======================================================================
+        install-plugin
 
-    <target name="dist-solution" depends="init">
+        Installs the plugin locally
+        ====================================================================-->
+  <target name="install-plugin" depends="dist" description="Installs the plugin locally">
 
-        <mkdir dir="${solution.stage.dir}"/>
+    <fail message="plugin.local.install.solutions.dir not set - cannot copy"
+          unless="plugin.local.install.solutions.dir"/>
 
-        <!-- copy over all the xactions within the cdf folder -->
-        <copy todir="${solution.stage.dir}" overwrite="true">
-            <fileset dir="./solution">
-                <include name="pentaho-cdf-dd/**/*"/>
-            </fileset>
-        </copy>
+    <delete dir="${plugin.local.install.solutions.dir}/system/${plugin.name}"/>
+    <copy todir="${plugin.local.install.solutions.dir}/system/${plugin.name}">
+      <fileset dir="${stage.dir}/${plugin.name}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
 
-        <zip zipfile="${dist.dir}/${plugin.solution.zipfile}"
-             basedir="${solution.stage.dir}"
-             includes="**/*"
-             excludes="**/Thumbs.db"
-                />
+    <!-- Copy solution -->
+    <copy todir="${plugin.local.install.solutions.dir}/plugin-samples">
+      <fileset dir="${solution.stage.dir}/">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+  </target>
 
+  <target name="write-properties" depends="make-stage">
+    <!-- Create editor.includes.properties -->
+    <echo file="${stage.dir}/${plugin.name}/${includes.name}"/>
+    <for list='${core-scripts}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="scripts" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
+    <for list='${pentaho-base-scripts}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="scripts" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
+    <for list='${pentaho-scripts}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="scripts" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
 
-    </target>
+    <for list='${core-styles}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="styles" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
+    <for list='${pentaho-base-styles}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="styles" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
+    <for list='${pentaho-styles}' param='filename'>
+      <sequential>
+        <propertyfile file="${includes.path}">
+          <entry key="styles" operation="+" value="@{filename}," />
+        </propertyfile>
+      </sequential>
+    </for>
+  </target>
 
+  <target name="write-patches" depends="write-properties">
+    <property name="scripts.patch" value="${stage.dir}/${plugin.name}/resources/scripts.html"/>
+    <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
+    <property file="${includes.path}"/>
 
-    <!--=======================================================================
-          install-plugin
+    <touch file='${scripts.patch}'/>
+    <echo file='${scripts.patch}' append='false'/>
+    <for list='${scripts}' param='filename'>
+      <sequential>
+        <echo file='${scripts.patch}' append='true'>&lt;script language="javascript" type="text/javascript"
+              src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;&#13;&#10;</echo>
+      </sequential>
+    </for>
 
-          Installs the plugin locally
-          ====================================================================-->
-    <target name="install-plugin" depends="dist" description="Installs the plugin locally">
+    <echo file='${styles.patch}' append='false'/>
+    <for list='${styles}' param='filename'>
+      <sequential>
+        <echo file='${styles.patch}' append='true'>&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
+      </sequential>
+    </for>
+  </target>
 
-        <fail message="plugin.local.install.solutions.dir not set - cannot copy"
-              unless="plugin.local.install.solutions.dir"/>
+  <target name='replace-ext-editor-labels'>
+    <property file="${basedir}/build.properties"/>
+    <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
+    <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
 
-        <delete dir="${plugin.local.install.solutions.dir}/system/${plugin.name}"/>
-        <copy todir="${plugin.local.install.solutions.dir}/system/${plugin.name}">
-            <fileset dir="${stage.dir}/${plugin.name}">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
+  </target>
 
-        <!-- Copy solution -->
-        <copy todir="${plugin.local.install.solutions.dir}/plugin-samples">
-            <fileset dir="${solution.stage.dir}/">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
+  <!-- used to build two different editors -->
+  <target name='replace-editor-labels'>
+    <copy file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" tofile="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html"/>
 
-        <get src="http://127.0.0.1:8080/pentaho/Publish?publish=now&amp;class=org.pentaho.platform.plugin.services.pluginmgr.PluginAdapter&amp;userid=${plugin.local.install.user}&amp;password=${plugin.local.install.pass}"
-             dest="${stage.dir}/blah.html"/>
+    <property file="${basedir}/build.properties"/>
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url.default}" />
+    <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url.default}" />
+  </target>
 
-    </target>
-
-
-
-    <target name="write-properties" depends="make-stage">
-        <!-- Create editor.includes.properties -->
-        <echo file="${stage.dir}/${plugin.name}/${includes.name}"/>
-        <for list='${core-scripts}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-        <for list='${pentaho-base-scripts}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-        <for list='${pentaho-scripts}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="scripts" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-
-        <for list='${core-styles}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-        <for list='${pentaho-base-styles}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-        <for list='${pentaho-styles}' param='filename'>
-            <sequential>
-                <propertyfile file="${includes.path}">
-                    <entry key="styles" operation="+" value="@{filename}," />
-                </propertyfile>
-            </sequential>
-        </for>
-    </target>
-
-
-
-    <target name="write-patches" depends="write-properties">
-        <property name="scripts.patch" value="${stage.dir}/${plugin.name}/resources/scripts.html"/>
-        <property name="styles.patch" value="${stage.dir}/${plugin.name}/resources/styles.html"/>
-        <property file="${includes.path}"/>
-
-        <touch file='${scripts.patch}'/>
-        <echo file='${scripts.patch}' append='false'/>
-        <for list='${scripts}' param='filename'>
-            <sequential>
-                <echo file='${scripts.patch}' append='true'>&lt;script language="javascript" type="text/javascript"
-                    src="#{WEBAPP_PATH}@{filename}"/&gt;&lt;/script&gt;&#13;&#10;</echo>
-            </sequential>
-        </for>
-
-        <echo file='${styles.patch}' append='false'/>
-        <for list='${styles}' param='filename'>
-            <sequential>
-                <echo file='${styles.patch}' append='true'>&lt;link href="#{WEBAPP_PATH}@{filename}" rel="stylesheet" type="text/css"/&gt;&#13;&#10;</echo>
-            </sequential>
-        </for>
-    </target>
-
-    <target name='replace-ext-editor-labels'>
-        <property file="${basedir}/build.properties"/>
-        <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-        <replace file="${stage.dir}/${plugin.name}/resources/ext-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-component-editor.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-    </target>
-
-    <!-- used to build two different editors -->
-    <target name='replace-editor-labels'>
-        <copy file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" tofile="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html"/>
-
-        <property file="${basedir}/build.properties"/>
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url}" />
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url}" />
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDE_RESOURCES_BASE_URL@" value="${cde.resources.base.url.default}" />
-        <replace file="${stage.dir}/${plugin.name}/resources/cdf-dd-default.html" token="@CDF_RESOURCES_BASE_URL@" value="${cdf.resources.base.url.default}" />
-    </target>
-
-    <!-- Overriding retrieve pattern to distinguish artifacts from same module -->
-    <target name="resolve-test" depends="resolve-init">
-      <ivy:resolve file="${ivyfile}" conf="test" />
-      <ivy:retrieve conf="test" pattern="${testlib.dir}/[artifact]-[revision](-[classifier]).[ext]" />
-    </target>
+  <!-- Overriding retrieve pattern to distinguish artifacts from same module -->
+  <target name="resolve-test" depends="resolve-init">
+    <ivy:resolve file="${ivyfile}" conf="test" />
+    <ivy:retrieve conf="test" pattern="${testlib.dir}/[artifact]-[revision](-[classifier]).[ext]" />
+  </target>
 
 
-    <target name="publish-nojar" depends="subfloor-pkg.publish-nojar">
-        <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   
-        <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="samples-pom.xml" />
-            <param name="publish.file" value="${dist.dir}/${plugin.solution.zipfile}" />
-        </antcall>   
-        
-        <ivy:makepom ivyfile="package-ivy-disabled.xml" pomfile="disabled-pom.xml" />   
-        <antcall target="maven-publish-artifact">
-            <param name="publish.pomFile" value="disabled-pom.xml" />
-            <param name="publish.file" value="${dist.dir}/${plugin.disabled.zipfile}" />
-        </antcall>   
-        
-        
-   </target>
+  <target name="publish-nojar" depends="subfloor-pkg.publish-nojar">
+    <ivy:makepom ivyfile="package-ivy-samples.xml" pomfile="samples-pom.xml" />   
+    <antcall target="maven-publish-artifact">
+      <param name="publish.pomFile" value="samples-pom.xml" />
+      <param name="publish.file" value="${dist.dir}/${plugin.solution.zipfile}" />
+    </antcall>   
+    
+    <ivy:makepom ivyfile="package-ivy-disabled.xml" pomfile="disabled-pom.xml" />   
+    <antcall target="maven-publish-artifact">
+      <param name="publish.pomFile" value="disabled-pom.xml" />
+      <param name="publish.file" value="${dist.dir}/${plugin.disabled.zipfile}" />
+    </antcall>   
+  </target>
 
+  <target name="run-karma" depends="install-antcontrib, npm-install">
+    <if>
+      <available file="${js.karma.ci.config}"/>
+      <then>
+        <if>
+          <isset property="isWindows"/>
+          <then>
+            <if>
+              <not>
+                <isset property="karma-for-windows-is-available"/>
+              </not>
+              <then>
+                <fail>Run 'npm install -g karma-cli' [adds karma.cmd to the command line]</fail>
+              </then>
+            </if>
+            <exec executable="karma.cmd" failonerror="${js.karma.failonerror}">
+              <arg value="start"/>
+              <arg value="${js.karma.ci.config}"/>
+              <!-- if we are running via ant, then assume we must 'single-run' -->
+              <arg value="--single-run"/>
+            </exec>
+          </then>
+          <else>
+            <exec executable="node_modules/karma/bin/karma" failonerror="${js.karma.failonerror}">
+              <arg value="start"/>
+              <arg value="${js.karma.ci.config}"/>
+              <!-- if we are running via ant, then assume we must 'single-run' -->
+              <arg value="--single-run"/>
+            </exec>
+          </else>
+        </if>
+      </then>
+      <else>
+        <fail>There is no karma configuration file available (looking for: ${js.karma.ci.config})</fail>
+      </else>
+    </if>
+  </target>
 
-	<target name="continuous" depends="subfloor.continuous, test-js"/>
+  <target name="test-js-require" depends="subfloor-js.resolve-js">
+
+    <!-- unzip CDF into js-lib/expanded/pentaho-cdf -->
+    <unzip dest="${js.expanded.lib.dir}" overwrite="true">
+      <fileset dir=".">
+        <include name="${js.lib.dir}/pentaho-cdf*.zip"/>
+      </fileset>
+    </unzip>
+
+    <!-- copy CDF into bin/test-js/cdf -->
+    <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf"/>
+    </copy>
+
+    <!-- compile the require file -->
+    <echo message="Collecting RequireJS Configurations"/>
+    <delete file="build-res/requireCfg-raw.js"/>
+    <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
+      <!-- cdf require-js cfg files -->
+      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf" casesensitive="yes">
+        <include name="js/*-require-js-cfg.js"/>
+        <include name="js/lib/*-require-js-cfg.js"/>
+      </fileset>
+      <!-- cde require-js cfg files -->
+      <fileset dir="../cde-core/resource/js" casesensitive="yes">
+        <include name="*-require-js-cfg.js"/>
+      </fileset>
+      <fileset dir="resource/js" casesensitive="yes">
+        <include name="*-require-js-cfg.js"/>
+      </fileset>
+    </concat>
+
+    <!-- run karma -->
+    <antcall target="run-karma"/>
+  </target>
+
+  <target name="test-js-legacy">
+    <antcall target="run-karma">
+      <param name="js.karma.ci.config" value="${js.karma.ci.config.legacy}"/>
+    </antcall>
+  </target>
+
+  <target name="test-js" depends="test-js-require, test-js-legacy">
+  </target>
+
+  <target name="continuous" depends="subfloor.continuous, test-js"/>
 
 </project>

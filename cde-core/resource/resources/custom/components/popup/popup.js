@@ -430,42 +430,53 @@ var ExportPopupComponent = PopupComponent.extend({
       filename: this.dataExportAttachmentName+"." + effectiveExportType
     });
   },  
-  
-  
-  
-  exportChart: function(cet){
 
-    var effectiveExportType = cet == undefined ? this.chartExportType : cet ;   
+  getExportChartOptions: function() {
+    //4.x has fullPath and 5.0 has path, this can go away when cdf gets refactored
+    var loc = (Dashboards.context.fullPath) ?
+        Dashboards.context.fullPath.replace(/[^\/]+$/, "") :
+        Dashboards.context.path.replace(/[^\/]+$/, "");
 
-    // Get query
-    Dashboards.log("Exporting to " + effectiveExportType);
+    var options = {
+      outputType: this.chartExportType,
+      script: loc + this.chartExportComponent + '.js'
+    };
 
     var parameters = this.chartComponent.parameters;
-    var dataAccess = this.chartComponent.chartDefinition.dataAccessId;
-    var path = this.chartComponent.chartDefinition.path;
 
-    //4.x has fullPath and 5.0 has path, this can go away when cdf gets refactored
-    var loc = (Dashboards.context.fullPath) ? Dashboards.context.fullPath.replace(/[^\/]+$/, "") : Dashboards.context.path.replace(/[^\/]+$/, "");
-
-    var url = wd.helpers.cggHelper.getCggDrawUrl() + "?script=" + loc +  this.chartExportComponent + ".js&outputType=" + effectiveExportType;
-    
-    var param;
     // Get parameter values; metadata is a special parameter, carries important
     // info for dashboard operation but has no data so isn't exported
-    for(var i=0; i<parameters.length; i++){
-      param = Dashboards.ev(Dashboards.getParameterValue(parameters[i][1]));
-      if( param !== undefined ){
-        url += "&param" + parameters[i][0] + "=" + (parameters[i][0] != 'metadata' ? encodeURIComponent( param ) : 'false');
+    for(var i = 0, L = parameters.length; i < L; i++) {
+      var name = parameters[i][0];
+      var param = parameters[i][1];
+      var value = Dashboards.ev(Dashboards.getParameterValue(param));
+
+      if(value !== undefined) {
+        options['param' + name] = name != 'metadata' ? value : 'false';
       }
     }
 
     // Check debug level and pass as parameter
     var level = Dashboards.debug;
     if(level > 1) {
-        url += "&paramdebug=true";
-        url += "&paramdebugLevel=" + level;
+      options['paramdebug'] = true;
+      options['paramdebugLevel'] = level;
     }
 
+    return options;
+  },
+
+  getExportChartUrl: function(options) {
+    return wd.helpers.cggHelper.getCggDrawUrl() + '?' + $.param(options);
+  },
+
+  exportChart: function() {
+    var options = this.getExportChartOptions();
+
+    // Get query
+    Dashboards.log("Exporting to " + options.outputType);
+
+    var url = this.getExportChartUrl(options);
     var myself = this;
     var masterDiv = $('<div class="exportChartMasterDiv">');
     //Style later
@@ -480,18 +491,14 @@ var ExportPopupComponent = PopupComponent.extend({
     smallButton.click(function () {
       $('.exportChartPopupButtonClicked').each(function (i, elt) {
         $(elt).removeClass('exportChartPopupButtonClicked')
-      })
+      });
       $(this).addClass('exportChartPopupButtonClicked');      
       $('#width').attr('disabled', true); 
       $('#height').attr('disabled', true); 
       
       $('#width').val(myself.baseSize);
-      $('#height').val(myself.baseSize*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
-      
-      
-    //             $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');
+      $('#height').val(myself.baseSize*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));
 
-   
     });
     popupButtonsDiv.append(smallButton);
 
@@ -500,7 +507,7 @@ var ExportPopupComponent = PopupComponent.extend({
      
       $('.exportChartPopupButtonClicked').each(function (i, elt) {
         $(elt).removeClass('exportChartPopupButtonClicked')
-      })
+      });
       $(this).addClass('exportChartPopupButtonClicked'); 
     
       $('#width').attr('disabled', true); 
@@ -508,13 +515,12 @@ var ExportPopupComponent = PopupComponent.extend({
       var size = myself.baseSize * myself.scalingFactor;
       $('#width').val(size);
       $('#height').val(size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
-    
-    
+
     });
    
     mediumButton.getComponentData = function () {
       return [(myself.chartComponent.chartDefinition.width), (myself.chartComponent.chartDefinition.height)];
-    }
+    };
    
    
     popupButtonsDiv.append(mediumButton);
@@ -524,7 +530,7 @@ var ExportPopupComponent = PopupComponent.extend({
     largeButton.click(function () {
       $('.exportChartPopupButtonClicked').each(function (i, elt) {
         $(elt).removeClass('exportChartPopupButtonClicked')
-      })
+      });
       $(this).addClass('exportChartPopupButtonClicked');      
     
       $('#width').attr('disabled', true); 
@@ -532,9 +538,7 @@ var ExportPopupComponent = PopupComponent.extend({
       
       var size = myself.baseSize * myself.scalingFactor * myself.scalingFactor;
       $('#width').val(size);
-      $('#height').val(size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));      
-      
-    //       $('.exportChartOkButton').addClass('exportChartOkButtonDisabled');    
+      $('#height').val(size*(myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width));
 
     });
 
@@ -544,24 +548,21 @@ var ExportPopupComponent = PopupComponent.extend({
     customButton.click(function () {
       $('.exportChartPopupButtonClicked').each(function (i, elt) {
         $(elt).removeClass('exportChartPopupButtonClicked')
-      })
+      });
       $(this).addClass('exportChartPopupButtonClicked'); 
       $('#width').removeAttr('disabled'); 
       $('#height').removeAttr('disabled'); 
     
       $('#width').val(myself.chartComponent.chartDefinition.width);
-      $('#height').val(myself.chartComponent.chartDefinition.height);      
-    
-    
-    //    $('.exportChartOkButton').removeClass('exportChartOkButtonDisabled');
-          
+      $('#height').val(myself.chartComponent.chartDefinition.height);
+
     });
    
     popupButtonsDiv.append(customButton);
 
-    var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width'  disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
+    var inputsWidthDiv = $("<div class='exportChartInput'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;Width:&nbsp;<input id='width' disabled='true' value='" + this.chartComponent.chartDefinition.width + "' onChange='javascript:$(\"#height\").val($(\"#width\").val() * " + (myself.chartComponent.chartDefinition.height/myself.chartComponent.chartDefinition.width) + ");' type='text'></div>");
     popupButtonsDiv.append(inputsWidthDiv);   
-    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' style='width:50px' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
+    var inputsHeightDiv = $("<div class='exportChartInput'>Height:&nbsp;</span><input id='height' disabled='true' value='" + this.chartComponent.chartDefinition.height + "' type='text'></div>");
     popupButtonsDiv.append(inputsHeightDiv);   
     var okButton = $("<div class='exportChartPopupButton exportChartOkButton'>Export</div>");
     okButton.click(function() {    
@@ -588,7 +589,7 @@ var ExportPopupComponent = PopupComponent.extend({
     
       var _exportIframe =  $('<iframe style="display:none">');
       _exportIframe.detach();
-      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + effectiveExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
+      _exportIframe[0].src = url + "&attachmentName=" +myself.dataExportAttachmentName + "." + myself.chartExportType + "&paramwidth=" + dimensions[0] + '&paramheight=' + dimensions[1];
       _exportIframe.appendTo($('body'));     
     
     

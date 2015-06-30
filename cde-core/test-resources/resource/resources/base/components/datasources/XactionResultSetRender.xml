@@ -1,0 +1,19 @@
+<DesignerComponent>
+	<Header>
+		<Override>DataSourceComponentType</Override>
+		<Name>XAction result set</Name>
+		<IName>Xaction</IName>
+		<Description>Use a result set returned from a xaction call in the Pentaho BI Server</Description>
+		<Category>LEGACY</Category>
+		<CatDescription>Legacy Datasources</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model prefix="Datasources">
+			<Property>solution</Property>
+			<Property>path</Property>
+            <Property>xaction</Property>
+            <Property>parameters</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

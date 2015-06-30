@@ -352,7 +352,7 @@ var PopupTextEditorComponent = BaseComponent.extend({
                     
             myself.textEditor.getRightPanel().html("<pre>"+JSON.stringify( queryResult.resultset ,undefined,2)+"</pre>");
             myself.isQueryPreviewShown = myself.textEditor.toggleRightPanel();
-            wd.log("Toggling!");
+            Dashboards.log("Toggling!");
             
         });
         

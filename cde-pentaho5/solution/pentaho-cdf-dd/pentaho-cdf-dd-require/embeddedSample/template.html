@@ -1,0 +1,76 @@
+<div class="shadow">
+
+  <div class="contents">
+
+    <h2>CDE Embedded Example</h2>
+
+    <h3>Description</h3>
+
+    <p> Loads CDE require configs from a server and creates a new dashboard with a Select Component, including a loaded CDE Dashboard. </p>
+    <p> This will make it possible for any server and/or 3rd party applications to embed CDE Dashboards, from a Pentaho Server.</p>
+
+    <h3>Configurations</h3>
+
+    <dl class="documentation">
+      <dt>script tag</dt>
+      <dd>The url for the server endpoint that injects the CDE dependencies</dd>
+    </dl>
+    
+    <br>
+    <p>To demonstrate the embedding capabilities of CDE, we have an embedded.html file (located in the same folder), which is is capable of embedding CDE.<br>
+    This is done by simply including a javascript resource, which will make sure to embed the necessary files.<br>
+    You can drop te embedded.html file into any web server and you'll be able to embed a CDE dashboard, as long as you provide the correct url for the script tag mentioned below.
+    </p>
+    
+    <p>You really only need to know the path to the Pentaho Server from which you want to embed CDF, and then include the embed javascript resource:</p>
+    <pre>&lt;script type="text/javascript" src="path/to/server/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</pre><br>
+    <p>Our embedded.html demonstrates this:</p>
+    <p>ln12:</p> <pre>&lt;script type="text/javascript" src="http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js"&gt;&lt;/script&gt;</pre>
+    <br>
+    <p>We can then assume we are in a Pentaho CDE environment, we are embedded!</p>
+    <p>ln54:</p>
+    <pre>
+      require([
+        'cdf/Dashboard.Blueprint',
+        'cdf/components/SelectComponent',
+        'myModule',
+        'cdf/Logger',
+        'dash!/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/embeddedSample/dashboard/sample.wcdf'
+      ], function(Dashboard, SelectComponent, myModule, Logger, SampleDash) {
+
+        Logger.log("MODULE getString() " + myModule.getString());
+        myModule.writeOnElement("#myModuleText", "Text written by a custom module defined in myModule.js");
+
+        var myDashboard = new Dashboard();
+
+        myDashboard.addParameter("region", "1");
+
+        var selectComponent = new SelectComponent({
+          name: "regionSelector",
+          type: "select",
+          parameters: [],
+          valuesArray: [["1", "Lisbon"], ["2", "Dusseldorf"]],
+          parameter: "region",
+          valueAsId: false,
+          htmlObject: "sampleObject",
+          executeAtStart: true,
+          postChange: function() {
+            alert("You chose: " + myDashboard.getParameterValue(this.parameter));
+          }
+        });
+
+        myDashboard.addComponent(selectComponent);
+        myDashboard.init();
+
+        var sampleDash = new SampleDash("content1");
+        sampleDash.render();
+      });
+    </pre>
+    <p>Note that myModule is not configured in CDF or CDE, hence requireJS will try to get its definition from a file named myModule.js in the same path as the embedded.html file.</p>
+    <p>In order to properly check this sample, please download the following file from the Pentaho Repository.</p>
+    <pre>
+      /Public/plugin-samples/CDE/Require Samples/embeddedSample/embedded.html
+    </pre>
+    <p>For instance, in an Apache Server, copy this file to its content root directory and in the browser open http://localhost/embedded.html</p>
+  </div>
+</div>

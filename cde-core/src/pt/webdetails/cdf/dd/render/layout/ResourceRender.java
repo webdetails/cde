@@ -1,21 +1,25 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.render.layout;
 
+import java.text.MessageFormat;
 import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.lang.StringUtils;
+import pt.webdetails.cdf.dd.CdeConstants;
 
 public class ResourceRender extends Render {
+
 
   public ResourceRender( JXPathContext context ) {
     super( context );
@@ -25,35 +29,34 @@ public class ResourceRender extends Render {
   public void processProperties() {
   }
 
+  @Override
   public String renderStart() {
-
-    String out = "";
-
-    String resourceType = getPropertyString( "resourceType" );
-
-    if ( hasProperty( "resourceFile" ) ) {
-      if ( resourceType.equals( "Css" ) ) {
-        out += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + getPropertyString( "resourceFile" ) + "\" />\n";
-      } else if ( resourceType.equals( "Javascript" ) ) {
-        out += "<script language=\"javascript\" type=\"text/javascript\" src=\"" + getPropertyString( "resourceFile" )
-          + "\" ></script>\n";
+    // render legacy LayoutResource type
+    final String resourceType = getPropertyString( CdeConstants.RESOURCE_TYPE );
+    String value;
+    if ( !StringUtils.isEmpty( value = getPropertyString( CdeConstants.RESOURCE_FILE ) ) ) {
+      // render RESOURCE_FILE
+      if ( resourceType.equals( CdeConstants.CSS ) ) {
+        return MessageFormat.format( CdeConstants.LINK, value );
+      } else if ( resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
+        return MessageFormat.format( CdeConstants.SCRIPT_FILE, value );
       }
     }
-    if ( hasProperty( "resourceCode" ) ) {
-      if ( resourceType.equals( "Css" ) ) {
-        out += "<style>\n<!--\n" + getPropertyString( "resourceCode" ) + "\n-->\n</style>\n";
-      } else if ( resourceType.equals( "Javascript" ) ) {
-        out += "<script language=\"javascript\" type=\"text/javascript\" >\n" + getPropertyString( "resourceCode" )
-          + "\n</script>\n";
+    if ( !StringUtils.isEmpty( value = getPropertyString( CdeConstants.RESOURCE_CODE ) ) ) {
+      // render RESOURCE_CODE
+      if ( resourceType.equals( CdeConstants.CSS ) ) {
+        return MessageFormat.format( CdeConstants.STYLE, value );
+      } else if ( resourceType.equals( CdeConstants.JAVASCRIPT ) ) {
+        return MessageFormat.format( CdeConstants.SCRIPT_SOURCE, value );
       }
     }
 
-    return out;
-
+    logger.error( "Resource not rendered" );
+    return "";
   }
 
+  @Override
   public String renderClose() {
-
     return "";
   }
 }

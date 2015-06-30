@@ -1974,7 +1974,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "simpleTest",
+      "value": "${h:simpleTest}",
       "type": "HtmlObject"
      },
      {
@@ -2152,7 +2152,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testTileServices}",
+      "value": "${h:testTileServices}",
       "type": "HtmlObject"
      },
      {
@@ -2330,7 +2330,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "testWithMarker",
+      "value": "${h:testWithMarker}",
       "type": "HtmlObject"
      },
      {
@@ -2508,7 +2508,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testWithGeoLocalization}",
+      "value": "${h:testWithGeoLocalization}",
       "type": "HtmlObject"
      },
      {
@@ -2686,7 +2686,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testWithShapes}",
+      "value": "${h:testWithShapes}",
       "type": "HtmlObject"
      },
      {
@@ -2696,7 +2696,7 @@
      },
      {
       "name": "preExecution",
-      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //console.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n            Dashboards.log(beat);\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
+      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //Dashboards.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n            Dashboards.log(beat);\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
       "type": "JavaScript"
      },
      {
@@ -2876,7 +2876,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "HiddenContentCol",
+      "value": "${h:HiddenContentCol}",
       "type": "HtmlObject"
      },
      {
@@ -2973,7 +2973,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:selectMapEngineObj}",
+      "value": "${h:selectMapEngineObj}",
       "type": "HtmlObject"
      },
      {
@@ -3076,7 +3076,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:selectTileObj}",
+      "value": "${h:selectTileObj}",
       "type": "HtmlObject"
      },
      {
@@ -3154,13 +3154,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
@@ -3225,13 +3225,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3296,13 +3296,13 @@
       "type": "Id"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {

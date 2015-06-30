@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
@@ -78,6 +78,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.repository.util.RepositoryHelper;
+import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cpf.utils.MimeTypes;
 
 public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
@@ -181,6 +182,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     String title = null;
     String description = null;
     String operation = null;
+    String file = null;
     String path = null;
     String cdfStructure = null;
     if ( getRequest().getContentType().startsWith( "multipart/form-data" ) ) {
@@ -200,7 +202,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
             operation = fi.getString();
           }
           if ( "file".equals( fi.getFieldName() ) ) {
-            path = fi.getString();
+            path = Utils.getURLDecoded( fi.getString(), CharsetHelper.getEncoding() );
           }
           if ( "cdfstructure".equals( fi.getFieldName() ) ) {
             cdfStructure = fi.getString( "UTF-8" );
@@ -244,6 +246,11 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       cdfStructure = (String) getRequestParameters().getStringParameter( REQUEST_PARAM_CDFSTRUCTURE, null );
 
       path = getRequestParameters().getStringParameter( REQUEST_PARAM_FILE, null );
+      file = (String) getRequestParameters().getParameter( "file" );
+
+      path = Utils.getURLDecoded( path, CharsetHelper.getEncoding() );
+      file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
+
       title = StringUtils.defaultIfEmpty( ( (String) getRequestParameters().getParameter( REQUEST_PARAM_TITLE ) ),
         FilenameUtils.getBaseName( path ) );
       description =
@@ -263,7 +270,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       Object result = null;
 
       if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
-        String file = getRequestParameters().getStringParameter( "file", null );
         JsonUtils.buildJsonResult( getResponse().getOutputStream(), true, dashboardStructure.load( file ) );
         return;
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
@@ -281,7 +287,6 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
-        String file = getRequestParameters().getStringParameter( "file", null );
         if ( StringUtils.isEmpty( file ) || UNSAVED_FILE_PATH.equals( file ) ) {
           String msg = Messages.getString( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" );
           logger.warn( msg );
@@ -391,8 +396,8 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( relativePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
         result = new MessageBundlesHelper( msgDir, readAccess, CdeEnvironment.getPluginSystemWriter(),
-          CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
-          .replaceParameters( result, null );
+                CdeEngine.getEnv().getLocale(), CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() )
+                .replaceParameters( result, null );
       }
 
       writeOut( out, result );
@@ -601,12 +606,12 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
     //i18n token replacement
     if ( !StringUtils.isEmpty( result ) ) {
-       /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
+      /* cde editor's i18n is different; it continues on relying on pentaho-cdf-dd/lang/messages.properties */
 
-      String msgDir = Util.SEPARATOR + "lang" + Util.SEPARATOR;
+      String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( wcdfPath ) );
       result = new MessageBundlesHelper( msgDir, CdeEnvironment.getPluginSystemReader( null ),
-        CdeEnvironment.getPluginSystemWriter(), CdeEngine.getEnv().getLocale(),
-        CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
+              CdeEnvironment.getPluginSystemWriter(), CdeEngine.getEnv().getLocale(),
+              CdeEngine.getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
     }
 
     writeOut( out, result );

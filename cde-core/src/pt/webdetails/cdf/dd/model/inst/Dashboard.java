@@ -164,7 +164,7 @@ public class Dashboard extends Instance<DashboardType>
     return this.getMeta().getId();
   }
   
-  public final DashboardWcdfDescriptor getWcdf()
+  public DashboardWcdfDescriptor getWcdf()
   {
     return this._wcdf;
   }

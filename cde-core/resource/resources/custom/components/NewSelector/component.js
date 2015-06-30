@@ -199,7 +199,7 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
     /*
      * Draw the selector proper
      */
-    this.$el.html(templates.pagingSelector.main(this.model.toJSON()));
+    this.$el.html(Mustache.render(templates.pagingSelector.main, this.model.toJSON()));
     this.updateCollapsed();
     this.renderOptions();
     this.renderPages();
@@ -287,7 +287,7 @@ views.pagingSelector.SelectorView = Backbone.View.extend({
           offset = bottomEdge <= bottomLimit ? 0 : bottomLimit - bottomEdge - minimumMargin;
 
       offset = topEdge - offset >= topLimit ? offset : topLimit - topEdge + minimumMargin;
-      // console.log("Offset is " + offset + " after correction");
+
       optionList.css("top", (optionList.position().top + offset) + "px");
     }
   },
@@ -326,7 +326,7 @@ views.pagingSelector.OptionView = Backbone.View.extend({
     this.model.on("change:visible",this.updateVisibility,this);
   },
   render: function() {
-    this.$el.html(templates.pagingSelector.option(this.model.toJSON()));
+    this.$el.html(Mustache.render(templates.pagingSelector.option, this.model.toJSON()));
     this.$el.addClass('item');  
     this.updateSelectionDisplay();
     this.updateVisibility();
@@ -369,7 +369,7 @@ views.pagingSelector.SelectionView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(templates.pagingSelector.picked(this.model.toJSON()));
+    this.$el.html(Mustache.render(templates.pagingSelector.picked, this.model.toJSON()));
     this.$el.addClass('item');
     this.delegateEvents();
     return this;
@@ -386,7 +386,7 @@ views.pagingSelector.SelectionView = Backbone.View.extend({
 
 var templates = templates || {};
 templates.pagingSelector = {};
-templates.pagingSelector.main = Mustache.compile(
+templates.pagingSelector.main =
   "<div class='selectorComponent'>" +
   "  <div class='pulldown'>"+
   "    <div class='title'>{{title}}</div>"+
@@ -409,20 +409,18 @@ templates.pagingSelector.main = Mustache.compile(
   "      </div>" +
   "  </div>" +
   "  <div class='selection'></div>"+
-  "</div>"
-);
-templates.pagingSelector.option = Mustache.compile(
+  "</div>";
+
+templates.pagingSelector.option =
   "<div class='target'>" +
   "  <span class='name' title='{{label}}'>{{label}}</span>" +
   "  <span class='check'>&nbsp;</span>"+
   "  {{#new}}<span class='new'>&nbsp;</span>{{/new}}" +
-  "</div>"
-);
+  "</div>";
 
-templates.pagingSelector.picked = Mustache.compile(
+templates.pagingSelector.picked =
   "<div class='target'>" +
   "  <span class='name' title='{{label}}'>{{label}}</span>" +
   "  <div class='remove'>&nbsp;</div>" +
-  "</div>"
-);
+  "</div>";
 

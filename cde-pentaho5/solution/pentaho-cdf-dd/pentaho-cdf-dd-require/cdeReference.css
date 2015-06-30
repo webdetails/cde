@@ -1,0 +1,250 @@
+/* Style resets */
+
+/* html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}*/
+
+/***************** Dashboard background ******************/
+body{
+}
+
+
+/****************** Header and Header border *************/
+.WDheader {
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+/****************** Other headers *************/
+
+.WDh1 {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 30px;
+    padding-bottom: 0px;
+
+}
+
+
+.WDh2 {
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+
+/******************* Filter Cells *****************/
+
+/* Filter Cells */
+.WDfilterCell {
+}
+.WDfilterCell .title_container{
+}
+.WDfilterCell .content-container{
+}
+
+
+
+/****************** Data Cells **********************/
+
+/* Data Cells */
+div.container .WDdataCell {
+
+    overflow:hidden;
+    margin-top:30px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;  
+    border-radius: 6px;
+
+    background-color: #f1f1f1;
+
+    border-style:solid;
+    border-width:2px;
+    border-color:#d0cfcf;
+
+    -webkit-box-shadow: 2px 2px 2px 0px #82858A;
+    -moz-box-shadow: 2px 2px 2px 0px #82858A;
+    -o-box-shadow: 2px 2px 2px 0px #82858A;
+    box-shadow: 2px 2px 2px 0px #82858A;
+
+    margin-left:-2px;
+    margin-right:-2px;
+}  
+
+
+.dataTables_wrapper{
+    min-height:inherit;
+}
+
+
+/* Data Cells title container*/
+div.container .WDdataCellHeader {
+
+    /*    overflow:hidden;*/
+    margin-top:30px;
+    min-height: 32px;
+    padding-top:8px;
+    margin-left:  -2px;
+    margin-right: -2px;
+
+    -webkit-border-radius: 3px 3px 0px 0px;
+    -moz-border-radius: 3px 3px 0px 0px;
+    -o-border-radius: 3px 3px 0px 0px;  
+    border-radius: 3px 3px 0px 0px;
+
+    font-size:18px;
+    font-weight: bold;
+    color:#ffffff;
+
+    text-indent: 30px;
+
+    /*    margin-left:-2px;*/
+    /*    margin-right:-2px;*/
+
+    background: #005ca4; /* Old browsers */
+
+    -webkit-box-shadow: 0px 0px 2px 0px #82858A;
+    -moz-box-shadow: 0px 0px 2px 0px #82858A;
+    -o-box-shadow: 0px 0px 2px 0px #82858A;
+    box-shadow: 0px 0px 2px 0px #82858A;
+
+
+
+}
+
+/* Data Cells content container */
+div.container .WDdataCellBody  {
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #f1f1f1;
+
+    -webkit-border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0px 0px 3px 3px;
+    -o-border-radius: 0px 0px 3px 3px;  
+    border-radius: 0px 0px 3px 3px;
+
+    -webkit-box-shadow: 0px 0px 2px 0px #82858A;
+    -moz-box-shadow: 0px 0px 2px 0px #82858A;
+    -o-box-shadow: 0px 0px 2px 0px #82858A;
+    box-shadow: 0px 0px 2px 0px #82858A;
+
+    margin-left:  -1px;
+    margin-right: -1px;
+
+
+}
+
+
+/************ Tables **************/
+
+/* Generic */
+/* Data Cell Tables*/
+div.container table {}
+
+
+div.container   thead {}
+div.container  thead tr {
+    height:28px;
+}
+div.container  thead th {
+    font-size:11px;
+    font-weight:500;
+    color:#36383D;
+    border-left: solid #C1C9D3 1px;
+    background-color:#DAE0EA;
+    cursor:pointer;
+}
+div.container  thead th.sorting{
+    background:#DAE0EA;
+}
+div.container  thead th.sorting_asc{
+    background: #b0c2d4;
+    color:#ffffff;
+}
+div.container  thead th.sorting_desc{
+    background: #8FA9C2;
+    color:#FFFFFF;
+}
+div.container   thead th:first-child {
+    border-left:none;
+}
+
+/* DataTables */
+div.container .dataTables_wrapper{
+    min-height:0px;  
+}
+
+/* DataTables Sorting and Alternate Rows*/
+/*div.container .dataTables_wrapper tbody td.sorting_1{
+  background:none
+}*/
+/* TODO: Temporary sort indicator*/
+div.container  .dataTables_wrapper tbody tr.odd td.sorting_1,
+div.container  .dataTables_wrapper tbody tr.odd{
+    background:#FFFFFF;
+}
+div.container  .dataTables_wrapper tbody tr.even td.sorting_1,
+div.container  .dataTables_wrapper tbody tr.even{
+    background:#F5F8FD; 
+}
+
+
+
+/************ Selectors *************/
+
+select {
+}
+
+select[multiple] {
+}
+
+
+
+
+
+
+/***************** Others ***************/
+
+
+blockquote {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    padding-left: 5px;
+    border-left: 3px solid #ccc;
+    font-family: 'Courier New',Courier,monospace;
+} 
+
+.dualColumn{
+    -moz-column-count: 2;
+    -moz-column-gap: 40px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 40px;
+    column-count: 2;
+    column-gap: 40px;
+}
+
+

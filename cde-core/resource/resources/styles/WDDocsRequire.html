@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+
+		@HEADER@
+	</head>
+	<body>
+		<script language="javascript" type="text/javascript">
+
+			// To use with mantle there's no need for a navigate component
+			//var templateComponents = [navigatorComponent];
+			//Dashboards.addComponents(templateComponents);
+			require(['cdf/lib/jquery'], function($) {
+				var enumerateAndBoxHeader = function() {
+
+					var i = 1;
+
+					var zPad = function(s, n) {
+						return (new Array(n + 1).join('0') + s).substr(-Math.max(n, s.toString().length));
+					}
+
+					$("#content h2").each(function(i, e) {
+
+						var h = $(this);
+						h.find("span.h2Num").remove();
+
+						$("<span/>").text(h.text()).appendTo(h.empty());
+						$("<span/>").addClass("h2Num h2Num" + (i % 2 == 0 ? "Even" : "Odd")).text(zPad(i + 1, 2)).prependTo(h);
+
+						h.css("vertical-align", i % 2 == 0 ? "top" : "bottom");
+						h.add(h.nextUntil("h2")).wrapAll($("<div/>").addClass("webdetailsBoxShadow"))
+
+					})
+				}
+			
+				$(enumerateAndBoxHeader);
+				// execute when ready
+			});
+
+		</script>
+		<div class="webdetailsWrapper">
+			<div class="webdetailsHead">
+				<div class="webdetailsLogo">
+					<a href="http://www.webdetails.pt"></a>
+				</div>
+				<div class="buttoncontact ">
+					<a href="mailto:lead@webdetails.pt" title="Contact Webdetails directly here.">Get in Touch</a>
+				</div>
+			</div>
+			<div class="webdetailsPanelsContainerWrapper">
+				<div class="webdetailsPanelsContainer">
+					<div class="panelContainer selectedPanel">
+						<div class="webdetailsPanelContainerLeft"></div>
+						<div class="webdetailsPanelContainerCenter">
+							<div class="panelTitle">
+								<div class="container">
+                                	<span class="span-3">&nbsp;</span>
+                                    <div class="span-13 panelTitleText">&nbsp;</div>
+                                    <div class="span-8 last panelTitleImages"></div>
+
+                                    <div class="span-17">&nbsp;</div>
+
+								</div>
+
+							</div>
+
+							<div id="content" class="webdetailsMainContent">
+								@CONTENT@
+							</div>
+
+						</div>
+						<div class="webdetailsPanelContainerRight">
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="webdetailsFooter">
+                <div class="webdetailsFooterWebdetails"><a href="http://www.webdetails.pt"></a></div>
+                <div class="webdetailsFooterCtools"><a href="http://www.webdetails.pt/ctools.html"></a></div>
+            </div>
+			@FOOTER@
+		</div>
+
+	</body>
+</html>

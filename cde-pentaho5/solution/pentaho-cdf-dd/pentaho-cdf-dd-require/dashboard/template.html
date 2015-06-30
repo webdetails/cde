@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="span-24"><h1>Dashboard Module Sample</h1></div>
+
+  <p>Require dashboards as AMD modules using RequireJS.</p>
+  <div id="content1" class="content"></div>
+  
+  <hr>
+  
+  <p>Instantiating the first dashboard required again.</p>
+  <div id="content2" class="content"></div>
+  
+  <hr>
+  
+  <p>Instantiating the first dashboard required again, passing an argument <code>alias</code> to the constructor</p>
+  <div id="content3" class="content"></div>
+
+</div>
+
+<script language="javascript" type="text/javascript">
+  
+  require([
+
+    // There are two ways to require a dashboard.
+    // Directly point to the getDashboard endpoint:
+    //'/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'
+
+    // or use the dash! requirejs loader plugin:
+    'dash!/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/cde_sample1.wcdf'
+
+  ], function(SampleDash) {
+
+    var sampleDash = new SampleDash("content1");
+    sampleDash.render();
+
+    //We are instantiating the SampleDash again, internally it will make sure to use different ids for the htmlObjects
+    //NOTE: this is only possible because the dashboard was required without an alias
+    var sampleDash2 = new SampleDash("content2"); //we could also define an alias at this point: new SampleDash("elementId", "alias")
+    sampleDash2.render();
+
+    var sampleDash3 = new SampleDash("content3", "sampleDash3");
+    sampleDash3.render();
+
+    //Linking a fireChange in one dashboard to a setParameter on the other
+    //  sampleDash.on("cdf productLine:fireChange", function (evt) {
+    //    sampleDash2.fireChange("productLine", evt.value);
+    //  });    
+
+  });
+</script>

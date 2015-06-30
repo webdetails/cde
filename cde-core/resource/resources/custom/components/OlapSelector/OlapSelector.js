@@ -111,14 +111,16 @@ var OlapSelectorModel = Backbone.Model.extend({
 
     addPreSelectValues: function(toChange, myself) {
       var newValue,
-          values = myself.get("values");
+          depth,
+          values = myself.get("values"),
+          maxLevel = this.get("levels").length - 1;
 
-      for (c = 0; c < toChange.length; c++) {
-        var newValue = toChange[c], depth;
-
+      for(var c = 0; c < toChange.length; c++) {
+        newValue = toChange[c];
         depth = newValue.qualifiedName.match(/(\[[^\]]+]\.?)/g).length - 2;
 
         newValue.level = myself.get("levels").at(depth).id;
+        newValue.canDrillDown = depth < maxLevel;
 
         values.add(newValue, {
           silent: true
@@ -473,7 +475,7 @@ var LevelModel = OptionModel.extend({
 
         // Bind changing qualifiedName to id and name to value
         this.on("change:qualifiedName change:name",function(o){
-            wd.log("Detected changes");
+            Dashboards.log("Detected changes");
             this.set("id",o.get("qualifiedName"));
             this.set("label",o.get("name"));
         });
@@ -563,7 +565,7 @@ var OlapSelectorView = Backbone.View.extend({
         /*
          * Draw the selector proper
          */
-        this.$el.html(templates.olapSelector.main(this.model.toJSON()));
+        this.$el.html(Mustache.render(templates.olapSelector.main, this.model.toJSON()));
         this.renderLevels();
         this.updateCollapsed();
         this.renderLevels();
@@ -578,10 +580,9 @@ var OlapSelectorView = Backbone.View.extend({
           crumbtrail = this.model.get("breadcrumb");
       if(crumbtrail.length > 0){
         var breadcrumb = crumbtrail[crumbtrail.length - 1];
-        this.$el.find(".breadcrumb").html(templates.olapSelector.crumbtrail({
-          level: currentLevelName,
-          name: breadcrumb.get("name")
-        }));
+        this.$el.find(".breadcrumb").html(Mustache.render(
+          templates.olapSelector.crumbtrail,
+          {level: currentLevelName, name: breadcrumb.get("name")}));
       } else {
         this.$el.find(".breadcrumb").empty();
       }
@@ -726,7 +727,7 @@ var OlapSelectorView = Backbone.View.extend({
             offset = bottomEdge <= bottomLimit ? 0 : bottomLimit - bottomEdge - minimumMargin;
 
             offset = topEdge - offset >= topLimit ? offset : topLimit - topEdge + minimumMargin;
-            console.log("Offset is " + offset + " after correction");
+
             optionList.css("top", (optionList.position().top + offset) + "px");
         }
     },
@@ -760,7 +761,7 @@ var OptionView = Backbone.View.extend({
     template: null,
     events: {
         "click .target": "toggleSelection",
-        "click .drill-down": "drillDown"
+        "click .drill-down-enabled": "drillDown"
     },
     initialize: function() {
         this.setTemplate();
@@ -777,8 +778,8 @@ var OptionView = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(this.template(this.model.toJSON()));
-        this.$el.addClass('item');  
+        this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+        this.$el.addClass('item');
         this.updateSelectionDisplay();
         this.delegateEvents();
         return this;
@@ -825,7 +826,7 @@ var SelectionView = Backbone.View.extend({
     },
 
     render: function() {
-      this.$el.html(templates.olapSelector.picked(this.model.toJSON()));
+      this.$el.html(Mustache.render(templates.olapSelector.picked, this.model.toJSON()));
       this.delegateEvents();
       return this;
     },
@@ -851,7 +852,7 @@ var SelectionViewOut = SelectionView.extend({
 
 var templates = templates || {};
 templates.olapSelector = {};
-templates.olapSelector.main = Mustache.compile(
+templates.olapSelector.main =
     "<div class='olapSelectorComponent'>" +
     " <div class='pulldown'>"+
     "   <div class='title'>{{title}}</div>"+
@@ -892,48 +893,35 @@ templates.olapSelector.main = Mustache.compile(
     " <div class='outsideArea'>"+
     "   <ul class='selection'></ul>"+
     " </div>"+
-    "</div>"
-);
-templates.olapSelector.option = Mustache.compile(
+    "</div>";
+
+templates.olapSelector.option =
     "<div class='target'>" +
     " <span class='name' title='{{name}}'>{{name}}</span>" +
     " <span class='check'>&nbsp;</span>"+
     "</div>" +
-    "<div class='drill-down'><span class='label'>&nbsp;</span></div>"
-);
+    "{{#canDrillDown}}<div class='drill-down drill-down-enabled'>{{/canDrillDown}}" +
+    "{{^canDrillDown}}<div class='drill-down drill-down-disabled'>{{/canDrillDown}}" +
+    "<span class='label'>&nbsp;</span></div>";
 
-templates.olapSelector.picked = Mustache.compile(
-"<div class='target'>" +
+templates.olapSelector.picked =
+    "<div class='target'>" +
     "  <span class='name' title='{{name}}'>{{name}}</span>" +
     "  <div class='remove'>&nbsp;</div>" +
-    "</div>"
-);
+    "</div>";
 
-templates.olapSelector.levels = Mustache.compile(
-"<div class='levelTitle'>Levels</div>"+
-    "<div class='levels options'></div>"
-);
+templates.olapSelector.levels =
+    "<div class='levelTitle'>Levels</div>"+
+    "<div class='levels options'></div>";
 
 
-templates.olapSelector.level = Mustache.compile(
+templates.olapSelector.level =
     "<div class='target'>" +
     "  <span class='name' title='{{label}}'>{{label}}</span>" +
-    "</div>"
-);
-    
+    "</div>";
 
-templates.olapSelector.crumbtrail = Mustache.compile(
+
+templates.olapSelector.crumbtrail =
   "<span class='level'>{{level}}</span>" +
   "<span class='separator'>&nbsp;</span>" +
-  "<span class='name'>{{name}}</span>"
-)
-
-
-
-// Shims
-if (typeof console === "undefined"){
-    console={};
-    console.log = function(){
-        return;
-    }
-}
+  "<span class='name'>{{name}}</span>";

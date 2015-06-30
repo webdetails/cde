@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-* 
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 var wd = (typeof wd !== 'undefined') ? wd : {};
 wd.cde = wd.cde || {};
@@ -58,7 +58,7 @@ wd.cde.endpoints = {
   },
 
   isEmptyFilePath: function(filePath) {
-    return (!filePath || "/null/null/null" == filePath);
+    return (!filePath || "/null/null/null" == filePath || encodeURIComponent("/null/null/null") == filePath );
   },
 
   getSaikuUiPluginUrl: function() {
@@ -353,13 +353,20 @@ var StylesRequests = {
 
   initStyles: function(saveSettingsParams, wcdf, myself, callback) {
 
+    var refreshTitle = function(title) {
+      var content = title + '<div class="cdfdd-title-status"></div>';
+      $("div.cdfdd-title")
+          .empty()
+          .html(content)
+          .attr('title', title);
+    };
+
     $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function(result) {
       try {
         var json = eval("(" + result + ")");
         if(json.status == "true") {
           myself.setDashboardWcdf(wcdf);
-          var title = wcdf.title;
-          $("div.cdfdd-title").empty().text(title).attr('title', title);
+          refreshTitle(wcdf.title);
           callback();
         } else {
           throw json.result;
@@ -446,7 +453,7 @@ var SaveRequests = {
           var solutionPath = selectedFolder.split("/");
           myself.initStyles(function() {
             //cdfdd.setExitNotification(false);
-            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
         } else {
           throw json.result;
@@ -494,7 +501,7 @@ var SaveRequests = {
           wcdf.widget = true;
           myself.saveSettingsRequest(wcdf);
           myself.initStyles(function() {
-            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + selectedFile;
+            window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
         } else {
           throw json.result;
@@ -674,5 +681,22 @@ var OlapUtils = {
 var Cgg = {
   getCggDrawUrl: function() {
     return window.location.href.substring(0, window.location.href.indexOf("content") - 1) + wd.cde.endpoints.getUnbasedCggPluginUrl() + "Draw";
+  }
+};
+
+var SettingsHelper = {
+  getExtraPromptContent: function(){
+    return '';
+  },
+
+  callExtraContentSubmit: function(){
+  },
+
+  getStyles: function(wcdf, myself){
+    return myself.styles;
+  },
+
+  getSelectedStyle: function(wcdf){
+    return wcdf.style;
   }
 };

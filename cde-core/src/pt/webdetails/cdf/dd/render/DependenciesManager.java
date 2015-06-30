@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.render;
 
@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.MetaModelManager;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
+import pt.webdetails.cdf.dd.model.meta.CustomComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -141,6 +142,10 @@ public final class DependenciesManager {
     DependenciesPackage ddScripts = depMgr.getPackage( StdPackages.CDFDD );
 
     for ( ComponentType compType : metaModel.getComponentTypes() ) {
+      // Custom components that support legacy dashboards must register resources.
+      if ( compType instanceof CustomComponentType && !compType.supportsLegacy() ) {
+        continue;
+      }
       // General Resources
       for ( Resource res : compType.getResources() ) {
         Resource.Type resType = res.getType();

@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
@@ -23,9 +23,6 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 
-/**
- * @author dcleao
- */
 public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteContext {
   protected static final String DASHBOARD_PATH_TAG = "\\$\\{dashboardPath\\}";
 
@@ -63,11 +60,11 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   protected final CdfRunJsDashboardWriteOptions _options;
 
   public CdfRunJsDashboardWriteContext(
-    IThingWriterFactory factory,
-    String indent,
-    boolean bypassCacheRead,
-    Dashboard dash, // Current Dashboard/Widget
-    CdfRunJsDashboardWriteOptions options ) {
+      IThingWriterFactory factory,
+      String indent,
+      boolean bypassCacheRead,
+      Dashboard dash, // Current Dashboard/Widget
+      CdfRunJsDashboardWriteOptions options ) {
     super( factory, true );
 
     if ( dash == null ) {
@@ -85,8 +82,8 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
   }
 
   protected CdfRunJsDashboardWriteContext(
-    CdfRunJsDashboardWriteContext other,
-    String indent ) {
+      CdfRunJsDashboardWriteContext other,
+      String indent ) {
     super( other.getFactory(), other.getBreakOnError() );
 
     this._indent = StringUtils.defaultIfEmpty( indent, "" );
@@ -98,7 +95,7 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
 
   public CdfRunJsDashboardWriteContext withIndent( String indent ) {
     return CdeEngine.getInstance().getEnvironment()
-      .getCdfRunJsDashboardWriteContext( this, indent );
+      .getCdfRunJsDashboardWriteContext( getFactory(), indent, _bypassCacheRead, _dash, _options );
   }
 
   public String getIndent() {
@@ -159,5 +156,23 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( SHORT_P_TAG, aliasAndName )
       .replaceAll( LONG_H_TAG, aliasAndName )
       .replaceAll( LONG_P_TAG, aliasAndName );
+  }
+
+  public String replaceHtmlAlias( String content ) {
+    if ( content == null ) {
+      return "";
+    }
+
+    String alias = this._options.getAliasPrefix();
+
+    String aliasAndName = ( StringUtils.isNotEmpty( alias ) ? ( alias + "_" ) : "" ) + "$1";
+
+    return content
+      .replaceAll( SHORT_C_TAG, COMPONENT_PREFIX + "$1" )
+      .replaceAll( LONG_C_TAG, COMPONENT_PREFIX + "$1" )
+      .replaceAll( SHORT_H_TAG, aliasAndName )
+      .replaceAll( SHORT_P_TAG, "$1" )
+      .replaceAll( LONG_H_TAG, aliasAndName )
+      .replaceAll( LONG_P_TAG, "$1" );
   }
 }

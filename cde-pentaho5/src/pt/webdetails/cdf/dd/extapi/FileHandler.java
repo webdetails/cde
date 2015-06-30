@@ -1,15 +1,16 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 package pt.webdetails.cdf.dd.extapi;
 
 import org.apache.commons.io.FilenameUtils;
@@ -30,6 +31,7 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
 
 public class FileHandler implements IFileHandler {
 
@@ -46,7 +48,7 @@ public class FileHandler implements IFileHandler {
       wcdfFile = Utils.getSystemOrUserRWAccess( wcdfPath ).getFileInputStream( wcdfPath );
     } else {
       wcdfFile = CdeEnvironment.getPluginSystemReader().getFileInputStream(
-        DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+          DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
 
       // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
       if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
@@ -60,8 +62,10 @@ public class FileHandler implements IFileHandler {
     String wcdfContentAsString = IOUtils.toString( wcdfFile, CharsetHelper.getEncoding() );
 
     // 2. Fill-in wcdf file title and description
-    wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_TITLE_TAG, title );
-    wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_DESCRIPTION_TAG, description );
+    wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_TITLE_TAG,
+        Matcher.quoteReplacement( title ) );
+    wcdfContentAsString = wcdfContentAsString.replaceFirst( CdeConstants.DASHBOARD_DESCRIPTION_TAG,
+        Matcher.quoteReplacement( description ) );
 
     // 3. Publish new wcdf file
     ByteArrayInputStream bais = new ByteArrayInputStream( wcdfContentAsString.getBytes( CharsetHelper.getEncoding() ) );
@@ -130,8 +134,7 @@ public class FileHandler implements IFileHandler {
    * @param isHidden if directory should be hidden
    * @return operation success
    */
-  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath,
-                                            final boolean isHidden ) {
+  public boolean createBasicDirIfNotExists( final IRWAccess access, final String relativeFolderPath, final boolean isHidden ) {
 
     if ( access == null || StringUtils.isEmpty( relativeFolderPath ) ) {
       return false;

@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.render;
 
@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
 import pt.webdetails.cdf.dd.render.cda.*;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 /**
  * Creates the .CDA file XML. TODO: this should be changed to a ThingWriter of DataSourceComponents?
@@ -101,7 +102,7 @@ public class CdaRenderer {
     Transformer transformer = tFactory.newTransformer();
 
     DOMSource source = new DOMSource( cdaFile );
-    StreamResult res = new StreamResult( new OutputStreamWriter( result, "UTF-8" ) );
+    StreamResult res = new StreamResult( new OutputStreamWriter( result, CharsetHelper.getEncoding() ) );
     transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
     transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "2" );
     transformer.transform( source, res );
@@ -207,7 +208,6 @@ public class CdaRenderer {
       Pointer pointer = params.next();
       String paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
       String placement = ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) ).toLowerCase();
-
       if ( placement.equals( "attrib" ) ) {
         if ( paramName.equals( "id" ) || paramName.equals( "connection" ) || paramName.equals( "cacheDuration" ) ) {
           continue;
@@ -240,9 +240,7 @@ public class CdaRenderer {
       } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
         || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
         Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
-
         renderProperty( new CompoundComponent(), context, paramName, compoundElem );
-
         dataAccess.appendChild( compoundElem );
         if ( paramName.equals( "left" ) ) {
           renderProperty( new Keys(), context, "leftkeys", compoundElem );

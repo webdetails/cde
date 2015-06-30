@@ -1,0 +1,66 @@
+<DesignerComponent>
+	<Header>
+		<Name>Chart Component</Name>
+		<IName>JFreeChart</IName>
+		<Description>Chart Component</Description>
+		<Category>CHARTS</Category>
+		<CatDescription>Charts</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>htmlObject</Property>
+			<Property>listeners</Property>
+			<Definition name="chartDefinition">
+				<Property name="title">title</Property>
+				<Property name="subtitle">subtitle</Property>
+				<Property name="chartType">chartType</Property>
+				<Property name="width">width</Property>
+				<Property name="height">height</Property>
+				<Property name="caption">caption</Property>
+				<Property>jFreeChartDataSource</Property>
+				<Property name="transformation">transformation</Property>
+				<Property name="directory">directory</Property>
+				<Property name="importStep">importStep</Property>
+				<Property name="parameterName">parameterName</Property>
+				<Property name="topCount">topCount</Property>
+				<Property name="topCountAxis">topCountAxis</Property>
+				<Property name="rangeTitle">rangeTitle</Property>
+				<Property name="is3d">is3d</Property>
+				<Property name="byRow">byRow</Property>
+				<Property name="isStacked">isStacked</Property>
+				<Property name="lineStyle">lineStyle</Property>
+				<Property name="lineWidth">lineWidth</Property>
+				<Property name="includeLegend">includeLegend</Property>
+				<Property name="legendFontFamily">legendFontFamily</Property>
+				<Property name="legendFontSize">legendFontSize</Property>
+				<Property name="legendFontIsBold">legendFontIsBold</Property>
+				<Property name="legendFontIsItalic">legendFontIsItalic</Property>		
+				<Property name="domainPeriodType">domainPeriodType</Property>
+				<Property name="domainTickFontSize">domainTickFontSize</Property>
+				<Property name="domainLabelRotation">domainLabelRotation</Property>
+				<Property name="domainLabelRotationDir">domainLabelRotationDir</Property>
+				<Property name="backgroundColor">backgroundColor</Property>
+				<Property name="plotbgcolor">plotbgcolor</Property>
+				<Property name="foregroundAlpha">foregroundAlpha</Property>
+				<Property name="backgroundAlpha">backgroundAlpha</Property>
+				<Property name="datasetType">datasetType</Property>
+				<Property name="urlTemplate">urlTemplate</Property>
+				<Property name="urlTarget">urlTarget</Property>
+				<Property name="orientation">orientation</Property>
+				<Property name="useBaseUrl">useBaseUrl</Property>
+				<Property name="seriesName">seriesName</Property>
+				<Property name="interiorGap">interiorGap</Property>
+				<Property name="maxBarWidth">maxBarWidth</Property>
+				<Property name="markersVisible">markersVisible</Property>
+				<Property name="tooltipContent">tooltipContent</Property>
+				<Property name="tooltipYContent">tooltipYContent</Property>
+			</Definition>
+			<Property>executeAtStart</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+		</Model>
+	</Contents>
+</DesignerComponent>

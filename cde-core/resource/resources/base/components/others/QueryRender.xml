@@ -17,6 +17,7 @@
 			<Property>executeAtStart</Property>
 			<Property>listeners</Property>
 			<Property>htmlObject</Property>
+			<Property>asynchronousMode</Property>
 			<Property>preExecution</Property>
 			<Property>postExecution</Property>
 			<Property>preChange</Property>

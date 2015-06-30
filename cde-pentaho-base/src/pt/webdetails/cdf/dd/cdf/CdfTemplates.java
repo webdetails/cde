@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.cdf;
 
@@ -45,7 +45,7 @@ public class CdfTemplates {
 
   private static String SYSTEM_CDF_DD_TEMPLATES = "/resources/templates";
   private String resoureUrl;
-
+  
   private static String REPOSITORY_CDF_DD_TEMPLATES_CUSTOM = "templates";
   private static Log logger = LogFactory.getLog( CdfTemplates.class );
 
@@ -66,9 +66,9 @@ public class CdfTemplates {
 
     byte[] fileData = structure.getBytes( CharsetHelper.getEncoding() );
     if ( !access.saveFile( Utils.joinPath( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM, file ), new ByteArrayInputStream(
-      fileData ) ) ) {
+        fileData ) ) ) {
       throw new DashboardStructureException( Messages
-        .getString( "DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION" ) );
+          .getString( "DashboardStructure.ERROR_006_SAVE_FILE_ADD_FAIL_EXCEPTION" ) );
     }
   }
 
@@ -79,24 +79,24 @@ public class CdfTemplates {
       GenericBasicFileFilter jsonFilter = new GenericBasicFileFilter( null, ".cdfde" );
 
       List<IBasicFile> defaultTemplatesList =
-        CdeEnvironment.getPluginSystemReader( SYSTEM_CDF_DD_TEMPLATES ).listFiles( null, jsonFilter,
-          IReadAccess.DEPTH_ALL );
+          CdeEnvironment.getPluginSystemReader( SYSTEM_CDF_DD_TEMPLATES ).listFiles( null, jsonFilter,
+              IReadAccess.DEPTH_ALL );
 
       if ( defaultTemplatesList != null ) {
-        loadFiles( defaultTemplatesList.toArray( new IBasicFile[] { } ), (JSONArray) result, "default" );
+        loadFiles( defaultTemplatesList.toArray( new IBasicFile[] {} ), (JSONArray) result, "default" );
       } else {
         result = Messages.getString( "CdfTemplates.ERROR_002_LOADING_TEMPLATES_EXCEPTION" );
       }
 
       List<IBasicFile> customTemplatesList =
-        CdeEnvironment.getPluginRepositoryReader( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM ).listFiles( null, jsonFilter,
-          IReadAccess.DEPTH_ALL );
+          CdeEnvironment.getPluginRepositoryReader( REPOSITORY_CDF_DD_TEMPLATES_CUSTOM ).listFiles( null, jsonFilter,
+              IReadAccess.DEPTH_ALL );
       if ( customTemplatesList != null ) {
-        loadFiles( customTemplatesList.toArray( new IBasicFile[] { } ), (JSONArray) result, "custom" );
+        loadFiles( customTemplatesList.toArray( new IBasicFile[] {} ), (JSONArray) result, "custom" );
       }
 
     } catch ( IOException e ) {
-      logger.error( e );
+      logger.error(e);
       result = Messages.getString( "CdfTemplates.ERROR_002_LOADING_EXCEPTION" );
     }
     return result;
@@ -121,15 +121,15 @@ public class CdfTemplates {
     for ( int i = 0; i < jsonFiles.length; i++ ) {
       final JSONObject template = new JSONObject();
 
-      String imgResourcePath = resoureUrl + "unknown.png";
+      String imgResourcePath = resoureUrl+"unknown.png";
 
-      if ( access.fileExists( jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) ) ) {
-        imgResourcePath = resoureUrl + jsonFiles[ i ].getName().replace( ".cdfde", ".png" );
+      if ( access.fileExists( jsonFiles[i].getName().replace( ".cdfde", ".png" ) ) ) {
+        imgResourcePath = resoureUrl+jsonFiles[i].getName().replace( ".cdfde", ".png" );
       }
 
       template.put( "img", imgResourcePath );
       template.put( "type", type );
-      template.put( "structure", JsonUtils.readJsonFromInputStream( jsonFiles[ i ].getContents() ) );
+      template.put( "structure", JsonUtils.readJsonFromInputStream( jsonFiles[i].getContents() ) );
       result.add( template );
     }
   }
@@ -147,10 +147,9 @@ public class CdfTemplates {
    * @return original template structure updated to include the dashboard's style and renderer type
    * @throws DashboardStructureException
    */
-  protected String addDashboardStyleAndRendererTypeToTemplate( String origStructure )
-    throws DashboardStructureException {
+  protected String addDashboardStyleAndRendererTypeToTemplate( String origStructure ) throws DashboardStructureException {
 
-    if ( origStructure == null ) {
+    if( origStructure == null ){
       return origStructure; // nothing to do here
     }
 
@@ -160,15 +159,15 @@ public class CdfTemplates {
 
       JSONObject jsonObj = JSONObject.fromObject( origStructure );
 
-      if ( jsonObj != null && jsonObj.containsKey( "filename" ) ) {
+      if( jsonObj != null && jsonObj.containsKey( "filename" ) ){
 
         DashboardWcdfDescriptor wcdf = loadWcdfDescriptor( jsonObj.getString( "filename" ) );
 
-        if ( wcdf != null ) {
+        if( wcdf != null ){
 
           // update the template structure
-          jsonObj.put( "style", wcdf.getStyle() );
-          jsonObj.put( "rendererType", wcdf.getRendererType() );
+          jsonObj.put( "style" , wcdf.getStyle() );
+          jsonObj.put( "rendererType" , wcdf.getRendererType() );
 
           updatedStructure = jsonObj.toString( 2 );
         }
@@ -176,7 +175,7 @@ public class CdfTemplates {
 
       return updatedStructure;
 
-    } catch ( Exception e ) {
+    } catch( Exception e ){
       logger.error( e );
       throw new DashboardStructureException( e.getMessage() );
     }
@@ -188,9 +187,9 @@ public class CdfTemplates {
   }
 
   // useful to mock the resource endpoint when unit testing CdfTemplates
-  protected String getResourceUrl( String resourceEndpoint ) {
+  protected String getResourceUrl( String resourceEndpoint ){
     return CdeEngine.getInstance().getEnvironment()
-      .getApplicationBaseContentUrl() + resourceEndpoint + SYSTEM_CDF_DD_TEMPLATES + "/";
+      .getApplicationBaseContentUrl() + resourceEndpoint + SYSTEM_CDF_DD_TEMPLATES + "/" ;
   }
 }
 

@@ -1,0 +1,27 @@
+<DesignerComponent>
+	<Header>
+		<Name>TextInput Component</Name>
+		<IName>textInput</IName>
+		<Description>Text input Component</Description>
+		<Category>SELECTORS</Category>
+		<CatDescription>Selects</CatDescription>
+		<Type>PalleteEntry</Type>
+	</Header>
+	<Contents>
+		<Model>
+			<Property>parameter</Property>
+			<Property>listeners</Property>
+			<Property>htmlObject</Property>
+			<Property>maxLength</Property>
+			<Property>size</Property>
+			<Property>executeAtStart</Property>
+			<Property>preChange</Property>
+			<Property>postChange</Property>
+			<Property>preExecution</Property>
+			<Property>postExecution</Property>
+			<Property>refreshPeriod</Property>
+			<Property>tooltip</Property>
+
+		</Model>
+	</Contents>
+</DesignerComponent>

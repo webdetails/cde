@@ -1,0 +1,13 @@
+<DesignerProperty>
+<Header>
+	<Name>width</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Width</Description>
+	<Tooltip>Element width, in pixels </Tooltip>
+	<InputType>Integer</InputType>
+	<OutputType>Number</OutputType>
+	<Order>50</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

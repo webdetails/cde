@@ -1974,7 +1974,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "simpleTest",
+      "value": "${h:simpleTest}",
       "type": "HtmlObject"
      },
      {
@@ -2152,7 +2152,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testTileServices}",
+      "value": "${h:testTileServices}",
       "type": "HtmlObject"
      },
      {
@@ -2330,7 +2330,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "testWithMarker",
+      "value": "${h:testWithMarker}",
       "type": "HtmlObject"
      },
      {
@@ -2508,7 +2508,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testWithGeoLocalization}",
+      "value": "${h:testWithGeoLocalization}",
       "type": "HtmlObject"
      },
      {
@@ -2686,7 +2686,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:testWithShapes}",
+      "value": "${h:testWithShapes}",
       "type": "HtmlObject"
      },
      {
@@ -2696,7 +2696,7 @@
      },
      {
       "name": "preExecution",
-      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //console.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n            Dashboards.log(beat);\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
+      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n    \n    this.parseShapeKey0 = function(y){\n        // Function called\n        try {\n            var description = $($(y).find('description')[0]).html().slice(0);\n            //Dashboards.log(description);\n            beat = description.split('Fipscntry:</td>')[1].split('<td>')[1];\n            beat = beat ? beat.split('</td>')[0] : beat;\n            Dashboards.log(beat);\n            return parseInt(beat);\n        } catch (e) {\n            return 'oops';\n        }\n    };\n}",
       "type": "JavaScript"
      },
      {
@@ -2716,7 +2716,7 @@
      },
      {
       "name": "shapeMouseOver",
-      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if (event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
+      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
       "type": "JavaScript"
      },
      {
@@ -2876,7 +2876,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "HiddenContentCol",
+      "value": "${h:HiddenContentCol}",
       "type": "HtmlObject"
      },
      {
@@ -2973,7 +2973,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:selectMapEngineObj}",
+      "value": "${h:selectMapEngineObj}",
       "type": "HtmlObject"
      },
      {
@@ -3076,7 +3076,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "${p:selectTileObj}",
+      "value": "${h:selectTileObj}",
       "type": "HtmlObject"
      },
      {

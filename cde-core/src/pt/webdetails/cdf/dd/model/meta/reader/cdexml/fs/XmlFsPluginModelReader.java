@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.meta.reader.cdexml.fs;
 
@@ -119,8 +119,13 @@ public final class XmlFsPluginModelReader {
     List<IBasicFile> filesList = CdeEnvironment.getPluginSystemReader( BASE_COMPS_DIR ).listFiles( null,
         new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
     PathOrigin origin = new StaticSystemOrigin( BASE_COMPS_DIR );
-    for ( IBasicFile file : filesList ) {
-      this.readComponentsFile( model, factory, file, DEF_BASE_TYPE, origin );
+
+    if ( filesList != null ) {
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
+        this.readComponentsFile( model, factory, file, DEF_BASE_TYPE, origin );
+      }
     }
   }
 
@@ -133,8 +138,9 @@ public final class XmlFsPluginModelReader {
         new GenericBasicFileFilter( null, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-
-      for ( IBasicFile file : filesList ) {
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
         this.readPropertiesFile( model, factory, file );
       }
     }
@@ -149,7 +155,9 @@ public final class XmlFsPluginModelReader {
         new GenericBasicFileFilter( CUSTOM_PROPS_FILENAME, DEFINITION_FILE_EXT ), IReadAccess.DEPTH_ALL );
 
     if ( filesList != null ) {
-      for ( IBasicFile file : filesList ) {
+      IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] {} );
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
         this.readPropertiesFile( model, factory, file );
       }
     }
@@ -184,20 +192,9 @@ public final class XmlFsPluginModelReader {
       XmlFsPluginThingReaderFactory factory,
       Element propertyElem,
       IBasicFile file ) {
-    String className = null;
     try {
-      className = Utils.getNodeText( "Header/Override", propertyElem );
-
-      if ( StringUtils.isEmpty( className ) ) {
-        className = "PropertyType";
-      }
-
-      //  String name = Utils.getNodeText("Header/Name", propertyElem); //TODO: do anything with this?
-
       PropertyType.Builder prop = factory.getPropertyTypeReader().read( propertyElem, file.getPath() );
-
       modelBuilder.addProperty( prop );
-
     } catch ( IllegalArgumentException ex ) {
       if ( !this.continueOnError ) {
         throw ex;
@@ -225,12 +222,9 @@ public final class XmlFsPluginModelReader {
 
     if ( filesList != null ) {
       logger.debug( String.format( "%d sub-folders found", filesList.size() ) );
-
       IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] { } );
-
-      Arrays.sort( filesArray, getComponentFileComparator() );
-
-      for ( IBasicFile file : filesList ) {
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
         this.readComponentsFile( model, factory, file, DEF_CUSTOM_TYPE, origin );
       }
     }
@@ -310,8 +304,8 @@ public final class XmlFsPluginModelReader {
     if ( filesList != null ) {
       logger.debug( String.format( "%s widget components found", filesList.size() ) );
       IBasicFile[] filesArray = filesList.toArray( new IBasicFile[] { } );
-      Arrays.sort( filesArray, getComponentFileComparator() );
-      for ( IBasicFile file : filesList ) {
+      Arrays.sort( filesArray, getFileComparator() );
+      for ( IBasicFile file : filesArray ) {
         this.readComponentsFile( model, factory, file, DEF_WIDGET_STUB_TYPE, widgetsOrigin );
       }
     }
@@ -369,15 +363,11 @@ public final class XmlFsPluginModelReader {
   }
 
 
-  private Comparator<IBasicFile> getComponentFileComparator() {
-    return new Comparator<IBasicFile>() { //TODO: why sort?
+  private Comparator<IBasicFile> getFileComparator() {
+    return new Comparator<IBasicFile>() {
       @Override
       public int compare( IBasicFile file1, IBasicFile file2 ) {
-        //        if (file1 == null && file2 == null) { //TODO if this makes sense so does one of them being null
-        //          return 0;
-        //        } else {
         return file1.getFullPath().toLowerCase().compareTo( file2.getFullPath().toLowerCase() );
-        //        }
       }
     };
   }

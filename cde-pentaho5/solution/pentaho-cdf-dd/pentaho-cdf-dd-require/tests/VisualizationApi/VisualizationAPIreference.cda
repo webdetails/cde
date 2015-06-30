@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="vizQueryScript" type="scripting.scripting">
+         <Initscript></Initscript>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="vizQuery" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="vizQueryScript"
+               id="vizQueryScript"
+               type="scriptable">
+      <Columns/>
+      <Parameters/>
+      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"Markets",
+"Product",
+"Sales"
+};
+
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+,Float.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new String("APAC"), new String("Classic Cars")
+,new Float("411956.300")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Motorcycles")
+,new Float("189818.230")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Planes")
+,new Float("121426.199")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Ships")
+,new Float("38393.48")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Trains")
+,new Float("9907.07")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Trucks and Buses")
+,new Float("145665.690")
+});
+model.addRow(new Object[]{ new String("APAC"), new String("Vintage Cars")
+,new Float("364538.920")
+});
+
+
+model.addRow(new Object[]{ new String("EMEA"), new String("Classic Cars")
+,new Float("2091600.639")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Motorcycles")
+,new Float("507138.280")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Planes")
+,new Float("491654.819")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Ships")
+,new Float("427264.679")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Trains")
+,new Float("138506.18")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Trucks and Buses")
+,new Float("500978.819")
+});
+model.addRow(new Object[]{ new String("EMEA"), new String("Vintage Cars")
+,new Float("851080.899")
+});
+
+model.addRow(new Object[]{ new String("Japan"), new String("Classic Cars")
+,new Float("181601.490")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Motorcycles")
+,new Float("52619.49")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Planes")
+,new Float("109733.139")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Ships")
+,new Float("33015.54")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Trains")
+,new Float("16802.379")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Trucks and Buses")
+,new Float("57847.659")
+});
+model.addRow(new Object[]{ new String("Japan"), new String("Vintage Cars")
+,new Float("52337.88")
+});
+
+model.addRow(new Object[]{ new String("NA"), new String("Classic Cars")
+,new Float("1406261.439")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Motorcycles")
+,new Float("524549.190")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Planes")
+,new Float("353942.96")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Ships")
+,new Float("249997.150")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Trains")
+,new Float("69253.560")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Trucks and Buses")
+,new Float("449788.399")
+});
+model.addRow(new Object[]{ new String("NA"), new String("Vintage Cars")
+,new Float("798268.690")
+});
+
+
+
+return model;</Query>
+   </DataAccess>
+   <DataAccess access="public" cache="true" cacheDuration="3600" connection="vizQuery"
+               id="vizQuery"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Columns/>
+      <Parameters/>
+      <Query>WITH
+SET [*NATIVE_CJ_SET] AS 'NONEMPTYCROSSJOIN([*BASE_MEMBERS__Markets_],[*BASE_MEMBERS__Product_])'
+SET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_0]}'
+SET [*BASE_MEMBERS__Markets_] AS '[Markets].[Territory].MEMBERS'
+SET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER,[Product].CURRENTMEMBER)})'
+SET [*BASE_MEMBERS__Product_] AS '[Product].[Line].MEMBERS'
+SET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,[Product].CURRENTMEMBER.ORDERKEY,BASC)'
+MEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500
+SELECT
+[*BASE_MEMBERS__Measures_] ON COLUMNS
+,NON EMPTY
+[*SORTED_ROW_AXIS] ON ROWS
+FROM [SteelWheelsSales]</Query>
+   </DataAccess>
+</CDADescriptor>

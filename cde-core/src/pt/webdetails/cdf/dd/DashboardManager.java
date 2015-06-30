@@ -1,21 +1,24 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,11 +50,11 @@ import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsReadContext;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsThingReaderFactory;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.legacy.CdfRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.render.DependenciesManager;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
@@ -59,9 +62,7 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererT
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
-import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IBasicFile;
-import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
@@ -73,6 +74,7 @@ public class DashboardManager {
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
+  private static final String[] MAP_PARAMETERS = {"Parameter", "JavascriptParameter", "DateParameter"};
 
   private final CacheManager _ehCacheManager;
   private final Cache _ehCache;
@@ -121,17 +123,35 @@ public class DashboardManager {
     return _instance;
   }
 
-  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs( String wcdfFilePath,
-                                                            CdfRunJsDashboardWriteOptions options,
+  public static JXPathContext openDashboardAsJXPathContext( DashboardWcdfDescriptor wcdf ) throws IOException,
+    FileNotFoundException {
+    return openDashboardAsJXPathContext( wcdf.getStructurePath(), wcdf );
+  }
+
+  public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
+    throws IOException, FileNotFoundException {
+    InputStream input = null;
+    try {
+      input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
+      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
+
+      if ( wcdf != null ) {
+        json.put( "settings", wcdf.toJSON() );
+      }
+
+      return JXPathContext.newContext( json );
+    } finally {
+      IOUtils.closeQuietly( input );
+    }
+  }
+
+  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs( String wcdfFilePath, CdfRunJsDashboardWriteOptions options,
                                                             boolean bypassCacheRead ) throws ThingWriteException {
     return getDashboardCdfRunJs( wcdfFilePath, options, bypassCacheRead, "" );
   }
 
-  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
-      String wcdfFilePath,
-      CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead,
-      String style )
+  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs( String wcdfFilePath, CdfRunJsDashboardWriteOptions options,
+                                                            boolean bypassCacheRead, String style )
     throws ThingWriteException {
     if ( wcdfFilePath == null ) {
       throw new IllegalArgumentException( "wcdfFilePath" );
@@ -179,11 +199,9 @@ public class DashboardManager {
     return wcdf;
   }
 
-  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs(
-      DashboardWcdfDescriptor wcdf,
-      CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead )
-    throws ThingWriteException {
+  public CdfRunJsDashboardWriteResult getDashboardCdfRunJs( DashboardWcdfDescriptor wcdf,
+                                                            CdfRunJsDashboardWriteOptions options,
+                                                            boolean bypassCacheRead ) throws ThingWriteException {
     // 1. Build the cache key.
     String cdeFilePath = Utils.sanitizeSlashesInPath( wcdf.getStructurePath() );
 
@@ -200,7 +218,6 @@ public class DashboardManager {
     // The current user may not have access to a cache item previously
     // created by another user.
     if ( !Utils.getSystemOrUserReadAccess( wcdf.getPath() ).fileExists( cdeFilePath ) ) {
-
       throw new ThingWriteException( new FileNotFoundException( cdeFilePath ) );
     }
 
@@ -209,7 +226,6 @@ public class DashboardManager {
     if ( !bypassCacheRead ) {
       try {
         dashWrite = getDashboardWriteResultFromCache( cacheKey, cdeFilePath );
-
       } catch ( FileNotFoundException ex ) {
         // Is in cache but:
         // * file doesn't exist (anymore)
@@ -250,6 +266,7 @@ public class DashboardManager {
       String wcdfPath,
       boolean bypassCacheRead )
     throws ThingReadException {
+
     try {
       DashboardWcdfDescriptor wcdf = DashboardWcdfDescriptor.load( wcdfPath );
       if ( wcdf == null ) {
@@ -262,10 +279,7 @@ public class DashboardManager {
     }
   }
 
-  public Dashboard getDashboard(
-      DashboardWcdfDescriptor wcdf,
-      boolean bypassCacheRead )
-    throws ThingReadException {
+  public Dashboard getDashboard( DashboardWcdfDescriptor wcdf, boolean bypassCacheRead ) throws ThingReadException {
     String cdeFilePath = Utils.sanitizeSlashesInPath( wcdf.getStructurePath() );
 
     // 1. Check existence and permissions to the original CDFDE file
@@ -279,6 +293,26 @@ public class DashboardManager {
 
     // 2. Get the Dashboard object
     return this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
+  }
+
+  public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead ) throws ThingReadException {
+    Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
+    ArrayList<String> parameters = new ArrayList<String>();
+    for ( Component component : dashboard.getRegulars() ) {
+      if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
+        parameters.add( component.getName() );
+      }
+    }
+    String result = "{";
+    if ( parameters.size() > 0 ) {
+      String params = "\n\"parameters\": [";
+      for ( String parameter : parameters ) {
+        params += "," + "\"" + parameter + "\"";
+      }
+      result += params.replaceFirst( ",", "" ) + "]";
+    }
+    return result + "\n}";
+
   }
 
   /**
@@ -349,34 +383,15 @@ public class DashboardManager {
     synchronized ( this._ehCacheLock ) {
       this._ehCache.removeAll();
     }
-
-    // clear i18n messages.properties cache dir
-    if ( getPluginSystemWriter().fileExists( MessageBundlesHelper.BASE_CACHE_DIR ) ) {
-
-      List<IBasicFile> cacheFiles = getPluginSystemWriter().listFiles( MessageBundlesHelper.BASE_CACHE_DIR,
-          new IBasicFileFilter() {
-          @Override
-          public boolean accept( IBasicFile file ) {
-            return true; // accept everything
-          }
-        } );
-
-      if ( cacheFiles != null ) {
-        for ( IBasicFile file : cacheFiles ) {
-          getPluginSystemWriter().deleteFile( file.getPath() );
-        }
-      }
-    }
   }
 
   protected IRWAccess getPluginSystemWriter() {
     return CdeEnvironment.getPluginSystemWriter();
   }
 
-  private void collectWidgetsToInvalidate(
-      Set<String> invalidateDashboards,
-      Map<String, Dashboard> dashboardsByCdfdeFilePath,
-      String cdeWidgetFilePath ) {
+  private void collectWidgetsToInvalidate( Set<String> invalidateDashboards,
+                                           Map<String, Dashboard> dashboardsByCdfdeFilePath,
+                                           String cdeWidgetFilePath ) {
     // Find not-invalidated dashboards containing widget cdeWidgetFilePath
 
     for ( Dashboard dash : dashboardsByCdfdeFilePath.values() ) {
@@ -404,10 +419,7 @@ public class DashboardManager {
     }
   }
 
-  private Dashboard getDashboard(
-      DashboardWcdfDescriptor wcdf,
-      String cdeFilePath,
-      boolean bypassCacheRead )
+  private Dashboard getDashboard( DashboardWcdfDescriptor wcdf, String cdeFilePath, boolean bypassCacheRead )
     throws ThingReadException {
     Dashboard cachedDash = null;
     if ( !bypassCacheRead ) {
@@ -421,8 +433,7 @@ public class DashboardManager {
 
     IReadAccess userAccess = Utils.getSystemOrUserReadAccess( cdeFilePath );
     // Read cache, cache item existed and it is valid?
-    if ( cachedDash != null
-        && cachedDash.getSourceDate().getTime() >= userAccess.getLastModified( cdeFilePath ) ) {
+    if ( cachedDash != null && cachedDash.getSourceDate().getTime() >= userAccess.getLastModified( cdeFilePath ) ) {
       // Check WCDF file date as well
 
       if ( !userAccess.fileExists( wcdf.getPath() ) ) {
@@ -445,9 +456,7 @@ public class DashboardManager {
     return this.replaceDashboardInCache( cdeFilePath, newDash, cachedDash );
   }
 
-  private Dashboard readDashboardFromCdfdeJs(
-      DashboardWcdfDescriptor wcdf )
-    throws ThingReadException {
+  private Dashboard readDashboardFromCdfdeJs( DashboardWcdfDescriptor wcdf ) throws ThingReadException {
     // 1. Open the CDFDE file.
     String cdeFilePath = wcdf.getStructurePath();
     JXPathContext cdfdeDoc;
@@ -484,22 +493,29 @@ public class DashboardManager {
     }
   }
 
-  private CdfRunJsDashboardWriteResult writeDashboardToCdfRunJs(
-      Dashboard dash,
-      CdfRunJsDashboardWriteOptions options,
-      boolean bypassCacheRead )
-    throws ThingWriteException {
+  /**
+   * @param dash
+   * @param options
+   * @param bypassCacheRead
+   * @return
+   * @throws ThingWriteException
+   */
+  private CdfRunJsDashboardWriteResult writeDashboardToCdfRunJs( Dashboard dash, CdfRunJsDashboardWriteOptions options,
+                                                                 boolean bypassCacheRead ) throws ThingWriteException {
+
     // 1. Obtain a Writer for the CdfRunJs format
-    CdfRunJsThingWriterFactory writerFactory = new CdfRunJsThingWriterFactory();
-    CdfRunJsDashboardWriter writer = writerFactory.getDashboardWriter( dash );
+    CdfRunJsThingWriterFactory factory = new CdfRunJsThingWriterFactory();
+    if ( dash.getWcdf().isRequire() ) {
+      factory = new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.amd.CdfRunJsThingWriterFactory();
+    }
+    CdfRunJsDashboardWriter writer = factory.getDashboardWriter( dash );
 
     // 2. Write it
-    CdfRunJsDashboardWriteContext writeContext = CdeEngine.getInstance().
-        getEnvironment().getCdfRunJsDashboardWriteContext( writerFactory, /*indent*/"", bypassCacheRead, dash, options );
+    CdfRunJsDashboardWriteContext writeContext = CdeEngine.getInstance().getEnvironment()
+        .getCdfRunJsDashboardWriteContext( factory, /*indent*/"", bypassCacheRead, dash, options );
 
     CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder =
         new CdfRunJsDashboardWriteResult.Builder();
-
     writer.write( dashboardWriteBuilder, writeContext, dash );
 
     return dashboardWriteBuilder.build();
@@ -553,8 +569,8 @@ public class DashboardManager {
 
     boolean cacheInvalid =
         ( userContentAccess.getLastModified( cdeFilePath ) > dashLoadedDate.getTime() )
-        || ( userContentAccess.fileExists( templPath )
-        && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
+          || ( userContentAccess.fileExists( templPath )
+          && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
     if ( cacheInvalid ) {
       _logger.info( "Cached dashboard render invalidated, re-rendering." );
       return null;
@@ -565,9 +581,8 @@ public class DashboardManager {
     return dashWrite;
   }
 
-  private CdfRunJsDashboardWriteResult replaceDashboardWriteResultInCache(
-      DashboardCacheKey cacheKey,
-      CdfRunJsDashboardWriteResult newDashWrite ) {
+  private CdfRunJsDashboardWriteResult replaceDashboardWriteResultInCache( DashboardCacheKey cacheKey,
+                                                                           CdfRunJsDashboardWriteResult newDashWrite ) {
     synchronized ( this._ehCacheLock ) {
       Element cacheElement;
       try {
@@ -582,8 +597,7 @@ public class DashboardManager {
         CdfRunJsDashboardWriteResult currDashWrite =
             (CdfRunJsDashboardWriteResult) cacheElement.getValue();
 
-        if ( currDashWrite.getLoadedDate().getTime()
-            > newDashWrite.getLoadedDate().getTime() ) {
+        if ( currDashWrite.getLoadedDate().getTime() > newDashWrite.getLoadedDate().getTime() ) {
           return currDashWrite;
         }
       }
@@ -623,10 +637,7 @@ public class DashboardManager {
     }
   }
 
-  private Dashboard replaceDashboardInCache(
-      String cdeFullPath,
-      Dashboard newDash,
-      Dashboard oldDash ) {
+  private Dashboard replaceDashboardInCache( String cdeFullPath, Dashboard newDash, Dashboard oldDash ) {
     assert newDash != null;
 
     synchronized ( this._dashboardsByCdfdeFilePath ) {
@@ -644,26 +655,131 @@ public class DashboardManager {
     }
   }
 
-  public static JXPathContext openDashboardAsJXPathContext(
-      DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException {
-    return openDashboardAsJXPathContext( wcdf.getStructurePath(), wcdf );
-  }
+  public CdfRunJsDashboardWriteResult getDashboardModule(
+      String wcdfFilePath, CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead, String style )
+    throws ThingWriteException, UnsupportedEncodingException {
+    if ( wcdfFilePath == null ) {
+      throw new IllegalArgumentException( "wcdfFilePath" );
+    }
 
-  public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException {
-    InputStream input = null;
-    try {
-      input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
-
-      if ( wcdf != null ) {
-        json.put( "settings", wcdf.toJSON() );
+    // Figure out what dashboard we should be handling: load its wcdf descriptor.
+    DashboardWcdfDescriptor wcdf;
+    if ( !wcdfFilePath.isEmpty() && wcdfFilePath.endsWith( ".wcdf" ) ) {
+      try {
+        wcdf = DashboardWcdfDescriptor.load( wcdfFilePath );
+      } catch ( IOException ex ) {
+        // TODO: User has no permission to WCDF falls here?
+        throw new ThingWriteException( "While accessing the WCDF file.", ex );
       }
 
-      return JXPathContext.newContext( json );
-    } finally {
-      IOUtils.closeQuietly( input );
+      if ( wcdf == null ) {
+        // Doesn't exist
+        // TODO: Explain or fix, why create a (totally) empty one?
+        wcdf = new DashboardWcdfDescriptor();
+      }
+    } else {
+      // We didn't receive a valid path. We're in preview mode.
+      // TODO: Support mobile preview mode (must remove dependency on setStyle())
+      wcdf = getPreviewWcdf( wcdfFilePath );
+      bypassCacheRead = true; // no cache for preview
     }
+
+    if ( StringUtils.isNotEmpty( style ) ) {
+      wcdf.setStyle( style );
+    }
+
+    return this.getDashboardModule( wcdf, options, bypassCacheRead );
+  }
+
+  public CdfRunJsDashboardWriteResult getDashboardModule(
+      DashboardWcdfDescriptor wcdf,
+      CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead )
+    throws ThingWriteException, UnsupportedEncodingException {
+    // 1. Build the cache key.
+    String cdeFilePath = Utils.sanitizeSlashesInPath( wcdf.getStructurePath() );
+
+    DashboardCacheKey cacheKey = new DashboardCacheKey(
+        cdeFilePath,
+        getPluginResourceLocationManager().getStyleResourceLocation( wcdf.getStyle() ),
+        options.isDebug(),
+        options.isAbsolute(),
+        options.getSchemedRoot(),
+        options.getAliasPrefix() );
+
+    // 2. Check existence and permissions to the original CDFDE file
+    // NOTE: the cache is shared by all users.
+    // The current user may not have access to a cache item previously
+    // created by another user.
+    if ( !Utils.getSystemOrUserReadAccess( wcdf.getPath() ).fileExists( cdeFilePath ) ) {
+      throw new ThingWriteException( new FileNotFoundException( cdeFilePath ) );
+    }
+
+    // 3. Reading from the cache?
+    CdfRunJsDashboardWriteResult dashWrite;
+    if ( !bypassCacheRead ) {
+      try {
+        dashWrite = getDashboardWriteResultFromCache( cacheKey, cdeFilePath );
+      } catch ( FileNotFoundException ex ) {
+        // Is in cache but:
+        // * file doesn't exist (anymore)
+        // * user has insufficient permissions to access the cdfde file
+        throw new ThingWriteException( ex );
+      }
+
+      if ( dashWrite != null ) {
+        // Return cached write result
+        return dashWrite;
+      }
+
+      // Not in cache or cache item expired/invalidated
+    } else {
+      _logger.info( "Bypassing dashboard render cache, rendering." );
+    }
+
+    // 4. Get the Dashboard object
+    Dashboard dash;
+    try {
+      dash = this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
+    } catch ( ThingReadException ex ) {
+      throw new ThingWriteException( ex );
+    }
+
+    // 5. Obtain a Writer for the CdfRunJs format
+    dashWrite = this.writeDashboardModule( dash, options, bypassCacheRead );
+
+    // 6. Cache the dashboard write
+    return this.replaceDashboardWriteResultInCache( cacheKey, dashWrite );
+  }
+
+  /**
+   * @param dash
+   * @param options
+   * @param bypassCacheRead
+   * @return
+   * @throws ThingWriteException
+   */
+  private CdfRunJsDashboardWriteResult writeDashboardModule(
+      Dashboard dash, CdfRunJsDashboardWriteOptions options,
+      boolean bypassCacheRead )
+    throws ThingWriteException, UnsupportedEncodingException {
+
+    // 1. Obtain a Writer for the CdfRunJs format
+    CdfRunJsThingWriterFactory factory =
+        new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.amd.CdfRunJsThingWriterFactory();
+
+    CdfRunJsDashboardWriter writer = factory.getDashboardWriter( dash );
+
+    // 2. Write it
+    CdfRunJsDashboardWriteContext writeContext = CdeEngine.getInstance().getEnvironment()
+        .getCdfRunJsDashboardWriteContext( factory, /*indent*/"", bypassCacheRead, dash, options );
+
+    CdfRunJsDashboardWriteResult.Builder dashboardWriteBuilder =
+        new CdfRunJsDashboardWriteResult.Builder();
+
+    writer.write( dashboardWriteBuilder, writeContext, dash );
+
+    return dashboardWriteBuilder.build();
   }
 }

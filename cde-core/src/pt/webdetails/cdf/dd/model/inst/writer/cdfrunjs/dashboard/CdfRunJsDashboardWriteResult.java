@@ -1,15 +1,15 @@
 /*!
-* Copyright 2002 - 2014 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
@@ -26,16 +26,16 @@ import pt.webdetails.cdf.dd.CdeConstants;
 public final class CdfRunJsDashboardWriteResult implements Serializable
 {
   private static final long serialVersionUID = 1L;
-  
+
   // --------------
-  
+
   private final Date _loadedDate;
   private final String _template, _header, _layout, _components, _content, _footer;
-  
+
   protected CdfRunJsDashboardWriteResult(Builder builder)
   {
     assert builder != null;
-    
+
     this._loadedDate = builder._loadedDate != null ? builder._loadedDate : new Date();
     this._template   = StringUtils.defaultIfEmpty(builder._template,   "");
     this._header     = StringUtils.defaultIfEmpty(builder._header,     "");
@@ -44,12 +44,12 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
     this._content    = StringUtils.defaultIfEmpty(builder._content,    "");
     this._footer     = StringUtils.defaultIfEmpty(builder._footer,     "");
   }
-  
+
   public Date getLoadedDate()
   {
     return this._loadedDate;
   }
-  
+
   public String getTemplate()
   {
     return this._template;
@@ -83,17 +83,17 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
   public String render(String dashboardContext)
   {
     return this._template.replaceAll(
-                CdeConstants.DASHBOARD_HEADER_TAG, 
+                CdeConstants.DASHBOARD_HEADER_TAG,
                 Matcher.quoteReplacement(dashboardContext));
   }
-  
+
   // --------------
-  
+
   public static class Builder
   {
     private String _template, _header, _layout, _components, _content, _footer;
     private Date _loadedDate;
-    
+
     public String getTemplate()
     {
       return this._template;
@@ -104,7 +104,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._template = template;
       return this;
     }
-    
+
     public String getHeader()
     {
       return this._header;
@@ -115,7 +115,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._header = header;
       return this;
     }
-    
+
     public String getLayout()
     {
       return this._layout;
@@ -126,7 +126,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._layout = layout;
       return this;
     }
-    
+
     public String getComponents()
     {
       return this._components;
@@ -137,7 +137,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._components = components;
       return this;
     }
-    
+
     public String getContent()
     {
       return this._content;
@@ -148,7 +148,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._content = content;
       return this;
     }
-    
+
     public String getFooter()
     {
       return this._footer;
@@ -159,7 +159,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._footer = footer;
       return this;
     }
-    
+
     public Date getLoadedDate()
     {
       return this._loadedDate;
@@ -170,7 +170,7 @@ public final class CdfRunJsDashboardWriteResult implements Serializable
       this._loadedDate = loadedDate;
       return this;
     }
-    
+
     public CdfRunJsDashboardWriteResult build()
     {
       return new CdfRunJsDashboardWriteResult(this);

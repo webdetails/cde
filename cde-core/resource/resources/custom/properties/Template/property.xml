@@ -1,0 +1,110 @@
+<DesignerProperties>
+  <DesignerProperty>
+    <Header>
+      <Name>modelHandler</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Model Handler</Description>
+      <Tooltip>A function to execute to handle data for the model. Should return the model to be used on the template</Tooltip>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>910</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>template</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Template</Description>
+      <Tooltip>Function that returns a template to be used</Tooltip>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>920</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>templateType</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>underscore</DefaultValue>
+      <Description>Template Library</Description>
+      <Tooltip>Template library to use on render, choose from list</Tooltip>
+      <InputType type="valuelist"/>
+      <OutputType>String</OutputType>
+      <Order>930</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+    <Values>
+      <Value display="Mustache">mustache</Value>
+      <Value display="Underscore">underscore</Value>
+    </Values>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>events</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Events</Description>
+      <Tooltip>Events to trigger for each event/event. On the left set the event and selector separated by space. On the right the event handler</Tooltip>
+      <InputType>EditorValuesArray</InputType>
+      <OutputType>Array</OutputType>
+      <Order>935</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>formatters</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>"[]"</DefaultValue>
+      <Description>Formatters</Description>
+      <Tooltip>Used to format data. You must define an ID and a function that will return the formatted value</Tooltip>
+      <InputType>EditorValuesArray</InputType>
+      <OutputType>Array</OutputType>
+      <Order>935</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>rootElement</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue>items</DefaultValue>
+      <Description>Model root element</Description>
+      <Tooltip>Set the id of the root element of the model to render</Tooltip>
+      <InputType>String</InputType>
+      <OutputType>String</OutputType>
+      <Order>970</Order>
+      <Advanced>false</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+
+  <DesignerProperty>
+    <Header>
+      <Name>extendableOptions</Name>
+      <Parent>BaseProperty</Parent>
+      <DefaultValue/>
+      <Description>Extendable Options</Description>
+      <Tooltip>An object with propertied to extend the functionality of the component</Tooltip>
+      <InputType>JavaScript</InputType>
+      <OutputType>Function</OutputType>
+      <Order>9000</Order>
+      <Advanced>true</Advanced>
+      <Version>1.0</Version>
+    </Header>
+  </DesignerProperty>
+</DesignerProperties>
