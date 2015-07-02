@@ -684,7 +684,7 @@ var PreviewRequests = {
     }
 
     if(rv && rv < 10) {
-      Dashboards.log(Dashboard.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
+      Dashboards.log(Dashboards.i18nSupport.prop("PreviewRequests.MULTIPART_ERROR"));
       $.post(syncUrl, saveParams, successFunction);
     } else {
       var $uploadForm = $('<form action="' + wd.cde.endpoints.getPluginUrl() + 'syncronizer/saveDashboard" method="post" enctype="multipart/form-data">');
