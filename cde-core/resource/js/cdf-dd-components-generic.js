@@ -368,7 +368,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
 
   getParameterRow: function(i, argInput, valInput, parameterButton, removeButton){
-    return '<div id="parameters_' + i + '" >\n' +
+    return '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' +
               argInput +
               (this.multiDimensionArray ?
                   ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
@@ -390,7 +390,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
     var typeSelect = this.getTypeSelector('Type', type, 'type_' + i);
     var row =
-        '<div id="parameters_' + i + '" >\n' +
+        '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' +
         argInput +
         '<div class="' + this.cssPrefix + 'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix + 'Types">' + typeSelect + parameterButton + removeButton + '<br /></div>\n';
     container.find('.' + this.cssPrefix).append(row);
@@ -847,7 +847,7 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     var accessCb = this.getAccessCheckbox(access, this.cssPrefix + 'Access', 'access_' + i);
 
 
-    var row = '<tr id="parameters_' + i + '" >';
+    var row = '<tr id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">';
     row += '<td>' + argInput + '</td>';
     row += '<td>' + valInput + '</td>';
     row += '<td>' + typeSelect + '</td>';
@@ -1049,12 +1049,11 @@ var ParameterMappingRenderer = ValuesArrayRenderer.extend({
         ParameterMappingRenderer.otherParam = undefined;
       }, this)
     });
-    
-    
+
   },
 
   getParameterRow: function(i, argInput, valInput, parameterButton, removeButton) {
-    var parameterRow = '<div id="parameters_' + i + '" >\n' + argInput +
+    var parameterRow = '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' + argInput +
               (this.multiDimensionArray ?
                 ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
                 removeButton) + '</div>\n';
