@@ -1710,6 +1710,11 @@ div.popup {
   transition: 0.3s;
 }
 
+/* IE11 will behave strangely with prompts with position fixed inside PUC */
+_:-ms-fullscreen, :root div.popup {
+  position: absolute !important;
+}
+
 .popupfade {
   opacity: 0.6;
   background: #fff;
