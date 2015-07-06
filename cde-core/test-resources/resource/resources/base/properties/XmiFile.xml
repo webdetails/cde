@@ -5,7 +5,7 @@
 	<DefaultValue></DefaultValue>
 	<Description>XMI File</Description>
 	<Tooltip>XMI Metadata file</Tooltip>
-	<InputType>String</InputType>
+	<InputType>ResourceFile</InputType>
 	<OutputType>String</OutputType>
 	<Order>50</Order>
 	<Version>1.0</Version>
