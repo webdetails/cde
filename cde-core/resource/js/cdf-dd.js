@@ -38,6 +38,14 @@ if(!Array.prototype.map) {
   };
 }
 
+// location.origin is not present in IE8 and IE9
+if (!window.location.origin) {
+  window.location.origin =
+    window.location.protocol + "//" +
+      window.location.hostname +
+        (window.location.port ? ':' + window.location.port: '');
+}
+
 $.editable.addInputType('autocomplete', {
   element: $.editable.types.text.element,
   plugin: function(settings, original) {
