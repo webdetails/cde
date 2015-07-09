@@ -199,7 +199,7 @@
 	"definition": {
 		"connection": {
 			"id": {"type": "STRING", "placement": "ATTRIB"},
-			"xmiFile": {"type": "STRING", "placement": "CHILD"},
+			"xmiFile": {"type": "ResourceFile", "placement": "CHILD"},
 			"domainId": {"type": "STRING", "placement": "CHILD"}
 		},
 		"dataaccess": {
