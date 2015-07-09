@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="mqlQuery" type="metadata.metadata">
+         <DomainId>steel-wheels</DomainId>
+         <XmiFile/>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="mqlQuery" id="mqlQuery" type="mql">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<mql>
+  <domain_type>relational</domain_type>
+  <domain_id>steel-wheels</domain_id>
+  <model_id>BV_ORDERS</model_id>
+  <model_name>Orders</model_name>
+  <selections>
+    <selection>
+      <view>CAT_ORDERS</view>
+      <column>BC_ORDERS_ORDERDATE</column>
+    </selection>
+    <selection>
+      <view>CAT_ORDERS</view>
+      <column>BC_ORDERS_ORDERNUMBER</column>
+    </selection>
+    <selection>
+      <view>CAT_ORDERS</view>
+      <column>BC_ORDER_DETAILS_QUANTITYORDERED</column>
+    </selection>
+  </selections>
+  <constraints>
+    <constraint>
+      <operator>AND</operator>
+      <condition>[CAT_ORDERS.BC_ORDERDETAILS_QUANTITYORDERED] > 70</condition>
+    </constraint>
+    <constraint>
+      <operator>AND</operator>
+      <condition>[CAT_ORDERS.BC_ORDERS_ORDERDATE] > DATE(2003;12;31)</condition>
+    </constraint>
+  </constraints>
+  <orders/>
+</mql>]]></Query>
+   </DataAccess>
+</CDADescriptor>
