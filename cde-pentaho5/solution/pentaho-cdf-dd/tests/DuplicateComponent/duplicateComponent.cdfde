@@ -2842,5 +2842,5 @@
  "datasources": {
   "rows": []
  },
- "filename": "%2Fpublic%2Fplugin-samples%2Fpentaho-cdf-dd%2Ftests%2FDuplicateComponent%2FduplicateComponent.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/DuplicateComponent/duplicateComponent.cdfde"
 }
