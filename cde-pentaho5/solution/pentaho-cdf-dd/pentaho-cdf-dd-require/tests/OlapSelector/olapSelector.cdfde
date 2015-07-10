@@ -1071,5 +1071,5 @@
  "datasources": {
   "rows": []
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd-require/tests/OlapSelector/olapSelector.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/OlapSelector/olapSelector.cdfde"
 }
