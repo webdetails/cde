@@ -10,7 +10,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "templateCSS",
       "type": "Id"
      },
      {
