@@ -103,8 +103,10 @@ public class CdaRenderer {
 
     DOMSource source = new DOMSource( cdaFile );
     StreamResult res = new StreamResult( new OutputStreamWriter( result, CharsetHelper.getEncoding() ) );
+    transformer.setOutputProperty( OutputKeys.ENCODING, CharsetHelper.getEncoding() );
     transformer.setOutputProperty( OutputKeys.INDENT, "yes" );
     transformer.setOutputProperty( "{http://xml.apache.org/xslt}indent-amount", "2" );
+    transformer.setOutputProperty( OutputKeys.CDATA_SECTION_ELEMENTS, "Query" );
     transformer.transform( source, res );
     return result.toString();
   }
@@ -194,7 +196,7 @@ public class CdaRenderer {
     }
     String name = (String) context.getValue( "properties/.[name='name']/value", String.class );
     JXPathContext conn =
-      JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/dataaccess", JSONObject.class ) );
+        JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/dataaccess", JSONObject.class ) );
     Element dataAccess = doc.createElement( tagName );
     dataAccess.setAttribute( "id", name );
     dataAccess.setAttribute( "type", daType );
