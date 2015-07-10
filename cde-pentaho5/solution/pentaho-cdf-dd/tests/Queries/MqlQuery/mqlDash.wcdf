@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>mqlDash</title>
+  <description>MQL Query sample</description>
+  <author></author>
+  <style>WDDocs</style>
+  <rendererType>blueprint</rendererType>
+  <require>false</require>
+  <widget>false</widget>
+  <widgetName></widgetName>
+  <widgetParameters>
+  </widgetParameters>
+</cdf>
