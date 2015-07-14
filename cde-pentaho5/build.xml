@@ -218,6 +218,8 @@
       <fileset dir='${core-resource.dir}'>
         <exclude name="${includes.name}"/>
         <exclude name="**/OlapSelector/test/**"/>
+        <!-- don't exclude the files used in 5.4.0.1 for legacy compatibility using the old plugin.xml -->
+        <!-- exclude name="**/*-require-js-cfg.js"/ -->
       </fileset>
     </copy>
 
@@ -232,8 +234,22 @@
     <copy todir='${stage.dir}/${plugin.name}' overwrite='true'>
       <fileset dir='${resource.dir}'>
         <exclude name="${includes.name}"/>
+        <!-- don't exclude the files used in 5.4.0.1 for legacy compatibility using the old plugin.xml -->
+        <!-- exclude name="**/*-require-js-cfg.js"/ -->
       </fileset>
     </copy>
+
+    <!-- create an aggregated "cde-require-js-cfg.js" RequireJS config file -->
+    <concat destfile="${stage.dir}/${plugin.name}/js/cde-require-js-cfg.js" append="true" force="yes">
+      <!-- CDE core RequireJS cfg file -->
+      <fileset dir="${core-resource.dir}" casesensitive="yes">
+        <include name="**/*-require-js-cfg.js"/>
+      </fileset>
+      <!-- CDE RequireJS cfg files -->
+      <fileset dir="${resource.dir}" casesensitive="yes">
+        <include name="**/*-require-js-cfg.js"/>
+      </fileset>
+    </concat>
 
     <antcall target="replace-ext-editor-labels"/>
     <antcall target="replace-editor-labels"/>
