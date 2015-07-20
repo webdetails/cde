@@ -27,6 +27,10 @@
   <import file="../build-res/subfloor-pkg.xml" id="subfloor-pkg"/>
   <import file="../build-res/subfloor-js.xml"/>
 
+  <!-- make sure when junit tests fail the build fails -->
+  <property name="junit.haltonfailure" value="yes" description="Fail the build if a test fails"/>
+  <property name="junit.haltonerror" value="yes" description="Fail the build if a error occurs"/>
+
   <!--
       AS STATED ABOVE, THE ONLY TASKS THAT SHOULD EXIST IN THIS BUILD FILE ARE
       THE TASKS THAT NEED TO DIFFER FROM THE DEFAULT IMPLEMENTATION OF THE TASKS
