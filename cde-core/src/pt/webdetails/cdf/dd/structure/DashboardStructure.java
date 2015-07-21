@@ -55,10 +55,9 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class DashboardStructure implements IDashboardStructure {
-  private static final String ENCODING = "UTF-8";
-
   private static Log logger = LogFactory.getLog( DashboardStructure.class );
 
   public static String SYSTEM_PLUGIN_EMPTY_STRUCTURE_FILE_PATH = "resources/empty-structure.json";
@@ -419,7 +418,7 @@ public class DashboardStructure implements IDashboardStructure {
 
   private static byte[] safeGetEncodedBytes( String text ) {
     try {
-      return text.getBytes( ENCODING );
+      return text.getBytes( CharsetHelper.getEncoding() );
     } catch ( UnsupportedEncodingException ex ) {
       // Never happens
       return null;

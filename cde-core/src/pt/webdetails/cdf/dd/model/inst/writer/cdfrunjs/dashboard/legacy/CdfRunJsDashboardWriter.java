@@ -49,56 +49,16 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.packager.StringFilter;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
   protected static final Log logger = LogFactory.getLog( CdfRunJsDashboardWriter.class );
 
-  private static final String EPILOGUE = wrapJsScriptTags( "Dashboards.init();" );
-
   private DashboardWcdfDescriptor.DashboardRendererType type;
-  private boolean isWidget;
 
-  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
+  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type ) {
     super();
     this.type = type;
-    this.isWidget = isWidget;
-  }
-
-  protected static String readStyleTemplateOrDefault( String styleName ) throws IOException {
-    if ( StringUtils.isNotEmpty( styleName ) ) {
-      try {
-        return readStyleTemplate( styleName );
-      } catch ( IOException ex ) {
-        logger.debug( ex.getMessage() );
-      }
-    }
-
-    // Couldn't open template file, attempt to use default
-    return readStyleTemplate( CdeConstants.DEFAULT_STYLE );
-  }
-
-  protected static String readStyleTemplate( String styleName ) throws IOException {
-    return readTemplateFile( CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName ) );
-  }
-
-  protected static String readTemplateFile( String templateFile ) throws IOException {
-    try {
-      if ( CdeEnvironment.getPluginRepositoryReader().fileExists( templateFile ) ) {
-        // template is in solution repository
-        return Util.toString( CdeEnvironment.getPluginRepositoryReader().getFileInputStream( templateFile ) );
-
-      } else if ( CdeEnvironment.getPluginSystemReader().fileExists( templateFile ) ) {
-        // template is in system
-        return Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( templateFile ) );
-      } else if ( Utils.getAppropriateReadAccess( templateFile ).fileExists( templateFile ) ) {
-        return Util.toString( Utils.getAppropriateReadAccess( templateFile ).getFileInputStream( templateFile ) );
-      } else {
-        // last chance : template is in user-defined folder
-        return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
-      }
-    } catch ( IOException ex ) {
-      logger.error( MessageFormat.format( "Couldn't open template file '{0}'.", templateFile ), ex );
-      throw ex;
-    }
   }
 
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
@@ -119,7 +79,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     String template;
     try {
-      template = this.readTemplate( wcdf );
+      template = Utils.readTemplate( wcdf );
     } catch ( IOException ex ) {
       throw new ThingWriteException( "Could not read style template file.", ex );
     }
@@ -155,10 +115,6 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       .setContent( content )
       .setFooter( footer )
       .setLoadedDate( ctx.getDashboard().getSourceDate() );
-  }
-
-  protected String readTemplate( DashboardWcdfDescriptor wcdf ) throws IOException {
-    return readStyleTemplateOrDefault( wcdf.getStyle() );
   }
 
   protected String writeLayout( CdfRunJsDashboardWriteContext context, Dashboard dash ) {
@@ -306,9 +262,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     out.append( layout );
 
-    wrapJsScriptTags( out, components );
-
-    out.append( EPILOGUE );
+    wrapJsScriptTags( out, components + NEWLINE + CdeConstants.Writer.DASHBOARDS_INIT );
 
     return out.toString();
   }

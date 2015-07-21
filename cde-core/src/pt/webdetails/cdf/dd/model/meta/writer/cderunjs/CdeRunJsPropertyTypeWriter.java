@@ -4,6 +4,7 @@
 
 package pt.webdetails.cdf.dd.model.meta.writer.cderunjs;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.meta.LabeledValue;
 import pt.webdetails.cdf.dd.model.meta.PropertyType;

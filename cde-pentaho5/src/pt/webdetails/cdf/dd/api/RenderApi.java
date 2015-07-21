@@ -412,7 +412,7 @@ public class RenderApi {
     CdfRunJsDashboardWriteOptions options =
         new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme, config );
 
-    return getDashboardManager().getDashboardModule( path, options, bypassCache, style );
+    return getDashboardManager().getDashboardCdfRunJs( path, options, bypassCache, style );
 
   }
 

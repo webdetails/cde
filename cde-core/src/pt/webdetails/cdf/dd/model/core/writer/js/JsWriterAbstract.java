@@ -14,23 +14,9 @@
 package pt.webdetails.cdf.dd.model.core.writer.js;
 
 import org.apache.commons.lang.StringUtils;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 
 public abstract class JsWriterAbstract {
-  protected static final String INDENT1 = "  ";
-  protected static final String INDENT2 = "    ";
-  protected static final String INDENT3 = "      ";
-  protected static final String INDENT4 = "        ";
-  protected static final String INDENT5 = "          ";
-  protected static final String INDENT6 = "            ";
-
-  protected static final String NEWLINE = System.getProperty( "line.separator" );
-
-  protected static final String TITLE = INDENT1 + "<title>{0}</title>";
-  protected static final String SCRIPT = INDENT1
-      + "<script language=\"javascript\" type=\"text/javascript\" src=\"{0}\"></script>" + NEWLINE;
-  protected static final String STYLE = INDENT1
-      + "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />" + NEWLINE;
-
 
   protected static void addCommaAndLineSep( StringBuilder out ) {
     out.append( "," );
