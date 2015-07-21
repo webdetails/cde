@@ -175,4 +175,20 @@ public abstract class CdfRunJsDashboardWriteContext extends DefaultThingWriteCon
       .replaceAll( LONG_H_TAG, aliasAndName )
       .replaceAll( LONG_P_TAG, "$1" );
   }
+
+  protected String getSystemDir() {
+    return CdeEngine.getEnv().getSystemDir();
+  }
+
+  protected String getPluginId( String path ) {
+    if ( path.startsWith( "/" ) ) {
+      path = path.replaceFirst( "/", "" );
+    }
+
+    if ( path.startsWith( getSystemDir() ) ) {
+      return path.split( "/" )[ 1 ];
+    } else {
+      return "";
+    }
+  }
 }

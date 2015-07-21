@@ -11,6 +11,8 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.CodeComponent;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 /**
  * @author dcleao
  */

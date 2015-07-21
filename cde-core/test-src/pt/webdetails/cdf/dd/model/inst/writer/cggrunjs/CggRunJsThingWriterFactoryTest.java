@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs;
+package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
 
 
 import junit.framework.TestCase;
@@ -23,10 +23,6 @@ import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
-import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsDashboardWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsDataSourceComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsGenericComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cggrunjs.CggRunJsThingWriterFactory;
 import pt.webdetails.cdf.dd.model.meta.GenericComponentType;
 
 import static org.mockito.Mockito.doReturn;
@@ -53,11 +49,11 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     cggRunJsThingWriterFactory = new CggRunJsThingWriterFactoryForTest( "" );
     try {
       cggRunJsThingWriterFactory.getWriter( null );
-      fail("IllegalArgumentException should have been thrown");
+      fail( "IllegalArgumentException should have been thrown" );
     } catch ( IllegalArgumentException e ) {
       assertTrue( true );
     } catch ( UnsupportedThingException e ) {
-      fail("IllegalArgumentException should have been thrown");
+      fail( "IllegalArgumentException should have been thrown" );
     }
   }
 
@@ -72,7 +68,7 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     try {
 
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
-      assertTrue(iWriter instanceof CggRunJsGenericComponentWriter);
+      assertTrue( iWriter instanceof CggRunJsGenericComponentWriter );
       CggRunJsGenericComponentWriter writer = (CggRunJsGenericComponentWriter) iWriter;
       assertFalse( writer.canWrite() );
 
@@ -95,7 +91,7 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     try {
 
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
-      assertTrue(iWriter instanceof CggRunJsGenericComponentWriter);
+      assertTrue( iWriter instanceof CggRunJsGenericComponentWriter );
       CggRunJsGenericComponentWriter writer = (CggRunJsGenericComponentWriter) iWriter;
       assertTrue( writer.canWrite() );
 
@@ -116,7 +112,7 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     try {
 
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
-      assertTrue(iWriter instanceof CggRunJsDataSourceComponentWriter );
+      assertTrue( iWriter instanceof CggRunJsDataSourceComponentWriter );
 
     } catch ( IllegalArgumentException e ) {
       fail( "IllegalArgumentException should not have been thrown" );
@@ -135,7 +131,7 @@ public class CggRunJsThingWriterFactoryTest extends TestCase {
     try {
 
       IThingWriter iWriter = cggRunJsThingWriterFactory.getWriter( thing );
-      assertTrue(iWriter instanceof CggRunJsDashboardWriter );
+      assertTrue( iWriter instanceof CggRunJsDashboardWriter );
 
     } catch ( IllegalArgumentException e ) {
       fail( "IllegalArgumentException should not have been thrown" );

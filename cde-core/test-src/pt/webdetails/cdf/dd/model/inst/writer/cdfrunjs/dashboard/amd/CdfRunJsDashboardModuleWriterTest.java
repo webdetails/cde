@@ -1,0 +1,155 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
+package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+import org.apache.commons.lang.StringUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
+import pt.webdetails.cdf.dd.render.ResourceMap;
+import pt.webdetails.cdf.dd.render.ResourceMap.ResourceKind;
+import pt.webdetails.cdf.dd.render.ResourceMap.ResourceType;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
+public class CdfRunJsDashboardModuleWriterTest extends TestCase {
+
+  private static final String CONTEXT_CONFIGURATION = "{" + NEWLINE
+      + INDENT1 + "context: {" + NEWLINE
+      + INDENT2 + "fakeContext: fakeContext" + NEWLINE
+      + INDENT1 + "}" + NEWLINE
+      + INDENT1 + "storage: {" + NEWLINE
+      + INDENT2 + "fakeStorage: fakeStorage" + NEWLINE
+      + INDENT1 + "}" + NEWLINE
+      + INDENT1 + "view: {" + NEWLINE
+      + INDENT2 + "fakeView: fakeView" + NEWLINE
+      + INDENT1 + "}" + NEWLINE;
+
+  private static CdfRunJsDashboardModuleWriter dashboardWriterSpy;
+  private static CdfRunJsDashboardWriteContext context;
+  private static CdfRunJsDashboardWriteOptions options;
+
+  @Before
+  public void setUp() throws Exception {
+    dashboardWriterSpy =
+      spy( new CdfRunJsDashboardModuleWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
+    context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
+    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    dashboardWriterSpy = null;
+    context = null;
+    options = null;
+  }
+
+  @Test
+  public void testWrapRequireModuleDefinitions() {
+    final String layout = "fakeLayout";
+
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
+
+    doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
+    doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
+
+    Map<String, String> testComponentModules = new LinkedHashMap<String, String>();
+    testComponentModules.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentModules.put( "TestComponent2", "cdf/components/TestComponent2" );
+
+    StringBuilder out = new StringBuilder();
+    doReturn( testComponentModules ).when( dashboardWriterSpy )
+      .writeFileResourcesRequireJSPathConfig( out, testResources, context );
+
+    ArrayList<String> moduleIds = new ArrayList<String>();
+    ArrayList<String> moduleClassNames = new ArrayList<String>();
+
+    dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
+    moduleIds.add( "cdf/components/TestComponent1" );
+    moduleIds.add( "cdf/components/TestComponent2" );
+    moduleIds.add( "cde/resources/jsFileRsrc1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleClassNames.add( "TestComponent1" );
+    moduleClassNames.add( "TestComponent2" );
+    moduleClassNames.add( "jsFileRsrc1" );
+
+    doReturn( CONTEXT_CONFIGURATION ).when( options ).getContextConfiguration();
+    doReturn( "@ALIAS@" ).when( options ).getAliasPrefix();
+    doReturn( options ).when( context ).getOptions();
+
+    final String content = "dashboard.addComponent(new TestComponent1({test: 1}));";
+
+    StringBuilder dashboardResult = new StringBuilder();
+
+    dashboardResult
+      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
+      // Output module paths and module class names
+      .append( MessageFormat.format( DEFINE_START,
+        StringUtils.join( moduleIds, "', '" ),
+        StringUtils.join( moduleClassNames, ", " ) ) )
+      .append( "" )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, layout ) )
+      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
+      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "jsCodeRsrc1" + NEWLINE + NEWLINE
+        + "dashboard.addComponent(new TestComponent1({test: 1}));" ) )
+      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
+      .append( DEFINE_STOP );
+
+    Assert.assertEquals(
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
+  }
+
+  @Test
+  public void testWriteRequireJsExecutionFunction() {
+    StringBuilder out = new StringBuilder();
+    ArrayList<String> moduleIds = new ArrayList<String>();
+    ArrayList<String> moduleClassNames = new ArrayList<String>();
+    moduleIds.add( "cdf/components/TestComponent1" );
+    moduleIds.add( "cde/resources/jsFileRsrc1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleClassNames.add( "TestComponent1" );
+    moduleClassNames.add( "jsFileRsrc1" );
+    moduleClassNames.add( "" );
+
+    dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
+
+    Assert.assertEquals(
+      MessageFormat.format( DEFINE_START,
+        "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
+        "TestComponent1, jsFileRsrc1" ),
+      out.toString() );
+  }
+}

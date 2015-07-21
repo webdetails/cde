@@ -29,6 +29,8 @@ import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsHelper;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     ComponentType comp = (ComponentType) t;

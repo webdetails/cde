@@ -39,6 +39,8 @@ import pt.webdetails.cpf.utils.CharsetHelper;
 import pt.webdetails.cdf.dd.model.meta.ComponentType;
 import pt.webdetails.cdf.dd.model.meta.Resource;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
   private static final Log _logger = LogFactory.getLog( CggRunJsGenericComponentWriter.class );
   private static final String CGG_EXTENSION = ".js";
