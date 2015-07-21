@@ -48,20 +48,15 @@ public class RenderResources extends Renderer {
 
     while ( resourceRows.hasNext() ) {
       JXPathContext context = getRelativeContext( (Pointer) resourceRows.next() );
-      String rowName = getResourceName( context );
-      String rowKind = getResourceType( context );
 
-      String type = (String) context.getValue( "type" );
-      String processedResource = processResource( context, alias, 4 );
-      String resourcePath = getResourcePath( context );
-
-      ResourceMap.ResourceKind resourceKind = rowKind.equals( CdeConstants.JAVASCRIPT )
-          ? ResourceMap.ResourceKind.JAVASCRIPT : ResourceMap.ResourceKind.CSS;
-
-      ResourceMap.ResourceType resourceType = type.equals( "LayoutResourceFile" )
-          ? ResourceMap.ResourceType.FILE : ResourceMap.ResourceType.CODE;
-
-      resources.add( resourceKind, resourceType, rowName, resourcePath, processedResource );
+      resources.add(
+          getResourceType( context ).equals( CdeConstants.JAVASCRIPT )
+            ? ResourceMap.ResourceKind.JAVASCRIPT : ResourceMap.ResourceKind.CSS,
+          context.getValue( "type" ).equals( "LayoutResourceFile" )
+            ? ResourceMap.ResourceType.FILE : ResourceMap.ResourceType.CODE,
+          getResourceName( context ),
+          getResourcePath( context ),
+          processResource( context, alias, 4 ) );
     }
 
     return resources;

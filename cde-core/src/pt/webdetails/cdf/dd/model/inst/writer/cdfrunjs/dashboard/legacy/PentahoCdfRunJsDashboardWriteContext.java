@@ -44,22 +44,21 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
     final String path = this._dash.getSourcePath().replaceAll( "(.+/).*", "$1" );
 
     return content
-      .replaceAll( DASHBOARD_PATH_TAG, path.replaceAll( "(^/.*/$)", "$1" ) ) // replace the dashboard path token
-      .replaceAll( ABS_IMG_TAG, root + RESOURCE_API_GET + "$1" + "?v="
-        + timestamp ) // build the image links, with a timestamp for caching purposes
-      .replaceAll( REL_IMG_TAG, root + RESOURCE_API_GET + path + "$1" + "?v="
-        + timestamp ) // build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$2" ) // Directories don't need the caching timestamp
-      .replaceAll( REL_DIR_RES_TAG,
-        root + RESOURCE_API_GET + path + "$2" )// Directories don't need the caching timestamp
-      .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$2" + "?v="
-        + timestamp )// build the image links, with a timestamp for caching purposes
-      .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$2" + "?v="
-        + timestamp ) // build the image links, with a timestamp for caching purposes
-      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/" + getPluginId( path )
-        + "$1" + "?v=" + timestamp ) //build system resources links, with a timestamp for caching purposes
-      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + path
-        + "$1" + "?v=" + timestamp ); //build system resources links, with a timestamp for caching purposes
+      // replace the dashboard path token
+      .replaceAll( DASHBOARD_PATH_TAG, path.replaceAll( "(^/.*/$)", "$1" ) )
+      // build the image links, with a timestamp for caching purposes
+      .replaceAll( ABS_IMG_TAG, root + RESOURCE_API_GET + "$1" + "?v=" + timestamp )
+      .replaceAll( REL_IMG_TAG, root + RESOURCE_API_GET + path + "$1" + "?v=" + timestamp )
+      // Directories don't need the caching timestamp
+      .replaceAll( ABS_DIR_RES_TAG, root + RESOURCE_API_GET + "$2" )
+      .replaceAll( REL_DIR_RES_TAG, root + RESOURCE_API_GET + path + "$2" )
+      // build the resource links, with a timestamp for caching purposes
+      .replaceAll( ABS_RES_TAG, root + RESOURCE_API_GET + "$2" + "?v=" + timestamp )
+      .replaceAll( REL_RES_TAG, root + RESOURCE_API_GET + path + "$2" + "?v=" + timestamp )
+      // build the system resource links, with a timestamp for caching purposes
+      .replaceAll( ABS_SYS_RES_TAG, root + RESOURCE_API_GET + "/" + getSystemDir() + "/"
+        + getPluginId( path ) + "$1" + "?v=" + timestamp )
+      .replaceAll( REL_SYS_RES_TAG, root + RESOURCE_API_GET + path + "$1" + "?v=" + timestamp );
   }
 
   protected String getRoot() {

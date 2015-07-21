@@ -44,27 +44,30 @@ public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implement
   }
 
   protected static void addSetParameterAssignment( StringBuilder out, String name, String value ) {
-    out.append( "dashboard.addParameter(" )
-        .append( name )
-        .append( ", " )
-        .append( value )
-        .append( ");" )
-        .append( NEWLINE );
+    out
+      .append( "dashboard.addParameter(" )
+      .append( name )
+      .append( ", " )
+      .append( value )
+      .append( ");" )
+      .append( NEWLINE );
   }
 
   protected static void addViewMode( StringBuilder out, String name, String viewRole ) {
-    out.append( "dashboard.setParameterViewMode(" )
-        .append( name )
-        .append( ", " )
-        .append( viewRole )
-        .append( ");" )
-        .append( NEWLINE );
+    out
+      .append( "dashboard.setParameterViewMode(" )
+      .append( name )
+      .append( ", " )
+      .append( viewRole )
+      .append( ");" )
+      .append( NEWLINE );
   }
 
   protected static void addBookmarkable( StringBuilder out, String name ) {
-    out.append( "dashboard.setBookmarkable(" )
-        .append( name )
-        .append( ");" )
-        .append( NEWLINE );
+    out
+      .append( "dashboard.setBookmarkable(" )
+      .append( name )
+      .append( ");" )
+      .append( NEWLINE );
   }
 }

@@ -105,8 +105,8 @@ public class DashboardWcdfDescriptor {
     // TODO: setting default to false allows to render legacy dashboards in branch require-js, but saves new ones as non-require
     wcdf.setRequire( new Boolean( Utils.getNodeText( "/cdf/require", wcdfDoc, "false" ) ) );
 
-    String widgetParams = wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ) != null ?
-      wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ).getText() : "";
+    String widgetParams = wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ) != null
+        ? wcdfDoc.selectSingleNode( "/cdf/widgetParameters" ).getText() : "";
     if ( StringUtils.isNotEmpty( widgetParams ) ) {
       wcdf.setWidgetParameters( widgetParams.split( "," ) );
     }
@@ -146,7 +146,7 @@ public class DashboardWcdfDescriptor {
     if ( parameters.containsKey( "rendererType" ) ) {
       setRendererType( (String) parameters.get( "rendererType" ) );
     }
-    if( parameters.containsKey( "require" ) ) {
+    if ( parameters.containsKey( "require" ) ) {
       setRequire( "true".equals( parameters.get( "require" ) ) );
     }
     if ( parameters.containsKey( "widgetName" ) ) {
@@ -157,7 +157,7 @@ public class DashboardWcdfDescriptor {
     }
     if ( parameters.containsKey( "widgetParameters" ) ) {
       Object widgetParams = parameters.get( "widgetParameters" );
-      String widgetParameters[] = null;
+      String[] widgetParameters = null;
       if ( widgetParams instanceof String[] ) {
         widgetParameters = (String[]) widgetParams;
       } else if ( widgetParams != null ) {

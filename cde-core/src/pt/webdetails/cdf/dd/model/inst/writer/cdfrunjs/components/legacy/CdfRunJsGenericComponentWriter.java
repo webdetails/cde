@@ -42,10 +42,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     String id = context.getId( comp );
 
-    out.append( "var " );
-    out.append( id );
-    out.append( " = {" );
-    out.append( NEWLINE );
+    out.append( "var " ).append( id ).append( " = {" ).append( NEWLINE );
     addJsProperty( out, "type", JsonUtils.toJsString( compType.getName() ), INDENT1, true );
     addJsProperty( out, "name", JsonUtils.toJsString( id ), INDENT1, false );
 
@@ -55,18 +52,16 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
       this.writeDefinition( definitionName, out, context, comp, compType );
     }
 
-    out.append( NEWLINE );
-    out.append( "};" );
-    out.append( NEWLINE );
+    out.append( NEWLINE ).append( "};" ).append( NEWLINE );
   }
 
   private void writeDefinition(
-    String definitionName,
-    StringBuilder out,
-    CdfRunJsDashboardWriteContext context,
-    GenericComponent comp,
-    GenericComponentType compType )
-    throws ThingWriteException {
+      String definitionName,
+      StringBuilder out,
+      CdfRunJsDashboardWriteContext context,
+      GenericComponent comp,
+      GenericComponentType compType )
+      throws ThingWriteException {
     String indent = INDENT1;
 
     boolean isDefaultDefinition = StringUtils.isEmpty( definitionName );
@@ -126,9 +121,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
     }
 
     if ( !isDefaultDefinition ) {
-      out.append( NEWLINE );
-      out.append( INDENT1 );
-      out.append( "}" );
+      out.append( NEWLINE ).append( INDENT1 ).append( "}" );
     }
   }
 }
