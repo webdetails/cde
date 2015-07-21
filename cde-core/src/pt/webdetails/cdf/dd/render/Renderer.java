@@ -56,8 +56,7 @@ public abstract class Renderer {
    * All returned widgets are loaded with an alias that is prefixed by the specified aliasPrefix argument.
    */
   protected final Map<String, CdfRunJsDashboardWriteResult> getWidgets( String aliasPrefix ) {
-    Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId =
-      new HashMap<String, CdfRunJsDashboardWriteResult>();
+    Map<String, CdfRunJsDashboardWriteResult> widgetsByContainerId = new HashMap<String, CdfRunJsDashboardWriteResult>();
 
     Dashboard dashboard = this.getContext().getDashboard();
     if ( dashboard.getRegularCount() > 0 ) {
@@ -78,7 +77,7 @@ public abstract class Renderer {
           }
 
           String containerId =
-            widgetComp.tryGetPropertyValue( "htmlObject", "" ).replaceAll( "\\$\\{.*:(.*)\\}", "$1" );
+              widgetComp.tryGetPropertyValue( "htmlObject", "" ).replaceAll( "\\$\\{.*:(.*)\\}", "$1" );
           widgetsByContainerId.put( containerId, dashResult );
         }
       }
@@ -112,7 +111,7 @@ public abstract class Renderer {
   }
 
   protected final String getIndent( int indent ) {
-    switch( indent ) {
+    switch ( indent ) {
       case 0:
         return "";
       case 1:
