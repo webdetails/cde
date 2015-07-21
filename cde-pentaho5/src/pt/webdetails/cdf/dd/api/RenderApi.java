@@ -189,9 +189,13 @@ public class RenderApi {
         String msgDir = FilenameUtils.getPath( FilenameUtils.separatorsToUnix( filePath ) );
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
 
-        result = new MessageBundlesHelper( msgDir, Utils.getAppropriateReadAccess( msgDir ),
-            CdeEnvironment.getPluginSystemWriter(), getEnv().getLocale(),
-            getEnv().getExtApi().getPluginStaticBaseUrl() ).replaceParameters( result, null );
+        result = new MessageBundlesHelper(
+            msgDir,
+            Utils.getAppropriateReadAccess( msgDir ),
+            CdeEnvironment.getPluginSystemWriter(),
+            getEnv().getLocale(),
+            getEnv().getExtApi().getPluginStaticBaseUrl() )
+          .replaceParameters( result, null );
       }
 
       logger.info( "[Timing] CDE Finished Dashboard Rendering: " + Utils.ellapsedSeconds( start ) + "s" );
@@ -208,6 +212,7 @@ public class RenderApi {
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
           this.getPentahoSession(), iLogger, start, uuid, end );
+
       return msg;
     }
   }
@@ -277,6 +282,7 @@ public class RenderApi {
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
           this.getPentahoSession(), iLogger, start, uuid, end );
+
       return msg;
     }
   }
@@ -403,8 +409,8 @@ public class RenderApi {
 
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
-      dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_"
-        + CdeConstants.DASHBOARD_ALIAS_TAG;
+      dashboardAlias =
+        FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
 

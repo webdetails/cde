@@ -44,8 +44,8 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
   protected static final Log logger = LogFactory.getLog( CdfRunJsThingWriterFactory.class );
 
   /**
-   * @param dashboard
-   * @return
+   * @param dashboard the dashboard
+   * @return an instance of a dashboard writer of the same render type as the provided dashboard
    */
   public CdfRunJsDashboardWriter getDashboardWriter( Dashboard dashboard ) {
     DashboardWcdfDescriptor wcdf = dashboard.getWcdf();

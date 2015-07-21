@@ -97,9 +97,8 @@ public class DashboardStructure implements IDashboardStructure {
    */
   public String load( String cdeFilePath ) throws Exception {
     InputStream cdeFileInput = null;
-    //InputStream wcdfFile = null;
+
     try {
-      //String cdeFilePath = (String)parameters.get("file");
 
       logger.info( "Loading File:" + cdeFilePath );
 

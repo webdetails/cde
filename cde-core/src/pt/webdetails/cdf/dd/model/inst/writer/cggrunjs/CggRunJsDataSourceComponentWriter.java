@@ -43,7 +43,7 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     if ( params.isEmpty() ) {
       return;
     }
-    
+
     /* ex:
       cgg.initParameter
       ('productLine', 'Classic Cars')
