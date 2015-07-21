@@ -22,6 +22,8 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdfRunJsParameterComponentWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (StringBuilder) output, (CdfRunJsDashboardWriteContext) context, (ParameterComponent) t );

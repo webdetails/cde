@@ -13,6 +13,8 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 /**
  * @author dcleao
  */

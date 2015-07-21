@@ -20,6 +20,8 @@ import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsHelper;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 /**
  * @author dcleao
  */

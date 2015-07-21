@@ -24,6 +24,8 @@ import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implements IThingWriter {
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (StringBuilder) output, (CggRunJsComponentWriteContext) context, (DataSourceComponent) t );

@@ -69,21 +69,4 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
         : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
   }
-
-  protected String getSystemDir() {
-    return CdeEngine.getEnv().getSystemDir();
-  }
-
-  protected String getPluginId( String path ) {
-    if ( path.startsWith( "/" ) ) {
-      path = path.replaceFirst( "/", "" );
-    }
-
-    if ( path.startsWith( getSystemDir() ) ) {
-      return path.split( "/" )[ 1 ];
-    } else {
-      return "";
-    }
-  }
-
 }

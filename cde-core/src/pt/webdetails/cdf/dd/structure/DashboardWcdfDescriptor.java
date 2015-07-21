@@ -39,7 +39,7 @@ public class DashboardWcdfDescriptor {
   private static final Log _logger = LogFactory.getLog( DashboardWcdfDescriptor.class );
 
   public enum DashboardRendererType {
-    MOBILE( "mobile" ), BLUEPRINT( "blueprint" ), BOOTSTRAP( "bootstrap" );
+    MOBILE( "mobile" ), BLUEPRINT( "blueprint" ), BOOTSTRAP( "bootstrap" ), CLEAN( "clean" );
 
     String type;
 

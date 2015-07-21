@@ -13,6 +13,8 @@
 
 package pt.webdetails.cdf.dd;
 
+import java.util.regex.Pattern;
+
 /**
  * Just constants. Inner classes serve as namespaces
  */
@@ -94,12 +96,12 @@ public class CdeConstants {
 
   public static final String CUSTOM_COMPONENT_CONFIG_FILENAME = "component.xml";
 
-  public enum REQUIREJS_PLUGIN {
+  public enum RequireJSPlugin {
     CSS( "css!" ), NONAMD( "amd!" );
 
     private final String plugin;
 
-    REQUIREJS_PLUGIN( String plugin ) {
+    RequireJSPlugin( String plugin ) {
       this.plugin = plugin;
     }
 
@@ -108,14 +110,55 @@ public class CdeConstants {
     }
   }
 
+  public enum AmdModule {
+    DASHBOARD_BLUEPRINT ( "cdf/Dashboard.Blueprint", "Dashboard" ),
+    DASHBOARD_BOOTSTRAP ( "cdf/Dashboard.Bootstrap", "Dashboard" ),
+    DASHBOARD_MOBILE ( "cdf/Dashboard.Mobile", "Dashboard" ),
+    DASHBOARD_CLEAN ( "cdf/Dashboard.Clean", "Dashboard" ),
+    LOGGER ( "cdf/Logger", "Logger" ),
+    JQUERY ( "cdf/lib/jquery", "$" ),
+    UNDERSCORE ( RequireJSPlugin.NONAMD + "cdf/lib/underscore", "_" ),
+    MOMENT ( "cdf/lib/moment", "moment" ),
+    CCC_CDO ( "cdf/lib/CCC/cdo", "cdo" ),
+    UTILS ( "cdf/dashboard/Utils", "Utils" );
+
+    private final String id;
+    private final String className;
+
+    AmdModule( String id, String className ) {
+      this.id = id;
+      this.className = className;
+    }
+
+    public String getId() {
+      return this.id;
+    }
+
+    public String getClassName() {
+      return this.className;
+    }
+  }
+
   public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
 
   public static class Writer {
+    public static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
+    public static final Pattern SCHEME_PATTERN = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
+
     public static final String NEWLINE = System.getProperty( "line.separator" );
     public static final String INDENT1 = "  ";
     public static final String INDENT2 = "    ";
     public static final String INDENT3 = "      ";
     public static final String INDENT4 = "        ";
+    public static final String INDENT5 = "          ";
+    public static final String INDENT6 = "            ";
+
+    public static final String TITLE = INDENT1 + "<title>{0}</title>";
+    public static final String SCRIPT =
+        INDENT1 + "<script language=\"javascript\" type=\"text/javascript\" src=\"{0}\"></script>" + NEWLINE;
+    public static final String STYLE =
+        INDENT1 + "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />" + NEWLINE;
+
     // make the dashboard variable available in the global scope to facilitate debugging
     public static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard({0});";
     public static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
@@ -186,6 +229,9 @@ public class CdeConstants {
         + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
     public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
     public static final String REQUIRE_CONFIG = "require.config(requireCfg);";
+
+    // legacy
+    public static final String DASHBOARDS_INIT = "Dashboards.init();";
   }
 
   // Resource Render

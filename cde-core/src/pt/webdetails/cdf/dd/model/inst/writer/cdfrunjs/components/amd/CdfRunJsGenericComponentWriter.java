@@ -30,6 +30,8 @@ import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
 
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
