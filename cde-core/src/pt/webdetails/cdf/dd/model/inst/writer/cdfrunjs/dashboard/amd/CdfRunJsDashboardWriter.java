@@ -156,11 +156,11 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
   protected String writeLayout( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws Exception {
     if ( dash.getLayoutCount() > 0 ) {
       JXPathContext docXP = dash.getLayout( "TODO" ).getLayoutXPContext();
-        return getLayoutRenderer( docXP, context ).render( context.getOptions().getAliasPrefix() );
+      return getLayoutRenderer( docXP, context ).render( context.getOptions().getAliasPrefix() );
     } else {
       logger.warn( "Unable to render layout: no layout found." );
-    return "";
-  }
+      return "";
+    }
   }
 
   /**
@@ -576,7 +576,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
         String path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
         if ( path.startsWith( "/" ) ) {
-          path = path.replaceFirst( "/", "" );
+          path =  path.replaceFirst( "/", "" );
         }
         // remove extension
         path = path.replaceFirst( "(?i).js$", "" );

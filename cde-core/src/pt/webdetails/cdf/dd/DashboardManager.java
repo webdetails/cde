@@ -392,8 +392,8 @@ public class DashboardManager {
   private void collectWidgetsToInvalidate( Set<String> invalidateDashboards,
                                            Map<String, Dashboard> dashboardsByCdfdeFilePath,
                                            String cdeWidgetFilePath ) {
-    // Find not-invalidated dashboards containing widget cdeWidgetFilePath
 
+    // Find not-invalidated dashboards containing widget cdeWidgetFilePath
     for ( Dashboard dash : dashboardsByCdfdeFilePath.values() ) {
       String cdeDashFilePath = dash.getSourcePath();
       if ( !invalidateDashboards.contains( cdeDashFilePath ) ) {
@@ -673,5 +673,4 @@ public class DashboardManager {
       return newDash;
     }
   }
-
 }

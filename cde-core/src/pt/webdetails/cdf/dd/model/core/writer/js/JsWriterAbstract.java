@@ -19,8 +19,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 public abstract class JsWriterAbstract {
 
   protected static void addCommaAndLineSep( StringBuilder out ) {
-    out.append( "," );
-    out.append( NEWLINE );
+    out.append( "," ).append( NEWLINE );
   }
 
   //TODO: review if this is used
@@ -30,21 +29,11 @@ public abstract class JsWriterAbstract {
   }
 
   protected static void addAssignmentWithOr( StringBuilder out, String name, String value ) {
-    out.append( name );
-    out.append( " = " );
-    out.append( name );
-    out.append( " || " );
-    out.append( value );
-    out.append( ";" );
-    out.append( NEWLINE );
+    out.append( name ).append( " = " ).append( name ).append( " || " ).append( value ).append( ";" ).append( NEWLINE );
   }
 
   protected static void addAssignment( StringBuilder out, String name, String value ) {
-    out.append( name );
-    out.append( " = " );
-    out.append( value );
-    out.append( ";" );
-    out.append( NEWLINE );
+    out.append( name ).append( " = " ).append( value ).append( ";" ).append( NEWLINE );
   }
 
   protected static void addJsProperty( StringBuilder out, String name, String jsValue, String indent ) {
@@ -61,9 +50,7 @@ public abstract class JsWriterAbstract {
       out.append( indent );
     }
 
-    out.append( name );
-    out.append( ": " );
-    out.append( jsValue );
+    out.append( name ).append( ": " ).append( jsValue );
   }
 
   protected static String wrapJsScriptTags( String code ) {
@@ -73,12 +60,13 @@ public abstract class JsWriterAbstract {
   }
 
   protected static void wrapJsScriptTags( StringBuilder out, String code ) {
-    out.append( NEWLINE );
-    out.append( "<script language=\"javascript\" type=\"text/javascript\">" );
-    out.append( NEWLINE );
-    out.append( code );
-    out.append( NEWLINE );
-    out.append( "</script>" );
-    out.append( NEWLINE );
+    out
+      .append( NEWLINE )
+      .append( "<script language=\"javascript\" type=\"text/javascript\">" )
+      .append( NEWLINE )
+      .append( code )
+      .append( NEWLINE )
+      .append( "</script>" )
+      .append( NEWLINE );
   }
 }

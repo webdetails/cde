@@ -66,22 +66,18 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     StringBuilder out = new StringBuilder();
 
-    out.append( "lib('cdf-env.js');" )
-      .append( NEWLINE )
-      .append( NEWLINE );
+    out.append( "lib('cdf-env.js');" ).append( NEWLINE ).append( NEWLINE );
 
     this.renderChart( out, context, comp, dashboardFileDir );
     out.append( NEWLINE );
 
     this.renderDatasource( out, context, comp );
-    out.append( NEWLINE )
-      .append( NEWLINE );
+    out.append( NEWLINE ).append( NEWLINE );
 
     String chartName = comp.getName();
     String compVarName = "render_" + chartName;
 
-    out.append( "cgg.render(" ).append( compVarName ).append( ");" )
-      .append( NEWLINE );
+    out.append( "cgg.render(" ).append( compVarName ).append( ");" ).append( NEWLINE );
 
     String chartScript = out.toString();
 
@@ -122,17 +118,16 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
       Resource.Type resType = resource.getType();
       switch ( resType ) {
         case RAW:
-          out.append( NEWLINE );
-          out.append( resource.getSource() );
-          out.append( NEWLINE );
+          out.append( NEWLINE ).append( resource.getSource() ).append( NEWLINE );
           break;
 
         case SCRIPT:
-          out.append( NEWLINE );
-          out.append( "load('" );
-          out.append( makeDashRelative( resource.getSource(), dashDir ) );
-          out.append( "');" );
-          out.append( NEWLINE );
+          out
+            .append( NEWLINE )
+            .append( "load('" )
+            .append( makeDashRelative( resource.getSource(), dashDir ) )
+            .append( "');" )
+            .append( NEWLINE );
           break;
       }
     }
@@ -140,11 +135,12 @@ public class CggRunJsGenericComponentWriter extends JsWriterAbstract implements 
     // Implementation
     String srcImpl = compType.getImplementationPath();
     if ( StringUtils.isNotEmpty( srcImpl ) ) {
-      out.append( NEWLINE );
-      out.append( "load('" );
-      out.append( makeDashRelative( srcImpl, dashDir ) );
-      out.append( "');" );
-      out.append( NEWLINE );
+      out
+        .append( NEWLINE )
+        .append( "load('" )
+        .append( makeDashRelative( srcImpl, dashDir ) )
+        .append( "');" )
+        .append( NEWLINE );
     }
 
     // ---------------
