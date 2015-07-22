@@ -159,8 +159,9 @@ public class CdeConstants {
     public static final String STYLE =
         INDENT1 + "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />" + NEWLINE;
 
+    public static final String DASHBOARD_DECLARATION = "var dashboard = new Dashboard({0});" + NEWLINE;
     // make the dashboard variable available in the global scope to facilitate debugging
-    public static final String DASHBOARD_DECLARATION = "window.dashboard = new Dashboard({0});";
+    public static final String DASHBOARD_DECLARATION_DEBUG = "window.dashboard = new Dashboard({0});" + NEWLINE;
     public static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
     public static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1}) '{'";
     public static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
