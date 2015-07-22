@@ -464,8 +464,11 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     //write dashboard declaration
-    out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) )
-      .append( NEWLINE );
+    if ( ctx.getOptions().isDebug() ) {
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, ctx.getOptions().getContextConfiguration() ) );
+    } else {
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) );
+    }
 
     // write JS Code snippets
     out.append( writeJsCodeResources( resources ) );
