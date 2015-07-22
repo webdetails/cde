@@ -452,12 +452,12 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       }
     }
 
-    // write RequireJS module path configurations for external JS and CSS resources
+    // write RequireJS module path configurations for JS and CSS file resources
     Map<String, String> fileResourceModules = writeFileResourcesRequireJSPathConfig( out, resources, ctx );
 
-    // Add external resource module ids to the list
+    // Add file resource module ids to the list
     moduleIds.addAll( fileResourceModules.keySet() );
-    // Add external resource module class names to the list
+    // Add file resource module class names to the list
     moduleClassNames.addAll( fileResourceModules.values() );
 
     // Output module paths and module class names
@@ -515,7 +515,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    * @param classNames the array list containing all module class names
    */
   protected void writeRequireJsExecutionFunction( StringBuilder out, List<String> ids, List<String> classNames ) {
-    // remove empty external resource module class names to the list
+    // remove file resource module empty class names from the list
     Iterator<String> i = classNames.iterator();
     while ( i.hasNext() ) {
       String className = i.next();
