@@ -14,7 +14,7 @@
 package pt.webdetails.cdf.dd.cdf;
 
 import junit.framework.Assert;
-import net.sf.json.JSONObject;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class CdfTemplatesTest {
         .addDashboardStyleAndRendererTypeToTemplate( testJson.toString( 2 ) );
     Assert.assertTrue( result != null );
 
-    JSONObject resultJson = JSONObject.fromObject( result );
+    JSONObject resultJson = new JSONObject( result );
     Assert.assertTrue( resultJson != null );
     Assert.assertTrue( resultJson.getString( "style" ) != null );
     Assert.assertTrue( resultJson.getString( "rendererType" ) != null );

@@ -15,12 +15,15 @@ package pt.webdetails.cdf.dd.render.cda;
 
 
 import junit.framework.TestCase;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doReturn;
@@ -45,7 +48,9 @@ public class CacheTest extends TestCase {
     cache = mock( Element.class );
     key = mock( Element.class );
     doc = mock( Document.class );
-    cacheRenderer.setDefinition( JSONObject.fromObject( "{\"value\":\"true\"}" ) );
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put( "value", "true" );
+    cacheRenderer.setDefinition( map );
 
     doReturn( doc ).when( dataAccess ).getOwnerDocument();
     doReturn( cache ).when( doc ).createElement( "Cache" );
@@ -53,7 +58,7 @@ public class CacheTest extends TestCase {
   }
 
   @Test
-  public void testRenderCacheTag() {
+  public void testRenderCacheTag() throws JSONException {
     doReturn( "500" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
     doReturn( "[]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 
@@ -65,7 +70,7 @@ public class CacheTest extends TestCase {
   }
 
   @Test
-  public void testRenderCacheTagWithKeys() {
+  public void testRenderCacheTagWithKeys() throws JSONException {
     doReturn( "3600" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
     doReturn( "[[\"Hello\",\"World\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 

@@ -13,18 +13,18 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-
-import net.sf.json.JSONObject;
-import net.sf.json.JSONArray;
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.Iterator;
+import java.util.Map;
 
 public class Cache implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
   private JXPathContext context;
   private final String NAME_ATTR = "name";
   private final String VALUE_ATTR = "value";
@@ -41,8 +41,8 @@ public class Cache implements CdaElementRenderer {
   }
 
   @Override
-  public void renderInto( Element dataAccess ) {
-    String isCacheEnabled = definition.getString( VALUE_ATTR );
+  public void renderInto( Element dataAccess ) throws JSONException {
+    String isCacheEnabled = (String) definition.get( VALUE_ATTR );
     String cacheDuration = context.getValue( "properties/.[name='cacheDuration']/value" ).toString();
 
     Document doc = dataAccess.getOwnerDocument();
@@ -51,17 +51,14 @@ public class Cache implements CdaElementRenderer {
     cache.setAttribute( CACHE_DURATION_ATTR, cacheDuration );
     dataAccess.appendChild( cache );
 
-    JSONArray cacheKeys = JSONArray.fromObject(
+    JSONArray cacheKeys = new JSONArray(
       context.getValue( "properties/.[name='cacheKeys']/value" ).toString() );
 
-    if ( cacheKeys.isEmpty() ) {
+    if ( cacheKeys.length() == 0 ) {
       return;
     }
-
-    @SuppressWarnings( "unchecked" )
-    Iterator<JSONArray> keysIterator = cacheKeys.iterator();
-    while ( keysIterator.hasNext() ) {
-      JSONArray content = keysIterator.next();
+    for ( int i = 0; i < cacheKeys.length(); i++ ) {
+      JSONArray content = cacheKeys.getJSONArray( i );
       Element key = doc.createElement( KEY_ELEMENT_NAME );
 
       key.setAttribute( NAME_ATTR, (String) content.get( 0 ) );
@@ -71,7 +68,7 @@ public class Cache implements CdaElementRenderer {
   }
 
   @Override
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
   }
 

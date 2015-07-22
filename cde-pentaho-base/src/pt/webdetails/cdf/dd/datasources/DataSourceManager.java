@@ -10,11 +10,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
@@ -37,7 +36,7 @@ public class DataSourceManager implements IDataSourceManager {
   private final Map<String, DataSourceProvider> providersById;
   
   // The map key is the data source provider id.
-  private final Map<String, JSON> providerDefinitionsById;
+  private final Map<String, JSONObject> providerDefinitionsById;
 
   private boolean _isRefresh;
   
@@ -53,7 +52,7 @@ public class DataSourceManager implements IDataSourceManager {
   private DataSourceManager() 
   {
     this.providersById = new LinkedHashMap<String, DataSourceProvider>();
-    this.providerDefinitionsById = new HashMap<String, JSON>();
+    this.providerDefinitionsById = new HashMap<String, JSONObject>();
     init(false);
   }
   
@@ -89,18 +88,19 @@ public class DataSourceManager implements IDataSourceManager {
     return dataSourceProviders;
   }
 
-  public JSON getJsDefinition()
-  {
+  public JSONObject getJsDefinition() throws JSONException {
     JSONObject dsSpec = new JSONObject();
     
     // TODO: this code seems to make more ifs than necessary...
     for(IDataSourceProvider provider : getProviders()) {
-      JSON dsDefinition = this.getProviderJsDefinition(provider.getId());
-      if(dsDefinition != null && !dsDefinition.isEmpty()) {
+      JSONObject dsDefinition = this.getProviderJsDefinition(provider.getId());
+      if(dsDefinition != null && (dsDefinition.length() > 0)) {
         if(dsDefinition instanceof JSONObject) {
-          JSONObject obj = ((JSONObject) dsDefinition);
-          if(!obj.isNullObject()) {
-            dsSpec.putAll(obj);
+          JSONObject obj = dsDefinition;
+          if( !obj.equals( JSONObject.NULL ) ) {
+            for ( String key : JSONObject.getNames( obj ) ) {
+              dsSpec.put(key, obj.get( key ) );
+            }
           }
         }
       }
@@ -109,14 +109,14 @@ public class DataSourceManager implements IDataSourceManager {
     return dsSpec;
   }
 
-  public JSON getProviderJsDefinition(String providerId) 
+  public JSONObject getProviderJsDefinition(String providerId)
   {
     return this.getProviderJsDefinition(providerId, false);
   }
 
-  public JSON getProviderJsDefinition(String providerId, boolean bypassCacheRead)
+  public JSONObject getProviderJsDefinition(String providerId, boolean bypassCacheRead)
   {
-    JSON result = null;
+    JSONObject result = null;
     
     if(!bypassCacheRead)
     {

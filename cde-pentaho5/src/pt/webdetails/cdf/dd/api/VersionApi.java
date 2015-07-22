@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.CdeVersionChecker;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -34,7 +35,7 @@ public class VersionApi {
   @GET
   @Path( "/check" )
   @Produces( "text/plain" )
-  public void checkVersion( @Context HttpServletResponse response ) throws IOException {
+  public void checkVersion( @Context HttpServletResponse response ) throws IOException, JSONException {
     VersionChecker versionChecker = new CdeVersionChecker( CdeSettings.getSettings() );
     CheckVersionResponse result = versionChecker.checkVersion();
     JsonUtils.buildJsonResult( response.getOutputStream(), result != null, result );

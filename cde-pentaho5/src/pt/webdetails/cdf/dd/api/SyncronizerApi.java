@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
@@ -187,7 +188,8 @@ public class SyncronizerApi { //TODO: synchronizer?
   public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation,
                              @FormParam( MethodParams.FILE ) String file,
                              @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
-                             @Context HttpServletResponse response ) throws IOException, DashboardStructureException {
+                             @Context HttpServletResponse response )
+    throws IOException, DashboardStructureException, JSONException {
     final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
     Object result = null;
 
@@ -204,7 +206,8 @@ public class SyncronizerApi { //TODO: synchronizer?
   @GET
   @Path( "/syncronizeStyles" )
   @Produces( MimeTypes.JSON )
-  public void syncStyles( @Context HttpServletResponse response ) throws IOException, DashboardDesignerException {
+  public void syncStyles( @Context HttpServletResponse response )
+    throws IOException, DashboardDesignerException, JSONException {
     final CdfStyles cdfStyles = new CdfStyles();
     JsonUtils.buildJsonResult( response.getOutputStream(), true, cdfStyles.liststyles() );
   }

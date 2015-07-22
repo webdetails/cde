@@ -13,17 +13,17 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Map;
+
 public class Output implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
   private JXPathContext context;
 
   public Output() {
@@ -33,8 +33,8 @@ public class Output implements CdaElementRenderer {
     this.context = context;
   }
 
-  public void renderInto( Element dataAccess ) {
-    JSONArray columns = JSONArray.fromObject( definition.getString( "value" ) );
+  public void renderInto( Element dataAccess ) throws JSONException {
+    JSONArray columns = new JSONArray( (String) definition.get( "value" ) );
     String mode;
     try {
       mode = context.getValue( "properties/.[name='outputMode']/value" ).toString();
@@ -42,27 +42,26 @@ public class Output implements CdaElementRenderer {
       // If we fail to read the property, it defaults to Inclusive mode.
       mode = "include";
     }
-    if ( columns.size() == 0 ) {
+    if ( columns.length() == 0 ) {
       return;
     }
     Document doc = dataAccess.getOwnerDocument();
     Element output = doc.createElement( "Output" );
     output.setAttribute( "mode", mode.toLowerCase() );
     dataAccess.appendChild( output );
-    @SuppressWarnings( "unchecked" )
-    Iterator<String> paramIterator = columns.iterator();
     StringBuilder indexes = new StringBuilder();
-    while ( paramIterator.hasNext() ) {
-      String col = paramIterator.next();
+
+    for ( int i = 0; i < columns.length(); i++ ) {
+      String col = columns.getString( i );
       indexes.append( col );
-      if ( paramIterator.hasNext() ) {
+      if ( i + 1 < columns.length() ) {
         indexes.append( "," );
       }
     }
     output.setAttribute( "indexes", indexes.toString() );
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
   }
 

@@ -13,40 +13,37 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Map;
+
 public class Parameters implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
   private final String NAME_ATTR = "name",
     DEFAULT_ATTR = "default",
     TYPE_ATTR = "type",
     ACCESS_ATTR = "access",
     ELEMENT_NAME = "Parameter";
 
-  public void renderInto( Element dataAccess ) {
-    JXPathContext.newContext( definition );
+  public void renderInto( Element dataAccess ) throws JSONException {
     Document doc = dataAccess.getOwnerDocument();
     Element parameters = doc.createElement( "Parameters" );
     dataAccess.appendChild( parameters );
-    JSONArray params = JSONArray.fromObject( definition.getString( "value" ) );
-    @SuppressWarnings( "unchecked" )
-    Iterator<JSONArray> paramIterator = params.iterator();
-    while ( paramIterator.hasNext() ) {
-      JSONArray param = (JSONArray) paramIterator.next();
+    JSONArray params = new JSONArray( (String) definition.get( "value" ) );
+
+    for ( int i = 0; i < params.length(); i++ ) {
+      JSONArray param = params.getJSONArray( i );
       Element parameter = doc.createElement( ELEMENT_NAME );
       parameter.setAttribute( NAME_ATTR, (String) param.get( 0 ) );
       parameter.setAttribute( DEFAULT_ATTR, (String) param.get( 1 ) );
-      if ( param.size() > 2 ) {
+      if ( param.length() > 2 ) {
         parameter.setAttribute( TYPE_ATTR, (String) param.get( 2 ) );
-        if ( param.size() > 3 ) {
+        if ( param.length() > 3 ) {
           String access = (String) param.get( 3 );
           if ( !StringUtils.isEmpty( access ) ) {
             parameter.setAttribute( ACCESS_ATTR, access );
@@ -55,12 +52,11 @@ public class Parameters implements CdaElementRenderer {
       } else {
         parameter.setAttribute( TYPE_ATTR, "String" );
       }
-
       parameters.appendChild( parameter );
     }
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
   }
 }

@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,13 +31,14 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
@@ -133,13 +135,18 @@ public class DashboardManager {
     InputStream input = null;
     try {
       input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
+      final JSONObject json = JsonUtils.readJsonFromInputStream( input );
 
       if ( wcdf != null ) {
-        json.put( "settings", wcdf.toJSON() );
+        try {
+          json.put( "settings", wcdf.toJSON() );
+        } catch ( JSONException e ) {
+          _logger.error( "Error writing settings to json", e );
+        }
       }
-
-      return JXPathContext.newContext( json );
+      return JsonUtils.toJXPathContext( json );
+    } catch ( JSONException e ) {
+      return null;
     } finally {
       IOUtils.closeQuietly( input );
     }

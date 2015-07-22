@@ -14,19 +14,21 @@
 package pt.webdetails.cdf.dd.model.meta.reader.datasources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.model.meta.DataSourceComponentType;
 import pt.webdetails.cdf.dd.model.meta.MetaModel;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
+import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cpf.packager.origin.PathOrigin;
 import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
@@ -40,18 +42,23 @@ public final class DataSourcesModelReader {
   protected static final Log logger = LogFactory.getLog( DataSourcesModelReader.class );
 
 
-  public void read( MetaModel.Builder model, JSON cdaDefs, String sourcePath ) throws ThingReadException {
+  public void read( MetaModel.Builder model, JSONObject cdaDefs, String sourcePath ) throws ThingReadException {
     assert model != null;
 
     logger.info( "Loading data source components of '" + sourcePath + "'" );
 
-    final JXPathContext doc = JXPathContext.newContext( cdaDefs );
+    try {
+      final JXPathContext doc = JsonUtils.toJXPathContext( cdaDefs );
 
-    @SuppressWarnings( "unchecked" )
-    Iterator<Pointer> pointers = doc.iteratePointers( "*" );
-    while ( pointers.hasNext() ) {
-      Pointer pointer = pointers.next();
-      this.readDataSourceComponent( model, pointer, sourcePath );
+      @SuppressWarnings( "unchecked" )
+      Iterator<Pointer> pointers = doc.iteratePointers( "*" );
+
+      while ( pointers.hasNext() ) {
+        Pointer pointer = pointers.next();
+        this.readDataSourceComponent( model, pointer, sourcePath );
+      }
+    } catch ( JSONException e ) {
+      logger.error( "Error generating JXPathContext", e );
     }
   }
 
@@ -65,7 +72,7 @@ public final class DataSourcesModelReader {
 
     DataSourceComponentType.Builder builder = new DataSourceComponentType.Builder();
 
-    JSONObject def = (JSONObject) pointer.getNode();
+    Map<String, Object> def = (Map<String, Object>) pointer.getNode();
     JXPathContext jctx = JXPathContext.newContext( def );
 
     String label = (String) jctx.getValue( "metadata/name" );
@@ -134,23 +141,19 @@ public final class DataSourcesModelReader {
     model.addComponent( builder );
   }
 
-  private List<String> getCDAPropertyNames( JSONObject def ) {
+  private List<String> getCDAPropertyNames( Map<String, Object> def ) {
     ArrayList<String> props = new ArrayList<String>();
 
     JXPathContext context = JXPathContext.newContext( def );
 
-    JSONObject connection = (JSONObject) context.getValue( "definition/connection", JSONObject.class );
+    Map<String, Object> connection = (Map<String, Object>) context.getValue( "definition/connection" );
     if ( connection != null ) {
-      @SuppressWarnings( "unchecked" )
-      Set<String> keys = connection.keySet();
-      props.addAll( keys );
+      props.addAll( connection.keySet() );
     }
 
-    JSONObject dataaccess = (JSONObject) context.getValue( "definition/dataaccess", JSONObject.class );
+    Map<String, Object> dataaccess = (Map<String, Object>) context.getValue( "definition/dataaccess" );
     if ( dataaccess != null ) {
-      @SuppressWarnings( "unchecked" )
-      Set<String> keys = dataaccess.keySet();
-      props.addAll( keys );
+      props.addAll( dataaccess.keySet() );
     }
 
     return props;

@@ -1,9 +1,8 @@
 package pt.webdetails.cdf.dd.datasources;
 
-
 import java.util.List;
 
-import net.sf.json.JSON;
+import org.json.JSONObject;
 
 public interface IDataSourceManager {
 		
@@ -11,9 +10,9 @@ public interface IDataSourceManager {
 	
 	public IDataSourceProvider getProvider(String id);
 	
-	public JSON getProviderJsDefinition(String providerId);
+	public JSONObject getProviderJsDefinition(String providerId);
 	
-	public JSON getProviderJsDefinition(String providerId, boolean bypassCacheRead);
+	public JSONObject getProviderJsDefinition(String providerId, boolean bypassCacheRead);
 	
 	public void refresh();
 

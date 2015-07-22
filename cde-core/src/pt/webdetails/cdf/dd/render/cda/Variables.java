@@ -13,15 +13,18 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Map;
+
 public class Variables implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
   private JXPathContext context;
 
   public Variables() {
@@ -31,14 +34,14 @@ public class Variables implements CdaElementRenderer {
     this.context = context;
   }
 
-  public void renderInto( Element dataAccess ) {
-    JSONArray vars = JSONArray.fromObject( definition.getString( "value" ) );
-    if ( vars.size() == 0 ) {
+  public void renderInto( Element dataAccess ) throws JSONException {
+    JSONArray vars = new JSONArray( (String) definition.get( "value" ) );
+    if ( vars.length() == 0 ) {
       return;
     }
     Document doc = dataAccess.getOwnerDocument();
-    for ( Object o : vars.toArray() ) {
-      JSONArray jsa = (JSONArray) o;
+    for ( int i = 0; i < vars.length(); i++ ) {
+      JSONArray jsa = vars.getJSONArray( i );
       Element variable = doc.createElement( "variables" );
       if ( !jsa.getString( 0 ).equals( "" ) ) {
         variable.setAttribute( "datarow-name", jsa.getString( 0 ) );
@@ -50,7 +53,7 @@ public class Variables implements CdaElementRenderer {
     }
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
   }
 

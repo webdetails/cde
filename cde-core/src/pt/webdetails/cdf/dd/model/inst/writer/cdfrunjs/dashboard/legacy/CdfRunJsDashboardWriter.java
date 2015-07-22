@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 
@@ -141,7 +142,11 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     StringBuilder widgetsOut = new StringBuilder();
 
     // Output WCDF
-    addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    try {
+      addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    } catch ( JSONException e ) {
+      logger.error( "Error building wcdf JSON", e );
+    }
     out.append( NEWLINE );
 
     boolean isFirstComp = true;

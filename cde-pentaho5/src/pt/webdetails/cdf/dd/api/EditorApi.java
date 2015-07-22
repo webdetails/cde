@@ -38,6 +38,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
@@ -81,7 +82,7 @@ public class EditorApi {
   @Produces( "text/javascript" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                          @Context HttpServletResponse response ) throws IOException {
+                          @Context HttpServletResponse response ) throws IOException, JSONException {
 
     IResourceLoader loader = getResourceLoader( path );
     IACAccess access = loader.getAccessControl();

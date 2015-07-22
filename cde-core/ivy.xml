@@ -35,10 +35,6 @@
 
       <dependency org="pentaho"                      name="cpf-core"    rev="${dependency.pentaho-cpf-plugin.revision}" conf="test, runtime->default" transitive="false" changing="true" />
 
-      <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" transitive="false">
-        <artifact name="json-lib" type="jar" m:classifier="jdk15"/>
-      </dependency>
-
       <dependency org="org.mockito"   name="mockito-all"   rev="1.8.4" conf="test, default->default"/>
       <dependency org="junit"         name="junit"         rev='4.10'  conf="test->default" />
       <dependency org="jaxen"         name="jaxen"         rev="1.1"   conf="test->default" />

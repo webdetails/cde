@@ -14,13 +14,14 @@
 package pt.webdetails.cdf.dd.structure;
 
 import junit.framework.Assert;
-import net.sf.json.JSON;
-import net.sf.json.JSONSerializer;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -145,7 +146,7 @@ public class Olap4jDatasourceStructureTest {
 
   public class CdaRendererTest extends CdaRenderer {
 
-    public CdaRendererTest( String docJson ) {
+    public CdaRendererTest( String docJson ) throws JSONException {
       super( docJson );
     }
 
@@ -156,8 +157,12 @@ public class Olap4jDatasourceStructureTest {
      * on a working CDA plugin ( in the context of a cde-core test )
      */
     @Override
-    public JSON getCdaDefinitions() {
-      return JSONSerializer.toJSON( cdaDatasourceDefinitions );
+    public JSONObject getCdaDefinitions() {
+      try {
+        return new JSONObject( cdaDatasourceDefinitions  );
+      } catch ( JSONException e ) {
+        return null;
+      }
     }
 
     @Override

@@ -14,14 +14,14 @@
 package pt.webdetails.cdf.dd.render.cda;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import net.sf.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class Olap4jProperties implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
   private String paramName = "";
 
   private HashMap<String, String> names;
@@ -45,7 +45,7 @@ public class Olap4jProperties implements CdaElementRenderer {
     dataAccess.appendChild( prop );
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
 
   }

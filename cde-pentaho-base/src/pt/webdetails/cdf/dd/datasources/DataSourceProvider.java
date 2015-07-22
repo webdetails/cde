@@ -5,11 +5,10 @@
  */
 package pt.webdetails.cdf.dd.datasources;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.InterPluginBroker;
 
 public class DataSourceProvider implements IDataSourceProvider {
@@ -30,12 +29,12 @@ public class DataSourceProvider implements IDataSourceProvider {
     this.pluginId = pluginId;
   }
   
-  public JSON getDataSourceDefinitions(boolean refresh)
+  public JSONObject getDataSourceDefinitions(boolean refresh)
   {
     try 
     {
       String dsDefinitions = InterPluginBroker.getDataSourceDefinitions(pluginId, null, DATA_SOURCE_DEFINITION_METHOD_NAME, refresh);
-      return JSONSerializer.toJSON(dsDefinitions);
+      return new JSONObject( dsDefinitions );
     } 
     catch(Exception ex)
     {

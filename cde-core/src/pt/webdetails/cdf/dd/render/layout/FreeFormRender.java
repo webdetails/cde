@@ -13,8 +13,9 @@
 
 package pt.webdetails.cdf.dd.render.layout;
 
-import net.sf.json.JSONArray;
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONArray;
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
 public class FreeFormRender extends Render {
@@ -38,7 +39,7 @@ public class FreeFormRender extends Render {
   }
 
   @Override
-  public String renderStart() {
+  public String renderStart() throws JSONException {
     String content = "<" + elementTag + " " + getPropertyBagString();
     content += buildMoreProperties() + ">";
     return content;
@@ -54,15 +55,15 @@ public class FreeFormRender extends Render {
     return id.length() > 0 ? id : XPathUtils.getStringValue( getNode(), "id" );
   }
 
-  protected String buildMoreProperties() {
+  protected String buildMoreProperties() throws JSONException {
     String properties = "";
     String arg = "";
     String value = "";
 
-    JSONArray attrs = JSONArray.fromObject( getMoreProperties() );
+    JSONArray attrs = new JSONArray( getMoreProperties() );
     JSONArray insertVal;
 
-    for ( int i = 0; i < attrs.size(); i++ ) {
+    for ( int i = 0; i < attrs.length(); i++ ) {
       insertVal = attrs.getJSONArray( i );
       arg = insertVal.getString( 0 );
       value = insertVal.getString( 1 );

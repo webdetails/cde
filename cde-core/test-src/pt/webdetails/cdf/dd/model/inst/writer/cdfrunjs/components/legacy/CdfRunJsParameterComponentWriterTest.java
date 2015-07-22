@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy;
 
 import junit.framework.Assert;
+import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;

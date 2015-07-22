@@ -19,8 +19,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +27,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 
@@ -72,7 +73,7 @@ public class DashboardWcdfDescriptor {
    *
    * @return
    */
-  public JSONObject toJSON() {
+  public JSONObject toJSON() throws JSONException {
     JSONObject json = new JSONObject();
     json.put( "title", getTitle() );
     json.put( "author", getAuthor() );
@@ -85,7 +86,7 @@ public class DashboardWcdfDescriptor {
 
     JSONArray aWidgetParams = new JSONArray();
     for ( String s : _widgetParameters ) {
-      aWidgetParams.add( s );
+      aWidgetParams.put( s );
     }
 
     json.put( "widgetParameters", aWidgetParams );

@@ -13,12 +13,15 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
+import org.json.JSONException;
 import org.w3c.dom.Element;
-import net.sf.json.JSONObject;
+
+import java.util.Map;
+
 
 public interface CdaElementRenderer {
 
-  public void renderInto( Element dataAccess );
+  public void renderInto( Element dataAccess ) throws JSONException;
 
-  public void setDefinition( JSONObject definition );
+  public void setDefinition( Map<String, Object> definition );
 }

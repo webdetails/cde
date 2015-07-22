@@ -13,11 +13,11 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
@@ -98,11 +98,15 @@ public class CdfTemplates {
     } catch ( IOException e ) {
       logger.error(e);
       result = Messages.getString( "CdfTemplates.ERROR_002_LOADING_EXCEPTION" );
+    } catch ( JSONException e ) {
+      logger.error(e);
+      result = Messages.getString( "CdfTemplates.ERROR_002_LOADING_EXCEPTION" );
     }
     return result;
   }
 
-  private void loadFiles( final IBasicFile[] jsonFiles, final JSONArray result, final String type ) throws IOException {
+  private void loadFiles( final IBasicFile[] jsonFiles, final JSONArray result, final String type )
+    throws IOException, JSONException {
 
     Arrays.sort( jsonFiles, new Comparator<IBasicFile>() {
 
@@ -130,7 +134,7 @@ public class CdfTemplates {
       template.put( "img", imgResourcePath );
       template.put( "type", type );
       template.put( "structure", JsonUtils.readJsonFromInputStream( jsonFiles[i].getContents() ) );
-      result.add( template );
+      result.put( template );
     }
   }
 
@@ -157,9 +161,9 @@ public class CdfTemplates {
 
       String updatedStructure = origStructure;  // starts off as the original one
 
-      JSONObject jsonObj = JSONObject.fromObject( origStructure );
+      JSONObject jsonObj = new JSONObject( origStructure );
 
-      if( jsonObj != null && jsonObj.containsKey( "filename" ) ){
+      if( jsonObj != null && jsonObj.has( "filename" ) ){
 
         DashboardWcdfDescriptor wcdf = loadWcdfDescriptor( jsonObj.getString( "filename" ) );
 

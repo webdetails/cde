@@ -13,11 +13,10 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import net.sf.json.JSONArray;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
@@ -95,7 +94,7 @@ public class CdfStyles {
 
       for ( IBasicFile file : styleFiles ) {
         String name = file.getName();
-        result.add( name.substring( 0, name.lastIndexOf( '.' ) ) + s.getSufixPluginName() );
+        result.put( name.substring( 0, name.lastIndexOf( '.' ) ) + s.getSufixPluginName() );
       }
     }
 

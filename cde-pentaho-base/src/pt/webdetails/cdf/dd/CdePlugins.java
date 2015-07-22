@@ -1,10 +1,9 @@
 package pt.webdetails.cdf.dd;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
@@ -51,7 +50,7 @@ public class CdePlugins {
         pluginObject.put("jsPath", plugin.getXmlValue("/settings/jsPath", "settings.xml"));
         pluginObject.put("pluginId", plugin.getId());
 
-        pluginsArray.add(pluginObject);
+        pluginsArray.put(pluginObject);
       } catch(Exception e) {
         logger.error(e);
       }

@@ -17,8 +17,8 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -153,7 +153,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( factory ).when( context ).getFactory();
     doReturn( writer ).when( factory ).getWriter( any( Thing.class ) );
 
-    doReturn( JSONObject.fromObject( "{}" ) ).when( dashboardWcdfDescriptor ).toJSON();
+    doReturn( new JSONObject( "{}" ) ).when( dashboardWcdfDescriptor ).toJSON();
     doReturn( dashboardWcdfDescriptor ).when( dash ).getWcdf();
 
     List<Component> componentList = new ArrayList<Component>();
