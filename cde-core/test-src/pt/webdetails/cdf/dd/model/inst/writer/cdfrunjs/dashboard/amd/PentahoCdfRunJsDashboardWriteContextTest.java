@@ -74,11 +74,11 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String solutionAbsoluteResourceExpected = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, "script.js" );
     String solutionRelativeResourceExpected = RepositoryHelper.joinPaths( ROOT, "script.js" );
 
-    String jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
-    String cssResourceReplaced = removeParams( context.replaceTokens( cssResource ) );
-    String absoluteResourceReplaced = removeParams( context.replaceTokens( absoluteResource ) );
-    String solutionAbsoluteResourceReplaced = removeParams( context.replaceTokens( solutionAbsoluteResource ) );
-    String solutionRelativeResourceReplaced = removeParams( context.replaceTokens( solutionRelativeResource ) );
+    String jsResourceReplaced = context.replaceTokens( jsResource );
+    String cssResourceReplaced = context.replaceTokens( cssResource );
+    String absoluteResourceReplaced = context.replaceTokens( absoluteResource );
+    String solutionAbsoluteResourceReplaced = context.replaceTokens( solutionAbsoluteResource );
+    String solutionRelativeResourceReplaced = context.replaceTokens( solutionRelativeResource );
 
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
     Assert.assertEquals( "${res:style.css} replacement failed", cssResourceExpected, cssResourceReplaced );
@@ -103,8 +103,8 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
 
     String systemResourceExpected = RepositoryHelper.joinPaths( SYSTEM, TEST_PLUGIN, TEST_FOLDER, "script.js" );
 
-    String systemAbsoluteResourceReplaced = removeParams( context.replaceTokens( systemAbsoluteResource ) );
-    String systemRelativeResourceReplaced = removeParams( context.replaceTokens( systemRelativeResource ) );
+    String systemAbsoluteResourceReplaced = context.replaceTokens( systemAbsoluteResource );
+    String systemRelativeResourceReplaced = context.replaceTokens( systemRelativeResource );
 
     Assert
       .assertEquals( "${system:script.js} replacement failed", systemResourceExpected, systemAbsoluteResourceReplaced );
@@ -127,21 +127,21 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String jsResourceExpected = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, "script.js" );
     String jsResourceAbsoluteExpected = RepositoryHelper.joinPaths( ROOT, TEST_FOLDER, "script.js" );
 
-    jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
+    jsResourceReplaced = context.replaceTokens( jsResource );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
 
     options = new CdfRunJsDashboardWriteOptions( true, false, "localhost:8080", "http" );
     context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
       indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
 
-    jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
+    jsResourceReplaced = context.replaceTokens( jsResource );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceAbsoluteExpected, jsResourceReplaced );
 
     options = new CdfRunJsDashboardWriteOptions( false, false, "localhost:8080", "http" );
     context = new PentahoCdfRunJsDashboardWriteContextForTesting( factory,
       indent, bypassCacheRead, getDashboard( dashboardPath, false ), options );
 
-    jsResourceReplaced = removeParams( context.replaceTokens( jsResource ) );
+    jsResourceReplaced = context.replaceTokens( jsResource );
     Assert.assertEquals( "${res:script.js} replacement failed", jsResourceExpected, jsResourceReplaced );
 
 
@@ -196,9 +196,4 @@ public class PentahoCdfRunJsDashboardWriteContextTest {
     String scheme = "";
     return new CdfRunJsDashboardWriteOptions( absolute, debug, absRoot, scheme );
   }
-
-  private String removeParams( String msg ) {
-    return msg.substring( 0, msg.indexOf( "?" ) );
-  }
-
 }
