@@ -125,12 +125,12 @@ public class DashboardManager {
   }
 
   public static JXPathContext openDashboardAsJXPathContext( DashboardWcdfDescriptor wcdf ) throws IOException,
-    FileNotFoundException {
+    FileNotFoundException, JSONException {
     return openDashboardAsJXPathContext( wcdf.getStructurePath(), wcdf );
   }
 
   public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException {
+    throws IOException, FileNotFoundException, JSONException {
     InputStream input = null;
     try {
       input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
@@ -144,8 +144,6 @@ public class DashboardManager {
         }
       }
       return JsonUtils.toJXPathContext( json );
-    } catch ( JSONException e ) {
-      return null;
     } finally {
       IOUtils.closeQuietly( input );
     }
@@ -475,6 +473,8 @@ public class DashboardManager {
       throw new ThingReadException( "The CDFDE dashboard file does not exist.", ex );
     } catch ( IOException ex ) {
       throw new ThingReadException( "While accessing the CDFDE dashboard file.", ex );
+    } catch ( JSONException ex ) {
+      throw new ThingReadException( "While opening the CDFDE dashboard file as a JXPathContext.", ex );
     }
 
     // 2. Obtain a reader to read the dashboard file

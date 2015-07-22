@@ -23,6 +23,7 @@ import javax.ws.rs.DefaultValue;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
@@ -32,7 +33,8 @@ public class DatasourcesApi {
   @GET
   @Path( "/get" )
   @Produces( "text/javascript" )
-  public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard ) {
+  public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard )
+    throws JSONException {
 
     if ( dashboard.isEmpty() ) {
       return "[]";
@@ -50,7 +52,7 @@ public class DatasourcesApi {
     public static final String DASHBOARD = "dashboard";
   }
 
-  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources( String dashboard ) {
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaDataSources( String dashboard ) throws JSONException {
     return CdaDataSourceReader.getCdaDataSources( dashboard );
   }
 }

@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
+import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ public class DatasourcesApiTest {
   }
 
   @Test
-  public void listCdaSourcesTest() {
+  public void listCdaSourcesTest() throws JSONException {
     DatasourcesApiForTesting datasourcesApi = new DatasourcesApiForTesting();
     String actualResult = datasourcesApi.listCdaSources( DASHBOARD );
 

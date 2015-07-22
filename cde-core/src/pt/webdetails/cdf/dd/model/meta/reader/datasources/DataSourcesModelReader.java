@@ -41,23 +41,25 @@ public final class DataSourcesModelReader {
   protected static final Log logger = LogFactory.getLog( DataSourcesModelReader.class );
 
 
-  public void read( MetaModel.Builder model, JSONObject cdaDefs, String sourcePath ) throws ThingReadException {
+  public void read( MetaModel.Builder model, JSONObject cdaDefs, String sourcePath )
+    throws ThingReadException {
     assert model != null;
 
     logger.info( "Loading data source components of '" + sourcePath + "'" );
 
+    final JXPathContext doc;
     try {
-      final JXPathContext doc = JsonUtils.toJXPathContext( cdaDefs );
-
-      @SuppressWarnings( "unchecked" )
-      Iterator<Pointer> pointers = doc.iteratePointers( "*" );
-
-      while ( pointers.hasNext() ) {
-        Pointer pointer = pointers.next();
-        this.readDataSourceComponent( model, pointer, sourcePath );
-      }
+      doc = JsonUtils.toJXPathContext( cdaDefs );
     } catch ( JSONException e ) {
-      logger.error( "Error generating JXPathContext", e );
+      throw new ThingReadException( "Couldn't get JXPathContext from json", e );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    Iterator<Pointer> pointers = doc.iteratePointers( "*" );
+
+    while ( pointers.hasNext() ) {
+      Pointer pointer = pointers.next();
+      this.readDataSourceComponent( model, pointer, sourcePath );
     }
   }
 

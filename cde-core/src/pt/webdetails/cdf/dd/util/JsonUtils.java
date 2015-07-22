@@ -33,16 +33,11 @@ import org.json.JSONObject;
 public class JsonUtils {
   private static final int INDENT = 2;
 
-  public static JSONObject readJsonFromInputStream( final InputStream input ) throws IOException {
+  public static JSONObject readJsonFromInputStream( final InputStream input ) throws IOException, JSONException {
 
     String contents = StringUtils.trim( IOUtils.toString( input, "UTF-8" ) );
 
-    try {
-      return new JSONObject( contents );
-    } catch ( JSONException e ) {
-      e.printStackTrace();
-    }
-    return null;
+    return new JSONObject( contents );
   }
 
   public static void buildJsonResult( final OutputStream out, final Boolean sucess, final Object result )

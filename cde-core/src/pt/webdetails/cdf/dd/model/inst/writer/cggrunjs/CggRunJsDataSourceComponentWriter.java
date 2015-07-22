@@ -40,7 +40,7 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
       try {
         renderParameters( out, new JSONArray( jsParamsArray ) );
       } catch ( JSONException e ) {
-        logger.error( "Error writing DataSourceComponent", e );
+        throw new ThingWriteException( "Couldn't render parameters", e );
       }
     }
   }

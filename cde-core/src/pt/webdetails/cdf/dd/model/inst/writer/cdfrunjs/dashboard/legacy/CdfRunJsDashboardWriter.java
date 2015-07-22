@@ -135,7 +135,8 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     return new RenderLayout( docXP, context );
   }
 
-  protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
+  protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash )
+    throws ThingWriteException {
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
 
     StringBuilder out = new StringBuilder();
@@ -144,8 +145,8 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     // Output WCDF
     try {
       addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
-    } catch ( JSONException e ) {
-      logger.error( "Error building wcdf JSON", e );
+    } catch ( JSONException ex ) {
+      throw new ThingWriteException( "Converting wcdf to json", ex );
     }
     out.append( NEWLINE );
 

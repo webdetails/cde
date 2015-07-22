@@ -24,6 +24,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.apache.commons.lang.StringUtils;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.util.XPathUtils;
 
@@ -66,7 +67,7 @@ public class CdaDataSourceReader {
 
   // TODO: The instance model
   // already has a DataSourceComponent list in the Dashboard object...
-  public static List<CdaDataSource> getCdaDataSources( String dashboard ) {
+  public static List<CdaDataSource> getCdaDataSources( String dashboard ) throws JSONException {
     JXPathContext context;
 
     try {

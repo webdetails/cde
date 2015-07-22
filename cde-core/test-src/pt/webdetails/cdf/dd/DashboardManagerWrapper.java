@@ -102,7 +102,7 @@ public class DashboardManagerWrapper {
 
   public static JXPathContext openDashboardAsJXPathContext(
       DashboardWcdfDescriptor wcdf )
-      throws IOException, FileNotFoundException {
+    throws IOException, FileNotFoundException, JSONException {
     return DashboardManager.openDashboardAsJXPathContext( wcdf );
   }
 
