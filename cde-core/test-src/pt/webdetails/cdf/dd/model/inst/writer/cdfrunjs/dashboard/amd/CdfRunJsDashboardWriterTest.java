@@ -359,6 +359,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     moduleClassNames.add( "jsFileRsrc1" );
 
     doReturn( CONTEXT_CONFIGURATION ).when( options ).getContextConfiguration();
+    doReturn( false ).when( options ).isDebug();
     doReturn( options ).when( context ).getOptions();
 
     final String content = "dashboard.addComponent(new TestComponent1({test: 1}));";
@@ -372,14 +373,34 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
-        StringUtils.join( moduleClassNames, ", " ) ) )
-      .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
+        StringUtils.join( moduleClassNames, ", " ) ) ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 
+    Assert.assertEquals(
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+
+    // Debug Mode set's window.dashboard
+    doReturn( true ).when( options ).isDebug();
+    dashboardResult.setLength( 0 );
+    dashboardResult
+      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
+      .append( REQUIRE_CONFIG ).append( NEWLINE )
+      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
+        StringUtils.join( moduleClassNames, ", " ) ) )
+      .append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) )
+      .append( "jsCodeRsrc1" ).append( NEWLINE )
+      .append( content ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
+      .append( REQUIRE_STOP );
     Assert.assertEquals(
       dashboardResult.toString(),
       dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
