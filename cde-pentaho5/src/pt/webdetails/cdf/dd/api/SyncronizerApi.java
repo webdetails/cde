@@ -37,14 +37,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONException;
-import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.cdf.CdfStyles;
 import pt.webdetails.cdf.dd.cdf.CdfTemplates;
 import pt.webdetails.cdf.dd.structure.DashboardStructure;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
-import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
@@ -98,7 +96,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
       // check access to path folder
       String fileDir =
-        file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
+          file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
       isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
@@ -147,7 +145,7 @@ public class SyncronizerApi { //TODO: synchronizer?
         return dashboardStructure.load( wcdfdeFile );
       } else if ( OPERATION_DELETE.equalsIgnoreCase( operation ) ) {
         dashboardStructure.delete( params );
-      } else if( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
+      } else if ( OPERATION_DELETE_PREVIEW.equalsIgnoreCase( operation ) ) {
         dashboardStructure.deletePreviewFiles( wcdfdeFile );
       } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
         result = dashboardStructure.save( file, cdfStructure );
@@ -161,7 +159,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       } else if ( OPERATION_SAVE_SETTINGS.equalsIgnoreCase( operation ) ) {
 
         // check if user is attempting to save settings over a new (non yet saved) dashboard/widget/template
-        if( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
+        if ( StringUtils.isEmpty( file ) || file.equals( UNSAVED_FILE_PATH ) ) {
           logger.warn( getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
           return JsonUtils.getJsonResult( false, getMessage( "CdfTemplates.ERROR_003_SAVE_DASHBOARD_FIRST" ) );
         }
@@ -241,8 +239,8 @@ public class SyncronizerApi { //TODO: synchronizer?
 
     boolean isPreview = false;
 
-    if ( !file.isEmpty() &&
-        !( file.equals( UNSAVED_FILE_PATH ) || Utils.getURLDecoded( file ).equals( UNSAVED_FILE_PATH ) ) ){
+    if ( !file.isEmpty()
+        && !( file.equals( UNSAVED_FILE_PATH ) || Utils.getURLDecoded( file ).equals( UNSAVED_FILE_PATH ) ) ) {
 
       file = Utils.getURLDecoded( file, CharsetHelper.getEncoding() );
 
@@ -252,7 +250,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
       // check access to path folder
       String fileDir =
-        file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
+          file.contains( ".wcdf" ) || file.contains( ".cdfde" ) ? file.substring( 0, file.lastIndexOf( "/" ) ) : file;
 
       isPreview = ( file.contains( "_tmp.cdfde" ) || file.contains( "_tmp.wcdf" ) );
 
@@ -296,7 +294,7 @@ public class SyncronizerApi { //TODO: synchronizer?
   }
 
   //useful to mock message bundle when unit testing SyncronizerApi
-  protected String getMessage( String key ){
+  protected String getMessage( String key ) {
     return Messages.getString( key );
   }
 

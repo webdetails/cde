@@ -15,7 +15,6 @@ package pt.webdetails.cdf.dd.render.cda;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

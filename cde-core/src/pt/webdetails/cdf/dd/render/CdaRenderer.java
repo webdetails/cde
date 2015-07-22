@@ -35,7 +35,18 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pt.webdetails.cdf.dd.render.cda.*;
+
+import pt.webdetails.cdf.dd.render.cda.Cache;
+import pt.webdetails.cdf.dd.render.cda.CalculatedColumns;
+import pt.webdetails.cdf.dd.render.cda.CdaElementRenderer;
+import pt.webdetails.cdf.dd.render.cda.Columns;
+import pt.webdetails.cdf.dd.render.cda.CompoundComponent;
+import pt.webdetails.cdf.dd.render.cda.DataFile;
+import pt.webdetails.cdf.dd.render.cda.Keys;
+import pt.webdetails.cdf.dd.render.cda.Olap4jProperties;
+import pt.webdetails.cdf.dd.render.cda.Output;
+import pt.webdetails.cdf.dd.render.cda.Parameters;
+import pt.webdetails.cdf.dd.render.cda.Variables;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
@@ -155,8 +166,8 @@ public class CdaRenderer {
       }*/
       else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
         Object array = context.getValue( "properties/.[name='" + paramName + "']/value" );
-        JSONArray jsonArray = array instanceof String ?
-          new JSONArray( array.toString() ) : new JSONArray( array );
+        JSONArray jsonArray = array instanceof String
+            ? new JSONArray( array.toString() ) : new JSONArray( array );
 
         for ( int i = 0; i < jsonArray.length(); i++ ) {
 
@@ -240,7 +251,7 @@ public class CdaRenderer {
         renderProperty( new CalculatedColumns(), context, "cdacalculatedcolumns", cols );
         dataAccess.appendChild( cols );
       } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
-        || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
+          || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
         Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
         renderProperty( new CompoundComponent(), context, paramName, compoundElem );
         dataAccess.appendChild( compoundElem );

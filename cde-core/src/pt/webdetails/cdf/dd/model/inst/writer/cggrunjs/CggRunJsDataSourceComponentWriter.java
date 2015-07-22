@@ -59,7 +59,7 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     out.append( "cgg.initParameter" );
     out.append( NEWLINE );
 
-    for(int i = 0; i < params.length(); i++) {
+    for ( int i = 0; i < params.length(); i++ ) {
       JSONArray param = params.getJSONArray( i );
       String paramName = param.get( 0 ).toString();
       String defaultValue = param.get( 1 ).toString();

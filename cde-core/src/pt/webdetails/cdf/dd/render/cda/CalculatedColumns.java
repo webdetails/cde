@@ -30,7 +30,7 @@ public class CalculatedColumns implements CdaElementRenderer {
       return;
     }
     Document doc = cols.getOwnerDocument();
-    for (int i = 0; i < columns.length(); i++) {
+    for ( int i = 0; i < columns.length(); i++ ) {
       JSONArray content = columns.getJSONArray( i );
       Element col = doc.createElement( "CalculatedColumn" );
       Element name = doc.createElement( "Name" );

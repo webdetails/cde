@@ -16,7 +16,6 @@ package pt.webdetails.cdf.dd.render.cda;
 import org.apache.commons.jxpath.JXPathContext;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -52,7 +51,7 @@ public class Cache implements CdaElementRenderer {
     dataAccess.appendChild( cache );
 
     JSONArray cacheKeys = new JSONArray(
-      context.getValue( "properties/.[name='cacheKeys']/value" ).toString() );
+        context.getValue( "properties/.[name='cacheKeys']/value" ).toString() );
 
     if ( cacheKeys.length() == 0 ) {
       return;

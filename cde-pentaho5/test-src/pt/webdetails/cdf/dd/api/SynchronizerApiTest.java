@@ -59,7 +59,7 @@ public class SynchronizerApiTest {
     HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
 
     String result = new SynchronizerApiForTesting()
-      .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
+        .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
         cdfStructure, operation, require , mockRequest, mockResponse );
 
     JSONObject jsonObj = new JSONObject( result );

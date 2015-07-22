@@ -171,7 +171,7 @@ public class Olap4jDatasourceStructureTest {
 
       logger.info( "'" + paramName + "'" + " isValidJsonArray ? " + isValid );
 
-      if( isValid ){
+      if ( isValid ) {
         logger.info( context.getValue("properties/.[name='" + paramName + "']/value" ).toString() );
       }
 

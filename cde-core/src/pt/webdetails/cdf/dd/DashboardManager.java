@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,7 +75,7 @@ public class DashboardManager {
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
-  private static final String[] MAP_PARAMETERS = {"Parameter", "JavascriptParameter", "DateParameter"};
+  private static final String[] MAP_PARAMETERS = { "Parameter", "JavascriptParameter", "DateParameter" };
 
   private final CacheManager _ehCacheManager;
   private final Cache _ehCache;
@@ -595,8 +594,8 @@ public class DashboardManager {
 
     boolean cacheInvalid =
         ( userContentAccess.getLastModified( cdeFilePath ) > dashLoadedDate.getTime() )
-          || ( userContentAccess.fileExists( templPath )
-          && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
+        || ( userContentAccess.fileExists( templPath )
+        && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
     if ( cacheInvalid ) {
       _logger.info( "Cached dashboard render invalidated, re-rendering." );
       return null;

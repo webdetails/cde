@@ -27,7 +27,6 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -56,7 +55,7 @@ public class CdfStyles {
 
     PluginsAnalyzer pluginsAnalyzer =
       new PluginsAnalyzer( CdeEnvironment.getContentAccessFactory(), PentahoSystem.get( IPluginManager.class ) );
-    pluginsAnalyzer.refresh();
+      pluginsAnalyzer.refresh();
 
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities( "/cde-styles" );
 

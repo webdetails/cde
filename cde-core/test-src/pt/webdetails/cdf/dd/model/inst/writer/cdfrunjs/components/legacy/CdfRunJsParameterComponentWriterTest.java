@@ -14,7 +14,6 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy;
 
 import junit.framework.Assert;
-import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -43,19 +42,20 @@ public class CdfRunJsParameterComponentWriterTest {
   @Test
   public void testParameterComponentWrite() {
     ParameterComponent parameterComponent = Mockito.mock( ParameterComponent.class );
-    when(parameterComponent.tryGetPropertyValue( "propertyValue", "" )).thenReturn("1");
-    when(parameterComponent.tryGetPropertyValue( "parameterViewRole", "unused" )).thenReturn("unused");
+    when( parameterComponent.tryGetPropertyValue( "propertyValue", "" ) ).thenReturn( "1" );
+    when( parameterComponent.tryGetPropertyValue( "parameterViewRole", "unused" ) ).thenReturn( "unused" );
 
-    when(context.getId( parameterComponent )).thenReturn( "param1" );
+    when( context.getId( parameterComponent ) ).thenReturn( "param1" );
 
     StringBuilder dashboardResult = new StringBuilder();
 
     try {
       writer.write( dashboardResult, context, parameterComponent );
 
-      Assert.assertEquals("Dashboards.addParameter(\"param1\", \"1\");\n"+
-        "Dashboards.setParameterViewMode(\"param1\", \"unused\");\n", dashboardResult.toString());
-    } catch ( ThingWriteException e ){}
+      Assert.assertEquals( "Dashboards.addParameter(\"param1\", \"1\");\n"
+          + "Dashboards.setParameterViewMode(\"param1\", \"unused\");\n", dashboardResult.toString() );
+    } catch ( ThingWriteException e ) {
+    }
   }
 
 }

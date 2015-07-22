@@ -45,7 +45,7 @@ public class CdfTemplatesTest {
 
 
     String result =
-      new CdfTemplatesForTesting( "", mockDashboardWcdfDescriptor )
+        new CdfTemplatesForTesting( "", mockDashboardWcdfDescriptor )
         .addDashboardStyleAndRendererTypeToTemplate( testJson.toString( 2 ) );
     Assert.assertTrue( result != null );
 

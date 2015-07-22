@@ -24,11 +24,11 @@ import java.util.Map;
 public class Parameters implements CdaElementRenderer {
 
   private Map<String, Object> definition;
-  private final String NAME_ATTR = "name",
-    DEFAULT_ATTR = "default",
-    TYPE_ATTR = "type",
-    ACCESS_ATTR = "access",
-    ELEMENT_NAME = "Parameter";
+  private final String NAME_ATTR = "name";
+  private final String DEFAULT_ATTR = "default";
+  private final String TYPE_ATTR = "type";
+  private final String ACCESS_ATTR = "access";
+  private final String ELEMENT_NAME = "Parameter";
 
   public void renderInto( Element dataAccess ) throws JSONException {
     Document doc = dataAccess.getOwnerDocument();

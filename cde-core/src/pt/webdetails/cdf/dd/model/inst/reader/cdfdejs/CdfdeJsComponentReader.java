@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.inst.reader.cdfdejs;
 
@@ -19,51 +28,49 @@ import pt.webdetails.cdf.dd.model.inst.UnresolvedPropertyBinding;
 
 /**
  * Reads the CDFDE JavaScript format of a component.
- * 
+ *
  * @author dcleao
  */
-public abstract class CdfdeJsComponentReader<TM extends Component.Builder> implements IThingReader
-{
-  public abstract TM read(IThingReadContext context, java.lang.Object source, String sourcePath)
-          throws ThingReadException;
-//  {
-//    Component.Builder builder = new Component.Builder();
-//    read(builder, context, (JXPathContext)source, sourcePath);
-//    return builder;
-//  }
-  
-  public void read(Thing.Builder builder, IThingReadContext context, java.lang.Object source, String sourcePath)
+public abstract class CdfdeJsComponentReader<TM extends Component.Builder> implements IThingReader {
+  public abstract TM read( IThingReadContext context, java.lang.Object source, String sourcePath )
+    throws ThingReadException;
+  //  {
+  //    Component.Builder builder = new Component.Builder();
+  //    read(builder, context, (JXPathContext)source, sourcePath);
+  //    return builder;
+  //  }
+
+  public void read( Thing.Builder builder, IThingReadContext context, java.lang.Object source, String sourcePath )
     throws ThingReadException {
-    read((TM)builder, context, (JXPathContext)source, sourcePath);
+    read( (TM) builder, context, (JXPathContext) source, sourcePath );
   }
 
-  public void read(TM builder, IThingReadContext context, JXPathContext source, String sourcePath) {
+  public void read( TM builder, IThingReadContext context, JXPathContext source, String sourcePath ) {
     // TODO: Other CDFDE component properties are not relevant now, 
     // but revisit this in the future.
-            
+
     // Property Bindings
-    Iterator<Map<String, Object>> mapIterator = source.iterate("properties");
-    while(mapIterator.hasNext())
-    {
+    Iterator<Map<String, Object>> mapIterator = source.iterate( "properties" );
+    while ( mapIterator.hasNext() ) {
       Map<String, Object> map = mapIterator.next();
       Object name = map.get( "name" );
       Object type = map.get( "type" );
       Object value = map.get( "value" );
 
       builder.addPropertyBinding(
-        new UnresolvedPropertyBinding.Builder()
+          new UnresolvedPropertyBinding.Builder()
           .setAlias( name != null ? name.toString() : "" ) // matches prop/name
           .setInputType( type != null ? type.toString() : "" )
-          .setValue( value != null ? value.toString() : "" ));
+          .setValue( value != null ? value.toString() : "" ) );
     }
-    
+
     // Attributes
-    Map<String, Object> jsComp = (Map<String, Object>)source.getContextBean();
+    Map<String, Object> jsComp = (Map<String, Object>) source.getContextBean();
     Set<String> keys = jsComp.keySet();
     for ( String key : keys ) {
-      if( key.startsWith("meta_") ) {
-        String name = key.substring("meta_".length());
-        builder.addAttribute(name, jsComp.get( key ).toString() );
+      if ( key.startsWith( "meta_" ) ) {
+        String name = key.substring( "meta_".length() );
+        builder.addAttribute( name, jsComp.get( key ).toString() );
       }
     }
   }

@@ -73,11 +73,11 @@ public class FreeFormRenderTest extends TestCase {
   @Test
   public void testRenderStartWithMorePropertiesComplex() throws JSONException {
     renderForTest.setProperties( "[['arg1','{{[ \"value11\", \"value12\"]}}'],"
-      + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
+        + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
     String select = renderForTest.renderStart();
 
     Assert.assertEquals( "<select  arg1='{{[ \"value11\", \"value12\"]}}' arg2=\"{{[ 'value21', 'value22']}}\">",
-      select );
+        select );
   }
 
   @Test

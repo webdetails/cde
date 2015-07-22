@@ -64,9 +64,9 @@ public class CacheTest extends TestCase {
 
     cacheRenderer.renderInto( dataAccess );
 
-    verify( cache, times(1)).setAttribute( "enabled", "true" );
-    verify( cache, times(1)).setAttribute( "duration", "500" );
-    verify( dataAccess, times(1)).appendChild( cache );
+    verify( cache, times( 1 ) ).setAttribute( "enabled", "true" );
+    verify( cache, times( 1 ) ).setAttribute( "duration", "500" );
+    verify( dataAccess, times( 1 ) ).appendChild( cache );
   }
 
   @Test
@@ -76,12 +76,12 @@ public class CacheTest extends TestCase {
 
     cacheRenderer.renderInto( dataAccess );
 
-    verify( cache, times(1)).setAttribute( "enabled", "true" );
-    verify( cache, times(1)).setAttribute( "duration", "3600" );
-    verify( dataAccess, times(1)).appendChild( cache );
+    verify( cache, times( 1 ) ).setAttribute( "enabled", "true" );
+    verify( cache, times( 1 ) ).setAttribute( "duration", "3600" );
+    verify( dataAccess, times( 1 ) ).appendChild( cache );
 
-    verify( key, times(1)).setAttribute( "name", "Hello" );
-    verify( key, times(1)).setAttribute( "value", "World" );
-    verify( cache, times(1)).appendChild( key );
+    verify( key, times( 1 ) ).setAttribute( "name", "Hello" );
+    verify( key, times( 1 ) ).setAttribute( "value", "World" );
+    verify( cache, times( 1 ) ).appendChild( key );
   }
 }
