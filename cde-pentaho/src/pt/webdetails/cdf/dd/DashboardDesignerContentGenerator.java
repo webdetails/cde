@@ -738,7 +738,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
    */
   @Deprecated
   @Exposed( accessLevel = AccessLevel.PUBLIC )
-  public void listCdaSources( final OutputStream out ) throws IOException {
+  public void listCdaSources( final OutputStream out ) throws IOException, JSONException {
 
     String dashboard = getRequestParameters().getStringParameter( "dashboard", null );
     dashboard = DashboardWcdfDescriptor.toStructurePath( dashboard );
@@ -750,7 +750,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     writeOut( out, result );
   }
 
-  protected List<CdaDataSourceReader.CdaDataSource> getCdaSources( String dashboard ) {
+  protected List<CdaDataSourceReader.CdaDataSource> getCdaSources( String dashboard ) throws JSONException {
     return CdaDataSourceReader.getCdaDataSources( dashboard );
   }
 

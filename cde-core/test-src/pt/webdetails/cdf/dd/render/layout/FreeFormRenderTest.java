@@ -16,6 +16,7 @@ package pt.webdetails.cdf.dd.render.layout;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -55,14 +56,14 @@ public class FreeFormRenderTest extends TestCase {
   }
 
   @Test
-  public void testRenderStartWithTagOnly() {
+  public void testRenderStartWithTagOnly() throws JSONException {
     String select = renderForTest.renderStart();
 
     Assert.assertEquals( "<select >", select );
   }
 
   @Test
-  public void testRenderStartWithMorePropertiesSimple() {
+  public void testRenderStartWithMorePropertiesSimple() throws JSONException {
     renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();
 
@@ -70,25 +71,26 @@ public class FreeFormRenderTest extends TestCase {
   }
 
   @Test
-  public void testRenderStartWithMorePropertiesComplex() {
+  public void testRenderStartWithMorePropertiesComplex() throws JSONException {
     renderForTest.setProperties( "[['arg1','{{[ \"value11\", \"value12\"]}}'],"
-      + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
+        + "['arg2', \"{{[ 'value21', 'value22']}}\"]]" );
     String select = renderForTest.renderStart();
 
     Assert.assertEquals( "<select  arg1='{{[ \"value11\", \"value12\"]}}' arg2=\"{{[ 'value21', 'value22']}}\">",
-      select );
+        select );
   }
 
   @Test
-  public void testRenderStartWithPropertyBag() {
+  public void testRenderStartWithPropertyBag() throws JSONException {
     renderForTest.setPropertyBag( "clear" );
     String select = renderForTest.renderStart();
+
 
     Assert.assertEquals( "<select  class='clear ' >", select );
   }
 
   @Test
-  public void testRenderStartWithAll() {
+  public void testRenderStartWithAll() throws JSONException {
     renderForTest.setPropertyBag( "clear" );
     renderForTest.setProperties( "[[\"arg1\",\"value1\"],[\"arg2\",\"value2\"]]" );
     String select = renderForTest.renderStart();

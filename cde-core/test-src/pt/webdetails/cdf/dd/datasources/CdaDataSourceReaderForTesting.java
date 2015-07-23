@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.datasources;
 
 
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.DashboardManagerWrapper;
 
 import java.io.FileNotFoundException;
@@ -32,6 +33,8 @@ public class CdaDataSourceReaderForTesting extends CdaDataSourceReader {
     } catch ( FileNotFoundException e ) {
       return null;
     } catch ( IOException e ) {
+      return null;
+    } catch ( JSONException e ) {
       return null;
     }
     return getCdaDataSources( context );

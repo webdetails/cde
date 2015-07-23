@@ -17,6 +17,7 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeConstants;
 import static pt.webdetails.cdf.dd.CdeConstants.AmdModule;
 import static pt.webdetails.cdf.dd.CdeConstants.RequireJSPlugin;
@@ -241,7 +242,11 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     Map<String, String> componentModules = new LinkedHashMap<String, String>();
 
     // Output WCDF
-    addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    try {
+      addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    } catch ( JSONException ex ) {
+      throw new ThingWriteException( "Converting wcdf to json", ex );
+    }
     out.append( NEWLINE );
 
     StringBuilder addCompIds = new StringBuilder();
@@ -278,7 +283,6 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
         }
 
         writer.write( out, context, comp );
-
       }
     }
 

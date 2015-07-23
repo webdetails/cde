@@ -13,27 +13,25 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
+import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class CalculatedColumns implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
 
-  public void renderInto( Element cols ) {
-    JSONArray columns = JSONArray.fromObject( definition.getString( "value" ) );
-    if ( columns.size() == 0 ) {
+  public void renderInto( Element cols ) throws JSONException {
+    JSONArray columns = new JSONArray( (String) definition.get( "value" ) );
+    if ( columns.length() == 0 ) {
       return;
     }
     Document doc = cols.getOwnerDocument();
-    @SuppressWarnings( "unchecked" )
-    Iterator<JSONArray> paramIterator = columns.iterator();
-    while ( paramIterator.hasNext() ) {
-      JSONArray content = paramIterator.next();
+    for ( int i = 0; i < columns.length(); i++ ) {
+      JSONArray content = columns.getJSONArray( i );
       Element col = doc.createElement( "CalculatedColumn" );
       Element name = doc.createElement( "Name" );
       Element formula = doc.createElement( "Formula" );
@@ -45,7 +43,7 @@ public class CalculatedColumns implements CdaElementRenderer {
     }
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
   }
 }

@@ -15,12 +15,15 @@ package pt.webdetails.cdf.dd.render.cda;
 
 
 import junit.framework.TestCase;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.jxpath.JXPathContext;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doReturn;
@@ -45,7 +48,9 @@ public class CacheTest extends TestCase {
     cache = mock( Element.class );
     key = mock( Element.class );
     doc = mock( Document.class );
-    cacheRenderer.setDefinition( JSONObject.fromObject( "{\"value\":\"true\"}" ) );
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put( "value", "true" );
+    cacheRenderer.setDefinition( map );
 
     doReturn( doc ).when( dataAccess ).getOwnerDocument();
     doReturn( cache ).when( doc ).createElement( "Cache" );
@@ -53,30 +58,30 @@ public class CacheTest extends TestCase {
   }
 
   @Test
-  public void testRenderCacheTag() {
+  public void testRenderCacheTag() throws JSONException {
     doReturn( "500" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
     doReturn( "[]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 
     cacheRenderer.renderInto( dataAccess );
 
-    verify( cache, times(1)).setAttribute( "enabled", "true" );
-    verify( cache, times(1)).setAttribute( "duration", "500" );
-    verify( dataAccess, times(1)).appendChild( cache );
+    verify( cache, times( 1 ) ).setAttribute( "enabled", "true" );
+    verify( cache, times( 1 ) ).setAttribute( "duration", "500" );
+    verify( dataAccess, times( 1 ) ).appendChild( cache );
   }
 
   @Test
-  public void testRenderCacheTagWithKeys() {
+  public void testRenderCacheTagWithKeys() throws JSONException {
     doReturn( "3600" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
     doReturn( "[[\"Hello\",\"World\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 
     cacheRenderer.renderInto( dataAccess );
 
-    verify( cache, times(1)).setAttribute( "enabled", "true" );
-    verify( cache, times(1)).setAttribute( "duration", "3600" );
-    verify( dataAccess, times(1)).appendChild( cache );
+    verify( cache, times( 1 ) ).setAttribute( "enabled", "true" );
+    verify( cache, times( 1 ) ).setAttribute( "duration", "3600" );
+    verify( dataAccess, times( 1 ) ).appendChild( cache );
 
-    verify( key, times(1)).setAttribute( "name", "Hello" );
-    verify( key, times(1)).setAttribute( "value", "World" );
-    verify( cache, times(1)).appendChild( key );
+    verify( key, times( 1 ) ).setAttribute( "name", "Hello" );
+    verify( key, times( 1 ) ).setAttribute( "value", "World" );
+    verify( cache, times( 1 ) ).appendChild( key );
   }
 }

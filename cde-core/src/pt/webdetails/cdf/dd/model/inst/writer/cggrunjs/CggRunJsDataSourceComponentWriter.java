@@ -13,9 +13,10 @@
 
 package pt.webdetails.cdf.dd.model.inst.writer.cggrunjs;
 
-import java.util.Iterator;
-
-import net.sf.json.JSONArray;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
@@ -27,6 +28,7 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 
 public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implements IThingWriter {
+  private static final Log logger = LogFactory.getLog( CggRunJsDataSourceComponentWriter.class );
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
     this.write( (StringBuilder) output, (CggRunJsComponentWriteContext) context, (DataSourceComponent) t );
   }
@@ -35,12 +37,16 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     throws ThingWriteException {
     String jsParamsArray = comp.tryGetPropertyValue( "parameters", null );
     if ( jsParamsArray != null ) {
-      renderParameters( out, JSONArray.fromObject( jsParamsArray ) );
+      try {
+        renderParameters( out, new JSONArray( jsParamsArray ) );
+      } catch ( JSONException e ) {
+        throw new ThingWriteException( "Couldn't render parameters", e );
+      }
     }
   }
 
-  private void renderParameters( StringBuilder out, JSONArray params ) {
-    if ( params.isEmpty() ) {
+  private void renderParameters( StringBuilder out, JSONArray params ) throws JSONException {
+    if ( params.length() == 0 ) {
       return;
     }
 
@@ -53,11 +59,8 @@ public class CggRunJsDataSourceComponentWriter extends JsWriterAbstract implemen
     out.append( "cgg.initParameter" );
     out.append( NEWLINE );
 
-    @SuppressWarnings( "unchecked" )
-    Iterator<JSONArray> it = params.iterator();
-    while ( it.hasNext() ) {
-      JSONArray param = it.next();
-
+    for ( int i = 0; i < params.length(); i++ ) {
+      JSONArray param = params.getJSONArray( i );
       String paramName = param.get( 0 ).toString();
       String defaultValue = param.get( 1 ).toString();
 

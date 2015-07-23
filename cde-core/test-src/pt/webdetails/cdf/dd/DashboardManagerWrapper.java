@@ -13,12 +13,13 @@
 
 package pt.webdetails.cdf.dd;
 
-import net.sf.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.model.core.reader.ThingReadException;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
@@ -101,23 +102,23 @@ public class DashboardManagerWrapper {
 
   public static JXPathContext openDashboardAsJXPathContext(
       DashboardWcdfDescriptor wcdf )
-      throws IOException, FileNotFoundException {
+    throws IOException, FileNotFoundException, JSONException {
     return DashboardManager.openDashboardAsJXPathContext( wcdf );
   }
 
   public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-      throws IOException, FileNotFoundException {
+    throws IOException, FileNotFoundException, JSONException {
     InputStream input = null;
     String pathToFile = FilenameUtils.normalizeNoEndSeparator( System.getProperty( "user.dir" ) + dashboardLocation );
     try {
       input = new FileInputStream( pathToFile );
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
+      final JSONObject json = JsonUtils.readJsonFromInputStream( input );
 
       if ( wcdf != null ) {
         json.put( "settings", wcdf.toJSON() );
       }
 
-      return JXPathContext.newContext( json );
+      return JsonUtils.toJXPathContext( json );
     } finally {
       IOUtils.closeQuietly( input );
     }

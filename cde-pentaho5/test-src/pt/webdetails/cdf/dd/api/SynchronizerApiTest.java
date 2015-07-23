@@ -14,8 +14,8 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,10 +59,10 @@ public class SynchronizerApiTest {
     HttpServletResponse mockResponse = Mockito.mock( HttpServletResponse.class );
 
     String result = new SynchronizerApiForTesting()
-      .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
+        .syncronize( file, path, title, author, description, style, widgetName, widget, rendererType, widgetParams,
         cdfStructure, operation, require , mockRequest, mockResponse );
 
-    JSONObject jsonObj = JSONObject.fromObject( result );
+    JSONObject jsonObj = new JSONObject( result );
 
     Assert.assertTrue( jsonObj.getString( "status" ) != null );
     Assert.assertTrue( jsonObj.getString( "result" ) != null );

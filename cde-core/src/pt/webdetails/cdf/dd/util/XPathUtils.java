@@ -13,12 +13,11 @@
 
 package pt.webdetails.cdf.dd.util;
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 
 public class XPathUtils {
 
@@ -63,10 +62,9 @@ public class XPathUtils {
 
     String value = "";
     try {
-      value = JSONSerializer.toJSON( node.selectNodes( xPath ) ).toString();
-    } catch ( JSONException e ) {
-      logger.error( e.getMessage() );
-    } catch ( JXPathException e ) {
+      JSONArray values = new JSONArray( node.selectNodes( xPath ) );
+      value = values.toString();
+    }  catch ( JXPathException e ) {
       logger.error( e.getMessage() );
     }
 

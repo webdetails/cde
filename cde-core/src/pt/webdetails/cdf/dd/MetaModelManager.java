@@ -13,9 +13,9 @@
 
 package pt.webdetails.cdf.dd;
 
-import net.sf.json.JSON;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
@@ -138,7 +138,7 @@ public final class MetaModelManager {
     IDataSourceManager dataSourceManager = CdeEnvironment.getDataSourceManager();
     for ( IDataSourceProvider dsProvider : dataSourceManager.getProviders() ) {
       String providerId = dsProvider.getId();
-      JSON jsDef = dataSourceManager.getProviderJsDefinition( providerId );
+      JSONObject jsDef = dataSourceManager.getProviderJsDefinition( providerId );
       try {
         // id is apparently a source
         dsModelReader.read( builder, jsDef, providerId );

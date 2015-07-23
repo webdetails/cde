@@ -13,13 +13,14 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import net.sf.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.Map;
+
 public class DataFile implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
 
   public void renderInto( Element connection ) {
     Document doc = connection.getOwnerDocument();
@@ -28,7 +29,7 @@ public class DataFile implements CdaElementRenderer {
     connection.appendChild( df );
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition( Map<String, Object> definition ) {
     this.definition = definition;
 
   }

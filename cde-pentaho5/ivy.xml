@@ -44,6 +44,8 @@
         <dependency org="pentaho" name="pentaho-platform-extensions" rev="${dependency.bi-platform.revision}" changing="true" transitive="false"/>
 
 
+
+
         <!-- olap -->
         <dependency org="pentaho" name="mondrian" rev="3.5.0">
             <exclude org="commons-dbcp" name="commons-dbcp"/>

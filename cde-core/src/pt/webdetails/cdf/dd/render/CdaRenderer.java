@@ -16,6 +16,7 @@ package pt.webdetails.cdf.dd.render;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -24,19 +25,30 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pt.webdetails.cdf.dd.render.cda.*;
+
+import pt.webdetails.cdf.dd.render.cda.Cache;
+import pt.webdetails.cdf.dd.render.cda.CalculatedColumns;
+import pt.webdetails.cdf.dd.render.cda.CdaElementRenderer;
+import pt.webdetails.cdf.dd.render.cda.Columns;
+import pt.webdetails.cdf.dd.render.cda.CompoundComponent;
+import pt.webdetails.cdf.dd.render.cda.DataFile;
+import pt.webdetails.cdf.dd.render.cda.Keys;
+import pt.webdetails.cdf.dd.render.cda.Olap4jProperties;
+import pt.webdetails.cdf.dd.render.cda.Output;
+import pt.webdetails.cdf.dd.render.cda.Parameters;
+import pt.webdetails.cdf.dd.render.cda.Variables;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
@@ -44,14 +56,14 @@ import pt.webdetails.cpf.utils.CharsetHelper;
  * Creates the .CDA file XML. TODO: this should be changed to a ThingWriter of DataSourceComponents?
  */
 public class CdaRenderer {
-  private final JSON cdaDefinitions;
+  private final JSONObject cdaDefinitions;
   private final JXPathContext doc;
 
   private static String CDA_ELEMENTS_JXPATH = "/datasources/rows[meta='CDA']";
 
-  public CdaRenderer( String docJson ) {
+  public CdaRenderer( String docJson ) throws JSONException {
     // JSONSerializer doesn't like newlines at the head of the file
-    this( JXPathContext.newContext( JSONSerializer.toJSON( docJson.replaceAll( "^\n*", "" ) ) ) );
+    this( JsonUtils.toJXPathContext( new JSONObject( docJson.replaceAll( "^\n*", "" ) ) ) );
   }
 
   public CdaRenderer( JXPathContext doc ) {
@@ -112,14 +124,13 @@ public class CdaRenderer {
   }
 
   private Element exportConnection( Document doc, JXPathContext context, String id ) throws Exception {
-    JXPathContext cda = JXPathContext.newContext( cdaDefinitions );
+    JXPathContext cda = JsonUtils.toJXPathContext( cdaDefinitions );
     String type = ( (String) context.getValue( "type", String.class ) ).replaceAll( "Components(.*)", "$1" );
     String conntype = ( (String) context.getValue( "meta_conntype", String.class ) );
     if ( conntype.isEmpty() || conntype.equals( "null" ) ) {
       throw new Exception( "No connection here!" );
     }
-    JXPathContext conn =
-      JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/connection", JSONObject.class ) );
+    JXPathContext conn = JXPathContext.newContext( cda.getValue( type + "/definition/connection" ) );
     Element connection = doc.createElement( "Connection" );
     connection.setAttribute( "id", id );
     connection.setAttribute( "type", conntype );
@@ -154,10 +165,11 @@ public class CdaRenderer {
       connection.appendChild(child);
       }*/
       else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
-        JSONArray jsonArray =
-          JSONArray.fromObject( context.getValue( "properties/.[name='" + paramName + "']/value" ) );
+        Object array = context.getValue( "properties/.[name='" + paramName + "']/value" );
+        JSONArray jsonArray = array instanceof String
+            ? new JSONArray( array.toString() ) : new JSONArray( array );
 
-        for ( int i = 0; i < jsonArray.size(); i++ ) {
+        for ( int i = 0; i < jsonArray.length(); i++ ) {
 
           JSONArray json = (JSONArray) jsonArray.get( i );
           String name = json.getString( 0 ); // property name
@@ -179,15 +191,15 @@ public class CdaRenderer {
   }
 
   private void renderProperty( CdaElementRenderer renderer, JXPathContext context, String propertyName,
-                               Element element ) {
-    renderer.setDefinition( (JSONObject) context.getValue( "properties/.[name='" + propertyName + "']" ) );
+                               Element element ) throws JSONException {
+    renderer.setDefinition( (Map<String, Object>) context.getValue( "properties/.[name='" + propertyName + "']" ) );
     renderer.renderInto( element );
   }
 
-  private Element exportDataAccess( Document doc, JXPathContext context, String connectionId ) {
+  private Element exportDataAccess( Document doc, JXPathContext context, String connectionId ) throws JSONException {
     String tagName = "DataAccess";
     // Boolean compound = false;
-    JXPathContext cda = JXPathContext.newContext( cdaDefinitions );
+    JXPathContext cda = JsonUtils.toJXPathContext( cdaDefinitions );
     String type = ( (String) context.getValue( "type", String.class ) ).replaceAll( "Components(.*)", "$1" );
     String daType = ( (String) context.getValue( "meta_datype", String.class ) );
     if ( type.equals( "join" ) || type.equals( "union" ) ) {
@@ -195,8 +207,7 @@ public class CdaRenderer {
       //  compound = true;
     }
     String name = (String) context.getValue( "properties/.[name='name']/value", String.class );
-    JXPathContext conn =
-        JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/dataaccess", JSONObject.class ) );
+    JXPathContext conn = JXPathContext.newContext( cda.getValue( type + "/definition/dataaccess" ) );
     Element dataAccess = doc.createElement( tagName );
     dataAccess.setAttribute( "id", name );
     dataAccess.setAttribute( "type", daType );
@@ -240,7 +251,7 @@ public class CdaRenderer {
         renderProperty( new CalculatedColumns(), context, "cdacalculatedcolumns", cols );
         dataAccess.appendChild( cols );
       } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
-        || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
+          || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
         Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
         renderProperty( new CompoundComponent(), context, paramName, compoundElem );
         dataAccess.appendChild( compoundElem );
@@ -262,7 +273,7 @@ public class CdaRenderer {
     return dataAccess;
   }
 
-  public JSON getCdaDefinitions() {
+  public JSONObject getCdaDefinitions() {
     return CdeEnvironment.getDataSourceManager().getProviderJsDefinition( "cda" );
   }
 

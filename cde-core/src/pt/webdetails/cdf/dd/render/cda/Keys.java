@@ -13,32 +13,30 @@
 
 package pt.webdetails.cdf.dd.render.cda;
 
-import java.util.Iterator;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Element;
+
+import java.util.Map;
 
 public class Keys implements CdaElementRenderer {
 
-  private JSONObject definition;
+  private Map<String, Object> definition;
 
-  public void renderInto( Element dataAccess ) {
-    JSONArray columns = JSONArray.fromObject( definition.getString( "value" ) );
-    @SuppressWarnings( "unchecked" )
-    Iterator<String> paramIterator = columns.iterator();
+  public void renderInto( Element dataAccess ) throws JSONException {
+    JSONArray columns = new JSONArray( (String) definition.get( "value" ) );
     StringBuilder indexes = new StringBuilder();
-    while ( paramIterator.hasNext() ) {
-      String col = paramIterator.next();
+    for ( int i = 0; i < columns.length(); i++ ) {
+      String col = columns.getString( i );
       indexes.append( col );
-      if ( paramIterator.hasNext() ) {
+      if ( i + 1 < columns.length() ) {
         indexes.append( "," );
       }
     }
     dataAccess.setAttribute( "keys", indexes.toString() );
   }
 
-  public void setDefinition( JSONObject definition ) {
+  public void setDefinition(  Map<String, Object> definition ) {
     this.definition = definition;
   }
 }

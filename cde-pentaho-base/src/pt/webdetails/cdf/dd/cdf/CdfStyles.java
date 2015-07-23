@@ -13,11 +13,10 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import net.sf.json.JSONArray;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.pentaho.platform.api.engine.IPluginManager;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 
@@ -28,7 +27,6 @@ import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.plugins.PluginsAnalyzer;
 import pt.webdetails.cpf.plugins.Plugin;
 import pt.webdetails.cpf.repository.api.IBasicFile;
@@ -57,7 +55,7 @@ public class CdfStyles {
 
     PluginsAnalyzer pluginsAnalyzer =
       new PluginsAnalyzer( CdeEnvironment.getContentAccessFactory(), PentahoSystem.get( IPluginManager.class ) );
-    pluginsAnalyzer.refresh();
+      pluginsAnalyzer.refresh();
 
     List<PluginsAnalyzer.PluginWithEntity> entities = pluginsAnalyzer.getRegisteredEntities( "/cde-styles" );
 
@@ -95,7 +93,7 @@ public class CdfStyles {
 
       for ( IBasicFile file : styleFiles ) {
         String name = file.getName();
-        result.add( name.substring( 0, name.lastIndexOf( '.' ) ) + s.getSufixPluginName() );
+        result.put( name.substring( 0, name.lastIndexOf( '.' ) ) + s.getSufixPluginName() );
       }
     }
 

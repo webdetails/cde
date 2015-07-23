@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 
@@ -134,14 +135,19 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     return new RenderLayout( docXP, context );
   }
 
-  protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
+  protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash )
+    throws ThingWriteException {
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
 
     StringBuilder out = new StringBuilder();
     StringBuilder widgetsOut = new StringBuilder();
 
     // Output WCDF
-    addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    try {
+      addAssignment( out, "wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    } catch ( JSONException ex ) {
+      throw new ThingWriteException( "Converting wcdf to json", ex );
+    }
     out.append( NEWLINE );
 
     boolean isFirstComp = true;

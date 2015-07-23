@@ -30,13 +30,14 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.model.core.KnownThingKind;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.reader.IThingReadContext;
@@ -74,7 +75,7 @@ public class DashboardManager {
   // Cache
   private static final String CACHE_CFG_FILE = "ehcache.xml";
   private static final String CACHE_NAME = "pentaho-cde";
-  private static final String[] MAP_PARAMETERS = {"Parameter", "JavascriptParameter", "DateParameter"};
+  private static final String[] MAP_PARAMETERS = { "Parameter", "JavascriptParameter", "DateParameter" };
 
   private final CacheManager _ehCacheManager;
   private final Cache _ehCache;
@@ -124,22 +125,25 @@ public class DashboardManager {
   }
 
   public static JXPathContext openDashboardAsJXPathContext( DashboardWcdfDescriptor wcdf ) throws IOException,
-    FileNotFoundException {
+    FileNotFoundException, JSONException {
     return openDashboardAsJXPathContext( wcdf.getStructurePath(), wcdf );
   }
 
   public static JXPathContext openDashboardAsJXPathContext( String dashboardLocation, DashboardWcdfDescriptor wcdf )
-    throws IOException, FileNotFoundException {
+    throws IOException, FileNotFoundException, JSONException {
     InputStream input = null;
     try {
       input = Utils.getSystemOrUserReadAccess( dashboardLocation ).getFileInputStream( dashboardLocation );
-      final JSONObject json = (JSONObject) JsonUtils.readJsonFromInputStream( input );
+      final JSONObject json = JsonUtils.readJsonFromInputStream( input );
 
       if ( wcdf != null ) {
-        json.put( "settings", wcdf.toJSON() );
+        try {
+          json.put( "settings", wcdf.toJSON() );
+        } catch ( JSONException e ) {
+          _logger.error( "Error writing settings to json", e );
+        }
       }
-
-      return JXPathContext.newContext( json );
+      return JsonUtils.toJXPathContext( json );
     } finally {
       IOUtils.closeQuietly( input );
     }
@@ -469,6 +473,8 @@ public class DashboardManager {
       throw new ThingReadException( "The CDFDE dashboard file does not exist.", ex );
     } catch ( IOException ex ) {
       throw new ThingReadException( "While accessing the CDFDE dashboard file.", ex );
+    } catch ( JSONException ex ) {
+      throw new ThingReadException( "While opening the CDFDE dashboard file as a JXPathContext.", ex );
     }
 
     // 2. Obtain a reader to read the dashboard file
@@ -588,8 +594,8 @@ public class DashboardManager {
 
     boolean cacheInvalid =
         ( userContentAccess.getLastModified( cdeFilePath ) > dashLoadedDate.getTime() )
-          || ( userContentAccess.fileExists( templPath )
-          && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
+        || ( userContentAccess.fileExists( templPath )
+        && userContentAccess.getLastModified( templPath ) > dashLoadedDate.getTime() );
     if ( cacheInvalid ) {
       _logger.info( "Cached dashboard render invalidated, re-rendering." );
       return null;

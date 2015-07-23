@@ -14,6 +14,7 @@
 package pt.webdetails.cdf.dd;
 
 import junit.framework.Assert;
+import org.json.JSONException;
 import org.junit.Test;
 import org.pentaho.platform.api.engine.IParameterProvider;
 
@@ -30,7 +31,7 @@ public class DashboardDesignerContentGeneratorTest {
   private final String EXPECTED = "[{cdaSettingsId:'dummy/dummy.cda'}]";
 
   @Test
-  public void listCdaSourcesTest() throws IOException {
+  public void listCdaSourcesTest() throws IOException, JSONException {
     MockParameterProvider requestMap = new MockParameterProvider();
     requestMap.setParameter( "dashboard", DASHBOARD );
     Map<String, IParameterProvider> parameterProviders = new HashMap<String, IParameterProvider>();

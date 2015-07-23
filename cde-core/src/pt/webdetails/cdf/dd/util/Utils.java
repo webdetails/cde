@@ -22,8 +22,6 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -33,6 +31,8 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.dom4j.DocumentException;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.xml.sax.EntityResolver;
 
 import pt.webdetails.cdf.dd.CdeConstants;
@@ -424,7 +424,7 @@ public class Utils {
 
   public static boolean isValidJsonArray( String jsonString ) {
     try {
-      JSONArray.fromObject( jsonString );
+      new JSONArray( jsonString );
       return true;
     } catch ( JSONException e ) {
       return false;
