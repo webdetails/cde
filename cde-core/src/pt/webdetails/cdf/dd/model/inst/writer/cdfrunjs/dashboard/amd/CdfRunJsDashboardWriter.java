@@ -14,19 +14,22 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import pt.webdetails.cdf.dd.CdeConstants;
+import static pt.webdetails.cdf.dd.CdeConstants.AmdModule;
+import static pt.webdetails.cdf.dd.CdeConstants.RequireJSPlugin;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
+import pt.webdetails.cdf.dd.model.core.writer.IThingWriteContext;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
+import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
-import pt.webdetails.cdf.dd.model.inst.PrimitiveComponent;
-import pt.webdetails.cdf.dd.model.inst.CustomComponent;
-import pt.webdetails.cdf.dd.model.inst.VisualComponent;
-import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.RenderLayout;
@@ -37,9 +40,6 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
-import pt.webdetails.cpf.packager.origin.PluginRepositoryOrigin;
-import pt.webdetails.cpf.packager.origin.StaticSystemOrigin;
-import pt.webdetails.cpf.packager.origin.OtherPluginStaticSystemOrigin;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -48,153 +48,197 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
+  protected static final Log logger = LogFactory.getLog( CdfRunJsDashboardWriter.class );
 
-public class CdfRunJsDashboardWriter
-    extends pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.legacy.CdfRunJsDashboardWriter {
+  private DashboardWcdfDescriptor.DashboardRendererType type;
 
-  private static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
-  protected Map<String, String> requireJsResourcesList = new LinkedHashMap<String, String>();
-  protected Map<String, String> requireCssResourcesList = new LinkedHashMap<String, String>();
-  protected StringBuffer jsCodeSnippets = new StringBuffer();
-  private Map<String, String> componentList = new LinkedHashMap<String, String>();
-  private static final Pattern schemePattern = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
-
-  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type, boolean isWidget ) {
-    super( type, isWidget );
+  public CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType type ) {
+    super();
+    this.type = type;
   }
 
   /**
-   * @param builder
-   * @param ctx
-   * @param dash
+   * Writes the dashboard to a provided builder object.
+   *
+   * @param output the builder object to where the processed dashboard will be stored
+   * @param context the dashboard context.
+   * @param t the dashboard to write.
    * @throws ThingWriteException
    */
-  @Override
+  public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
+    this.write( (CdfRunJsDashboardWriteResult.Builder) output, (CdfRunJsDashboardWriteContext) context, (Dashboard) t );
+  }
+
+  /**
+   * Writes the dashboard to a provided builder object.
+   *
+   * @param builder the builder object to where the processed dashboard will be stored
+   * @param ctx the dashboard context.
+   * @param dash the dashboard to write.
+   * @throws ThingWriteException
+   */
   public void write( CdfRunJsDashboardWriteResult.Builder builder, CdfRunJsDashboardWriteContext ctx, Dashboard dash )
     throws ThingWriteException {
     assert dash == ctx.getDashboard();
 
-    if ( ctx.getOptions().isAmdModule() ) {
-      writeModule( builder, ctx, dash );
-      return;
-    }
-
     DashboardWcdfDescriptor wcdf = dash.getWcdf();
 
-    String template;
+    // header
+    final String header = ctx.replaceTokens( writeHeaders( dash ) );
+
+    // content resources
+    ResourceMap resources;
     try {
-      template = this.readTemplate( wcdf );
-    } catch ( IOException ex ) {
-      throw new ThingWriteException( "Could not read style template file.", ex );
+      resources = getResourceRenderer( dash.getLayout( "TODO" ).getLayoutXPContext(), ctx )
+          .renderResources( ctx.getOptions().getAliasPrefix() );
+    } catch ( Exception ex ) {
+      throw new ThingWriteException( "Error rendering resources.", ex );
     }
+    // content layout, prepend the CSS code snippets
+    final String layout;
+    try {
+      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) )
+        + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
+    } catch ( Exception ex ) {
+      throw new ThingWriteException( "Error rendering layout", ex );
+    }
+    // content components, write component AMD modules and add them to the componentModules Map
+    StringBuilder out = new StringBuilder();
+    final Map<String, String> componentModules = writeComponents( ctx, dash, out );
+    final String components = ctx.replaceTokensAndAlias( out.toString() );
+    // content
+    final String content = writeContent( resources, layout, componentModules, components, ctx );
 
-    template = ctx.replaceTokens( template );
-
+    // footer
     String footer;
     try {
-      footer =
-        Util.toString(
+      footer = Util.toString(
           CdeEnvironment.getPluginSystemReader().getFileInputStream( CdeConstants.RESOURCE_FOOTER_REQUIRE ) );
     } catch ( IOException ex ) {
       throw new ThingWriteException( "Could not read footer file.", ex );
     }
 
-    final String cssResources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
-    // Prepend the CSS (<style> and <link>) code to the HTML layout
-    final String layout = cssResources + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
-    final String components = ctx.replaceTokensAndAlias( this.writeComponents( ctx, dash ) );
-    final String content = writeContent( layout, components, ctx.getOptions().getContextConfiguration() );
-    final String header = ctx.replaceTokens( writeHeaders( content, ctx ) );
-
+    // template
+    String template;
+    try {
+      template = ctx.replaceTokens( Utils.readTemplate( wcdf ) );
+    } catch ( IOException ex ) {
+      throw new ThingWriteException( "Could not read style template file.", ex );
+    }
     // Leave the DASHBOARD_HEADER_TAG to replace additional stuff on render.
     template = template
       .replaceAll( CdeConstants.DASHBOARD_HEADER_TAG,
         Matcher.quoteReplacement( header ) + CdeConstants.DASHBOARD_HEADER_TAG )
-      .replaceAll( CdeConstants.DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement( footer ) )
-      .replaceAll( CdeConstants.DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement( content ) );
+      .replaceAll( CdeConstants.DASHBOARD_CONTENT_TAG, Matcher.quoteReplacement( content ) )
+      .replaceAll( CdeConstants.DASHBOARD_FOOTER_TAG, Matcher.quoteReplacement( footer ) );
 
     // Export
     builder
-      .setTemplate( template )
       .setHeader( header )
       .setLayout( layout )
       .setComponents( components )
       .setContent( content )
       .setFooter( footer )
-      .setLoadedDate( ctx.getDashboard().getSourceDate() );
+      .setTemplate( template )
+      .setLoadedDate( dash.getSourceDate() );
   }
 
   /**
-   * @param context
-   * @param dash
-   * @returns A String containing the <style> and <link> CSS resources
+   * Return a string containing the dashboard HTML layout.
+   *
+   * @param context the dashboard context
+   * @param dash the dashboard to write
+   * @return the string containing the dashboard's layout
    */
-  protected String writeResources( CdfRunJsDashboardWriteContext context, Dashboard dash ) {
-    if ( dash.getLayoutCount() == 1 ) {
+  protected String writeLayout( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws Exception {
+    if ( dash.getLayoutCount() > 0 ) {
       JXPathContext docXP = dash.getLayout( "TODO" ).getLayoutXPContext();
-      try {
-        ResourceMap resources =
-            getResourceRenderer( docXP, context ).renderResources( context.getOptions().getAliasPrefix() );
-
-        List<ResourceMap.Resource> cssResources = resources.getCssResources();
-        List<ResourceMap.Resource> javascriptResources = resources.getJavascriptResources();
-
-        StringBuffer buffer = new StringBuffer();
-        for ( ResourceMap.Resource jsResource : javascriptResources ) {
-          if ( jsResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
-            addRequireJsResource( CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + jsResource.getResourceName(),
-                context.replaceTokensAndAlias( jsResource.getResourcePath().startsWith( "/" )
-                ? jsResource.getResourcePath().replaceFirst( "/", "" ) : jsResource.getResourcePath() ) );
-          } else {
-            addJsCodeSnippet( jsResource.getProcessedResource() + NEWLINE );
-          }
-        }
-        for ( ResourceMap.Resource cssResource : cssResources ) {
-          if ( cssResource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
-            // Use the css! requireJS loader plugin for CSS external resource loading
-            addRequireCssResource( CdeConstants.REQUIREJS_PLUGIN.CSS
-                + CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + cssResource.getResourceName(),
-                context.replaceTokensAndAlias( cssResource.getResourcePath().startsWith( "/" )
-                ? cssResource.getResourcePath().replaceFirst( "/", "" ) : cssResource.getResourcePath() ) );
-          } else {
-            buffer.append( cssResource.getProcessedResource() ).append( NEWLINE );
-          }
-        }
-
-        return buffer.toString();
-
-      } catch ( Exception ex ) {
-        logger.error( "Error rendering resources", ex );
-      }
+      return getLayoutRenderer( docXP, context ).render( context.getOptions().getAliasPrefix() );
+    } else {
+      logger.warn( "Unable to render layout: no layout found." );
+      return "";
     }
-
-    return "";
   }
 
-  protected RenderResources getResourceRenderer( JXPathContext docXP, CdfRunJsDashboardWriteContext context ) {
-    return new RenderResources( docXP, context );
-  }
-
+  /**
+   * Returns a layout renderer that allows to render the dashboard's HTML layout to a string.
+   *
+   * @param docXP the JXPathContext object
+   * @param context the dashboard context
+   * @return the generated layout renderer object
+   */
   protected Renderer getLayoutRenderer( JXPathContext docXP, CdfRunJsDashboardWriteContext context ) {
     return new RenderLayout( docXP, context, false );
   }
 
   /**
-   * @param context
-   * @param dash
-   * @return
-   * @throws ThingWriteException
+   * Returns a string with the dashboard's CSS code snippet resources contained in HTML style tags.
+   *
+   * @param resources the dashboard's resources
+   * @return the string containing the CSS code snippet resources
    */
-  protected String writeComponents( CdfRunJsDashboardWriteContext context, Dashboard dash ) throws ThingWriteException {
-    DashboardWcdfDescriptor wcdf = dash.getWcdf();
-    componentList.clear();
+  protected String writeCssCodeResources( ResourceMap resources ) {
 
     StringBuilder out = new StringBuilder();
+    //CSS
+    for ( ResourceMap.Resource resource : resources.getCssResources() ) {
+      if ( resource.getResourceType().equals( ResourceMap.ResourceType.CODE ) ) {
+        out.append( resource.getProcessedResource() ).append( NEWLINE );
+      }
+    }
+
+    return out.toString();
+  }
+
+  /**
+   * Returns a string containing the JavaScript code snippet resources.
+   *
+   * @param resources the dashboard's resources
+   * @return the string containing the processed JavaScript code snippet resources
+   */
+  protected String writeJsCodeResources( ResourceMap resources ) {
+    //JS
+    StringBuilder sb = new StringBuilder();
+    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
+      if ( resource.getResourceType().equals( ResourceMap.ResourceType.CODE ) ) {
+        sb.append( resource.getProcessedResource() ).append( NEWLINE );
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /**
+   * Returns a resource renderer that allows to render the dashboard's resources.
+   *
+   * @param docXP the JXPathContext object
+   * @param context the dashboard context
+   * @return the generated resource renderer object
+   */
+  protected RenderResources getResourceRenderer( JXPathContext docXP, CdfRunJsDashboardWriteContext context ) {
+    return new RenderResources( docXP, context );
+  }
+
+  /**
+   * Writes the dashboard components sourcecode to the provided StringBuilder
+   * and returns the module ids and class names of the valid component modules found.
+   *
+   * @param context the dashboard context
+   * @param dash the dashboard
+   * @param out the StringBuilder to where the components sourcecode will be written
+   * @return the Map containing the processed component module ids and class names
+   * @throws ThingWriteException
+   */
+  protected Map<String, String> writeComponents(
+      CdfRunJsDashboardWriteContext context,
+      Dashboard dash,
+      StringBuilder out ) throws ThingWriteException {
+
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
+    Map<String, String> componentModules = new LinkedHashMap<String, String>();
 
     // Output WCDF
     addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
@@ -205,7 +249,7 @@ public class CdfRunJsDashboardWriter
 
     Iterable<Component> comps = dash.getRegulars();
     for ( Component comp : comps ) {
-      if ( StringUtils.isNotEmpty( getComponentName( comp ) ) ) {
+      if ( StringUtils.isNotEmpty( comp.getName() ) ) {
         IThingWriter writer;
         try {
           writer = factory.getWriter( comp );
@@ -214,16 +258,16 @@ public class CdfRunJsDashboardWriter
         }
 
         // custom primitive widget (generic components) & layout component
-        if ( isVisualComponent( comp ) ) {
-          if ( isCustomComponent( comp ) || isPrimitiveComponent( comp ) ) {
-            String componentClassName = getComponentClassName( comp );
+        if ( comp.isVisualComponent() ) {
+          if ( comp.isCustomComponent() || comp.isPrimitiveComponent() ) {
+            String componentClassName = comp.getComponentClassName();
 
-            if ( !componentList.containsKey( componentClassName ) ) {
-              String componentPath = getComponentPath( comp, componentClassName );
-              if ( StringUtils.isEmpty( componentPath ) ) {
+            if ( !componentModules.containsKey( componentClassName ) ) {
+              String componentModuleId = writeComponentModuleId( comp, componentClassName );
+              if ( StringUtils.isEmpty( componentModuleId ) ) {
                 continue;
               }
-              componentList.put( componentClassName, componentPath );
+              componentModules.put( componentClassName, componentModuleId );
             }
           }
 
@@ -238,51 +282,54 @@ public class CdfRunJsDashboardWriter
       }
     }
 
-    if ( componentList.size() > 0 ) {
+    if ( addCompIds.length() > 0 ) {
       out.append( NEWLINE )
         .append( "dashboard.addComponents([" )
         .append( addCompIds )
         .append( "]);" ).append( NEWLINE );
     }
 
-    return out.toString();
+    return componentModules;
   }
 
-  protected String getComponentName( Component comp ) {
-    return comp.getName();
-  }
+  /**
+   * Returns a string containing the module id given a component and a class name.
+   *
+   * @param comp the component used to build the module id
+   * @param className the class name used to build the module id
+   * @return the string containing the component module id
+   */
+  protected String writeComponentModuleId( Component comp, String className ) {
+    StringBuilder componentModuleId = new StringBuilder();
 
-  protected String getComponentPath( Component comp, String componentClassName ) {
-    StringBuilder componentPath = new StringBuilder();
-
-    if ( isPrimitiveComponent( comp ) && isComponentStaticSystemOrigin( comp ) ) {
+    if ( comp.isPrimitiveComponent() && comp.isComponentStaticSystemOrigin() ) {
 
       // CDF component with a static system origin
-      componentPath
+      componentModuleId
         .append( CDF_AMD_BASE_COMPONENT_PATH )
-        .append( componentClassName );
+        .append( className );
 
-    } else if ( isCustomComponent( comp ) ) {
+    } else if ( comp.isCustomComponent() ) {
 
-      if ( isComponentStaticSystemOrigin( comp ) ) {
+      if ( comp.isComponentStaticSystemOrigin() ) {
 
         // CDE custom component with a static system origin
-        componentPath
+        componentModuleId
           .append( CDE_AMD_BASE_COMPONENT_PATH )
-          .append( componentClassName );
+          .append( className );
 
-      } else if ( isComponentPluginRepositoryOrigin( comp ) ) {
+      } else if ( comp.isComponentPluginRepositoryOrigin() ) {
 
-        String compImplPath = getComponentImplementationPath( comp );
+        String compImplPath = comp.getComponentImplementationPath();
 
         // if both versions are supported or no implementation path is provided
         // build AMD module using source path and component class name
-        if ( supportsLegacy( comp ) || StringUtils.isEmpty( compImplPath ) ) {
+        if ( comp.supportsLegacy() || StringUtils.isEmpty( compImplPath ) ) {
 
           // assume that the AMD implementation file is in the same folder as component.xml
           // and that it has the same name as the component's class
-          compImplPath = getComponentSourcePath( comp ).split( CdeConstants.CUSTOM_COMPONENT_CONFIG_FILENAME )[ 0 ]
-            + componentClassName;
+          compImplPath = comp.getComponentSourcePath().split( CdeConstants.CUSTOM_COMPONENT_CONFIG_FILENAME )[ 0 ]
+            + className;
 
         } else {
 
@@ -292,103 +339,79 @@ public class CdfRunJsDashboardWriter
 
         // validate component's AMD module implementation path
         if ( StringUtils.isEmpty( compImplPath ) ) {
-          logger.error( "Missing an implementation code source path for component " + componentClassName );
+          logger.error( "Missing an implementation code source path for component " + className );
           return "";
         }
 
         // CDE custom component uploaded to the repository
-        componentPath
+        componentModuleId
           .append( CDE_AMD_REPO_COMPONENT_PATH )
           .append( compImplPath );
 
-      } else if ( isComponentOtherPluginStaticSystemOrigin( comp ) ) {
+      } else if ( comp.isComponentOtherPluginStaticSystemOrigin() ) {
 
         // custom component from another plugin (e.g. sparkl)
-        componentPath
-          .append( getPluginIdFromOrigin( comp ) )
+        componentModuleId
+          .append( comp.getPluginIdFromOrigin() )
           .append( PLUGIN_COMPONENT_FOLDER )
-          .append( componentClassName );
+          .append( className );
       }
-    } else if ( comp instanceof WidgetComponent ) {
+    } else if ( comp.isWidgetComponent() ) {
       // TODO: process WidgetComponent
+      logger.error( "Unsupported component: " + className );
       return "";
     }
 
-    return componentPath.toString();
-  }
-
-  protected String getComponentClassName( Component comp ) {
-    return Utils.getComponentClassName( comp.getMeta().getName() );
-  }
-
-  protected boolean isPrimitiveComponent( Component comp ) {
-    return comp instanceof PrimitiveComponent;
-  }
-
-  protected boolean isCustomComponent( Component comp ) {
-    return comp instanceof CustomComponent;
-  }
-
-  protected boolean isVisualComponent( Component comp ) {
-    return comp instanceof VisualComponent;
-  }
-
-  protected boolean isComponentStaticSystemOrigin( Component comp ) {
-    return comp.getMeta().getOrigin() instanceof StaticSystemOrigin;
-  }
-
-  protected boolean isComponentPluginRepositoryOrigin( Component comp ) {
-    return comp.getMeta().getOrigin() instanceof PluginRepositoryOrigin;
-  }
-
-  protected boolean isComponentOtherPluginStaticSystemOrigin( Component comp ) {
-    return comp.getMeta().getOrigin() instanceof OtherPluginStaticSystemOrigin;
-  }
-
-  protected boolean supportsLegacy( Component comp ) {
-    return comp.getMeta().supportsLegacy();
-  }
-
-  protected String getComponentImplementationPath( Component comp ) {
-    return comp.getMeta().getImplementationPath();
-  }
-
-  protected String getComponentSourcePath( Component comp ) {
-    return comp.getMeta().getSourcePath();
-  }
-
-  protected String getPluginIdFromOrigin( Component comp ) {
-    return ( (OtherPluginStaticSystemOrigin) comp.getMeta().getOrigin() ).getPluginId();
+    return componentModuleId.toString();
   }
 
   /**
-   * @param contents
-   * @param context
-   * @return
+   * Returns a string containing the HTML header sourcecode for the given dashboard.
+   *
+   * @param dash the dashboard object
+   * @return the string that contains the dashboard HTML header sourcecode
    */
-  protected String writeHeaders( String contents, CdfRunJsDashboardWriteContext context ) {
+  protected String writeHeaders( Dashboard dash ) {
 
-    return MessageFormat.format( TITLE, context.getDashboard().getWcdf().getTitle() )
+    return MessageFormat.format( TITLE, dash.getWcdf().getTitle() )
       + NEWLINE + MessageFormat.format( SCRIPT, writeWebcontext( "cdf", true ) );
   }
 
+  /**
+   * Returns a string containing the URL that allows to import webcontext into the dashboard's HTML page.
+   *
+   * @param context the URL context query parameter value
+   * @param requireJsOnly the URL requireJsOnly query parameter value
+   * @return the string containing the URL to the webcontext including query parameters
+   */
   protected String writeWebcontext( String context, boolean requireJsOnly ) {
-    return MessageFormat.format( WEBCONTEXT, context, requireJsOnly ? "true" : "false" );
+    return MessageFormat.format( WEBCONTEXT, context, Boolean.toString( requireJsOnly ).toLowerCase() );
   }
 
   /**
-   * @param layout
-   * @param components
-   * @return
+   * Returns the dashboard's generated JavaScript sourcecode.
+   *
+   * @param resources the dashboard resources
+   * @param layout the dashboard HTML layout sourcecode.
+   * @param componentModules the dashboard components' AMD modules
+   * @param components the dashboard's components
+   * @param ctx the dashboard context
+   * @return the string containing the dashboard's generated JavaScript sourcecode
    */
-  private String writeContent( String layout, String components, String config ) {
+  protected String writeContent(
+      ResourceMap resources,
+      String layout,
+      Map<String, String> componentModules,
+      String components,
+      CdfRunJsDashboardWriteContext ctx ) {
+
     StringBuilder out = new StringBuilder();
 
     out.append( layout );
 
     //do the encapsulation stuff here
 
-    wrapJsScriptTags( out, wrapRequireDefinitions( components, config ) );
+    wrapJsScriptTags( out, wrapRequireDefinitions( resources, componentModules, components, ctx ) );
 
     return out.toString();
   }
@@ -396,264 +419,259 @@ public class CdfRunJsDashboardWriter
   /**
    * Wraps the JavaScript code, contained in the input parameter, with requirejs configurations.
    *
-   * @param content Some JavaScript code to be wrapped.
-   * @return The JS code wrapped with requirejs configuration
+   * @param resources the dashboard's resources
+   * @param componentModules the dashboard's component modules
+   * @param components the dashboard's generated component JavaScript sourcecode, that creates components, to be wrapped
+   * @param ctx the dashboard context
+   * @return the dashboard's JavaScript sourcecode
    */
-  protected String wrapRequireDefinitions( String content, String config ) {
+  protected String wrapRequireDefinitions(
+      ResourceMap resources,
+      Map<String, String> componentModules,
+      String components,
+      CdfRunJsDashboardWriteContext ctx ) {
+
     StringBuilder out = new StringBuilder();
 
+    ArrayList<String> moduleIds = new ArrayList<String>(),
+        moduleClassNames = new ArrayList<String>();
 
-    ArrayList<String> cdfRequirePaths = new ArrayList<String>(), // AMD module paths
-        componentClassNames = new ArrayList<String>(); // AMD module class names (except Dashboard module))
+    // Add default dashboard module ids and class names
+    addDefaultDashboardModules( moduleIds, moduleClassNames );
 
-    // Add main Dashboard module class name
-    componentClassNames.add( "Dashboard" );
-    componentClassNames.add( "Logger" );
-    componentClassNames.add( "$" );
-    componentClassNames.add( "_" );
-    componentClassNames.add( "moment" );
-    componentClassNames.add( "cdo" );
-    componentClassNames.add( "Utils" );
-    // Add main Dashboard module path
-    cdfRequirePaths.add( getDashboardRequireModuleId() );
-    cdfRequirePaths.add( "cdf/Logger" );
-    cdfRequirePaths.add( "cdf/lib/jquery" );
-    cdfRequirePaths.add( CdeConstants.REQUIREJS_PLUGIN.NONAMD + "cdf/lib/underscore" );
-    cdfRequirePaths.add( "cdf/lib/moment" );
-    cdfRequirePaths.add( "cdf/lib/CCC/cdo" );
-    cdfRequirePaths.add( "cdf/dashboard/Utils" );
-
-    // Add component AMD modules
-    Iterator it = getComponentList().entrySet().iterator();
+    // store component AMD modules ids and class names
+    Iterator it = componentModules.entrySet().iterator();
     Map.Entry pair;
     while ( it.hasNext() ) {
       pair = (Map.Entry) it.next();
       // Add component AMD module path
-      cdfRequirePaths.add( (String) pair.getValue() );
+      moduleIds.add( (String) pair.getValue() );
       // Add component AMD module class name
-      componentClassNames.add( (String) pair.getKey() );
+      if ( !StringUtils.isEmpty( (String) pair.getKey() ) ) {
+        moduleClassNames.add( (String) pair.getKey() );
+      }
     }
 
-    componentClassNames.addAll( getRequireFilteredClassNames() );
-    cdfRequirePaths.addAll( getRequireJsResourcesList().keySet() );
-    cdfRequirePaths.addAll( getRequireCssResourcesList().keySet() );
+    // write RequireJS module path configurations for external JS and CSS resources
+    Map<String, String> fileResourceModules = writeFileResourcesRequireJSPathConfig( out, resources, ctx );
 
-    out.append( getFileResourcesRequirePaths() )
-      // Output module paths and module class names
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, config ) ).append( NEWLINE )
-      .append( getJsCodeSnippets().toString() )
-      .append( content ).append( NEWLINE )
+    // Add external resource module ids to the list
+    moduleIds.addAll( fileResourceModules.keySet() );
+    // Add external resource module class names to the list
+    moduleClassNames.addAll( fileResourceModules.values() );
+
+    // Output module paths and module class names
+    writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
+
+    //write dashboard declaration
+    if ( ctx.getOptions().isDebug() ) {
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, ctx.getOptions().getContextConfiguration() ) );
+    } else {
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) );
+    }
+
+    // write JS Code snippets
+    out.append( writeJsCodeResources( resources ) );
+
+    // write content
+    out.append( components ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 
     return out.toString();
   }
 
-  protected String getDashboardRequireModuleId() {
-    DashboardWcdfDescriptor.DashboardRendererType dashboardType = this.getType();
+  /**
+   * Adds the default dashboard module ids and class names to the provided lists.
+   *
+   * @param moduleIds the array list that will hold the default module ids
+   * @param moduleClassNames the array list that will hold the default module class names
+   */
+  protected void addDefaultDashboardModules( ArrayList<String> moduleIds, ArrayList<String> moduleClassNames ) {
+    final AmdModule dashboardModule = getDashboardModule();
+    // Add default module ids
+    moduleIds.add( dashboardModule.getId() );
+    moduleIds.add( AmdModule.LOGGER.getId() );
+    moduleIds.add( AmdModule.JQUERY.getId() );
+    moduleIds.add( AmdModule.UNDERSCORE.getId() );
+    moduleIds.add( AmdModule.MOMENT.getId() );
+    moduleIds.add( AmdModule.CCC_CDO.getId() );
+    moduleIds.add( AmdModule.UTILS.getId() );
+    // Add default module class names
+    moduleClassNames.add( dashboardModule.getClassName() );
+    moduleClassNames.add( AmdModule.LOGGER.getClassName() );
+    moduleClassNames.add( AmdModule.JQUERY.getClassName() );
+    moduleClassNames.add( AmdModule.UNDERSCORE.getClassName() );
+    moduleClassNames.add( AmdModule.MOMENT.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_CDO.getClassName() );
+    moduleClassNames.add( AmdModule.UTILS.getClassName() );
+  }
+
+  /**
+   * Writes the RequireJS 'require' JavaScript function sourcecode to the provided StringBuilder instance.
+   *
+   * @param out the string builder to where the sourcecode will be written
+   * @param ids the array list containing all module ids
+   * @param classNames the array list containing all module class names
+   */
+  protected void writeRequireJsExecutionFunction( StringBuilder out, List<String> ids, List<String> classNames ) {
+    // remove empty external resource module class names to the list
+    Iterator<String> i = classNames.iterator();
+    while ( i.hasNext() ) {
+      String className = i.next();
+      if ( StringUtils.isEmpty( className ) ) {
+        i.remove();
+      }
+    }
+    out
+      .append( MessageFormat.format(
+        REQUIRE_START,
+        StringUtils.join( ids, "', '" ),
+        StringUtils.join( classNames, ", " ) ) )
+      .append( NEWLINE );
+  }
+
+  /**
+   * Returns a string containing the dashboard module id generated using the current dashboard type.
+   *
+   * @return the dashboard module id
+   */
+  protected AmdModule getDashboardModule() {
+    DashboardWcdfDescriptor.DashboardRendererType dashboardType = getType();
     if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) ) {
-      return "cdf/Dashboard.Blueprint";
+      return AmdModule.DASHBOARD_BLUEPRINT;
     } else if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP ) ) {
-      return "cdf/Dashboard.Bootstrap";
+      return AmdModule.DASHBOARD_BOOTSTRAP;
     } else if ( dashboardType.equals( DashboardWcdfDescriptor.DashboardRendererType.MOBILE ) ) {
-      return "cdf/Dashboard.Mobile";
+      return AmdModule.DASHBOARD_MOBILE;
     } else {
-      return "cdf/Dashboard.Clean";
+      return AmdModule.DASHBOARD_CLEAN;
     }
   }
 
-  protected String getFileResourcesRequirePaths() {
-    StringBuffer out = new StringBuffer();
+  /**
+   * Returns the current dashboard renderer type.
+   *
+   * @return the dashboard renderer type
+   */
+  public DashboardWcdfDescriptor.DashboardRendererType getType() {
+    return this.type;
+  }
 
-    Set<Map.Entry<String, String>> requireResourcesList = getRequireJsResourcesList().entrySet();
-    if ( requireResourcesList.size() > 0 ) {
-      for ( Map.Entry<String, String> resource : requireResourcesList ) {
+  /**
+   * Writes the RequireJS module path configuration sourcecode to a given string builder.
+   *
+   * @param out the string builder to where the RequireJS module path configuration sourcecode will be written
+   * @param resources the dashboard's resources
+   * @param ctx the dashboard context
+   * @return the Map containing the dashboard resource modules ids and class names
+   */
+  protected Map<String, String> writeFileResourcesRequireJSPathConfig(
+      StringBuilder out,
+      ResourceMap resources,
+      CdfRunJsDashboardWriteContext ctx ) {
+
+    Map<String, String> resourceModules = new LinkedHashMap<String, String>();
+
+    // JS
+    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
+      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
+
+        String path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+        if ( path.startsWith( "/" ) ) {
+          path =  path.replaceFirst( "/", "" );
+        }
+        // remove extension
+        path = path.replaceFirst( "(?i).js$", "" );
+        // build the module id without the file extension and cache buster version from path
+        String id =
+            CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + ( StringUtils.isEmpty(  resource.getResourceName() )
+              ? path : resource.getResourceName() );
+
         out.append( MessageFormat.format(
-          schemePattern.matcher( resource.getValue() ).find() ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
-          CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + getRequireFilteredClassName( resource.getKey() ),
-          resource.getValue() ) ).append( NEWLINE );
+            SCHEME_PATTERN.matcher( resource.getResourcePath() ).find()
+              ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
+            id,
+            "/" + path ) )
+          .append( NEWLINE );
+
+        resourceModules.put( id, resource.getResourceName() );
       }
     }
 
-    requireResourcesList = getRequireCssResourcesList().entrySet();
-    if ( requireResourcesList.size() > 0 ) {
-      for ( Map.Entry<String, String> resource : requireResourcesList ) {
+    // CSS
+    for ( ResourceMap.Resource resource : resources.getCssResources() ) {
+      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
+
+        String path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+        if ( path.startsWith( "/" ) ) {
+          path = path.replaceFirst( "/", "" );
+        }
+        // remove extension
+        path = path.replaceFirst( "(?i).css$", "" );
+        String id = CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
+            + ( StringUtils.isEmpty( resource.getResourceName() )
+              ? path : resource.getResourceName() );
+
         out.append( MessageFormat.format(
-          schemePattern.matcher( resource.getValue() ).find() ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
-          CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + getRequireFilteredClassName( resource.getKey() ),
-          resource.getValue() ) ).append( NEWLINE );
+            SCHEME_PATTERN.matcher( resource.getResourcePath() ).find()
+              ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
+            id,
+            "/" + path ) )
+          .append( NEWLINE );
+
+        // prepend css! RequireJS loader plugin and don't provide a class name for CSS resources
+        resourceModules.put(  RequireJSPlugin.CSS + id, ""/*resource.getResourceName()*/ );
       }
     }
 
+    // write require config function call
     if ( out.length() > 0 ) {
       out.append( REQUIRE_CONFIG ).append( NEWLINE );
     }
 
-    return out.toString();
-  }
-
-  public Map<String, String> getComponentList() {
-    return componentList;
-  }
-
-  public void setComponentList( Map<String, String> componentList ) {
-    this.componentList = componentList;
-  }
-
-  public Map<String, String> getRequireJsResourcesList() {
-    return requireJsResourcesList;
-  }
-
-  public void addRequireJsResource( String resourceName, String resourcePath ) {
-    this.requireJsResourcesList.put( resourceName, resourcePath );
-  }
-
-  public Map<String, String> getRequireCssResourcesList() {
-    return requireCssResourcesList;
-  }
-
-  public void addRequireCssResource( String resourceName, String resourcePath ) {
-    this.requireCssResourcesList.put( resourceName, resourcePath );
-  }
-
-  public StringBuffer getJsCodeSnippets() {
-    return jsCodeSnippets;
-  }
-
-  public void addJsCodeSnippet( String jsCodeSnippet ) {
-    this.jsCodeSnippets.append( jsCodeSnippet );
-  }
-
-  public void writeModule(
-      CdfRunJsDashboardWriteResult.Builder builder,
-      CdfRunJsDashboardWriteContext ctx,
-      Dashboard dash )
-      throws ThingWriteException {
-
-    final String cssResources = ctx.replaceTokensAndAlias( this.writeResources( ctx, dash ) );
-    // Prepend the CSS (<style> and <link>) code to the HTML layout
-    final String layout = cssResources + ctx.replaceTokens( this.writeLayout( ctx, dash ) );
-    final String components = replaceAliasTagWithAlias(
-        ctx.replaceHtmlAlias( ctx.replaceTokens( this.writeComponents( ctx, dash ) ) ) );
-
-    boolean emptyAlias = ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG );
-    final String content = this.wrapRequireModuleDefinitions( components, layout, emptyAlias,
-        ctx.getOptions().getContextConfiguration() );
-
-    // Export
-    builder
-      .setTemplate( "" )
-      .setHeader( "" )
-      .setLayout( layout )
-      .setComponents( components )
-      .setContent( content )
-      .setFooter( "" )
-      .setLoadedDate( ctx.getDashboard().getSourceDate() );
-  }
-
-  protected String replaceAliasTagWithAlias( String content ) {
-    return content.replaceAll( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias +\"" );
+    return resourceModules;
   }
 
   /**
-   * Wraps the JavaScript code, contained in the input parameters, as a requirejs module definition.
+   * Filters AMD module class names, removing any prepended requireJS loader plugin references from them. Excludes
+   * CSS resource modules (file resources). These are used as the input parameters of the require function's callback
+   * function parameter.
    *
-   * @param content Some JavaScript code to be wrapped.
-   * @return A string containing an AMD module definition.
+   * @param resources the dashboard resources
+   * @return the list of the JavaScript file resource modules
    */
-  protected String wrapRequireModuleDefinitions( String content, String layout, boolean emptyAlias, String config ) {
-    StringBuilder out = new StringBuilder();
-
-    ArrayList<String> cdfRequirePaths = new ArrayList<String>(), // AMD module ids
-        componentClassNames = new ArrayList<String>(); // AMD module class names
-
-    // Add main Dashboard module class name
-    componentClassNames.add( "Dashboard" );
-    componentClassNames.add( "Logger" );
-    componentClassNames.add( "$" );
-    componentClassNames.add( "_" );
-    componentClassNames.add( "moment" );
-    componentClassNames.add( "cdo" );
-    componentClassNames.add( "Utils" );
-    // Add main Dashboard module id
-    cdfRequirePaths.add( getDashboardRequireModuleId() );
-    cdfRequirePaths.add( "cdf/Logger" );
-    cdfRequirePaths.add( "cdf/lib/jquery" );
-    cdfRequirePaths.add( CdeConstants.REQUIREJS_PLUGIN.NONAMD + "cdf/lib/underscore" );
-    cdfRequirePaths.add( "cdf/lib/moment" );
-    cdfRequirePaths.add( "cdf/lib/CCC/cdo" );
-    cdfRequirePaths.add( "cdf/dashboard/Utils" );
-
-    // Add component AMD modules
-    Iterator it = getComponentList().entrySet().iterator();
-    Map.Entry pair;
-    while ( it.hasNext() ) {
-      pair = (Map.Entry) it.next();
-      // Add component AMD module id/path
-      cdfRequirePaths.add( (String) pair.getValue() );
-      // Add component AMD module class name
-      componentClassNames.add( (String) pair.getKey() );
-    }
-
-    componentClassNames.addAll( getRequireFilteredClassNames() );
-    cdfRequirePaths.addAll( getRequireJsResourcesList().keySet() );
-    cdfRequirePaths.addAll( getRequireCssResourcesList().keySet() );
-
-    out.append( getFileResourcesRequirePaths() )
-      // Output module paths and module class names
-        .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) );
-
-    if ( emptyAlias ) {
-      out.append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, config,
-          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
-    } else {
-      out.append( MessageFormat.format( DASHBOARD_MODULE_START, config ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
-    }
-
-    final String jsCodeSnippets = getJsCodeSnippets().toString();
-
-    out.append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
-        jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + content : content ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
-
-    return out.toString();
-  }
-
-  /**
-   * Filters AMD module class names, removing any prepended requireJS loader plugin references from them and excluding
-   * CSS resources.
-   *
-   * @return ArrayList containing the filtered AMD module ids/class names.
-   */
-  protected ArrayList<String> getRequireFilteredClassNames() {
-    ArrayList<String> classNames = new ArrayList<String>( getRequireJsResourcesList().size() );
+  protected ArrayList<String> getJsModuleClassNames( ResourceMap resources ) {
+    ArrayList<String> classNames = new ArrayList<String>();
+    String className;
     // Filter and remove known RequireJS Loader plugin from class names
-    for ( String className : getRequireJsResourcesList().keySet() ) {
-
-      classNames.add( getRequireFilteredClassName( className ) );
+    // JS
+    for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
+      if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
+        if ( StringUtils.isEmpty( className = getModuleClassName( resource.getResourceName() ) ) ) {
+          continue;
+        }
+        classNames.add( className );
+      }
     }
+
+    // CSS AMD modules are not included as input parameters in require function's callback function parameter
 
     return classNames;
   }
 
   /**
-   * Filters a AMD module class name, removing any prepended requireJS loader plugin references from it.
+   * Filters an AMD module class name, removing any prepended RequireJS loader plugin references from it.
    *
-   * @param className The unfiltered module id/class name.
-   * @return String containing the filtered AMD module id/class name.
+   * @param className the unfiltered module class name
+   * @return the string containing the filtered module class name
    */
-  protected String getRequireFilteredClassName( String className ) {
-    // remove prepended requireJS loader plugins from class name
-    for ( CdeConstants.REQUIREJS_PLUGIN plugin : CdeConstants.REQUIREJS_PLUGIN.values() ) {
+  protected String getModuleClassName( String className ) {
+    if ( StringUtils.isEmpty( className ) ) {
+      return "";
+    }
+    // remove prepended requireJS loader plugins and resource namespace from class name
+    for ( RequireJSPlugin plugin : RequireJSPlugin.values() ) {
       className = className.replace( plugin.toString(), "" ).replace(
         CdeConstants.RESOURCE_AMD_NAMESPACE + "/", "" );
     }

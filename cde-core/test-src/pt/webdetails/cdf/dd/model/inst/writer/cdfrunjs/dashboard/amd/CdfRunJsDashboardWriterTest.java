@@ -23,26 +23,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.CdeConstants.AmdModule;
 import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
-import pt.webdetails.cdf.dd.model.inst.CustomComponent;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.LayoutComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.amd.CdeRunJsThingWriterFactory;
-import pt.webdetails.cdf.dd.render.RenderResources;
+import pt.webdetails.cdf.dd.render.RenderLayout;
 import pt.webdetails.cdf.dd.render.ResourceMap;
+import pt.webdetails.cdf.dd.render.ResourceMap.ResourceKind;
+import pt.webdetails.cdf.dd.render.ResourceMap.ResourceType;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,355 +64,85 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       + INDENT2 + "fakeView: fakeView" + NEWLINE
       + INDENT1 + "}" + NEWLINE;
 
-  private static CdfRunJsDashboardWriter dashboardWriter;
+  private static Dashboard dash;
   private static CdfRunJsDashboardWriter dashboardWriterSpy;
   private static CdfRunJsDashboardWriteContext context;
   private static CdfRunJsDashboardWriteOptions options;
+  private static ResourceMap resources;
 
   @Before
   public void setUp() throws Exception {
-    dashboardWriter =
-      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
-    dashboardWriterSpy = spy( dashboardWriter );
+    dash = Mockito.mock( Dashboard.class );
+    dashboardWriterSpy = spy( new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
     options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+    resources = Mockito.mock( ResourceMap.class );
   }
 
   @After
   public void tearDown() throws Exception {
-    dashboardWriter = null;
+    dash = null;
+    dashboardWriterSpy = null;
     context = null;
     options = null;
+    resources = null;
   }
 
-  @Test
-  public void testWrapRequireDefinitions() {
-
-    Map testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
-
-    dashboardWriter.setComponentList( testComponentList );
-
-    List<String> componentClassNames = Arrays.asList(
-        "Dashboard",
-        "Logger",
-        "$",
-        "_",
-        "moment",
-        "cdo",
-        "Utils",
-        "TestComponent1",
-        "TestComponent2",
-        "TestComponent3" );
-    List<String> cdfRequirePaths = Arrays.asList(
-        "cdf/Dashboard.Blueprint",
-        "cdf/Logger",
-        "cdf/lib/jquery",
-        "amd!cdf/lib/underscore",
-        "cdf/lib/moment",
-        "cdf/lib/CCC/cdo",
-        "cdf/dashboard/Utils",
-        "cdf/components/TestComponent1",
-        "cdf/components/TestComponent2",
-        "cdf/components/TestComponent3" );
-
-    String out = dashboardWriter.wrapRequireDefinitions( "fakeContent", CONTEXT_CONFIGURATION );
-
-    StringBuilder dashboardResult = new StringBuilder();
-
-    dashboardResult
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
-      .append( "fakeContent" ).append( NEWLINE )
-      .append( DASHBOARD_INIT )
-      .append( REQUIRE_STOP );
-
-    Assert.assertEquals( out, dashboardResult.toString() );
-
-    // test with additional requireJS configurations
-
-    testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
-
-    dashboardWriter.setComponentList( testComponentList );
-
-    dashboardWriter.addRequireJsResource( "cde/resources/TestResource1", "/TestResourcePath1" );
-
-    out = dashboardWriter.wrapRequireDefinitions( "fakeContent", CONTEXT_CONFIGURATION );
-
-    dashboardResult = new StringBuilder();
-
-    componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3",
-      "TestResource1" );
-    cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3",
-      "cde/resources/TestResource1" );
-
-    dashboardResult
-      .append( "requireCfg['paths']['cde/resources/TestResource1'] =" )
-      .append( " CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
-      .append( "fakeContent" ).append( NEWLINE )
-      .append( DASHBOARD_INIT )
-      .append( REQUIRE_STOP );
-
-    Assert.assertEquals( dashboardResult.toString(), out );
-
-    // test with additional JS and CSS external file using amd! and css! requireJS loader plugins
-
-    testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
-
-    dashboardWriter.setComponentList( testComponentList );
-
-    dashboardWriter.addRequireCssResource( "css!cde/resources/TestResourceCSS", "/TestResourceCSSPath" );
-
-    out = dashboardWriter.wrapRequireDefinitions( "fakeContent", CONTEXT_CONFIGURATION );
-
-    dashboardResult.setLength( 0 );
-
-    componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3",
-      "TestResource1" );
-    cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3",
-      "cde/resources/TestResource1",
-      "css!cde/resources/TestResourceCSS" );
-
-    dashboardResult
-      .append(
-        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" ).append(
-      NEWLINE )
-      // plugin css! should have been stripped from module id
-      .append(
-        "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" )
-      .append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
-      .append( "fakeContent" ).append( NEWLINE )
-      .append( DASHBOARD_INIT )
-      .append( REQUIRE_STOP );
-
-    Assert.assertEquals( dashboardResult.toString(), out );
-
-  }
 
   @Test
-  public void testDashboardType() {
-    dashboardWriter =
-      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Blueprint" );
-    dashboardWriter =
-      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Bootstrap" );
-    dashboardWriter =
-      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE, false );
-    assertEquals( dashboardWriter.getDashboardRequireModuleId(), "cdf/Dashboard.Mobile" );
-  }
+  public void testWriteLayout() throws Exception {
 
-  @Test
-  public void testGetFileResourcesRequirePaths() {
-    dashboardWriter.addRequireJsResource( "myResource1", "/myResource1.js" );
-    dashboardWriter.addRequireJsResource( "myResource2", "/myResource2.js" );
-    dashboardWriter.addRequireJsResource( "myResource3", "/myResource3.js" );
+    doReturn( 0 ).when( dash ).getLayoutCount();
+    Assert.assertEquals( "", dashboardWriterSpy.writeLayout( context, dash ) );
 
-    String fileResources = dashboardWriter.getFileResourcesRequirePaths();
-
-    assertEquals( fileResources,
-        "requireCfg['paths']['cde/resources/myResource1'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/myResource1.js';\n"
-        + "requireCfg['paths']['cde/resources/myResource2'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/myResource2.js';\n"
-        + "requireCfg['paths']['cde/resources/myResource3'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/myResource3.js';\n"
-        + REQUIRE_CONFIG + NEWLINE );
-  }
-
-  @Test
-  public void testWriteResources() throws Exception {
-    doReturn( "" ).when( options ).getAliasPrefix();
-    doReturn( options ).when( context ).getOptions();
-    Dashboard dash = mock( Dashboard.class );
     doReturn( 1 ).when( dash ).getLayoutCount();
+    LayoutComponent comp = Mockito.mock( LayoutComponent.class );
+    doReturn( comp ).when( dash ).getLayout( "TODO" );
+    JXPathContext docXP = Mockito.mock( JXPathContext.class );
+    doReturn( docXP ).when( comp ).getLayoutXPContext();
+    RenderLayout rLayout = Mockito.mock( RenderLayout.class );
+    doReturn( rLayout ).when( dashboardWriterSpy ).getLayoutRenderer( docXP, context );
+    doReturn( options ).when( context ).getOptions();
+    final String aliasPrefix = "_alias_prefix_";
+    doReturn( aliasPrefix ).when( options ).getAliasPrefix();
+    final String sampleLayout = "<div id='content'></div>";
+    doReturn( sampleLayout ).when( rLayout ).render( aliasPrefix );
 
-    LayoutComponent layoutComponent = mock( LayoutComponent.class );
-    doReturn( layoutComponent ).when( dash ).getLayout( "TODO" );
+    String layout = dashboardWriterSpy.writeLayout( context, dash );
 
-    JXPathContext jxPathContext = mock( JXPathContext.class );
-    doReturn( jxPathContext ).when( layoutComponent ).getLayoutXPContext();
+    Assert.assertEquals( sampleLayout.toString(), layout );
 
-    List<ResourceMap.Resource> cssResources = new ArrayList<ResourceMap.Resource>();
-
-    ResourceMap.Resource cssResource1 = mock( ResourceMap.Resource.class ),
-        cssResource2 = mock( ResourceMap.Resource.class );
-    doReturn( ResourceMap.ResourceType.FILE ).when( cssResource1 ).getResourceType();
-    doReturn( "/fakePath" ).when( cssResource1 ).getResourcePath();
-    doReturn( ResourceMap.ResourceType.CODE ).when( cssResource2 ).getResourceType();
-
-    doReturn( "" ).when( cssResource1 ).getProcessedResource();
-    doReturn( "" ).when( cssResource2 ).getProcessedResource();
-    cssResources.add( cssResource1 );
-    cssResources.add( cssResource2 );
-
-    List<ResourceMap.Resource> jsResources = new ArrayList<ResourceMap.Resource>();
-    ResourceMap.Resource jsResource1 = mock( ResourceMap.Resource.class ),
-        jsResource2 = mock( ResourceMap.Resource.class );
-
-    doReturn( ResourceMap.ResourceType.FILE ).when( jsResource1 ).getResourceType();
-    doReturn( "/fakePath" ).when( jsResource1 ).getResourcePath();
-    doReturn( ResourceMap.ResourceType.CODE ).when( jsResource2 ).getResourceType();
-    doReturn( "(function(){ return true; })" ).when( jsResource2 ).getProcessedResource();
-
-    jsResources.add( jsResource1 );
-    jsResources.add( jsResource2 );
-
-    ResourceMap resourceMap = mock( ResourceMap.class );
-    doReturn( cssResources ).when( resourceMap ).getCssResources();
-    doReturn( jsResources ).when( resourceMap ).getJavascriptResources();
-
-    RenderResources resourceRender = mock( RenderResources.class );
-    doReturn( resourceMap ).when( resourceRender ).renderResources( anyString() );
-    doReturn( resourceRender ).when( dashboardWriterSpy ).getResourceRenderer( jxPathContext, context );
-
-    dashboardWriterSpy.writeResources( context, dash );
-    verify( cssResource2, times( 1 ) ).getProcessedResource();
-    verify( dashboardWriterSpy, times( 1 ) ).addRequireCssResource( anyString(), anyString() );
-    verify( dashboardWriterSpy, times( 1 ) ).addRequireJsResource( anyString(), anyString() );
-    verify( dashboardWriterSpy, times( 1 ) ).addJsCodeSnippet( anyString() );
-    verify( jsResource1, times( 1 ) ).getResourceType();
-    verify( jsResource1, times( 2 ) ).getResourcePath();
-    verify( jsResource2, times( 1 ) ).getProcessedResource();
+    doReturn( "TestResourcePath1" ).when( context ).replaceTokensAndAlias( anyString() );
   }
 
   @Test
-  public void testGetComponentPath() {
+  public void testWriteCssCodeResources() throws Exception {
+    // test resources
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
 
-    Component primitiveComp = mock( CustomComponent.class );
-    Component customComp1 = mock( CustomComponent.class );
-    Component customComp2 = mock( CustomComponent.class );
-    Component customComp3 = mock( CustomComponent.class );
+    Assert.assertEquals( "cssCodeRsrc1" + NEWLINE, dashboardWriterSpy.writeCssCodeResources( testResources ) );
+  }
 
-    doReturn( true ).when( dashboardWriterSpy ).isPrimitiveComponent( primitiveComp );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( primitiveComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( primitiveComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( primitiveComp );
-    Assert.assertEquals(
-        CDF_AMD_BASE_COMPONENT_PATH + "FakePrimitiveComponent",
-        dashboardWriterSpy.getComponentPath( primitiveComp, "FakePrimitiveComponent" ) );
+  @Test
+  public void testWriteJsCodeResources() throws Exception {
+    // test resources
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1","jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
 
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp1 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp1 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp1 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp1 );
-    Assert.assertEquals(
-        CDE_AMD_BASE_COMPONENT_PATH + "Custom1Component",
-        dashboardWriterSpy.getComponentPath( customComp1, "Custom1Component" ) );
-
-    // AMD only with implementation path, custom component uploaded to the repository
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
-    doReturn( "fakePath/Custom2Component.js" ).when( dashboardWriterSpy ).getComponentImplementationPath( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
-    Assert.assertEquals(
-        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
-        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
-
-    // AMD only without implementation path, custom component uploaded to the repository
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
-    doReturn( "" ).when( dashboardWriterSpy ).getComponentImplementationPath( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
-    doReturn( "fakePath/component.xml" ).when( dashboardWriterSpy ).getComponentSourcePath( customComp2 );
-    Assert.assertEquals(
-        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
-        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
-
-    // AMD and legacy with implementation path, custom component uploaded to the repository
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp2 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp2 );
-    doReturn( "fakeIgnoredPath/Custom2Component.js" ).when( dashboardWriterSpy ).getComponentImplementationPath(
-        customComp2 );
-    doReturn( true ).when( dashboardWriterSpy ).supportsLegacy( customComp2 );
-    doReturn( "fakePath/component.xml" ).when( dashboardWriterSpy ).getComponentSourcePath( customComp2 );
-    Assert.assertEquals(
-        CDE_AMD_REPO_COMPONENT_PATH + "fakePath/Custom2Component",
-        dashboardWriterSpy.getComponentPath( customComp2, "Custom2Component" ) );
-
-    doReturn( true ).when( dashboardWriterSpy ).isCustomComponent( customComp3 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( customComp3 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( customComp3 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( customComp3 );
-    doReturn( "sparkl" ).when( dashboardWriterSpy ).getPluginIdFromOrigin( customComp3 );
-    Assert.assertEquals(
-        "sparkl" + PLUGIN_COMPONENT_FOLDER + "Custom3Component",
-        dashboardWriterSpy.getComponentPath( customComp3, "Custom3Component" ) );
+    Assert.assertEquals( "jsCodeRsrc1" + NEWLINE, dashboardWriterSpy.writeJsCodeResources( testResources ) );
   }
 
   @Test
   public void testWriteComponents() throws ValidationException, UnsupportedThingException, ThingWriteException,
     JSONException {
 
-    when( options.isAmdModule() ).thenReturn( false );
     when( context.getOptions() ).thenReturn( options );
 
     Dashboard dash = mock( Dashboard.class );
@@ -427,328 +158,365 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     List<Component> componentList = new ArrayList<Component>();
 
-    Component comp1 = mock( CustomComponent.class );
-    Component comp2 = mock( CustomComponent.class );
-    Component invalidComp = mock( CustomComponent.class );
-    Component comp3 = mock( CustomComponent.class );
-
+    Component comp1 = mock( Component.class );
+    Component comp2 = mock( Component.class );
+    Component invalidComp = mock( Component.class );
+    Component comp3 = mock( Component.class );
+    // custom component from static system origin
     componentList.add( comp1 );
     doReturn( "comp1" ).when( comp1 ).getId();
-    doReturn( "comp1" ).when( dashboardWriterSpy ).getComponentName( comp1 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp1 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp1 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp1 );
-    doReturn( "Fake1Component" ).when( dashboardWriterSpy ).getComponentClassName( comp1 );
-    doReturn( "fake1/path" ).when( dashboardWriterSpy ).getComponentPath( comp1, "Fake1Component" );
-
+    doReturn( "comp1" ).when( comp1 ).getName();
+    doReturn( true ).when( comp1 ).isVisualComponent();
+    doReturn( true ).when( comp1 ).isCustomComponent();
+    doReturn( true ).when( comp1 ).isComponentStaticSystemOrigin();
+    doReturn( "Comp1Component" ).when( comp1 ).getComponentClassName();
+    doReturn( "comp/Comp1Component" ).when( dashboardWriterSpy ).writeComponentModuleId( comp1, "Comp1Component" );
+    // custom component from plugin repository origin
     componentList.add( comp2 );
     doReturn( "comp2" ).when( comp2 ).getId();
-    doReturn( "comp2" ).when( dashboardWriterSpy ).getComponentName( comp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp2 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp2 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp2 );
-    doReturn( "Fake2Component" ).when( dashboardWriterSpy ).getComponentClassName( comp2 );
-    doReturn( "fake2/path" ).when( dashboardWriterSpy ).getComponentPath( comp2, "Fake2Component" );
-
+    doReturn( "comp2" ).when( comp2 ).getName();
+    doReturn( true ).when( comp2 ).isVisualComponent();
+    doReturn( true ).when( comp2 ).isCustomComponent();
+    doReturn( false ).when( comp2 ).isComponentStaticSystemOrigin();
+    doReturn( true ).when( comp2 ).isComponentPluginRepositoryOrigin();
+    doReturn( false ).when( comp2 ).supportsLegacy();
+    doReturn( "/cde/components/comp2/component.xml" ).when( comp2 ).getComponentImplementationPath();
+    doReturn( false ).when( comp2 ).isComponentOtherPluginStaticSystemOrigin();
+    doReturn( "Comp2Component" ).when( comp2 ).getComponentClassName();
+    doReturn( "comp/Comp2Component" ).when( dashboardWriterSpy ).writeComponentModuleId( comp2, "Comp2Component" );
+    // invalid custom component from plugin repository origin
     componentList.add( invalidComp );
     doReturn( "invalidComponent" ).when( invalidComp ).getId();
-    doReturn( "invalidComponent" ).when( dashboardWriterSpy ).getComponentName( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( invalidComp );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( invalidComp );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( invalidComp );
-    doReturn( "InvalidComponent" ).when( dashboardWriterSpy ).getComponentClassName( invalidComp );
+    doReturn( "invalidComponent" ).when( invalidComp ).getName();
+    doReturn( true ).when( invalidComp ).isVisualComponent();
+    doReturn( true ).when( invalidComp ).isCustomComponent();
+    doReturn( false ).when( invalidComp ).isComponentStaticSystemOrigin();
+    doReturn( true ).when( invalidComp ).isComponentPluginRepositoryOrigin();
+    doReturn( false ).when( invalidComp ).supportsLegacy();
+    doReturn( "" ).when( invalidComp ).getComponentImplementationPath();
+    doReturn( false ).when( invalidComp ).isComponentOtherPluginStaticSystemOrigin();
+    doReturn( "InvalidComponent" ).when( invalidComp ).getComponentClassName();
     // custom components in the repository must contain an implementation path or will be ignored
     // it is needed for AMD path configuration purposes
-    doReturn( "" ).when( dashboardWriterSpy ).getComponentPath( invalidComp, "InvalidComponent" );
-
+    doReturn( "" ).when( dashboardWriterSpy ).writeComponentModuleId( invalidComp, "InvalidComponent" );
+    // custom component from other plugin static system origin
     componentList.add( comp3 );
     doReturn( "comp3" ).when( comp3 ).getId();
-    doReturn( "comp3" ).when( dashboardWriterSpy ).getComponentName( comp3 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentStaticSystemOrigin( comp3 );
-    doReturn( false ).when( dashboardWriterSpy ).isComponentPluginRepositoryOrigin( comp3 );
-    doReturn( true ).when( dashboardWriterSpy ).isComponentOtherPluginStaticSystemOrigin( comp3 );
-    doReturn( "sparkl" ).when( dashboardWriterSpy ).getPluginIdFromOrigin( comp3 );
-    doReturn( "Fake3Component" ).when( dashboardWriterSpy ).getComponentClassName( comp3 );
-    doReturn( "sparkl/fake3/component" ).when( dashboardWriterSpy ).getComponentPath( comp3, "Fake3Component" );
+    doReturn( "comp3" ).when( comp3 ).getName();
+    doReturn( true ).when( comp3 ).isVisualComponent();
+    doReturn( true ).when( comp3 ).isCustomComponent();
+    doReturn( false ).when( comp3 ).isComponentStaticSystemOrigin();
+    doReturn( false ).when( comp3 ).isComponentPluginRepositoryOrigin();
+    doReturn( true ).when( comp3 ).isComponentOtherPluginStaticSystemOrigin();
+    doReturn( "sparkl" ).when( comp3 ).getPluginIdFromOrigin();
+    doReturn( "Comp3Component" ).when( comp3 ).getComponentClassName();
+    doReturn( "sparkl/comp/Comp3Component" ).when( dashboardWriterSpy ).writeComponentModuleId( comp3,
+      "Comp3Component" );
 
     doReturn( componentList ).when( dash ).getRegulars();
 
+    StringBuilder out = new StringBuilder();
+    Map<String, String> componentModules = dashboardWriterSpy.writeComponents( context, dash, out );
+
     Assert.assertEquals(
-        "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
+      "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
         + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
-        dashboardWriterSpy.writeComponents( context, dash ) );
+      out.toString() );
 
-    Assert.assertEquals( 3, dashboardWriter.getComponentList().size() );
-
+    // invalid components are not added
+    Assert.assertEquals( 3, componentModules.size() );
+    Assert.assertEquals( true, componentModules.containsKey( "Comp1Component" ) );
+    Assert.assertEquals( true, componentModules.containsKey( "Comp2Component" ) );
+    Assert.assertEquals( false, componentModules.containsKey( "InvalidComponent" ) );
+    Assert.assertEquals( true, componentModules.containsKey( "Comp3Component" ) );
   }
 
   @Test
-  public void testWrapRequireModuleDefinitions() {
+  public void testWriteComponentModuleId() {
+    final String className = "CompComponent";
+    // primitive component from static system origin
+    Component comp = mock( Component.class );
+    doReturn( true ).when( comp ).isPrimitiveComponent();
+    doReturn( true ).when( comp ).isComponentStaticSystemOrigin();
+    Assert.assertEquals(
+      CDF_AMD_BASE_COMPONENT_PATH + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+    // custom component from static system origin
+    comp = mock( Component.class );
+    doReturn( true ).when( comp ).isCustomComponent();
+    doReturn( true ).when( comp ).isComponentStaticSystemOrigin();
+    Assert.assertEquals(
+      CDE_AMD_BASE_COMPONENT_PATH + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+    // custom component from plugin repository origin with no implementation path
+    comp = mock( Component.class );
+    doReturn( true ).when( comp ).isCustomComponent();
+    doReturn( false ).when( comp ).isComponentStaticSystemOrigin();
+    doReturn( true ).when( comp ).isComponentPluginRepositoryOrigin();
+    doReturn( null ).when( comp ).getComponentImplementationPath();
+    doReturn( "comp/component.xml" ).when( comp ).getComponentSourcePath();
+    Assert.assertEquals(
+      CDE_AMD_REPO_COMPONENT_PATH + "comp/" + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+    // custom component from plugin repository origin
+    comp = mock( Component.class );
+    doReturn( true ).when( comp ).isCustomComponent();
+    doReturn( false ).when( comp ).isComponentStaticSystemOrigin();
+    doReturn( true ).when( comp ).isComponentPluginRepositoryOrigin();
+    doReturn( "comp/comp.js" ).when( comp ).getComponentImplementationPath();
+    Assert.assertEquals(
+      CDE_AMD_REPO_COMPONENT_PATH + "comp/comp",
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+    // custom component from other plugin static system origin
+    comp = mock( Component.class );
+    doReturn( true ).when( comp ).isCustomComponent();
+    doReturn( false ).when( comp ).isComponentStaticSystemOrigin();
+    doReturn( false ).when( comp ).isComponentPluginRepositoryOrigin();
+    doReturn( true ).when( comp ).isComponentOtherPluginStaticSystemOrigin();
+    doReturn( "sparkl" ).when( comp ).getPluginIdFromOrigin();
+    doReturn( "comp/comp.js" ).when( comp ).getComponentImplementationPath();
+    Assert.assertEquals(
+      "sparkl" + PLUGIN_COMPONENT_FOLDER + "CompComponent",
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+    // widget components are not supported
+    comp = mock( Component.class );
+    doReturn( true ).when( comp ).isWidgetComponent();
+    Assert.assertEquals( "", dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+  }
 
-    Map testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+  @Test
+  public void testWriteHeaders() {
+    DashboardWcdfDescriptor wcdf = Mockito.mock( DashboardWcdfDescriptor.class );
+    doReturn( "Title 1" ).when( wcdf ).getTitle();
+    doReturn( wcdf ).when( dash ).getWcdf();
+    Assert.assertEquals(
+      MessageFormat.format( TITLE, dash.getWcdf().getTitle() ) + NEWLINE
+        + MessageFormat.format( SCRIPT, dashboardWriterSpy.writeWebcontext( "cdf", true ) ),
+      dashboardWriterSpy.writeHeaders( dash ) );
+  }
 
-    dashboardWriter.setComponentList( testComponentList );
+  @Test
+  public void testWriteWebContext() {
+    Assert.assertEquals(
+      MessageFormat.format( WEBCONTEXT, "cdf", "true" ),
+      dashboardWriterSpy.writeWebcontext( "cdf", true ) );
+  }
 
-    List<String> componentClassNames = Arrays.asList(
-        "Dashboard",
-        "Logger",
-        "$",
-        "_",
-        "moment",
-        "cdo",
-        "Utils",
-        "TestComponent1",
-        "TestComponent2",
-        "TestComponent3" );
-    List<String> cdfRequirePaths = Arrays.asList(
-        "cdf/Dashboard.Blueprint",
-        "cdf/Logger",
-        "cdf/lib/jquery",
-        "amd!cdf/lib/underscore",
-        "cdf/lib/moment",
-        "cdf/lib/CCC/cdo",
-        "cdf/dashboard/Utils",
-        "cdf/components/TestComponent1",
-        "cdf/components/TestComponent2",
-        "cdf/components/TestComponent3" );
+  @Test
+  public void testWriteContent() {
+    // layout
+    final String layout = "<div id='content'></div>";
+    //component modules
+    Map<String, String> componentModules = new LinkedHashMap();
+    // components sourcecode
+    final String components = "var comp = new CompComponent();";
+    componentModules.put( "comp", "comp/CompComponent" );
 
-    String out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false, CONTEXT_CONFIGURATION );
+    doReturn( "TestResourcePath1" ).when( context ).replaceTokensAndAlias( anyString() );
+    doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
+
+    doReturn( "content" ).when( dashboardWriterSpy )
+      .wrapRequireDefinitions( resources, componentModules, components, context );
+
+    Assert.assertEquals(
+      layout + NEWLINE
+        + "<script language=\"javascript\" type=\"text/javascript\">" + NEWLINE
+        + "content" + NEWLINE
+        + "</script>" + NEWLINE,
+      dashboardWriterSpy.writeContent( resources, layout, componentModules, components, context ) );
+  }
+
+  @Test
+  public void testWrapRequireDefinitions() {
+
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
+
+    doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
+    doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
+
+    Map<String, String> testComponentModules = new LinkedHashMap<String, String>();
+    testComponentModules.put( "TestComponent1", "cdf/components/TestComponent1" );
+    testComponentModules.put( "TestComponent2", "cdf/components/TestComponent2" );
+
+    StringBuilder out = new StringBuilder();
+    doReturn( testComponentModules ).when( dashboardWriterSpy )
+      .writeFileResourcesRequireJSPathConfig( out, testResources, context );
+
+    ArrayList<String> moduleIds = new ArrayList<String>();
+    ArrayList<String> moduleClassNames = new ArrayList<String>();
+
+    dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
+    moduleIds.add( "cdf/components/TestComponent1" );
+    moduleIds.add( "cdf/components/TestComponent2" );
+    moduleIds.add( "cde/resources/jsFileRsrc1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleClassNames.add( "TestComponent1" );
+    moduleClassNames.add( "TestComponent2" );
+    moduleClassNames.add( "jsFileRsrc1" );
+
+    doReturn( CONTEXT_CONFIGURATION ).when( options ).getContextConfiguration();
+    doReturn( false ).when( options ).isDebug();
+    doReturn( options ).when( context ).getOptions();
+
+    final String content = "dashboard.addComponent(new TestComponent1({test: 1}));";
 
     StringBuilder dashboardResult = new StringBuilder();
 
     dashboardResult
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
-      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
-
-    Assert.assertEquals( dashboardResult.toString(), out );
-
-    // test with additional requireJS configurations for JS external resource
-
-    testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
-
-    dashboardWriter.setComponentList( testComponentList );
-
-    dashboardWriter.addRequireJsResource( "cde/resources/TestResource1", "/TestResourcePath1" );
-
-    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false, CONTEXT_CONFIGURATION );
-
-    dashboardResult.setLength( 0 );
-
-    componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3",
-      "TestResource1" );
-    cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3",
-      "cde/resources/TestResource1" );
-
-    dashboardResult
-      .append(
-        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
-      .append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
-      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
+      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
+        StringUtils.join( moduleClassNames, ", " ) ) ).append( NEWLINE )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) )
+      .append( "jsCodeRsrc1" ).append( NEWLINE )
+      .append( content ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
+      .append( REQUIRE_STOP );
 
-    Assert.assertEquals( dashboardResult.toString(), out );
+    Assert.assertEquals(
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
 
-    // test with empty alias
-
-    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", true, CONTEXT_CONFIGURATION );
-
+    // Debug Mode set's window.dashboard
+    doReturn( true ).when( options ).isDebug();
     dashboardResult.setLength( 0 );
-
     dashboardResult
-      .append(
-        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
-      .append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
+      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
+      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
       .append( REQUIRE_CONFIG ).append( NEWLINE )
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, "fakeLayout" ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
-
-    Assert.assertEquals( dashboardResult.toString(), out );
-
-    // test with additional JS snippet
-
-    StringBuffer jsCodeSnippet = new StringBuffer( "(function(){return;})()" );
-
-    doReturn( jsCodeSnippet ).when( dashboardWriterSpy ).getJsCodeSnippets();
-
-    out = dashboardWriterSpy.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false, CONTEXT_CONFIGURATION );
-
-    componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestResource1" );
-    cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cde/resources/TestResource1" );
-
-    dashboardResult.setLength( 0 );
-
-    dashboardResult
-      .append(
-        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
+      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
+        StringUtils.join( moduleClassNames, ", " ) ) )
       .append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
-      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
-        jsCodeSnippet.toString() + NEWLINE + "fakeContent" ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
+      .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) )
+      .append( "jsCodeRsrc1" ).append( NEWLINE )
+      .append( content ).append( NEWLINE )
+      .append( DASHBOARD_INIT )
+      .append( REQUIRE_STOP );
+    Assert.assertEquals(
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+  }
 
-    Assert.assertEquals( dashboardResult.toString(), out );
+  @Test
+  public void testDashboardType() {
+    CdfRunJsDashboardWriter dashboardWriter =
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT );
+    assertEquals( dashboardWriter.getDashboardModule().getId(), "cdf/Dashboard.Blueprint" );
+    dashboardWriter =
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP );
+    assertEquals( dashboardWriter.getDashboardModule().getId(), "cdf/Dashboard.Bootstrap" );
+    dashboardWriter =
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.MOBILE );
+    assertEquals( dashboardWriter.getDashboardModule().getId(), "cdf/Dashboard.Mobile" );
+    dashboardWriter =
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.CLEAN );
+    assertEquals( dashboardWriter.getDashboardModule().getId(), "cdf/Dashboard.Clean" );
+  }
 
-    // test with additional JS and CSS external file using amd! and css! requireJS loader plugins
+  @Test
+  public void testWriteRequireJsExecutionFunction() {
+    StringBuilder out = new StringBuilder();
+    ArrayList<String> moduleIds = new ArrayList<String>();
+    ArrayList<String> moduleClassNames = new ArrayList<String>();
+    moduleIds.add( "cdf/components/TestComponent1" );
+    moduleIds.add( "cde/resources/jsFileRsrc1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleClassNames.add( "TestComponent1" );
+    moduleClassNames.add( "jsFileRsrc1" );
+    moduleClassNames.add( "" );
 
-    testComponentList = new LinkedHashMap<String, String>();
-    testComponentList.put( "TestComponent1", "cdf/components/TestComponent1" );
-    testComponentList.put( "TestComponent2", "cdf/components/TestComponent2" );
-    testComponentList.put( "TestComponent3", "cdf/components/TestComponent3" );
+    dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
-    dashboardWriter.setComponentList( testComponentList );
+    Assert.assertEquals(
+      MessageFormat.format( REQUIRE_START,
+        "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
+        "TestComponent1, jsFileRsrc1" ) + NEWLINE,
+      out.toString() );
+  }
 
-    dashboardWriter.addRequireCssResource( "css!cde/resources/TestResourceCSS", "/TestResourceCSSPath" );
+  @Test
+  public void testGetDashboardModule() {
+    doReturn( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ).when( dashboardWriterSpy ).getType();
+    Assert.assertEquals( AmdModule.DASHBOARD_BLUEPRINT, dashboardWriterSpy.getDashboardModule() );
+    doReturn( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP ).when( dashboardWriterSpy ).getType();
+    Assert.assertEquals( AmdModule.DASHBOARD_BOOTSTRAP, dashboardWriterSpy.getDashboardModule() );
+    doReturn( DashboardWcdfDescriptor.DashboardRendererType.MOBILE ).when( dashboardWriterSpy ).getType();
+    Assert.assertEquals( AmdModule.DASHBOARD_MOBILE, dashboardWriterSpy.getDashboardModule() );
+    doReturn( DashboardWcdfDescriptor.DashboardRendererType.CLEAN ).when( dashboardWriterSpy ).getType();
+    Assert.assertEquals( AmdModule.DASHBOARD_CLEAN, dashboardWriterSpy.getDashboardModule() );
+  }
+  @Test
+  public void testWriteFileResourcesRequireJSPathConfig() {
+    StringBuilder out = new StringBuilder();
+    // resources
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    // unnamed file resource
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "a/path/../file2.js", "jsFileRsrc2" );
+    // file resource not normalized
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc3", "a/path/../file3.js", "jsFileRsrc3" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
 
-    //testing cases which may use a full url as a resource
-    dashboardWriter
-      .addRequireCssResource( "css!cde/resources/TestResourceCSSFullUrl", "http://TestResourceCSSFullUrl" );
-    dashboardWriter.addRequireJsResource( "cde/resources/TestResourceJSFullUrl", "http://TestResourceJSFullUrl" );
+    // context
+    doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
+    doReturn( "a/path/../file2.js" ).when( context ).replaceTokensAndAlias( "a/path/../file2.js" );
+    doReturn( "a/path/../file3.js" ).when( context ).replaceTokensAndAlias( "a/path/../file3.js" );
+    doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
+    doReturn( "cssFileRsrcPath2.css" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath2.css" );
 
-    out = dashboardWriter.wrapRequireModuleDefinitions( "fakeContent", "fakeLayout", false, CONTEXT_CONFIGURATION );
+    Map<String, String> resourceModules =
+      dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
 
-    dashboardResult.setLength( 0 );
+    assertEquals(
+      "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" + NEWLINE
+        + "requireCfg['paths']['cde/resources/a/file2'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/a/file2';" + NEWLINE
+        + "requireCfg['paths']['cde/resources/jsFileRsrc3'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/a/file3';" + NEWLINE
+        + "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" + NEWLINE
+        + "requireCfg['paths']['cde/resources/cssFileRsrc2'] = CONTEXT_PATH + "
+        + "'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath2';" + NEWLINE
+        + REQUIRE_CONFIG + NEWLINE,
+      out.toString() );
 
-    componentClassNames = Arrays.asList(
-      "Dashboard",
-      "Logger",
-      "$",
-      "_",
-      "moment",
-      "cdo",
-      "Utils",
-      "TestComponent1",
-      "TestComponent2",
-      "TestComponent3",
-      "TestResource1",
-      "TestResourceJSFullUrl" );
-    cdfRequirePaths = Arrays.asList(
-      "cdf/Dashboard.Blueprint",
-      "cdf/Logger",
-      "cdf/lib/jquery",
-      "amd!cdf/lib/underscore",
-      "cdf/lib/moment",
-      "cdf/lib/CCC/cdo",
-      "cdf/dashboard/Utils",
-      "cdf/components/TestComponent1",
-      "cdf/components/TestComponent2",
-      "cdf/components/TestComponent3",
-      "cde/resources/TestResource1",
-      "cde/resources/TestResourceJSFullUrl",
-      "css!cde/resources/TestResourceCSS",
-      "css!cde/resources/TestResourceCSSFullUrl" );
+    Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
+    expectedResourceModules.put( "cde/resources/jsFileRsrc1", "jsFileRsrc1" );
+    expectedResourceModules.put( "cde/resources/a/file2", "" );
+    expectedResourceModules.put( "cde/resources/jsFileRsrc3", "jsFileRsrc3" );
+    expectedResourceModules.put( "css!cde/resources/cssFileRsrc1", "" );
+    expectedResourceModules.put( "css!cde/resources/cssFileRsrc2", "" );
 
-    dashboardResult
-      .append(
-        "requireCfg['paths']['cde/resources/TestResource1'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourcePath1';" )
-      .append( NEWLINE )
-      .append( "requireCfg['paths']['cde/resources/TestResourceJSFullUrl'] = 'http://TestResourceJSFullUrl'" ).append(
-      NEWLINE )
-      // plugin css! should have been stripped from module id
-      .append(
-        "requireCfg['paths']['cde/resources/TestResourceCSS'] = CONTEXT_PATH + "
-          + "'plugin/pentaho-cdf-dd/api/resources/TestResourceCSSPath';" ).append( NEWLINE )
-      .append(
-        "requireCfg['paths']['cde/resources/TestResourceCSSFullUrl'] = 'http://TestResourceCSSFullUrl'" )
-      .append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
-      // Output module paths and module class names
-      .append( MessageFormat.format( DEFINE_START,
-        StringUtils.join( cdfRequirePaths, "', '" ),
-        StringUtils.join( componentClassNames, ", " ) ) )
-      .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START, CONTEXT_CONFIGURATION ) )
-      .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT, "fakeLayout" ) )
-      .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
-      .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "fakeContent" ) )
-      .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
-      .append( DEFINE_STOP );
+    assertEquals( expectedResourceModules, resourceModules );
+  }
 
-    Assert.assertEquals( dashboardResult.toString(), out );
+  @Test
+  public void testGetJsModuleClassNames() {
+    // resources
+    ResourceMap testResources = new ResourceMap();
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, /*name*/"", "jsFileRsrcPath2", "jsFileRsrc2" );
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
+
+    ArrayList<String> expectedClassNames = new ArrayList<String>();
+    expectedClassNames.add( "jsFileRsrc1" );
+
+    Assert.assertEquals( expectedClassNames,
+      dashboardWriterSpy.getJsModuleClassNames( testResources ) );
   }
 }
