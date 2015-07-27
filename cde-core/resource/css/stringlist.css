@@ -86,7 +86,7 @@ div.popup .popup-text-input:focus {
 
 .popup-list-body {
   position: relative;
-  height: 290px;
+  height: 316px;
   padding-right: 20px;
   overflow-y: auto;
 }
