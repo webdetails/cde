@@ -5,7 +5,7 @@
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Column Headers</Description>
 	<Tooltip>The table column header</Tooltip>
-	<InputType>Array</InputType>
+	<InputType>ColHeadersArray</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>
 	<Version>1.0</Version>
