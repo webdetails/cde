@@ -6,7 +6,7 @@
 	<Description>Sortable Column</Description>
 	<Tooltip>Is the column sortable? Example: [true,false]</Tooltip>
 	<Advanced>true</Advanced>
-	<InputType>Array</InputType>
+	<InputType>ColSortableArray</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>
 	<Version>1.0</Version>

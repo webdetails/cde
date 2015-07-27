@@ -322,7 +322,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     CDFDDUtils.movePopupButtons(popupObj);
 
 
-    popupObj.addClass(myself.cssPrefix + 'Popup');
+    popupObj.addClass(myself.cssPrefix + 'Popup array-list-popup');
 
     myself.onPopupLoad();
 
@@ -339,6 +339,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }
 
     myself.dragAndDrop();
+    myself.handleOverflow();
 
     //Focus on the first available input field
     $('.popup-text-input:first').focus();
@@ -818,8 +819,8 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
  */
 var ArrayRenderer = ValuesArrayRenderer.extend({
 
+  popupTitle: 'String Array',
   multiDimensionArray: false,
-
   cssPrefix: "StringArray",
 
   constructor: function(tableManager) {
@@ -828,6 +829,22 @@ var ArrayRenderer = ValuesArrayRenderer.extend({
     this.logger.debug("Creating new ArrayRenderer");
   }
 
+});
+
+var ColHeadersArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Headers'
+});
+
+var ColFormatsArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Formats'
+});
+
+var ColWidthsArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Widths'
+});
+
+var ColSortableArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Sortable Columns'
 });
 
 var ColTypesArrayRender = ArrayRenderer.extend({
@@ -846,8 +863,7 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 
 var IndexArrayRenderer = ArrayRenderer.extend({
   autocomplete: false,
-  popupTitle: 'Index',
-  argTitle: 'Index'
+  popupTitle: 'Output Options'
 });
 
 //arg, value, no param button, //TODO: own css
@@ -863,7 +879,7 @@ var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
 
 //used by ExtraOptions
 var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
-  popupTitle: 'Cache Keys',
+  popupTitle: 'Options',
   argTitle: 'Option'
 });
 
