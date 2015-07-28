@@ -1,493 +1,449 @@
-
-.StringListContainer,
-.GenericSelectContainer,
-.StringArrayContainer,
-.ParameterListContainer {
-  height:300px;
-  background-color: #eaedee;
+div.popup .popup-body-container.popup-list-body-container {
+  background-color: #F5F6F8;
+  padding: 20px 0 20px 20px;
 }
 
-.StringList, .StringArray, .ParameterList, .GenericSelect {
-  height: 260px;
+.popup-list-body.overflow-container {
+  padding-right: 5px;
+}
+
+.popup-body-header {
+  margin-right: 20px;
+}
+
+.popup-list-buttons {
+  margin-bottom: 20px;
+}
+
+.popup-list-body-container.popup-remove-mode .add-button-container,
+.popup-list-body-container.popup-add-mode .remove-selection-button-container {
+  display: none;
+}
+
+.remove-selection-button-container {
+  position: relative;
+  box-sizing: border-box;
+  padding-right: 95px;
+}
+
+div.popup .popup-list-buttons button {
+  margin: 0;
+  padding: 0;
+}
+
+div.popup .remove-selection-button-container button {
+  color: #AF0E1A;
+  background-color: #DF9FA3;
+}
+
+div.popup .remove-selection-button-container button:hover, div.popup .remove-selection-button-container button:active {
+  color: #FFFFFF;
+  background-color: #AF0E1A;
+}
+
+div.popup .remove-selection-button-container button:active {
+  box-shadow: 0 3px 5px 0 #46060A inset;
+}
+
+div.popup button.popup-cancel-selection {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+}
+
+div.popup button.popup-add-row-button, div.popup button.popup-remove-selection {
+  width: 100%;
+}
+
+.popup-text-input {
+  box-sizing: border-box;
+
+  height: 24px;
+  width: 100%;
+
+  margin: 0;
+  padding: 0 0 0 10px;
+  border: 1px solid #FFFFFF;
+}
+
+.popup-text-div {
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  height: 24px;
+  padding: 0 10px;
+  cursor: pointer;
+  border: 1px dashed #F5F6F8;
+}
+
+div.popup .popup-text-input:focus {
+  border: 1px Solid #005CA7;
+}
+
+.single-dimension-row .popup-text-input {
+  border: none;
+}
+
+.popup-list-body {
+  position: relative;
+  height: 316px;
+  padding-right: 20px;
   overflow-y: auto;
-  float:left;
-  position:relative;
-  top:15px;
-  left:10px;
 }
 
-.GenericSelect {
-  width:415px;
+div.StringArrayPopup {
+  width: 500px;
+  min-width: 500px;
 }
 
-.StringList {
-  width:608px;
+div.StringListPopup {
+  width: 700px;
+  min-width: 700px;
 }
 
-.ParameterList {
-  width:778px;
+div.ParameterListPopup {
+  width: 727px;
+  min-width: 727px;
 }
 
-.ParameterList td {
-  text-align: center;
+.popup-list-row, .popup-sortable-holder, .popup-list-row-label, div.ui-sortable-helper {
+  position: relative;
+  background-color: #F5F6F8;
+  border: 1px solid #F5F6F8;
+
+  padding-left: 24px;
+  padding-right: 52px;
+}
+
+.popup-list-row, .popup-sortable-holder, div.ui-sortable-helper {
+  height: 24px;
+}
+
+.popup-list-row.popup-drag-hover {
+  border: 1px Solid #005CA7;
+}
+
+.popup-sortable-holder {
+  border: 1px dashed #0072CE;
+}
+
+/** Remove Row Button */
+.popup-remove-row-select {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 24px;
+  height: 24px;
+
+  border: 1px solid #EAEDEE;
+  background: #EAEDEE url("../images/popups/close.svg") 0 0;
+}
+
+.popup-remove-hover .popup-remove-row-select, .popup-remove-selected .popup-remove-row-select {
+  cursor: pointer;
+  border: 1px solid #AF0E1A;
+  background: #AF0E1A url("../images/popups/close.svg") -22px 0;
+}
+
+.popup-list-row.popup-remove-hover .popup-text-input,
+.popup-list-row.popup-remove-selected .popup-text-input {
+  color: #AF0E1A;
+}
+
+.popup-list-row.popup-remove-hover .popup-text-input {
+  border: 1px solid #F9ECED;
+  background-color: #F9ECED;
+}
+
+.popup-list-row.popup-remove-selected .popup-text-input {
+  border: 1px solid #DF9FA3;
+  background-color: #DF9FA3;
+}
+
+/**
+ * Drag Row Icon
+ */
+.popup-drag-icon, .popup-drag-icon .drag-icon-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 24px;
+}
+
+.popup-drag-icon {
+  background-color: #FFFFFF;
+}
+
+.popup-drag-icon span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  margin: 2px 10px 2px 20px;
+  background: url("../images/drag-icon.svg") -20px 0;
+}
+
+.popup-drag-icon:hover {
+  background-color: #0072CE;
+}
+
+.popup-remove-hover .popup-drag-icon, .popup-remove-selected .popup-drag-icon {
+  display: none;
+}
+
+div.ui-sortable-helper {
+  border: 1px solid #005CA7;
+}
+
+div.ui-sortable-helper .popup-drag-icon {
+  background-color: #005CA7;
+}
+
+div.ui-sortable .popup-drag-icon {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+div.ui-sortable-helper, div.ui-sortable:active .popup-drag-icon {
+  cursor: move !important; /* fallback if grab cursor is unsupported */
+  cursor: grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: -webkit-grabbing !important;
+}
+
+div.ui-sortable-helper .popup-drag-icon:hover span, .popup-drag-icon:hover span,
+div.ui-sortable-helper .popup-drag-icon span {
+  background-position: 0 0;
+}
+
+/** End of Drag Icon */
+
+.popup-arg-label, .popup-arg-container, .popup-value-label, .popup-value-container {
+  box-sizing: border-box;
+  float: left;
+}
+
+.popup-arg-label, .popup-arg-container {
+  width: 40%;
+}
+
+.typed-label .popup-label {
+  float: left;
+  width: 150px;
+}
+
+.typed-row .popup-arg-container, .typed-row .popup-value-container,
+.typed-row .popup-input-container, .typed-row .popup-checkbox-container {
+  float: left;
+  background: #FFFFFF;
+  height: 24px;
+  margin-right: 2px;
+}
+
+.typed-row .popup-arg-container, .typed-row .popup-value-container {
+  width: 150px;
+}
+
+.typed-row .popup-checkbox-container {
+  width: 100px;
+}
+
+.single-dimension-row .popup-arg-container {
+  width: 100%;
+}
+
+.popup-value-label, .popup-value-container {
+  width: 60%;
+}
+
+.multi-dimension-row .popup-value-container {
+  padding-left: 1px;
 }
 
 
-div.jqiStringList, div.jqiStringArray, div.jqiParameterList, div.jqiGenericSelect { 
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	position: absolute; 
-	background-color: #ffffff; 
-	font-size: 11px; 
-	text-align: left; 
-	border: solid 1px #eeeeee;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	padding: 7px;
+
+.popup-remove-hover .popup-value-container, .popup-list-row.popup-remove-hover {
+  background-color: #F9ECED;
+}
+
+.popup-remove-selected .popup-value-container, .popup-list-row.popup-remove-selected {
+  background-color: #DF9FA3;
+}
+
+div.jqiStringList, div.jqiStringArray, div.jqiParameterList, div.jqiGenericSelect {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  position: absolute;
+  background-color: #ffffff;
+  font-size: 11px;
+  text-align: left;
+  border: solid 1px #eeeeee;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  padding: 7px;
 }
 
 div.jqiGenericSelect {
-	width: 440px;
+  width: 440px;
 }
+
 div.jqiStringList {
-	width: 640px;
+  width: 640px;
 }
 
-div.jqiStringArray{ 
-	width: 260px; 
+div.jqiStringArray {
+  width: 260px;
 }
+
 div.jqiParameterList {
-	width: 800px;
+  width: 800px;
 }
 
-.StringListAddButton, .StringArrayAddButton, .ParameterListAddButton, .GenericSelectAddButton {
-	padding: 3px 7px;
-	background-color: #eaedee;
-	border: solid 2px #12a2d8;
-	color: #999;
-	font-size: 12px;
-	position: absolute;
-	bottom: 33px;
-	right: 9px;
-	width: 40px;
-}
-
-.StringListAddButton:hover, .StringArrayAddButton:hover, .ParameterListAddButton:hover, .GenericSelectAddButton:hover {
-	background-color: #12a2d8; 
-	color: #333; 
-}
-
-
-.StringListText , .StringArrayText, .ParameterListText, .GenericSelectText, .StringListValueDiv {
-	float:left;
-/*	width:100px;*/
-	position:relative;
-	font-size:9pt; 
-}
-
-.StringListValueDiv {
-
-  width: 250px;
-  height: 20px;
-  top:5px;
-
-  background-color: #F2F4F5;
-  border:1px solid #D3D5D6;
-
-}
-
-/* StringList: names */
-.GenericSelectArgs {
-	float:left;
-	width: 100px;
-}
-.StringListArgs {
-	float:left;
-	width: 200px;
-}
-.GenericSelectArgs .GenericSelectText {
-	width: 60px;
-}
-.StringListArgs .StringListText {
-	width: 160px!important;
-}
-/* rest */
-.GenericSelectValues {
-	width: 270px;
-	display:block;
-	float:left;
-}
-.StringListValues {
-	width: 370px;
-	display:block;
-	float:left;
-}
-
-/* StringList: values */
-.GenericSelectVal {
-	float: left;
-	width: 190px;
-}
-
-.StringListVal {
-	float: left;
-	width: 290px;
-}
-
-.StringListVal .StringListText{
-	float: left;
-	width: 250px!important;
-}
-
-.StringListParameter, .StringListRemove, .StringArrayParameter, .StringArrayRemove,
-.GenericSelectParameter, .GenericSelectRemove, .GenericSelectParameter, .GenericSelectRemove,
-.ParameterListParameter , .ParameterListRemove {
-	padding: 4px 10px;
-	background-color: #eaedee;
-	color: #333;
-	font-size: 12px;
-}
-
-.StringListRemove, .StringArrayRemove, .GenericSelectRemove, .GenericSelectRemove, .ParameterListRemove {
-  width: 12px;
-}
-
-.StringListParameterHolder, .StringArrayParameterHolder {
-  height: 37px;
-}
-
-/* String Array - Single Value Popup */
-
-.StringArrayContainer {
-	height: 320px;
-}
-
-.StringArray {
-	width:250px;
-	height: 280px;
-}
-
-.StringArrayParameterHolder {
-	position: relative;
-	width: 168px;
-	height: 24px;
-	padding-left: 12px;
-	padding-right: 50px;
-	margin-bottom: 2px;
-	background-color: #FFFFFF;
-	border: 1px solid #BBBBBB;
-}
-
-.popupSortableHolder {
-	width: 230px;
-	height: 24px;
-	margin-bottom: 2px;
-	border: 1px dashed #0072CE;
-}
-
-.StringArrayParameterHolder.StringArrayFocus {
-	border: 1px solid #000000;
-}
-
-.StringArrayParameterHolder .StringArrayRemove {
-	float: left;
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 0;
-	height: 24px;
-	border: none;
-	border-right: 1px solid #bbb;
-}
-
-.StringArrayParameterHolder .StringArrayText {
-	margin: 0;
-	border: none;
-	height: 24px;
-	padding-left: 10px;
-	border-right: solid 2px #eaedee;
-}
-
-.StringArrayParameterHolder:before {
-	height: 24px;
-	width: 100px;
-	border: dashed 1px blue;
-}
-
-.StringArrayParameterHolder .StringArrayText:focus {
-	border-right: solid 1px #eaedee;
-}
-
-.StringArrayParameterHolder .StringArrayDragIcon {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 50px;
-	height: 24px;
-}
-
-.StringArrayParameterHolder .StringArrayDragIcon:hover {
-	background-color: #0072CE;
-}
-
-.StringArrayParameterHolder.ui-sortable-helper .StringArrayDragIcon {
-	background-color: #005CA7;
-}
-
-.StringArrayParameterHolder .StringArrayDragIcon span {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 20px;
-	height: 20px;
-	margin: 2px 10px  2px 20px;
-	background-image: url("../images/drag-icon.svg");
-	background-position: -20px 0;
-}
-
-div.ui-sortable .StringArrayDragIcon {
-	cursor: move; /* fallback if grab cursor is unsupported */
-	cursor: grab;
-	cursor: -moz-grab;
-	cursor: -webkit-grab;
-}
-
-div.ui-sortable-helper,
-div.ui-sortable:active .StringArrayDragIcon {
-	cursor: move !important; /* fallback if grab cursor is unsupported */
-	cursor: grabbing !important;
-	cursor: -moz-grabbing !important;
-	cursor: -webkit-grabbing !important;
-}
-
-.StringArrayParameterHolder.ui-sortable-helper .StringArrayDragIcon span,
-.StringArrayParameterHolder .StringArrayDragIcon:hover span {
-	background-position: 0 0;
-}
-
-ul.StringListParameter li div, ul.GenericSelectParameter li div, ul.ParameterListParameter li div {
-	padding-left: 10px;
-	width: 100%;
-}
-
-.StringListTextLabel, .GenericArrayTextLabel, .StringArrayTextLabel {
-	float:left;
-	position:relative;
-	top:5px;
-	width:35px;
-	font-size: 10px;
-}
-
-.ParameterListTextLabel {
-	float:none;
-	font-size: 10px;
-}
-
-.ParameterList th {
-	text-align: center;
-}
-
-.StringArrayValues{
-	display:block;
-	float:left;
-	width:220px;
-}
-
-.ParameterListValues {
-	display:block;
-	float:left;
-	width:150px;
-}
-.ParameterListTypes {
-	display:block;
-	float:left;
-	width:220px;
-}
-
-.jqiStringListfade, .jqiGenericSelectfade, .jqiStringArrayfade{
-	position: absolute; 
-	background-color: #aaaaaa; 
+.jqiStringListfade, .jqiGenericSelectfade, .jqiStringArrayfade {
+  position: absolute;
+  background-color: #aaaaaa;
 }
 
 div.jqiStringList .jqiStringListcontainer,
 div.jqiGenericSelect .jqiGenericSelectcontainer,
 div.jqiStringArray .jqiStringArraycontainer,
 div.jqiParameterList .jqiParameterListcontainer {
-	font-weight: bold; 
+  font-weight: bold;
 }
 
 div.jqiStringList .jqiStringListclose,
 div.jqiGenericSelect .jqiGenericSelectclose,
 div.jqiStringArray .jqiStringArrayclose,
 div.jqiParameterList .jqiParameterListClose {
-	position: absolute;
-	top: 4px; right: -2px; 
-	width: 18px; 
-	cursor: default; 
-	color: #bbbbbb; 
-	font-weight: bold; 
+  position: absolute;
+  top: 4px;
+  right: -2px;
+  width: 18px;
+  cursor: default;
+  color: #bbbbbb;
+  font-weight: bold;
 }
 
 div.jqiStringList .jqiStringListmessage,
 div.jqiGenericSelect .jqiGenericSelectmessage,
 div.jqiStringArray .jqiStringArraymessage,
-div.jqiParameterList .jqiParameterListmessage{ 
-	padding: 10px; 
-	line-height: 20px; 
-	color: #444444; 
+div.jqiParameterList .jqiParameterListmessage {
+  padding: 10px;
+  line-height: 20px;
+  color: #444444;
 }
+
 div.jqiStringList .jqiStringListbuttons,
 div.jqiGenericSelect .jqiGenericSelectbuttons,
 div.jqiStringArray .jqiStringArraybuttons,
-div.jqiParameterList .jqiParameterListbuttons { 
-	text-align: right; 
-	padding: 5px 0 5px 0; 
-	border: solid 1px #eeeeee; 
-	background-color: #f4f4f4;
+div.jqiParameterList .jqiParameterListbuttons {
+  text-align: right;
+  padding: 5px 0 5px 0;
+  border: solid 1px #eeeeee;
+  background-color: #f4f4f4;
 }
 
 div.jqiStringList button,
 div.jqiGenericSelect button,
 div.jqiStringArray button,
-div.jqiParameterList button{ 
-	padding: 3px 10px; 
-	margin: 0 10px; 
-	background-color: #2F6073; 
-	border: solid 1px #f4f4f4; 
-	color: #ffffff; 
-	font-weight: bold; 
-	font-size: 12px; 
+div.jqiParameterList button {
+  padding: 3px 10px;
+  margin: 0 10px;
+  background-color: #2F6073;
+  border: solid 1px #f4f4f4;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 12px;
 }
+
 div.jqiStringList button:hover,
 div.jqiGenericSelect button:hover,
 div.jqiStringArray button:hover,
-div.jqiParameterList button:hover{ 
-	background-color: #728A8C;
+div.jqiParameterList button:hover {
+  background-color: #728A8C;
 }
 
 div.jqiStringList button.jqiStringListdefaultbutton,
 div.jqiGenericSelect .jqiGenericSelectdefaultbutton,
 div.jqiStringArray button.jqiStringArraydefaultbutton,
-div.jqiParameterList button.jqiParameterListdefaultbutton{ 
-	/*background-color: #8DC05B;*/
-	background-color: #BF5E26;
+div.jqiParameterList button.jqiParameterListdefaultbutton {
+  background-color: #BF5E26;
 }
 
 .jqiStringListwarning .jqiStringList .jqiStringListbuttons,
 .jqiGenericSelectwarning .jqiGenericSelect .jqiGenericSelectbuttons,
 .jqiStringArraywarning .jqiStringArray .jqiStringArraybuttons,
-.jqiParameterListwarning .jqiParameterList .jqiParameterListbuttons{ 
-	background-color: #BF5E26;
+.jqiParameterListwarning .jqiParameterList .jqiParameterListbuttons {
+  background-color: #BF5E26;
 }
-
-ul.StringListParameter,
-ul.GenericSelectParameter,
-ul.ParameterListParameter {
-	list-style-type: none;
-	cursor: default;  
-	border: 1px solid #d9dcdd;
-	height:200px;
-	position:relative;
-	left:5px;
-	overflow:auto;
-	width:248px;
-	background-color: #fcfcfc;
-	margin: 10px;
-	padding-left:0;
-}
-
-.StringListParameterContainer p,
-.GenericSelectParameterContainer p,
-.ParameterListParameterContainer p,  {
-	text-align: left;
-	position:relative;
-	left:5px;
-	top:5px;
-}
-
-ul.StringListParameter li,
-ul.GenericSelectParameter li,
-ul.ParameterListParameter li {
- list-style-type: none; 
- position:relative;
- left:5px;
- width:239px;
-}
-
-ul.StringListParameter li  div:hover,
-ul.StringListParameter li  div.selected,
-ul.GenericSelectParameter li div:hover,
-ul.ParameterListParameter li  div:hover {
-	background-color: #12a2d8;
-	color: #eee;
-}
-
 
 .jqiStringListParametersfade,
 .jqiGenericSelectParametersfade,
 .jqiParameterListParametersfade {
-	position: absolute; 
-	background-color: #aaaaaa; 
+  position: absolute;
+  background-color: #aaaaaa;
 }
 
 .jqiStringListParametersbox,
 .jqiGenericSelectParametersbox,
 .jqiParameterListParametersbox {
-	padding-top:50px;
+  padding-top: 50px;
 }
 
 div.jqiStringListParameters,
 div.jqiGenericSelectParameters,
-div.jqiParameterListParameters { 
-	width: 280px; 
-	height: 275px; 
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	position: absolute; 
-	background-color: #F0F0F0; 
-	font-size: 11px; 
-	text-align: left; 
-	border: solid 3px #B7B7B7;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
+div.jqiParameterListParameters {
+  width: 280px;
+  height: 275px;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  position: absolute;
+  background-color: #F0F0F0;
+  font-size: 11px;
+  text-align: left;
+  border: solid 3px #B7B7B7;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
 
 div.jqiStringListParameters .jqiStringListParameterscontainer,
 div.jqiGenericSelectParameters .jqiGenericSelectParameterscontainer,
-div.jqiParameterListParameters .jqiParameterListParameterscontainer { 
-	font-weight: bold; 
+div.jqiParameterListParameters .jqiParameterListParameterscontainer {
+  font-weight: bold;
 }
 
 div.jqiStringListParameters .jqiStringListParametersclose,
 div.jqiGenericSelectParameters .jqiGenericSelectParametersclose,
-div.jqiParameterListParameters .jqiParameterListParametersclose{ 
-	position: absolute;
-	top: 4px; right: -2px; 
-	width: 18px; 
-	cursor: default; 
-	color: #bbbbbb; 
-	font-weight: bold; 
+div.jqiParameterListParameters .jqiParameterListParametersclose {
+  position: absolute;
+  top: 4px;
+  right: -2px;
+  width: 18px;
+  cursor: default;
+  color: #bbbbbb;
+  font-weight: bold;
 }
 
 div.jqiStringListParameters .jqiStringListParametersmessage,
 div.jqiGenericSelectParameters .jqiGenericSelectParametersmessage,
-div.jqiParameterListParameters .jqiParameterListParametersmessage{ 
-	
-	color: #444444; 
+div.jqiParameterListParameters .jqiParameterListParametersmessage {
+  color: #444444;
 }
 
 div.jqiStringListParameters .jqiStringListParametersbuttons,
 div.jqiGenericSelectParameters .jqiGenericSelectParametersbuttons,
-div.jqiParameterListParameters .jqiParameterListParametersbuttons{ 
-	text-align: right; 
-	width:267px;
-	top:-10px;
+div.jqiParameterListParameters .jqiParameterListParametersbuttons {
+  text-align: right;
+  width: 267px;
+  top: -10px;
 }
 
 .jqiStringListParametersbuttons button,
 .jqiGenericSelectParametersbuttons button,
 .jqiParameterListParametersbuttons button {
-	font-size:11px;
+  font-size: 11px;
 }
-
-
-
-

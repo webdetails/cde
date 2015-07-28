@@ -91,43 +91,81 @@ var SynchronizeRequests = {
   },
 
   doGetJson: function(loadParams) {
+    var myself = this;
 
     $.getJSON(wd.cde.endpoints.getPluginUrl() + "SyncTemplates", loadParams, function(json) {
       try {
         if(json.status) {
 
-          templates = json.result;
+          var templates = json.result;
           var selectTemplate = undefined;
+
+          var templatesCount = 0;
           var myTemplatesCount = 0;
-          var _templates = '<h2 style="padding:10px; line-height: 20px;">Apply Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          var _myTemplates = '<h2 style="padding:10px; line-height: 20px;">Apply Custom Template</h2><hr><div class="templates"><a class="prev disabled"></a><div class="scrollable"><div id="thumbs" class="thumbs">';
-          for(v in templates) {
+          var _templates = '<div class="template-scroll">';
+          var _myTemplates = '<div class="template-scroll">';
+
+          for(var v in templates) {
             if(templates.hasOwnProperty(v)) {
-              if(templates[v].type == "default")
-                _templates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-              else if(templates[v].type == "custom") {
-                _myTemplates += '<div><img id="' + v + '" src="' + templates[v].img + '"/><p>' + templates[v].structure.layout.title + '</p></div>';
-                myTemplatesCount++;
+              var template = templates[v];
+              var title = templates[v].structure.layout.title;
+              var imgSource = templates[v].img;
+              var extraClass;
+
+              if(template.type == "default") {
+                extraClass = (++templatesCount)%3 === 0 ? 'last': '';
+                _templates += '<div class="popup-template-container ' + extraClass + '">\n' +
+                '  <span class="popup-label">' + title + '</span>\n' +
+                '  <div class="popup-template">\n' +
+                '    <img id="' + v + '" src="' + imgSource + '"/>\n' +
+                '  </div>\n' +
+                '</div>\n';
+              } else if(template.type == "custom") {
+                extraClass = (++myTemplatesCount)%3 === 0 ? 'last': '';
+                _myTemplates += '<div class="popup-template-container ' + extraClass + '">' +
+                '  <span class="popup-label">' + title + '</span>' +
+                '  <div class="popup-template">' +
+                '    <img id="' + v + '" src="' + imgSource + '"/>' +
+                '  </div>' +
+                '</div>';
               }
             }
           }
-          _templates += '</div></div><a class="next"></a></div>';
-          _myTemplates += '</div></div><a class="next"></a></div>';
+
+          var _templatesWrapper = '' +
+              '<div class="popup-header-container">\n' +
+              '  <div class="popup-title-container">Apply Template</div>\n' +
+              '</div>\n' +
+              '<div class="popup-body-container template-popup-container">\n' + _templates + '</div></div>';
+
+          var _myTemplatesWrapper = '' +
+              '<div class="popup-header-container">\n' +
+              '  <div class="popup-title-container">Apply Custom Template</div>\n' +
+              '</div>\n' +
+              '<div class="popup-body-container template-popup-container">\n' + _myTemplates + '</div></div>';
+
           var loaded = function() {
-            selectTemplate = undefined;
-            $("div.scrollable").scrollable({size: 3, items: '#thumbs', hoverClass: 'hover'});
-            $(function() {
-              $("div.scrollable:eq(0) div.thumbs div").bind('click', function() {
-                selectTemplate = templates[$(this).find("img").attr("id")];
-              });
+            var $popup = $(this);
+            $popup.addClass('template-popup');
+            CDFDDUtils.movePopupButtons($popup);
+
+            $('div.popup-template').click(function() {
+              var container = $(this);
+              $('div.popup-template').removeClass('template-selected');
+              container.addClass('template-selected');
+              selectTemplate = templates[container.find("img").attr("id")];
             });
+
+            $('div.popup-template-container').slice(-3).addClass('bottom'); //last 3 elements
           };
+
+
 
           var callback = function(v, m, f) {
             if(v == 1 && selectTemplate != undefined) {
               var overwriteComponents = selectTemplate.structure.components.rows.length != 0;
               var overwriteDatasources = selectTemplate.structure.datasources.rows.length != 0;
-              var promptPrefix = 'popupTemplate';
+              var promptPrefix = 'popup';
               var message = Dashboards.i18nSupport.prop('SynchronizeRequests.CONFIRMATION_LOAD_TEMPLATE') + '<br><br>';
 
               if(overwriteComponents && overwriteDatasources) {
@@ -140,8 +178,19 @@ var SynchronizeRequests = {
                 message += Dashboards.i18nSupport.prop('SynchronizeRequests.OVERWRITE_LAYOUT');
               }
 
+              message = '' +
+              '<div class="popup-header-container">\n' +
+              '  <div class="popup-title-container">Load Template</div>\n' +
+              '</div>\n' +
+              '<div class="popup-body-container layout-popup">\n' + message + '</div>';
+
               $.prompt(message, {
                 buttons: {Ok: true, Cancel: false}, prefix: promptPrefix,
+                loaded: function() {
+                  var $popup = $(this);
+                  $popup.addClass('settings-popup');
+                  CDFDDUtils.movePopupButtons($popup);
+                },
                 callback: function(v, m, f) {
                   if(v) {
                     if(!selectTemplate.structure.components.rows.length) {
@@ -159,42 +208,36 @@ var SynchronizeRequests = {
                   }
                 }
               });
-
-              $('#' + promptPrefix).addClass('warningPopupTemplate');
             }
           };
 
           var promptTemplates = {
             loaded: loaded,
             buttons: myTemplatesCount > 0 ? {MyTemplates: 2, Ok: 1, Cancel: 0} : {Ok: 1, Cancel: 0},
-            opacity: 0.2,
-            prefix: 'popupTemplate',
+            top: "40px",
+            prefix: 'popup',
             callback: callback,
             submit: function(v, m, f) {
-              if(v != 2) {
-                return true;
-              }
+              if(v != 2) return true;
               $.prompt.close();
-              $.prompt(_myTemplates, promptMyTemplates, {prefix: "popupTemplate"});
+              $.prompt(_myTemplatesWrapper, promptMyTemplates, {prefix: "popup"});
             }
           };
 
           var promptMyTemplates = {
             loaded: loaded,
             buttons: {Back: 2, Ok: 1, Cancel: 0},
-            opacity: 0.2,
-            prefix: 'popupTemplate',
+            top: "40px",
+            prefix: 'popup',
             callback: callback,
             submit: function(v, m, f) {
-              if(v != 2) {
-                return true;
-              }
+              if(v != 2) return true;
               $.prompt.close();
-              $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+              $.prompt(_templatesWrapper, promptTemplates, {prefix: "popup"});
             }
           };
 
-          $.prompt(_templates, promptTemplates, {prefix: "popupTemplate"});
+          $.prompt(_templatesWrapper, promptTemplates, {prefix: "popup"});
         } else {
           throw json.result;
         }
@@ -253,14 +296,23 @@ var OlapWizardRequests = {
 
         myself.logger.info("Got correct response from getCubes: " + catalogs);
 
-        var _selector = $("#cdfddOlapCubeSelector");
-        _selector.append(
-                '<select id="cdfddOlapCatalogSelect" class="small" onchange="WizardManager.getWizardManager(\'' + myself.wizardId + '\').catalogSelected()"><option value="-"> Select catalog </option></select><br/>');
-        _selector.append(
-                '<select id="cdfddOlapCubeSelect" class="small" onchange="WizardManager.getWizardManager(\'' + myself.wizardId + '\').cubeSelected()" ><option value="-"> Select cube </option></select>');
+        var _catalogWrapper = $("#cdfddOlapCatalogSelector");
+        var _cubeWrapper = $("#cdfddOlapCubeSelector");
+        _catalogWrapper.append('' +
+        '<span class="popup-label">Catalog</span>\n' +
+        '<select id="cdfddOlapCatalogSelect" class="popup-select" onchange="WizardManager.getWizardManager(\'' + myself.wizardId + '\').catalogSelected()"></select>');
+        _cubeWrapper.append('' +
+        '<span class="popup-label">Cube</span>\n' +
+        '<select id="cdfddOlapCubeSelect" class="popup-select" onchange="WizardManager.getWizardManager(\'' + myself.wizardId + '\').cubeSelected()" disabled></select>');
+
+        var catalogSelect =  $("select#cdfddOlapCatalogSelect", _catalogWrapper);
+        var cubeSelect = $("select#cdfddOlapCubeSelect", _cubeWrapper);
+
+        CDFDDUtils.buildPopupSelect(catalogSelect, {});
+        CDFDDUtils.buildPopupSelect(cubeSelect, {});
 
         $.each(catalogs, function(i, catalog) {
-          $("select#cdfddOlapCatalogSelect", _selector).append("<option>" + catalog.name + "</option>");
+          $("select#cdfddOlapCatalogSelect", _catalogWrapper).append("<option>" + catalog.name + "</option>");
         });
 
       } else {
@@ -276,50 +328,105 @@ var OlapWizardRequests = {
 
         myself.logger.info("Got correct response from GetCubeStructure");
 
+        /* Dimensions */
         var dimensions = json.result.dimensions;
 
         var dimensionIdx = 0;
-        var dimensionTBody = $("#cdfddOlapDimensionSelector > tbody");
-        dimensionTBody.empty();
+        var dimensionSelect = $('#cdfddOlapDimensionSelector');
+        var dimensionHolder = $('<div id="prompt-dimensions-accordion" class="prompt-wizard-accordion"></div>');
+        $('#prompt-dimensions-accordion').remove();
+        dimensionSelect
+            .append(dimensionHolder);
+
         $.each(dimensions, function(i, dimension) {
           var hierarchies = dimension.hierarchies;
           $.each(hierarchies, function(j, hierarchy) {
-            var hierarchyId = "dimRow-" + (++dimensionIdx);
             var name = hierarchy.caption == undefined ? hierarchy.name : hierarchy.caption;
-            dimensionTBody.append("<tr id='" + hierarchyId + "'><td>" + name + "</td></tr>");
+            var hierarchyId = "dimRow-" + name;//+ (++dimensionIdx);
+
+
+            dimensionHolder.append('' +
+            '<div>\n' +
+            '  <h3 class="prompt-wizard-elements">' + name + '</h3>' +
+            '  <div id="' + hierarchyId + '"><ul></ul></div>\n' +
+            '</div>');
 
             var levels = hierarchy.levels;
+            var $hierarchyHolder = $('#' + hierarchyId + ' ul');
             $.each(levels, function(k, level) {
-              var levelId = "dimRow-" + (++dimensionIdx);
-              var name = level.caption == undefined ? level.name : level.caption;
-              dimensionTBody.append("<tr id='" + levelId + "' class='olapObject child-of-" + hierarchyId + "'><td class='draggableDimension'>" + name + "</td></tr>");
+              var levelId = "Dimension-" + (dimensionIdx++);
+              var levelName = level.caption == undefined ? level.name : level.caption;
+
+              $hierarchyHolder.append('<li id="' + levelId + '" class="draggableDimension olapObject prompt-wizard-elements">' + levelName + '</li>');
+
               level.hierarchy = hierarchy;
               level.catalog = selectedCatalog;
               level.cube = selectedCube;
               myself.addOlapObject(WizardOlapObjectManager.DIMENSION, level);
             });
           });
-
-
         });
-        dimensionTBody.parent().treeTable();
-        $("td.draggableDimension", dimensionTBody).draggable({helper: 'clone'});
 
-        // Measures
+        dimensionHolder.accordion({
+          header: 'h3',
+          active: false,
+          heightStyle: "content",
+          collapsible: true
+        });
+
+        $(".draggableDimension", dimensionHolder).draggable({helper: 'clone'});
+
+        $('.prompt-wizard-caption', dimensionSelect)
+            .removeClass('disabled')
+            .off()
+            .click(function() {
+              $(this).parent().toggleClass('collapsed');
+            });
+
+
+        /* Measures */
         var measures = json.result.measures;
 
         var measureIdx = 0;
-        var measureTBody = $("#cdfddOlapMeasureSelector > tbody");
-        measureTBody.empty();
+        var measureSelect = $('#cdfddOlapMeasureSelector');
+        var measuresHolder = $('<div id="prompt-measures-accordion" class="prompt-wizard-accordion"><div><ul></ul></div></div>');
+
+        $('#prompt-measures-accordion').remove();
+        measureSelect
+            .append(measuresHolder);
+
         $.each(measures, function(i, measure) {
-          var measureId = "levelRow-" + (++measureIdx);
+          var measureId = "Measure-" + (measureIdx++);
           var name = measure.caption == undefined ? measure.name : measure.caption;
-          measureTBody.append("<tr id='" + measureId + "' class='olapObject'><td class='draggableMeasure'>" + name + "</td></tr>");
+          measuresHolder.find('ul').append('<li id="' + measureId + '" class="draggableMeasure olapObject prompt-wizard-elements">' + name + '</li>');
           myself.addOlapObject(WizardOlapObjectManager.MEASURE, measure);
 
         });
-        measureTBody.parent().treeTable();
-        $("td.draggableMeasure", measureTBody).draggable({helper: 'clone', type: "Measure"});
+
+        $("li.draggableMeasure", measuresHolder).draggable({
+          helper: 'clone',
+          type: "Measure",
+
+          start: function(event, ui) {
+            var originalRow = $(this);
+            var dragObjElements = ui.helper;
+
+            originalRow.addClass('dragging-element');
+          },
+
+          stop: function(event, ui) {
+            var originalRow = $(this);
+
+            originalRow.removeClass('dragging-element');
+          }
+        });
+
+        $('.prompt-wizard-caption', measureSelect)
+            .removeClass('disabled')
+            .off()
+            .click(function() {
+              $(this).parent().toggleClass('collapsed');
+            });
 
         myself.getAvailableFilters();
       } else {

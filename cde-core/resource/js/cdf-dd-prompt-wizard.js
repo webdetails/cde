@@ -59,24 +59,24 @@ var PromptWizard = WizardManager.extend({
     return "";
   },
 
-  renderWizard: function() {
+  renderWizard: function () {
 
     $("#cdfdd-wizard-button-ok").removeAttr("disabled");
 
     var leftSectionContent = $('<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
-        '</div>');
+    '</div>');
 
     if(this.hasFunctions)
       leftSectionContent.append('<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
-          '	<tbody class="ui-widget-content">\n' +
-          '	</tbody>\n' +
-          '</table>');
+      '	<tbody class="ui-widget-content">\n' +
+      '	</tbody>\n' +
+      '</table>');
 
     if(this.hasParameters)
       leftSectionContent.append('<table id="prompt-wizard-parameters" class="">\n' +
-          '	<tbody class="ui-widget-content">\n' +
-          '	</tbody>\n' +
-          '</table>');
+      '	<tbody class="ui-widget-content">\n' +
+      '	</tbody>\n' +
+      '</table>');
 
     var centerSectionContent = '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
         '	<div class="span-18">\n' +
@@ -93,6 +93,7 @@ var PromptWizard = WizardManager.extend({
   },
 
   renderLeftPanel: function() {
+    var myself = this;
 
     //1. RENDER FUNCTIONS
     if(this.hasFunctions) {
@@ -101,7 +102,6 @@ var PromptWizard = WizardManager.extend({
       functionsTBody.empty();
       functionsTBody.append("<tr id='functions' class='ui-state-hover expanded'><td>Functions</td></tr>");
 
-      var myself = this;
       $.each(this.functions, function(i, _function) {
         var parentId = "function-" + _function.parent.replace(/ /g, "_").toLowerCase();
         if($("#" + parentId).length == 0)
@@ -127,7 +127,7 @@ var PromptWizard = WizardManager.extend({
       var parametersTBody = $("#prompt-wizard-parameters > tbody");
       parametersTBody.empty();
       parametersTBody.append("<tr id='parameters' class='ui-state-hover expanded'><td>Parameters</td></tr>");
-      var myself = this;
+
       var parameterIdx = 0;
       $.each(parameters, function(i, param) {
         if(myself.getPropertyValue("name") != param.properties[0].value) {
@@ -171,173 +171,9 @@ var PromptWizard = WizardManager.extend({
   }
 
 }, {
-
   WIZARD_RIGHT_SECTION: "cdfdd-wizard-prompt-right-section",
   WIZARD_LEFT_SECTION: "cdfdd-wizard-prompt-left-section"
 });
-
-
-var AcePromptWizard = PromptWizard.extend({
-
-  mode: 'none',
-  editor: null,
-  EDITOR_ID: 'wizardEditor',
-
-  renderWizard: function() {//TODO: refactor with PromptWizard
-
-    $("#cdfdd-wizard-button-ok").removeAttr("disabled");
-
-    var leftSectionContent = $('<div class="cdfdd-wizard-prompt-left-section span-5 last round">\n' +
-        '</div>');
-
-    if(this.hasFunctions)
-      leftSectionContent.append('<table id="prompt-wizard-functions" class="prompt-wizard-functions">\n' +
-          '	<tbody class="ui-widget-content">\n' +
-          '	</tbody>\n' +
-          '</table>');
-
-    if(this.hasParameters)
-      leftSectionContent.append('<table id="prompt-wizard-parameters" class="">\n' +
-          '	<tbody class="ui-widget-content">\n' +
-          '	</tbody>\n' +
-          '</table>');
-
-    var centerSectionContent = '<div class="cdfdd-wizard-prompt-center-section span-19 last round">\n' +
-        ' <div class="span-18">\n' +
-        '   <pre id="' + this.EDITOR_ID + '" style="position: relative;width: 750px;height: 400px;"> </pre>\n' +
-        ' </div>\n' +
-        '</div>';
-
-    $("#" + WizardManager.WIZARD_LEFT_SECTION).append(leftSectionContent);
-    $("#" + WizardManager.WIZARD_CENTER_SECTION).append(centerSectionContent);
-
-    $(".round", "#" + WizardManager.WIZARD_BODY).corner();
-    this.renderLeftPanel();
-  },
-
-  renderLeftPanel: function() {
-    if(this.hasFunctions) {
-      this.renderFunctions();
-    }
-
-    if(this.hasParameters) {
-      this.renderParameters();
-    }
-  },
-
-  renderFunctions: function() {
-    var functionsTBody = $("#prompt-wizard-functions > tbody");
-    functionsTBody.empty();
-    functionsTBody.append("<tr id='functions' class='ui-state-hover expanded'><td>Functions</td></tr>");
-
-    var myself = this;
-    $.each(this.functions, function(i, _function) {
-
-      if(_function != null) {
-        var parentId = "function-" + _function.parent.replace(/ /g, "_").toLowerCase();
-        if($("#" + parentId).length == 0)
-          functionsTBody.append("<tr id='" + parentId + "' class='child-of-functions prompt-wizard-elements small' ><td>" + _function.parent + "</td></tr>");
-
-        var jsFunction = $("'<td class='draggableLevel'>" + _function.name + "</td>'");
-        functionsTBody.append($("<tr id='" + _function.type + "' class='child-of-" + parentId + " prompt-wizard-elements small'></tr>").append(jsFunction));
-        jsFunction.click(function() {
-          myself.editor.insert(myself.getFunctionValue(_function));
-          return false;
-        });
-      }
-    });
-
-    functionsTBody.parent().treeTable();
-  },
-
-  renderParameters: function() {
-    var parameters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
-
-    var parametersTBody = $("#prompt-wizard-parameters > tbody");
-    parametersTBody.empty();
-    parametersTBody.append("<tr id='parameters' class='ui-state-hover expanded'><td>Parameters</td></tr>");
-    var myself = this;
-    var parameterIdx = 0;
-    var paramRows = {}
-    $.each(parameters, function(i, param) {
-      if(myself.getPropertyValue("name") != param.properties[0].value) {
-        var parameterId = "parmeter-" + (++parameterIdx);
-        var parentId = "parameter-" + param.properties[1].type.replace(/ /g, "_").toLowerCase();
-        if(!paramRows[parentId]) {
-          paramRows[parentId] = [$("<tr id='" + parentId + "' class='child-of-parameters prompt-wizard-elements small' ><td>" + param.properties[1].type + "</td></tr>")];
-        }
-        var parameter = $("<td>" + param.properties[0].value + "</td>");
-        paramRows[parentId].push($("<tr id='" + parameterId + "' class='child-of-" + parentId + " prompt-wizard-elements small'></tr>").append(parameter));
-        parameter.click(function() {
-          myself.editor.insert(myself.getParameterValue(param.properties));
-          return false
-        });
-      }
-    });
-    $.each(paramRows, function(i, row) {
-      $.each(row, function(i, param) {
-        parametersTBody.append(param);
-      });
-    });
-
-    parametersTBody.parent().treeTable();
-  },
-
-  postRenderWizard: function() {
-    this.editor = new CodeEditor();
-    this.editor.initEditor(this.EDITOR_ID);
-    this.editor.setMode(this.mode);
-    var content = this.invoker.getValue();
-    if (!content && this.queryTemplate) {
-      content = this.queryTemplate;
-    }
-    this.editor.setContents(content);
-  },
-
-  apply: function() {
-    var value = this.editor.getContents();
-    this.invoker.promptCallback(value);
-  }
-
-});
-
-
-var JavascriptWizard = AcePromptWizard.extend({
-
-  wizardId: "JAVASCRIPT_WIZARD",
-  title: "Javascript Wizard",
-  hasOlap: false,
-  mode: 'javascript',
-
-  constructor: function() {
-    this.base();
-    this.logger = new Logger("JavascriptWizard");
-    this.functions = WizardFunctionsManager.getWizardFunctions("JavascriptWizard").getFunctions();
-  },
-
-  getParameterValue: function(parameterProperties) {
-    return parameterProperties[0].value;
-  },
-
-  getFunctionValue: function(_function) {
-    return _function.value;
-  },
-
-  apply: function() {
-    var value = this.editor.getContents();
-
-    // set value. We need to add a space to prevent a string like function(){}
-    // to be interpreted by json as a function instead of a string
-    if(value && value.length != 0 && value.substr(value.length - 1, 1) != " ") {
-      value = value + " ";
-    }
-
-    this.invoker.promptCallback(value);
-  }
-
-}, {
-});
-PromptWizardManager.register(new JavascriptWizard());
 
 var MdxWizard = PromptWizard.extend({
 
@@ -381,11 +217,11 @@ var MdxWizard = PromptWizard.extend({
     this.base();
 
     $("." + PromptWizard.WIZARD_LEFT_SECTION).append('<table id="prompt-wizard-olap" class="prompt-wizard-olap">\n' +
-        '	<thead>\n' +
-        '	</thead>\n' +
-        '	<tbody class="ui-widget-content">\n' +
-        '	</tbody>\n' +
-        '</table>');
+    '	<thead>\n' +
+    '	</thead>\n' +
+    '	<tbody class="ui-widget-content">\n' +
+    '	</tbody>\n' +
+    '</table>');
 
     $(".cdfdd-wizard-buttons form").prepend('<input id="cdfdd-wizard-button-preview" type="button" onclick="PromptWizardManager.getWizard(\'' + this.wizardId + '\').buttonPreview()" value="Preview"></input>');
 
@@ -458,6 +294,200 @@ var MdxWizard = PromptWizard.extend({
 }, {
 });
 PromptWizardManager.register(new MdxWizard());
+
+var AcePromptWizard = PromptWizard.extend({
+
+  mode: 'none',
+  editor: null,
+  EDITOR_ID: 'wizardEditor',
+
+  renderWizard: function() {
+
+    $("#cdfdd-wizard-button-ok").removeAttr("disabled");
+    $('#wizardDialog').addClass('prompt-wizard-dialog');
+
+    var leftSectionContent = $('<div class="cdfdd-wizard-prompt-left-section last">\n' +
+    '</div>');
+
+    if(this.hasFunctions) {
+      leftSectionContent.append('' +
+        '<div id="prompt-wizard-functions" class="prompt-accordion-container collapsed">' +
+        '  <div class="prompt-wizard-caption">' +
+        '    <span>Functions</span>' +
+        '    <span id="prompt-functions-toggle" class="prompt-caption-more-less"></span>' +
+        '  </div>' +
+        '  <div id="prompt-functions-accordion" class="prompt-wizard-accordion"></div>' +
+        '</div>');
+
+    }
+
+    if(this.hasParameters) {
+      leftSectionContent.append('' +
+        '<div id="prompt-wizard-parameters" class="prompt-accordion-container collapsed">' +
+        '  <div class="prompt-wizard-caption">' +
+        '    <span>Parameters</span>' +
+        '    <span id="prompt-parameters-toggle" class="prompt-caption-more-less"></span>' +
+        '  </div>' +
+        '  <div id="prompt-parameters-accordion" class="prompt-wizard-accordion"></div>' +
+        '</div>');
+    }
+
+    var rightSectionContent = '<div class="cdfdd-wizard-prompt-right-section last">\n' +
+        '   <pre class="prompt-wizard-text-area" id="' + this.EDITOR_ID + '"></pre>\n' +
+        '</div>';
+
+    $("#" + WizardManager.WIZARD_LEFT_SECTION).append(leftSectionContent);
+    $("#" + WizardManager.WIZARD_RIGHT_SECTION).append(rightSectionContent);
+
+    this.renderLeftPanel();
+  },
+
+  renderLeftPanel: function() {
+    if(this.hasFunctions) {
+      this.renderFunctions();
+    }
+
+    if(this.hasParameters) {
+      this.renderParameters();
+    }
+  },
+
+  renderFunctions: function() {
+    var functionsHolder = $("#prompt-functions-accordion");
+    var myself = this;
+
+    $.each(this.functions, function(i, _function) {
+      if(_function != null) {
+        var parentId = "function-" + _function.parent.replace(/ /g, "_").toLowerCase();
+        if($("#" + parentId).length == 0) {
+          functionsHolder.append('' +
+            '<div>\n' +
+            '  <h3 class="prompt-wizard-elements">' + _function.parent + '</h3>' +
+            '  <div id="' + parentId + '"><ul></ul></div>\n' +
+            '</div>');
+        }
+
+        var jsFunction = $('<li id="' + _function.type + '" class="prompt-wizard-elements">' + _function.name + '</li>');
+        functionsHolder
+            .find('#' + parentId + ' ul')
+            .append(jsFunction);
+        jsFunction.click(function() {
+          myself.editor.insert(myself.getFunctionValue(_function));
+          return false;
+        });
+      }
+    });
+    functionsHolder.accordion({
+      header: 'h3',
+      active: false,
+      heightStyle: "content",
+      collapsible: true
+    });
+
+    $('.prompt-wizard-caption', $('#prompt-wizard-functions'))
+        .click(function() {
+          $(this).parent().toggleClass('collapsed');
+    });
+  },
+
+  renderParameters: function() {
+    var parameters = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+    var parametersHolder = $("#prompt-parameters-accordion");
+    var myself = this;
+
+    $.each(parameters, function(i, param) {
+      var name = param.properties[0].value;
+      var type = param.properties[1].type;
+
+      if(myself.getPropertyValue("name") != name) {
+        var parameterId = "parameter-" + name;
+        var parentId = "parameter-" + type.replace(/ /g, "_").toLowerCase();
+        if($("#" + parentId).length == 0) {
+          parametersHolder.append('' +
+            '<div>\n' +
+            '  <h3 class="prompt-wizard-elements">' + type + '</h3>' +
+            '  <div id="' + parentId + '"><ul></ul></div>\n' +
+            '</div>');
+        }
+        var parameter = $('<li id="' + parameterId + '" class="prompt-wizard-elements">' + name + '</li>');
+        parametersHolder
+            .find('#' + parentId + ' ul')
+            .append(parameter);
+
+        parameter.click(function() {
+          myself.editor.insert(myself.getParameterValue(param.properties));
+          return false
+        });
+      }
+    });
+
+    parametersHolder.accordion({
+      header: 'h3',
+      active: false,
+      heightStyle: "content",
+      collapsible: true
+    });
+
+    $('.prompt-wizard-caption', $('#prompt-wizard-parameters'))
+        .click(function() {
+          $(this).parent().toggleClass('collapsed');
+    });
+  },
+
+  postRenderWizard: function() {
+    this.editor = new CodeEditor();
+    this.editor.initEditor(this.EDITOR_ID);
+    this.editor.setMode(this.mode);
+    var content = this.invoker.getValue();
+    if (!content && this.queryTemplate) {
+      content = this.queryTemplate;
+    }
+    this.editor.setContents(content);
+  },
+
+  apply: function() {
+    var value = this.editor.getContents();
+    this.invoker.promptCallback(value);
+  }
+
+});
+
+var JavascriptWizard = AcePromptWizard.extend({
+
+  wizardId: "JAVASCRIPT_WIZARD",
+  title: "Javascript Wizard",
+  hasOlap: false,
+  mode: 'javascript',
+
+  constructor: function() {
+    this.base();
+    this.logger = new Logger("JavascriptWizard");
+    this.functions = WizardFunctionsManager.getWizardFunctions("JavascriptWizard").getFunctions();
+  },
+
+  getParameterValue: function(parameterProperties) {
+    return parameterProperties[0].value;
+  },
+
+  getFunctionValue: function(_function) {
+    return _function.value;
+  },
+
+  apply: function() {
+    var value = this.editor.getContents();
+
+    // set value. We need to add a space to prevent a string like function(){}
+    // to be interpreted by json as a function instead of a string
+    if(value && value.length != 0 && value.substr(value.length - 1, 1) != " ") {
+      value = value + " ";
+    }
+
+    this.invoker.promptCallback(value);
+  }
+
+}, {
+});
+PromptWizardManager.register(new JavascriptWizard());
 
 var CurrentMdxEditor = AcePromptWizard.extend({
   
@@ -549,9 +579,7 @@ var DefaultEditor = AcePromptWizard.extend({
 		}
 		
 	},{
-
 });
-
 PromptWizardManager.register(new DefaultEditor());
 
 var MqlEditor = AcePromptWizard.extend({ 
@@ -600,9 +628,7 @@ var MqlEditor = AcePromptWizard.extend({
 		}
 		
 	},{
-
 });
-
 PromptWizardManager.register(new MqlEditor());
 
 var ScriptableEditor = AcePromptWizard.extend({ 
@@ -648,7 +674,6 @@ var ScriptableEditor = AcePromptWizard.extend({
     }
 	},{
 });
-
 PromptWizardManager.register(new ScriptableEditor());
 
 var JsonScriptableEditor = ScriptableEditor.extend({
@@ -676,7 +701,6 @@ var JsonScriptableEditor = ScriptableEditor.extend({
   }
 }, {
 });
-
 PromptWizardManager.register(new JsonScriptableEditor());
 
 var XPathEditor = AcePromptWizard.extend({ 
@@ -702,8 +726,5 @@ var XPathEditor = AcePromptWizard.extend({
 		}
 		
 	},{
-
 });
-
 PromptWizardManager.register(new XPathEditor());
-
