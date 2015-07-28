@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>public</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue>"false"</DefaultValue>
+	<Description>Public</Description>
+	<Tooltip>Is this parameter public?</Tooltip>
+	<InputType>Boolean</InputType>
+	<OutputType>Boolean</OutputType>
+	<Order>91</Order>
+	<Advanced>false</Advanced>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>

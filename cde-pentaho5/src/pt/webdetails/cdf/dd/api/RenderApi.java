@@ -291,7 +291,8 @@ public class RenderApi {
   @Path( "/getDashboardParameters" )
   @Produces( MimeTypes.JSON )
   public String getDashboardParameters( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                              @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                                        @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                                        @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
                               @Context HttpServletRequest request ) throws IOException {
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
@@ -305,7 +306,7 @@ public class RenderApi {
     }
 
     try {
-      return getDashboardManager().getDashboardParameters( path, bypassCache );
+      return getDashboardManager().getDashboardParameters( path, bypassCache, all );
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard parameters: " + ex.getMessage();
       logger.error( msg, ex );

@@ -26,13 +26,14 @@ define([
     dashboard.init();
 
     dashboard.addParameter("param1", "");
+    dashboard.addParameter("param2", "");
 
     var dashboardComponent = new DashboardComponent({
       type: "DashboardComponent",
       name: "render_test",
       priority: 5,
       dashboardPath: "cde/test/dummyDashboard",
-      parameterMapping: [["param1", "dummyParam"]],
+      parameterMapping: [["param1", "dummyParam"], ["param2", "privateParam"]],
       executeAtStart: true,
       htmlObject: "sampleObject",
       listeners: []
@@ -60,13 +61,42 @@ define([
      */
     it("allows the correct use of parameter mapping", function(done) {
       var mapTest = "mappingTest";
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.success({
+          parameters: ["dummyParam"],
+          // split function to bypass i18n error
+          split: function(){return "";}
+        });
+      });
 
       dashboardComponent.once('cdf:postExecution', function() {
         dashboardComponent.requiredDashboard.once("dummyParam:fireChange", function() {
           expect(dashboardComponent.requiredDashboard.getParameterValue("dummyParam")).toEqual(mapTest);
-          done();  
+          done();
         });
         dashboard.fireChange("param1", mapTest);
+      });
+
+      dashboard.update(dashboardComponent);
+
+    });
+
+    /**
+     * ## The Dashboard Component # will not map private parameters
+     */
+    it("will not map private parameters", function(done) {
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.success({
+          parameters: ["dummyParam"],
+          // split function to bypass i18n error
+          split: function(){return "";}
+        });
+      });
+
+      dashboardComponent.once('cdf:postExecution', function() {
+        expect( dashboardComponent.registeredEvents["param1:fireChange"].length ).toEqual(1);
+        expect( dashboardComponent.registeredEvents["param2:fireChange"] ).not.toBeDefined();
+        done();
       });
 
       dashboard.update(dashboardComponent);

@@ -21,6 +21,10 @@ define([], function() {
       }
       // use the dash! requirejs loader plugin
       return "dash!" + path;
+    },
+
+    getDashboardParametersEndpoint: function() {
+      return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
     }
   };
 

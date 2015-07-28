@@ -13,6 +13,7 @@
 		<Model>
 			<Property>propertyDateValue</Property>
 			<Property>bookmarkable</Property>
+			<Property>public</Property>
 		</Model>
 	</Contents>
 </DesignerComponent>
