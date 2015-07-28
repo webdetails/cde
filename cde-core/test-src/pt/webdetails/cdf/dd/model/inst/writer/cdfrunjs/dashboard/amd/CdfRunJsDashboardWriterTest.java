@@ -376,8 +376,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( REQUIRE_STOP );
 
     Assert.assertEquals(
-      dashboardResult.toString(),
-      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+        dashboardResult.toString(),
+        dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
 
     // Debug Mode set's window.dashboard
     doReturn( true ).when( options ).isDebug();
@@ -458,12 +458,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
     // absolute file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4", "http://dummy/jsFileRsrcPath4.js",
-      "jsFileRsrc4" );
+        "jsFileRsrc4" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
     testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc3", "http://dummy/cssFileRsrcPath3.css",
-      "cssFileRsrc3" );
+        "cssFileRsrc3" );
 
     // context
     doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
@@ -483,8 +483,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
     assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4'\n"
-      + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3'\n"
-      + "require.config(requireCfg);", out.toString().trim() );
+        + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3'\n"
+        + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
     expectedResourceModules.put( "cde/resources/jsFileRsrcPath1", "jsFileRsrc1" );
