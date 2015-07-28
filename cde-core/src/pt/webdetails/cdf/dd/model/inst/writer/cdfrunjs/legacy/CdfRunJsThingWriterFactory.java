@@ -25,7 +25,7 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsDateParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsDateParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsExpressionParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsParameterComponentWriter;
