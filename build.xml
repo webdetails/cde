@@ -17,6 +17,9 @@
   <!-- just to steal install-antcontrib from subfloor -->
   <property name="Implementation-Version" value="bogus"/>
   <property name="Implementation-Title" value="cde:bogus"/>
+  <!-- Properties are immutable, set them before loading subfloor.xml, make sure when junit tests fail the build fails -->
+  <property name="junit.haltonfailure" value="yes" description="Fail the build if a test fails"/>
+  <property name="junit.haltonerror" value="yes" description="Fail the build if a error occurs"/>
   <import file="build-res/subfloor.xml" as="subfloor"/>
 
   <!-- No project-specific stuff beyond this point! -->
