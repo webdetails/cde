@@ -352,8 +352,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
     moduleIds.add( "cdf/components/TestComponent1" );
     moduleIds.add( "cdf/components/TestComponent2" );
-    moduleIds.add( "cde/resources/jsFileRsrc1" );
-    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleIds.add( "cde/resources/jsFileRsrcPath1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrcPath1" );
     moduleClassNames.add( "TestComponent1" );
     moduleClassNames.add( "TestComponent2" );
     moduleClassNames.add( "jsFileRsrc1" );
@@ -367,11 +367,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     StringBuilder dashboardResult = new StringBuilder();
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
-      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
         StringUtils.join( moduleClassNames, ", " ) ) ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) )
@@ -381,18 +376,13 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( REQUIRE_STOP );
 
     Assert.assertEquals(
-      dashboardResult.toString(),
-      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+        dashboardResult.toString(),
+        dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
 
     // Debug Mode set's window.dashboard
     doReturn( true ).when( options ).isDebug();
     dashboardResult.setLength( 0 );
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
-      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
         StringUtils.join( moduleClassNames, ", " ) ) )
       .append( NEWLINE )
@@ -465,9 +455,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     // file resource not normalized
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc3", "a/path/../file3.js", "jsFileRsrc3" );
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
+    // absolute file resource
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4", "http://dummy/jsFileRsrcPath4.js",
+        "jsFileRsrc4" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
     testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
+    testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc3", "http://dummy/cssFileRsrcPath3.css",
+        "cssFileRsrc3" );
 
     // context
     doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
@@ -477,28 +472,27 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "cssFileRsrcPath2.css" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath2.css" );
 
     Map<String, String> resourceModules =
-      dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
+        dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
+    assertEquals( "jsFileRsrc1", resourceModules.get( "cde/resources/jsFileRsrcPath1" ) );
+    assertEquals( "", resourceModules.get( "cde/resources/a/file2" ) );
+    assertEquals( "jsFileRsrc3", resourceModules.get( "cde/resources/a/file3" ) );
+    assertEquals( "jsFileRsrc4", resourceModules.get( "cde/resources/jsFileRsrc4" ) );
+    assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath1" ) );
+    assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath2" ) );
+    assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
-    assertEquals(
-      "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" + NEWLINE
-        + "requireCfg['paths']['cde/resources/a/file2'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/a/file2';" + NEWLINE
-        + "requireCfg['paths']['cde/resources/jsFileRsrc3'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/a/file3';" + NEWLINE
-        + "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" + NEWLINE
-        + "requireCfg['paths']['cde/resources/cssFileRsrc2'] = CONTEXT_PATH + "
-        + "'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath2';" + NEWLINE
-        + REQUIRE_CONFIG + NEWLINE,
-      out.toString() );
+    assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4'\n"
+        + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3'\n"
+        + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
-    expectedResourceModules.put( "cde/resources/jsFileRsrc1", "jsFileRsrc1" );
+    expectedResourceModules.put( "cde/resources/jsFileRsrcPath1", "jsFileRsrc1" );
     expectedResourceModules.put( "cde/resources/a/file2", "" );
-    expectedResourceModules.put( "cde/resources/jsFileRsrc3", "jsFileRsrc3" );
-    expectedResourceModules.put( "css!cde/resources/cssFileRsrc1", "" );
-    expectedResourceModules.put( "css!cde/resources/cssFileRsrc2", "" );
+    expectedResourceModules.put( "cde/resources/a/file3", "jsFileRsrc3" );
+    expectedResourceModules.put( "cde/resources/jsFileRsrc4", "jsFileRsrc4" );
+    expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath1", "" );
+    expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath2", "" );
+    expectedResourceModules.put( "css!cde/resources/cssFileRsrc3", "" );
 
     assertEquals( expectedResourceModules, resourceModules );
   }

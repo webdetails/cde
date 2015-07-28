@@ -139,8 +139,6 @@ public class CdeConstants {
     }
   }
 
-  public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
-
   public static class Writer {
     public static final String WEBCONTEXT = "webcontext.js?context={0}&amp;requireJsOnly={1}";
     public static final Pattern SCHEME_PATTERN = Pattern.compile( "^(ht|f)tps?\\:\\/\\/" );
@@ -226,6 +224,7 @@ public class CdeConstants {
     public static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
     public static final String CDE_AMD_REPO_COMPONENT_PATH = "cde/repo/components/";
     public static final String PLUGIN_COMPONENT_FOLDER = "/components/";
+    public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
     public static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
         + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
     public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";

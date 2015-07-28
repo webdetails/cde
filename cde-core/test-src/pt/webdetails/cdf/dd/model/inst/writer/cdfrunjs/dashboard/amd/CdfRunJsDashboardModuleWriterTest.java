@@ -94,8 +94,8 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
     moduleIds.add( "cdf/components/TestComponent1" );
     moduleIds.add( "cdf/components/TestComponent2" );
-    moduleIds.add( "cde/resources/jsFileRsrc1" );
-    moduleIds.add( "css!cde/resources/cssFileRsrc1" );
+    moduleIds.add( "cde/resources/jsFileRsrcPath1" );
+    moduleIds.add( "css!cde/resources/cssFileRsrcPath1" );
     moduleClassNames.add( "TestComponent1" );
     moduleClassNames.add( "TestComponent2" );
     moduleClassNames.add( "jsFileRsrc1" );
@@ -109,11 +109,6 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     StringBuilder dashboardResult = new StringBuilder();
 
     dashboardResult
-      .append( "requireCfg['paths']['cde/resources/jsFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/jsFileRsrcPath1';" ).append( NEWLINE )
-      .append( "requireCfg['paths']['cde/resources/cssFileRsrc1'] = CONTEXT_PATH +" )
-      .append( " 'plugin/pentaho-cdf-dd/api/resources/cssFileRsrcPath1';" ).append( NEWLINE )
-      .append( REQUIRE_CONFIG ).append( NEWLINE )
       // Output module paths and module class names
       .append( MessageFormat.format( DEFINE_START,
         StringUtils.join( moduleIds, "', '" ),
@@ -128,8 +123,8 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( DEFINE_STOP );
 
     Assert.assertEquals(
-      dashboardResult.toString(),
-      dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
+        dashboardResult.toString(),
+        dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
   }
 
   @Test
@@ -147,9 +142,9 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     Assert.assertEquals(
-      MessageFormat.format( DEFINE_START,
+        MessageFormat.format( DEFINE_START,
         "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
         "TestComponent1, jsFileRsrc1" ),
-      out.toString() );
+        out.toString() );
   }
 }
