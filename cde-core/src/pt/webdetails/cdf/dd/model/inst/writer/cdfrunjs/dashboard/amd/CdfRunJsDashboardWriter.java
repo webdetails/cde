@@ -49,6 +49,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingWriter {
@@ -581,24 +582,35 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
       if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
 
-        String path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
-        if ( path.startsWith( "/" ) ) {
-          path =  path.replaceFirst( "/", "" );
+        String path = resource.getResourcePath();
+
+        String id;
+
+        // full URI
+        if ( SCHEME_PATTERN.matcher( path ).find() ) {
+
+          id = RESOURCE_AMD_NAMESPACE + "/"
+            + ( StringUtils.isEmpty( resource.getResourceName() )
+              ? "R" + UUID.randomUUID()/*.toString().replace( "-", "" )*/
+              :  resource.getResourceName() );
+          // output RequireJS path configuration
+          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).js$", "" ) ) )
+            .append( NEWLINE );
+
+        } else {
+          // normalize the path
+          path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+          if ( path.startsWith( "/" ) ) {
+            path =  path.replaceFirst( "/", "" );
+          }
+
+          // remove file extension
+          id = RESOURCE_AMD_NAMESPACE + "/" + path.replaceFirst( "(?i).js$", "" );
+          // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
+
         }
-        // remove extension
-        path = path.replaceFirst( "(?i).js$", "" );
-        // build the module id without the file extension and cache buster version from path
-        String id =
-            CdeConstants.RESOURCE_AMD_NAMESPACE + "/" + ( StringUtils.isEmpty(  resource.getResourceName() )
-              ? path : resource.getResourceName() );
 
-        out.append( MessageFormat.format(
-            SCHEME_PATTERN.matcher( resource.getResourcePath() ).find()
-              ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
-            id,
-            "/" + path ) )
-          .append( NEWLINE );
-
+        // store the generated module id and class name
         resourceModules.put( id, resource.getResourceName() );
       }
     }
@@ -607,25 +619,36 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     for ( ResourceMap.Resource resource : resources.getCssResources() ) {
       if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
 
-        String path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
-        if ( path.startsWith( "/" ) ) {
-          path = path.replaceFirst( "/", "" );
-        }
-        // remove extension
-        path = path.replaceFirst( "(?i).css$", "" );
-        String id = CdeConstants.RESOURCE_AMD_NAMESPACE + "/"
-            + ( StringUtils.isEmpty( resource.getResourceName() )
-              ? path : resource.getResourceName() );
+        String path = resource.getResourcePath();
+        String id;
 
-        out.append( MessageFormat.format(
-            SCHEME_PATTERN.matcher( resource.getResourcePath() ).find()
-              ? REQUIRE_PATH_CONFIG_FULL_URI : REQUIRE_PATH_CONFIG,
-            id,
-            "/" + path ) )
-          .append( NEWLINE );
+        // full URI
+        if ( SCHEME_PATTERN.matcher( path ).find() ) {
+
+          id = RESOURCE_AMD_NAMESPACE + "/"
+            + ( StringUtils.isEmpty( resource.getResourceName() )
+            ? "R" + UUID.randomUUID()/*.toString().replace( "-", "" )*/
+            :  resource.getResourceName() );
+          // output RequireJS path configuration
+          out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).css$", "" ) ) )
+            .append( NEWLINE );
+
+        } else {
+          // normalize the path
+          path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+          if ( path.startsWith( "/" ) ) {
+            path = path.replaceFirst( "/", "" );
+          }
+
+          // remove file extension
+          id = RESOURCE_AMD_NAMESPACE + "/" + path.replaceFirst( "(?i).css$", "" );
+          // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
+
+        }
 
         // prepend css! RequireJS loader plugin and don't provide a class name for CSS resources
         resourceModules.put(  RequireJSPlugin.CSS + id, ""/*resource.getResourceName()*/ );
+
       }
     }
 
@@ -676,8 +699,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     }
     // remove prepended requireJS loader plugins and resource namespace from class name
     for ( RequireJSPlugin plugin : RequireJSPlugin.values() ) {
-      className = className.replace( plugin.toString(), "" ).replace(
-        CdeConstants.RESOURCE_AMD_NAMESPACE + "/", "" );
+      className = className.replace( plugin.toString(), "" ).replace( RESOURCE_AMD_NAMESPACE + "/", "" );
     }
 
     return className;
