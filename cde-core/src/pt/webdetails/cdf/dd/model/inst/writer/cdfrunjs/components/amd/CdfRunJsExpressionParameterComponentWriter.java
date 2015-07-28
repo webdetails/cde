@@ -24,7 +24,7 @@ public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParamete
   @Override
   public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp )
     throws ThingWriteException {
-    String name = JsonUtils.toJsString( context.getId( comp ) );
+    String name = JsonUtils.toJsString( comp.getId() );
     String value = sanitizeExpression( comp.tryGetPropertyValue( "javaScript", "" ) );
     Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue( "bookmarkable", null ) );
 

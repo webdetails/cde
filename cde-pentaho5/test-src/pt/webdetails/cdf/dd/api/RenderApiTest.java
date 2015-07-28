@@ -157,7 +157,7 @@ public class RenderApiTest {
   public void testGetDashboardParameters() throws IOException {
     HttpServletRequest request = mock( HttpServletRequest.class );
 
-    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, request );
+    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, request );
     String expected = "{\"parameters\":[\"dummyComponent\"]}";
     Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
         expected, parameters.replace( " ", "" ).replace( "\n", "" ) );

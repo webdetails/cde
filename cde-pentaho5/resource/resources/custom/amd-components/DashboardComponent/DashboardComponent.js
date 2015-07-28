@@ -13,8 +13,9 @@
 
 define([
   'cdf/components/UnmanagedComponent',
-  './DashboardComponentExt'],
-  function(UnmanagedComponent, DashboardComponentExt) { 
+  './DashboardComponentExt',
+  'cdf/lib/jquery'],
+  function(UnmanagedComponent, DashboardComponentExt, $) {
 
   var DashboardComponent = UnmanagedComponent.extend({
 
@@ -25,15 +26,14 @@ define([
       var myself = this;
       require([DashboardComponentExt.getDashboardUrl(this.dashboardPath)], function(Dashboard) {
         myself.requiredDashboard = new Dashboard(myself.htmlObject);
-        myself.mapParameters();
+        myself.unregisterEvents();
         myself.requiredDashboard.render();
+        myself.mapParameters();
         myself.postExec();
       });
     },
 
-    mapParameters: function() {
-      var reqDash = this.requiredDashboard;
-
+    unregisterEvents: function() {
       if(this.registeredEvents) {
         for(var evts in this.registeredEvents) {
           for(var i = 0; i < this.registeredEvents[evts].length; i++) {
@@ -41,25 +41,53 @@ define([
           }
         }
       }
-      
+    },
+
+    mapParameters: function() {
+      var myself = this;
+      var reqDash = this.requiredDashboard;
       this.registeredEvents = {};
+      this.publicParameters = [];
 
-      for(var i = 0; i < this.parameterMapping.length; i++) {
-        var otherParamName = this.parameterMapping[i][1];
-        var eventName = this.parameterMapping[i][0] + ":fireChange";
-        var fun = function(evt) {
-          reqDash.fireChange(otherParamName, evt.value);
-        };
-        this.dashboard.on(eventName, fun);
+      var getPublicParametersUrl = DashboardComponentExt.getDashboardParametersEndpoint() + this.dashboardPath;
 
-        if(!this.registeredEvents[eventName]) {
-          this.registeredEvents[eventName] = [];
+      $.ajax({
+        url: getPublicParametersUrl,
+        type: "GET",
+        success: function(data) {
+          myself.publicParameters = data.parameters;
+          myself.loopThroughMapping(function(myParam, otherParam) {
+            if (myself.isParameterPublic(otherParam)) {
+              var eventName = myParam + ":fireChange";
+              var fun = function(evt) {
+                reqDash.fireChange(otherParam, evt.value);
+              };
+              myself.dashboard.on(eventName, fun);
+
+              if(!myself.registeredEvents[eventName]) {
+                myself.registeredEvents[eventName] = [];
+              }
+              myself.registeredEvents[eventName].push(fun);
+            }
+          });
         }
+      });
+    },
 
-        this.registeredEvents[eventName].push(fun);
+    loopThroughMapping: function(fun){
+      for(var i = 0; i< this.parameterMapping.length; i++) {
+        fun(this.parameterMapping[i][0], this.parameterMapping[i][1]);
       }
-    }
-    
+    },
+
+    isParameterPublic: function(parameterName){
+      for(var i = 0; i < this.publicParameters.length; i++) {
+        if (parameterName === this.publicParameters[i]) {
+          return true;
+        }
+      }
+      return false;
+     }
   });
 
   return DashboardComponent;
