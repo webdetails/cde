@@ -298,13 +298,20 @@ public class DashboardManager {
     // 2. Get the Dashboard object
     return this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
   }
-
   public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead ) throws ThingReadException {
+    return getDashboardParameters( wcdfPath, bypassCacheRead, false );
+  }
+
+  public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead, boolean all )
+    throws ThingReadException {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> parameters = new ArrayList<String>();
     for ( Component component : dashboard.getRegulars() ) {
       if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
-        parameters.add( component.getName() );
+        // if no 'public' property is present, we must default to true
+        if ( !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
+          parameters.add( component.getName() );
+        }
       }
     }
     String result = "{";
