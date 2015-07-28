@@ -123,8 +123,8 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( DEFINE_STOP );
 
     Assert.assertEquals(
-      dashboardResult.toString(),
-      dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
+        dashboardResult.toString(),
+        dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
   }
 
   @Test
@@ -142,9 +142,9 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     Assert.assertEquals(
-      MessageFormat.format( DEFINE_START,
+        MessageFormat.format( DEFINE_START,
         "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
         "TestComponent1, jsFileRsrc1" ),
-      out.toString() );
+        out.toString() );
   }
 }
