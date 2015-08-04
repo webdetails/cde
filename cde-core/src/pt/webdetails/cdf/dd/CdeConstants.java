@@ -162,9 +162,11 @@ public class CdeConstants {
     // make the dashboard variable available in the global scope to facilitate debugging
     public static final String DASHBOARD_DECLARATION_DEBUG = "window.dashboard = new Dashboard({0});" + NEWLINE;
     public static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
-    public static final String REQUIRE_START = "require([''{0}'']," + NEWLINE + "function({1}) '{'";
+    public static final String REQUIRE_START = "require([" + NEWLINE + INDENT1 + "''{0}''],"
+        + NEWLINE + "function(" + NEWLINE + INDENT1 + "{1}) '{'" + NEWLINE;
     public static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
-    public static final String DEFINE_START = "define([''{0}'']," + NEWLINE + INDENT1 + "function({1}) '{'" + NEWLINE;
+    public static final String DEFINE_START = "define([" + NEWLINE + INDENT1 + "''{0}''],"
+        + NEWLINE + INDENT1 + "function(" + NEWLINE + INDENT1 + "{1}) '{'" + NEWLINE;
     public static final String DEFINE_STOP = "return CustomDashboard;" + NEWLINE + "});";
     public static final String DASHBOARD_MODULE_START_EMPTY_ALIAS =
         "var CustomDashboard = Dashboard.extend('{'" + NEWLINE
@@ -228,7 +230,7 @@ public class CdeConstants {
     public static final String RESOURCE_AMD_NAMESPACE = "cde/resources";
     public static final String REQUIRE_PATH_CONFIG = "requireCfg[''paths''][''{0}''] = "
         + "CONTEXT_PATH + ''plugin/pentaho-cdf-dd/api/resources{1}'';";
-    public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}''";
+    public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}'';";
     public static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
     // legacy
