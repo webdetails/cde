@@ -527,8 +527,8 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     out
       .append( MessageFormat.format(
         REQUIRE_START,
-        StringUtils.join( ids, "', '" ),
-        StringUtils.join( classNames, ", " ) ) )
+        StringUtils.join( ids, "'," + NEWLINE + INDENT1 + "'" ),
+        StringUtils.join( classNames, "," + NEWLINE + INDENT1 ) ) )
       .append( NEWLINE );
   }
 
@@ -573,41 +573,58 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       CdfRunJsDashboardWriteContext ctx ) {
 
     Map<String, String> resourceModules = new LinkedHashMap<String, String>();
+    // File Resources with empty names should be placed last in the array dependency list
+    Map<String, String> unnamedResourceModules = new LinkedHashMap<String, String>();
+    String path;
+    StringBuilder id = new StringBuilder();
 
     // JS
     for ( ResourceMap.Resource resource : resources.getJavascriptResources() ) {
       if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
 
-        String path = resource.getResourcePath();
-
-        String id;
+        // replace tokens and alias
+        path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
+        // reset
+        id.setLength( 0 );
 
         // full URI
         if ( SCHEME_PATTERN.matcher( path ).find() ) {
 
-          id = RESOURCE_AMD_NAMESPACE + "/"
-            + ( StringUtils.isEmpty( resource.getResourceName() )
-              ? "R" + UUID.randomUUID()/*.toString().replace( "-", "" )*/
-              :  resource.getResourceName() );
+          if ( StringUtils.isEmpty( resource.getResourceName() ) ) {
+            id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( getRandomUUID() );
+            // store the generated module id and class name to be added at the end of the dependency array
+            unnamedResourceModules.put( id.toString(), resource.getResourceName() );
+          } else {
+            id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( resource.getResourceName() );
+            // store the generated module id and class name
+            resourceModules.put( id.toString(), resource.getResourceName() );
+          }
+
           // output RequireJS path configuration
           out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).js$", "" ) ) )
             .append( NEWLINE );
 
         } else {
+
           // normalize the path
-          path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+          path = Util.normalizeUri( path );
           if ( path.startsWith( "/" ) ) {
             path =  path.replaceFirst( "/", "" );
           }
 
           // remove file extension
-          id = RESOURCE_AMD_NAMESPACE + "/" + path.replaceFirst( "(?i).js$", "" );
+          id.append( RESOURCE_AMD_NAMESPACE ).append( "/" ).append( path.replaceFirst( "(?i).js$", "" ) );
+
+          if ( StringUtils.isEmpty( resource.getResourceName() ) ) {
+            // store the generated module id and class name to be added at the end of the dependency array
+            unnamedResourceModules.put( id.toString(), resource.getResourceName() );
+          } else {
+            // store the generated module id and class name, maintain order
+            resourceModules.put( id.toString(), resource.getResourceName() );
+          }
+
           // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
-
         }
-
-        // store the generated module id and class name
-        resourceModules.put( id, resource.getResourceName() );
       }
     }
 
@@ -615,35 +632,39 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     for ( ResourceMap.Resource resource : resources.getCssResources() ) {
       if ( resource.getResourceType().equals( ResourceMap.ResourceType.FILE ) ) {
 
-        String path = resource.getResourcePath();
-        String id;
+        // replace tokens and alias
+        path = ctx.replaceTokensAndAlias( resource.getResourcePath() );
+        // reset
+        id.setLength( 0 );
 
         // full URI
         if ( SCHEME_PATTERN.matcher( path ).find() ) {
 
-          id = RESOURCE_AMD_NAMESPACE + "/"
-            + ( StringUtils.isEmpty( resource.getResourceName() )
-            ? "R" + UUID.randomUUID()/*.toString().replace( "-", "" )*/
-            :  resource.getResourceName() );
+          id.append( RESOURCE_AMD_NAMESPACE )
+            .append( "/" )
+            .append( ( StringUtils.isEmpty( resource.getResourceName() ) ? getRandomUUID() : resource.getResourceName() ) );
           // output RequireJS path configuration
           out.append( MessageFormat.format( REQUIRE_PATH_CONFIG_FULL_URI, id, path.replaceFirst( "(?i).css$", "" ) ) )
             .append( NEWLINE );
 
         } else {
+
           // normalize the path
-          path = Util.normalizeUri( ctx.replaceTokensAndAlias( resource.getResourcePath() ) );
+          path = Util.normalizeUri( path );
           if ( path.startsWith( "/" ) ) {
             path = path.replaceFirst( "/", "" );
           }
 
           // remove file extension
-          id = RESOURCE_AMD_NAMESPACE + "/" + path.replaceFirst( "(?i).css$", "" );
+          id.append( RESOURCE_AMD_NAMESPACE )
+            .append( "/" )
+            .append( path.replaceFirst( "(?i).css$", "" ) );
           // no need for RequireJS path configuration (built based on cde-require-js-cfg.js cde/resources/)
 
         }
 
         // prepend css! RequireJS loader plugin and don't provide a class name for CSS resources
-        resourceModules.put(  RequireJSPlugin.CSS + id, ""/*resource.getResourceName()*/ );
+        resourceModules.put( RequireJSPlugin.CSS + id.toString(), "" );
 
       }
     }
@@ -653,7 +674,19 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       out.append( REQUIRE_CONFIG ).append( NEWLINE );
     }
 
+    // Finally append the unnamed JS file resources to be added at the end of the dependency array
+    resourceModules.putAll( unnamedResourceModules );
+
     return resourceModules;
+  }
+
+  /**
+   * Generates a UUID to be used as part of an AMD module id.
+   *
+   * @return the string containing the random UUID value
+   */
+  protected String getRandomUUID() {
+    return UUID.randomUUID().toString();
   }
 
   /**
