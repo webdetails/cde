@@ -69,11 +69,11 @@
         <dependency org="org.hamcrest"      name="hamcrest-core"     rev="1.1"                 conf="test->default" transitive="false"/>
         <dependency org="org.objenesis"     name="objenesis"         rev="1.0"                 conf="test->default" transitive="false"/>
 
-        <dependency org="org.springframework"          name="spring-core"          rev="3.0.3.RELEASE" conf="test->default" transitive="false"/>
-        <dependency org="org.springframework"          name="spring-beans"         rev="3.0.3.RELEASE" conf="test->default" transitive="false"/>
-        <dependency org="org.springframework"          name="spring-context"       rev="3.0.3.RELEASE" conf="test->default" transitive="false"/>
-        <dependency org="org.springframework"          name="spring-asm"           rev="3.0.3.RELEASE" conf="test->default" transitive="false"/>
-        <dependency org="org.springframework"          name="spring-expression"    rev="3.0.3.RELEASE" conf="test->default" transitive="false"/>
+        <dependency org="org.springframework"          name="spring-core"          rev="${dependency.spring.framework.revision}" conf="test->default" transitive="false"/>
+        <dependency org="org.springframework"          name="spring-beans"         rev="${dependency.spring.framework.revision}" conf="test->default" transitive="false"/>
+        <dependency org="org.springframework"          name="spring-context"       rev="${dependency.spring.framework.revision}" conf="test->default" transitive="false"/>
+        <dependency org="org.springframework"          name="spring-asm"           rev="${dependency.spring.framework.asm.revision}" conf="test->default" transitive="false"/>
+        <dependency org="org.springframework"          name="spring-expression"    rev="${dependency.spring.framework.revision}" conf="test->default" transitive="false"/>
 
         <dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="3.1"           conf="test->default" transitive="false"/>
 
