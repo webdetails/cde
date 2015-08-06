@@ -367,8 +367,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     StringBuilder dashboardResult = new StringBuilder();
 
     dashboardResult
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
-        StringUtils.join( moduleClassNames, ", " ) ) ).append( NEWLINE )
+      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
+        StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
@@ -383,8 +383,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( true ).when( options ).isDebug();
     dashboardResult.setLength( 0 );
     dashboardResult
-      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "', '" ),
-        StringUtils.join( moduleClassNames, ", " ) ) )
+      .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
+        StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) )
       .append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
@@ -427,10 +427,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     Assert.assertEquals(
-      MessageFormat.format( REQUIRE_START,
-        "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
-        "TestComponent1, jsFileRsrc1" ) + NEWLINE,
-      out.toString() );
+        MessageFormat.format(
+          REQUIRE_START,
+          "cdf/components/TestComponent1',"
+            + NEWLINE + INDENT1 + "'cde/resources/jsFileRsrc1',"
+            + NEWLINE + INDENT1 + "'css!cde/resources/cssFileRsrc1",
+          "TestComponent1,"
+            + NEWLINE + INDENT1 + "jsFileRsrc1" ) + NEWLINE,
+        out.toString() );
   }
 
   @Test
@@ -447,17 +451,22 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   @Test
   public void testWriteFileResourcesRequireJSPathConfig() {
     StringBuilder out = new StringBuilder();
+    doReturn( "1234" ).when( dashboardWriterSpy ).getRandomUUID();
     // resources
     ResourceMap testResources = new ResourceMap();
-    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
     // unnamed file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "a/path/../file2.js", "jsFileRsrc2" );
+    // named file resource
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc1", "jsFileRsrcPath1", "jsFileRsrc1" );
     // file resource not normalized
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc3", "a/path/../file3.js", "jsFileRsrc3" );
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
     // absolute file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4", "http://dummy/jsFileRsrcPath4.js",
         "jsFileRsrc4" );
+    // absolute unnamed file resource
+    testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "http://dummy/jsFileRsrcPath5.js",
+        "jsFileRsrc5" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
     testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
@@ -468,8 +477,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
     doReturn( "a/path/../file2.js" ).when( context ).replaceTokensAndAlias( "a/path/../file2.js" );
     doReturn( "a/path/../file3.js" ).when( context ).replaceTokensAndAlias( "a/path/../file3.js" );
+    doReturn( "http://dummy/jsFileRsrcPath4.js" )
+      .when( context ).replaceTokensAndAlias( "http://dummy/jsFileRsrcPath4.js" );
+    doReturn( "http://dummy/jsFileRsrcPath5.js" )
+      .when( context ).replaceTokensAndAlias( "http://dummy/jsFileRsrcPath5.js" );
     doReturn( "cssFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath1" );
     doReturn( "cssFileRsrcPath2.css" ).when( context ).replaceTokensAndAlias( "cssFileRsrcPath2.css" );
+    doReturn( "http://dummy/cssFileRsrcPath3.css" )
+      .when( context ).replaceTokensAndAlias( "http://dummy/cssFileRsrcPath3.css" );
 
     Map<String, String> resourceModules =
         dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
@@ -477,12 +492,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     assertEquals( "", resourceModules.get( "cde/resources/a/file2" ) );
     assertEquals( "jsFileRsrc3", resourceModules.get( "cde/resources/a/file3" ) );
     assertEquals( "jsFileRsrc4", resourceModules.get( "cde/resources/jsFileRsrc4" ) );
+    assertEquals( "", resourceModules.get( "cde/resources/1234" ) ); // random UUID mocked value
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath1" ) );
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrcPath2" ) );
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
-    assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4'\n"
-        + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3'\n"
+    assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4';\n"
+        + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';\n"
+        + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';\n"
         + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
@@ -493,6 +510,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath1", "" );
     expectedResourceModules.put( "css!cde/resources/cssFileRsrcPath2", "" );
     expectedResourceModules.put( "css!cde/resources/cssFileRsrc3", "" );
+    // unnamed file resource from full URI (UUID) will come last
+    expectedResourceModules.put( "cde/resources/1234", "" );
 
     assertEquals( expectedResourceModules, resourceModules );
   }
