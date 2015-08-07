@@ -12,9 +12,7 @@
 			<Property>label</Property>
 			<Property>htmlObject</Property>
 			<Property>listeners</Property>
-			<Property>solution</Property>
 			<Property>path</Property>
-			<Property>action</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Property>executeAtStart</Property>
 			<Property>preExecution</Property>

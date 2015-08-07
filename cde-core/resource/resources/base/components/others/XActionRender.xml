@@ -9,9 +9,7 @@
 	</Header>
 	<Contents>
 		<Model>
-			<Property>action</Property>
 			<Property>path</Property>
-			<Property>solution</Property>
 			<Property name="parameters">xActionArrayParameter</Property>
 			<Property>valueAsId</Property>
 			<Property>executeAtStart</Property>
