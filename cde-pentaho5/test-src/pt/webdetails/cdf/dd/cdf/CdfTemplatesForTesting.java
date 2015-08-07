@@ -13,8 +13,9 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class CdfTemplatesForTesting extends CdfTemplates {
   }
 
   @Override
-  protected JSONObject getStructure( IBasicFile file ) throws IOException, JSONException {
-    return new JSONObject( "{fileName: \"" + file.getName() + "\"}" );
+  protected JSON getStructure( IBasicFile file ) throws IOException {
+    return JSONObject.fromObject( "{fileName: \"" + file.getName() + "\"}" );
   }
 }
