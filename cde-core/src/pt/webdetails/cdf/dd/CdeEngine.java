@@ -67,9 +67,11 @@ public class CdeEngine {
   private static void initialize() throws InitializationException {
     if ( instance.cdeEnv == null ) {
 
-      IBeanFactory factory = new AbstractBeanFactory(){
+      IBeanFactory factory = new AbstractBeanFactory() {
         @Override
-        public String getSpringXMLFilename(){ return "cde.spring.xml"; }
+        public String getSpringXMLFilename() {
+          return "cde.spring.xml";
+        }
       };
 
       // try to get the environment from the configuration
@@ -98,6 +100,13 @@ public class CdeEngine {
     }
     if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES, false ) ) {
       logger.error( "Couldn't find or create CDE templates dir." );
+    } else {
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES_BLUEPRINT, false ) ) {
+        logger.error( "Couldn't find or create CDE templates/blueprint dir." );
+      }
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES_BOOTSTRAP, false ) ) {
+        logger.error( "Couldn't find or create CDE templates/bootstrap dir." );
+      }
     }
 
     // special case for widgets: copy widget samples into dir if creating dir for the first time
@@ -107,13 +116,13 @@ public class CdeEngine {
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ), sysPluginSamples,
-          "widget.cdfde" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ),sysPluginSamples,
-          "widget.wcdf" );
+            "widget.cdfde" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
+            "widget.wcdf" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
-          "widget.cda" );
+            "widget.cda" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
-          sysPluginSamples, "widget.xml" );
+            sysPluginSamples, "widget.xml" );
       }
     }
 
