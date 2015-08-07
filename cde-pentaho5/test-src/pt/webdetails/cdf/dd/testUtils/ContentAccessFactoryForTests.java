@@ -49,7 +49,7 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
   }
 
   public ContentAccessFactoryForTests( IUserContentAccess mockedContentAccess, IReadAccess mockedReadAccess,
-                                       IRWAccess mockedRWAccess) {
+                                       IRWAccess mockedRWAccess ) {
     this.mockedContentAccess = mockedContentAccess;
     this.mockedReadAccess = mockedReadAccess;
     this.mockedRWAccess = mockedRWAccess;

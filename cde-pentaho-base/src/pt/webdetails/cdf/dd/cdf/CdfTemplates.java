@@ -23,7 +23,6 @@ import org.json.JSONObject;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.Messages;
 import pt.webdetails.cdf.dd.structure.DashboardStructureException;
-import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.util.JsonUtils;
@@ -137,7 +136,7 @@ public class CdfTemplates {
     } );
 
     IReadAccess access =
-      CdeEnvironment.getPluginSystemReader( Utils.joinPath( SYSTEM_CDF_DD_TEMPLATES , rendererType ) );
+        CdeEnvironment.getPluginSystemReader( Utils.joinPath( SYSTEM_CDF_DD_TEMPLATES , rendererType ) );
 
     for ( int i = 0; i < jsonFiles.length; i++ ) {
       final JSONObject template = new JSONObject();
@@ -145,8 +144,8 @@ public class CdfTemplates {
       String imgResourcePath = resourceUrl + "unknown.png";
 
       if ( access.fileExists( jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) ) ) {
-        imgResourcePath = resourceUrl +
-          Utils.joinPath( rendererType, jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) );
+        imgResourcePath = resourceUrl
+          + Utils.joinPath( rendererType, jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) );
       }
 
       template.put( "img", imgResourcePath );

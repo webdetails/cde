@@ -13,7 +13,6 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
