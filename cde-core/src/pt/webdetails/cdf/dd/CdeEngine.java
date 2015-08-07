@@ -67,9 +67,11 @@ public class CdeEngine {
   private static void initialize() throws InitializationException {
     if ( instance.cdeEnv == null ) {
 
-      IBeanFactory factory = new AbstractBeanFactory(){
+      IBeanFactory factory = new AbstractBeanFactory() {
         @Override
-        public String getSpringXMLFilename(){ return "cde.spring.xml"; }
+        public String getSpringXMLFilename() {
+          return "cde.spring.xml";
+        }
       };
 
       // try to get the environment from the configuration
@@ -114,13 +116,13 @@ public class CdeEngine {
       } else {
         IReadAccess sysPluginSamples = CdeEnvironment.getPluginSystemReader( "resources/samples/" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cdfde" ), sysPluginSamples,
-          "widget.cdfde" );
-        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ),sysPluginSamples,
-          "widget.wcdf" );
+            "widget.cdfde" );
+        saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.wcdf" ), sysPluginSamples,
+            "widget.wcdf" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.cda" ), sysPluginSamples,
-          "widget.cda" );
+            "widget.cda" );
         saveAndClose( repoBase, Util.joinPath( CdeConstants.SolutionFolders.WIDGETS, "sample.component.xml" ),
-          sysPluginSamples, "widget.xml" );
+            sysPluginSamples, "widget.xml" );
       }
     }
 
