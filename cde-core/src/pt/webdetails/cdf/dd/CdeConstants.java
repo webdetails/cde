@@ -42,6 +42,8 @@ public class CdeConstants {
     public static final String WIDGETS = "widgets";
     public static final String STYLES = "styles";
     public static final String TEMPLATES = "templates";
+    public static final String TEMPLATES_BLUEPRINT = TEMPLATES + "/blueprint";
+    public static final String TEMPLATES_BOOTSTRAP = TEMPLATES + "/bootstrap";
   }
 
   public static class MethodParams {

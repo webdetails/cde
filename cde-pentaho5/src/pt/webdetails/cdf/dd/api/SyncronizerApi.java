@@ -186,16 +186,16 @@ public class SyncronizerApi { //TODO: synchronizer?
   public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation,
                              @FormParam( MethodParams.FILE ) String file,
                              @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+                             @FormParam( MethodParams.RENDERER_TYPE ) String rendererType,
                              @Context HttpServletResponse response )
     throws IOException, DashboardStructureException, JSONException {
     final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
     Object result = null;
 
     if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
-      result = cdfTemplates.load();
-
+      result = cdfTemplates.load( rendererType );
     } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
-      cdfTemplates.save( file, cdfStructure );
+      cdfTemplates.save( file, cdfStructure, rendererType );
     }
 
     JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
