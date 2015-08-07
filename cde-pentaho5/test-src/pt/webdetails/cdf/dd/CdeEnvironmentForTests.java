@@ -27,6 +27,7 @@ import pt.webdetails.cpf.bean.IBeanFactory;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.resources.IResourceLoader;
@@ -38,6 +39,7 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
 
   private IUserContentAccess mockedContentAccess;
   private IReadAccess mockedReadAccess;
+  private IRWAccess mockedRWAccess;
   private IPluginResourceLocationManager mockedPluginResourceLocationManager;
   private IDataSourceManager mockedDataSourceManager;
   private IUrlProvider mockedUrlProvider;
@@ -49,6 +51,10 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
 
   public void setMockedReadAccess( IReadAccess mockedReadAccess ) {
     this.mockedReadAccess = mockedReadAccess;
+  }
+
+  public void setMockedRWAccess( IRWAccess mockedRWAccess ) {
+    this.mockedRWAccess = mockedRWAccess;
   }
 
   public void setMockedPluginResourceLocationManager(
@@ -101,6 +107,9 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
 
   @Override
   public IContentAccessFactory getContentAccessFactory() {
+    if ( this.mockedRWAccess != null ) {
+      return new ContentAccessFactoryForTests( mockedContentAccess, mockedReadAccess, mockedRWAccess );
+    }
     return new ContentAccessFactoryForTests( mockedContentAccess, mockedReadAccess );
   }
 
