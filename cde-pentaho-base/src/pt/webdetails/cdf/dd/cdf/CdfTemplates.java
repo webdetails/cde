@@ -133,7 +133,7 @@ public class CdfTemplates {
     } );
 
     IReadAccess access =
-      CdeEnvironment.getPluginSystemReader( Utils.joinPath( SYSTEM_CDF_DD_TEMPLATES , rendererType ) );
+        CdeEnvironment.getPluginSystemReader( Utils.joinPath( SYSTEM_CDF_DD_TEMPLATES , rendererType ) );
 
     for ( int i = 0; i < jsonFiles.length; i++ ) {
       final JSONObject template = new JSONObject();
@@ -141,8 +141,8 @@ public class CdfTemplates {
       String imgResourcePath = resourceUrl + "unknown.png";
 
       if ( access.fileExists( jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) ) ) {
-        imgResourcePath = resourceUrl +
-          Utils.joinPath( rendererType, jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) );
+        imgResourcePath = resourceUrl
+          + Utils.joinPath( rendererType, jsonFiles[ i ].getName().replace( ".cdfde", ".png" ) );
       }
 
       template.put( "img", imgResourcePath );
