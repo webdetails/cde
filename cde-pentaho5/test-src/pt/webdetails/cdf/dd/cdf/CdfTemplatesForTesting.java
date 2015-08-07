@@ -13,8 +13,10 @@
 
 package pt.webdetails.cdf.dd.cdf;
 
-import pt.webdetails.cdf.dd.structure.DashboardStructureException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cpf.repository.api.IBasicFile;
 
 import java.io.IOException;
 
@@ -26,6 +28,7 @@ public class CdfTemplatesForTesting extends CdfTemplates {
   public CdfTemplatesForTesting( String mockResourceEndpoint ) {
     super( mockResourceEndpoint );
     this.mockResourceEndpoint = mockResourceEndpoint;
+    this.resourceUrl = mockResourceEndpoint;
   }
 
   public CdfTemplatesForTesting( String mockResourceEndpoint, DashboardWcdfDescriptor mockDashboardWcdfDescriptor ) {
@@ -39,21 +42,16 @@ public class CdfTemplatesForTesting extends CdfTemplates {
     return mockResourceEndpoint;
   }
 
-  @Override
-  protected DashboardWcdfDescriptor loadWcdfDescriptor( String wcdfFile ) throws IOException {
-    return mockDashboardWcdfDescriptor;
-  }
-
-  @Override
-  public String addDashboardStyleAndRendererTypeToTemplate( String origStructure ) throws DashboardStructureException {
-    return super.addDashboardStyleAndRendererTypeToTemplate( origStructure );
-  }
-
   public DashboardWcdfDescriptor getMockDashboardWcdfDescriptor() {
     return mockDashboardWcdfDescriptor;
   }
 
   public void setMockDashboardWcdfDescriptor( DashboardWcdfDescriptor mockDashboardWcdfDescriptor ) {
     this.mockDashboardWcdfDescriptor = mockDashboardWcdfDescriptor;
+  }
+
+  @Override
+  protected JSONObject getStructure( IBasicFile file ) throws IOException, JSONException {
+    return new JSONObject( "{fileName: \"" + file.getName() + "\"}" );
   }
 }

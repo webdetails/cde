@@ -98,6 +98,13 @@ public class CdeEngine {
     }
     if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES, false ) ) {
       logger.error( "Couldn't find or create CDE templates dir." );
+    } else {
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES_BLUEPRINT, false ) ) {
+        logger.error( "Couldn't find or create CDE templates/blueprint dir." );
+      }
+      if ( !ensureDirExists( repoBase, CdeConstants.SolutionFolders.TEMPLATES_BOOTSTRAP, false ) ) {
+        logger.error( "Couldn't find or create CDE templates/bootstrap dir." );
+      }
     }
 
     // special case for widgets: copy widget samples into dir if creating dir for the first time
