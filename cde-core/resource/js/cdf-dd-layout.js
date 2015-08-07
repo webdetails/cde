@@ -627,6 +627,8 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 
           var template = cdfdd.getDashboardData();
           template.layout.title = title;
+          template.style = cdfdd.dashboardWcdf.style;
+          template.rendererType = cdfdd.dashboardWcdf.rendererType;
           if(!includeComponents) {
             template.components.rows = [];
 
@@ -635,7 +637,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
             template.datasources.rows = [];
           }
 
-          var templateParams = {operation: "save", file: file, cdfstructure: JSON.stringify(template)};
+          var templateParams = {operation: "save", file: file, cdfstructure: JSON.stringify(template), rendererType: cdfdd.dashboardWcdf.rendererType};
           SynchronizeRequests.doPost(templateParams);
         }
       }
@@ -658,7 +660,7 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
   execute: function(tableManager) {
     this.logger.info("Loading templates...");
 
-    var loadParams = { operation: "load" };
+    var loadParams = { operation: "load", rendererType: cdfdd.dashboardWcdf.rendererType};
     SynchronizeRequests.doGetJson(loadParams);
   }
 });

@@ -1,0 +1,1168 @@
+{
+	"components": {
+		"rows": []
+	},
+	"datasources": {
+		"rows": []
+	},
+	"layout": {
+		"rows": [{
+			"id": "1d51f130-cab0-79fa-fd2f-c5c0be279529",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Header",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "54a44da1-7877-627d-a0da-d4c43078de19",
+			"parent": "1d51f130-cab0-79fa-fd2f-c5c0be279529",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "12",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": ""
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": ""
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": ""
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": ""
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "60",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "#005ac7",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "center",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "1acdaaf4-3437-a8aa-0369-5b85b216a2a1",
+			"parent": "54a44da1-7877-627d-a0da-d4c43078de19",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "html",
+				"type": "Html",
+				"value": "<h2 style=\"color:#FFFFFF;\">Dashboard generated with CDE</h2> ",
+				"description": "HTML",
+				"tooltip": "Html code to be added",
+				"order": 15,
+				"classType": ""
+			}, {
+				"name": "fontSize",
+				"type": "Integer",
+				"value": "",
+				"description": "Font Size",
+				"tooltip": "Font size, in pixels ",
+				"order": 49,
+				"classType": "advanced"
+			}, {
+				"name": "color",
+				"type": "Color",
+				"value": "",
+				"description": "Color",
+				"tooltip": "Element color",
+				"order": 55,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutHtml",
+			"typeDesc": "Html"
+		}, {
+			"id": "72a8717f-9e1d-fdaf-06b1-8bd96f159f7f",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Spacer",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "5",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "bc19af30-9a5f-7f04-d630-4b91593b8e24",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Body",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "8788af7f-47db-f262-05e0-08ef325080d5"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "a75d7b67-5e4d-b509-59cf-62c00735b1f1"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "5d89d7d2-41f7-1d82-4c02-3cfaa455eb4c"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "0fdd7fb2-8ed9-da5f-f61e-30f7d7d8dc48"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "92514168-b2f1-db8c-cf62-248274ea4297"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "070c617a-405c-ea59-19f2-9275f3697568"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "f35b9bc1-f5e1-5787-c9a7-67d6596e9dd5",
+			"parent": "bc19af30-9a5f-7f04-d630-4b91593b8e24",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "f80fbacd-9654-c37c-10a3-edd2a0cff45f"
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "6",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": "",
+				"id": "270f25ad-8915-af63-9440-63c0854956cf"
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": "",
+				"id": "0b9d0358-8302-d7c7-458c-65851048cade"
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": "",
+				"id": "e3ded533-cc9a-40d3-c4f4-6aad5a85607f"
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": "",
+				"id": "4979c28a-6782-3b61-2628-65864e13da18"
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": "",
+				"id": "5bcae8cc-e8e8-c3bb-7c6d-7aafb36d0896"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "e5d1e82a-7d45-f185-479c-af7ad61fab98"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "86382b45-9a93-a911-75d4-c79b4704d2a2"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "e12515d8-b0c1-bef0-dbc0-210757772838"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "b02078d0-f9d4-7254-5cd3-b41eb26daa63"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "79a031a0-3436-40db-ce77-52f9f5cb360d"
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "5a8d7c03-3433-8208-1dcc-b96ec97607b7",
+			"parent": "f35b9bc1-f5e1-5787-c9a7-67d6596e9dd5",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "5da55dfb-1d9d-c151-3ef3-b399130f7bdb"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "1f58a9e3-1a29-a25b-ac4c-fd5274a2af4d"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "812cb922-fc25-a8d4-c876-9526b17ac774"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "9cab4a59-7358-b444-2cf3-f40271397f9f"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "6f78d8ac-4092-e658-1b93-4a898474b659"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "d4ae28ee-e4c7-c2c4-8728-38c567d5eb24"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "451f3e00-b704-ccc6-536d-df2c03dbc780",
+			"parent": "5a8d7c03-3433-8208-1dcc-b96ec97607b7",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Panel_1",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "0dc4a2b9-8547-db46-80be-81f7858d1457"
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "12",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": "",
+				"id": "ac20bb58-bf2a-d396-230b-4af0dcc488d5"
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": "",
+				"id": "46426201-75c2-c052-2fa1-b217dcfc0d46"
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": "",
+				"id": "14e03be7-ed00-e67a-a59f-e3bae37ce5ee"
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": "",
+				"id": "1ed9d680-337c-424b-0c64-bd35ce2e5fd1"
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": "",
+				"id": "8a878a5e-4e80-e111-70e6-a4bf23214b81"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "195",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "c1189d15-7225-551d-9fdd-3660c93ba84f"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "#eaedee",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "234eadd2-25f2-a9ce-54f4-678fb0d13c4b"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "9adf9668-3b4b-259b-9aea-96e458963df7"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "4281ea7a-2eb7-5d24-ea52-34dbd891c2d8"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "04647093-925f-fdca-7110-3ab20397e508"
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "d8fbf75b-66cb-f147-32c9-0abfe60bddae",
+			"parent": "f35b9bc1-f5e1-5787-c9a7-67d6596e9dd5",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Spacer_2",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "982063a3-8be4-8f61-482a-a57ea3fe18ab"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "10",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "88984819-f652-5711-5312-b5b0487ab268"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "2ca01dd5-1bcd-084b-19e0-6088b18e3992"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "d9954bdc-fc64-dfd6-f763-9c1e8cf32d5d"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "12bdc7b1-3935-49b6-7ff1-f3d526b83625"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "6c8d417b-e2b7-86a5-3745-c2b11d42d3ec"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "6da27941-fe17-993d-cc1d-cc9e580b0f05",
+			"parent": "f35b9bc1-f5e1-5787-c9a7-67d6596e9dd5",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "820818a1-bef4-cb9e-e66c-c26c51cc2325"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "4e67e3ed-d367-3ef6-8bdd-9848456af971"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "27a6b1f4-39c0-8175-ae29-2f3b9d443836"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "16788707-f530-9fc5-c81a-4320cecdfc8d"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "4b7a0fe7-1406-42f4-825a-b11785be9c5c"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "7c5348ae-f0f8-6e8e-974f-bc5c41282302"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "992d2a9f-f476-5a6d-ec17-d4c2b84f067a",
+			"parent": "6da27941-fe17-993d-cc1d-cc9e580b0f05",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Panel_2",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "85ff7c01-b34b-ae57-e4b5-f3bc61b32ff8"
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "12",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": "",
+				"id": "877125c0-ddc3-a62c-abea-08430e1613ba"
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": "",
+				"id": "59cc6315-69ba-652e-2ada-2182fda66a8b"
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": "",
+				"id": "0f82532c-c92c-8fc9-f5b6-7fc234f5e26c"
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": "",
+				"id": "e0f9ff48-9ed4-7d53-b75c-1402574edd05"
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": "",
+				"id": "6e2a0eda-1bfb-abf0-88d2-65893c82a7cb"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "195",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "abdf01fb-ab23-1b95-c71b-f7308d66e9d5"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "#eaedee",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "de6c5abc-a1f9-c7f4-cf67-7f448047ab85"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "34705750-72cd-7a1b-f92f-0dc926ec4533"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "b89fe15b-e9e4-15f7-3a7b-c8e5007c548d"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "e2b8d252-099b-bc77-87c6-aeed1d30dac0"
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "d86613ab-7103-66b3-3201-deaf96f38bad",
+			"parent": "bc19af30-9a5f-7f04-d630-4b91593b8e24",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Panel_3",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": "",
+				"id": "a23f13d5-f029-6d12-0bce-848698d3811f"
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "6",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": "",
+				"id": "1f5d0b7c-dfe9-ef46-31ad-e82a4bb68c13"
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": "",
+				"id": "76febbad-1312-515e-afa3-206ca6ba88d7"
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": "",
+				"id": "c440f925-61e3-6615-b5f4-02ed41e5ef34"
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": "",
+				"id": "1278015f-95e7-93a2-e4d9-d3db290ff8bb"
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": "",
+				"id": "0da53f54-31d9-d2aa-0ec2-9d51c2dd543d"
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "400",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": "",
+				"id": "15d2e369-731e-e974-2783-0c848397d853"
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "#eaedee",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced",
+				"id": "c9dd6679-5587-c633-3371-3715772d927d"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": "",
+				"id": "407f98df-bb90-21ee-dbde-36b955fba2e8"
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": "",
+				"id": "87571e33-1126-caa3-a8c1-80adc6c3dd30"
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": "",
+				"id": "614e605e-3729-0421-db5b-243c36215226"
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "5839b3da-fbf1-5908-b6c0-1efef76b9a80",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Small_Space",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "5",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "5e522c83-0c3d-fc75-7ba3-f77eee2742d8",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Footer",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "50",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "9c451be0-653e-7c4f-1fcc-93db72d9d7eb",
+			"parent": "5e522c83-0c3d-fc75-7ba3-f77eee2742d8",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "Footer_Image",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "bootstrapExtraSmall",
+				"type": "String",
+				"value": "12",
+				"description": "Extra Small Devices",
+				"tooltip": "Bootstrap Extra Small Devices Property",
+				"order": 30,
+				"classType": ""
+			}, {
+				"name": "bootstrapSmall",
+				"type": "String",
+				"value": "",
+				"description": "Small Devices",
+				"tooltip": "Bootstrap Small Devices Property",
+				"order": 31,
+				"classType": ""
+			}, {
+				"name": "bootstrapMedium",
+				"type": "String",
+				"value": "",
+				"description": "Medium Devices",
+				"tooltip": "Bootstrap Medium Devices Property",
+				"order": 32,
+				"classType": ""
+			}, {
+				"name": "bootstrapLarge",
+				"type": "String",
+				"value": "",
+				"description": "Large Devices",
+				"tooltip": "Bootstrap Large Devices Property",
+				"order": 33,
+				"classType": ""
+			}, {
+				"name": "bootstrapCssClass",
+				"type": "String",
+				"value": "",
+				"description": "Bootstrap Css Class",
+				"tooltip": "Bootstrap Css Class to be used when this element is rendered",
+				"order": 34,
+				"classType": ""
+			}, {
+				"name": "height",
+				"type": "Integer",
+				"value": "50",
+				"description": "Height",
+				"tooltip": "Element height, in pixels ",
+				"order": 50,
+				"classType": ""
+			}, {
+				"name": "backgroundColor",
+				"type": "Color",
+				"value": "#eaedee",
+				"description": "BackgroundColor",
+				"tooltip": "Element background color",
+				"order": 56,
+				"classType": "advanced"
+			}, {
+				"name": "roundCorners",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"description": "Corners",
+				"tooltip": "Corners type",
+				"order": 70,
+				"classType": ""
+			}, {
+				"name": "textAlign",
+				"type": "TextAlign",
+				"value": "",
+				"description": "Text Align",
+				"tooltip": "Text Align",
+				"order": 75,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutBootstrapColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "09c11ffd-ef65-8432-bb58-b42e334e9116",
+			"parent": "9c451be0-653e-7c4f-1fcc-93db72d9d7eb",
+			"properties": [{
+				"name": "name",
+				"type": "Id",
+				"value": "",
+				"description": "Name",
+				"tooltip": "Name",
+				"order": 5,
+				"classType": ""
+			}, {
+				"name": "html",
+				"type": "Html",
+				"value": "<a style=\"position:relative;top:9px;right:15px;float:right;\" border=\"0\" title=\"WebDetails\" href=\"http://www.webdetails.pt\">\n<img src=\"images/NAV/logo_webdetails.png\"/>\n</a> ",
+				"description": "HTML",
+				"tooltip": "Html code to be added",
+				"order": 15,
+				"classType": ""
+			}, {
+				"name": "fontSize",
+				"type": "Integer",
+				"value": "",
+				"description": "Font Size",
+				"tooltip": "Font size, in pixels ",
+				"order": 49,
+				"classType": "advanced"
+			}, {
+				"name": "color",
+				"type": "Color",
+				"value": "",
+				"description": "Color",
+				"tooltip": "Element color",
+				"order": 55,
+				"classType": ""
+			}, {
+				"name": "cssClass",
+				"type": "String",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"order": 80,
+				"classType": ""
+			}],
+			"type": "LayoutHtml",
+			"typeDesc": "Html"
+		}],
+		"title": "Two x One Template"
+	}
+}

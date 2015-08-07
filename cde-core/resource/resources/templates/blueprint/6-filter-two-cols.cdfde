@@ -1,0 +1,1258 @@
+{
+	"components": {
+		"rows": []
+	},
+	"datasources": {
+		"rows": []
+	},
+	"layout": {
+		"rows": [{
+			"id": "e12f9bf3-27f1-beb1-0a68-a5b0facd091b",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Header",
+				"id": "1867bd7e-e6da-01cd-1399-423d299a0e65"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "d8d840c5-ee4e-cb55-de15-62f606cd1550"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "0a3fa6ef-1783-1a37-541a-4662213f966f"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "06d7e3c5-be87-06ab-d3e5-ac3b5da58a48"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "34b3bcf5-3dc5-9ca2-aa9a-9543a3b9188e"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "8e0f2b33-a8ff-6374-a256-60506f09465d"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "5dc54aa4-6a22-269a-d641-ac5fd3a61298",
+			"parent": "e12f9bf3-27f1-beb1-0a68-a5b0facd091b",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "c737dacb-bc08-37a1-20e9-e96cdd75667d"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "24",
+				"id": "74a3cc3c-49de-a994-69ea-ad337b0d9d3c"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "19a27ade-8671-cc5b-d616-39ac0ace0862"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "6915e754-7b00-19a4-fe4f-e6ff418897fd"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "8ebd2d06-23d9-c9a1-b30a-e1c4cb79c21a"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "bb2603ba-a969-8224-f213-59f774bb631a"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "d149fea1-a8c1-8efb-4047-2fd8b07f9dbb"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "18e84f15-bfe0-c801-6b37-52a891af89ef"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "60",
+				"id": "c6c6b306-c743-220a-931e-7441e267923d"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "#005ac7",
+				"id": "c27f74cd-7398-5b72-96c9-d986450f024a"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"id": "4accec49-91f1-dc8f-0798-0ffe553bc5c0"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "center",
+				"id": "8ff23c63-2c24-e015-132a-f5b243c12686"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "4438aaa9-9d62-9b0f-e5be-d64c1bdc5b7d"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "53e4ccdd-bd66-1ee1-8b5a-5a8771703095",
+			"parent": "5dc54aa4-6a22-269a-d641-ac5fd3a61298",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "title",
+				"id": "24169ceb-b8e7-c86d-1fb4-0e7c2a01566a"
+			}, {
+				"description": "HTML",
+				"name": "html",
+				"order": 15,
+				"tooltip": "Html code to be added",
+				"type": "Html",
+				"value": "<h2 style=\"color:#FFFFFF;\">Dashboard generated with CDE</h2> ",
+				"id": "291adcf2-274a-5a95-b4d5-0a71944e1063"
+			}, {
+				"name": "fontSize",
+				"value": "",
+				"description": "Font Size",
+				"tooltip": "Font size, in pixels ",
+				"type": "Integer",
+				"order": 49,
+				"classType": "advanced",
+				"id": "455799e4-8b0b-eb10-8720-106b75270546"
+			}, {
+				"name": "color",
+				"value": "",
+				"description": "Color",
+				"tooltip": "Element color",
+				"type": "Color",
+				"order": 55,
+				"classType": "",
+				"id": "884f2d65-44e6-8b51-15c2-8bb02b9c8b76"
+			}, {
+				"name": "cssClass",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"order": 80,
+				"classType": "",
+				"id": "3cb32d48-35a3-aa7f-0b53-be92d1d9b5ab"
+			}],
+			"type": "LayoutHtml",
+			"typeDesc": "Html"
+		}, {
+			"id": "cda9bf5f-0f51-13db-68ac-616cef3e73be",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Spacer",
+				"id": "c4ab71cf-b70d-54e5-4ac2-42b7c9337844"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "5",
+				"id": "7c9293d2-1281-6219-01d5-2283a6cb36b8"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "00f3e978-21d2-3477-1e70-c28fbbd10f54"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "c1c4de6f-2300-4732-4d1d-240cda5fd8bc"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "c4dbb3ba-4c14-5a0a-813a-7bb1af9bf8a1"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "0b7d621d-199f-9750-eb6c-da0820344a54"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "9b5e4665-60dd-d123-d49a-7cb9072a0540",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Body",
+				"id": "1c03feb6-3de8-4fc3-a8d2-0c2db7c8ab49"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "c1ed50f5-fca0-6305-2fa6-f892c7d7ecc4"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "8b32bc9f-ac9d-4d5a-0829-cce6f112ba1a"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "557e6357-90e7-8896-dc51-f661a04a5f94"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "b5b19259-6a3a-a92f-a96b-3c858dc20602"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "47dc0a2f-4df7-0cef-fe25-5574b5c3834c"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "a75b059a-0f5b-deda-6d3f-aeba72af2fe5",
+			"parent": "9b5e4665-60dd-d123-d49a-7cb9072a0540",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "9abd46e7-cbd4-a099-0fd1-1dfd15107520"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "5",
+				"id": "198b1bf3-7b71-f83e-c099-dc0936da6a35"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "2fdd1c2e-bcef-9072-70f6-f5717ba168b4"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "575b87e8-edb8-9a73-10d0-43dee2044863"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "6ab83efa-88c8-8743-966b-09303c025763"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "af0c9732-d3a4-f210-9d19-9956922c0117"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "ea196d0a-d6b3-50e9-b52f-ca74e7b0e552"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "34f91815-2599-045e-9ebc-9dfbaf85f49c"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "f351f619-d7ae-8478-f6e6-1f459193c7c4"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "9644602d-caad-7ecb-34fc-cf2a8e9ffb50"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "039c7a2c-87e6-6a70-8183-9592545dd71c"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "2d3d5964-cd6a-5823-a98d-80d5c82be7eb"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "200b0688-0741-e5ba-93ea-c9bf12c3994b"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "109e0fe4-cbaf-cfc7-7223-87b4e440ba61",
+			"parent": "a75b059a-0f5b-deda-6d3f-aeba72af2fe5",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "6c2a3ba6-2316-27dd-989d-8c6d4ed270de"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "4913b737-d7bc-4d2f-3f8c-ab640e73d691"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "dc474b89-2778-da58-ecab-af8bb0d6b03f"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "25b8b58d-9af6-0ba6-8ff6-22e8974b8dd4"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "12b73ba7-50e8-4419-2f00-44bcfdb6db1c"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "13d4b960-ecb4-2057-f081-a6536bd47ada"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "8c6986df-92c9-7603-892b-7515bd1395eb",
+			"parent": "109e0fe4-cbaf-cfc7-7223-87b4e440ba61",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "14c08ea2-9b51-0a0b-7d75-e909ba61dbca"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "3",
+				"id": "e0127033-658f-dc50-a650-92fc3e09464e"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "9a953d5d-f67d-2897-feb2-27a6b36604bc"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "a2233e57-bffd-bddc-f159-3e7930643428"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "66801959-5671-1187-89ca-759ee3ccca03"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "ddf594d9-884e-0e77-e6a2-6996a1e7d84e"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "720e1186-4af5-3818-beef-7420da475474"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "3de54da2-b8a3-fd65-b231-3cc4e53e855b"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "400",
+				"id": "6e2b3d2a-e25b-35ed-381c-d2de5ed3aaad"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "#eaedee",
+				"id": "be6c895c-61eb-7ac4-7328-8cf6f56262e3"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"id": "d30c125c-4598-7c5d-f11b-1dd0f1b561f9"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "717d0caa-0c45-2722-1ffc-b10c63f4db8d"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "0015036d-46dc-9b79-f77c-6a0d63acf915"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "791e69ca-0094-9704-402e-8f36a825d68b",
+			"parent": "9b5e4665-60dd-d123-d49a-7cb9072a0540",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "ccb6d618-c6a1-9a14-e33d-7c999e422ea3"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "19",
+				"id": "c794466c-0150-83c0-1cdc-b2c74372582b"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "b708edb1-ba68-ca14-7fe0-69d8adfe5442"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "703a2c1a-2e0c-1d4a-de77-29300fd4d06d"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "61301bf7-a8df-9183-86bf-481a3c3eea7a"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "2cfe09a6-95b5-d46d-3e05-3e973ff2b734"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "01ef6119-8f46-ceca-3e36-b818bb6d897b"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "e86aff5e-ae54-2659-0034-58e5d074624c"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "3e010579-810d-0317-c163-2b63ebbe4b93"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "ec05dcf0-d00e-76cc-0ce5-491528926ed7"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "758ba238-2466-b475-9249-0303458957b2"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "6d9d1f96-b49c-4bb8-0ac0-33554f7bd6f9"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "8adbc73e-b6d7-9132-41c9-62503079050a"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "3349aa2a-b3a6-b0f2-2fbd-94b57faf972a",
+			"parent": "791e69ca-0094-9704-402e-8f36a825d68b",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "5857ea0c-f175-fea9-e50b-b2c90761e2de"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "316bbc64-5890-a1b4-cbb5-3242dc67ec15"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "6ba87323-28a8-87dd-da25-ff4610177a1d"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "6ae32122-a604-76d5-7b32-bc2d4b3a62b1"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "e2c009a6-c7b6-96db-eb0b-2a3a41963e12"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "a9c76e95-70bb-b0c6-3817-9484f8262d2f"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "1aa15524-97e6-422c-845f-b5907d3e0fd7",
+			"parent": "3349aa2a-b3a6-b0f2-2fbd-94b57faf972a",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "3990416b-6dd0-215f-6f08-ee9eda6f7757"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "7",
+				"id": "4d7ac741-793e-4375-1ba1-f7bd28cf671a"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "74660431-5314-2bbf-1ced-47dfe3c75d47"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "bd2c6a91-a459-118f-d2a9-bf72a8f06bcb"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "01b41100-4e78-8c3d-05cc-6c3d31ced84b"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "7fed0157-8094-b7f6-7313-d6c68cbc1bde"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "d41cd3b2-dcd6-a231-53cf-c991595cc4fc"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "a4dd7b27-c21d-7857-b4c9-c57921ba9040"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "400",
+				"id": "84c79f31-f195-b7d1-6444-dfca8061ed3f"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "#eaedee",
+				"id": "4e6301cf-7683-bec9-10f8-4f0d8a4143ad"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"id": "885fa570-dba4-65fb-b047-4490065fc9af"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "84f28378-7223-c135-a22c-ec0fb50f2763"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "305a6d82-a729-27be-35a1-1c1d1137775e"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "cddb95b2-cd21-651a-90b7-c0ce0e88e620",
+			"parent": "3349aa2a-b3a6-b0f2-2fbd-94b57faf972a",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "",
+				"id": "8220b431-f6da-df3e-248d-8001507ca07f"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "8",
+				"id": "c6b6525b-7bc5-234e-a191-1c044e2b602f"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "43b32360-85e0-cffb-24ae-8ffcd05faa6e"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "1",
+				"id": "889729c5-f63a-b469-7edb-95bce1aeb5f5"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "6b5c7b97-826b-6dfa-c14d-3b577e90d233"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "66bb802e-c407-4845-2194-f97a97a85ed2"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "53f52b5c-e0a1-971b-8d66-cf6628ba94fb"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "b10e1100-7eb6-3ae1-f58a-4d7e03b11160"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "400",
+				"id": "b844c9ff-b843-b65c-b639-14a948c0c82f"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "#eaedee",
+				"id": "f235c7d8-3172-a1f7-2fbc-1757de84bb23"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"id": "3841256a-1f06-02df-3e5b-ade4211fe529"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "b6ba9ef7-0a67-cdfe-fa00-a4abc841ff3b"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "047114c6-124d-f0cd-8b1e-3d23fd50c931"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "6e933249-6d80-9b57-95f9-8a47a24ae398",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Small_Space",
+				"id": "2999d06d-6847-71d9-5dee-8f96d04b29ba"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "5",
+				"id": "033a4a67-2325-4c5e-8e0f-39748eed47a4"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "c7ca2881-e465-cc8a-de21-b07380860e1f"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "aeaea6a6-2f62-55f5-fa4f-3f97e1bf4b90"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "",
+				"id": "15fb28a4-5484-73e6-c814-907aa777a6e1"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "68c0b069-9fef-433a-eaec-8be6417544c3"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "64b07960-f21e-b93e-4911-8c2c025d0d3b",
+			"parent": "UnIqEiD",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Footer",
+				"id": "e49264b4-bc3a-d8a0-0888-1609f03747b1"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "50",
+				"id": "7624af31-cd8e-5736-75c1-76ecc1cd74cd"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "#eaedee",
+				"id": "7367e064-e2b7-b25d-5055-f3985169f422"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "cdfdd-round",
+				"id": "4901e798-2765-cb1d-3f4c-32893e4880d7"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "right",
+				"id": "3784162a-1152-e355-f149-e1e8c4112374"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "29c9f41f-6ad0-0889-3e41-884709a2951a"
+			}],
+			"type": "LayoutRow",
+			"typeDesc": "Row"
+		}, {
+			"id": "e5c22f13-2f56-9638-5a05-b675a84fc695",
+			"parent": "64b07960-f21e-b93e-4911-8c2c025d0d3b",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Footer_Image",
+				"id": "3d8d1daf-ac21-0458-1d2b-4bac93eeb915"
+			}, {
+				"description": "Span size",
+				"name": "columnSpan",
+				"order": 30,
+				"tooltip": "Column span size, numeric. The total must be 24",
+				"type": "Integer",
+				"value": "24",
+				"id": "6db8a7fb-ee09-ec14-2a14-cd8b5f4d39a2"
+			}, {
+				"description": "Prepend size",
+				"name": "columnPrepend",
+				"order": 32,
+				"tooltip": "Prepend size - optional",
+				"type": "Integer",
+				"value": "",
+				"id": "29d400f3-e5ec-53aa-ae4d-0a1aa320da87"
+			}, {
+				"description": "Append size",
+				"name": "columnAppend",
+				"order": 33,
+				"tooltip": "Append size - optional",
+				"type": "Integer",
+				"value": "0",
+				"id": "fce2b13a-487e-cae6-26c5-be78b23aa552"
+			}, {
+				"description": "Prepend gutter to top",
+				"name": "columnPrependTop",
+				"order": 34,
+				"tooltip": "Prepend space to the top of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "a64436b3-a0a8-073c-affb-41d744cc69c5"
+			}, {
+				"description": "Prepend gutter to bottom",
+				"name": "columnAppendBottom",
+				"order": 35,
+				"tooltip": "Prepend space to the bottom of the element",
+				"type": "Boolean",
+				"value": false,
+				"id": "63931843-da2f-a0de-0f6a-c7ce32c1cbe6"
+			}, {
+				"description": "Right border",
+				"name": "columnBorder",
+				"order": 36,
+				"tooltip": "Generates a border between the columns",
+				"type": "Boolean",
+				"value": false,
+				"id": "8ecacee4-6540-3a6b-77d5-cb982c47a885"
+			}, {
+				"description": "Big right border",
+				"name": "columnBigBorder",
+				"order": 37,
+				"tooltip": "Generates a border between the columns, ",
+				"type": "Boolean",
+				"value": false,
+				"id": "d354f474-fbfb-2b1a-e67f-d06d9c3f9669"
+			}, {
+				"description": "Height",
+				"name": "height",
+				"order": 50,
+				"tooltip": "Element height, in pixels ",
+				"type": "Integer",
+				"value": "",
+				"id": "821a2c8d-d661-afef-2dac-d84f98824f5e"
+			}, {
+				"description": "BackgroundColor",
+				"name": "backgroundColor",
+				"order": 55,
+				"tooltip": "Element background color",
+				"type": "Color",
+				"value": "",
+				"id": "f8592213-1a7d-9916-d2bd-655375a48058"
+			}, {
+				"description": "Corners",
+				"name": "roundCorners",
+				"order": 70,
+				"tooltip": "Corners type",
+				"type": "RoundCorners",
+				"value": "",
+				"id": "562d78a5-0c9b-edcb-b2b1-6f792d272f6d"
+			}, {
+				"description": "Text Align",
+				"name": "textAlign",
+				"order": 75,
+				"tooltip": "Text Align",
+				"type": "TextAlign",
+				"value": "left",
+				"id": "3b428f68-1efd-a62a-ea92-e47295849591"
+			}, {
+				"description": "Css Class",
+				"name": "cssClass",
+				"order": 80,
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"value": "",
+				"id": "13702346-516d-d48a-25b2-18f5c1a559c3"
+			}],
+			"type": "LayoutColumn",
+			"typeDesc": "Column"
+		}, {
+			"id": "68d6b48f-a44c-99af-7261-38b98e99259e",
+			"parent": "e5c22f13-2f56-9638-5a05-b675a84fc695",
+			"properties": [{
+				"description": "Name",
+				"name": "name",
+				"order": 5,
+				"tooltip": "Name",
+				"type": "Id",
+				"value": "Image",
+				"id": "9e1e4166-2954-cc16-c0d2-7e6108babeb1"
+			}, {
+				"description": "HTML",
+				"name": "html",
+				"order": 15,
+				"tooltip": "Html code to be added",
+				"type": "Html",
+				"value": "<a style=\"position:relative;top:9px;right:15px;float:right;\" border=\"0\" title=\"WebDetails\" href=\"http://www.webdetails.pt\">\n<img src=\"images/NAV/logo_webdetails.png\"/>\n</a> ",
+				"id": "5874ee4e-d1d9-c2cd-fbd1-8f6580adbfc9"
+			}, {
+				"name": "fontSize",
+				"value": "",
+				"description": "Font Size",
+				"tooltip": "Font size, in pixels ",
+				"type": "Integer",
+				"order": 49,
+				"classType": "advanced",
+				"id": "81c48efb-358d-b7ec-9e23-b7a3a58b563f"
+			}, {
+				"name": "color",
+				"value": "",
+				"description": "Color",
+				"tooltip": "Element color",
+				"type": "Color",
+				"order": 55,
+				"classType": "",
+				"id": "769dfd30-0b41-e196-f58c-0837d530bce2"
+			}, {
+				"name": "cssClass",
+				"value": "",
+				"description": "Css Class",
+				"tooltip": "Css Class to be used when this element is rendered",
+				"type": "String",
+				"order": 80,
+				"classType": "",
+				"id": "2fc2c553-88cd-0c5f-7075-53ad61460719"
+			}],
+			"type": "LayoutHtml",
+			"typeDesc": "Html"
+		}],
+		"title": "Filter 2 Cols Template"
+	}
+}
