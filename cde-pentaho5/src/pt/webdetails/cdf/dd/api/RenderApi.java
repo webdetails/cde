@@ -38,7 +38,7 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
-import pt.webdetails.cdf.dd.CdeApi;
+
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
 import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
@@ -388,9 +388,11 @@ public class RenderApi {
   @GET
   @Path( "/cde-embed.js" )
   @Produces( MimeTypes.JAVASCRIPT )
-  public void getCdeEmbeddedContext( @Context HttpServletRequest servletRequest,
+  public String getCdeEmbeddedContext( @Context HttpServletRequest servletRequest,
                        @Context HttpServletResponse servletResponse ) throws Exception {
-    new CdeApi().getCdeEmbeddedContext( servletRequest, servletResponse );
+    return InterPluginBroker.getCdfEmbed( servletRequest.getProtocol(), servletRequest.getServerName(),
+      servletRequest.getServerPort(), servletRequest.getSession().getMaxInactiveInterval(),
+      servletRequest.getParameter( "locale" ), getParameterProvider( servletRequest.getParameterMap() ) );
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
