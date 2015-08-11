@@ -2147,6 +2147,10 @@ div.popup.edit-popup {
   background: #0072CE;
 }
 
+.popup-body-notification {
+  padding: 20px;
+}
+
 div.popup .template-scroll {
   max-height: 400px;
   overflow: auto;
