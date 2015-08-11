@@ -187,4 +187,37 @@ public class InterPluginBroker {
     IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "context", "getConfig" );
     return pluginCall.call( params.getParameters() );
   }
+
+  public static String getCdfEmbed( String protocol, String name, int port, int inactiveInterval, String locale,
+                                    IParameterProvider requestParams ) throws Exception {
+    CallParameters params = new CallParameters();
+    params.put( "protocol", protocol );
+    params.put( "name", name );
+    params.put( "port", port );
+    params.put( "inactiveInterval", inactiveInterval );
+    params.put( "locale", locale );
+
+    if ( requestParams != null ) {
+      Iterator<String> iterator = requestParams.getParameterNames();
+
+      while ( iterator.hasNext() ) {
+        String paramName = iterator.next();
+        if ( StringUtils.isEmpty( paramName ) ) {
+          continue;
+        }
+        if ( requestParams.hasParameter( paramName ) ) {
+          Object paramValue = requestParams.getParameter( paramName );
+          if ( paramValue == null ) {
+            continue;
+          }
+
+          params.put( paramName, StringUtils.join( (String[]) paramValue, null, 0, 1 ) );
+        }
+      }
+    }
+
+    IPluginCall pluginCall = PluginEnvironment.env().getPluginCall( CorePlugin.CDF.getId(), "cdfApi",
+        "buildCdfEmbedContext" );
+    return pluginCall.call( params.getParameters() );
+  }
 }
