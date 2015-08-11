@@ -1142,6 +1142,34 @@ var CellRenderer = Base.extend({
 
   getTableManager: function() {
     return this.tableManager;
+  },
+
+  notificationPopup: function(title, message) {
+    // this is being triggered twice, we don't want to show a popup if a popup is already shown
+    if ( $("#popupbox").length > 0) {
+      return false;
+    }
+    var popupHeader = '' +
+      '<div class="popup-header-container">\n' +
+      '  <div class="popup-title-container">' + title + '</div>\n' +
+      '</div>\n';
+    var popupBody = '' +
+      '<div class="popup-body-notification">\n' +
+      '  <div class="popup-body-header clearfix">' + message + '  </div>' +
+      '</div>';
+    var htmlContent = $('<div>')
+        .append(popupHeader + popupBody)
+        .html();
+
+    $.prompt(htmlContent, {
+      buttons: {
+        Ok: false
+      },
+      prefix: "popup",
+      loaded: function() {
+        CDFDDUtils.movePopupButtons($(this));
+      }
+    });
   }
 });
 
@@ -1211,11 +1239,11 @@ var IdRenderer = StringRenderer.extend({
 
     if(cdfdd.dashboardWcdf.widget) {
       if(!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
-        $.prompt('Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.', {prefix: "popup"});
+        this.notificationPopup('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
         return false;
       }
     } else if(!value.match(/^[a-zA-Z0-9_.]*$/)) {
-      $.prompt('Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters', {prefix: "popup"});
+      this.notificationPopup('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
       return false;
     }
     return true;
@@ -1234,7 +1262,7 @@ var IntegerRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*$/)) {
-      $.prompt('Argument ' + value + ' must be numeric', {prefix: "popup"});
+      this.notificationPopup('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
@@ -1252,7 +1280,7 @@ var FloatRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*\.?\d*$/)) {
-      $.prompt('Argument ' + value + ' must be numeric', {prefix: "popup"});
+      this.notificationPopup('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
