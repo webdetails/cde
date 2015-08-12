@@ -39,8 +39,8 @@ var OpenLayersEngine = MapEngine.extend({
 
     var multiPolygonOL = _.map(multiPolygon, function(polygon){
       var polygonOL = _.map(polygon, function (ring) {
-        var linearRingOL = _.map(ring, function (latlong){
-          var point = new OpenLayers.LonLat(latlong[1], latlong[0] ).transform(
+        var linearRingOL = _.map(ring, function (lonlat){
+          var point = new OpenLayers.LonLat(lonlat[0], lonlat[1] ).transform(
             proj, // transform from WGS 1984
             mapProj // to the map system
           );
