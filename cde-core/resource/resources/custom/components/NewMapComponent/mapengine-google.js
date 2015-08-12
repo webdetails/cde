@@ -296,6 +296,45 @@ var GoogleMapEngine = MapEngine.extend({
         this.map.setOptions(layerOptions[k]);
       }
     }
+
+    function wrapViewportEvent(){
+      function transformPoint(centerPoint){
+        var center = {
+          latitude: centerPoint.lat(),
+          longitude: centerPoint.lng()
+        };
+        return center;
+      }
+      var bounds = this.map.getBounds();
+      var wrappedEvent = {
+        zoomLevel: this.map.getZoom(),
+        center: transformPoint(this.map.getCenter()),
+        _viewport: {
+          northEast: transformPoint(bounds.getNorthEast()),
+          southWest: transformPoint(bounds.getSouthWest())
+        },
+        raw: this.map
+      };
+
+      return wrappedEvent;
+    }
+
+    var eventMap = {
+      'zoom_changed': 'map:zoom',
+      'center_changed': 'map:center'
+    };
+
+    _.each(eventMap, function(mapEvent, engineEvent){
+      google.maps.event.addListener(myself.map, engineEvent, function(){
+        var wrappedEvent = wrapViewportEvent.call(myself);
+        myself.mapComponent.trigger.call(myself.mapComponent, mapEvent, wrappedEvent);
+      });
+    });
+
+
+
+
+
   },
 
   tileLayer: function(name){

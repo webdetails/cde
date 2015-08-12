@@ -82,10 +82,15 @@ var OpenLayersEngine = MapEngine.extend({
   },
 
   wrapEvent: function (event, featureType){
-    var lastXy = this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy || {x: undefined, y: undefined};
-    var coords = this.map.getLonLatFromPixel(lastXy)
-          .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326')
+    var lastXy = this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy; // || {x: undefined, y: undefined};
+    var coords;
+    if (lastXy){
+      coords = this.map.getLonLatFromPixel(lastXy)
+        .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326')
                     );
+    } else {
+      coords = { lat: undefined, lon: undefined};
+    }
     var feature = event.feature.layer.getFeatureById(event.feature.id);
     var myself = this;
     return {
@@ -326,6 +331,68 @@ var OpenLayersEngine = MapEngine.extend({
       }
     }
 
+
+    function wrapViewportEvent(e){
+      var mapProj = this.map.getProjectionObject();
+      var wsg84 = new OpenLayers.Projection('EPSG:4326');
+      var transformPoint = function(centerPoint){
+        var center;
+        if (centerPoint) {
+          var p = centerPoint.clone().transform(mapProj, wsg84);
+          center = {
+            latitude: p.lat,
+            longitude: p.lon
+          };
+        } else {
+          center = {
+            latitude: undefined, longitude: undefined
+          };
+        }
+        return center;
+      };
+
+      var extentObj = e.object.getExtent();
+      var viewport = {
+        northEast:{},
+        southWest:{}
+      };
+      if (extentObj){
+        var extentInLatLon = extentObj.transform(mapProj, wsg84);
+        viewport = {
+          northEast:{
+            latitude: extentInLatLon.top,
+            longitude: extentInLatLon.right
+          },
+          southWest: {
+            latitude: extentInLatLon.bottom,
+            longitude: extentInLatLon.left
+          }
+        };
+      }
+      var wrappedEvent = {
+        zoomLevel: e.object.getZoom(),
+        center: transformPoint(e.object.center),
+        viewport: viewport,
+        raw: e
+      };
+      window.lastEvent = e;
+      return wrappedEvent;
+    }
+
+    var eventMap = {
+      //'zoomstart': 'map:zoom',
+      'zoomend': 'map:zoom',
+      'movestart': 'map:center'
+    };
+
+    _.each(eventMap, function(mapEvent, engineEvent){
+      myself.map.events.register(engineEvent, myself.map, function(e){
+        var wrappedEvent = wrapViewportEvent.call(myself, e);
+        myself.mapComponent.trigger.call(myself.mapComponent, mapEvent, wrappedEvent);
+      });
+    });
+
+
     var hoverCtrl = new OpenLayers.Control.SelectFeature( [this.markers, this.shapes], {
       hover: true,
       highlightOnly: true,
@@ -341,13 +408,13 @@ var OpenLayersEngine = MapEngine.extend({
       outFeature: function(feature) {
         if (this.hover) {
           if (this.highlightOnly) {
-            // we do nothing if we're not the last highlighter of the 
-            // feature 
+            // we do nothing if we're not the last highlighter of the
+            // feature
             if (feature._lastHighlighter == this.id) {
-              // if another select control had highlighted the feature before 
-              // we did it ourself then we use that control to highlight the 
-              // feature as it was before we highlighted it, else we just 
-              // unhighlight it 
+              // if another select control had highlighted the feature before
+              // we did it ourself then we use that control to highlight the
+              // feature as it was before we highlighted it, else we just
+              // unhighlight it
               if (feature._prevHighlighter &&
                 feature._prevHighlighter != this.id) {
                 delete feature._lastHighlighter;
@@ -355,7 +422,7 @@ var OpenLayersEngine = MapEngine.extend({
                   feature._prevHighlighter);
                 if (control) {
                   control.highlight(feature);
-                  // THIS IS ADDED BY ME 
+                  // THIS IS ADDED BY ME
                   this.events.triggerEvent("featureunhighlighted", {
                     feature: feature
                   });
@@ -364,7 +431,7 @@ var OpenLayersEngine = MapEngine.extend({
                 this.unhighlight(feature);
               }
             } else {
-              // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME                
+              // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME
               this.events.triggerEvent("featureunhighlighted", {
                 feature: feature
               });
@@ -396,7 +463,7 @@ var OpenLayersEngine = MapEngine.extend({
 
     this.shapes.events.on({
       featureselected: function(e) {myself.mapComponent.trigger('shape:click', myself.wrapEvent(e));}
-    })
+    });
 
   },
 
