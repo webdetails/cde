@@ -623,13 +623,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
     if(this.multiDimensionArray) {
       arg = values[0];
       value = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
+      values[1] = value;
       if(this.hasTypedValues) {
         type = values[2];
         access = values[3];
 
         row = this.buildTypedRow(index, arg, value, type, access);
       } else {
-        row = this.buildMultiDimensionRow(index, arg, value);
+        row = this.buildMultiDimensionRow.apply(this, [index].concat(values));
       }
     } else {
       arg = values;
@@ -886,7 +887,45 @@ var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
 var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Cache Keys',
   argTitle: 'Key',
-  valTitle: 'Value'
+  valTitle: 'Value',
+  onPopupLoad: function(){
+    var lh = $("#popupbox .popup-list-row-label");
+    lh.find(".popup-label.popup-value-label").addClass('popup-value-label-small');
+    lh.find(".popup-label.popup-arg-label").addClass('popup-arg-label-small');
+    lh.append('<div class="popup-label popup-default-label">Default</div>');
+  },
+  getRowValues: function(i) {
+      var result = [];
+      result.push($('#arg_' + i).val());//key
+      result.push($('#val_' + i).val());//value
+      result.push($('#def_' + i).val());//default
+      return result;
+  },
+  getArgSection: function(index, value) {
+    return '' +
+        '<div class="popup-arg-container-small">' +
+        '  <input id="arg_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Cache Key..."></input>' +
+        '</div>';
+  },
+  getValueSection: function(index, value) {
+    return '' +
+        '<div class="popup-value-container-small">' +
+        '  <input id="val_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Value..."></input>' +
+        '</div>';
+  },
+  getDefaultSection: function(index, value) {
+    return '' +
+        '<div class="popup-default-container">' +
+        '  <input id="def_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Default..."></input>' +
+        '</div>';
+  },
+  buildMultiDimensionRow: function(index, arg, val, def) {
+    var argSection = this.getArgSection(index, arg);
+    var valSection = this.getValueSection(index, val);
+    var defaultSection = this.getDefaultSection(index, def);
+
+    return this.wrapPopupRow(index, 'multi-dimension-row', argSection + valSection + defaultSection);
+  }
 });
 
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
