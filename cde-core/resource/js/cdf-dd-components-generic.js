@@ -623,6 +623,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     if(this.multiDimensionArray) {
       arg = values[0];
       value = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
+      values[1] = value;
       if(this.hasTypedValues) {
         type = values[2];
         access = values[3];
