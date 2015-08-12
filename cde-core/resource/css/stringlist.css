@@ -224,13 +224,21 @@ div.ui-sortable-helper .popup-drag-icon span {
 
 /** End of Drag Icon */
 
-.popup-arg-label, .popup-arg-container, .popup-value-label, .popup-value-container {
+.popup-arg-label, .popup-arg-label-small, .popup-arg-container,
+.popup-arg-container-small, .popup-value-label,
+.popup-value-label-small, .popup-value-container,
+.popup-value-container-small, .popup-default-label,
+.popup-default-container {
   box-sizing: border-box;
   float: left;
 }
 
 .popup-arg-label, .popup-arg-container {
   width: 40%;
+}
+
+.popup-arg-label-small, .popup-arg-container-small {
+  width: 20%;
 }
 
 .typed-label .popup-label {
@@ -262,7 +270,14 @@ div.ui-sortable-helper .popup-drag-icon span {
   width: 60%;
 }
 
-.multi-dimension-row .popup-value-container {
+.popup-value-label-small, .popup-value-container-small,
+.popup-default-label, .popup-default-container {
+  width: 40%;
+}
+
+.multi-dimension-row .popup-value-container,
+.multi-dimension-row .popup-value-container-small,
+.multi-dimension-row .popup-default-container, {
   padding-left: 1px;
 }
 

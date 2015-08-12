@@ -67,7 +67,7 @@ public class CacheTest extends TestCase {
   @Test
   public void testRenderCacheTagWithKeys() {
     doReturn( "3600" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
-    doReturn( "[[\"Hello\",\"World\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
+    doReturn( "[[\"Hello\",\"World\",\"Foo\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 
     cacheRenderer.renderInto( dataAccess );
 
@@ -75,8 +75,9 @@ public class CacheTest extends TestCase {
     verify( cache, times(1)).setAttribute( "duration", "3600" );
     verify( dataAccess, times(1)).appendChild( cache );
 
-    verify( key, times(1)).setAttribute( "name", "Hello" );
-    verify( key, times(1)).setAttribute( "value", "World" );
-    verify( cache, times(1)).appendChild( key );
+    verify( key, times( 1 ) ).setAttribute( "name", "Hello" );
+    verify( key, times( 1 ) ).setAttribute( "value", "World" );
+    verify( key, times( 1 ) ).setAttribute( "default", "Foo" );
+    verify( cache, times( 1 ) ).appendChild( key );
   }
 }
