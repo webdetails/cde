@@ -27,6 +27,7 @@ public class Cache implements CdaElementRenderer {
   private JXPathContext context;
   private final String NAME_ATTR = "name";
   private final String VALUE_ATTR = "value";
+  private final String DEFAULT_ATTR = "default";
   private final String CACHE_ENABLED_ATTR = "enabled";
   private final String CACHE_DURATION_ATTR = "duration";
   private final String CACHE_ELEMENT_NAME = "Cache";
@@ -62,6 +63,9 @@ public class Cache implements CdaElementRenderer {
 
       key.setAttribute( NAME_ATTR, (String) content.get( 0 ) );
       key.setAttribute( VALUE_ATTR, (String) content.get( 1 ) );
+      if ( content.length() > 2 ) {
+        key.setAttribute( DEFAULT_ATTR, (String) content.get( 2 ) );
+      }
       cache.appendChild( key );
     }
   }

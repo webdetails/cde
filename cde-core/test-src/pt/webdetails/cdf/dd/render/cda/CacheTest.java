@@ -72,7 +72,7 @@ public class CacheTest extends TestCase {
   @Test
   public void testRenderCacheTagWithKeys() throws JSONException {
     doReturn( "3600" ).when( context ).getValue( "properties/.[name='cacheDuration']/value" );
-    doReturn( "[[\"Hello\",\"World\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
+    doReturn( "[[\"Hello\",\"World\",\"Foo\"]]" ).when( context ).getValue( "properties/.[name='cacheKeys']/value" );
 
     cacheRenderer.renderInto( dataAccess );
 
@@ -82,6 +82,7 @@ public class CacheTest extends TestCase {
 
     verify( key, times( 1 ) ).setAttribute( "name", "Hello" );
     verify( key, times( 1 ) ).setAttribute( "value", "World" );
+    verify( key, times( 1 ) ).setAttribute( "default", "Foo" );
     verify( cache, times( 1 ) ).appendChild( key );
   }
 }
