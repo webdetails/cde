@@ -37,10 +37,11 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
       spyOn(valueAr, 'buildSingleDimensionRow');
       spyOn(valueAr, 'buildMultiDimensionRow');
 
-      var values1 = ["arg","",""];
+      var values1 = ["arg", ""];
       var values2 = ["arg", "value"];
       var values3 = ["arg", null];
       var values4 = ["arg", undefined];
+      var values5 = ["key", "value", "default"];
 
       var index = 0;
       var container = $('<div>')//undefined;
@@ -52,6 +53,8 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
       expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values3[0], 'null');
       valueAr.addPopupRow(index, values4, container);
       expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values4[0], '');
+      valueAr.addPopupRow(index, values5, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values5[0], values5[1], values5[2]);
 
       expect(valueAr.buildTypedRow).not.toHaveBeenCalled();
       expect(valueAr.buildSingleDimensionRow).not.toHaveBeenCalled();
