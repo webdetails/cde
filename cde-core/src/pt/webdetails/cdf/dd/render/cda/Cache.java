@@ -67,7 +67,7 @@ public class Cache implements CdaElementRenderer {
 
       key.setAttribute( NAME_ATTR, (String) content.get( 0 ) );
       key.setAttribute( VALUE_ATTR, (String) content.get( 1 ) );
-      if ( content.length() > 2 ) {
+      if ( content.size() > 2 ) {
         key.setAttribute( DEFAULT_ATTR, (String) content.get( 2 ) );
       }
       cache.appendChild( key );
