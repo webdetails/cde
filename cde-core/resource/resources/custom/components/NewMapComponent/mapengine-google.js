@@ -163,8 +163,8 @@ var GoogleMapEngine = MapEngine.extend({
     // It seems that Google Maps does not support multipolygons, so we have to register each polygon instead.
     _.each(multiPolygon, function(polygon) {
       var polygonGM = _.map(polygon, function (ring) {
-        return _.map(ring, function (latlong){
-          return new google.maps.LatLng( latlong[0], latlong[1] );
+        return _.map(ring, function (lonlat){
+          return new google.maps.LatLng( lonlat[1], lonlat[0] );
         });
       });
 

@@ -281,10 +281,11 @@ var NewMapComponent = (function (){
     mapEngine: undefined, // points to one instance of a MapEngine object
     values: undefined,
     locationResolver: undefined, // addIn used to process location
+    //shapeResolver: undefined, // addIn used to process location
     API_KEY: false, // API KEY for map services such as Google Maps
     // Properies defined in CDE
-    //shapeDefinition: undefined,
     //mapMode: ['', 'markers', 'shapes'][1],
+    //shapeDefinition: undefined,
     //shapeSource: '',
     //tilesets: ['mapquest'],
     //colormap: [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]], //RGBA
@@ -383,8 +384,6 @@ var NewMapComponent = (function (){
 
       if ( this.queryDefinition && !$.isEmptyObject(this.queryDefinition) ){
         if ( (this.mapMode == "shapes") && (!_.isEmpty(this.shapeSource)) )  {
-          // this.load_sequential();
-          // this.load_deferred_hack();
           this.load_deferred();
         } else {
           this.triggerQuery(this.queryDefinition, _.bind(this.render, this));
@@ -393,41 +392,6 @@ var NewMapComponent = (function (){
         // No datasource, we'll just display the map
         this.synchronous(_.bind(this.render, this), {});
       }
-    },
-
-    dataRequest: function(url, callback){
-      /* Small wrapper around $.ajax requests with a success callback
-       * A $.Deferred() object is returned
-       */
-      return $.ajax(url, {
-        async: true,
-        type: 'GET',
-        processData: url.endsWith('json')
-      }).then(callback);
-    },
-
-    load_deferred_hack: function() {
-      var myself = this;
-      /* There are two possible approaches, concerning
-       *
-       */
-      // In this variant, postExec is called ASAP, possibly before this.render is called
-      var deferredQuery = function() {
-        var _deferredQuery = $.Deferred(),
-            myself = this;
-        this.triggerQuery(this.queryDefinition, function(data){
-          //myself.rawData = data;
-          _deferredQuery.resolve(data);
-        });
-        return _deferredQuery.promise();
-      };
-
-      return $.when( this.dataRequest(this.shapeSource),
-                     deferredQuery()
-                   ).done( function(shapes, resultset){
-                     myself.processShapeDefinition(shapes, function(){});
-                     myself.render(resultset);
-                   });
     },
 
     load_deferred: function() {
@@ -439,7 +403,8 @@ var NewMapComponent = (function (){
       }
 
       var deferreds = [
-        this.dataRequest(myself.shapeSource, _.bind(this.processShapeDefinition, this))
+        //this.dataRequest(myself.shapeSource, _.bind(this.processShapeDefinition, this))
+        this.dataRequest(myself.shapeSource)
       ];
 
       if (this.mapEngine == 'google'){
@@ -450,9 +415,45 @@ var NewMapComponent = (function (){
       return this.deferredTriggerQuery( this.queryDefinition, deferreds, function (resultset){
         myself.render(resultset);
       });
+    },
 
+    dataRequest: function(url, callback) {
+      var addIn = this.getAddIn("ShapeResolver", this.shapeResolver);
+      if (!addIn) {
+        if (this.shapeSource.endsWith('json')){
+          addIn = this.getAddIn("ShapeResolver", 'simpleJSON');
+        } else {
+          addIn = this.getAddIn("ShapeResolver", 'kml');
+        }
+      }
+      var deferred = $.Deferred();
+      if (!addIn){
+        deferred.resolve({});
+        return deferred.promise();
+      }
+
+      var tgt = this,
+          st = {
+            _parseShapeKey: this.parseShapeKey,
+            _shapeSource: url
+          };
+      var promise = addIn.call(tgt, st, this.getAddInOptions('ShapeResolver', addIn.getName()));
+      var me = this;
+      promise.then(function(data){
+        var result = data;
+        if (_.isFunction(callback)){
+          //result = callback.call(me, data);
+        }
+        me.shapeDefinition = result;
+        console.debug('shapeDefinitions arrived! ' + me.name);
+        deferred.resolve(result);
+      });
+      return deferred.promise();
 
     },
+
+
+
     deferredTriggerQuery: function (queryDef, deferreds, callback, userQueryOptions) {
       /*
        * Variation of the triggerQuery, supporting deferreds
@@ -574,60 +575,6 @@ var NewMapComponent = (function (){
     },
 
 
-    load_sequential : function() {
-      /*
-       Ensure the shapes are loaded before rendering, i.e., before attempting to draw the shapes.
-       In this approach, the shapes are loaded after postFetch
-       */
-      var myself=this;
-      this.triggerQuery( this.queryDefinition, function (resultset) {
-        myself.getShapeDefinition( function(){
-          myself.render(resultset);
-        });
-      });
-    },
-
-
-    getShapeDefinition : function(callback){
-      Dashboards.log('NewMapComponent.getShapeDefinition: entered with arguments ' + JSON.stringify(arguments), 'debug');
-      var myself = this;
-      if (this.shapeSource && !_.isEmpty(this.shapeSource) && !this.shapeDefinition){
-        var filetype = this.shapeSource.split('.').reverse()[0].toLowerCase(); // get extension
-        $.ajax(this.shapeSource, {
-          async: true,
-          type: 'GET',
-          processData: this.shapeSource.endsWith('json'),
-          success: function(data) {
-            myself.processShapeDefinition(data, callback);
-          }
-        });
-      }
-      // else {
-      //     callback.apply(myself);
-      //}
-    },
-
-    processShapeDefinition : function(data, callback) {
-      var filetype = this.shapeSource.split('.').reverse()[0].toLowerCase(); // get extension
-      if (data)  {
-        switch (filetype){
-        case 'kml':
-          Dashboards.log('parsing shapes', 'debug');
-          this.shapeDefinition = this.getShapeFromKML(data, this.parseShapeKey);
-          break;
-        case 'json':
-          this.shapeDefinition = data;
-          break;
-        }
-        if (_.isFunction( this.postProcessShape )) {
-          this.shapeDefinition = this.postProcessShape(this.shapeDefinition);
-        }
-      }
-      if (_.isFunction(callback)){
-        Dashboards.log('NewMapComponent.processShapeDefinition: callback is a function', 'debug');
-        callback(data);
-      }
-    },
 
     postProcessShape : function(shapeDefinition){
       /*
@@ -779,7 +726,8 @@ var NewMapComponent = (function (){
       var qvalues = _.map(values.resultset, function (row) { return row[idxValue]; });
       var minValue = _.min(qvalues), maxValue = _.max(qvalues);
 
-      $(values.resultset).each( function (i, elt) {
+      console.debug('rendering shapes' + this.name);
+      _.each(values.resultset, function (elt, i) {
         var fillColor = myself.mapColor(elt[idxValue], minValue, maxValue, colormap);
         myself.renderShape( myself.shapeDefinition[elt[idxKey]], _.defaults({
           fillColor: fillColor
@@ -866,7 +814,7 @@ var NewMapComponent = (function (){
           addinName = 'urlMarker';
         }
         var addIn = this.getAddIn("MarkerImage",addinName);
-        markerIcon = addIn.call(this.ph, st, this.getAddInOptions("MarkerImage", addIn.name));
+        markerIcon = addIn.call(this.ph, st, this.getAddInOptions("MarkerImage", addIn.getName()));
       }
       if (mapping.description) description = elt[mapping.description];
 
