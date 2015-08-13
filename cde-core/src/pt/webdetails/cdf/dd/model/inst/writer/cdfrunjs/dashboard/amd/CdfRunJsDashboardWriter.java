@@ -244,7 +244,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     // Output WCDF
     try {
-      addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
+      addAssignment( out, "var wcdfSettings = dashboard.wcdfSettings", wcdf.toJSON().toString( 2 ) );
     } catch ( JSONException ex ) {
       throw new ThingWriteException( "Converting wcdf to json", ex );
     }

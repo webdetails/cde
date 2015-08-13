@@ -12,7 +12,7 @@
         <Model>
             <Property>label</Property>
             <Property>htmlObject</Property>
-            <Property name="buttonStyle">tableStyle</Property>
+            <Property>buttonStyle</Property>
             <Property>executeAtStart</Property>
             <Property>listeners</Property>
             <Property>preExecution</Property>
@@ -82,6 +82,20 @@
                         <Advanced>true</Advanced>
 	                <Order>40</Order>
 	                <Version>1.0</Version>
+                    </Header>
+                </DesignerProperty>
+                <DesignerProperty>
+                    <Header>
+                        <Name>buttonStyle</Name>
+                        <Parent>BaseProperty</Parent>
+                        <DefaultValue></DefaultValue>
+                        <Description>Style</Description>
+                        <Tooltip>Button Style</Tooltip>
+                        <Advanced>true</Advanced>
+                        <InputType>TableStyle</InputType>
+                        <OutputType>String</OutputType>
+                        <Order>56</Order>
+                        <Version>1.0</Version>
                     </Header>
                 </DesignerProperty>
             </CustomProperties>
