@@ -11,28 +11,29 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-;(function(){
+;
+(function () {
 
   var thisAddIn = {
     name: "geoJSON",
     label: "GeoJSON shape resolver",
     defaults: {
       url: '', //url for the resource containing the json map definitions
-      keyProperty: '' //GeoJSON feature property that will be used to index the feature
+      idPropertyName: '' //GeoJSON feature property that will be used to index the feature
     },
     implementation: function (tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
-      if (url){
+      if (url) {
         $.ajax(url, {
           async: true,
           type: 'GET',
           dataType: 'json',
-          success: function(json) {
-            var map = geoJSON_to_map(json, opt.keyProperty);
+          success: function (json) {
+            var map = toMappedGeoJSON(json, opt.idPropertyName);
             deferred.resolve(map);
           },
-          error: function(){
+          error: function () {
             Dashboards.log('NewMapComponent geoJSON addIn: failed to retrieve data at' + url, 'debug');
             deferred.resolve({});
           }
@@ -45,22 +46,23 @@
     }
   };
 
-  function geoJSON_to_map(json, keyProperty){
+  function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features)
-        .map(function(feature, idx){
-          var id = feature.id || idx;
-          if (keyProperty){
-            id = feature.properties[keyProperty] || id;
-          }
-          var featureGeometry = feature.geometry.coordinates;
-          if (feature.geometry.type === 'Polygon'){
-            featureGeometry = [feature.geometry.coordinates];
-          }
-          return [id, featureGeometry];
+        .map(function (feature, idx) {
+          var id = getFeatureId(feature, idPropertyName) || idx;
+          return [id, feature];
         })
         .object()
         .value();
     return map;
+  }
+
+  function getFeatureId(feature, idPropertyName) {
+    var id = feature.id;
+    if (idPropertyName) {
+      id = feature.properties[idPropertyName] || id;
+    }
+    return id;
   }
 
   Dashboards.registerAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
