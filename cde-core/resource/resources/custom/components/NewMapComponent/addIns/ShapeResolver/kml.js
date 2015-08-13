@@ -97,7 +97,15 @@
   }
 
   function multiPolygonToGeoJSON(polygonArray){
-    return polygonArray;
+    var feature = {
+      type: "Feature",
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: polygonArray
+      },
+      properties: {}
+    };
+    return feature;
   }
 
   Dashboards.registerAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));

@@ -22,111 +22,111 @@ var GoogleMapEngine = MapEngine.extend({
   overlays: [],
   API_KEY: false,
   selectedFeature: undefined,
-  init: function(mapComponent, tilesets) {
+  init: function (mapComponent, tilesets) {
     this.tilesets = tilesets;
     this.mapComponent = mapComponent;
 
-    $.when( loadGoogleMaps('3',  this.API_KEY) ).then (
-      function (status) {
-        OurMapOverlay.prototype = new google.maps.OverlayView();
-        OurMapOverlay.prototype.onAdd = function() {
-          // Note: an overlay's receipt of onAdd() indicates that
-          // the map's panes are now available for attaching
-          // the overlay to the map via the DOM.
+    $.when(loadGoogleMaps('3', this.API_KEY)).then(
+        function (status) {
+          OurMapOverlay.prototype = new google.maps.OverlayView();
+          OurMapOverlay.prototype.onAdd = function () {
+            // Note: an overlay's receipt of onAdd() indicates that
+            // the map's panes are now available for attaching
+            // the overlay to the map via the DOM.
 
-          // Create the DIV and set some basic attributes.
-          var div = document.createElement('DIV');
-          div.id = 'MapOverlay';
-          div.style.position = "absolute";
+            // Create the DIV and set some basic attributes.
+            var div = document.createElement('DIV');
+            div.id = 'MapOverlay';
+            div.style.position = "absolute";
 
-          if (this.borderColor_) {
-            div.style.border = '3px solid ' + this.borderColor_;
-          } else {
-            div.style.border = "none";
-          }
+            if (this.borderColor_) {
+              div.style.border = '3px solid ' + this.borderColor_;
+            } else {
+              div.style.border = "none";
+            }
 
 
-          /*      var myself = this;
-           var closeDiv = $("<div id=\"MapOverlay_close\" class=\"olPopupCloseBox\" style=\"position: absolute;\"></div>");
-           closeDiv.click(function () {
-           myself.setMap(null);
-           });
+            /*      var myself = this;
+             var closeDiv = $("<div id=\"MapOverlay_close\" class=\"olPopupCloseBox\" style=\"position: absolute;\"></div>");
+             closeDiv.click(function () {
+             myself.setMap(null);
+             });
 
-           $(div).append(closeDiv);
-           */
-          if (this.popupContentDiv_ && this.popupContentDiv_.length > 0) {
-            $(div).append($('#' + this.popupContentDiv_));
-          } else
-            div.innerHTML = this.htmlContent_;
+             $(div).append(closeDiv);
+             */
+            if (this.popupContentDiv_ && this.popupContentDiv_.length > 0) {
+              $(div).append($('#' + this.popupContentDiv_));
+            } else
+              div.innerHTML = this.htmlContent_;
+
+
+            //Using implementation described on http://web.archive.org/web/20100522001851/http://code.google.com/apis/maps/documentation/javascript/overlays.html
+            // Set the overlay's div_ property to this DIV
+            this.div_ = div;
+
+            // We add an overlay to a map via one of the map's panes.
+            // We'll add this overlay to the overlayImage pane.
+            var panes = this.getPanes();
+            panes.overlayLayer.appendChild(div);
+          };
 
 
           //Using implementation described on http://web.archive.org/web/20100522001851/http://code.google.com/apis/maps/documentation/javascript/overlays.html
-          // Set the overlay's div_ property to this DIV
-          this.div_ = div;
+          OurMapOverlay.prototype.draw = function () {
+            // Size and position the overlay. We use a southwest and northeast
+            // position of the overlay to peg it to the correct position and size.
+            // We need to retrieve the projection from this overlay to do this.
+            var overlayProjection = this.getProjection();
 
-          // We add an overlay to a map via one of the map's panes.
-          // We'll add this overlay to the overlayImage pane.
-          var panes = this.getPanes();
-          panes.overlayLayer.appendChild(div);
-        };
+            // Retrieve the southwest and northeast coordinates of this overlay
+            // in latlngs and convert them to pixels coordinates.
+            // We'll use these coordinates to resize the DIV.
+            var sp = overlayProjection.fromLatLngToDivPixel(this.startPoint_);
 
-
-        //Using implementation described on http://web.archive.org/web/20100522001851/http://code.google.com/apis/maps/documentation/javascript/overlays.html
-        OurMapOverlay.prototype.draw = function() {
-          // Size and position the overlay. We use a southwest and northeast
-          // position of the overlay to peg it to the correct position and size.
-          // We need to retrieve the projection from this overlay to do this.
-          var overlayProjection = this.getProjection();
-
-          // Retrieve the southwest and northeast coordinates of this overlay
-          // in latlngs and convert them to pixels coordinates.
-          // We'll use these coordinates to resize the DIV.
-          var sp = overlayProjection.fromLatLngToDivPixel(this.startPoint_);
-
-          // Resize the DIV to fit the indicated dimensions.
-          var div = this.div_;
-          div.style.left = sp.x + 'px';
-          div.style.top = (sp.y + 30) + 'px';
-          div.style.width = this.width_ + 'px';
-          div.style.height = this.height_ + 'px';
-        };
+            // Resize the DIV to fit the indicated dimensions.
+            var div = this.div_;
+            div.style.left = sp.x + 'px';
+            div.style.top = (sp.y + 30) + 'px';
+            div.style.width = this.width_ + 'px';
+            div.style.height = this.height_ + 'px';
+          };
 
 
-        OurMapOverlay.prototype.onRemove = function() {
-          if (this.popupContentDiv_) {
-            // $('#' + this.popupContentDiv_).append($(this.div_));
-            // $(this.div_).detach();
-          }
-          this.div_.style.display = 'none';
-          // this.div_.parentNode.removeChild(this.div_);
-          // this.div_ = null;
-        };
+          OurMapOverlay.prototype.onRemove = function () {
+            if (this.popupContentDiv_) {
+              // $('#' + this.popupContentDiv_).append($(this.div_));
+              // $(this.div_).detach();
+            }
+            this.div_.style.display = 'none';
+            // this.div_.parentNode.removeChild(this.div_);
+            // this.div_ = null;
+          };
 
-        mapComponent.initCallBack();
+          mapComponent.initCallBack();
 
-      });
+        });
   },
 
-  toNativeStyle: function (foreignStyle){
+  toNativeStyle: function (foreignStyle) {
     var validStyle = {};
-    _.each(foreignStyle, function (value, key){
-      switch(key){
-      case 'strokeWidth':
-        validStyle['strokeWeight'] = value;
-        break;
-      case 'zIndex':
-      case 'visible':
-      case 'fillColor':
-      case 'fillOpacity':
-      case 'strokeColor':
-      case 'strokeOpacity':
-        validStyle[key] = value;
+    _.each(foreignStyle, function (value, key) {
+      switch (key) {
+        case 'strokeWidth':
+          validStyle['strokeWeight'] = value;
+          break;
+        case 'zIndex':
+        case 'visible':
+        case 'fillColor':
+        case 'fillOpacity':
+        case 'strokeColor':
+        case 'strokeOpacity':
+          validStyle[key] = value;
       }
     });
     return validStyle;
   },
 
-  wrapEvent: function (event, feature, featureType, featureStyle, data, marker){
+  wrapEvent: function (event, feature, featureType, featureStyle, data, marker) {
     var myself = this;
     return {
       latitude: event.latLng.lat(),
@@ -137,69 +137,99 @@ var GoogleMapEngine = MapEngine.extend({
       style: _.clone(featureStyle),
       marker: feature.marker,
       mapEngineType: 'google3',
-      draw: function( style ){
+      draw: function (style) {
         // this function is currently called by the shape callbacks
         var validStyle = myself.toNativeStyle(style);
         feature.setOptions(validStyle);
         feature.setVisible(false);
         feature.setVisible(_.has(style, 'visible') ? !!style.visible : true);
       },
-      setSelectedStyle: function(style) {
+      setSelectedStyle: function (style) {
         feature.selStyle = style;
       },
-      getSelectedStyle: function() {
+      getSelectedStyle: function () {
         return feature.selStyle;
       },
-      isSelected: function() {
+      isSelected: function () {
         return myself.selectedFeature && myself.selectedFeature[0] === data.key;
       },
       raw: event
     };
   },
-  setShape: function(multiPolygon, shapeStyle, data) {
+
+
+  setShape1: function (multiPolygon, shapeStyle, data) {
+    var shapes = this.map.data.addGeoJson(multiPolygon);
+    return;
+  },
+
+
+  setShape: function (feature, shapeStyle, data) {
+    if (!feature) {
+      return;
+    }
     var myself = this;
-    var shapes = [];
+
+    var multiPolygon;
+    switch (feature.geometry.type) {
+      case 'MultiPolygon':
+        multiPolygon = feature.geometry.coordinates;
+        break;
+      case 'Polygon':
+        multiPolygon = [feature.geometry.coordinates];
+        break;
+      case 'LineString':
+        multiPolygon = [[feature.geometry.coordinates]];
+        break;
+      default:
+        return;
+    }
 
     // It seems that Google Maps does not support multipolygons, so we have to register each polygon instead.
-    _.each(multiPolygon, function(polygon) {
+    var feature = _.map(multiPolygon, function (polygon) {
       var polygonGM = _.map(polygon, function (ring) {
-        return _.map(ring, function (lonlat){
-          return new google.maps.LatLng( lonlat[1], lonlat[0] );
+        return _.map(ring, function (lonlat) {
+          return new google.maps.LatLng(lonlat[1], lonlat[0]);
         });
       });
 
       var shape = new google.maps.Polygon(_.extend({
-        paths : polygonGM
+        paths: polygonGM
       }, myself.toNativeStyle(shapeStyle)));
       shape.setMap(myself.map);
-      shapes.push(shape);
+      return shape;
+    });
 
+
+    function addEventToFeature(eventName, event, feature, shapeStyle, data) {
+      _.each(feature, function (f) {
+        myself.mapComponent.trigger(eventName, myself.wrapEvent(event, f, 'shape', shapeStyle, data));
+      });
+    }
+
+    // We'll have to use a trick to emulate the callbacks on multipolygons...
+    _.each(feature, function (featurePolygon) {
       // We'll have to use a trick to emulate the multipolygons...
-      google.maps.event.addListener(shape, 'click', function (event) {
-        myself.unselectPrevShape(data.key, shapes, shapeStyle);
-        _.each(shapes, function (s){
-          myself.mapComponent.trigger('shape:click', myself.wrapEvent(event, s, 'shape',  shapeStyle, data));
-        });
+      google.maps.event.addListener(featurePolygon, 'click', function (event) {
+        myself.unselectPrevShape(data.key, feature, shapeStyle);
+        addEventToFeature('shape:click', event, feature, shapeStyle, data);
       });
-      google.maps.event.addListener(shape, 'mousemove',function (event) {
-        _.each(shapes, function (s){
-          myself.mapComponent.trigger('shape:mouseover', myself.wrapEvent(event, s, 'shape', shapeStyle, data));
-        });
+      google.maps.event.addListener(featurePolygon, 'mousemove', function (event) {
+        addEventToFeature('shape:mouseover', event, feature, shapeStyle, data);
       });
-      google.maps.event.addListener(shape, 'mouseout', function (event) {
-        _.each(shapes, function (s){
-          myself.mapComponent.trigger('shape:mouseout', myself.wrapEvent(event, s, 'shape', shapeStyle, data));
-        });
+      google.maps.event.addListener(featurePolygon, 'mouseout', function (event) {
+        addEventToFeature('shape:mouseout', event, feature, shapeStyle, data);
       });
     });
   },
 
-  postSetShapes: function (){},
+  postSetShapes: function () {
+  },
 
-  unselectPrevShape: function(key, shapes, shapeStyle) {
+  unselectPrevShape: function (key, shapes, shapeStyle) {
     var myself = this;
     var prevSelected = this.selectedFeature;
-    if(prevSelected && prevSelected[0] !== key) {
+    if (prevSelected && prevSelected[0] !== key) {
       var prevShapes = prevSelected[1];
       var prevStyle = prevSelected[2];
       _.each(prevShapes, function (s) {
@@ -212,16 +242,15 @@ var GoogleMapEngine = MapEngine.extend({
     this.selectedFeature = [key, shapes, shapeStyle];
   },
 
-  setMarker: function(lon, lat, icon, description, data, markerWidth, markerHeight, markerInfo) {
-    var myLatLng = new google.maps.LatLng(lat,lon);
+  setMarker: function (lon, lat, icon, description, data, markerWidth, markerHeight, markerInfo) {
+    var myLatLng = new google.maps.LatLng(lat, lon);
     var image = new google.maps.MarkerImage(icon,
-                                            // This marker is 20 pixels wide by 32 pixels tall.
-                                            new google.maps.Size(markerWidth, markerHeight),
-                                            // The origin for this image is 0,0.
-                                            new google.maps.Point(0,0),
-                                            // The anchor for this image is the base of the flagpole at 0,32.
-                                            new google.maps.Point(0, 0));
-
+        // This marker is 20 pixels wide by 32 pixels tall.
+        new google.maps.Size(markerWidth, markerHeight),
+        // The origin for this image is 0,0.
+        new google.maps.Point(0, 0),
+        // The anchor for this image is the base of the flagpole at 0,32.
+        new google.maps.Point(0, 0));
 
 
     var marker = new google.maps.Marker({
@@ -233,7 +262,7 @@ var GoogleMapEngine = MapEngine.extend({
     });
 
     var myself = this;
-    google.maps.event.addListener(marker, 'click', function(e) {
+    google.maps.event.addListener(marker, 'click', function (e) {
       myself.mapComponent.trigger('marker:click', myself.wrapEvent(e, marker, 'marker', markerInfo, data));
     });
 
@@ -241,15 +270,16 @@ var GoogleMapEngine = MapEngine.extend({
       this.map.setCenter(myLatLng);
   },
 
-  renderMap: function(target, centerLongitude, centerLatitude, zoomLevel) {
+  renderMap: function (target, centerLongitude, centerLatitude, zoomLevel) {
     var myself = this;
     var latlng;
 
     if (centerLatitude && centerLatitude != '' && centerLongitude && centerLongitude != '') {
       latlng = new google.maps.LatLng(centerLatitude, centerLongitude);
       this.centered = true;
-    } else
+    } else {
       latlng = new google.maps.LatLng(38.471, -9.15);
+    }
 
     if (!zoomLevel) zoomLevel = 2;
 
@@ -264,17 +294,15 @@ var GoogleMapEngine = MapEngine.extend({
     var layers = [],
         layerIds = [],
         layerOptions = [];
-    for (var k=0; k<this.tilesets.length; k++) {
-      var thisTileset = this.tilesets[k].slice(0),
-          tileset = thisTileset.slice(0).split('-')[0],
-          variant = thisTileset.slice(0).split('-').slice(1).join('-') || 'default';
+    for (var k = 0; k < this.tilesets.length; k++) {
+      var thisTileset = this.tilesets[k].slice(0);
 
       layerIds.push(thisTileset);
       layerOptions.push(_.extend(myOptions, {
         mapTypeId: thisTileset
       }));
 
-      if (this.tileServices[thisTileset]){
+      if (this.tileServices[thisTileset]) {
         layers.push(this.tileLayer(thisTileset));
       } else {
         layers.push('');
@@ -288,8 +316,8 @@ var GoogleMapEngine = MapEngine.extend({
         mapTypeIds: layerIds.concat(_.values(google.maps.MapTypeId))
       }
     });
-    for (k=0; k<layers.length; k++){
-      if (! _.isEmpty(layers[k])){
+    for (k = 0; k < layers.length; k++) {
+      if (!_.isEmpty(layers[k])) {
         this.map.mapTypes.set(layerIds[k], layers[k]);
         //this.map.overlayMapTypes.push(layers[k]);
         this.map.setMapTypeId(layerIds[k]);
@@ -297,47 +325,55 @@ var GoogleMapEngine = MapEngine.extend({
       }
     }
 
-    function wrapViewportEvent(){
-      function transformPoint(centerPoint){
-        var center = {
-          latitude: centerPoint.lat(),
-          longitude: centerPoint.lng()
-        };
-        return center;
-      }
-      var bounds = this.map.getBounds();
-      var wrappedEvent = {
-        zoomLevel: this.map.getZoom(),
-        center: transformPoint(this.map.getCenter()),
-        _viewport: {
-          northEast: transformPoint(bounds.getNorthEast()),
-          southWest: transformPoint(bounds.getSouthWest())
-        },
-        raw: this.map
-      };
-
-      return wrappedEvent;
-    }
-
     var eventMap = {
       'zoom_changed': 'map:zoom',
       'center_changed': 'map:center'
     };
-
-    _.each(eventMap, function(mapEvent, engineEvent){
-      google.maps.event.addListener(myself.map, engineEvent, function(){
+    _.each(eventMap, function (mapEvent, engineEvent) {
+      google.maps.event.addListener(myself.map, engineEvent, function () {
         var wrappedEvent = wrapViewportEvent.call(myself);
         myself.mapComponent.trigger.call(myself.mapComponent, mapEvent, wrappedEvent);
       });
     });
 
 
+    function wrapViewportEvent() {
+      var viewport = getViewport(this.map.getBounds());
+      var wrappedEvent = {
+        zoomLevel: this.map.getZoom(),
+        center: transformPoint(this.map.getCenter()),
+        viewport: viewport,
+        raw: this.map
+      };
+      return wrappedEvent;
 
+      function transformPoint(centerPoint) {
+        var center = {
+          latitude: centerPoint.lat(),
+          longitude: centerPoint.lng()
+        };
+        return center;
+      }
+
+      function getViewport(bounds) {
+        if (bounds) {
+          viewport = {
+            northEast: transformPoint(bounds.getNorthEast()),
+            southWest: transformPoint(bounds.getSouthWest())
+          };
+        } else {
+          viewport = {
+            northEast: {},
+            southWest: {}
+          }
+        }
+      }
+    }
 
 
   },
 
-  tileLayer: function(name){
+  tileLayer: function (name) {
     var options = _.extend({
       tileSize: new google.maps.Size(256, 256),
       minZoom: 1,
@@ -348,7 +384,7 @@ var GoogleMapEngine = MapEngine.extend({
 
     return new google.maps.ImageMapType(_.defaults({
       name: name.indexOf('/') >= 0 ? 'custom' : name,
-      getTileUrl: function(coord, zoom) {
+      getTileUrl: function (coord, zoom) {
         var limit = Math.pow(2, zoom);
         if (coord.y < 0 || coord.y >= limit) {
           return '404.png';
@@ -356,24 +392,24 @@ var GoogleMapEngine = MapEngine.extend({
           // use myself._selectUrl
           coord.x = ((coord.x % limit) + limit) % limit;
           var url;
-          if (_.isArray(urlList)){
-            url = urlList[ (coord.x + coord.y + zoom) % urlList.length ];
-            var s =  _.template('${z}/${x}/${y}', {x:coord.x, y:coord.y, z:zoom}, {interpolate: /\$\{(.+?)\}/g});
+          if (_.isArray(urlList)) {
+            var s = _.template('${z}/${x}/${y}', {x: coord.x, y: coord.y, z: zoom}, {interpolate: /\$\{(.+?)\}/g});
             url = myself._selectUrl(s, urlList);
           } else {
             url = urlList;
           }
-          return _.template(url, {x:coord.x, y:coord.y, z:zoom}, {interpolate: /\$\{(.+?)\}/g});
+          return _.template(url, {x: coord.x, y: coord.y, z: zoom}, {interpolate: /\$\{(.+?)\}/g});
         }
       }
     }, options));
   },
 
-  showPopup: function(data, mapElement, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
-
+  showPopup: function (data, mapElement, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
     var overlay = new OurMapOverlay(mapElement.getPosition(), popupWidth, popupHeight, contents, popupContentDiv, this.map, borderColor);
 
-    $(this.overlays).each(function (i, elt) {elt.setMap(null);});
+    _.each(this.overlays, function (elt) {
+      elt.setMap(null);
+    });
     this.overlays.push(overlay);
   }
 
