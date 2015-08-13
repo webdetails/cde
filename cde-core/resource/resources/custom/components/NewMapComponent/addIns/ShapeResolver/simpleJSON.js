@@ -50,14 +50,15 @@
     }
   };
 
-  function multiPolygonReverseCoordinates(multiPolygon) {
-    var reversedMultiPolygon = _.map(multiPolygon, function(polygon){
+  function multiPolygonReverseCoordinates(latLonMultiPolygon) {
+    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon){
       return _.map(polygon, function(lineString){
         return _.map(lineString, function(point){
           return point.reverse();
         });
       });
     });
+    return lonLatMultiPolygon;
   }
 
 
