@@ -195,10 +195,6 @@ var PalleteEntry = Base.extend({
 
     var _stub = stub != undefined ? stub : this.getStub();
 
-    if( rendererType == "bootstrap" && this.id == "TABLE_ENTRY" ) {
-      this.changeProperty( _stub, "tableStyle", "bootstrap" )
-    }
-
     var rowIdx;
     var colIdx = 0;
     var rowId;
