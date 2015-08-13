@@ -219,7 +219,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Map<String, String> componentModules = dashboardWriterSpy.writeComponents( context, dash, out );
 
     Assert.assertEquals(
-        "var wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
+        "var wcdfSettings = dashboard.wcdfSettings = {};" + NEWLINE + NEWLINE + NEWLINE
         + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
         out.toString() );
 
