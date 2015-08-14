@@ -14,8 +14,9 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
-  'cdf/lib/jquery'],
-  function(AddIn, Dashboard, $) {
+  'cdf/lib/jquery',
+  'amd!cdf/lib/underscore'],
+  function(AddIn, Dashboard, $, _) {
 
   var nominatim = {
     name: "openstreetmap",
@@ -42,7 +43,7 @@ define([
         st.continuationFunction(location);
         return;
       }
-        
+
       var params = $.extend(true, {}, opt.serviceParams);
 
       _.each(_.keys(st), function(key) {
@@ -85,10 +86,11 @@ define([
   $.extend(
       true,
       mapquest,
-      nominatim,
-      {name: "mapquest",
-      label: "MapQuest",
-      defaults: {url: "http://open.mapquestapi.com/nominatim/v1/search"}});
+      nominatim, {
+        name: "mapquest",
+        label: "MapQuest",
+        defaults: {url: "http://open.mapquestapi.com/nominatim/v1/search"}
+      });
 
   mapquest = new AddIn(mapquest);
 

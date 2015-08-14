@@ -53,7 +53,10 @@
       <Dependencies>
         <!-- <Dependency src="lib/OpenLayers.js" version="2.13.1">OpenLayers</Dependency> -->
         <Dependency src="MapComponentAsyncLoader.js" version="1.0">MapComponentAsyncLoader</Dependency>
-        <Dependency src="mapAddins.js" version="1.0">NewMapComponentAddins</Dependency>
+        <Dependency src="addIns/mapAddins.js" version="1.0">NewMapComponent_Addins</Dependency>
+        <Dependency src="addIns/ShapeResolver/kml.js" version="1.0">NewMapComponent_Addins_ShapeResolver_kml</Dependency>
+        <Dependency src="addIns/ShapeResolver/simpleJSON.js" version="1.0">NewMapComponent_Addins_ShapeResolver_simpleJSON</Dependency>
+        <Dependency src="addIns/ShapeResolver/geoJSON.js" version="1.0">NewMapComponent_Addins_ShapeResolver_geoJSON</Dependency>
         <Dependency src="mapengine.js" version="1.0">NewMapComponent_mapengine</Dependency>
         <Dependency src="mapengine-google.js" version="1.0">NewMapComponent_mapengine_google</Dependency>
         <Dependency src="mapengine-openlayers.js" version="1.0">NewMapComponent_mapengine_openlayers</Dependency>
