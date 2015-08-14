@@ -321,7 +321,7 @@ define([
         'apple': {minZoom: 3, maxZoom: 14}
       },
       // shapeMouseOver : function(event){
-      //     Loggerlog('Currently at lat=' + event.latitude + ', lng=' + event.longitude + ': Beat '+ event.data.key + ':' + event.data.value + ' crimes');
+      //     Logger.log('Currently at lat=' + event.latitude + ', lng=' + event.longitude + ': Beat '+ event.data.key + ':' + event.data.value + ' crimes');
       //     return {
       //         fillColor: 'blue',
       //         fillOpacity: 1,
@@ -443,20 +443,21 @@ define([
       initCallBack: function () {
 
         this.ph = this.placeholder();
-        var $popupDivHolder = $("#" + this.popupContentsDiv).clone();
+        var $popupContentsDiv = $("#" + this.popupContentsDiv);
+        var $popupDivHolder = $popupContentsDiv.clone();
         this.ph.empty(); //clear();
         //after first render, the popupContentsDiv gets moved inside ph, it will be discarded above, make sure we re-add him
-        if (this.popupContentsDiv && $("#" + this.popupContentsDiv).length != 1) {
+        if (this.popupContentsDiv && $popupContentsDiv.length != 1) {
           this.ph.append($popupDivHolder.html("None"));
         }
 
-        var centerLatitude = parseFloat(centerLatitude);
-        var centerLongitude = parseFloat(centerLongitude);
-        /*
-         centerLatitude = _.isFinite(centerLatitude) ? centerLatitude : 38.471;
-         centerLongitude = _.isFinite(centerLongitude) ? centerLongitude : -9.15;
-         */
-        this.mapEngine.renderMap(this.ph[0], centerLongitude, centerLatitude, this.defaultZoomLevel);
+        var centerLatitude = parseFloat(this.centerLatitude);
+        var centerLongitude = parseFloat(this.centerLongitude);
+
+        //centerLatitude = _.isFinite(centerLatitude) ? centerLatitude : 38.471;
+        //centerLongitude = _.isFinite(centerLongitude) ? centerLongitude : -9.15;
+
+        this.mapEngine.renderMap(this.ph[0]);
 
         switch (this.mapMode) {
           case 'shapes':
@@ -466,6 +467,9 @@ define([
             this.setupMarkers(this.values);
             break;
         }
+
+        this.mapEngine.updateViewport(centerLongitude, centerLatitude, this.defaultZoomLevel);
+
         Logger.log('Stopping clock: update cycle of ' + this.htmlObject + ' took ' + (new Date() - this.clock) + ' ms', 'debug');
       },
 
@@ -665,7 +669,7 @@ define([
           description = row[mapping.description];
         }
 
-        Logger.log('About to render ' + location[0] + ' / ' + location[1] + ' with marker ' + ' sized ' + markerHeight + ' / ' + markerWidth + 'and description ' + description, 'debug');
+        Logger.log('About to render ' + location[0] + ' / ' + location[1] + ' with marker sized ' + markerHeight + ' / ' + markerWidth + 'and description ' + description, 'debug');
 
         var markerInfo = { // hack to pass marker information to the mapEngine. This information will be included in the events
           longitude: location[0],
@@ -683,8 +687,9 @@ define([
         var defaultMarkers = event.marker.defaultMarkers;
         var mapping = event.marker.mapping;
         var position = event.marker.position;
+        var me = this;
         _.each(this.popupParameters, function (eltA) {
-          Logger.fireChange(eltA[1], event.data[mapping[eltA[0].toLowerCase()]]);
+          me.dashboard.fireChange(eltA[1], event.data[mapping[eltA[0].toLowerCase()]]);
         });
 
         if (this.popupContentsDiv || mapping.popupContents) {
@@ -806,7 +811,6 @@ define([
 
 
     });
-
 
 
     return NewMapComponent;
