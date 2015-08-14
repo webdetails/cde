@@ -2,18 +2,16 @@
 <CDADescriptor>
    <DataSources>
       <Connection id="emptyTemplateQuery" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
       <Connection id="templateQuery" type="scripting.scripting">
-         <Initscript></Initscript>
+         <Initscript/>
          <Language>beanshell</Language>
       </Connection>
-      <Connection id="githubStats" type="kettle.TransFromFile">
-         <KtrFile>githubStats.ktr</KtrFile>
-         <variables datarow-name="OWNER" variable-name="OWNER"/>
-         <variables datarow-name="REPO" variable-name="REPO"/>
-         <variables datarow-name="SHA" variable-name="SHA"/>
+      <Connection id="githubStats" type="scripting.scripting">
+         <Initscript/>
+         <Language>beanshell</Language>
       </Connection>
    </DataSources>
    <DataAccess access="public" connection="emptyTemplateQuery" id="emptyTemplateQuery"
@@ -21,7 +19,7 @@
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    
 String[] columnNames = new String[]{											
 	"Name",	"Description",	"Latitude",	"Longitude", "enabled",	"date",	"bullet",	"v1",	"v2",	"v3"	
 };											
@@ -30,13 +28,13 @@ Class[] columnTypes = new Class[]{
 };											
 TypedTableModel model = new TypedTableModel(columnNames, columnTypes);											
 
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="templateQuery" id="templateQuery" type="scriptable">
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;    
 String[] columnNames = new String[]{											
 	"Name",	"Description",	"Latitude",	"Longitude",	"enabled",	"date",	"bullet",	"v1",	"v2",	"v3"	
 };											
@@ -53,17 +51,175 @@ model.addRow(new Object[]{	new String ("CPK"),	new String ("Plugin Kickstarter")
 model.addRow(new Object[]{	new String ("CFR"),	new String ("File Repository"),	new Float(-64.86836197),	new Float(-62.77248056),	new Boolean(false),	new String("2014-12-30"),	new String ("13.51558242,14.6513744,97.66532517"),	new Float(13.51558242),	new Float(14.6513744),	new Float(97.66532517)	});
 model.addRow(new Object[]{	new String ("CDG"),	new String ("Data Generator"),	new Float(-88.20733418),	new Float(-72.48848486),	new Boolean(false),	new String("2015-01-01"),	new String ("1.954412768,83.66806352,31.52089382"),	new Float(1.954412768),	new Float(83.66806352),	new Float(31.52089382)	});
 model.addRow(new Object[]{	new String ("CBF"),	new String ("Build Framework"),	new Float(10.75148192),	new Float(-175.6339215),	new Boolean(true),	new String("2015-01-02"),	new String ("23.42902329,36.18434318,63.00424021"),	new Float(23.42902329),	new Float(36.18434318),	new Float(63.00424021)	});
-return model;</Query>
+return model;]]></Query>
    </DataAccess>
-   <DataAccess access="public" connection="githubStats" id="githubStats" type="kettle">
+   <DataAccess access="public" connection="githubStats" id="githubStats" type="jsonScriptable">
       <Cache duration="3600" enabled="true"/>
       <Columns/>
-      <Output indexes="0,1,2" mode="exclude"/>
-      <Parameters>
-         <Parameter default="webdetails" name="ONWER" type="String"/>
-         <Parameter default="cde" name="REPO" type="String"/>
-         <Parameter default="master" name="SHA" type="String"/>
-      </Parameters>
-      <Query>OUTPUT</Query>
+      <Parameters/>
+      <Query><![CDATA[{
+    "resultset": [
+        [
+            "Pedro Vale",
+            "https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a",
+            "Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test",
+            1,
+            76
+        ],
+        [
+            "Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a",
+        	"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test",
+        	2,
+        	76
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a",
+        	"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test",
+        	11,
+        	76
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a",
+        	"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test",
+        	15,
+        	76
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a",
+        	"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test",
+        	1,
+        	76
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5",
+        	"[CDE-556] - Fixing unit test",
+        	1,
+        	28
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5",
+        	"[CDE-556] - Fixing unit test",
+        	2,
+        	28
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5",
+        	"[CDE-556] - Fixing unit test",
+        	11,
+        	28
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5",
+        	"[CDE-556] - Fixing unit test",
+        	15,
+        	28
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5",
+        	"[CDE-556] - Fixing unit test",
+        	1,
+        	28
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476",
+        	"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	1,
+        	114
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476",
+        	"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	2,
+        	114
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476",
+        	"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	11,
+        	114
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476",
+        	"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	15,
+        	114
+        ],
+        [
+        	"Pedro Vale",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476",
+        	"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	1,
+        	114
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271",
+        	"[CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	1,
+        	65
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271",
+        	"[CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	2,
+        	65
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271",
+        	"[CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	11,
+        	65
+        ],
+        [
+        	"João Velasques",
+        	"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271",
+        	"[CDE-556] - CDE should expose default parameter for CDA cacheKeys",
+        	15,
+        	65
+        ],
+    ],
+    "metadata": [
+        {
+            colIndex: 0,
+            colType: "String",
+            colName: "Commiter"
+        },
+        {
+            colIndex: 1,
+            colType: "String",
+            colName: "URL"
+        },
+        {
+            colIndex: 2,
+            colType: "String",
+            colName: "Message"
+        },
+        {
+            colIndex: 3,
+            colType: "Integer",
+            colName: "Count"
+        },
+        {
+            colIndex: 4,
+            colType: "Integer",
+            colName: "Length"
+        }
+    ]
+}]]></Query>
    </DataAccess>
 </CDADescriptor>
