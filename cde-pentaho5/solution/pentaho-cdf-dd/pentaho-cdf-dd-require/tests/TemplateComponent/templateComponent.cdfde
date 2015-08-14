@@ -3305,7 +3305,7 @@
      },
      {
       "name": "colTypes",
-      "value": "[\"template\",\"template\",\"template\",\"numeric\",\"numeric\"]",
+      "value": "[\"string\",\"template\",\"template\",\"numeric\",\"numeric\"]",
       "type": "colTypesCustom"
      },
      {
@@ -3420,7 +3420,7 @@
      },
      {
       "name": "preExecution",
-      "value": "function f() {\n    var templateOptsInfo = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '  <div> {{items.name}} </div>'+\n                    '  <div> <a href=\"mailto:{{items.email}}\"> {{items.email}} </a> </div>'+\n                    '  <div class=\"fa fa-clock-o\"> {{items.date.date}} </div>'+\n                    '  <div class=\"fa fa-calendar\"> {{items.date.time}} </div>'+\n                    '</div>',\n        rootElement: 'items',\n        formatters: {\n            date: function(value){\n                var result = {\n                    date: moment(value).format('YYYY-MM-DD'),\n                    time: moment(value).format('hh:mm:ss')\n                };\n                return result;\n            }\n        }\n    };\n    var templateOptsLink = {\n        templateType: 'mustache', \n        template:   '<div class=\"fa fa-external-link\"> <a target=\"_blank\" href=\"{{value}}\"> Details </a> </div>',\n        rootElement: 'value',\n        formatters: {\n        }\n    };\n    var templateOptsExpandClick = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '   <div class=\"message ellipsis\"> {{value}} </div>'+\n                    '   <a class=\"toggleEllipsis\"> Click me to expand/collapse </a>'+\n                    '</div>',\n        rootElement: 'value',\n        formatters: {\n        },\n        events: [\n            ['click .toggleEllipsis', function(event) {\n                $(event.data.target).find('.message').toggleClass('ellipsis');\n            }]\n        ]\n    };\n    \n    this.setAddInOptions(\"colType\",\"template\", function(state){\n        var opts = {};\n        switch(state.colIdx) {\n            case 0: \n                opts =  templateOptsInfo;\n                break;\n            case 1: \n                opts =  templateOptsLink;\n                break;\n            case 2: \n                opts =  templateOptsExpandClick;\n                break;\n            default: \n                opts = {};\n                break;\n        }\n        return opts;\n    });\n} ",
+      "value": "function f() {\n    /*var templateOptsInfo = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '  <div> {{items.name}} </div>'+\n                    '  <div> <a href=\"mailto:{{items.email}}\"> {{items.email}} </a> </div>'+\n                    '  <div class=\"fa fa-clock-o\"> {{items.date.date}} </div>'+\n                    '  <div class=\"fa fa-calendar\"> {{items.date.time}} </div>'+\n                    '</div>',\n        rootElement: 'items',\n        formatters: {\n            date: function(value){\n                var result = {\n                    date: moment(value).format('YYYY-MM-DD'),\n                    time: moment(value).format('hh:mm:ss')\n                };\n                return result;\n            }\n        }\n    };*/\n    var templateOptsLink = {\n        templateType: 'mustache', \n        template:   '<div class=\"fa fa-external-link\"> <a target=\"_blank\" href=\"{{value}}\"> Details </a> </div>',\n        rootElement: 'value',\n        formatters: {\n        }\n    };\n    var templateOptsExpandClick = {\n        templateType: 'mustache', \n        template:   '<div>'+\n                    '   <div class=\"message ellipsis\"> {{value}} </div>'+\n                    '   <a class=\"toggleEllipsis\"> Click me to expand/collapse </a>'+\n                    '</div>',\n        rootElement: 'value',\n        formatters: {\n        },\n        events: [\n            ['click .toggleEllipsis', function(event) {\n                $(event.data.target).find('.message').toggleClass('ellipsis');\n            }]\n        ]\n    };\n    \n    this.setAddInOptions(\"colType\",\"template\", function(state){\n        var opts = {};\n        switch(state.colIdx) {\n            case 0: \n                opts = {};/* templateOptsInfo;*/\n                break;\n            case 1: \n                opts =  templateOptsLink;\n                break;\n            case 2: \n                opts =  templateOptsExpandClick;\n                break;\n            default: \n                opts = {};\n                break;\n        }\n        return opts;\n    });\n} ",
       "type": "JavaScript"
      },
      {
@@ -3631,24 +3631,10 @@
     "meta_datype": "scriptable"
    },
    {
-    "id": "KETTLE",
-    "name": "KETTLE Queries",
-    "type": "Label",
-    "typeDesc": "<i>Group</i>",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "Group",
-      "value": "KETTLE Queries",
-      "type": "Label"
-     }
-    ]
-   },
-   {
-    "id": "c47188ae-84cf-d08c-08b1-5b6e5fa82357",
-    "type": "Componentskettle_kettleTransFromFile",
-    "typeDesc": "kettle over kettleTransFromFile",
-    "parent": "KETTLE",
+    "id": "a323c29b-2d7b-6264-ab7b-6bebd0273872",
+    "type": "ComponentsjsonScriptable_scripting",
+    "typeDesc": "jsonScriptable over scripting",
+    "parent": "SCRIPTING",
     "properties": [
      {
       "name": "name",
@@ -3656,9 +3642,14 @@
       "type": "Id"
      },
      {
-      "name": "ktrFile",
-      "value": "githubStats.ktr",
-      "type": "KtrPath"
+      "name": "initscript",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "language",
+      "value": "beanshell",
+      "type": "String"
      },
      {
       "name": "access",
@@ -3667,18 +3658,13 @@
      },
      {
       "name": "query",
-      "value": "OUTPUT",
-      "type": "DefaultQuery"
+      "value": "{\n    \"resultset\": [\n        [\n            \"Pedro Vale\",\n            \"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a\",\n            \"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test\",\n            1,\n            76\n        ],\n        [\n            \"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a\",\n        \t\"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test\",\n        \t2,\n        \t76\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a\",\n        \t\"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test\",\n        \t11,\n        \t76\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a\",\n        \t\"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test\",\n        \t15,\n        \t76\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/0e95983d865310b4173fa04629a09c36decf450a\",\n        \t\"Merge pull request #490 from jvelasques/master [CDE-556] - Fixing unit test\",\n        \t1,\n        \t76\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5\",\n        \t\"[CDE-556] - Fixing unit test\",\n        \t1,\n        \t28\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5\",\n        \t\"[CDE-556] - Fixing unit test\",\n        \t2,\n        \t28\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5\",\n        \t\"[CDE-556] - Fixing unit test\",\n        \t11,\n        \t28\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5\",\n        \t\"[CDE-556] - Fixing unit test\",\n        \t15,\n        \t28\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/d6d4ad8c23ad94552a2ed579443e09747957d9a5\",\n        \t\"[CDE-556] - Fixing unit test\",\n        \t1,\n        \t28\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476\",\n        \t\"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t1,\n        \t114\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476\",\n        \t\"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t2,\n        \t114\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476\",\n        \t\"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t11,\n        \t114\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476\",\n        \t\"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t15,\n        \t114\n        ],\n        [\n        \t\"Pedro Vale\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/829757934db79f4244d6ed686336ab51e62fc476\",\n        \t\"Merge pull request #488 from jvelasques/CDE-556 [CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t1,\n        \t114\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271\",\n        \t\"[CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t1,\n        \t65\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271\",\n        \t\"[CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t2,\n        \t65\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271\",\n        \t\"[CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t11,\n        \t65\n        ],\n        [\n        \t\"João Velasques\",\n        \t\"https://api.github.com/repos/webdetails/cde/git/commits/f455e2278b746db7e31a0a1f611ed44fbafca271\",\n        \t\"[CDE-556] - CDE should expose default parameter for CDA cacheKeys\",\n        \t15,\n        \t65\n        ],\n    ],\n    \"metadata\": [\n        {\n            colIndex: 0,\n            colType: \"String\",\n            colName: \"Commiter\"\n        },\n        {\n            colIndex: 1,\n            colType: \"String\",\n            colName: \"URL\"\n        },\n        {\n            colIndex: 2,\n            colType: \"String\",\n            colName: \"Message\"\n        },\n        {\n            colIndex: 3,\n            colType: \"Integer\",\n            colName: \"Count\"\n        },\n        {\n            colIndex: 4,\n            colType: \"Integer\",\n            colName: \"Length\"\n        }\n    ]\n}",
+      "type": "JsonScriptableQuery"
      },
      {
       "name": "parameters",
-      "value": "[[\"ONWER\",\"webdetails\",\"String\",\"\"],[\"REPO\",\"cde\",\"String\",\"\"],[\"SHA\",\"master\",\"String\",\"\"]]",
+      "value": "[]",
       "type": "CdaParameters"
-     },
-     {
-      "name": "variables",
-      "value": "[[\"OWNER\",\"OWNER\"],[\"REPO\",\"REPO\"],[\"SHA\",\"SHA\"]]",
-      "type": "ValuesArray"
      },
      {
       "name": "cdacalculatedcolumns",
@@ -3692,12 +3678,12 @@
      },
      {
       "name": "output",
-      "value": "[\"0\",\"1\",\"2\"]",
+      "value": "[]",
       "type": "IndexArray"
      },
      {
       "name": "outputMode",
-      "value": "exclude",
+      "value": "include",
       "type": "OutputMode"
      },
      {
@@ -3717,8 +3703,8 @@
      }
     ],
     "meta": "CDA",
-    "meta_conntype": "kettle.TransFromFile",
-    "meta_datype": "kettle"
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "jsonScriptable"
    }
   ]
  },
