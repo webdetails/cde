@@ -408,20 +408,21 @@ var NewMapComponent = (function () {
     initCallBack: function () {
 
       this.ph = this.placeholder();
-      var $popupDivHolder = $("#" + this.popupContentsDiv).clone();
+      var $popupContentsDiv = $("#" + this.popupContentsDiv);
+      var $popupDivHolder = $popupContentsDiv.clone();
       this.ph.empty(); //clear();
       //after first render, the popupContentsDiv gets moved inside ph, it will be discarded above, make sure we re-add him
-      if (this.popupContentsDiv && $("#" + this.popupContentsDiv).length != 1) {
+      if (this.popupContentsDiv && $popupContentsDiv.length != 1) {
         this.ph.append($popupDivHolder.html("None"));
       }
 
-      var centerLatitude = parseFloat(centerLatitude);
-      var centerLongitude = parseFloat(centerLongitude);
-      /*
-       centerLatitude = _.isFinite(centerLatitude) ? centerLatitude : 38.471;
-       centerLongitude = _.isFinite(centerLongitude) ? centerLongitude : -9.15;
-       */
-      this.mapEngine.renderMap(this.ph[0], centerLongitude, centerLatitude, this.defaultZoomLevel);
+      var centerLatitude = parseFloat(this.centerLatitude);
+      var centerLongitude = parseFloat(this.centerLongitude);
+
+       //centerLatitude = _.isFinite(centerLatitude) ? centerLatitude : 38.471;
+       //centerLongitude = _.isFinite(centerLongitude) ? centerLongitude : -9.15;
+
+      this.mapEngine.renderMap(this.ph[0]);
 
       switch (this.mapMode) {
         case 'shapes':
@@ -431,6 +432,9 @@ var NewMapComponent = (function () {
           this.setupMarkers(this.values);
           break;
       }
+
+      this.mapEngine.updateViewport(centerLongitude, centerLatitude, this.defaultZoomLevel);
+
       Dashboards.log('Stopping clock: update cycle of ' + this.htmlObject + ' took ' + (new Date() - this.clock) + ' ms', 'debug');
     },
 
@@ -630,7 +634,7 @@ var NewMapComponent = (function () {
         description = row[mapping.description];
       }
 
-      Dashboards.log('About to render ' + location[0] + ' / ' + location[1] + ' with marker ' + marker + ' sized ' + markerHeight + ' / ' + markerWidth + 'and description ' + description, 'debug');
+      Dashboards.log('About to render ' + location[0] + ' / ' + location[1] + ' with marker sized ' + markerHeight + ' / ' + markerWidth + 'and description ' + description, 'debug');
 
       var markerInfo = { // hack to pass marker information to the mapEngine. This information will be included in the events
         longitude: location[0],

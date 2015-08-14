@@ -22,7 +22,8 @@ define([
     tileServices: undefined,
     tileServicesOptions: undefined,
     tileLayer: function(name) {},
-    renderMap: function() {},
+    renderMap: function(target) {},
+    updateViewport: function (centerLongitude, centerLatitude, zoomLevel){},
     setMarker: function() {},
     showPopup: function() {},
     setShape: function(polygonArray, shapeStyle, data) {},
@@ -108,7 +109,7 @@ define([
       var urlTemplate = this.tileServices[name]; // || this.tileServices['default'],
       if(!urlTemplate){
         // Allow the specification of an url from CDE
-        if(name.length > 0 && name.contains('{')) {
+        if((name.length > 0) && (name.indexOf('{') > -1)) {
           urlTemplate = name;
           //name = 'custom';
         }
