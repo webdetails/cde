@@ -1,8 +1,9 @@
+<!--This property is both used by the TableComponent and the ButtonComponent-->
 <DesignerProperty>
 <Header>
 	<Name>tableStyle</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue>themeroller</DefaultValue>
+	<DefaultValue></DefaultValue>
 	<Description>Style</Description>
 	<Tooltip>Table style</Tooltip>
 	<Advanced>true</Advanced>

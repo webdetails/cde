@@ -1407,46 +1407,6 @@ var CDFDD = Base.extend({
       file: CDFDDFileName.replace(".cdfde", ".wcdf")
     }, wcdf);
 
-    var newRenderer = saveSettingsParams.rendererType;
-    var oldRenderer = cdfdd.getDashboardWcdf().rendererType;
-    var toUpdate = [];
-
-    //if the renderer type changed, then check for the existence of Table Components
-    //that needs to update the style property
-    if(newRenderer != oldRenderer) {
-      var components = cdfdd.getDashboardData().components.rows;
-      _.each(components, function(comp, i) {
-        if(comp.parent == "OTHERCOMPONENTS" && comp.type == "ComponentsTable") {
-          _.each(comp.properties, function(prop, j) {
-            if(prop.name == "tableStyle") {
-              if(( newRenderer != "bootstrap" && prop.value == "bootstrap" ) ||
-                  ( newRenderer == "bootstrap" && prop.value != "bootstrap" )) {
-                toUpdate.push(prop);
-                return;
-              }
-            }
-          });
-        }
-      });
-    }
-
-    if(toUpdate.length) {
-      var message = Dashboards.i18nSupport.prop('SaveSettings.INFO_UPDATE_TABLE_STYLE_PROP') + '\n' +
-          Dashboards.i18nSupport.prop('SaveSettings.CONFIRMATION_UPDATE_TABLE_STYLE_PROP');
-      var updateStyle = confirm(message);
-
-      if(updateStyle) {
-        _.each(toUpdate, function(prop, index) {
-          if(newRenderer == "bootstrap") {
-            prop.value = "bootstrap";
-          } else {
-            prop.value = "themeroller";
-          }
-        });
-        cdfdd.components.initTables();
-      }
-    }
-
     SaveRequests.saveSettings(saveSettingsParams, cdfdd, wcdf, myself);
 
   },

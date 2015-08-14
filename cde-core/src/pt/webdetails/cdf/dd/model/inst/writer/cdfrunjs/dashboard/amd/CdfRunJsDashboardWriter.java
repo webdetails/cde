@@ -242,7 +242,7 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     Map<String, String> componentModules = new LinkedHashMap<String, String>();
 
     // Output WCDF
-    addAssignment( out, "var wcdfSettings", wcdf.toJSON().toString( 2 ) );
+    out.append( "dashboard.getWcdfSettings = function() {\n  return " + wcdf.toJSON().toString( 2 ) + "\n};" );
     out.append( NEWLINE );
 
     StringBuilder addCompIds = new StringBuilder();
