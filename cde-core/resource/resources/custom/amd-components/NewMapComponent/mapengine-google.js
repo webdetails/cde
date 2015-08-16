@@ -146,7 +146,7 @@ define([
       return validStyle;
     },
 
-    wrapEvent: function (event, feature, featureType, featureStyle, data, marker) {
+    wrapEvent: function (event, feature, featureType, featureStyle, data) {
       var myself = this;
       return {
         latitude: event.latLng.lat(),
@@ -221,12 +221,6 @@ define([
       });
 
 
-      function addEventToFeature(eventName, event, feature, shapeStyle, data) {
-        _.each(feature, function (f) {
-          myself.mapComponent.trigger(eventName, myself.wrapEvent(event, f, 'shape', shapeStyle, data));
-        });
-      }
-
       // We'll have to use a trick to emulate the callbacks on multipolygons...
       _.each(feature, function (featurePolygon) {
         // We'll have to use a trick to emulate the multipolygons...
@@ -241,6 +235,13 @@ define([
           addEventToFeature('shape:mouseout', event, feature, shapeStyle, data);
         });
       });
+
+      function addEventToFeature(eventName, event, feature, shapeStyle, data) {
+        _.each(feature, function (f) {
+          myself.mapComponent.trigger(eventName, myself.wrapEvent(event, f, 'shape', shapeStyle, data));
+        });
+      }
+
     },
 
     postSetShapes: function () {
@@ -286,27 +287,12 @@ define([
         myself.mapComponent.trigger('marker:click', myself.wrapEvent(e, marker, 'marker', markerInfo, data));
       });
 
-      if (!this.centered)
-        this.map.setCenter(myLatLng);
     },
 
-    renderMap: function (target, centerLongitude, centerLatitude, zoomLevel) {
-      var myself = this;
-      var latlng;
 
-      if (centerLatitude && centerLatitude != '' && centerLongitude && centerLongitude != '') {
-        latlng = new google.maps.LatLng(centerLatitude, centerLongitude);
-        this.centered = true;
-      } else {
-        latlng = new google.maps.LatLng(38.471, -9.15);
-      }
-
-      if (!zoomLevel) zoomLevel = 2;
-
+    renderMap: function (target) {
 
       var myOptions = {
-        zoom: zoomLevel,
-        center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
@@ -345,49 +331,21 @@ define([
         }
       }
 
-      var eventMap = {
-        'zoom_changed': 'map:zoom',
-        'center_changed': 'map:center'
-      };
-      _.each(eventMap, function (mapEvent, engineEvent) {
-        google.maps.event.addListener(myself.map, engineEvent, function () {
-          var wrappedEvent = wrapViewportEvent.call(myself);
-          myself.mapComponent.trigger.call(myself.mapComponent, mapEvent, wrappedEvent);
-        });
-      });
+      registerViewportEvents.call(this);
+    },
 
 
-      function wrapViewportEvent() {
-        var viewport = getViewport(this.map.getBounds());
-        var wrappedEvent = {
-          zoomLevel: this.map.getZoom(),
-          center: transformPoint(this.map.getCenter()),
-          viewport: viewport,
-          raw: this.map
-        };
-        return wrappedEvent;
+    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+      if (!zoomLevel) zoomLevel = 2;
+      this.map.setZoom(zoomLevel);
 
-        function transformPoint(centerPoint) {
-          var center = {
-            latitude: centerPoint.lat(),
-            longitude: centerPoint.lng()
-          };
-          return center;
-        }
-
-        function getViewport(bounds) {
-          if (bounds) {
-            viewport = {
-              northEast: transformPoint(bounds.getNorthEast()),
-              southWest: transformPoint(bounds.getSouthWest())
-            };
-          } else {
-            viewport = {
-              northEast: {},
-              southWest: {}
-            }
-          }
-        }
+      var centerPoint;
+      if (_.isFinite(centerLatitude) && _.isFinite(centerLongitude)) {
+        centerPoint = new google.maps.LatLng(centerLatitude, centerLongitude);
+        this.centered = true;
+        this.map.panTo(centerPoint);
+      } else {
+        this.map.panTo(new google.maps.LatLng(38, -9));
       }
 
 
@@ -424,6 +382,7 @@ define([
       }, options));
     },
 
+
     showPopup: function (data, mapElement, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
       var overlay = new OurMapOverlay(mapElement.getPosition(), popupWidth, popupHeight, contents, popupContentDiv, this.map, borderColor);
 
@@ -436,5 +395,54 @@ define([
   });
 
   return GoogleMapEngine;
+
+  function registerViewportEvents() {
+    var me = this;
+    var eventMap = {
+      'zoom_changed': 'map:zoom',
+      'center_changed': 'map:center'
+    };
+    _.each(eventMap, function (mapEvent, engineEvent) {
+      google.maps.event.addListener(me.map, engineEvent, function () {
+        var wrappedEvent = wrapViewportEvent.call(me);
+        me.mapComponent.trigger.call(me.mapComponent, mapEvent, wrappedEvent);
+      });
+    });
+
+
+    function wrapViewportEvent() {
+      var viewport = getViewport(this.map.getBounds());
+      var wrappedEvent = {
+        zoomLevel: this.map.getZoom(),
+        center: transformPoint(this.map.getCenter() || new google.maps.LatLng()),
+        viewport: viewport,
+        raw: this.map
+      };
+      return wrappedEvent;
+
+      function transformPoint(centerPoint) {
+        var center = {
+          latitude: centerPoint.lat(),
+          longitude: centerPoint.lng()
+        };
+        return center;
+      }
+
+      function getViewport(bounds) {
+        if (bounds) {
+          viewport = {
+            northEast: transformPoint(bounds.getNorthEast()),
+            southWest: transformPoint(bounds.getSouthWest())
+          };
+        } else {
+          viewport = {
+            northEast: {},
+            southWest: {}
+          }
+        }
+      }
+    }
+  }
+
 
 });

@@ -14,9 +14,10 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
+  'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore'
-], function (AddIn, Dashboard, $, _) {
+], function (AddIn, Dashboard, Logger, $, _) {
 
   var thisAddIn = {
     name: "geoJSON",
@@ -38,12 +39,12 @@ define([
             deferred.resolve(map);
           },
           error: function () {
-            Dashboards.log('NewMapComponent geoJSON addIn: failed to retrieve data at' + url, 'debug');
+            Logger.log('NewMapComponent geoJSON addIn: failed to retrieve data at' + url, 'debug');
             deferred.resolve({});
           }
         });
       } else {
-        Dashboards.log('NewMapComponent geoJSON addIn: no url is defined', 'debug');
+        Logger.log('NewMapComponent geoJSON addIn: no url is defined', 'debug');
         deferred.resolve(null);
       }
       return deferred.promise();

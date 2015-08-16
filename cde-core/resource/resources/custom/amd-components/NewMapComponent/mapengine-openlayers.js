@@ -25,26 +25,11 @@ define([
   'cdf/lib/OpenStreetMap'
 ], function (MapEngine, MapComponentAsyncLoader, Logger, $, _, OpenLayers) {
 
-  /**
-   * Converts a LonLat Object using the Mercator formular
-   *
-   * @param {OpenLayers.LonLat} ll the coordinate object.
-   *
-   * @returns {OpenLayers.LonLat} the transformed coordinates
-   */
-  function lonLatToMercator(ll) {
-    var lon = ll.lon * 20037508.34 / 180;
-    var lat = Math.log(Math.tan((90 + ll.lat) * Math.PI / 360)) / (Math.PI / 180);
-    lat = lat * 20037508.34 / 180;
-    return new OpenLayers.LonLat(lon, lat);
-  }
-
   var OpenLayersEngine = MapEngine.extend({
     map: undefined,
     markers: undefined,
-    centered: false,
+    shapes: undefined,
     //    featureLayer: undefined,
-    useMercator: true,
     API_KEY: 0,
     init: function (mapComponent, tilesets) {
       this.tilesets = tilesets;
@@ -60,7 +45,7 @@ define([
 
       if (contains('googleXXX')) {
         // This is (probably) only needed if we use the OpenLayers.Layer.Google API,
-        $.when(MapComponentAsyncLoader('3', this.API_KEY)).then(mapComponent.initCallBack);
+        $.when(loadGoogleMaps('3', this.API_KEY)).then(mapComponent.initCallBack);
       } else {
         mapComponent.initCallBack();
       }
@@ -111,7 +96,7 @@ define([
     },
 
     wrapEvent: function (event, featureType) {
-      var lastXy = this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy; // || {x: undefined, y: undefined};
+      var lastXy = this.map.getControlsByClass('OpenLayers.Control.MousePosition')[0].lastXy; // || {x: undefined, y: undefined};
       var coords;
       if (lastXy) {
         coords = this.map.getLonLatFromPixel(lastXy)
@@ -155,7 +140,7 @@ define([
       var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
       var iconObj = new OpenLayers.Icon(icon, size, offset);
 
-      var proj = new OpenLayers.Projection("EPSG:4326"),  // transform from WGS 1984 //4326
+      var proj = new OpenLayers.Projection('EPSG:4326'),  // transform from WGS 1984 //4326
         mapProj = this.map.getProjectionObject();
       var point = new OpenLayers.LonLat(lon, lat).transform(
         proj, // transform from WGS 1984
@@ -176,8 +161,6 @@ define([
 
       this.markers.addFeatures([feature]);
 
-      if (!this.centered)
-        this.map.setCenter(point);
     },
 
     showPopup: function (data, mapElement, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
@@ -190,7 +173,7 @@ define([
         contents = div.html();
       }
 
-      var name = "featurePopup";
+      var name = 'featurePopup';
       if (borderColor != undefined) {
         name = name + borderColor.substring(1);
       }
@@ -214,20 +197,9 @@ define([
       this.map.addPopup(popup, true);
     },
 
-    renderMap: function (target, centerLongitude, centerLatitude, zoomLevel) {
-      Logger.log('Entered renderMap', 'debug');
-      var myself = this;
-      var useLayerControl = false;
-      var customMap = false;
-      var centerPoint;
-
-      if (centerLongitude && centerLongitude != '' && centerLatitude && centerLatitude != '') {
-        if (this.useMercator) {
-          centerPoint = lonLatToMercator(new OpenLayers.LonLat(centerLongitude, centerLatitude));
-        } else {
-          centerPoint = new OpenLayers.LonLat(centerLongitude, centerLatitude);
-        }
-      }
+    renderMap: function (target) {
+      var projectionMap = new OpenLayers.Projection('EPSG:900913');
+      var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
 
       var mapOptions = {
         //maxExtent: new OpenLayers.Bounds(-20037508,-20037508,20037508,20037508),
@@ -235,8 +207,8 @@ define([
         //maxResolution: 156543,
         //units: 'm',
         zoomDuration: 10, // approximately match Google's zoom animation
-        displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: projectionWGS84,
+        projection: projectionMap,
         controls: [
           new OpenLayers.Control.Navigation(),
           // new OpenLayers.Control.NavToolbar(),
@@ -253,20 +225,10 @@ define([
         ]
       };
       if (OpenLayers.TileManager) {
-        //This is available in OpenLayers 2.13
         mapOptions.tileManager = new OpenLayers.TileManager();
       }
       this.map = new OpenLayers.Map(target, mapOptions);
 
-      /*
-       //OpenLayers.ImgPath = 'resources/components/NewMapComponent/openlayers_themes/dark/'; //theme the buttons
-       var myOptions = {
-       type: 'png',
-       transparent: 'true',
-       transitionEffect: 'resize',
-       displayOutsideMaxExtent: true
-       };
-       */
       var layer;
       for (var k = 0, m = this.tilesets.length; k < m; k++) {
         var thisTileset = this.tilesets[k],
@@ -275,17 +237,15 @@ define([
         Logger.log('Tilesets: ' + JSON.stringify(this.tilesets) + ', handling now :' + thisTileset + ', ie tileset ' + tileset + ', variant ' + variant);
         switch (tileset) {
           case 'googleXXX':
-            layer = new OpenLayers.Layer.Google("Google Streets", {visibility: true, version: '3'});
+            layer = new OpenLayers.Layer.Google('Google Streets', {visibility: true, version: '3'});
             break;
 
           case 'opengeo':
             layer = new OpenLayers.Layer.WMS(thisTileset,
-              "http://maps.opengeo.org/geowebcache/service/wms",
-              {
+              'http://maps.opengeo.org/geowebcache/service/wms', {
                 layers: variant,
                 bgcolor: '#A1BDC4'
-              },
-              {
+              }, {
                 wrapDateLine: true,
                 transitionEffect: 'resize'
               });
@@ -315,7 +275,7 @@ define([
           graphicZIndex: 1
         }
       });
-      this.markers = new OpenLayers.Layer.Vector("Markers");
+      this.markers = new OpenLayers.Layer.Vector('Markers');
 
       this.map.addLayers([this.shapes, this.markers]);
       this.setCallbacks();
@@ -323,38 +283,43 @@ define([
 
       this._geoJSONParser = new OpenLayers.Format.GeoJSON({
         ignoreExtraDims: true,
-        internalProjection: new OpenLayers.Projection('EPSG:900913'), //this.map.baseLayer.projection, //this.map.baseLayer.projection,
-        externalProjection: new OpenLayers.Projection('EPSG:4326')
+        internalProjection: this.map.getProjectionObject(),
+        externalProjection: projectionWGS84
       });
-
-
-      //set center and zoomlevel of the map
-      if (centerPoint) {
-        this.map.setCenter(centerPoint);
-        this.centered = true;
-      } else {
-        this.map.setCenter(lonLatToMercator(new OpenLayers.LonLat(-9.15, 38.46)));
-      }
-
-      if (zoomLevel != '')
-        this.map.zoomTo(zoomLevel);
-
-      Logger.log('NewMapComponent: exited renderMap', 'debug');
-      this.postRenderMap();
-
     },
 
-    postRenderMap: function () {
-      // Hook for adding extra rendering code
-      //
-      // var layer = new OpenLayers.Layer.GML("KML", "static/custom/maps/PoliceBeats.kml", {
-      //     projection: "EPSG:4326",
-      //     format: OpenLayers.Format.KML,
-      //     formatOptions: {
-      //         'extractStyles': true
-      //     }
-      // });
-      // this.map.addLayer(layer);
+    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+
+      var bounds = new OpenLayers.Bounds();
+      var markersBounds = this.markers.getDataExtent();
+      var shapesBounds = this.shapes.getDataExtent();
+      if (markersBounds || shapesBounds) {
+        bounds.extend(markersBounds);
+        bounds.extend(shapesBounds);
+      } else {
+        bounds = null;
+      }
+
+      if (_.isFinite(zoomLevel)) {
+        this.map.zoomTo(zoomLevel);
+      } else {
+        if (bounds) {
+          this.map.zoomToExtent(bounds);
+        } else {
+          this.map.zoomTo(2);
+        }
+      }
+
+      var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
+      var centerPoint;
+      if (_.isFinite(centerLatitude) && _.isFinite(centerLongitude)) {
+        centerPoint = (new OpenLayers.LonLat(centerLongitude, centerLatitude)).transform(projectionWGS84, this.map.getProjectionObject());
+        this.map.setCenter(centerPoint);
+      } else if (!bounds) {
+        centerPoint = (new OpenLayers.LonLat(-10, 20)).transform(projectionWGS84, this.map.getProjectionObject());
+        this.map.setCenter(centerPoint);
+      }
+
     },
 
     setCallbacks: function () {
@@ -362,7 +327,7 @@ define([
 
       function event_relay(e) {
         var prefix;
-        if (e.feature.layer.name == "Shapes") {
+        if (e.feature.layer.name == 'Shapes') {
           prefix = 'shape';
         } else {
           prefix = 'marker';
@@ -377,70 +342,12 @@ define([
         }
       }
 
-
-      function wrapViewportEvent(e) {
-        var mapProj = this.map.getProjectionObject();
-        var wsg84 = new OpenLayers.Projection('EPSG:4326');
-        var transformPoint = function (centerPoint) {
-          var center;
-          if (centerPoint) {
-            var p = centerPoint.clone().transform(mapProj, wsg84);
-            center = {
-              latitude: p.lat,
-              longitude: p.lon
-            };
-          } else {
-            center = {
-              latitude: undefined,
-              longitude: undefined
-            };
-          }
-          return center;
-        };
-
-        var extentObj = e.object.getExtent();
-        var viewport = {
-          northEast: {},
-          southWest: {}
-        };
-        if (extentObj) {
-          var extentInLatLon = extentObj.transform(mapProj, wsg84);
-          viewport = {
-            northEast: {
-              latitude: extentInLatLon.top,
-              longitude: extentInLatLon.right
-            },
-            southWest: {
-              latitude: extentInLatLon.bottom,
-              longitude: extentInLatLon.left
-            }
-          };
-        }
-        var wrappedEvent = {
-          zoomLevel: e.object.getZoom(),
-          center: transformPoint(e.object.center),
-          viewport: viewport,
-          raw: e
-        };
-        return wrappedEvent;
-      }
-
-      var eventMap = {
-        'zoomend': 'map:zoom',
-        'movestart': 'map:center'
-      };
-      _.each(eventMap, function (mapEvent, engineEvent) {
-        myself.map.events.register(engineEvent, myself.map, function (e) {
-          var wrappedEvent = wrapViewportEvent.call(myself, e);
-          myself.mapComponent.trigger.call(myself.mapComponent, mapEvent, wrappedEvent);
-        });
-      });
-
+      registerViewportEvents.call(this);
 
       var hoverCtrl = new OpenLayers.Control.SelectFeature([this.markers, this.shapes], {
         hover: true,
         highlightOnly: true,
-        renderIntent: "temporary",
+        renderIntent: 'temporary',
         eventListeners: {
           featurehighlighted: event_relay,
           featureunhighlighted: event_relay,
@@ -467,7 +374,7 @@ define([
                   if (control) {
                     control.highlight(feature);
                     // THIS IS ADDED BY ME
-                    this.events.triggerEvent("featureunhighlighted", {
+                    this.events.triggerEvent('featureunhighlighted', {
                       feature: feature
                     });
                   }
@@ -476,7 +383,7 @@ define([
                 }
               } else {
                 // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME
-                this.events.triggerEvent("featureunhighlighted", {
+                this.events.triggerEvent('featureunhighlighted', {
                   feature: feature
                 });
               }
@@ -518,21 +425,75 @@ define([
     },
 
     tileLayer: function (name) {
-      var urlTemplate = this.tileServices[name];
+      var urlTemplate = this._getTileServiceURL(name);
       var options = _.extend({
-        "transitionEffect": "resize"
+        'transitionEffect': 'resize'
       }, this.tileServicesOptions[name] || {});
-      if (!urlTemplate) {
-        // Allow the specification of an url from CDE
-        if (name.length > 0 && name.contains('{')) {
-          urlTemplate = name;
-          name = 'custom';
-        }
-      }
       return new OpenLayers.Layer.XYZ(name, this._switchUrl(urlTemplate), _.extend({}, options));
 
     }
   });
+
+  function registerViewportEvents() {
+    var me = this;
+    var eventMap = {
+      'zoomend': 'map:zoom',
+      'movestart': 'map:center'
+    };
+    _.each(eventMap, function (mapEvent, engineEvent) {
+      me.map.events.register(engineEvent, me.map, function (e) {
+        var wrappedEvent = wrapViewportEvent.call(me, e);
+        me.mapComponent.trigger.call(me.mapComponent, mapEvent, wrappedEvent);
+      });
+    });
+    function wrapViewportEvent(e) {
+      var mapProj = this.map.getProjectionObject();
+      var wsg84 = new OpenLayers.Projection('EPSG:4326');
+      var transformPoint = function (centerPoint) {
+        var center;
+        if (centerPoint) {
+          var p = centerPoint.clone().transform(mapProj, wsg84);
+          center = {
+            latitude: p.lat,
+            longitude: p.lon
+          };
+        } else {
+          center = {
+            latitude: undefined,
+            longitude: undefined
+          };
+        }
+        return center;
+      };
+
+      var extentObj = e.object.getExtent();
+      var viewport = {
+        northEast: {},
+        southWest: {}
+      };
+      if (extentObj) {
+        var extentInLatLon = extentObj.transform(mapProj, wsg84);
+        viewport = {
+          northEast: {
+            latitude: extentInLatLon.top,
+            longitude: extentInLatLon.right
+          },
+          southWest: {
+            latitude: extentInLatLon.bottom,
+            longitude: extentInLatLon.left
+          }
+        };
+      }
+      var wrappedEvent = {
+        zoomLevel: e.object.getZoom(),
+        center: transformPoint(e.object.center),
+        viewport: viewport,
+        raw: e
+      };
+      return wrappedEvent;
+    }
+  }
+
 
   return OpenLayersEngine;
 
