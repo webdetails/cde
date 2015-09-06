@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/ViewManagerComponent', 'cdf/lib/jquery'],
-  function(Dashboard, ViewManagerComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/ViewManagerComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, ViewManagerComponent, $) {
 
   /**
    * ## The View Manager Component

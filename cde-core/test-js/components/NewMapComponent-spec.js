@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/NewMapComponent', 'cdf/lib/jquery'],
-  function(Dashboard, NewMapComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/NewMapComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, NewMapComponent, $) {
 
   /**
    * ## The New Map Component

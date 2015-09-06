@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/jquery'],
-  function(Dashboard, GMapsOverlayComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/GMapsOverlayComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, GMapsOverlayComponent, $) {
 
   /**
    * ## The Google Maps Overlay Component
