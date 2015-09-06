@@ -26,11 +26,10 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.meta.*;
 
 import static org.mockito.Mockito.when;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.INDENT1;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
 
 public class CdfRunJsGenericComponentWriterTest extends TestCase {
-
-  private static final String NEWLINE = System.getProperty( "line.separator" );
-  private static final String INDENT = "  ";
 
   private static CdfRunJsGenericComponentWriter genericComponentWriter;
   private static CdfRunJsDashboardWriteContext context;
@@ -77,11 +76,11 @@ public class CdfRunJsGenericComponentWriterTest extends TestCase {
 
     StringBuilder expectedReturnValue = new StringBuilder();
     expectedReturnValue.append( "var test = new TestComponent({" ).append( NEWLINE )
-        .append( INDENT ).append( "type: \"TestComponent\"," ).append( NEWLINE )
-        .append( INDENT ).append( "name: \"test\"" ).append( NEWLINE )
+        .append( INDENT1 ).append( "type: \"TestComponent\"," ).append( NEWLINE )
+        .append( INDENT1 ).append( "name: \"test\"" ).append( NEWLINE )
         .append( "});" ).append( NEWLINE );
 
-    Assert.assertEquals( out.toString(), expectedReturnValue.toString() );
+    Assert.assertEquals( expectedReturnValue.toString(), out.toString() );
 
   }
 
