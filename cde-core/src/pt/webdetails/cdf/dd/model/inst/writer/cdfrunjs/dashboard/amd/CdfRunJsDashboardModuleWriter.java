@@ -64,17 +64,24 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     // content layout, prepend the CSS code snippets
     final String layout;
     try {
-      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) )
-        + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) ); // replaceTokens
+      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) + this.writeLayout( ctx, dash ) );
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering layout", ex );
     }
-    // content components, get component AMD modules and write the components to the StringBuilder
+
     StringBuilder out = new StringBuilder();
+    // content wcdf settings, write WCDF settings
+    final String wcdfSettings = writeWcdfSettings( dash );
+    // content components, get component AMD modules and write the components to the StringBuilder
     final Map<String, String> componentModules = this.writeComponents( ctx, dash, out );
     final String components = replaceAliasTagWithAlias( ctx.replaceHtmlAlias( ctx.replaceTokens( out.toString() ) ) );
     // content
-    final String content = wrapRequireModuleDefinitions( layout, resources, componentModules, components, ctx );
+    final String content = wrapRequireModuleDefinitions(
+        layout,
+        resources,
+        componentModules,
+        wcdfSettings + components,
+        ctx );
 
     // Export
     builder
@@ -103,7 +110,7 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
    * @param layout the dashboard's layout HTML sourcecode
    * @param resources the dashboard's resources
    * @param componentModules the dashboard component modules
-   * @param components the dashboard's generated component JavaScript sourcecode, that creates components, to be wrapped
+   * @param content the dashboard generated JavaScript sourcecode to be wrapped
    * @param ctx the dashboard context
    * @return the string containing the dashboard module definition.
    */
@@ -111,7 +118,7 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
       String layout,
       ResourceMap resources,
       Map<String, String> componentModules,
-      String components,
+      String content,
       CdfRunJsDashboardWriteContext ctx ) {
 
     StringBuilder out = new StringBuilder();
@@ -162,7 +169,7 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     out.append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS,
-        jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + components : components ) )
+        jsCodeSnippets.length() > 0 ? jsCodeSnippets + NEWLINE + content : content ) )
       .append( DASHBOARD_MODULE_STOP ).append( NEWLINE )
       .append( DEFINE_STOP );
 

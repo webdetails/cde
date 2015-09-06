@@ -107,7 +107,18 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
           if ( !isDefaultDefinition && childContext.isFirstInList() ) {
             out.append( NEWLINE );
           }
-
+/*
+          if ( propBind.getAlias().equalsIgnoreCase( "datasource" ) ) {
+            try {
+              propBind = new UnresolvedPropertyBinding.Builder()
+                .setInputType( propBind.getInputType() )
+                .setAlias( "datasourceName" )
+                .setValue( propBind.getValue() ).build( comp, ( new MetaModel.Builder() ).build() );
+            } catch ( ValidationException e ) {
+              e.printStackTrace();
+            }
+          }
+*/
           writer.write( out, childContext, propBind );
         }
       }

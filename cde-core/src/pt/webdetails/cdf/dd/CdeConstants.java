@@ -235,6 +235,57 @@ public class CdeConstants {
     public static final String REQUIRE_PATH_CONFIG_FULL_URI = "requireCfg[''paths''][''{0}''] = ''{1}'';";
     public static final String REQUIRE_CONFIG = "require.config(requireCfg);";
 
+    public static final String GET_WCDF_SETTINGS_FUNCTION = INDENT1 + "dashboard.getWcdfSettings = function() '{'"
+        + NEWLINE + INDENT2 + "return {0};" + NEWLINE + INDENT1 + "'}';" + NEWLINE + NEWLINE;
+
+    // dashboard.addDataSource function
+    public static final String DASHBOARD_ADD_DATA_SOURCE_INIT = INDENT1 + "dashboard.addDataSource(\"{0}\", ";
+    public static final String DASHBOARD_ADD_DATA_SOURCE_END = "{0});" + NEWLINE + NEWLINE;
+    // dashboard.addComponents function
+    public static final String DASHBOARD_ADD_COMPONENTS = NEWLINE + "dashboard.addComponents([{0}]);" + NEWLINE;
+
+    public static class DataSource {
+      public static final String META_TYPE_CDA = "CDA";
+      public static final String META_TYPE_CPK = "CPK";
+      /**
+       * This class contains the constants that represent the names of the
+       * data source properties that are to be rendered to Javascript.
+       */
+      public static class PropertyName {
+        // Datasource
+        public static final String QUERY_TYPE = "queryType";
+        public static final String QUERY = "query";
+        public static final String SQL_QUERY = "sqlquery";
+        public static final String MDX_QUERY = "mdxquery";
+        public static final String JNDI = "jndi";
+        public static final String CATALOG = "catalog";
+        public static final String CUBE = "cube";
+
+        // CPK DataSource
+        public static final String DATA_ACCESS_ID = "dataAccessId";
+        public static final String ENDPOINT = "endpoint";
+        public static final String PLUGIN_ID = "pluginId";
+        public static final String KETTLE_OUTPUT_FORMAT = "kettleOutput";
+        public static final String KETTLE_OUTPUT_STEP_NAME = "stepName";
+
+        // CDA DataSource
+        public static final String OUTPUT_INDEX_ID = "outputIndexId";
+        public static final String SOLUTION = "solution";
+        public static final String PATH = "path";
+        public static final String CDA_PATH = "cdaPath";
+        public static final String FILE = "file";
+      }
+
+      /**
+       * This class contains the constant values for data source properties.
+       */
+      public static class PropertyValue {
+        public static final String CPK_QUERY_TYPE = "cpk";
+        public static final String MDX_QUERY_TYPE = "mdx";
+        public static final String SQL_QUERY_TYPE = "sql";
+      }
+    }
+
     // legacy
     public static final String DASHBOARDS_INIT = "Dashboards.init();";
   }

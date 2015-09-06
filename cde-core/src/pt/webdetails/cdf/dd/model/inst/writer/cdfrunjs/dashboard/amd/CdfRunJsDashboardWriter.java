@@ -31,6 +31,7 @@ import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.RenderLayout;
@@ -99,23 +100,26 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering resources.", ex );
     }
-    // content layout, prepend the CSS code snippets
+
+    // content layout
     final String layout;
     try {
-      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) )
-        + ctx.replaceTokensAndAlias( this.writeLayout( ctx, dash ) );
+      layout = ctx.replaceTokensAndAlias( this.writeCssCodeResources( resources ) + this.writeLayout( ctx, dash ) );
     } catch ( Exception ex ) {
       throw new ThingWriteException( "Error rendering layout", ex );
     }
-    // content components, write component AMD modules and add them to the componentModules Map
+
     StringBuilder out = new StringBuilder();
+    // content dashboard wcdf settings, write WCDF settings
+    final String wcdfSettings = writeWcdfSettings( dash );
+    // content dashboard components, write component AMD modules and add them to the componentModules map
     final Map<String, String> componentModules = writeComponents( ctx, dash, out );
     final String components = ctx.replaceTokensAndAlias( out.toString() );
     // content
-    final String content = writeContent( resources, layout, componentModules, components, ctx );
+    final String content = writeContent( resources, layout, componentModules, wcdfSettings + components, ctx );
 
     // footer
-    String footer;
+    final String footer;
     try {
       footer = Util.toString(
           CdeEnvironment.getPluginSystemReader().getFileInputStream( CdeConstants.RESOURCE_FOOTER_REQUIRE ) );
@@ -225,6 +229,26 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
   }
 
   /**
+   * Returns a string containing the dashboard WCDF settings of the provided dashboard.
+   *
+   * @param dash the dashboard
+   * @return the WCDF settings for the provided dashboard
+   * @throws ThingWriteException
+   */
+  protected String writeWcdfSettings( Dashboard dash ) throws ThingWriteException {
+
+    StringBuilder wcdfSettings = new StringBuilder();
+    DashboardWcdfDescriptor wcdf = dash.getWcdf();
+
+    // Output WCDF
+    try {
+      return MessageFormat.format( GET_WCDF_SETTINGS_FUNCTION, wcdf.toJSON().toString( 6 ) );
+    } catch ( JSONException ex ) {
+      throw new ThingWriteException( "Converting wcdf to json", ex );
+    }
+  }
+
+  /**
    * Writes the dashboard components sourcecode to the provided StringBuilder
    * and returns the module ids and class names of the valid component modules found.
    *
@@ -239,20 +263,34 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
       Dashboard dash,
       StringBuilder out ) throws ThingWriteException {
 
-    DashboardWcdfDescriptor wcdf = dash.getWcdf();
-    Map<String, String> componentModules = new LinkedHashMap<String, String>();
 
-    // Output WCDF
-    try {
-      out.append( "dashboard.getWcdfSettings = function() {\n  return " + wcdf.toJSON().toString( 2 ) + "\n};" );
-    } catch ( JSONException ex ) {
-      throw new ThingWriteException( "Converting wcdf to json", ex );
-    }
-    out.append( NEWLINE );
-
-    StringBuilder addCompIds = new StringBuilder();
     IThingWriterFactory factory = context.getFactory();
+    StringBuilder tmp = new StringBuilder();
 
+    // write data source components
+    // store data source
+    //tmp.setLength( 0 );
+    Iterable<DataSourceComponent> dataSourceComps = dash.getDataSources();
+    for ( DataSourceComponent comp : dataSourceComps ) {
+      if ( StringUtils.isNotEmpty( comp.getName() ) ) {
+        IThingWriter writer;
+        try {
+          writer = factory.getWriter( comp );
+          tmp.setLength( 0 );
+        } catch ( UnsupportedThingException ex ) {
+          throw new ThingWriteException( ex );
+        }
+
+        out.append( MessageFormat.format( DASHBOARD_ADD_DATA_SOURCE_INIT, comp.getName() ) );
+        writer.write( tmp, context, comp );
+        out.append( MessageFormat.format( DASHBOARD_ADD_DATA_SOURCE_END, tmp.toString() ) );
+      }
+    }
+
+    // write regular components
+    Map<String, String> componentModules = new LinkedHashMap<String, String>();
+    // store component ids
+    tmp.setLength( 0 );
     Iterable<Component> comps = dash.getRegulars();
     for ( Component comp : comps ) {
       if ( StringUtils.isNotEmpty( comp.getName() ) ) {
@@ -277,21 +315,18 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
             }
           }
 
-          if ( addCompIds.length() > 0 ) {
-            addCompIds.append( ", " );
+          if ( tmp.length() > 0 ) {
+            tmp.append( ", " );
           }
-          addCompIds.append( comp.getId() );
+          tmp.append( comp.getId() );
         }
 
         writer.write( out, context, comp );
       }
     }
 
-    if ( addCompIds.length() > 0 ) {
-      out.append( NEWLINE )
-        .append( "dashboard.addComponents([" )
-        .append( addCompIds )
-        .append( "]);" ).append( NEWLINE );
+    if ( tmp.length() > 0 ) {
+      out.append( MessageFormat.format( DASHBOARD_ADD_COMPONENTS, tmp.toString() ) );
     }
 
     return componentModules;
@@ -426,14 +461,14 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
    *
    * @param resources the dashboard's resources
    * @param componentModules the dashboard's component modules
-   * @param components the dashboard's generated component JavaScript sourcecode, that creates components, to be wrapped
+   * @param content the dashboard generated JavaScript sourcecode to be wrapped
    * @param ctx the dashboard context
    * @return the dashboard's JavaScript sourcecode
    */
   protected String wrapRequireDefinitions(
       ResourceMap resources,
       Map<String, String> componentModules,
-      String components,
+      String content,
       CdfRunJsDashboardWriteContext ctx ) {
 
     StringBuilder out = new StringBuilder();
@@ -470,16 +505,18 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     //write dashboard declaration
     if ( ctx.getOptions().isDebug() ) {
-      out.append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, ctx.getOptions().getContextConfiguration() ) );
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, ctx.getOptions().getContextConfiguration() ) )
+        .append( NEWLINE );
     } else {
-      out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) );
+      out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) )
+        .append( NEWLINE );
     }
 
     // write JS Code snippets
     out.append( writeJsCodeResources( resources ) );
 
     // write content
-    out.append( components ).append( NEWLINE )
+    out.append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
 

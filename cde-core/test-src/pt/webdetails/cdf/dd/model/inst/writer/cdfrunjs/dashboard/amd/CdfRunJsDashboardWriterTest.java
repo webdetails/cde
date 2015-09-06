@@ -24,14 +24,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pt.webdetails.cdf.dd.CdeConstants.AmdModule;
-import pt.webdetails.cdf.dd.model.core.Thing;
 import pt.webdetails.cdf.dd.model.core.UnsupportedThingException;
 import pt.webdetails.cdf.dd.model.core.validation.ValidationException;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.LayoutComponent;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsDataSourceComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
@@ -64,7 +65,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       + INDENT2 + "fakeView: fakeView" + NEWLINE
       + INDENT1 + "}" + NEWLINE;
 
+  private static final String DATA_SOURCE = "{" + NEWLINE
+    + INDENT2 + "accessId: : \"dataSourceComp1\"," + NEWLINE
+    + INDENT2 + "path: \"/path/fake.cda\"" + NEWLINE
+    + INDENT1 + "}";
+
   private static Dashboard dash;
+  private static DashboardWcdfDescriptor dashboardWcdfDescriptor;
+  private static CdeRunJsThingWriterFactory factory;
   private static CdfRunJsDashboardWriter dashboardWriterSpy;
   private static CdfRunJsDashboardWriteContext context;
   private static CdfRunJsDashboardWriteOptions options;
@@ -73,6 +81,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   @Before
   public void setUp() throws Exception {
     dash = Mockito.mock( Dashboard.class );
+    dashboardWcdfDescriptor = mock( DashboardWcdfDescriptor.class );
+    factory = mock( CdeRunJsThingWriterFactory.class );
     dashboardWriterSpy = spy( new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
     context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
     options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
@@ -82,6 +92,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   @After
   public void tearDown() throws Exception {
     dash = null;
+    dashboardWcdfDescriptor = null;
+    factory = null;
     dashboardWriterSpy = null;
     context = null;
     options = null;
@@ -145,17 +157,26 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
 
     when( context.getOptions() ).thenReturn( options );
 
-    Dashboard dash = mock( Dashboard.class );
-    DashboardWcdfDescriptor dashboardWcdfDescriptor = mock( DashboardWcdfDescriptor.class );
-    CdeRunJsThingWriterFactory factory = mock( CdeRunJsThingWriterFactory.class );
-    IThingWriter writer = mock( CdfRunJsGenericComponentWriter.class );
+    IThingWriter dataSourceWriter = mock( CdfRunJsDataSourceComponentWriter.class );
+    IThingWriter componentWriter = mock( CdfRunJsGenericComponentWriter.class );
 
     doReturn( factory ).when( context ).getFactory();
-    doReturn( writer ).when( factory ).getWriter( any( Thing.class ) );
+    doReturn( componentWriter ).when( factory ).getWriter( any( Component.class ) );
+    doReturn( dataSourceWriter ).when( factory ).getWriter( any( DataSourceComponent.class ) );
 
     doReturn( new JSONObject( "{}" ) ).when( dashboardWcdfDescriptor ).toJSON();
     doReturn( dashboardWcdfDescriptor ).when( dash ).getWcdf();
 
+    // Data Source Components
+    List<DataSourceComponent> dashComponentList = new ArrayList<DataSourceComponent>();
+
+    DataSourceComponent dataSourceComp1 = mock( DataSourceComponent.class );
+    doReturn( "dataSourceComp1" ).when( dataSourceComp1 ).getName();
+    dashComponentList.add( dataSourceComp1 );
+
+    doReturn( dashComponentList ).when( dash ).getDataSources();
+
+    // Regular Components
     List<Component> componentList = new ArrayList<Component>();
 
     Component comp1 = mock( Component.class );
@@ -219,9 +240,9 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     Map<String, String> componentModules = dashboardWriterSpy.writeComponents( context, dash, out );
 
     Assert.assertEquals(
-        "dashboard.getWcdfSettings = function() {\n  return {}\n};" + NEWLINE + NEWLINE
-        + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
-        out.toString() );
+      INDENT1 + "dashboard.addDataSource(\"dataSourceComp1\", );" + NEWLINE + NEWLINE
+        + NEWLINE + "dashboard.addComponents([comp1, comp2, comp3]);" + NEWLINE,
+      out.toString() );
 
     // invalid components are not added
     Assert.assertEquals( 3, componentModules.size() );
@@ -327,6 +348,42 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   }
 
   @Test
+  public void testWriteWcdfSettings() throws ThingWriteException, JSONException {
+
+    doReturn( "" ).when( dashboardWcdfDescriptor ).getTitle();
+    doReturn( "thatGuy" ).when( dashboardWcdfDescriptor ).getAuthor();
+    doReturn( "description" ).when( dashboardWcdfDescriptor ).getDescription();
+    doReturn( "WDDocsRequire" ).when( dashboardWcdfDescriptor ).getStyle();
+    doReturn( "blueprint" ).when( dashboardWcdfDescriptor ).getRendererType();
+    doReturn( true ).when( dashboardWcdfDescriptor ).isRequire();
+    // deprecated
+    doReturn( false ).when( dashboardWcdfDescriptor ).isWidget();
+    doReturn( "" ).when( dashboardWcdfDescriptor ).getWidgetName();
+    String[] widgetParams = {""};
+    doReturn( widgetParams ).when( dashboardWcdfDescriptor ).getWidgetParameters();
+
+    JSONObject json = new JSONObject();
+    json.put( "title", dashboardWcdfDescriptor.getTitle() );
+    json.put( "author", dashboardWcdfDescriptor.getAuthor() );
+    json.put( "description", dashboardWcdfDescriptor.getDescription() );
+    json.put( "style", dashboardWcdfDescriptor.getStyle() );
+    json.put( "rendererType", dashboardWcdfDescriptor.getRendererType() );
+    json.put( "require", dashboardWcdfDescriptor.isRequire() );
+    // deprecated
+    json.put( "widget", dashboardWcdfDescriptor.isWidget() );
+    json.put( "widgetName", dashboardWcdfDescriptor.getWidgetName() );
+    json.put( "widgetParameters", dashboardWcdfDescriptor.getWidgetParameters() );
+
+    doReturn( json ).when( dashboardWcdfDescriptor ).toJSON();
+
+    doReturn( dashboardWcdfDescriptor ).when( dash ).getWcdf();
+
+    Assert.assertEquals(
+      MessageFormat.format( GET_WCDF_SETTINGS_FUNCTION, dashboardWcdfDescriptor.toJSON().toString( 6 ) ),
+      dashboardWriterSpy.writeWcdfSettings( dash ) );
+  }
+
+  @Test
   public void testWrapRequireDefinitions() {
 
     ResourceMap testResources = new ResourceMap();
@@ -369,7 +426,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardResult
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
         StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -386,7 +443,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
         StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) )
       .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) )
+      .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )

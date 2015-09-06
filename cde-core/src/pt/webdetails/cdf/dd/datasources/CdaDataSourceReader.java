@@ -98,12 +98,11 @@ public class CdaDataSourceReader {
     if ( builtInDataSources.hasNext() ) {
       //built-in
       String fileName = XPathUtils.getStringValue( docContext, "/filename" );
-      String toReplace = ".cdfde";
-      String replaceWith = ".cda";
       if ( StringUtils.endsWith( fileName, ".wcdf" ) ) {
-        toReplace = ".wcdf";
+        fileName = StringUtils.replace( fileName, ".wcdf", ".cda" );
+      } else {
+        fileName = StringUtils.replace( fileName, ".cdfde", ".cda" );
       }
-      fileName = StringUtils.replace( fileName, toReplace, replaceWith );
       //just add cda name
       dataSources.add( new CdaDataSource( fileName, null ) );
     }
