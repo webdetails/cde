@@ -14,8 +14,8 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/NewSelectorComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, NewSelectorComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, NewSelectorComponent, $) {
 
   /**
    * ## The New Selector Component
