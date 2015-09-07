@@ -14,8 +14,8 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/NewSelectorComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, NewSelectorComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, NewSelectorComponent, $) {
 
   /**
    * ## The New Selector Component
@@ -27,6 +27,11 @@ define([
 
     dashboard.addParameter("paramS", "");
     dashboard.addParameter("param1", "");
+
+    dashboard.addDataSource("testQuery", {
+      dataAccessId: "testDatId",
+      path: "/dummy/path/toFile.cda"
+    });
 
     var newSelectorComponent = new NewSelectorComponent({
       type: "NewSelectorComponent",
@@ -41,10 +46,7 @@ define([
       valueAsId: true,
       listeners: [],
       multiselect: true,
-      chartDefinition: {
-        dataAccessId: "Char2Col",
-        path: "/dummy/path/toFile.cda"
-      }
+      chartDefinition: {dataSource: "testQuery"}
     });
 
     dashboard.addComponent(newSelectorComponent);

@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/CggDialComponent', 'cdf/lib/jquery'],
-  function(Dashboard, CggDialComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/CggDialComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, CggDialComponent, $) {
 
   /**
    * ## The Cgg Dial Component

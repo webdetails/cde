@@ -15,8 +15,8 @@ define([
   'cdf/Dashboard.Clean',
   'cde/components/CggDialComponent',
   'cde/components/DuplicateComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, CggDialComponent, DuplicateComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, CggDialComponent, DuplicateComponent, $) {
 
   /**
    * ## The Duplicate Component

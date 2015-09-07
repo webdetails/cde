@@ -22,21 +22,19 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriter;
 import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.inst.CodeComponent;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.GenericComponent;
 import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
-import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsDataSourceComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsDateParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsExpressionParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.amd.CdfRunJsParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.CdfRunJsDashboardModuleWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.CdfRunJsDashboardWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsCdaDataSourcePropertyBindingWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsGenericPropertyBindingWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsJFreeChartDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 
@@ -95,20 +93,11 @@ public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
       if ( CodeComponent.class.isAssignableFrom( compClass ) ) {
         return new CdfRunJsCodeComponentWriter();
       }
+
+      if ( DataSourceComponent.class.isAssignableFrom( compClass ) ) {
+        return new CdfRunJsDataSourceComponentWriter();
+      }
     } else if ( KnownThingKind.PropertyBinding.equals( kind ) ) {
-      PropertyBinding propBind = (PropertyBinding) t;
-      String propName = propBind.getName().toLowerCase();
-
-      if ( propName.equals( "datasource" ) ) {
-        return new CdfRunJsDataSourcePropertyBindingWriter(); //ToDo
-      }
-      if ( propName.equals( "cdadatasource" ) ) {
-        return new CdfRunJsCdaDataSourcePropertyBindingWriter();
-      }
-      if ( propName.equals( "jfreechartdatasource" ) ) {
-        return new CdfRunJsJFreeChartDataSourcePropertyBindingWriter();
-      }
-
       return new CdfRunJsGenericPropertyBindingWriter();
     } else if ( KnownThingKind.Dashboard.equals( kind ) ) { // shouldn't get here anymore
       return getDashboardWriter( ( (Dashboard) t ) );

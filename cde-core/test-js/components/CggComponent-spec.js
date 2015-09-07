@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/CggComponent', 'cdf/lib/jquery'],
-  function(Dashboard, CggComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/CggComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, CggComponent, $) {
 
   /**
    * ## The Cgg Component

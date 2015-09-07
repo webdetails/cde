@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'],
-  function(Dashboard, PopupComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/PopupComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, PopupComponent, $) {
 
   /**
    * ## The Popup Component
