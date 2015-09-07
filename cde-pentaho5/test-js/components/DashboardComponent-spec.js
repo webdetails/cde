@@ -21,25 +21,34 @@ define([
    * ## The Dashboard Component
    */
   describe("The Dashboard Component #", function() {
-    var dashboard = new Dashboard();
+    var dashboard;
+    var dashboardComponent;
 
-    dashboard.init();
+    beforeEach(function() {
+      dashboard = new Dashboard();
+      dashboard.init();
+      dashboard.addParameter("param1", "");
+      dashboard.addParameter("param2", "");
 
-    dashboard.addParameter("param1", "");
-    dashboard.addParameter("param2", "");
+      dashboard.addDataSource("dataSource", {
+        origin: "DashboardComponent"
+      });
 
-    var dashboardComponent = new DashboardComponent({
-      type: "DashboardComponent",
-      name: "render_test",
-      priority: 5,
-      dashboardPath: "cde/test/dummyDashboard",
-      parameterMapping: [["param1", "dummyParam"], ["param2", "privateParam"]],
-      executeAtStart: true,
-      htmlObject: "sampleObject",
-      listeners: []
+      dashboardComponent = new DashboardComponent({
+        type: "DashboardComponent",
+        name: "render_test",
+        priority: 5,
+        dashboardPath: "cde/test/dummyDashboard",
+        parameterMapping: [["param1", "dummyParam"], ["param2", "privateParam"]],
+        dataSourceMapping: [["dataSource", "dummyDataSource"]],
+        executeAtStart: true,
+        htmlObject: "sampleObject",
+        listeners: []
+      });
+      dashboard.addComponent(dashboardComponent);
+
     });
 
-    dashboard.addComponent(dashboardComponent);
 
     /**
      * ## The Dashboard Component # allows a dashboard to execute update
@@ -96,6 +105,29 @@ define([
       dashboardComponent.once('cdf:postExecution', function() {
         expect( dashboardComponent.registeredEvents["param1:fireChange"].length ).toEqual(1);
         expect( dashboardComponent.registeredEvents["param2:fireChange"] ).not.toBeDefined();
+        done();
+      });
+
+      dashboard.update(dashboardComponent);
+
+    });
+
+    /**
+     * ## The Dashboard Component # allows the correct use of data sources mapping
+     */
+    it("allows the correct use of data sources mapping", function(done) {
+      var mapTest = "mappingTest";
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.success({
+          dataSources: ["dummyDataSource"],
+          parameters: ["dummyParam"],
+          // split function to bypass i18n error
+          split: function(){return "";}
+        });
+      });
+
+      dashboardComponent.once('cdf:postExecution', function() {
+        expect(dashboardComponent.requiredDashboard.getDataSource("dummyDataSource").origin).toEqual("DashboardComponent");
         done();
       });
 

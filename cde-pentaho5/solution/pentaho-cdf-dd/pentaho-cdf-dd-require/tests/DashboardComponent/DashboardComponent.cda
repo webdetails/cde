@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="dashCompDatasource1" type="scripting.scripting">
+         <Initscript/>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="dashCompDatasource2" type="scripting.scripting">
+         <Initscript/>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="dashCompDatasource1" id="dashCompDatasource1"
+               type="jsonScriptable">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[{
+    "resultset": [
+		["Rc1",10, 25, 20, 5],
+		["Rc2",9, 10, 10, 0],
+		["Rc3",5, 1, 0, 1],
+		["Rc4",10, 30, 12, 18]
+	],
+	"metadata": [{
+		"colIndex": 0,
+		"colType": "String",
+		"colName": "Model"
+	}, {
+		"colIndex": 1,
+		"colType": "Numeric",
+		"colName": "Score"
+	}, {
+		"colIndex": 2,
+		"colType": "Numeric",
+		"colName": "Total Sold"
+	}, {
+		"colIndex": 3,
+		"colType": "Numeric",
+		"colName": "Sold in Store"
+	}, {
+		"colIndex": 4,
+		"colType": "Numeric",
+		"colName": "Sold Online"
+	}]
+}]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="dashCompDatasource2" id="dashCompDatasource2"
+               type="jsonScriptable">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[{
+    "queryInfo": {
+		"totalRows": "44"
+	},
+	"resultset": [
+		["John Doe", 2],
+		["Jane", 1],
+		["Avenue Store", 37],
+		["Street Store", 22],
+		["Collector", 4]
+	],
+	"metadata": [{
+		"colIndex": 0,
+		"colType": "String",
+		"colName": "CUSTOMER"
+	}, {
+		"colIndex": 1,
+		"colType": "Numeric",
+		"colName": "TOTAL"
+	}]
+}]]></Query>
+   </DataAccess>
+</CDADescriptor>
