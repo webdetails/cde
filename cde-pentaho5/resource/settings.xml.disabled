@@ -16,6 +16,7 @@
     -->
     <!--4.x old <path>system/pentaho-cdf-dd/resources/custom/components</path>-->
     <path origin="static">resources/custom/components</path>
+    <path origin="static">resources/custom/amd-components</path>
     <!--4.x old <path>cde/components</path-->
     <path origin="repo">components</path>
   </custom-components>
