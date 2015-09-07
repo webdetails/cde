@@ -446,7 +446,7 @@
      },
      {
       "name": "vizId",
-      "value": "twelveDaysViz/index",
+      "value": "x-twelveDaysViz/index",
       "type": "Datasource"
      },
      {
