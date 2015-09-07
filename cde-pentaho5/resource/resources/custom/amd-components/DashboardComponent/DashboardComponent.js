@@ -26,11 +26,23 @@ define([
       var myself = this;
       require([DashboardComponentExt.getDashboardUrl(this.dashboardPath)], function(Dashboard) {
         myself.requiredDashboard = new Dashboard(myself.htmlObject);
+        myself.mapDataSources();
         myself.unregisterEvents();
         myself.requiredDashboard.render();
         myself.mapParameters();
         myself.postExec();
       });
+    },
+
+    mapDataSources: function() {
+      for (var i = 0; i < this.dataSourceMapping.length; i++) {
+        this.requiredDashboard.setDataSource(
+          this.dataSourceMapping[i][1],
+          // TODO: should we copy the datasource, is it safe to use a reference?
+          // $.extend({}, this.dashboard.getDataSource(this.dataSourceMapping[i][0])),
+          this.dashboard.getDataSource(this.dataSourceMapping[i][0]),
+          true);
+      }
     },
 
     unregisterEvents: function() {
@@ -57,7 +69,7 @@ define([
         success: function(data) {
           myself.publicParameters = data.parameters;
           myself.loopThroughMapping(function(myParam, otherParam) {
-            if (myself.isParameterPublic(otherParam)) {
+            if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
                 reqDash.fireChange(otherParam, evt.value);
@@ -82,7 +94,7 @@ define([
 
     isParameterPublic: function(parameterName){
       for(var i = 0; i < this.publicParameters.length; i++) {
-        if (parameterName === this.publicParameters[i]) {
+        if(parameterName === this.publicParameters[i]) {
           return true;
         }
       }

@@ -14,6 +14,8 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -80,7 +82,7 @@ public class RenderApiTest {
     when( mockedUserContentAccess.getFileInputStream( anyString() ) )
         .thenAnswer( new Answer<InputStream>() {
           @Override
-        public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
+          public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
             return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
           }
         } );
@@ -102,9 +104,39 @@ public class RenderApiTest {
     when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
       .thenReturn( STYLE_CLEAN );
 
+    JSONObject dataSourceDefinition = new JSONObject( "{ \"scriptable_scripting\": {"
+        + "\"metadata\": {"
+        + "\"name\": \"scriptable over scripting\","
+        + "\"conntype\": \"scripting.scripting\","
+        + "\"datype\": \"scriptable\","
+        + "\"group\": \"SCRIPTING\","
+        + "\"groupdesc\": \"SCRIPTING Queries\"},"
+        + "\"definition\": {"
+        + "\"connection\": {"
+        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+        + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
+        + "\"dataaccess\": {"
+        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+        + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
+        + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
+        + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
+    //mock IDataSourceProvider
+    IDataSourceProvider ds = mock( IDataSourceProvider.class );
+    when( ds.getId() ).thenReturn( "cda" );
+    List<IDataSourceProvider> dataSourceProviders = new ArrayList<IDataSourceProvider>();
+    dataSourceProviders.add( ds );
+
     //mock IDataSourceManager
     IDataSourceManager mockedDataSourceManager = mock( IDataSourceManager.class );
-    when( mockedDataSourceManager.getProviders() ).thenReturn( new ArrayList<IDataSourceProvider>() );
+    when( mockedDataSourceManager.getProviders() ).thenReturn( dataSourceProviders );
+    when( mockedDataSourceManager.getProviderJsDefinition( anyString() ) ).thenReturn( dataSourceDefinition );
 
     //mock IUrlProvider
     IUrlProvider mockedUrlProvider = mock( IUrlProvider.class );
@@ -160,6 +192,16 @@ public class RenderApiTest {
     String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, request );
     String expected = "{\"parameters\":[\"dummyComponent\"]}";
     Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
+        expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
+  }
+
+  @Test
+  public void testGetDashboardDataSources() throws IOException, JSONException {
+    HttpServletRequest request = mock( HttpServletRequest.class );
+
+    String parameters = renderApi.getDashboardDatasources( DUMMY_WCDF, false, request );
+    String expected = "{\"dataSources\":[\"dummyDatasource\"]}";
+    Assert.assertEquals( "Dummy Dashboard has a data source - dummyDatasource",
         expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
   }
 
