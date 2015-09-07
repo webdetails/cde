@@ -62,6 +62,10 @@ define('cde/test/dummyDashboard', ['cdf/Dashboard.Bootstrap', 'cdf/Logger', 'cdf
         "widgetParameters": []
       };
 
+      dashboard.addDataSource("dummyDataSource", {
+        origin: "dummyDashboard"
+      });
+
       var render_button = new ButtonComponent({
         type: "ButtonComponent",
         name: "render_button",
