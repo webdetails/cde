@@ -5,7 +5,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue></DefaultValue>
 	<Description>Style</Description>
-	<Tooltip>Table style</Tooltip>
+	<Tooltip>Table Style, if left empty will infer from the dashboard renderer type</Tooltip>
 	<Advanced>true</Advanced>
 	<InputType>TableStyle</InputType>
 	<OutputType>String</OutputType>
