@@ -20,5 +20,8 @@ wd.helpers.editor = {
   },
   getDashboardParametersUrl: function() {
   	return webAppPath + "/plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path="
+  },
+  getDashboardDataSourcesUrl: function() {
+  	return webAppPath + "/plugin/pentaho-cdf-dd/api/renderer/getDashboardDatasources?path="
   }
 };
