@@ -308,6 +308,9 @@ public class DashboardStructure implements IDashboardStructure {
         .saveFile( wcdfFilePath, new ByteArrayInputStream( safeGetEncodedBytes( wcdfText ) ) ) ) {
       throw new DashboardStructureException(
         Messages.getString( "DashboardStructure.ERROR_010_SAVE_SETTINGS_FAIL_EXCEPTION" ) );
+    } else {
+      // Since we changed some settings, we need to invalidate the cached dashboard
+      DashboardManager.getInstance().invalidateDashboard( wcdfFilePath );
     }
 
     // Save widget component.xml file?
