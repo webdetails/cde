@@ -331,7 +331,7 @@ public class DashboardManager {
    * @return A String representation of a json containing the list of data sources
    * */
   public String getDashboardDataSources( String wcdfPath, boolean bypassCacheRead )
-    throws ThingReadException, JSONException {
+    throws ThingReadException {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> dataSources = new ArrayList<String>();
     for ( DataSourceComponent dataSource : dashboard.getDataSources() ) {

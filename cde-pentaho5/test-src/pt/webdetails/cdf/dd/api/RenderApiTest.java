@@ -14,8 +14,8 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -104,29 +104,29 @@ public class RenderApiTest {
     when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
       .thenReturn( STYLE_CLEAN );
 
-    JSONObject dataSourceDefinition = new JSONObject( "{ \"scriptable_scripting\": {"
-        + "\"metadata\": {"
-        + "\"name\": \"scriptable over scripting\","
-        + "\"conntype\": \"scripting.scripting\","
-        + "\"datype\": \"scriptable\","
-        + "\"group\": \"SCRIPTING\","
-        + "\"groupdesc\": \"SCRIPTING Queries\"},"
-        + "\"definition\": {"
-        + "\"connection\": {"
-        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
-        + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
-        + "\"dataaccess\": {"
-        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
-        + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
-        + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
-        + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
+    JSON dataSourceDefinition = JSONObject.fromObject( "{ \"scriptable_scripting\": {"
+      + "\"metadata\": {"
+      + "\"name\": \"scriptable over scripting\","
+      + "\"conntype\": \"scripting.scripting\","
+      + "\"datype\": \"scriptable\","
+      + "\"group\": \"SCRIPTING\","
+      + "\"groupdesc\": \"SCRIPTING Queries\"},"
+      + "\"definition\": {"
+      + "\"connection\": {"
+      + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+      + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
+      + "\"dataaccess\": {"
+      + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+      + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
+      + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
+      + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
     //mock IDataSourceProvider
     IDataSourceProvider ds = mock( IDataSourceProvider.class );
     when( ds.getId() ).thenReturn( "cda" );
@@ -196,7 +196,7 @@ public class RenderApiTest {
   }
 
   @Test
-  public void testGetDashboardDataSources() throws IOException, JSONException {
+  public void testGetDashboardDataSources() throws IOException {
     HttpServletRequest request = mock( HttpServletRequest.class );
 
     String parameters = renderApi.getDashboardDatasources( DUMMY_WCDF, false, request );

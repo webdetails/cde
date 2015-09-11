@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONException;
 import org.pentaho.platform.api.engine.ILogger;
 import org.pentaho.platform.api.engine.IParameterProvider;
 import org.pentaho.platform.api.engine.IPentahoSession;
@@ -320,7 +319,7 @@ public class RenderApi {
   @Produces( MimeTypes.JSON )
   public String getDashboardDatasources( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                                 @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-                                @Context HttpServletRequest request ) throws IOException, JSONException {
+                                @Context HttpServletRequest request ) throws IOException {
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
       return JsonUtils.getJsonResult( false, "No path provided" );
