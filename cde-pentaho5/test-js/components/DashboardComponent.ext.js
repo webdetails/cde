@@ -16,6 +16,10 @@ define('cde/components/DashboardComponentExt', [], function() {
 
     getDashboardUrl: function(path) {
       return path;
+    },
+
+    getDashboardParametersEndpoint: function() {
+      return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
     }
   };
 

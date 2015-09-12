@@ -48,6 +48,7 @@ import pt.webdetails.cdf.dd.model.core.writer.IThingWriterFactory;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cdf.dd.model.inst.Component;
 import pt.webdetails.cdf.dd.model.inst.Dashboard;
+import pt.webdetails.cdf.dd.model.inst.DataSourceComponent;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsReadContext;
 import pt.webdetails.cdf.dd.model.inst.reader.cdfdejs.CdfdeJsThingReaderFactory;
@@ -294,13 +295,20 @@ public class DashboardManager {
     // 2. Get the Dashboard object
     return this.getDashboard( wcdf, cdeFilePath, bypassCacheRead );
   }
-
   public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead ) throws ThingReadException {
+    return getDashboardParameters( wcdfPath, bypassCacheRead, false );
+  }
+
+  public String getDashboardParameters( String wcdfPath, boolean bypassCacheRead, boolean all )
+    throws ThingReadException {
     Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
     ArrayList<String> parameters = new ArrayList<String>();
     for ( Component component : dashboard.getRegulars() ) {
       if ( Arrays.asList( MAP_PARAMETERS ).contains( component.getMeta().getName() ) ) {
-        parameters.add( component.getName() );
+        // if no 'public' property is present, we must default to true
+        if ( !all && Boolean.valueOf( component.tryGetPropertyValue( "public", "true" ) ) ) {
+          parameters.add( component.getName() );
+        }
       }
     }
     String result = "{";
@@ -313,6 +321,25 @@ public class DashboardManager {
     }
     return result + "\n}";
 
+  }
+  /**
+   * Returns a json with an array of data source names.
+   * Typically used by the editor, to easily map data sources with the DashboardComponent.
+   *
+   * @param wcdfPath the path to the dashboard to get data sources from
+   * @param bypassCacheRead whether to bypassCache when loading the dashboard or not
+   * @return A String representation of a json containing the list of data sources
+   * */
+  public String getDashboardDataSources( String wcdfPath, boolean bypassCacheRead )
+    throws ThingReadException {
+    Dashboard dashboard = getDashboard( wcdfPath, bypassCacheRead );
+    ArrayList<String> dataSources = new ArrayList<String>();
+    for ( DataSourceComponent dataSource : dashboard.getDataSources() ) {
+      dataSources.add( dataSource.getName() );
+    }
+    JSONObject result = new JSONObject();
+    result.put( "dataSources", dataSources );
+    return result.toString();
   }
 
   /**

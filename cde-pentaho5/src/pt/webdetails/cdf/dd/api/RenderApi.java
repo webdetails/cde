@@ -54,6 +54,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
+import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
@@ -291,8 +292,9 @@ public class RenderApi {
   @Path( "/getDashboardParameters" )
   @Produces( MimeTypes.JSON )
   public String getDashboardParameters( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                              @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-                              @Context HttpServletRequest request ) throws IOException {
+                                @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                                @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
+                                @Context HttpServletRequest request ) throws IOException {
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
       return "No path provided.";
@@ -305,11 +307,36 @@ public class RenderApi {
     }
 
     try {
-      return getDashboardManager().getDashboardParameters( path, bypassCache );
+      return getDashboardManager().getDashboardParameters( path, bypassCache, all );
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard parameters: " + ex.getMessage();
       logger.error( msg, ex );
       return msg;
+    }
+  }
+  @GET
+  @Path( "/getDashboardDatasources" )
+  @Produces( MimeTypes.JSON )
+  public String getDashboardDatasources( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+                                @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                                @Context HttpServletRequest request ) throws IOException {
+    if ( StringUtils.isEmpty( path ) ) {
+      logger.warn( "No path provided." );
+      return JsonUtils.getJsonResult( false, "No path provided" );
+    }
+
+    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( path );
+    if ( readAccess == null ) {
+      logger.warn( "Access Denied or File Not Found." );
+      return JsonUtils.getJsonResult( false, "Access Denied or File Not Found." );
+    }
+
+    try {
+      return getDashboardManager().getDashboardDataSources( path, bypassCache );
+    } catch ( Exception ex ) { //TODO: better error handling?
+      String msg = "Could not load dashboard datasources: " + ex.getMessage();
+      logger.error( msg, ex );
+      return JsonUtils.getJsonResult( false, msg );
     }
   }
 

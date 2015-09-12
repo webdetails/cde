@@ -14,8 +14,8 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/OlapSelectorComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, OlapSelectorComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, OlapSelectorComponent, $) {
 
   /**
    * ## The Olap Selector Component

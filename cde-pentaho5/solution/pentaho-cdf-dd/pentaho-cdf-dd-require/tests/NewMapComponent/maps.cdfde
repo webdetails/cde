@@ -83,14 +83,14 @@
       "type": "Id"
      },
      {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
       "name": "resourceCode",
       "value": "require(['cdf/lib/OpenLayers','cdf/lib/OpenStreetMap'], function(OpenLayers) { window.API_KEY = 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/theme/dark/'; });",
       "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
      }
     ]
    },
@@ -106,14 +106,14 @@
       "type": "Id"
      },
      {
-      "name": "resourceType",
-      "value": "Css",
-      "type": "Label"
-     },
-     {
       "name": "resourceCode",
       "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} ",
       "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Css",
+      "type": "Label"
      }
     ]
    },
@@ -1863,49 +1863,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "colormap",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "markerClickFunction",
+      "name": "API_KEY",
       "value": "",
       "type": "String"
-     },
-     {
-      "name": "tilesets",
-      "value": "mapquest",
-      "type": "tilesetsCustom"
-     },
-     {
-      "name": "shapeSource",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "mapMode",
-      "value": "",
-      "type": "mapModeCustom"
-     },
-     {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "mapEngineType",
-      "value": "openlayers",
-      "type": "String"
-     },
-     {
-      "name": "defaultZoomLevel",
-      "value": "5",
-      "type": "Integer"
-     },
-     {
-      "name": "centerLongitude",
-      "value": "",
-      "type": "Float"
      },
      {
       "name": "centerLatitude",
@@ -1913,24 +1873,24 @@
       "type": "Float"
      },
      {
-      "name": "popupParameters",
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "cggGraphParameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
-      "name": "markerWidth",
-      "value": 25,
-      "type": "Integer"
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
      },
      {
-      "name": "markerHeight",
-      "value": 25,
-      "type": "Integer"
-     },
-     {
-      "name": "API_KEY",
+      "name": "defaultZoomLevel",
       "value": "",
-      "type": "String"
+      "type": "Integer"
      },
      {
       "name": "locationResolver",
@@ -1938,14 +1898,14 @@
       "type": "locationResolverCustom"
      },
      {
-      "name": "popupHeight",
-      "value": 250,
-      "type": "Integer"
+      "name": "mapEngineType",
+      "value": "openlayers",
+      "type": "String"
      },
      {
-      "name": "popupContentsDiv",
+      "name": "mapMode",
       "value": "",
-      "type": "String"
+      "type": "mapModeCustom"
      },
      {
       "name": "marker",
@@ -1958,9 +1918,49 @@
       "type": "String"
      },
      {
+      "name": "markerClickFunction",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerHeight",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "markerWidth",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "popupHeight",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
       "name": "popupWidth",
       "value": 250,
       "type": "Integer"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
      },
      {
       "name": "dataSource",
@@ -2003,7 +2003,7 @@
       "type": "Html"
      },
      {
-      "name": "shapeMouseOver",
+      "name": "shapeMouseClick",
       "value": "",
       "type": "JavaScript"
      },
@@ -2013,7 +2013,7 @@
       "type": "JavaScript"
      },
      {
-      "name": "shapeMouseClick",
+      "name": "shapeMouseOver",
       "value": "",
       "type": "JavaScript"
      }
@@ -2041,49 +2041,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "colormap",
-      "value": "[]",
-      "type": "Array"
-     },
-     {
-      "name": "markerClickFunction",
+      "name": "API_KEY",
       "value": "",
       "type": "String"
-     },
-     {
-      "name": "tilesets",
-      "value": "mapquest",
-      "type": "tilesetsCustom"
-     },
-     {
-      "name": "shapeSource",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "mapMode",
-      "value": "",
-      "type": "mapModeCustom"
-     },
-     {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "mapEngineType",
-      "value": "openlayers",
-      "type": "String"
-     },
-     {
-      "name": "defaultZoomLevel",
-      "value": "5",
-      "type": "Integer"
-     },
-     {
-      "name": "centerLongitude",
-      "value": "",
-      "type": "Float"
      },
      {
       "name": "centerLatitude",
@@ -2091,24 +2051,24 @@
       "type": "Float"
      },
      {
-      "name": "popupParameters",
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "cggGraphParameters",
       "value": "[]",
       "type": "ValuesArray"
      },
      {
-      "name": "markerWidth",
-      "value": 25,
-      "type": "Integer"
+      "name": "colormap",
+      "value": "[]",
+      "type": "Array"
      },
      {
-      "name": "markerHeight",
-      "value": 25,
-      "type": "Integer"
-     },
-     {
-      "name": "API_KEY",
+      "name": "defaultZoomLevel",
       "value": "",
-      "type": "String"
+      "type": "Integer"
      },
      {
       "name": "locationResolver",
@@ -2116,14 +2076,14 @@
       "type": "locationResolverCustom"
      },
      {
-      "name": "popupHeight",
-      "value": 250,
-      "type": "Integer"
+      "name": "mapEngineType",
+      "value": "openlayers",
+      "type": "String"
      },
      {
-      "name": "popupContentsDiv",
+      "name": "mapMode",
       "value": "",
-      "type": "String"
+      "type": "mapModeCustom"
      },
      {
       "name": "marker",
@@ -2136,9 +2096,49 @@
       "type": "String"
      },
      {
+      "name": "markerClickFunction",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "markerHeight",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "markerWidth",
+      "value": 25,
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "popupHeight",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
       "name": "popupWidth",
       "value": "250",
       "type": "Integer"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
      },
      {
       "name": "dataSource",
@@ -2181,7 +2181,7 @@
       "type": "Html"
      },
      {
-      "name": "shapeMouseOver",
+      "name": "shapeMouseClick",
       "value": "",
       "type": "JavaScript"
      },
@@ -2191,7 +2191,7 @@
       "type": "JavaScript"
      },
      {
-      "name": "shapeMouseClick",
+      "name": "shapeMouseOver",
       "value": "",
       "type": "JavaScript"
      }
@@ -2219,23 +2219,43 @@
       "type": "CdaParameters"
      },
      {
+      "name": "API_KEY",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
       "name": "colormap",
       "value": "[]",
       "type": "Array"
      },
      {
-      "name": "markerHeight",
-      "value": "52",
+      "name": "defaultZoomLevel",
+      "value": "",
       "type": "Integer"
      },
      {
-      "name": "tilesets",
-      "value": "mapquest",
-      "type": "tilesetsCustom"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
-      "name": "shapeSource",
-      "value": "",
+      "name": "mapEngineType",
+      "value": "openlayers",
       "type": "String"
      },
      {
@@ -2244,68 +2264,8 @@
       "type": "mapModeCustom"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "mapEngineType",
-      "value": "openlayers",
-      "type": "String"
-     },
-     {
-      "name": "defaultZoomLevel",
-      "value": "5",
-      "type": "Integer"
-     },
-     {
-      "name": "centerLongitude",
-      "value": "",
-      "type": "Float"
-     },
-     {
-      "name": "centerLatitude",
-      "value": "",
-      "type": "Float"
-     },
-     {
-      "name": "popupParameters",
-      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "marker",
       "value": "",
-      "type": "String"
-     },
-     {
-      "name": "markerWidth",
-      "value": "36",
-      "type": "Integer"
-     },
-     {
-      "name": "API_KEY",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "locationResolver",
-      "value": "openstreetmap",
-      "type": "locationResolverCustom"
-     },
-     {
-      "name": "popupWidth",
-      "value": 250,
-      "type": "Integer"
-     },
-     {
-      "name": "popupHeight",
-      "value": "250",
-      "type": "Integer"
-     },
-     {
-      "name": "popupContentsDiv",
-      "value": "HiddenContentCol",
       "type": "String"
      },
      {
@@ -2317,6 +2277,46 @@
       "name": "markerClickFunction",
       "value": "function() {\n  require(['cdf/Logger'], function(Logger) { Logger.log(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked'); });\n}",
       "type": "JavaScript"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "markerWidth",
+      "value": "36",
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "HiddenContentCol",
+      "type": "String"
+     },
+     {
+      "name": "popupHeight",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "popupWidth",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
      },
      {
       "name": "dataSource",
@@ -2359,7 +2359,7 @@
       "type": "Html"
      },
      {
-      "name": "shapeMouseOver",
+      "name": "shapeMouseClick",
       "value": "",
       "type": "JavaScript"
      },
@@ -2369,7 +2369,7 @@
       "type": "JavaScript"
      },
      {
-      "name": "shapeMouseClick",
+      "name": "shapeMouseOver",
       "value": "",
       "type": "JavaScript"
      }
@@ -2397,23 +2397,43 @@
       "type": "CdaParameters"
      },
      {
+      "name": "API_KEY",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "",
+      "type": "Float"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
       "name": "colormap",
       "value": "[]",
       "type": "Array"
      },
      {
-      "name": "markerHeight",
-      "value": "52",
+      "name": "defaultZoomLevel",
+      "value": "",
       "type": "Integer"
      },
      {
-      "name": "tilesets",
-      "value": "mapquest",
-      "type": "tilesetsCustom"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
-      "name": "shapeSource",
-      "value": "",
+      "name": "mapEngineType",
+      "value": "openlayers",
       "type": "String"
      },
      {
@@ -2422,68 +2442,8 @@
       "type": "mapModeCustom"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "mapEngineType",
-      "value": "openlayers",
-      "type": "String"
-     },
-     {
-      "name": "defaultZoomLevel",
-      "value": "2",
-      "type": "Integer"
-     },
-     {
-      "name": "centerLongitude",
-      "value": "-15",
-      "type": "Float"
-     },
-     {
-      "name": "centerLatitude",
-      "value": "40",
-      "type": "Float"
-     },
-     {
-      "name": "popupParameters",
-      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "marker",
       "value": "",
-      "type": "String"
-     },
-     {
-      "name": "markerWidth",
-      "value": "36",
-      "type": "Integer"
-     },
-     {
-      "name": "API_KEY",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "locationResolver",
-      "value": "openstreetmap",
-      "type": "locationResolverCustom"
-     },
-     {
-      "name": "popupWidth",
-      "value": "250",
-      "type": "Integer"
-     },
-     {
-      "name": "popupHeight",
-      "value": "250",
-      "type": "Integer"
-     },
-     {
-      "name": "popupContentsDiv",
-      "value": "HiddenContentCol",
       "type": "String"
      },
      {
@@ -2495,6 +2455,46 @@
       "name": "markerClickFunction",
       "value": "\"function() {alert(dashboard.getParameterValue('CustomerNameParameter');}\"",
       "type": "String"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "markerWidth",
+      "value": "36",
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "HiddenContentCol",
+      "type": "String"
+     },
+     {
+      "name": "popupHeight",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "popupWidth",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "shapeSource",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
      },
      {
       "name": "dataSource",
@@ -2537,7 +2537,7 @@
       "type": "Html"
      },
      {
-      "name": "shapeMouseOver",
+      "name": "shapeMouseClick",
       "value": "",
       "type": "JavaScript"
      },
@@ -2547,7 +2547,7 @@
       "type": "JavaScript"
      },
      {
-      "name": "shapeMouseClick",
+      "name": "shapeMouseOver",
       "value": "",
       "type": "JavaScript"
      }
@@ -2575,23 +2575,43 @@
       "type": "CdaParameters"
      },
      {
+      "name": "API_KEY",
+      "value": "",
+      "type": "String"
+     },
+     {
+      "name": "centerLatitude",
+      "value": "38",
+      "type": "Float"
+     },
+     {
+      "name": "centerLongitude",
+      "value": "-9",
+      "type": "Float"
+     },
+     {
+      "name": "cggGraphParameters",
+      "value": "[]",
+      "type": "ValuesArray"
+     },
+     {
       "name": "colormap",
       "value": "[\"[0, 102, 0, 255]\", \"[255, 255, 0, 255]\", \"[255, 0, 0, 255]\"]",
       "type": "Array"
      },
      {
-      "name": "markerHeight",
-      "value": "52",
+      "name": "defaultZoomLevel",
+      "value": "2",
       "type": "Integer"
      },
      {
-      "name": "tilesets",
-      "value": "stamen-watercolor",
-      "type": "tilesetsCustom"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
-      "name": "shapeSource",
-      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/maps/countries.kml",
+      "name": "mapEngineType",
+      "value": "openlayers",
       "type": "String"
      },
      {
@@ -2600,68 +2620,8 @@
       "type": "mapModeCustom"
      },
      {
-      "name": "cggGraphParameters",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
-      "name": "mapEngineType",
-      "value": "openlayers",
-      "type": "String"
-     },
-     {
-      "name": "defaultZoomLevel",
-      "value": "2",
-      "type": "Integer"
-     },
-     {
-      "name": "centerLongitude",
-      "value": "",
-      "type": "Float"
-     },
-     {
-      "name": "centerLatitude",
-      "value": "",
-      "type": "Float"
-     },
-     {
-      "name": "popupParameters",
-      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "marker",
       "value": "",
-      "type": "String"
-     },
-     {
-      "name": "markerWidth",
-      "value": "36",
-      "type": "Integer"
-     },
-     {
-      "name": "API_KEY",
-      "value": "",
-      "type": "String"
-     },
-     {
-      "name": "locationResolver",
-      "value": "openstreetmap",
-      "type": "locationResolverCustom"
-     },
-     {
-      "name": "popupWidth",
-      "value": 250,
-      "type": "Integer"
-     },
-     {
-      "name": "popupHeight",
-      "value": "250",
-      "type": "Integer"
-     },
-     {
-      "name": "popupContentsDiv",
-      "value": "HiddenContentCol",
       "type": "String"
      },
      {
@@ -2673,6 +2633,46 @@
       "name": "markerClickFunction",
       "value": "function() {\n    alert(dashboard.getParameterValue('CustomerNameParameter') + ' has  been clicked');\n}",
       "type": "JavaScript"
+     },
+     {
+      "name": "markerHeight",
+      "value": "52",
+      "type": "Integer"
+     },
+     {
+      "name": "markerWidth",
+      "value": "36",
+      "type": "Integer"
+     },
+     {
+      "name": "popupContentsDiv",
+      "value": "HiddenContentCol",
+      "type": "String"
+     },
+     {
+      "name": "popupHeight",
+      "value": "250",
+      "type": "Integer"
+     },
+     {
+      "name": "popupParameters",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]",
+      "type": "ValuesArray"
+     },
+     {
+      "name": "popupWidth",
+      "value": 250,
+      "type": "Integer"
+     },
+     {
+      "name": "shapeSource",
+      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/maps/countries.kml",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "stamen-watercolor",
+      "type": "tilesetsCustom"
      },
      {
       "name": "dataSource",
@@ -2715,8 +2715,8 @@
       "type": "Html"
      },
      {
-      "name": "shapeMouseOver",
-      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n  require(['cdf/Logger'], function(Logger) { Logger.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude); });\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
+      "name": "shapeMouseClick",
+      "value": "function f(event){\n    var msg = 'Mouse clicked at ' + event.data.key +', at latitude:' + event.latitude + ' and longitude:' + event.longitude;\n  require(['cdf/Logger'], function(Logger) { Logger.log(msg); });\n    \n    //if (!this.userData){\n    //    this.userData = {};\n    //}\n    //this.userData[event.data.key] = !this.userData[event.data.key];\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // otherwise, nothing happens\n    return {\n        fillColor: 'red',\n        fillOpacity: 1,\n        strokeColor: 'black',\n        strokeWidth: 2\n    };\n}",
       "type": "JavaScript"
      },
      {
@@ -2725,8 +2725,8 @@
       "type": "JavaScript"
      },
      {
-      "name": "shapeMouseClick",
-      "value": "function f(event){\n    var msg = 'Mouse clicked at ' + event.data.key +', at latitude:' + event.latitude + ' and longitude:' + event.longitude;\n  require(['cdf/Logger'], function(Logger) { Logger.log(msg); });\n    \n    //if (!this.userData){\n    //    this.userData = {};\n    //}\n    //this.userData[event.data.key] = !this.userData[event.data.key];\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // otherwise, nothing happens\n    return {\n        fillColor: 'red',\n        fillOpacity: 1,\n        strokeColor: 'black',\n        strokeWidth: 2\n    };\n}",
+      "name": "shapeMouseOver",
+      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n  require(['cdf/Logger'], function(Logger) { Logger.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude); });\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} ",
       "type": "JavaScript"
      }
     ]
@@ -2865,13 +2865,13 @@
       "type": "JavaScript"
      },
      {
-      "name": "refreshPeriod",
-      "value": "",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "refreshPeriod",
+      "value": "",
       "type": "Integer"
      },
      {
@@ -2942,14 +2942,14 @@
       "type": "ValuesArray"
      },
      {
-      "name": "valueAsId",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
       "name": "externalPlugin",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "valueAsId",
+      "value": "false",
+      "type": "Boolean"
      },
      {
       "name": "dataSource",
@@ -3007,14 +3007,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extraOptions",
       "value": "[]",
       "type": "OptionArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      }
     ]
    },
@@ -3045,14 +3045,14 @@
       "type": "ValuesArray"
      },
      {
-      "name": "valueAsId",
-      "value": "false",
-      "type": "Boolean"
-     },
-     {
       "name": "externalPlugin",
       "value": "",
       "type": "String"
+     },
+     {
+      "name": "valueAsId",
+      "value": "false",
+      "type": "Boolean"
      },
      {
       "name": "dataSource",
@@ -3110,14 +3110,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "tooltip",
-      "value": "",
-      "type": "Html"
-     },
-     {
       "name": "extraOptions",
       "value": "[]",
       "type": "OptionArray"
+     },
+     {
+      "name": "tooltip",
+      "value": "",
+      "type": "Html"
      }
     ]
    }
@@ -3179,9 +3179,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -3189,14 +3189,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -3230,13 +3230,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -3255,9 +3255,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -3265,14 +3265,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",
@@ -3331,9 +3331,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -3341,14 +3341,14 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
      },
      {
       "name": "cacheKeys",

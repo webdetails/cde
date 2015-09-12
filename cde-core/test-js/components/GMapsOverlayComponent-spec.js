@@ -11,14 +11,22 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/jquery'],
-  function(Dashboard, GMapsOverlayComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/GMapsOverlayComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, GMapsOverlayComponent, $) {
 
   /**
    * ## The Google Maps Overlay Component
    */
   describe("The Google Maps Overlay Component #", function() {
     var dashboard = new Dashboard();
+
+    dashboard.addDataSource("gMapsQuery", {
+      dataAccessId: "GetCrimesByBeat",
+      path: "/fake/path/file.cda"
+    });
 
     dashboard.init();
 
@@ -41,10 +49,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/GMapsOverlayComponent', 'cdf/lib/
       legend: [],
       legendText: "Legend",
       search: false,
-      queryDefinition: {
-        dataAccessId: "GetCrimesByBeat",
-        path: "/fake/path/file.cda"
-      }
+      queryDefinition: {dataSource: "gMapsQuery"}
     });
 
     dashboard.addComponent(gMapsOverlayComponent);

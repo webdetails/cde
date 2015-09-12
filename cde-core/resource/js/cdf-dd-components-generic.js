@@ -971,20 +971,16 @@ var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
   valTitle: 'Form.'
 });
 
-var ParameterMappingRenderer = ValuesArrayRenderer.extend({
-  popupTitle: 'Parameter Mapping',
-  argTitle: 'Map from this dashboard',
-  valTitle: 'Map to other dashboard',
+var abstractMapperRenderer = ValuesArrayRenderer.extend({
 
   constructor: function(tableManager) {
     this.base(tableManager);
-    this.logger = new Logger("ParameterMappingRenderer");
-    this.logger.debug("Creating new ParameterMappingRenderer");
+    this.logger = new Logger(this.mapperType);
+    this.logger.debug("Creating new " + this.mapperType);
   },
 
   onPopupLoad: function() {
-    var myself = this;
-    var getParametersUrl = wd.helpers.editor.getDashboardParametersUrl();
+    var requestUrl = this.getRequestUrl();
     var tableData = this.tableManager.getTableModel().data;
     for (var i = 0; i < tableData.length; i++) {
       if (tableData[i].name == "dashboardPath") {
@@ -992,18 +988,16 @@ var ParameterMappingRenderer = ValuesArrayRenderer.extend({
         break;
       }
     }
+    var successFun = _.bind(this.requestSuccess, this);
+    var errorFun = _.bind(this.requestError, this);
 
     $.ajax({
       async: true,
       method: "get",
       dataType: "json",
-      url: getParametersUrl + this.dashboardPath,
-      success: function(data) {
-        myself.otherDashboardParameters = data ? data.parameters || [] : [];
-      },
-      error: function(){
-        myself.otherDashboardParameters = [];
-      }
+      url: requestUrl + this.dashboardPath,
+      success: successFun,
+      error: errorFun
     });
   },
 
@@ -1085,7 +1079,7 @@ var ParameterMappingRenderer = ValuesArrayRenderer.extend({
   getOtherData: function() {
     var data = {};
 
-    var filters = this.otherDashboardParameters;
+    var filters = this[this.dataSaveProp];
 
     var isWidget = cdfdd.getDashboardWcdf().widget;
     if(filters.length > 0) {
@@ -1102,9 +1096,69 @@ var ParameterMappingRenderer = ValuesArrayRenderer.extend({
     }
 
     return data;
+  },
+  getData: function() {
+    var data = {};
+    var filterCategory = this.datasourceFiltering ?
+      Panel.getPanel( DatasourcesPanel.MAIN_PANEL).getDatasources() :
+      Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+
+    var filters = _.sortBy(filterCategory, function (filter) {
+      return filter.properties[0].value;
+    });
+
+    var isWidget = cdfdd.getDashboardWcdf().widget;
+    if(filters.length > 0) {
+      $.each(filters, function(i, filter) {
+        var value = filter.properties[0].value;
+        if(isWidget && $.inArray(value, cdfdd.getDashboardWcdf().widgetParameters) > -1) {
+          data[value] = '${p:' + value + '}';
+        } else {
+          data[value] = value;
+        }
+      });
+    } else {
+      data[''] = '';
+    }
+    return data;
   }
 
-},{
+});
+
+var ParameterMappingRenderer = abstractMapperRenderer.extend({
+  mapperType: "ParameterMappingRenderer",
+  popupTitle: 'Parameter Mapping',
+  argTitle: 'Map from this dashboard',
+  valTitle: 'Map to other dashboard',
+  dataSaveProp: "otherDashboardParameters",
+  getRequestUrl: function() {
+    return wd.helpers.editor.getDashboardParametersUrl();
+  },
+  requestSuccess: function(data) {
+    this.otherDashboardParameters = data ? data.parameters || [] : [];
+  },
+  requestError: function(){
+    this.otherDashboardParameters = [];
+  }
+});
+
+var DataSourceMappingRenderer = abstractMapperRenderer.extend({
+  mapperType: "DataSourceMappingRenderer",
+  popupTitle: 'Data Source Mapping',
+  argTitle: 'Map from this dashboard',
+  valTitle: 'Map to other dashboard',
+  dataSaveProp: "otherDashboardDataSources",
+  valPlaceHolderText: 'Datasources...',
+  datasourceFiltering: true,
+  getRequestUrl: function() {
+    return wd.helpers.editor.getDashboardDataSourcesUrl();
+  },
+  requestSuccess: function(data) {
+    this.otherDashboardDataSources = data ? data.dataSources || [] : [];
+  },
+  requestError: function(){
+    this.otherDashboardDataSources = [];
+  }
 });
 
 var CdaQueryRenderer = PromptRenderer.extend({

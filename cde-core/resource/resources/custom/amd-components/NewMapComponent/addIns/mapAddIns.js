@@ -12,11 +12,14 @@
  */
 
 define([
-  './addIns/cggMarker/cggMarker',
-  './addIns/geonames/geonames',
-  './addIns/nominatim/nominatim',
-  './addIns/mapquest/mapquest',
-  './addIns/urlMarker/urlMarker'],
-  function() {
+  './addIns/LocationResolver/geonames/geonames',
+  './addIns/LocationResolver/nominatim/nominatim',
+  './addIns/LocationResolver/mapquest/mapquest',
+  './addIns/MarkerImage/cggMarker/cggMarker',
+  './addIns/MarkerImage/urlMarker/urlMarker',
+  './addIns/ShapeResolver/simpleJSON',
+  './addIns/ShapeResolver/kml',
+  './addIns/ShapeResolver/geoJSON'
+], function () {
 
 });

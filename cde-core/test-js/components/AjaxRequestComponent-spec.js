@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/AjaxRequestComponent', 'cdf/lib/jquery'],
-  function(Dashboard, AjaxRequestComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/AjaxRequestComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, AjaxRequestComponent, $) {
 
   /**
    * ## The Ajax Request Component

@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/RaphaelComponent', 'cdf/lib/jquery'],
-  function(Dashboard, RaphaelComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/RaphaelComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, RaphaelComponent, $) {
 
   /**
    * ## The Raphael Component
