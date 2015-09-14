@@ -1,0 +1,568 @@
+{
+ "components": {
+  "rows": [
+   {
+    "id": "OTHERCOMPONENTS",
+    "name": "Others",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Others"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "f406b52e-1fd6-6f76-160b-1f8e94dc8337",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "GeoChart"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "vizId",
+      "type": "Datasource",
+      "value": "x-open_layers"
+     },
+     {
+      "name": "vizOptions",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "vizQuery"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "refreshPeriod",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:ChartObj}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": "function f() {\n    // Keep controls near the map\n    $(\".visual-element\", this.placeholder())\n    .css('position', 'relative');\n    \n    // Undo some unwanted side-effects of template.css\n    $(\".visual-element td\", this.placeholder())\n    .css('padding', '0');\n    //$(\"#visualPanelElement-0\").css('background-color', 'transparent');\n} "
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": "function f(cdaData) {\n    // Many/most visualizations use a visual-roles to data-columns mapping\n    // to know which data to show in which parts of the visualization.\n    // Right now, this mapping must be specified by annotating \n    // the columns of the data table.\n    // Also, in the geo visualization, we must inform of which columns\n    // play a GEOgraphic role.\n    // In the final VizAPI 3 this will be more easily specified \n    // through regular viz options.\n    \n    var DataTable = require(\"pentaho/visual/data/DataTable\"),\n        data = new DataTable(cdaData);\n    \n    data.setColumnProperty(0, \"dataReq\", [{id: \"rows\"}]);\n    data.setColumnProperty(0, \"geoRole\", \"Country\");\n    \n    data.setColumnProperty(1, \"dataReq\", [{id: \"color\"}]);\n    data.setColumnProperty(2, \"dataReq\", [{id: \"size\"}]);\n    \n    return data;\n} "
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsvisualizationAPI",
+    "typeDesc": "Visualization API Component"
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "MDX",
+    "name": "MDX Queries",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "MDX Queries"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "9b7a4b50-242f-ff79-c3bd-c6586b1e139c",
+    "meta": "CDA",
+    "meta_conntype": "mondrian.jndi",
+    "meta_datype": "mdx",
+    "parent": "MDX",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "vizQuery"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "jndi",
+      "type": "Jndi",
+      "value": "SampleData"
+     },
+     {
+      "name": "catalog",
+      "type": "MondrianCatalog",
+      "value": "mondrian:/SteelWheels"
+     },
+     {
+      "name": "query",
+      "type": "SqlQuery",
+      "value": "WITH\nSET [*NATIVE_CJ_SET_WITH_SLICER] AS 'FILTER([*BASE_MEMBERS__Markets_], NOT ISEMPTY ([Measures].[Sales]) OR NOT ISEMPTY ([Measures].[Quantity]))'\nSET [*NATIVE_CJ_SET] AS '[*NATIVE_CJ_SET_WITH_SLICER]'\nSET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_1],[Measures].[*FORMATTED_MEASURE_0]}'\nSET [*BASE_MEMBERS__Markets_] AS '[Markets].[Country].MEMBERS'\nSET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER)})'\nSET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,ANCESTOR([Markets].CURRENTMEMBER,[Markets].[Territory]).ORDERKEY,BASC)'\nMEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Quantity]', FORMAT_STRING = '#,###', SOLVE_ORDER=500\nMEMBER [Measures].[*FORMATTED_MEASURE_1] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500\nSELECT\n[*BASE_MEMBERS__Measures_] ON COLUMNS\n,[*SORTED_ROW_AXIS] ON ROWS\nFROM [SteelWheelsSales]"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "bandedMode",
+      "type": "BandedMode",
+      "value": "compact"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": "3600"
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsmdx_mondrianJndi",
+    "typeDesc": "mdx over mondrianJndi"
+   }
+  ]
+ },
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/vizapi/geo/geo.cdfde",
+ "layout": {
+  "rows": [
+   {
+    "id": "f682a2ca-729d-5a3f-209a-3700aaf855b1",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "loadGeoDependencies",
+      "type": "Id"
+     },
+     {
+      "name": "resourceCode",
+      "value": "// Unfortunately, the current version of the GEO plugin\n// doesn't declare this dependency, so we have to include it this way...\nrequire([\"common-ui/repo/pentaho-ajax\"], function(){}) ",
+      "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "6b92846b-526c-cb97-0949-4551f920ae12",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../../template.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "03a83220-159d-d841-c40d-0a04044f3e51",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "css"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../../cdeReference.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "7746f3c7-ccfb-9cba-b7cd-f5dae17d6a63",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Spacer"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "20"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "Title"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDheader"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9e153dff-b071-01a0-54dd-3666a857debe",
+    "parent": "23974863-0f28-ff9c-62f8-30c632ba973d",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "Visualization API - Pentaho EE GEO plugin Sample "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": "18"
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "DescriptionBody"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "46e27ef7-a339-d5fb-0d0f-728bdaec0476",
+    "parent": "2d99f333-9735-6b03-85d5-93d4a0142d07",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<p>You can now use visualizations registered in Pentaho Visualization API as regular CDF components.</p>\n\n<p>This samples shows a dashboard using the Pentaho GEO EE visualization,\n   which was developed and registered to be used in Analyzer.</p>\n\n<p>In order for the sample to run, you must ensure that you have installed the Pentaho GEO EE plugin.</p>\n\n<p><b>This Sample only runs in Pentaho 6.0 or later.</b></p> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ChartBody"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellBody"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "100379ee-749c-6807-e780-83f2aa5d6a79",
+    "parent": "c2b51a60-0d9d-491d-e46f-2a2bf806920e",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ChartObj"
+     },
+     {
+      "name": "columnSpan",
+      "type": "Integer",
+      "value": "20"
+     },
+     {
+      "name": "columnPrepend",
+      "type": "Integer",
+      "value": "1"
+     },
+     {
+      "name": "columnAppend",
+      "type": "Integer",
+      "value": "1"
+     },
+     {
+      "name": "columnPrependTop",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnAppendBottom",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBigBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "600"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutColumn",
+    "typeDesc": "Column"
+   }
+  ],
+  "title": "CDF - Sample structure"
+ }
+}
