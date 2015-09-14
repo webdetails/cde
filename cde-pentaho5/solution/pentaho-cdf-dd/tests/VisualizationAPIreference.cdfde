@@ -14,14 +14,14 @@
       "type": "Id"
      },
      {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
       "name": "resourceCode",
       "value": "delete define;\ndelete require; ",
       "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
      }
     ]
    },
@@ -40,6 +40,29 @@
       "name": "resourceFile",
       "value": "webcontext.js?context=mantle&amp;requireJsOnly=true",
       "type": "ResourceFile"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "a0447646-222b-9104-711e-f6c91f7cb32d",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "loadVizDependencies",
+      "type": "Id"
+     },
+     {
+      "name": "resourceCode",
+      "value": "require([], function() {\n    // Configuration loaded now, safe to do other require calls\n    // that depend on that config.\n    require([\n        'common-ui/vizapi/DataTable',\n        'common-ui/vizapi/Events',\n        'twelveDaysViz/pentaho/viz/index/index',\n        'twelveDaysViz/pentaho/viz/index/definition'\n    ], function(){\n        render_IndexChart.update();\n    });\n        \n});\n ",
+      "type": "Resource"
      },
      {
       "name": "resourceType",
@@ -664,7 +687,7 @@
      },
      {
       "name": "executeAtStart",
-      "value": "true",
+      "value": "false",
       "type": "Boolean"
      },
      {
@@ -673,13 +696,13 @@
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
-      "value": "",
+      "name": "postExecution",
+      "value": "function () {\n    $(\"#svgDiv\").css('position', 'relative');\n    $(\"#visualPanelElement-0\").css('background-color', 'transparent') ; \n} ",
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
-      "value": "function () {\n    $(\"#svgDiv\").css('position', 'relative');\n    $(\"#visualPanelElement-0\").css('background-color', 'transparent') ; \n} ",
+      "name": "postFetch",
+      "value": "",
       "type": "JavaScript"
      },
      {
@@ -732,13 +755,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -757,9 +780,9 @@
       "type": "CdaParameters"
      },
      {
-      "name": "outputMode",
-      "value": "include",
-      "type": "OutputMode"
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
      },
      {
       "name": "cdacolumns",
@@ -767,14 +790,19 @@
       "type": "CdaColumnsArray"
      },
      {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
+     },
+     {
+      "name": "outputMode",
+      "value": "include",
+      "type": "OutputMode"
+     },
+     {
+      "name": "cacheKeys",
+      "value": "[]",
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
@@ -839,6 +867,21 @@
       "type": "CdaParameters"
      },
      {
+      "name": "bandedMode",
+      "value": "compact",
+      "type": "BandedMode"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "value": "[]",
+      "type": "CdaCalculatedColumnsArray"
+     },
+     {
+      "name": "cdacolumns",
+      "value": "[]",
+      "type": "CdaColumnsArray"
+     },
+     {
       "name": "output",
       "value": "[]",
       "type": "IndexArray"
@@ -849,19 +892,9 @@
       "type": "OutputMode"
      },
      {
-      "name": "cdacolumns",
+      "name": "cacheKeys",
       "value": "[]",
-      "type": "CdaColumnsArray"
-     },
-     {
-      "name": "cdacalculatedcolumns",
-      "value": "[]",
-      "type": "CdaCalculatedColumnsArray"
-     },
-     {
-      "name": "bandedMode",
-      "value": "compact",
-      "type": "BandedMode"
+      "type": "CacheKeysValues"
      },
      {
       "name": "cacheDuration",
