@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="vizQuery" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="vizQuery" id="vizQuery" type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH
+SET [*NATIVE_CJ_SET_WITH_SLICER] AS 'FILTER([*BASE_MEMBERS__Markets_], NOT ISEMPTY ([Measures].[Sales]) OR NOT ISEMPTY ([Measures].[Quantity]))'
+SET [*NATIVE_CJ_SET] AS '[*NATIVE_CJ_SET_WITH_SLICER]'
+SET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_1],[Measures].[*FORMATTED_MEASURE_0]}'
+SET [*BASE_MEMBERS__Markets_] AS '[Markets].[Country].MEMBERS'
+SET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER)})'
+SET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,ANCESTOR([Markets].CURRENTMEMBER,[Markets].[Territory]).ORDERKEY,BASC)'
+MEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Quantity]', FORMAT_STRING = '#,###', SOLVE_ORDER=500
+MEMBER [Measures].[*FORMATTED_MEASURE_1] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500
+SELECT
+[*BASE_MEMBERS__Measures_] ON COLUMNS
+,[*SORTED_ROW_AXIS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+</CDADescriptor>

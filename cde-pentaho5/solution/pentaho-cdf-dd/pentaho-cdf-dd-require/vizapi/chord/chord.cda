@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="vizQuery" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="vizQuery" id="vizQuery" type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH
+SET [*NATIVE_CJ_SET] AS 'NONEMPTYCROSSJOIN([*BASE_MEMBERS__Markets_],[*BASE_MEMBERS__Product_])'
+SET [*BASE_MEMBERS__Measures_] AS '{[Measures].[*FORMATTED_MEASURE_0]}'
+SET [*BASE_MEMBERS__Markets_] AS '[Markets].[Territory].MEMBERS'
+SET [*CJ_ROW_AXIS] AS 'GENERATE([*NATIVE_CJ_SET], {([Markets].CURRENTMEMBER,[Product].CURRENTMEMBER)})'
+SET [*BASE_MEMBERS__Product_] AS '[Product].[Line].MEMBERS'
+SET [*SORTED_ROW_AXIS] AS 'ORDER([*CJ_ROW_AXIS],[Markets].CURRENTMEMBER.ORDERKEY,BASC,[Product].CURRENTMEMBER.ORDERKEY,BASC)'
+MEMBER [Measures].[*FORMATTED_MEASURE_0] AS '[Measures].[Sales]', FORMAT_STRING = '#,###', SOLVE_ORDER=500
+SELECT
+[*BASE_MEMBERS__Measures_] ON COLUMNS
+,NON EMPTY
+[*SORTED_ROW_AXIS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+</CDADescriptor>
