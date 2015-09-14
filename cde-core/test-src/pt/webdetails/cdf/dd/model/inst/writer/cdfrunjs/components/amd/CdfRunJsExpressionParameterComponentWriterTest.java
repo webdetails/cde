@@ -19,6 +19,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.PROPER_EXPRESSION_CONTEXT;
+
 public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
 
   private CdfRunJsExpressionParameterComponentWriter expressionParameterComponentWriter;
@@ -35,10 +37,21 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   }
 
   @Test
+  public void testBindProperContext() {
+    String functionToBind = "function() {}";
+    String returnValue = "_.bind(" + functionToBind + ", " + PROPER_EXPRESSION_CONTEXT + ")";
+    Assert.assertEquals(
+        "Function is correctly bound to a proper context",
+        returnValue,
+        bind( functionToBind )
+    );
+  }
+
+  @Test
   public void testExpressionParameterComponentWriterSimpleValue() {
     String customParamValue = "value;       ";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value" + NEWLINE + "}()";
+    String expectedReturnValue = bind( "function() { return value" + NEWLINE + "}" ) + "()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
@@ -46,7 +59,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterMultipleLineValue() {
     String customParamValue = "value;" + NEWLINE + "//comment";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return value;" + NEWLINE + "//comment" + NEWLINE + "}()";
+    String expectedReturnValue = bind( "function() { return value;" + NEWLINE + "//comment" + NEWLINE + "}" ) + "()";
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
@@ -54,7 +67,7 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterFunction() {
     String customParamValue = "function() { return 'value'; }";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() { return 'value'; }";
+    String expectedReturnValue = bind( "function() { return 'value'; }" );
     Assert.assertEquals( returnValue, expectedReturnValue );
   }
 
@@ -62,8 +75,12 @@ public class CdfRunJsExpressionParameterComponentWriterTest extends TestCase {
   public void testExpressionParameterComponentWriterMultipleLineFunction() {
     String customParamValue = "function() {" + NEWLINE + "return 'value';" + NEWLINE + "}";
     String returnValue = expressionParameterComponentWriter.sanitizeExpression( customParamValue );
-    String expectedReturnValue = "function() {" + NEWLINE + "return 'value';" + NEWLINE + "}";
+    String expectedReturnValue = bind( "function() {" + NEWLINE + "return 'value';" + NEWLINE + "}" );
     Assert.assertEquals( returnValue, expectedReturnValue );
+  }
+
+  private String bind( String toBind ) {
+    return CdfRunJsExpressionParameterComponentWriter.bindProperContext( toBind );
   }
 
 }
