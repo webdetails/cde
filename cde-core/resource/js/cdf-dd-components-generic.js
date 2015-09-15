@@ -761,7 +761,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
   },
 
   getValueSection: function(index, value) {
-    var tooltip = value != "" ? "<pre>" + value + "</pre>" : "Click to Edit...";
+    var tooltip = value != "" ? $("<a>").text("<pre>" + value + "</pre>").html() : "Click to Edit...";
     return '' +
         '<div class="popup-value-container">' +
         '  <div id="val_' + index + '" class="popup-text-div" title="' + tooltip + '" placeholder="' + this.valPlaceHolderText + '">' + this.getFormattedValue(value) + '</div>' +
