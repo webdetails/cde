@@ -34,6 +34,8 @@ public class CdeConstants {
 
   public static final String LEGACY_UNSAVED_FILE_PATH = "/null/null/null";
 
+  public static final String PLUGIN_SETTINGS_ALLOW_CROSS_DOMAIN_RESOURCES = "settings/allow-cross-domain-resources";
+
   /**
    * Inner paths relative to plugin repository dir
    */
