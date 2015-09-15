@@ -82,6 +82,9 @@ define([
               myself.registeredEvents[eventName].push(fun);
             }
           });
+        },
+        xhrFields: {
+          withCredentials: true
         }
       });
     },
