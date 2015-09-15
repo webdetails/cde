@@ -34,6 +34,8 @@ public class CdeConstants {
 
   public static final String LEGACY_UNSAVED_FILE_PATH = "/null/null/null";
 
+  public static final String PLUGIN_SETTINGS_ALLOW_CROSS_DOMAIN_RESOURCES = "settings/allow-cross-domain-resources";
+
   /**
    * Inner paths relative to plugin repository dir
    */
@@ -243,6 +245,8 @@ public class CdeConstants {
     public static final String DASHBOARD_ADD_DATA_SOURCE_END = "{0});" + NEWLINE + NEWLINE;
     // dashboard.addComponents function
     public static final String DASHBOARD_ADD_COMPONENTS = NEWLINE + "dashboard.addComponents([{0}]);" + NEWLINE;
+
+    public static final String PROPER_EXPRESSION_CONTEXT = "{\"dashboard\": dashboard}";
 
     public static class DataSource {
       public static final String META_TYPE_CDA = "CDA";

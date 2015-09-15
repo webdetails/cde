@@ -56,6 +56,7 @@ import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
+import pt.webdetails.cdf.dd.util.CorsUtil;
 import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.localization.MessageBundlesHelper;
@@ -294,7 +295,9 @@ public class RenderApi {
   public String getDashboardParameters( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                                 @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                                 @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
-                                @Context HttpServletRequest request ) throws IOException {
+                                @Context HttpServletRequest request,
+                                @Context HttpServletResponse response ) throws IOException {
+    setCorsHeaders( request, response );
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
       return "No path provided.";
@@ -510,6 +513,10 @@ public class RenderApi {
       return this.privateEnviroment;
     }
     return CdeEngine.getEnv();
+  }
+
+  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {
+    CorsUtil.getInstance().setCorsHeaders( request, response );
   }
 
 }

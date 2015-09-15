@@ -127,7 +127,8 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     it("# getValueDiv", function() {
       var index = "0",
           value = "Hello World!",
-          tooltip = "<pre>Hello World!</pre>";
+          // using jquery to escape html
+          tooltip = $("<a>").text("<pre>Hello World!</pre>").html();
 
       expect( evar.getValueSection(index, value) ).toBe(
           '<div class="popup-value-container">' +

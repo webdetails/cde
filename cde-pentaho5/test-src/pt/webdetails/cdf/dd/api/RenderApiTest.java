@@ -34,6 +34,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -188,8 +189,9 @@ public class RenderApiTest {
   @Test
   public void testGetDashboardParameters() throws IOException {
     HttpServletRequest request = mock( HttpServletRequest.class );
+    HttpServletResponse response = mock( HttpServletResponse.class );
 
-    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, request );
+    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, request, response );
     String expected = "{\"parameters\":[\"dummyComponent\"]}";
     Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
         expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
