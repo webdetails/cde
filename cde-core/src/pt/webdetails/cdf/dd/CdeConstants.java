@@ -244,6 +244,8 @@ public class CdeConstants {
     // dashboard.addComponents function
     public static final String DASHBOARD_ADD_COMPONENTS = NEWLINE + "dashboard.addComponents([{0}]);" + NEWLINE;
 
+    public static final String PROPER_EXPRESSION_CONTEXT = "{\"dashboard\": dashboard}";
+
     public static class DataSource {
       public static final String META_TYPE_CDA = "CDA";
       public static final String META_TYPE_CPK = "CPK";
