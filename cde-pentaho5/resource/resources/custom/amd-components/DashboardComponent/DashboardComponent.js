@@ -66,6 +66,7 @@ define([
       $.ajax({
         url: getPublicParametersUrl,
         type: "GET",
+        async: true,
         success: function(data) {
           myself.publicParameters = data.parameters;
           myself.loopThroughMapping(function(myParam, otherParam) {
