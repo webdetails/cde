@@ -14,7 +14,10 @@
 package pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard;
 
 import java.io.Serializable;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
+import pt.webdetails.cdf.dd.CdeConstants;
 
 public class CdfRunJsDashboardWriteOptions implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -22,6 +25,11 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
   private final boolean _absolute, _debug, _amdModule;
   private final String  _absRoot, _scheme, _aliasPrefix;
   private String _contextConfiguration;
+  // '.' and ':' are actually accepted in HTML4 ids, however its better to treat them
+  // because jQuery selectors would need to explicitly escape these characters
+  private static final String SPECIAL_CHARACTERS = "—[~!@#$%^&*(){}|,]=+|;'\"?<>`.: ";
+  private static final Pattern SPECIAL_CHARACTERS_PATTERN =
+      Pattern.compile( "[\\Q" + SPECIAL_CHARACTERS + "\\E]" );
 
   public CdfRunJsDashboardWriteOptions(
       boolean absolute,
@@ -58,7 +66,7 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
       String absRoot,
       String scheme,
       String config ) {
-    this._aliasPrefix = aliasPrefix;
+    this._aliasPrefix = escapeAlias( aliasPrefix );
     this._amdModule   = amdModule;
     this._absolute    = absolute;
     this._debug       = debug;
@@ -71,6 +79,8 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
     if ( StringUtils.isEmpty( aliasPrefix ) ) {
       throw new IllegalArgumentException( "aliasPrefix" );
     }
+
+    aliasPrefix = escapeAlias( aliasPrefix );
 
     return new CdfRunJsDashboardWriteOptions(
         StringUtils.isEmpty( this._aliasPrefix ) ? aliasPrefix : ( this._aliasPrefix + "_" + aliasPrefix ),
@@ -111,6 +121,47 @@ public class CdfRunJsDashboardWriteOptions implements Serializable {
 
   public String getContextConfiguration() {
     return this._contextConfiguration;
+  }
+
+  /**
+   * Method used to escape the alias.
+   * Will not escape the tag used for alias substitution.
+   *
+   * @param alias The alias to escape
+   * @return The escaped alias
+   * */
+  protected String escapeAlias( String alias ) {
+    if ( alias.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
+      String left = alias.substring( 0, alias.indexOf( CdeConstants.DASHBOARD_ALIAS_TAG ) );
+      String right = alias.substring( alias.indexOf( CdeConstants.DASHBOARD_ALIAS_TAG )
+          + CdeConstants.DASHBOARD_ALIAS_TAG.length(), alias.length() );
+      return toJavaIdentifier( left ) + CdeConstants.DASHBOARD_ALIAS_TAG + toJavaIdentifier( right );
+    }
+    return toJavaIdentifier( alias );
+  }
+
+  /**
+   * Converting all occurrences of SPECIAL_CHARACTERS to a java identifier equivalent
+   *
+   * @param str The string to be converted
+   * @return The converted string
+   * */
+  protected String toJavaIdentifier( String str ) {
+    // Theoretically, a dashboard could be named "I-[~!@#$%^&*(){}|.,]-=_+|;'"?<>~`"
+    // to prevent going against id naming rules in HTML4, we'll convert the string to a java identifier
+    if ( StringUtils.isNotEmpty( str ) && SPECIAL_CHARACTERS_PATTERN.matcher( str ).find() ) {
+      StringBuffer sb = new StringBuffer();
+      sb.append( "id_" );
+      for ( int i = 0; i < str.length(); i++ ) {
+        if ( SPECIAL_CHARACTERS.indexOf( str.charAt( i ) ) >= 0 ) {
+          sb.append( (int) str.charAt( i ) );
+        } else {
+          sb.append( str.charAt( i ) );
+        }
+      }
+      return sb.toString();
+    }
+    return str;
   }
 
 }
