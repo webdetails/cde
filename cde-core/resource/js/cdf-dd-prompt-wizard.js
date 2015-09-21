@@ -593,7 +593,7 @@ var MqlEditor = AcePromptWizard.extend({
 			this.base();
 			this.logger = new Logger("MqlEditor" );
 			this.hasFunctions = false;
-      this.queryTemplate ='<![CDATA[<?xml version="1.0" encoding="UTF-8"?>\n' +
+      this.queryTemplate ='<?xml version="1.0" encoding="UTF-8"?>\n' +
         '<mql>\n' +
         ' <domain_type></domain_type>\n' +
         ' <domain_id></domain_id>\n' +
@@ -616,7 +616,7 @@ var MqlEditor = AcePromptWizard.extend({
         '   -->\n' +
         ' </constraints>\n' +
         ' <orders/>\n' +
-        '</mql>]]>\n';
+        '</mql>\n';
 		},
 		
 		getParameterValue: function(parameterProperties){
