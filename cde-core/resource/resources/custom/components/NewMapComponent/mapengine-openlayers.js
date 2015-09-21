@@ -374,11 +374,15 @@ var OpenLayersEngine = (function () {
           }
         }
       });
+      // allowing event to travel down
+      hoverCtrl.handlers['feature'].stopDown = false;
       this.map.addControl(hoverCtrl);
       hoverCtrl.activate();
       var clickCtrl = new OpenLayers.Control.SelectFeature([this.markers, this.shapes], {
         clickout: false
       });
+      // allowing event to travel down
+      clickCtrl.handlers['feature'].stopDown = false;
       this.map.addControl(clickCtrl);
       clickCtrl.activate();
 
@@ -403,6 +407,8 @@ var OpenLayersEngine = (function () {
         }
       });
 
+      // letting shapes events fall through
+      this.shapes.events.fallThrough = true;
     },
 
     tileLayer: function (name) {
