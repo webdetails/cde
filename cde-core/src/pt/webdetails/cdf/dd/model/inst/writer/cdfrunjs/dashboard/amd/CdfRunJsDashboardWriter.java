@@ -533,6 +533,9 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     moduleIds.add( AmdModule.UNDERSCORE.getId() );
     moduleIds.add( AmdModule.MOMENT.getId() );
     moduleIds.add( AmdModule.CCC_CDO.getId() );
+    moduleIds.add( AmdModule.CCC_DEF.getId() );
+    moduleIds.add( AmdModule.CCC_PV.getId() );
+    moduleIds.add( AmdModule.CCC_PVC.getId() );
     moduleIds.add( AmdModule.UTILS.getId() );
     // Add default module class names
     moduleClassNames.add( dashboardModule.getClassName() );
@@ -541,6 +544,9 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
     moduleClassNames.add( AmdModule.UNDERSCORE.getClassName() );
     moduleClassNames.add( AmdModule.MOMENT.getClassName() );
     moduleClassNames.add( AmdModule.CCC_CDO.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_DEF.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_PV.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_PVC.getClassName() );
     moduleClassNames.add( AmdModule.UTILS.getClassName() );
   }
 

@@ -125,6 +125,9 @@ public class CdeConstants {
     UNDERSCORE ( RequireJSPlugin.NONAMD + "cdf/lib/underscore", "_" ),
     MOMENT ( "cdf/lib/moment", "moment" ),
     CCC_CDO ( "cdf/lib/CCC/cdo", "cdo" ),
+    CCC_DEF ( "cdf/lib/CCC/def", "def" ),
+    CCC_PV ( "cdf/lib/CCC/protovis-compat!", "pv" ),
+    CCC_PVC ( "cdf/lib/CCC/pvc", "pvc" ),
     UTILS ( "cdf/dashboard/Utils", "Utils" );
 
     private final String id;
