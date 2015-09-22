@@ -406,7 +406,28 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     ArrayList<String> moduleIds = new ArrayList<String>();
     ArrayList<String> moduleClassNames = new ArrayList<String>();
 
-    dashboardWriterSpy.addDefaultDashboardModules( moduleIds, moduleClassNames );
+    // Add dashboard default AMD module ids and class names
+    moduleIds.add( AmdModule.DASHBOARD_BLUEPRINT.getId() );
+    moduleIds.add( AmdModule.LOGGER.getId() );
+    moduleIds.add( AmdModule.JQUERY.getId() );
+    moduleIds.add( AmdModule.UNDERSCORE.getId() );
+    moduleIds.add( AmdModule.MOMENT.getId() );
+    moduleIds.add( AmdModule.CCC_CDO.getId() );
+    moduleIds.add( AmdModule.CCC_DEF.getId() );
+    moduleIds.add( AmdModule.CCC_PV.getId() );
+    moduleIds.add( AmdModule.CCC_PVC.getId() );
+    moduleIds.add( AmdModule.UTILS.getId() );
+    moduleClassNames.add( AmdModule.DASHBOARD_BLUEPRINT.getClassName() );
+    moduleClassNames.add( AmdModule.LOGGER.getClassName() );
+    moduleClassNames.add( AmdModule.JQUERY.getClassName() );
+    moduleClassNames.add( AmdModule.UNDERSCORE.getClassName() );
+    moduleClassNames.add( AmdModule.MOMENT.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_CDO.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_DEF.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_PV.getClassName() );
+    moduleClassNames.add( AmdModule.CCC_PVC.getClassName() );
+    moduleClassNames.add( AmdModule.UTILS.getClassName() );
+    // Add test dashboard AMD module ids and class names
     moduleIds.add( "cdf/components/TestComponent1" );
     moduleIds.add( "cdf/components/TestComponent2" );
     moduleIds.add( "cde/resources/jsFileRsrcPath1" );
@@ -433,8 +454,10 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( REQUIRE_STOP );
 
     Assert.assertEquals(
-        dashboardResult.toString(),
-        dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+
+    verify( dashboardWriterSpy, times( 1 ) ).addDefaultDashboardModules( moduleIds, moduleClassNames );
 
     // Debug Mode set's window.dashboard
     doReturn( true ).when( options ).isDebug();
@@ -448,9 +471,12 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
       .append( REQUIRE_STOP );
+
     Assert.assertEquals(
-        dashboardResult.toString(),
-        dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+      dashboardResult.toString(),
+      dashboardWriterSpy.wrapRequireDefinitions( testResources, testComponentModules, content, context ) );
+
+    verify( dashboardWriterSpy, times( 2 ) ).addDefaultDashboardModules( moduleIds, moduleClassNames );
   }
 
   @Test
