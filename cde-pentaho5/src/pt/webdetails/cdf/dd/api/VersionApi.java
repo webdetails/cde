@@ -13,6 +13,14 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.CdeSettings;
 import pt.webdetails.cdf.dd.CdeVersionChecker;
@@ -22,19 +30,12 @@ import pt.webdetails.cpf.VersionChecker.CheckVersionResponse;
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Exposed;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import java.io.IOException;
-
 @Path( "pentaho-cdf-dd/api/version" )
 public class VersionApi {
 
   @GET
   @Path( "/check" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public void checkVersion( @Context HttpServletResponse response ) throws IOException, JSONException {
     VersionChecker versionChecker = new CdeVersionChecker( CdeSettings.getSettings() );
     CheckVersionResponse result = versionChecker.checkVersion();
@@ -43,7 +44,7 @@ public class VersionApi {
 
   @GET
   @Path( "/get" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   @Exposed( accessLevel = AccessLevel.PUBLIC )
   public String getVersion() {
     VersionChecker versionChecker = new CdeVersionChecker( CdeSettings.getSettings() );

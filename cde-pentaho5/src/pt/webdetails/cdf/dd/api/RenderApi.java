@@ -13,11 +13,15 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -26,12 +30,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.json.JSONException;
 import org.pentaho.platform.api.engine.ILogger;
 import org.pentaho.platform.api.engine.IParameterProvider;
@@ -39,7 +41,6 @@ import org.pentaho.platform.api.engine.IPentahoSession;
 import org.pentaho.platform.engine.core.solution.SimpleParameterProvider;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.util.logging.SimpleLogger;
-
 import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeConstants.MethodParams;
 import pt.webdetails.cdf.dd.CdeConstants.DashboardSupportedTypes;
@@ -62,18 +63,17 @@ import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.localization.MessageBundlesHelper;
 import pt.webdetails.cpf.repository.api.IReadAccess;
-import pt.webdetails.cpf.utils.MimeTypes;
+import pt.webdetails.cpf.utils.CharsetHelper;
 
 @Path( "pentaho-cdf-dd/api/renderer" )
 public class RenderApi {
 
   private static final Log logger = LogFactory.getLog( RenderApi.class );
-  //  private static final String MIME_TYPE = "text/html";
   protected ICdeEnvironment privateEnviroment;
 
   @GET
   @Path( "/getComponentDefinitions" )
-  @Produces( MimeTypes.JAVASCRIPT )
+  @Produces( JAVASCRIPT )
   public String getComponentDefinitions(
       @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
       @Context HttpServletResponse response ) throws IOException {
@@ -87,7 +87,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getContent" )
-  @Produces( MimeTypes.JAVASCRIPT )
+  @Produces( JAVASCRIPT )
   public String getContent( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -113,7 +113,7 @@ public class RenderApi {
 
   @GET
   @Path( "/getHeaders" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public String getHeaders( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                             @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -139,7 +139,7 @@ public class RenderApi {
 
   @GET
   @Path( "/render" )
-  @Produces( MimeTypes.HTML )
+  @Produces( TEXT_HTML )
   public String render( @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
                         @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                         @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
@@ -222,18 +222,18 @@ public class RenderApi {
 
   @GET
   @Path( "/getDashboard" )
-  @Produces( MimeTypes.HTML )
+  @Produces( TEXT_HTML )
   public String getDashboard( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                        @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
-                        @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
-                        @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
-                        @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-                        @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-                        @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
-                        @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
-                        @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
-                        @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
-                        @Context HttpServletRequest request ) throws IOException {
+                              @QueryParam( MethodParams.INFERSCHEME ) @DefaultValue( "false" ) boolean inferScheme,
+                              @QueryParam( MethodParams.ROOT ) @DefaultValue( "" ) String root,
+                              @QueryParam( MethodParams.ABSOLUTE ) @DefaultValue( "true" ) boolean absolute,
+                              @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+                              @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+                              @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
+                              @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+                              @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
+                              @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
+                              @Context HttpServletRequest request ) throws IOException {
     final String schemeToUse;
     if ( !inferScheme ) {
       schemeToUse = StringUtils.isEmpty( scheme ) ? request.getScheme() : scheme;
@@ -262,11 +262,16 @@ public class RenderApi {
 
     try {
       logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
-      String config = InterPluginBroker.getCdfRequireConfig( path, requestParams );
-      CdfRunJsDashboardWriteResult dashboard =
-          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias, config );
-
-      String result = dashboard.getContent();
+      CdfRunJsDashboardWriteResult dashboard = getDashboardModule(
+          path,
+          schemeToUse,
+          root,
+          absolute,
+          bypassCache,
+          debug,
+          style,
+          alias,
+          InterPluginBroker.getCdfRequireConfig( path, requestParams ) );
 
       //TODO: how to process i18n for a required dashboard
       //i18n token replacement
@@ -277,7 +282,7 @@ public class RenderApi {
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
           this.getPentahoSession(), iLogger, start, uuid, end );
 
-      return result;
+      return dashboard.getContent();
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error( msg, ex );
@@ -292,20 +297,24 @@ public class RenderApi {
 
   @GET
   @Path( "/getDashboardParameters" )
-  @Produces( MimeTypes.JSON )
-  public String getDashboardParameters( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                                @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-                                @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
-                                @Context HttpServletRequest request,
-                                @Context HttpServletResponse response ) throws IOException {
-    setCorsHeaders( request, response );
+  @Produces( APPLICATION_JSON )
+  public String getDashboardParameters(
+      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+      @QueryParam( MethodParams.ALLPARAMS ) @DefaultValue( "false" ) boolean all,
+      @Context HttpServletRequest servletRequest,
+      @Context HttpServletResponse servletResponse ) throws IOException {
+
+    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
+    setCorsHeaders( servletRequest, servletResponse );
+
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
       return "No path provided.";
     }
 
-    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( path );
-    if ( readAccess == null ) {
+    if ( !hasSystemOrUserReadAccess( path ) ) {
       logger.warn( "Access Denied or File Not Found." );
       return "Access Denied or File Not Found.";
     }
@@ -320,17 +329,23 @@ public class RenderApi {
   }
   @GET
   @Path( "/getDashboardDatasources" )
-  @Produces( MimeTypes.JSON )
-  public String getDashboardDatasources( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-                                @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
-                                @Context HttpServletRequest request ) throws IOException, JSONException {
+  @Produces( APPLICATION_JSON )
+  public String getDashboardDatasources(
+      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+      @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
+      @Context HttpServletRequest servletRequest,
+      @Context HttpServletResponse servletResponse ) throws IOException, JSONException {
+
+    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
+    setCorsHeaders( servletRequest, servletResponse );
+
     if ( StringUtils.isEmpty( path ) ) {
       logger.warn( "No path provided." );
       return JsonUtils.getJsonResult( false, "No path provided" );
     }
 
-    IReadAccess readAccess = Utils.getSystemOrUserReadAccess( path );
-    if ( readAccess == null ) {
+    if ( !hasSystemOrUserReadAccess( path ) ) {
       logger.warn( "Access Denied or File Not Found." );
       return JsonUtils.getJsonResult( false, "Access Denied or File Not Found." );
     }
@@ -346,7 +361,7 @@ public class RenderApi {
 
   @GET
   @Path( "/edit" )
-  @Produces( MimeTypes.HTML )
+  @Produces( TEXT_HTML )
   public String edit(
       @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
       @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
@@ -372,7 +387,7 @@ public class RenderApi {
 
   @GET
   @Path( "/new" )
-  @Produces( MimeTypes.HTML )
+  @Produces( TEXT_HTML )
   public String newDashboard( //TODO: change file to path; does new ever use this arg?
                               //      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "null" ) String solution,
                               @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
@@ -387,7 +402,7 @@ public class RenderApi {
 
   @GET
   @Path( "/listRenderers" )
-  @Produces( MimeTypes.JSON )
+  @Produces( APPLICATION_JSON )
   public String listRenderers() {
     return "{\"result\": [\""
       + DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT.getType()
@@ -400,7 +415,7 @@ public class RenderApi {
 
   @GET
   @Path( "/refresh" )
-  @Produces( MimeTypes.PLAIN_TEXT )
+  @Produces( TEXT_PLAIN )
   public String refresh( @Context HttpServletResponse servletResponse ) throws Exception {
     String msg = "Refreshed CDE Successfully";
 
@@ -418,9 +433,9 @@ public class RenderApi {
 
   @GET
   @Path( "/cde-embed.js" )
-  @Produces( MimeTypes.JAVASCRIPT )
+  @Produces( JAVASCRIPT )
   public String getCdeEmbeddedContext( @Context HttpServletRequest servletRequest,
-                       @Context HttpServletResponse servletResponse ) throws Exception {
+                                       @Context HttpServletResponse servletResponse ) throws Exception {
     return InterPluginBroker.getCdfEmbed( servletRequest.getProtocol(), servletRequest.getServerName(),
       servletRequest.getServerPort(), servletRequest.getSession().getMaxInactiveInterval(),
       servletRequest.getParameter( "locale" ), getParameterProvider( servletRequest.getParameterMap() ) );
@@ -443,7 +458,7 @@ public class RenderApi {
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
       dashboardAlias =
-        FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
+          FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
 
@@ -492,7 +507,7 @@ public class RenderApi {
 
   private String getEditor( String path, boolean debug, String scheme, boolean isDefault,
                             HttpServletResponse response, boolean isRequire ) throws Exception {
-    response.setContentType( MimeTypes.HTML );
+    response.setContentType( TEXT_HTML );
     String result = DashboardEditor.getEditor( path, debug, scheme, isDefault, isRequire );
 
     //i18n token replacement
@@ -520,4 +535,7 @@ public class RenderApi {
     CorsUtil.getInstance().setCorsHeaders( request, response );
   }
 
+  protected boolean hasSystemOrUserReadAccess( String path ) {
+    return Utils.getSystemOrUserReadAccess( path ) != null;
+  }
 }

@@ -13,14 +13,16 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import static javax.ws.rs.core.MediaType.TEXT_HTML;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -31,13 +33,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.reader.factory.IResourceLoader;
 import pt.webdetails.cdf.dd.reader.factory.ResourceLoaderFactory;
@@ -58,8 +57,8 @@ public class EditorApi {
 
   @GET
   @Path( "/file/get" )
-  @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Produces( TEXT_PLAIN )
   public String getFile( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                          @Context HttpServletResponse response )
     throws IOException {
@@ -79,8 +78,8 @@ public class EditorApi {
 
   @POST
   @Path( "/file/delete" )
-  @Produces( "text/javascript" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Produces( JAVASCRIPT )
   public void deleteFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                           @Context HttpServletResponse response ) throws IOException, JSONException {
 
@@ -99,8 +98,8 @@ public class EditorApi {
 
   @POST
   @Path( "/file/write" )
-  @Produces( "text/plain" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON, APPLICATION_FORM_URLENCODED } )
+  @Produces( TEXT_PLAIN )
   public String writeFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                            @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                            @Context HttpServletResponse response ) throws IOException {
@@ -128,8 +127,8 @@ public class EditorApi {
 
   @PUT
   @Path( "/file/write" )
-  @Produces( "text/plain" )
-  @Consumes( { APPLICATION_XML, APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED } )
+  @Consumes( { APPLICATION_XML, APPLICATION_JSON, APPLICATION_FORM_URLENCODED } )
+  @Produces( TEXT_PLAIN )
   public String createFile( @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.DATA ) @DefaultValue( "" ) String data,
                             @Context HttpServletResponse response ) throws IOException {
@@ -157,8 +156,8 @@ public class EditorApi {
 
   @GET
   @Path( "/file/canEdit" )
-  @Produces( "text/plain" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Produces( TEXT_PLAIN )
   public String canEdit( @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path ) {
     IResourceLoader loader = getResourceLoader( path );
     IACAccess contentAccess = loader.getAccessControl();
@@ -202,8 +201,8 @@ public class EditorApi {
 
   @GET
   @Path( "/getExternalEditor" )
-  @Produces( "text/html" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Produces( TEXT_HTML )
   public String externalEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
     if ( access.fileExists( EXTERNAL_EDITOR_PAGE ) ) {
@@ -218,8 +217,8 @@ public class EditorApi {
 
   @GET
   @Path( "/getComponentEditor" )
-  @Produces( "text/html" )
   @Consumes( { APPLICATION_XML, APPLICATION_JSON } )
+  @Produces( TEXT_HTML )
   public String componentEditor() throws IOException {
     IReadAccess access = CdeEnvironment.getPluginSystemReader();
     if ( access.fileExists( COMPONENT_EDITOR_PAGE ) ) {

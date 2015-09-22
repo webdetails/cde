@@ -13,11 +13,14 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
+
+import com.sun.jersey.multipart.FormDataParam;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -28,14 +31,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-
-import com.sun.jersey.multipart.FormDataParam;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.DashboardDesignerException;
 import pt.webdetails.cdf.dd.Messages;
@@ -47,7 +46,6 @@ import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
-import pt.webdetails.cpf.utils.MimeTypes;
 
 @Path( "pentaho-cdf-dd/api/syncronizer" )
 public class SyncronizerApi { //TODO: synchronizer?
@@ -71,7 +69,7 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/syncronizeDashboard" )
-  @Produces( MimeTypes.JSON )
+  @Produces( APPLICATION_JSON )
   public String syncronize( @FormParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                             @FormParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
                             @FormParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
@@ -85,8 +83,11 @@ public class SyncronizerApi { //TODO: synchronizer?
                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                             @FormParam( MethodParams.OPERATION ) String operation,
                             @FormParam( MethodParams.REQUIRE ) boolean require,
-                            @Context HttpServletRequest request,
-                            @Context HttpServletResponse response ) throws Exception {
+                            @Context HttpServletRequest servletRequest,
+                            @Context HttpServletResponse servletResponse ) throws Exception {
+
+    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     boolean isPreview = false;
 
@@ -103,7 +104,7 @@ public class SyncronizerApi { //TODO: synchronizer?
       IReadAccess rwAccess = Utils.getSystemOrUserRWAccess( file );
 
       if ( rwAccess == null ) {
-        String msg = "Access denied for the syncronize method syncronizeDashboard." + operation + " : " + file;
+        String msg = "Access denied for the synchronize method syncronizeDashboard." + operation + " : " + file;
         logger.warn( msg );
         return JsonUtils.getJsonResult( false, msg );
       }
@@ -171,7 +172,7 @@ public class SyncronizerApi { //TODO: synchronizer?
     } catch ( Exception e ) {
       if ( e.getCause() != null ) {
         if ( e.getCause() instanceof DashboardStructureException ) {
-          JsonUtils.buildJsonResult( response.getOutputStream(), false, e.getCause().getMessage() );
+          JsonUtils.buildJsonResult( servletResponse.getOutputStream(), false, e.getCause().getMessage() );
         } else if ( e instanceof InvocationTargetException ) {
           throw (Exception) e.getCause();
         }
@@ -182,32 +183,37 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/syncronizeTemplates" )
-  @Produces( MimeTypes.JSON )
-  public void syncTemplates( @FormParam( MethodParams.OPERATION ) String operation,
-                             @FormParam( MethodParams.FILE ) String file,
-                             @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
-                             @FormParam( MethodParams.RENDERER_TYPE ) String rendererType,
-                             @Context HttpServletResponse response )
-    throws IOException, DashboardStructureException, JSONException {
-    final CdfTemplates cdfTemplates = new CdfTemplates( GET_RESOURCE );
+  @Produces( APPLICATION_JSON )
+  public void syncTemplates(
+      @FormParam( MethodParams.OPERATION ) String operation,
+      @FormParam( MethodParams.FILE ) String file,
+      @FormParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
+      @FormParam( MethodParams.RENDERER_TYPE ) String rendererType,
+      @Context HttpServletResponse servletResponse ) throws IOException, DashboardStructureException, JSONException {
+
+    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
+
     Object result = null;
 
     if ( OPERATION_LOAD.equalsIgnoreCase( operation ) ) {
-      result = cdfTemplates.load( rendererType );
+      result = ( new CdfTemplates( GET_RESOURCE ) ).load( rendererType );
     } else if ( OPERATION_SAVE.equalsIgnoreCase( operation ) ) {
-      cdfTemplates.save( file, cdfStructure, rendererType );
+      ( new CdfTemplates( GET_RESOURCE ) ).save( file, cdfStructure, rendererType );
     }
-
-    JsonUtils.buildJsonResult( response.getOutputStream(), true, result );
+    JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, result );
   }
 
   @GET
   @Path( "/syncronizeStyles" )
-  @Produces( MimeTypes.JSON )
-  public void syncStyles( @Context HttpServletResponse response )
-    throws IOException, DashboardDesignerException, JSONException {
-    final CdfStyles cdfStyles = new CdfStyles();
-    JsonUtils.buildJsonResult( response.getOutputStream(), true, cdfStyles.liststyles() );
+  @Produces( APPLICATION_JSON )
+  public void syncStyles( @Context HttpServletResponse servletResponse )
+      throws IOException, DashboardDesignerException, JSONException {
+
+    servletResponse.setContentType( APPLICATION_JSON );
+    servletResponse.setCharacterEncoding( CharsetHelper.getEncoding() );
+
+    listStyles( servletResponse );
   }
 
   private class MethodParams {
@@ -228,14 +234,17 @@ public class SyncronizerApi { //TODO: synchronizer?
 
   @POST
   @Path( "/saveDashboard" )
-  @Produces( MimeTypes.JSON )
-  @Consumes( "multipart/form-data" )
+  @Consumes( MULTIPART_FORM_DATA )
+  @Produces( APPLICATION_JSON )
   public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
                                @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
                                @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
                                @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
+
+    response.setContentType( APPLICATION_JSON );
+    response.setCharacterEncoding( CharsetHelper.getEncoding() );
 
     boolean isPreview = false;
 
@@ -296,6 +305,13 @@ public class SyncronizerApi { //TODO: synchronizer?
   //useful to mock message bundle when unit testing SyncronizerApi
   protected String getMessage( String key ) {
     return Messages.getString( key );
+  }
+
+  protected void listStyles( HttpServletResponse servletResponse )
+      throws IOException, DashboardDesignerException, JSONException {
+
+    final CdfStyles cdfStyles = new CdfStyles();
+    JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, cdfStyles.liststyles() );
   }
 
 }
