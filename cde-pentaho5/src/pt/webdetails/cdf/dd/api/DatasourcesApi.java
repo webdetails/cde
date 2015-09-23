@@ -13,26 +13,26 @@
 
 package pt.webdetails.cdf.dd.api;
 
-import java.util.List;
+import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
 
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.DefaultValue;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.json.JSONException;
 import pt.webdetails.cdf.dd.datasources.CdaDataSourceReader;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+
 
 @Path( "pentaho-cdf-dd/api/datasources" )
 public class DatasourcesApi {
 
   @GET
   @Path( "/get" )
-  @Produces( "text/javascript" )
+  @Produces( JAVASCRIPT )
   public String listCdaSources( @QueryParam( MethodParams.DASHBOARD ) @DefaultValue( "" ) String dashboard )
     throws JSONException {
 

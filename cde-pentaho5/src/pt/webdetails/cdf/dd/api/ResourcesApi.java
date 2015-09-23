@@ -13,6 +13,11 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static javax.ws.rs.core.MediaType.WILDCARD;
+import static pt.webdetails.cpf.utils.MimeTypes.CSS;
+import static pt.webdetails.cpf.utils.MimeTypes.JAVASCRIPT;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +31,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.lang.StringUtils;
@@ -59,7 +63,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/get" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
     try {
@@ -98,7 +102,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getCss" )
-  @Produces( "text/css" )
+  @Produces( CSS )
   public void getCssResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                               @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                               @Context HttpServletResponse response )
@@ -108,7 +112,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getJs" )
-  @Produces( "text/javascript" )
+  @Produces( JAVASCRIPT )
   public void getJsResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                              @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                              @Context HttpServletResponse response )
@@ -118,7 +122,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getUntyped" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public void getUntypedResource( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                                   @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                                   @Context HttpServletResponse response )
@@ -130,7 +134,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/getImg" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public void getImage( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                         @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                         @Context HttpServletResponse response )
@@ -140,7 +144,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/res" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public void res( @QueryParam( "path" ) @DefaultValue( "" ) String path,
                    @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                    @Context HttpServletResponse response )
@@ -150,7 +154,7 @@ public class ResourcesApi {
 
   @POST
   @Path( "/explore" )
-  @Produces( "text/plain" )
+  @Produces( TEXT_PLAIN )
   public String exploreFolder( @FormParam( "dir" ) @DefaultValue( "/" ) String folder,
                                @FormParam( "outputType" ) String outputType,
                                @QueryParam( "dashboardPath" ) @DefaultValue( "" ) String dashboardPath,
@@ -237,7 +241,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/system/{path: [^?]+ }" )
-  @Produces( { MediaType.WILDCARD } )
+  @Produces( { WILDCARD } )
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
@@ -264,7 +268,7 @@ public class ResourcesApi {
 
   @GET
   @Path( "/{resource: [^?]+ }" )
-  @Produces( { MediaType.WILDCARD } )
+  @Produces( { WILDCARD } )
   public void resource( @PathParam( "resource" ) String resource, @Context HttpServletResponse response )
     throws Exception {
     getResource( resource, response );

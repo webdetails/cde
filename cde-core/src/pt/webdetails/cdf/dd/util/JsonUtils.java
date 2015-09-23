@@ -40,7 +40,7 @@ public class JsonUtils {
     return new JSONObject( contents );
   }
 
-  public static void buildJsonResult( final OutputStream out, final Boolean sucess, final Object result )
+  public static void buildJsonResult( final OutputStream out, final Boolean success, final Object result )
     throws JSONException {
 
     final JSONObject jsonResult = new JSONObject();
@@ -48,7 +48,7 @@ public class JsonUtils {
     if ( result != null ) {
       jsonResult.put( "result", result );
     }
-    jsonResult.put( "status", sucess.toString() );
+    jsonResult.put( "status", success.toString() );
 
     PrintWriter pw = null;
     try {

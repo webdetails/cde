@@ -36,7 +36,8 @@ public class RenderApiForTesting extends RenderApi {
   }
 
   @Override
-  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {
-    // do nothing
-  }
+  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {}
+
+  @Override
+  protected boolean hasSystemOrUserReadAccess( String path ) { return true; }
 }

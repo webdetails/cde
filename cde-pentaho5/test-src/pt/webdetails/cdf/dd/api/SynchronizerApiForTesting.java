@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,4 +34,7 @@ public class SynchronizerApiForTesting extends SyncronizerApi {
     }
     return key;
   }
+
+  @Override
+  protected void listStyles( HttpServletResponse servletResponse ) {}
 }
