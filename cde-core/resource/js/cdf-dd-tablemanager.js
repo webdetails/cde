@@ -1137,7 +1137,7 @@ var CellRenderer = Base.extend({
   //  render: function(row,placeholder, getExpression,setExpression,editable){
 
   render: function(placeholder, value, callback, options) {
-    $("<td>" + value + "</td>").appendTo(placeholder);
+    $("<td>" + (value || "&nbsp;") + "</td>").appendTo(placeholder);
   },
 
   getTableManager: function() {
