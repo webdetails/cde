@@ -117,7 +117,8 @@ var LayoutPanel = Panel.extend({
           var _tableManager = TableManager.getTableManager("table-" + LayoutPanel.TREE);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();
-          $("#" + _tableManager.getTableId() + " > tbody > tr:eq(" + _cell[0] + ") > td:eq(1)").text(value);
+          var td = $("#" + _tableManager.getTableId() + " > tbody > tr:eq(" + _cell[0] + ") > td:eq(1)");
+          value ? td.text(value) : td.html("&nbsp;");
         }
       }
     ]);
