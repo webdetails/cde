@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd;
 
@@ -34,40 +43,42 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
 //  public ContentType getContentType() {
 //    return ContentType.DOM4JDOC;
 //  }
-  
-  public IFileInfo getFileInfo(ISolutionFile solutionFile, InputStream in) {
+
+  public IFileInfo getFileInfo( ISolutionFile solutionFile, InputStream in ) {
     String solution = solutionFile.getSolution();
     String path = solutionFile.getFullPath();
     String fileName = solutionFile.getFileName();
     SAXReader reader = new SAXReader();
-    
+
     try {
-      
-      Document doc = reader.read(in);
-      return getFileInfo(solution, path, fileName, doc);
-      
-    } catch (DocumentException e) {
-      if(logger!=null) logger.error("Error parsing document",e);
+
+      Document doc = reader.read( in );
+      return getFileInfo( solution, path, fileName, doc );
+
+    } catch ( DocumentException e ) {
+      if ( logger != null ) {
+        logger.error( "Error parsing document", e );
+      }
       return null;
     }
   }
 
-  public IFileInfo getFileInfo(String solution, String path, String filename,
-                               Document doc) {
+  public IFileInfo getFileInfo( String solution, String path, String filename,
+                               Document doc ) {
 
     String result = "dashboard";  //$NON-NLS-1$
     doc.asXML();
-    String author = XmlDom4JHelper.getNodeText("/cdf/author", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-    String description = XmlDom4JHelper.getNodeText("/cdf/description", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-    String icon = XmlDom4JHelper.getNodeText("/cdf/icon", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
-    String title = XmlDom4JHelper.getNodeText("/cdf/title", doc, "");  //$NON-NLS-1$ //$NON-NLS-2$
+    String author = XmlDom4JHelper.getNodeText( "/cdf/author", doc, "" );  //$NON-NLS-1$ //$NON-NLS-2$
+    String description = XmlDom4JHelper.getNodeText( "/cdf/description", doc, "" );  //$NON-NLS-1$ //$NON-NLS-2$
+    String icon = XmlDom4JHelper.getNodeText( "/cdf/icon", doc, "" );  //$NON-NLS-1$ //$NON-NLS-2$
+    String title = XmlDom4JHelper.getNodeText( "/cdf/title", doc, "" );  //$NON-NLS-1$ //$NON-NLS-2$
 
     IFileInfo info = new FileInfo();
-    info.setAuthor(author);
-    info.setDescription(description);
-    info.setDisplayType(result);
-    info.setIcon(icon);
-    info.setTitle(title);
+    info.setAuthor( author );
+    info.setDescription( description );
+    info.setDisplayType( result );
+    info.setIcon( icon );
+    info.setTitle( title );
     return info;
   }
 
@@ -98,7 +109,7 @@ public class DashboardDesignerFileInfoGenerator implements ISolutionFileMetaProv
 //    }
 //  }
 
-  public void setLogger(ILogger logger) {
+  public void setLogger( ILogger logger ) {
     this.logger = logger;
   }
 

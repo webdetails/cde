@@ -169,7 +169,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public CdfRunJsDashboardWriteContext getCdfRunJsDashboardWriteContext( IThingWriterFactory factory, String indent,
                                                                          boolean bypassCacheRead, Dashboard dash,
                                                                          CdfRunJsDashboardWriteOptions options ) {
-    if( dash.getWcdf().isRequire() ) {
+    if ( dash.getWcdf().isRequire() ) {
       return new pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.amd.PentahoCdfRunJsDashboardWriteContext(
           factory, indent, bypassCacheRead, dash, options );
     } else {
