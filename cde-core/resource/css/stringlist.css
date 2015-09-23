@@ -115,6 +115,10 @@ div.ParameterListPopup {
   padding-right: 52px;
 }
 
+.popup-list-row.typed-row {
+  padding-right: 0px;
+}
+
 .popup-list-row, .popup-sortable-holder, div.ui-sortable-helper {
   height: 24px;
 }
