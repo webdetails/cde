@@ -220,10 +220,6 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
       cdfdd.arrayValue = vals;
 
-      for(var i = 0; i < index; i++) {
-        myself.addPopupRow(i, vals[i], $('.popup-list-body', content));
-      }
-
       var htmlContent = $('<div>')
           .append(content)
           .html();
@@ -250,6 +246,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
         },
 
         loaded: function() {
+          for(var i = 0; i < index; i++) {
+            myself.addPopupRow(i, vals[i], $('.popup-list-body'));
+          }
           myself.popupLoadedCallback($(this));
         },
 
