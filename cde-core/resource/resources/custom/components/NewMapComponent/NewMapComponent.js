@@ -522,9 +522,9 @@ var NewMapComponent = (function () {
       // Define default shape appearance
       var shapeSettings = _.defaults(this.shapeSettings || {}, {
         //fillColor:  'blue',
-        //fillOpacity: 0.5,
+        fillOpacity: this.shapeFillOpacity,
         strokeWidth: 2,
-        strokeColor: 'white',
+        strokeColor: this.shapeStrokeColor,
         zIndex: 0
       });
 
