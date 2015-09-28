@@ -17,6 +17,7 @@
     label: "KML shape resolver",
     defaults: {
       url: '', //url for the resource containing the kml data
+      idSelector: 'name',
       parseShapeKey: null
     },
     implementation: function (tgt, st, opt) {
@@ -30,12 +31,10 @@
           type: 'GET',
           processData: false,
           success: function(data) {
-            var map = getShapeFromKML(data, parseShapeKey);
-            //st.callback(data);
+            var map = getShapeFromKML(data, opt.idSelector, parseShapeKey);
             deferred.resolve(map);
           },
           error: function(){
-            //st.callback({});
             deferred.resolve({});
           }
         });
@@ -46,7 +45,7 @@
     }
   };
 
-  function getShapeFromKML(rawData, parseShapeKey){
+  function getShapeFromKML(rawData, idSelector, parseShapeKey){
     /*
       Parse a KML file, return a JSON dictionary where each key is associated with an array of shapes of the form
       mymap = {'Cascais:'[ [[lat0, long0],[lat1, long1]] ]}; // 1 array with a list of points
@@ -59,10 +58,10 @@
         try {
           key = parseShapeKey(y);
         } catch (e) {
-          key = $(y).find('name').text();
+          key = $(y).find(idSelector).text();
         }
       } else {
-        key = $(y).find('name').text();
+        key = $(y).find(idSelector).text();
       }
 
       // Create an array for the strings that define the (closed) curves in a Placemark

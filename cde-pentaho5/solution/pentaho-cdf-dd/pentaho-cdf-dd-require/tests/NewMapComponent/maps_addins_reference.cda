@@ -1,72 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDADescriptor>
    <DataSources>
-      <Connection id="ForMapWithMarkers" type="scripting.scripting">
+      <Connection id="countries" type="scripting.scripting">
          <Initscript/>
          <Language>beanshell</Language>
       </Connection>
-      <Connection id="ForMapWithGeo" type="scripting.scripting">
-         <Initscript/>
-         <Language>beanshell</Language>
-      </Connection>
-      <Connection id="ForMapWithShapes" type="scripting.scripting">
+      <Connection id="unresolvedLocations" type="scripting.scripting">
          <Initscript/>
          <Language>beanshell</Language>
       </Connection>
    </DataSources>
-   <DataAccess access="public" connection="ForMapWithMarkers" id="ForMapWithMarkers"
-               type="scriptable">
-      <Cache duration="3600" enabled="true"/>
-      <Columns/>
-      <Parameters/>
-      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
-
-String[] columnNames = new String[]{
-"Longitude",
-"Latitude",
-"Description"
-};
-
-Class[] columnTypes = new Class[]{
-Float.class
-,Float.class
-,String.class
-};
-
-TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
-
-model.addRow(new Object[]{ new Float(3), new Float(45.45), new String("Atelier Graphique")});
-model.addRow(new Object[]{ new Float(12), new Float(45.45), new String("Australian Collectors, Co.")});
-model.addRow(new Object[]{ new Float(14), new Float(45.45), new String("Signal Gift Stores")});
-return model;]]></Query>
-   </DataAccess>
-   <DataAccess access="public" connection="ForMapWithGeo" id="ForMapWithGeo" type="scriptable">
-      <Cache duration="3600" enabled="true"/>
-      <Columns/>
-      <Parameters/>
-      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
-
-String[] columnNames = new String[]{
-"City",
-"Description"
-};
-
-Class[] columnTypes = new Class[]{
-String.class
-,String.class
-};
-
-TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
-
-model.addRow(new Object[]{ new String("Nantes"), new String("Atelier Graphique")});
-model.addRow(new Object[]{ new String("Melbourne"), new String("Australian Collectors, Co.")});
-model.addRow(new Object[]{ new String("Las Vegas"), new String("Signal Gift Stores")});
-model.addRow(new Object[]{ new String("Paris"), new String("La Rochelle Gifts")});
-model.addRow(new Object[]{ new String("Stavern"), new String("Baane Mini Imports")});
-return model;]]></Query>
-   </DataAccess>
-   <DataAccess access="public" connection="ForMapWithShapes" id="ForMapWithShapes"
-               type="scriptable">
+   <DataAccess access="public" connection="countries" id="countries" type="scriptable">
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
@@ -186,6 +130,32 @@ model.addRow(new Object[]{ new String("Kazakhstan"), new Float(6)});
 model.addRow(new Object[]{ new String("Canada"), new Float(3.55)});
 model.addRow(new Object[]{ new String("Australia"), new Float(3)});
 
+return model;]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="unresolvedLocations" id="unresolvedLocations"
+               type="scriptable">
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+
+String[] columnNames = new String[]{
+"City",
+"Description"
+};
+
+Class[] columnTypes = new Class[]{
+String.class
+,String.class
+};
+
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+
+model.addRow(new Object[]{ new String("Nantes"), new String("Atelier Graphique")});
+model.addRow(new Object[]{ new String("Melbourne"), new String("Australian Collectors, Co.")});
+model.addRow(new Object[]{ new String("Las Vegas"), new String("Signal Gift Stores")});
+model.addRow(new Object[]{ new String("Paris"), new String("La Rochelle Gifts")});
+model.addRow(new Object[]{ new String("Stavern"), new String("Baane Mini Imports")});
 return model;]]></Query>
    </DataAccess>
 </CDADescriptor>
