@@ -371,7 +371,7 @@ define([
         var me = this;
         if ((this.mapMode == "shapes") && (!_.isEmpty(this.shapeSource))) {
           var keys = _.pluck(json.resultset, idx.id);
-          this.dataRequest(this.shapeSource, keys)
+          this.dataRequest(this.shapeSource, keys, json)
             .then(function () {
               me.render.call(me, json);
             });
@@ -380,7 +380,7 @@ define([
         }
       },
 
-      dataRequest: function (url, keys) {
+      dataRequest: function (url, keys, json) {
         var addIn = this.getAddIn('ShapeResolver', this.shapeResolver);
         if (!addIn) {
           if (this.shapeSource.endsWith('json')) {
@@ -398,6 +398,7 @@ define([
         var tgt = this,
           st = {
             keys: keys,
+            tableData: json,
             _simplifyPoints: ShapeConversion.simplifyPoints,
             _parseShapeKey: this.parseShapeKey,
             _shapeSource: url
@@ -638,15 +639,15 @@ define([
         if (markerIcon == undefined) {
           var st = {
             data: row,
-            position: position
+            position: position,
+            width: markerWidth,
+            height: markerHeight
           };
           var addinName = this.markerImageGetter;
 
           //Check for cgg graph marker
           if (this.markerCggGraph) {
             st.cggGraphName = this.markerCggGraph;
-            st.width = markerWidth;
-            st.height = markerHeight;
             st.parameters = {};
             _.each(this.cggGraphParameters, function (parameter) {
               st.parameters[parameter[0]] = row[mapping[parameter[1]]];
@@ -716,11 +717,11 @@ define([
         var addinName = this.locationResolver || 'openstreetmap';
         var addIn = this.getAddIn("LocationResolver", addinName);
 
-        var target = this.placeholder();
         var state = {
+          data: data,
+          position: position,
           address: address,
-          addressType: addressType,
-          position: position
+          addressType: addressType
         };
 
         var props = ['country', 'city', 'county', 'region', 'state'];
@@ -740,6 +741,7 @@ define([
         state.continuationFunction = function (location) {
           myself.renderMarker(location, data, mapping, position);
         };
+        var target = this.placeholder();
         addIn.call(target, state, this.getAddInOptions("LocationResolver", addIn.getName()));
       },
 

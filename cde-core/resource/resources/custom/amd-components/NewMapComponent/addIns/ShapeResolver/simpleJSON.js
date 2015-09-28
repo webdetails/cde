@@ -27,21 +27,21 @@ define([
     implementation: function (tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
-      if (url){
+      if (url) {
         $.ajax(url, {
           async: true,
           type: 'GET',
           dataType: 'json',
-          success: function(latlonMap) {
+          success: function (latlonMap) {
             var map = _.chain(latlonMap)
-                .map(function(multiPolygonLatLon, key){
-                  return [key, multiPolygonReverseCoordinates(multiPolygonLatLon)];
-                })
-                .object()
-                .value();
+              .map(function (multiPolygonLatLon, key) {
+                return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
+              })
+              .object()
+              .value();
             deferred.resolve(map);
           },
-          error: function(){
+          error: function () {
             deferred.resolve({});
           }
         });
@@ -52,15 +52,24 @@ define([
     }
   };
 
-  function multiPolygonReverseCoordinates(latLonMultiPolygon) {
-    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon){
-      return _.map(polygon, function(lineString){
-        return _.map(lineString, function(point){
+  function multiPolygonToGeoJSON(latLonMultiPolygon) {
+    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function (polygon) {
+      return _.map(polygon, function (lineString) {
+        return _.map(lineString, function (point) {
           return point.reverse();
         });
       });
     });
-    return lonLatMultiPolygon;
+
+    var feature = {
+      type: 'Feature',
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: lonLatMultiPolygon
+      },
+      properties: {}
+    };
+    return feature;
   }
 
 

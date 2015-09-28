@@ -54,6 +54,8 @@
         <!-- <Dependency src="lib/OpenLayers.js" version="2.13.1">OpenLayers</Dependency> -->
         <Dependency src="MapComponentAsyncLoader.js" version="1.0">MapComponentAsyncLoader</Dependency>
         <Dependency src="addIns/mapAddins.js" version="1.0">NewMapComponent_Addins</Dependency>
+        <Dependency src="addIns/MarkerImage/urlMarker/urlMarker.js" version="1.0">NewMapComponent_Addins_MarkerImage_urlMarker</Dependency>
+        <Dependency src="addIns/MarkerImage/cggMarker/cggMarker.js" version="1.0">NewMapComponent_Addins_MarkerImage_cggMarker</Dependency>
         <Dependency src="addIns/ShapeResolver/kml.js" version="1.0">NewMapComponent_Addins_ShapeResolver_kml</Dependency>
         <Dependency src="addIns/ShapeResolver/simpleJSON.js" version="1.0">NewMapComponent_Addins_ShapeResolver_simpleJSON</Dependency>
         <Dependency src="addIns/ShapeResolver/geoJSON.js" version="1.0">NewMapComponent_Addins_ShapeResolver_geoJSON</Dependency>
