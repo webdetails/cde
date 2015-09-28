@@ -6,19 +6,16 @@
  * this file except in compliance with the license. If you need a copy of the license,
  * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
  *
- * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * Software distributed under the Mozilla Public License is distributed on an 'AS IS'
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitations.
  */
 
-;(function() {
-
-
-
+;(function () {
 
   var thisAddIn = {
-    name: "simpleJSON",
-    label: "Simple JSON shape resolver",
+    name: 'simpleJSON',
+    label: 'Simple JSON shape resolver',
     defaults: {
       url: '' //url for the resource containing the json map definitions
     },
@@ -32,11 +29,11 @@
           dataType: 'json',
           success: function(latlonMap) {
             var map = _.chain(latlonMap)
-                .map(function(multiPolygonLatLon, key){
-                  return [key, multiPolygonReverseCoordinates(multiPolygonLatLon)];
-                })
-                .object()
-                .value();
+              .map(function(multiPolygonLatLon, key){
+                return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
+              })
+              .object()
+              .value();
             deferred.resolve(map);
           },
           error: function(){
@@ -50,7 +47,7 @@
     }
   };
 
-  function multiPolygonReverseCoordinates(latLonMultiPolygon) {
+  function multiPolygonToGeoJSON(latLonMultiPolygon) {
     var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon){
       return _.map(polygon, function(lineString){
         return _.map(lineString, function(point){
@@ -58,9 +55,18 @@
         });
       });
     });
-    return lonLatMultiPolygon;
+
+    var feature = {
+      type: 'Feature',
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: lonLatMultiPolygon
+      },
+      properties: {}
+    };
+    return feature;
   }
 
 
-  Dashboards.registerAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboards.registerAddIn('NewMapComponent', 'ShapeResolver', new AddIn(thisAddIn));
 })();
