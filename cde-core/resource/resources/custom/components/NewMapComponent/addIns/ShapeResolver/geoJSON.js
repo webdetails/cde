@@ -19,7 +19,7 @@
     label: "GeoJSON shape resolver",
     defaults: {
       url: '', //url for the resource containing the json map definitions
-      idPropertyName: '' //GeoJSON feature property that will be used to index the feature
+      idPropertyName: undefined //GeoJSON feature property that will be used to index the feature
     },
     implementation: function (tgt, st, opt) {
       var deferred = $.Deferred();
