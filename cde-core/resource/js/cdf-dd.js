@@ -110,6 +110,10 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
+        if ( e.keyCode === 9 && $("#popupbox").length > 0) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
         var target = $(e.target);
         var hasPopup = (target.find('.popup:visible').length || target.find('.jqmWindow:visible').length) > 0 ;
         if(target.is('input, select, textarea') || hasPopup || e.ctrlKey) {
@@ -689,24 +693,10 @@ var CDFDD = Base.extend({
 
     var message = 'Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>';
 
-    var content = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">New Dashboard</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container">' + message + '</div>';
+    var content = CDFDDUtils.wrapPopupTitle('New Dashboard') + CDFDDUtils.wrapPopupBody(message);
 
-    $.prompt(content, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      top: "40px",
-      prefix: "popup",
-      loaded: function() {
-        var $popup = $(this);
-        $popup.addClass('settings-popup');
-        CDFDDUtils.movePopupButtons($popup);
-      },
+    CDFDDUtils.prompt(content, {
+      popupClass: "settings-popup",
       callback: function(v, m, f) {
         if(v) {
           location.assign(url);
@@ -854,24 +844,10 @@ var CDFDD = Base.extend({
 
     var message = 'Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>';
 
-    var content = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Reload</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container">' + message + '</div>';
+    var content = CDFDDUtils.wrapPopupTitle('Reload') + CDFDDUtils.wrapPopupBody(message);
 
-    $.prompt(content, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      top: "40px",
-      prefix: "popup",
-      loaded: function() {
-        var $popup = $(this);
-        $popup.addClass('settings-popup');
-        CDFDDUtils.movePopupButtons($popup);
-      },
+    CDFDDUtils.prompt(content, {
+      popupClass: 'settings-popup',
       callback: function(v, m, f) {
         if(v) {
           self.logger.warn("Reloading dashboard... ");
@@ -1020,29 +996,14 @@ var CDFDD = Base.extend({
       rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
     }
 
-    var contentWrapper = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Settings</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container layout-popup ' + rv + '">\n' + content + '</div>';
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Settings') + CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
 
     content = Mustache.render(contentWrapper, settingsData);
-    $.prompt(content, {
-      buttons: {
-        Save: true,
-        Cancel: false
-      },
-      top: "40px",
-      prefix: "popup",
-
+    CDFDDUtils.prompt(content, {
+      popupClass: 'settings-popup save-settings',
       loaded: function() {
-        var $popup = $(this);
-
-        $popup.addClass('settings-popup save-settings');
         CDFDDUtils.buildPopupSelect($('.popup-select'), {});
-        CDFDDUtils.movePopupButtons($popup);
       },
-
       submit: function(save) {
         if (save) {
           wcdf.title = $("#titleInput").val();
@@ -1063,70 +1024,27 @@ var CDFDD = Base.extend({
         if(v) {
           /* Validations */
           var validInputs = true;
-          var message = "";
-          var content = "";
-
           if(wcdf.widget) {
             if(!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName)) {
-
-              message = 'Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.';
-              content = '' +
-                  '<div class="popup-header-container">\n' +
-                  '  <div class="popup-title-container">Settings Validations</div>\n' +
-                  '</div>\n' +
-                  '<div class="popup-body-container">' + message + '</div>';
-
-              $.prompt(content, {
-                top: "40px",
-                prefix: "popup",
-                loaded: function() {
-                  CDFDDUtils.movePopupButtons($(this));
-                }
-              });
+              CDFDDUtils.promptNotification("Error",
+                'Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', true);
               validInputs = false;
             } else if(wcdf.widgetName.length == 0) {
               if(wcdf.title.length == 0) {
-
-                message = 'No widget name provided. Tried to use title instead but title is empty.';
-                content = '' +
-                    '<div class="popup-header-container">\n' +
-                    '  <div class="popup-title-container">Settings Validations</div>\n' +
-                    '</div>\n' +
-                    '<div class="popup-body-container">' + message + '</div>';
-
-                $.prompt(content, {
-                  top: "40px",
-                  prefix: "popup",
-                  loaded: function() {
-                    CDFDDUtils.movePopupButtons($(this));
-                  }
-                });
+                CDFDDUtils.promptNotification("Error",
+                  'No widget name provided. Tried to use title instead but title is empty.', true);
                 validInputs = false;
               } else {
                 wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
 
                 if(wcdf.widgetName.length == 0) {
-
-                  message = 'No widget name provided. Unable to use the title, too many invalid characters.';
-                  content = '' +
-                      '<div class="popup-header-container">\n' +
-                      '  <div class="popup-title-container">Settings Validations</div>\n' +
-                      '</div>\n' +
-                      '<div class="popup-body-container">' + message + '</div>';
-
-                  $.prompt(content, {
-                    top: "40px",
-                    prefix: "popup",
-                    loaded: function() {
-                      CDFDDUtils.movePopupButtons($(this));
-                    }
-                  });
+                  CDFDDUtils.promptNotification("Error",
+                    'No widget name provided. Unable to use the title, too many invalid characters.', true);
                   validInputs = false;
                 }
               }
             }
           }
-
           if(validInputs) {
             myself.saveSettingsRequest(wcdf);
           }
@@ -1193,24 +1111,17 @@ var CDFDD = Base.extend({
       rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
     }
 
-    var contentWrapper = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Save as</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container layout-popup ' + rv + '">' + content + '</div>';
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Save as') + CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
 
-    $.prompt(contentWrapper, {
-      prefix: "popup",
-      top: "40px",
+    CDFDDUtils.prompt(contentWrapper, {
       buttons: {
         Ok: 1,
         Cancel: 0
       },
+      popupClass: 'settings-popup save-dashboard',
       loaded: function() {
 
         var $popup = $(this);
-        $popup.addClass('settings-popup save-dashboard');
-        CDFDDUtils.movePopupButtons($popup);
 
         var widgetField = $(".widgetField");
 
@@ -1308,19 +1219,7 @@ var CDFDD = Base.extend({
               SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
 
             } else {
-              var validationContent = '' +
-                  '<div class="popup-header-container">\n' +
-                  '  <div class="popup-title-container"></div>\n' +
-                  '</div>\n' +
-                  '<div class="popup-body-container">' + validationMsg + '</div>';
-
-              $.prompt(validationContent, {
-                top: "40px",
-                prefix: "popup",
-                loaded: function() {
-                  CDFDDUtils.movePopupButtons($(this));
-                }
-              });
+              CDFDDUtils.promptNotification("Error", validationMsg, true);
             }
           }
 
@@ -1377,22 +1276,9 @@ var CDFDD = Base.extend({
               SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
 
             } else {
-              var validationContent = '' +
-                  '<div class="popup-header-container">\n' +
-                  '  <div class="popup-title-container"></div>\n' +
-                  '</div>\n' +
-                  '<div class="popup-body-container">' + validationMsg + '</div>';
-
-              $.prompt(validationContent, {
-                top: "40px",
-                prefix: "popup",
-                loaded: function() {
-                  CDFDDUtils.movePopupButtons($(this));
-                }
-              });
+              CDFDDUtils.promptNotification("Error", validationMsg, true);
             }
           }
-
           return false;
         }
       }
@@ -1728,6 +1614,97 @@ var CDFDDUtils = Base.extend({}, {
 
     headerContainer.append(popupButtons);
     popupButtons.show();
+  },
+
+  wrapPopupTitle: function(title) {
+    return '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">' + title + '</div>\n' +
+          '</div>\n';
+  },
+
+  wrapPopupBody: function(content, extraClasses) {
+    return '<div class="popup-body-container ' + (extraClasses || "") + '">\n' + content + '</div>';
+  },
+
+  promptNotification: function(title, message, force) {
+    // this is being triggered twice, we don't want to show a popup if a popup is already shown
+    if ( !force && $("#popupbox").length > 0) {
+      return false;
+    }
+
+    var popupBody = '' +
+      '<div class="popup-body-notification">\n' +
+      '  <div class="popup-body-header clearfix">' + message + '  </div>' +
+      '</div>';
+
+    CDFDDUtils.prompt( CDFDDUtils.wrapPopupTitle(title) + popupBody, {
+      buttons: {
+        Ok: false
+      }
+    });
+  },
+  // central prompt builder
+  prompt: function(content, options) {
+    var options = options || {};
+    if (!options.prefix) {
+      options.prefix = "popup";
+    }
+    if (!options.top) {
+      options.top = "40px";
+    }
+    if (_.isObject(content)) {
+      // probably a composed prompt, with several states
+      // it must already be properly formatted
+      return $.prompt(content, options);
+    }
+    if (!options.buttons) {
+      options.buttons = {
+        Ok: true,
+        Cancel: false
+      };
+    }
+    var customLoaded = options.loaded;
+    var popupClass = options.popupClass || "";
+    options.loaded = function() {
+      var $popup = $(this);
+      CDFDDUtils.movePopupButtons($popup);
+      $popup.addClass(popupClass);
+
+      // finally calling a custom loaded function, if it exists
+      if(customLoaded) {
+        customLoaded.apply(this, arguments);
+      }
+      $popup.on('keydown', function(e) {
+        if(e.keyCode === 9) {
+          var elems = $popup.find("input:visible");
+          var idx = -1;
+          for(var i = 0; i < elems.length; i++) {
+            if (elems[i] == e.target) {
+              idx = i;
+              break;
+            }
+          }
+          if(idx > -1) {
+            if(e.shiftKey) {
+              if(e.target == elems[0]) {
+                elems[elems.length - 1].focus();
+              } else {
+                elems[idx - 1].focus();
+              }
+            } else {
+              if(elems[elems.length - 1] == e.target) {
+                elems[0].focus();
+              } else {
+                elems[idx + 1].focus();
+              }
+            }
+          }
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      });
+    };
+    return $.prompt(content, options);
   },
 
   buildPopupSelect: function(selectElem, override) {

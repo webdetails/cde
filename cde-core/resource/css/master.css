@@ -1628,7 +1628,7 @@ div.prompt-wizard-preview button.prompt-wizard-previewdefaultbutton{
 .linkToAnotherDashboardinput2{
   position: relative;
   top:1px;
-  left:48px;
+  left:59px;
   width: 200px;
 }
 
@@ -2088,6 +2088,13 @@ div.popup.edit-popup {
   min-width: 822px;
 }
 
+div.popup.url-template-popup {
+  min-width: 550px;
+}
+
+div.popup.choose-file-popup {
+  min-width: 404px;
+}
 
 .popupfade {
   opacity: 0.7;
@@ -2395,6 +2402,15 @@ div.popup button[id$=buttonOk] {
   width: 120px;
   margin-left: 40px;
 }
+div.popup.url-template-popup button[id$=buttonOk] {
+  width: 100px;
+  margin-left: 5px;
+}
+
+div.popup.url-template-popup button[id$=buttonOk] {
+  width: 100px;
+  margin-left: 5px;
+}
 
 div.template-popup button[id$=buttonOk] {
   margin-left: 15px;
@@ -2407,6 +2423,10 @@ div.template-popup button[id$=buttonBack], div.template-popup button[id$=buttonM
 div.popup button[id$=buttonCancel] {
   width: 80px;
   margin-left: 15px;
+}
+
+div.popup.url-template-popup button[id$=buttonCancel] {
+  margin-left: 5px;
 }
 
 div.popup button:hover, div.popup button:active {
