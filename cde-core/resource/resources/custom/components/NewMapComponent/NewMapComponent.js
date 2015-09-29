@@ -349,7 +349,7 @@ var NewMapComponent = (function () {
       };
 
       var me = this;
-      if ((this.mapMode == "shapes") && (!_.isEmpty(this.shapeSource))) {
+      if (this.mapMode == "shapes") {
         var keys = _.pluck(json.resultset, idx.id);
         this.dataRequest(this.shapeSource, keys)
             .then(function () {
@@ -362,8 +362,8 @@ var NewMapComponent = (function () {
 
     dataRequest: function (url, keys) {
       var addIn = this.getAddIn('ShapeResolver', this.shapeResolver);
-      if (!addIn) {
-        if (this.shapeSource.endsWith('json')) {
+      if (!addIn && this.shapeSource) {
+        if (this.shapeSource.endsWith('json') || this.shapeSource.endsWith('js')) {
           addIn = this.getAddIn('ShapeResolver', 'simpleJSON');
         } else {
           addIn = this.getAddIn('ShapeResolver', 'kml');
