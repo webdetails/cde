@@ -1131,7 +1131,7 @@
      {
       "name": "shapeSource",
       "type": "String",
-      "value": "${solution:countries.js}"
+      "value": ""
      },
      {
       "name": "tilesets",
@@ -1161,7 +1161,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
      },
      {
       "name": "postExecution",
@@ -1487,7 +1487,7 @@
      {
       "name": "shapeSource",
       "type": "String",
-      "value": "${solution:countries-legacy.js}"
+      "value": ""
      },
      {
       "name": "tilesets",
@@ -1517,7 +1517,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: '${solution:countries-legacy.js}'\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: getResource + '${solution:countries-legacy.js}'\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
      },
      {
       "name": "postExecution",
@@ -3117,7 +3117,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h4>Add-In Configuration</h4>\nExample of custom configuration via the component's preExecution callback:\n<pre>\nfunction(){\n    this.shapeResolver = 'geoJSON'; //use this addIn for resolving shapes\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n} \n \n</pre>\n<h4>Result</h4>\nThe shape definitions defined in the url above are assumed to be a \"FeatureCollection\".\nEach \"Feature\" has a set of properties that can be used to match against the user's data:\n<br/>\n<pre>\n{\n    \"type\": \"FeatureCollection\",\n    \"features\": [\n        // ...\n    {\n        \"type\": \"Feature\",\n        \"properties\": {\n            // ... some properties ommited\n            \"ADMIN\": \"United Kingdom\",\n            \"ADM0_A3\": \"GBR\",\n            \"GEOU_DIF\": 0,\n            \"GEOUNIT\": \"United Kingdom\",\n            \"GU_A3\": \"GBR\",\n            \"SU_DIF\": 0,\n            \"SUBUNIT\": \"United Kingdom\",\n            \"SU_A3\": \"GBR\",\n            \"BRK_DIFF\": 0,\n            \"NAME\": \"United Kingdom\",\n            \"NAME_LONG\": \"United Kingdom\",\n            \"BRK_A3\": \"GBR\",\n            \"BRK_NAME\": \"United Kingdom\",\n            \"BRK_GROUP\": null,\n            \"ABBREV\": \"U.K.\",\n            \"POSTAL\": \"GB\",\n            \"FORMAL_EN\": \"United Kingdom of Great Britain and Northern Ireland\",\n            \"NAME_SORT\": \"United Kingdom\",\n            \"NAME_ALT\": null,\n            \"FIPS_10_\": \"UK\",\n            \"ISO_A2\": \"GB\",\n            \"ISO_A3\": \"GBR\",\n            \"ISO_N3\": \"826\",\n            \"UN_A3\": \"826\",\n            \"WB_A2\": \"GB\",\n            \"WB_A3\": \"GBR\",\n            \"ADM0_A3_IS\": \"GBR\",\n            \"ADM0_A3_US\": \"GBR\",\n            \"ADM0_A3_UN\": -99,\n            \"ADM0_A3_WB\": -99,\n            \"CONTINENT\": \"Europe\",\n            \"REGION_UN\": \"Europe\",\n            \"SUBREGION\": \"Northern Europe\",\n            \"REGION_WB\": \"Europe & Central Asia\",\n            \"NAME_LEN\": 14,\n            \"LONG_LEN\": 14,\n            \"ABBREV_LEN\": 4,\n            \"TINY\": -99,\n            \"HOMEPART\": 1\n        },\n        \"geometry\": {\n            \"type\": \"MultiPolygon\",\n            \"coordinates\": [...]\n        }\n    },\n    //...\n    ]\n}\n</pre>\n<p>\n</p> \n "
+      "value": "<h4>Add-In Configuration</h4>\nExample of custom configuration via the component's preExecution callback:\n<pre>\nfunction(){\n    this.shapeResolver = 'geoJSON'; //use this addIn for resolving shapes\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: '/pentaho/plugin/pentaho-cdf-dd/api/resources${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n} \n \n</pre>\n<h4>Result</h4>\nThe shape definitions defined in the url above are assumed to be a \"FeatureCollection\".\nEach \"Feature\" has a set of properties that can be used to match against the user's data:\n<br/>\n<pre>\n{\n    \"type\": \"FeatureCollection\",\n    \"features\": [\n        // ...\n    {\n        \"type\": \"Feature\",\n        \"properties\": {\n            // ... some properties ommited\n            \"ADMIN\": \"United Kingdom\",\n            \"ADM0_A3\": \"GBR\",\n            \"GEOU_DIF\": 0,\n            \"GEOUNIT\": \"United Kingdom\",\n            \"GU_A3\": \"GBR\",\n            \"SU_DIF\": 0,\n            \"SUBUNIT\": \"United Kingdom\",\n            \"SU_A3\": \"GBR\",\n            \"BRK_DIFF\": 0,\n            \"NAME\": \"United Kingdom\",\n            \"NAME_LONG\": \"United Kingdom\",\n            \"BRK_A3\": \"GBR\",\n            \"BRK_NAME\": \"United Kingdom\",\n            \"BRK_GROUP\": null,\n            \"ABBREV\": \"U.K.\",\n            \"POSTAL\": \"GB\",\n            \"FORMAL_EN\": \"United Kingdom of Great Britain and Northern Ireland\",\n            \"NAME_SORT\": \"United Kingdom\",\n            \"NAME_ALT\": null,\n            \"FIPS_10_\": \"UK\",\n            \"ISO_A2\": \"GB\",\n            \"ISO_A3\": \"GBR\",\n            \"ISO_N3\": \"826\",\n            \"UN_A3\": \"826\",\n            \"WB_A2\": \"GB\",\n            \"WB_A3\": \"GBR\",\n            \"ADM0_A3_IS\": \"GBR\",\n            \"ADM0_A3_US\": \"GBR\",\n            \"ADM0_A3_UN\": -99,\n            \"ADM0_A3_WB\": -99,\n            \"CONTINENT\": \"Europe\",\n            \"REGION_UN\": \"Europe\",\n            \"SUBREGION\": \"Northern Europe\",\n            \"REGION_WB\": \"Europe & Central Asia\",\n            \"NAME_LEN\": 14,\n            \"LONG_LEN\": 14,\n            \"ABBREV_LEN\": 4,\n            \"TINY\": -99,\n            \"HOMEPART\": 1\n        },\n        \"geometry\": {\n            \"type\": \"MultiPolygon\",\n            \"coordinates\": [...]\n        }\n    },\n    //...\n    ]\n}\n</pre>\n<p>\n</p> \n "
      },
      {
       "name": "fontSize",
