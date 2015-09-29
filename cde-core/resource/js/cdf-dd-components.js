@@ -383,16 +383,19 @@ ComponentValidations.validateComponents = function() {
   status = this.aggregateStatus(status, htmlObjValidations.status);
   validations = validations.concat(htmlObjValidations.validations);
 
-  var msg = 'Validations: <br/>';
+  var msg = '';
 
   if(status == this.STATUS_OK) {
     msg += 'No obvious problems detected.';
   } else {
     for(var i = 0; i < validations.length; i++) {
-      msg += '<br/>';
-      msg += '[' + validations[i][0] + '] ' + validations[i][1];//ToDo: change to status, message
+      var color = validations[i][0] == "error" ? "#FF0000" : "#FFBF00";
+      msg += '<div>' + '<span style="color:' + color + '">[' + validations[i][0] + ']</span> ' +
+              validations[i][1] + "</div>";//ToDo: change to status, message
     }
   }
+  var validationsWrapper = CDFDDUtils.wrapPopupTitle('Validations') +
+                CDFDDUtils.wrapPopupBody('<div class="template-scroll">' + msg + '</div>', 'template-popup-container');
 
-  $.prompt(msg, {prefix: "popup"});
+  CDFDDUtils.prompt(validationsWrapper, {buttons: {Ok: true}, popupClass: "template-popup"});
 };

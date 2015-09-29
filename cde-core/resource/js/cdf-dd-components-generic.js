@@ -224,15 +224,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
           .append(content)
           .html();
 
-      $.prompt(htmlContent, {
-
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
-
-        prefix: "popup",
-
+      CDFDDUtils.prompt(htmlContent, {
         callback: function(v, m, f) {
           if(v) {
             var result = cdfdd.arrayValue;
@@ -290,12 +282,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
     var rowListHeaders = this.getRowListHeaders();
 
-    var popupBody = '' +
-        '<div class="popup-body-container popup-list-body-container popup-add-mode ' + rv + '">\n' +
-        '  <div class="popup-body-header clearfix">' + addRowButton + removeRowButtons + rowListHeaders + '  </div>' +
-        '  <div class="popup-list-body"></div>\n' +
-        '</div>';
-
+    var popupBody = CDFDDUtils.wrapPopupBody(
+        '<div class="popup-body-header clearfix">' + addRowButton + removeRowButtons + rowListHeaders + '  </div>' +
+        '<div class="popup-list-body"></div>\n', 'popup-list-body-container popup-add-mode');
     return $(popupHeader + popupBody);
   },
 
@@ -318,7 +307,6 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
   popupLoadedCallback: function(popupObj) {
     var myself = this;
-    CDFDDUtils.movePopupButtons(popupObj);
 
 
     popupObj.addClass(myself.cssPrefix + 'Popup array-list-popup');

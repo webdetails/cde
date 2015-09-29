@@ -582,20 +582,12 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
       rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
     }
 
-    var contentWrapper = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Save as Template</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container layout-popup ' + rv + '">\n' + content + '</div>';
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Save as Template') +
+        CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
 
-
-    $.prompt(contentWrapper, {buttons: { Save: true, Cancel: false }, top: "40px", prefix: "popup",
-      loaded: function() {
-        var $popup = $(this);
-
-        $popup.addClass('settings-popup');
-        CDFDDUtils.movePopupButtons($popup);
-      },
+    CDFDDUtils.prompt(contentWrapper, {
+      buttons: { Save: true, Cancel: false },
+      popupClass: "settings-popup",
       submit: function(v) {
         title = $("#titleInput").val();
         file = $("#fileInput").val();
@@ -714,27 +706,15 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
 
         '</div>\n';
 
-    var contentWrapper = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Add Resource</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container layout-popup resource-popup">\n' + content + '</div>';
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Add Resource') +
+        CDFDDUtils.wrapPopupBody(content, 'layout-popup resource-popup');
 
-    $.prompt(contentWrapper, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-
-      top: "40px",
-      prefix: "popup",
-
+    CDFDDUtils.prompt(contentWrapper, {
       loaded: function() {
         var $popup = $(this);
         var resourceType = $('#resourceType', $popup);
         var resourceSource = $('#resourceSource', $popup);
 
-        CDFDDUtils.movePopupButtons($popup);
         CDFDDUtils.buildPopupSelect(resourceType, {});
         CDFDDUtils.buildPopupSelect(resourceSource, {});
       },
