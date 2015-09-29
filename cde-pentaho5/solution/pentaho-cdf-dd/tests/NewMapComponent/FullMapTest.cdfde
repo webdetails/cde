@@ -15,7 +15,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../template.css}",
+      "value": "${res:../../template.css}",
       "type": "ResourceFile"
      },
      {
@@ -38,7 +38,7 @@
      },
      {
       "name": "resourceFile",
-      "value": "${res:../cdeReference.css}",
+      "value": "${res:../../cdeReference.css}",
       "type": "ResourceFile"
      },
      {
@@ -570,7 +570,7 @@
      },
      {
       "name": "markerCggGraph",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/salesGraphForMarker.js",
+      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/salesGraphForMarker.js",
       "type": "String"
      },
      {
@@ -639,9 +639,9 @@
       "type": "Integer"
      },
      {
-      "name": "tilesets",
-      "value": "mapquest",
-      "type": "tilesetsCustom"
+      "name": "locationResolver",
+      "value": "openstreetmap",
+      "type": "locationResolverCustom"
      },
      {
       "name": "colormap",
@@ -659,6 +659,16 @@
       "type": "mapModeCustom"
      },
      {
+      "name": "API_KEY",
+      "value": "0",
+      "type": "String"
+     },
+     {
+      "name": "tilesets",
+      "value": "mapquest",
+      "type": "tilesetsCustom"
+     },
+     {
       "name": "dataSource",
       "type": "Datasource",
       "value": "ForMapWithGeo"
@@ -670,7 +680,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "testWithGeoLocalization",
+      "value": "${h:testWithGeoLocalization}",
       "type": "HtmlObject"
      },
      {
@@ -804,8 +814,8 @@
       "value": "salesGraphQuery"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "width",
+      "value": "290",
       "type": "Integer"
      },
      {
@@ -814,12 +824,12 @@
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "290",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
-      "name": "width",
+      "name": "height",
       "value": "290",
       "type": "Integer"
      },
@@ -830,7 +840,7 @@
      },
      {
       "name": "htmlObject",
-      "value": "HiddenContentCol",
+      "value": "${h:HiddenContentCol}",
       "type": "HtmlObject"
      },
      {
@@ -844,12 +854,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -864,14 +874,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "extensionPoints",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "tooltip",
       "value": "",
       "type": "Html"
+     },
+     {
+      "name": "extensionPoints",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "activeSliceRadius",
@@ -959,9 +969,19 @@
       "type": "Boolean"
      },
      {
+      "name": "dataPartRole",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "dataSeparator",
       "value": "~",
       "type": "String"
+     },
+     {
+      "name": "dataWhere",
+      "value": "",
+      "type": "JavaScript"
      },
      {
       "name": "doubleClickAction",
@@ -1179,6 +1199,11 @@
       "type": "JavaScript"
      },
      {
+      "name": "pointingMode",
+      "value": "near",
+      "type": "cccPointingModeCustom"
+     },
+     {
       "name": "renderCallback",
       "value": "",
       "type": "JavaScript"
@@ -1319,6 +1344,11 @@
       "type": "Boolean"
      },
      {
+      "name": "tooltipClassName",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "tooltipEnabled",
       "value": true,
       "type": "Boolean"
@@ -1404,6 +1434,11 @@
       "type": "Boolean"
      },
      {
+      "name": "valuesOverflow",
+      "value": "hide",
+      "type": "cccValuesOverflowCustom"
+     },
+     {
       "name": "valuesVisible",
       "value": "",
       "type": "Boolean"
@@ -1444,8 +1479,8 @@
       "value": "salesGraphQuery"
      },
      {
-      "name": "priority",
-      "value": 5,
+      "name": "width",
+      "value": "75",
       "type": "Integer"
      },
      {
@@ -1454,12 +1489,12 @@
       "type": "Integer"
      },
      {
-      "name": "height",
-      "value": "75",
+      "name": "priority",
+      "value": 5,
       "type": "Integer"
      },
      {
-      "name": "width",
+      "name": "height",
       "value": "75",
       "type": "Integer"
      },
@@ -1484,12 +1519,12 @@
       "type": "JavaScript"
      },
      {
-      "name": "postExecution",
+      "name": "postFetch",
       "value": "",
       "type": "JavaScript"
      },
      {
-      "name": "postFetch",
+      "name": "postExecution",
       "value": "",
       "type": "JavaScript"
      },
@@ -1504,14 +1539,14 @@
       "type": "JavaScript"
      },
      {
-      "name": "extensionPoints",
-      "value": "[]",
-      "type": "ValuesArray"
-     },
-     {
       "name": "tooltip",
       "value": "",
       "type": "Html"
+     },
+     {
+      "name": "extensionPoints",
+      "value": "[]",
+      "type": "ValuesArray"
      },
      {
       "name": "activeSliceRadius",
@@ -1599,9 +1634,19 @@
       "type": "Boolean"
      },
      {
+      "name": "dataPartRole",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "dataSeparator",
       "value": "~",
       "type": "String"
+     },
+     {
+      "name": "dataWhere",
+      "value": "",
+      "type": "JavaScript"
      },
      {
       "name": "doubleClickAction",
@@ -1819,6 +1864,11 @@
       "type": "JavaScript"
      },
      {
+      "name": "pointingMode",
+      "value": "near",
+      "type": "cccPointingModeCustom"
+     },
+     {
       "name": "renderCallback",
       "value": "",
       "type": "JavaScript"
@@ -1959,6 +2009,11 @@
       "type": "Boolean"
      },
      {
+      "name": "tooltipClassName",
+      "value": "",
+      "type": "String"
+     },
+     {
       "name": "tooltipEnabled",
       "value": true,
       "type": "Boolean"
@@ -2042,6 +2097,11 @@
       "name": "valuesOptimizeLegibility",
       "value": "",
       "type": "Boolean"
+     },
+     {
+      "name": "valuesOverflow",
+      "value": "hide",
+      "type": "cccValuesOverflowCustom"
      },
      {
       "name": "valuesVisible",
@@ -2174,13 +2234,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -2245,13 +2305,13 @@
       "type": "Id"
      },
      {
-      "name": "language",
-      "value": "beanshell",
+      "name": "initscript",
+      "value": "",
       "type": "String"
      },
      {
-      "name": "initscript",
-      "value": "",
+      "name": "language",
+      "value": "beanshell",
       "type": "String"
      },
      {
@@ -2303,5 +2363,5 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FullMapTest.cdfde"
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/FullMapTest.cdfde"
 }
