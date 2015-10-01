@@ -342,24 +342,39 @@ define([
       // },
       // // End
       update: function () {
+        if(!this.preExec()) {
+          return false;
+        }
+        this.maybeToggleBlock(true);
+
         this.registerEvents();
         if (_.isString(this.tilesets)) {
           this.tilesets = [this.tilesets];
-        }
-
-        if (this.testData) {
-          this.render(this.testData);
-          return;
         }
         Logger.log('Starting clock of ' + this.htmlObject, 'debug');
         this.clock = (new Date());
 
         if (this.queryDefinition && !_.isEmpty(this.queryDefinition)) {
-          this.triggerQuery(this.queryDefinition, _.bind(this.onDataReady, this));
+          this.getData();
         } else {
           // No datasource, we'll just display the map
-          this.synchronous(_.bind(this.render, this), {});
+          this.onDataReady(this.testData || {});
         }
+      },
+
+      maybeToggleBlock: function(block) {
+        if (!this.isSilent()) {
+          block ? this.block() : this.unblock();
+        }
+      },
+
+      getData: function() {
+        var query = this.queryState = this.query = this.dashboard.getQuery(this.queryDefinition);
+        query.setAjaxOptions({async: true});
+        query.fetchData(
+          this.parameters,
+          this.getSuccessHandler(this.onDataReady),
+          this.getErrorHandler());
       },
 
       onDataReady: function (json) {
@@ -471,6 +486,11 @@ define([
         this.mapEngine.updateViewport(centerLongitude, centerLatitude, this.defaultZoomLevel);
 
         Logger.log('Stopping clock: update cycle of ' + this.htmlObject + ' took ' + (new Date() - this.clock) + ' ms', 'debug');
+
+        // google mapEngine implementation will still fetch data asynchronously before calling initCallBack
+        // so only here can we finish the lifecycle.
+        this.postExec();
+        this.maybeToggleBlock(false);
       },
 
       registerEvents: function () {
