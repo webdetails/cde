@@ -38,7 +38,7 @@ define([
       type: "SiteMapComponent",
       name: "siteMapComponent",
       priority: 5,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectSiteMap",
       parameters: [],
       executeAtStart: true,
       siteMapParameter: "param1",

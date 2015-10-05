@@ -35,7 +35,7 @@ define([
       name: "gMapsOverlayComponent",
       priority: 5,
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectGMaps",
       listeners: [],
       preExecution: [],
       postExecution: [],

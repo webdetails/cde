@@ -33,7 +33,7 @@ define([
       title: "Olap Selector",
       parameter: "param1",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectOlapSelect",
       parameters: [],
       catalog: "mondrian:/SteelWheels",
       cube: "SteelWheelsSales",
