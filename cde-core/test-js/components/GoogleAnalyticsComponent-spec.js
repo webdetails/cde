@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/GoogleAnalyticsComponent', "cdf/lib/jquery"],
-  function(Dashboard, GoogleAnalyticsComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/GoogleAnalyticsComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, GoogleAnalyticsComponent, $) {
 
   /**
    * ## The Google Analytics Component

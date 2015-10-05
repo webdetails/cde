@@ -29,7 +29,7 @@ define([
       type: "ExportButtonComponent",
       name: "expButton1",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectExportButton",
       priority: 5,
       label: "TestExport",
       componentName: "",
@@ -41,7 +41,7 @@ define([
     dashboard.addComponent(exportButtonComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', exportButtonComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', exportButtonComponent.htmlObject);
 
     /**
      * ## The Export Button Component # allows a dashboard to execute update

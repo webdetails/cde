@@ -34,7 +34,7 @@ define([
       parameter: "param1",
       colors: [],
       intervals: [],
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectCggDial",
       listeners: [],
       width: 300,
       height: 300
@@ -43,7 +43,7 @@ define([
     dashboard.addComponent(cggDialComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', cggDialComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', cggDialComponent.htmlObject);
   
     /**
      * ## The Cgg Dial Component # allows a dashboard to execute update

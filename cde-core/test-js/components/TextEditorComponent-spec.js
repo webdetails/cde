@@ -30,7 +30,7 @@ define([
       name: "textEditorComponent",
       priority: 5,
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectTextEdit",
       parameters: [],
       parameter: undefined,
       listeners: []

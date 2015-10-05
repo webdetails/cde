@@ -28,7 +28,7 @@ define([
     var viewManagerComponent = new ViewManagerComponent({
       type: "ViewManagerComponent",
       name: "viewManagerComponent",
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectViewMan",
       priority: 5,
       executeAtStart: true,
       listeners: []

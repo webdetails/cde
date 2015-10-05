@@ -40,7 +40,7 @@ define([
       title: "Press to select",
       searchParam: "paramS",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectNewSelect",
       parameters: [],
       valuesArray: [],
       valueAsId: true,
