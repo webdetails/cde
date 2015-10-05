@@ -34,7 +34,7 @@ define([
       priority: 5,
       executeAtStart: true,
       parameters: [["param1","param1"],["param2","param2"]],
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectCgg",
       resourceFile: "test/path",
       listeners: [],
       width: 400,
@@ -44,7 +44,7 @@ define([
     dashboard.addComponent(cggComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', cggComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', cggComponent.htmlObject);
   
     /**
      * ## The Cgg Component # allows a dashboard to execute update

@@ -34,7 +34,7 @@ define([
       executeAtStart: true,
       chartExportType: 'png',
       chartExportComponent: 'chart',
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectExportPop",
       parameters: [],
       listeners: []
     });
