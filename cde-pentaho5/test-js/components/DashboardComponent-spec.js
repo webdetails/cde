@@ -14,8 +14,8 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/DashboardComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, DashboardComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, DashboardComponent, $) {
 
   /**
    * ## The Dashboard Component
@@ -49,7 +49,6 @@ define([
 
     });
 
-
     /**
      * ## The Dashboard Component # allows a dashboard to execute update
      */
@@ -74,7 +73,7 @@ define([
         params.success({
           parameters: ["dummyParam"],
           // split function to bypass i18n error
-          split: function(){return "";}
+          split: function() { return ""; }
         });
       });
 
@@ -87,7 +86,6 @@ define([
       });
 
       dashboard.update(dashboardComponent);
-
     });
 
     /**
@@ -98,18 +96,17 @@ define([
         params.success({
           parameters: ["dummyParam"],
           // split function to bypass i18n error
-          split: function(){return "";}
+          split: function() { return ""; }
         });
       });
 
       dashboardComponent.once('cdf:postExecution', function() {
-        expect( dashboardComponent.registeredEvents["param1:fireChange"].length ).toEqual(1);
-        expect( dashboardComponent.registeredEvents["param2:fireChange"] ).not.toBeDefined();
+        expect(dashboardComponent.registeredEvents["param1:fireChange"].length).toEqual(1);
+        expect(dashboardComponent.registeredEvents["param2:fireChange"]).not.toBeDefined();
         done();
       });
 
       dashboard.update(dashboardComponent);
-
     });
 
     /**
@@ -122,7 +119,7 @@ define([
           dataSources: ["dummyDataSource"],
           parameters: ["dummyParam"],
           // split function to bypass i18n error
-          split: function(){return "";}
+          split: function() { return ""; }
         });
       });
 
@@ -132,8 +129,6 @@ define([
       });
 
       dashboard.update(dashboardComponent);
-
     });
-
   });
 });
