@@ -25,26 +25,18 @@ var MdxEntryBase = PalleteEntry.extend({
         '<span class="popup-label">Cube</span>' +
         '<select id="cdfddOlapCubeSelect" class="popup-select" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').cubeSelected()" ></select>' +
       '</div>';
-    var _inner = '' +
-          '<div class="popup-header-container">\n' +
-          '  <div class="popup-title-container">OLAP MDX Query</div>\n' +
-          '</div>\n' +
-          '<div class="popup-body-container layout-popup">\n' +
-          content +
-          '</div>';
-    $.prompt(_inner,{
+    var _inner = CDFDDUtils.wrapPopupTitle('OLAP MDX Query') + 
+          CDFDDUtils.wrapPopupBody(content, 'layout-popup');
+    CDFDDUtils.prompt(_inner,{
       buttons: {
         Ok: true,
         Skip: false
       },
-      top: "40px",
-      prefix:"popup",
       loaded: function(){
         var $popup = $(this);
         var cdfddOlapCatalogSelect = $('#cdfddOlapCatalogSelect', $popup);
         var cdfddOlapCubeSelect = $('#cdfddOlapCubeSelect', $popup);
 
-        CDFDDUtils.movePopupButtons($popup);
         CDFDDUtils.buildPopupSelect(cdfddOlapCatalogSelect, {minimumResultsForSearch: -1});
         CDFDDUtils.buildPopupSelect(cdfddOlapCubeSelect, {minimumResultsForSearch: -1});
         $.getJSON(OlapUtils.getOlapCubesUrl(), {}, function(json) {

@@ -162,23 +162,13 @@ var SynchronizeRequests = {
               }
             }
 
-            var _templatesWrapper = '' +
-                '<div class="popup-header-container">\n' +
-                '  <div class="popup-title-container">Apply Template</div>\n' +
-                '</div>\n' +
-                '<div class="popup-body-container template-popup-container">\n' + _templates + '</div></div>';
+            var _templatesWrapper = CDFDDUtils.wrapPopupTitle('Apply Template') +
+                CDFDDUtils.wrapPopupBody(_templates + '</div>', 'template-popup-container');
 
-            var _myTemplatesWrapper = '' +
-                '<div class="popup-header-container">\n' +
-                '  <div class="popup-title-container">Apply Custom Template</div>\n' +
-                '</div>\n' +
-                '<div class="popup-body-container template-popup-container">\n' + _myTemplates + '</div></div>';
+            var _myTemplatesWrapper = CDFDDUtils.wrapPopupTitle('Apply Custom Template') +
+                CDFDDUtils.wrapPopupBody(_myTemplates + '</div>', 'template-popup-container');
 
             var loaded = function() {
-              var $popup = $(this);
-              $popup.addClass('template-popup');
-              CDFDDUtils.movePopupButtons($popup);
-
               myself.selectTemplate = undefined;
 
               $('div.popup-template').click(function() {
@@ -194,55 +184,40 @@ var SynchronizeRequests = {
             var callback = function(v, m, f) {
               var selectedTemplate = myself.selectTemplate;
               if(v === 1 && selectedTemplate !== undefined) {
-                var message = '' +
-                    '<div class="popup-header-container">\n' +
-                    '  <div class="popup-title-container">Load Template</div>\n' +
-                    '</div>\n' +
-                    '<div class="popup-body-container layout-popup">\n' +
-                      myself.warningTemplateMessage(selectedTemplate) +
-                    '</div>';
+                var message = CDFDDUtils.wrapPopupTitle('Load Template') +
+                    CDFDDUtils.wrapPopupBody(myself.warningTemplateMessage(selectedTemplate), 'layout-popup');
 
-
-                $.prompt(message, {
-                  buttons: {Ok: true, Cancel: false},
-                  prefix: 'popup',
+                CDFDDUtils.prompt(message, {
                   callback: myself.callbackLoadTemplate,
-                  loaded: function() {
-                    var $popup = $(this);
-                    $popup.addClass('settings-popup');
-                    CDFDDUtils.movePopupButtons($popup);
-                  }
+                  popupClass: 'settings-popup'
                 });
               }
             };
 
             var promptTemplates = {
               loaded: loaded,
+              popupClass: 'template-popup',
               buttons: myTemplatesCount > 0 ? {MyTemplates: 2, Ok: 1, Cancel: 0} : {Ok: 1, Cancel: 0},
-              top: "40px",
-              prefix: 'popup',
               callback: callback,
               submit: function(v, m, f) {
                 if(v != 2) return true;
                 $.prompt.close();
-                $.prompt(_myTemplatesWrapper, promptMyTemplates, {prefix: "popup"});
+                CDFDDUtils.prompt(_myTemplatesWrapper, promptMyTemplates);
               }
             };
 
             var promptMyTemplates = {
               loaded: loaded,
               buttons: {Back: 2, Ok: 1, Cancel: 0},
-              top: "40px",
-              prefix: 'popup',
               callback: callback,
               submit: function(v, m, f) {
                 if(v != 2) return true;
                 $.prompt.close();
-                $.prompt(_templatesWrapper, promptTemplates, {prefix: "popup"});
+                CDFDDUtils.prompt(_templatesWrapper, promptTemplates);
               }
             };
 
-            $.prompt(_templatesWrapper, promptTemplates, {prefix: "popup"});
+            CDFDDUtils.prompt(_templatesWrapper, promptTemplates);
 
           } else {
             throw result && result.result;
