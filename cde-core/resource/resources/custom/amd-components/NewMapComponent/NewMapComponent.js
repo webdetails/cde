@@ -567,7 +567,6 @@ define([
         if (!json || !json.resultset) {
           return;
         }
-        var myself = this;
 
         //Build an hashmap from metadata
         //var mapping = this.getMapping(values);
@@ -577,8 +576,7 @@ define([
 
         // Define default shape appearance
         var shapeSettings = _.defaults(this.shapeSettings || {}, {
-          //fillColor:  'blue',
-          //fillOpacity: 0.5,
+          fillOpacity: 0.5,
           strokeWidth: 2,
           strokeColor: 'white',
           zIndex: 0
@@ -590,17 +588,18 @@ define([
         var minValue = _.min(qvalues),
           maxValue = _.max(qvalues);
 
-        _.each(json.resultset, function (elt) {
-          var fillColor = myself.mapColor(elt[idxValue], minValue, maxValue, colormap);
+        var myself = this;
+        _.each(json.resultset, function (row) {
+          var fillColor = myself.mapColor(row[idxValue], minValue, maxValue, colormap);
           var data = {
-            rawData: elt,
-            key: elt[idxKey],
-            value: elt[idxValue],
+            rawData: row,
+            key: row[idxKey],
+            value: row[idxValue],
             minValue: minValue,
             maxValue: maxValue
           };
 
-          myself.renderShape(myself.shapeDefinition[elt[idxKey]], _.defaults({
+          myself.renderShape(myself.shapeDefinition[row[idxKey]], _.defaults({
             fillColor: fillColor
           }, shapeSettings), data);
         });
