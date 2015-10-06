@@ -1142,34 +1142,6 @@ var CellRenderer = Base.extend({
 
   getTableManager: function() {
     return this.tableManager;
-  },
-
-  notificationPopup: function(title, message) {
-    // this is being triggered twice, we don't want to show a popup if a popup is already shown
-    if ( $("#popupbox").length > 0) {
-      return false;
-    }
-    var popupHeader = '' +
-      '<div class="popup-header-container">\n' +
-      '  <div class="popup-title-container">' + title + '</div>\n' +
-      '</div>\n';
-    var popupBody = '' +
-      '<div class="popup-body-notification">\n' +
-      '  <div class="popup-body-header clearfix">' + message + '  </div>' +
-      '</div>';
-    var htmlContent = $('<div>')
-        .append(popupHeader + popupBody)
-        .html();
-
-    $.prompt(htmlContent, {
-      buttons: {
-        Ok: false
-      },
-      prefix: "popup",
-      loaded: function() {
-        CDFDDUtils.movePopupButtons($(this));
-      }
-    });
   }
 });
 
@@ -1239,11 +1211,11 @@ var IdRenderer = StringRenderer.extend({
 
     if(cdfdd.dashboardWcdf.widget) {
       if(!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
-        this.notificationPopup('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
+        CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
         return false;
       }
     } else if(!value.match(/^[a-zA-Z0-9_.]*$/)) {
-      this.notificationPopup('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
       return false;
     }
     return true;
@@ -1262,7 +1234,7 @@ var IntegerRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*$/)) {
-      this.notificationPopup('Invalid Input', 'Argument ' + value + ' must be numeric');
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
@@ -1280,7 +1252,7 @@ var FloatRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*\.?\d*$/)) {
-      this.notificationPopup('Invalid Input', 'Argument ' + value + ' must be numeric');
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
@@ -1695,14 +1667,9 @@ var TextAreaRenderer = CellRenderer.extend({
       var _inner = 'Edit<br /><textarea wrap="off" cols="80" class="cdfddEdit" name="textarea">' + myself.value + '</textarea>';
       // Store what we need in a global var
       cdfdd.textarea = [myself, placeholder, myself.value, callback];
-      $.prompt(_inner, {
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
+      CDFDDUtils.prompt(_inner, {
         callback: myself.callback,
-        opacity: 0.2,
-        prefix: 'popup'
+        opacity: 0.2
       });
     }).appendTo($("div.edit", _editArea));
 
@@ -1756,25 +1723,15 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click", function() {
-      var _inner = '' +
-          '<div class="popup-header-container">\n' +
-          '  <div class="popup-title-container">Edit</div>\n' +
-          '</div>\n' +
-          '<div class="popup-body-container">\n' +
-          '  <pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n' +
-          '</div>';
+      var _inner = CDFDDUtils.wrapPopupTitle('Edit') +
+          CDFDDUtils.wrapPopupBody('<pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n');
       // Store what we need in a global var
       cdfdd.textarea = [myself, placeholder, myself.value, callback];
-      $.prompt(_inner, {
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
+      CDFDDUtils.prompt(_inner, {
         loaded: function() {
           var $popup = $(this);
 
           $popup.addClass('edit-popup')
-          CDFDDUtils.movePopupButtons($popup);
 
           //editor
           myself.editor = new CodeEditor();
@@ -1785,8 +1742,7 @@ var CodeRenderer = CellRenderer.extend({
         },
 
         callback: myself.callback,
-        opacity: 0.2,
-        prefix: 'popup'
+        opacity: 0.2
       });
 
 
@@ -1843,25 +1799,15 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
     }
 
     var myself = this;
-    var _inner = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container">Edit</div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container">\n' +
-        '  <pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n' +
-        '</div>';
+    var _inner = CDFDDUtils.wrapPopupTitle('Edit') +
+        CDFDDUtils.wrapPopupBody('<pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n');
     // Store what we need in a global var
     cdfdd.textarea = [myself, callback];
-    var prompt = $.prompt(_inner, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
+    var prompt = CDFDDUtils.prompt(_inner, {
       loaded: function() {
         var $popup = $(this);
 
         $popup.addClass('edit-popup')
-        CDFDDUtils.movePopupButtons($popup);
 
         //editor
         myself.editor = new CodeEditor();
@@ -1872,8 +1818,7 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
       },
 
       callback: myself.callback,
-      opacity: 0.2,
-      prefix: 'popup'
+      opacity: 0.2
     });
     return prompt;
   },
@@ -2069,19 +2014,10 @@ var ResourceFileRenderer = CellRenderer.extend({
       var url = ExternalEditor.getEditorUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
-      var contentWrapper = '' +
-          '<div class="popup-header-container">\n' +
-          '  <div class="popup-title-container">Edit</div>\n' +
-          '</div>\n' +
-          '<div class="popup-body-container">\n' + _inner + '</div>';
+      var contentWrapper = CDFDDUtils.wrapPopupTitle('Edit') + CDFDDUtils.wrapPopupBody(_inner);
 
-      var confirmWrapper = '' +
-          '<div class="popup-header-container">\n' +
-          '  <div class="popup-title-container">Confirm</div>\n' +
-          '</div>\n' +
-          '<div class="popup-body-container">\n' +
-          '  <div ><span>Any unsaved changes will be lost. Continue anyway?</span></div>' +
-          '</div>';
+      var confirmWrapper = CDFDDUtils.wrapPopupTitle('Confirm') +
+          CDFDDUtils.wrapPopupBody('<div><span>Any unsaved changes will be lost. Continue anyway?</span></div>');
 
       // Store what we need in a global var
       var action;
@@ -2129,18 +2065,13 @@ var ResourceFileRenderer = CellRenderer.extend({
           }
         }
       };
-
-      $.prompt(extEditor, {
-        //opacity: 0.2,
-        prefix: 'popup',
+      CDFDDUtils.prompt(extEditor, {
         loaded: function() {
           var $popup = $(this);
           $popup.addClass('external-editor-popup');
           CDFDDUtils.movePopupButtons($popup.find('#popup_state_edit'));
           CDFDDUtils.movePopupButtons($popup.find('#popup_state_confirm'));
-        },
-        top: '40px'
-
+        }
       });
     });
   },
@@ -2188,25 +2119,16 @@ var ResourceFileRenderer = CellRenderer.extend({
     _fileExplorer.bind('click', function() {
 
       var fileExplorerLabel = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one' : '');
-      var fileExplorerContent = '' +
-        '<div class="popup-header-container">\n' +
-        '  <div class="popup-title-container"></div>\n' +
-        '</div>\n' +
-        '<div class="popup-body-container">\n' +
-        '  <div class="popup-label">' + fileExplorerLabel + '</div>\n' +
-        '  <div id="container_id" class="urltargetfolderexplorer"></div>\n' +
-        '</div>';
+      var fileExplorerContent = CDFDDUtils.wrapPopupTitle('') +
+        CDFDDUtils.wrapPopupBody('<div class="popup-label">' + fileExplorerLabel + '</div>\n' +
+          '<div id="container_id" class="urltargetfolderexplorer"></div>\n');
 
-      var newFileContent = '' +
-          '<div class="popup-header-container">\n' +
-          '  <div class="popup-title-container">Create File</div>\n' +
-          '</div>\n' +
-          '<div class="popup-body-container layout-popup">\n' +
-          '  <div class="popup-input-container bottom">\n' +
-          '    <div class="popup-label">New File</div>\n' +
-          '    <input class="popup-text-input" name="fileName"/>' +
-          '  </div>\n' +
-          '</div>';
+      var newFileContent = CDFDDUtils.wrapPopupTitle('Create File') +
+          CDFDDUtils.wrapPopupBody(
+          '<div class="popup-input-container bottom">\n' +
+          '  <div class="popup-label">New File</div>\n' +
+          '  <input class="popup-text-input" name="fileName"/>' +
+          '</div>\n', 'layout-popup');
 
       var selectedFile = "";
       var selectedFolder = "";
@@ -2274,7 +2196,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         }
       };
 
-      $.prompt(openOrNew, {
+      CDFDDUtils.prompt(openOrNew, {
         opacity: '0.2',
         prefix: "popup",
         loaded: function() {

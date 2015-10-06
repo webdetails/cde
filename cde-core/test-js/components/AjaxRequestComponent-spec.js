@@ -29,7 +29,7 @@ define([
       type: "AjaxRequestComponent",
       name: "ajaxRequest",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectAjax",
       parameters: [],
       url: 'test/fake',
       ajaxRequestType: 'json',

@@ -29,7 +29,7 @@ define([
       type: "PopupComponent",
       name: "popup1",
       executeAtStart: true,
-      htmlObject: "samplePopObject",
+      htmlObject: "sampleObjectPop",
       parameters: [],
       listeners: []
     });
@@ -37,7 +37,7 @@ define([
     dashboard.addComponent(popupComponent);
 
     // inject samplePopObject div
-    $htmlObject = $('<div>').attr('id', popupComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', popupComponent.htmlObject);
     $('body').append($htmlObject);
 
     /**
@@ -65,6 +65,7 @@ define([
 
       expect(popupComponent.clone).toHaveBeenCalled();
       expect(popupCloned.ph.find("[id]").attr("id")).toEqual(popupComponent.htmlObject + "_1");
+      $htmlObject.remove();
     });
   });
 });

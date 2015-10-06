@@ -42,9 +42,9 @@ define([
     });
 
     var setExtraOptions = function() {
-      newMap.preExecution = function(){this.preExecutionCalled = true;};
-      newMap.postFetch = function(){this.postFetchCalled = true;};
-      newMap.postExecution = function(){this.postExecutionCalled = true;};
+      newMap.preExecution = function() { this.preExecutionCalled = true; };
+      newMap.postFetch = function() { this.postFetchCalled = true; };
+      newMap.postExecution = function() { this.postExecutionCalled = true; };
     };
 
     /**
