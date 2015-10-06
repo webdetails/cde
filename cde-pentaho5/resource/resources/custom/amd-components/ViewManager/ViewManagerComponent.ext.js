@@ -25,7 +25,7 @@ define([], function() {
     getUrl: function(solution, path, file, view) {
       return CONTEXT_PATH + "api/repos/"
         + ((solution ? solution : "") + (path ? path : "") + (file ? file : "")).replace(/\//g, ':').replace(/\+/g, "%20")
-        + "/generatedContent?viewId=" + view.replace(/\+/g, "%20");
+        + "/generatedContent?view=" + view.replace(/\+/g, "%20");
     }
   };
 
