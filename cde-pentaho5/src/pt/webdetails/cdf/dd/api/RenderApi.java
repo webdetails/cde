@@ -149,7 +149,7 @@ public class RenderApi {
                         @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                         @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                         @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
-                        @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+                        @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                         @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                         @Context HttpServletRequest request ) throws IOException {
     String schemeToUse = "";
@@ -184,7 +184,7 @@ public class RenderApi {
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
       String context = dashboardWcdf.isRequire()
           ? InterPluginBroker.getCdfRequireContext( filePath, requestParams )
-          : InterPluginBroker.getCdfContext( filePath, "", viewId, requestParams );
+          : InterPluginBroker.getCdfContext( filePath, "", view, requestParams );
       String result = dashboard.render( context );
 
       //i18n token replacement
@@ -230,7 +230,7 @@ public class RenderApi {
                               @QueryParam( MethodParams.BYPASSCACHE ) @DefaultValue( "false" ) boolean bypassCache,
                               @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
                               @QueryParam( MethodParams.SCHEME ) @DefaultValue( "" ) String scheme,
-                              @QueryParam( MethodParams.VIEWID ) @DefaultValue( "" ) String viewId,
+                              @QueryParam( MethodParams.VIEW ) @DefaultValue( "" ) String view,
                               @QueryParam( MethodParams.STYLE ) @DefaultValue( "" ) String style,
                               @QueryParam( MethodParams.ALIAS ) @DefaultValue( "" ) String alias,
                               @Context HttpServletRequest request ) throws IOException {

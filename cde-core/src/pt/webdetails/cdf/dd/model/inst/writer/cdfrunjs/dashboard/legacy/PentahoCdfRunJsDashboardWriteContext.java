@@ -63,7 +63,7 @@ public class PentahoCdfRunJsDashboardWriteContext extends CdfRunJsDashboardWrite
 
   protected String getRoot() {
     return this._options.isAbsolute()
-      ? ( !StringUtils.isEmpty(this._options.getAbsRoot() )
+      ? ( !StringUtils.isEmpty( this._options.getAbsRoot() )
         ? ( this._options.getSchemedRoot() + CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
         : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl() )
       : CdeEngine.getInstance().getEnvironment().getApplicationBaseContentUrl();
