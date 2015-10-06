@@ -47,6 +47,12 @@
       <Property>shapeMouseOver</Property>
       <Property>shapeMouseOut</Property>
       <Property>shapeMouseClick</Property>
+
+      <Definition name="shapeSettings">
+        <Property name="fillOpacity">shapeFillOpacity</Property>
+        <Property name="strokeWidth">shapeStrokeWidth</Property>
+        <Property name="strokeColor">shapeStrokeColor</Property>
+      </Definition>
     </Model>
     <Implementation supportsLegacy="true" supportsAMD="true">
       <Code src="NewMapComponent.js" />
@@ -443,6 +449,48 @@
             <Value display="OpenStreetMap">openstreetmap</Value>
             <Value display="MapQuest">mapquest</Value>
           </Values>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>shapeFillOpacity</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>0.5</DefaultValue>
+            <Description>Shape Fill Opacity</Description>
+            <Tooltip>Value of shape's opacity (from 0 to 1)</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Float</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>shapeStrokeColor</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>white</DefaultValue>
+            <Description>Shape Stroke Color</Description>
+            <Tooltip>Define a color for shape's borders</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>shapeStrokeWidth</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>2</DefaultValue>
+            <Description>Shape Stroke Width</Description>
+            <Tooltip>Define the width for shape's borders</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Float</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
         </DesignerProperty>
       </CustomProperties>
     </Implementation>
