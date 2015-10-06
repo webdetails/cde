@@ -42,6 +42,8 @@
       <Property>mapMode</Property>
       <Property>locationResolver</Property>
       <Property>shapeSource</Property>
+      <Property>shapeFillOpacity</Property>
+      <Property>shapeStrokeColor</Property>
       <Property>colormap</Property>
       <Property>tilesets</Property>
       <Property>shapeMouseOver</Property>
@@ -107,6 +109,34 @@
             <DefaultValue></DefaultValue>
             <Description>Shape definitions</Description>
             <Tooltip>JSON or KML file containing the definitions of the shapes</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>String</InputType>
+            <OutputType>String</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>shapeFillOpacity</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>0.5</DefaultValue>
+            <Description>Shape Fill Opacity</Description>
+            <Tooltip>Value of shape's opacity (from 0 to 1)</Tooltip>
+            <Advanced>false</Advanced>
+            <InputType>Float</InputType>
+            <OutputType>Number</OutputType>
+            <Order>40</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>shapeStrokeColor</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue></DefaultValue>
+            <Description>Shape Stroke Color</Description>
+            <Tooltip>Define a color for shape's borders</Tooltip>
             <Advanced>false</Advanced>
             <InputType>String</InputType>
             <OutputType>String</OutputType>
