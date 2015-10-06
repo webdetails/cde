@@ -85,17 +85,17 @@ public class InterPluginBroker {
    *
    * @param dashboard
    * @param action
-   * @param viewId
+   * @param view
    * @param requestParams
    * @return
    * @throws Exception
    */
-  public static String getCdfContext( String dashboard, String action, String viewId, IParameterProvider requestParams )
+  public static String getCdfContext( String dashboard, String action, String view, IParameterProvider requestParams )
       throws Exception {
     CallParameters params = new CallParameters();
     params.put( "path", dashboard );
     params.put( "action", action );
-    params.put( "viewId", viewId );
+    params.put( "view", view );
 
     if ( requestParams != null ) {
       Iterator<String> iterator = requestParams.getParameterNames();

@@ -57,6 +57,7 @@ public class CdeConstants {
     public static final String INFERSCHEME = "inferScheme";
     public static final String ABSOLUTE = "absolute";
     public static final String BYPASSCACHE = "bypassCache";
+    public static final String VIEW = "view";
     public static final String VIEWID = "viewId";
     public static final String STYLE = "style";
     public static final String SCHEME = "scheme";
