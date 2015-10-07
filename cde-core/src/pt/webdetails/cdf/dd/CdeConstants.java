@@ -32,6 +32,8 @@ public class CdeConstants {
 
   public static final String LEGACY_UNSAVED_FILE_PATH = "/null/null/null";
 
+  public static final String PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS = "settings/resources/downloadable-formats";
+
   /**
    * Inner paths relative to plugin repository dir
    */
