@@ -65,13 +65,20 @@ import pt.webdetails.cpf.utils.MimeTypes;
 public class ResourcesApi {
   private static final Log logger = LogFactory.getLog( ResourcesApi.class );
 
+  private static final List<String> allowedExtensions;
+
+  static {
+    String formats = PentahoSystem.get( IPluginResourceLoader.class, null ).getPluginSetting( ResourcesApi.class,
+            CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+    allowedExtensions =  Arrays.asList( StringUtils.split( formats, ',' ) );
+  }
+
   @GET
   @Path( "/get" )
   @Produces( "text/plain" )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
     try {
-      List<String> allowedExtensions = getAllowedExtensions();
       String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
       if ( allowedExtensions.indexOf( extension ) < 0 ) {
         // We can't provide this type of file
@@ -259,6 +266,14 @@ public class ResourcesApi {
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
+    String extension = path.replaceAll( ".*\\.(.*)", "$1" );
+    if ( allowedExtensions.indexOf( extension ) < 0 ) {
+      // We can't provide this type of file
+      logger.error( "Extension '" + extension + "' not whitelisted" );
+      throw new SecurityException( "Not allowed" );
+    }
+
+
     String[] splitPath = path.split( "/" );
     String pluginId = splitPath[ 0 ];
     String resource = "";
@@ -297,15 +312,5 @@ public class ResourcesApi {
     return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
   }
 
-  /**
-   * Retrieves the list of allowed extensions.
-   *
-   * @return the list of allowed extensions
-   */
-  protected List<String> getAllowedExtensions() {
-    String formats = PentahoSystem.get( IPluginResourceLoader.class, null ).getPluginSetting( this.getClass(),
-        CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
-    return Arrays.asList( StringUtils.split( formats, ',' ) );
-  }
 
 }
