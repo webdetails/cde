@@ -498,7 +498,14 @@ public class Utils {
   }
 
   public static String readStyleTemplate( String styleName ) throws IOException {
-    return readTemplateFile( CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName ) );
+    String location = CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName );
+    if ( StringUtils.isEmpty( location ) ) {
+      logger.error( MessageFormat.format( "Couldn''t find style template file ''{0}'', will fallback to ''{1}''",
+          styleName, CdeConstants.DEFAULT_STYLE ) );
+      location =
+        CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( CdeConstants.DEFAULT_STYLE );
+    }
+    return readTemplateFile( location );
   }
 
   public static String readTemplateFile( String templateFile ) throws IOException {
