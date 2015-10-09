@@ -37,6 +37,7 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.session.IUserSession;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -70,6 +71,8 @@ public class RenderApiTest {
   private static final boolean ALL = true;
   private MockHttpServletRequest servletRequest;
   private MockHttpServletResponse servletResponse;
+  private static CdeEnvironmentForTests cdeEnvironmentForTests;
+  private static IUserContentAccess mockedUserContentAccess;
 
   @BeforeClass
   public static void setUp() throws Exception {
@@ -79,7 +82,7 @@ public class RenderApiTest {
     baseProperties.add( getBasicFileFromFile( propertyName ) );
 
     //mock IUserContentAccess
-    IUserContentAccess mockedUserContentAccess = mock( IUserContentAccess.class );
+    mockedUserContentAccess = mock( IUserContentAccess.class );
     when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
     when( mockedUserContentAccess.fetchFile( anyString() ) )
       .thenAnswer( new Answer<IBasicFile>() {
@@ -154,12 +157,17 @@ public class RenderApiTest {
     IUrlProvider mockedUrlProvider = mock( IUrlProvider.class );
     when( mockedUrlProvider.getWebappContextRoot() ).thenReturn( DEFAULT_ROOT );
 
-    CdeEnvironmentForTests cdeEnvironmentForTests = new CdeEnvironmentForTests();
+    //mock IUserSession
+    IUserSession mockedUserSession = mock( IUserSession.class );
+    when( mockedUserSession.isAdministrator() ).thenReturn( false );
+
+    cdeEnvironmentForTests = new CdeEnvironmentForTests();
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
     cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
     cdeEnvironmentForTests.setMockedPluginResourceLocationManager( mockedPluginResourceLocationManager );
     cdeEnvironmentForTests.setMockedDataSourceManager( mockedDataSourceManager );
     cdeEnvironmentForTests.setMockedUrlProvider( mockedUrlProvider );
+    cdeEnvironmentForTests.setMockedUserSession( mockedUserSession );
 
     renderApi = new RenderApiForTesting( cdeEnvironmentForTests );
     new CdeEngineForTests( cdeEnvironmentForTests );
@@ -235,6 +243,30 @@ public class RenderApiTest {
 
     Assert.assertTrue( servletResponse.getContentType().equals( APPLICATION_JSON ) );
     Assert.assertTrue( servletResponse.getCharacterEncoding().equals( CharsetHelper.getEncoding() ) );
+  }
+
+  @Test
+  public void testEditDashboardFailPermissions() throws Exception {
+    cdeEnvironmentForTests.setCanCreateContent( false );
+    String expected = "This functionality is limited to users with permission 'Create Content'";
+    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+
+    IUserContentAccess testPermContentAccess = mock( IUserContentAccess.class );
+    when( testPermContentAccess.fileExists( anyString() ) ).thenReturn( true );
+    when( testPermContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) ).thenReturn( false );
+    cdeEnvironmentForTests.setMockedContentAccess( testPermContentAccess );
+    cdeEnvironmentForTests.setCanCreateContent( true );
+    expected = "Access Denied or file not found - /path/to/dashboard.wcdf";
+    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+
+    cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
+  }
+
+  @Test
+  public void testNewDashboardFailPermissions() throws Exception {
+    cdeEnvironmentForTests.setCanCreateContent( false );
+    String expected = "This functionality is limited to users with permission 'Create Content'";
+    Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
   }
 
   private String doCase( String root,
