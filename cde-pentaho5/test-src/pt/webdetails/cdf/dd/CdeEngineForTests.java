@@ -16,7 +16,8 @@ package pt.webdetails.cdf.dd;
 public class CdeEngineForTests extends CdeEngine {
 
   public CdeEngineForTests( ICdeEnvironment cdeEnvironment ) {
-    CdeEngine.getInstance().cdeEnv = cdeEnvironment;
+    super( cdeEnvironment );
+    this.instance = this;
   }
 
 }

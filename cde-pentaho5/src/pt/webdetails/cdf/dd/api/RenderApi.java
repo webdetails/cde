@@ -70,6 +70,7 @@ public class RenderApi {
   //  private static final String MIME_TYPE = "text/html";
   protected ICdeEnvironment privateEnviroment;
 
+
   @GET
   @Path( "/getComponentDefinitions" )
   @Produces( MimeTypes.JAVASCRIPT )
@@ -356,8 +357,11 @@ public class RenderApi {
       @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
-    if ( Utils.getSystemOrUserRWAccess( wcdfPath ) == null ) {
-      return "Access Denied to file " + wcdfPath; //TODO: keep html?
+
+    if ( !CdeEnvironment.canCreateContent() ) {
+      return "This functionality is limited to users with permission 'Create Content'";
+    } else if ( Utils.getSystemOrUserRWAccess( wcdfPath ) == null ) {
+      return "Access Denied or file not found - " + wcdfPath; //TODO: keep html?
     }
 
     return getEditor(
@@ -381,6 +385,9 @@ public class RenderApi {
                               @Context HttpServletRequest request,
                               @Context HttpServletResponse response ) throws Exception {
 
+    if ( !CdeEnvironment.canCreateContent() ) {
+      return "This functionality is limited to users with permission 'Create Content'";
+    }
     return getEditor( path, debug, request.getScheme(), isDefault, response, false );
   }
 
