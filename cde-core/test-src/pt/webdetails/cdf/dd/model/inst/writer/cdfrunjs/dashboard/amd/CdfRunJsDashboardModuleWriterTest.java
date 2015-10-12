@@ -115,6 +115,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
         StringUtils.join( moduleClassNames, ", " ) ) )
       .append( "" )
       .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, layout ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, "\" + this._alias + \"" ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "jsCodeRsrc1" + NEWLINE + NEWLINE

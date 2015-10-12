@@ -157,11 +157,14 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
       out.append( MessageFormat.format(
           DASHBOARD_MODULE_START_EMPTY_ALIAS,
           ctx.getOptions().getContextConfiguration(),
-          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+          StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
+          .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS,
+            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) );
     } else {
       out.append( MessageFormat.format( DASHBOARD_MODULE_START, ctx.getOptions().getContextConfiguration() ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
-            StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) );
+            StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
+            .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) );
     }
 
     final String jsCodeSnippets = writeJsCodeResources( resources );
