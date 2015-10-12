@@ -100,5 +100,13 @@ public abstract class CdeEnvironment {
   public static IFileHandler getFileHandler() {
     return CdeEngine.getInstance().getEnvironment().getFileHandler();
   }
+
+  public static boolean isAdministrator() {
+    return CdeEngine.getInstance().getEnvironment().getUserSession().isAdministrator();
+  }
+
+  public static boolean canCreateContent() {
+    return CdeEngine.getInstance().getEnvironment().canCreateContent();
+  }
 }
 

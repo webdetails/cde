@@ -43,6 +43,8 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
   private IPluginResourceLocationManager mockedPluginResourceLocationManager;
   private IDataSourceManager mockedDataSourceManager;
   private IUrlProvider mockedUrlProvider;
+  private IUserSession mockedUserSession;
+  private boolean canCreateContent;
   private final String SYSTEM_DIR = "system";
 
   public void setMockedContentAccess( IUserContentAccess mockedContentAccess ) {
@@ -70,9 +72,17 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
     this.mockedUrlProvider = mockedUrlProvider;
   }
 
+  public void setMockedUserSession( IUserSession mockedUserSession ) {
+    this.mockedUserSession = mockedUserSession;
+  }
+
+  public void setCanCreateContent( boolean canCreateContent ) {
+    this.canCreateContent = canCreateContent;
+  }
+
   @Override
   public void init( IBeanFactory factory ) throws InitializationException {
-
+    canCreateContent = true;
   }
 
   @Override
@@ -189,7 +199,12 @@ public class CdeEnvironmentForTests implements ICdeEnvironment {
 
   @Override
   public IUserSession getUserSession() {
-    return null;
+    return mockedUserSession;
+  }
+
+  @Override
+  public boolean canCreateContent() {
+    return canCreateContent;
   }
 }
 
