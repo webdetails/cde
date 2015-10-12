@@ -18,6 +18,7 @@ http://www.pentaho.com/schema/pentaho-system http://www.pentaho.com/schema/penta
   <bean id="ICdeEnvironment" class="pt.webdetails.cdf.dd.PentahoCdeEnvironment" scope="prototype"/>
   <bean id="IResourceLoader" class="pt.webdetails.cpf.resources.PentahoPluginResourceLoader" scope="prototype"/>
   <bean id="IFileHandler" class="pt.webdetails.cdf.dd.extapi.FileHandler" scope="prototype"/>
+  <!-- this <pen:bean /> declaration is not mandatory -->
   <pen:bean id="IAuthorizationPolicy" class="org.pentaho.platform.api.engine.IAuthorizationPolicy"/>
 
 </beans>

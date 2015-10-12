@@ -217,6 +217,13 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
   @Override
   public boolean canCreateContent() {
+    if ( authorizationPolicy == null ) {
+      authorizationPolicy = PentahoSystem.get( IAuthorizationPolicy.class );
+      if ( authorizationPolicy == null ) {
+        logger.warn( "Couldn't retrieve Authorization Policy" );
+        return getUserSession().isAdministrator();
+      }
+    }
     return authorizationPolicy.isAllowed( RepositoryCreateAction.NAME );
   }
 
