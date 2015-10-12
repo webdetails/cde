@@ -271,7 +271,7 @@ var CDFDD = Base.extend({
     return Panel.getPanel(panelId);
   },
 
-  initStyles: function(callback) {
+  initSettings: function(callback) {
     var myself = this;
     if(myself.styles.length > 0) {
       var wcdf = myself.getDashboardWcdf();
@@ -292,7 +292,7 @@ var CDFDD = Base.extend({
         rendererType: wcdf.rendererType
       };
 
-      StylesRequests.initStyles(saveSettingsParams, wcdf, myself, callback);
+      SynchronizeRequests.initSettings(saveSettingsParams, wcdf, myself, callback);
     }
   },
 
@@ -1017,7 +1017,7 @@ var CDFDD = Base.extend({
               .each(function(i, e) {
                 wcdf.widgetParameters.push(e.value);
               });
-          SettingsHelper.callExtraContentSubmit(myself, wcdf);
+          return SettingsHelper.callExtraContentSubmit(myself, wcdf);
         }
       },
       callback: function(v, m, f) {

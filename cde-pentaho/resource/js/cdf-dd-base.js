@@ -255,6 +255,32 @@ var SynchronizeRequests = {
           }
         }
     );
+  },
+
+  initSettings: function(saveSettingsParams, wcdf, myself, callback) {
+
+    var refreshTitle = function(title) {
+      var content = title + '<div class="cdfdd-title-status"></div>';
+      $("div.cdfdd-title")
+          .empty()
+          .html(content)
+          .attr('title', title);
+    };
+
+    $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function(result) {
+      try {
+        var json = eval("(" + result + ")");
+        if(json.status == "true") {
+          myself.setDashboardWcdf(wcdf);
+          refreshTitle(wcdf.title);
+          callback();
+        } else {
+          throw json.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
+      }
+    });
   }
 
 };
@@ -456,32 +482,6 @@ var StylesRequests = {
       myself.renderers = json.result;
 
     });
-  },
-
-  initStyles: function(saveSettingsParams, wcdf, myself, callback) {
-
-    var refreshTitle = function(title) {
-      var content = title + '<div class="cdfdd-title-status"></div>';
-      $("div.cdfdd-title")
-          .empty()
-          .html(content)
-          .attr('title', title);
-    };
-
-    $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function(result) {
-      try {
-        var json = eval("(" + result + ")");
-        if(json.status == "true") {
-          myself.setDashboardWcdf(wcdf);
-          refreshTitle(wcdf.title);
-          callback();
-        } else {
-          throw json.result;
-        }
-      } catch(e) {
-        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
-      }
-    });
   }
 };
 
@@ -558,7 +558,7 @@ var SaveRequests = {
             selectedFolder = selectedFolder.substring(1, selectedFolder.length);
           }
           var solutionPath = selectedFolder.split("/");
-          myself.initStyles(function() {
+          myself.initSettings(function() {
             //cdfdd.setExitNotification(false);
             window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
@@ -607,7 +607,7 @@ var SaveRequests = {
           wcdf.widgetName = saveAsParams.widgetName;
           wcdf.widget = true;
           myself.saveSettingsRequest(wcdf);
-          myself.initStyles(function() {
+          myself.initSettings(function() {
             window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getPluginUrl() + 'Edit?solution=' + solutionPath[0] + "&path=" + solutionPath.slice(1).join("/") + "&file=" + encodeURIComponent( selectedFile );
           });
         } else {
@@ -797,6 +797,7 @@ var SettingsHelper = {
   },
 
   callExtraContentSubmit: function(){
+    return true;
   },
 
   getStyles: function(wcdf, myself){
