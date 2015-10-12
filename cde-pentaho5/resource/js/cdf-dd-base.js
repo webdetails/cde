@@ -283,6 +283,22 @@ var SynchronizeRequests = {
         }
       }
     });
+  },
+
+  initSettings: function(saveSettingsParams, wcdf, myself, callback) {
+    saveSettingsParams.require = wcdf.require || false;
+    $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
+      try {
+        if(result && result.status === "true") {
+          myself.setDashboardWcdf(wcdf);
+          callback();
+        } else {
+          throw result && result.result;
+        }
+      } catch(e) {
+        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
+      }
+    });
   }
 };
 
@@ -493,22 +509,6 @@ var StylesRequests = {
     }, function(json) {
       myself.renderers = json.result;
     });
-  },
-
-  initStyles: function(saveSettingsParams, wcdf, myself, callback) {
-
-    $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
-      try {
-        if(result && result.status === "true") {
-          myself.setDashboardWcdf(wcdf);
-          callback();
-        } else {
-          throw result && result.result;
-        }
-      } catch(e) {
-        NotifyBarUtils.errorNotifyBar("Errors initializing settings", e);
-      }
-    });
   }
 };
 
@@ -599,7 +599,7 @@ var SaveRequests = {
             selectedFolder = selectedFolder.substring(1, selectedFolder.length);
           }
           var solutionPath = selectedFolder.split("/");
-          myself.initStyles(function() {
+          myself.initSettings(function() {
             window.location = window.location.protocol + "//" + window.location.host + wd.cde.endpoints.getWebappBasePath() + '/api/repos/:' + selectedFolder.replace(new RegExp("/", "g"), ":") +  encodeURIComponent( selectedFile ) + '/edit';
           });
         } else {
@@ -609,13 +609,6 @@ var SaveRequests = {
         NotifyBarUtils.errorNotifyBar("Errors saving file", e);
       }
     };
-
-    // inform user that the save as will create a require dashboard
-    if( myself.getDashboardWcdf().require ) {
-      if(!confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
-        return;
-      }
-    }
 
     // CDF-271 $.browser is depricated
     var rv;
@@ -867,6 +860,7 @@ var SettingsHelper = {
   },
 
   callExtraContentSubmit: function(myself, wcdf){
+    var wasRequire = wcdf.require;
     var isRequire = $('#require_checkbox').is(':checked');
     var style = $("#styleInput").val();
     if(isRequire && myself._requireStyles.indexOf(style) > - 1) {
@@ -874,7 +868,11 @@ var SettingsHelper = {
     } else {
       wcdf.style = style;
     }
+    if(!wasRequire && isRequire && !confirm(Dashboards.i18nSupport.prop("SaveAsDashboard.REQUIRE_DASHBOARD_SAVE"))) {
+      return false;
+    }
     wcdf.require = isRequire;
+    return true;
   },
 
   getStyles: function(wcdf, myself){
