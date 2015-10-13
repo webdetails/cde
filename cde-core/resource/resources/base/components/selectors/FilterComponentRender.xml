@@ -36,7 +36,7 @@
       <Definition name="componentInput">
         <Property>valueAsId</Property>
         <Property>valuesArray</Property>
-        <Property>inputParameter</Property>
+        <!-- <Property>inputParameter</Property> -->
       </Definition>
 
       <Definition name="componentOutput">
