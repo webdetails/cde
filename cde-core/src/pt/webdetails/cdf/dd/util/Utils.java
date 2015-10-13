@@ -390,8 +390,7 @@ public class Utils {
 
   public static IReadAccess getSystemOrUserReadAccess( String filePath ) {
     IReadAccess readAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-        .endsWith( ".cdfde" ) ) ) {
+    if ( isSystemDashboard( filePath ) ) {
       readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
@@ -400,26 +399,27 @@ public class Utils {
   }
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
-    IRWAccess rwAccess = null;
-    if ( CdeEngine.getEnv().getUserSession().isAdministrator() && (
-        filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-        .endsWith( ".cdfde" ) ) ) ) {
-      rwAccess = getSystemRWAccess( filePath.split( "/" )[2], null );
-    } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+    if ( CdeEnvironment.isAdministrator() && isSystemDashboard( filePath ) ) {
+      return getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
+    }
+    return getUserRWAccess( filePath );
+  }
 
-      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
-        rwAccess = CdeEnvironment.getUserContentAccess();
+  public static IRWAccess getUserRWAccess( String filePath ) {
+    if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+      if ( CdeEnvironment.canCreateContent()
+          && CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
+        return CdeEnvironment.getUserContentAccess();
       } else {
         return null;
       }
-    } else if ( CdeEnvironment.getUserContentAccess()
+    } else if ( CdeEnvironment.canCreateContent() && CdeEnvironment.getUserContentAccess()
         .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
       // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself;
       // it should be checked against destination folder
-      rwAccess = CdeEnvironment.getUserContentAccess();
+      return CdeEnvironment.getUserContentAccess();
     }
-    return rwAccess;
-
+    return null;
   }
 
   public static boolean isValidJsonArray( String jsonString ) {
@@ -466,7 +466,7 @@ public class Utils {
   }
 
   public static String getURLDecoded( String s ) {
-    return getURLDecoded( s , CharsetHelper.getEncoding() );
+    return getURLDecoded( s, CharsetHelper.getEncoding() );
   }
 
   public static String getURLDecoded( String s, String enc ) {
@@ -498,7 +498,14 @@ public class Utils {
   }
 
   public static String readStyleTemplate( String styleName ) throws IOException {
-    return readTemplateFile( CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName ) );
+    String location = CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName );
+    if ( StringUtils.isEmpty( location ) ) {
+      logger.error( MessageFormat.format( "Couldn''t find style template file ''{0}'', will fallback to ''{1}''",
+          styleName, CdeConstants.DEFAULT_STYLE ) );
+      location =
+        CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( CdeConstants.DEFAULT_STYLE );
+    }
+    return readTemplateFile( location );
   }
 
   public static String readTemplateFile( String templateFile ) throws IOException {
@@ -520,6 +527,11 @@ public class Utils {
       logger.error( MessageFormat.format( "Couldn't open template file '{0}'.", templateFile ), ex );
       throw ex;
     }
+  }
+
+  public static boolean isSystemDashboard( String path ) {
+    return ( path.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( path.endsWith( ".wcdf" )
+        || path.endsWith( ".cdfde" ) ) );
   }
 
 }

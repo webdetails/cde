@@ -92,4 +92,6 @@ public interface ICdeEnvironment {
 
   public IUserSession getUserSession();
 
+  public boolean canCreateContent();
+
 }

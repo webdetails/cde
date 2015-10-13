@@ -200,7 +200,7 @@ public class CdeConstants {
         + INDENT2 + "$.extend(extendedOpts, {0}, opts);" + NEWLINE
         + INDENT2 + "this.base.apply(this, [extendedOpts]); '}'," + NEWLINE;
     public static final String DASHBOARD_MODULE_LAYOUT = INDENT1 + "layout: ''{0}''," + NEWLINE;
-    public static final String DASHBOARD_MODULE_SETUP_DOM = "setupDOM: function() {" + NEWLINE
+    public static final String DASHBOARD_MODULE_SETUP_DOM = INDENT1 + "setupDOM: function() {" + NEWLINE
         + INDENT2 + "var target, isId;" + NEWLINE
         + INDENT2 + "if(typeof this.phElement === \"string\") {" + NEWLINE
         + INDENT3 + "target = $('#' + this.phElement);" + NEWLINE
@@ -218,7 +218,7 @@ public class CdeConstants {
         + INDENT2 + "target.empty();" + NEWLINE
         + INDENT2 + "target.html(this.layout);" + NEWLINE
         + " },";
-    public static final String DASHBOARD_MODULE_RENDERER = "render: function() {" + NEWLINE
+    public static final String DASHBOARD_MODULE_RENDERER = INDENT1 + "render: function() {" + NEWLINE
         + INDENT2 + "this.setupDOM();" + NEWLINE
         + INDENT2 + "this.renderDashboard();" + NEWLINE
         + INDENT1 + "}," + NEWLINE
@@ -231,6 +231,10 @@ public class CdeConstants {
         + INDENT2 + "var dashboard = this;" + NEWLINE
         + INDENT2 + "{0}" + NEWLINE
         + INDENT1 + "'}'" + NEWLINE;
+    public static final String DASHBOARD_MODULE_NORMALIZE_ALIAS =
+        INDENT1 + "normalizeId: function(id) '{'" + NEWLINE
+        + INDENT2 + "return \"{0}_\" + id;" + NEWLINE
+        + INDENT1 + "'},'" + NEWLINE;
     public static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
     public static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
     public static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";
