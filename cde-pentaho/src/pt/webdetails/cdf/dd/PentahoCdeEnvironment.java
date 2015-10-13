@@ -185,4 +185,9 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   public IUserSession getUserSession() {
     return new PentahoSessionUtils().getCurrentSession();
   }
+
+  @Override
+  public boolean canCreateContent() {
+    return true;
+  }
 }
