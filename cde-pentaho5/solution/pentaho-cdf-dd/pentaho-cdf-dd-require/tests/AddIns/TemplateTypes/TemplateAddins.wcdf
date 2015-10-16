@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdf>
+  <title>Template Addins</title>
+  <description>Template Addins samples</description>
+  <author></author>
+  <style>WDDocsRequire</style>
+  <rendererType>bootstrap</rendererType>
+  <require>true</require>
+  <widget>false</widget>
+  <widgetName></widgetName>
+  <widgetParameters></widgetParameters>
+</cdf>

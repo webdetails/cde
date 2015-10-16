@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="templateQueryTerritory" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="templateQueryCountry" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="templateQueryProdLine" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="templateQueryProduct" type="mondrian.jndi">
+         <Catalog>mondrian:/SteelWheels</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="templateQueryTerritory" id="templateQueryTerritory"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH 
+  MEMBER [Measures].[Year] AS "2004"
+  SET [ROWS] AS FILTER({[Markets].[Territory].Members}, NOT ISEMPTY([Measures].[Sales]))
+  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')
+  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])
+  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0
+  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || "," || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || ", " || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   
+  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])
+  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)
+  MEMBER [Measures].[Hyperlink] AS "["||"Google it ..."||"]["||"https://www.google.pt/search?q="||[Product].CURRENTMEMBER.NAME||"]"
+  MEMBER [Measures].[cccChart] AS "[" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), "["""||[Time].CURRENTMEMBER.NAME ||""","""|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||"""]", ',') || "]"
+SELECT
+  NON EMPTY {
+    [Measures].[Sales], 
+    [Measures].[Year], 
+    [Measures].[Sparkline],  
+    [Measures].[Trends], 
+    [Measures].[Bubble], 
+    [Measures].[Bullet], 
+    [Measures].[Formatted], 
+    [Measures].[Localized],
+    [Measures].[Hyperlink],
+    [Measures].[Months],
+    [Measures].[cccChart] } ON COLUMNS,
+  NON EMPTY [ROWS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="templateQueryCountry" id="templateQueryCountry"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH 
+  MEMBER [Measures].[Year] AS "2004"
+  SET [ROWS] AS FILTER({[Markets].[Country].Members}, NOT ISEMPTY([Measures].[Sales]))
+  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')
+  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])
+  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0
+  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || "," || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || ", " || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   
+  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])
+  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)
+  MEMBER [Measures].[Hyperlink] AS "["||"Google it ..."||"]["||"https://www.google.pt/search?q="||[Product].CURRENTMEMBER.NAME||"]"
+  MEMBER [Measures].[cccChart] AS "[" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), "["""||[Time].CURRENTMEMBER.NAME ||""","""|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||"""]", ',') || "]"
+SELECT
+  NON EMPTY {
+    [Measures].[Sales], 
+    [Measures].[Year], 
+    [Measures].[Sparkline],  
+    [Measures].[Trends], 
+    [Measures].[Bubble], 
+    [Measures].[Bullet], 
+    [Measures].[Formatted], 
+    [Measures].[Localized],
+    [Measures].[Hyperlink],
+    [Measures].[Months],
+    [Measures].[cccChart] } ON COLUMNS,
+  NON EMPTY [ROWS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="templateQueryProdLine" id="templateQueryProdLine"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH 
+  MEMBER [Measures].[Year] AS "2004"
+  SET [ROWS] AS FILTER({[Product].[Line].Members}, NOT ISEMPTY([Measures].[Sales]))
+  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')
+  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])
+  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0
+  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || "," || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || ", " || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   
+  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])
+  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)
+  MEMBER [Measures].[Hyperlink] AS "["||"Google it ..."||"]["||"https://www.google.pt/search?q="||[Product].CURRENTMEMBER.NAME||"]"
+  MEMBER [Measures].[cccChart] AS "[" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), "["""||[Time].CURRENTMEMBER.NAME ||""","""|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||"""]", ',') || "]"
+SELECT
+  NON EMPTY {
+    [Measures].[Sales], 
+    [Measures].[Year], 
+    [Measures].[Sparkline],  
+    [Measures].[Trends], 
+    [Measures].[Bubble], 
+    [Measures].[Bullet], 
+    [Measures].[Formatted], 
+    [Measures].[Localized],
+    [Measures].[Hyperlink],
+    [Measures].[Months],
+    [Measures].[cccChart] } ON COLUMNS,
+  NON EMPTY [ROWS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="templateQueryProduct" id="templateQueryProduct"
+               type="mdx">
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[WITH 
+  MEMBER [Measures].[Year] AS "2004"
+  SET [ROWS] AS FILTER({[Product].[Product].Members}, NOT ISEMPTY([Measures].[Sales]))
+  MEMBER [Measures].[Sparkline] AS GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING), ',')
+  MEMBER [Measures].[Trends] AS ([Time].[2004], [Measures].[Sales])-([Time].[2003], [Measures].[Sales])
+  MEMBER [Measures].[Bubble] AS ([Time].[2004], [Measures].[Quantity])+0
+  MEMBER [Measures].[Bullet] AS CAST(([Time].[2003], [Measures].[Quantity])+0 AS STRING) || "," || CAST(([Time].[2004], [Measures].[Quantity])+0 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/3 AS STRING) || "," || CAST((([Time].[2004], ([Measures].[Quantity]))+1000)/2 AS STRING) || ", " || CAST(([Time].[2004], ([Measures].[Quantity]))+1000 AS STRING)   
+  MEMBER [Measures].[Formatted] AS MAX(DESCENDANTS([Time].[2004], [Time].[Months]), [Measures].[Sales])
+  MEMBER [Measures].[Localized] AS GENERATE(TOPCOUNT(DESCENDANTS([Time].[2004], [Time].[Months]), 1, [Measures].[Sales]), [Time].CURRENTMEMBER.NAME)
+  MEMBER [Measures].[Hyperlink] AS "["||"Google it ..."||"]["||"https://www.google.pt/search?q="||[Product].CURRENTMEMBER.NAME||"]"
+  MEMBER [Measures].[cccChart] AS "[" || GENERATE(DESCENDANTS([Time].[2004], [Time].[Months]), "["""||[Time].CURRENTMEMBER.NAME ||""","""|| CAST(ROUND( [Measures].[Sales]+0, 1) AS STRING)||"""]", ',') || "]"
+SELECT
+  NON EMPTY {
+    [Measures].[Sales], 
+    [Measures].[Year], 
+    [Measures].[Sparkline],  
+    [Measures].[Trends], 
+    [Measures].[Bubble], 
+    [Measures].[Bullet], 
+    [Measures].[Formatted], 
+    [Measures].[Localized],
+    [Measures].[Hyperlink],
+    [Measures].[Months],
+    [Measures].[cccChart] } ON COLUMNS,
+  NON EMPTY [ROWS] ON ROWS
+FROM [SteelWheelsSales]]]></Query>
+   </DataAccess>
+</CDADescriptor>
