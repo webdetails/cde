@@ -31,7 +31,12 @@ PreviewRequests = {
 };
 
 SaveRequests = {
-  saveSettings: function() {}
+  saveSettings: function() {},
+  saveAsDashboard: function() {}
+};
+
+SolutionTreeRequests = {
+  getExplorerFolderEndpoint: function() {}
 };
 
 pluginUrl = "/pentaho/plugin/pentaho-cdf-dd/api";
