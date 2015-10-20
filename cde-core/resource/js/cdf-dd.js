@@ -1102,7 +1102,7 @@ var CDFDD = Base.extend({
 
         '<div class="popup-input-container bottom">' +
         '  <span class="popup-label">Description</span>' +
-        '  <input class="popup-text-input" id="fileInput" type="text" placeholder="Insert Text..." value="' + selectedDescription + '"/>' +
+        '  <input class="popup-text-input" id="descriptionInput" type="text" placeholder="Insert Text..." value="' + selectedDescription + '"/>' +
         '</div>';
 
     var rv = "";
@@ -1156,133 +1156,142 @@ var CDFDD = Base.extend({
       },
 
       submit: function(v, m, f) {
-        if(v == 1) {
-          function isValidField(field) {
-            return (field != null && field != undefined);
-          }
-
-          function isValidFieldNotEmpty(field) {
-            return (field != null && field != undefined && field != "");
-          }
-
-          // validation flag
-          var validationFlag = true,
-              validationMsg = '';
-
-          // remove leading and trailing white spaces
-          selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
-
-          // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
-          // TODO: use webcontext when it becomes available, include the colon char
-          if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
-
-            validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please insert a valid file name.';
-            validationFlag = false;
-
-          } else if(!/(\.wcdf)$/.test(selectedFile)) {
-
-            // append file extension
-            selectedFile += ".wcdf";
-          }
-
-          /**
-           * Save as Dashboard
-           */
-          if($('input[name=saveAsRadio]:checked').val() === "dashboard") {
-
-            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
-
-            // Validate Folder Name
-            if(selectedFolder.length == 0) {
-
-              validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please choose destination folder.';
-              validationFlag = false;
-            }
-
-            if(validationFlag) {
-
-              CDFDDFileName = selectedFolder + selectedFile;
-              cdfdd.dashboardData.filename = CDFDDFileName;
-              var stripArgs = {
-                needsReload: false
-              };
-
-              var saveAsParams = {
-                operation: "saveas",
-                file: selectedFolder + selectedFile,
-                title: selectedTitle,
-                description: selectedDescription,
-                cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
-              };
-
-              SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
-
-            } else {
-              CDFDDUtils.promptNotification("Error", validationMsg, true);
-            }
-          }
-
-          /**
-           * Save as Widget
-           */
-          else if($('input[name=saveAsRadio]:checked').val() == "widget") {
-
-            selectedFolder = wd.helpers.repository.getWidgetsLocation();
-            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
-            var selectedWidgetName = $("#componentInput").val();
-
-            // Validate Widget Name
-            if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-
-              validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
-              validationFlag = false;
-
-            } else if(selectedWidgetName.length == 0) {
-
-              // Try to use title
-              if(selectedTitle.length == 0) {
-
-                validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use empty title.';
-                validationFlag = false;
-
-              } else {
-
-                selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
-
-                if(selectedWidgetName.length == 0) {
-
-                  validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use the title, too many invalid characters.';
-                  validationFlag = false;
-                }
-              }
-            }
-
-            if(validationFlag) {
-
-              CDFDDFileName = selectedFolder + selectedFile;
-              myself.dashboardData.filename = CDFDDFileName;
-
-              var saveAsParams = {
-                operation: "saveas",
-                file: selectedFolder + selectedFile,
-                title: selectedTitle,
-                description: selectedDescription,
-                cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
-                widgetName: selectedWidgetName
-              };
-
-              SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-
-            } else {
-              CDFDDUtils.promptNotification("Error", validationMsg, true);
-            }
-          }
-          return false;
-        }
+        myself.combinedSaveAsSubmit(v, selectedFolder);
       }
     });
+  },
+
+  combinedSaveAsSubmit: function(status, selectedFolder) {
+    if(status == 1) {
+      function isValidField(field) {
+        return (field != null && field != undefined);
+      }
+
+      function isValidFieldNotEmpty(field) {
+        return (field != null && field != undefined && field != "");
+      }
+
+      // validation flag
+      var validationFlag = true,
+          validationMsg = '',
+          selectedFile = "",
+          selectedTitle = "",
+          selectedDescription = "";
+
+      // remove leading and trailing white spaces
+      selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
+
+      // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
+      // TODO: use webcontext when it becomes available, include the colon char
+      if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
+
+        validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please insert a valid file name.';
+        validationFlag = false;
+
+      } else if(!/(\.wcdf)$/.test(selectedFile)) {
+
+        // append file extension
+        selectedFile += ".wcdf";
+      }
+
+      /**
+       * Save as Dashboard
+       */
+      var selectedRadio = $('input[name=saveAsRadio]:checked').val();
+      var titleInput = $("#titleInput").val();
+      var descriptionInput = $("#descriptionInput").val();
+
+
+      if(selectedRadio === "dashboard") {
+
+        selectedTitle = isValidField(titleInput) ? titleInput : cdfdd.getDashboardWcdf().title;
+        selectedDescription = isValidFieldNotEmpty(descriptionInput) ? descriptionInput : cdfdd.getDashboardWcdf().description;
+
+        // Validate Folder Name
+        if(selectedFolder.length == 0) {
+          validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please choose destination folder.';
+          validationFlag = false;
+        }
+
+        if(validationFlag) {
+          CDFDDFileName = selectedFolder + selectedFile;
+          cdfdd.dashboardData.filename = CDFDDFileName;
+          var stripArgs = {
+            needsReload: false
+          };
+
+          var saveAsParams = {
+            operation: "saveas",
+            file: selectedFolder + selectedFile,
+            title: selectedTitle,
+            description: selectedDescription,
+            cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
+          };
+
+          SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, this);
+
+        } else {
+          CDFDDUtils.promptNotification("Error", validationMsg, true);
+        }
+      }
+
+      /**
+       * Save as Widget
+       */
+      else if(selectedRadio == "widget") {
+
+        selectedFolder = wd.helpers.repository.getWidgetsLocation();
+        selectedTitle = isValidField(titleInput) ? titleInput : cdfdd.getDashboardWcdf().title;
+        selectedDescription = isValidFieldNotEmpty(descriptionInput) ? descriptionInput : cdfdd.getDashboardWcdf().description;
+        var selectedWidgetName = $("#componentInput").val();
+
+        // Validate Widget Name
+        if(!(/^[a-zA-Z0-9_]*$/).test(selectedWidgetName)) {
+
+          validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
+          validationFlag = false;
+
+        } else if(selectedWidgetName.length == 0) {
+
+          // Try to use title
+          if(selectedTitle.length == 0) {
+
+            validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use empty title.';
+            validationFlag = false;
+
+          } else {
+
+            selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+
+            if(selectedWidgetName.length == 0) {
+
+              validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use the title, too many invalid characters.';
+              validationFlag = false;
+            }
+          }
+        }
+
+        if(validationFlag) {
+          CDFDDFileName = selectedFolder + selectedFile;
+          this.dashboardData.filename = CDFDDFileName;
+
+          var saveAsParams = {
+            operation: "saveas",
+            file: selectedFolder + selectedFile,
+            title: selectedTitle,
+            description: selectedDescription,
+            cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1),
+            widgetName: selectedWidgetName
+          };
+
+          SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, this);
+
+        } else {
+          CDFDDUtils.promptNotification("Error", validationMsg, true);
+        }
+      }
+      return false;
+    }
   },
 
   saveSettingsRequest: function(wcdf) {
