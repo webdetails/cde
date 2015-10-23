@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-	<title>filter_visual_guide</title>
-	<description>Filter Component Visual Guide</description>
+	<title>cde_filter_visual_guide</title>
+	<description>CDE-Filter Component Visual Guide</description>
 	<author></author>
 	<style>WDDocsRequire</style>
   	<rendererType>blueprint</rendererType>
