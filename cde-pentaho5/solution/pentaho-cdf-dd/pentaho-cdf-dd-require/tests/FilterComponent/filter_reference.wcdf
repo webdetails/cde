@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-	<title>filter_reference</title>
-	<description>filter_selector</description>
+	<title>cde_filter_reference</title>
+	<description>cde_filter_selector</description>
 	<author></author>
 	<style>WDDocsRequire</style>
   	<rendererType>blueprint</rendererType>
