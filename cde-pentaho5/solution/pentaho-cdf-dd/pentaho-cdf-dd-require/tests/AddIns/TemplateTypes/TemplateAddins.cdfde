@@ -104,7 +104,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var sparklineOpts = function(state){\n        if(state.id == \"Sparkline\"){\n            return {\n                type: 'bar',\n                height: 50,\n                barWidth: 8\n            };\n        } else {   \n            return {\n                width: 120,\n                type: 'bullet',\n                height: '12',\n                targetColor: '#007fff',\n                performanceColor: '#cccccc',\n                rangeColors: ['transparent','transparent','transparent']\n            };\n        }\n    };\n   \n    this.setAddInOptions(\"templateType\",\"sparkline\", sparklineOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            clearSelectionMode: false,\n            selectable: false,\n            clickable: false,\n            //interactive: false,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f(){\n templates.setSparklineOpts(this);\n templates.setBubbleOpts(this);\n templates.setBulletChartOpts(this);\n templates.setLinkOpts(this);\n templates.setCCCChartOpts(this);\n} "
      },
      {
       "name": "postExecution",
@@ -202,7 +202,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n        type: 'bar',\n        height: 50,\n        barWidth: 8,\n        //barColor: \"#49AEC0\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f(){\n    templates.setCCCChartOpts(this);\n} "
      },
      {
       "name": "postExecution",
@@ -300,7 +300,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n        type: 'bar',\n        height: 50,\n        barWidth: 8,\n        //barColor: \"#49AEC0\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f() {\n  templates.setBubbleOpts(this);\n} "
      },
      {
       "name": "postExecution",
@@ -398,7 +398,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n        type: 'bar',\n        height: 50,\n        barWidth: 8,\n        //barColor: \"#49AEC0\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f() {\n  templates.setBulletChartOpts(this);\n} "
      },
      {
       "name": "postExecution",
@@ -496,7 +496,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n            width: 100,\n            type: 'bullet',\n            height: '12',\n            targetColor: '#007fff',\n            performanceColor: '#cccccc',\n            rangeColors: ['transparent','transparent','transparent']\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f() {\n  templates.setSparklineOpts(this, true);\n} "
      },
      {
       "name": "postExecution",
@@ -594,7 +594,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n        type: 'bar',\n        height: 50,\n        barWidth: 8\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": "function f() {\n  templates.setSparklineOpts(this);\n} "
      },
      {
       "name": "postExecution",
@@ -692,7 +692,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    \n    var spOpts = {\n        type: 'bar',\n        height: 50,\n        barWidth: 8,\n        //barColor: \"#49AEC0\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"sparkline\", spOpts);\n    \n    var bubbleOpts = {\n        containerSize: 60,\n        color: \"#FFE085\"\n    };\n\n    this.setAddInOptions(\"templateType\",\"bubble\", bubbleOpts);\n    \n    var bulletChartOpts = {\n        \n        chartOpts: {\n            height: 40,\n            bulletSize: 16,    \n            bulletSpacing: 150,\n            bulletMargin: 5, \n            bulletRuleLabel_text: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n        }\n    };\n    \n    this.setAddInOptions(\"templateType\",\"bulletChart\", bulletChartOpts);\n    \n    var linkOpts = {\n        pattern: /\\[(.*?)\\]/g\n    };\n\n    this.setAddInOptions(\"templateType\",\"hyperlink\", linkOpts);\n\n\n    var cccChartOpts = { \n        type: 'PieChart',\n        chartOpts: {\n            width: 200,\n            height: 200,\n            seriesInRows: false,\n            crossTabMode: false,\n            timeSeries: false,\n            legendVisible: false,\n            valuesLabelStyle: 'inside',\n            valuesOptimizeLegibility: true,\n            valueFormat: function(value) {\n                return Utils.numberFormat(value, \"#A\");\n            },\n            selectable: true,\n            hoverable:  true,\n            valuesFont: 'normal 9px \"Open Sans\"',\n            slice_innerRadiusEx: '50%',\n            slice_strokeStyle:   'white',\n            colors: [\n                '#333333', '#777777', '#FFC20F', '#FFE085',\n                '#00325b', '#005CA7', '#0086F4', '#39A74A',\n                '#63CA73', '#80BCA3', '#655643', '#BF4D28'\n            ]            \n        }\n    };\n    this.setAddInOptions(\"templateType\",\"cccChart\", cccChartOpts);\n    \n} "
+      "value": ""
      },
      {
       "name": "postExecution",
@@ -1095,6 +1095,52 @@
  "filename": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/AddIns/TemplateTypes/TemplateAddins.cdfde",
  "layout": {
   "rows": [
+   {
+    "id": "aef69c02-c4fe-440f-8ea4-3531684ca74a",
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "value": "forceFluid",
+      "type": "Id"
+     },
+     {
+      "name": "resourceCode",
+      "value": "$(document).ready(function() {\n\nvar containers = $(\".container\");\n\n// We want to force .container-fluid on both the header, and the content containers\n// due to the way jQuery traverses the DOM, we know that positions 0 and 1\n// will be the header and the content container respectively\nif(containers.length > 1) {\n  $(containers[0]).removeClass(\"container\").addClass(\"container-fluid\");\n  $(containers[1]).removeClass(\"container\").addClass(\"container-fluid\");\n}\n}); ",
+      "type": "Resource"
+     },
+     {
+      "name": "resourceType",
+      "value": "Javascript",
+      "type": "Label"
+     }
+    ]
+   },
+   {
+    "id": "4993ed77-a75f-2626-f660-27be4b6cfb57",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "templates"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${solution:templates.js}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Javascript"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
    {
     "id": "5ff56c8f-d9d8-c8ad-c444-246daad5af8b",
     "parent": "UnIqEiD",
@@ -1532,71 +1578,402 @@
     "typeDesc": "Row"
    },
    {
-    "id": "95df98db-b955-0a93-f027-ddaafd1ded71",
-    "type": "LayoutBootstrapColumn",
-    "typeDesc": "Column",
+    "id": "885e4fb6-29b8-52fe-289e-beb994aa9184",
     "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
     "properties": [
      {
       "name": "name",
-      "value": "template",
-      "type": "Id"
+      "type": "Id",
+      "value": ""
      },
      {
       "name": "bootstrapExtraSmall",
-      "value": "12",
-      "type": "String"
+      "type": "String",
+      "value": "12"
      },
      {
       "name": "bootstrapSmall",
-      "value": "",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "bootstrapMedium",
-      "value": "",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "bootstrapLarge",
-      "value": "",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "bootstrapCssClass",
-      "value": "",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "height",
-      "value": "",
-      "type": "Integer"
+      "type": "Integer",
+      "value": ""
      },
      {
       "name": "backgroundColor",
-      "value": "",
-      "type": "Color"
+      "type": "Color",
+      "value": ""
      },
      {
       "name": "roundCorners",
-      "value": "",
-      "type": "RoundCorners"
+      "type": "RoundCorners",
+      "value": ""
      },
      {
       "name": "textAlign",
-      "value": "",
-      "type": "TextAlign"
+      "type": "TextAlign",
+      "value": ""
      },
      {
       "name": "cssClass",
-      "value": "template",
-      "type": "String"
+      "type": "String",
+      "value": ""
      }
-    ]
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "0ccb12cd-259b-8fc6-f56c-23f5b4cb3b1e",
+    "parent": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "d7929eac-7136-94db-f73f-a005642bf880",
+    "parent": "0ccb12cd-259b-8fc6-f56c-23f5b4cb3b1e",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "allInOne"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>All in One:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "95df98db-b955-0a93-f027-ddaafd1ded71",
+    "parent": "714b47b4-2683-7204-2050-e1befc87aa1c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "template"
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "6ee3d985-f3a7-9799-3cc6-6ac9e91648d4",
+    "parent": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "8338c619-18d7-ace2-1bf1-171e2a94c9f4",
+    "parent": "6ee3d985-f3a7-9799-3cc6-6ac9e91648d4",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "cccChart"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>CCC Chart:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
    },
    {
     "id": "92906654-186a-95b3-4ba1-ae5d6ec46030",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "09fecdfd-b375-52f1-baed-36a7592f3b3b",
     "properties": [
      {
       "name": "name",
@@ -1658,8 +2035,142 @@
     "typeDesc": "Column"
    },
    {
+    "id": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "60e281fa-5013-bdec-396f-3bf2fdc912db",
+    "parent": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "41ece098-2372-a4c6-fad4-ec6c6369ae29",
+    "parent": "60e281fa-5013-bdec-396f-3bf2fdc912db",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bulletChart"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bullet Chart:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
     "id": "47c753a8-f5ef-1db5-856f-b7deda19bf53",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "fea5c393-8138-0bde-f0f1-70d1e2178eeb",
     "properties": [
      {
       "name": "name",
@@ -1721,8 +2232,142 @@
     "typeDesc": "Column"
    },
    {
+    "id": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9ac17afe-77b7-9c78-2c7f-039ece22df9a",
+    "parent": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "68e1d432-f656-9754-41dd-e498db6e9c27",
+    "parent": "9ac17afe-77b7-9c78-2c7f-039ece22df9a",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bubble"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bubble:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
     "id": "5d85c88a-0106-4bc0-0cc8-42c71f060af3",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "48ad8c75-6c44-43dc-6e51-9f79ba570741",
     "properties": [
      {
       "name": "name",
@@ -1784,8 +2429,142 @@
     "typeDesc": "Column"
    },
    {
+    "id": "fcd51255-6415-c411-00d6-15e506a1e534",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "9c28135a-17a2-78ef-5732-44c168eb69e4",
+    "parent": "fcd51255-6415-c411-00d6-15e506a1e534",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "f4d58ea7-391d-9fb5-2d7c-9f38c693b0f7",
+    "parent": "9c28135a-17a2-78ef-5732-44c168eb69e4",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "bullet"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Bullet:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
     "id": "e903247d-1bd1-23d8-7e77-eafe8fee2cea",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "fcd51255-6415-c411-00d6-15e506a1e534",
     "properties": [
      {
       "name": "name",
@@ -1847,8 +2626,142 @@
     "typeDesc": "Column"
    },
    {
+    "id": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "08c7383e-210e-177d-4ece-36fa111a844c",
+    "parent": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "a55c59ed-9f54-86d5-595b-6c3242112712",
+    "parent": "08c7383e-210e-177d-4ece-36fa111a844c",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "sparklines"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Sparklines:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
     "id": "eb18d347-732f-9252-6aec-a1a9ca082be9",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "08bed5a0-8d27-8b87-04d7-04c5ebfb0929",
     "properties": [
      {
       "name": "name",
@@ -1910,8 +2823,142 @@
     "typeDesc": "Column"
    },
    {
+    "id": "b319e7b6-8579-afbd-55ee-309de91a528b",
+    "parent": "885e4fb6-29b8-52fe-289e-beb994aa9184",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "224e25c8-f560-b9a4-dff9-8610387edf06",
+    "parent": "b319e7b6-8579-afbd-55ee-309de91a528b",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "bootstrapExtraSmall",
+      "type": "String",
+      "value": "12"
+     },
+     {
+      "name": "bootstrapSmall",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapMedium",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapLarge",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "bootstrapCssClass",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutBootstrapColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "881eee3f-be84-3643-d734-bf4548da1e4b",
+    "parent": "224e25c8-f560-b9a4-dff9-8610387edf06",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "trendArrow"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h3>Trend Arrow:</h3> "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
     "id": "8c14ca89-a367-97fa-d660-870f5d6cd190",
-    "parent": "56bcbf91-0e2a-c6c0-ea65-8c13a2a66ddd",
+    "parent": "b319e7b6-8579-afbd-55ee-309de91a528b",
     "properties": [
      {
       "name": "name",
