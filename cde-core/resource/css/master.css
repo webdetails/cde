@@ -2336,12 +2336,27 @@ input[type=checkbox] + .popup-input-label:hover:before {
   background: #FFFFFF none;
 }
 
+.popup-remove-hover .popup-select.select2-container a {
+  border-color: #F9ECED;
+  background-color: #F9ECED;
+}
+
+.popup-remove-selected .popup-select.select2-container a {
+  background-color: #DF9FA3;
+  border-color: #DF9FA3;
+}
+
 .popup-input-container .popup-select.select2-container .select2-chosen {
   color: #555555;
 }
 
 .popup-input-container .popup-select.select2-container-disabled .select2-chosen {
   color: #999999;
+}
+
+.popup-remove-hover .popup-select.select2-container .select2-chosen,
+.popup-remove-selected .popup-select.select2-container-disabled .select2-chosen {
+  color: #AF0E1A;
 }
 
 .popup-input-container .popup-select.select2-container-active a {
@@ -2353,6 +2368,11 @@ input[type=checkbox] + .popup-input-label:hover:before {
   border: none;
   border-radius: 0;
   background: #FFFFFF none;
+}
+
+.popup-remove-hover .popup-select.select2-container span.select2-arrow,
+.popup-remove-selected .popup-select.select2-container span.select2-arrow {
+  display: none;
 }
 
 .popup-input-container .popup-select.select2-container,
