@@ -258,6 +258,37 @@ div.ui-sortable-helper .popup-drag-icon span {
   margin-right: 2px;
 }
 
+.typed-row.popup-remove-hover .popup-checkbox-container {
+  border-color: #F9ECED;
+  background-color: #F9ECED;
+}
+
+.typed-row.popup-remove-selected .popup-checkbox-container {
+  border-color: #DF9FA3;
+  background-color: #DF9FA3;
+}
+
+.typed-row.popup-remove-hover input[type=checkbox] + .popup-input-label,
+.typed-row.popup-remove-selected input[type=checkbox] + .popup-input-label {
+  cursor: default;
+  color: #AF0E1A;
+  border-color: #AF0E1A;
+}
+
+.typed-row.popup-remove-hover input[type=checkbox]:checked + .popup-input-label:before,
+.typed-row.popup-remove-selected input[type=checkbox]:checked + .popup-input-label:before {
+  background-color: #AF0E1A;
+}
+
+.typed-row.popup-remove-hover input[type=checkbox]:checked + .popup-input-label:before {
+  border-color: #F9ECED;
+}
+
+.typed-row.popup-remove-selected input[type=checkbox] + .popup-input-label:before,
+.typed-row.popup-remove-selected input[type=checkbox] + .popup-input-label:hover:before {
+  border-color: #DF9FA3;
+}
+
 .typed-row .popup-arg-container, .typed-row .popup-value-container {
   width: 150px;
 }
