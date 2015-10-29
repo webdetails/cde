@@ -1689,7 +1689,7 @@
      {
       "name": "pageSize",
       "type": "Integer",
-      "value": "20"
+      "value": "50"
      },
      {
       "name": "showIcons",
