@@ -403,11 +403,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
     $(selector).click(function() {
       var placeholder = $(this).parents('.popup-list-row');
       var removeSelClass = 'popup-remove-selected';
-      var input = placeholder.find('.popup-text-input');
-      var state = input.prop('disabled');
+      var possibleInputs = placeholder.find('.popup-text-input, .popup-select, input[type=checkbox]');
+      var state = possibleInputs.prop('disabled');
 
       placeholder.toggleClass(removeSelClass);
-      input.prop('disabled', !state);
+      possibleInputs.prop('disabled', !state);
+
 
       var mainContainer = $('.popup-list-body-container');
       var isRemoving = !!mainContainer.has('.' + removeSelClass).length;
