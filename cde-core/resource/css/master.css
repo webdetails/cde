@@ -708,6 +708,7 @@ textarea.popup-text-input:hover, input.popup-text-input:hover {
 }
 
 textarea.popup-text-input[disabled], input.popup-text-input[disabled] {
+  border: 1px Solid #FFFFFF;
   color: #999999;
 }
 
