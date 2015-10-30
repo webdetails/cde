@@ -25,11 +25,12 @@ import org.apache.commons.lang.StringUtils;
 public class Parameters implements CdaElementRenderer {
 
   private JSONObject definition;
-  private final String NAME_ATTR = "name",
-    DEFAULT_ATTR = "default",
-    TYPE_ATTR = "type",
-    ACCESS_ATTR = "access",
-    ELEMENT_NAME = "Parameter";
+  private final String NAME_ATTR = "name";
+  private final String DEFAULT_ATTR = "default";
+  private final String TYPE_ATTR = "type";
+  private final String ACCESS_ATTR = "access";
+  private final String PATTERN_ATTR = "pattern";
+  private final String ELEMENT_NAME = "Parameter";
 
   public void renderInto( Element dataAccess ) {
     JXPathContext.newContext( definition );
@@ -51,9 +52,15 @@ public class Parameters implements CdaElementRenderer {
           if ( !StringUtils.isEmpty( access ) ) {
             parameter.setAttribute( ACCESS_ATTR, access );
           }
+          if ( param.size() > 4 ) {
+            String pattern = (String) param.get( 4 );
+            if (!StringUtils.isEmpty( pattern ) ) {
+              parameter.setAttribute( PATTERN_ATTR, pattern );
+            }
+          }
         }
       } else {
-        parameter.setAttribute( TYPE_ATTR, "String" );
+        parameter.setAttribute( TYPE_ATTR, "String");
       }
 
       parameters.appendChild( parameter );
