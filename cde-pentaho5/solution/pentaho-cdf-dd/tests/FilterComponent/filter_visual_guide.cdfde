@@ -1611,7 +1611,7 @@
      {
       "name": "options",
       "type": "JavaScript",
-      "value": "function(){\n    return {\n        component: {\n            search: {\n                serverSide: true\n            }\n        }\n    };\n} "
+      "value": "function(){\n    return {};\n} "
      }
     ],
     "type": "ComponentsFilterComponent",
@@ -4115,7 +4115,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h1>Visual Guide to the Filter Component</h1>\n<h2>Introduction </h2>\n<p>\nReading documentation is usually boring.\nIt takes time and people are usually too busy to read things thoroughly.\n\nThis is a visual guide to the filter component.\nIs also serves as a showcase of some of the options available in the component.\n</p>\n "
+      "value": "<h1>Filter Component Visual Guide</h1>\n<h2>Introduction </h2>\n<p>\nReading documentation is usually boring.\nIt takes time and people are usually too busy to read things thoroughly.\n\nThis is a visual guide to the filter component.\nIs also serves as a showcase of some of the options available in the component.\n</p>\n "
      },
      {
       "name": "fontSize",
@@ -4509,7 +4509,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h3>Adding data: simple lists of options</h3> \n<p>\nWithout data there is not much a filter can do. \nTo populate the filter with a a list of options, you can:\n<ol>\n    <li>Define a datasource a query and assign it to the component</li>\n    <li>Fill in the property <tt>valuesArray</tt>, which is useful if you have a static dataset</li>\n</ol>   \n</p>\n\n<p>\nIn the simplest approach, the first column contains the ID of the items, \nwhereas the second column holds the label that will allow the user to identify the item.\nFor instance, the following table and the two filters below are populated by the same data set.\n</p> "
+      "value": "<h3>Adding data: simple lists of options</h3> \n<p>\nWithout data there is not much a filter can do. \nTo populate the filter with a list of options, you can:\n<ol>\n    <li>Define a datasource a query and assign it to the component</li>\n    <li>Fill in the property <tt>valuesArray</tt>, which is useful if you have a static dataset</li>\n</ol>   \n</p>\n\n<p>\nIn the simplest approach, the first column contains the ID of the items, \nwhereas the second column holds the label that will allow the user to identify the item.\nFor instance, the following table and the two filters below are populated by the same data set.\n</p> "
      },
      {
       "name": "fontSize",
@@ -6831,7 +6831,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h2>Handling large list of options (CDA queries only)</h2>\n<p>\nBy default, the filter attempts to load the entire dataset defined by a datasource. \nHowever, in some cases, the list of options might be quite large. \nIf the datasource that populates the filter with data is a CDA query, you may\nwant to take advantage of CDA's support for pagination and server-side search. \n</p>\n\n<h3>Pagination</h3>\n<p>\nYou can configure the filter to sequentially load pages of items from the server.\nThen, as you scroll down the list, the filter loads more data from the server \nand updates the list of visible items.\n<br/>\nYou will typically need to:\n</p>\n<ul>\n    <li>    \n        set the filter's property <tt>Page Length</tt> to some finite integer value (e.g. 20)\n    </li>\n</ul>\n<p>\n    When the user reaches the bottom of the scrollbar, a new page is loaded and added to the list of items.\n</p>\n<h3>Server-side Search</h3>\n<p>\nYou may be interested in \ndelegating to the server the task of filtering the items. To do so, you will need to:\n</p>\n<ul>\n    <li>\n        write a CDA query that accepts a parameter <tt>searchBox</tt> and that takes responsability for any filtering\n        e.g. \n        <pre><code>\n        SELECT optionID,optionLabel FROM myTable \n        WHERE optionLabel LIKE '${searchBox}';\n        </code></pre>\n    </li>\n    <li>\n        set the filter's property <tt>Server supports search</tt> to <tt>True</tt>\n    </li>\n</ul>\n\n "
+      "value": "<h2>Handling large list of options (CDA queries only)</h2>\n<p>\nBy default, the filter attempts to load the entire dataset defined by a datasource. \nHowever, in some cases, the list of options might be quite large. \nIf the datasource that populates the filter with data is a CDA query, you may\nwant to take advantage of CDA's support for pagination and server-side search. \n</p>\n\n<h3>Pagination</h3>\n<p>\nYou can configure the filter to sequentially load pages of items from the server.\nThen, as you scroll down the list, the filter loads more data from the server \nand updates the list of visible items.\n<br/>\nYou will typically need to:\n</p>\n<ul>\n    <li>    \n        set the filter's property <tt>Page Length</tt> to some finite integer value (e.g. 20)\n    </li>\n</ul>\n<p>\n    When the user reaches the bottom of the scrollbar, a new page is loaded and added to the list of items.\n</p>\n<h3>Server-side Search</h3>\n<p>\nYou may be interested in \ndelegating to the server the task of filtering the items. To do so, you will need to:\n</p>\n<ul>\n    <li>\n        write a CDA query that accepts a parameter <tt>searchBox</tt> and that takes responsability for any filtering\n        e.g. \n        <pre><code>\n        SELECT optionID,optionLabel FROM myTable \n        WHERE optionLabel LIKE '${searchBox}';\n        </code></pre>\n    </li>\n    <li>\n        as mentioned in filter reference page add the following section in <tt>Advancved Settings</tt>:\n        <pre><code>\n        component: {\n            search: {\n                serverSide: true\n            }\n        }\n        </code></pre>\n    </li>\n</ul>\n\n "
      },
      {
       "name": "fontSize",
