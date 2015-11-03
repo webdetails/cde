@@ -119,7 +119,7 @@ public class CdaRenderer {
       throw new Exception( "No connection here!" );
     }
     JXPathContext conn =
-      JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/connection", JSONObject.class ) );
+        JXPathContext.newContext( (JSONObject) cda.getValue( type + "/definition/connection", JSONObject.class ) );
     Element connection = doc.createElement( "Connection" );
     connection.setAttribute( "id", id );
     connection.setAttribute( "type", conntype );
@@ -145,17 +145,9 @@ public class CdaRenderer {
         renderProperty( new Olap4jProperties( paramName ), context, paramName, connection );
       } else if ( paramName.equals( "dataFile" ) ) {
         renderProperty( new DataFile(), context, paramName, connection );
-      }
-      /*else if (paramName.equals("ktrFile"))
-      {
-      String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
-      Element child = doc.createElement("KtrFile");
-      child.appendChild(doc.createTextNode(value));
-      connection.appendChild(child);
-      }*/
-      else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
+      } else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
         JSONArray jsonArray =
-          JSONArray.fromObject( context.getValue( "properties/.[name='" + paramName + "']/value" ) );
+            JSONArray.fromObject( context.getValue( "properties/.[name='" + paramName + "']/value" ) );
 
         for ( int i = 0; i < jsonArray.size(); i++ ) {
 
@@ -209,25 +201,25 @@ public class CdaRenderer {
 
     @SuppressWarnings( "unchecked" )
     Iterator<Pointer> params = conn.iteratePointers( "*" );
+    Pointer pointer;
+    String paramName;
     while ( params.hasNext() ) {
-      Pointer pointer = params.next();
-      String paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
-      String placement = ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) ).toLowerCase();
-      if ( placement.equals( "attrib" ) ) {
+      pointer = params.next();
+      paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
+      if ( ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) )
+          .toLowerCase().equals( "attrib" ) ) {
         if ( paramName.equals( "id" ) || paramName.equals( "connection" ) || paramName.equals( "cacheDuration" ) ) {
           continue;
         } else {
-          String value = (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class );
-          dataAccess.setAttribute( paramName, value );
+          dataAccess.setAttribute(
+              paramName, (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class ) );
         }
       } else if ( paramName.equals( "parameters" ) ) {
         renderProperty( new Parameters(), context, paramName, dataAccess );
       } else if ( paramName.equals( "output" ) ) {
-        Output output = new Output( context );
-        renderProperty( output, context, paramName, dataAccess );
+        renderProperty( new Output( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "variables" ) ) {
-        Variables vars = new Variables( context );
-        renderProperty( vars, context, paramName, dataAccess );
+        renderProperty( new Variables( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "outputMode" ) ) {
         // Skip over outputMode, it's handled by output.
         continue;
@@ -235,15 +227,14 @@ public class CdaRenderer {
         // Skip over cacheKeys, it's handled by cache.
         continue;
       } else if ( paramName.equals( "cache" ) ) {
-        Cache cache = new Cache( context );
-        renderProperty( cache, context, paramName, dataAccess );
+        renderProperty( new Cache( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "columns" ) ) {
         Element cols = dataAccess.getOwnerDocument().createElement( "Columns" );
         renderProperty( new Columns(), context, "cdacolumns", cols );
         renderProperty( new CalculatedColumns(), context, "cdacalculatedcolumns", cols );
         dataAccess.appendChild( cols );
       } else if ( paramName.equals( "top" ) || paramName.equals( "bottom" )
-        || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
+          || paramName.equals( "left" ) || paramName.equals( "right" ) ) {
         Element compoundElem = dataAccess.getOwnerDocument().createElement( Utils.toFirstUpperCase( paramName ) );
         renderProperty( new CompoundComponent(), context, paramName, compoundElem );
         dataAccess.appendChild( compoundElem );
