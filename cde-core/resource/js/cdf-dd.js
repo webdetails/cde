@@ -1728,6 +1728,15 @@ var CDFDDUtils = Base.extend({}, {
     }
 
     selectElem.select2(options);
+  },
+
+  makeEditable: function(element, callback, options) {
+    element.editable(callback, $.extend({
+      data:function(revert, settings) {
+        // retrieving the proper unescaped value, for editing
+        return $("<div>").html(revert).text();
+      }
+    }, options));
   }
 });
 

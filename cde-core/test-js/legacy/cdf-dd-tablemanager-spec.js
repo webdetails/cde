@@ -387,5 +387,86 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
         expect(detRenderer.getData()).toEqual({'xls': 'xls', 'csv': 'csv', 'xml': 'xml', 'json': 'json'});
       })
     });
+    describe("Input validation #", function(){
+      var ph;
+      var phId = "test_validations_placeholder";
+
+      beforeEach(function(){
+        $("body").append('<div id="' + phId + '"></div>');
+        ph = $("#" + phId);
+      });
+
+      afterEach(function() {
+        ph.remove();
+      });
+
+      describe("StringRenderer #", function() {
+        it("accepts all input", function() {
+          var stringRenderer = new StringRenderer();
+          var testValue = "testValue_.!#$%&/()=<tag></script>";
+          var testValueEscaped = "testValue_.!#$%&amp;/()=&lt;tag&gt;&lt;/script&gt;";
+          stringRenderer.render(ph, testValue, function() {});
+          expect(stringRenderer.validate(testValue)).toEqual(true);
+          expect(ph.find("td").html()).toEqual(testValueEscaped);
+          expect(ph.find("td").text()).toEqual(testValue);
+        });
+      });
+
+      describe("IdRenderer #", function() {
+        it("validates input", function() {
+          var idRenderer = new IdRenderer();
+          expect(idRenderer.validate("validId1")).toEqual(true);
+          expect(idRenderer.validate("valid_Id1")).toEqual(true);
+          expect(idRenderer.validate("invalid.Id1")).toEqual(false);
+        });
+      });
+
+      describe("IntegerRenderer #", function() {
+        it("validates input", function() {
+          var integerRenderer = new IntegerRenderer();
+          expect(integerRenderer.validate("1")).toEqual(true);
+          expect(integerRenderer.validate("100")).toEqual(true);
+          expect(integerRenderer.validate("1.2")).toEqual(false);
+          expect(integerRenderer.validate("NaN")).toEqual(false);
+        });
+      });
+
+      describe("FloatRenderer #", function() {
+        it("validates input", function() {
+          var floatRenderer = new FloatRenderer();
+          expect(floatRenderer.validate("1")).toEqual(true);
+          expect(floatRenderer.validate("100")).toEqual(true);
+          expect(floatRenderer.validate("1.2")).toEqual(true);
+          expect(floatRenderer.validate("NaN")).toEqual(false);
+        });
+      });
+
+      describe("SelectRenderer #", function() {
+        it("validates input", function() {
+          var selectRenderer = new SelectRenderer();
+          selectRenderer.revertedSelectData = {
+            'prop': 'value'
+          }
+          expect(selectRenderer.validate("prop")).toEqual(true);
+          expect(selectRenderer.validate("PROP")).toEqual(true);
+          selectRenderer.caseInsensitiveMatch = false;
+          expect(selectRenderer.validate("prop")).toEqual(true);
+          expect(selectRenderer.validate("PROP")).toEqual(false);
+        });
+      });
+
+      describe("ResourceFileRenderer #", function() {
+        it("escapes user input", function() {
+          var tm = getTestTableManager();
+          tm.setTableModel(getTestTableModel());
+          var resourceFileRenderer = new ResourceFileRenderer(tm);
+          var testValue = "testValue_.!#$%&/()=<tag></script>";
+          var testValueEscaped = "testValue_.!#$%&amp;/()=&lt;tag&gt;&lt;/script&gt;";
+          resourceFileRenderer.render(ph, testValue, function() {});
+          expect(ph.find("td .cdfdd-resourceFileNameRender").html()).toEqual(testValueEscaped);
+          expect(ph.find("td .cdfdd-resourceFileNameRender").text()).toEqual(testValue);
+        });
+      });
+    });
   });
 });
