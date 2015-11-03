@@ -146,7 +146,11 @@ var UrlTemplateRenderer = CellRenderer.extend({
 							$.prompt.goToState('chooseClickBehaviour');
 						else{
 							if(v == 1){
-								myself.callback(callback, 'linkToAnotherDashboard',selectedFile,$("#parameterName").val(),$("#seriesName").val());
+								myself.callback(callback,
+									'linkToAnotherDashboard',
+									selectedFile,
+									Dashboards.escapeHtml($("#parameterName").val()),
+									Dashboards.escapeHtml($("#seriesName").val()));
 							}
 							$.prompt.close();
 						}

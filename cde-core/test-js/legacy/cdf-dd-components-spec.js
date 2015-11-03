@@ -19,7 +19,7 @@ describe("CDF-DD-COMPONENTS tests", function() {
     cp.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
 
     spyOn(cp, "init").and.callFake(function() {
-      alert("Components initialized");
+      //do nothing
     });
     cp.initTables();
 

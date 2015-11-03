@@ -29,7 +29,6 @@ describe("Datasources Editor Test #", function() {
 	var jsonScriptablePh = $("<div></div>");
 	var xPathPh = $("<div></div>");
 
-	debugger;
 	var cmqr = new CurrentMdxQueryRenderer(tableManager);
 	PromptWizardManager.getWizard(cmqr.wizard).extend({
 		hasFunctions: false,
