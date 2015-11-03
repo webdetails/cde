@@ -203,6 +203,9 @@ public class CdaRenderer {
     if ( connectionId != null && !connectionId.equals( "" ) ) {
       dataAccess.setAttribute( "connection", connectionId );
     }
+    Element elName = doc.createElement( "Name" );
+    elName.appendChild( doc.createTextNode( name ) );
+    dataAccess.appendChild( elName );
 
     @SuppressWarnings( "unchecked" )
     Iterator<Pointer> params = conn.iteratePointers( "*" );
