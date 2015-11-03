@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/TextEditorComponent', 'cdf/lib/jquery'],
-  function(Dashboard, TextEditorComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/TextEditorComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, TextEditorComponent, $) {
 
   /**
    * ## The Text Editor Component
@@ -27,7 +30,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/TextEditorComponent', 'cdf/lib/jq
       name: "textEditorComponent",
       priority: 5,
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectTextEdit",
       parameters: [],
       parameter: undefined,
       listeners: []

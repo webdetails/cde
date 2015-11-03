@@ -38,6 +38,14 @@ if(!Array.prototype.map) {
   };
 }
 
+// location.origin is not present in IE8 and IE9
+if (!window.location.origin) {
+  window.location.origin =
+    window.location.protocol + "//" +
+      window.location.hostname +
+        (window.location.port ? ':' + window.location.port: '');
+}
+
 $.editable.addInputType('autocomplete', {
   element: $.editable.types.text.element,
   plugin: function(settings, original) {
@@ -102,6 +110,10 @@ var CDFDD = Base.extend({
     // Keyboard shortcuts
     $(function () {
       $(document).keydown(function (e) {
+        if ( e.keyCode === 9 && $("#popupbox").length > 0) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
         var target = $(e.target);
         var hasPopup = (target.find('.popup:visible').length || target.find('.jqmWindow:visible').length) > 0 ;
         if(target.is('input, select, textarea') || hasPopup || e.ctrlKey) {
@@ -259,7 +271,7 @@ var CDFDD = Base.extend({
     return Panel.getPanel(panelId);
   },
 
-  initStyles: function(callback) {
+  initSettings: function(callback) {
     var myself = this;
     if(myself.styles.length > 0) {
       var wcdf = myself.getDashboardWcdf();
@@ -280,7 +292,7 @@ var CDFDD = Base.extend({
         rendererType: wcdf.rendererType
       };
 
-      StylesRequests.initStyles(saveSettingsParams, wcdf, myself, callback);
+      SynchronizeRequests.initSettings(saveSettingsParams, wcdf, myself, callback);
     }
   },
 
@@ -679,12 +691,12 @@ var CDFDD = Base.extend({
       return;
     }
 
-    $.prompt('<h2>New Dashboard</h2><hr/>Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>', {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      prefix: "popup",
+    var message = 'Are you sure you want to start a new dashboard?<br/><span class="description">Unsaved changes will be lost.</span>';
+
+    var content = CDFDDUtils.wrapPopupTitle('New Dashboard') + CDFDDUtils.wrapPopupBody(message);
+
+    CDFDDUtils.prompt(content, {
+      popupClass: "settings-popup",
       callback: function(v, m, f) {
         if(v) {
           location.assign(url);
@@ -830,12 +842,12 @@ var CDFDD = Base.extend({
       return;
     }
 
-    $.prompt('<h2>Reload</h2><hr/>Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>', {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      prefix: "popup",
+    var message = 'Are you sure you want to reload?<br><span class="description">Unsaved changes will be lost.</span>';
+
+    var content = CDFDDUtils.wrapPopupTitle('Reload') + CDFDDUtils.wrapPopupBody(message);
+
+    CDFDDUtils.prompt(content, {
+      popupClass: 'settings-popup',
       callback: function(v, m, f) {
         if(v) {
           self.logger.warn("Reloading dashboard... ");
@@ -887,8 +899,7 @@ var CDFDD = Base.extend({
         settingsData = $.extend({
           widgetParameters: []
         }, wcdf),
-        myself = this,
-        content;
+        myself = this;
 
     settingsData.styles = [];
     this.styles = SettingsHelper.getStyles(wcdf, this);
@@ -920,64 +931,79 @@ var CDFDD = Base.extend({
         });
 
     var extraOptions = SettingsHelper.getExtraPromptContent();
-        
-    content = '' +
-        '<span>' +
-        ' <h2>Settings:</h2>' +
-        '</span>' +
-        '<hr style="background: none;"/>\n' +
-        '<span class="title">Title:</span>' +
-        '<br/>' +
-        '<input class="cdf_settings_input" id="titleInput" type="text" value="{{title}}"/>' +
-        '<br/>\n' +
+
+    var content = '' +
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Title</span>\n' +
+        '  <input class="popup-text-input" id="titleInput" placeholder="Insert Text..." type="text" value="{{title}}"/>' +
+        '</div>\n' +
+
         '{{#widget}}' +
-        '<span class="title">Widget Name:</span>' +
-        '<br/>' +
-        '<input class="cdf_settings_input" id="widgetNameInput" type="text" value="{{widgetName}}"/>' +
-        '<br/>\n' +
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Widget Name</span>' +
+        '  <input class="popup-text-input" id="widgetNameInput" placeholder="Insert Text..." type="text" value="{{widgetName}}"/>' +
+        '</div>\n' +
         '{{/widget}}' +
-        '<span class="title">Author:</span>' +
-        '<br/>' +
-        '<input class="cdf_settings_input" id="authorInput" type="text" value="{{author}}"/>' +
-        '<span class="title">Description:</span>' +
-        '<br/>' +
-        '<textarea class="cdf_settings_textarea" id="descriptionInput">{{description}}</textarea>\n' +
-        '<span class="title">Style:</span>' +
-        '<br/>' +
-        '<select class="cdf_settings_input" id="styleInput">\n' +
-        '{{#styles}}' +
-        '<option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
-        '{{/styles}}' +
-        '</select>' +
-        '<hr style="background:none;"/>' +
-        '<span class="title">Dashboard Type:</span><br/><select class="cdf_settings_input" id="rendererInput">\n' +
-        '{{#renderers}}' +
-        '   <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
-        '{{/renderers}}' +
-        '</select>' +
+
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Author</span>' +
+        '  <input class="popup-text-input" id="authorInput" placeholder="Insert Text..." type="text" value="{{author}}"/>' +
+        '</div>\n'+
+
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Description</span>' +
+        '  <textarea class="popup-text-input" placeholder="Insert Text..." id="descriptionInput">{{description}}</textarea>\n' +
+        '</div>\n' +
+
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Style</span>\n' +
+        '    <select class="popup-select" id="styleInput">\n' +
+        '    <option value=""></option>\n' +
+        '      {{#styles}}' +
+        '      <option value="{{style}}" {{#selected}}selected{{/selected}}>{{style}}</option>\n' +
+        '      {{/styles}}' +
+        '    </select>' +
+        '</div>\n' +
+
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Dashboard Type</span>\n' +
+        '    <select class="popup-select" id="rendererInput">\n' +
+        '      <option value=""></option>\n' +
+        '      {{#renderers}}' +
+        '      <option value="{{renderer}}" {{#selected}}selected{{/selected}}>{{renderer}}</option>\n' +
+        '      {{/renderers}}' +
+        '    </select>' +
+        '</div>\n' +
+
         extraOptions +
+
         '{{#widget}}' +
-        '<span>' +
-        '  <br>' +
-        '  <b>Widget Parameters:</b>' +
-        '</span>' +
-        '<br>' +
-        '<span id="widgetParameters">' +
-        ' <div style=" max-height: 110px; overflow: auto; ">' +
-        ' {{#parameters}}' +
-        '     <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}} style=" position: relative; top: 4px; "><span>{{parameter}}</span><br>\n' +
-        ' {{/parameters}}' +
-        '</span>' +
-        ' </div>' +
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Widget Parameters</span>\n' +
+        '  <span id="widgetParameters">' +
+        '    <div style=" max-height: 110px; overflow: auto; ">' +
+        '      {{#parameters}}' +
+        '      <input type="checkbox" name="{{parameter}}" value="{{parameter}}" {{#selected}}checked{{/selected}} style=" position: relative; top: 4px; "><span>{{parameter}}</span><br>\n' +
+        '      {{/parameters}}' +
+        '    </div>' +
+        '  </span>' +
+        '</div>\n' +
         '{{/widget}}';
 
-    content = Mustache.render(content, settingsData);
-    $.prompt(content, {
-      buttons: {
-        Save: true,
-        Cancel: false
+    var rv = "";
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if(re.exec(navigator.userAgent) != null) {
+      rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
+    }
+
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Settings') + CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
+
+    content = Mustache.render(contentWrapper, settingsData);
+    CDFDDUtils.prompt(content, {
+      popupClass: 'settings-popup save-settings',
+      loaded: function() {
+        CDFDDUtils.buildPopupSelect($('.popup-select'), {});
       },
-      prefix: "popup",
       submit: function(save) {
         if (save) {
           wcdf.title = $("#titleInput").val();
@@ -991,7 +1017,7 @@ var CDFDD = Base.extend({
               .each(function(i, e) {
                 wcdf.widgetParameters.push(e.value);
               });
-          SettingsHelper.callExtraContentSubmit(myself, wcdf);
+          return SettingsHelper.callExtraContentSubmit(myself, wcdf);
         }
       },
       callback: function(v, m, f) {
@@ -1000,30 +1026,25 @@ var CDFDD = Base.extend({
           var validInputs = true;
           if(wcdf.widget) {
             if(!/^[a-zA-Z0-9_]*$/.test(wcdf.widgetName)) {
-              $.prompt('Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', {
-                prefix: "popup"
-              });
+              CDFDDUtils.promptNotification("Error",
+                'Invalid characters in widget name. Only alphanumeric characters and \'_\' are allowed.', true);
               validInputs = false;
             } else if(wcdf.widgetName.length == 0) {
               if(wcdf.title.length == 0) {
-                $.prompt('No widget name provided. Tried to use title instead but title is empty.', {
-                  prefix: "popup"
-                });
+                CDFDDUtils.promptNotification("Error",
+                  'No widget name provided. Tried to use title instead but title is empty.', true);
                 validInputs = false;
               } else {
                 wcdf.widgetName = wcdf.title.replace(/[^a-zA-Z0-9_]/g, "");
 
                 if(wcdf.widgetName.length == 0) {
-
-                  $.prompt('No widget name provided. Unable to use the title, too many invalid characters.', {
-                    prefix: "popup"
-                  });
+                  CDFDDUtils.promptNotification("Error",
+                    'No widget name provided. Unable to use the title, too many invalid characters.', true);
                   validInputs = false;
                 }
               }
             }
           }
-
           if(validInputs) {
             myself.saveSettingsRequest(wcdf);
           }
@@ -1039,92 +1060,72 @@ var CDFDD = Base.extend({
         selectedFile = "",
         selectedFolder = "";
     var myself = this;
-    var radioButtons = '' +
-        '<form>\n' +
-        ' <table>\n' +
-        '   <tr style="font-weight: normal;">\n' +
-        '     <td style="width:50%;margin: 0;padding: 0;">\n' +
-        '       <div style=" width: 15px; padding: 0; margin: 0; float: left; "><input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" style="width:100%;" checked></div>\n' +
-        '       <div style="width:80%; float: right;padding: 0;margin: 0;"><span style="top: -2px; width: 20%;">Dashboard</span></div>\n' +
-        '     </td>\n' +
-        '     <td style="width:50%;margin: 0;padding: 0;">\n' +
-        '       <div style="width:15px; float:left;"><input type="radio" name="saveAsRadio" value="widget" id="widgetRadio" style="width:100%;"></div>\n' +
-        '       <div style="width:80%; float: right;"><span style="top: -2px; width: 20%;">Widget</span></div>\n' +
-        '     </td>\n' +
-        '   </tr>\n' +
-        '  </table>\n' +
-        '</form>\n';
-
-    var widgetFieldContent = '' +
-        '<div style="width:20%; float:left;position: relative;top: 2px; left:0px;">\n' +
-        ' <span class="folderexplorerfilelabel" style="width:100%; left:0;">Widget Name: *</span>\n' +
-        '</div>\n' +
-        '<div style="width:80%;float:right;">\n' +
-        ' <span style="top:0; left: 0; ">\n' +
-        '   <input id="componentInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"/>\n' +
-        ' </span>\n' +
-        '</div>\n' +
-        '<hr class="filexplorerhr"/>\n';
-
-    var fileInfo = '' +
-        '<div id="container_id" class="folderexplorer" width="400px"></div>\n' +
-        '<div style="height:25px;padding-top: 10px;">\n' +
-        ' <div style="float: left; width:20%;position: relative;top: 7px;">' +
-        '   <span class="folderexplorerfilelabel" style="float: left;width: 100%; left:0;">File Name: *</span>' +
-        ' </div>\n' +
-        ' <div style="float: right;width:80%;">' +
-        '   <table>' +
-        '     <tr>' +
-        '       <td style="padding:0;">' +
-        '         <span style=" top: 0px; left:0;"><input id="fileInput"  type="text" value="" style="width: 100%;vertical-align: middle;margin: 0;"/></span>' +
-        '       </td>' +
-        '       <td style="width:200px;">' +
-        radioButtons +
-        '       </td>' +
-        '     </tr>' +
-        '   </table>' +
-        ' </div>' +
-        '</div>\n' +
-        '<br>\n' +
-        '<div class="widgetField"></div>\n' +
-        '<hr class="saveHr">' +
-        '<span class="folderexplorerextralabel" style="left:0px;">- Extra Information -</span><br/>\n' +
-        '<div>\n' +
-        ' <div style="float:left; width:20%;">\n' +
-        '   <span class="folderexplorerextralabels" style="font-weight: normal;">Title:</span>\n' +
-        ' </div>\n' +
-        ' <div style="float:right; width:80%;">\n' +
-        '   <input id="titleInput" class="folderexplorertitleinput" type="text" value="' + selectedTitle + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>\n' +
-        '  </div>\n' +
-        '</div>\n' +
-        '<hr>' +
-        ' <div>\n' +
-        '   <div style="float:left; width:20%;">' +
-        '     <span class="folderexplorerextralabels" style="font-weight: normal;">Description:</span>\n' +
-        '   </div>\n' +
-        '   <div style="float:right; width:80%;">' +
-        '     <input id="descriptionInput"  class="folderexplorerdescinput" type="text" value="' + selectedDescription + '" style="width: 100%;float: left;margin: 0;padding: 0;left: 0;"></input>\n' +
-        '   </div><br>\n' +
-        '</div>\n';
 
     var content = '' +
-        '<h2>Save as...</h2>\n' +
-        '<hr/>\n' +
-        '<div style="">' + fileInfo + '</div>\n';
+        '<div id="chooseFormatWrapper" class="popup-input-container input-pair">' +
+        '  <span class="popup-label">Choose Format</span>' +
 
-    $.prompt(content, {
-      prefix: "popup",
+        '  <div class="clearfix">' +
+        '    <div class="popup-radio-container">' +
+        '      <input type="radio" name="saveAsRadio" value="dashboard" id="dashRadio" checked>' +
+        '      <label class="popup-input-label" for="dashRadio">Dashboard</label>' +
+        '    </div>' +
+
+        '    <div class="popup-radio-container last">' +
+        '      <input type="radio" name="saveAsRadio" value="widget" id="widgetRadio">' +
+        '      <label class="popup-input-label" for="widgetRadio">Widget</label>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>' +
+
+        '<div id="saveAsFEContainer" class="popup-input-container">' +
+        '  <span class="popup-label">Choose Folder</span>' +
+        '  <div id="saveAsFolderExplorer" class="folderexplorer"></div>' +
+        '</div>' +
+
+        '<div class="popup-input-container">' +
+        '  <span class="popup-label">File Name*</span>' +
+        '  <input class="popup-text-input" id="fileInput" placeholder="Insert Text..." type="text" value=""/>' +
+        '</div>' +
+
+        '<div class="popup-input-container widgetField" style="display: none">' +
+        '  <span class="popup-label">Widget Name*</span>' +
+        '  <input class="popup-text-input" id="componentInput" placeholder="Insert Text..." type="text" value=""/>' +
+        '</div>' +
+
+        '<hr class="saveHr">' +
+
+        '<div class="popup-input-container">' +
+        '  <span class="popup-label">Title</span>' +
+        '  <input class="popup-text-input" id="titleInput" type="text" placeholder="Insert Text..." value="' + selectedTitle + '"/>' +
+        '</div>' +
+
+        '<div class="popup-input-container bottom">' +
+        '  <span class="popup-label">Description</span>' +
+        '  <input class="popup-text-input" id="descriptionInput" type="text" placeholder="Insert Text..." value="' + selectedDescription + '"/>' +
+        '</div>';
+
+    var rv = "";
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if(re.exec(navigator.userAgent) != null) {
+      rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
+    }
+
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Save as') + CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
+
+    CDFDDUtils.prompt(contentWrapper, {
       buttons: {
         Ok: 1,
         Cancel: 0
       },
+      popupClass: 'settings-popup save-dashboard',
       loaded: function() {
 
-        $("#popup").css("width", "515px");
-        $(".widgetField").hide();
-        $(".widgetField").append(widgetFieldContent);
+        var $popup = $(this);
 
-        $('#container_id').fileTree({
+        var widgetField = $(".widgetField");
+
+        $('#saveAsFolderExplorer').fileTree({
           root: '/',
           script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=.wcdf&access=create",
           expandSpeed: 1000,
@@ -1136,150 +1137,161 @@ var CDFDD = Base.extend({
             selectedFolder = folder;
           }
         }, function(file) {
+
           $("#fileInput").val(file.replace(selectedFolder, ""));
           selectedFile = $("#fileInput").val();
         });
 
         $("#dashRadio").click(function(event) {
-          $("#container_id").show();
-          $(".widgetField").hide();
+          $("#saveAsFEContainer").show();
+          $popup.addClass('save-dashboard').removeClass('save-widget');
+          widgetField.hide();
         });
 
         $("#widgetRadio").click(function(event) {
-          $("#container_id").hide();
-          $(".widgetField").show();
+          $("#saveAsFEContainer").hide();
+          $popup.removeClass('save-dashboard').addClass('save-widget');
+          widgetField.show();
         });
       },
+
       submit: function(v, m, f) {
-        if(v == 1) {
-          function isValidField(field) {
-            return (field != null && field != undefined);
-          }
-
-          function isValidFieldNotEmpty(field) {
-            return (field != null && field != undefined && field != "");
-          }
-
-          // validation flag
-          var validationFlag = true,
-              validationMsg = '';
-
-          // remove leading and trailing white spaces
-          selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
-
-          // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
-          // TODO: use webcontext when it becomes available, include the colon char
-          if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
-
-            validationMsg += '<br>Please insert a valid file name.';
-            validationFlag = false;
-
-          } else if(!/(\.wcdf)$/.test(selectedFile)) {
-
-            // append file extension
-            selectedFile += ".wcdf";
-          }
-
-          /**
-           * Save as Dashboard
-           */
-          if($('input[name=saveAsRadio]:checked').val() == "dashboard") {
-
-            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
-
-            // Validate Folder Name
-            if(selectedFolder.length == 0) {
-
-              validationMsg += '<br>Please choose destination folder.';
-              validationFlag = false;
-            }
-
-            if(validationFlag) {
-
-              CDFDDFileName = selectedFolder + selectedFile;
-              cdfdd.dashboardData.filename = CDFDDFileName;
-              var stripArgs = {
-                needsReload: false
-              };
-
-              var saveAsParams = {
-                operation: "saveas",
-                file: selectedFolder + selectedFile,
-                title: selectedTitle,
-                description: selectedDescription,
-                cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
-              };
-
-              SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, myself);
-
-            } else {
-
-              $.prompt(validationMsg, {prefix: "popup"});
-            }
-          }
-          /**
-           * Save as Widget
-           */
-          else if($('input[name=saveAsRadio]:checked').val() == "widget") {
-
-            selectedFolder = wd.helpers.repository.getWidgetsLocation();
-            selectedTitle = isValidField($("#titleInput").val()) ? $("#titleInput").val() : cdfdd.getDashboardWcdf().title;
-            selectedDescription = isValidFieldNotEmpty($("#descriptionInput").val()) ? $("#descriptionInput").val() : cdfdd.getDashboardWcdf().description;
-            var selectedWidgetName = $("#componentInput").val();
-
-            // Validate Widget Name
-            if(!/^[a-zA-Z0-9_]*$/.test(selectedWidgetName)) {
-
-              validationMsg += '<br>Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
-              validationFlag = false;
-
-            } else if(selectedWidgetName.length == 0) {
-
-              // Try to use title
-              if(selectedTitle.length == 0) {
-
-                validationMsg += '<br>No widget name provided. Unable to use empty title.';
-                validationFlag = false;
-
-              } else {
-
-                selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
-
-                if(selectedWidgetName.length == 0) {
-
-                  validationMsg += "<br>No widget name provided. Unable to use the title, too many invalid characters.";
-                  validationFlag = false;
-                }
-              }
-            }
-
-            if(validationFlag) {
-
-              CDFDDFileName = selectedFolder + selectedFile;
-              myself.dashboardData.filename = CDFDDFileName;
-
-              var saveAsParams = {
-                operation: "saveas",
-                file: selectedFolder + selectedFile,
-                title: selectedTitle,
-                description: selectedDescription,
-                cdfstructure: JSON.stringify(myself.strip(myself.dashboardData, stripArgs), null, 1),
-                widgetName: selectedWidgetName
-              };
-
-              SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, myself);
-
-            } else {
-
-              $.prompt(validationMsg, {prefix: "popup"});
-            }
-          }
-
-          return false;
-        }
+        myself.combinedSaveAsSubmit(v, selectedFolder);
       }
     });
+  },
+
+  combinedSaveAsSubmit: function(status, selectedFolder) {
+    if(status == 1) {
+      function isValidField(field) {
+        return (field != null && field != undefined);
+      }
+
+      function isValidFieldNotEmpty(field) {
+        return (field != null && field != undefined && field != "");
+      }
+
+      // validation flag
+      var validationFlag = true,
+          validationMsg = '',
+          selectedFile = "",
+          selectedTitle = "",
+          selectedDescription = "";
+
+      // remove leading and trailing white spaces
+      selectedFile = $('#fileInput').val().replace(/^\s+/, "").replace(/\s+$/, "");
+
+      // validate file name using RESERVED_CHARS_REGEX_PATTERN from webcontext (added colon char)
+      // TODO: use webcontext when it becomes available, include the colon char
+      if(!selectedFile || selectedFile == ".wcdf" || /.*[\/\\\t\r\n:]+.*/.test(selectedFile)) {
+
+        validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please insert a valid file name.';
+        validationFlag = false;
+
+      } else if(!/(\.wcdf)$/.test(selectedFile)) {
+
+        // append file extension
+        selectedFile += ".wcdf";
+      }
+
+      /**
+       * Save as Dashboard
+       */
+      var selectedRadio = $('input[name=saveAsRadio]:checked').val();
+      var titleInput = $("#titleInput").val();
+      var descriptionInput = $("#descriptionInput").val();
+
+
+      if(selectedRadio === "dashboard") {
+
+        selectedTitle = isValidField(titleInput) ? titleInput : cdfdd.getDashboardWcdf().title;
+        selectedDescription = isValidFieldNotEmpty(descriptionInput) ? descriptionInput : cdfdd.getDashboardWcdf().description;
+
+        // Validate Folder Name
+        if(selectedFolder.length == 0) {
+          validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Please choose destination folder.';
+          validationFlag = false;
+        }
+
+        if(validationFlag) {
+          CDFDDFileName = selectedFolder + selectedFile;
+          cdfdd.dashboardData.filename = CDFDDFileName;
+          var stripArgs = {
+            needsReload: false
+          };
+
+          var saveAsParams = {
+            operation: "saveas",
+            file: selectedFolder + selectedFile,
+            title: selectedTitle,
+            description: selectedDescription,
+            cdfstructure: JSON.stringify(cdfdd.strip(cdfdd.dashboardData, stripArgs), "", 1)
+          };
+
+          SaveRequests.saveAsDashboard(saveAsParams, selectedFolder, selectedFile, this);
+
+        } else {
+          CDFDDUtils.promptNotification("Error", validationMsg, true);
+        }
+      }
+
+      /**
+       * Save as Widget
+       */
+      else if(selectedRadio == "widget") {
+
+        selectedFolder = wd.helpers.repository.getWidgetsLocation();
+        selectedTitle = isValidField(titleInput) ? titleInput : cdfdd.getDashboardWcdf().title;
+        selectedDescription = isValidFieldNotEmpty(descriptionInput) ? descriptionInput : cdfdd.getDashboardWcdf().description;
+        var selectedWidgetName = $("#componentInput").val();
+
+        // Validate Widget Name
+        if(!(/^[a-zA-Z0-9_]*$/).test(selectedWidgetName)) {
+
+          validationMsg += (validationMsg !== '' ? '<br>' : '') + 'Invalid widget name. Only alphanumeric characters and \'_\' are allowed.';
+          validationFlag = false;
+
+        } else if(selectedWidgetName.length == 0) {
+
+          // Try to use title
+          if(selectedTitle.length == 0) {
+
+            validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use empty title.';
+            validationFlag = false;
+
+          } else {
+
+            selectedWidgetName = selectedTitle.replace(/[^a-zA-Z0-9_]/g, "");
+
+            if(selectedWidgetName.length == 0) {
+
+              validationMsg += (validationMsg !== '' ? '<br>' : '') + 'No widget name provided. Unable to use the title, too many invalid characters.';
+              validationFlag = false;
+            }
+          }
+        }
+
+        if(validationFlag) {
+          CDFDDFileName = selectedFolder + selectedFile;
+          this.dashboardData.filename = CDFDDFileName;
+
+          var saveAsParams = {
+            operation: "saveas",
+            file: selectedFolder + selectedFile,
+            title: selectedTitle,
+            description: selectedDescription,
+            cdfstructure: JSON.stringify(this.strip(this.dashboardData, stripArgs), null, 1),
+            widgetName: selectedWidgetName
+          };
+
+          SaveRequests.saveAsWidget(saveAsParams, selectedFolder, selectedFile, this);
+
+        } else {
+          CDFDDUtils.promptNotification("Error", validationMsg, true);
+        }
+      }
+      return false;
+    }
   },
 
   saveSettingsRequest: function(wcdf) {
@@ -1289,46 +1301,6 @@ var CDFDD = Base.extend({
       operation: "saveSettings",
       file: CDFDDFileName.replace(".cdfde", ".wcdf")
     }, wcdf);
-
-    var newRenderer = saveSettingsParams.rendererType;
-    var oldRenderer = cdfdd.getDashboardWcdf().rendererType;
-    var toUpdate = [];
-
-    //if the renderer type changed, then check for the existence of Table Components
-    //that needs to update the style property
-    if(newRenderer != oldRenderer) {
-      var components = cdfdd.getDashboardData().components.rows;
-      _.each(components, function(comp, i) {
-        if(comp.parent == "OTHERCOMPONENTS" && comp.type == "ComponentsTable") {
-          _.each(comp.properties, function(prop, j) {
-            if(prop.name == "tableStyle") {
-              if(( newRenderer != "bootstrap" && prop.value == "bootstrap" ) ||
-                  ( newRenderer == "bootstrap" && prop.value != "bootstrap" )) {
-                toUpdate.push(prop);
-                return;
-              }
-            }
-          });
-        }
-      });
-    }
-
-    if(toUpdate.length) {
-      var message = Dashboards.i18nSupport.prop('SaveSettings.INFO_UPDATE_TABLE_STYLE_PROP') + '\n' +
-          Dashboards.i18nSupport.prop('SaveSettings.CONFIRMATION_UPDATE_TABLE_STYLE_PROP');
-      var updateStyle = confirm(message);
-
-      if(updateStyle) {
-        _.each(toUpdate, function(prop, index) {
-          if(newRenderer == "bootstrap") {
-            prop.value = "bootstrap";
-          } else {
-            prop.value = "themeroller";
-          }
-        });
-        cdfdd.components.initTables();
-      }
-    }
 
     SaveRequests.saveSettings(saveSettingsParams, cdfdd, wcdf, myself);
 
@@ -1643,6 +1615,119 @@ var CDFDDUtils = Base.extend({}, {
 
   markAsDirty: function() {
     $('div.cdfdd-title-status').addClass('dirtyStatus');
+  },
+
+  movePopupButtons: function(container) {
+    var headerContainer = container.find('.popup-header-container');
+    var popupButtons = container.find('.popupbuttons');
+
+    headerContainer.append(popupButtons);
+    popupButtons.show();
+  },
+
+  wrapPopupTitle: function(title) {
+    return '<div class="popup-header-container">\n' +
+          '  <div class="popup-title-container">' + title + '</div>\n' +
+          '</div>\n';
+  },
+
+  wrapPopupBody: function(content, extraClasses) {
+    return '<div class="popup-body-container ' + (extraClasses || "") + '">\n' + content + '</div>';
+  },
+
+  promptNotification: function(title, message, force) {
+    // this is being triggered twice, we don't want to show a popup if a popup is already shown
+    if ( !force && $("#popupbox").length > 0) {
+      return false;
+    }
+
+    var popupBody = '' +
+      '<div class="popup-body-notification">\n' +
+      '  <div class="popup-body-header clearfix">' + message + '  </div>' +
+      '</div>';
+
+    CDFDDUtils.prompt( CDFDDUtils.wrapPopupTitle(title) + popupBody, {
+      buttons: {
+        Ok: false
+      }
+    });
+  },
+  // central prompt builder
+  prompt: function(content, options) {
+    var options = options || {};
+    if (!options.prefix) {
+      options.prefix = "popup";
+    }
+    if (!options.top) {
+      options.top = "40px";
+    }
+    if (_.isObject(content)) {
+      // probably a composed prompt, with several states
+      // it must already be properly formatted
+      return $.prompt(content, options);
+    }
+    if (!options.buttons) {
+      options.buttons = {
+        Ok: true,
+        Cancel: false
+      };
+    }
+    var customLoaded = options.loaded;
+    var popupClass = options.popupClass || "";
+    options.loaded = function() {
+      var $popup = $(this);
+      CDFDDUtils.movePopupButtons($popup);
+      $popup.addClass(popupClass);
+
+      // finally calling a custom loaded function, if it exists
+      if(customLoaded) {
+        customLoaded.apply(this, arguments);
+      }
+      $popup.on('keydown', function(e) {
+        if(e.keyCode === 9) {
+          var elems = $popup.find("input:visible");
+          var idx = -1;
+          for(var i = 0; i < elems.length; i++) {
+            if (elems[i] == e.target) {
+              idx = i;
+              break;
+            }
+          }
+          if(idx > -1) {
+            if(e.shiftKey) {
+              if(e.target == elems[0]) {
+                elems[elems.length - 1].focus();
+              } else {
+                elems[idx - 1].focus();
+              }
+            } else {
+              if(elems[elems.length - 1] == e.target) {
+                elems[0].focus();
+              } else {
+                elems[idx + 1].focus();
+              }
+            }
+          }
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      });
+    };
+    return $.prompt(content, options);
+  },
+
+  buildPopupSelect: function(selectElem, override) {
+    var options = $.extend({
+      minimumResultsForSearch: Infinity,
+      dropdownCssClass: 'popup-select-dropdown',
+      placeholder: 'Select...'
+    }, override);
+
+    if(selectElem.is(':empty')) {
+      selectElem.append('<option value="">');
+    }
+
+    selectElem.select2(options);
   }
 });
 
@@ -1792,7 +1877,7 @@ $(function() {
   };
 
   /* End Jeditable attribution */
-  
+
   /*!
    * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
    *

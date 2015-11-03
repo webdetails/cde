@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/RaphaelComponent', 'cdf/lib/jquery'],
-  function(Dashboard, RaphaelComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/RaphaelComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, RaphaelComponent, $) {
 
   /**
    * ## The Raphael Component
@@ -85,7 +88,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/RaphaelComponent', 'cdf/lib/jquer
         Raphael(this.htmlObject, this.height, this.width)
           .pieChart(200, 150, 80, values, labels, "#222");
       },
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectRaph",
       listeners: [],
       queryDefinition: {}
     });
@@ -93,20 +96,26 @@ define(['cdf/Dashboard.Clean', 'cde/components/RaphaelComponent', 'cdf/lib/jquer
     dashboard.addComponent(raphaelComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', raphaelComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', raphaelComponent.htmlObject);
+
+    beforeEach(function() {
+      $('body').append($htmlObject);
+    });
+
+    afterEach(function() {
+      $htmlObject.remove();
+    });
 
     /**
      * ## The Raphael Component # allows a dashboard to execute update
      */
     it("allows a dashboard to execute update", function(done) {
-      $('body').append($htmlObject);
 
       spyOn(raphaelComponent, 'update').and.callThrough();
 
       // listen to cdf:postExecution event
       raphaelComponent.once("cdf:postExecution", function() {
         expect(raphaelComponent.update).toHaveBeenCalled();
-        $htmlObject.remove();
         done();
       });
 

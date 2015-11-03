@@ -55,7 +55,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
       root = getRequestParameterAsString( MethodParams.ROOT, "" ),
       scheme = getRequestParameterAsString( MethodParams.SCHEME, "" );
 
-    String viewId = getRequestParameterAsString( MethodParams.VIEWID, "" );
+    String view = getRequestParameterAsString( MethodParams.VIEW, "" );
 
     String filePath = getPathParameterAsString( MethodParams.PATH, "" );
 
@@ -104,7 +104,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
 
       PluginIOUtils.writeOutAndFlush( getResponse().getOutputStream(),
         renderer.render( "", "", filePath, inferScheme, root, absolute, bypassCacheRead, debug, scheme,
-          viewId, style, getRequest() ) );
+          view, style, getRequest() ) );
     }
 
     long end = System.currentTimeMillis();
@@ -131,6 +131,7 @@ public class DashboardDesignerContentGenerator extends SimpleContentGenerator {
     public static final String PATH = "path";
     public static final String FILE = "file";
     public static final String REQUEST = "request";
+    public static final String VIEW = "view";
     public static final String VIEWID = "viewId";
     public static final String COMMAND = "cmd";
     public static final String STYLE = "style";

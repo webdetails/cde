@@ -14,8 +14,8 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/OlapSelectorComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, OlapSelectorComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, OlapSelectorComponent, $) {
 
   /**
    * ## The Olap Selector Component
@@ -33,7 +33,7 @@ define([
       title: "Olap Selector",
       parameter: "param1",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectOlapSelect",
       parameters: [],
       catalog: "mondrian:/SteelWheels",
       cube: "SteelWheelsSales",

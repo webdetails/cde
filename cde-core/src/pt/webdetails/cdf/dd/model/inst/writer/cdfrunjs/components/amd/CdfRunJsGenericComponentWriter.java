@@ -30,6 +30,8 @@ import pt.webdetails.cdf.dd.model.meta.PropertyTypeUsage;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 import pt.webdetails.cdf.dd.util.Utils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements IThingWriter {
 
   public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
@@ -55,12 +57,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
 
     String id = comp.getId();
 
-    out.append( "var " )
-        .append( id )
-        .append( " = new " )
-        .append( className )
-        .append( "({" )
-        .append( NEWLINE );
+    out.append( "var " ).append( id ).append( " = new " ).append( className ).append( "({" ).append( NEWLINE );
 
     addJsProperty( out, "type", JsonUtils.toJsString( className ), INDENT1, true );
     addJsProperty( out, "name", JsonUtils.toJsString( id ), INDENT1, false );
@@ -71,9 +68,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
       this.writeDefinition( definitionName, out, context, comp, compType );
     }
 
-    out.append( NEWLINE )
-        .append( "});" )
-        .append( NEWLINE );
+    out.append( NEWLINE ).append( "});" ).append( NEWLINE );
   }
 
   private void writeDefinition(
@@ -112,7 +107,18 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
           if ( !isDefaultDefinition && childContext.isFirstInList() ) {
             out.append( NEWLINE );
           }
-
+/*
+          if ( propBind.getAlias().equalsIgnoreCase( "datasource" ) ) {
+            try {
+              propBind = new UnresolvedPropertyBinding.Builder()
+                .setInputType( propBind.getInputType() )
+                .setAlias( "datasourceName" )
+                .setValue( propBind.getValue() ).build( comp, ( new MetaModel.Builder() ).build() );
+            } catch ( ValidationException e ) {
+              e.printStackTrace();
+            }
+          }
+*/
           writer.write( out, childContext, propBind );
         }
       }
@@ -141,9 +147,7 @@ public class CdfRunJsGenericComponentWriter extends JsWriterAbstract implements 
     }
 
     if ( !isDefaultDefinition ) {
-      out.append( NEWLINE );
-      out.append( INDENT1 );
-      out.append( "}" );
+      out.append( NEWLINE ).append( INDENT1 ).append( "}" );
     }
   }
 

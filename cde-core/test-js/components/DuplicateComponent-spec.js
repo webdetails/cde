@@ -15,8 +15,8 @@ define([
   'cdf/Dashboard.Clean',
   'cde/components/CggDialComponent',
   'cde/components/DuplicateComponent',
-  'cdf/lib/jquery'],
-  function(Dashboard, CggDialComponent, DuplicateComponent, $) {
+  'cdf/lib/jquery'
+], function(Dashboard, CggDialComponent, DuplicateComponent, $) {
 
   /**
    * ## The Duplicate Component
@@ -37,7 +37,7 @@ define([
       parameter: "param1",
       colors: [],
       intervals: [],
-      htmlObject: "sampleObject1",
+      htmlObject: "sampleObjectDup1",
       listeners: [],
       width: 300,
       height: 300
@@ -50,17 +50,17 @@ define([
       executeAtStart: true,
       components: ["cggDial1"],
       parameters: [],
-      htmlObject: "sampleObject2",
-      targetHtmlObject: "sampleObject3",
+      htmlObject: "sampleObjectDup2",
+      targetHtmlObject: "sampleObjectDup3",
       listeners: []
     });
 
     dashboard.addComponents([render_cggDial1, duplicateComponent]);
 
     // inject sampleObject div
-    $htmlObject1 = $('<div>').attr('id', render_cggDial1.htmlObject);
-    $htmlObject2 = $('<div>').attr('id', duplicateComponent.htmlObject);
-    $htmlObject3 = $('<div>').attr('id', duplicateComponent.targetHtmlObject);
+    var $htmlObject1 = $('<div>').attr('id', render_cggDial1.htmlObject),
+        $htmlObject2 = $('<div>').attr('id', duplicateComponent.htmlObject),
+        $htmlObject3 = $('<div>').attr('id', duplicateComponent.targetHtmlObject);
 
     /**
      * ## The Duplicate Component # allows a dashboard to execute update

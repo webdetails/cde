@@ -38,6 +38,7 @@ import static org.mockito.Mockito.mock;
 public class ContentAccessFactoryForTests implements IContentAccessFactory {
   private IUserContentAccess mockedContentAccess;
   private IReadAccess mockedReadAccess;
+  private IRWAccess mockedRWAccess;
   private static final String USER_DIR = System.getProperty( "user.dir" );
   private static final String TEST_RESOURCES = USER_DIR + File.separator + "test-resources";
   private static final String LIST_COMPONENTS = "resources" + File.separator + "base" + File.separator + "components";
@@ -45,6 +46,13 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
   public ContentAccessFactoryForTests( IUserContentAccess mockedContentAccess, IReadAccess mockedReadAccess ) {
     this.mockedContentAccess = mockedContentAccess;
     this.mockedReadAccess = mockedReadAccess;
+  }
+
+  public ContentAccessFactoryForTests( IUserContentAccess mockedContentAccess, IReadAccess mockedReadAccess,
+                                       IRWAccess mockedRWAccess ) {
+    this.mockedContentAccess = mockedContentAccess;
+    this.mockedReadAccess = mockedReadAccess;
+    this.mockedRWAccess = mockedRWAccess;
   }
 
   @Override
@@ -59,7 +67,7 @@ public class ContentAccessFactoryForTests implements IContentAccessFactory {
 
   @Override
   public IRWAccess getPluginRepositoryWriter( String s ) {
-    return null;
+    return mockedRWAccess;
   }
 
   @Override

@@ -77,7 +77,7 @@ public interface ICdeEnvironment {
   String getCdfIncludes( String dashboard, String type, boolean debug, boolean absolute, String absRoot, String scheme )
     throws Exception;
 
-  //String getCdfContext( String dashboard, String action, String viewId ) throws Exception;
+  //String getCdfContext( String dashboard, String action, String view ) throws Exception;
 
   public IFileHandler getFileHandler();
 
@@ -91,5 +91,7 @@ public interface ICdeEnvironment {
   public IBasicFile getCdeXml();
 
   public IUserSession getUserSession();
+
+  public boolean canCreateContent();
 
 }

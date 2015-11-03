@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/ExportButtonComponent', 'cdf/lib/jquery'],
-  function(Dashboard, ExportButtonComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/ExportButtonComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, ExportButtonComponent, $) {
 
   /**
    * ## The Export Button Component
@@ -26,7 +29,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportButtonComponent', 'cdf/lib/
       type: "ExportButtonComponent",
       name: "expButton1",
       executeAtStart: true,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectExportButton",
       priority: 5,
       label: "TestExport",
       componentName: "",
@@ -38,7 +41,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportButtonComponent', 'cdf/lib/
     dashboard.addComponent(exportButtonComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', exportButtonComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', exportButtonComponent.htmlObject);
 
     /**
      * ## The Export Button Component # allows a dashboard to execute update

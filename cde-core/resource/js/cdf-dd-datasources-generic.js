@@ -15,17 +15,30 @@ var MdxEntryBase = PalleteEntry.extend({
   execute : function(palleteManager) {
     var myself = this;
     this._execute = this.base;
-    
-    var content = '<select id="cdfddOlapCatalogSelect" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').catalogSelected()"><option value="-"> Select catalog </option></select><br/>\n' +
-'			<select id="cdfddOlapCubeSelect" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').cubeSelected()" ><option value="-"> Select cube </option></select>';
 
-    $.prompt(content,{
+    var content = '' +
+      '<div class="popup-input-container">' +
+        '<span class="popup-label">Catalog</span>' +
+        '<select id="cdfddOlapCatalogSelect" class="popup-select" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').catalogSelected()"></select>\n' +
+      '</div>' +
+      '<div class="popup-input-container bottom">' +
+        '<span class="popup-label">Cube</span>' +
+        '<select id="cdfddOlapCubeSelect" class="popup-select" onchange="MdxEntryBase.getEntry(\'MDX_ENTRY\').cubeSelected()" ></select>' +
+      '</div>';
+    var _inner = CDFDDUtils.wrapPopupTitle('OLAP MDX Query') + 
+          CDFDDUtils.wrapPopupBody(content, 'layout-popup');
+    CDFDDUtils.prompt(_inner,{
       buttons: {
         Ok: true,
         Skip: false
       },
-      prefix:"popup",
       loaded: function(){
+        var $popup = $(this);
+        var cdfddOlapCatalogSelect = $('#cdfddOlapCatalogSelect', $popup);
+        var cdfddOlapCubeSelect = $('#cdfddOlapCubeSelect', $popup);
+
+        CDFDDUtils.buildPopupSelect(cdfddOlapCatalogSelect, {minimumResultsForSearch: -1});
+        CDFDDUtils.buildPopupSelect(cdfddOlapCubeSelect, {minimumResultsForSearch: -1});
         $.getJSON(OlapUtils.getOlapCubesUrl(), {}, function(json) {
           if(json.status == "true"){
             var catalogs = json.result.catalogs;
@@ -48,19 +61,19 @@ var MdxEntryBase = PalleteEntry.extend({
       }
     });
   },
-		
+
   catalogSelected: function(){
     var myself = this;
     var selectedCatalog = $("#cdfddOlapCatalogSelect").val();
     var catalog = null;
-			
+
     $.each(this.catalogs,function(i,cat){
       if(cat.name == selectedCatalog){
         catalog = cat;
         return;
       };
     });
-			
+
     this.catalog = catalog;
     if(catalog != null){
       var cubes = catalog.cubes;
@@ -71,7 +84,7 @@ var MdxEntryBase = PalleteEntry.extend({
       });
     }
   },
-		
+
   cubeSelected: function(){
     this.cube = $("#cdfddOlapCatalogSelect").val();
   }
@@ -109,7 +122,7 @@ var CdaPathRenderer = NoContextPathRenderer.extend({
   getFileExtensions: function() {
     return ".cda";
   },
-	
+
   getResourceType: function() {
     return 'cda';
   }
@@ -153,10 +166,10 @@ var CggPathRenderer = ResourceFileRenderer.extend({
   getFileExtensions: function(){
     return ".js";
   },
-	
-	getResourceType: function(){
-		return 'javascript';
-	},
+
+  getResourceType: function(){
+    return 'javascript';
+  },
 
   formatSelection: function(file){
     return file;
@@ -177,10 +190,10 @@ var SaikuPathRenderer = ResourceFileRenderer.extend({
 
   //disallow selecting a folder for new file creation
   createNew: false,
-	
+
   //omit edit button
   renderEditorButton: function(){ return '';},
-	
+
   getFileExtensions: function(){
     return ".saiku";
   },
@@ -194,10 +207,10 @@ var AnalyzerPathRenderer = ResourceFileRenderer.extend({
 
   //disallow selecting a folder for new file creation
   createNew: false,
-	
+
   //omit edit button
   renderEditorButton: function(){ return '';},
-	
+
   getFileExtensions: function(){
     return ".xanalyzer";
   },

@@ -15,6 +15,7 @@ package pt.webdetails.cdf.dd.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -39,6 +40,7 @@ import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
 import org.pentaho.platform.engine.security.SecurityHelper;
 import org.pentaho.platform.web.http.api.resources.PluginResource;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.GenericBasicFileFilter;
 import pt.webdetails.cdf.dd.CdeSettings;
@@ -57,12 +59,27 @@ import pt.webdetails.cpf.utils.PluginIOUtils;
 public class ResourcesApi {
   private static final Log logger = LogFactory.getLog( ResourcesApi.class );
 
+  private static final List<String> allowedExtensions;
+
+  static {
+    String formats = PentahoSystem.get( IPluginResourceLoader.class, null ).getPluginSetting( ResourcesApi.class,
+            CdeConstants.PLUGIN_SETTINGS_DOWNLOADABLE_FORMATS );
+    allowedExtensions =  Arrays.asList( StringUtils.split( formats, ',' ) );
+  }
+
   @GET
   @Path( "/get" )
   @Produces( "text/plain" )
   public void getResource( @QueryParam( "resource" ) @DefaultValue( "" ) String resource,
                            @Context HttpServletResponse response ) throws IOException {
     try {
+      String extension = resource.replaceAll( ".*\\.(.*)", "$1" );
+      if ( allowedExtensions.indexOf( extension ) < 0 ) {
+        // We can't provide this type of file
+        logger.error( "Extension '" + extension + "' not whitelisted" );
+        throw new SecurityException( "Not allowed" );
+      }
+
       IBasicFile file = Utils.getFileViaAppropriateReadAccess( resource );
 
       if ( file == null ) {
@@ -70,7 +87,6 @@ public class ResourcesApi {
         response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
         return;
       }
-
       IPluginResourceLoader resLoader = PentahoSystem.get( IPluginResourceLoader.class, null );
       String maxAge = resLoader.getPluginSetting( this.getClass(), "max-age" );
 
@@ -241,6 +257,14 @@ public class ResourcesApi {
   public Response getSystemResource( @PathParam( "path" ) String path, @Context HttpServletResponse response )
     throws IOException {
 
+    String extension = path.replaceAll( ".*\\.(.*)", "$1" );
+    if ( allowedExtensions.indexOf( extension ) < 0 ) {
+      // We can't provide this type of file
+      logger.error( "Extension '" + extension + "' not whitelisted" );
+      throw new SecurityException( "Not allowed" );
+    }
+
+
     String[] splitPath = path.split( "/" );
     String pluginId = splitPath[ 0 ];
     String resource = "";
@@ -278,5 +302,6 @@ public class ResourcesApi {
   protected boolean isAdministrator() {
     return SecurityHelper.getInstance().isPentahoAdministrator( PentahoSessionHolder.getSession() );
   }
+
 
 }

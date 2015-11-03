@@ -117,7 +117,8 @@ var LayoutPanel = Panel.extend({
           var _tableManager = TableManager.getTableManager("table-" + LayoutPanel.TREE);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();
-          $("#" + _tableManager.getTableId() + " > tbody > tr:eq(" + _cell[0] + ") > td:eq(1)").text(value);
+          var td = $("#" + _tableManager.getTableId() + " > tbody > tr:eq(" + _cell[0] + ") > td:eq(1)");
+          value ? td.text(value) : td.html("&nbsp;");
         }
       }
     ]);
@@ -554,17 +555,39 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
     var includeDataSources = true;
     var myself = this;
     var content = '' +
-        '<span><h2>Save as Template</h2></span><br/><hr/>\n' +
-        '<span id="fileLabel" >File Name:</span><br/>\n' +
-        '<input class="cdf_settings_input" id="fileInput" type="text" value="" style="width:100%;"/><br/>\n' +
-        '<span>Title:</span><br/>\n' +
-        '<input class="cdf_settings_input" id="titleInput" type="text" value=""style="width:100%;"/><br>\n' +
-        '<span>Include Components:</span>\n' +
-        '<input type="checkbox" checked="yes" id="includeComponentsInput" value="true"/>\n' +
-        '&nbsp&nbsp<span>Include Datasources:</span>\n' +
-        '<input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true"/>\n';
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label" id="fileLabel" >File Name</span>\n' +
+        '  <input class="popup-text-input" id="fileInput" placeholder="Insert Text..." type="text"/>\n' +
+        '</div>\n' +
 
-    $.prompt(content, {buttons: { Save: true, Cancel: false }, prefix: "popup",
+        '<div class="popup-input-container">\n' +
+        '  <span class="popup-label">Title</span>\n' +
+        '  <input class="popup-text-input" id="titleInput" placeholder="Insert Text..." type="text"/>\n' +
+        '</div>\n' +
+
+        '<div class="popup-input-container input-pair bottom clearfix">\n' +
+        '  <div class="popup-checkbox-container">'+
+        '    <input type="checkbox" checked="yes" id="includeComponentsInput" value="true"/>\n' +
+        '    <label class="popup-input-label" for="includeComponentsInput">Include Components</label>\n' +
+        '  </div>'+
+        '  <div class="popup-checkbox-container">'+
+        '    <input type="checkbox" checked="yes" id="includeDataSourcesInput" value="true"/>\n' +
+        '    <label class="popup-input-label" for="includeDataSourcesInput">Include Datasources</label>\n' +
+        '  </div>'+
+        '</div>\n';
+
+    var rv = "";
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if(re.exec(navigator.userAgent) != null) {
+      rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
+    }
+
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Save as Template') +
+        CDFDDUtils.wrapPopupBody(content, 'layout-popup ' + rv);
+
+    CDFDDUtils.prompt(contentWrapper, {
+      buttons: { Save: true, Cancel: false },
+      popupClass: "settings-popup",
       submit: function(v) {
         title = $("#titleInput").val();
         file = $("#fileInput").val();
@@ -574,13 +597,13 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
         var validate = true;
         if(file.length == 0) {
           $("#fileLabel").css("color", "red");
-          $("#fileLabel").text("* File Name: (required)");
+          $("#fileLabel").text("* File Name (required)");
           validate = false;
         }
 
         if(file.indexOf(".") != -1 && (file.length < 6 || file.lastIndexOf(".cdfde") != file.length - 6)) {
           $("#fileLabel").css("color", "red");
-          $("#fileLabel").text("* File Name: (Invalid file extension. Must be .cdfde)");
+          $("#fileLabel").text("* File Name (Invalid file extension. Must be .cdfde)");
           validate = false;
         }
 
@@ -597,6 +620,8 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
 
           var template = cdfdd.getDashboardData();
           template.layout.title = title;
+          template.style = cdfdd.dashboardWcdf.style;
+          template.rendererType = cdfdd.dashboardWcdf.rendererType;
           if(!includeComponents) {
             template.components.rows = [];
 
@@ -605,7 +630,7 @@ var LayoutSaveAsTemplateOperation = SaveAsTemplateOperation.extend({
             template.datasources.rows = [];
           }
 
-          var templateParams = {operation: "save", file: file, cdfstructure: JSON.stringify(template)};
+          var templateParams = {operation: "save", file: file, cdfstructure: JSON.stringify(template), rendererType: cdfdd.dashboardWcdf.rendererType};
           SynchronizeRequests.doPost(templateParams);
         }
       }
@@ -628,7 +653,7 @@ var LayoutApplyTemplateOperation = ApplyTemplateOperation.extend({
   execute: function(tableManager) {
     this.logger.info("Loading templates...");
 
-    var loadParams = { operation: "load" };
+    var loadParams = { operation: "load", rendererType: cdfdd.dashboardWcdf.rendererType};
     SynchronizeRequests.doGetJson(loadParams);
   }
 });
@@ -659,22 +684,47 @@ var LayoutAddResourceOperation = AddRowOperation.extend({
     // Add a row. This special type goes always to the beginning;
     var myself = this;
     var content = '' +
-        '<h2>Add Resource</h2>\n' +
-        '<hr>Resource Type:&nbsp;&nbsp;\n' +
-        '<select id="resourceType">\n' +
-        ' <option value="Css">Css</option>\n' +
-        ' <option value="Javascript">Javascript</option>\n' +
-        '</select>\n' +
-        '<select id="resourceSource">\n' +
-        ' <option value="file">External File</option>\n' +
-        ' <option value="code">Code Snippet</option>\n' +
-        '</select>\n';
-    $.prompt(content, { buttons: { Ok: true, Cancel: false }, prefix: "popup",
+        '<div class="clearfix">\n' +
+
+        '  <div class="popup-input-container bottom">\n' +
+        '    <span class="popup-label">Resource Type</span>\n' +
+        '    <select id="resourceType" class="popup-select">\n' +
+        '      <option value=""></option>\n' +
+        '      <option value="Css">Css</option>\n' +
+        '      <option value="Javascript">Javascript</option>\n' +
+        '    </select>\n' +
+        '  </div>\n' +
+
+        '  <div class="popup-input-container bottom last">\n' +
+        '    <span class="popup-label">Resource Source</span>\n' +
+        '    <select id="resourceSource" class="popup-select">\n' +
+        '      <option value=""></option>\n' +
+        '      <option value="file">External File</option>\n' +
+        '      <option value="code">Code Snippet</option>\n' +
+        '    </select>\n' +
+        '  </div>\n' +
+
+        '</div>\n';
+
+    var contentWrapper = CDFDDUtils.wrapPopupTitle('Add Resource') +
+        CDFDDUtils.wrapPopupBody(content, 'layout-popup resource-popup');
+
+    CDFDDUtils.prompt(contentWrapper, {
+      loaded: function() {
+        var $popup = $(this);
+        var resourceType = $('#resourceType', $popup);
+        var resourceSource = $('#resourceSource', $popup);
+
+        CDFDDUtils.buildPopupSelect(resourceType, {});
+        CDFDDUtils.buildPopupSelect(resourceSource, {});
+      },
+
       submit: function(v) {
         myself.resourceSubmit(v, tableManager);
       }
     });
   },
+
   resourceSubmit: function(status, tableManager) {
     if(status) {
       var resourceType = $("#resourceType").val();

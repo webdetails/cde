@@ -3,7 +3,7 @@
   <cache>false</cache>
   <max-age>2628000</max-age>
   <resources>
-      <downloadable-formats>css,js,html,htm,png,jpg,jpeg,gif,swf,htc,otf,woff,ico,doc,docx,xls,xlsx,pdf,ppt,pptx</downloadable-formats>
+      <downloadable-formats>css,js,svg,html,htm,png,jpg,jpeg,gif,swf,htc,ttf,otf,woff,ico,doc,docx,xls,xlsx,pdf,ppt,pptx</downloadable-formats>
   </resources>
   <packager>
     <minification>MINIFY</minification>
@@ -16,6 +16,7 @@
     -->
     <!--4.x old <path>system/pentaho-cdf-dd/resources/custom/components</path>-->
     <path origin="static">resources/custom/components</path>
+    <path origin="static">resources/custom/amd-components</path>
     <!--4.x old <path>cde/components</path-->
     <path origin="repo">components</path>
   </custom-components>

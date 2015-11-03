@@ -17,7 +17,9 @@ import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pentaho.platform.api.engine.IAuthorizationPolicy;
 import org.pentaho.platform.engine.core.system.PentahoSystem;
+import org.pentaho.platform.security.policy.rolebased.actions.RepositoryCreateAction;
 import org.pentaho.platform.util.messages.LocaleHelper;
 import pt.webdetails.cdf.dd.datasources.DataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
@@ -55,6 +57,7 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   private IPluginResourceLocationManager pluginResourceLocationManager;
   private ICdeApiPathProvider apiPaths;
   private IFileHandler fileHandler;
+  private IAuthorizationPolicy authorizationPolicy;
 
   public PentahoCdeEnvironment() {
 
@@ -71,6 +74,10 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
 
     if ( factory.containsBean( IFileHandler.class.getSimpleName() ) ) {
       fileHandler = (IFileHandler) factory.getBean( IFileHandler.class.getSimpleName() );
+    }
+
+    if ( factory.containsBean( IAuthorizationPolicy.class.getSimpleName() ) ) {
+      authorizationPolicy = (IAuthorizationPolicy) factory.getBean( IAuthorizationPolicy.class.getSimpleName() );
     }
 
     super.init( this );
@@ -144,8 +151,8 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
     return InterPluginBroker.getCdfIncludes( dashboard, type, debug, absolute, absRoot, scheme );
   }
 
-  //  public String getCdfContext(String dashboard, String action, String viewId) throws Exception {
-  //    return InterPluginBroker.getCdfContext( dashboard, action, viewId );
+  //  public String getCdfContext(String dashboard, String action, String view) throws Exception {
+  //    return InterPluginBroker.getCdfContext( dashboard, action, view );
   //  }
 
   public PentahoPluginEnvironment getPluginEnv() {
@@ -206,6 +213,18 @@ public class PentahoCdeEnvironment extends PentahoPluginEnvironment implements I
   @Override
   public IUserSession getUserSession() {
     return new PentahoSessionUtils().getCurrentSession();
+  }
+
+  @Override
+  public boolean canCreateContent() {
+    if ( authorizationPolicy == null ) {
+      authorizationPolicy = PentahoSystem.get( IAuthorizationPolicy.class );
+      if ( authorizationPolicy == null ) {
+        logger.warn( "Couldn't retrieve Authorization Policy" );
+        return getUserSession().isAdministrator();
+      }
+    }
+    return authorizationPolicy.isAllowed( RepositoryCreateAction.NAME );
   }
 
 }

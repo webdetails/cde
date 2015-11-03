@@ -62,6 +62,10 @@ define('cde/test/dummyDashboard', ['cdf/Dashboard.Bootstrap', 'cdf/Logger', 'cdf
         "widgetParameters": []
       };
 
+      dashboard.addDataSource("dummyDataSource", {
+        origin: "dummyDashboard"
+      });
+
       var render_button = new ButtonComponent({
         type: "ButtonComponent",
         name: "render_button",
@@ -78,6 +82,8 @@ define('cde/test/dummyDashboard', ['cdf/Dashboard.Bootstrap', 'cdf/Logger', 'cdf
       });
       dashboard.addParameter("dummyParam", "");
       dashboard.setParameterViewMode("dummyParam", "unused");
+      dashboard.addParameter("privateParam", "");
+      dashboard.setParameterViewMode("privateParam", "unused");
 
       dashboard.addComponents([render_button]);
 

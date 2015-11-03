@@ -48,7 +48,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [],
 
-    preprocessors: {'resource/js/cdf-dd.js': 'coverage'},
+    //preprocessors: {'resource/js/cdf-dd.js': 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -100,7 +100,7 @@ module.exports = function(config) {
     browsers: ['Chrome'],//, 'Firefox', 'IE', 'PhantomJS'],
 
     // If browser does not capture in given timeout [ms], kill it
-    captureTimeout: 60000,
+    captureTimeout: 600000,
 
     browserNoActivityTimeout: 600000,
 

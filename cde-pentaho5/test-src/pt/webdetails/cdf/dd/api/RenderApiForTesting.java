@@ -17,6 +17,9 @@ import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.DashboardManagerForTests;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class RenderApiForTesting extends RenderApi {
   private DashboardManager dashboardManagerForTests;
 
@@ -32,5 +35,8 @@ public class RenderApiForTesting extends RenderApi {
     return dashboardManagerForTests;
   }
 
-
+  @Override
+  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {
+    // do nothing
+  }
 }

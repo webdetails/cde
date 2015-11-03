@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-	<title>filter_addIn_reference_accordion</title>
-	<description>Filter AddIn Reference: Accordion</description>
+	<title>cde_filter_addIn_reference_accordion</title>
+	<description>CDE-Filter AddIn Reference: Accordion</description>
 	<author></author>
 	<style>WDDocs</style>
   	<rendererType>blueprint</rendererType>

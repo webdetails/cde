@@ -32,36 +32,41 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
       expect(valueAr.selectData).toEqual({});
     });
 
-    it("# addParameter", function() {
-      spyOn(valueAr, 'addTypedParameters');
-      spyOn(valueAr, 'addParameters');
+    it("# addPopupRow", function() {
+      spyOn(valueAr, 'buildTypedRow');
+      spyOn(valueAr, 'buildSingleDimensionRow');
+      spyOn(valueAr, 'buildMultiDimensionRow');
 
-      var values1 = ["arg","",""];
+      var values1 = ["arg", ""];
       var values2 = ["arg", "value"];
       var values3 = ["arg", null];
       var values4 = ["arg", undefined];
+      var values5 = ["key", "value", "default"];
 
       var index = 0;
-      var container = undefined;
-      valueAr.addParameter(index, values1, container);
-      expect(valueAr.addParameters).toHaveBeenCalledWith(index, values1[0], values1[1], container);
-      valueAr.addParameter(index, values2, container);
-      expect(valueAr.addParameters).toHaveBeenCalledWith(index, values2[0], values2[1], container);
-      valueAr.addParameter(index, values3, container);
-      expect(valueAr.addParameters).toHaveBeenCalledWith(index, values3[0], 'null', container);
-      valueAr.addParameter(index, values4, container);
-      expect(valueAr.addParameters).toHaveBeenCalledWith(index, values4[0], '', container);
+      var container = $('<div>')//undefined;
+      valueAr.addPopupRow(index, values1, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values1[0], values1[1]);
+      valueAr.addPopupRow(index, values2, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values2[0], values2[1]);
+      valueAr.addPopupRow(index, values3, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values3[0], 'null');
+      valueAr.addPopupRow(index, values4, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values4[0], '');
+      valueAr.addPopupRow(index, values5, container);
+      expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values5[0], values5[1], values5[2]);
 
-      expect(valueAr.addTypedParameters).not.toHaveBeenCalled();
+      expect(valueAr.buildTypedRow).not.toHaveBeenCalled();
+      expect(valueAr.buildSingleDimensionRow).not.toHaveBeenCalled();
     });
 
     it("# getParameterValues", function() {
       //it is a multi dimensional array without typed values
-      expect( valueAr.getParameterValues(0).length ).toEqual(2)
+      expect( valueAr.getRowValues(0).length ).toEqual(2)
     });
 
     it("# getInitialValue", function() {
-      expect(valueAr.getInitialValue("[]")).toEqual([["", "", ""]]);
+      expect(valueAr.getInitialValue("[]")).toEqual([["", "", "", ""]]);
       expect(valueAr.getInitialValue("[\"arg1\", \"arg2\"]")).toEqual(["arg1", "arg2"]);
       expect(valueAr.getInitialValue("[[\"arg1\", \"value1\"]]")).toEqual([["arg1", "value1"]]);
 
@@ -120,20 +125,15 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     });
 
     it("# getValueDiv", function() {
-      var title = "myTitle",
+      var index = "0",
           value = "Hello World!",
-          cssClass = "myCssClass",
-          id = "myId";
+          // using jquery to escape html
+          tooltip = $("<a>").text("<pre>Hello World!</pre>").html();
 
-      expect( evar.getValueDiv(title, value, cssClass, id) ).toBe(
-          "<div class='myCssClass'><span class='StringListTextLabel'>myTitle</span>"
-          + "<div id='myId' class='StringListValueDiv' title='<pre>Hello World!</pre>'>Hello World!</div></div>\n");
-      expect( evar.getValueDiv(null, value, cssClass, id) ).toBe(
-          "<div class='myCssClass'><div id='myId' class='StringListValueDiv' title='<pre>Hello World!</pre>'>"
-          + "Hello World!</div></div>\n");
-      expect( evar.getValueDiv(title, "", cssClass, id) ).toBe(
-          "<div class='myCssClass'><span class='StringListTextLabel'>myTitle</span>"
-          + "<div id='myId' class='StringListValueDiv' title=''></div></div>\n");
+      expect( evar.getValueSection(index, value) ).toBe(
+          '<div class="popup-value-container">' +
+          '  <div id="val_0" class="popup-text-div" title="' + tooltip + '" placeholder="Click to edit...">' + value + '</div>' +
+          '</div>');
     });
 
     it("# escapeOutPutValue", function() {

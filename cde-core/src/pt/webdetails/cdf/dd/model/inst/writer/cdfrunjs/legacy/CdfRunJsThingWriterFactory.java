@@ -25,7 +25,7 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.PropertyBinding;
 import pt.webdetails.cdf.dd.model.inst.WidgetComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsCodeComponentWriter;
-import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.CdfRunJsDateParameterComponentWriter;
+import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsDateParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsExpressionParameterComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsGenericComponentWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.components.legacy.CdfRunJsParameterComponentWriter;
@@ -35,19 +35,11 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsCdaDat
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsDataSourcePropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsGenericPropertyBindingWriter;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.properties.CdfRunJsJFreeChartDataSourcePropertyBindingWriter;
-import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor.DashboardRendererType;
 
-/**
- * @author dcleao
- */
 public class CdfRunJsThingWriterFactory implements IThingWriterFactory {
 
   public CdfRunJsDashboardWriter getDashboardWriter( Dashboard dashboard ) {
-    DashboardWcdfDescriptor wcdf = dashboard.getWcdf();
-    DashboardRendererType rendererType = wcdf.getParsedRendererType();
-
-    return new CdfRunJsDashboardWriter( rendererType, wcdf.isWidget() );
+    return new CdfRunJsDashboardWriter( dashboard.getWcdf().getParsedRendererType() );
   }
 
   public IThingWriter getWriter( Thing t ) throws UnsupportedThingException {

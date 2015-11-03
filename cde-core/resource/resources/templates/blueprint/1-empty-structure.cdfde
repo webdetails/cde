@@ -1,0 +1,15 @@
+{
+	layout: {
+		title: "Empty Sample",
+		rows: [
+		]
+	},
+	components: {
+		rows: [
+		]
+	},
+	"datasources": {
+		rows: [
+		]
+	}
+}

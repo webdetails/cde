@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/CggComponent', 'cdf/lib/jquery'],
-  function(Dashboard, CggComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/CggComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, CggComponent, $) {
 
   /**
    * ## The Cgg Component
@@ -31,7 +34,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggComponent', 'cdf/lib/jquery'],
       priority: 5,
       executeAtStart: true,
       parameters: [["param1","param1"],["param2","param2"]],
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectCgg",
       resourceFile: "test/path",
       listeners: [],
       width: 400,
@@ -41,7 +44,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggComponent', 'cdf/lib/jquery'],
     dashboard.addComponent(cggComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', cggComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', cggComponent.htmlObject);
   
     /**
      * ## The Cgg Component # allows a dashboard to execute update

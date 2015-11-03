@@ -183,10 +183,10 @@ var DefaultQueryRenderer = PromptRenderer.extend({
 var ValuesArrayRenderer = CellRenderer.extend({
 
   multiDimensionArray: true,
+  hasTypedValues: false,//if true, args also have a type
+  autocomplete: true, //disable autocomplete
 
   cssPrefix: "StringList",
-
-  hasTypedValues: false,//if true, args also have a type
 
   typesArray: [],//only used if hasTypedValues
   selectData: {},//to use with autocomplete
@@ -194,6 +194,13 @@ var ValuesArrayRenderer = CellRenderer.extend({
   //used for value input labels
   argTitle: 'Arg',
   valTitle: 'Value',
+
+  popupTitle: 'Parameters',
+
+  argPlaceholderText: 'Insert Text...',
+  valPlaceHolderText: 'Parameters...',
+
+  index: 0,
 
   constructor: function(tableManager) {
     this.base(tableManager);
@@ -207,96 +214,240 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var myself = this;
 
     _editArea.click(function() {
+      var content = myself.getPopupContent();
+      var vals = myself.getInitialValue(value);
+      var index = myself.index = vals.length;
 
-      var arrayValue = value;
-      var content = $(
-          '<div id="' + myself.cssPrefix + '" class="' + myself.cssPrefix + 'Container">\n' +
-          ' <div class="' + myself.cssPrefix + '"></div>\n' +
-          ' <input class="' + myself.cssPrefix + 'AddButton" type="button" value="Add"></input>\n' +
-          '</div>');
+      cdfdd.arrayValue = vals;
 
-      var vals = myself.getInitialValue(arrayValue);
+      var htmlContent = $('<div>')
+          .append(content)
+          .html();
 
-      for(var i = 0; i < vals.length; i++) {
-        myself.addParameter(i, vals[i], content);
-      }
-
-      var index = vals.length;
-      var wrapper = $("<div>", {id: myself.cssPrefix, 'class': myself.cssPrefix + 'Container'});
-      wrapper.append(content);
-      $.prompt(wrapper.html(), {
-
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
-
-        prefix: "popup",
-
+      CDFDDUtils.prompt(htmlContent, {
         callback: function(v, m, f) {
           if(v) {
+            var result = cdfdd.arrayValue;
             // A bit of a hack to make null happen
-            arrayValue = arrayValue.replace(/"null"/g, "null");
-            callback(arrayValue);
-            _editArea.text(arrayValue);
+            result = result.replace(/"null"/g, "null");
+            callback(result);
+            _editArea.text(result);
           }
+          delete cdfdd.arrayValue;
+
         },
 
         loaded: function() {
-            //button bindings
-            myself.onPopupLoad();
-            if(myself.cssPrefix == "StringList") {
-              $('.popup').css("width", "630px");//Since some objects extend from this one this is just to confirm we're resizing the right popup.
-            }
-            var addParamVal = _.bind(myself.addParameterValue, myself);
-            $('.' + myself.cssPrefix + 'AddButton').bind('click', function() {
-              if(myself.multiDimensionArray) {
-                myself.addParameter(index, ["", "", ""], $("#" + myself.cssPrefix));
-              }
-              else {
-                myself.addParameter(index, "", $("#" + myself.cssPrefix));
-              }
-              $("#remove_button_" + index).bind('click', myself.removeParameter);
-              $("#parameter_button_" + index).bind('click', function(){addParamVal(this.id);});
-              myself.addAutoComplete(index);
-              index++;
-            });
-            $('.' + myself.cssPrefix + 'Remove').bind('click', myself.removeParameter);
-            $('.' + myself.cssPrefix + 'Parameter').bind('click', function(){addParamVal(this.id);});
+          for(var i = 0; i < index; i++) {
+            myself.addPopupRow(i, vals[i], $('.popup-list-body'));
+          }
+          myself.popupLoadedCallback($(this));
         },
 
         submit: function(v, m, f) {
-          var array = [];
-          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
-            var index = $(this).attr('id').replace('parameters_', '');
-            var paramVal = myself.getParameterValues(index);
-            if(!myself.isParameterEmpty(paramVal)) {
-              array.push(paramVal); //don't attempt to add deleted lines
-            }
-          });
-
-          arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
+          if(v) {
+            myself.popupSubmitCallback();
+          }
         }
       });
-
-      for(i = 0; i < vals.length; i++) {
-        myself.addAutoComplete(i);
-        myself.addFocusEvent(i);
-      }
-
-      $('.' + myself.cssPrefix + 'Container #arg_0').focus();
-
-      if(!myself.multiDimensionArray) {
-        myself.dragAndDrop();
-      }
     });
 
     _editArea.appendTo(placeholder);
+  },
 
+  getPopupContent: function() {
+    var cssPrefix = this.cssPrefix;
+
+    var rv = "";
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if(re.exec(navigator.userAgent) != null) {
+      rv = parseFloat(RegExp.$1) < 10 ? "ie8" : "";
+    }
+
+    var popupHeader = '' +
+        '<div class="popup-header-container">\n' +
+        '  <div class="popup-title-container">' + this.popupTitle + '</div>\n' +
+        '</div>\n';
+
+    var addRowButton = '' +
+        '<div class="popup-list-buttons add-button-container">\n' +
+        '  <button class="popup-add-row-button">Add</button>\n' +
+        '</div>\n';
+
+    var removeRowButtons = '' +
+        '<div class="popup-list-buttons remove-selection-button-container">\n' +
+        '  <button class="popup-remove-selection">Remove</button>\n' +
+        '  <button class="popup-cancel-selection">Cancel</button>\n' +
+        '</div>';
+
+    var rowListHeaders = this.getRowListHeaders();
+
+    var popupBody = CDFDDUtils.wrapPopupBody(
+        '<div class="popup-body-header clearfix">' + addRowButton + removeRowButtons + rowListHeaders + '  </div>' +
+        '<div class="popup-list-body"></div>\n', 'popup-list-body-container popup-add-mode');
+    return $(popupHeader + popupBody);
+  },
+
+  getRowListHeaders: function() {
+    var html = '';
+    var cssClass = 'popup-list-row-label';
+
+    if(this.multiDimensionArray) {
+      html += '<div class="popup-label popup-arg-label">' + this.argTitle + '</div>' +
+      '<div class="popup-label popup-value-label">' + this.valTitle + '</div>';
+
+      if(this.hasTypedValues) {
+        html += '<div class="popup-label">Type</div>';
+        cssClass += ' typed-label';
+      }
+    }
+
+    return html === "" ? html : '<div class="' + cssClass + '">' + html + '</div>';
+  },
+
+  popupLoadedCallback: function(popupObj) {
+    var myself = this;
+
+
+    popupObj.addClass(myself.cssPrefix + 'Popup array-list-popup');
+
+    myself.onPopupLoad();
+
+    /* Bind Events */
+    myself.addRowButtonEvent();
+    myself.removeSelectedRowsEvent();
+    myself.cancelRowSelectionEvent();
+    myself.dragAndDropHoverEvent('.popup-drag-icon');
+    myself.selectRowToRemoveEvent('.popup-remove-row-select');
+    myself.valueClickEvent('.popup-text-div');
+
+    for(var i = 0; i < myself.index; i++) {
+      myself.addAutoComplete(i);
+    }
+
+    myself.dragAndDrop();
+    myself.handleOverflow();
+
+    //Focus on the first available input field
+    $('.popup-text-input:first').focus();
+  },
+
+  popupSubmitCallback: function() {
+    var array = [];
+    var myself = this;
+    $('.popup-list-row').each(function() {
+      var index = $(this).attr('id').replace('parameters_', '');
+      var paramVal = myself.getRowValues(index);
+      if(!myself.isParameterEmpty(paramVal)) {
+        array.push(paramVal); //don't attempt to add deleted lines
+      }
+    });
+
+    cdfdd.arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
+  },
+
+  /* Popup Events */
+  addRowButtonEvent: function() {
+    var myself = this;
+    $('.popup-add-row-button').click(function() {
+      var container = $('.popup-list-body');
+      var index = myself.index++;
+
+      if(myself.multiDimensionArray) {
+        myself.addPopupRow(index, ["", "", "", ""], container);
+      } else {
+        myself.addPopupRow(index, "", container);
+      }
+
+      //events
+      myself.handleOverflow();
+      myself.selectRowToRemoveEvent("#remove_button_" + index);
+      myself.dragAndDropHoverEvent("#drag_icon_" + index);
+      myself.valueClickEvent('#val_' + index);
+      myself.addAutoComplete(index);
+    });
+  },
+
+  removeSelectedRowsEvent: function() {
+    var myself= this;
+
+    $('.popup-remove-selection').click(function() {
+      var mainContainer = $('.popup-list-body-container');
+
+      $('.popup-remove-selected').remove();
+      mainContainer.addClass('popup-add-mode');
+      mainContainer.removeClass('popup-remove-mode');
+
+      myself.handleOverflow();
+    });
+  },
+
+  cancelRowSelectionEvent: function() {
+    $('.popup-cancel-selection').click(function() {
+      var removeSelClass = 'popup-remove-selected';
+      var mainContainer = $('.popup-list-body-container');
+
+      var rows = $('.' + removeSelClass);
+
+      rows.removeClass(removeSelClass);
+      rows.find('.popup-text-input').prop('disabled', false);
+
+      mainContainer.addClass('popup-add-mode');
+      mainContainer.removeClass('popup-remove-mode');
+
+    });
+  },
+
+  selectRowToRemoveEvent: function(selector) {
+    var myself = this;
+    $(selector).click(function() {
+      var placeholder = $(this).parents('.popup-list-row');
+      var removeSelClass = 'popup-remove-selected';
+      var input = placeholder.find('.popup-text-input');
+      var state = input.prop('disabled');
+
+      placeholder.toggleClass(removeSelClass);
+      input.prop('disabled', !state);
+
+      var mainContainer = $('.popup-list-body-container');
+      var isRemoving = !!mainContainer.has('.' + removeSelClass).length;
+
+      mainContainer.toggleClass('popup-add-mode', !isRemoving);
+      mainContainer.toggleClass('popup-remove-mode', isRemoving);
+
+    }).hover(function() {
+      $(this).parents('.popup-list-row').addClass('popup-remove-hover');
+
+    }, function() {
+      $(this).parents('.popup-list-row').removeClass('popup-remove-hover');
+
+    });
+  },
+
+  valueClickEvent: function(selector) {
+    //default does nothing
+  },
+
+  dragAndDropHoverEvent: function(selector) {
+    $(selector).hover(function() {
+      var container = $(this).parents('.popup-list-row');
+
+      container.find('input').blur();
+      container.addClass('popup-drag-hover');
+
+    }, function() {
+      var container = $(this).parents('.popup-list-row');
+      container.removeClass('popup-drag-hover');
+
+    });
   },
 
   onPopupLoad: function() {
-    //custom renderers may want to do something on popup load, this is here just as a hook 
+    //custom renderers may want to do something on popup load, this is here just as a hook
+  },
+
+  postAddRow: function() {
+    //default does nothing
   },
 
   validate: function(settings, original) {
@@ -307,7 +458,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var initialValue = JSON.parse(value);
 
     if(!initialValue.length) {
-      initialValue = this.multiDimensionArray ? [["", "", ""]] : [""];
+      initialValue = this.multiDimensionArray ? [["", "", "", ""]] : [""];
     }
 
     return initialValue;
@@ -321,85 +472,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
     if(this.multiDimensionArray) {
       return  _.isEmpty(param[0]) && _.isEmpty(param[1]);
     }
-    
+
     return false;
-  },
-
-  /**
-   * @param i line number
-   * @param values {Array|String}
-   * @param container
-   **/
-  addParameter: function(i, values, container) { //TODO: still not done
-    if(this.multiDimensionArray) {
-      if(this.hasTypedValues) {
-        var val = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
-        var type = values.length >= 3 ? values[2] : null;
-        this.addTypedParameters(i, values[0], val, type, container);
-      } else {
-        this.addParameters(i, values[0], (values[1] === undefined ? "" : values[1] === null ? "null" : values[1]), container);
-      }
-    } else {
-      this.addParameters(i, values, "null", container);
-      this.addFocusEvent(i);
-    }
-  },
-
-  addParameters: function(i, arg, val, container) {
-
-    if(val) {
-      val = val.replace(/["]/g, '&quot;');
-    }//for output only, will come back ok
-
-    var parameterButton = this.getParameterButton(i);
-    var removeButton = this.getRemoveButton(i);
-    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
-    var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
-
-    var row = this.getParameterRow(i, argInput, valInput, parameterButton, removeButton);
-
-    var subContainer = container.find('.' + this.cssPrefix);
-    subContainer.append(row);
-    subContainer.find('#parameters_' + i + ' input:eq(0)').focus();
-  },
-
-  addFocusEvent: function(index) {
-    //default does nothing
-  },
-
-  getParameterRow: function(i, argInput, valInput, parameterButton, removeButton){
-    return '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' +
-              argInput +
-              (this.multiDimensionArray ?
-                  ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
-                  removeButton) +
-              '</div>\n';
-  },
-
-  addTypedParameters: function(i, arg, val, type, container) {//ToDo: should be refactored with addParameters, currently not used
-    //used when hasTypedValues=true, assumes multiDimensionalArray
-
-    if(val) {
-      val = val.replace(/["]/g, '&quot;');
-    }//for output only, will come back ok
-
-    var parameterButton = this.getParameterButton(i);
-    var removeButton = this.getRemoveButton(i);
-    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
-    var valInput = this.getTextInput(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
-
-    var typeSelect = this.getTypeSelector('Type', type, 'type_' + i);
-    var row =
-        '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' +
-        argInput +
-        '<div class="' + this.cssPrefix + 'Values">' + valInput + '</div>' + '<div class="' + this.cssPrefix + 'Types">' + typeSelect + parameterButton + removeButton + '<br /></div>\n';
-    container.find('.' + this.cssPrefix).append(row);
   },
 
   /**
    * @returns {Array} Values to be stored for each parameter_<i>
    **/
-  getParameterValues: function(i) {
+  getRowValues: function(i) {
 
     if(!this.multiDimensionArray) {
       return   $('#arg_' + i).val();
@@ -417,91 +497,45 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }
   },
 
-  //TODO: redo, move to another file
+  handleOverflow: function() {
+    var container = $('.popup-list-body');
 
-  //parameters field generation (begin)
-
-  getParameterButton: function(i) {
-    return '<input id="parameter_button_' + i + '" class="' + this.cssPrefix + 'Parameter" type="button" value="..."></input>\n';
-  },
-
-  getRemoveButton: function(i) {
-    return '<input id="remove_button_' + i + '" class="' + this.cssPrefix + 'Remove" type="button" value="-" ></input>\n';
-  },
-
-  getTextInput: function(title, value, cssClass, id) {
-    return '<div class="' + cssClass + '">' +
-        (title != null ? ('<span class="' + this.cssPrefix + 'TextLabel">' + title + '</span>') : '' ) +
-        '<input  id="' + id + '" class="' + this.cssPrefix + 'Text" type="text" value="' + value + '"></input></div>\n';
-  },
-
-  getTypeSelector: function(title, type, id) {
-    var typeOptions = "";
-    for(var j = 0; j < this.typesArray.length; j++) {
-      typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
-      typeOptions += this.typesArray[j] + '</option>';
+    if(!container.length) {
+      return;
     }
-    return '<div class="' + this.cssPrefix + 'Type">' +
-        (title != null ? ('<span class="' + this.cssPrefix + 'TextLabel">' + title + ':</span>' ) : '' ) +
-        '<select  id="' + id + '" class="' + this.cssPrefix + 'Text">' + typeOptions + '</select></div>\n';
-  },
 
-  getAccessCheckbox: function(access, cssClass, id) {
-    var checked = (access == 'private');
-    return '<div class="' + cssClass + '"> <input id="' + id + '" type="checkbox" value="private" ' + (checked ? 'checked="checked"' : '' ) + ' /></div>';
-  },
-  //parameters field generation (end)
-
-  removeParameter: function() {
-    $("#" + this.id.replace("remove_button_", "parameters_")).remove();
-  },
-
-  addParameterValue: function(id) {
-    var content = '<div id="parameterList" class="StringListParameterContainer">';
-    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
-      return filter.properties[0].value;
-    });
-    var isWidget = cdfdd.getDashboardWcdf().widget;
-
-    if(filters.length == 0) {
-      content += "<p>No Parameters!</p>";
+    var element = container.get(0);
+    if(element.offsetHeight < element.scrollHeight) {
+      container.addClass('overflow-container');
     } else {
-      content += '<p>Choose Parameter:</p><ul class="StringListParameter">';
-      $.each(filters, function(i, filter) {
-        var value = filter.properties[0].value;
-
-        if(isWidget && $.inArray(value, cdfdd.getDashboardWcdf().widgetParameters) > -1) {
-          content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'${p:' + value + '}\')">' + value + '</div></li>';
-        } else {
-          content += '<li><div onClick="ValuesArrayRenderer.setParameterValue(\'' + id + '\',\'' + value + '\')">' + value + '</div></li>';
-        }
-      });
-      content += '</ul>';
+      container.removeClass('overflow-container');
     }
-
-    cdfdd.impromptu = $.prompt(content + '</div>', {
-      buttons: {
-        Cancel: false
-      },
-      prefix: 'popup',
-      focus: 1
-    });
   },
+
+  /***************
+   * AutoComplete Functions
+   *****/
 
   addAutoComplete: function(index) {
+    if(!this.autocomplete) {
+      return undefined;
+    }
+
     var elemID = (this.multiDimensionArray ? '#val_' : '#arg_') + index;
-    var placeHolder = '#' + this.cssPrefix;
+
     var myself = this;
     $(elemID).autocomplete({
-      appendTo: placeHolder,
+      appendTo: '.popup-list-body-container',
       source: function(req, add) {
         myself.autoCompleteRequest(req, add);
       },
       minLength: 0,
       delay: 300,
+
       select: function(event, ui) {
         $(elemID).find('input').val(ui.item.value);
       },
+
       focus: function(event, data) {
         if(data != undefined) {
           $(elemID).val(data.item.value);
@@ -514,10 +548,6 @@ var ValuesArrayRenderer = CellRenderer.extend({
     });
   },
 
-  getData: function() {
-    return this.selectData || {};
-  },
-
   autoCompleteRequest: function(req, add) {
     var results = $.map(this.getData(), function(v, k) {
       return k;
@@ -528,14 +558,159 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }));
   },
 
-  dragAndDrop: function(index) {
-    var myself = this;
-    $('div.popupcontainer .' + this.cssPrefix).sortable({
+  getData: function() {
+    var data = {};
+
+    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
+      return filter.properties[0].value;
+    });
+
+    var isWidget = cdfdd.getDashboardWcdf().widget;
+    if(filters.length > 0) {
+      $.each(filters, function(i, filter) {
+        var value = filter.properties[0].value;
+        if(isWidget && $.inArray(value, cdfdd.getDashboardWcdf().widgetParameters) > -1) {
+          data[value] = '${p:' + value + '}';
+        } else {
+          data[value] = value;
+        }
+      });
+    } else {
+      data[''] = '';
+    }
+
+    return data;
+  },
+
+  /***************
+   * Drag&Drop Functions
+   *****/
+
+  dragAndDrop: function() {
+    $('div.popup .popup-list-body').sortable({
       axis: 'y',
       cursor: 'auto',
-      placeholder: 'popupSortableHolder'
+      placeholder: 'popup-sortable-holder',
+      delay: 100,
+
+      sort: function(event, ui) {
+        var a = "";
+      }
     });
+  },
+
+
+  /***************
+   * UI Functions
+   *****/
+
+  addPopupRow: function(index, values, container) {
+
+    var arg, value, type, access, row;
+    if(this.multiDimensionArray) {
+      arg = values[0];
+      value = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
+      values[1] = value;
+      if(this.hasTypedValues) {
+        type = values[2];
+        access = values[3];
+
+        row = this.buildTypedRow(index, arg, value, type, access);
+      } else {
+        row = this.buildMultiDimensionRow.apply(this, [index].concat(values));
+      }
+    } else {
+      arg = values;
+      row = this.buildSingleDimensionRow(index, arg);
+    }
+
+    container.append(row);
+    container.find('#parameters_' + index + ' input:eq(0)').focus();
+
+    this.postAddRow(container, index);
+  },
+
+  buildSingleDimensionRow: function(index, arg) {
+    var argSection = this.getArgSection(index, arg);
+
+    return this.wrapPopupRow(index, 'single-dimension-row', argSection);
+  },
+
+  buildMultiDimensionRow: function(index, arg, val) {
+    var argSection = this.getArgSection(index, arg);
+    var valSection = this.getValueSection(index, val);
+
+    return this.wrapPopupRow(index, 'multi-dimension-row', argSection + valSection);
+  },
+
+  buildTypedRow: function(index, arg, val, type, access) {
+    var argSection = this.getArgSection(index, arg);
+    var valSection = this.getValueSection(index, val);
+
+    var typeSection = this.getTypeSelector(index, type);
+    var accessSection = this.getAccessCheckbox(index, access);
+
+    return this.wrapPopupRow(index, 'typed-row', argSection + valSection + typeSection + accessSection);
+  },
+
+  wrapPopupRow: function(index, cssClass, html) {
+    var removeButton = this.getRemoveRowButton(index);
+    var dragIcon = this.getDragIcon(index);
+
+    return '' +
+        '<div id="parameters_' + index + '" class="popup-list-row ' + cssClass + '">' +
+        removeButton + html + dragIcon + '</div>';
+  },
+
+  getRemoveRowButton: function(index) {
+    return '<span type="button" id="remove_button_' + index + '" class="popup-remove-row-select"></span>';
+  },
+
+  getArgSection: function(index, value) {
+    return '' +
+        '<div class="popup-arg-container">' +
+        '  <input id="arg_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '"></input>' +
+        '</div>';
+  },
+
+  getValueSection: function(index, value) {
+    return '' +
+        '<div class="popup-value-container">' +
+        '  <input id="val_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '"></input>' +
+        '</div>';
+  },
+
+  getDragIcon: function(index) {
+    return '<div id="drag_icon_' + index + '" class="popup-drag-icon">' +
+           '  <span class="drag-icon-holder"></span><div class="drag-icon-overlay"></div>' +
+           '</div>';
+  },
+
+  getTypeSelector: function(index, type) {
+    var typeOptions = "";
+    var id = "type_" + index;
+
+    for(var j = 0; j < this.typesArray.length; j++) {
+      typeOptions += (this.typesArray[j] == type) ? '<option selected>' : '<option>';
+      typeOptions += this.typesArray[j] + '</option>\n';
+    }
+    return '' +
+        '<div class="popup-input-container popup-type-container">\n' +
+        '  <select id="' + id + '" class="popup-select">' + typeOptions + '</select>' +
+        '</div>\n';
+  },
+
+  getAccessCheckbox: function(index, access) {
+    var checked = access === 'private' ? 'checked' : '';
+    var id = "access_" + index;
+
+    return '<div class="popup-checkbox-container">' +
+    '  <input type="checkbox" id="' + id + '" name="' + id + '" ' + checked + '>' +
+    '  <label class="popup-input-label" for="' + id + '">Private</label>' +
+    '</div>';
   }
+  //parameters field generation (end)
+
 }, {
   setParameterValue: function(id, value) {
     $("#" + id.replace("parameter_button_", "val_")).val(value);
@@ -543,10 +718,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
   }
 });
 
-
 var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
-  arrayValue: null,
+  autocomplete: false,
+  popupTitle: 'Extension Points',
+
+  valPlaceHolderText: 'Click to edit...',
 
   constructor: function(tableManager) {
     this.base(tableManager);
@@ -554,130 +731,46 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
     this.logger.debug("Creating new EditorValuesArrayRenderer");
   },
 
-  render: function(placeholder, value, callback) {
+  onPopupLoad: function() {
+    $('.popup-text-div').tooltip();
+  },
 
-    var _editArea = $("<td>" + ( value.length > 30 ? ( value.substring(0, 20) + " (...)" ) : value ) + "</td>");
+  valueClickEvent: function(selector) {
     var myself = this;
+    $(selector).click(function() {
+      var values = cdfdd.arrayValue;
+      var param_i = this.id.replace("val_", "");
+      var value = values[param_i] != undefined ? values[param_i][1] : "";
 
-    _editArea.click(function() {
+      var editor = new EditExtensionPointsRenderer(myself.getTableManager());
+      editor.render($(this), value, myself.editorCallback);
+    })
+  },
 
-      var arrayValue = value;
-      var content = $(
-          "<div id='" + myself.cssPrefix + "' class='" + myself.cssPrefix + "Container'>" +
-          "  <div class='" + myself.cssPrefix + "'></div>\n" +
-          "    <input class='" + myself.cssPrefix + "AddButton' type='button' value='Add'></input>");
-
-      var vals = myself.getInitialValue(value);
-      cdfdd.arrayValue = vals;
-      var index = vals.length;
-
-      for(var i = 0; i < index; i++) {
-        myself.addParameters(i, vals[i][0], vals[i][1], content);
-      }
-
-      var htmlContent = content.wrap("<div>").parent().html();
-
-      $.prompt(htmlContent, {
-
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
-
-        prefix: "popup",
-
-        callback: function(v, m, f) {
-          if(v) {
-            // A bit of a hack to make null happen
-            arrayValue = arrayValue.replace(/"null"/g, "null");
-            callback(arrayValue);
-            _editArea.text(arrayValue);
-          }
-          delete cdfdd.arrayValue;
-        },
-
-        loaded: function() { //button bindings
-          $('.popup').css("width", "630px");
-          $('.' + myself.cssPrefix + 'AddButton').click(function() {
-            myself.addParameters(index, "", "", $("#" + myself.cssPrefix));
-
-            $("#remove_button_" + index).click(myself.removeParameter);
-            $("#parameter_button_" + index).click(function() {
-              myself.editorInit(this, cdfdd.arrayValue);
-            });
-
-            index++;
-          });
-
-          $('.' + myself.cssPrefix + 'Remove').click(myself.removeParameter);
-          $('.' + myself.cssPrefix + 'Parameter').click(function() {
-            myself.editorInit(this, cdfdd.arrayValue);
-          });
-          $('.' + myself.cssPrefix + 'ValueDiv').tooltip();
-
-        },
-
-        submit: function(v, m, f) {
-          var array = [];
-
-          $('.' + myself.cssPrefix + 'ParameterHolder').each(function() {
-            var index = $(this).attr('id').replace('parameters_', '');
-            var paramVal = myself.getParameterValues(index);
-            if(!myself.isParameterEmpty(paramVal)) {
-              array.push(paramVal); //don't attempt to add deleted lines
-            }
-          });
-
-          arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
-        }
-      });
-      //end of $.prompt
-    });
-    //end of _editArea.click
-    _editArea.appendTo(placeholder);
+  getValueSection: function(index, value) {
+    var tooltip = value != "" ? $("<a>").text("<pre>" + value + "</pre>").html() : "Click to Edit...";
+    return '' +
+        '<div class="popup-value-container">' +
+        '  <div id="val_' + index + '" class="popup-text-div" title="' + tooltip + '" placeholder="' + this.valPlaceHolderText + '">' + this.getFormattedValue(value) + '</div>' +
+        '</div>';
   },
 
   editorCallback: function(value, index) {
     var divValue = value;
-    if(divValue.length > 40) {
-      divValue = divValue.substring(0, 30) + " (...)";
+    if(divValue.length > 35) {
+      divValue = divValue.substring(0, 25) + " (...)";
     }
 
-    $("#val_" + index).text(divValue);
+    var $val = $("#val_" + index);
+    $val.text(divValue);
 
     if(value != "") {
       // CDF-271 jQueryUI tooltip bug #8861 XSS Vulnerability, no HTML allowed in an element's title
-      $("#val_" + index).tooltip({content: "<pre>" + value + "</pre>"});
+      $val.tooltip({content: "<pre>" + value + "</pre>"});
     }
 
     cdfdd.arrayValue[index] = [ $("#arg_" + index).val(), value ];
 
-  },
-
-  editorInit: function(placeholder, values) {
-    var param_i = placeholder.id.replace("parameter_button_", "");
-    var value = values[param_i] != undefined ? values[param_i][1] : "";
-
-    var editor = new EditExtensionPointsRenderer(this.getTableManager());
-    editor.render($(placeholder), value, this.editorCallback);
-  },
-
-  addParameters: function(i, arg, val, container) {
-
-    val = this.escapeOutputValue(val); //for output only, will come back ok
-
-    var parameterButton = this.getParameterButton(i);
-    var removeButton = this.getRemoveButton(i);
-
-    var argInput = this.getTextInput(this.argTitle, arg, this.cssPrefix + 'Args', 'arg_' + i);
-    var valDiv = this.getValueDiv(this.valTitle, val, this.cssPrefix + 'Val', 'val_' + i);
-    var row = "<div id='parameters_" + i + "' class='" + this.cssPrefix + "ParameterHolder'>\n" + argInput +
-        "<div class='" + this.cssPrefix + "Values'>" + valDiv + parameterButton + removeButton + "</div><br />" +
-        "</div>\n";
-
-    var subContainer = container.find('.' + this.cssPrefix);
-    subContainer.append(row);
-    subContainer.find('#parameters_' + i + ' input:eq(0)').focus();
   },
 
   escapeOutputValue: function(val) {
@@ -689,27 +782,22 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
     }
   },
 
-  getParameterValues: function(i) {
+  getRowValues: function(i) {
     var arg = $('#arg_' + i).val();
-    var value = cdfdd.arrayValue[i] != undefined ? cdfdd.arrayValue[i][1] : "";
+    var value;
+
+    if(arg != null) {
+      value = cdfdd.arrayValue[i] != undefined ? cdfdd.arrayValue[i][1] : "";
+    }
 
     return [arg, value];
   },
 
   getFormattedValue: function(_value) {
-
     if(_value.length > 40) {
       _value = _value.substring(0, 30) + " (...)";
     }
     return _value;
-  },
-
-  getValueDiv: function(title, value, cssClass, id) {
-    var tooltip = value != "" ? "<pre>" + value + "</pre>" : "";
-    return "<div class='" + cssClass + "'>" +
-        (title != null ? "<span class='" + this.cssPrefix + "TextLabel'>" + title + "</span>" : "") +
-        "<div id='" + id + "' class='" + this.cssPrefix + "ValueDiv' title='" + tooltip + "'>" + this.getFormattedValue(value) +
-        "</div></div>\n";
   }
 
 });
@@ -719,53 +807,37 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
  */
 var ArrayRenderer = ValuesArrayRenderer.extend({
 
+  popupTitle: 'String Array',
   multiDimensionArray: false,
-
   cssPrefix: "StringArray",
 
   constructor: function(tableManager) {
     this.base(tableManager);
     this.logger = new Logger("ArrayRenderer");
     this.logger.debug("Creating new ArrayRenderer");
-  },
-
-  getTextInput: function(value, i) {
-    return '<input  id="arg_' + i + '" class="' + this.cssPrefix + 'Text" type="text" value="' + value + '"></input>';
-  },
-
-  addParameters: function(i, arg, val, container) {
-
-    if(val) {
-      val = val.replace(/["]/g, '&quot;');
-    }//for output only, will come back ok
-
-    var myself = this;
-    var removeButton = this.getRemoveButton(i);
-    var argInput = this.getTextInput(arg, i);
-
-    var row = '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">' +
-        removeButton + argInput + '<div class="' + this.cssPrefix + 'DragIcon"><span/></div></div>\n';
-
-    var subContainer = container.find('.' + this.cssPrefix);
-    subContainer.append(row);
-  },
-
-  addFocusEvent: function(index) {
-    var parameterInput = $('.' + this.cssPrefix + 'Container #arg_' + index);
-    var myself = this;
-    parameterInput
-        .focus(function(e) {
-          $(this).parent().addClass(myself.cssPrefix + 'Focus');
-        })
-        .blur(function(e) {
-          $(this).parent().removeClass(myself.cssPrefix + 'Focus');
-        });
-
-    parameterInput.focus();
   }
+
+});
+
+var ColHeadersArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Headers'
+});
+
+var ColFormatsArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Formats'
+});
+
+var ColWidthsArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Column Widths'
+});
+
+var ColSortableArrayRenderer = ArrayRenderer.extend({
+  popupTitle: 'Sortable Columns'
 });
 
 var ColTypesArrayRender = ArrayRenderer.extend({
+  popupTitle: 'Column Types',
+
   getData: function() {
     var data = this.selectData || {};
     _.extend(data, {
@@ -778,36 +850,79 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 });
 
 var IndexArrayRenderer = ArrayRenderer.extend({
-  argTitle: 'Index'
+  autocomplete: false,
+  popupTitle: 'Output Options'
 });
 
 //arg, value, no param button, //TODO: own css
 var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
-  //disable parameter button
-  getParameterButton: function(i) {
-    return '';
-  }
+  autocomplete: false
 });
 
 var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
+  popupTitle: 'Sort By',
   argTitle: 'Index',
   valTitle: 'Order'
 });
 
 //used by ExtraOptions
 var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
+  popupTitle: 'Options',
   argTitle: 'Option'
 });
 
 var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
+  popupTitle: 'Cache Keys',
   argTitle: 'Key',
-  valTitle: 'Value'
+  valTitle: 'Value',
+  onPopupLoad: function(){
+    var lh = $("#popupbox .popup-list-row-label");
+    lh.find(".popup-label.popup-value-label").addClass('popup-value-label-small');
+    lh.find(".popup-label.popup-arg-label").addClass('popup-arg-label-small');
+    lh.append('<div class="popup-label popup-default-label">Default</div>');
+  },
+  getRowValues: function(i) {
+      var result = [];
+      result.push($('#arg_' + i).val());//key
+      result.push($('#val_' + i).val());//value
+      result.push($('#def_' + i).val());//default
+      return result;
+  },
+  getArgSection: function(index, value) {
+    return '' +
+        '<div class="popup-arg-container-small">' +
+        '  <input id="arg_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Cache Key..."></input>' +
+        '</div>';
+  },
+  getValueSection: function(index, value) {
+    return '' +
+        '<div class="popup-value-container-small">' +
+        '  <input id="val_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Value..."></input>' +
+        '</div>';
+  },
+  getDefaultSection: function(index, value) {
+    return '' +
+        '<div class="popup-default-container">' +
+        '  <input id="def_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="Default..."></input>' +
+        '</div>';
+  },
+  buildMultiDimensionRow: function(index, arg, val, def) {
+    var argSection = this.getArgSection(index, arg);
+    var valSection = this.getValueSection(index, val);
+    var defaultSection = this.getDefaultSection(index, def);
+
+    return this.wrapPopupRow(index, 'multi-dimension-row', argSection + valSection + defaultSection);
+  }
 });
 
 var CdaParametersRenderer = ValuesArrayRenderer.extend({
   cssPrefix: "ParameterList",
+
   argTitle: 'Name',
   valTitle: 'Value',
+
+  valPlaceHolderText: 'Insert Text...',
+
   hasTypedValues: true,
   //TODO: this should be fetched from somewhere
   typesArray: ['String', 'Integer', 'Numeric', 'Date', 'StringArray', 'IntegerArray', 'NumericArray', 'DateArray'],
@@ -815,7 +930,7 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
   /**
    * @returns {Array}
    **/
-  getParameterValues: function(i) {
+  getRowValues: function(i) {
     var name = $("#arg_" + i).val();
     var value = $("#val_" + i).val();
     var type = $("#type_" + i).val();
@@ -823,65 +938,214 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     return [name, value, type, access];
   },
 
-  addParameter: function(i, values, container) {
-
-    var arg = values[0];
-    var val = values[1];
-    var type = values[2];
-    var access = values[3];
-
-    if(val === undefined) {
-      val = "";
-    } else if(val === null) {
-      val = "null";
-    } else if(val) {
-      val = val.replace(/["]/g, '&quot;');
-    }//for output only, will come back ok
-
-    var parameterButton = this.getParameterButton(i);
-    var removeButton = this.getRemoveButton(i);
-
-    var argInput = this.getTextInput(null, arg, this.cssPrefix + 'Args', 'arg_' + i);
-    var valInput = this.getTextInput(null, val, this.cssPrefix + 'Val', 'val_' + i);
-    var typeSelect = this.getTypeSelector(null, type, 'type_' + i);
-    var accessCb = this.getAccessCheckbox(access, this.cssPrefix + 'Access', 'access_' + i);
-
-
-    var row = '<tr id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">';
-    row += '<td>' + argInput + '</td>';
-    row += '<td>' + valInput + '</td>';
-    row += '<td>' + typeSelect + '</td>';
-    row += '<td>' + accessCb + '</td>';
-    row += '<td>' + removeButton + '</td>';
-    row += '</tr>';
-
-    if(i == 0) { //add table and header
-      container.find('.' + this.cssPrefix).append('<table> </table>');
-      var hdr = '<tr>';
-      hdr += '<th><span class="' + this.cssPrefix + 'TextLabel">' + this.argTitle + '</span></th>';
-      hdr += '<th><span class="' + this.cssPrefix + 'TextLabel">' + this.valTitle + '</span></th>';
-      hdr += '<th><span class="' + this.cssPrefix + 'TextLabel">Type</span></th>';
-      hdr += '<th><span class="' + this.cssPrefix + 'TextLabel">Private?</span></th>';
-      hdr += '<th><span class="' + this.cssPrefix + 'TextLabel"></span></th>';
-      hdr += '</tr>';
-      row = hdr + row;
-    }
-
-    var subContainer = container.find('.' + this.cssPrefix + ' table');
-    subContainer.append(row);
-    subContainer.find('#parameters_' + i + ' input:eq(0)').focus();
+  postAddRow: function(container, index) {
+    var selector = container.find("#type_" + index);
+    CDFDDUtils.buildPopupSelect(selector, {});
   }
-
 });
 
 var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
+  autocomplete: false,
+  popupTitle: 'Columns',
   argTitle: 'Index',
   valTitle: 'Name'
 });
 
 var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
+  autocomplete: false,
+  popupTitle: 'Calculated Columns',
   argTitle: 'Name',
   valTitle: 'Form.'
+});
+
+var abstractMapperRenderer = ValuesArrayRenderer.extend({
+
+  constructor: function(tableManager) {
+    this.base(tableManager);
+    this.logger = new Logger(this.mapperType);
+    this.logger.debug("Creating new " + this.mapperType);
+  },
+
+  onPopupLoad: function() {
+    var requestUrl = this.getRequestUrl();
+    var tableData = this.tableManager.getTableModel().data;
+    for (var i = 0; i < tableData.length; i++) {
+      if (tableData[i].name == "dashboardPath") {
+        this.dashboardPath = tableData[i].value;
+        break;
+      }
+    }
+    var successFun = _.bind(this.requestSuccess, this);
+    var errorFun = _.bind(this.requestError, this);
+
+    $.ajax({
+      async: true,
+      method: "get",
+      dataType: "json",
+      url: requestUrl + this.dashboardPath,
+      success: successFun,
+      error: errorFun
+    });
+  },
+
+  addAutoComplete: function(index) {
+    if(!this.autocomplete) {
+      return undefined;
+    }
+
+    var myself = this;
+    $('#arg_' + index).autocomplete({
+      appendTo: '.popup-list-body-container',
+
+      source: function(req, add) {
+        myself.autoCompleteRequest(req, add);
+      },
+      minLength: 0,
+      delay: 300,
+
+      select: function(event, ui) {
+        $('#arg_' + index).find('input').val(ui.item.value);
+      },
+
+      focus: function(event, data) {
+        if(data != undefined) {
+          $('#arg_' + index).val(data.item.value);
+        }
+      },
+      onsubmit: function(settings, original) {
+        return myself.validate($('input', this).val());
+      },
+      height: 12
+    });
+
+    $('#val_' + index).autocomplete({
+      appendTo: '.popup-list-body-container',
+
+      source: function(req, add) {
+        myself.otherAutoCompleteRequest(req, add);
+      },
+      minLength: 0,
+      delay: 300,
+
+      select: function(event, ui) {
+        $('#val_' + index).find('input').val(ui.item.value);
+      },
+
+      focus: function(event, data) {
+        if(data != undefined) {
+          $('#val_' + index).val(data.item.value);
+        }
+      },
+      onsubmit: function(settings, original) {
+        return myself.validate($('input', this).val());
+      },
+      height: 12
+    });
+  },
+
+  autoCompleteRequest: function(req, add) {
+    var results = $.map(this.getData(), function(v, k) {
+      return k;
+    });
+
+    add($.grep(results, function(elt, i) {
+      return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
+    }));
+  },
+
+  otherAutoCompleteRequest: function(req, add) {
+    var results = $.map(this.getOtherData(), function(v, k) {
+      return k;
+    });
+
+    add($.grep(results, function(elt, i) {
+      return elt.toLowerCase().indexOf(req.term.toLowerCase()) >= 0;
+    }));
+  },
+
+  getOtherData: function() {
+    var data = {};
+
+    var filters = this[this.dataSaveProp];
+
+    var isWidget = cdfdd.getDashboardWcdf().widget;
+    if(filters.length > 0) {
+      $.each(filters, function(i, filter) {
+        var value = filter;
+        if(isWidget && $.inArray(value, cdfdd.getDashboardWcdf().widgetParameters) > -1) {
+          data[value] = '${p:' + value + '}';
+        } else {
+          data[value] = value;
+        }
+      });
+    } else {
+      data[''] = '';
+    }
+
+    return data;
+  },
+  getData: function() {
+    var data = {};
+    var filterCategory = this.datasourceFiltering ?
+      Panel.getPanel( DatasourcesPanel.MAIN_PANEL).getDatasources() :
+      Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+
+    var filters = _.sortBy(filterCategory, function (filter) {
+      return filter.properties[0].value;
+    });
+
+    var isWidget = cdfdd.getDashboardWcdf().widget;
+    if(filters.length > 0) {
+      $.each(filters, function(i, filter) {
+        var value = filter.properties[0].value;
+        if(isWidget && $.inArray(value, cdfdd.getDashboardWcdf().widgetParameters) > -1) {
+          data[value] = '${p:' + value + '}';
+        } else {
+          data[value] = value;
+        }
+      });
+    } else {
+      data[''] = '';
+    }
+    return data;
+  }
+
+});
+
+var ParameterMappingRenderer = abstractMapperRenderer.extend({
+  mapperType: "ParameterMappingRenderer",
+  popupTitle: 'Parameter Mapping',
+  argTitle: 'Map from this dashboard',
+  valTitle: 'Map to other dashboard',
+  dataSaveProp: "otherDashboardParameters",
+  getRequestUrl: function() {
+    return wd.helpers.editor.getDashboardParametersUrl();
+  },
+  requestSuccess: function(data) {
+    this.otherDashboardParameters = data ? data.parameters || [] : [];
+  },
+  requestError: function(){
+    this.otherDashboardParameters = [];
+  }
+});
+
+var DataSourceMappingRenderer = abstractMapperRenderer.extend({
+  mapperType: "DataSourceMappingRenderer",
+  popupTitle: 'Data Source Mapping',
+  argTitle: 'Map from this dashboard',
+  valTitle: 'Map to other dashboard',
+  dataSaveProp: "otherDashboardDataSources",
+  valPlaceHolderText: 'Datasources...',
+  datasourceFiltering: true,
+  getRequestUrl: function() {
+    return wd.helpers.editor.getDashboardDataSourcesUrl();
+  },
+  requestSuccess: function(data) {
+    this.otherDashboardDataSources = data ? data.dataSources || [] : [];
+  },
+  requestError: function(){
+    this.otherDashboardDataSources = [];
+  }
 });
 
 var CdaQueryRenderer = PromptRenderer.extend({
@@ -967,125 +1231,4 @@ var JndiRenderer = SelectRenderer.extend({
       }
     });
   }
-});
-
-var ParameterMappingRenderer = ValuesArrayRenderer.extend({
-  argTitle: '',
-  valTitle: '',
-  onPopupLoad: function() {
-    var myself = this;
-    var getParametersUrl = wd.helpers.editor.getDashboardParametersUrl();
-    var tableData = this.tableManager.getTableModel().data;
-    for (var i = 0; i < tableData.length; i++) {
-      if (tableData[i].name == "dashboardPath") {
-        this.dashboardPath = tableData[i].value;
-        break;
-      }
-    }
-    $.ajax({
-      async: true,
-      method: "get",
-      dataType: "json",
-      url: getParametersUrl + this.dashboardPath,
-      success: function(data) {
-        myself.otherDashboardParameters = data ? data.parameters || [] : [];
-      },
-      error: function(){
-        myself.otherDashboardParameters = [];
-      }
-    });
-  }, 
-
-  constructor: function(tableManager) {
-    this.base(tableManager);
-    this.logger = new Logger("ParameterMappingRenderer");
-    this.logger.debug("Creating new ParameterMappingRenderer");
-  },
-
-  addParameterValue: function(id) {
-    var leftContent = '<div id="parameterListLeft" class="StringListParameterContainer" style="float:left;">';
-    var rightContent = '<div id="parameterListRight" class="StringListParameterContainer" style="float:left;">';
-
-    var filters = _.sortBy(Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(), function (filter) {
-      return filter.properties[0].value;
-    });
-
-    rightContent += '<p>Map to other dashboard:</p><ul class="StringListParameter">';
-    if (this.otherDashboardParameters.length == 0) {
-      rightContent += '<li><div><p>No Parameters!<p></div></li>';
-    } else {
-      for (var i = 0; i < this.otherDashboardParameters.length; i++) {
-        rightContent += '<li><div onClick="ParameterMappingRenderer.preRegisterValue(this, false, \'' + this.otherDashboardParameters[i] + '\')">' + this.otherDashboardParameters[i] + '</div></li>';
-      }
-    }
-    rightContent += '</ul></div>';
-
-    leftContent += '<p>Map from this dashboard:</p><ul class="StringListParameter">';
-    if(filters.length == 0) {
-      leftContent += '<li><div><p>No Parameters!<p></div></li>';
-    } else {
-      $.each(filters, function(i, filter) {
-        var value = filter.properties[0].value;
-          leftContent += '<li><div onClick="ParameterMappingRenderer.preRegisterValue( this, true, \'' + value + '\')">' + value + '</div></li>';
-        });
-    }
-    leftContent += '</ul></div>';
-
-    var content = leftContent + rightContent;
-
-    cdfdd.impromptu = $.prompt(content, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
-      prefix: 'popup',
-      focus: 1,
-      submit: _.bind(function(e,v,m,f){
-        if (e) {
-          $("#" + id.replace("parameter_button_", "arg_")).val(ParameterMappingRenderer.thisParam || "");
-          $("#" + id.replace("parameter_button_", "val_")).val(ParameterMappingRenderer.otherParam || "");
-        }
-        ParameterMappingRenderer.thisParam = undefined;
-        ParameterMappingRenderer.otherParam = undefined;
-      }, this)
-    });
-
-  },
-
-  getParameterRow: function(i, argInput, valInput, parameterButton, removeButton) {
-    var parameterRow = '<div id="parameters_' + i + '" class="' + this.cssPrefix + 'ParameterHolder">\n' + argInput +
-              (this.multiDimensionArray ?
-                ('<div class="' + this.cssPrefix + 'Values">' + valInput + parameterButton + removeButton + '</div><br />') :
-                removeButton) + '</div>\n';
-
-    if ( ($("#StringList").length > 0 && $("#paramMappHeader").length === 0) || i === 0 ) {
-      return '<div id="paramMappHeader">' +
-              '<div class="StringListArgs">Map from this dashboard</div>' +
-              '<div class="StringListValues">Map to other dashboard</div>' +
-            '</div>' + parameterRow;
-    }
-    return parameterRow;
-  },
-
-  removeParameter: function() {
-    var paramMappTitle = $("#paramMappHeader");
-    $("#" + this.id.replace("remove_button_", "parameters_")).remove();
-    if(paramMappTitle && paramMappTitle.siblings().length === 0) {
-      paramMappTitle.remove();
-    }
-  }
-},{
-    preRegisterValue: function(elem, left, val) {
-      if (left) {
-        ParameterMappingRenderer.thisParam = val;
-      } else {
-        ParameterMappingRenderer.otherParam = val;
-      }
-      $(elem)
-        .parentsUntil(".StringListParameter")
-          .parent()
-            .find("li div")
-              .removeClass('selected');
-      $(elem).addClass('selected');
-    }
 });

@@ -19,14 +19,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -34,8 +35,11 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.DocumentException;
 import org.xml.sax.EntityResolver;
 
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngine;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
+import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cpf.Util;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IContentAccessFactory;
@@ -44,8 +48,7 @@ import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 public class Utils {
-
-  //  private static Log logger = LogFactory.getLog(Utils.class);
+  private static final Log logger = LogFactory.getLog( Utils.class );
 
   private static final String NEWLINE = System.getProperty( "line.separator" );
 
@@ -78,7 +81,7 @@ public class Utils {
       uri = new URI( "/pentaho" );
       System.out.println( uri.getPath() );
     } catch ( URISyntaxException ex ) {
-      Logger.getLogger( Utils.class.getName() ).log( Level.SEVERE, null, ex );
+      logger.error( ex.getMessage(), ex );
     }
   }
 
@@ -148,7 +151,7 @@ public class Utils {
   /**
    * Create a <code>Document</code> from the contents of a file.
    *
-   * @param file
+   * @param file the file with the <code>Document</code> content
    * @param resolver EntityResolver an instance of an EntityResolver that will resolve any external URIs. See the docs
    *                 on EntityResolver. null is an acceptable value.
    * @return <code>Document</code> initialized with the xml in <code>strXml</code>.
@@ -387,9 +390,8 @@ public class Utils {
 
   public static IReadAccess getSystemOrUserReadAccess( String filePath ) {
     IReadAccess readAccess = null;
-    if ( filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-        .endsWith( ".cdfde" ) ) ) {
-      readAccess = getSystemReadAccess( filePath.split( "/" )[2], null );
+    if ( isSystemDashboard( filePath ) ) {
+      readAccess = getSystemReadAccess( filePath.split( "/" )[ 2 ], null );
     } else if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.EXECUTE ) ) {
       readAccess = CdeEnvironment.getUserContentAccess();
     }
@@ -397,26 +399,27 @@ public class Utils {
   }
 
   public static IRWAccess getSystemOrUserRWAccess( String filePath ) {
-    IRWAccess rwAccess = null;
-    if ( CdeEngine.getEnv().getUserSession().isAdministrator() && (
-        filePath.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( filePath.endsWith( ".wcdf" ) || filePath
-        .endsWith( ".cdfde" ) ) ) ) {
-      rwAccess = getSystemRWAccess( filePath.split( "/" )[2], null );
-    } else if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+    if ( CdeEnvironment.isAdministrator() && isSystemDashboard( filePath ) ) {
+      return getSystemRWAccess( filePath.split( "/" )[ 2 ], null );
+    }
+    return getUserRWAccess( filePath );
+  }
 
-      if ( CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
-        rwAccess = CdeEnvironment.getUserContentAccess();
+  public static IRWAccess getUserRWAccess( String filePath ) {
+    if ( CdeEnvironment.getUserContentAccess().fileExists( filePath ) ) {
+      if ( CdeEnvironment.canCreateContent()
+          && CdeEnvironment.getUserContentAccess().hasAccess( filePath, FileAccess.WRITE ) ) {
+        return CdeEnvironment.getUserContentAccess();
       } else {
         return null;
       }
-    } else if ( CdeEnvironment.getUserContentAccess()
+    } else if ( CdeEnvironment.canCreateContent() && CdeEnvironment.getUserContentAccess()
         .hasAccess( "/" + FilenameUtils.getPath( filePath ), FileAccess.WRITE ) ) {
       // if file does not exist yet (ex: 'save as...'), then hasAccess method will not work on the file itself;
       // it should be checked against destination folder
-      rwAccess = CdeEnvironment.getUserContentAccess();
+      return CdeEnvironment.getUserContentAccess();
     }
-    return rwAccess;
-
+    return null;
   }
 
   public static boolean isValidJsonArray( String jsonString ) {
@@ -445,7 +448,7 @@ public class Utils {
     // starts with upper case character
     if ( !Character.isUpperCase( componentType.charAt( 0 ) ) ) {
       sb.append( Character.toUpperCase( componentType.charAt( 0 ) ) )
-          .append( componentType.substring( 1 ) );
+        .append( componentType.substring( 1 ) );
     } else {
       sb.append( componentType );
     }
@@ -462,19 +465,73 @@ public class Utils {
     return CdeEngine.getInstance().getEnvironment();
   }
 
-  public static String getURLDecoded( String s ){
-    return getURLDecoded( s , CharsetHelper.getEncoding() );
+  public static String getURLDecoded( String s ) {
+    return getURLDecoded( s, CharsetHelper.getEncoding() );
   }
 
-  public static String getURLDecoded( String s, String enc ){
-    if( s != null ){
+  public static String getURLDecoded( String s, String enc ) {
+    if ( s != null ) {
       try {
         return URLDecoder.decode( s, ( enc != null ? enc : CharsetHelper.getEncoding() ) );
-      } catch ( Exception e ){
+      } catch ( Exception e ) {
         /* do nothing, assume this value as-is */
       }
     }
     return s;
+  }
+
+  public static String readTemplate( DashboardWcdfDescriptor wcdf ) throws IOException {
+    return readStyleTemplateOrDefault( wcdf.getStyle() );
+  }
+
+  public static String readStyleTemplateOrDefault( String styleName ) throws IOException {
+    if ( StringUtils.isNotEmpty( styleName ) ) {
+      try {
+        return readStyleTemplate( styleName );
+      } catch ( IOException ex ) {
+        logger.debug( ex.getMessage() );
+      }
+    }
+
+    // Couldn't open template file, attempt to use default
+    return readStyleTemplate( CdeConstants.DEFAULT_STYLE );
+  }
+
+  public static String readStyleTemplate( String styleName ) throws IOException {
+    String location = CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( styleName );
+    if ( StringUtils.isEmpty( location ) ) {
+      logger.error( MessageFormat.format( "Couldn''t find style template file ''{0}'', will fallback to ''{1}''",
+          styleName, CdeConstants.DEFAULT_STYLE ) );
+      location =
+        CdeEnvironment.getPluginResourceLocationManager().getStyleResourceLocation( CdeConstants.DEFAULT_STYLE );
+    }
+    return readTemplateFile( location );
+  }
+
+  public static String readTemplateFile( String templateFile ) throws IOException {
+    try {
+      if ( CdeEnvironment.getPluginRepositoryReader().fileExists( templateFile ) ) {
+        // template is in solution repository
+        return Util.toString( CdeEnvironment.getPluginRepositoryReader().getFileInputStream( templateFile ) );
+
+      } else if ( CdeEnvironment.getPluginSystemReader().fileExists( templateFile ) ) {
+        // template is in system
+        return Util.toString( CdeEnvironment.getPluginSystemReader().getFileInputStream( templateFile ) );
+      } else if ( Utils.getAppropriateReadAccess( templateFile ).fileExists( templateFile ) ) {
+        return Util.toString( Utils.getAppropriateReadAccess( templateFile ).getFileInputStream( templateFile ) );
+      } else {
+        // last chance : template is in user-defined folder
+        return Util.toString( CdeEnvironment.getUserContentAccess().getFileInputStream( templateFile ) );
+      }
+    } catch ( IOException ex ) {
+      logger.error( MessageFormat.format( "Couldn't open template file '{0}'.", templateFile ), ex );
+      throw ex;
+    }
+  }
+
+  public static boolean isSystemDashboard( String path ) {
+    return ( path.startsWith( "/" + CdeEnvironment.getSystemDir() + "/" ) && ( path.endsWith( ".wcdf" )
+        || path.endsWith( ".cdfde" ) ) );
   }
 
 }

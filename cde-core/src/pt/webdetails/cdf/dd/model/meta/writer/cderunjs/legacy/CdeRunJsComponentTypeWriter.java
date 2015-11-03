@@ -1,6 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.model.meta.writer.cderunjs.legacy;
 
@@ -20,102 +29,99 @@ import pt.webdetails.cdf.dd.model.core.writer.js.JsWriterAbstract;
 import pt.webdetails.cdf.dd.model.meta.writer.cderunjs.CdeRunJsHelper;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
+
 /**
  * @author dcleao
  */
-public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements IThingWriter
-{
-  public void write(Object output, IThingWriteContext context, Thing t) throws ThingWriteException
-  {
-    ComponentType comp = (ComponentType)t;
-    StringBuilder out  = (StringBuilder)output;
-  
-    Attribute cdeModelIgnoreAttr = comp.tryGetAttribute("cdeModelIgnore");
-    
-    if(cdeModelIgnoreAttr != null && "true".equals(cdeModelIgnoreAttr.getValue())) { return; }
-    
+public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements IThingWriter {
+  public void write( Object output, IThingWriteContext context, Thing t ) throws ThingWriteException {
+    ComponentType comp = (ComponentType) t;
+    StringBuilder out = (StringBuilder) output;
+
+    Attribute cdeModelIgnoreAttr = comp.tryGetAttribute( "cdeModelIgnore" );
+
+    if ( cdeModelIgnoreAttr != null && "true".equals( cdeModelIgnoreAttr.getValue() ) ) {
+      return;
+    }
+
     String name = comp.getName();
-    
+
     // the name in cdefdejs/components/rows/type
-    String modelPrefix  = CdeRunJsHelper.getComponentTypeModelPrefix( comp );
-    String modelName    = CdeRunJsHelper.getComponentTypeModelId(comp, modelPrefix);
+    String modelPrefix = CdeRunJsHelper.getComponentTypeModelPrefix( comp );
+    String modelName = CdeRunJsHelper.getComponentTypeModelId( comp, modelPrefix );
     String modelVarName = modelName + "Model";
-    
+
     String label = comp.getLabel();
-    String jsTooltip = JsonUtils.toJsString(comp.getTooltip());
+    String jsTooltip = JsonUtils.toJsString( comp.getTooltip() );
 
     // --------------
     // ENTRY
-    if(comp.getVisible()) 
-    {
+    if ( comp.getVisible() ) {
       String entryName = name + "Entry";
-      String entryId   = name.toUpperCase() + "_ENTRY";
-      String baseEntryType = comp.tryGetAttributeValue("cdePalleteType", "PalleteEntry");
-      out.append(NEWLINE);
-      out.append("var ");
-      out.append(entryName);
-      out.append(" = ");
-      out.append(baseEntryType);
-      out.append(".extend({");
-      out.append(NEWLINE);
+      String entryId = name.toUpperCase() + "_ENTRY";
+      String baseEntryType = comp.tryGetAttributeValue( "cdePalleteType", "PalleteEntry" );
+      out
+        .append( NEWLINE )
+        .append( "var " )
+        .append( entryName )
+        .append( " = " )
+        .append( baseEntryType )
+        .append( ".extend({" )
+        .append( NEWLINE );
 
-      addJsProperty(out, "id",           JsonUtils.toJsString(entryId), INDENT1, true);
-      addJsProperty(out, "name",         JsonUtils.toJsString(label  ), INDENT1, false);
-      addJsProperty(out, "description",  jsTooltip, INDENT1, false);
-      addJsProperty(out, "category",     JsonUtils.toJsString(comp.getCategory()), INDENT1, false);
-      addJsProperty(out, "categoryDesc", JsonUtils.toJsString(comp.getCategoryLabel()), INDENT1, false);
-      addCommaAndLineSep(out);
-      out.append(INDENT1);
-      out.append("getStub: function() {");
-      out.append(NEWLINE);
-      out.append(INDENT2);
-      out.append("return ");
-      out.append(modelVarName);
-      out.append(".getStub();");
-      out.append(NEWLINE);
-      out.append(INDENT1);
-      out.append("}");
-      out.append(NEWLINE);
-      out.append("});");
-      out.append(NEWLINE);
-      
+      addJsProperty( out, "id", JsonUtils.toJsString( entryId ), INDENT1, true );
+      addJsProperty( out, "name", JsonUtils.toJsString( label ), INDENT1, false );
+      addJsProperty( out, "description", jsTooltip, INDENT1, false );
+      addJsProperty( out, "category", JsonUtils.toJsString( comp.getCategory() ), INDENT1, false );
+      addJsProperty( out, "categoryDesc", JsonUtils.toJsString( comp.getCategoryLabel() ), INDENT1, false );
+      addCommaAndLineSep( out );
+      out
+        .append( INDENT1 )
+        .append( "getStub: function() {" )
+        .append( NEWLINE )
+        .append( INDENT2 )
+        .append( "return " )
+        .append( modelVarName )
+        .append( ".getStub();" )
+        .append( NEWLINE )
+        .append( INDENT1 )
+        .append( "}" )
+        .append( NEWLINE )
+        .append( "});" )
+        .append( NEWLINE );
+
       // TODO: maybe asbtract this into some explicit ComponentType «Class» concept/field or something?
-      String collectionName = (comp instanceof DataSourceComponentType) ?
-              "CDFDDDatasourcesArray" : 
-              "CDFDDComponentsArray";
+      String collectionName = ( comp instanceof DataSourceComponentType )
+          ? "CDFDDDatasourcesArray" : "CDFDDComponentsArray";
 
-      out.append(collectionName);
-      out.append(".push(new ");
-      out.append(entryName);
-      out.append("());");
-      out.append(NEWLINE);
+      out
+        .append( collectionName )
+        .append( ".push(new " )
+        .append( entryName )
+        .append( "());" )
+        .append( NEWLINE );
     }
-    
+
     // --------------
     // OWN PROPERTIES
-    if(comp.getPropertyUsageCount() > 0)
-    {
+    if ( comp.getPropertyUsageCount() > 0 ) {
       IThingWriterFactory factory = context.getFactory();
-      for(PropertyTypeUsage propUsage : comp.getPropertyUsages())
-      {
-        if(propUsage.isOwned())
-        {
+      for ( PropertyTypeUsage propUsage : comp.getPropertyUsages() ) {
+        if ( propUsage.isOwned() ) {
           PropertyType prop = propUsage.getProperty();
           IThingWriter writer;
-          try
-          {
-            writer = factory.getWriter(prop);
-          }
-          catch (UnsupportedThingException ex)
-          {
-            throw new ThingWriteException(ex);
+          try {
+            writer = factory.getWriter( prop );
+          } catch ( UnsupportedThingException ex ) {
+            throw new ThingWriteException( ex );
           }
 
-          writer.write(out, context, prop);
+          writer.write( out, context, prop );
         }
       }
     }
-    
+
     // --------------
     // MODEL
     //
@@ -125,121 +131,101 @@ public class CdeRunJsComponentTypeWriter extends JsWriterAbstract implements ITh
     //    AModelClass.getStub() --> creates a new model of given type
     // Own properties
     // Aliased properties
-    out.append(NEWLINE);
-    out.append("var "); out.append(modelVarName); out.append(" = BaseModel.create({"); out.append(NEWLINE);
-    
-    addJsProperty(out, "name",        JsonUtils.toJsString(modelName), INDENT1, true);
-    addJsProperty(out, "description", jsTooltip, INDENT1, false);
-    if(comp.getLegacyNameCount() > 0) 
-    {
-      addCommaAndLineSep(out); out.append(INDENT1);
-      out.append("legacyNames: [");
-      boolean isFirstLegacyName = true;
-      for(String legacyName : comp.getLegacyNames()) 
-      {
-        if(isFirstLegacyName) 
-        {
-          isFirstLegacyName = false;
-        }
-        else
-        {
-          out.append(", ");
-        } 
+    out.append( NEWLINE );
+    out.append( "var " ).append( modelVarName ).append( " = BaseModel.create({" ).append( NEWLINE );
 
-        out.append(JsonUtils.toJsString(legacyName));
+    addJsProperty( out, "name", JsonUtils.toJsString( modelName ), INDENT1, true );
+    addJsProperty( out, "description", jsTooltip, INDENT1, false );
+    if ( comp.getLegacyNameCount() > 0 ) {
+      addCommaAndLineSep( out );
+      out.append( INDENT1 ).append( "legacyNames: [" );
+      boolean isFirstLegacyName = true;
+      for ( String legacyName : comp.getLegacyNames() ) {
+        if ( isFirstLegacyName ) {
+          isFirstLegacyName = false;
+        } else {
+          out.append( ", " );
+        }
+
+        out.append( JsonUtils.toJsString( legacyName ) );
       }
-      out.append("]");
+      out.append( "]" );
     }
-    
+
     boolean isFirstAttr = true;
-    for(Attribute attribute : comp.getAttributes())
-    {
+    for ( Attribute attribute : comp.getAttributes() ) {
       String attName = attribute.getName();
-      
-      if(!"cdeModelIgnore".equals(attName) &&
-         !"cdeModelPrefix".equals(attName) &&
-         !"cdePalleteType".equals(attName))
-      {
-        if(isFirstAttr)
-        {
-          addJsProperty(out, "metas", "{", INDENT1, false);
-          out.append(NEWLINE);
+
+      if ( !"cdeModelIgnore".equals( attName )
+          && !"cdeModelPrefix".equals( attName )
+          && !"cdePalleteType".equals( attName ) ) {
+        if ( isFirstAttr ) {
+          addJsProperty( out, "metas", "{", INDENT1, false );
+          out.append( NEWLINE );
         }
-        
+
         String jsAttrName = attribute.getName();
-        if(StringUtils.isEmpty(jsAttrName))
-        {
+        if ( StringUtils.isEmpty( jsAttrName ) ) {
           jsAttrName = "meta";
-        }
-        else
-        {
+        } else {
           jsAttrName = "meta_" + jsAttrName;
         }
-        
+
         addJsProperty(
             out,
-            JsonUtils.toJsString(jsAttrName),
-            JsonUtils.toJsString(attribute.getValue()),
+            JsonUtils.toJsString( jsAttrName ),
+            JsonUtils.toJsString( attribute.getValue() ),
             INDENT2,
-            isFirstAttr);
-        
-        if(isFirstAttr) { isFirstAttr = false; }
+            isFirstAttr );
+
+        if ( isFirstAttr ) {
+          isFirstAttr = false;
+        }
       }
     }
-    
-    if(!isFirstAttr)
-    {
-      out.append(NEWLINE);
-      out.append(INDENT1);
-      out.append("}");
+
+    if ( !isFirstAttr ) {
+      out.append( NEWLINE ).append( INDENT1 ).append( "}" );
     }
-    
-    addJsProperty(out, "properties", "[", INDENT1, false);
-    if(comp.getPropertyUsageCount() > 0)
-    {
+
+    addJsProperty( out, "properties", "[", INDENT1, false );
+    if ( comp.getPropertyUsageCount() > 0 ) {
       boolean isFirstProp = true;
-      for(PropertyTypeUsage propUsage : comp.getPropertyUsages())
-      {
-        if(isFirstProp) { isFirstProp = false; }
-        else            { out.append(","); }
-        out.append(NEWLINE);
-        out.append(INDENT2);
-        
+      for ( PropertyTypeUsage propUsage : comp.getPropertyUsages() ) {
+        if ( isFirstProp ) {
+          isFirstProp = false;
+        } else {
+          out.append( "," );
+        }
+        out.append( NEWLINE ).append( INDENT2 );
+
         // NOTE: the use of camelName to obtain the property in the client.
         String camelName = propUsage.getProperty().getCamelName();
-        String alias     = propUsage.getAlias();
-        
-        boolean isAliased = !camelName.equals(alias);
-        boolean isOwned   = propUsage.isOwned();
-        
-        String jsName = JsonUtils.toJsString(camelName);
-        if(isAliased || isOwned) 
-        {
-          out.append("{name: "); out.append(jsName);
-          
-          if(isAliased) 
-          {
-            out.append(", alias: "); out.append(JsonUtils.toJsString(alias));
+        String alias = propUsage.getAlias();
+
+        boolean isAliased = !camelName.equals( alias );
+        boolean isOwned = propUsage.isOwned();
+
+        String jsName = JsonUtils.toJsString( camelName );
+        if ( isAliased || isOwned ) {
+          out.append( "{name: " ).append( jsName );
+
+          if ( isAliased ) {
+            out.append( ", alias: " ).append( JsonUtils.toJsString( alias ) );
           }
-          
-          if(isOwned)
-          {
-            out.append(", owned: true");
+
+          if ( isOwned ) {
+            out.append( ", owned: true" );
           }
-          out.append("}");
-        }
-        else
-        {
-          out.append(jsName);
+          out.append( "}" );
+        } else {
+          out.append( jsName );
         }
       }
-      
-      out.append(NEWLINE);
-      out.append(INDENT1);
-      out.append("]");
-      out.append(NEWLINE);
+
+      out.append( NEWLINE ).append( INDENT1 ).append( "]" ).append( NEWLINE );
     }
-    
-    out.append("});"); out.append(NEWLINE); // .create({
+
+    out.append( "});" ).append( NEWLINE );
   }
 }

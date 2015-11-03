@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'],
-  function(Dashboard, PopupComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/PopupComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, PopupComponent, $) {
 
   /**
    * ## The Popup Component
@@ -26,7 +29,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'
       type: "PopupComponent",
       name: "popup1",
       executeAtStart: true,
-      htmlObject: "samplePopObject",
+      htmlObject: "sampleObjectPop",
       parameters: [],
       listeners: []
     });
@@ -34,7 +37,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'
     dashboard.addComponent(popupComponent);
 
     // inject samplePopObject div
-    $htmlObject = $('<div>').attr('id', popupComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', popupComponent.htmlObject);
     $('body').append($htmlObject);
 
     /**
@@ -62,6 +65,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/PopupComponent', 'cdf/lib/jquery'
 
       expect(popupComponent.clone).toHaveBeenCalled();
       expect(popupCloned.ph.find("[id]").attr("id")).toEqual(popupComponent.htmlObject + "_1");
+      $htmlObject.remove();
     });
   });
 });

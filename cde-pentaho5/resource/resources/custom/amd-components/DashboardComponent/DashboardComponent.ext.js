@@ -20,7 +20,13 @@ define([], function() {
         return path;
       }
       // use the dash! requirejs loader plugin
-      return "dash!" + path;
+      return "dash!" + encodeURIComponent(path).replace(/[!'()*]/g, function(c) {
+        return '%' + c.charCodeAt(0).toString(16);
+      });
+    },
+
+    getDashboardParametersEndpoint: function() {
+      return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/renderer/getDashboardParameters?path=";
     }
   };
 

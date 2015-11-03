@@ -79,7 +79,7 @@
     "properties": [
      {
       "name": "name",
-      "value": "",
+      "value": "mapCSS",
       "type": "Id"
      },
      {

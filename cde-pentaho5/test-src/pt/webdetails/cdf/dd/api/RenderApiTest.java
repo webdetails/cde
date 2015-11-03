@@ -14,6 +14,8 @@
 package pt.webdetails.cdf.dd.api;
 
 import junit.framework.Assert;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -30,8 +32,10 @@ import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
+import pt.webdetails.cpf.session.IUserSession;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,6 +61,9 @@ public class RenderApiTest {
       TEST_RESOURCES + File.separator + "resources" + File.separator + "styles" + File.separator + "Clean.html";
   private static final String DEFAULT_ROOT = "http://localhost:8080/";
 
+  private static CdeEnvironmentForTests cdeEnvironmentForTests;
+  private static IUserContentAccess mockedUserContentAccess;
+
   @BeforeClass
   public static void setUp() throws Exception {
 
@@ -65,7 +72,7 @@ public class RenderApiTest {
     baseProperties.add( getBasicFileFromFile( propertyName ) );
 
     //mock IUserContentAccess
-    IUserContentAccess mockedUserContentAccess = mock( IUserContentAccess.class );
+    mockedUserContentAccess = mock( IUserContentAccess.class );
     when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
     when( mockedUserContentAccess.fetchFile( anyString() ) )
         .thenAnswer( new Answer<IBasicFile>() {
@@ -80,7 +87,7 @@ public class RenderApiTest {
     when( mockedUserContentAccess.getFileInputStream( anyString() ) )
         .thenAnswer( new Answer<InputStream>() {
           @Override
-        public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
+          public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
             return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
           }
         } );
@@ -102,20 +109,55 @@ public class RenderApiTest {
     when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
       .thenReturn( STYLE_CLEAN );
 
+    JSON dataSourceDefinition = JSONObject.fromObject( "{ \"scriptable_scripting\": {"
+        + "\"metadata\": {"
+        + "\"name\": \"scriptable over scripting\","
+        + "\"conntype\": \"scripting.scripting\","
+        + "\"datype\": \"scriptable\","
+        + "\"group\": \"SCRIPTING\","
+        + "\"groupdesc\": \"SCRIPTING Queries\"},"
+        + "\"definition\": {"
+        + "\"connection\": {"
+        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+        + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
+        + "\"dataaccess\": {"
+        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+        + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+        + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+        + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
+        + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
+        + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
+    //mock IDataSourceProvider
+    IDataSourceProvider ds = mock( IDataSourceProvider.class );
+    when( ds.getId() ).thenReturn( "cda" );
+    List<IDataSourceProvider> dataSourceProviders = new ArrayList<IDataSourceProvider>();
+    dataSourceProviders.add( ds );
+
     //mock IDataSourceManager
     IDataSourceManager mockedDataSourceManager = mock( IDataSourceManager.class );
-    when( mockedDataSourceManager.getProviders() ).thenReturn( new ArrayList<IDataSourceProvider>() );
+    when( mockedDataSourceManager.getProviders() ).thenReturn( dataSourceProviders );
+    when( mockedDataSourceManager.getProviderJsDefinition( anyString() ) ).thenReturn( dataSourceDefinition );
 
     //mock IUrlProvider
     IUrlProvider mockedUrlProvider = mock( IUrlProvider.class );
     when( mockedUrlProvider.getWebappContextRoot() ).thenReturn( DEFAULT_ROOT );
 
-    CdeEnvironmentForTests cdeEnvironmentForTests = new CdeEnvironmentForTests();
+    //mock IUserSession
+    IUserSession mockedUserSession = mock( IUserSession.class );
+    when( mockedUserSession.isAdministrator() ).thenReturn( false );
+
+    cdeEnvironmentForTests = new CdeEnvironmentForTests();
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
     cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
     cdeEnvironmentForTests.setMockedPluginResourceLocationManager( mockedPluginResourceLocationManager );
     cdeEnvironmentForTests.setMockedDataSourceManager( mockedDataSourceManager );
     cdeEnvironmentForTests.setMockedUrlProvider( mockedUrlProvider );
+    cdeEnvironmentForTests.setMockedUserSession( mockedUserSession );
 
     renderApi = new RenderApiForTesting( cdeEnvironmentForTests );
     new CdeEngineForTests( cdeEnvironmentForTests );
@@ -156,11 +198,46 @@ public class RenderApiTest {
   @Test
   public void testGetDashboardParameters() throws IOException {
     HttpServletRequest request = mock( HttpServletRequest.class );
+    HttpServletResponse response = mock( HttpServletResponse.class );
 
-    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, request );
+    String parameters = renderApi.getDashboardParameters( DUMMY_WCDF, false, false, request, response );
     String expected = "{\"parameters\":[\"dummyComponent\"]}";
     Assert.assertEquals( "Dummy Dashboard has a SimpleParameter - dummyComponent",
         expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
+  }
+
+  @Test
+  public void testGetDashboardDataSources() throws IOException {
+    HttpServletRequest request = mock( HttpServletRequest.class );
+
+    String parameters = renderApi.getDashboardDatasources( DUMMY_WCDF, false, request );
+    String expected = "{\"dataSources\":[\"dummyDatasource\"]}";
+    Assert.assertEquals( "Dummy Dashboard has a data source - dummyDatasource",
+        expected, parameters.replace( " ", "" ).replace( "\n", "" ) );
+  }
+
+  @Test
+  public void testEditDashboardFailPermissions() throws Exception {
+    cdeEnvironmentForTests.setCanCreateContent( false );
+    String expected = "This functionality is limited to users with permission 'Create Content'";
+    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+
+    IUserContentAccess testPermContentAccess = mock( IUserContentAccess.class );
+    when( testPermContentAccess.fileExists( anyString() ) ).thenReturn( true );
+    when( testPermContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) ).thenReturn( false );
+    cdeEnvironmentForTests.setMockedContentAccess( testPermContentAccess );
+    cdeEnvironmentForTests.setCanCreateContent( true );
+    expected = "Access Denied or file not found - /path/to/dashboard.wcdf";
+    Assert.assertEquals( expected, renderApi.edit( "", "/path/to/dashboard.wcdf", "", true, true, null, null ) );
+
+    cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
+  }
+
+  @Test
+  public void testNewDashboardFailPermissions() throws Exception {
+    cdeEnvironmentForTests.setCanCreateContent( false );
+    String expected = "This functionality is limited to users with permission 'Create Content'";
+    Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
   }
 
   private String doCase( String root,

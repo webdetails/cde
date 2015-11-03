@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/SiteMapComponent', 'cdf/lib/jquery'],
-  function(Dashboard, SiteMapComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/SiteMapComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, SiteMapComponent, $) {
 
   /**
    * ## The Site Map Component
@@ -23,21 +26,19 @@ define(['cdf/Dashboard.Clean', 'cde/components/SiteMapComponent', 'cdf/lib/jquer
     dashboard.init();
 
     dashboard.addParameter("param1", function() {
-      return [
-        {"name": "Pentaho", "link": "http://www.pentaho.com/"},
-        {"name": "Pentaho Community", "link": "http://community.pentaho.com/"},
-        {"name": "Webdetails",
-          "link": "http://www.webdetails.pt/",
-          "sublinks": [{"name": "CTools", "link": "http://www.webdetails.pt/ctools/"},
-                       {"name": "Showcase", "link": "http://www.webdetails.pt/showcase/"}]
-        }];
+      return [{"name": "Pentaho", "link": "http://www.pentaho.com/"},
+              {"name": "Pentaho Community", "link": "http://community.pentaho.com/"},
+              {"name": "Webdetails",
+                "link": "http://www.webdetails.pt/",
+                "sublinks": [{"name": "CTools", "link": "http://www.webdetails.pt/ctools/"},
+                             {"name": "Showcase", "link": "http://www.webdetails.pt/showcase/"}]}];
     }());
 
     var siteMapComponent = new SiteMapComponent({
       type: "SiteMapComponent",
       name: "siteMapComponent",
       priority: 5,
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectSiteMap",
       parameters: [],
       executeAtStart: true,
       siteMapParameter: "param1",

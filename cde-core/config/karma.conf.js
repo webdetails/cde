@@ -52,7 +52,7 @@ module.exports = function(config) {
       'bin/test-js/cdf/js/compressed/**/*'
     ],
 
-    preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
+    //preprocessors: {'resource/resources/custom/amd-components/**/*.js': 'coverage'},
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -104,7 +104,7 @@ module.exports = function(config) {
     browsers: ['Chrome'],//, 'Firefox', 'IE', 'PhantomJS'],
 
     // If browser does not capture in given timeout [ms], kill it
-    captureTimeout: 60000,
+    captureTimeout: 600000,
 
     browserNoActivityTimeout: 600000,
 

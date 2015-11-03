@@ -18,11 +18,15 @@ import pt.webdetails.cdf.dd.model.inst.ParameterComponent;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.util.JsonUtils;
 
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.NEWLINE;
+import static pt.webdetails.cdf.dd.CdeConstants.Writer.PROPER_EXPRESSION_CONTEXT;
+
 public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParameterComponentWriter {
+
   @Override
   public void write( StringBuilder out, CdfRunJsDashboardWriteContext context, ParameterComponent comp )
     throws ThingWriteException {
-    String name = JsonUtils.toJsString( context.getId( comp ) );
+    String name = JsonUtils.toJsString( comp.getId() );
     String value = sanitizeExpression( comp.tryGetPropertyValue( "javaScript", "" ) );
     Boolean isBookmarkable = "true".equalsIgnoreCase( comp.tryGetPropertyValue( "bookmarkable", null ) );
 
@@ -35,9 +39,21 @@ public class CdfRunJsExpressionParameterComponentWriter extends CdfRunJsParamete
   protected static String sanitizeExpression( String expr ) {
     expr = expr.replaceAll( "[;\\s]+$", "" );
     if ( expr.startsWith( "function" ) ) {
-      return expr;
+      return bindProperContext( expr );
     } else {
-      return "function() { return " + expr + NEWLINE + "}()";
+      return bindProperContext( "function() { return " + expr + NEWLINE + "}" ) + "()";
     }
+  }
+
+  /**
+   * Binds a function with a proper context.
+   * This allows to call this.dashboard inside the function.
+   * Typically used by custom parameters, ensures consistency.
+   *
+   * @param expr Function to bind context to.
+   * @return the properly bound function.
+   * */
+  protected static String bindProperContext( String expr ) {
+    return "_.bind(" + expr + ", " + PROPER_EXPRESSION_CONTEXT + ")";
   }
 }

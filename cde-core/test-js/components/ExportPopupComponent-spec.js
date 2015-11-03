@@ -11,8 +11,10 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
-  function(Dashboard, ExportPopupComponent) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/ExportPopupComponent'
+], function(Dashboard, ExportPopupComponent) {
 
   /**
    * ## The ExportPopup Component
@@ -32,7 +34,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/ExportPopupComponent'],
       executeAtStart: true,
       chartExportType: 'png',
       chartExportComponent: 'chart',
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectExportPop",
       parameters: [],
       listeners: []
     });

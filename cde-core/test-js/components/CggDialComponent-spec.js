@@ -11,8 +11,11 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/Dashboard.Clean', 'cde/components/CggDialComponent', 'cdf/lib/jquery'],
-  function(Dashboard, CggDialComponent, $) {
+define([
+  'cdf/Dashboard.Clean',
+  'cde/components/CggDialComponent',
+  'cdf/lib/jquery'
+], function(Dashboard, CggDialComponent, $) {
 
   /**
    * ## The Cgg Dial Component
@@ -31,7 +34,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggDialComponent', 'cdf/lib/jquer
       parameter: "param1",
       colors: [],
       intervals: [],
-      htmlObject: "sampleObject",
+      htmlObject: "sampleObjectCggDial",
       listeners: [],
       width: 300,
       height: 300
@@ -40,7 +43,7 @@ define(['cdf/Dashboard.Clean', 'cde/components/CggDialComponent', 'cdf/lib/jquer
     dashboard.addComponent(cggDialComponent);
 
     // inject sampleObject div
-    $htmlObject = $('<div>').attr('id', cggDialComponent.htmlObject);
+    var $htmlObject = $('<div>').attr('id', cggDialComponent.htmlObject);
   
     /**
      * ## The Cgg Dial Component # allows a dashboard to execute update

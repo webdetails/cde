@@ -20,7 +20,7 @@
             <Property>refreshPeriod</Property>
             <Property>tooltip</Property>
             <Definition name="actionDefinition">
-                <Property type="query">Datasource</Property>
+                <Property type="query">dataSource</Property>
             </Definition>
             <Property>actionParameters</Property>
             <Property>expression</Property>
@@ -59,7 +59,7 @@
                 </DesignerProperty>
                 <DesignerProperty>
                     <Header>
-                        <Name>Datasource</Name>
+                        <Name>dataSource</Name>
                         <Parent>BaseProperty</Parent>
                         <DefaultValue></DefaultValue>
                         <Description>Action Datasource</Description>

@@ -1137,7 +1137,7 @@ var CellRenderer = Base.extend({
   //  render: function(row,placeholder, getExpression,setExpression,editable){
 
   render: function(placeholder, value, callback, options) {
-    $("<td>" + value + "</td>").appendTo(placeholder);
+    $("<td>" + (value || "&nbsp;") + "</td>").appendTo(placeholder);
   },
 
   getTableManager: function() {
@@ -1211,11 +1211,11 @@ var IdRenderer = StringRenderer.extend({
 
     if(cdfdd.dashboardWcdf.widget) {
       if(!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
-        $.prompt('Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.', {prefix: "popup"});
+        CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
         return false;
       }
     } else if(!value.match(/^[a-zA-Z0-9_.]*$/)) {
-      $.prompt('Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters', {prefix: "popup"});
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
       return false;
     }
     return true;
@@ -1234,7 +1234,7 @@ var IntegerRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*$/)) {
-      $.prompt('Argument ' + value + ' must be numeric', {prefix: "popup"});
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
@@ -1252,7 +1252,7 @@ var FloatRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*\.?\d*$/)) {
-      $.prompt('Argument ' + value + ' must be numeric', {prefix: "popup"});
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
       return false;
     }
     return true;
@@ -1667,14 +1667,9 @@ var TextAreaRenderer = CellRenderer.extend({
       var _inner = 'Edit<br /><textarea wrap="off" cols="80" class="cdfddEdit" name="textarea">' + myself.value + '</textarea>';
       // Store what we need in a global var
       cdfdd.textarea = [myself, placeholder, myself.value, callback];
-      $.prompt(_inner, {
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
+      CDFDDUtils.prompt(_inner, {
         callback: myself.callback,
-        opacity: 0.2,
-        prefix: 'popup'
+        opacity: 0.2
       });
     }).appendTo($("div.edit", _editArea));
 
@@ -1728,15 +1723,15 @@ var CodeRenderer = CellRenderer.extend({
     _editArea.find("code").text(this.getFormattedValue(value));
     var myself = this;
     var _prompt = $('<button class="cdfddInput">...</button>').bind("click", function() {
-      var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px; height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+      var _inner = CDFDDUtils.wrapPopupTitle('Edit') +
+          CDFDDUtils.wrapPopupBody('<pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n');
       // Store what we need in a global var
       cdfdd.textarea = [myself, placeholder, myself.value, callback];
-      $.prompt(_inner, {
-        buttons: {
-          Ok: true,
-          Cancel: false
-        },
+      CDFDDUtils.prompt(_inner, {
         loaded: function() {
+          var $popup = $(this);
+
+          $popup.addClass('edit-popup')
 
           //editor
           myself.editor = new CodeEditor();
@@ -1744,14 +1739,10 @@ var CodeRenderer = CellRenderer.extend({
           myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
           myself.editor.setMode(myself.getCodeType());
           myself.editor.setContents(myself.value);
-          $('.popup').css("width", "820px");
-          $('.popup').css('min-height', '500px');
-          $('.popup').css('min-width', '820px');
         },
 
         callback: myself.callback,
-        opacity: 0.2,
-        prefix: 'popup'
+        opacity: 0.2
       });
 
 
@@ -1808,30 +1799,26 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
     }
 
     var myself = this;
-    var _inner = '<div style="height:450px;"><h2>Edit</h2><hr><pre id="codeArea" style="width:800px;height:90%;" class="cdfddEdit" name="textarea"></pre></div>';
+    var _inner = CDFDDUtils.wrapPopupTitle('Edit') +
+        CDFDDUtils.wrapPopupBody('<pre id="codeArea" class="cdfddEdit" name="textarea"></pre>\n');
     // Store what we need in a global var
     cdfdd.textarea = [myself, callback];
-    var prompt = $.prompt(_inner, {
-      buttons: {
-        Ok: true,
-        Cancel: false
-      },
+    var prompt = CDFDDUtils.prompt(_inner, {
       loaded: function() {
+        var $popup = $(this);
+
+        $popup.addClass('edit-popup')
+
         //editor
         myself.editor = new CodeEditor();
         myself.editor.initEditor("codeArea");
         myself.editor.setTheme(null);//if null the default is used ("ace/theme/twilight" is the default)
         myself.editor.setMode(myself.getCodeType());
         myself.editor.setContents(myself.value);
-
-        $('.popup:has(#codeArea)').css("width", "820px");
-        $('.popup:has(#codeArea)').css('min-height', '500px');
-        $('.popup:has(#codeArea)').css('min-width', '820px');
       },
 
       callback: myself.callback,
-      opacity: 0.2,
-      prefix: 'popup'
+      opacity: 0.2
     });
     return prompt;
   },
@@ -2027,18 +2014,23 @@ var ResourceFileRenderer = CellRenderer.extend({
       var url = ExternalEditor.getEditorUrl() + "?path=" + myself.fileName + "&mode=" + myself.getResourceType();
       var _inner = "<iframe id=externalEditor src='" + url + "' width='800px' height='400px' ></iframe>";
 
+      var contentWrapper = CDFDDUtils.wrapPopupTitle('Edit') + CDFDDUtils.wrapPopupBody(_inner);
+
+      var confirmWrapper = CDFDDUtils.wrapPopupTitle('Confirm') +
+          CDFDDUtils.wrapPopupBody('<div><span>Any unsaved changes will be lost. Continue anyway?</span></div>');
+
       // Store what we need in a global var
       var action;
       var extEditor = {
 
         edit: {// external editor
-          html: _inner,
+          html: contentWrapper,
           buttons: {
             'Open File in new Tab/Window': 'newtab',
             'Close': 'close'
           },
           opacity: 0.2,
-          top: '5%',
+          top: '40px',
           prefix: 'brownJqi',
           submit: function(val, msg, form) {
             action = val;
@@ -2057,7 +2049,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         },
 
         confirm: {//confirm exit //TODO: style elsewhere
-          html: '<div height="100%" width="100%" style="text-align:center;font-size:15px;"> <br> <br> <span>Any unsaved changes will be lost. Continue anyway?</span> <br> <br> </div>',
+          html: confirmWrapper,
           buttons: { Yes: true, Cancel: false },
           submit: function(val, msg, form) {
             if(val) {
@@ -2073,15 +2065,13 @@ var ResourceFileRenderer = CellRenderer.extend({
           }
         }
       };
-
-      $.prompt(extEditor, {
-        //opacity: 0.2,
-        prefix: 'popup',
+      CDFDDUtils.prompt(extEditor, {
         loaded: function() {
-          $('.popup').css("width", "810px");
-        },
-        top: '5%'
-
+          var $popup = $(this);
+          $popup.addClass('external-editor-popup');
+          CDFDDUtils.movePopupButtons($popup.find('#popup_state_edit'));
+          CDFDDUtils.movePopupButtons($popup.find('#popup_state_confirm'));
+        }
       });
     });
   },
@@ -2128,14 +2118,24 @@ var ResourceFileRenderer = CellRenderer.extend({
     var fileExtensions = this.getFileExtensions();
     _fileExplorer.bind('click', function() {
 
-      var fileExplorercontent = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one:' : ':');
-      fileExplorercontent += '<div id="container_id" class="urltargetfolderexplorer"></div>';
+      var fileExplorerLabel = 'Choose existing file' + (myself.createNew ? ', or select a folder to create one' : '');
+      var fileExplorerContent = CDFDDUtils.wrapPopupTitle('') +
+        CDFDDUtils.wrapPopupBody('<div class="popup-label">' + fileExplorerLabel + '</div>\n' +
+          '<div id="container_id" class="urltargetfolderexplorer"></div>\n');
+
+      var newFileContent = CDFDDUtils.wrapPopupTitle('Create File') +
+          CDFDDUtils.wrapPopupBody(
+          '<div class="popup-input-container bottom">\n' +
+          '  <div class="popup-label">New File</div>\n' +
+          '  <input class="popup-text-input" name="fileName"/>' +
+          '</div>\n', 'layout-popup');
+
       var selectedFile = "";
       var selectedFolder = "";
 
       var openOrNew = {
         browse: {// file explorer
-          html: fileExplorercontent,
+          html: fileExplorerContent,
           buttons: {
             Ok: true,
             Cancel: false
@@ -2161,7 +2161,7 @@ var ResourceFileRenderer = CellRenderer.extend({
         },
 
         newFile: {// new file prompt when folder selected
-          html: '<div> New File: <input name="fileName"/></div>',
+          html: newFileContent,
           buttons: {
             Ok: true,
             Cancel: false
@@ -2196,11 +2196,17 @@ var ResourceFileRenderer = CellRenderer.extend({
         }
       };
 
-      $.prompt(openOrNew, {
+      CDFDDUtils.prompt(openOrNew, {
         opacity: '0.2',
         prefix: "popup",
         loaded: function() {
           selectedFile = "";
+
+          var $this = $(this);
+          $this.addClass('choose-file-popup');
+          CDFDDUtils.movePopupButtons($this.find('#popup_state_browse'));
+          CDFDDUtils.movePopupButtons($this.find('#popup_state_newFile'));
+
           $('#container_id').fileTree({
                 root: '/',
                 script: SolutionTreeRequests.getExplorerFolderEndpoint(CDFDDDataUrl) + "?fileExtensions=" + fileExtensions + "&showHiddenFiles=true" + (CDFDDFileName != "" ? "&dashboardPath=" + CDFDDFileName : ""),

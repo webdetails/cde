@@ -77,18 +77,18 @@ var UrlTemplateRenderer = CellRenderer.extend({
 		this.logger = new Logger("StringRenderer");
 		this.logger.debug("Creating new StringRenderer");
 	},
-	
+
 	render: function(placeholder, value, callback){
 		//this.value = value;
-		
+
 		var _editArea = $('<td><div style="float:left"><code></code></div><div class="edit" style="float:right"></div></td>');
 		this.editArea = _editArea;
 		_editArea.find("code").text(value);
-		
+
 		var myself=this;
 		var selectedFile = "";
-		
-		var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters(); 
+
+		var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
 		var strData = "{";
 		var chooseParameterSelector = '<select id="fireChange_parameters_container">';
 		$.each(data,function(i,val){
@@ -98,17 +98,18 @@ var UrlTemplateRenderer = CellRenderer.extend({
 		});
 		strData+=" 'selected':"+ "''" + "}";
 		chooseParameterSelector+= '</select>';
-		
-		
+
+
 		var _prompt = $('<button class="cdfddInput">...</button>').bind("click",function(){
-			
+
 			var urlTemplateWizard = {
 				chooseClickBehaviour: {
-							html:'Choose Click Behaviour:&nbsp;&nbsp;<select id="clickBehaviour">\n' +
-'					<option value="linkToAnotherDashboard">Link to Another Dashboard</option>\n' +
-'					<option value="fireChange">Fire Change</option>\n' +
-'					<option value="jumpToUrl">Jump to Url</option></select>',
-							buttons: { Cancel: 0, Next: 1, Skip: 2 },
+							html: CDFDDUtils.wrapPopupTitle('Choose Click Behaviour') + CDFDDUtils.wrapPopupBody(
+								'<select id="clickBehaviour">\n' +
+								'<option value="linkToAnotherDashboard">Link to Another Dashboard</option>\n' +
+								'<option value="fireChange">Fire Change</option>\n' +
+								'<option value="jumpToUrl">Jump to Url</option></select>'),
+							buttons: { Skip: 2, Next: 1, Cancel: 0 },
 							focus: 1,
 							submit:function(v,m,f){
 								if(v == 0) return true;
@@ -123,23 +124,24 @@ var UrlTemplateRenderer = CellRenderer.extend({
 											function(obj,folder){if($(".selectedFolder").length > 0)$(".selectedFolder").attr("class","");$(obj).attr("class","selectedFolder");}}, 
 											function(file) {selectedFile = file;$(".selectedFile").attr("class","");$("a[rel='" + file + "']").attr("class","selectedFile");});
 									}
-										
+
 								}
 										return false;
 							}
 				},
 				linkToAnotherDashboard: {
-					html:'Link to Another Dashaboard<hr/>\n' +
-'						Choose Dashboard:\n' +
-'						<div id="container_id" class="urltargetfolderexplorer">&nbsp;</div>\n' +
-'						<span class="linkToAnotherDashboardlabel">Store parameters at var:&nbsp;</span><input class="linkToAnotherDashboardinput1" type="text" id="parameterName" value=""/><br/>\n' +
-'						<span class="linkToAnotherDashboardlabel">Store series at var:&nbsp;</span><input class="linkToAnotherDashboardinput2" type="text" id="seriesName" value="" />',
-					buttons: { Back: -1, Ok:1, Cancel: 0 },
+					html: CDFDDUtils.wrapPopupTitle('Link to Another Dashboard') +
+						CDFDDUtils.wrapPopupBody(
+							'Choose Dashboard:\n' +
+							'<div id="container_id" class="urltargetfolderexplorer">&nbsp;</div>\n' +
+							'<span class="linkToAnotherDashboardlabel">Store parameters at var:&nbsp;</span><input class="linkToAnotherDashboardinput1" type="text" id="parameterName" value=""/><br/>\n' +
+							'<span class="linkToAnotherDashboardlabel">Store series at var:&nbsp;</span><input class="linkToAnotherDashboardinput2" type="text" id="seriesName" value="" />'),
+					buttons: { Ok: 1, Back: -1, Cancel: 0 },
 					focus: 1,
 					submit:function(v,m,f){
 						if(v == 0) return true;
 						if(v == 1 && selectedFile.length == 0)
-							$.prompt("Please select a dashboard file!",{prefix:"popup"}); 
+							CDFDDUtils.promptNotification("Error","Please select a dashboard file!", true);
 						else if(v==-1)
 							$.prompt.goToState('chooseClickBehaviour');
 						else{
@@ -152,10 +154,11 @@ var UrlTemplateRenderer = CellRenderer.extend({
 					}
 				},
 				fireChange: {
-								html:'Fire Change<hr/>Choose Parameter:&nbsp;&nbsp;' + chooseParameterSelector,
-								buttons: { Back: -1, Ok:1, Cancel: 0 },
-								focus: 1,
-								submit:function(v,m,f){
+					html: CDFDDUtils.wrapPopupTitle('Fire Change') +
+					CDFDDUtils.wrapPopupBody('Choose Parameter:&nbsp;&nbsp;' + chooseParameterSelector),
+					buttons: { Ok: 1, Back: -1, Cancel: 0 },
+					focus: 1,
+					submit:function(v,m,f){
 						if(v == 0) return true;
 						if(v==-1)
 							$.prompt.goToState('chooseClickBehaviour');
@@ -163,15 +166,15 @@ var UrlTemplateRenderer = CellRenderer.extend({
 							myself.callback(callback, 'fireChange',$("#fireChange_parameters_container").val());
 							$.prompt.close();
 						}
-										return false;	
+						return false;
 					}
-					},
+				},
 				jumpToUrl: {
-								html:'Jump to Url:<hr/>\n' +
-'					<span>Url:&nbsp;&nbsp;</span><input class="utlTemplateTargetInput" type="text" id="urlTarget" value="' + value + '"/>',
-								buttons: { Back: -1, Ok:1, Cancel: 0 },
-								focus: 1,
-								 submit:function(v,m,f){
+					html: CDFDDUtils.wrapPopupTitle('Jump to Url') +
+					CDFDDUtils.wrapPopupBody('<span>Url:&nbsp;&nbsp;</span><input class="utlTemplateTargetInput" type="text" id="urlTarget" value="' + value + '"/>'),
+					buttons: { Ok: 1, Back: -1, Cancel: 0 },
+					focus: 1,
+					submit:function(v,m,f){
 						if(v == 0) return true;
 						if(v==-1)
 							$.prompt.goToState('chooseClickBehaviour');
@@ -179,38 +182,48 @@ var UrlTemplateRenderer = CellRenderer.extend({
 							myself.callback(callback, 'jumpToUrl',$("#urlTarget").val());
 							$.prompt.close();
 						}
-										return false;	
+						return false;
 					}
-					},
+				},
 				skip: {
-								html:'Url Template:<hr/>\n' +
-'					<textarea class="urlTemplateInput" type="text" id="urlTemplate" >' + value + '</textarea>',
-								buttons: { Back: -1, Ok:1, Cancel: 0 },
-								focus: 1,
-								 submit:function(v,m,f){
-						if(v == 0) return true;
-						if(v==-1)
-							$.prompt.goToState('chooseClickBehaviour');
-						else if(v == 1){
-							myself.callback(callback, 'jumpToUrl',$("#urlTarget").val());
-							$.prompt.close();
-							myself.callback(callback, 'skip',$("#urlTemplate").val());
-						}
-										return false;	
+					html: CDFDDUtils.wrapPopupTitle('Url Template') +
+						CDFDDUtils.wrapPopupBody('<textarea class="urlTemplateInput" type="text" id="urlTemplate" >' + value + '</textarea>'),
+						buttons: { Ok: 1, Back: -1, Cancel: 0 },
+						focus: 1,
+						submit:function(v,m,f){
+							if(v == 0) return true;
+							if(v==-1)
+								$.prompt.goToState('chooseClickBehaviour');
+							else if(v == 1){
+								myself.callback(callback, 'jumpToUrl',$("#urlTarget").val());
+								$.prompt.close();
+								myself.callback(callback, 'skip',$("#urlTemplate").val());
+							}
+							return false;	
 					}
 				}
 			};
 
-			$.prompt(urlTemplateWizard,{prefix:"popup"}); 
-		
+			CDFDDUtils.prompt(urlTemplateWizard, {
+				loaded: function() {
+					var $this = $(this);
+					$this.addClass('url-template-popup');
+					CDFDDUtils.movePopupButtons($this.find('#popup_state_chooseClickBehaviour'));
+					CDFDDUtils.movePopupButtons($this.find('#popup_state_linkToAnotherDashboard'));
+					CDFDDUtils.movePopupButtons($this.find('#popup_state_fireChange'));
+					CDFDDUtils.movePopupButtons($this.find('#popup_state_jumpToUrl'));
+					CDFDDUtils.movePopupButtons($this.find('#popup_state_skip'));
+				}
+			});
+
 		}).appendTo($("div.edit",_editArea));
 
 		_editArea.appendTo(placeholder);
 	},
-		
+
 		callback :function(callback, clickBehaviour,param1,param2,param3){
 			var value = "";
-			
+
 			if(clickBehaviour == "linkToAnotherDashboard"){
 				var solutionPath = param1.split("/");
 				var solution = solutionPath[1];
@@ -232,7 +245,7 @@ var UrlTemplateRenderer = CellRenderer.extend({
 			else {
 				value = param1;
 			}
-			
+
 			this.value = value;
 			this.editArea.find("code").text(value);
 			callback(value);

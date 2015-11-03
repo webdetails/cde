@@ -61,7 +61,7 @@
             <DefaultValue></DefaultValue>
             <Description>Target HTML Object</Description>
             <Tooltip>HTML Object to duplicate</Tooltip>
-            <InputType>String</InputType>
+            <InputType>HtmlObject</InputType>
             <OutputType>String</OutputType>
             <Order>51</Order>
             <Advanced>false</Advanced>
@@ -75,7 +75,7 @@
             <DefaultValue></DefaultValue>
             <Description>Target Container HTML Object</Description>
             <Tooltip>HTML Object where the duplicates will be inserted.</Tooltip>
-            <InputType>String</InputType>
+            <InputType>HtmlObject</InputType>
             <OutputType>String</OutputType>
             <Order>51</Order>
             <Advanced>true</Advanced>

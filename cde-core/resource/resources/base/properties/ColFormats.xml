@@ -6,7 +6,7 @@
 	<Description>Column Formats</Description>
 	<Tooltip>The table column formats. Example: [null, %.2f, %2d, %1.3f]</Tooltip>
 	<Advanced>true</Advanced>
-	<InputType>Array</InputType>
+	<InputType>ColFormatsArray</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>
 	<Version>1.0</Version>
