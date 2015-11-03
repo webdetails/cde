@@ -1598,7 +1598,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"formattedText\",function(state){\n\n        if(state.colIdx == \"2\"){\n            return {\n              textFormat: function(st) {\n                return \"<span style='font-size:80%;margin:3px;text-align:right;padding:2px;background:blue;border-radius:3px;color:white;'>\"+st.value+\"</span>\"\n              }\n            }\n        }\n    });\n} "
+      "value": "function f(){\n   \n    this.setAddInOptions(\"colType\",\"formattedText\",function(state){\n\n        if(state.colIdx == \"2\"){\n            return {\n              textFormat: function(v, st) {\n                return \"<span style='font-size:80%;margin:3px;text-align:right;padding:2px;background:blue;border-radius:3px;color:white;'>\"+ v +\"</span>\"\n              }\n            }\n        }\n    });\n} "
      },
      {
       "name": "postExecution",
