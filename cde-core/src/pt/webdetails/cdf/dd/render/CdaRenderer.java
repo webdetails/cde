@@ -156,15 +156,7 @@ public class CdaRenderer {
         renderProperty( new Olap4jProperties( paramName ), context, paramName, connection );
       } else if ( paramName.equals( "dataFile" ) ) {
         renderProperty( new DataFile(), context, paramName, connection );
-      }
-      /*else if (paramName.equals("ktrFile"))
-      {
-      String value = (String) context.getValue("properties/.[name='" + paramName + "']/value", String.class);
-      Element child = doc.createElement("KtrFile");
-      child.appendChild(doc.createTextNode(value));
-      connection.appendChild(child);
-      }*/
-      else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
+      } else if ( paramName.equals( "property" ) && isValidJsonArray( context, paramName ) ) {
         Object array = context.getValue( "properties/.[name='" + paramName + "']/value" );
         JSONArray jsonArray = array instanceof String
             ? new JSONArray( array.toString() ) : new JSONArray( array );
@@ -214,28 +206,31 @@ public class CdaRenderer {
     if ( connectionId != null && !connectionId.equals( "" ) ) {
       dataAccess.setAttribute( "connection", connectionId );
     }
+    Element elName = doc.createElement( "Name" );
+    elName.appendChild( doc.createTextNode( name ) );
+    dataAccess.appendChild( elName );
 
     @SuppressWarnings( "unchecked" )
     Iterator<Pointer> params = conn.iteratePointers( "*" );
+    Pointer pointer;
+    String paramName;
     while ( params.hasNext() ) {
-      Pointer pointer = params.next();
-      String paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
-      String placement = ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) ).toLowerCase();
-      if ( placement.equals( "attrib" ) ) {
+      pointer = params.next();
+      paramName = pointer.asPath().replaceAll( ".*name='(.*?)'.*", "$1" );
+      if ( ( (String) conn.getValue( pointer.asPath() + "/placement", String.class ) )
+          .toLowerCase().equals( "attrib" ) ) {
         if ( paramName.equals( "id" ) || paramName.equals( "connection" ) || paramName.equals( "cacheDuration" ) ) {
           continue;
         } else {
-          String value = (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class );
-          dataAccess.setAttribute( paramName, value );
+          dataAccess.setAttribute(
+              paramName, (String) context.getValue( "properties/.[name='" + paramName + "']/value", String.class ) );
         }
       } else if ( paramName.equals( "parameters" ) ) {
         renderProperty( new Parameters(), context, paramName, dataAccess );
       } else if ( paramName.equals( "output" ) ) {
-        Output output = new Output( context );
-        renderProperty( output, context, paramName, dataAccess );
+        renderProperty( new Output( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "variables" ) ) {
-        Variables vars = new Variables( context );
-        renderProperty( vars, context, paramName, dataAccess );
+        renderProperty( new Variables( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "outputMode" ) ) {
         // Skip over outputMode, it's handled by output.
         continue;
@@ -243,8 +238,7 @@ public class CdaRenderer {
         // Skip over cacheKeys, it's handled by cache.
         continue;
       } else if ( paramName.equals( "cache" ) ) {
-        Cache cache = new Cache( context );
-        renderProperty( cache, context, paramName, dataAccess );
+        renderProperty( new Cache( context ), context, paramName, dataAccess );
       } else if ( paramName.equals( "columns" ) ) {
         Element cols = dataAccess.getOwnerDocument().createElement( "Columns" );
         renderProperty( new Columns(), context, "cdacolumns", cols );
