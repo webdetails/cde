@@ -189,6 +189,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   cssPrefix: "StringList",
 
   typesArray: [],//only used if hasTypedValues
+  patternUnlockTypes: [],
   selectData: {},//to use with autocomplete
 
   //used for value input labels
@@ -297,7 +298,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       '<div class="popup-label popup-value-label">' + this.valTitle + '</div>';
 
       if(this.hasTypedValues) {
-        html += '<div class="popup-label">Type</div>';
+        html += '<div class="popup-label popup-type-label">Type</div><div class="popup-label">Pattern</div>';
         cssClass += ' typed-label';
       }
     }
@@ -346,7 +347,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     cdfdd.arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
   },
 
-  /* Popup Events */
+  //region Popup Events
   addRowButtonEvent: function() {
     var myself = this;
     $('.popup-add-row-button').click(function() {
@@ -354,7 +355,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       var index = myself.index++;
 
       if(myself.multiDimensionArray) {
-        myself.addPopupRow(index, ["", "", "", ""], container);
+        myself.addPopupRow(index, ["", "", "", "", ""], container);
       } else {
         myself.addPopupRow(index, "", container);
       }
@@ -383,6 +384,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
 
   cancelRowSelectionEvent: function() {
+    var myself = this;
     $('.popup-cancel-selection').click(function() {
       var removeSelClass = 'popup-remove-selected';
       var mainContainer = $('.popup-list-body-container');
@@ -390,11 +392,23 @@ var ValuesArrayRenderer = CellRenderer.extend({
       var rows = $('.' + removeSelClass);
 
       rows.removeClass(removeSelClass);
-      rows.find('input, select').prop('disabled', false);
+      if(myself.hasTypedValues) {
+        rows.each(function(i, row) {
+          var elementsToEnable = '.arg-input, .value-input, .type-select, .access-checkbox';
+          var typeVal = $(row).find('select.type-select').val();
+
+          if($.inArray(typeVal, myself.patternUnlockTypes) > -1) {
+            elementsToEnable += ', .pattern-input';
+          }
+
+          $(row).find(elementsToEnable).prop('disabled', false);
+        });
+      } else {
+        rows.find('popup-text-input').prop('disabled', false);
+      }
 
       mainContainer.addClass('popup-add-mode');
       mainContainer.removeClass('popup-remove-mode');
-
     });
   },
 
@@ -403,7 +417,26 @@ var ValuesArrayRenderer = CellRenderer.extend({
     $(selector).click(function() {
       var placeholder = $(this).parents('.popup-list-row');
       var removeSelClass = 'popup-remove-selected';
-      var possibleInputs = placeholder.find('input, select');
+      var possibleInputs;
+
+      if(myself.multiDimensionArray) {
+        possibleInputs = placeholder.find('.arg-input, .value-input');
+
+        if(myself.hasTypedValues) {
+          possibleInputs = possibleInputs.add(placeholder.find('.type-select, .access-checkbox'));
+
+          var patternInput = placeholder.find('.pattern-input');
+          var patternState = patternInput.prop('disabled');
+
+          var typeVal = placeholder.find('select.type-select').val();
+          patternState = $.inArray(typeVal, myself.patternUnlockTypes) > -1 ? !patternState : true;
+
+          patternInput.prop('disabled', patternState);
+        }
+      } else {
+        possibleInputs = placeholder.find('.arg-input');
+      }
+
       var state = possibleInputs.prop('disabled');
 
       placeholder.toggleClass(removeSelClass);
@@ -450,7 +483,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
   postAddRow: function() {
     //default does nothing
   },
+  //endregion
 
+  //region Utils Functions
   validate: function(settings, original) {
     return true;
   },
@@ -459,7 +494,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var initialValue = JSON.parse(value);
 
     if(!initialValue.length) {
-      initialValue = this.multiDimensionArray ? [["", "", "", ""]] : [""];
+      initialValue = this.multiDimensionArray ? [["", "", "", "", ""]] : [""];
     }
 
     return initialValue;
@@ -475,6 +510,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }
 
     return false;
+  },
+
+  sanitizeValues: function(values) {
+    for(var i = 1, L = values.length; i < L; i++) {
+      values[i] = values[i] === undefined ? "" : values[i] === null ? "null" : values[i];
+    }
+
+    return values;
   },
 
   /**
@@ -512,11 +555,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
       container.removeClass('overflow-container');
     }
   },
+  //endregion
 
-  /***************
-   * AutoComplete Functions
-   *****/
-
+  //region AutoComplete Functions
   addAutoComplete: function(index) {
     if(!this.autocomplete) {
       return undefined;
@@ -582,11 +623,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
     return data;
   },
+  //endregion
 
-  /***************
-   * Drag&Drop Functions
-   *****/
-
+  //region Drag&Drop Functions
   dragAndDrop: function() {
     $('div.popup .popup-list-body').sortable({
       axis: 'y',
@@ -599,30 +638,21 @@ var ValuesArrayRenderer = CellRenderer.extend({
       }
     });
   },
+  //endregion
 
-
-  /***************
-   * UI Functions
-   *****/
-
+  //region UI Functions
   addPopupRow: function(index, values, container) {
-
-    var arg, value, type, access, row;
+    var row;
     if(this.multiDimensionArray) {
-      arg = values[0];
-      value = values[1] === undefined ? "" : values[1] === null ? "null" : values[1];
-      values[1] = value;
-      if(this.hasTypedValues) {
-        type = values[2];
-        access = values[3];
+      values = this.sanitizeValues(values);
 
-        row = this.buildTypedRow(index, arg, value, type, access);
+      if(this.hasTypedValues) {
+        row = this.buildTypedRow.apply(this, [index].concat(values));
       } else {
         row = this.buildMultiDimensionRow.apply(this, [index].concat(values));
       }
     } else {
-      arg = values;
-      row = this.buildSingleDimensionRow(index, arg);
+      row = this.buildSingleDimensionRow(index, values);
     }
 
     container.append(row);
@@ -644,14 +674,15 @@ var ValuesArrayRenderer = CellRenderer.extend({
     return this.wrapPopupRow(index, 'multi-dimension-row', argSection + valSection);
   },
 
-  buildTypedRow: function(index, arg, val, type, access) {
+  buildTypedRow: function(index, arg, val, type, access, pattern) {
     var argSection = this.getArgSection(index, arg);
     var valSection = this.getValueSection(index, val);
 
     var typeSection = this.getTypeSelector(index, type);
+    var patternSection = this.getPatternSection(index, pattern, type);
     var accessSection = this.getAccessCheckbox(index, access);
 
-    return this.wrapPopupRow(index, 'typed-row', argSection + valSection + typeSection + accessSection);
+    return this.wrapPopupRow(index, 'typed-row', argSection + valSection + typeSection + patternSection + accessSection);
   },
 
   wrapPopupRow: function(index, cssClass, html) {
@@ -670,14 +701,23 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getArgSection: function(index, value) {
     return '' +
         '<div class="popup-arg-container">' +
-        '  <input id="arg_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '"></input>' +
+        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '"></input>' +
         '</div>';
   },
 
   getValueSection: function(index, value) {
     return '' +
         '<div class="popup-value-container">' +
-        '  <input id="val_' + index + '" class="popup-text-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '"></input>' +
+        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '"></input>' +
+        '</div>';
+  },
+
+  getPatternSection: function(index, value, typeValue) {
+    var disabledProp = this.patternUnlockTypes.indexOf(typeValue) < 0 ? "disabled" : "";
+
+    return '' +
+        '<div class="popup-pattern-container">' +
+        '  <input id="pattern_' + index + '" class="popup-text-input pattern-input" type="text"' + disabledProp + ' value="' + value + '" placeholder="Insert Pattern..."></input>' +
         '</div>';
   },
 
@@ -697,7 +737,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }
     return '' +
         '<div class="popup-input-container popup-type-container">\n' +
-        '  <select id="' + id + '" class="popup-select">' + typeOptions + '</select>' +
+        '  <select id="' + id + '" class="popup-select type-select">' + typeOptions + '</select>' +
         '</div>\n';
   },
 
@@ -706,11 +746,11 @@ var ValuesArrayRenderer = CellRenderer.extend({
     var id = "access_" + index;
 
     return '<div class="popup-checkbox-container">' +
-    '  <input type="checkbox" id="' + id + '" name="' + id + '" ' + checked + '>' +
+    '  <input type="checkbox" id="' + id + '" name="' + id + '" class="access-checkbox" ' + checked + '>' +
     '  <label class="popup-input-label" for="' + id + '">Private</label>' +
     '</div>';
   }
-  //parameters field generation (end)
+  //endregion
 
 }, {
   setParameterValue: function(id, value) {
@@ -927,6 +967,7 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
   hasTypedValues: true,
   //TODO: this should be fetched from somewhere
   typesArray: ['String', 'Integer', 'Numeric', 'Date', 'StringArray', 'IntegerArray', 'NumericArray', 'DateArray'],
+  patternUnlockTypes: ['Date', 'DateArray'],
 
   /**
    * @returns {Array}
@@ -936,11 +977,17 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     var value = $("#val_" + i).val();
     var type = $("#type_" + i).val();
     var access = $("#access_" + i).attr('checked') ? 'private' : '';
-    return [name, value, type, access];
+    var pattern = $("#pattern_" + i).val();
+    return [name, value, type, access, pattern];
   },
 
   postAddRow: function(container, index) {
     var selector = container.find("#type_" + index);
+    var myself = this;
+    selector.change(function(event) {
+      var disabled = $.inArray(selector.val(), myself.patternUnlockTypes) < 0;
+      container.find("#pattern_" + index).prop("disabled", disabled)
+    });
     CDFDDUtils.buildPopupSelect(selector, {});
   }
 });

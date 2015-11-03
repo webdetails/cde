@@ -28,6 +28,7 @@ public class Parameters implements CdaElementRenderer {
   private final String DEFAULT_ATTR = "default";
   private final String TYPE_ATTR = "type";
   private final String ACCESS_ATTR = "access";
+  private final String PATTERN_ATTR = "pattern";
   private final String ELEMENT_NAME = "Parameter";
 
   public void renderInto( Element dataAccess ) throws JSONException {
@@ -48,9 +49,15 @@ public class Parameters implements CdaElementRenderer {
           if ( !StringUtils.isEmpty( access ) ) {
             parameter.setAttribute( ACCESS_ATTR, access );
           }
+          if ( param.length() > 4 ) {
+            String pattern = (String) param.get(4);
+            if (!StringUtils.isEmpty(pattern)) {
+              parameter.setAttribute(PATTERN_ATTR, pattern);
+            }
+          }
         }
       } else {
-        parameter.setAttribute( TYPE_ATTR, "String" );
+        parameter.setAttribute(TYPE_ATTR, "String");
       }
       parameters.appendChild( parameter );
     }
