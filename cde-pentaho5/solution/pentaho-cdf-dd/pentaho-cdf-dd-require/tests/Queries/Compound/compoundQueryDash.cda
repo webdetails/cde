@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="union1" type="sql.jdbc">
+         <Driver>org.hsqldb.jdbcDriver</Driver>
+         <Pass/>
+         <Url>jdbc:hsqldb:mem:SampleData</Url>
+         <User>sa</User>
+      </Connection>
+      <Connection id="union2" type="sql.jdbc">
+         <Driver>org.hsqldb.jdbcDriver</Driver>
+         <Pass/>
+         <Url>jdbc:hsqldb:mem:SampleData</Url>
+         <User>sa</User>
+      </Connection>
+      <Connection id="join1" type="sql.jdbc">
+         <Driver>org.hsqldb.jdbcDriver</Driver>
+         <Pass/>
+         <Url>jdbc:hsqldb:mem:SampleData</Url>
+         <User>sa</User>
+      </Connection>
+      <Connection id="join2" type="sql.jdbc">
+         <Driver>org.hsqldb.jdbcDriver</Driver>
+         <Pass/>
+         <Url>jdbc:hsqldb:mem:SampleData</Url>
+         <User>sa</User>
+      </Connection>
+   </DataSources>
+   <CompoundDataAccess id="joinDataSource" type="join">
+      <Name>joinDataSource</Name>
+      <Columns>
+         <Column idx="0">
+            <Name>Year</Name>
+         </Column>
+         <CalculatedColumn>
+            <Name>CalcCol</Name>
+            <Formula>=[TOTALPRICE]-[TRIPLEPRICE]</Formula>
+         </CalculatedColumn>
+      </Columns>
+      <JoinType>LEFT_OUTER</JoinType>
+      <Left id="join1" keys="0,1"/>
+      <Parameters/>
+      <Right id="join2" keys="0,1"/>
+   </CompoundDataAccess>
+   <CompoundDataAccess id="unionDataSource" type="union">
+      <Name>unionDataSource</Name>
+      <Bottom id="union1"/>
+      <Columns>
+         <Column idx="0">
+            <Name>Year</Name>
+         </Column>
+         <CalculatedColumn>
+            <Name>AnotherCalcCol</Name>
+            <Formula>=[PRICE]*2</Formula>
+         </CalculatedColumn>
+      </Columns>
+      <Parameters/>
+      <Top id="union2"/>
+   </CompoundDataAccess>
+   <DataAccess access="public" connection="union1" id="union1" type="sql">
+      <Name>union1</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[select o.YEAR_ID, sum(o.TOTALPRICE/1000) as PRICE
+from orderfact o
+where o.YEAR_ID < 2004
+group by o.YEAR_ID]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="union2" id="union2" type="sql">
+      <Name>union2</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[select o.YEAR_ID, sum(o.TOTALPRICE/500) as PRICE
+from orderfact o
+where o.YEAR_ID > 2003
+group by o.YEAR_ID
+order by o.YEAR_ID DESC]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="join1" id="join1" type="sql">
+      <Name>join1</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[select o.YEAR_ID, o.STATUS as status, sum(o.TOTALPRICE) as totalprice
+from orderfact o
+group by o.YEAR_ID, o.STATUS]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="join2" id="join2" type="sql">
+      <Name>join2</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[select o.YEAR_ID, o.status, sum(o.TOTALPRICE * 3) as tripleprice
+from orderfact o
+group by o.YEAR_ID, o.STATUS
+order by o.YEAR_ID DESC, o.STATUS]]></Query>
+   </DataAccess>
+</CDADescriptor>
