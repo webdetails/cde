@@ -83,31 +83,34 @@ public class CdaRendererTest {
     Assert.assertEquals( dataAccess.getAttributes().getNamedItem( "type" ).getNodeValue(), "scriptable" );
     NodeList nodes = dataAccess.getChildNodes();
     Node el;
-    String nodeName;
+
     for ( int i = 0; i < nodes.getLength(); i++ ) {
       el = nodes.item( i );
-      nodeName = el.getNodeName();
-      if ( nodeName.equals( "Name" ) ) {
-        Assert.assertEquals( el.getFirstChild().getNodeValue(), "testQueryFTW" );
-      } else if ( nodeName.equals( "Cache" ) ) {
-        Assert.assertEquals( el.getAttributes().getNamedItem( "duration" ).getNodeValue(), "3600" );
-        Assert.assertEquals( el.getAttributes().getNamedItem( "enabled" ).getNodeValue(), "true" );
-      } else if ( nodeName.equals( "Query" ) ) {
-        Assert.assertEquals( el.getFirstChild().getNodeType(), CDATASection.CDATA_SECTION_NODE );
-        Assert.assertEquals(
-          el.getFirstChild().getNodeValue(),
-          "import org.pentaho.reporting.engine.classic.core.util"
-            + ".TypedTableModel;\n\n"
-            + "String[] columnNames = new String[]{\n"
-            + "\"value\",\"name2\"\n"
-            + "};\n\n\n"
-            + "Class[] columnTypes = new Class[]{\n"
-            + "Integer.class,\n"
-            + "String.class\n"
-            + "};\n\n"
-            + "TypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n"
-            + "model.addRow(new Object[]{ new Integer(\"0\"), new String(\"Name\") });\n\n"
-            + "return model;" );
+      switch ( el.getNodeName() ) {
+        case "Name":
+          Assert.assertEquals( el.getFirstChild().getNodeValue(), "testQueryFTW" );
+          break;
+        case "Cache":
+          Assert.assertEquals( el.getAttributes().getNamedItem( "duration" ).getNodeValue(), "3600" );
+          Assert.assertEquals( el.getAttributes().getNamedItem( "enabled" ).getNodeValue(), "true" );
+          break;
+        case "Query":
+          Assert.assertEquals( el.getFirstChild().getNodeType(), CDATASection.CDATA_SECTION_NODE );
+          Assert.assertEquals(
+              el.getFirstChild().getNodeValue(),
+              "import org.pentaho.reporting.engine.classic.core.util"
+              + ".TypedTableModel;\n\n"
+              + "String[] columnNames = new String[]{\n"
+              + "\"value\",\"name2\"\n"
+              + "};\n\n\n"
+              + "Class[] columnTypes = new Class[]{\n"
+              + "Integer.class,\n"
+              + "String.class\n"
+              + "};\n\n"
+              + "TypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n"
+              + "model.addRow(new Object[]{ new Integer(\"0\"), new String(\"Name\") });\n\n"
+              + "return model;" );
+          break;
       }
     }
   }
