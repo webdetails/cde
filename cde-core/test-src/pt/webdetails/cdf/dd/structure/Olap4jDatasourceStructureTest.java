@@ -14,10 +14,7 @@
 package pt.webdetails.cdf.dd.structure;
 
 import junit.framework.Assert;
-import net.sf.json.JSON;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,7 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import pt.webdetails.cdf.dd.render.CdaRenderer;
+import pt.webdetails.cdf.dd.render.CdaRendererForTesting;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,7 +89,7 @@ public class Olap4jDatasourceStructureTest {
 
       logger.info( "Preparing to instantiate CdaRenderer..." );
 
-      CdaRendererTest cdaRenderer = new CdaRendererTest( cdfdeContent );
+      CdaRendererForTesting cdaRenderer = new CdaRendererForTesting( cdfdeContent );
 
       logger.info( "CdaRenderer instantiated" );
 
@@ -141,36 +138,5 @@ public class Olap4jDatasourceStructureTest {
   public void tearDown() throws Exception {
     cdfdeContent = null;
     cdaDatasourceDefinitions = null;
-  }
-
-  public class CdaRendererTest extends CdaRenderer {
-
-    public CdaRendererTest( String docJson ) {
-      super( docJson );
-    }
-
-    /**
-     * CDA datasource definitions are fetched via inter-plugin call;
-     *
-     * This is overridden and mocked, so that we do not have to depend
-     * on a working CDA plugin ( in the context of a cde-core test )
-     */
-    @Override
-    public JSON getCdaDefinitions() {
-      return JSONSerializer.toJSON( cdaDatasourceDefinitions );
-    }
-
-    @Override
-    public boolean isValidJsonArray( JXPathContext context, String paramName ) {
-      boolean isValid = super.isValidJsonArray( context, paramName );
-
-      logger.info( "'" + paramName + "'" + " isValidJsonArray ? " + isValid );
-
-      if( isValid ){
-        logger.info( context.getValue("properties/.[name='" + paramName + "']/value" ).toString() );
-      }
-
-      return isValid;
-    }
   }
 }

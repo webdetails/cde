@@ -390,7 +390,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
       var rows = $('.' + removeSelClass);
 
       rows.removeClass(removeSelClass);
-      rows.find('.popup-text-input').prop('disabled', false);
+      rows.find('input, select').prop('disabled', false);
 
       mainContainer.addClass('popup-add-mode');
       mainContainer.removeClass('popup-remove-mode');
@@ -403,11 +403,12 @@ var ValuesArrayRenderer = CellRenderer.extend({
     $(selector).click(function() {
       var placeholder = $(this).parents('.popup-list-row');
       var removeSelClass = 'popup-remove-selected';
-      var input = placeholder.find('.popup-text-input');
-      var state = input.prop('disabled');
+      var possibleInputs = placeholder.find('input, select');
+      var state = possibleInputs.prop('disabled');
 
       placeholder.toggleClass(removeSelClass);
-      input.prop('disabled', !state);
+      possibleInputs.prop('disabled', !state);
+
 
       var mainContainer = $('.popup-list-body-container');
       var isRemoving = !!mainContainer.has('.' + removeSelClass).length;
