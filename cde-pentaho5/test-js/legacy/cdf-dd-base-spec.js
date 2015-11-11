@@ -95,4 +95,25 @@ describe("CDF-DD-BASE tests", function() {
 
   });
 
+  describe("StyleRequests Tests", function() {
+
+    it("syncStyles test", function() {
+      var myself = {
+        _legacyStyles: [],
+        _requireStyles: []
+      };
+
+      spyOn($, "getJSON").and.callFake(function(url, params, success) {
+        success({result: ["LStyle", "RStyleRequire", "LStyle - (plugin)", "RStyleRequire - (plugin)"]});
+      });
+
+      StylesRequests.syncStyles(myself);
+
+      expect(myself._legacyStyles).toEqual(["LStyle", "LStyle - (plugin)"]);
+      expect(myself._requireStyles).toEqual(["RStyle", "RStyle - (plugin)"]);
+
+    });
+
+  })
+
 });
