@@ -35,7 +35,17 @@ import org.apache.commons.jxpath.ri.model.beans.NullPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pt.webdetails.cdf.dd.render.cda.*;
+import pt.webdetails.cdf.dd.render.cda.Cache;
+import pt.webdetails.cdf.dd.render.cda.CalculatedColumns;
+import pt.webdetails.cdf.dd.render.cda.CdaElementRenderer;
+import pt.webdetails.cdf.dd.render.cda.Columns;
+import pt.webdetails.cdf.dd.render.cda.CompoundComponent;
+import pt.webdetails.cdf.dd.render.cda.DataFile;
+import pt.webdetails.cdf.dd.render.cda.Keys;
+import pt.webdetails.cdf.dd.render.cda.Olap4jProperties;
+import pt.webdetails.cdf.dd.render.cda.Output;
+import pt.webdetails.cdf.dd.render.cda.Parameters;
+import pt.webdetails.cdf.dd.render.cda.Variables;
 import pt.webdetails.cdf.dd.util.CdeEnvironment;
 import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.utils.CharsetHelper;
