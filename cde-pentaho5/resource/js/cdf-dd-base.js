@@ -488,19 +488,20 @@ var StylesRequests = {
       myself.styles = json.result;
       myself._legacyStyles = [];
       myself._requireStyles = [];
-      var pattern = /(.+)Require$/;
+      var pattern = /(.+)Require( - \(.+\))?$/;
       if (myself.styles) {
         for (var i = 0; i < myself.styles.length; i++) {
           var style = json.result[i];
-          var reqStyle = pattern.exec(style)
+          var reqStyle = pattern.exec(style);
           if(reqStyle) {
-              myself._requireStyles.push(reqStyle[1]);
-            } else {
-              myself._legacyStyles.push(style);
-            }
+            style = reqStyle[1] + (reqStyle[2] !== undefined ? reqStyle[2] : "");
+            myself._requireStyles.push(style);
+          } else {
+            myself._legacyStyles.push(style);
           }
         }
-      });
+      }
+    });
   },
 
   listStyleRenderers: function(myself) {
@@ -880,7 +881,7 @@ var SettingsHelper = {
   },
 
   getSelectedStyle: function(wcdf){
-    var matchedStyle = /(.+)Require$/.exec(wcdf.style);
+    var matchedStyle = /(.+)Require( - \(.+\))?$/.exec(wcdf.style);
     if (matchedStyle) {
       return matchedStyle[1];
     } else {
