@@ -2,6 +2,136 @@
 
 
 <h1>
+        Release Notes - Community Dashboard Editor - Version 15.10.26
+    </h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-142'>CDE-142</a>] -         CDE crashes if it does not find the .html template defined in a .wcdf file
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-326'>CDE-326</a>] -         MultiButton component: if the same button is clicked N time, processChange is called N times
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-544'>CDE-544</a>] -         Saving a CDE dashboard with filename I-[~!@#$%^&amp;*(){}|.,]-=_+|;&#39;&quot;?&lt;&gt;~` and a normal title fails with 404 Page not found
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-561'>CDE-561</a>] -         Required dashboards fail to work with components that depend on DOM objects other than htmlObject
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-570'>CDE-570</a>] -         In sample FilterComponent (filter_visual_guide) on Multiple selections the world Only is over the numbers
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-571'>CDE-571</a>] -         IE 11 : Options Cancel and OK disable when adding HTML code
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-576'>CDE-576</a>] -         IE10/11: The icon Drag and Drop in layout structure is align top
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-577'>CDE-577</a>] -         IE8/IE9: Clicking New in CDE editor throw a new page with error
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-578'>CDE-578</a>] -         webservice &quot;olap/getCubes&quot; not fetching latest cube
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-582'>CDE-582</a>] -         Table component does not respect lifecycle.silent tag and still runs the block function
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-584'>CDE-584</a>] -         CDE renders incomplete AMD module ids for JS/CSS resources with an empty &quot;name&quot; property
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-591'>CDE-591</a>] -         Filter Component refers an undefined property - inputParameter
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-594'>CDE-594</a>] -         It is only possible to load resources in the same folder
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-595'>CDE-595</a>] -         Applying templates to a bootstrap dashboard introduces blueprint elements
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-598'>CDE-598</a>] -         The sample Map Component Reference with require-js is broken (probably missing a resource)
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-599'>CDE-599</a>] -         Dashboards require with a Date Parameter do not render
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-600'>CDE-600</a>] -         The documentation of the filter component does not explicitly explain that the selected items are written to the parameter as an array of IDs
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-604'>CDE-604</a>] -         JS File Resources with no name break the resource order
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-608'>CDE-608</a>] -         Unable to use custom components from external plugins in embedded scenarios
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-611'>CDE-611</a>] -         Can&#39;t close error popup
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-613'>CDE-613</a>] -         As a dashboard developer using the NewMapComponent, I would like to react to a change on the zoom level or map position
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-614'>CDE-614</a>] -         As a dashboard developer using the NewMapComponent, I would like to create addIns that provide shape definitions
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-615'>CDE-615</a>] -         ButtonComponent doesn&#39;t show label
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-616'>CDE-616</a>] -         As a developer using the NewMapComponent, I would like to use the GeoJSON format internally
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-617'>CDE-617</a>] -         Extension Points popup shows wrong value
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-618'>CDE-618</a>] -         Custom Params don&#39;t work on a required [Requirejs] dashboard
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-620'>CDE-620</a>] -         Minification is breaking Filter Component accordion
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-622'>CDE-622</a>] -         Adding lots of parameters to a datasource results in bad formatting
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-623'>CDE-623</a>] -         Table is not assuming Bootstrap as Style
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-624'>CDE-624</a>] -         MQL query example misleads the dashboard developer.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-626'>CDE-626</a>] -         unable to close &quot;OLAP MDX query&quot; popup
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-627'>CDE-627</a>] -         Changing renderer does not prevent cached version of dashboard to be loaded
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-630'>CDE-630</a>] -         Using tab key when popup is opened allows user to edit fields beneath the popup
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-634'>CDE-634</a>] -         using &quot;save as&quot; on a requireJS supported dashboard saves the new dashboard (wcdf settings) as a legacy dashboard
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-637'>CDE-637</a>] -         DashboardComponent will not map parameters in embedded scenarios
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-640'>CDE-640</a>] -         DashboardComponent can&#39;t map parameters in Firefox
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-641'>CDE-641</a>] -         The ButtonComponent does not execute its datasource when clicked
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-646'>CDE-646</a>] -         Can&#39;t open type selector in an datasource parameters popup
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-650'>CDE-650</a>] -         validation popup doesn&#39;t close
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-651'>CDE-651</a>] -         Post Execution is running before map renderisation is concluded
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-652'>CDE-652</a>] -         resources endpoint doesn't respect downloadable-formats whitelist
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-659'>CDE-659</a>] -         CDE save new dashboard: &quot;Description&quot; field isn&#39;t being considered
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-629'>CDF-629</a>] -         Map component does not pan when we try to drag over a map shape
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-676'>CDF-676</a>] -         Duplicated text and some grammatical mistakes in FilterComponent samples
+</li>
+
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-553'>CDE-553</a>] -         Review Pop ups in CDE
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-556'>CDE-556</a>] -         CDE should expose default parameter for CDA cacheKeys
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-558'>CDE-558</a>] -         Resultset created by postChange() should be persisted
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-579'>CDE-579</a>] -         save CDA queries using CDATA sections
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-589'>CDE-589</a>] -         Avoid production use of the global `dashboard` variable
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-590'>CDE-590</a>] -         CDE Parameters should have a Public/Private property
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-621'>CDE-621</a>] -         The Dashboard component should allow swapping datasources
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-643'>CDE-643</a>] -         Add def, pv and pvc to the default AMD dependency list when rendering CDE dashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-648'>CDE-648</a>] -         Setting shape opacity and stroke in NewMapComponent
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-649'>CDE-649</a>] -         As an admin I would like to define users/roles with a permission to create/view CDE reports
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-579'>CDF-579</a>] -         Integrate new Selector component into CDF
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-637'>CDF-637</a>] -         As a web developer I want to be able to have more addins on the template component
+</li>
+
+</ul>
+                                
+
+
+
+<h1>
         Release Notes - Community Dashboard Editor - Version 15.06.30
     </h1>
 <h2>        Bug
