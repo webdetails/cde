@@ -1,22 +1,20 @@
 /*!
-* Copyright 2002 - 2015 Webdetails, a Pentaho company.  All rights reserved.
-*
-* This software was developed by Webdetails and is provided under the terms
-* of the Mozilla Public License, Version 2.0, or any later version. You may not use
-* this file except in compliance with the license. If you need a copy of the license,
-* please go to  http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
-*
-* Software distributed under the Mozilla Public License is distributed on an "AS IS"
-* basis, WITHOUT WARRANTY OF ANY KIND, either express or  implied. Please refer to
-* the license for the specific language governing your rights and limitations.
-*/
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
 
 package pt.webdetails.cdf.dd.render;
 
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.Pointer;
 import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
@@ -32,14 +30,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 public class CdaRendererTest {
-  Document doc;
-  JXPathContext context;
   CdaRenderer cdaRenderer;
 
   private static final String CDFDE_FILE = "test-resources/datasources/scripting/test-scripting.cdfde";
@@ -52,28 +44,18 @@ public class CdaRendererTest {
 
   @Before
   public void setup() throws IOException, JSONException {
-    doc = mock( Document.class );
-    context = mock( JXPathContext.class );
     cdaRenderer = new CdaRendererForTesting( FileUtils.readFileToString( new File( CDFDE_FILE ) ) );
   }
 
   @After
   public void tearDown() throws Exception {
-    doc = null;
-    context = null;
     cdaRenderer = null;
   }
 
   @Test
   public void testRender() throws Exception {
-    List<Pointer> objectList = new ArrayList<Pointer>( 1 );
-    Pointer p = mock( Pointer.class );
-    objectList.add( p );
-
-    String cdaContentAsString = cdaRenderer.render();
-
     // this is the .cda file content ( that would have been saved / stored )
-    Document dom = stringToDom( cdaContentAsString );
+    Document dom = stringToDom( cdaRenderer.render() );
 
     NodeList cDADescriptor = dom.getElementsByTagName( "CDADescriptor" );
     Assert.assertNotNull( cDADescriptor );
@@ -113,8 +95,8 @@ public class CdaRendererTest {
       } else if ( nodeName.equals( "Query" ) ) {
         Assert.assertEquals( el.getFirstChild().getNodeType(), CDATASection.CDATA_SECTION_NODE );
         Assert.assertEquals(
-            el.getFirstChild().getNodeValue(),
-            "import org.pentaho.reporting.engine.classic.core.util"
+          el.getFirstChild().getNodeValue(),
+          "import org.pentaho.reporting.engine.classic.core.util"
             + ".TypedTableModel;\n\n"
             + "String[] columnNames = new String[]{\n"
             + "\"value\",\"name2\"\n"
