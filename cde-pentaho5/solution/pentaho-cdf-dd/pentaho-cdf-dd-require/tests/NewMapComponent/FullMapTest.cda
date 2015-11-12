@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CDADescriptor>
-  <DataSources>
-    <Connection id="salesGraphQueryOld" type="mondrian.jndi">
-      <Catalog>mondrian:/SteelWheels</Catalog>
-      <Jndi>SampleData</Jndi>
-    </Connection>
-    <Connection id="ForMapWithGeo" type="scripting.scripting">
-      <Initscript></Initscript>
-      <Language>beanshell</Language>
-    </Connection>
-    <Connection id="salesGraphQuery" type="scripting.scripting">
-      <Initscript></Initscript>
-      <Language>beanshell</Language>
-    </Connection>
-  </DataSources>
-  <DataAccess access="public" cache="true" cacheDuration="3600"
-              connection="salesGraphQueryOld"
-              id="salesGraphQueryOld"
-              type="mdx">
-    <BandedMode>compact</BandedMode>
-    <Columns/>
-    <Parameters>
-      <Parameter default="none" name="customer" type="String"/>
-    </Parameters>
-    <Query>select NON EMPTY(TopCount({Descendants([Product].[All Products] ,[Product].[Line])}, 10, [Measures].[Quantity])) on ROWS, 
+   <DataSources>
+      <Connection id="salesGraphQueryOld" type="mondrian.jndi">
+         <Catalog>/steel-wheels/analysis/steelwheels.mondrian.xml</Catalog>
+         <Jndi>SampleData</Jndi>
+      </Connection>
+      <Connection id="ForMapWithGeo" type="scripting.scripting">
+         <Initscript/>
+         <Language>beanshell</Language>
+      </Connection>
+      <Connection id="salesGraphQuery" type="scripting.scripting">
+         <Initscript/>
+         <Language>beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="salesGraphQueryOld" id="salesGraphQueryOld"
+               type="mdx">
+      <Name>salesGraphQueryOld</Name>
+      <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters>
+         <Parameter default="none" name="customer" type="String"/>
+      </Parameters>
+      <Query><![CDATA[select NON EMPTY(TopCount({Descendants([Product].[All Products] ,[Product].[Line])}, 10, [Measures].[Quantity])) on ROWS, 
  NON EMPTY({[Measures].[Quantity]}) on Columns 
  from [SteelWheelsSales]
-where ([Customer].[${customer}])</Query>
-  </DataAccess>
-  <DataAccess access="public" cache="true" cacheDuration="3600" connection="ForMapWithGeo"
-              id="ForMapWithGeo"
-              type="scriptable">
-    <Columns/>
-    <Parameters/>
-    <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+where ([Customer].[${customer}])]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="ForMapWithGeo" id="ForMapWithGeo" type="scriptable">
+      <Name>ForMapWithGeo</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "City",
@@ -56,17 +56,17 @@ model.addRow(new Object[]{ new String("Moscow"), new String("Russia"), new Strin
 model.addRow(new Object[]{ new String("Stavern"),new String("Norway"),  new String("Baane Mini Imports")});
 model.addRow(new Object[]{ new String("San Rafael"), new String("Argentina"), new String("Mini Gifts Distributors Ltd.")});
 model.addRow(new Object[]{ new String("Frankfurt"), new String("Germany"), new String("Blauer See Auto, Co.")});
-return model;
-    </Query>
-  </DataAccess>
-  <DataAccess access="public" cache="true" cacheDuration="3600" connection="salesGraphQuery"
-              id="salesGraphQuery"
-              type="scriptable">
-    <Columns/>
-    <Parameters>
-      <Parameter default="none" name="customer" type="String"/>
-    </Parameters>
-    <Query>import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+return model;]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="salesGraphQuery" id="salesGraphQuery"
+               type="scriptable">
+      <Name>salesGraphQuery</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters>
+         <Parameter default="none" name="customer" type="String"/>
+      </Parameters>
+      <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
 "Product",
@@ -126,7 +126,6 @@ case "Blauer See Auto, Co.":
     model.addRow(new Object[]{new String("Motorcycles"), new Float(1600)});
 break;
 }
-return model;
-    </Query>
-  </DataAccess>
+return model;]]></Query>
+   </DataAccess>
 </CDADescriptor>
