@@ -1,6 +1,7 @@
 /*
- Webdetails template
+ * Webdetails template
  */
+
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -15,9 +16,8 @@
   src: local('Open Sans Light'), local('OpenSans-Light'), url('http://themes.googleusercontent.com/static/fonts/opensans/v4/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff') format('woff');
 }
 
-body {
+body .webdetailsWrapper {
   margin-top: 10px;
-  background-color: #f6f7f8;
   min-height: 900px;
   font-family: 'Open Sans', Arial, sans-serif;
   font-size: 12px;
@@ -107,7 +107,7 @@ body {
   font-size: 22px;
   margin-left: 5px;
   margin-right: 20px;
-  font-family: Open Sans Light;
+  font-family: 'Open Sans Light';
 }
 
 .webdetailsHead div.cdeLinks {
@@ -131,18 +131,14 @@ body {
 }
 
 .webdetailsHead div.cdeLinks:hover {
-
   color: #393e3e;
 }
 
-.webdetailsHead > div.webdetailsActions {
-
-}
+.webdetailsHead > div.webdetailsActions { }
 
 .webdetailsHead > div.webdetailsPanels {
-
   float: right;
-  margin-right: 50px
+  margin-right: 50px;
 }
 
 .webdetailsPanelsContainer {
@@ -155,7 +151,7 @@ body {
 
 .panelContainer {
   width: 1150px;
-  min-height: 600px;
+  min-height: 450px;
   overflow: hidden;
 }
 
@@ -166,7 +162,7 @@ body {
 
 .webdetailsPanelContainerLeft {
   width: 50px;
-  min-height: 1250px;
+  min-height: 450px;
 }
 
 .webdetailsPanelContainerCenter {
@@ -185,7 +181,7 @@ body {
 
 .webdetailsPanelContainerRight {
   width: 50px;
-  min-height: 1250px;
+  min-height: 450px;
 }
 
 .webdetailsFooter {
@@ -236,7 +232,6 @@ body {
 }
 
 .ctoolsLogo {
-
   display: block;
   height: 27px;
   width: 100%;
@@ -244,7 +239,6 @@ body {
 }
 
 .pentahoLogo {
-
   display: block;
   height: 27px;
   width: 100%;
@@ -255,15 +249,15 @@ body {
   margin: 0em;
 }
 
-h1, h2 {
+div.webdetailsWrapper h1, h2 {
 }
 
-a {
+div.webdetailsWrapper a {
   color: #007ee0;
   text-decoration: none;
 }
 
-a:hover {
+div.webdetailsWrapper a:hover {
   text-decoration: none;
   color: #005ca4;
 }
@@ -278,6 +272,7 @@ a:hover {
   background: #dbdbdb;
   padding: 0.5em;
 }
+
 #outer {
   position: relative;
   margin: 2em;
@@ -401,18 +396,6 @@ a:hover {
   font-size: 20px;
 }
 
-/*
- #content h2 span, #content h3 span
- {
- position: absolute;
- top: 0em;
- right: 0em;
- background: #fff url('images/x1.gif') top right no-repeat;
- width: 16px;
- height: 28px;
- }
- */
-
 #content blockquote {
   border: dashed 1px #BFB793;
   background: #FFFEFB;
@@ -465,13 +448,7 @@ a:hover {
 
 /* Secondary Content */
 
-#secondaryContent {
-  /*        position: relative;
-   float: right;
-   width: 12em;
-   padding: 1.5em;
-   margin-right: 1em;*/
-}
+#secondaryContent { }
 
 #secondaryContent {
   padding-top: 280px;
@@ -481,14 +458,14 @@ a:hover {
   float: right;
   width: 240px;
 }
+
 #boxContent ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-#boxContent li {
-}
+#boxContent li { }
 
 #boxContent li ul {
   padding: 20px 20px 10px 20px;
@@ -519,8 +496,7 @@ a:hover {
   list-style: none;
 }
 
-#menuContent li {
-}
+#menuContent li { }
 
 #menuContent li ul {
   padding: 20px 20px 10px 20px;
@@ -555,27 +531,27 @@ a:hover {
   border: none;
 }
 
-dl.documentation {
-}
+dl.documentation { }
 
 .documentation dt {
   float: left;
   clear: left;
-  /*    width: 100px;*/
   text-align: right;
   font-weight: 500;
   color: #999999;
   letter-spacing: .3px;
 }
+
 .documentation dt:after {
   content: ":\0000a0";
 }
+
 .documentation dd {
   margin: 0 0 0 180px;
   padding: 0 0 0.5em 0;
 }
 
-pre {
+div.webdetailsWrapper pre {
   font-size: 8pt;
 }
 
@@ -631,8 +607,7 @@ pre {
   color: #137bca;
 }
 
-#example > ul > li:active {
-}
+#example > ul > li:active { }
 
 #example > ul > li:active > a {
   color: #137bca;
