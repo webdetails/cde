@@ -200,6 +200,7 @@
       name: "cde/components/DashboardComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
+        "cdf/lib/jquery",
         "cdf/components/UnmanagedComponent"
       ]
     },
