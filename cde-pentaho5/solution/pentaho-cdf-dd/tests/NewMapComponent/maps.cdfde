@@ -65,6 +65,11 @@
       "value": "5"
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -128,6 +133,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -243,6 +258,11 @@
       "value": "5"
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -306,6 +326,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -421,6 +451,11 @@
       "value": "5"
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -484,6 +519,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -599,6 +644,11 @@
       "value": "2"
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -662,6 +712,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -777,6 +837,11 @@
       "value": "2"
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -840,6 +905,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/maps/countries.kml"
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -1558,7 +1633,7 @@
    }
   ]
  },
- "filename": "/home/admin/maps-legacy/NewMapComponent/maps.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/maps.cdfde",
  "layout": {
   "rows": [
    {

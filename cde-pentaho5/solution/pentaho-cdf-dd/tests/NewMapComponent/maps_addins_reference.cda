@@ -11,6 +11,7 @@
       </Connection>
    </DataSources>
    <DataAccess access="public" connection="countries" id="countries" type="scriptable">
+      <Name>countries</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
@@ -134,6 +135,7 @@ return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="unresolvedLocations" id="unresolvedLocations"
                type="scriptable">
+      <Name>unresolvedLocations</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
