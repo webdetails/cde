@@ -891,6 +891,11 @@
       "value": ""
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -954,6 +959,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -1069,6 +1084,11 @@
       "value": ""
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -1132,6 +1152,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": "${solution:countries.js}"
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -1247,6 +1277,11 @@
       "value": ""
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -1310,6 +1345,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/maps/countries.kml"
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -1425,6 +1470,11 @@
       "value": ""
      },
      {
+      "name": "fillOpacity",
+      "value": 0.5,
+      "type": "Float"
+     },
+     {
       "name": "locationResolver",
       "type": "locationResolverCustom",
       "value": "openstreetmap"
@@ -1488,6 +1538,16 @@
       "name": "shapeSource",
       "type": "String",
       "value": "${solution:countries-legacy.js}"
+     },
+     {
+      "name": "strokeColor",
+      "value": "white",
+      "type": "String"
+     },
+     {
+      "name": "strokeWidth",
+      "value": 2,
+      "type": "Float"
      },
      {
       "name": "tilesets",
@@ -1725,7 +1785,7 @@
    }
   ]
  },
- "filename": "/home/admin/maps/NewMapComponent/maps_addins_reference.cdfde",
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/maps_addins_reference.cdfde",
  "layout": {
   "rows": [
    {

@@ -16,6 +16,7 @@
    </DataSources>
    <DataAccess access="public" connection="ForMapWithMarkers" id="ForMapWithMarkers"
                type="scriptable">
+      <Name>ForMapWithMarkers</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
@@ -41,6 +42,7 @@ model.addRow(new Object[]{ new Float(14), new Float(45.45), new String("Signal G
 return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="ForMapWithGeo" id="ForMapWithGeo" type="scriptable">
+      <Name>ForMapWithGeo</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
@@ -67,6 +69,7 @@ return model;]]></Query>
    </DataAccess>
    <DataAccess access="public" connection="ForMapWithShapes" id="ForMapWithShapes"
                type="scriptable">
+      <Name>ForMapWithShapes</Name>
       <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
