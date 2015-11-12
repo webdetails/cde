@@ -117,14 +117,14 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     evar.cssClass = "css";
     evar.cssPrefix = "StringList";
 
-    it("# getFormatedValue",function() {
+    it("getFormatedValue",function() {
       var shortValue = "Hello World!",
           longValue = "This      must      be      very      long!"; //must be more than 40 characters long
       expect( evar.getFormattedValue(shortValue) ).toBe(shortValue);
       expect( evar.getFormattedValue(longValue) ).toBe("This      must      be      ve (...)");
     });
 
-    it("# getValueDiv", function() {
+    it("getValueDiv", function() {
       var index = "0",
           value = "Hello World!",
           // using jquery to escape html
@@ -136,11 +136,19 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
           '</div>');
     });
 
-    it("# escapeOutPutValue", function() {
+    it("escapeOutPutValue", function() {
       expect(evar.escapeOutputValue(undefined)).toBe(undefined);
       expect(evar.escapeOutputValue(null)).toBe(null);
       expect(evar.escapeOutputValue("Hello World!")).toBe("Hello World!");
       expect(evar.escapeOutputValue("'Hello' \"World\"!")).toBe("&#39;Hello&#39; &quot;World&quot;!");
+    });
+
+    it("escapes input value", function() {
+      var testValue
+      expect(evar.escapeValue("normal")).toEqual("normal");
+      expect(evar.escapeValue("<script>")).toEqual("&lt;script&gt;");
+      expect(evar.escapeValue(["normal", "normal"])).toEqual(["normal", "normal"]);
+      expect(evar.escapeValue(["<script>", "<script>"])).toEqual(["&lt;script&gt;", "&lt;script&gt;"]);
     });
   });
 

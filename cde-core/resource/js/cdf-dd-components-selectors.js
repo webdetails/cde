@@ -12,7 +12,7 @@
  */
 
 // Parameter
-var ParameterRenderer = SelectRenderer.extend({
+var ParameterRenderer = SelectRendererNonForcefull.extend({
 
   getData: function() {
     var r = {};
@@ -54,7 +54,7 @@ var ListenersRenderer = SelectMultiRenderer.extend({
 
 var ArrayParameterRenderer = ListenersRenderer.extend({});
 
-var DatasourceRenderer = SelectRenderer.extend({
+var DatasourceRenderer = SelectRendererNonForcefull.extend({
 
   getData: function() {
 
@@ -65,7 +65,7 @@ var DatasourceRenderer = SelectRenderer.extend({
 
 });
 
-var HtmlObjectRenderer = SelectRenderer.extend({
+var HtmlObjectRenderer = SelectRendererNonForcefull.extend({
 
   getData: function() {
     var r = {};

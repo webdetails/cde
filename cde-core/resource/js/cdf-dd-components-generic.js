@@ -240,7 +240,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
         loaded: function() {
           for(var i = 0; i < index; i++) {
-            myself.addPopupRow(i, vals[i], $('.popup-list-body'));
+            myself.addPopupRow(i, myself.escapeValue(vals[i]), $('.popup-list-body'));
           }
           myself.popupLoadedCallback($(this));
         },
@@ -345,6 +345,19 @@ var ValuesArrayRenderer = CellRenderer.extend({
     });
 
     cdfdd.arrayValue = array.length > 0 ? JSON.stringify(array) : "[]";
+  },
+
+  escapeValue: function(value) {
+    if(_.isArray(value)) {
+      var escapedArray = [];
+      for(var i = 0; i < value.length; i++) {
+        escapedArray.push(this.escapeValue(value[i]));
+      }
+      return escapedArray;
+    } else if(_.isString(value)) {
+      return Dashboards.escapeHtml(value);
+    }
+    return value;
   },
 
   //region Popup Events
@@ -773,7 +786,11 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
   },
 
   onPopupLoad: function() {
-    $('.popup-text-div').tooltip();
+    // we can't have html in the title, removing it
+    var $ph = $('.popup-text-div');
+    var tooltip = $ph.attr("title");
+    $ph.attr("title", "");
+    $ph.tooltip({content: tooltip});
   },
 
   valueClickEvent: function(selector) {
@@ -807,7 +824,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
     if(value != "") {
       // CDF-271 jQueryUI tooltip bug #8861 XSS Vulnerability, no HTML allowed in an element's title
-      $val.tooltip({content: "<pre>" + value + "</pre>"});
+      $val.tooltip({content: "<pre>" + $("<a>").text(value).html() + "</pre>"});
     }
 
     cdfdd.arrayValue[index] = [ $("#arg_" + index).val(), value ];
@@ -1206,7 +1223,7 @@ var CdaQueryRenderer = PromptRenderer.extend({
   }
 });
 
-var MondrianCatalogRenderer = SelectRenderer.extend({
+var MondrianCatalogRenderer = SelectRendererNonForcefull.extend({
 
   logger: null,
   selectData: {},
@@ -1257,7 +1274,7 @@ var MondrianCatalogRenderer = SelectRenderer.extend({
   }
 });
 
-var JndiRenderer = SelectRenderer.extend({
+var JndiRenderer = SelectRendererNonForcefull.extend({
 
   logger: null,
   selectData: [],
