@@ -90,6 +90,7 @@ var TableManager = Base.extend({
         (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
         ' </div>\n' +
         ' <div class="scrollContainer">\n' +
+        '   <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
         '   <table id="' + this.tableId + '" class="' + this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
         '     <thead>\n' +
         '     </thead>\n' +
@@ -503,6 +504,7 @@ var TableManager = Base.extend({
     this.fireDependencies(row, col, classType);
 
     $('#' + this.getId()).addClass('selectedTable');
+    $('#anchor-' + this.getId()).focus();
   },
 
   cellUnselected: function() {

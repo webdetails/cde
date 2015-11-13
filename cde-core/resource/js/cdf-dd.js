@@ -115,13 +115,16 @@ var CDFDD = Base.extend({
           e.preventDefault();
         }
         var target = $(e.target);
+        var isFKey = e.which > 111 && e.which < 124;
         var hasPopup = (target.find('.popup:visible').length || target.find('.jqmWindow:visible').length) > 0 ;
-        if(target.is('input, select, textarea') || hasPopup || e.ctrlKey) {
+        if(target.is('input, select, textarea') || hasPopup || e.ctrlKey || isFKey) {
           return;
         }
 
         e.preventDefault();
 
+        var row, command, operation;
+        var $modes = $(".cdfdd-modes");
         var activePanel = cdfdd.getActivePanel();
         var activeTable = activePanel.getSelectedTable();
 
@@ -144,6 +147,7 @@ var CDFDD = Base.extend({
               cdfdd.cggDialog();
             }
             break;
+          case 219:
           case 222: //?
             cdfdd.toggleHelp();
             break;
@@ -158,7 +162,7 @@ var CDFDD = Base.extend({
             } else { //enter
               var rowIdx = activeTable.getSelectedCell()[0];
               var rowId = activeTable.getTableModel().getEvaluatedId(rowIdx);
-              var row = $('#' + rowId + ' td:eq(1)');
+              row = $('#' + rowId + ' td:eq(1)');
               row.find('div, div.edit :button, form :input.colorcheck').addBack().click();
             }
             break;
@@ -168,20 +172,20 @@ var CDFDD = Base.extend({
            */
           case 97: //Numpad 1
           case 49: //1
-            $(".cdfdd-modes").find("a:eq(2)").click();
+            $modes.find("a:eq(2)").click();
             break;
           case 98: //Numpad 2
           case 50: //2
-            $(".cdfdd-modes").find("a:eq(1)").click();
+            $modes.find("a:eq(1)").click();
             break;
           case 99: //Numpad 3
           case 51: //3
-            $(".cdfdd-modes").find("a:eq(0)").click();
+            $modes.find("a:eq(0)").click();
             break;
           case 38:
             if(e.shiftKey) { //shift + up
-              var operation = new MoveUpOperation();
-              var command = new RowOperationCommand(operation, activeTable);
+              operation = new MoveUpOperation();
+              command = new RowOperationCommand(operation, activeTable);
 
               Commands.executeCommand(command);
             } else { //up
@@ -190,8 +194,8 @@ var CDFDD = Base.extend({
             break;
           case 40:
             if(e.shiftKey) { //shift+down
-              var operation = new MoveDownOperation();
-              var command = new RowOperationCommand(operation, activeTable);
+              operation = new MoveDownOperation();
+              command = new RowOperationCommand(operation, activeTable);
 
               Commands.executeCommand(command);
             } else { //down
@@ -207,7 +211,7 @@ var CDFDD = Base.extend({
           case 9: //tab
             var nextTable = activePanel.selectNextTable();
             if(nextTable) {
-              var row = nextTable.getSelectedCell();
+              row = nextTable.getSelectedCell();
               row = !row.length ? [0,0] : row;
               nextTable.selectCell(row[0], row[1], 'simple');
             }
@@ -217,35 +221,35 @@ var CDFDD = Base.extend({
            * Row Operations
            */
           case 82: //r
-            var operation = new LayoutAddRowOperation();
-            var command = new RowOperationCommand(operation, activeTable);
+            operation = new LayoutAddRowOperation();
+            command = new RowOperationCommand(operation, activeTable);
 
             Commands.executeCommand(command);
             break;
           case 67: //c
-            var operation = new LayoutAddColumnsOperation();
-            var command = new RowOperationCommand(operation, activeTable);
+            operation = new LayoutAddColumnsOperation();
+            command = new RowOperationCommand(operation, activeTable);
 
             Commands.executeCommand(command);
             break;
           case 72: //h
-            var operation = new LayoutAddHtmlOperation();
-            var command = new RowOperationCommand(operation, activeTable);
+            operation = new LayoutAddHtmlOperation();
+            command = new RowOperationCommand(operation, activeTable);
 
             Commands.executeCommand(command);
             break;
           case 88:
             if(e.shiftKey) { //shift+x
-              var operation = new DeleteOperation();
-              var command = new RowOperationCommand(operation, activeTable);
+              operation = new DeleteOperation();
+              command = new RowOperationCommand(operation, activeTable);
 
               Commands.executeCommand(command);
             }
             break;
           case 68:
             if(e.shiftKey) { //shift+d
-              var operation = new (activePanel.getDuplicateOperation())();
-              var command = new RowOperationCommand(operation, activeTable);
+              operation = new (activePanel.getDuplicateOperation())();
+              command = new RowOperationCommand(operation, activeTable);
 
               Commands.executeCommand(command);
             }
