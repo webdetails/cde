@@ -1288,9 +1288,7 @@ var SelectRenderer = CellRenderer.extend({
     if(value == null) {
       label = "";
     } else {
-      label = (!this.isArray && typeof data[value] !== "undefined") ?
-          data[value] :
-          value;
+      label = this.getLabel(data, value);
     }
 
     var _editArea = $("<td>" + label + "</td>");
@@ -1298,14 +1296,7 @@ var SelectRenderer = CellRenderer.extend({
 
     var myself = this;
 
-    CDFDDUtils.makeEditable(_editArea, function(value /*,settings*/) {
-      var valueId = myself.getActualValue(value);
-
-      myself.logger.debug("Saving new value: " + valueId);
-      callback(valueId);
-      myself.postChange(valueId);
-      return value;
-    }, {
+    CDFDDUtils.makeEditable(_editArea, this.getEditableCallback(callback), {
       type: "autocomplete",
       tooltip: "Click to edit...",
       onblur: "submit",
@@ -1326,6 +1317,20 @@ var SelectRenderer = CellRenderer.extend({
     });
 
     _editArea.appendTo(placeholder);
+  },
+
+  getEditableCallback: function(callback) {
+    return _.bind(function(value) {
+      var valueId = this.getActualValue(value);
+      this.logger.debug("Saving new value: " + valueId);
+      callback(valueId);
+      this.postChange(valueId);
+      return value;
+    }, this);
+  },
+
+  getLabel: function(data, value) {
+    return (!this.isArray && typeof data[value] !== "undefined") ? data[value] : value;
   },
 
   getActualValue: function(value) {
