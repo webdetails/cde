@@ -264,6 +264,21 @@ div.ui-sortable-helper .popup-drag-icon span {
   margin-right: 2px;
 }
 
+.popup-pattern-container:not(.date-type-selected) .pattern-input {
+  color: transparent;
+}
+
+.popup-pattern-container:not(.date-type-selected):after {
+  background-color: #CECECE;
+  content: "";
+  display: block;
+  height: 2px;
+  position: absolute;
+  margin: 0 10px;
+  top: 50%;
+  width: 130px;
+}
+
 .typed-row.popup-remove-hover .popup-checkbox-container {
   border-color: #F9ECED;
   background-color: #F9ECED;
@@ -282,7 +297,9 @@ div.ui-sortable-helper .popup-drag-icon span {
 }
 
 .typed-row.popup-remove-hover input[type=checkbox]:checked + .popup-input-label:before,
-.typed-row.popup-remove-selected input[type=checkbox]:checked + .popup-input-label:before {
+.typed-row.popup-remove-selected input[type=checkbox]:checked + .popup-input-label:before,
+.typed-row.popup-remove-hover .popup-pattern-container:not(.date-type-selected):after,
+.typed-row.popup-remove-selected .popup-pattern-container:not(.date-type-selected):after {
   background-color: #AF0E1A;
 }
 
@@ -318,11 +335,9 @@ div.ui-sortable-helper .popup-drag-icon span {
 
 .multi-dimension-row .popup-value-container,
 .multi-dimension-row .popup-value-container-small,
-.multi-dimension-row .popup-default-container, {
+.multi-dimension-row .popup-default-container {
   padding-left: 1px;
 }
-
-
 
 .popup-remove-hover .popup-value-container, .popup-list-row.popup-remove-hover {
   background-color: #F9ECED;
