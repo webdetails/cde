@@ -79,7 +79,10 @@ var ComponentsPanel = Panel.extend({
     componentsTableModel.setData(componentRows);
     this.componentsTable.setTableModel(componentsTableModel);
     this.componentsTable.init();
-    $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable');
+
+    var componentsTree = $('#' + ComponentsPanel.COMPONENTS);
+    var propertiesTree = $('#' + ComponentsPanel.PROPERTIES);
+    componentsTree.addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(ComponentsPanel.PROPERTIES);
@@ -116,14 +119,14 @@ var ComponentsPanel = Panel.extend({
       return arr;
     });
 
-    $('#' + ComponentsPanel.COMPONENTS).click(function(e) {
-      $('#' + ComponentsPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
-      $('#' + ComponentsPanel.COMPONENTS).addClass('selectedTable').removeClass('unselectedTable');
+    componentsTree.click(function(e) {
+      propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
+      componentsTree.addClass('selectedTable').removeClass('unselectedTable');
     });
 
-    $('#' + ComponentsPanel.PROPERTIES).click(function(e) {
-      $('#' + ComponentsPanel.COMPONENTS).addClass('unselectedTable').removeClass('selectedTable');
-      $('#' + ComponentsPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    propertiesTree.click(function(e) {
+      componentsTree.addClass('unselectedTable').removeClass('selectedTable');
+      propertiesTree.addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -158,8 +161,14 @@ var ComponentsPanel = Panel.extend({
 
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+    var tm = TableManager.getTableManager("table-" + selectedTableId);
+    var data = tm.getTableModel().getData();
 
-    return TableManager.getTableManager("table-" + selectedTableId);
+    if( data != null && data.length == 0) {
+      tm = TableManager.getTableManager("table-" + ComponentsPanel.COMPONENTS);
+    }
+
+    return tm;
   },
 
   selectNextTable: function() {
