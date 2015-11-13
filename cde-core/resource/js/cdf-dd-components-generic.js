@@ -201,6 +201,8 @@ var ValuesArrayRenderer = CellRenderer.extend({
   argPlaceholderText: 'Insert Text...',
   valPlaceHolderText: 'Parameters...',
 
+  patternPlaceholderText:'Insert Pattern...',
+
   index: 0,
 
   constructor: function(tableManager) {
@@ -526,7 +528,9 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
 
   sanitizeValues: function(values) {
-    for(var i = 1, L = values.length; i < L; i++) {
+    var L = this.hasTypedValues ? 5 : values.length;
+
+    for(var i = 1; i < L; i++) {
       values[i] = values[i] === undefined ? "" : values[i] === null ? "null" : values[i];
     }
 
@@ -708,29 +712,30 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
 
   getRemoveRowButton: function(index) {
-    return '<span type="button" id="remove_button_' + index + '" class="popup-remove-row-select"></span>';
+    return '<span id="remove_button_' + index + '" class="popup-remove-row-select"></span>';
   },
 
   getArgSection: function(index, value) {
     return '' +
         '<div class="popup-arg-container">' +
-        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '"></input>' +
+        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '">' +
         '</div>';
   },
 
   getValueSection: function(index, value) {
     return '' +
         '<div class="popup-value-container">' +
-        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '"></input>' +
+        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '">' +
         '</div>';
   },
 
   getPatternSection: function(index, value, typeValue) {
     var disabledProp = this.patternUnlockTypes.indexOf(typeValue) < 0 ? "disabled" : "";
+    var placeholder = disabledProp === "" ? this.patternPlaceholderText : "";
 
     return '' +
         '<div class="popup-pattern-container">' +
-        '  <input id="pattern_' + index + '" class="popup-text-input pattern-input" type="text"' + disabledProp + ' value="' + value + '" placeholder="Insert Pattern..."></input>' +
+        '  <input id="pattern_' + index + '" class="popup-text-input pattern-input" type="text" value="' + value + '" placeholder="' + placeholder + '"' + disabledProp + '>' +
         '</div>';
   },
 
@@ -1003,7 +1008,10 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     var myself = this;
     selector.change(function(event) {
       var disabled = $.inArray(selector.val(), myself.patternUnlockTypes) < 0;
-      container.find("#pattern_" + index).prop("disabled", disabled)
+      var placeholder = disabled ? "" : myself.patternPlaceholderText;
+
+      container.find(".popup-pattern-container").toggleClass("date-type-selected", !disabled);
+      container.find("#pattern_" + index).prop("disabled", disabled).attr("placeholder", placeholder);
     });
     CDFDDUtils.buildPopupSelect(selector, {});
   }
