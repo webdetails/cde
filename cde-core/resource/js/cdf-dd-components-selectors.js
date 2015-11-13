@@ -71,9 +71,26 @@ var HtmlObjectRenderer = SelectRendererNonForcefull.extend({
     var r = {};
     _.each(Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlObjects(),function(o){
       var h = o.properties[0].value;
-      r["${h:" + h + "}"] = h;
+      r[h] = h;
     });
     return r;
+  },
+
+  getActualValue: function(value) {
+    if(!!value) {
+      if(value.indexOf("${h:") == 0 && value.lastIndexOf("}") == (value.length - 1)){
+        return value;
+      }
+      return "${h:" + value + "}";
+    }
+    return this.base(value);
+  },
+
+  getLabel: function(data, value) {
+    if(value && value.indexOf("${h:") == 0 && value.lastIndexOf("}") == (value.length - 1)) {
+      return value.substring(4, value.length - 1);
+    }
+    return this.base(data, value);
   }
 });
 
