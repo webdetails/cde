@@ -102,7 +102,10 @@ var LayoutPanel = Panel.extend({
     treeTableModel.setData(layoutRows);
     this.treeTable.setTableModel(treeTableModel);
     this.treeTable.init();
-    $('#' + LayoutPanel.TREE).addClass('selectedTable');
+
+    var layoutPanelTree = $('#' + LayoutPanel.TREE);
+    var propertiesTree = $('#' + LayoutPanel.PROPERTIES);
+    layoutPanelTree.addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(LayoutPanel.PROPERTIES);
@@ -137,14 +140,14 @@ var LayoutPanel = Panel.extend({
       return arr;
     });
 
-    $('#' + LayoutPanel.TREE).click(function(e) {
-      $('#' + LayoutPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
-      $('#' + LayoutPanel.TREE).addClass('selectedTable').removeClass('unselectedTable');
+    layoutPanelTree.click(function(e) {
+      propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
+      layoutPanelTree.addClass('selectedTable').removeClass('unselectedTable');
     });
 
-    $('#' + LayoutPanel.PROPERTIES).click(function(e) {
-      $('#' + LayoutPanel.TREE).addClass('unselectedTable').removeClass('selectedTable');
-      $('#' + LayoutPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    propertiesTree.click(function(e) {
+      layoutPanelTree.addClass('unselectedTable').removeClass('selectedTable');
+      propertiesTree.addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -185,8 +188,14 @@ var LayoutPanel = Panel.extend({
 
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+    var tm = TableManager.getTableManager("table-" + selectedTableId);
+    var data = tm.getTableModel().getData();
 
-    return TableManager.getTableManager("table-" + selectedTableId);
+    if( data != null && data.length == 0) {
+      tm = TableManager.getTableManager("table-" + LayoutPanel.TREE);
+    }
+
+    return tm;
   },
 
   selectNextTable: function() {

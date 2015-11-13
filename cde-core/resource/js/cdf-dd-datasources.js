@@ -76,7 +76,10 @@ var DatasourcesPanel = Panel.extend({
     datasourcesTableModel.setData(dataSources);
     this.datasourcesTable.setTableModel(datasourcesTableModel);
     this.datasourcesTable.init();
-    $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable');
+
+    var datasourcesTree = $('#' + DatasourcesPanel.DATASOURCES);
+    var propertiesTree = $('#' + DatasourcesPanel.PROPERTIES);
+    datasourcesTree.addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
@@ -114,14 +117,14 @@ var DatasourcesPanel = Panel.extend({
       return arr;
     });
 
-    $('#' + DatasourcesPanel.DATASOURCES).click(function(e) {
-      $('#' + DatasourcesPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
-      $('#' + DatasourcesPanel.DATASOURCES).addClass('selectedTable').removeClass('unselectedTable');
+    datasourcesTree.click(function(e) {
+      propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
+      datasourcesTree.addClass('selectedTable').removeClass('unselectedTable');
     });
 
-    $('#' + DatasourcesPanel.PROPERTIES).click(function(e) {
-      $('#' + DatasourcesPanel.DATASOURCES).addClass('unselectedTable').removeClass('selectedTable');
-      $('#' + DatasourcesPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    propertiesTree.click(function(e) {
+      datasourcesTree.addClass('unselectedTable').removeClass('selectedTable');
+      propertiesTree.addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -177,8 +180,14 @@ var DatasourcesPanel = Panel.extend({
 
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+    var tm = TableManager.getTableManager("table-" + selectedTableId);
+    var data = tm.getTableModel().getData();
 
-    return TableManager.getTableManager("table-" + selectedTableId);
+    if( data != null && data.length == 0) {
+      tm = TableManager.getTableManager("table-" + DatasourcesPanel.DATASOURCES);
+    }
+
+    return tm;
   },
 
   selectNextTable: function() {
