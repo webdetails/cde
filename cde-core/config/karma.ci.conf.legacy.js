@@ -47,6 +47,7 @@ module.exports = function(config) {
       'resource/js/cdf-dd-layout.js',
       'resource/js/cdf-dd-components.js',
       'resource/js/cdf-dd-components-generic.js',
+      'resource/js/cdf-dd-components-selectors.js',
       'resource/js/cdf-dd-prompt-properties.js',
       'resource/js/cdf-dd-prompt-wizard.js',
       'resource/js/cdf-dd-datasources.js',
