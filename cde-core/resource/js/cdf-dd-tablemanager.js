@@ -1293,7 +1293,8 @@ var SelectRenderer = CellRenderer.extend({
       label = this.getLabel(data, value);
     }
 
-    var _editArea = $("<td>" + label + "</td>");
+    var _editArea = $("<td></td>");
+    _editArea.text(label);
     data = null;
 
     var myself = this;
