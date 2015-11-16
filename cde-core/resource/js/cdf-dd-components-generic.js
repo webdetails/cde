@@ -1000,7 +1000,10 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     var value = $("#val_" + i).val();
     var type = $("#type_" + i).val();
     var access = $("#access_" + i).attr('checked') ? 'private' : '';
-    var pattern = $("#pattern_" + i).val();
+
+    var isDate = $.inArray(type, this.patternUnlockTypes) != -1;
+    var pattern = isDate ? $("#pattern_" + i).val() : "";
+
     return [name, value, type, access, pattern];
   },
 
@@ -1011,8 +1014,14 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
       var disabled = $.inArray(selector.val(), myself.patternUnlockTypes) < 0;
       var placeholder = disabled ? "" : myself.patternPlaceholderText;
 
-      container.find(".popup-pattern-container").toggleClass("date-type-selected", !disabled);
-      container.find("#pattern_" + index).prop("disabled", disabled).attr("placeholder", placeholder);
+      container
+          .find(".popup-pattern-container").has("#pattern_" + index)
+            .toggleClass("date-type-selected", !disabled);
+
+      container
+          .find("#pattern_" + index)
+            .prop("disabled", disabled)
+            .attr("placeholder", placeholder);
     });
     CDFDDUtils.buildPopupSelect(selector, {});
   }
