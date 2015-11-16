@@ -1,0 +1,1837 @@
+{
+ "components": {
+  "rows": [
+   {
+    "id": "CUSTOMCOMPONENTS",
+    "name": "Custom",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Custom"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "dfbe5a0c-36b6-5efa-3a79-501ff768d4ba",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "MapWithMarkers"
+     },
+     {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": "${p:paramMapWithMarkers}"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:paramMapEngine}']"
+     },
+     {
+      "name": "API_KEY",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "centerLatitude",
+      "type": "Float",
+      "value": ""
+     },
+     {
+      "name": "centerLongitude",
+      "type": "Float",
+      "value": ""
+     },
+     {
+      "name": "cggGraphParameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "colormap",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "defaultZoomLevel",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "fillOpacity",
+      "type": "Float",
+      "value": ""
+     },
+     {
+      "name": "locationResolver",
+      "type": "locationResolverCustom",
+      "value": "openstreetmap"
+     },
+     {
+      "name": "mapEngineType",
+      "type": "mapEngineTypeCustom",
+      "value": "openlayers"
+     },
+     {
+      "name": "mapMode",
+      "type": "mapModeCustom",
+      "value": "markers"
+     },
+     {
+      "name": "marker",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "markerCggGraph",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "markerClickFunction",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "markerHeight",
+      "type": "Integer",
+      "value": 25
+     },
+     {
+      "name": "markerWidth",
+      "type": "Integer",
+      "value": 25
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "popupContentsDiv",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "popupHeight",
+      "type": "Integer",
+      "value": 250
+     },
+     {
+      "name": "popupParameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "popupWidth",
+      "type": "Integer",
+      "value": 250
+     },
+     {
+      "name": "shapeSource",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "strokeWidth",
+      "type": "Float",
+      "value": 2
+     },
+     {
+      "name": "tilesets",
+      "type": "tilesetsCustom",
+      "value": "default"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithMarkers"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:testWithMarkers}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function(){\n\n    this.visualRoles = {\n        id: 2\n    };\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n\n    \n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseClick",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseOut",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseOver",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component"
+   },
+   {
+    "id": "007195fc-9625-c0f8-0391-42104ee7464f",
+    "parent": "CUSTOMCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "MapWithShapes"
+     },
+     {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": "${p:paramMapWithShapes}"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:paramMapEngine}']"
+     },
+     {
+      "name": "API_KEY",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "centerLatitude",
+      "type": "Float",
+      "value": "38"
+     },
+     {
+      "name": "centerLongitude",
+      "type": "Float",
+      "value": "-9"
+     },
+     {
+      "name": "cggGraphParameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "colormap",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "defaultZoomLevel",
+      "type": "Integer",
+      "value": "2"
+     },
+     {
+      "name": "fillOpacity",
+      "type": "Float",
+      "value": ""
+     },
+     {
+      "name": "locationResolver",
+      "type": "locationResolverCustom",
+      "value": "openstreetmap"
+     },
+     {
+      "name": "mapEngineType",
+      "type": "String",
+      "value": "openlayers"
+     },
+     {
+      "name": "mapMode",
+      "type": "mapModeCustom",
+      "value": "shapes"
+     },
+     {
+      "name": "marker",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "markerCggGraph",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "markerClickFunction",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "markerHeight",
+      "type": "Integer",
+      "value": "52"
+     },
+     {
+      "name": "markerWidth",
+      "type": "Integer",
+      "value": "36"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "popupContentsDiv",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "popupHeight",
+      "type": "Integer",
+      "value": "250"
+     },
+     {
+      "name": "popupParameters",
+      "type": "ValuesArray",
+      "value": "[[\"Description\",\"CustomerNameParameter\"]]"
+     },
+     {
+      "name": "popupWidth",
+      "type": "Integer",
+      "value": 250
+     },
+     {
+      "name": "shapeSource",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "strokeColor",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "strokeWidth",
+      "type": "Float",
+      "value": ""
+     },
+     {
+      "name": "tilesets",
+      "type": "tilesetsCustom",
+      "value": "default"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": "ForMapWithShapes"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:testWithShapes}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function(){\n    var getResource = ''; //this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    \n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.mapEngineType = this.dashboard.getParameterValue('${p:paramMapEngine}')[0];\n} \n "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": "function(json){\n    var ids = _.pluck(json.resultset, 0);\n    \n    var randomSelection = _.chain(_.range(4))\n    .map(function(){\n        return Math.round(Math.random() * ids.length)\n    })\n    .map(function(idx){\n        return ids[idx];\n    })\n    .compact()\n    .value();\n    \n    this.dashboard.fireChange(this.parameter, randomSelection);\n    \n    return json;\n} "
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseClick",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseOut",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "shapeMouseOver",
+      "type": "JavaScript",
+      "value": ""
+     }
+    ],
+    "type": "ComponentsNewMapComponent",
+    "typeDesc": "Map Component"
+   },
+   {
+    "id": "OTHERCOMPONENTS",
+    "name": "Others",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Others"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "f620a49a-19e2-1865-2085-5ddc857ad03e",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithMarkersResult"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:paramMapWithMarkers}']"
+     },
+     {
+      "name": "expression",
+      "type": "JavaScript",
+      "value": "function(){\n    return \"Result: \" + JSON.stringify(this.dashboard.getParameterValue('${p:paramMapWithMarkers}'));\n} "
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "refreshPeriod",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:testWithMarkersResultObj}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     }
+    ],
+    "type": "ComponentstextComponent",
+    "typeDesc": "Text Component"
+   },
+   {
+    "id": "e74ac47a-c5a8-6b46-ba08-6d51ff2e2bc1",
+    "parent": "OTHERCOMPONENTS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithShapesResult"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:paramMapWithShapes}']"
+     },
+     {
+      "name": "expression",
+      "type": "JavaScript",
+      "value": "function(){\n    return \"Result: \" + JSON.stringify(this.dashboard.getParameterValue('${p:paramMapWithShapes}'));\n} "
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "refreshPeriod",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:testWithShapesResultObj}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "tooltip",
+      "type": "Html",
+      "value": ""
+     }
+    ],
+    "type": "ComponentstextComponent",
+    "typeDesc": "Text Component"
+   },
+   {
+    "id": "GENERIC",
+    "name": "Generic",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Generic"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "bbb56a2d-20fa-a4a2-12ae-c80f15953b10",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "paramMapWithMarkers"
+     },
+     {
+      "name": "javaScript",
+      "type": "JavaScript",
+      "value": " [\"Australian Collectors, Co.\"]; "
+     },
+     {
+      "name": "parameterViewRole",
+      "type": "parameterViewRoleCustom",
+      "value": "unused"
+     },
+     {
+      "name": "bookmarkable",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "public",
+      "type": "Boolean",
+      "value": "false"
+     }
+    ],
+    "type": "ComponentsJavascriptParameter",
+    "typeDesc": "Custom parameter"
+   },
+   {
+    "id": "8fa48e05-f237-b164-8384-a3f385a415ce",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "paramMapWithShapes"
+     },
+     {
+      "name": "javaScript",
+      "type": "JavaScript",
+      "value": "[]; "
+     },
+     {
+      "name": "parameterViewRole",
+      "type": "parameterViewRoleCustom",
+      "value": "unused"
+     },
+     {
+      "name": "bookmarkable",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "public",
+      "type": "Boolean",
+      "value": "false"
+     }
+    ],
+    "type": "ComponentsJavascriptParameter",
+    "typeDesc": "Custom parameter"
+   },
+   {
+    "id": "f75608db-f426-4ec3-6cf5-e4f16387ecfe",
+    "parent": "GENERIC",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "paramMapEngine"
+     },
+     {
+      "name": "javaScript",
+      "type": "JavaScript",
+      "value": "[\"openlayers\"] "
+     },
+     {
+      "name": "parameterViewRole",
+      "type": "parameterViewRoleCustom",
+      "value": "unused"
+     },
+     {
+      "name": "bookmarkable",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "public",
+      "type": "Boolean",
+      "value": "false"
+     }
+    ],
+    "type": "ComponentsJavascriptParameter",
+    "typeDesc": "Custom parameter"
+   },
+   {
+    "id": "SELECTORS",
+    "name": "Selects",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "Selects"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "91afa6cb-554e-2967-0bba-f15093998421",
+    "parent": "SELECTORS",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "selectEngine"
+     },
+     {
+      "name": "title",
+      "type": "String",
+      "value": "Map Engine"
+     },
+     {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": "${p:paramMapEngine}"
+     },
+     {
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "[]"
+     },
+     {
+      "name": "parameters",
+      "type": "ValuesArray",
+      "value": "[]"
+     },
+     {
+      "name": "valueAsId",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "outputFormat",
+      "type": "outputFormatCustom",
+      "value": "lowestID"
+     },
+     {
+      "name": "dataSource",
+      "type": "Datasource",
+      "value": ""
+     },
+     {
+      "name": "valuesArray",
+      "type": "ValuesArray",
+      "value": "[[\"openlayers\",\"OpenLayers\"],[\"google\",\"Google Maps\"]]"
+     },
+     {
+      "name": "priority",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "alwaysExpanded",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "multiselect",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "selectionLimit",
+      "type": "Integer",
+      "value": 200
+     },
+     {
+      "name": "pageSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "showIcons",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "showButtonOnlyThis",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "useOverlay",
+      "type": "Boolean",
+      "value": "true"
+     },
+     {
+      "name": "showFilter",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "htmlObject",
+      "type": "HtmlObject",
+      "value": "${h:selectionObj}"
+     },
+     {
+      "name": "executeAtStart",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "preExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postExecution",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postUpdate",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "renderRootHeader",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "renderRootSelection",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "renderRootFooter",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "renderGroupSelection",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "renderItemSelection",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "sortGroup",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "sortItem",
+      "type": "Array",
+      "value": "[]"
+     },
+     {
+      "name": "options",
+      "type": "JavaScript",
+      "value": "function options(){\n    return {};\n}"
+     }
+    ],
+    "type": "ComponentsFilterComponent",
+    "typeDesc": "Filter Component"
+   }
+  ]
+ },
+ "datasources": {
+  "rows": [
+   {
+    "id": "SCRIPTING",
+    "name": "SCRIPTING Queries",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "Group",
+      "type": "Label",
+      "value": "SCRIPTING Queries"
+     }
+    ],
+    "type": "Label",
+    "typeDesc": "<i>Group</i>"
+   },
+   {
+    "id": "cbf44bc8-199c-1c07-2496-20ccf0c86bf7",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ForMapWithShapes"
+     },
+     {
+      "name": "initscript",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "language",
+      "type": "String",
+      "value": "beanshell"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "query",
+      "type": "SqlQuery",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"id\",\n\"fill\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting"
+   },
+   {
+    "id": "170c6626-4eab-ab94-473c-32fce3e17eb4",
+    "meta": "CDA",
+    "meta_conntype": "scripting.scripting",
+    "meta_datype": "scriptable",
+    "parent": "SCRIPTING",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "ForMapWithMarkers"
+     },
+     {
+      "name": "initscript",
+      "type": "String",
+      "value": ""
+     },
+     {
+      "name": "language",
+      "type": "String",
+      "value": "beanshell"
+     },
+     {
+      "name": "access",
+      "type": "Access",
+      "value": "public"
+     },
+     {
+      "name": "query",
+      "type": "ScriptableQuery",
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"Longitude\",\n\"Latitude\",\n\"Description\"\n};\n\nClass[] columnTypes = new Class[]{\nFloat.class\n,Float.class\n,String.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\nmodel.addRow(new Object[]{ new Float(3), new Float(45.45), new String(\"Atelier Graphique\")});\nmodel.addRow(new Object[]{ new Float(12), new Float(45.45), new String(\"Australian Collectors, Co.\")});\nmodel.addRow(new Object[]{ new Float(14), new Float(45.45), new String(\"Signal Gift Stores\")});\nreturn model;\n\n\n"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
+      "name": "cdacalculatedcolumns",
+      "type": "CdaCalculatedColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "cdacolumns",
+      "type": "CdaColumnsArray",
+      "value": "[]"
+     },
+     {
+      "name": "output",
+      "type": "IndexArray",
+      "value": "[]"
+     },
+     {
+      "name": "outputMode",
+      "type": "OutputMode",
+      "value": "include"
+     },
+     {
+      "name": "cacheKeys",
+      "type": "CacheKeysValues",
+      "value": "[]"
+     },
+     {
+      "name": "cacheDuration",
+      "type": "Integer",
+      "value": 3600
+     },
+     {
+      "name": "cache",
+      "type": "Boolean",
+      "value": "true"
+     }
+    ],
+    "type": "Componentsscriptable_scripting",
+    "typeDesc": "scriptable over scripting"
+   }
+  ]
+ },
+ "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/selection.cdfde",
+ "layout": {
+  "rows": [
+   {
+    "id": "0c161c28-7118-15a8-b495-840c5525b04f",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "template"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../../template.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "bbe15273-4bcc-7290-77bf-3a2e9205064a",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "wd_style"
+     },
+     {
+      "name": "resourceFile",
+      "type": "ResourceFile",
+      "value": "${res:../../cdeReference.css}"
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceFile",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "7bae4c43-4df1-1af3-6521-f40db8db57f4",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "GoogleApiKeyDefinition"
+     },
+     {
+      "name": "resourceCode",
+      "type": "Resource",
+      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/theme/dark/'; \n "
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Javascript"
+     }
+    ],
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "1dc266d5-7b94-4aa0-5200-991bdb65706f",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "mapCSS"
+     },
+     {
+      "name": "resourceCode",
+      "type": "Resource",
+      "value": "#testWithMarkers,\n#testWithShapes{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\npre.prettyprint {\nborder: 1px none #888;\n} \n\n.WDhidden{\n    display: none;\n} "
+     },
+     {
+      "name": "resourceType",
+      "type": "Label",
+      "value": "Css"
+     }
+    ],
+    "type": "LayoutResourceCode",
+    "typeDesc": "Resource"
+   },
+   {
+    "id": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "documentation"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "a05b739c-8186-4b41-eacc-790980a35213",
+    "parent": "ca944a50-23e8-d5e2-c80c-1158ac263102",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "<h2>Introduction</h2>\n\n<p>\n  The NewMapComponent can be used as a selector. \n  As with any other CDF selector component, the id's of the items are read and stored in a control parameter.  \n</p>\n\n<p>\nThe map has three operating modes:\n\n\n<dl>\n    <dt>Panning mode</dt>\n    <dd>\n        <p>\n            Allows navigation over the map. Operates in single selection mode.\n        </p>\n    </dd>\n    \n    <dt>Zoom box mode</dt>\n    <dd>\n        <p>\n            Allows the drawing of a rectangle to define a new zoom area.\n            The ability to select/unselect items is disabled. \n        </p>\n    </dd>\n    \n    <dt>Selection box mode</dt>\n    <dd>\n        <p>\n            Allows the drawing of a rectangle that selects a set of items.\n            The selection state of the items inside the rectangle is toggled. \n            Multiple selection of items is allowed.\n        </p>\n    </dd>\n</dl>\n</p>\n\n\n<p>\n\nIt is possible to specify state-dependent styles, which can be used to provide \na visual cue to the user on the current selection state of a particular item.\n\nFor the items, the states are the following:\n<dl>\n    <dt>Selected</dt>\n    <dd>\n        <p>\n            When the item is selected.\n        </p>\n    </dd>\n\n    <dt>Unselected</dt>\n    <dd>\n        <p>\n            When the item is not selected.\n        </p>\n    </dd>\n\n    <dt>Hover</dt>\n    <dd>\n        <p>\n            When the mouse is over an item.\n        </p>\n    </dd>\n    \n    <dt>Normal</dt>\n    <dd>\n        <p>\n            When the mouse is not over an item.\n        </p>\n    </dd>\n</dl>\n</p>\n \n<h2>Style and State Modes</h2>\n\n<p>\nThe combination of the map operation mode and item state defines the individual style for each item\non the map. Only the following combinations might occur:\n\n    <ul>\n        <li>Panning : Selected   : Hover</li>\n        <li>Panning : Selected   : Normal</li>\n        <li>Panning : Unselected : Hover</li>\n        <li>Panning : Unselected : Normal</li>\n    </ul> \n\n    <ul>\n        <li>Zoom Box : Selected   : Hover</li>\n        <li>Zoom Box : Selected   : Normal</li>\n        <li>Zoom Box : Unselected : Hover</li>\n        <li>Zoom Box : Unselected : Normal</li>\n    </ul> \n    \n    <ul>\n        <li>Selection Box : Selected   : Hover</li>\n        <li>Selection Box : Selected   : Normal</li>\n        <li>Selection Box : Unselected : Hover</li>\n        <li>Selection Box : Unselected : Normal</li>\n    </ul> \n</p>\n\n<p>\nBy default, the NewMapComponent has a style defined for each combination. To create a\ncustomized style you must think in the following hierarchical structure:\n\n<pre class='javascript prettyprint lang-js'>\n  var styleMaps = {\n    global: {\n      pan: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      zoombox: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      selection: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      }\n    },\n    markers: {\n      pan: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      zoombox: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      selection: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      }\n    },\n    shapes: {\n      pan: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      zoombox: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      },\n      selection: {\n        unselected: {\n          normal: { },\n          hover: { }\n        },\n        selected: {\n          normal: { },\n          hover: { }\n        }\n      }\n    }\n  };\n</pre>\n\n<dl>\n    <dt>global</dt>\n    <dd>\n        <p>\n            Defines the default style shared by all items in the map.\n        </p>\n    </dd>\n    \n    <dt>markers</dt>\n    <dd>\n        <p>\n            Defines the default style for markers.\n        </p>\n    </dd>\n\n    <dt>shapes</dt>\n    <dd>\n        <p>\n            Defines the default style for shapes.\n        </p>\n    </dd>\n\n<dl>\n</p>\n\n<p>\nThere is also a chain of precedence amongst all the elements. The chain below shows the \nrespective chain from the most generic to the most specific:\n\n<strong>\n<ul>\n    <li>\n    global\n    </li>\n    \n    <li>\n    markers/shapes\n    </li>\n\n    <li>\n    pan/zoombox/selection\n    </li>\n\n    <li>\n    unselected/selected\n    </li>\n    \n    <li>\n    normal/hover\n    </li>\n    \n    <li>\n    calculated attributes based on the result set\n    </li>\n    \n</ul>\n</strong>\n\n</p>\n\n<h2>Styling</h2>\n\n<p>\nCustomized style must be defined for nodes using a <strong>styleMaps</strong> structure. The style will be applied for every node below.\n</p>\n\n<p>\nAll the code must be written as a preExecution function.\n</p>\n\n<p>\nFor instance, to define a global opacity for both markers and shapes, when selected and unselected, in the Panning mode:\n\n<pre class='javascript prettyprint lang-js'>\nfunction() {\n\n    this.styleMap = {\n        global: {\n            pan: {\n                \"fill-opacity\": 0.8\n            }\n        }\n    };\n\n}\n</pre>\n    \n</p>\n\n<p>\nDefining a different color for selected shapes for each map state when the mouse hovers over an item:\n\n<pre class='javascript prettyprint lang-js'>\nfunction() {\n\n    this.styleMap = {\n        shapes: {\n            pan: {\n                selected: {\n                    hover: { \n                        fill: #ff0000\n                    }\n                }\n            },\n            zoombox: {\n                selected: {\n                    hover: { \n                        fill: #00ff00\n                    }\n                }\n            },\n            selection: {\n                selected: {\n                    hover: { \n                        fill: #0000ff\n                    }\n                }\n            }\n        }\n    }\n\n}\n</pre>\n</p>\n\n<p>\nDefining a global behavior for items.\n\n<pre class='javascript prettyprint lang-js'>\nfunction() {\n\n    this.styleMap = {\n        global: {\n            normal: {\n                stroke: 'white'\n            },\n            hover: {\n                stroke: 'black',\n                cursor: 'pointer'\n            },\n            unselected: {\n                'fill-opacity': 0.5\n            },\n            selected: {\n                'fill-opacity': 0.9\n            }\n        }\n    };\n</pre>\n\n</p>\n\n<p>\nBelow the properties that are common between openlayers and google engines:\n\n<dl>\n    <dt>fill</dt>\n    <dd>\n        <p>\n            This attribute defines the color of the interior of the given shape or marker.\n        </p>\n    </dd>\n    \n    <dt>fill-opacity</dt>\n    <dd>\n        <p>\n            This attribute specifies the opacity of the color or the content the current object is filled with.\n        </p>\n    </dd>\n\n    <dt>stroke</dt>\n    <dd>\n        <p>\n            The stroke attribute defines the color of the outline on a given shape or marker.\n        </p>\n    </dd>\n    \n    <dt>stroke-opacity</dt>\n    <dd>\n        <p>\n            The stroke-opacity attribute specifies the opacity of the outline on the current object.\n        </p>\n    </dd>\n    \n    <dt>stroke-width</dt>\n    <dd>\n        <p>\n            The stroke-width attribute specifies the width of the outline on the current object.\n        </p>\n    </dd>\n\n    <dt>r</dt>\n    <dd>\n        <p>\n            For the marker this attribute defines the radius of the element when no Marker Image is defined.\n        </p>\n    </dd>\n\n<dl>\n\n</p>\n \n<p>\nThe documented attributes for each engine can also be used.\n</p> \n\n<h2>Default Style</h2>\n\n<p>\nFor reference, below is the default style applied in the NewMapComponent.\n</p>\n\n<pre class='javascript prettyprint lang-js'>\n    global: {\n        normal: {\n            stroke: 'white'\n        },\n        hover: {\n            stroke: 'black',\n            cursor: 'pointer'\n        },\n        unselected: {\n            'fill-opacity': 0.5\n        },\n        selected: {\n            'fill-opacity': 0.9\n        },\n        selection: {\n            unselected: {\n                fill: 'gray'\n            }\n        }\n    },\n    markers: {\n        r: 10,\n        symbol: 'circle',\n        labelAlign: 'cm',\n        labelYOffset: -20,\n        fill: 'red',\n        'stroke-width': 2\n    },\n    shapes: {\n        normal: {\n            'stroke-width': 1,\n            'z-index': 0\n        },\n        hover: {\n            fill: 'orange',\n            'stroke-width': 2,\n            'z-index': 1\n        },\n        selected: {\n            normal: {\n                fill: 'red'\n            },\n            hover: {\n                fill: 'darkred'\n            }\n        }\n    }\n</pre>\n "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "99d30b82-a82e-daee-5488-beabc6bbbace",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "0fd38acf-434c-d8d8-4f53-0352ef0fd35b",
+    "parent": "99d30b82-a82e-daee-5488-beabc6bbbace",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "selectionObj"
+     },
+     {
+      "name": "columnSpan",
+      "type": "Integer",
+      "value": 5
+     },
+     {
+      "name": "columnPrepend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnAppend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnPrependTop",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnAppendBottom",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBigBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "8f0fbb4b-2395-3b8d-2e60-3da2d45e0558",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "sampleMarkers"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "30"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellHeader"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "963d3dae-3e19-95b6-2949-dc8ea45fd77f",
+    "parent": "8f0fbb4b-2395-3b8d-2e60-3da2d45e0558",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "case3_new"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "Selection on Map with Markers "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": "14"
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "3bb41e28-f59d-7fc1-ee80-9e255383dfcc",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": "center"
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellBody"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "62e0d728-7e63-9bbb-2f1f-e42a9302f5a1",
+    "parent": "3bb41e28-f59d-7fc1-ee80-9e255383dfcc",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "columnSpan",
+      "type": "Integer",
+      "value": "12"
+     },
+     {
+      "name": "columnPrepend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnAppend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnPrependTop",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnAppendBottom",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBigBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "b99f7fe5-c577-8651-1321-6322e9df9317",
+    "parent": "62e0d728-7e63-9bbb-2f1f-e42a9302f5a1",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithMarkers"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "be397af5-079b-c86e-355b-063eb1529ef3",
+    "parent": "62e0d728-7e63-9bbb-2f1f-e42a9302f5a1",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithMarkersResultObj"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": "left"
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "1f52ad78-0b33-93b1-1030-9b5ef52133d2",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "sampleShapes"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": "30"
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellHeader"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "c25548ae-021d-ec41-8c37-a3b6a90e1df3",
+    "parent": "1f52ad78-0b33-93b1-1030-9b5ef52133d2",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "case3"
+     },
+     {
+      "name": "html",
+      "type": "Html",
+      "value": "Selection on Map with Shapes (population per km2, top 100 countries) "
+     },
+     {
+      "name": "fontSize",
+      "type": "Integer",
+      "value": "14"
+     },
+     {
+      "name": "color",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutHtml",
+    "typeDesc": "Html"
+   },
+   {
+    "id": "6b726fae-b0e3-1a26-a3b8-1802d4685a19",
+    "parent": "UnIqEiD",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": "center"
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": "WDdataCellBody"
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "02ee5bef-1f60-9d02-1481-b7a8345f6434",
+    "parent": "6b726fae-b0e3-1a26-a3b8-1802d4685a19",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": ""
+     },
+     {
+      "name": "columnSpan",
+      "type": "Integer",
+      "value": "12"
+     },
+     {
+      "name": "columnPrepend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnAppend",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "columnPrependTop",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnAppendBottom",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "columnBigBorder",
+      "type": "Boolean",
+      "value": "false"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutColumn",
+    "typeDesc": "Column"
+   },
+   {
+    "id": "03c3bb1d-245c-4ff9-e81c-bfd5c47151c2",
+    "parent": "02ee5bef-1f60-9d02-1481-b7a8345f6434",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithShapes"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": ""
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   },
+   {
+    "id": "b82d579a-db1b-f17a-c8eb-a58f21abb56a",
+    "parent": "02ee5bef-1f60-9d02-1481-b7a8345f6434",
+    "properties": [
+     {
+      "name": "name",
+      "type": "Id",
+      "value": "testWithShapesResultObj"
+     },
+     {
+      "name": "height",
+      "type": "Integer",
+      "value": ""
+     },
+     {
+      "name": "backgroundColor",
+      "type": "Color",
+      "value": ""
+     },
+     {
+      "name": "roundCorners",
+      "type": "RoundCorners",
+      "value": ""
+     },
+     {
+      "name": "textAlign",
+      "type": "TextAlign",
+      "value": "left"
+     },
+     {
+      "name": "cssClass",
+      "type": "String",
+      "value": ""
+     }
+    ],
+    "type": "LayoutRow",
+    "typeDesc": "Row"
+   }
+  ],
+  "title": "CDF - Sample structure"
+ }
+}
