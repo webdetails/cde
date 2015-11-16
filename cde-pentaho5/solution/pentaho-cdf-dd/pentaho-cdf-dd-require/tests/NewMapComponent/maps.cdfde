@@ -25,14 +25,14 @@
       "value": "SimpleMap"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "['${p:tileServiceParam}']"
-     },
-     {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
      },
      {
       "name": "API_KEY",
@@ -108,6 +108,11 @@
       "name": "markerWidth",
       "type": "Integer",
       "value": 25
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
      },
      {
       "name": "popupContentsDiv",
@@ -147,7 +152,7 @@
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -185,6 +190,16 @@
       "value": ""
      },
      {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
       "name": "tooltip",
       "type": "Html",
       "value": ""
@@ -218,14 +233,14 @@
       "value": "MapTilesets"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "['${p:tileServiceParam}','${p:mapEngineParam}']"
-     },
-     {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
      },
      {
       "name": "API_KEY",
@@ -255,7 +270,7 @@
      {
       "name": "defaultZoomLevel",
       "type": "Integer",
-      "value": ""
+      "value": "2"
      },
      {
       "name": "fillOpacity",
@@ -301,6 +316,11 @@
       "name": "markerWidth",
       "type": "Integer",
       "value": 25
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
      },
      {
       "name": "popupContentsDiv",
@@ -340,7 +360,7 @@
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -378,6 +398,16 @@
       "value": ""
      },
      {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
       "name": "tooltip",
       "type": "Html",
       "value": ""
@@ -411,14 +441,14 @@
       "value": "MapWithMarkers"
      },
      {
-      "name": "listeners",
-      "type": "Listeners",
-      "value": "[]"
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:mapEngineParam}']"
      },
      {
       "name": "API_KEY",
@@ -496,6 +526,11 @@
       "value": "36"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": "HiddenContentCol"
@@ -533,7 +568,7 @@
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -558,7 +593,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function(){\n    this.markerImageGetter = 'urlMarker';\n    this.mapEngineType = this.dashboard.getParameterValue('mapEngineParam');\n} "
      },
      {
       "name": "postExecution",
@@ -567,6 +602,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -604,14 +649,14 @@
       "value": "GeoLocalizedMap"
      },
      {
-      "name": "listeners",
-      "type": "Listeners",
-      "value": "[]"
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:mapEngineParam}']"
      },
      {
       "name": "API_KEY",
@@ -689,6 +734,11 @@
       "value": "36"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": "HiddenContentCol"
@@ -726,7 +776,7 @@
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -751,7 +801,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function (){\n    this.mapEngineType = this.dashboard.getParameterValue('mapEngineParam');\n} "
      },
      {
       "name": "postExecution",
@@ -760,6 +810,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -797,14 +857,14 @@
       "value": "MapWithShapes"
      },
      {
-      "name": "listeners",
-      "type": "Listeners",
-      "value": "[]"
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
+      "name": "listeners",
+      "type": "Listeners",
+      "value": "['${p:mapEngineParam}']"
      },
      {
       "name": "API_KEY",
@@ -829,7 +889,7 @@
      {
       "name": "colormap",
       "type": "Array",
-      "value": "[\"[0, 102, 0, 255]\", \"[255, 255, 0, 255]\", \"[255, 0, 0, 255]\"]"
+      "value": "[]"
      },
      {
       "name": "defaultZoomLevel",
@@ -882,6 +942,11 @@
       "value": "36"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": "HiddenContentCol"
@@ -904,7 +969,7 @@
      {
       "name": "shapeSource",
       "type": "String",
-      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/maps/countries.kml"
+      "value": ""
      },
      {
       "name": "strokeColor",
@@ -919,7 +984,7 @@
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "stamen-watercolor"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -944,15 +1009,25 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    this.shapeSettings = {\n        fillOpacity: 0.5,\n        fillColor: 'red',\n        strokeWidth: 1,\n        zIndex: 0,\n        strokeColor: 'black'//#edeceb\"\n    }\n\n} "
+      "value": "function f(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n    \n    this.mapEngineType = this.dashboard.getParameterValue('mapEngineParam');\n} "
      },
      {
       "name": "postExecution",
       "type": "JavaScript",
-      "value": "function(){\n    \n    this.off('map:center').on('map:center', function(event){\n        //Dashboards.log('new map center:', event.center) \n        require(['cdf/Logger'], function(Logger){\n            Logger.debug('new map center:' +  JSON.stringify(event.center)) \n        });\n    });\n    \n    this.off('map:zoom').on('map:zoom', function(event){\n        //Dashboards.log('new map zoomLevel:', event.zoomLevel);\n        require(['cdf/Logger'], function(Logger){\n            Logger.debug('new map zoomLevel:' + event.zoomLevel) \n        });\n    });\n    \n} "
+      "value": "function(){\n    this.off('map:center').on('map:center', function(event){\n        //Dashboards.log('new map center:', event.center) \n        require(['cdf/Logger'], function(Logger){\n            Logger.debug('new map center:' +  JSON.stringify(event.center)) \n        });\n    });\n    \n    this.off('map:zoom').on('map:zoom', function(event){\n        //Dashboards.log('new map zoomLevel:', event.zoomLevel);\n        require(['cdf/Logger'], function(Logger){\n            Logger.debug('new map zoomLevel:' + event.zoomLevel) \n        });\n    });\n    \n} "
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -964,7 +1039,7 @@
      {
       "name": "shapeMouseClick",
       "type": "JavaScript",
-      "value": "function f(event){\n    var msg = 'Mouse clicked at ' + event.data.key +', at latitude:' + event.latitude + ' and longitude:' + event.longitude;\n  require(['cdf/Logger'], function(Logger) { Logger.log(msg); });\n    \n    //if (!this.userData){\n    //    this.userData = {};\n    //}\n    //this.userData[event.data.key] = !this.userData[event.data.key];\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // otherwise, nothing happens\n    return {\n        fillColor: 'red',\n        fillOpacity: 1,\n        strokeColor: 'black',\n        strokeWidth: 2\n    };\n}"
+      "value": "function f(event){\n    require(['cdf/Logger'], function(Logger) { \n        var msg = 'Mouse clicked at ' + event.data.key +', at latitude:' + event.latitude + ' and longitude:' + event.longitude;\n        Logger.log(msg); \n    });\n} "
      },
      {
       "name": "shapeMouseOut",
@@ -974,7 +1049,7 @@
      {
       "name": "shapeMouseOver",
       "type": "JavaScript",
-      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n  require(['cdf/Logger'], function(Logger) { Logger.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude); });\n    \n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    var newStyle = {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n\n} "
+      "value": "function f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this: \n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location \n        longitude: -9.35, //always in decimal degrees\n        data: { \n            key: \"PT\", // key associated with this shape \n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'stroke-width': 1,\n            'z-index': 1,\n            'visible': true,\n            'fill': 'rgba(255,255,0,55)',\n            'fill-opacity': 0.5,\n            'stroke': 'white',\n            'stroke-opacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n    \n  require(['cdf/Logger'], function(Logger) { Logger.log('Mouse currently over the shape \"'+ event.id+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude); });\n    \n} "
      }
     ],
     "type": "ComponentsNewMapComponent",
@@ -1039,7 +1114,7 @@
      {
       "name": "propertyValue",
       "type": "String",
-      "value": "mapquest-sat"
+      "value": "default"
      },
      {
       "name": "parameterViewRole",
@@ -1241,7 +1316,7 @@
      {
       "name": "executeAtStart",
       "type": "Boolean",
-      "value": "true"
+      "value": "false"
      },
      {
       "name": "preExecution",
@@ -1585,7 +1660,7 @@
      {
       "name": "query",
       "type": "SqlQuery",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"key\",\n\"value\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;"
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"id\",\n\"fill\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;"
      },
      {
       "name": "parameters",
@@ -1717,7 +1792,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "require(['cdf/lib/OpenLayers','cdf/lib/OpenStreetMap'], function(OpenLayers) { window.API_KEY = 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/theme/dark/'; });"
+      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>';\nrequire(['cdf/lib/OpenLayers','cdf/lib/OpenStreetMap'], function(OpenLayers) { \n    OpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/theme/dark/'; \n}); "
      },
      {
       "name": "resourceType",
@@ -1740,7 +1815,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} \n\n.WDhidden{\n    display: none;\n} "
+      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} \n\n.WDhidden{\n    display: none;\n} "
      },
      {
       "name": "resourceType",
@@ -1872,7 +1947,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<p>\n  This component  allows the user to either navigate through the map and see information about marked locations, or to represent quantities as the fill color of a set of shapes/regions.\n</p>\n\n<h3>Global Options</h3>\n<dl class=\"documentation\">\n  <dt>listeners</dt><dd><i>Array - </i> Parameters to which this component will react</dd>\n  <dt>parameters</dt><dd><i>Array of Arrays - </i> Parameters</dd>\n  <dt>htmlObject</dt><dd>map. Not optional for now</dd>\n  <dt>executeAtStart</dt><dd>True to execute the component at start, false otherwise</dd>\n  <dt>preExecution</dt><dd><i>Function - </i> Function to be called before the component is executed</dd>\n  <dt>postExecution</dt><dd><i>Function - </i> Function to be called after the component is executed</dd>\n\n  <dt>Center Longitude</dt><dd>Initial longitude position</dd>\n  <dt>Center Latitude</dt><dd>Initial latitude position</dd>\n  <dt>Default zoom Level</dt><dd>Initial map zoom</dd>\n  <dt>Datasource</dt><dd>Name for the cda data source where the location data is read from</dd>\n  <dt>Map Engine</dt><dd>Map engine to use to render the map. Can be either google (Google Maps 3) or openlayers (OpenLayers 2). If using Google Maps, please either define a global javascript variable with the name API_KEY containing the string with your API key.</dd>\n  <dt>API_KEY</dt><dd>If using Google Maps, put your API key here.</dd>\n  <dt>Tilesets to display as layers</dt><dd><i>Array of strings - </i> List of tile map servers, or urls of the form <pre>http://{switch:a,b,c}.tile.openstreetmap.org/${z}/${x}/${y}.png</pre></dd>\n  <dt>Operation Mode</dt><dd>Define how the result set returned by the data source will be interpreted. Possible values: \"Just the map\" (the output of the datasource is ignores), \"Marker\", \"Shapes\". </dd>\n</dl>\n\n<h3>Options valid in Marker mode</h3>\n<dl class=\"documentation\">\n  <dt>Marker image</dt><dd>URL-string for the marker image. This will be override either by markers defined in the resultset or when using cgg graphs to render markers.</dd>\n  <dt>Marker Width</dt><dd>Width for the marker image.</dd>\n  <dt>Marker Height</dt><dd>Height for the marker image.</dd>\n  <dt>Marker Click Parameters</dt><dd>Parameters to be changed when a marker is clicked - arg is column Name, value is parameter name to change with column value</dd>\n  <dt>Marker click Function</dt><dd>Javascript function to be executed when marker is clicked. If it returns anything other than <kbd>false</kbd>, the default popup window will open after this function is executed.</dd>\n  <dt>Cgg Graph for Marker</dt><dd>Name of the cgg graph script to use as marker renderer. This will usually be in the form /solution/GraphName.js </dd>\n  <dt>Cgg Graph Parameters</dt><dd>Mapping between resultset columns and parameters for cgg graph - arg is column Name, value is the parameter name that will be passed to CGG having as value the column value</dd>\n  <dt>Div for popup window</dt><dd>Div id to use as the source for the popup window contents</dd>\n  <dt>Popup Width</dt><dd>Width for the popup window.</dd>\n  <dt>Popup Height</dt><dd>Height for the popup window.</dd>\n</dl>\n\n<h3>Location Result Set in Marker mode</h3>\nThese locations are obtained with a Data Source that returns a result set where certain column names have associated semantics.<br/>\n<dl class=\"documentation\">\n  <dt>Longitude</dt><dd> Location Longitude</dd>\n  <dt>Latitude</dt><dd> Location Latitude</dd>\n  <dt>Address</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> City: </b>Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> County</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>State</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>Region</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> Country</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>Description</dt><dd> Optional. If existent, its value will be used to populate an hover popup for each location</dd>\n  <dt>marker</dt><dd> Optional. If exists, this will be used as the url for the marker image to be used</dd>\n  <dt>markerWidth</dt><dd> Optional. Width of the marker image</dd>\n  <dt>markerHeight</dt><dd> Optional. Height of the marker image</dd>\n  <dt>popupContents</dt><dd> Optional. If exists, the value will be used as the html to populate a popup window that will appear when user clicks on the marker.</dd>\n  <dt>popupWidth</dt><dd> Optional. Width for the popup window</dd>\n  <dt>popupHeight</dt><dd> Optional. Height for the popup window.</dd>\n</dl>\n\n\n<h3>Options valid in Shapes mode</h3>\nIn Shape mode, the result set is assumed to be of the form <kbd>[[key1, value1], [key2, value2]]</kbd>.\n<dl class=\"documentation\">\n  <dt>Shape Definitions</dt>\n  <dd>\n  File/URL of a resource containing the definitions of the shapes to be drawn on the map.\n  Please consult the NewMapComponent AddIn Reference for more details.\n  </dd>\n\n  <dt>Shape Mouse Over Function</dt>\n  <dd> Javascript function to be executed when marker is clicked</dd>\n  \n  <dt>Shape Mouse Out Function</dt>\n  <dd> Javascript function to be executed when marker is clicked</dd>\n  \n  <dt>Shape Mouse Click Function</dt>\n  <dd> Javascript function to be executed when the shape is clicked. <br/>\nThe callback functions in <i>Shape mode</i> are of the form:\n  <pre class='javascript prettyprint lang-js'>\nfunction f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this:\n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location\n        longitude: -9.35, //always in decimal degrees\n        data: {\n            key: \"PT\", // key associated with this shape\n            value: 10e6, //value used to define the shape colour\n            minValue: 5e3,\n            maxValue: 220e6,\n            rawData: [\"PT\", 10e6, \"Portugal\", \"Euro\"] // entire row from the result set associated with this key\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'strokeWidth': 1,\n            'zIndex': 1,\n            'visible': true,\n            'fillColor': 'rgba(255,255,0,55)',\n            'fillOpacity': 0.5,\n            'strokeColor': 'white',\n            'strokeOpacity': 1\n        },\n        mapEngineType: 'OpenLayers',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n\n   require(['cdf/Logger'], function(Logger) { Logger.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude); });\n\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    return {\n        //fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'white',\n        strokeWidth: 2,\n        zIndex:1\n    };\n}\n</pre>\n</dd>\n</dl>\n \n<h3>Events</h3>\n<p>The following Backbone events are issued by the component</p>\n<dl class=\"documentation\">\n    <dt><code>map:zoom</code></dt>\n    <dd>Triggered on each change of the zoom level. Emits a Viewport object.</dd>\n    <dt><code>map:center</code></dt>\n    <dd>Triggered whenever the user pans. Emits a Viewport object.</dd>\n</dl>\n<p>Sample Viewport Object:</p>\n<pre>\n{\n    zoomLevel: 1, // integer\n    center: {\n        latitude: 0, // float\n        longitude: 0 // float\n    },\n    viewport: {\n        northEast: { // nortEast corner\n            latitude: 10,\n            longitude: 10\n        },\n        southWest: { // southWest corner\n            latitude: -10,\n            longitude: -10\n        }\n    },\n    raw: {...} //engine-specific event\n}\n</pre> "
+      "value": "<p>\n  This component  allows the user to either navigate through the map and see information about marked locations, or to represent quantities as the fill color of a set of shapes/regions.\n</p>\n\n<h3>Global Options</h3>\n<dl class=\"documentation\">\n  <dt>listeners</dt><dd><i>Array - </i> Parameters to which this component will react</dd>\n  <dt>parameters</dt><dd><i>Array of Arrays - </i> Parameters</dd>\n  <dt>htmlObject</dt><dd>map. Not optional for now</dd>\n  <dt>executeAtStart</dt><dd>True to execute the component at start, false otherwise</dd>\n  <dt>preExecution</dt><dd><i>Function - </i> Function to be called before the component is executed</dd>\n  <dt>postExecution</dt><dd><i>Function - </i> Function to be called after the component is executed</dd>\n\n  <dt>Center Longitude</dt><dd>Initial longitude position</dd>\n  <dt>Center Latitude</dt><dd>Initial latitude position</dd>\n  <dt>Default zoom Level</dt><dd>Initial map zoom</dd>\n  <dt>Datasource</dt><dd>Name for the cda data source where the location data is read from</dd>\n  <dt>Map Engine</dt><dd>Map engine to use to render the map. Can be either google (Google Maps 3) or openlayers (OpenLayers 2). If using Google Maps, please either define a global javascript variable with the name API_KEY containing the string with your API key.</dd>\n  <dt>API_KEY</dt><dd>If using Google Maps, put your API key here.</dd>\n  <dt>Tilesets to display as layers</dt><dd><i>Array of strings - </i> List of tile map servers, or urls of the form <pre>http://{switch:a,b,c}.tile.openstreetmap.org/${z}/${x}/${y}.png</pre></dd>\n  <dt>Operation Mode</dt><dd>Define how the result set returned by the data source will be interpreted. Possible values: \"Just the map\" (the output of the datasource is ignores), \"Marker\", \"Shapes\". </dd>\n</dl>\n\n<h3>Options valid in Marker mode</h3>\n<dl class=\"documentation\">\n  <dt>Marker image</dt><dd>URL-string for the marker image. This will be override either by markers defined in the resultset or when using cgg graphs to render markers.</dd>\n  <dt>Marker Width</dt><dd>Width for the marker image.</dd>\n  <dt>Marker Height</dt><dd>Height for the marker image.</dd>\n  <dt>Marker Click Parameters</dt><dd>Parameters to be changed when a marker is clicked - arg is column Name, value is parameter name to change with column value</dd>\n  <dt>Marker click Function</dt><dd>Javascript function to be executed when marker is clicked. If it returns anything other than <kbd>false</kbd>, the default popup window will open after this function is executed.</dd>\n  <dt>Cgg Graph for Marker</dt><dd>Name of the cgg graph script to use as marker renderer. This will usually be in the form /solution/GraphName.js </dd>\n  <dt>Cgg Graph Parameters</dt><dd>Mapping between resultset columns and parameters for cgg graph - arg is column Name, value is the parameter name that will be passed to CGG having as value the column value</dd>\n  <dt>Div for popup window</dt><dd>Div id to use as the source for the popup window contents</dd>\n  <dt>Popup Width</dt><dd>Width for the popup window.</dd>\n  <dt>Popup Height</dt><dd>Height for the popup window.</dd>\n</dl>\n\n<h3>Location Result Set in Marker mode</h3>\nThese locations are obtained with a Data Source that returns a result set where certain column names have associated semantics.<br/>\n<dl class=\"documentation\">\n  <dt>Longitude</dt><dd> Location Longitude</dd>\n  <dt>Latitude</dt><dd> Location Latitude</dd>\n  <dt>Address</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> City: </b>Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> County</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>State</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>Region</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt> Country</dt><dd> Location address. Either one of the columns or Latitude/Longitude must be present</dd>\n  <dt>Description</dt><dd> Optional. If existent, its value will be used to populate an hover popup for each location</dd>\n  <dt>marker</dt><dd> Optional. If exists, this will be used as the url for the marker image to be used</dd>\n  <dt>markerWidth</dt><dd> Optional. Width of the marker image</dd>\n  <dt>markerHeight</dt><dd> Optional. Height of the marker image</dd>\n  <dt>popupContents</dt><dd> Optional. If exists, the value will be used as the html to populate a popup window that will appear when user clicks on the marker.</dd>\n  <dt>popupWidth</dt><dd> Optional. Width for the popup window</dd>\n  <dt>popupHeight</dt><dd> Optional. Height for the popup window.</dd>\n</dl>\n\n\n<h3>Options valid in Shapes mode</h3>\nIn Shape mode, the result set is assumed to be of the form <kbd>[[key1, value1], [key2, value2]]</kbd>.\n<dl class=\"documentation\">\n  <dt>Shape Definitions</dt>\n  <dd>\n  File/URL of a resource containing the definitions of the shapes to be drawn on the map.\n  Please consult the NewMapComponent AddIn Reference for more details.\n  </dd>\n\n  <dt>Shape Mouse Over Function</dt>\n  <dd> Javascript function to be executed when marker is clicked</dd>\n  \n  <dt>Shape Mouse Out Function</dt>\n  <dd> Javascript function to be executed when marker is clicked</dd>\n  \n  <dt>Shape Mouse Click Function</dt>\n  <dd> Javascript function to be executed when the shape is clicked. <br/>\nThe callback functions in <i>Shape mode</i> are of the form:\n  <pre class='javascript prettyprint lang-js'>\nfunction f(event){\n    //shapeMouseOver: callback fired whenever the mouse is over a given shape\n    // Typically an event structure looks like this:\n    var eventExample = {\n        latitude: 40,     //Geographical coordinates at the mouse pointer location\n        longitude: -9.35, //always in decimal degrees,\n        model: {...},\n        id: \"PT\",\n        data: {\n            key: \"PT\", // key associated with this shape\n            0: \"PT\",\n            value: 10e6, //value used to define the shape colour\n            1: 10e6,\n            2: \"Portugal\",\n            3: \"Euro\"\n        },\n        style: {  //feature-specific style (in this case, it's a shape)\n            'stroke-width': 1,\n            'z-index': 1,\n            'visible': true,\n            'fill': 'rgba(255,255,0,55)',\n            'fill-opacity': 0.5,\n            'stroke': 'white',\n            'stroke-opacity': 1\n        },\n        mapEngineType: 'openlayers2',\n        draw: function( style ){}, // function used internally to apply a style to the feature (only works with shapes)\n        feature: {}, // engine-specific structure pertaining the feature\n        featureType: 'shape', // also 'marker'\n        raw: {} //engine-specific event structure\n    };\n\n    Dashboards.log('Mouse currently over the shape \"'+ event.data.key+ '\", at latitude: ' + event.latitude + ' and longitude: ' + event.longitude);\n\n    // If a structure containing style settings is returned, the shape will be redrawn,\n    // If a falsy result is returned, the shape under the mouse cursor is not redrawn.\n\n    return {\n        //fill: event.style.fill,\n        //\"fill-opacity\": 0.5,\n        stroke: 'white',\n        \"stroke-width\": 2,\n        \"z-index\":1\n    };\n}\n</pre>\n</dd>\n</dl>\n \n<h3>Events</h3>\n<p>The following Backbone events are issued by the component</p>\n<dl class=\"documentation\">\n    <dt><code>map:zoom</code></dt>\n    <dd>Triggered on each change of the zoom level. Emits a Viewport object.</dd>\n    <dt><code>map:center</code></dt>\n    <dd>Triggered whenever the user pans. Emits a Viewport object.</dd>\n</dl>\n<p>Sample Viewport Object:</p>\n<pre>\n{\n    zoomLevel: 1, // integer\n    center: {\n        latitude: 0, // float\n        longitude: 0 // float\n    },\n    viewport: {\n        northEast: { // nortEast corner\n            latitude: 10,\n            longitude: 10\n        },\n        southWest: { // southWest corner\n            latitude: -10,\n            longitude: -10\n        }\n    },\n    raw: {...} //engine-specific event\n}\n</pre> "
      },
      {
       "name": "fontSize",
@@ -2125,7 +2200,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "Map engine and map tile services "
+      "value": "Map tile services "
      },
      {
       "name": "fontSize",
@@ -2362,7 +2437,7 @@
      {
       "name": "cssClass",
       "type": "String",
-      "value": ""
+      "value": "WDhidden"
      }
     ],
     "type": "LayoutColumn",

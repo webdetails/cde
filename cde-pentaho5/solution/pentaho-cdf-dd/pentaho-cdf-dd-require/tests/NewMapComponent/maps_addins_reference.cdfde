@@ -851,6 +851,11 @@
       "value": "map_LocationResolver"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "[]"
@@ -892,8 +897,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "locationResolver",
@@ -962,18 +967,18 @@
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -1011,6 +1016,16 @@
       "value": ""
      },
      {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
       "name": "tooltip",
       "type": "Html",
       "value": ""
@@ -1044,6 +1059,11 @@
       "value": "map_ShapeResolver_geoJSON"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "[]"
@@ -1085,8 +1105,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "locationResolver",
@@ -1155,18 +1175,18 @@
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -1191,7 +1211,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n\n    this.shapeResolver = 'geoJSON';\n    this.setAddInOptions('ShapeResolver', 'geoJSON', {\n        url: getResource + '${solution:countries.js}', //BA server does not recognize the .geojson extension\n        idPropertyName: 'NAME' //GeoJSON feature property that will be used to index the feature\n    });\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1200,6 +1220,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -1221,7 +1251,7 @@
      {
       "name": "shapeMouseOver",
       "type": "JavaScript",
-      "value": "function f(event){\n    var newStyle = {\n        fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'yellow',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n} "
+      "value": ""
      }
     ],
     "type": "ComponentsNewMapComponent",
@@ -1237,6 +1267,11 @@
       "value": "map_ShapeResolver_kml"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "[]"
@@ -1249,7 +1284,7 @@
      {
       "name": "API_KEY",
       "type": "String",
-      "value": "0"
+      "value": ""
      },
      {
       "name": "centerLatitude",
@@ -1278,8 +1313,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "locationResolver",
@@ -1314,12 +1349,12 @@
      {
       "name": "markerHeight",
       "type": "Integer",
-      "value": 25
+      "value": ""
      },
      {
       "name": "markerWidth",
       "type": "Integer",
-      "value": 25
+      "value": ""
      },
      {
       "name": "popupContentsDiv",
@@ -1329,7 +1364,7 @@
      {
       "name": "popupHeight",
       "type": "Integer",
-      "value": 250
+      "value": ""
      },
      {
       "name": "popupParameters",
@@ -1339,27 +1374,27 @@
      {
       "name": "popupWidth",
       "type": "Integer",
-      "value": 250
+      "value": ""
      },
      {
       "name": "shapeSource",
       "type": "String",
-      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/NewMapComponent/maps/countries.kml"
+      "value": ""
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -1384,7 +1419,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    this.shapeResolver = 'kml';\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        idSelector: 'NAME' //selector within \"<Placemark>\" that will be used to index the feature\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    \n    this.shapeResolver = 'kml';\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        idSelector: 'NAME', //selector within \"<Placemark>\" that will be used to index the feature\n        url: getResource + '${solution:countries.kml.html}'\n        //url: '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/maps/countries.kml'\n    });\n\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1393,6 +1428,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -1414,7 +1459,7 @@
      {
       "name": "shapeMouseOver",
       "type": "JavaScript",
-      "value": "function f(event){\n    var newStyle = {\n        fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'yellow',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n} "
+      "value": ""
      }
     ],
     "type": "ComponentsNewMapComponent",
@@ -1428,6 +1473,11 @@
       "name": "name",
       "type": "Id",
       "value": "map_ShapeResolver_simpleJSON"
+     },
+     {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
      },
      {
       "name": "listeners",
@@ -1471,8 +1521,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "locationResolver",
@@ -1541,18 +1591,18 @@
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": ""
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": ""
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -1577,7 +1627,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: getResource + '${solution:countries-legacy.js}'\n    });\n\n    this.shapeSettings = {\n        strokeWidth: 1,\n        zIndex: 0,\n    }\n} \n "
+      "value": "function(){\n    var getResource = this.dashboard.getWebAppPath() + '/plugin/pentaho-cdf-dd/api/resources';\n    this.shapeResolver = 'simpleJSON';\n    this.setAddInOptions('ShapeResolver', 'simpleJSON', {\n        url: getResource + '${solution:countries-legacy.js}'\n    });\n\n} \n "
      },
      {
       "name": "postExecution",
@@ -1586,6 +1636,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -1607,7 +1667,7 @@
      {
       "name": "shapeMouseOver",
       "type": "JavaScript",
-      "value": "function f(event){\n    var newStyle = {\n        fillColor: event.style.fillColor,\n        //fillOpacity: 0.5,\n        strokeColor: 'yellow',\n        strokeWidth: 2,\n        zIndex:1\n    }\n    if(event.isSelected()) {\n        var clickedStyle = event.getSelectedStyle();\n        newStyle.fillColor  = clickedStyle.fillColor;\n    }\n    return newStyle;\n} "
+      "value": ""
      }
     ],
     "type": "ComponentsNewMapComponent",
@@ -1661,7 +1721,7 @@
      {
       "name": "query",
       "type": "ScriptableQuery",
-      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"key\",\n\"value\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;"
+      "value": "import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;\n\nString[] columnNames = new String[]{\n\"id\",\n\"fill\"\n};\n\nClass[] columnTypes = new Class[]{\nString.class\n,Float.class\n};\n\nTypedTableModel model = new TypedTableModel(columnNames, columnTypes);\n\n/* Population density pop/km2*/\nmodel.addRow(new Object[]{ new String(\"Bangladesh\"), new Float(988.38)});\nmodel.addRow(new Object[]{ new String(\"Taiwan\"), new Float(646)});\nmodel.addRow(new Object[]{ new String(\"South Korea\"), new Float(505)});\nmodel.addRow(new Object[]{ new String(\"Rwanda\"), new Float(416)});\nmodel.addRow(new Object[]{ new String(\"Netherlands\"), new Float(405.2)});\nmodel.addRow(new Object[]{ new String(\"India\"), new Float(377.4)});\nmodel.addRow(new Object[]{ new String(\"Haiti\"), new Float(385)});\nmodel.addRow(new Object[]{ new String(\"Israel\"), new Float(369)});\nmodel.addRow(new Object[]{ new String(\"Belgium\"), new Float(366)});\nmodel.addRow(new Object[]{ new String(\"Burundi\"), new Float(365)});\nmodel.addRow(new Object[]{ new String(\"Japan\"), new Float(337)});\nmodel.addRow(new Object[]{ new String(\"Philippines\"), new Float(330.53)});\nmodel.addRow(new Object[]{ new String(\"Sri Lanka\"), new Float(309)});\nmodel.addRow(new Object[]{ new String(\"Vietnam\"), new Float(268)});\nmodel.addRow(new Object[]{ new String(\"United Kingdom\"), new Float(262)});\nmodel.addRow(new Object[]{ new String(\"Pakistan\"), new Float(230.98)});\nmodel.addRow(new Object[]{ new String(\"Germany\"), new Float(226)});\nmodel.addRow(new Object[]{ new String(\"Italy\"), new Float(199)});\nmodel.addRow(new Object[]{ new String(\"Dominican Republic\"), new Float(197)});\nmodel.addRow(new Object[]{ new String(\"North Korea\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Switzerland\"), new Float(196)});\nmodel.addRow(new Object[]{ new String(\"Nigeria\"), new Float(188)});\nmodel.addRow(new Object[]{ new String(\"Nepal\"), new Float(180)});\nmodel.addRow(new Object[]{ new String(\"Guatemala\"), new Float(142)});\nmodel.addRow(new Object[]{ new String(\"China\"), new Float(141.37)});\nmodel.addRow(new Object[]{ new String(\"Uganda\"), new Float(141)});\nmodel.addRow(new Object[]{ new String(\"Czech Republic\"), new Float(133)});\nmodel.addRow(new Object[]{ new String(\"Thailand\"), new Float(128)});\nmodel.addRow(new Object[]{ new String(\"Indonesia\"), new Float(124)});\nmodel.addRow(new Object[]{ new String(\"Poland\"), new Float(123)});\nmodel.addRow(new Object[]{ new String(\"Malawi\"), new Float(121)});\nmodel.addRow(new Object[]{ new String(\"France\"), new Float(118)});\nmodel.addRow(new Object[]{ new String(\"Syria\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Portugal\"), new Float(115)});\nmodel.addRow(new Object[]{ new String(\"Hungary\"), new Float(106)});\nmodel.addRow(new Object[]{ new String(\"Azerbaijan\"), new Float(109)});\nmodel.addRow(new Object[]{ new String(\"Ghana\"), new Float(103)});\nmodel.addRow(new Object[]{ new String(\"Cuba\"), new Float(102)});\nmodel.addRow(new Object[]{ new String(\"Austria\"), new Float(101)});\nmodel.addRow(new Object[]{ new String(\"Turkey\"), new Float(100)});\nmodel.addRow(new Object[]{ new String(\"United Arab Emirates\"), new Float(99)});\nmodel.addRow(new Object[]{ new String(\"Spain\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Serbia\"), new Float(93)});\nmodel.addRow(new Object[]{ new String(\"Benin\"), new Float(92)});\nmodel.addRow(new Object[]{ new String(\"Malaysia\"), new Float(91)});\nmodel.addRow(new Object[]{ new String(\"Egypt\"), new Float(85.78)});\nmodel.addRow(new Object[]{ new String(\"Romania\"), new Float(84)});\nmodel.addRow(new Object[]{ new String(\"Greece\"), new Float(82)});\nmodel.addRow(new Object[]{ new String(\"Ethiopia\"), new Float(81)});\nmodel.addRow(new Object[]{ new String(\"Burma\"), new Float(79)});\nmodel.addRow(new Object[]{ new String(\"Iraq\"), new Float(77)});\nmodel.addRow(new Object[]{ new String(\"Ukraine\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Honduras\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Morocco\"), new Float(75)});\nmodel.addRow(new Object[]{ new String(\"Cambodia\"), new Float(74)});\nmodel.addRow(new Object[]{ new String(\"Ivory Coast\"), new Float(72)});\nmodel.addRow(new Object[]{ new String(\"Senegal\"), new Float(69)});\nmodel.addRow(new Object[]{ new String(\"Kenya\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Uzbekistan\"), new Float(67)});\nmodel.addRow(new Object[]{ new String(\"Tunisia\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Bulgaria\"), new Float(66)});\nmodel.addRow(new Object[]{ new String(\"Burkina Faso\"), new Float(64)});\nmodel.addRow(new Object[]{ new String(\"Ecuador\"), new Float(61)});\nmodel.addRow(new Object[]{ new String(\"Mexico\"), new Float(60)});\nmodel.addRow(new Object[]{ new String(\"Tajikistan\"), new Float(56)});\nmodel.addRow(new Object[]{ new String(\"Yemen\"), new Float(54)});\nmodel.addRow(new Object[]{ new String(\"Tanzania\"), new Float(51)});\nmodel.addRow(new Object[]{ new String(\"Iran\"), new Float(47)});\nmodel.addRow(new Object[]{ new String(\"Belarus\"), new Float(46)});\nmodel.addRow(new Object[]{ new String(\"Guinea\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"Cameroon\"), new Float(44)});\nmodel.addRow(new Object[]{ new String(\"South Africa\"), new Float(43)});\nmodel.addRow(new Object[]{ new String(\"Colombia\"), new Float(42)});\nmodel.addRow(new Object[]{ new String(\"Afghanistan\"), new Float(39)});\nmodel.addRow(new Object[]{ new String(\"Madagascar\"), new Float(35)});\nmodel.addRow(new Object[]{ new String(\"United States\"), new Float(32.32)});\nmodel.addRow(new Object[]{ new String(\"Zimbabwe\"), new Float(33)});\nmodel.addRow(new Object[]{ new String(\"Venezuela\"), new Float(32)});\nmodel.addRow(new Object[]{ new String(\"Mozambique\"), new Float(30)});\nmodel.addRow(new Object[]{ new String(\"Democratic Republic of the Congo\"), new Float(29)});\nmodel.addRow(new Object[]{ new String(\"Peru\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Brazil\"), new Float(24)});\nmodel.addRow(new Object[]{ new String(\"Sweden\"), new Float(23)});\nmodel.addRow(new Object[]{ new String(\"Chile\"), new Float(22)});\nmodel.addRow(new Object[]{ new String(\"South Sudan\"), new Float(18)});\nmodel.addRow(new Object[]{ new String(\"Zambia\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Sudan\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Angola\"), new Float(17)});\nmodel.addRow(new Object[]{ new String(\"Algeria\"), new Float(16)});\nmodel.addRow(new Object[]{ new String(\"Somalia\"), new Float(15)});\nmodel.addRow(new Object[]{ new String(\"Argentina\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Niger\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Saudi Arabia\"), new Float(14)});\nmodel.addRow(new Object[]{ new String(\"Mali\"), new Float(12)});\nmodel.addRow(new Object[]{ new String(\"Bolivia\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Chad\"), new Float(9)});\nmodel.addRow(new Object[]{ new String(\"Russia\"), new Float(8)});\nmodel.addRow(new Object[]{ new String(\"Kazakhstan\"), new Float(6)});\nmodel.addRow(new Object[]{ new String(\"Canada\"), new Float(3.55)});\nmodel.addRow(new Object[]{ new String(\"Australia\"), new Float(3)});\n\nreturn model;"
      },
      {
       "name": "parameters",
@@ -3374,7 +3434,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h3>kml</h3>\n</p>\nThis add-in accesses a specific URL, assuming it provides a \n<a href=\"https://developers.google.com/kml/documentation/\">KML</a> resource.\nThe shape definitions are obtained by iterating over all <code>&lt;Placemark&gt;</code> nodes.\n</p>\n<dl>Supported options\n    <dt>url</dt>\n    <dd>String [current value of the \"Shape Definitions\" property]<p>\n    URL pointing to an uncompressed KML resource.\n    </p>\n    </dd>\n    <dt>idSelector</dt>\n    <dd>String [<code>name</code>]<p>\n    selector used to discover the tag containing the key associated with the \n    feature described by the <code>&lt;Placemark&gt;</code> node currently being processed.\n    </p>\n    </dd>\n    <dt>parseShapeKey</dt>\n    <dd><code>function (node)</code> [<code>null</code>]<p>\n    optional function used to discover the tag containing the key used to index the feature.\n    The argument <code>node</code> is the <code>&lt;Placemark&gt;</code> node in the KML being currently processed \n    </p>\n    </dd>\n</dl>\n<h4>Data layout</h4>\nThis examples assume the following result set: "
+      "value": "<h3>kml</h3>\n</p>\nThis add-in accesses a specific URL, assuming it provides a \n<a href=\"https://developers.google.com/kml/documentation/\">KML</a> resource.\nThe shape definitions are obtained by iterating over all <code>&lt;Placemark&gt;</code> nodes.\n</p>\n<dl>Supported options\n    <dt>url</dt>\n    <dd>String [current value of the \"Shape Definitions\" property]<p>\n    URL pointing to an uncompressed KML resource.\n    </p>\n    </dd>\n    <dt>idSelector</dt>\n    <dd>String [<code>name</code>]<p>\n    selector used to discover the tag containing the id associated with the \n    feature described by the <code>&lt;Placemark&gt;</code> node currently being processed.\n    </p>\n    </dd>\n    <dt>parseShapeKey</dt>\n    <dd><code>function (node)</code> [<code>null</code>]<p>\n    optional function used to discover the tag containing the id used to index the feature.\n    The argument <code>node</code> is the <code>&lt;Placemark&gt;</code> node in the KML being currently processed \n    </p>\n    </dd>\n</dl>\n<h4>Data layout</h4>\nThis examples assume the following result set: "
      },
      {
       "name": "fontSize",
@@ -3533,7 +3593,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h4>Add-In Configuration</h4>\nExample of custom configuration via the component's preExecution callback:\n<pre>\nfunction(){\n    this.shapeResolver = 'kml'; //use this addIn for resolving shapes\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        //override the value set on the property \"Shape Definitions\"\n        //url: '/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/maps/countries.kml', \n        //idSelector: 'name' //selector used to discover the tag containing the key used to index the feature\n    });\n} \n \n</pre>\n<h4>Result</h4>\n "
+      "value": "<h4>Add-In Configuration</h4>\nExample of custom configuration via the component's preExecution callback:\n<pre>\nfunction(){\n    this.shapeResolver = 'kml'; //use this addIn for resolving shapes\n    this.setAddInOptions('ShapeResolver', 'kml', {\n        //override the value set on the property \"Shape Definitions\"\n        //url: '/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/maps/countries.kml', \n        //idSelector: 'name' //selector used to discover the tag containing the key used to index the feature\n    });\n} \n \n</pre>\n<h4>Result</h4>\n "
      },
      {
       "name": "fontSize",
@@ -3730,7 +3790,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h3>simpleJSON</h3>\n</p>\nThis add-in provides compatibility with the default format of shape definitions \nused in legacy releases of CDE (up to 15.06.30).\nIf you are starting a new project, please consider using GeoJSON.\n</p>\n\n<p>\nThe add-in accesses a specific URL, assuming its format is a dictionary of multipolygons, as follows:\n<pre class='json'>\n  {\n    \"key1\": [[[[latitude, longitude],...],...,],...],\n    \"key2\": [[[[latitude, longitude],...],...,],...]\n  }\n</pre>\n<b>Note:</b> A multipolygon is a list of polygons: <kbd>[[outerPolygon1, innerPolygon11, innerPolygon12],[outerPolygon2, innerPolygon21, innerPolygon22]]</kbd>, whereas a polygon is a list of points.\n</p>\n<dl>Supported options\n    <dt>url</dt>\n    <dd>String [current value of the \"Shape Definitions\" property]<p>\n    URL pointing to the JSON resource.\n    </p>\n    </dd>\n</dl>\n<h4>Data layout</h4>\nThis examples assume the following result set: "
+      "value": "<h3>simpleJSON</h3>\n</p>\nThis add-in provides compatibility with the default format of shape definitions \nused in legacy releases of CDE (up to 15.06.30).\nIf you are starting a new project, please consider using GeoJSON.\n</p>\n\n<p>\nThe add-in accesses a specific URL, assuming its format is a dictionary of multipolygons, as follows:\n<pre class='json'>\n  {\n    \"id1\": [[[[latitude, longitude],...],...,],...],\n    \"id2\": [[[[latitude, longitude],...],...,],...]\n  }\n</pre>\n<b>Note:</b> A multipolygon is a list of polygons: <kbd>[[outerPolygon1, innerPolygon11, innerPolygon12],[outerPolygon2, innerPolygon21, innerPolygon22]]</kbd>, whereas a polygon is a list of points.\n</p>\n<dl>Supported options\n    <dt>url</dt>\n    <dd>String [current value of the \"Shape Definitions\" property]<p>\n    URL pointing to the JSON resource.\n    </p>\n    </dd>\n</dl>\n<h4>Data layout</h4>\nThis examples assume the following result set: "
      },
      {
       "name": "fontSize",
