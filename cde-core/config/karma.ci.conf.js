@@ -38,6 +38,7 @@ module.exports = function(config) {
       // fix 404 messages
       {pattern: 'resource/resources/custom/amd-components/**/*.png', watched: false, included: false, served: true},
       {pattern: 'resource/resources/custom/amd-components/**/*.gif', watched: false, included: false, served: true},
+      {pattern: 'resource/resources/custom/amd-components/**/*.html', watched: false, included: false, served: true},
       {pattern: 'bin/test-js/cdf/js/**/*.png', watched: false, included: false, served: true},
       {pattern: 'bin/test-js/cdf/js/**/*.gif', watched: false, included: false, served: true}
 

@@ -76,8 +76,8 @@ return model;]]></Query>
       <Query><![CDATA[import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
 
 String[] columnNames = new String[]{
-"key",
-"value"
+"id",
+"fill"
 };
 
 Class[] columnTypes = new Class[]{

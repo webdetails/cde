@@ -1,0 +1,14 @@
+.olPopupCloseBox {
+    background: url("../../images/close.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 28px !important;
+    width: 28px !important;
+    top: 1px !important;
+    right: 1px !important;
+}
+
+
+#MapOverlay {
+    background-color: white;
+    z-index:0;
+}
