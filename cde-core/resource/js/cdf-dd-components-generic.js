@@ -733,9 +733,10 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getPatternSection: function(index, value, typeValue) {
     var disabledProp = this.patternUnlockTypes.indexOf(typeValue) < 0 ? "disabled" : "";
     var placeholder = disabledProp === "" ? this.patternPlaceholderText : "";
+    var containerCss = disabledProp === "" ? "date-type-selected": "";
 
     return '' +
-        '<div class="popup-pattern-container">' +
+        '<div class="popup-pattern-container ' + containerCss + '">' +
         '  <input id="pattern_' + index + '" class="popup-text-input pattern-input" type="text" value="' + value + '" placeholder="' + placeholder + '"' + disabledProp + '>' +
         '</div>';
   },
@@ -915,7 +916,7 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 
 var IndexArrayRenderer = ArrayRenderer.extend({
   autocomplete: false,
-  popupTitle: 'Output Options'
+  popupTitle: 'Output Columns'
 });
 
 //arg, value, no param button, //TODO: own css
@@ -1031,14 +1032,16 @@ var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
   autocomplete: false,
   popupTitle: 'Columns',
   argTitle: 'Index',
-  valTitle: 'Name'
+  valTitle: 'Name',
+  valPlaceHolderText: 'Insert Text...'
 });
 
 var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
   autocomplete: false,
   popupTitle: 'Calculated Columns',
   argTitle: 'Name',
-  valTitle: 'Form.'
+  valTitle: 'Formula',
+  valPlaceHolderText: 'Insert Text...'
 });
 
 var abstractMapperRenderer = ValuesArrayRenderer.extend({
