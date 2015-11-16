@@ -1,0 +1,82 @@
+.map-control-panel {
+    position: absolute;
+    right: 25px;
+    margin-top: 25px;
+}
+
+.map-controls-mode {
+    margin-top: 15px;
+}
+
+.map-control-panel .map-control-button {
+    background-size: initial;
+    border: 1px solid #a0a0a0;
+    height: 30px;
+    width: 30px;
+}
+
+.map-control-panel .map-control-button {
+    background-image: url(../images/map-btns-sprite.svg);
+    background-color: #FFFFFF;
+}
+
+.map-control-panel .map-control-button:hover {
+    cursor: pointer;
+    background-color: #a0a0a0;
+}
+
+.map-control-panel .map-control-button.map-control-zoom-in {
+    background-position: left top;
+    border-bottom: none;
+}
+
+.map-control-panel .map-control-button.map-control-zoom-out {
+    background-position: left 120px;
+}
+
+.map-control-panel .map-control-button.map-control-pan {
+    background-position: left 90px;
+    border-bottom: none;
+}
+
+.map-control-panel .map-control-button.map-control-zoombox {
+
+    background-position: left 60px;
+}
+
+.map-control-panel .map-control-button.map-control-select {
+    background-position: left 30px;
+    border-top: none;
+}
+
+.map-controls-mode.pan .map-control-pan,
+.map-controls-mode.zoombox .map-control-zoombox,
+.map-controls-mode.selection .map-control-select {
+    background-color: #a0a0a0;
+}
+
+/*----------------*/
+
+.map-control-panel .map-control-button.map-control-zoom-in:hover {
+    background-position: 30px top;
+    border-bottom: none;
+}
+
+.map-control-panel .map-control-button.map-control-zoom-out:hover {
+    background-position: 30px 120px;
+}
+
+.map-control-panel .map-control-button.map-control-pan:hover {
+    background-position: 30px 90px;
+    border-bottom: none;
+}
+
+.map-control-panel .map-control-button.map-control-zoombox:hover {
+    background-position: 30px 60px;
+
+}
+
+.map-control-panel .map-control-button.map-control-select:hover {
+    background-position: 30px 30px;
+    border-top: none;
+}
