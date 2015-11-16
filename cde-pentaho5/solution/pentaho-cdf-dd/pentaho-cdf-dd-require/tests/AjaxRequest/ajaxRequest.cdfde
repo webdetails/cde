@@ -26,29 +26,6 @@
     ]
    },
    {
-    "id": "55291303-7ccc-8404-9694-82a427f612a8",
-    "type": "LayoutResourceCode",
-    "typeDesc": "Resource",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "value": "AddInDefaults",
-      "type": "Id"
-     },
-     {
-      "name": "resourceType",
-      "value": "Javascript",
-      "type": "Label"
-     },
-     {
-      "name": "resourceCode",
-      "value": "/* http://jira.pentaho.com/browse/CDE-374 Dashboards.setAddInDefaults(\"Table\",\"colType\",\"sparkline\",\n{\n    fillColor:\"#aaaaaa\",\n    width: \"150\"\n}\n); */",
-      "type": "Resource"
-     }
-    ]
-   },
-   {
     "id": "03a83220-159d-d841-c40d-0a04044f3e51",
     "type": "LayoutResourceFile",
     "typeDesc": "Resource",
