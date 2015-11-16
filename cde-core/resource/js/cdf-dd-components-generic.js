@@ -211,7 +211,8 @@ var ValuesArrayRenderer = CellRenderer.extend({
 
   render: function(placeholder, value, callback) {
 
-    var _editArea = $("<td>" + (value.length > 30 ? (value.substring(0, 20) + " (...)") : value) + "</td>");
+    var _editArea = $("<td></td>");
+    _editArea.text(value.length > 30 ? (value.substring(0, 20) + " (...)") : value);
     var myself = this;
 
     _editArea.click(function() {
