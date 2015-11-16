@@ -25,6 +25,11 @@
       "value": "GeoLocalizedMap"
      },
      {
+      "name": "parameter",
+      "value": "",
+      "type": "Parameter"
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "[]"
@@ -37,7 +42,7 @@
      {
       "name": "API_KEY",
       "type": "String",
-      "value": "0"
+      "value": ""
      },
      {
       "name": "centerLatitude",
@@ -66,8 +71,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": 0.5
      },
      {
       "name": "locationResolver",
@@ -136,18 +141,18 @@
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": "white"
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": 2
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -183,6 +188,16 @@
       "name": "postFetch",
       "type": "JavaScript",
       "value": ""
+     },
+     {
+      "name": "preChange",
+      "value": "",
+      "type": "JavaScript"
+     },
+     {
+      "name": "postChange",
+      "value": "",
+      "type": "JavaScript"
      },
      {
       "name": "tooltip",
@@ -248,8 +263,8 @@
      },
      {
       "name": "public",
-      "value": "false",
-      "type": "Boolean"
+      "type": "Boolean",
+      "value": "false"
      }
     ],
     "type": "ComponentsParameter",
@@ -692,8 +707,8 @@
      },
      {
       "name": "readers",
-      "value": "[]",
-      "type": "Array"
+      "type": "Array",
+      "value": "[]"
      },
      {
       "name": "renderCallback",
@@ -702,8 +717,8 @@
      },
      {
       "name": "renderedCallback",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "selectable",
@@ -1367,8 +1382,8 @@
      },
      {
       "name": "readers",
-      "value": "[]",
-      "type": "Array"
+      "type": "Array",
+      "value": "[]"
      },
      {
       "name": "renderCallback",
@@ -1377,8 +1392,8 @@
      },
      {
       "name": "renderedCallback",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "selectable",
@@ -1701,8 +1716,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",
@@ -1791,8 +1806,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",
@@ -1867,8 +1882,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",

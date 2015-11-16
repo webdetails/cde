@@ -89,7 +89,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "var API_KEY = 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/theme/dark/'; ",
+      "value": "var API_KEY = 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/theme/dark/'; ",
       "type": "Resource"
      }
     ]
@@ -112,7 +112,7 @@
      },
      {
       "name": "resourceCode",
-      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} ",
+      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} ",
       "type": "Resource"
      }
     ]
@@ -2591,7 +2591,7 @@
      },
      {
       "name": "shapeSource",
-      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/components/NewMapComponent/maps/countries.kml",
+      "value": "/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/maps/countries.kml",
       "type": "String"
      },
      {
