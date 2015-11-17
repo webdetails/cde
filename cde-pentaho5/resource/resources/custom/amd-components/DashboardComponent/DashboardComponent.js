@@ -68,7 +68,7 @@ define([
         type: "GET",
         async: true,
         success: function(data) {
-          myself.publicParameters = data.parameters;
+          myself.publicParameters = data.parameters || [];
           myself.loopThroughMapping(function(myParam, otherParam) {
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
