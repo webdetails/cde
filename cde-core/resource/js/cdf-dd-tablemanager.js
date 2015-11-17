@@ -84,13 +84,13 @@ var TableManager = Base.extend({
   newTable: function(args) {
     var table = '' +
         '<div class="tableContainer">\n' +
+        ' <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
         ' <div class="tableCaption ui-state-default">\n' +
         '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
         '   <div id="' + this.tableId + 'Operations" style="float: right" class="cdfdd-operations"></div>\n' +
         (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
         ' </div>\n' +
         ' <div class="scrollContainer">\n' +
-        '   <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
         '   <table id="' + this.tableId + '" class="' + this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
         '     <thead>\n' +
         '     </thead>\n' +

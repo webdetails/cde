@@ -184,13 +184,13 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
       var dummyRow = $('<div id="dummy_row">')
           .append('<input id="arg_0" type="text" value="paramName"/>')
           .append('<input id="val_0" type="text" value="paramValue"/>')
-          .append('<select id="type_0"><option selected>paramType</option>')
+          .append('<select id="type_0"><option selected>Date</option>')
           .append('<input id="pattern_0" type="text" value="paramPattern"/>')
           .append('<input id="access_0" type="checkbox" checked/>');
 
       dummyRow.appendTo("#test_container");
 
-      var expectedReturn = ["paramName", "paramValue", "paramType", "private", "paramPattern"];
+      var expectedReturn = ["paramName", "paramValue", "Date", "private", "paramPattern"];
       var actualReturn = cdaPR.getRowValues(0);
 
       expect(actualReturn.length).toEqual(5);
