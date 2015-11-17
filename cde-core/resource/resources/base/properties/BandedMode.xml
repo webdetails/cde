@@ -4,7 +4,9 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>compact</DefaultValue>
 	<Description>Banded Mode</Description>
-	<Tooltip>Banded Mode</Tooltip>
+	<Tooltip>
+		Classic will return all hierarchies with it's fully qualified name. Ex:[Time].[Years], Compact will return just the plain result set. Ex:Time
+	</Tooltip>
 	<InputType>BandedMode</InputType>
 	<OutputType>String</OutputType>
 	<Order>40</Order>

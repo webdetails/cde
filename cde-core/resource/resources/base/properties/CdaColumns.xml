@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Columns</Description>
-	<Tooltip>Column Configuration</Tooltip>
+	<Tooltip>Change the columns default names</Tooltip>
 	<InputType>CdaColumnsArray</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>

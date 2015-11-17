@@ -4,7 +4,7 @@
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Parameters</Description>
-	<Tooltip>Parameters to be sent to the xaction</Tooltip>
+	<Tooltip>Parameters to be sent to the datasource</Tooltip>
 	<InputType>CdaParameters</InputType>
 	<OutputType>Array</OutputType>
 	<Order>28</Order>
