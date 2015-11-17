@@ -6,6 +6,14 @@
 		@HEADER@
 	</head>
 	<body>
+		<style>
+			body.fouc-protected {
+			  display: none;
+			}
+		</style>
+		<script type="text/javascript">
+			document.getElementsByTagName("body")[0].className = "fouc-protected";
+		</script>
 		@CONTENT@
 		
 		@FOOTER@
