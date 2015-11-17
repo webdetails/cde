@@ -8,6 +8,14 @@
 		@HEADER@
 	</head>
 	<body>
+		<style>
+			body.fouc-protected {
+			  display: none;
+			}
+		</style>
+		<script type="text/javascript">
+			document.getElementsByTagName("body")[0].className = "fouc-protected";
+		</script>
 		<script language="javascript" type="text/javascript">
 
 			// To use with mantle there's no need for a navigate component
