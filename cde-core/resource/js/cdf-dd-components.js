@@ -37,23 +37,32 @@ var ComponentsPanel = Panel.extend({
   },
 
   init: function() {
+    this.base();
+    this.logger.debug("Specific init");
+
+    this.initComponentsPallete();
+    this.initComponentsTable();
+    this.initPropertiesTable();
+
+    this.registerTableEvents();
+  },
+
+  initComponentsPallete: function() {
+    if(this.initPallete) {
+      this.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
+      this.addPalleteEntries();
+    }
+    this.componentsPallete.init();
+  },
+
+  initComponentsTable: function() {
     var panelOperations = [
       new ComponentsMoveUpOperation(),
       new ComponentsMoveDownOperation(),
       new ComponentsDuplicateOperation(),
       new ComponentsDeleteOperation()
     ];
-    this.base();
-    this.logger.debug("Specific init");
 
-    // Pallete
-    if(this.initPallete) {
-      this.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
-      this.addPalleteEntries();
-    }
-    this.componentsPallete.init();
-
-    // Components
     this.componentsTable = new TableManager(ComponentsPanel.COMPONENTS);
     this.componentsTable.setTitle("Components");
     this.componentsPallete.setLinkedTableManager(this.componentsTable);
@@ -61,30 +70,36 @@ var ComponentsPanel = Panel.extend({
 
     var componentsTableModel = new TableModel('componentsTreeTableModel');
     componentsTableModel.setColumnNames(['Type', 'Name']);
+    componentsTableModel.setColumnTypes(['String', 'String']);
     componentsTableModel.setColumnGetExpressions([
-      function(row) { return row.typeDesc; },
+      function(row) {
+        if(row.type === "Label") {
+          return row.typeDesc;
+        }
+
+        return row.rowName || row.typeDesc;
+      },
       function(row) {
         var props = row.properties;
         return props.length ? props[0].value : "";
       }
     ]);
-    componentsTableModel.setColumnTypes(['String', 'String']);
-    var rowId = function(row) { return row.id; };
-    componentsTableModel.setRowId(rowId);
-    var rowType = function(row) { return row.type; };
-    componentsTableModel.setRowType(rowType);
-    var parentId = function(row) { return row.parent };
-    componentsTableModel.setParentId(parentId);
-    var componentRows = cdfdd.getDashboardData().components.rows;
-    componentsTableModel.setData(componentRows);
+    componentsTableModel.setRowId(function(row) {
+      return row.id;
+    });
+    componentsTableModel.setRowType(function(row) {
+      return row.type;
+    });
+    componentsTableModel.setParentId(function(row) {
+      return row.parent;
+    });
+    componentsTableModel.setData(cdfdd.getDashboardData().components.rows);
+
     this.componentsTable.setTableModel(componentsTableModel);
     this.componentsTable.init();
+  },
 
-    var componentsTree = $('#' + ComponentsPanel.COMPONENTS);
-    var propertiesTree = $('#' + ComponentsPanel.PROPERTIES);
-    componentsTree.addClass('selectedTable');
-
-    // Properties
+  initPropertiesTable: function() {
     this.propertiesTable = new TableManager(ComponentsPanel.PROPERTIES);
     this.propertiesTable.setTitle("Properties");
     var propertiesTableModel = new PropertiesTableModel('componentsPropertiesTableModel');
@@ -111,13 +126,21 @@ var ComponentsPanel = Panel.extend({
       var arr = [];
       var props = row.properties;
       for(var p in props) {
-        var prop = props[p];
-        if(!prop.classType || prop.classType == classType) {
-          arr.push(prop);
+        if(props.hasOwnProperty(p)) {
+          var prop = props[p];
+          if(!prop.classType || prop.classType == classType) {
+            arr.push(prop);
+          }
         }
       }
       return arr;
     });
+  },
+
+  registerTableEvents: function() {
+    var componentsTree = $('#' + ComponentsPanel.COMPONENTS);
+    var propertiesTree = $('#' + ComponentsPanel.PROPERTIES);
+    componentsTree.addClass('selectedTable');
 
     componentsTree.click(function(e) {
       propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
