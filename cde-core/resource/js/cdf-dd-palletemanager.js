@@ -50,8 +50,7 @@ var PalleteManager = Base.extend({
 			return _container;
 		},
 
-		render: function(){
-
+		render: function() {
 			this.logger.debug("Rendering pallete " + this.getPalleteId());
 			var palleteSelector = '#' + this.getPalleteId(),
 			    _placeholder = $(palleteSelector),
@@ -102,44 +101,50 @@ var PalleteManager = Base.extend({
 			return exists;
 		},
 
-		addEntry: function(palleteEntry){
+		addEntry: function(palleteEntry) {
 
 			var object = palleteEntry;
 			var array = this.getEntries();
-			
 
-
-			if(this.exists(object, array) == false){
+			if(this.exists(object, array) == false) {
 				this.getEntries()[palleteEntry.getId()] = palleteEntry;
 
 				var _cat = palleteEntry.getCategory();
-				if(typeof this.getCategories()[_cat] == 'undefined' ){
+				if(typeof this.getCategories()[_cat] == 'undefined' ) {
 					this.createCategory(palleteEntry);
 				}
+
 				this.getCategories()[_cat].push(palleteEntry);
 
 				var _placeholder = $(".pallete-" + _cat +" > ul ", $("#"+this.getPalleteId()) );
 				//TODO: this hover ain't pretty, change this...
-				//			<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">
+				//<li onmouseover="$(this).addClass(\'ui-state-hover\')" onmouseout="$(this).removeClass(\'ui-state-hover\')" ><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">
 				var code = '\n' +
-	'							<li><a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\n' +
-	'			'+ palleteEntry.getName() +'\n' +
-	'			</a>\n' +
-	'			';
+					'<li>' +
+					'  <a class="tooltip" title="' + palleteEntry.getDescription() + '"  href="javascript:PalleteManager.executeEntry(\'' + this.getPalleteId() + '\',\''+ palleteEntry.getId() +'\');">\n' +
+					'			'+ palleteEntry.getName() +'\n' +
+					'  </a>' +
+					'</li>';
 
-				_placeholder.append(code)
+				_placeholder.append(code);
 			}
 		
 		},
 
-		createCategory: function(palleteEntry){
-			
-			$("#"+this.getPalleteId()).append('<div><h3><a href="#">' + palleteEntry.getCategoryDesc() + '</a></h3><div class="pallete-'+palleteEntry.getCategory()+'"><ul></ul></div></div>');
+		createCategory: function(palleteEntry) {
+			var content = '' +
+					'<div>' +
+					'  <h3>' +
+					'    <a href="#">' + palleteEntry.getCategoryDesc() + '</a>' +
+					'  </h3>' +
+					'  <div class="pallete-'+palleteEntry.getCategory()+'">' +
+					'    <ul></ul>' +
+					'  </div>' +
+					'</div>';
 
+			$("#"+this.getPalleteId()).append(content);
 			this.getCategories()[palleteEntry.getCategory()] = [];
-					
 		},
-
 
 		// Accessors
 		setId: function(id){this.id = id},
@@ -156,15 +161,15 @@ var PalleteManager = Base.extend({
 	},{
 		palleteManagers: {},
 		
-		register: function(palleteManager){
+		register: function(palleteManager) {
 			PalleteManager.palleteManagers[palleteManager.getPalleteId()] = palleteManager;
 		},
 
-		getPalleteManager: function(id){
+		getPalleteManager: function(id) {
 			return PalleteManager.palleteManagers[id];
 		},
 
-		executeEntry: function(palleteManagerId,id){
+		executeEntry: function(palleteManagerId, id) {
 			
 			var palleteManager = PalleteManager.getPalleteManager(palleteManagerId);
 			var entry = palleteManager.getEntries()[id];
@@ -183,43 +188,28 @@ var PalleteEntry = Base.extend({
   categoryDesc: undefined,
   logger: {},
 
-  constructor: function(){
+  constructor: function() {
     this.logger = new Logger("BaseOperation");
   },
 
-  execute: function(palleteManager,stub){
+  execute: function(palleteManager, stub) {
     // Add a new entry
-
+		var rowType, insertAtIdx;
     var tableManager = palleteManager.getLinkedTableManager();
-    var rendererType = cdfdd.dashboardWcdf.rendererType;
-
     var _stub = stub != undefined ? stub : this.getStub();
 
-    var rowIdx;
-    var colIdx = 0;
-    var rowId;
-    var rowType;
-    var insertAtIdx = -1;
+    insertAtIdx = tableManager.createOrGetParent(this.category, this.categoryDesc);
+    _stub.parent = this.category;
 
-    var indexManager = tableManager.getTableModel().getIndexManager();
-
-    // insertAtIdx = tableManager.getTableModel().getData().length;
-    insertAtIdx = tableManager.createOrGetParent( this.category, this.categoryDesc );
-    _stub.parent=this.category;
-
-    this.logger.debug("Inserting row after "+ rowType + " at " + insertAtIdx);
+    this.logger.debug("Inserting row after " + rowType + " at " + insertAtIdx);
 
     if(_stub.typeDesc == "" || _stub.typeDesc == "" || _stub.typeDesc == "") {
       _stub.typeDesc = _stub.type;
     }
-    
-    if (_stub.properties){
-    	this.fixQueryProperty(_stub, this.category);
-    }
-    tableManager.insertAtIdx(_stub,insertAtIdx);
 
-    // focus the newly created line
-    //atableManager.selectCell(insertAtIdx,colIdx);
+		this.addRowName(_stub, this.name);
+		this.fixQueryProperty(_stub, this.category);
+    tableManager.insertAtIdx(_stub,insertAtIdx);
 
 		// edit the new entry - we know the name is on the first line
 		var linkedTableManager = tableManager.getLinkedTableManager();
@@ -230,9 +220,14 @@ var PalleteEntry = Base.extend({
 
     return _stub;
   },
+
 	fixQueryProperty: function(stub, cat) {
 		var props = stub.properties;
 		var type = stub.type;
+
+		if(props == null) {
+			return false;
+		}
 
 		$.each(props, function(i, prop) {
 			if (prop.name == "query") {
@@ -265,6 +260,12 @@ var PalleteEntry = Base.extend({
 				return false;
 			}
 		});
+	},
+
+	addRowName: function(stub, name) {
+		if(stub.rowName == null) {
+			stub.rowName = name;
+		}
 	},
 
   getStub: function(){
