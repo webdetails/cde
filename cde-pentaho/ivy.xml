@@ -53,7 +53,7 @@
       <!-- TESTS -->
       <dependency org="junit"               name="junit"               rev="4.10"                conf="test->default" transitive="false"/>
       <dependency org="jaxen"               name="jaxen"               rev="1.1"                 conf="test->default" transitive="false"/>
-      <dependency org="commons-collections" name="commons-collections" rev="3.2"                 conf="test->default" transitive="false"/>
+      <dependency org="commons-collections" name="commons-collections" rev="3.2.2"                 conf="test->default" transitive="false"/>
       <dependency org="commons-beanutils"   name="commons-beanutils"   rev="1.9.1"               conf='test->default' transitive="false"/>
       <dependency org="net.sf.ezmorph"      name="ezmorph"             rev="1.0.6"               conf='test->default' transitive="false"/>
 
