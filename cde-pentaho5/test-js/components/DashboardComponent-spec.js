@@ -23,6 +23,7 @@ define([
   describe("The Dashboard Component #", function() {
     var dashboard;
     var dashboardComponent;
+    var mapTest = "mappingTest";
 
     beforeEach(function() {
       dashboard = new Dashboard();
@@ -49,11 +50,24 @@ define([
 
     });
 
+    var makeAjaxSpy = function(datasources) {
+      var successObj = {
+        parameters: ["dummyParam"],
+        dataSources: datasources ? ["dummyDataSource"] : [],
+        // split function to bypass i18n error
+        split: function() { return ""; }
+      };
+      dataSources: ["dummyDataSource"],
+      spyOn($, "ajax").and.callFake(function(params) {
+        params.success(successObj);
+      });
+    };
+
     /**
      * ## The Dashboard Component # allows a dashboard to execute update
      */
     it("allows a dashboard to execute update", function(done) {
-
+      makeAjaxSpy();
       spyOn(dashboardComponent, 'update').and.callThrough();
 
       dashboardComponent.once('cdf:postExecution', function() {
@@ -68,16 +82,11 @@ define([
      * ## The Dashboard Component # allows the correct use of parameter mapping
      */
     it("allows the correct use of parameter mapping", function(done) {
-      var mapTest = "mappingTest";
-      spyOn($, "ajax").and.callFake(function(params) {
-        params.success({
-          parameters: ["dummyParam"],
-          // split function to bypass i18n error
-          split: function() { return ""; }
-        });
-      });
+      makeAjaxSpy();
 
+      dashboard.setParameter("param1", "beforeTrigger");
       dashboardComponent.once('cdf:postExecution', function() {
+        expect(dashboardComponent.requiredDashboard.getParameterValue("dummyParam")).toEqual("beforeTrigger");
         dashboardComponent.requiredDashboard.once("dummyParam:fireChange", function() {
           expect(dashboardComponent.requiredDashboard.getParameterValue("dummyParam")).toEqual(mapTest);
           done();
@@ -92,13 +101,7 @@ define([
      * ## The Dashboard Component # will not map private parameters
      */
     it("will not map private parameters", function(done) {
-      spyOn($, "ajax").and.callFake(function(params) {
-        params.success({
-          parameters: ["dummyParam"],
-          // split function to bypass i18n error
-          split: function() { return ""; }
-        });
-      });
+      makeAjaxSpy();
 
       dashboardComponent.once('cdf:postExecution', function() {
         expect(dashboardComponent.registeredEvents["param1:fireChange"].length).toEqual(1);
@@ -113,15 +116,7 @@ define([
      * ## The Dashboard Component # allows the correct use of data sources mapping
      */
     it("allows the correct use of data sources mapping", function(done) {
-      var mapTest = "mappingTest";
-      spyOn($, "ajax").and.callFake(function(params) {
-        params.success({
-          dataSources: ["dummyDataSource"],
-          parameters: ["dummyParam"],
-          // split function to bypass i18n error
-          split: function() { return ""; }
-        });
-      });
+      makeAjaxSpy(true);
 
       dashboardComponent.once('cdf:postExecution', function() {
         expect(dashboardComponent.requiredDashboard.getDataSource("dummyDataSource").origin).toEqual("DashboardComponent");
