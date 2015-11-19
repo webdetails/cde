@@ -37,6 +37,26 @@ var DatasourcesPanel = Panel.extend({
   },
 
   init: function() {
+    this.base();
+    this.logger.debug("Specific init");
+
+    this.initDataSourcePallete();
+    this.initDataSourceTable();
+    this.initPropertiesTable();
+
+    this.registerTableEvents();
+
+  },
+
+  initDataSourcePallete: function() {
+    if(this.initPallete) {
+      this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
+      this.addPalleteEntries();
+    }
+    this.datasourcesPallete.init();
+  },
+
+  initDataSourceTable: function() {
     var panelOperations = [
       new DatasourcesMoveUpOperation(),
       new DatasourcesMoveDownOperation(),
@@ -44,17 +64,6 @@ var DatasourcesPanel = Panel.extend({
       new DatasourcesDeleteOperation()
     ];
 
-    this.base();
-    this.logger.debug("Specific init");
-
-    // Pallete
-    if(this.initPallete) {
-      this.datasourcesPallete = new PalleteManager(DatasourcesPanel.PALLETE);
-      this.addPalleteEntries();
-    }
-    this.datasourcesPallete.init();
-
-    // Datasources
     this.datasourcesTable = new TableManager(DatasourcesPanel.DATASOURCES);
     this.datasourcesTable.setTitle("Datasources");
     this.datasourcesPallete.setLinkedTableManager(this.datasourcesTable);
@@ -62,32 +71,46 @@ var DatasourcesPanel = Panel.extend({
 
     var datasourcesTableModel = new TableModel('datasourcesTreeTableModel');
     datasourcesTableModel.setColumnNames(['Type', 'Name']);
-    var typeDescription = function(row) { return row.typeDesc; };
-    var rowProperties = function(row) { return CDFDDUtils.ev(row.properties[0].value); };
-    datasourcesTableModel.setColumnGetExpressions([typeDescription, rowProperties]);
     datasourcesTableModel.setColumnTypes(['String', 'String']);
-    var rowId = function(row) { return row.id; };
-    datasourcesTableModel.setRowId(rowId);
-    var rowType = function(row) { return row.type; };
-    datasourcesTableModel.setRowType(rowType);
-    var rowParent = function(row) { return row.parent; };
-    datasourcesTableModel.setParentId(rowParent);
-    var dataSources = cdfdd.getDashboardData().datasources.rows;
-    datasourcesTableModel.setData(dataSources);
+
+    datasourcesTableModel.setColumnGetExpressions([
+      function(row) {
+        if(row.type === "Label") {
+          return row.typeDesc;
+        }
+
+        return row.rowName || row.typeDesc;
+      },
+      function(row) {
+        return CDFDDUtils.ev(row.properties[0].value);
+      }
+    ]);
+    datasourcesTableModel.setRowId(function(row) {
+      return row.id;
+    });
+    datasourcesTableModel.setRowType(function(row) {
+      return row.type;
+    });
+    datasourcesTableModel.setParentId(function(row) {
+      return row.parent;
+    });
+    datasourcesTableModel.setData(cdfdd.getDashboardData().datasources.rows);
+
     this.datasourcesTable.setTableModel(datasourcesTableModel);
     this.datasourcesTable.init();
+  },
 
-    var datasourcesTree = $('#' + DatasourcesPanel.DATASOURCES);
-    var propertiesTree = $('#' + DatasourcesPanel.PROPERTIES);
-    datasourcesTree.addClass('selectedTable');
-
-    // Properties
+  initPropertiesTable: function() {
     this.propertiesTable = new TableManager(DatasourcesPanel.PROPERTIES);
     this.propertiesTable.setTitle("Properties");
     var propertiesTableModel = new PropertiesTableModel('datasourcesPropertiesTableModel');
     propertiesTableModel.setColumnGetExpressions([
-      function(row) { return row.description; },
-      function(row) { return CDFDDUtils.ev(row.value); }
+      function(row) {
+        return row.description;
+      },
+      function(row) {
+        return CDFDDUtils.ev(row.value);
+      }
     ]);
 
     // If we set the name, we need to change the name in the datasourcesTable
@@ -116,6 +139,12 @@ var DatasourcesPanel = Panel.extend({
       }
       return arr;
     });
+  },
+
+  registerTableEvents: function() {
+    var datasourcesTree = $('#' + DatasourcesPanel.DATASOURCES);
+    var propertiesTree = $('#' + DatasourcesPanel.PROPERTIES);
+    datasourcesTree.addClass('selectedTable');
 
     datasourcesTree.click(function(e) {
       propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
