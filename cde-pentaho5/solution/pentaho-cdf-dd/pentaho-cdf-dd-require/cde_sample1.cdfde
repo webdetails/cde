@@ -1636,7 +1636,7 @@
      {
       "name": "public",
       "type": "Boolean",
-      "value": "false"
+      "value": "true"
      }
     ],
     "type": "ComponentsParameter",
