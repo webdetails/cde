@@ -94,6 +94,18 @@ var HtmlObjectRenderer = SelectRendererNonForcefull.extend({
   }
 });
 
+var HtmlTargetRenderer = HtmlObjectRenderer.extend({
+  getData: function() {
+    var r = {};
+    var data = Panel.getPanel(LayoutPanel.MAIN_PANEL).getHtmlTargets();
+    _.each(data, function(obj) {
+      var h = obj.properties[0].value;
+      r[h] = h;
+    });
+    return r;
+  }
+});
+
 var MatchTypeRenderer = SelectRenderer.extend({
 
   isAutoComplete: false,
