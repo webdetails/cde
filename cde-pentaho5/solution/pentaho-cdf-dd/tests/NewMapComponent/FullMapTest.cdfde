@@ -25,19 +25,19 @@
       "value": "GeoLocalizedMap"
      },
      {
+      "name": "parameter",
+      "type": "Parameter",
+      "value": ""
+     },
+     {
       "name": "listeners",
       "type": "Listeners",
       "value": "[]"
      },
      {
-      "name": "parameters",
-      "type": "CdaParameters",
-      "value": "[]"
-     },
-     {
       "name": "API_KEY",
       "type": "String",
-      "value": "0"
+      "value": ""
      },
      {
       "name": "centerLatitude",
@@ -66,8 +66,8 @@
      },
      {
       "name": "fillOpacity",
-      "value": 0.5,
-      "type": "Float"
+      "type": "Float",
+      "value": 0.5
      },
      {
       "name": "locationResolver",
@@ -92,7 +92,7 @@
      {
       "name": "markerCggGraph",
       "type": "String",
-      "value": "/public/plugin-samples/pentaho-cdf-dd/pentaho-cdf-dd-require/tests/NewMapComponent/salesGraphForMarker.js"
+      "value": "/public/plugin-samples/pentaho-cdf-dd/tests/NewMapComponent/salesGraphForMarker.js"
      },
      {
       "name": "markerClickFunction",
@@ -108,6 +108,11 @@
       "name": "markerWidth",
       "type": "Integer",
       "value": "50"
+     },
+     {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
      },
      {
       "name": "popupContentsDiv",
@@ -136,18 +141,18 @@
      },
      {
       "name": "strokeColor",
-      "value": "white",
-      "type": "String"
+      "type": "String",
+      "value": "white"
      },
      {
       "name": "strokeWidth",
-      "value": 2,
-      "type": "Float"
+      "type": "Float",
+      "value": 2
      },
      {
       "name": "tilesets",
       "type": "tilesetsCustom",
-      "value": "mapquest"
+      "value": "default"
      },
      {
       "name": "dataSource",
@@ -181,6 +186,16 @@
      },
      {
       "name": "postFetch",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "preChange",
+      "type": "JavaScript",
+      "value": ""
+     },
+     {
+      "name": "postChange",
       "type": "JavaScript",
       "value": ""
      },
@@ -248,8 +263,8 @@
      },
      {
       "name": "public",
-      "value": "false",
-      "type": "Boolean"
+      "type": "Boolean",
+      "value": "false"
      }
     ],
     "type": "ComponentsParameter",
@@ -692,8 +707,8 @@
      },
      {
       "name": "readers",
-      "value": "[]",
-      "type": "Array"
+      "type": "Array",
+      "value": "[]"
      },
      {
       "name": "renderCallback",
@@ -702,8 +717,8 @@
      },
      {
       "name": "renderedCallback",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "selectable",
@@ -1367,8 +1382,8 @@
      },
      {
       "name": "readers",
-      "value": "[]",
-      "type": "Array"
+      "type": "Array",
+      "value": "[]"
      },
      {
       "name": "renderCallback",
@@ -1377,8 +1392,8 @@
      },
      {
       "name": "renderedCallback",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "selectable",
@@ -1701,8 +1716,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",
@@ -1791,8 +1806,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",
@@ -1867,8 +1882,8 @@
      },
      {
       "name": "cacheKeys",
-      "value": "[]",
-      "type": "CacheKeysValues"
+      "type": "CacheKeysValues",
+      "value": "[]"
      },
      {
       "name": "cacheDuration",
@@ -1947,7 +1962,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "var API_KEY = '<GoogleApiKey>'; "
+      "value": "var API_KEY = API_KEY || '<GoogleApiKey>'; "
      },
      {
       "name": "resourceType",
