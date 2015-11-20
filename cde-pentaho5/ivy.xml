@@ -30,7 +30,7 @@
 
         <!-- for karma testing -->
         <dependency org="pentaho" name="pentaho-cdf" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
-            <artifact name="pentaho-cdf" type="zip" ext="zip"/>
+            <artifact name="pentaho-cdf" type="js" ext="zip" m:classifier="js"/>
         </dependency>
 
 
