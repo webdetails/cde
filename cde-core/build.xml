@@ -289,16 +289,15 @@
 
     <!-- copy CDF into bin/test-js/cdf -->
     <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
-      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf"/>
+      <fileset dir="${js.expanded.lib.dir}/cdf"/>
     </copy>
 
     <!-- compile the require file -->
     <echo message="Collecting RequireJS Configurations"/>
     <delete file="build-res/requireCfg-raw.js"/>
     <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
-      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf" casesensitive="yes">
-        <include name="js/*-require-js-cfg.js"/>
-        <include name="js/lib/*-require-js-cfg.js"/>
+      <fileset dir="${js.expanded.lib.dir}/cdf" casesensitive="yes">
+        <include name="cdf-require-js-cfg.js"/>
       </fileset>
       <fileset dir="resource/js" casesensitive="yes">
         <include name="*-require-js-cfg.js"/>

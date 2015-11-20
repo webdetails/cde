@@ -144,22 +144,22 @@
     </unzip>
 
     <!-- copy requirejs loader plugins & other CDF dependencies -->
-    <copy todir='${js.module.script.agg.dir}/cdf/js' overwrite='true'>
-      <fileset dir='${js.expanded.lib.dir}/pentaho-cdf/js'>
+    <copy todir='${js.module.script.agg.dir}/cdf' overwrite='true'>
+      <fileset dir='${js.expanded.lib.dir}/cdf'>
         <!-- including only required dependencies makes the optimization much faster -->
-        <include name="lib/require-css/**/*"/>
-        <include name="lib/require-amd/**/*"/>
-        <include name="lib/require-dashboard/**/*"/>
-        <include name="lib/require-text/**/*"/>
-        <include name="lib/Raphael/raphael.js"/>
-        <include name="lib/jQuery/jquery.js"/>
-        <include name="lib/jquery-migrate-1.2.1.js"/>
-        <include name="lib/fancybox/jquery.fancybox.css"/>
-        <include name="lib/fancybox/jquery.fancybox.js"/>
-        <include name="components/CggComponent.ext.js"/>
-        <include name="lib/backbone/backbone.js"/>
-        <include name="lib/underscore/underscore.js"/>
-        <include name="lib/OpenMap/OpenLayers/theme/default/style.css"/>
+        <include name="js/lib/require-css/**/*"/>
+        <include name="js/lib/require-amd/**/*"/>
+        <include name="js/lib/require-dashboard/**/*"/>
+        <include name="js/lib/require-text/**/*"/>
+        <include name="js/lib/Raphael/raphael.js"/>
+        <include name="js/lib/jQuery/jquery.js"/>
+        <include name="js/lib/jquery-migrate-1.2.1.js"/>
+        <include name="js/lib/fancybox/jquery.fancybox.css"/>
+        <include name="js/lib/fancybox/jquery.fancybox.js"/>
+        <include name="js/components/CggComponent.ext.js"/>
+        <include name="js/lib/backbone/backbone.js"/>
+        <include name="js/lib/underscore/underscore.js"/>
+        <include name="js/lib/OpenMap/OpenLayers/theme/default/style.css"/>
       </fileset>
     </copy>
 
@@ -181,9 +181,8 @@
     <echo message="var requireCfg={paths:{},shim:{}};" file="build-res/requireCfg-raw.js" force="true" append="false"/>
     <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
       <!-- cdf requirejs cfg files -->
-      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf/js" casesensitive="yes">
-        <include name="*-require-js-cfg.js"/>
-        <include name="lib/*-require-js-cfg.js"/>
+      <fileset dir="${js.expanded.lib.dir}/cdf/js" casesensitive="yes">
+        <include name="cdf-require-js-cfg.js"/>
       </fileset>
       <!-- cde require-js cfg files -->
       <fileset dir="${core-resource.dir}/js" casesensitive="yes">
@@ -538,7 +537,7 @@
 
     <!-- copy CDF into bin/test-js/cdf -->
     <copy todir="${bin.test-js.cdf.dir}" overwrite="true">
-      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf"/>
+      <fileset dir="${js.expanded.lib.dir}/cdf"/>
     </copy>
 
     <!-- compile the require file -->
@@ -546,9 +545,8 @@
     <delete file="build-res/requireCfg-raw.js"/>
     <concat destfile="build-res/requireCfg-raw.js" append="true" force="yes">
       <!-- cdf require-js cfg files -->
-      <fileset dir="${js.expanded.lib.dir}/pentaho-cdf" casesensitive="yes">
-        <include name="js/*-require-js-cfg.js"/>
-        <include name="js/lib/*-require-js-cfg.js"/>
+      <fileset dir="${js.expanded.lib.dir}/cdf" casesensitive="yes">
+        <include name="cdf-require-js-cfg.js"/>
       </fileset>
       <!-- cde require-js cfg files -->
       <fileset dir="../cde-core/resource/js" casesensitive="yes">
