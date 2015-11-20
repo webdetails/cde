@@ -132,7 +132,7 @@ var LayoutPanel = Panel.extend({
     this.treeTable.setLinkedTableManager(this.propertiesTable);
     this.treeTable.setLinkedTableManagerOperation(function(row) {
       var arr = [];
-      for(p in row.properties) {
+      for(var p in row.properties) {
         if(row.properties.hasOwnProperty(p)) {
           arr.push(row.properties[p]);
         }
@@ -158,24 +158,37 @@ var LayoutPanel = Panel.extend({
   },
 
   // Get HtmlObjects
-  getHtmlObjects: function() {
 
+  getHtmlTargets: function() {
     var data = this.treeTable.getTableModel().getData();
     var autoCompleteModels = [
       LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
       LayoutFreeFormModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
-      LayoutBootstrapPanelBodyModel.MODEL
+      LayoutBootstrapPanelFooterModel.MODEL
     ];
+
     var output = [];
-    var myself = this;
     $.each(data, function(i, row) {
       if($.inArray(row.type, autoCompleteModels) > -1) {
-        // Use the ones that don't have children and a name defined
-        var rowProperties = row.properties;
-        if(myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length == 0
-            && rowProperties[0].value != "") {
+        if(row.properties[0].value !== "") {
           output.push(row);
         }
+      }
+    });
+
+    return output;
+  },
+
+  getHtmlObjects: function() {
+    var data = this.getHtmlTargets();
+    var output = [];
+    var myself = this;
+
+    $.each(data, function(i, row) {
+      // Use the ones that don't have children
+      var children = myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children;
+      if(children.length === 0) {
+        output.push(row);
       }
     });
 
