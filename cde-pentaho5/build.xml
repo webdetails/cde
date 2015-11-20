@@ -157,6 +157,9 @@
         <include name="js/lib/fancybox/jquery.fancybox.css"/>
         <include name="js/lib/fancybox/jquery.fancybox.js"/>
         <include name="js/components/CggComponent.ext.js"/>
+        <include name="js/lib/backboneTreemodel/backbone.treemodel.js"/>
+        <include name="js/lib/baseEvents/**"/>
+        <include name="js/lib/baseSelectionTree/**"/>
         <include name="js/lib/backbone/backbone.js"/>
         <include name="js/lib/underscore/underscore.js"/>
         <include name="js/lib/OpenMap/OpenLayers/theme/default/style.css"/>
