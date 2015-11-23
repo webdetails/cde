@@ -11,6 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
+//region Prompt Renderers
 var PromptRenderer = CellRenderer.extend({
 
   callback: null,
@@ -110,7 +111,7 @@ var MdxQueryRenderer = PromptRenderer.extend({
   }
 });
 
-var CurrentMdxQueryRenderer = PromptRenderer.extend({ 
+var CurrentMdxQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
     this.base(tableManager);
@@ -170,6 +171,16 @@ var JsonScriptableQueryRenderer = PromptRenderer.extend({
   }
 });
 
+var CdaQueryRenderer = PromptRenderer.extend({
+
+  constructor: function(tableManager){
+    this.base(tableManager);
+    this.logger = new Logger("CdaQueryRenderer");
+    this.logger.debug("Creating new CdaQueryRenderer");
+    this.wizard = "CDA_WIZARD";
+  }
+});
+
 var DefaultQueryRenderer = PromptRenderer.extend({
 
   constructor: function(tableManager){
@@ -179,12 +190,14 @@ var DefaultQueryRenderer = PromptRenderer.extend({
     this.wizard = "DEFAULT_EDITOR";
   }
 });
+//endregion
 
+//region Multi Dimension Renderers
 var ValuesArrayRenderer = CellRenderer.extend({
 
   multiDimensionArray: true,
-  hasTypedValues: false,//if true, args also have a type
-  autocomplete: true, //disable autocomplete
+  hasTypedValues: false, //if true, args also have a type
+  autocomplete: true, //enabled autocomplete
 
   cssPrefix: "StringList",
 
@@ -201,7 +214,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   argPlaceholderText: 'Insert Text...',
   valPlaceHolderText: 'Parameters...',
 
-  patternPlaceholderText:'Insert Pattern...',
+  patternPlaceholderText: 'Insert Pattern...',
 
   index: 0,
 
@@ -386,7 +399,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   },
 
   removeSelectedRowsEvent: function() {
-    var myself= this;
+    var myself = this;
 
     $('.popup-remove-selection').click(function() {
       var mainContainer = $('.popup-list-body-container');
@@ -522,7 +535,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
     }
 
     if(this.multiDimensionArray) {
-      return  _.isEmpty(param[0]) && _.isEmpty(param[1]);
+      return _.isEmpty(param[0]) && _.isEmpty(param[1]);
     }
 
     return false;
@@ -544,7 +557,7 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getRowValues: function(i) {
 
     if(!this.multiDimensionArray) {
-      return   $('#arg_' + i).val();
+      return $('#arg_' + i).val();
     } else {
 
       var result = [];
@@ -779,9 +792,61 @@ var ValuesArrayRenderer = CellRenderer.extend({
   }
 });
 
-var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
+var CdaParametersRenderer = ValuesArrayRenderer.extend({
+  cssPrefix: "ParameterList",
 
-  autocomplete: false,
+  argTitle: 'Name',
+  valTitle: 'Value',
+
+  valPlaceHolderText: 'Insert Text...',
+
+  hasTypedValues: true,
+  //TODO: this should be fetched from somewhere
+  typesArray: ['String', 'Integer', 'Numeric', 'Date', 'StringArray', 'IntegerArray', 'NumericArray', 'DateArray'],
+  patternUnlockTypes: ['Date', 'DateArray'],
+
+  /**
+   * @returns {Array}
+   **/
+  getRowValues: function(i) {
+    var name = $("#arg_" + i).val();
+    var value = $("#val_" + i).val();
+    var type = $("#type_" + i).val();
+    var access = $("#access_" + i).attr('checked') ? 'private' : '';
+
+    var isDate = $.inArray(type, this.patternUnlockTypes) != -1;
+    var pattern = isDate ? $("#pattern_" + i).val() : "";
+
+    return [name, value, type, access, pattern];
+  },
+
+  postAddRow: function(container, index) {
+    var selector = container.find("#type_" + index);
+    var myself = this;
+    selector.change(function(event) {
+      var disabled = $.inArray(selector.val(), myself.patternUnlockTypes) < 0;
+      var placeholder = disabled ? "" : myself.patternPlaceholderText;
+
+      container
+          .find(".popup-pattern-container").has("#pattern_" + index)
+          .toggleClass("date-type-selected", !disabled);
+
+      container
+          .find("#pattern_" + index)
+          .prop("disabled", disabled)
+          .attr("placeholder", placeholder);
+    });
+    CDFDDUtils.buildPopupSelect(selector, {});
+  }
+});
+//endregion
+
+//region Multi Dimension No Autocomplete Renderers
+var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
+  autocomplete: false
+});
+
+var EditorValuesArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Extension Points',
 
   valPlaceHolderText: 'Click to edit...',
@@ -834,7 +899,7 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
       $val.tooltip({content: "<pre>" + $("<a>").text(value).html() + "</pre>"});
     }
 
-    cdfdd.arrayValue[index] = [ $("#arg_" + index).val(), value ];
+    cdfdd.arrayValue[index] = [$("#arg_" + index).val(), value];
 
   },
 
@@ -867,70 +932,12 @@ var EditorValuesArrayRenderer = ValuesArrayRenderer.extend({
 
 });
 
-/**
- * Single value renderer
- */
-var ArrayRenderer = ValuesArrayRenderer.extend({
-
-  popupTitle: 'String Array',
-  multiDimensionArray: false,
-  cssPrefix: "StringArray",
-
-  constructor: function(tableManager) {
-    this.base(tableManager);
-    this.logger = new Logger("ArrayRenderer");
-    this.logger.debug("Creating new ArrayRenderer");
-  }
-
-});
-
-var ColHeadersArrayRenderer = ArrayRenderer.extend({
-  popupTitle: 'Column Headers'
-});
-
-var ColFormatsArrayRenderer = ArrayRenderer.extend({
-  popupTitle: 'Column Formats'
-});
-
-var ColWidthsArrayRenderer = ArrayRenderer.extend({
-  popupTitle: 'Column Widths'
-});
-
-var ColSortableArrayRenderer = ArrayRenderer.extend({
-  popupTitle: 'Sortable Columns'
-});
-
-var ColTypesArrayRender = ArrayRenderer.extend({
-  popupTitle: 'Column Types',
-
-  getData: function() {
-    var data = this.selectData || {};
-    _.extend(data, {
-      string: 'string',
-      numeric: 'numeric',
-      hidden: 'hidden'
-    });
-    return data;
-  }
-});
-
-var IndexArrayRenderer = ArrayRenderer.extend({
-  autocomplete: false,
-  popupTitle: 'Output Columns'
-});
-
-//arg, value, no param button, //TODO: own css
-var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
-  autocomplete: false
-});
-
 var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Sort By',
   argTitle: 'Index',
   valTitle: 'Order'
 });
 
-//used by ExtraOptions
 var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Options',
   argTitle: 'Option'
@@ -940,18 +947,18 @@ var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Cache Keys',
   argTitle: 'Key',
   valTitle: 'Value',
-  onPopupLoad: function(){
+  onPopupLoad: function() {
     var lh = $("#popupbox .popup-list-row-label");
     lh.find(".popup-label.popup-value-label").addClass('popup-value-label-small');
     lh.find(".popup-label.popup-arg-label").addClass('popup-arg-label-small');
     lh.append('<div class="popup-label popup-default-label">Default</div>');
   },
   getRowValues: function(i) {
-      var result = [];
-      result.push($('#arg_' + i).val());//key
-      result.push($('#val_' + i).val());//value
-      result.push($('#def_' + i).val());//default
-      return result;
+    var result = [];
+    result.push($('#arg_' + i).val());//key
+    result.push($('#val_' + i).val());//value
+    result.push($('#def_' + i).val());//default
+    return result;
   },
   getArgSection: function(index, value) {
     return '' +
@@ -980,70 +987,76 @@ var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
   }
 });
 
-var CdaParametersRenderer = ValuesArrayRenderer.extend({
-  cssPrefix: "ParameterList",
-
-  argTitle: 'Name',
-  valTitle: 'Value',
-
-  valPlaceHolderText: 'Insert Text...',
-
-  hasTypedValues: true,
-  //TODO: this should be fetched from somewhere
-  typesArray: ['String', 'Integer', 'Numeric', 'Date', 'StringArray', 'IntegerArray', 'NumericArray', 'DateArray'],
-  patternUnlockTypes: ['Date', 'DateArray'],
-
-  /**
-   * @returns {Array}
-   **/
-  getRowValues: function(i) {
-    var name = $("#arg_" + i).val();
-    var value = $("#val_" + i).val();
-    var type = $("#type_" + i).val();
-    var access = $("#access_" + i).attr('checked') ? 'private' : '';
-
-    var isDate = $.inArray(type, this.patternUnlockTypes) != -1;
-    var pattern = isDate ? $("#pattern_" + i).val() : "";
-
-    return [name, value, type, access, pattern];
-  },
-
-  postAddRow: function(container, index) {
-    var selector = container.find("#type_" + index);
-    var myself = this;
-    selector.change(function(event) {
-      var disabled = $.inArray(selector.val(), myself.patternUnlockTypes) < 0;
-      var placeholder = disabled ? "" : myself.patternPlaceholderText;
-
-      container
-          .find(".popup-pattern-container").has("#pattern_" + index)
-            .toggleClass("date-type-selected", !disabled);
-
-      container
-          .find("#pattern_" + index)
-            .prop("disabled", disabled)
-            .attr("placeholder", placeholder);
-    });
-    CDFDDUtils.buildPopupSelect(selector, {});
-  }
-});
-
-var CdaColumnsArrayRenderer = ValuesArrayRenderer.extend({
-  autocomplete: false,
+var CdaColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Columns',
   argTitle: 'Index',
   valTitle: 'Name',
   valPlaceHolderText: 'Insert Text...'
 });
 
-var CdaCalculatedColumnsArrayRenderer = ValuesArrayRenderer.extend({
-  autocomplete: false,
+var CdaCalculatedColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Calculated Columns',
   argTitle: 'Name',
   valTitle: 'Formula',
   valPlaceHolderText: 'Insert Text...'
 });
+//endregion
 
+//region Single Dimension Renderers
+var ArrayRenderer = ValuesArrayRenderer.extend({
+  popupTitle: 'String Array',
+  multiDimensionArray: false,
+  cssPrefix: "StringArray",
+
+  constructor: function(tableManager) {
+    this.base(tableManager);
+    this.logger = new Logger("ArrayRenderer");
+    this.logger.debug("Creating new ArrayRenderer");
+  }
+});
+
+var ColTypesArrayRender = ArrayRenderer.extend({
+  popupTitle: 'Column Types',
+
+  getData: function() {
+    var data = this.selectData || {};
+    _.extend(data, {
+      string: 'string',
+      numeric: 'numeric',
+      hidden: 'hidden'
+    });
+    return data;
+  }
+});
+//endregion
+
+//region Single Dimension No Autocomplete Renderes
+var ArrayNoParamRenderer = ArrayRenderer.extend({
+  autocomplete: false
+});
+
+var ColHeadersArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Column Headers'
+});
+
+var ColFormatsArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Column Formats'
+});
+
+var ColWidthsArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Column Widths'
+});
+
+var ColSortableArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Sortable Columns'
+});
+
+var IndexArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Output Columns'
+});
+//endregion
+
+//region Mapping Renderers
 var abstractMapperRenderer = ValuesArrayRenderer.extend({
 
   constructor: function(tableManager) {
@@ -1055,8 +1068,8 @@ var abstractMapperRenderer = ValuesArrayRenderer.extend({
   onPopupLoad: function() {
     var requestUrl = this.getRequestUrl();
     var tableData = this.tableManager.getTableModel().data;
-    for (var i = 0; i < tableData.length; i++) {
-      if (tableData[i].name == "dashboardPath") {
+    for(var i = 0; i < tableData.length; i++) {
+      if(tableData[i].name == "dashboardPath") {
         this.dashboardPath = tableData[i].value;
         break;
       }
@@ -1173,10 +1186,10 @@ var abstractMapperRenderer = ValuesArrayRenderer.extend({
   getData: function() {
     var data = {};
     var filterCategory = this.datasourceFiltering ?
-      Panel.getPanel( DatasourcesPanel.MAIN_PANEL).getDatasources() :
-      Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
+        Panel.getPanel(DatasourcesPanel.MAIN_PANEL).getDatasources() :
+        Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
 
-    var filters = _.sortBy(filterCategory, function (filter) {
+    var filters = _.sortBy(filterCategory, function(filter) {
       return filter.properties[0].value;
     });
 
@@ -1210,7 +1223,7 @@ var ParameterMappingRenderer = abstractMapperRenderer.extend({
   requestSuccess: function(data) {
     this.otherDashboardParameters = data ? data.parameters || [] : [];
   },
-  requestError: function(){
+  requestError: function() {
     this.otherDashboardParameters = [];
   }
 });
@@ -1229,20 +1242,11 @@ var DataSourceMappingRenderer = abstractMapperRenderer.extend({
   requestSuccess: function(data) {
     this.otherDashboardDataSources = data ? data.dataSources || [] : [];
   },
-  requestError: function(){
+  requestError: function() {
     this.otherDashboardDataSources = [];
   }
 });
-
-var CdaQueryRenderer = PromptRenderer.extend({
-
-  constructor: function(tableManager) {
-    this.base(tableManager);
-    this.logger = new Logger("CdaQueryRenderer");
-    this.logger.debug("Creating new CdaQueryRenderer");
-    this.wizard = "CDA_WIZARD";
-  }
-});
+//endregion
 
 var MondrianCatalogRenderer = SelectRendererNonForcefull.extend({
 
