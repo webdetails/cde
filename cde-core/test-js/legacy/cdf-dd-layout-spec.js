@@ -17,16 +17,29 @@ describe("Table Operations #", function() {
   /*Mock tableManager for testing*/
   var initTableManager = function(spyObjName) {
     var spyOnMethods = ['getSelectedCell', 'selectCell', 'getDroppedOnId', 'setDroppedOnId', 'getTableModel',
-      'getTableId', 'updateTreeTable', /*'canMoveInto',*/ 'addRow', 'insertAtIdx'];
+      'getTableId', 'updateTreeTable', 'addRow', 'insertAtIdx'];
     tableManager = jasmine.createSpyObj(spyObjName, spyOnMethods);
 
-    tableManager.setDroppedOnId.and.callFake(function(id){ tableManager.droppedOnId = id; });
-    tableManager.getDroppedOnId.and.callFake(function() { return tableManager.droppedOnId; });
-    tableManager.selectCell.and.callFake(function(row,col) { tableManager.selectedCell = [row,col]; });
-    tableManager.getSelectedCell.and.callFake(function() { return tableManager.selectedCell; });
-    tableManager.getTableModel.and.callFake(function() { return tableModel; });
+    tableManager.setDroppedOnId.and.callFake(function(id) {
+      tableManager.droppedOnId = id;
+    });
+    tableManager.getDroppedOnId.and.callFake(function() {
+      return tableManager.droppedOnId;
+    });
+    tableManager.selectCell.and.callFake(function(row,col) {
+      tableManager.selectedCell = [row,col];
+    });
+    tableManager.getSelectedCell.and.callFake(function() {
+      return tableManager.selectedCell;
+    });
+    tableManager.getTableModel.and.callFake(function() {
+      return tableModel;
+    });
     tableManager.addRow.and.callFake(function() {});
-    tableManager.insertAtIdx.and.callFake(function(row, pos) { tableModel.getData().splice(pos,0,row); indexManager.updateIndex(); });
+    tableManager.insertAtIdx.and.callFake(function(row, pos) {
+      tableModel.getData().splice(pos,0,row);
+      indexManager.updateIndex();
+    });
   };
 
   /*Mock tableModel for testing*/
@@ -34,14 +47,32 @@ describe("Table Operations #", function() {
     var spyOnMethods = ['getEvaluatedId', 'getParentId', 'getRowType', 'getIndexManager', 'getData', 'setData'];
     tableModel = jasmine.createSpyObj(spyObjName, spyOnMethods);
 
-    var rowType = function(row){return row.type};
-    var parentId = function(row){ return row.parent; };
-    tableModel.getIndexManager.and.callFake(function() { return indexManager; });
-    tableModel.getEvaluatedId.and.callFake(function( rowNumber ) { return tableModel.getData()[rowNumber].id; });
-    tableModel.getParentId.and.callFake(function() { return parentId; });
-    tableModel.getRowType.and.callFake(function() { return rowType; });
-    tableModel.getData.and.callFake(function() { return tableModel.data; });
-    tableModel.setData.and.callFake(function(data) { tableModel.data = data; indexManager.updateIndex() });
+    var rowType = function(row) {
+      return row.type;
+    };
+    var parentId = function(row) {
+      return row.parent;
+    };
+
+    tableModel.getIndexManager.and.callFake(function() {
+      return indexManager;
+    });
+    tableModel.getEvaluatedId.and.callFake(function(rowNumber) {
+      return tableModel.getData()[rowNumber].id;
+    });
+    tableModel.getParentId.and.callFake(function() {
+      return parentId;
+    });
+    tableModel.getRowType.and.callFake(function() {
+      return rowType;
+    });
+    tableModel.getData.and.callFake(function() {
+      return tableModel.data;
+    });
+    tableModel.setData.and.callFake(function(data) {
+      tableModel.data = data;
+      indexManager.updateIndex();
+    });
   };
 
   var initIndexManager = function(tableModel) {
@@ -58,24 +89,17 @@ describe("Table Operations #", function() {
     initTableManager('TableManager');
     initTableModel('TableModel');
     initIndexManager(tableModel);
-    //populate(tableModel, exampleData_2);
-    done();
-  });
-
-  afterEach(function(done) {
-    tableManager = undefined;
-    tableModel = undefined;
-    indexManager = undefined;
     done();
   });
 
   describe("Layout Panel #", function() {
     var layoutPanel;
 
-    beforeEach(function() {
+    beforeEach(function(done) {
       layoutPanel = new LayoutPanel("test-layout-panel");
       layoutPanel.treeTable = tableManager;
-      populate(layoutPanel.treeTableModel, exampleData_1);
+      populate(tableManager.getTableModel(), exampleData_1);
+      done();
     });
 
     it("# getHtmlTargets", function() {
@@ -113,8 +137,6 @@ describe("Table Operations #", function() {
 
       expect(layoutPanel.getHtmlObjects()).toEqual(expected);
     });
-
-
   });
 
   describe("LayoutAddResourceOperation", function() {
