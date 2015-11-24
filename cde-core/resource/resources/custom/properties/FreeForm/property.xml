@@ -20,7 +20,7 @@
       <DefaultValue>"[]"</DefaultValue>
       <Description>Other Attributes</Description>
       <Tooltip>More attributes to add to the freeForm component</Tooltip>
-      <InputType>OptionArray</InputType>
+      <InputType>OtherAttributesArray</InputType>
       <OutputType>Array</OutputType>
       <Order>301</Order>
       <Advanced>true</Advanced>

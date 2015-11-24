@@ -6,7 +6,7 @@
 	<Description>Expand Parameters</Description>
 	<Tooltip>Choose which parameter stores the column value on expand. Example: [[0,param0],[1,param1]]</Tooltip>
 	<Advanced>true</Advanced>
-	<InputType>ValuesArray</InputType>
+	<InputType>ExpandParameters</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>
 	<Version>1.0</Version>

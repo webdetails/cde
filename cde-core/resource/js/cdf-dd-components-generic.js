@@ -839,11 +839,17 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     CDFDDUtils.buildPopupSelect(selector, {});
   }
 });
+
+var ExpandParametersRenderer = ValuesArrayRenderer.extend({
+  popupTitle: "Expand Parameters",
+  argTitle: "Index"
+});
 //endregion
 
 //region Multi Dimension No Autocomplete Renderers
 var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
-  autocomplete: false
+  autocomplete: false,
+  valPlaceHolderText: "Insert Text..."
 });
 
 var EditorValuesArrayRenderer = ListArgValNoParamRenderer.extend({
@@ -938,9 +944,14 @@ var SortByArrayRenderer = ListArgValNoParamRenderer.extend({
   valTitle: 'Order'
 });
 
-var OptionArrayRenderer = ListArgValNoParamRenderer.extend({
-  popupTitle: 'Options',
+var ExtraOptionsArrayRenderer = ListArgValNoParamRenderer.extend({
+  popupTitle: 'Extra Options',
   argTitle: 'Option'
+});
+
+var OtherAttributesArrayRenderer = ListArgValNoParamRenderer.extend({
+  popupTitle: 'Other Attributes',
+  argTitle: 'Attribute'
 });
 
 var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
@@ -990,15 +1001,13 @@ var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
 var CdaColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Columns',
   argTitle: 'Index',
-  valTitle: 'Name',
-  valPlaceHolderText: 'Insert Text...'
+  valTitle: 'Name'
 });
 
 var CdaCalculatedColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Calculated Columns',
   argTitle: 'Name',
-  valTitle: 'Formula',
-  valPlaceHolderText: 'Insert Text...'
+  valTitle: 'Formula'
 });
 //endregion
 
@@ -1030,7 +1039,7 @@ var ColTypesArrayRender = ArrayRenderer.extend({
 });
 //endregion
 
-//region Single Dimension No Autocomplete Renderes
+//region Single Dimension No Autocomplete Renderers
 var ArrayNoParamRenderer = ArrayRenderer.extend({
   autocomplete: false
 });
@@ -1053,6 +1062,10 @@ var ColSortableArrayRenderer = ArrayNoParamRenderer.extend({
 
 var IndexArrayRenderer = ArrayNoParamRenderer.extend({
   popupTitle: 'Output Columns'
+});
+
+var ColSearchableArrayRenderer = ArrayNoParamRenderer.extend({
+  popupTitle: 'Searchable Columns'
 });
 //endregion
 
