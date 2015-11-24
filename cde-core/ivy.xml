@@ -18,8 +18,8 @@
 
     <dependencies defaultconf="default->default" >
       <!-- for karma testing -->
-      <dependency org="pentaho" name="pentaho-cdf" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
-            <artifact name="pentaho-cdf" type="js" ext="zip" m:classifier="js"/>
+      <dependency org="pentaho" name="pentaho-cdf-js" rev="${dependency.pentaho-cdf-plugin.revision}" transitive="false" changing="true" conf="js->default">
+            <artifact name="pentaho-cdf-js" ext="zip"/>
         </dependency>
 
       <!--  third party dependencies -->
