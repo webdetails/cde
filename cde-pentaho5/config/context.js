@@ -16,6 +16,13 @@ requireCfg = {
   shim: {}
 };
 
+var ENVIRONMENT_CONFIG = {
+  paths: {
+    "cdf": "bin/test-js/cdf/js",
+    "cdf/lib": "bin/test-js/cdf/js/lib"
+  }
+};
+
 var KARMA_RUN = true;
 
 var SESSION_NAME = "dummy";
