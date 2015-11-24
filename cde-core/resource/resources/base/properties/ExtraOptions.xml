@@ -5,7 +5,7 @@
       <DefaultValue>"[]"</DefaultValue>
       <Description>Extra Options</Description>
       <Tooltip>Extra Options</Tooltip>
-      <InputType>OptionArray</InputType>
+      <InputType>ExtraOptionsArray</InputType>
       <OutputType>Array</OutputType>
       <Order>99</Order>
       <Advanced>true</Advanced>
