@@ -283,6 +283,31 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
   describe("Testing CellRenderers #", function() {
 
     /*
+     * SelectRenderer
+     */
+    describe("Testing SelectRenderer #", function() {
+      var selectRenderer;
+
+      beforeEach(function() {
+        selectRenderer = new SelectRenderer();
+        selectRenderer.selectData = {
+          'hello': 'World',
+          'true': 'True',
+          'false': 'False'
+        };
+        selectRenderer.processData();
+      });
+
+      it("# getActualValue", function() {
+        expect(selectRenderer.getActualValue(null)).toEqual(null);
+        expect(selectRenderer.getActualValue("")).toEqual("");
+        expect(selectRenderer.getActualValue("World")).toEqual("hello");
+        expect(selectRenderer.getActualValue("True")).toEqual("true");
+        expect(selectRenderer.getActualValue("False")).toEqual("false");
+      });
+    });
+
+    /*
      * ComponentToExportRenderer
      */
     describe("ComponentToExportRenderer #", function() {
@@ -371,22 +396,23 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
         expect(cctoRenderer.prevSelectedValue).toEqual("mockComponent_1");
         cctoRenderer.postChange("");
         expect(mockComponent_1.meta_cdwRender).toEqual("false");
-      })
+      });
     });
 
     describe("ChartExportTypeRenderer #", function() {
       var cetRenderer = new ChartExportTypeRenderer();
       it("getData", function() {
         expect(cetRenderer.getData()).toEqual({png: "png", svg: "svg"});
-      })
+      });
     });
 
     describe("DataExportTypeRenderer #", function() {
       var detRenderer = new DataExportTypeRenderer();
       it("getData", function() {
         expect(detRenderer.getData()).toEqual({'xls': 'xls', 'csv': 'csv', 'xml': 'xml', 'json': 'json'});
-      })
+      });
     });
+
     describe("Input validation #", function(){
       var ph;
       var phId = "test_validations_placeholder";
