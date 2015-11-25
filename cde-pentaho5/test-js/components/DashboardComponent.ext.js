@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/DashboardComponentExt', [], function() {
+define('cde/components/Dashboard/DashboardComponent.ext', [], function() {
   var DashboardComponentExt = {
 
     getDashboardUrl: function(path) {

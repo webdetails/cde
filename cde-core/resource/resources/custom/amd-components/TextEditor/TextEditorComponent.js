@@ -17,9 +17,9 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
   'cdf/lib/mustache',
-  './TextEditorComponentExt',
-  'css!./TextEditorComponent'],
-  function(BaseComponent, Logger, $, _, Mustache, TextEditorComponentExt) {
+  './TextEditorComponent.ext',
+  'css!./TextEditorComponent'
+], function(BaseComponent, Logger, $, _, Mustache, TextEditorComponentExt) {
 
   /*
    *  Text editor component

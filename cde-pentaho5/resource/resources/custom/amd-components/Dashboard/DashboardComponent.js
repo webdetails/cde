@@ -13,11 +13,11 @@
 
 define([
   'cdf/components/UnmanagedComponent',
-  './DashboardComponentExt',
-  'cdf/lib/jquery'],
-  function(UnmanagedComponent, DashboardComponentExt, $) {
+  './DashboardComponent.ext',
+  'cdf/lib/jquery'
+], function(UnmanagedComponent, DashboardComponentExt, $) {
 
-  var DashboardComponent = UnmanagedComponent.extend({
+  return UnmanagedComponent.extend({
 
     update: function() {
       if(!this.preExec()) {
@@ -38,7 +38,7 @@ define([
     },
 
     mapDataSources: function() {
-      for (var i = 0; i < this.dataSourceMapping.length; i++) {
+      for(var i = 0; i < this.dataSourceMapping.length; i++) {
         this.requiredDashboard.setDataSource(
           this.dataSourceMapping[i][1],
           // TODO: should we copy the datasource, is it safe to use a reference?
@@ -113,7 +113,5 @@ define([
       return false;
      }
   });
-
-  return DashboardComponent;
 
 });

@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cde/components/CggComponent'], function(CggComponent) {
+define(['./CggComponent'], function(CggComponent) {
 
   var CggDialComponent = CggComponent.extend({
     script: "system/pentaho-cdf-dd/resources/custom/amd-components/cgg/charts/dial.js",

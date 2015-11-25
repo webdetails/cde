@@ -27,9 +27,9 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
   './GMapEngine',
-  './GMapsOverlayComponentExt',
-  'css!./GMapsOverlayComponent'],
-  function(UnmanagedComponent, Logger, $, _, GMapEngine, GMapsOverlayComponentExt) {
+  './GMapsOverlayComponent.ext',
+  'css!./GMapsOverlayComponent'
+], function(UnmanagedComponent, Logger, $, _, GMapEngine, GMapsOverlayComponentExt) {
 
   var GMapsOverlayComponent = UnmanagedComponent.extend({
 

@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/TextEditorComponentExt', [], function() {
+define('cde/components/TextEditor/TextEditorComponent.ext', [], function() {
 
   var TextEditorComponentExt = {
 

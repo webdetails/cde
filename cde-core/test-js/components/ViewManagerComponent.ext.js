@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/ViewManagerComponentExt', [], function() {
+define('cde/components/ViewManager/ViewManagerComponent.ext', [], function() {
 
   var ViewManagerComponentExt = {
 
