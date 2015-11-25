@@ -999,6 +999,14 @@ tr.ui-droppable td:after {
 
 
 /* CDE Drag And Drop*/
+#cdfdd-layout-tree tbody {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 #cdfdd-layout-tree table tbody tr.ui-draggable-dragging td {
   padding-top: 2px;
   padding-bottom: 2px;

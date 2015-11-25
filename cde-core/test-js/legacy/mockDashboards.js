@@ -1,22 +1,22 @@
 LoadRequests = {
   loadDashboard: function () {}
-}
+};
 
 PreviewRequests = {
   
   status: false,
 
-  previewDashboard: function( saveParams, _href ) {
+  previewDashboard: function(saveParams, _href) {
     
-    if( saveParams.operation != "saveas" ) {
+    if(saveParams.operation !== "saveas") {
       this.status = false;
       return;
     }
-    if( saveParams.file.indexOf( "_tmp.wcdf" ) == -1 ) {
+    if(saveParams.file.indexOf("_tmp.wcdf") === -1) {
       this.status = false;
       return;
     }
-    if( _href.indexOf( "_tmp.wcdf" ) == -1 ) {
+    if(_href.indexOf( "_tmp.wcdf" ) === -1) {
       this.status = false;
       return;
     }
@@ -26,7 +26,9 @@ PreviewRequests = {
   },
 
   getPreviewUrl: function( sol, path, file, style ) {
-    return pluginUrl+"/renderer/render?solution="+sol+"&path="+path+"&file="+file+"&style="+style+"&bypassCache=true&root="+window.location.host;
+    return pluginUrl + "/renderer/render?" +
+        "solution=" + sol + "&path="+path+"&file="+file+"&style="+style+"&bypassCache=true" +
+        "&root=" + window.location.host;
   }
 };
 
@@ -64,7 +66,7 @@ Dashboards = {
 
 Mustache = {
   compile: function () {}
-}
+};
 
 
 Logger = Base.extend({
@@ -82,7 +84,7 @@ Logger = Base.extend({
   },
 
   log: function(level, str) {
-    if (cdfddLogEnabled && level <= cdfddLogLevel && typeof console != 'undefined') {
+    if (cdfddLogEnabled && level <= cdfddLogLevel && typeof console !== 'undefined') {
       console.log(" - [" + this.name + "] " + this.logDescription[level] + ": " + str);
     }
   },
