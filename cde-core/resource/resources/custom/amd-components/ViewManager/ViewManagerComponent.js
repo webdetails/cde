@@ -14,10 +14,10 @@
 define([
   'cdf/components/BaseComponent',
   'cdf/lib/jquery',
-  './ViewManager/ViewManagerModel',
-  './ViewManager/ViewManagerView',
-  'css!./ViewManagerComponent'],
-  function(BaseComponent, $, ViewManagerModel, ViewManagerView) {
+  './ViewManagerModel',
+  './ViewManagerView',
+  'css!./ViewManagerComponent'
+], function(BaseComponent, $, ViewManagerModel, ViewManagerView) {
 
   var ViewManagerComponent = BaseComponent.extend({
     update: function() {

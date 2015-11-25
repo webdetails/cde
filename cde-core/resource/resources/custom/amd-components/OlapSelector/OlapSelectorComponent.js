@@ -16,20 +16,19 @@ define([
   'cdf/dashboard/Utils',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
-  './OlapSelector/OlapSelectorView',
-  './OlapSelector/OlapSelectorModel',
-  './OlapSelector/lib/OlapUtils',
-  './OlapSelectorComponentExt',
-  'css!./OlapSelectorComponent'],
-  function(
-    BaseComponent,
-    Utils,
-    $,
-    _,
-    OlapSelectorView,
-    OlapSelectorModel,
-    OlapUtils,
-    OlapSelectorComponentExt) {
+  './OlapSelectorView',
+  './OlapSelectorModel',
+  './lib/OlapUtils',
+  './OlapSelectorComponent.ext',
+  'css!./OlapSelectorComponent'
+], function(BaseComponent,
+            Utils,
+            $,
+            _,
+            OlapSelectorView,
+            OlapSelectorModel,
+            OlapUtils,
+            OlapSelectorComponentExt) {
 
   var OlapSelectorComponent = BaseComponent.extend({
 
@@ -71,7 +70,7 @@ define([
         myself.isInitialized = true;
       }
 
-      myself.model.on("change:collapsed",function(m, v) {
+      myself.model.on("change:collapsed", function(m, v) {
         if(v) {
           myself.dashboard.processChange(myself.name);
         }
@@ -90,12 +89,12 @@ define([
 
 
     getParamValues: function(overrides) {
-      var params = ( overrides instanceof Array)
+      var params = (overrides instanceof Array)
         ? Utils.propertiesArrayToObject(overrides)
-        : ( overrides || {} );
+        : (overrides || {});
       var paramValues = {};
 
-      _.each( params , function (value, name) {
+      _.each(params , function(value, name) {
         value = this.dashboard.getParameterValue(value);
 
         if(_.isObject(value)){

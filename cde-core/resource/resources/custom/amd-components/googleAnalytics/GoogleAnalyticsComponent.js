@@ -39,8 +39,8 @@ requirejs.config(requireCfg);
 define([
   'cdf/components/BaseComponent',
   'cdf/lib/jquery',
-  'amd!./googleAnalytics/lib/jquery.ga'],
-  function(BaseComponent, $) {
+  'amd!./lib/jquery.ga'
+], function(BaseComponent, $) {
 
   var GoogleAnalyticsComponent = BaseComponent.extend({
 

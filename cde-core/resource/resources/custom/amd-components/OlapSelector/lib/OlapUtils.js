@@ -15,7 +15,7 @@ define([
   'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
-  '../../OlapSelectorComponentExt'],
+  '../OlapSelectorComponent.ext'],
   function(Logger, $, _, OlapSelectorComponentExt) {
 
   var OlapUtils = function(spec) {
