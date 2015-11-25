@@ -28,9 +28,12 @@ define([
         myself.requiredDashboard = new Dashboard(myself.htmlObject);
         myself.mapDataSources();
         myself.unregisterEvents();
-        myself.requiredDashboard.render();
-        myself.mapParameters();
-        myself.postExec();
+        myself.requiredDashboard.setupDOM();
+        myself.requiredDashboard._processComponents();
+        myself.mapParameters(function() {
+          myself.requiredDashboard.init();
+          myself.postExec();
+        });
       });
     },
 
@@ -55,7 +58,7 @@ define([
       }
     },
 
-    mapParameters: function() {
+    mapParameters: function(callback) {
       var myself = this;
       var reqDash = this.requiredDashboard;
       this.registeredEvents = {};
@@ -68,7 +71,7 @@ define([
         type: "GET",
         async: true,
         success: function(data) {
-          myself.publicParameters = data.parameters;
+          myself.publicParameters = data.parameters || [];
           myself.loopThroughMapping(function(myParam, otherParam) {
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
@@ -81,8 +84,13 @@ define([
                 myself.registeredEvents[eventName] = [];
               }
               myself.registeredEvents[eventName].push(fun);
+              myself.requiredDashboard.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
             }
           });
+          callback();
+        },
+        error: function(err) {
+          myself.failExec(err);
         },
         xhrFields: {
           withCredentials: true

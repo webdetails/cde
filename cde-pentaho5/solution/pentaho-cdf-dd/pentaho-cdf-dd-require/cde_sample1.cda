@@ -9,25 +9,25 @@
          <Jndi>SampleData</Jndi>
       </Connection>
    </DataSources>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="mdxQuery"
-               id="mdxQuery"
-               type="mdx">
+   <DataAccess access="public" connection="mdxQuery" id="mdxQuery" type="mdx">
+      <Name>mdxQuery</Name>
       <BandedMode>compact</BandedMode>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters/>
-      <Query>select NON EMPTY [Markets].[All Markets].Children ON COLUMNS,
+      <Query><![CDATA[select NON EMPTY [Markets].[All Markets].Children ON COLUMNS,
   NON EMPTY [Product].[All Products].Children ON ROWS
-from [SteelWheelsSales]</Query>
+from [SteelWheelsSales]]]></Query>
    </DataAccess>
-   <DataAccess access="public" cache="true" cacheDuration="3600" connection="sqlQuery"
-               id="sqlQuery"
-               type="sql">
+   <DataAccess access="public" connection="sqlQuery" id="sqlQuery" type="sql">
+      <Name>sqlQuery</Name>
+      <Cache duration="3600" enabled="true"/>
       <Columns/>
       <Parameters>
          <Parameter default="Classic Cars" name="productLine" type="String"/>
          <Parameter default="APAC" name="territory" type="String"/>
       </Parameters>
-      <Query>SELECT
+      <Query><![CDATA[SELECT
 c.CUSTOMERNAME as customer, sum(f.TOTALPRICE) as total
 FROM ORDERFACT f
 inner join PRODUCTS p on ( p.PRODUCTCODE = f.PRODUCTCODE )
@@ -35,6 +35,6 @@ inner join CUSTOMER_W_TER c on (c.CUSTOMERNUMBER = f.CUSTOMERNUMBER)
 where p.PRODUCTLINE=${productLine}
 and c.TERRITORY=${territory}
 group by c.CUSTOMERNAME
-order by total desc</Query>
+order by total desc]]></Query>
    </DataAccess>
 </CDADescriptor>

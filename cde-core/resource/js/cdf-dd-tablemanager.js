@@ -84,6 +84,7 @@ var TableManager = Base.extend({
   newTable: function(args) {
     var table = '' +
         '<div class="tableContainer">\n' +
+        ' <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
         ' <div class="tableCaption ui-state-default">\n' +
         '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
         '   <div id="' + this.tableId + 'Operations" style="float: right" class="cdfdd-operations"></div>\n' +
@@ -503,6 +504,7 @@ var TableManager = Base.extend({
     this.fireDependencies(row, col, classType);
 
     $('#' + this.getId()).addClass('selectedTable');
+    $('#anchor-' + this.getId()).focus();
   },
 
   cellUnselected: function() {
@@ -1174,10 +1176,10 @@ var StringRenderer = CellRenderer.extend({
   },
 
   render: function(placeholder, value, callback) {
-
-    var _editArea = $("<td>" + value + "</td>");
+    var escapedValue = _.isString(value) ? Dashboards.escapeHtml(value) : value;
+    var _editArea = $("<td>" + escapedValue + "</td>");
     var myself = this;
-    _editArea.editable(function(value, settings) {
+    CDFDDUtils.makeEditable(_editArea, function(value, settings) {
       myself.logger.debug("Saving new value: " + value);
       callback(value);
 
@@ -1208,14 +1210,15 @@ var IdRenderer = StringRenderer.extend({
   },
 
   validate: function(value) {
+    value = Dashboards.escapeHtml(value);
 
     if(cdfdd.dashboardWcdf.widget) {
       if(!value.match(/^[\${}:a-zA-Z0-9_.]*$/)) {
         CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters, the special _ and . characters and the {p:name} construct.');
         return false;
       }
-    } else if(!value.match(/^[a-zA-Z0-9_.]*$/)) {
-      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ and . characters');
+    } else if(!value.match(/^[a-zA-Z0-9_]*$/)) {
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' invalid. Can only contain alphanumeric characters and the special _ character');
       return false;
     }
     return true;
@@ -1234,7 +1237,7 @@ var IntegerRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*$/)) {
-      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + Dashboards.escapeHtml(value) + ' must be numeric');
       return false;
     }
     return true;
@@ -1252,7 +1255,7 @@ var FloatRenderer = StringRenderer.extend({
   validate: function(value) {
 
     if(!value.match(/^[-]?\d*\.?\d*$/)) {
-      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + value + ' must be numeric');
+      CDFDDUtils.promptNotification('Invalid Input', 'Argument ' + Dashboards.escapeHtml(value) + ' must be numeric');
       return false;
     }
     return true;
@@ -1269,6 +1272,9 @@ var SelectRenderer = CellRenderer.extend({
   revertedSelectData: {},
   autocompleteArray: [],
 
+  // accept case insensitive matching
+  caseInsensitiveMatch: true,
+
   constructor: function(tableManager) {
     this.base(tableManager);
     this.logger = new Logger("SelectRenderer");
@@ -1284,29 +1290,16 @@ var SelectRenderer = CellRenderer.extend({
     if(value == null) {
       label = "";
     } else {
-      label = (!this.isArray && typeof data[value] !== "undefined") ?
-          data[value] :
-          value;
+      label = this.getLabel(data, value);
     }
 
-    var _editArea = $("<td>" + label + "</td>");
+    var _editArea = $("<td></td>");
+    _editArea.text(label);
     data = null;
 
     var myself = this;
 
-    _editArea.editable(function(value /*,settings*/) {
-      var valueId;
-      if(!myself.isArray && Object.prototype.hasOwnProperty.call(myself.revertedSelectData, value)) {
-        valueId = myself.revertedSelectData[value];
-      } else {
-        valueId = value;
-      }
-
-      myself.logger.debug("Saving new value: " + valueId);
-      callback(valueId);
-      myself.postChange(valueId);
-      return value;
-    }, {
+    CDFDDUtils.makeEditable(_editArea, this.getEditableCallback(callback), {
       type: "autocomplete",
       tooltip: "Click to edit...",
       onblur: "submit",
@@ -1327,6 +1320,42 @@ var SelectRenderer = CellRenderer.extend({
     });
 
     _editArea.appendTo(placeholder);
+  },
+
+  getEditableCallback: function(callback) {
+    return _.bind(function(value) {
+      var valueId = this.getActualValue(value);
+      this.logger.debug("Saving new value: " + valueId);
+      callback(valueId);
+      this.postChange(valueId);
+      return value;
+    }, this);
+  },
+
+  getLabel: function(data, value) {
+    return (!this.isArray && typeof data[value] !== "undefined") ? data[value] : value;
+  },
+
+  getActualValue: function(value) {
+      return this.extractValueFromData(value) || value;
+  },
+
+  extractValueFromData: function(value) {
+    if(!this.isArray) {
+        for(var key in this.revertedSelectData) {
+          if(this.revertedSelectData.hasOwnProperty(key) && this.keysEqual(key, value)) {
+            return this.revertedSelectData[key];
+          }
+        }
+      }
+    return null;
+  },
+
+  keysEqual: function(key, value) {
+    if(this.caseInsensitiveMatch) {
+      return key.toLowerCase() == value.toLowerCase();
+    }
+    return key == value;
   },
 
   autoCompleteRequest: function(req, add) {
@@ -1365,8 +1394,8 @@ var SelectRenderer = CellRenderer.extend({
     return data;
   },
 
-  validate: function(/*settings, original*/) {
-    return true;
+  validate: function(value) {
+    return !!this.extractValueFromData(value);
   },
 
   getData: function() {
@@ -1380,6 +1409,20 @@ var SelectRenderer = CellRenderer.extend({
 
   postChange: function() {
     // Default implementation - do nothing
+  }
+});
+
+// will accept any value, but will escape it
+var SelectRendererNonForcefull = SelectRenderer.extend({
+
+  caseInsensitiveMatch: false,
+
+  getActualValue: function(value) {
+    return Dashboards.escapeHtml(this.base(value));
+  },
+
+  validate: function(value) {
+    return true;
   }
 });
 
@@ -1483,7 +1526,7 @@ var SelectMultiRenderer = CellRenderer.extend({
     this.value = value;
     var myself = this;
     var _editArea = $("<td>" + myself.getFormattedValue(value) + "</td>");
-    _editArea.editable(function(value, settings) {
+    CDFDDUtils.makeEditable(_editArea, function(value, settings) {
 
       var selector = $(this);
       var val = selector.find("input").val();
@@ -1731,7 +1774,7 @@ var CodeRenderer = CellRenderer.extend({
         loaded: function() {
           var $popup = $(this);
 
-          $popup.addClass('edit-popup')
+          $popup.addClass('edit-popup');
 
           //editor
           myself.editor = new CodeEditor();
@@ -1807,7 +1850,7 @@ var EditExtensionPointsRenderer = CodeRenderer.extend({
       loaded: function() {
         var $popup = $(this);
 
-        $popup.addClass('edit-popup')
+        $popup.addClass('edit-popup');
 
         //editor
         myself.editor = new CodeEditor();
@@ -1874,7 +1917,7 @@ var DateRenderer = CellRenderer.extend({
     var _editArea = $("<td>" + this.getFormattedValue(value) + "</td>");
     var myself = this;
 
-    _editArea.editable(function(value, settings) {
+    CDFDDUtils.makeEditable(_editArea, function(value, settings) {
       myself.logger.debug("Saving new value: " + value);
       if(value != 'pickDate') {
         callback(value);
@@ -2091,7 +2134,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     this.validate(value);
 
     var content = $('<td></td>');
-    var _editArea = $('<div class="cdfdd-resourceFileNameRender" >' + value + '</div>');
+    var _editArea = $('<div class="cdfdd-resourceFileNameRender" >' + Dashboards.escapeHtml(value) + '</div>');
     var _fileExplorer = $('<button class="cdfdd-resourceFileExplorerRender"> ^ </button>');
     var myself = this;
 
@@ -2101,7 +2144,7 @@ var ResourceFileRenderer = CellRenderer.extend({
     content.append(_fileExplorer);
     content.append(_prompt);
 
-    _editArea.editable(function(value, settings) {
+    CDFDDUtils.makeEditable(_editArea, function(value, settings) {
       myself.logger.debug("Saving new value: " + value);
       callback(value);
       return value;

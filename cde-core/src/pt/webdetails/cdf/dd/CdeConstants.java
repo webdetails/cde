@@ -171,8 +171,10 @@ public class CdeConstants {
     // make the dashboard variable available in the global scope to facilitate debugging
     public static final String DASHBOARD_DECLARATION_DEBUG = "window.dashboard = new Dashboard({0});" + NEWLINE;
     public static final String DASHBOARD_INIT = "dashboard.init();" + NEWLINE;
+    public static final String REMOVE_FOUC_PROTECTION = "// resources were loaded, removing FOUC protection."
+        + " (Flash of Unstyled Content) " + NEWLINE + "$(\"body\").removeClass(\"fouc-protected\");" + NEWLINE;
     public static final String REQUIRE_START = "require([" + NEWLINE + INDENT1 + "''{0}''],"
-        + NEWLINE + "function(" + NEWLINE + INDENT1 + "{1}) '{'" + NEWLINE;
+        + NEWLINE + "function(" + NEWLINE + INDENT1 + "{1}) '{'" + NEWLINE + REMOVE_FOUC_PROTECTION;
     public static final String REQUIRE_STOP = "return dashboard;" + NEWLINE + "});";
     public static final String DEFINE_START = "define([" + NEWLINE + INDENT1 + "''{0}''],"
         + NEWLINE + INDENT1 + "function(" + NEWLINE + INDENT1 + "{1}) '{'" + NEWLINE;

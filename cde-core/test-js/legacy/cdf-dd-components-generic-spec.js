@@ -44,7 +44,7 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
       var values5 = ["key", "value", "default"];
 
       var index = 0;
-      var container = $('<div>')//undefined;
+      var container = $('<div>'); //undefined;
       valueAr.addPopupRow(index, values1, container);
       expect(valueAr.buildMultiDimensionRow).toHaveBeenCalledWith(index, values1[0], values1[1]);
       valueAr.addPopupRow(index, values2, container);
@@ -66,7 +66,7 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     });
 
     it("# getInitialValue", function() {
-      expect(valueAr.getInitialValue("[]")).toEqual([["", "", "", ""]]);
+      expect(valueAr.getInitialValue("[]")).toEqual([["", "", "", "", ""]]);
       expect(valueAr.getInitialValue("[\"arg1\", \"arg2\"]")).toEqual(["arg1", "arg2"]);
       expect(valueAr.getInitialValue("[[\"arg1\", \"value1\"]]")).toEqual([["arg1", "value1"]]);
 
@@ -117,14 +117,14 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
     evar.cssClass = "css";
     evar.cssPrefix = "StringList";
 
-    it("# getFormatedValue",function() {
+    it("getFormatedValue",function() {
       var shortValue = "Hello World!",
           longValue = "This      must      be      very      long!"; //must be more than 40 characters long
       expect( evar.getFormattedValue(shortValue) ).toBe(shortValue);
       expect( evar.getFormattedValue(longValue) ).toBe("This      must      be      ve (...)");
     });
 
-    it("# getValueDiv", function() {
+    it("getValueDiv", function() {
       var index = "0",
           value = "Hello World!",
           // using jquery to escape html
@@ -136,11 +136,65 @@ describe("CDF-DD-COMPONENTS-GENERIC-TESTS", function() {
           '</div>');
     });
 
-    it("# escapeOutPutValue", function() {
+    it("escapeOutPutValue", function() {
       expect(evar.escapeOutputValue(undefined)).toBe(undefined);
       expect(evar.escapeOutputValue(null)).toBe(null);
       expect(evar.escapeOutputValue("Hello World!")).toBe("Hello World!");
       expect(evar.escapeOutputValue("'Hello' \"World\"!")).toBe("&#39;Hello&#39; &quot;World&quot;!");
+    });
+
+    it("escapes input value", function() {
+      var testValue
+      expect(evar.escapeValue("normal")).toEqual("normal");
+      expect(evar.escapeValue("<script>")).toEqual("&lt;script&gt;");
+      expect(evar.escapeValue(["normal", "normal"])).toEqual(["normal", "normal"]);
+      expect(evar.escapeValue(["<script>", "<script>"])).toEqual(["&lt;script&gt;", "&lt;script&gt;"]);
+    });
+  });
+
+  describe("Testing CdaParametersRenderer #", function() {
+    var cdaPR;
+
+    beforeEach(function() {
+      $('<div id="test_container"></div>').appendTo('body');
+      cdaPR = new CdaParametersRenderer(tableManager);
+    });
+
+    afterEach(function() {
+      $('#test_container').remove();
+      cdaPR = undefined;
+    });
+
+    it("# Object Initial Values", function() {
+      expect(cdaPR.multiDimensionArray).toBe(true);
+      expect(cdaPR.hasTypedValues).toBe(true);
+      expect(cdaPR.cssPrefix).toEqual('ParameterList');
+
+      expect(cdaPR.argTitle).toEqual('Name');
+      expect(cdaPR.valTitle).toEqual('Value');
+      expect(cdaPR.argPlaceholderText).toEqual('Insert Text...');
+      expect(cdaPR.valPlaceHolderText).toEqual('Insert Text...');
+
+      expect(cdaPR.typesArray).toEqual(['String', 'Integer', 'Numeric', 'Date', 'StringArray', 'IntegerArray', 'NumericArray', 'DateArray']);
+      expect(cdaPR.patternUnlockTypes).toEqual(['Date', 'DateArray']);
+      expect(cdaPR.selectData).toEqual({});
+    });
+
+    it("# Test getRowValues", function() {
+      var dummyRow = $('<div id="dummy_row">')
+          .append('<input id="arg_0" type="text" value="paramName"/>')
+          .append('<input id="val_0" type="text" value="paramValue"/>')
+          .append('<select id="type_0"><option selected>Date</option>')
+          .append('<input id="pattern_0" type="text" value="paramPattern"/>')
+          .append('<input id="access_0" type="checkbox" checked/>');
+
+      dummyRow.appendTo("#test_container");
+
+      var expectedReturn = ["paramName", "paramValue", "Date", "private", "paramPattern"];
+      var actualReturn = cdaPR.getRowValues(0);
+
+      expect(actualReturn.length).toEqual(5);
+      expect(actualReturn).toEqual(expectedReturn);
     });
   });
 });

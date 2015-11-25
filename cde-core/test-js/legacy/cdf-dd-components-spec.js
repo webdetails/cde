@@ -12,19 +12,59 @@
  */
 
 describe("CDF-DD-COMPONENTS tests", function() {
+  var panel;
 
-  it("Template Load Test", function() {
-
-    var cp = new ComponentsPanel;
-    cp.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
-
-    spyOn(cp, "init").and.callFake(function() {
-      alert("Components initialized");
-    });
-    cp.initTables();
-
-    expect( cp.initPallete ).toBe(false);
-
+  beforeEach(function() {
+    panel = new ComponentsPanel();
+    panel.componentsPallete = new PalleteManager(ComponentsPanel.PALLETE);
+    panel.componentsTable = new TableManager(ComponentsPanel.COMPONENTS);
+    panel.propertiesTable = new TableManager(ComponentsPanel.PROPERTIES);
   });
 
+  it("Template Load Test", function() {
+    spyOn(panel, "init");
+    panel.initTables();
+    expect(panel.initPallete).toBe(false);
+  });
+
+  describe("Components Table Tests", function() {
+    var panelCompRows = {
+      oldLabel: {
+        type: "Label",
+        typeDesc: "Label Desc"
+      },
+      newLabel: {
+        type: "Label",
+        typeDesc: "Label Desc",
+        rowName: "Label Name"
+      },
+      oldComp: {
+        type: "Component",
+        typeDesc: "Comp Desc"
+      },
+      newComp: {
+        type: "Component",
+        typeDesc: "Comp Desc",
+        rowName: "Comp Name"
+      }
+    };
+
+    beforeEach(function() {
+      spyOn(panel.componentsPallete, "setLinkedTableManager");
+      spyOn(panel.componentsTable, "init");
+      spyOn(cdfdd, "getDashboardData").and.returnValue({components: {rows: []}});
+
+      panel.initComponentsTable();
+    });
+
+    it("Get Component Type Description Test", function() {
+      var columnExpressions = panel.componentsTable.getTableModel().getColumnGetExpressions();
+      var getDisplay = columnExpressions[0];
+
+      expect(getDisplay(panelCompRows.oldLabel)).toEqual("Label Desc");
+      expect(getDisplay(panelCompRows.newLabel)).toEqual("Label Desc");
+      expect(getDisplay(panelCompRows.oldComp)).toEqual("Comp Desc");
+      expect(getDisplay(panelCompRows.newComp)).toEqual("Comp Name");
+    });
+  });
 });

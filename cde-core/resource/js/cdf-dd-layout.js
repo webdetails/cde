@@ -102,7 +102,10 @@ var LayoutPanel = Panel.extend({
     treeTableModel.setData(layoutRows);
     this.treeTable.setTableModel(treeTableModel);
     this.treeTable.init();
-    $('#' + LayoutPanel.TREE).addClass('selectedTable');
+
+    var layoutPanelTree = $('#' + LayoutPanel.TREE);
+    var propertiesTree = $('#' + LayoutPanel.PROPERTIES);
+    layoutPanelTree.addClass('selectedTable');
 
     // Properties
     this.propertiesTable = new TableManager(LayoutPanel.PROPERTIES);
@@ -129,7 +132,7 @@ var LayoutPanel = Panel.extend({
     this.treeTable.setLinkedTableManager(this.propertiesTable);
     this.treeTable.setLinkedTableManagerOperation(function(row) {
       var arr = [];
-      for(p in row.properties) {
+      for(var p in row.properties) {
         if(row.properties.hasOwnProperty(p)) {
           arr.push(row.properties[p]);
         }
@@ -137,14 +140,14 @@ var LayoutPanel = Panel.extend({
       return arr;
     });
 
-    $('#' + LayoutPanel.TREE).click(function(e) {
-      $('#' + LayoutPanel.PROPERTIES).removeClass('selectedTable').addClass('unselectedTable');
-      $('#' + LayoutPanel.TREE).addClass('selectedTable').removeClass('unselectedTable');
+    layoutPanelTree.click(function(e) {
+      propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
+      layoutPanelTree.addClass('selectedTable').removeClass('unselectedTable');
     });
 
-    $('#' + LayoutPanel.PROPERTIES).click(function(e) {
-      $('#' + LayoutPanel.TREE).addClass('unselectedTable').removeClass('selectedTable');
-      $('#' + LayoutPanel.PROPERTIES).addClass('selectedTable').removeClass('unselectedTable');
+    propertiesTree.click(function(e) {
+      layoutPanelTree.addClass('unselectedTable').removeClass('selectedTable');
+      propertiesTree.addClass('selectedTable').removeClass('unselectedTable');
     });
   },
 
@@ -155,24 +158,37 @@ var LayoutPanel = Panel.extend({
   },
 
   // Get HtmlObjects
-  getHtmlObjects: function() {
 
+  getHtmlTargets: function() {
     var data = this.treeTable.getTableModel().getData();
     var autoCompleteModels = [
       LayoutRowModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL,
       LayoutFreeFormModel.MODEL, LayoutBootstrapPanelHeaderModel.MODEL, LayoutBootstrapPanelBodyModel.MODEL,
-      LayoutBootstrapPanelBodyModel.MODEL
+      LayoutBootstrapPanelFooterModel.MODEL
     ];
+
     var output = [];
-    var myself = this;
     $.each(data, function(i, row) {
       if($.inArray(row.type, autoCompleteModels) > -1) {
-        // Use the ones that don't have children and a name defined
-        var rowProperties = row.properties;
-        if(myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children.length == 0
-            && rowProperties[0].value != "") {
+        if(row.properties[0].value !== "") {
           output.push(row);
         }
+      }
+    });
+
+    return output;
+  },
+
+  getHtmlObjects: function() {
+    var data = this.getHtmlTargets();
+    var output = [];
+    var myself = this;
+
+    $.each(data, function(i, row) {
+      // Use the ones that don't have children
+      var children = myself.treeTable.getTableModel().getIndexManager().getIndex()[row.id].children;
+      if(children.length === 0) {
+        output.push(row);
       }
     });
 
@@ -185,8 +201,14 @@ var LayoutPanel = Panel.extend({
 
   getSelectedTable: function() {
     var selectedTableId = $('#panel-' + this.id + ' .selectedTable').attr('id');
+    var tm = TableManager.getTableManager("table-" + selectedTableId);
+    var data = tm.getTableModel().getData();
 
-    return TableManager.getTableManager("table-" + selectedTableId);
+    if( data != null && data.length == 0) {
+      tm = TableManager.getTableManager("table-" + LayoutPanel.TREE);
+    }
+
+    return tm;
   },
 
   selectNextTable: function() {

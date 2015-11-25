@@ -48,6 +48,17 @@ Dashboards = {
       prop: function(name) {
         return name;
       }
+    },
+    escapeHtml: function(input) {
+      // using Negative Lookahead when replacing '&' to make sure we don't
+      // double escape
+      var escaped = input
+      .replace(/&(?!amp;)(?!lt;)(?!gt;)(?!#34;)(?!#39;)/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/'/g,"&#39;")
+      .replace(/"/g,"&#34;");
+      return escaped;
     }
 };
 

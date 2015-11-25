@@ -3,8 +3,8 @@
 	<Name>Output</Name>
 	<Parent>BaseProperty</Parent>
 	<DefaultValue>"[]"</DefaultValue>
-	<Description>Output Options</Description>
-	<Tooltip>Output options for this data access</Tooltip>
+	<Description>Output Columns</Description>
+	<Tooltip>Choose which columns to include/exclude, depending on the Output Mode selected</Tooltip>
 	<InputType>IndexArray</InputType>
 	<OutputType>Array</OutputType>
 	<Order>40</Order>

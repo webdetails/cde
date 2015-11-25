@@ -708,6 +708,7 @@ textarea.popup-text-input:hover, input.popup-text-input:hover {
 }
 
 textarea.popup-text-input[disabled], input.popup-text-input[disabled] {
+  border: 1px Solid #FFFFFF;
   color: #999999;
 }
 
@@ -2260,7 +2261,7 @@ div.popup .popup-template img {
   display: inline-block;
   cursor: pointer;
   position: relative;
-  padding: 4px 10px 2px 35px;
+  padding: 3px 10px 2px 35px;
   margin-right: 15px;
   font-size: 14px;
 }

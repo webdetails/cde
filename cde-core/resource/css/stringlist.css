@@ -86,7 +86,7 @@ div.popup .popup-text-input:focus {
 
 .popup-list-body {
   position: relative;
-  height: 316px;
+  height: 296px;
   padding-right: 20px;
   overflow-y: auto;
 }
@@ -102,8 +102,8 @@ div.StringListPopup {
 }
 
 div.ParameterListPopup {
-  width: 727px;
-  min-width: 727px;
+  width: 878px;
+  min-width: 878px;
 }
 
 .popup-list-row, .popup-sortable-holder, .popup-list-row-label, div.ui-sortable-helper {
@@ -116,7 +116,7 @@ div.ParameterListPopup {
 }
 
 .popup-list-row.typed-row {
-  padding-right: 0px;
+  padding-right: 0;
 }
 
 .popup-list-row, .popup-sortable-holder, div.ui-sortable-helper {
@@ -248,14 +248,35 @@ div.ui-sortable-helper .popup-drag-icon span {
 .typed-label .popup-label {
   float: left;
   width: 150px;
+  margin-right: 2px;
+}
+
+.typed-label .popup-type-label {
+  width: 200px;
 }
 
 .typed-row .popup-arg-container, .typed-row .popup-value-container,
-.typed-row .popup-input-container, .typed-row .popup-checkbox-container {
+.typed-row .popup-input-container, .typed-row .popup-checkbox-container,
+.typed-row .popup-pattern-container {
   float: left;
   background: #FFFFFF;
   height: 24px;
   margin-right: 2px;
+}
+
+.popup-pattern-container:not(.date-type-selected) .pattern-input {
+  color: transparent;
+}
+
+.popup-pattern-container:not(.date-type-selected):after {
+  background-color: #CECECE;
+  content: "";
+  display: block;
+  height: 2px;
+  position: absolute;
+  margin: 0 10px;
+  top: 50%;
+  width: 130px;
 }
 
 .typed-row.popup-remove-hover .popup-checkbox-container {
@@ -276,7 +297,9 @@ div.ui-sortable-helper .popup-drag-icon span {
 }
 
 .typed-row.popup-remove-hover input[type=checkbox]:checked + .popup-input-label:before,
-.typed-row.popup-remove-selected input[type=checkbox]:checked + .popup-input-label:before {
+.typed-row.popup-remove-selected input[type=checkbox]:checked + .popup-input-label:before,
+.typed-row.popup-remove-hover .popup-pattern-container:not(.date-type-selected):after,
+.typed-row.popup-remove-selected .popup-pattern-container:not(.date-type-selected):after {
   background-color: #AF0E1A;
 }
 
@@ -289,7 +312,7 @@ div.ui-sortable-helper .popup-drag-icon span {
   border-color: #DF9FA3;
 }
 
-.typed-row .popup-arg-container, .typed-row .popup-value-container {
+.typed-row .popup-arg-container, .typed-row .popup-value-container, .typed-row .popup-pattern-container {
   width: 150px;
 }
 
@@ -312,11 +335,9 @@ div.ui-sortable-helper .popup-drag-icon span {
 
 .multi-dimension-row .popup-value-container,
 .multi-dimension-row .popup-value-container-small,
-.multi-dimension-row .popup-default-container, {
+.multi-dimension-row .popup-default-container {
   padding-left: 1px;
 }
-
-
 
 .popup-remove-hover .popup-value-container, .popup-list-row.popup-remove-hover {
   background-color: #F9ECED;

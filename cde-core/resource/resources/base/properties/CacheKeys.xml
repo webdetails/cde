@@ -4,7 +4,7 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue>"[]"</DefaultValue>
     <Description>Cache Keys</Description>
-    <Tooltip>Cache Keys</Tooltip>
+    <Tooltip>Define System Wide Cache Keys</Tooltip>
     <InputType>CacheKeysValues</InputType>
     <OutputType>Array</OutputType>
     <Order>45</Order>
