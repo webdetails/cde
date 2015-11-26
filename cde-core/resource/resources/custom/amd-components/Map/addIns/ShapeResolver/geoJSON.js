@@ -15,7 +15,7 @@ define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
   'cdf/Logger',
-  'cdf/lib/jquery',
+  '../jquery.transport.xdr',
   'amd!cdf/lib/underscore'
 ], function (AddIn, Dashboard, Logger, $, _) {
 
