@@ -13,7 +13,7 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
-  'cdf/lib/jquery',
+  '../jquery.transport.xdr',
   'amd!cdf/lib/underscore'
 ], function (AddIn, Dashboard, $, _) {
 

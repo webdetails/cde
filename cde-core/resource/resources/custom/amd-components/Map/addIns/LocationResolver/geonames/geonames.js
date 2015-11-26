@@ -14,7 +14,7 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
-  'cdf/lib/jquery'
+  '../../jquery.transport.xdr'
 ], function (AddIn, Dashboard, $) {
   
   var geonames = {
