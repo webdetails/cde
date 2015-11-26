@@ -31,12 +31,12 @@ describe("CDF-DD tests", function() {
       spyOn(SolutionTreeRequests, "getExplorerFolderEndpoint");
       spyOn(CDFDDUtils, "promptNotification");
 
-      done()
+      done();
     });
 
     afterEach(function(done) {
       $(".layout-popup").remove();
-      done()
+      done();
     });
 
     it("Default layout should be in dashboard mode", function() {
@@ -103,6 +103,6 @@ describe("CDF-DD tests", function() {
       expect(mostRecentCalls[1]).toEqual(folder);
       expect(mostRecentCalls[2]).toEqual(filename);
       expect(mostRecentCalls[3]).toEqual(cdfdd);
-    })
-  })
+    });
+  });
 });

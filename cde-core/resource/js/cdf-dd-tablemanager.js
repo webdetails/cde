@@ -42,7 +42,6 @@ var TableManager = Base.extend({
   },
 
   init: function() {
-
     this.reset();
     $("#" + this.id).append(this.newTable());
     this.render();
@@ -61,7 +60,7 @@ var TableManager = Base.extend({
     $.each(myself.getTableModel().getColumnNames(), function(i, val) {
       var _header = $('<th><div class="tableHeader ui-state-default">' + val + '</div></th>');
 
-      if(typeof myself.getTableModel().getColumnSizes() != 'undefined') {
+      if(typeof myself.getTableModel().getColumnSizes() !== 'undefined') {
         _header.attr('width', myself.getTableModel().getColumnSizes()[i]);
       }
       _header.appendTo(headerRows);
@@ -81,14 +80,14 @@ var TableManager = Base.extend({
     this.updateOperations();
   },
 
-  newTable: function(args) {
-    var table = '' +
+  newTable: function() {
+    return '' +
         '<div class="tableContainer">\n' +
         ' <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
         ' <div class="tableCaption ui-state-default">\n' +
         '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
         '   <div id="' + this.tableId + 'Operations" style="float: right" class="cdfdd-operations"></div>\n' +
-        (this.hasAdvancedProperties == true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
+        (this.hasAdvancedProperties === true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
         ' </div>\n' +
         ' <div class="scrollContainer">\n' +
         '   <table id="' + this.tableId + '" class="' + this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
@@ -99,8 +98,6 @@ var TableManager = Base.extend({
         '   </table>\n' +
         ' </div>\n' +
         '</div>\n';
-
-    return table;
   },
 
   addRow: function(row, pos) {
@@ -109,7 +106,7 @@ var TableManager = Base.extend({
     // Merge default options here
     // this.logger.debug("Adding row type "+ row.type  +" to table " + this.getTableId());
     var _model = BaseModel.getModel(row.type);
-    if(typeof _model != 'undefined') {
+    if(typeof _model !== 'undefined') {
       this.extendProperties(row, _model.getStub());
     }
 
@@ -128,9 +125,9 @@ var TableManager = Base.extend({
     var _parentExpression = this.getTableModel().getParentId();
     // parentId?
     try {
-      if(typeof _parentExpression != 'undefined') {
+      if(typeof _parentExpression !== 'undefined') {
         _parent = _parentExpression(row);
-        if(typeof _parent != 'undefined' && _parent != IndexManager.ROOTID) {
+        if(typeof _parent !== 'undefined' && _parent !== IndexManager.ROOTID) {
           //this.logger.debug("Row parent: " + _parent );
           rowObj.addClass("child-of-" + _parent);
         }
@@ -148,13 +145,13 @@ var TableManager = Base.extend({
     }
 
     var selector = "table#" + this.getTableId() + " tbody";
-    if(pos < 0 || pos == undefined) {
+    if(pos < 0 || pos == null) {
       $(selector).append(rowObj);
       //rowObj.appendTo($(selector));
       //$(selector).append(html); // TODO <<-- undefined variable !!
     } else {
       var _selector = $(selector + " > tr:eq(" + pos + ")");
-      _selector.length == 1 ? _selector.before(rowObj) : $(selector).append(rowObj);
+      _selector.length === 1 ? _selector.before(rowObj) : $(selector).append(rowObj);
     }
 
     this.dragAndDrop(row, _id);
@@ -288,7 +285,9 @@ var TableManager = Base.extend({
   },
 
   disableDrop: function(dragId, dropId) {
-    var notToRoot = [LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL]
+    var notToRoot = [
+      LayoutImageModel.MODEL, LayoutHtmlModel.MODEL, LayoutColumnModel.MODEL, LayoutBootstrapColumnModel.MODEL
+    ];
     var indexManager = this.getTableModel().getIndexManager();
     var rowIndex = indexManager.getIndex();
 
@@ -297,7 +296,7 @@ var TableManager = Base.extend({
     var dragRT = rowIndex[dragId].type;
 
     //disable drop on (sub-)children of drag and on direct parent of drag
-    if(this.isChildrenOfObj(dragId, dropId) || dragParentId == dropId) {
+    if(this.isChildrenOfObj(dragId, dropId) || dragParentId === dropId) {
       return true;
     }
 
@@ -306,7 +305,7 @@ var TableManager = Base.extend({
       return true;
     }
 
-    if(dropParentId != IndexManager.ROOTID) {
+    if(dropParentId !== IndexManager.ROOTID) {
       //disable drop when dragObj cant moveInto dropObj and dropObj parent
       return !this.canMoveInto(dragId, dropParentId) && !this.canMoveInto(dragId, dropId);
     } else {
@@ -324,7 +323,7 @@ var TableManager = Base.extend({
 
     while(children.length) {
       var child = children.pop();
-      if(child.id == dropId) {
+      if(child.id === dropId) {
         return true;
       }
       children = children.concat(rowIndex[child.id].children);
@@ -353,9 +352,9 @@ var TableManager = Base.extend({
   renderColumn: function(tr, row, colIdx) {
     var tm = this.getTableModel();
     var ct = tm.getColumnTypes()[colIdx];
-    var _type = typeof ct == 'function' ? ct(row) : ct;
+    var _type = typeof ct === 'function' ? ct(row) : ct;
 
-    if(!(typeof tm.getEditable() == 'undefined' ? false : tm.getEditable()[colIdx])) {
+    if(!(typeof tm.getEditable() === 'undefined' ? false : tm.getEditable()[colIdx])) {
       _type = "Label";
     }
 
@@ -388,7 +387,7 @@ var TableManager = Base.extend({
 
     return renderer.render(tr, tm.getColumnGetExpressions()[colIdx](row), function(value) {
       var oldValue = row.value;
-      if(oldValue != value) {
+      if(oldValue !== value) {
         var command = new ChangePropertyCommand(myself, row, value);
         Commands.executeCommand(command);
       }
@@ -397,12 +396,10 @@ var TableManager = Base.extend({
       tr.find("td:eq(" + colIdx + ")").remove();
       myself.renderColumn(tr, row, colIdx);
     }, options);
-
   },
 
   renderColumnByRow: function(row, colIdx) {
-
-    if(typeof colIdx == "undefined") {
+    if(typeof colIdx === "undefined") {
       colIdx = 1;
     }
 
@@ -410,13 +407,11 @@ var TableManager = Base.extend({
     var tr = $("#" + this.getId()).find("tbody > tr:eq(" + rowIdx + ")");
     tr.find("td:eq(1)").remove();
     this.renderColumn(tr, row, colIdx);
-
   },
 
   updateTreeTable: function(rowId) {
 
-    if(rowId != IndexManager.ROOTID) {
-
+    if(rowId !== IndexManager.ROOTID) {
       var _parentQ = $('#' + this.getTableId() + " > tbody > tr#" + rowId);
       _parentQ.removeClass("initialized");
       _parentQ.removeClass("parent");
@@ -432,7 +427,7 @@ var TableManager = Base.extend({
     // Insert it on the dataModel
     this.getTableModel().getData().splice(insertAtIdx, 0, _stub);
     this.getTableModel().getIndexManager().updateIndex();
-    var newId = this.addRow(_stub, insertAtIdx);
+    this.addRow(_stub, insertAtIdx);
 
     // Update treeTable:
     this.updateTreeTable(_stub.parent);
@@ -446,7 +441,7 @@ var TableManager = Base.extend({
     // Does this exist? If yes, return the last position
     var indexManager = this.getTableModel().getIndexManager();
     var cat = indexManager.getIndex()[category];
-    if(typeof cat == 'undefined') {
+    if(typeof cat === 'undefined') {
       // Create it and return the last idx
       var _stub = {
         id: category,
@@ -463,7 +458,7 @@ var TableManager = Base.extend({
           }
         ]
       };
-      insertAtIdx = this.getTableModel().getData().length;
+      var insertAtIdx = this.getTableModel().getData().length;
       this.insertAtIdx(_stub, insertAtIdx);
       return insertAtIdx + 1;
 
@@ -484,7 +479,7 @@ var TableManager = Base.extend({
 
       var myself = this;
       $.each(operations, function(i, _operation) {
-        if(typeof _operation != 'undefined') {
+        if(typeof _operation !== 'undefined') {
           _opsNode.append(_operation.getHtml(myself, i));
         }
       });
@@ -493,7 +488,7 @@ var TableManager = Base.extend({
 
   cellClick: function(row, col, classType) {
     // Update operations
-    if(typeof this.getLinkedTableManager() != 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
       this.getLinkedTableManager().cellUnselected();
     }
 
@@ -504,7 +499,6 @@ var TableManager = Base.extend({
     this.fireDependencies(row, col, classType);
 
     $('#' + this.getId()).addClass('selectedTable');
-    $('#anchor-' + this.getId()).focus();
   },
 
   cellUnselected: function() {
@@ -514,7 +508,7 @@ var TableManager = Base.extend({
     this.cleanSelections();
     this.updateOperations();
     this.cleanDependencies();
-    if(typeof this.getLinkedTableManager() != 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
       this.getLinkedTableManager().cellUnselected();
     }
   },
@@ -585,7 +579,7 @@ var TableManager = Base.extend({
 
       var prevRow = indexManager.getPreviousSibling(rowId);
 
-      if(prevRow != undefined) {
+      if(prevRow != null) {
         var id = prevRow.id;
         while(indexManager.isParent(id) && $('#' + id).hasClass('expanded')) {
           prevRow = indexManager.getLastChild(id, 1);
@@ -626,7 +620,7 @@ var TableManager = Base.extend({
 
       if(isParent && isCollapsed) {
         var id = rowId;
-        while(nextRow == undefined) {
+        while(nextRow == null) {
           id = indexManager.getParent(id).id;
           nextRow = indexManager.getNextSibling(id);
         }
@@ -685,7 +679,7 @@ var TableManager = Base.extend({
   },
 
   fireDependencies: function(row, col, classType) {
-    if(typeof this.getLinkedTableManager() != 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
 
       var data = this.getLinkedTableManagerOperation()(this.getTableModel().getData()[row], classType);
 
@@ -698,7 +692,7 @@ var TableManager = Base.extend({
   },
 
   cleanDependencies: function() {
-    if(typeof this.getLinkedTableManager() != 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
       var tableManager = this.getLinkedTableManager();
 
       tableManager.getTableModel().setData([]);
@@ -779,8 +773,7 @@ var TableManager = Base.extend({
     });
   },
 
-
-  // Accessors
+  //region Accessors
   setId: function(id) {
     this.id = id;
   },
@@ -836,6 +829,7 @@ var TableManager = Base.extend({
   getLinkedTableManagerOperation: function() {
     return this.linkedTableManagerOperation;
   }
+  //endregion
 
 }, {
   tableManagers: {},
@@ -867,17 +861,17 @@ var TableManager = Base.extend({
       var row = myself.parent().prevAll().length;
       var col = myself.prevAll().length;
 
-      var wasSelected = myself.hasClass("selected");
       var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+      var _selectedCell = _tableManager.getSelectedCell();
+      var wasSelected = _selectedCell != null ? _selectedCell[0] === row : false;
 
       if(!wasSelected) {
-        _tableManager.selectCell(row, col, 'simple');
-      } else {
-        _tableManager.cellUnselected();
+        $('#anchor-' + _tableManager.getId()).focus();
+        console.log("#######", "# Was Here #", "#######");
       }
 
+      _tableManager.selectCell(row, col, 'simple');
     });
-
 
     $(document).on("click", ".advancedProperties", function() {
       var tbody = $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
@@ -888,9 +882,10 @@ var TableManager = Base.extend({
           var row = myself.parent().prevAll().length;
           var col = myself.prevAll().length;
           var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+          var $advancedProperties = $(".advancedProperties");
           _tableManager.selectCell(row, col, 'advanced');
-          $(".advancedProperties").attr("class", "advancedProperties propertiesSelected");
-          $(".advancedProperties").parent().find(".simpleProperties").attr("class", "simpleProperties propertiesUnSelected");
+          $advancedProperties.attr("class", "advancedProperties propertiesSelected");
+          $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesUnSelected");
 
         }
       }, 500);
@@ -905,15 +900,13 @@ var TableManager = Base.extend({
           var row = myself.parent().prevAll().length;
           var col = myself.prevAll().length;
           var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+          var $advancedProperties = $(".advancedProperties");
           _tableManager.selectCell(row, col, 'simple');
-          $(".advancedProperties").attr("class", "advancedProperties propertiesUnSelected");
-          $(".advancedProperties").parent().find(".simpleProperties").attr("class", "simpleProperties propertiesSelected");
+          $advancedProperties.attr("class", "advancedProperties propertiesUnSelected");
+          $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesSelected");
         }
-
       }, 500);
-
     });
-
   },
 
   S4: function() {
@@ -964,9 +957,9 @@ var TableModel = Base.extend({
   },
 
   getRowByName: function(name) {
-    var row;
+    var row = null;
     $.each(this.data, function(i, r) {
-      if(r.name == name) {
+      if(r.name === name) {
         row = r;
         return;
       }
@@ -974,11 +967,10 @@ var TableModel = Base.extend({
     return row;
   },
 
-
   getRowIndexByName: function(name) {
     var idx;
     $.each(this.data, function(i, r) {
-      if(r.name == name) {
+      if(r.name === name) {
         idx = i;
         return false;
       }
@@ -996,17 +988,18 @@ var TableModel = Base.extend({
   },
 
   isFirstRow: function(rowId) {
-    return this.data[0].id == rowId;
+    return this.data[0].id === rowId;
   },
 
   isLastRow: function(rowId) {
-    return this.data[this.data.length - 1].id == rowId;
+    return this.data[this.data.length - 1].id === rowId;
   },
 
   init: function() {
     // Do nothing
   },
 
+  //region Accessors
   setId: function(id) {
     this.id = id;
   },
@@ -1080,6 +1073,7 @@ var TableModel = Base.extend({
   getParentId: function() {
     return this.parentId;
   }
+  //endregion
 });
 
 
@@ -1123,7 +1117,7 @@ var PropertiesTableModel = TableModel.extend({
   }
 });
 
-
+//region CellRenderers
 var CellRenderer = Base.extend({
 
   logger: {},
@@ -1309,7 +1303,7 @@ var SelectRenderer = CellRenderer.extend({
         },
         minLength: 0,
         focus: function(event, data2) {
-          if(data2 != undefined) { $('input', _editArea).val(data2.item.value); }
+          if(data2 != null) { $('input', _editArea).val(data2.item.value); }
         },
         delay: this.getDelay()
       },
@@ -1337,32 +1331,36 @@ var SelectRenderer = CellRenderer.extend({
   },
 
   getActualValue: function(value) {
-      return this.extractValueFromData(value) || value;
+    var fromData = this.extractValueFromData(value);
+    return fromData != null ? fromData.value : value;
   },
 
   extractValueFromData: function(value) {
-    if(!this.isArray) {
-        for(var key in this.revertedSelectData) {
-          if(this.revertedSelectData.hasOwnProperty(key) && this.keysEqual(key, value)) {
-            return this.revertedSelectData[key];
-          }
+    if(!this.isArray && value != null) {
+      var data = _.extend({"": ""}, this.revertedSelectData);
+
+      for(var key in data) {
+        if(data.hasOwnProperty(key) && this.keysEqual(key, value)) {
+          return {value: data[key]};
         }
       }
+    }
+
     return null;
   },
 
   keysEqual: function(key, value) {
     if(this.caseInsensitiveMatch) {
-      return key.toLowerCase() == value.toLowerCase();
+      return key.toLowerCase() === value.toLowerCase();
     }
-    return key == value;
+    return key === value;
   },
 
   autoCompleteRequest: function(req, add) {
     if(this.isAutoComplete) {
-      add(jQuery.grep(this.autocompleteArray, function(elt/*, i*/) {
+      add(jQuery.grep(this.autocompleteArray, function(elt) {
         var target = $.isArray(elt) ? elt[1] : elt;
-        return target.toLowerCase().indexOf(req.term.toLowerCase()) == 0;
+        return target.toLowerCase().indexOf(req.term.toLowerCase()) === 0;
       }));
     } else {
       add(this.autocompleteArray);
@@ -1486,13 +1484,13 @@ var ChartComponentToExportRenderer = ComponentToExportRenderer.extend({
     var components = cdfdd.dashboardData.components.rows;
     var myself = this;
 
-    if(this.prevSelectedValue != componentName) {
+    if(this.prevSelectedValue !== componentName) {
       components.map(function(comp) {
-        if(comp.properties[0].value == componentName) {
+        if(comp.properties[0].value === componentName) {
           comp.meta_cdwRender = 'true';
         }
 
-        if(comp.properties[0].value == myself.prevSelectedValue) {
+        if(comp.properties[0].value === myself.prevSelectedValue) {
           comp.meta_cdwRender = 'false';
         }
       });
@@ -1530,11 +1528,11 @@ var SelectMultiRenderer = CellRenderer.extend({
 
       var selector = $(this);
       var val = selector.find("input").val();
-      if(typeof myself.postProcessValue == "function") {
+      if(typeof myself.postProcessValue === "function") {
         val = myself.postProcessValue(val);
       }
-      var value = "['" + val.replace(/, /g, "','") + "']";
-      if(value == "['${p:Select options}']") {
+      value = "['" + val.replace(/, /g, "','") + "']";
+      if(value === "['${p:Select options}']") {
         value = "[]";
       }
       myself.logger.debug("Saving new value: " + value);
@@ -1612,12 +1610,18 @@ var ColorRenderer = CellRenderer.extend({
     var id = this.getId();
     var inputId = "#colorpicker_input_" + id;
     var checkId = "#colorpicker_check_" + id;
-    var _editArea = $('<td><form onsubmit="return false" class="cdfddInput"><input id="colorpicker_check_' + id + '" class="colorcheck" type="checkbox"></input><input id="colorpicker_input_' + id + '" class="colorinput" type="text" size="7" maxlength="7"></input></form></td>');
+    var _editArea = $('' +
+        '<td>' +
+        '  <form onsubmit="return false" class="cdfddInput">' +
+        '    <input id="colorpicker_check_' + id + '" class="colorcheck" type="checkbox">' +
+        '    <input id="colorpicker_input_' + id + '" class="colorinput" type="text" size="7" maxlength="7">' +
+        '  </form>' +
+        '</td>');
     var myself = this;
     var fixHex = function(hex) {
       var length = 6 - hex.length;
       //account for 3 digits color codes
-      if(length == 3) {
+      if(length === 3) {
         var r = hex.charAt(0),
             g = hex.charAt(1),
             b = hex.charAt(2);
@@ -1658,7 +1662,7 @@ var ColorRenderer = CellRenderer.extend({
       $(this).ColorPickerShow();
       var fixedHex = fixHex(this.value.indexOf('#') > -1 ? this.value.substring(1) : this.value);
       $(this).ColorPickerSetColor(fixedHex);
-      if(evt.keyCode == 13) {
+      if(evt.keyCode === 13) {
         $(this).ColorPickerHide();
         if(fixedHex.length > 0) {
           fixedHex = "#".concat(fixedHex);
@@ -1674,7 +1678,7 @@ var ColorRenderer = CellRenderer.extend({
 
   updateValueState: function(value, placeholder, inputId, checkId) {
     // set checkbox and textarea state
-    if(value == '') {
+    if(value === '') {
       $(checkId, placeholder).removeAttr("checked");
       $(checkId, placeholder).css("background-color", "#ffffff");
       $(inputId, placeholder).attr("disabled", true);
@@ -1726,7 +1730,7 @@ var TextAreaRenderer = CellRenderer.extend({
       // to be interpreted by json as a function instead of a string
       var value = f.textarea;
       this.value = value;
-      if(value.length != 0 && value.substr(value.length - 1, 1) != " ") {
+      if(value.length !== 0 && value.substr(value.length - 1, 1) !== " ") {
         value = value + " ";
       }
       cdfdd.textarea[3](value);
@@ -1800,7 +1804,7 @@ var CodeRenderer = CellRenderer.extend({
       // to be interpreted by json as a function instead of a string
       var value = cdfdd.textarea[0].editor.getContents();
       this.value = value;
-      if(value.length != 0 && value.substr(value.length - 1, 1) != " ") {
+      if(value.length !== 0 && value.substr(value.length - 1, 1) !== " ") {
         value = value + " ";
       }
       cdfdd.textarea[3](value);
@@ -1919,7 +1923,7 @@ var DateRenderer = CellRenderer.extend({
 
     CDFDDUtils.makeEditable(_editArea, function(value, settings) {
       myself.logger.debug("Saving new value: " + value);
-      if(value != 'pickDate') {
+      if(value !== 'pickDate') {
         callback(value);
       }
 
@@ -1932,7 +1936,7 @@ var DateRenderer = CellRenderer.extend({
       height: 12,
       onsubmit: function(settings, original) {
         var selectedValue = $(this.children()[0]).val();
-        if(selectedValue == 'pickDate') {
+        if(selectedValue === 'pickDate') {
           myself.pickDate($(this.children()[0]));
           return false;
         }
@@ -1978,7 +1982,7 @@ var DateRenderer = CellRenderer.extend({
       date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
       return  this.toDateString(date);
     } else {
-      if(selectedValue == 'pickDate') {
+      if(selectedValue === 'pickDate') {
         return this.toDateString(this.datePicker.datepicker('getDate'));
       }
       return selectedValue;
@@ -2023,14 +2027,14 @@ var DateRangeRenderer = DateRenderer.extend({
 
   getFormattedValue: function(value) {
     var selectedValue = value;
-    if(selectedValue == 'pickDate') {
+    if(selectedValue === 'pickDate') {
       return  this.rangeA + " - " + this.rangeB;
     }
 
     var date = new Date();
-    if(selectedValue == "monthToDay") {
+    if(selectedValue === "monthToDay") {
       date.setDate(1);
-    } else if(selectedValue == "yearToDay") {
+    } else if(selectedValue === "yearToDay") {
       date.setMonth(0);
       date.setDate(1);
     }
@@ -2082,7 +2086,7 @@ var ResourceFileRenderer = CellRenderer.extend({
               $.prompt.goToState('confirm');
               return false;
             } else {
-              if(action == 'newtab') {
+              if(action === 'newtab') {
                 window.open(url);
               }
               return true;
@@ -2091,12 +2095,12 @@ var ResourceFileRenderer = CellRenderer.extend({
           }
         },
 
-        confirm: {//confirm exit //TODO: style elsewhere
+        confirm: { //confirm exit //TODO: style elsewhere
           html: confirmWrapper,
           buttons: { Yes: true, Cancel: false },
           submit: function(val, msg, form) {
             if(val) {
-              if(action == 'newtab') {
+              if(action === 'newtab') {
                 window.open(url);
               }
               //$.prompt.close();
@@ -2216,7 +2220,7 @@ var ResourceFileRenderer = CellRenderer.extend({
 
               //check extension
               var ext = selectedFile.substring(selectedFile.lastIndexOf('.') + 1);
-              if('.' + ext != myself.getFileExtensions()) {
+              if('.' + ext !== myself.getFileExtensions()) {
                 selectedFile += myself.getFileExtensions();
               }
 
@@ -2257,9 +2261,12 @@ var ResourceFileRenderer = CellRenderer.extend({
                 collapseSpeed: 1000,
                 multiFolder: false,
                 folderClick: function(obj, folder) {
-                  if($(".selectedFolder").length > 0) { $(".selectedFolder").attr("class", ""); }
+                  var $selectFolder = $(".selectedFolder");
+                  if($selectFolder.length > 0) {
+                    $selectFolder.attr("class", "");
+                  }
                   $(obj).attr("class", "selectedFolder");
-                  selectedFolder = folder;//TODO:
+                  selectedFolder = folder; //TODO:
                 }
               },
               function(file) {
@@ -2287,7 +2294,7 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   getFileExtensions: function() {
-    return this.getResourceType() == "css" ? ".css" : ".js";
+    return this.getResourceType() === "css" ? ".css" : ".js";
   },
 
   formatSelection: function(file) {
@@ -2295,11 +2302,11 @@ var ResourceFileRenderer = CellRenderer.extend({
     var finalPath = "";
     var dashFile = CDFDDFileName;
 
-    if(file.charAt(0) != '/') {
+    if(file.charAt(0) !== '/') {
       file = "/" + file;
     }
 
-    if(dashFile != null && dashFile.indexOf("/system") == 0) {
+    if(dashFile != null && dashFile.indexOf("/system") === 0) {
       var systemDir = "system";
       var pluginDir = dashFile.split('/')[2];
       file = "/" + systemDir + "/" + pluginDir + file;
@@ -2308,7 +2315,7 @@ var ResourceFileRenderer = CellRenderer.extend({
 
     var common = true;
     var splitFile = file.split("/");
-    if(dashFile == "") {
+    if(dashFile === "") {
       //the path is forced to start by slash because the cde editor is called without name in the context of
       //creating a new dashboard in the solution repository. In this case all paths must be absolute. In system
       //dashboards, the file name must exists and start by /system, so this scenario is not applied
@@ -2349,20 +2356,20 @@ var ResourceFileRenderer = CellRenderer.extend({
       var toReplace = settings.substring(0, settings.indexOf(':') + 1);
       fileName = settings.replace(toReplace, '').replace('}', '');
 
-      if(fileName.charAt(0) != '/') { //relative path, append dashboard location
+      if(fileName.charAt(0) !== '/') { //relative path, append dashboard location
         fileName = this.getAbsoluteFileName(fileName);
       }
 
     } else if(settings.indexOf('${system:') > -1) {
       fileName = settings.replace('${system:', '').replace('}', '');
 
-      if(fileName.charAt(0) != '/') { //relative path, append dashboard location
+      if(fileName.charAt(0) !== '/') { //relative path, append dashboard location
         fileName = this.getAbsoluteFileName(fileName);
       } else {
         fileName = "/system/" + CDFDDFileName.split('/')[2] + fileName;
       }
 
-    } else if(settings != null && settings != '') { //needs a solution path
+    } else if(settings != null && settings !== '') { //needs a solution path
       fileName = settings;
 
     } else {
@@ -2388,7 +2395,7 @@ var ResourceFileRenderer = CellRenderer.extend({
       var file = fileName.split('/');
       var baseEnd = base.length;
       var fileStart = 0;
-      while(file[fileStart] == '..' && baseEnd > 0) {
+      while(file[fileStart] === '..' && baseEnd > 0) {
         fileStart++;
         baseEnd--;
       }
@@ -2405,9 +2412,10 @@ var ResourceFileRenderer = CellRenderer.extend({
   },
 
   validate: function(settings, original) {
-    if(settings != '' && ( this.fileName == null || settings != this.formatSelection(this.fileName))) {
+    if(settings !== '' && ( this.fileName == null || settings !== this.formatSelection(this.fileName))) {
       this.setFileName(settings);//if set manually
     }
     return true;
   }
 });
+//endregion
