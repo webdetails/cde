@@ -1712,29 +1712,6 @@
  "layout": {
   "rows": [
    {
-    "id": "aec1d9f1-9c0a-228e-a550-dcf203c96bc4",
-    "parent": "UnIqEiD",
-    "properties": [
-     {
-      "name": "name",
-      "type": "Id",
-      "value": "pretty"
-     },
-     {
-      "name": "resourceFile",
-      "type": "ResourceFile",
-      "value": "https://google-code-prettify.googlecode.com/svn/loader/run_prettify"
-     },
-     {
-      "name": "resourceType",
-      "type": "Label",
-      "value": "Javascript"
-     }
-    ],
-    "type": "LayoutResourceFile",
-    "typeDesc": "Resource"
-   },
-   {
     "id": "0c161c28-7118-15a8-b495-840c5525b04f",
     "parent": "UnIqEiD",
     "properties": [
