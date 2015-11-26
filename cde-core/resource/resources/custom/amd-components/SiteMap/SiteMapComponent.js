@@ -16,8 +16,8 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
   'cdf/lib/mustache',
-  'cdf/dashboard/Utils'],
-  function(BaseComponent, $, _, Mustache, Utils) {
+  'cdf/dashboard/Utils'
+], function(BaseComponent, $, _, Mustache, Utils) {
 
   /**
    *
@@ -27,7 +27,7 @@ define([
    *
    */
 
-  var SiteMapComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     ph: undefined,
     selected: "UNUSEDPARAM!@#$",
@@ -182,7 +182,5 @@ define([
     }
     ]*/
   });
-
-  return SiteMapComponent;
 
 });

@@ -13,12 +13,11 @@
 
 define('cde/components/Map/Map.ext', [], function() {
 
-  var NewMapComponentExt = {
+  return {
 
     getMarkerImgPath: function() {
-      return 'dummy/NewMapComponent/images/';
+      return 'dummy/Map/images/';
     }
   };
 
-  return NewMapComponentExt;
 });

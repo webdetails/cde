@@ -19,8 +19,17 @@ define([
   'cdf/lib/base64',
   './ViewModel',
   './ViewCollection',
-  '../ViewManagerComponentExt'],
-  function(Logger, $, _, Backbone, Base64, ViewModel, ViewCollection, ViewManagerComponentExt) {
+  './ViewManagerComponent.ext'
+], function(
+  Logger,
+  $,
+  _,
+  Backbone,
+  Base64,
+  ViewModel,
+  ViewCollection,
+  ViewManagerComponentExt
+) {
 
   // Treat underscore templates as if they had a mustache
   // http://underscorejs.org/#template 
@@ -83,7 +92,7 @@ define([
   };
   _.templateSettings = _TemplateSettings;
 
-  var ViewManagerView = Backbone.View.extend({
+  return Backbone.View.extend({
 
     collection: ViewCollection,
 
@@ -295,7 +304,5 @@ define([
       );
     }
   });
-
-  return ViewManagerView;
 
 });

@@ -11,8 +11,9 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/OlapSelectorComponentExt', [], function() {
-  var OlapSelectorComponentExt = {
+define('cde/components/OlapSelector/OlapSelectorComponent.ext', [], function() {
+
+  return {
     getServiceUrl: function() {
       return "dummy/plugin/pentaho-cdf-dd/api/olap/";
     },
@@ -34,5 +35,4 @@ define('cde/components/OlapSelectorComponentExt', [], function() {
     }
   };
 
-  return OlapSelectorComponentExt;
 });

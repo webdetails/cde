@@ -11,12 +11,12 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/GMapsOverlayComponentExt', [], function() {
+define('cde/components/gmapsoverlay/GMapsOverlayComponent.ext', [], function() {
 
   /*
    *  Google Maps Overlay component
    */
-  var GMapsOverlayComponentExt = {
+  return {
     getResourceUrl: function() {
       return "res";
     },
@@ -26,5 +26,4 @@ define('cde/components/GMapsOverlayComponentExt', [], function() {
     }
   };
 
-  return GMapsOverlayComponentExt;
 });

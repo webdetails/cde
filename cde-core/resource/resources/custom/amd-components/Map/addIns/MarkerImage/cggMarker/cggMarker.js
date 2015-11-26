@@ -14,10 +14,10 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
-  'cdf/components/CggComponent.ext'],
-  function(AddIn, Dashboard, CggComponentExt) {
+  'cdf/components/CggComponent.ext'
+], function(AddIn, Dashboard, CggComponentExt) {
   
-  var cggMarker = new AddIn({
+  var cggMarker = {
     name: "cggMarker",
     label: "CGG Marker",
     defaults: {},
@@ -51,8 +51,9 @@ define([
       return url;
 
     }
-  });
-  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", cggMarker);
+  };
+
+  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(cggMarker));
 
   return cggMarker;
 

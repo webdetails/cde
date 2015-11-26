@@ -17,74 +17,64 @@
 
 (function() {
 
-  var requirePaths = requireCfg.paths;
   requireCfg.map = requireCfg.map || {};
   requireCfg.map['*'] = requireCfg.map['*'] || {};
-  var requireMapAll = requireCfg.map['*'];
 
   var isDebug = typeof document == "undefined" || document.location.href.indexOf("debug=true") > 0;
 
-  var prefix;
   if(typeof KARMA_RUN !== "undefined") { // unit tests
-    prefix = requirePaths['cde/components'] = 'resource/resources/custom/amd-components';
+    requireCfg.paths['cde/components'] = 'resource/resources/custom/amd-components';
 
   } else if(typeof CONTEXT_PATH !== "undefined") { // production
-    prefix = requirePaths['cde/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/resources/custom/'
+    requireCfg.paths['cde/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/resources/custom/'
       + (isDebug ? 'amd-components' : 'amd-components-compressed');
-    requirePaths['cde/repo/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
+    requireCfg.paths['cde/repo/components'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
-    requirePaths['cde/resources'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources';
+    requireCfg.paths['cde/resources'] = CONTEXT_PATH + 'plugin/pentaho-cdf-dd/api/resources';
 
   } else if(typeof FULL_QUALIFIED_URL != "undefined") { // embedded
-    prefix = requirePaths['cde/components'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/resources/custom'
+    requireCfg.paths['cde/components'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/resources/custom'
       + (isDebug ? 'amd-components' : 'amd-components-compressed');
-    requirePaths['cde/repo/components'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
+    requireCfg.paths['cde/repo/components'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources/public/cde/components';
 
-    requirePaths['cde/resources'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources';
+    requireCfg.paths['cde/resources'] = FULL_QUALIFIED_URL + 'plugin/pentaho-cdf-dd/api/resources';
 
   } else { // build
-    prefix = requirePaths['cde/components'] = 'amd-components';
+    requireCfg.paths['cde/components'] = 'amd-components';
   }
 
-  requirePaths['cde/components/PopupComponent'] = prefix + '/popup/PopupComponent';
-  requirePaths['cde/components/ExportPopupComponent'] = prefix + '/popup/ExportPopupComponent';
+  requireCfg.map['*']['cde/components/PopupComponent'] = 'cde/components/popup/PopupComponent';
+  requireCfg.map['*']['cde/components/ExportPopupComponent'] = 'cde/components/popup/ExportPopupComponent';
 
-  requireMapAll['cde/components/NewMapComponent'] = 'cde/components/Map/Map';
+  requireCfg.map['*']['cde/components/NewMapComponent'] = 'cde/components/Map/Map';
 
-  requirePaths['cde/components/ExportButtonComponent'] = prefix + '/exportButton/ExportButtonComponent';
+  requireCfg.map['*']['cde/components/ExportButtonComponent'] = 'cde/components/exportButton/ExportButtonComponent';
 
-  requirePaths['cde/components/AjaxRequestComponent'] = prefix + '/AjaxRequestComponent/AjaxRequestComponent';
+  requireCfg.map['*']['cde/components/AjaxRequestComponent'] = 'cde/components/AjaxRequest/AjaxRequestComponent';
 
-  requirePaths['cde/components/CggComponent'] = prefix + '/cgg/CggComponent';
-  requirePaths['cde/components/CggDialComponent'] = prefix + '/cgg/CggDialComponent';
+  requireCfg.map['*']['cde/components/CggComponent'] = 'cde/components/cgg/CggComponent';
+  requireCfg.map['*']['cde/components/CggDialComponent'] = 'cde/components/cgg/CggDialComponent';
 
-  requirePaths['cde/components/DuplicateComponent'] = prefix + '/Duplicate/DuplicateComponent';
+  requireCfg.map['*']['cde/components/DuplicateComponent'] = 'cde/components/Duplicate/DuplicateComponent';
 
-  requirePaths['cde/components/NewSelectorComponent'] = prefix + '/NewSelector/NewSelectorComponent';
+  requireCfg.map['*']['cde/components/NewSelectorComponent'] = 'cde/components/NewSelector/NewSelectorComponent';
 
-  requirePaths['cde/components/OlapSelectorComponent'] = prefix + '/OlapSelector/OlapSelectorComponent';
-  requirePaths['cde/components/OlapSelectorComponentExt'] = prefix + '/OlapSelector/OlapSelectorComponent.ext';
+  requireCfg.map['*']['cde/components/OlapSelectorComponent'] = 'cde/components/OlapSelector/OlapSelectorComponent';
 
-  requirePaths['cde/components/RaphaelComponent'] = prefix + '/Raphael/RaphaelComponent';
+  requireCfg.map['*']['cde/components/RaphaelComponent'] = 'cde/components/Raphael/RaphaelComponent';
 
-  requirePaths['cde/components/RelatedContentComponent'] = prefix + '/RelatedContent/RelatedContentComponent';
+  requireCfg.map['*']['cde/components/RelatedContentComponent'] = 'cde/components/RelatedContent/RelatedContentComponent';
 
-  requirePaths['cde/components/SiteMapComponent'] = prefix + '/SiteMap/SiteMapComponent';
+  requireCfg.map['*']['cde/components/SiteMapComponent'] = 'cde/components/SiteMap/SiteMapComponent';
 
-  requirePaths['cde/components/TextEditorComponent'] = prefix + '/TextEditor/TextEditorComponent';
-  requirePaths['cde/components/TextEditorComponentExt'] = prefix + '/TextEditor/TextEditorComponent.ext';
+  requireCfg.map['*']['cde/components/TextEditorComponent'] = 'cde/components/TextEditor/TextEditorComponent';
 
-  requirePaths['cde/components/GMapsOverlayComponent'] = prefix + '/gmapsoverlay/GMapsOverlayComponent';
-  requirePaths['cde/components/GMapsOverlayComponentExt'] = prefix + '/gmapsoverlay/GMapsOverlayComponent.ext';
-  requirePaths['cde/components/GMapEngine'] = prefix + '/gmapsoverlay/GMapEngine';
-  requirePaths['cde/components/GMapComponentAsyncLoader'] = prefix + '/gmapsoverlay/GMapComponentAsyncLoader';
+  requireCfg.map['*']['cde/components/GMapsOverlayComponent'] = 'cde/components/gmapsoverlay/GMapsOverlayComponent';
 
-  requirePaths['cde/components/ViewManagerComponent'] = prefix + '/ViewManager/ViewManagerComponent';
-  requirePaths['cde/components/ViewManagerComponentExt'] = prefix + '/ViewManager/ViewManagerComponent.ext';
+  requireCfg.map['*']['cde/components/ViewManagerComponent'] = 'cde/components/ViewManager/ViewManagerComponent';
   
-  requirePaths['cde/components/GoogleAnalyticsComponent'] = prefix + '/googleAnalytics/GoogleAnalyticsComponent';
+  requireCfg.map['*']['cde/components/GoogleAnalyticsComponent'] = 'cde/components/googleAnalytics/GoogleAnalyticsComponent';
 
-  requirePaths['cde/components/DashboardComponent'] = prefix + '/DashboardComponent/DashboardComponent';
-  requirePaths['cde/components/DashboardComponentExt'] = prefix + '/DashboardComponent/DashboardComponent.ext';
+  requireCfg.map['*']['cde/components/DashboardComponent'] = 'cde/components/Dashboard/DashboardComponent';
 
 })();

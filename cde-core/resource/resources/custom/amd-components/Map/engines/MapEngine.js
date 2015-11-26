@@ -17,9 +17,8 @@ define([
   'cdf/lib/BaseEvents',
   '../model/MapModel'
 ], function ($, _, BaseEvents, MapModel) {
-  var SelectionStates = MapModel.SelectionStates;
 
-  var MapEngine = BaseEvents.extend({
+  return BaseEvents.extend({
     tileServices: undefined,
     tileServicesOptions: undefined,
     tileLayer: function (name) {
@@ -80,7 +79,7 @@ define([
         featureType: modelItem.getFeatureType(),
         style: modelItem.getStyle(),
         isSelected: function () {
-          return modelItem.getSelection() === SelectionStates.ALL;
+          return modelItem.getSelection() === MapModel.SelectionStates.ALL;
         }
       };
     },
@@ -175,7 +174,5 @@ define([
     }
 
   });
-
-  return MapEngine;
 
 });

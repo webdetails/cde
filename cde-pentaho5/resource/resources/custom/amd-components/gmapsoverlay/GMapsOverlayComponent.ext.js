@@ -17,7 +17,7 @@ define([], function() {
    *  Google Maps Overlay component
    */
 
-  var GMapsOverlayComponentExt = {
+  return {
     getResourceUrl: function() {
       return "res";
     },
@@ -26,7 +26,5 @@ define([], function() {
       return "/public/";
     }
   };
-
-  return GMapsOverlayComponentExt;
 
 });

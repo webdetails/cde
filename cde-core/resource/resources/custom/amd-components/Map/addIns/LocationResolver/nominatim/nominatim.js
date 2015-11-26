@@ -15,8 +15,8 @@ define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
   'cdf/lib/jquery',
-  'amd!cdf/lib/underscore'],
-  function(AddIn, Dashboard, $, _) {
+  'amd!cdf/lib/underscore'
+], function(AddIn, Dashboard, $, _) {
   
   var nominatim = {
     name: "openstreetmap",
@@ -92,6 +92,7 @@ define([
 
     }
   };
+
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim));
 
   return nominatim;

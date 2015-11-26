@@ -17,7 +17,7 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
   '../nominatim/nominatim'
-], function (AddIn, Dashboard, $, _, nominatim) {
+], function(AddIn, Dashboard, $, _, nominatim) {
 
   var mapquest = $.extend(true, {}, nominatim, {
     name: "mapquest",
@@ -28,6 +28,7 @@ define([
   });
 
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(mapquest));
+
   return mapquest;
 
 });

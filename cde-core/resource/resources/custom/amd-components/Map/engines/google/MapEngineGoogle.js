@@ -19,7 +19,6 @@ define([
   "../../model/MapModel",
   "css!./styleGoogle"
 ], function ($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
-  var SelectionStates = MapModel.SelectionStates;
 
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
 
@@ -38,8 +37,7 @@ define([
     this.setMap(map);
   }
 
-
-  var GoogleMapEngine = MapEngine.extend({
+  return MapEngine.extend({
     map: undefined,
     centered: false,
     overlays: [],
@@ -720,10 +718,12 @@ define([
 
   });
 
-  return GoogleMapEngine;
-
   function toggleSelection(me, modelItem) {
-    modelItem.setSelection((modelItem.getSelection() === SelectionStates.ALL) ? SelectionStates.NONE : SelectionStates.ALL);
+    modelItem.setSelection(
+      (modelItem.getSelection() === MapModel.SelectionStates.ALL)
+        ? MapModel.SelectionStates.NONE
+        : MapModel.SelectionStates.ALL
+    );
     //me.updateItem(modelItem);
   }
 

@@ -33,7 +33,7 @@ define([
   'cdf/lib/jquery'
 ], function ($) {
 
-  var loadGoogleMaps = (function($) {
+  return (function($) {
 
     var now = $.now(), promise;
 
@@ -113,11 +113,8 @@ define([
       promise = deferred.promise();
 
       return promise;
-
     };
 
   })($);
-
-  return loadGoogleMaps;
 
 });

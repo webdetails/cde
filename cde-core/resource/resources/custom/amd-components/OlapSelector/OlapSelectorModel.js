@@ -14,15 +14,49 @@
 define([
   'cdf/Logger',
   'amd!cdf/lib/backbone',
-  'amd!cdf/lib/underscore'],
-  function(Logger, Backbone, _) {
+  'amd!cdf/lib/underscore'
+], function(Logger, Backbone, _) {
+
+  /*
+   * Option Model describes the behaviour for each individual
+   * option within the selector.
+   */
+  var OptionModel = Backbone.Model.extend({
+    defaults: {
+      "idx": 0,
+      "name": "",
+      "value": null,
+      "level": null,
+      "drill": false,
+      "selected": false
+    },
+
+    toggleSelected: function() {
+      this.set("selected", !this.get("selected"));
+    }
+  });
+
+  var LevelModel = OptionModel.extend({
+
+    defaults: {},
+
+    initialize: function(o) {
+      // Bind changing qualifiedName to id and name to value
+      this.on("change:qualifiedName change:name", function(o) {
+        Logger.log("Detected changes");
+        this.set("id", o.get("qualifiedName"));
+        this.set("label", o.get("name"));
+      });
+      this.set("id", this.get("qualifiedName"));
+      this.set("label", this.get("name"));
+    }
+  });
 
   /*
    * Selector Model describes the behaviour for the selector
    * as a whole.
    */
-
-  var OlapSelectorModel = Backbone.Model.extend({
+  return Backbone.Model.extend({
     defaults: {
       "title": "",
       "search": true,
@@ -442,44 +476,5 @@ define([
       this.trigger('notify', this);
     }
   });
-
-  /*
-   * Option Model describes the behaviour for each individual
-   * option within the selector.
-   */
-  var OptionModel = Backbone.Model.extend({
-    defaults: {
-      "idx": 0,
-      "name": "",
-      "value": null,
-      "level": null,
-      "drill": false,
-      "selected": false
-    },
-
-    toggleSelected: function() {
-      this.set("selected", !this.get("selected"));
-    }
-  });
-
-  var LevelModel = OptionModel.extend({
-
-    defaults: {},
-
-    initialize: function(o) {
-      // Bind changing qualifiedName to id and name to value
-      this.on("change:qualifiedName change:name", function(o) {
-        Logger.log("Detected changes");
-        this.set("id", o.get("qualifiedName"));
-        this.set("label", o.get("name"));
-      });
-      this.set("id", this.get("qualifiedName"));
-      this.set("label", this.get("name"));
-    }
-
-  });
-
-  return OlapSelectorModel;
-
 });
 

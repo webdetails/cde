@@ -15,10 +15,10 @@ define([
   'cdf/Logger',
   'amd!cdf/lib/backbone',
   './ViewModel',
-  '../ViewManagerComponentExt'],
-  function(Logger, Backbone, ViewModel, ViewManagerComponentExt) {
+  './ViewManagerComponent.ext'
+], function(Logger, Backbone, ViewModel, ViewManagerComponentExt) {
 
-  var ViewCollection = Backbone.Collection.extend({
+  return Backbone.Collection.extend({
     url: function() { return ViewManagerComponentExt.getViewsEndpoint(); },
     model: ViewModel,
     parse: function(response) {
@@ -29,7 +29,5 @@ define([
       return response.result;
     }
   });
-
-  return ViewCollection;
 
 });

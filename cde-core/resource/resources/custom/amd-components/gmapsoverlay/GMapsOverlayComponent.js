@@ -12,14 +12,15 @@
  */
 
 /*
-
-Contributions by Carlos Russo from Webdetails.pt
-
-* TODO Consider using .kml files directly, see https://code.google.com/p/geoxml3/
-* TODO Attempt merging with NewMapComponent
-* TODO Attempt using API of https://github.com/mapstraction/mxn/
-
-*/
+ *
+ * Contributions by Carlos Russo from Webdetails.pt
+ *
+ *
+ * TODO Consider using .kml files directly, see https://code.google.com/p/geoxml3/
+ * TODO Attempt merging with NewMapComponent
+ * TODO Attempt using API of https://github.com/mapstraction/mxn/
+ *
+ */
 
 define([
   'cdf/components/UnmanagedComponent',
@@ -27,11 +28,11 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
   './GMapEngine',
-  './GMapsOverlayComponentExt',
-  'css!./GMapsOverlayComponent'],
-  function(UnmanagedComponent, Logger, $, _, GMapEngine, GMapsOverlayComponentExt) {
+  './GMapsOverlayComponent.ext',
+  'css!./GMapsOverlayComponent'
+], function(UnmanagedComponent, Logger, $, _, GMapEngine, GMapsOverlayComponentExt) {
 
-  var GMapsOverlayComponent = UnmanagedComponent.extend({
+  return UnmanagedComponent.extend({
 
     mapEngineOpts: undefined, //override this in preExec
     colormap: [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]], //RGBA
@@ -175,7 +176,6 @@ define([
 
         });
       }
-
     },
   
     _parseLegend: function(isContinuousMapColor) {
@@ -199,7 +199,6 @@ define([
     },
   
     update: function() {
-
       var myself = this;
 
       if($.isEmptyObject(myself.queryDefinition))  {  
@@ -260,12 +259,9 @@ define([
         [0, 0.5, 1],
         myself.legendRanges,
         myself.isContinuousMapColor,
-        myself.isColorDefinedInDS);
-
+        myself.isColorDefinedInDS
+      );
     }
-
   });
-
-  return GMapsOverlayComponent;
 
 });

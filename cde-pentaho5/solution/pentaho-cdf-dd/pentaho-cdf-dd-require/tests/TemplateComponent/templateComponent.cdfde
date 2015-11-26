@@ -3134,7 +3134,7 @@
      },
      {
       "name": "extendableOptions",
-      "value": "function() {\n    var opts = {\n        messages: {\n            error: {\n                noData: \"No data available on this component. You can customize this messages!\",\n                invalidTemplate: \"Invalid template.\",\n                invalidTemplateType: \"Invalid template type.\",\n                generic: \"Invalid options defined. Please check the template component properties.\"\n            }\n        }\n    };\n    return opts;\n}\n    ",
+      "value": "function() {\n    var opts = {\n        messages: {\n            error: {\n                noData: \"No data available on this component. You can customize this message!\",\n                invalidTemplate: \"Invalid template.\",\n                invalidTemplateType: \"Invalid template type.\",\n                generic: \"Invalid options defined. Please check the template component properties.\"\n            }\n        }\n    };\n    return opts;\n}\n    ",
       "type": "JavaScript"
      }
     ]

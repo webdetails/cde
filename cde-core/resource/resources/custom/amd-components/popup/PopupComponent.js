@@ -14,12 +14,12 @@
 define([
   'cdf/components/BaseComponent',
   'cdf/lib/jquery',
-  'css!./PopupComponent'],
-  function(BaseComponent, $) {
+  'css!./PopupComponent'
+], function(BaseComponent, $) {
 
   var duplicateIndex = 1;
 
-  var PopupComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     ph: undefined,
     arrow: undefined,
@@ -291,7 +291,5 @@ define([
       near;
     }
   });
-
-  return PopupComponent;
 
 });

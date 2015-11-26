@@ -11,9 +11,9 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define('cde/components/ViewManagerComponentExt', [], function() {
+define('cde/components/ViewManager/ViewManagerComponent.ext', [], function() {
 
-  var ViewManagerComponentExt = {
+  return {
 
     getViewsEndpoint: function(name) {
       return "fake/path";
@@ -24,5 +24,4 @@ define('cde/components/ViewManagerComponentExt', [], function() {
     }
   };
 
-  return ViewManagerComponentExt;
 });

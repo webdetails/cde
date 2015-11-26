@@ -16,8 +16,8 @@ define([
   'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
-  './GMapComponentAsyncLoader',],
-  function(Base, Logger, $, _, loadGoogleMapsOverlay) {
+  './GMapComponentAsyncLoader'
+], function(Base, Logger, $, _, loadGoogleMapsOverlay) {
 
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
 
@@ -58,7 +58,7 @@ define([
     }
   }
 
-  var GMapEngine = Base.extend({
+  return Base.extend({
     map: undefined,
     opts: {
       mapOptions: {
@@ -402,7 +402,5 @@ define([
     }
 
   });
-
-  return GMapEngine;
 
 });

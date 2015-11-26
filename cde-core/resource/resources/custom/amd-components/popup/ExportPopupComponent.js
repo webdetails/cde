@@ -18,10 +18,10 @@ define([
   'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/jquery.fancybox',
-  'css!./ExportPopupComponent'],
-  function(PopupComponent, CggComponentExt, Utils, Logger, $) {
+  'css!./ExportPopupComponent'
+], function(PopupComponent, CggComponentExt, Utils, Logger, $) {
 
-  var ExportPopupComponent = PopupComponent.extend({
+  return PopupComponent.extend({
 
     ph: undefined,
     arrow: undefined,
@@ -372,11 +372,7 @@ define([
         height: this.chartComponent.chartDefinition.height + 60,
         autoDimensions: false
       });
-
     }
-    
   });
-
-  return ExportPopupComponent;
 
 });

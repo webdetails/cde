@@ -158,7 +158,7 @@
     //of its dependencies includes i18n bundles, they may not be included in the
     //built file unless the locale: section is set above.
     {
-      name: "cde/components/AjaxRequestComponent",
+      name: "cde/components/AjaxRequest/AjaxRequestComponent",
       //create: true can be used to create the module layer at the given
       //name, if it does not already exist in the source location. If
       //there is a module at the source location with this name, then
@@ -181,7 +181,7 @@
       ]
     },
     {
-      name: "cde/components/CggComponent",
+      name: "cde/components/cgg/CggComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -189,7 +189,7 @@
       ]
     },
     {
-      name: "cde/components/CggDialComponent",
+      name: "cde/components/cgg/CggDialComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -197,7 +197,7 @@
       ]
     },
     {
-      name: "cde/components/DashboardComponent",
+      name: "cde/components/Dashboard/DashboardComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -205,7 +205,7 @@
       ]
     },
     {
-      name: "cde/components/DuplicateComponent",
+      name: "cde/components/Duplicate/DuplicateComponent",
       exclude: [
         // CDF libs / components / utils
         "cdf/lib/jquery",
@@ -214,10 +214,10 @@
       ]
     },
     {
-      name: "cde/components/ExportButtonComponent",
+      name: "cde/components/exportButton/ExportButtonComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/ExportButtonComponent",
+        "css!cde/components/exportButton/ExportButtonComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent",
@@ -226,10 +226,10 @@
       ]
     },
     {
-      name: "cde/components/GMapsOverlayComponent",
+      name: "cde/components/gmapsoverlay/GMapsOverlayComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/GMapsOverlayComponent",
+        "css!cde/components/gmapsoverlay/GMapsOverlayComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
@@ -238,7 +238,7 @@
       ]
     },
     {
-      name: "cde/components/GoogleAnalyticsComponent",
+      name: "cde/components/googleAnalytics/GoogleAnalyticsComponent",
       exclude: [
         // exclude resources that depend on requirejs loader plugins,
         // this avoids including requirejs loader plugins from CDF into the output module
@@ -276,10 +276,10 @@
       ]
     },
     {
-      name: "cde/components/NewSelectorComponent",
+      name: "cde/components/NewSelector/NewSelectorComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/NewSelectorComponent",
+        "css!cde/components/NewSelector/NewSelectorComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
@@ -291,10 +291,10 @@
       ]
     },
     {
-      name: "cde/components/OlapSelectorComponent",
+      name: "cde/components/OlapSelector/OlapSelectorComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/OlapSelectorComponent",
+        "css!cde/components/OlapSelector/OlapSelectorComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
@@ -307,21 +307,21 @@
       ]
     },
     {
-      name: "cde/components/PopupComponent",
+      name: "cde/components/popup/PopupComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/PopupComponent",
+        "css!cde/components/popup/PopupComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent"
       ]
     },
     {
-      name: "cde/components/ExportPopupComponent",
+      name: "cde/components/popup/ExportPopupComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/ExportPopupComponent",
-        "css!cde/components/PopupComponent",
+        "css!cde/components/popup/ExportPopupComponent",
+        "css!cde/components/popup/PopupComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/jquery.fancybox",
@@ -332,7 +332,7 @@
       ]
     },
     {
-      name: "cde/components/RaphaelComponent",
+      name: "cde/components/Raphael/RaphaelComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         //"cdf/lib/raphael", // don't exclude raphael
@@ -340,7 +340,7 @@
       ]
     },
     {
-      name: "cde/components/RelatedContentComponent",
+      name: "cde/components/RelatedContent/RelatedContentComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -348,7 +348,7 @@
       ]
     },
     {
-      name: "cde/components/SiteMapComponent",
+      name: "cde/components/SiteMap/SiteMapComponent",
       exclude: [
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
@@ -359,10 +359,10 @@
       ]
     },
     {
-      name: "cde/components/TextEditorComponent",
+      name: "cde/components/TextEditor/TextEditorComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/TextEditorComponent",
+        "css!cde/components/TextEditor/TextEditorComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "amd!cdf/lib/underscore",
@@ -372,10 +372,10 @@
       ]
     },
     {
-      name: "cde/components/ViewManagerComponent",
+      name: "cde/components/ViewManager/ViewManagerComponent",
       exclude: [
         // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/ViewManagerComponent",
+        "css!cde/components/ViewManager/ViewManagerComponent",
         // CDF dependencies (overhead, these might already have been loaded)
         "cdf/lib/jquery",
         "cdf/components/BaseComponent",
