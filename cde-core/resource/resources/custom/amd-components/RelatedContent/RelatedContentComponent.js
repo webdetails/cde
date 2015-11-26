@@ -11,9 +11,12 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define(['cdf/components/BaseComponent', 'cdf/lib/jquery'], function(BaseComponent, $) {
+define([
+  'cdf/components/BaseComponent',
+  'cdf/lib/jquery'
+], function(BaseComponent, $) {
 
-  var RelatedContentComponent = BaseComponent.extend({
+  return BaseComponent.extend({
     update: function() {
 
       var relatedContent = this.relatedContent;
@@ -37,7 +40,5 @@ define(['cdf/components/BaseComponent', 'cdf/lib/jquery'], function(BaseComponen
       }
     }
   });
-
-  return RelatedContentComponent;
 
 });

@@ -21,14 +21,13 @@
  */
 define("common-ui/util/URLEncoder", [], function() {
 
-  var Encoder = {};
+  // Return encoder for AMD use
+  return {
+  	encode: function(str, args, queryObj) {
+      "use strict"
 
-  Encoder.encode = function(str, args, queryObj) {
-    "use strict"
-
-    return "dummy";
+      return "dummy";
+    }
   };
 
-  // Return encoder for AMD use
-  return Encoder;
 });

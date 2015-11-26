@@ -42,14 +42,12 @@ define([
   'amd!./lib/jquery.ga'
 ], function(BaseComponent, $) {
 
-  var GoogleAnalyticsComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     update: function() {
       $.ga.load(this.gaTrackingId);
     }
 
   });
-
-  return GoogleAnalyticsComponent;
 
 });

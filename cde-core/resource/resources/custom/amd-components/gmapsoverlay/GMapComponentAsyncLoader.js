@@ -31,7 +31,7 @@
 
 define(['cdf/lib/jquery'], function($) {
 
-  var loadGoogleMapsOverlay = (function($) {
+  return (function($) {
 
     var now = $.now(), promise;
 
@@ -123,7 +123,5 @@ define(['cdf/lib/jquery'], function($) {
     };
 
   })($);
-
-  return loadGoogleMapsOverlay;
 
 });

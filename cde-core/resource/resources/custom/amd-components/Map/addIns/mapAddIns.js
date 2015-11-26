@@ -20,6 +20,6 @@ define([
   './ShapeResolver/simpleJSON',
   './ShapeResolver/kml',
   './ShapeResolver/geoJSON'
-], function () {
+], function() {
 
 });

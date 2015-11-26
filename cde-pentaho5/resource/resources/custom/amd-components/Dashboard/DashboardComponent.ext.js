@@ -12,6 +12,7 @@
  */
 
 define([], function() {
+
   return {
 
     getDashboardUrl: function(path) {

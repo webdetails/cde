@@ -21,7 +21,7 @@ define([
   'css!./NewSelectorComponent'
 ], function(UnmanagedComponent, Utils, $, _, views, models) {
 
-  var NewSelectorComponent = UnmanagedComponent.extend({
+  return UnmanagedComponent.extend({
 
     pageStart: 0,
     pageSize: 54,
@@ -156,7 +156,5 @@ define([
       return this.selectorModel.selectedValues();
     }
   });
-
-  return NewSelectorComponent;
 
 });

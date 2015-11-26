@@ -15,10 +15,10 @@ define([
   'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore',
-  '../OlapSelectorComponent.ext'],
-  function(Logger, $, _, OlapSelectorComponentExt) {
+  '../OlapSelectorComponent.ext'
+], function(Logger, $, _, OlapSelectorComponentExt) {
 
-  var OlapUtils = function(spec) {
+  return function(spec) {
     
     var defaults = {
       url: OlapSelectorComponentExt.getServiceUrl(),
@@ -278,7 +278,5 @@ define([
     return myself;
 
   };
-
-  return OlapUtils;
 
 });

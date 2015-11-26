@@ -17,9 +17,9 @@ define([
   'cdf/Logger',
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore'
-], function (AddIn, Dashboard, Logger, $, _) {
+], function(AddIn, Dashboard, Logger, $, _) {
 
-  var thisAddIn = {
+  var geoJSON = {
     name: "geoJSON",
     label: "GeoJSON shape resolver",
     defaults: {
@@ -29,7 +29,7 @@ define([
     implementation: function (tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
-      if (url) {
+      if(url) {
         $.ajax(url, {
           async: true,
           type: 'GET',
@@ -53,7 +53,7 @@ define([
 
   function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features)
-      .map(function (feature, idx) {
+      .map(function(feature, idx) {
         var id = getFeatureId(feature, idPropertyName) || idx;
         return [id, feature];
       })
@@ -64,11 +64,13 @@ define([
 
   function getFeatureId(feature, idPropertyName) {
     var id = feature.id;
-    if (idPropertyName) {
+    if(idPropertyName) {
       id = feature.properties[idPropertyName] || id;
     }
     return id;
   }
 
-  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(geoJSON));
+
+  return geoJSON;
 });

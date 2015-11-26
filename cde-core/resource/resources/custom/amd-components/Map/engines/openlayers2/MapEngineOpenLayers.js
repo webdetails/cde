@@ -10,7 +10,7 @@
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
  * the license for the specific language governing your rights and limitatio
 
- /*
+/*
  * OpenLayers engine.
  *
  */
@@ -24,7 +24,7 @@ define([
   'css!./styleOpenLayers2'
 ], function ($, _, MapEngine, OpenLayers, MapModel, Logger) {
 
-  var OpenLayersEngine = MapEngine.extend({
+  return MapEngine.extend({
     map: undefined,
     //    featureLayer: undefined,
     API_KEY: 0,
@@ -557,10 +557,7 @@ define([
         return wrappedEvent;
       }
     }
-
   });
-
-  return OpenLayersEngine;
 
   function clearSelection(me) {
     if (me.model) {

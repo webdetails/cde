@@ -12,7 +12,7 @@
  */
 
 define([], function() {
-  var OlapSelectorComponentExt = {
+  return {
     getServiceUrl: function() {
       return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/olap/";
     },
@@ -33,7 +33,5 @@ define([], function() {
       return "getLevelMembersStructure";
     }
   };
-
-  return OlapSelectorComponentExt;
 
 });

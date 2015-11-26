@@ -15,24 +15,22 @@ define([
   'cdf/components/BaseComponent',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'cdf/dashboard/Utils'],
-  function(BaseComponent, Logger, $, Utils) {
+  'cdf/dashboard/Utils'
+], function(BaseComponent, Logger, $, Utils) {
 
-  var AjaxRequestComponent = BaseComponent.extend({
+  return BaseComponent.extend({
     visible: false,
-    update : function() {
+    update: function() {
       this.executeRequest(this);
     },
     
-    parseXML : function(sText) {
+    parseXML: function(sText) {
       if(!sText) {
         return null;
       }
       var xmlDoc;
       try { //Firefox, Mozilla, Opera, etc.
-        parser = new DOMParser();
-        xmlDoc = parser.parseFromString(sText, "text/xml");
-        return xmlDoc;
+        return (new DOMParser()).parseFromString(sText, "text/xml");
       } catch(e) {
         try { //Internet Explorer
           xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
@@ -99,21 +97,10 @@ define([
           }
 
           if(this.dataType == "xml" || this.dataType == "html") {
-            var xmlDoc;
-            try { //Firefox, Mozilla, Opera, etc.
-              parser = new DOMParser();
-              xmlDoc = parser.parseFromString(values, "text/xml");
-            } catch(e) {
-              try { //Internet Explorer
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async = "false";
-                xmlDoc.loadXML(values);
-                values = xmlDoc;
-              } catch(e) {
-                Logger.error('XML is invalid or no XML parser found');
-              }
+            values = myself.parseXML(values);
+            if(values == null) {
+              return;
             }
-            values = xmlDoc;
 
             var nodeList = values.getElementsByTagName('return');
             if(nodeList.length > 0 && nodeList[0].firstChild) {
@@ -147,7 +134,5 @@ define([
       });
     }
   });
-
-  return AjaxRequestComponent;
 
 });

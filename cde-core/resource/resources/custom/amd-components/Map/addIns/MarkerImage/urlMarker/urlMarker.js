@@ -15,14 +15,14 @@ define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
   '../../../Map.ext'
-], function (AddIn, Dashboard, NewMapComponentExt) {
-
-  var urlMarker = new AddIn({
+], function(AddIn, Dashboard, NewMapComponentExt) {
+  
+  var urlMarker = {
     name: "urlMarker",
     label: "Url Marker",
     defaults: {
       defaultUrl: NewMapComponentExt.getMarkerImgPath() + 'marker_grey.png',
-      imagePath: NewMapComponentExt.getMarkerImgPath(),
+      imagePath:  NewMapComponentExt.getMarkerImgPath(),
       images: [
         'marker_grey.png',
         'marker_blue.png',
@@ -31,18 +31,19 @@ define([
         'marker_purple.png',
       ]
     },
-    implementation: function (tgt, st, opt) {
-      if (st.url) {
+    implementation: function(tgt, st, opt) {
+      if(st.url) {
         return st.url;
       }
-      if (st.position) {
+      if(st.position) {
         return opt.imagePath + opt.images[st.position % opt.images.length] || opt.defaultUrl;
       }
 
       return opt.defaultUrl;
     }
-  });
-  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", urlMarker);
+  };
+
+  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(urlMarker));
 
   return urlMarker;
 

@@ -13,7 +13,7 @@
 
 define(['amd!cdf/lib/backbone'], function(Backbone) {
 
-  var ViewModel = Backbone.Model.extend({
+  return Backbone.Model.extend({
     defaults: {
       name: "Unsaved",
       description: "",
@@ -31,7 +31,5 @@ define(['amd!cdf/lib/backbone'], function(Backbone) {
       Backbone.Model.apply(this, arguments);
     }
   });
-
-  return ViewModel;
 
 });

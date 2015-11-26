@@ -12,7 +12,8 @@
  */
 
 define('cde/components/OlapSelector/OlapSelectorComponent.ext', [], function() {
-  var OlapSelectorComponentExt = {
+
+  return {
     getServiceUrl: function() {
       return "dummy/plugin/pentaho-cdf-dd/api/olap/";
     },
@@ -34,5 +35,4 @@ define('cde/components/OlapSelector/OlapSelectorComponent.ext', [], function() {
     }
   };
 
-  return OlapSelectorComponentExt;
 });

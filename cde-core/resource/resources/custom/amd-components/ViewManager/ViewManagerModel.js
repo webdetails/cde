@@ -13,7 +13,7 @@
 
 define(['amd!cdf/lib/backbone'], function(Backbone) {
 
-  var ViewManagerModel = Backbone.Model.extend({
+  return Backbone.Model.extend({
     defaults: {
       dashboard: undefined
     },
@@ -22,7 +22,5 @@ define(['amd!cdf/lib/backbone'], function(Backbone) {
       Backbone.Model.apply(this, arguments);
     }
   });
-
-  return ViewManagerModel;
 
 });

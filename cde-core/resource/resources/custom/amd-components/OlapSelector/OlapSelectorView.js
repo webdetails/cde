@@ -16,14 +16,179 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/backbone',
   'amd!cdf/lib/underscore',
-  'cdf/lib/mustache'],
-  function(Logger, $, Backbone, _, Mustache) {
+  'cdf/lib/mustache'
+], function(Logger, $, Backbone, _, Mustache) {
+
+  /*
+   * Option View displays a selector option, as it is represented
+   * in the option listing
+   */
+  var OptionView = Backbone.View.extend({
+    tagName: "span",
+    template: null,
+    events: {
+      "click .target": "toggleSelection",
+      "click .drill-down-enabled": "drillDown"
+    },
+
+    initialize: function() {
+      this.setTemplate();
+      this.model.on("change:selected", this.updateSelectionDisplay, this);
+    },
+
+    setTemplate: function(){
+      this.template = templates.olapSelector.option
+    },
+
+    drillDown: function() {
+      var val = this.model.get("drill");
+      this.model.set("drill", !val);
+    },
+
+    render: function() {
+      this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+      this.$el.addClass('item');
+      this.updateSelectionDisplay();
+      this.delegateEvents();
+      return this;
+    },
+
+    toggleSelection: function() {
+      this.model.toggleSelected();
+      this.model.trigger("select");
+    },
+
+    updateSelectionDisplay: function() {
+      if(this.model.get('selected')) {
+        this.$el.addClass('selected');
+      } else {
+        this.$el.removeClass('selected');
+      }
+    }
+
+  });
+
+  var LevelView = OptionView.extend({
+    tagName: "span",
+    template: null,
+    setTemplate: function() {
+      this.template = templates.olapSelector.level;
+    }
+  });
+
+  /*
+   * Selection View displays a selector option, as it is represented
+   * in the listing of selected options.
+   */
+  var SelectionView = Backbone.View.extend({
+    tagName: "li",
+    events: {
+      "click .remove": "unselect"
+    },
+
+    render: function() {
+      this.$el.html(Mustache.render(templates.olapSelector.picked, this.model.toJSON()));
+      this.delegateEvents();
+      return this;
+    },
+
+    unselect: function() {
+      this.model.set("selected", false);
+      this.model.trigger("select");
+    }
+  });
+
+  var SelectionViewOut = SelectionView.extend({
+    unselect: function() {
+      this.model.set("selected", false);
+      this.model.trigger("select");
+      this.model.trigger("notify");
+    }
+  });
+
+  /*
+   * TEMPLATES
+   */
+  var templates = templates || {};
+  templates.olapSelector = {};
+  templates.olapSelector.main =
+    "<div class='olapSelectorComponent'>" +
+    " <div class='pulldown'>"+
+    "   <div class='title'>{{title}}</div>"+
+    "     <div class='optionList'>"+
+    "       <div class='leftArea'>" +
+    "         <div class='header'>Select Level</div>" +
+    "         <div class='levels'></div>" +
+    "         <div class='selectionPanel'>" +
+    "           <div class='label'>Selected Filters</div>" +
+    "           <ul class='selection'></ul>" +
+    "         </div>" +
+    "       </div>" +
+    "       <div class='rightArea {{#paginate}}paginate{{/paginate}}'>" +
+    "         <div class='header'>" +
+    /* Don't touch the indentation! Indentating this
+     * would create some pretty annoying text nodes
+     */
+    "<div class='breadcrumb'>Breadcrumb &#x21FE; Content</div>"+
+    "<div class='search'>"+
+    "             <input type='text' placeholder='Search...' value='{{searchterm}}'/>"+
+    "             <div class='cancel'>&nbsp;</div>"+
+    "           </div>"+
+    "         </div>"+
+    "         <div class='options'></div>"+
+    "         <div class='paginationContainer'>"+
+    "           <div class='pagination'>"+
+    "             <div class='prev paginateButton'>Previous Page<div class='arrow'>&nbsp;</div></div>"+
+    "             <div class='next paginateButton'>Next Page<div class='arrow'>&nbsp;</div></div>"+
+    "           </div>"+
+    "         </div>"+
+    "         <div class='footer'>" +
+    "           <div class='button cancel'>Cancel</div>"+
+    "           <div class='button validate'>Apply</div>"+
+    "         </div>" +
+    "       </div>"+
+    "     </div>" +
+    " </div>" +
+    " <div class='outsideArea'>"+
+    "   <ul class='selection'></ul>"+
+    " </div>"+
+    "</div>";
+
+  templates.olapSelector.option =
+    "<div class='target'>" +
+    " <span class='name' title='{{name}}'>{{name}}</span>" +
+    " <span class='check'>&nbsp;</span>"+
+    "</div>" +
+    "{{#canDrillDown}}<div class='drill-down drill-down-enabled'>{{/canDrillDown}}" +
+    "{{^canDrillDown}}<div class='drill-down drill-down-disabled'>{{/canDrillDown}}" +
+    "<span class='label'>&nbsp;</span></div>";
+
+  templates.olapSelector.picked =
+    "<div class='target'>" +
+    "  <span class='name' title='{{name}}'>{{name}}</span>" +
+    "  <div class='remove'>&nbsp;</div>" +
+    "</div>";
+
+  templates.olapSelector.levels =
+    "<div class='levelTitle'>Levels</div>"+
+    "<div class='levels options'></div>";
+
+
+  templates.olapSelector.level =
+    "<div class='target'>" +
+    "  <span class='name' title='{{label}}'>{{label}}</span>" +
+    "</div>";
+
+
+  templates.olapSelector.crumbtrail =
+    "<span class='level'>{{level}}</span>" +
+    "<span class='separator'>&nbsp;</span>" +
+    "<span class='name'>{{name}}</span>";
 
   /*
    * Selector View displays the selector model
    */
-
-  var OlapSelectorView = Backbone.View.extend({
+  return Backbone.View.extend({
 
     events: {
       "click .title": "toggleCollapsed",
@@ -268,173 +433,4 @@ define([
       this.model.goToPage(page);
     }
   });
-
-  /*
-   * Option View displays a selector option, as it is represented
-   * in the option listing
-   */
-  var OptionView = Backbone.View.extend({
-    tagName: "span",
-    template: null,
-    events: {
-      "click .target": "toggleSelection",
-      "click .drill-down-enabled": "drillDown"
-    },
-
-    initialize: function() {
-      this.setTemplate();
-      this.model.on("change:selected", this.updateSelectionDisplay, this);
-    },
-
-    setTemplate: function(){
-      this.template = templates.olapSelector.option
-    },
-
-    drillDown: function() {
-      var val = this.model.get("drill");
-      this.model.set("drill", !val);
-    },
-
-    render: function() {
-      this.$el.html(Mustache.render(this.template, this.model.toJSON()));
-      this.$el.addClass('item');
-      this.updateSelectionDisplay();
-      this.delegateEvents();
-      return this;
-    },
-
-    toggleSelection: function() {
-      this.model.toggleSelected();
-      this.model.trigger("select");
-    },
-
-    updateSelectionDisplay: function() {
-      if(this.model.get('selected')) {
-        this.$el.addClass('selected');
-      } else {
-        this.$el.removeClass('selected');
-      }
-    }
-
-  });
-
-  var LevelView = OptionView.extend({
-    tagName: "span",
-    template: null,
-    setTemplate: function() {
-      this.template = templates.olapSelector.level;
-    }
-  });
-
-  /*
-   * Selection View displays a selector option, as it is represented
-   * in the listing of selected options.
-   */
-  var SelectionView = Backbone.View.extend({
-    tagName: "li",
-    events: {
-      "click .remove": "unselect"
-    },
-
-    render: function() {
-      this.$el.html(Mustache.render(templates.olapSelector.picked, this.model.toJSON()));
-      this.delegateEvents();
-      return this;
-    },
-
-    unselect: function() {
-      this.model.set("selected", false);
-      this.model.trigger("select");
-    }
-  });
-
-  var SelectionViewOut = SelectionView.extend({
-    unselect: function() {
-      this.model.set("selected", false);
-      this.model.trigger("select");
-      this.model.trigger("notify");
-    }
-  });
-
-  /*
-   * TEMPLATES
-   */
-  var templates = templates || {};
-  templates.olapSelector = {};
-  templates.olapSelector.main =
-    "<div class='olapSelectorComponent'>" +
-    " <div class='pulldown'>"+
-    "   <div class='title'>{{title}}</div>"+
-    "     <div class='optionList'>"+
-    "       <div class='leftArea'>" +
-    "         <div class='header'>Select Level</div>" +
-    "         <div class='levels'></div>" +
-    "         <div class='selectionPanel'>" +
-    "           <div class='label'>Selected Filters</div>" +
-    "           <ul class='selection'></ul>" +
-    "         </div>" +
-    "       </div>" +
-    "       <div class='rightArea {{#paginate}}paginate{{/paginate}}'>" +
-    "         <div class='header'>" +
-    /* Don't touch the indentation! Indentating this
-     * would create some pretty annoying text nodes
-     */
-    "<div class='breadcrumb'>Breadcrumb &#x21FE; Content</div>"+
-    "<div class='search'>"+
-    "             <input type='text' placeholder='Search...' value='{{searchterm}}'/>"+
-    "             <div class='cancel'>&nbsp;</div>"+
-    "           </div>"+
-    "         </div>"+
-    "         <div class='options'></div>"+
-    "         <div class='paginationContainer'>"+
-    "           <div class='pagination'>"+
-    "             <div class='prev paginateButton'>Previous Page<div class='arrow'>&nbsp;</div></div>"+
-    "             <div class='next paginateButton'>Next Page<div class='arrow'>&nbsp;</div></div>"+
-    "           </div>"+
-    "         </div>"+
-    "         <div class='footer'>" +
-    "           <div class='button cancel'>Cancel</div>"+
-    "           <div class='button validate'>Apply</div>"+
-    "         </div>" +
-    "       </div>"+
-    "     </div>" +
-    " </div>" +
-    " <div class='outsideArea'>"+
-    "   <ul class='selection'></ul>"+
-    " </div>"+
-    "</div>";
-
-  templates.olapSelector.option =
-    "<div class='target'>" +
-    " <span class='name' title='{{name}}'>{{name}}</span>" +
-    " <span class='check'>&nbsp;</span>"+
-    "</div>" +
-    "{{#canDrillDown}}<div class='drill-down drill-down-enabled'>{{/canDrillDown}}" +
-    "{{^canDrillDown}}<div class='drill-down drill-down-disabled'>{{/canDrillDown}}" +
-    "<span class='label'>&nbsp;</span></div>";
-
-  templates.olapSelector.picked =
-    "<div class='target'>" +
-    "  <span class='name' title='{{name}}'>{{name}}</span>" +
-    "  <div class='remove'>&nbsp;</div>" +
-    "</div>";
-
-  templates.olapSelector.levels =
-    "<div class='levelTitle'>Levels</div>"+
-    "<div class='levels options'></div>";
-
-
-  templates.olapSelector.level =
-    "<div class='target'>" +
-    "  <span class='name' title='{{label}}'>{{label}}</span>" +
-    "</div>";
-
-
-  templates.olapSelector.crumbtrail =
-    "<span class='level'>{{level}}</span>" +
-    "<span class='separator'>&nbsp;</span>" +
-    "<span class='name'>{{name}}</span>";
-
-  return OlapSelectorView;
-
 });

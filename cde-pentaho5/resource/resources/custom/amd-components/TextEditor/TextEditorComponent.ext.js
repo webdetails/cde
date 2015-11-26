@@ -17,12 +17,10 @@ define([], function() {
    *  Text editor component
    */
 
-  var TextEditorComponentExt = {
+  return {
     getUrl: function() {
       return CONTEXT_PATH + "plugin/pentaho-cdf-dd/api/editor/getExternalEditor?";
     }
   };
-
-  return TextEditorComponentExt;
 
 });

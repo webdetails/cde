@@ -13,10 +13,10 @@
 
 define([
   'cdf/components/BaseComponent',
-  'cdf/lib/raphael'],
-  function(BaseComponent, Raphael) {
+  'cdf/lib/raphael'
+], function(BaseComponent, Raphael) {
 
-  var RaphaelComponent = BaseComponent.extend({
+  return BaseComponent.extend({
     update: function() {
       var myself = this,
           parameters = myself.parameters;
@@ -24,7 +24,5 @@ define([
       myself.customfunction.apply(myself, parameters ? parameters : []);
     }
   });
-
-  return RaphaelComponent;
 
 });
