@@ -56,7 +56,7 @@ define([
       zoomLevel: {
         min: 0,
         max: Infinity,
-        default: this.defaultZoomLevel
+        "default": this.defaultZoomLevel
       }
 
     };
