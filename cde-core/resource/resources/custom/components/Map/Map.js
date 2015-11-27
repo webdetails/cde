@@ -325,7 +325,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       r: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.r];
         if (_.isNumber(value)) {
-          var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / v.max - v.min);
+          var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / (v.max - v.min));
           if (_.isFinite(r)) return r;
         }
       }
