@@ -735,7 +735,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   });
 }), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel, Logger) {
   function clearSelection(me) {
+    var SelectionStates = MapModel.SelectionStates;
     me.model && me.model.setSelection(SelectionStates.NONE);
+  }
+
+  function addToSelection(modelItem) {
+    modelItem.setSelection(MapModel.SelectionStates.ALL);
   }
 
   function toggleSelection(me) {
@@ -969,8 +974,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         boxselectionend: function (e) {
           _.each(e.layers, function (layer) {
             _.each(layer.selectedFeatures, function (f) {
-              var newState = !f.attributes.model.getSelection();
-              f.attributes.model.setSelection(newState);
+              addToSelection(f.attributes.model);
             });
           }), e.object.unselectAll(), me.trigger("engine:selection:complete");
         }
@@ -1113,6 +1117,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
       this.htmlContent_ = htmlContent, this.popupContentDiv_ = popupContentDiv, this.borderColor_ = borderColor,
       this.div_ = null, this.setMap(map);
+  }
+
+  function addToSelection(modelItem) {
+    modelItem.setSelection(MapModel.SelectionStates.ALL);
   }
 
   function toggleSelection(modelItem) {
@@ -1386,7 +1394,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           var id = m.get("id");
           void 0 != me.map.data.getFeatureById(id) && $.when(m.get("geoJSON")).then(function (obj) {
             var geometry = obj.geometry, isWithinArea = isInBounds(geometry, bounds);
-            isWithinArea && toggleSelection(m);
+            isWithinArea && addToSelection(m);
           });
         }), me.trigger("engine:selection:complete");
       });
