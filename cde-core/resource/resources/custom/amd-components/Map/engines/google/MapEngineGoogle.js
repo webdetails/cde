@@ -315,12 +315,17 @@ define([
     },
 
     _addControlHover: function () {
-      this.map.data.addListener('mouseover', function (event) {
-        setStyle(event, 'hover');
+      var me = this;
+      this.map.data.addListener('mouseover', function (e) {
+        setStyle(e, 'hover');
+        var featureType = e.feature.getProperty('model').getFeatureType();
+        me.trigger(featureType + ':mouseover', me.wrapEvent(e));
       });
 
-      this.map.data.addListener('mouseout', function (event) {
-        setStyle(event, 'normal');
+      this.map.data.addListener('mouseout', function (e) {
+        setStyle(e, 'normal');
+        var featureType = e.feature.getProperty('model').getFeatureType();
+        me.trigger(featureType + ':mouseout', me.wrapEvent(e));
       });
 
       function setStyle(event, action) {
@@ -349,7 +354,7 @@ define([
     _addControlClick: function () {
       var me = this;
       this.map.data.addListener('click', function (e) {
-        var featureType = event.feature.getProperty('model').getFeatureType();
+        var featureType = e.feature.getProperty('model').getFeatureType();
         me.trigger(featureType + ':click', me.wrapEvent(e));
         me.trigger('engine:selection:complete');
       });
