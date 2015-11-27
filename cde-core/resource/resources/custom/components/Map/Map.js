@@ -1128,19 +1128,40 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   }
 
   function isInBounds(geometry, bounds) {
-    var isWithinBounds = !1;
-    if ("MultiPolygon" == geometry.type) isWithinBounds = _.some(geometry.coordinates, function (polygon) {
-      return _.some(polygon, function (line) {
-        return _.some(line, function (coord) {
-          var latLng = new google.maps.LatLng(coord[1], coord[0]);
-          return bounds.contains(latLng);
-        });
-      });
-    }); else if ("Point" == geometry.type) {
-      var latLng = new google.maps.LatLng(geometry.coordinates[1], geometry.coordinates[0]);
-      isWithinBounds = bounds.contains(latLng);
+    function containsMultiPolygon(bounds, multiPolygon) {
+      var hasPolygon = function (polygon) {
+        return containsPolygon(bounds, polygon);
+      };
+      return _.some(multiPolygon, hasPolygon);
     }
-    return isWithinBounds;
+
+    function containsPolygon(bounds, polygon) {
+      var hasPoint = function (point) {
+        return containsPoint(bounds, point);
+      };
+      return _.some(polygon, function (line) {
+        return _.some(line, hasPoint);
+      });
+    }
+
+    function containsPoint(bounds, point) {
+      var latLng = new google.maps.LatLng(point[1], point[0]);
+      return bounds.contains(latLng);
+    }
+
+    switch (geometry.type) {
+      case "MultiPolygon":
+        return containsMultiPolygon(bounds, geometry.coordinates);
+
+      case "Polygon":
+        return containsPolygon(bounds, geometry.coordinates);
+
+      case "Point":
+        return containsPoint(bounds, geometry.coordinates);
+
+      default:
+        return !1;
+    }
   }
 
   return MapEngine.extend({
