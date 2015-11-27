@@ -14,10 +14,10 @@
 define([
   'cdf/AddIn',
   'cdf/Dashboard.Clean',
-  'cdf/lib/jquery',
+  '../../jquery.transport.xdr',
   'amd!cdf/lib/underscore'],
   function(AddIn, Dashboard, $, _) {
-  
+
   var nominatim = {
     name: "openstreetmap",
     label: "OpenStreetMap",
@@ -43,7 +43,7 @@ define([
         st.continuationFunction(location);
         return;
       }
-        
+
       var params = $.extend(true, {}, opt.serviceParams);
 
       _.each(_.keys(st), function(key) {
@@ -78,7 +78,7 @@ define([
         }
       };
       var onError = function(){
-        st.continuationFunction(undefined);
+        st.continuationFunction([]);
       };
       return $.ajax({
         dataType: "json",

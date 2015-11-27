@@ -311,7 +311,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       r: [10, 20]
     },
     attributeMapping: {
-      fill: function (context, seriesRoot, mapping, row, rowIdx) {
+      fill: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.fill], useGradient = context.mode === MapModel.Modes.pan && context.state === MapModel.States.unselected && context.action === MapModel.Actions.normal;
         useGradient = useGradient || context.mode === MapModel.Modes.selection && context.state === MapModel.States.selected && context.action === MapModel.Actions.normal,
           useGradient = !0;
@@ -319,10 +319,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         return isGrayscale = !1, isGrayscale && (colormap = _.map(colormap, this.toGrayscale)),
           _.isNumber(value) && (useGradient || isGrayscale) ? this.mapColor(value, seriesRoot.get("extremes").fill.min, seriesRoot.get("extremes").fill.max, colormap) : void 0;
       },
-      label: function (context, seriesRoot, mapping, row, rowIdx) {
+      label: function (context, seriesRoot, mapping, row) {
         return _.isEmpty(row) ? void 0 : row[mapping.label] + "";
       },
-      r: function (context, seriesRoot, mapping, row, rowIdx) {
+      r: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.r];
         if (_.isNumber(value)) {
           var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / v.max - v.min);
@@ -520,10 +520,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     getColorMap: function () {
       var colorMap = [];
-      colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps["default"]) : _.map(this.colormap, JSON.parse),
+      colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps.default) : _.map(this.colormap, JSON.parse),
         colorMap = _.map(colorMap, color2array);
       var cmap = [];
-      for (k = 1, L = colorMap.length; k < L; k++) cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
+      for (k = 1, L = colorMap.length; L > k; k++) cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
       return _.map(cmap, function (v) {
         return "rgba(" + v.join(",") + ")";
       });
@@ -538,7 +538,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
   return IColorMap;
-}), define("text!cde/components/Map/ControlPanel/ControlPanel.html", [], function () {
+}), define("cdf/lib/require-text/text!cde/components/Map/ControlPanel/ControlPanel.html", [], function () {
   return '<div class="map-control-panel">\n    <div class="map-control-button map-control-zoom-in"></div>\n    <div class="map-control-button map-control-zoom-out"></div>\n    <div class="map-controls-mode {{mode}}">\n        <div class="map-control-button map-control-pan"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
 }), define("cde/components/Map/ControlPanel/ControlPanel", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/lib/mustache", "cdf/lib/BaseEvents", "../model/MapModel", "text!./ControlPanel.html", "css!./ControlPanel"], function ($, _, Mustache, BaseEvents, MapModel, template) {
   var MODES = MapModel.Modes, ControlPanel = BaseEvents.extend({
@@ -648,13 +648,13 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   var SelectionStates = MapModel.SelectionStates, MapEngine = BaseEvents.extend({
     tileServices: void 0,
     tileServicesOptions: void 0,
-    tileLayer: function (name) {
+    tileLayer: function () {
     },
     init: function () {
       var deferred = $.Deferred();
       return deferred.resolve(), deferred.promise();
     },
-    renderMap: function (target) {
+    renderMap: function () {
     },
     render: function (model) {
       this.model = model;
@@ -668,14 +668,14 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         modes[value] && modes[value].call(me), model.leafs().each(function (m) {
           me.updateItem(m);
         });
-      }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model, value) {
+      }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model) {
         model.children() || me.updateItem(model);
       }), model.leafs().each(function (m) {
         me.renderItem(m);
       }), model.isPanningMode() && me.setPanningMode(), model.isZoomBoxMode() && me.setZoomBoxMode(),
       model.isSelectionMode() && me.setSelectionMode();
     },
-    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+    updateViewport: function () {
     },
     showPopup: function () {
     },
@@ -714,7 +714,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         featureType: featureType,
         style: void 0,
         mapEngineType: "abstract",
-        draw: function (style) {
+        draw: function () {
         },
         raw: void 0
       };
@@ -737,7 +737,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   });
   return MapEngine;
-}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel, Logger) {
+}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel) {
   function clearSelection(me) {
     me.model && me.model.setSelection(SelectionStates.NONE);
   }
@@ -860,7 +860,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     renderMap: function (target) {
       var projectionMap = new OpenLayers.Projection("EPSG:900913"), projectionWGS84 = new OpenLayers.Projection("EPSG:4326"), mapOptions = {
-        zoom: this.options.viewport.zoomLevel["default"],
+        zoom: this.options.viewport.zoomLevel.default,
         zoomDuration: 10,
         displayProjection: projectionWGS84,
         projection: projectionMap,
@@ -931,7 +931,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       if (_.isFinite(zoomLevel)) this.map.zoomTo(zoomLevel); else {
         var bounds = new OpenLayers.Bounds(), markersBounds = this.layers.markers.getDataExtent(), shapesBounds = this.layers.shapes.getDataExtent();
         markersBounds || shapesBounds ? (bounds.extend(markersBounds), bounds.extend(shapesBounds)) : bounds = null,
-          bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
+          bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel.default);
       }
       var centerPoint, projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       _.isFinite(centerLatitude) && _.isFinite(centerLongitude) ? (centerPoint = new OpenLayers.LonLat(centerLongitude, centerLatitude).transform(projectionWGS84, this.map.getProjectionObject()),
@@ -1135,10 +1135,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.base(), $.extend(this, options), this.controls = {}, this.controls.listenersHandle = {};
     },
     init: function () {
-      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(function (status) {
+      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(function () {
         OurMapOverlay.prototype = new google.maps.OverlayView(), OurMapOverlay.prototype.onAdd = function () {
           var div = document.createElement("DIV");
-          div.id = "MapOverlay", div.style.position = "absolute", this.borderColor_ ? div.style.border = "3px solid " + this.borderColor_ : div.style.border = "none";
+          div.id = "MapOverlay", div.style.position = "absolute", div.style.border = this.borderColor_ ? "3px solid " + this.borderColor_ : "none";
           var me = this, closeDiv = $('<div id="MapOverlay_close" class="olPopupCloseBox" style="position: absolute;"></div>');
           closeDiv.click(function () {
             me.setMap(null);
@@ -1156,7 +1156,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         };
       });
     },
-    wrapEvent: function (event, featureType) {
+    wrapEvent: function (event) {
       var me = this, modelItem = event.feature.getProperty("model");
       return $.extend(this._wrapEvent(modelItem), {
         latitude: event.latLng.lat(),
@@ -1283,10 +1283,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         modelItem.setHover("hover" === action);
       }
 
-      this.map.data.addListener("mouseover", function (event) {
-        setStyle(event, "hover");
-      }), this.map.data.addListener("mouseout", function (event) {
-        setStyle(event, "normal");
+      var me = this;
+      this.map.data.addListener("mouseover", function (e) {
+        setStyle(e, "hover");
+        var featureType = e.feature.getProperty("model").getFeatureType();
+        me.trigger(featureType + ":mouseover", me.wrapEvent(e));
+      }), this.map.data.addListener("mouseout", function (e) {
+        setStyle(e, "normal");
+        var featureType = e.feature.getProperty("model").getFeatureType();
+        me.trigger(featureType + ":mouseout", me.wrapEvent(e));
       });
     },
     _addControlZoomBox: function () {
@@ -1306,7 +1311,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     _addControlClick: function () {
       var me = this;
       this.map.data.addListener("click", function (e) {
-        var featureType = event.feature.getProperty("model").getFeatureType();
+        var featureType = e.feature.getProperty("model").getFeatureType();
         me.trigger(featureType + ":click", me.wrapEvent(e)), me.trigger("engine:selection:complete");
       });
     },
@@ -1469,7 +1474,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         p.setMap(null);
       }), this._popups.push(popup);
     },
-    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
+    showPopup: function (data, feature, popupHeight, popupWidth, contents) {
       var popup = new google.maps.InfoWindow({
         content: contents,
         position: feature.getGeometry().get(),
@@ -1521,7 +1526,86 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   });
   return GoogleMapEngine;
-}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery"], function (AddIn, Dashboard, $) {
+}), define("cde/components/Map/addIns/jquery.transport.xdr", ["cdf/lib/jquery"], function ($) {
+  var module_messages = {
+    get: function (code, param) {
+      var _messages = {
+        0: "Unknown Error",
+        1: "No Transport",
+        2: param + " Method Not Allowed",
+        3: param + " Scheme Not Supported",
+        4: "URI source and target scheme must be the same",
+        5: "No Data",
+        6: "Bad Data: " + param,
+        7: "Network Error",
+        8: "Timeout"
+      };
+      return _messages[code in _messages ? code : 0];
+    }
+  };
+  return $.ajaxTransport("+*", function (opts, optsUser, xhr) {
+    if (opts.crossDomain && (document.addEventListener || document.querySelector) && !window.atob && window.XDomainRequest) {
+      var text = module_messages, xdr = new XDomainRequest(), method = opts.type.toUpperCase(), contentType = opts.contentType || optsUser.contentType, scheme = opts.url.substring(0, opts.url.indexOf(":")).toUpperCase(), uri = opts.url, data = optsUser.data || {}, _error = function (code, param) {
+        return {
+          send: function (hdr, cb) {
+            cb(-1, text.get(code, param));
+          },
+          abort: $.noop
+        };
+      };
+      return xdr ? optsUser.forceMethod || -1 !== $.inArray(method, ["GET", "POST"]) ? -1 === $.inArray(scheme, ["HTTP", "HTTPS"]) ? _error(3, scheme) : scheme !== location.protocol.substring(0, location.protocol.indexOf(":")).toUpperCase() ? _error(4) : (optsUser.forceMethod && ("HEAD" === method && (method = "GET",
+        uri += (-1 === opts.url.indexOf("?") ? "?" : "&") + "__ethod=" + method), -1 !== $.inArray(method, ["PUT", "DELETE", "PATCH"]) && (method = "POST",
+        $.isPlainObject(data) ? data.__method = method : "string" == typeof data && (data += (data.length ? "&" : "") + "__method=" + method))),
+      optsUser.forceContentType && ("GET" === method && (uri += (-1 === opts.url.indexOf("?") ? "?" : "&") + "__contentType=" + encodeURIComponent(contentType)),
+      "POST" === method && ($.isPlainObject(data) ? data.__contentType = contentType : "string" == typeof data && (data += (data.length ? "&" : "") + $.param({
+          __contentType: contentType
+        })))), opts.timeout && (xdr.timeout = opts.timeout), xdr.onprogress = $.noop, {
+        send: function (hdr, cb) {
+          xdr.onload = function () {
+            var data = {}, error = null;
+            switch (opts.dataType) {
+              case "json":
+                try {
+                  data.json = $.parseJSON(xdr.responseText);
+                } catch (e) {
+                  error = e.message;
+                }
+                break;
+
+              case "xml":
+                try {
+                  data.xml = $.parseXML(xdr.responseText);
+                } catch (e) {
+                  error = e.message;
+                }
+                break;
+
+              case "text":
+                data.text = xdr.responseText;
+                break;
+
+              case "html":
+                data.html = xdr.responseText;
+            }
+            if (error) return cb(500, text.get(6, error));
+            var headers = ["Content-Type: " + xdr.contentType, "Content-Length: " + xdr.responseText.length];
+            cb(200, "OK", data, headers.join("\r\n"));
+          }, xdr.onerror = function () {
+            cb(500, text.get(7));
+          }, xdr.ontimeout = function () {
+            cb(500, text.get(8));
+          }, optsUser.__test === !0 && (xhr.__method = method, xhr.__uri = uri), xdr.open(method, uri),
+            setTimeout(function () {
+              xdr.send("POST" === method ? "string" == typeof data ? data : $.isPlainObject(data) ? $.param(data) : null : null);
+            }, 0);
+        },
+        abort: function () {
+          xdr.abort();
+        }
+      }) : _error(2, method) : _error(1);
+    }
+  }), $;
+}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr"], function (AddIn, Dashboard, $) {
   var geonames = {
     name: "geonames",
     label: "GeoNames",
@@ -1560,7 +1644,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames)),
     geonames;
-}), define("cde/components/Map/addIns/LocationResolver/nominatim/nominatim", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/LocationResolver/nominatim/nominatim", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   var nominatim = {
     name: "openstreetmap",
     label: "OpenStreetMap",
@@ -1582,7 +1666,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     implementation: function (tgt, st, opt) {
       if (st.latitude || st.longitude) {
         var location = [parseFloat(st.longitude), parseFloat(st.latitude)];
-        return void st.continuationFunction(location);
+        return st.continuationFunction(location), void 0;
       }
       var params = $.extend(!0, {}, opt.serviceParams);
       _.each(_.keys(st), function (key) {
@@ -1601,7 +1685,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           st.continuationFunction(location);
         }
       }, onError = function () {
-        st.continuationFunction(void 0);
+        st.continuationFunction([]);
       };
       return $.ajax({
         dataType: "json",
@@ -1615,7 +1699,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim)),
     nominatim;
-}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore", "../nominatim/nominatim"], function (AddIn, Dashboard, $, _, nominatim) {
+}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/lib/jquery", "cdf/AddIn", "cdf/Dashboard.Clean", "../nominatim/nominatim"], function ($, AddIn, Dashboard, nominatim) {
   var mapquest = $.extend(!0, {}, nominatim, {
     name: "mapquest",
     label: "MapQuest",
@@ -1630,7 +1714,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     name: "cggMarker",
     label: "CGG Marker",
     defaults: {},
-    implementation: function (tgt, st, opt) {
+    implementation: function (tgt, st) {
       var url = CggComponentExt.getCggDrawUrl() + "?script=" + st.cggGraphName, cggParameters = {};
       st.width && (cggParameters.width = st.width), st.height && (cggParameters.height = st.height),
         cggParameters.noChartBg = !0;
@@ -1666,7 +1750,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   });
   return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", urlMarker),
     urlMarker;
-}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   function multiPolygonToGeoJSON(latLonMultiPolygon) {
     var lonLatMultiPolygon = _.map(latLonMultiPolygon, function (polygon) {
       return _.map(polygon, function (lineString) {
@@ -1710,7 +1794,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
   Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
-}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   function getShapeFromKML(rawData, idSelector, parseShapeKey) {
     var mymap = {};
     return $(rawData).find("Placemark").each(function (idx, y) {
@@ -1776,7 +1860,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
   Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
-}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, Logger, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, Logger, $, _) {
   function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features).map(function (feature, idx) {
       var id = getFeatureId(feature, idPropertyName) || idx;
@@ -1825,9 +1909,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       API_KEY: !1,
       update: function () {
         return this.preExec() ? (this.maybeToggleBlock(!0), this.configuration = this.getConfiguration(),
-          void this._initMapEngine().then(_.bind(this.init, this)).then(_.bind(function () {
+          this._initMapEngine().then(_.bind(this.init, this)).then(_.bind(function () {
             this.queryDefinition && !_.isEmpty(this.queryDefinition) ? this.getQueryData() : this.onDataReady(this.testData || {});
-          }, this))) : !1;
+          }, this)), void 0) : !1;
       },
       onDataReady: function (json) {
         return $.when(this.resolveFeatures(json)).then(_.bind(function (json) {
@@ -1838,7 +1922,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         var options = $.extend(!0, {}, this.configuration.addIns.MapEngine.options, {
           options: this.configuration
         });
-        return "google" == this.configuration.addIns.MapEngine.name ? this.mapEngine = new GoogleMapEngine(options) : this.mapEngine = new OpenLayersEngine(options),
+        return this.mapEngine = "google" == this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(options) : new OpenLayersEngine(options),
           this.mapEngine.init();
       },
       init: function () {
@@ -1865,7 +1949,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       },
       render: function () {
         this.mapEngine.render(this.model);
-        var centerLatitude = this.configuration.viewport.center.latitude, centerLongitude = this.configuration.viewport.center.longitude, defaultZoomLevel = this.configuration.viewport.zoomLevel["default"];
+        var centerLatitude = this.configuration.viewport.center.latitude, centerLongitude = this.configuration.viewport.center.longitude, defaultZoomLevel = this.configuration.viewport.zoomLevel.default;
         this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
       },
       _relayMapEngineEvents: function () {
@@ -1899,7 +1983,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           _.size(result) > 0 && event.draw(_.defaults(result, event.style));
         }), this.on("shape:click", function (event) {
           if (_.isFunction(me.shapeMouseClick)) {
-            me.shapeMouseClick(event);
+            {
+              me.shapeMouseClick(event);
+            }
             return;
           }
         });
