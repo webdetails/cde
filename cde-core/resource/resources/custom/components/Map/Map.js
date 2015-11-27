@@ -1984,7 +1984,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         }), this.on("shape:click", function (event) {
           if (_.isFunction(me.shapeMouseClick)) {
             {
-              me.shapeMouseClick(event);
+            me.shapeMouseClick(event);
             }
             return;
           }
