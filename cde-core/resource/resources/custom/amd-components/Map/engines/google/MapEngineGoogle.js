@@ -40,6 +40,10 @@ define([
   return MapEngine.extend({
     map: undefined,
     centered: false,
+    boxStyle: {
+      fillOpacity: 0.15,
+      strokeWeight: 0.9
+    },
     overlays: [],
     API_KEY: false,
     selectedFeature: undefined,
@@ -154,14 +158,11 @@ define([
           feature.setVisible(false);
           feature.setVisible(_.has(style, "visible") ? !!style.visible : true);
         },
-        setSelectedStyle: function (style) {
+        _setSelectedStyle: function (style) {
           feature.selStyle = style;
         },
-        getSelectedStyle: function () {
+        _getSelectedStyle: function () {
           return feature.selStyle;
-        },
-        isSelected: function () {
-          return me.selectedFeature && me.selectedFeature[0] === data.key;
         },
         raw: event
       });
@@ -216,7 +217,7 @@ define([
         }
       });
 
-      if (modelItem && modelItem.getFeatureType() === 'marker') {
+      if (modelItem && modelItem.getFeatureType() === "marker") {
         if (!validStyle.icon) {
           validStyle = {
             icon: validStyle
@@ -254,7 +255,7 @@ define([
     zoomExtends: function () {
       var latlngbounds = new google.maps.LatLngBounds();
       this.map.data.forEach(function (feature) {
-        if (feature.getGeometry().getType() == 'Point') {
+        if (feature.getGeometry().getType() == "Point") {
           latlngbounds.extend(feature.getGeometry().get());
         }
       });
@@ -272,7 +273,7 @@ define([
       if (!modelItem) {
         return;
       }
-      var geoJSON = modelItem.get('geoJSON');
+      var geoJSON = modelItem.get("geoJSON");
       var me = this;
       $.when(geoJSON).then(function (feature) {
         if (!feature) {
@@ -282,13 +283,13 @@ define([
         //set id for the feature
         $.extend(true, feature, {
           properties: {
-            id: modelItem.get('id'),
+            id: modelItem.get("id"),
             model: modelItem
           }
         });
 
         var importedFeatures = me.map.data.addGeoJson(feature, {
-          idPropertyName: 'id'
+          idPropertyName: "id"
         });
         _.each(importedFeatures, function (f) {
           var style = me.toNativeStyle(modelItem.getStyle(), modelItem);
@@ -308,24 +309,29 @@ define([
 
     },
 
-    _removelistenersHandle: function () {
+    _removeListeners: function () {
       _.each(this.controls.listenersHandle, function (h) {
         h.remove();
       });
     },
 
     _addControlHover: function () {
-      this.map.data.addListener('mouseover', function (event) {
-        setStyle(event, 'hover');
+      var me = this;
+      this.map.data.addListener("mouseover", function (e) {
+        setStyle(e, "hover");
+        var featureType = e.feature.getProperty("model").getFeatureType();
+        me.trigger(featureType + ":mouseover", me.wrapEvent(e));
       });
 
-      this.map.data.addListener('mouseout', function (event) {
-        setStyle(event, 'normal');
+      this.map.data.addListener("mouseout", function (e) {
+        setStyle(e, "normal");
+        var featureType = e.feature.getProperty("model").getFeatureType();
+        me.trigger(featureType + ":mouseout", me.wrapEvent(e));
       });
 
       function setStyle(event, action) {
-        var modelItem = event.feature.getProperty('model');
-        modelItem.setHover(action === 'hover');
+        var modelItem = event.feature.getProperty("model");
+        modelItem.setHover(action === "hover");
       }
 
     },
@@ -348,21 +354,20 @@ define([
 
     _addControlClick: function () {
       var me = this;
-      this.map.data.addListener('click', function (e) {
-        var featureType = event.feature.getProperty('model').getFeatureType();
-        me.trigger(featureType + ':click', me.wrapEvent(e));
-        me.trigger('engine:selection:complete');
+      this.map.data.addListener("click", function (e) {
+        var featureType = e.feature.getProperty("model").getFeatureType();
+        me.trigger(featureType + ":click", me.wrapEvent(e));
+        me.trigger("engine:selection:complete");
       });
     },
 
     _addLimitZoomLimits: function () {
-
+      var minZoom = _.isFinite(this.options.viewport.zoomLevel.min) ? this.options.viewport.zoomLevel.min : 0;
+      var maxZoom = _.isFinite(this.options.viewport.zoomLevel.max) ? this.options.viewport.zoomLevel.max : null;
       var me = this;
-      var minZoom = _.isFinite(me.options.viewport.zoomLevel.min) ? me.options.viewport.zoomLevel.min : 0;
-      var maxZoom = _.isFinite(me.options.viewport.zoomLevel.max) ? me.options.viewport.zoomLevel.max : null;
 
       // Limit the zoom level
-      google.maps.event.addListener(me.map, 'zoom_changed', function () {
+      google.maps.event.addListener(this.map, "zoom_changed", function () {
         if (me.map.getZoom() < minZoom) {
           me.map.setZoom(minZoom);
         } else if ((!_.isNull(maxZoom)) && (me.map.getZoom() > maxZoom)) {
@@ -372,148 +377,119 @@ define([
     },
 
     zoomIn: function () {
-      //console.log('zoomIn');
       this.map.setZoom(this.map.getZoom() + 1);
     },
 
     zoomOut: function () {
-      //console.log('zoomOut');
       this.map.setZoom(this.map.getZoom() - 1);
     },
 
     setPanningMode: function () {
-      this._removelistenersHandle();
+      this._removeListeners();
       var me = this;
       me.controls.listenersHandle.click = this._toggleOnClick();
     },
 
     setZoomBoxMode: function () {
-      this._removelistenersHandle();
+      this._removeListeners();
       var me = this;
-      me.controls.listenersHandle.click = this._toggleOnClick();
-      me.controls.listenersHandle.mousedown = google.maps.event.addListener(this.map, 'mousedown', function (e) {
-        if (me.model.isZoomBoxMode()) {
-          me._beginBox(me.controls.zoomBox, e);
-        }
-      });
+      var control = this.controls.zoomBox;
+      var listeners = this.controls.listenersHandle;
 
-      me.controls.listenersHandle.mousemove = google.maps.event.addListener(this.map, 'mousemove', function (e) {
-        var control = me.controls.zoomBox;
+      listeners.click = this._toggleOnClick();
+
+      var onMouseDown = function (e) {
+        if (me.model.isZoomBoxMode()) {
+          me._beginBox(control, e);
+        }
+      };
+      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown);
+      listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
+
+      var onMouseMove = function (e) {
         if (me.model.isZoomBoxMode() && control.mouseIsDown) {
           me._onBoxResize(control, e);
         }
-      });
+      };
+      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
+      listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
 
-      me.controls.listenersHandle.mouseup = google.maps.event.addListener(this.map, 'mouseup', function (e) {
-        if (me.model.isZoomBoxMode() && me.controls.zoomBox.mouseIsDown) {
-          me.controls.zoomBox.mouseIsDown = false;
-          me.controls.zoomBox.mouseUpPos = e.latLng;
-
-          var bounds = me.controls.zoomBox.gribBoundingBox.getBounds();
-          var boundsSelectionArea = new google.maps.LatLngBounds(
-            bounds.getSouthWest(),
-            bounds.getNorthEast()
-          );
-
-          me.map.fitBounds(boundsSelectionArea);
-          me.controls.zoomBox.gribBoundingBox.setMap(null);
-          me.controls.zoomBox.gribBoundingBox = null;
-          me.map.setOptions({
-            draggable: true
-          });
+      var onMouseUp = this._endBox(control,
+        function () {
+          return me.model.isZoomBoxMode()
+        },
+        function (bounds) {
+          me.map.fitBounds(bounds);
         }
-      });
-
-
+      );
+      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
+      listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
     },
 
 
     setSelectionMode: function () {
-      this._removelistenersHandle();
+      this._removeListeners();
       var me = this;
       var control = me.controls.boxSelector;
+      var listeners = this.controls.listenersHandle;
 
-      this.controls.listenersHandle.click = this._toggleOnClick();
+      listeners.click = this._toggleOnClick();
 
-      this.controls.listenersHandle.mousedown = google.maps.event.addListener(this.map, 'mousedown', function (e) {
+      var onMouseDown = function (e) {
         if (me.model.isSelectionMode()) {
-          me._beginBox(me.controls.boxSelector, e);
+          me._beginBox(control, e);
         }
-      });
+      };
+      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown);
+      listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
 
-      me.controls.listenersHandle.mousemove = google.maps.event.addListener(this.map, 'mousemove', function (e) {
-        var control = me.controls.boxSelector;
+      var onMouseMove = function (e) {
         if (me.model.isSelectionMode() && control.mouseIsDown) {
           me._onBoxResize(control, e);
         }
-      });
+      };
+      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
+      listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
 
-      me.controls.listenersHandle.mouseup = google.maps.event.addListener(this.map, 'mouseup', function (e) {
-        if (me.model.isSelectionMode() && control.mouseIsDown) {
-          control.mouseIsDown = false;
-          control.mouseUpPos = e.latLng;
-
+      var onMouseUp = this._endBox(control,
+        function () {
+          return me.model.isSelectionMode()
+        },
+        function (bounds) {
           me.model.leafs()
             .each(function (m) {
-              var id = m.get('id');
+              var id = m.get("id");
               if (me.map.data.getFeatureById(id) != undefined) {
-                // Replace with $.when(m.geoJSON).then()
-                me.map.data.getFeatureById(id).toGeoJson(function (obj) {
+                $.when(m.get("geoJSON")).then(function (obj) {
                   var geometry = obj.geometry;
-                  var isWithinArea = false;
-                  var bounds = control.gribBoundingBox.getBounds();
-                  // For shape
-                  if (geometry.type == 'MultiPolygon') {
-                    isWithinArea = _.some(geometry.coordinates, function (value) {
-                      return _.some(value, function (value) {
-                        return _.some(value, function (value) {
-                          var latLng = new google.maps.LatLng(value[1], value[0]);
-                          return bounds.contains(latLng);
-                        });
-                      });
-                    });
-                  } else if (geometry.type == 'Point') {
-                    var latLng = new google.maps.LatLng(geometry.coordinates[1], geometry.coordinates[0]);
-                    isWithinArea = bounds.contains(latLng);
-                  }
-
+                  var isWithinArea = isInBounds(geometry, bounds);
                   // Area contains shape
                   if (isWithinArea) {
-                    toggleSelection(me, m);
+                    addToSelection(m);
                   }
-
                 });
-
               }
-
             });
-
-          //me.map.fitBounds( boundsSelectionArea );
-          me.trigger('engine:selection:complete');
-          control.gribBoundingBox.setMap(null);
-          control.gribBoundingBox = null;
-
-          me.map.setOptions({
-            draggable: true
-          });
-
+          me.trigger("engine:selection:complete");
         }
-      });
+      );
 
+      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
+      listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
 
-      //console.log('Selection mode enable');
+      //console.log("Selection mode enable");
     },
 
 
     /*-----------------------------*/
     _toggleOnClick: function () {
       var me = this;
-      return this.map.data.addListener('click', function (event) {
-        var modelItem = event.feature.getProperty('model');
-        toggleSelection(me, modelItem);
-        me.trigger('engine:selection:complete');
+      return this.map.data.addListener("click", function (event) {
+        var modelItem = event.feature.getProperty("model");
+        toggleSelection(modelItem);
+        me.trigger("engine:selection:complete");
         var featureType = modelItem.getFeatureType();
-        me.trigger(featureType + ':click', me.wrapEvent(event));
+        me.trigger(featureType + ":click", me.wrapEvent(event));
       });
     },
 
@@ -525,18 +501,36 @@ define([
       });
     },
 
+    _endBox: function (control, condition, callback) {
+      var me = this;
+      return function (e) {
+        if (condition() && control.mouseIsDown) {
+          control.mouseIsDown = false;
+          control.mouseUpPos = e.latLng;
+          var bounds = control.gribBoundingBox.getBounds();
+
+          callback(bounds);
+
+          control.gribBoundingBox.setMap(null);
+          control.gribBoundingBox = null;
+
+          me.map.setOptions({
+            draggable: true
+          });
+        }
+      };
+    },
+
     _onBoxResize: function (control, e) {
       if (control.gribBoundingBox !== null) { // box exists
-        var newbounds = new google.maps.LatLngBounds(control.mouseDownPos, null);
-        newbounds.extend(e.latLng);
-        control.gribBoundingBox.setBounds(newbounds); // If this statement is enabled, I lose mouseUp events
+        var bounds = new google.maps.LatLngBounds(control.mouseDownPos, null);
+        bounds.extend(e.latLng);
+        control.gribBoundingBox.setBounds(bounds); // If this statement is enabled, I lose mouseUp events
       } else { // create bounding box
-        control.gribBoundingBox = new google.maps.Rectangle({
+        control.gribBoundingBox = new google.maps.Rectangle($.extend({
           map: this.map,
-          fillOpacity: 0.15,
-          strokeWeight: 0.9,
           clickable: false
-        });
+        }, this.boxStyle));
       }
     },
 
@@ -551,7 +545,7 @@ define([
           var validStyle = myself.toNativeStyle(prevStyle);
           s.setOptions(validStyle);
           s.setVisible(false);
-          s.setVisible(_.has(prevStyle, 'visible') ? !!prevStyle.visible : true);
+          s.setVisible(_.has(prevStyle, "visible") ? !!prevStyle.visible : true);
         });
       }
       this.selectedFeature = [key, shapes, shapeStyle];
@@ -572,7 +566,7 @@ define([
         if (this.tileServices[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
         } else {
-          layers.push('');
+          layers.push("");
         }
 
       } //for tilesets
@@ -589,11 +583,10 @@ define([
     },
 
     updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
-      if (!zoomLevel) zoomLevel = 2;
+      if (!zoomLevel) {
+        zoomLevel = this.options.viewport.zoomLevel.default;
+      }
       this.map.setZoom(zoomLevel);
-
-      var centerPoint;
-
       if (!this.zoomExtends())
         this.map.panTo(new google.maps.LatLng(38, -9));
     },
@@ -608,17 +601,17 @@ define([
       var myself = this;
 
       return new google.maps.ImageMapType(_.defaults({
-        name: name.indexOf('/') >= 0 ? 'custom' : name,
+        name: name.indexOf("/") >= 0 ? "custom" : name,
         getTileUrl: function (coord, zoom) {
           var limit = Math.pow(2, zoom);
           if (coord.y < 0 || coord.y >= limit) {
-            return '404.png';
+            return "404.png";
           } else {
             // use myself._selectUrl
             coord.x = ((coord.x % limit) + limit) % limit;
             var url;
             if (_.isArray(urlList)) {
-              var s = _.template('${z}/${x}/${y}', {
+              var s = _.template("${z}/${x}/${y}", {
                 x: coord.x,
                 y: coord.y,
                 z: zoom
@@ -643,7 +636,7 @@ define([
 
     showPopup0: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
       if (popupContentDiv && popupContentDiv.length > 0) {
-        contents = $('#' + popupContentDiv).html();
+        contents = $("#" + popupContentDiv).html();
       }
 
       var popup = new OurMapOverlay(feature.getGeometry().get(), popupWidth, popupHeight, contents, popupContentDiv, this.map, borderColor);
@@ -671,8 +664,8 @@ define([
     registerViewportEvents: function () {
       var me = this;
       var eventMap = {
-        'zoom_changed': 'map:zoom',
-        'center_changed': 'map:center'
+        "zoom_changed": "map:zoom",
+        "center_changed": "map:center"
       };
       _.each(eventMap, function (mapEvent, engineEvent) {
         google.maps.event.addListener(me.map, engineEvent, function () {
@@ -718,13 +711,51 @@ define([
 
   });
 
-  function toggleSelection(me, modelItem) {
+
+  function addToSelection(modelItem) {
+    modelItem.setSelection(MapModel.SelectionStates.ALL);
+  }
+
+  function toggleSelection(modelItem) {
     modelItem.setSelection(
       (modelItem.getSelection() === MapModel.SelectionStates.ALL)
         ? MapModel.SelectionStates.NONE
         : MapModel.SelectionStates.ALL
     );
-    //me.updateItem(modelItem);
+  }
+
+  function isInBounds(geometry, bounds) {
+    switch(geometry.type){
+      case "MultiPolygon":
+        return containsMultiPolygon(bounds, geometry.coordinates);
+      case "Polygon":
+        return containsPolygon(bounds, geometry.coordinates);
+      case "Point":
+        return containsPoint(bounds, geometry.coordinates);
+      default:
+        return false;
+    }
+
+    function containsMultiPolygon(bounds, multiPolygon) {
+      var hasPolygon = function(polygon){
+        return containsPolygon(bounds, polygon);
+      };
+      return _.some(multiPolygon, hasPolygon);
+    }
+
+    function containsPolygon(bounds, polygon){
+      var hasPoint = function(point){
+        return containsPoint(bounds, point);
+      };
+      return _.some(polygon, function (line) {
+        return _.some(line, hasPoint)
+      });
+    }
+
+    function containsPoint(bounds, point){
+      var latLng = new google.maps.LatLng(point[1], point[0]);
+      return bounds.contains(latLng);
+    }
   }
 
 });

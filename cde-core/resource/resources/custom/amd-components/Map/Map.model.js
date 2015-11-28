@@ -123,7 +123,7 @@ define([
           var rmax = this.scales.r[1];
           var v = seriesRoot.get('extremes').r;
           //var r = rmin + (value - v.min)/(v.max - v.min)*(rmax-rmin); //linear scaling
-          var r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / v.max - v.min); //sqrt scaling, i.e. area scales linearly with data
+          var r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / (v.max - v.min)); //sqrt scaling, i.e. area scales linearly with data
           if (_.isFinite(r)) {
             return r;
           }
