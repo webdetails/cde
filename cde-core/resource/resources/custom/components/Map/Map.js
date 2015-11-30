@@ -532,7 +532,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       return colormap[Math.floor(level * (n - 1))];
     },
     toGrayscale: function (color) {
-      var rgba = color2array(color), g = Math.round(.2989 * rgba[0] + .587 * rgba[1] + .114 * rgba[2]), v = [g, g, g, rgba[3]];
+      var rgba = color2array(color), g = Math.round(Math.sqrt(.2989 * rgba[0] * rgba[0] + .587 * rgba[1] * rgba[1] + .114 * rgba[2] * rgba[2])), v = [g, g, g, rgba[3]];
       return "rgba(" + v.join(",") + ")";
     }
   };
@@ -736,7 +736,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
 }), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel, Logger) {
   function clearSelection(me) {
     var SelectionStates = MapModel.SelectionStates;
-    me.model && me.model.setSelection(SelectionStates.NONE);
+    return function (feature) {
+      me.model && (me.model.flatten().each(function (m) {
+        m.setSelection(SelectionStates.NONE);
+      }), me.trigger("engine:selection:complete"));
+    };
   }
 
   function addToSelection(modelItem) {
@@ -1119,6 +1123,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.div_ = null, this.setMap(map);
   }
 
+  function clearSelection(modelItem) {
+    modelItem.root().setSelection(MapModel.SelectionStates.NONE);
+  }
+
   function addToSelection(modelItem) {
     modelItem.setSelection(MapModel.SelectionStates.ALL);
   }
@@ -1369,8 +1377,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     setPanningMode: function () {
       this._removeListeners();
-      var me = this;
-      me.controls.listenersHandle.click = this._toggleOnClick();
+      var listeners = this.controls.listenersHandle;
+      listeners.click = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
     },
     setZoomBoxMode: function () {
       this._removeListeners();
@@ -1397,7 +1405,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     setSelectionMode: function () {
       this._removeListeners();
       var me = this, control = me.controls.boxSelector, listeners = this.controls.listenersHandle;
-      listeners.click = this._toggleOnClick();
+      listeners.toggleOnClick = this._toggleOnClick();
       var onMouseDown = function (e) {
         me.model.isSelectionMode() && me._beginBox(control, e);
       };
@@ -1422,6 +1430,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp),
         listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
     },
+    _clearOnClick: function () {
+      var me = this;
+      return google.maps.event.addListener(this.map, "click", function (event) {
+        clearSelection(me.model), me.trigger("engine:selection:complete");
+      });
+    },
     _toggleOnClick: function () {
       var me = this;
       return this.map.data.addListener("click", function (event) {
@@ -1439,7 +1453,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     _endBox: function (control, condition, callback) {
       var me = this;
       return function (e) {
-        if (condition() && control.mouseIsDown) {
+        if (condition() && control.mouseIsDown && control.gribBoundingBox) {
           control.mouseIsDown = !1, control.mouseUpPos = e.latLng;
           var bounds = control.gribBoundingBox.getBounds();
           callback(bounds), control.gribBoundingBox.setMap(null), control.gribBoundingBox = null,

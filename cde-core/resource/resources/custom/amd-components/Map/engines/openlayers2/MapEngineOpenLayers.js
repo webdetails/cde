@@ -561,8 +561,13 @@ define([
 
   function clearSelection(me) {
     var SelectionStates = MapModel.SelectionStates;
-    if (me.model) {
-      me.model.setSelection(SelectionStates.NONE);
+    return function (feature) {
+      if (me.model) {
+        me.model.flatten().each(function (m) {
+          m.setSelection(SelectionStates.NONE);
+        });
+        me.trigger('engine:selection:complete');
+      }
     }
   }
 
