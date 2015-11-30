@@ -465,7 +465,7 @@ define([
                   var isWithinArea = isInBounds(geometry, bounds);
                   // Area contains shape
                   if (isWithinArea) {
-                    toggleSelection(m);
+                    addToSelection(m);
                   }
                 });
               }
@@ -710,6 +710,14 @@ define([
     }
 
   });
+
+  function clearSelection(modelItem){
+    //modelItem.root().setSelection(MapModel.SelectionStates.NONE);
+  }
+
+  function addToSelection(modelItem) {
+    modelItem.setSelection(MapModel.SelectionStates.ALL);
+  }
 
   function toggleSelection(modelItem) {
     modelItem.setSelection(
