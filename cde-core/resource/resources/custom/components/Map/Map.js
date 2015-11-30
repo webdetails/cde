@@ -32,8 +32,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.setValue(idList);
     },
     processChange: function () {
-      return console.debug("processChange was called: ", new Date().toISOString()), this.dashboard.processChange(this.name),
-        this;
+      return this.dashboard.processChange(this.name), this;
     }
   };
 }), define("cde/components/Map/model/MapModel", ["cdf/lib/BaseSelectionTree", "amd!cdf/lib/underscore", "cdf/lib/jquery"], function (BaseSelectionTree, _, $) {
@@ -169,7 +168,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
 
   return getMapping;
 }), define("cde/components/Map/FeatureStore/shapeConversion", [], function () {
-  return {
+  var shapeConversion = {
     simplifyPoints: function (points, precision_m) {
       function properRDP(points, epsilon) {
         var firstPoint = points[0], lastPoint = points[points.length - 1];
@@ -198,6 +197,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.shapeDefinition && window.open("data:text/json;charset=utf-8," + escape(JSON.stringify(this.shapeDefinition)));
     }
   };
+  return shapeConversion;
 }), define("cde/components/Map/FeatureStore/resolveShapes", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "./shapeConversion"], function ($, _, ShapeConversion) {
   function resolveShapes(json, mapping, configuration) {
     var addIn = this.getAddIn("ShapeResolver", configuration.addIns.ShapeResolver.name), url = configuration.addIns.ShapeResolver.options.url;
@@ -310,7 +310,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       r: [10, 20]
     },
     attributeMapping: {
-      fill: function (context, seriesRoot, mapping, row, rowIdx) {
+      fill: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.fill], useGradient = context.mode === MapModel.Modes.pan && context.state === MapModel.States.unselected && context.action === MapModel.Actions.normal;
         useGradient = useGradient || context.mode === MapModel.Modes.selection && context.state === MapModel.States.selected && context.action === MapModel.Actions.normal,
           useGradient = !0;
@@ -318,10 +318,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         return isGrayscale = !1, isGrayscale && (colormap = _.map(colormap, this.toGrayscale)),
           _.isNumber(value) && (useGradient || isGrayscale) ? this.mapColor(value, seriesRoot.get("extremes").fill.min, seriesRoot.get("extremes").fill.max, colormap) : void 0;
       },
-      label: function (context, seriesRoot, mapping, row, rowIdx) {
+      label: function (context, seriesRoot, mapping, row) {
         return _.isEmpty(row) ? void 0 : row[mapping.label] + "";
       },
-      r: function (context, seriesRoot, mapping, row, rowIdx) {
+      r: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.r];
         if (_.isNumber(value)) {
           var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / (v.max - v.min));
@@ -509,7 +509,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     return d;
   }
 
-  return {
+  var IColorMap = {
     colormaps: {
       "default": ["#79be77", "#96b761", "#b6ae4c", "#e0a433", "#f4a029", "#fa8e1f", "#f47719", "#ec5f13", "#e4450f", "#dc300a"],
       default0: [[0, 102, 0, 1], [255, 255, 0, 1], [255, 0, 0, 1]],
@@ -522,7 +522,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps["default"]) : _.map(this.colormap, JSON.parse),
         colorMap = _.map(colorMap, color2array);
       var cmap = [];
-      for (k = 1, L = colorMap.length; k < L; k++) cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
+      for (k = 1, L = colorMap.length; L > k; k++) cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
       return _.map(cmap, function (v) {
         return "rgba(" + v.join(",") + ")";
       });
@@ -532,14 +532,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       return colormap[Math.floor(level * (n - 1))];
     },
     toGrayscale: function (color) {
-      var rgba = color2array(color), g = Math.round(.2989 * rgba[0] + .587 * rgba[1] + .114 * rgba[2]), v = [g, g, g, rgba[3]];
+      var rgba = color2array(color), g = Math.round(Math.sqrt(.2989 * rgba[0] * rgba[0] + .587 * rgba[1] * rgba[1] + .114 * rgba[2] * rgba[2])), v = [g, g, g, rgba[3]];
       return "rgba(" + v.join(",") + ")";
     }
   };
-}), define("text!cde/components/Map/ControlPanel/ControlPanel.html", [], function () {
+  return IColorMap;
+}), define("cdf/lib/require-text/text!cde/components/Map/ControlPanel/ControlPanel.html", [], function () {
   return '<div class="map-control-panel">\n    <div class="map-control-button map-control-zoom-in"></div>\n    <div class="map-control-button map-control-zoom-out"></div>\n    <div class="map-controls-mode {{mode}}">\n        <div class="map-control-button map-control-pan"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
 }), define("cde/components/Map/ControlPanel/ControlPanel", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/lib/mustache", "cdf/lib/BaseEvents", "../model/MapModel", "text!./ControlPanel.html", "css!./ControlPanel"], function ($, _, Mustache, BaseEvents, MapModel, template) {
-  return BaseEvents.extend({
+  var MODES = MapModel.Modes, ControlPanel = BaseEvents.extend({
     constructor: function (domNode, model, configuration) {
       return this.base(), this.ph = $(domNode), this.model = model, this.configuration = configuration,
         this;
@@ -580,9 +581,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     _updateView: function () {
       var mode = this.model.getMode();
-      this.ph.find(".map-controls-mode").removeClass(_.values(MapModel.Modes).join(" ")).addClass(mode);
+      this.ph.find(".map-controls-mode").removeClass(_.values(MODES).join(" ")).addClass(mode);
     }
   });
+  return ControlPanel;
 }), define("cde/components/Map/Map.tileServices", [], function () {
   var _tileServices = {
     "default": "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}.png",
@@ -642,16 +644,16 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
 }), define("cde/components/Map/engines/MapEngine", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/lib/BaseEvents", "../model/MapModel"], function ($, _, BaseEvents, MapModel) {
-  return BaseEvents.extend({
+  var SelectionStates = MapModel.SelectionStates, MapEngine = BaseEvents.extend({
     tileServices: void 0,
     tileServicesOptions: void 0,
-    tileLayer: function (name) {
+    tileLayer: function () {
     },
     init: function () {
       var deferred = $.Deferred();
       return deferred.resolve(), deferred.promise();
     },
-    renderMap: function (target) {
+    renderMap: function () {
     },
     render: function (model) {
       this.model = model;
@@ -665,14 +667,14 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         modes[value] && modes[value].call(me), model.leafs().each(function (m) {
           me.updateItem(m);
         });
-      }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model, value) {
+      }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model) {
         model.children() || me.updateItem(model);
       }), model.leafs().each(function (m) {
         me.renderItem(m);
       }), model.isPanningMode() && me.setPanningMode(), model.isZoomBoxMode() && me.setZoomBoxMode(),
       model.isSelectionMode() && me.setSelectionMode();
     },
-    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+    updateViewport: function () {
     },
     showPopup: function () {
     },
@@ -684,7 +686,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         featureType: modelItem.getFeatureType(),
         style: modelItem.getStyle(),
         isSelected: function () {
-          return modelItem.getSelection() === MapModel.SelectionStates.ALL;
+          return modelItem.getSelection() === SelectionStates.ALL;
         }
       };
     },
@@ -711,7 +713,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         featureType: featureType,
         style: void 0,
         mapEngineType: "abstract",
-        draw: function (style) {
+        draw: function () {
         },
         raw: void 0
       };
@@ -733,10 +735,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         urlTemplate;
     }
   });
-}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel, Logger) {
+  return MapEngine;
+}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "cdf/Logger", "css!./styleOpenLayers2"], function ($, _, MapEngine, OpenLayers, MapModel) {
   function clearSelection(me) {
     var SelectionStates = MapModel.SelectionStates;
-    me.model && me.model.setSelection(SelectionStates.NONE);
+    return function () {
+      me.model && (me.model.flatten().each(function (m) {
+        m.setSelection(SelectionStates.NONE);
+      }), me.trigger("engine:selection:complete"));
+    };
   }
 
   function addToSelection(modelItem) {
@@ -757,7 +764,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     };
   }
 
-  return MapEngine.extend({
+  var OpenLayersEngine = MapEngine.extend({
     map: void 0,
     API_KEY: 0,
     constructor: function (options) {
@@ -1083,8 +1090,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       });
     }
   });
+  return OpenLayersEngine;
 }), define("cde/components/Map/engines/google/MapComponentAsyncLoader", ["cdf/lib/jquery"], function ($) {
-  return function ($) {
+  var loadGoogleMaps = function ($) {
     var promise, now = $.now();
     return function (version, apiKey) {
       if (promise) return promise;
@@ -1112,11 +1120,16 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       })), promise = deferred.promise();
     };
   }($);
+  return loadGoogleMaps;
 }), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function ($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
       this.htmlContent_ = htmlContent, this.popupContentDiv_ = popupContentDiv, this.borderColor_ = borderColor,
       this.div_ = null, this.setMap(map);
+  }
+
+  function clearSelection(modelItem) {
+    modelItem.root().setSelection(MapModel.SelectionStates.NONE);
   }
 
   function addToSelection(modelItem) {
@@ -1178,10 +1191,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.base(), $.extend(this, options), this.controls = {}, this.controls.listenersHandle = {};
     },
     init: function () {
-      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(function (status) {
+      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(function () {
         OurMapOverlay.prototype = new google.maps.OverlayView(), OurMapOverlay.prototype.onAdd = function () {
           var div = document.createElement("DIV");
-          div.id = "MapOverlay", div.style.position = "absolute", this.borderColor_ ? div.style.border = "3px solid " + this.borderColor_ : div.style.border = "none";
+          div.id = "MapOverlay", div.style.position = "absolute", div.style.border = this.borderColor_ ? "3px solid " + this.borderColor_ : "none";
           var me = this, closeDiv = $('<div id="MapOverlay_close" class="olPopupCloseBox" style="position: absolute;"></div>');
           closeDiv.click(function () {
             me.setMap(null);
@@ -1199,7 +1212,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         };
       });
     },
-    wrapEvent: function (event, featureType) {
+    wrapEvent: function (event) {
       var me = this, modelItem = event.feature.getProperty("model");
       return $.extend(this._wrapEvent(modelItem), {
         latitude: event.latLng.lat(),
@@ -1369,8 +1382,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     setPanningMode: function () {
       this._removeListeners();
-      var me = this;
-      me.controls.listenersHandle.click = this._toggleOnClick();
+      var listeners = this.controls.listenersHandle;
+      listeners.click = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
     },
     setZoomBoxMode: function () {
       this._removeListeners();
@@ -1397,7 +1410,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     setSelectionMode: function () {
       this._removeListeners();
       var me = this, control = me.controls.boxSelector, listeners = this.controls.listenersHandle;
-      listeners.click = this._toggleOnClick();
+      listeners.toggleOnClick = this._toggleOnClick();
       var onMouseDown = function (e) {
         me.model.isSelectionMode() && me._beginBox(control, e);
       };
@@ -1422,6 +1435,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp),
         listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
     },
+    _clearOnClick: function () {
+      var me = this;
+      return google.maps.event.addListener(this.map, "click", function () {
+        clearSelection(me.model), me.trigger("engine:selection:complete");
+      });
+    },
     _toggleOnClick: function () {
       var me = this;
       return this.map.data.addListener("click", function (event) {
@@ -1439,7 +1458,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     _endBox: function (control, condition, callback) {
       var me = this;
       return function (e) {
-        if (condition() && control.mouseIsDown) {
+        if (condition() && control.mouseIsDown && control.gribBoundingBox) {
           control.mouseIsDown = !1, control.mouseUpPos = e.latLng;
           var bounds = control.gribBoundingBox.getBounds();
           callback(bounds), control.gribBoundingBox.setMap(null), control.gribBoundingBox = null,
@@ -1523,7 +1542,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         p.setMap(null);
       }), this._popups.push(popup);
     },
-    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
+    showPopup: function (data, feature, popupHeight, popupWidth, contents) {
       var popup = new google.maps.InfoWindow({
         content: contents,
         position: feature.getGeometry().get(),
@@ -1574,7 +1593,86 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       });
     }
   });
-}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery"], function (AddIn, Dashboard, $) {
+}), define("cde/components/Map/addIns/jquery.transport.xdr", ["cdf/lib/jquery"], function ($) {
+  var module_messages = {
+    get: function (code, param) {
+      var _messages = {
+        0: "Unknown Error",
+        1: "No Transport",
+        2: param + " Method Not Allowed",
+        3: param + " Scheme Not Supported",
+        4: "URI source and target scheme must be the same",
+        5: "No Data",
+        6: "Bad Data: " + param,
+        7: "Network Error",
+        8: "Timeout"
+      };
+      return _messages[code in _messages ? code : 0];
+    }
+  };
+  return $.ajaxTransport("+*", function (opts, optsUser, xhr) {
+    if (opts.crossDomain && (document.addEventListener || document.querySelector) && !window.atob && window.XDomainRequest) {
+      var text = module_messages, xdr = new XDomainRequest(), method = opts.type.toUpperCase(), contentType = opts.contentType || optsUser.contentType, scheme = opts.url.substring(0, opts.url.indexOf(":")).toUpperCase(), uri = opts.url, data = optsUser.data || {}, _error = function (code, param) {
+        return {
+          send: function (hdr, cb) {
+            cb(-1, text.get(code, param));
+          },
+          abort: $.noop
+        };
+      };
+      return xdr ? optsUser.forceMethod || -1 !== $.inArray(method, ["GET", "POST"]) ? -1 === $.inArray(scheme, ["HTTP", "HTTPS"]) ? _error(3, scheme) : scheme !== location.protocol.substring(0, location.protocol.indexOf(":")).toUpperCase() ? _error(4) : (optsUser.forceMethod && ("HEAD" === method && (method = "GET",
+        uri += (-1 === opts.url.indexOf("?") ? "?" : "&") + "__ethod=" + method), -1 !== $.inArray(method, ["PUT", "DELETE", "PATCH"]) && (method = "POST",
+        $.isPlainObject(data) ? data.__method = method : "string" == typeof data && (data += (data.length ? "&" : "") + "__method=" + method))),
+      optsUser.forceContentType && ("GET" === method && (uri += (-1 === opts.url.indexOf("?") ? "?" : "&") + "__contentType=" + encodeURIComponent(contentType)),
+      "POST" === method && ($.isPlainObject(data) ? data.__contentType = contentType : "string" == typeof data && (data += (data.length ? "&" : "") + $.param({
+          __contentType: contentType
+        })))), opts.timeout && (xdr.timeout = opts.timeout), xdr.onprogress = $.noop, {
+        send: function (hdr, cb) {
+          xdr.onload = function () {
+            var data = {}, error = null;
+            switch (opts.dataType) {
+              case "json":
+                try {
+                  data.json = $.parseJSON(xdr.responseText);
+                } catch (e) {
+                  error = e.message;
+                }
+                break;
+
+              case "xml":
+                try {
+                  data.xml = $.parseXML(xdr.responseText);
+                } catch (e) {
+                  error = e.message;
+                }
+                break;
+
+              case "text":
+                data.text = xdr.responseText;
+                break;
+
+              case "html":
+                data.html = xdr.responseText;
+            }
+            if (error) return cb(500, text.get(6, error));
+            var headers = ["Content-Type: " + xdr.contentType, "Content-Length: " + xdr.responseText.length];
+            cb(200, "OK", data, headers.join("\r\n"));
+          }, xdr.onerror = function () {
+            cb(500, text.get(7));
+          }, xdr.ontimeout = function () {
+            cb(500, text.get(8));
+          }, optsUser.__test === !0 && (xhr.__method = method, xhr.__uri = uri), xdr.open(method, uri),
+            setTimeout(function () {
+              xdr.send("POST" === method ? "string" == typeof data ? data : $.isPlainObject(data) ? $.param(data) : null : null);
+            }, 0);
+        },
+        abort: function () {
+          xdr.abort();
+        }
+      }) : _error(2, method) : _error(1);
+    }
+  }), $;
+}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr"], function (AddIn, Dashboard, $) {
   var geonames = {
     name: "geonames",
     label: "GeoNames",
@@ -1613,7 +1711,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames)),
     geonames;
-}), define("cde/components/Map/addIns/LocationResolver/nominatim/nominatim", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/LocationResolver/nominatim/nominatim", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   var nominatim = {
     name: "openstreetmap",
     label: "OpenStreetMap",
@@ -1635,7 +1733,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     implementation: function (tgt, st, opt) {
       if (st.latitude || st.longitude) {
         var location = [parseFloat(st.longitude), parseFloat(st.latitude)];
-        return void st.continuationFunction(location);
+        return st.continuationFunction(location), void 0;
       }
       var params = $.extend(!0, {}, opt.serviceParams);
       _.each(_.keys(st), function (key) {
@@ -1654,7 +1752,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           st.continuationFunction(location);
         }
       }, onError = function () {
-        st.continuationFunction(void 0);
+        st.continuationFunction([]);
       };
       return $.ajax({
         dataType: "json",
@@ -1668,7 +1766,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim)),
     nominatim;
-}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore", "../nominatim/nominatim"], function (AddIn, Dashboard, $, _, nominatim) {
+}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/lib/jquery", "cdf/AddIn", "cdf/Dashboard.Clean", "../nominatim/nominatim"], function ($, AddIn, Dashboard, nominatim) {
   var mapquest = $.extend(!0, {}, nominatim, {
     name: "mapquest",
     label: "MapQuest",
@@ -1679,11 +1777,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(mapquest)),
     mapquest;
 }), define("cde/components/Map/addIns/MarkerImage/cggMarker/cggMarker", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/components/CggComponent.ext"], function (AddIn, Dashboard, CggComponentExt) {
-  var cggMarker = {
+  var cggMarker = new AddIn({
     name: "cggMarker",
     label: "CGG Marker",
     defaults: {},
-    implementation: function (tgt, st, opt) {
+    implementation: function (tgt, st) {
       var url = CggComponentExt.getCggDrawUrl() + "?script=" + st.cggGraphName, cggParameters = {};
       st.width && (cggParameters.width = st.width), st.height && (cggParameters.height = st.height),
         cggParameters.noChartBg = !0;
@@ -1694,17 +1792,18 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       for (parameter in cggParameters) void 0 !== cggParameters[parameter] && (url += "&param" + parameter + "=" + encodeURIComponent(cggParameters[parameter]));
       return url;
     }
-  };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(cggMarker)),
+  });
+  return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", cggMarker),
     cggMarker;
 }), define("cde/components/Map/Map.ext", [], function () {
-  return {
+  var NewMapComponentExt = {
     getMarkerImgPath: function () {
       return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/";
     }
   };
+  return NewMapComponentExt;
 }), define("cde/components/Map/addIns/MarkerImage/urlMarker/urlMarker", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../../Map.ext"], function (AddIn, Dashboard, NewMapComponentExt) {
-  var urlMarker = {
+  var urlMarker = new AddIn({
     name: "urlMarker",
     label: "Url Marker",
     defaults: {
@@ -1715,10 +1814,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     implementation: function (tgt, st, opt) {
       return st.url ? st.url : st.position ? opt.imagePath + opt.images[st.position % opt.images.length] || opt.defaultUrl : opt.defaultUrl;
     }
-  };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(urlMarker)),
+  });
+  return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", urlMarker),
     urlMarker;
-}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   function multiPolygonToGeoJSON(latLonMultiPolygon) {
     var lonLatMultiPolygon = _.map(latLonMultiPolygon, function (polygon) {
       return _.map(polygon, function (lineString) {
@@ -1726,8 +1825,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           return point.reverse();
         });
       });
-    });
-    return {
+    }), feature = {
       type: "Feature",
       geometry: {
         type: "MultiPolygon",
@@ -1735,9 +1833,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       },
       properties: {}
     };
+    return feature;
   }
 
-  var simpleJSON = {
+  var thisAddIn = {
     name: "simpleJSON",
     label: "Simple JSON shape resolver",
     defaults: {
@@ -1750,9 +1849,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         type: "GET",
         dataType: "json",
         success: function (latlonMap) {
-          deferred.resolve(_.chain(latlonMap).map(function (multiPolygonLatLon, key) {
+          var map = _.chain(latlonMap).map(function (multiPolygonLatLon, key) {
             return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
-          }).object().value());
+          }).object().value();
+          deferred.resolve(map);
         },
         error: function () {
           deferred.resolve({});
@@ -1760,9 +1860,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       }) : deferred.resolve(null), deferred.promise();
     }
   };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(simpleJSON)),
-    simpleJSON;
-}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, $, _) {
   function getShapeFromKML(rawData, idSelector, parseShapeKey) {
     var mymap = {};
     return $(rawData).find("Placemark").each(function (idx, y) {
@@ -1803,7 +1902,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     return feature;
   }
 
-  var kml = {
+  var thisAddIn = {
     name: "kml",
     label: "KML shape resolver",
     defaults: {
@@ -1818,7 +1917,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         type: "GET",
         processData: !1,
         success: function (data) {
-          deferred.resolve(getShapeFromKML(data, opt.idSelector, parseShapeKey));
+          var map = getShapeFromKML(data, opt.idSelector, parseShapeKey);
+          deferred.resolve(map);
         },
         error: function () {
           deferred.resolve({});
@@ -1826,9 +1926,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       }) : deferred.resolve(null), deferred.promise();
     }
   };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(kml)),
-    kml;
-}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, Logger, $, _) {
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function (AddIn, Dashboard, Logger, $, _) {
   function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features).map(function (feature, idx) {
       var id = getFeatureId(feature, idPropertyName) || idx;
@@ -1842,7 +1941,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     return idPropertyName && (id = feature.properties[idPropertyName] || id), id;
   }
 
-  var geoJSON = {
+  var thisAddIn = {
     name: "geoJSON",
     label: "GeoJSON shape resolver",
     defaults: {
@@ -1867,20 +1966,19 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         deferred.promise();
     }
   };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(geoJSON)),
-    geoJSON;
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
 }), define("cde/components/Map/addIns/mapAddIns", ["./LocationResolver/geonames/geonames", "./LocationResolver/nominatim/nominatim", "./LocationResolver/mapquest/mapquest", "./MarkerImage/cggMarker/cggMarker", "./MarkerImage/urlMarker/urlMarker", "./ShapeResolver/simpleJSON", "./ShapeResolver/kml", "./ShapeResolver/geoJSON"], function () {
 }),
   define("cde/components/Map/Map", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/components/UnmanagedComponent", "./Map.lifecycle", "./Map.selector", "./Map.model", "./Map.configuration", "./Map.featureStyles", "./Map.colorMap", "./ControlPanel/ControlPanel", "./Map.tileServices", "./engines/openlayers2/MapEngineOpenLayers", "./engines/google/MapEngineGoogle", "./addIns/mapAddIns", "css!./Map"], function ($, _, UnmanagedComponent, ILifecycle, ISelector, IMapModel, IConfiguration, IFeatureStyle, IColorMap, ControlPanel, tileServices, OpenLayersEngine, GoogleMapEngine) {
-    return UnmanagedComponent.extend(ILifecycle).extend(ISelector).extend(IMapModel).extend(IConfiguration).extend(IFeatureStyle).extend(IColorMap).extend(tileServices).extend({
+    var NewMapComponent = UnmanagedComponent.extend(ILifecycle).extend(ISelector).extend(IMapModel).extend(IConfiguration).extend(IFeatureStyle).extend(IColorMap).extend(tileServices).extend({
       mapEngine: void 0,
       locationResolver: void 0,
       API_KEY: !1,
       update: function () {
         return this.preExec() ? (this.maybeToggleBlock(!0), this.configuration = this.getConfiguration(),
-          void this._initMapEngine().then(_.bind(this.init, this)).then(_.bind(function () {
+          this._initMapEngine().then(_.bind(this.init, this)).then(_.bind(function () {
             this.queryDefinition && !_.isEmpty(this.queryDefinition) ? this.getQueryData() : this.onDataReady(this.testData || {});
-          }, this))) : !1;
+          }, this)), void 0) : !1;
       },
       onDataReady: function (json) {
         return $.when(this.resolveFeatures(json)).then(_.bind(function (json) {
@@ -1891,7 +1989,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         var options = $.extend(!0, {}, this.configuration.addIns.MapEngine.options, {
           options: this.configuration
         });
-        return "google" == this.configuration.addIns.MapEngine.name ? this.mapEngine = new GoogleMapEngine(options) : this.mapEngine = new OpenLayersEngine(options),
+        return this.mapEngine = "google" == this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(options) : new OpenLayersEngine(options),
           this.mapEngine.init();
       },
       init: function () {
@@ -1952,7 +2050,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           _.size(result) > 0 && event.draw(_.defaults(result, event.style));
         }), this.on("shape:click", function (event) {
           if (_.isFunction(me.shapeMouseClick)) {
-            me.shapeMouseClick(event);
+            {
+              me.shapeMouseClick(event);
+            }
             return;
           }
         });
@@ -2016,4 +2116,5 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         }
       }
     });
+    return NewMapComponent;
   });
