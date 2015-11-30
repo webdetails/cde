@@ -584,7 +584,7 @@ define([
 
     updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
       if (!zoomLevel) {
-        zoomLevel = this.options.viewport.zoomLevel.default;
+        zoomLevel = this.options.viewport.zoomLevel["default"];
       }
       this.map.setZoom(zoomLevel);
       if (!this.zoomExtends())
