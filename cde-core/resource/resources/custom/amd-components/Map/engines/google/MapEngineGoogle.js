@@ -306,8 +306,8 @@ define([
       this._addControlZoomBox();
       this._addControlBoxSelector();
       this._addLimitZoomLimits();
-
     },
+
 
     _removeListeners: function () {
       _.each(this.controls.listenersHandle, function (h) {
@@ -387,7 +387,9 @@ define([
     setPanningMode: function () {
       this._removeListeners();
       var me = this;
-      me.controls.listenersHandle.click = this._toggleOnClick();
+      var listeners = this.controls.listenersHandle;
+      listeners.click = this._toggleOnClick();
+      listeners.clearOnClick = this._clearOnClick();
     },
 
     setZoomBoxMode: function () {
@@ -433,7 +435,7 @@ define([
       var control = me.controls.boxSelector;
       var listeners = this.controls.listenersHandle;
 
-      listeners.click = this._toggleOnClick();
+      listeners.toggleOnClick = this._toggleOnClick();
 
       var onMouseDown = function (e) {
         if (me.model.isSelectionMode()) {
@@ -482,6 +484,14 @@ define([
 
 
     /*-----------------------------*/
+    _clearOnClick: function () {
+      var me = this;
+      return google.maps.event.addListener(this.map, "click", function (event) {
+        clearSelection(me.model);
+        me.trigger("engine:selection:complete");
+      });
+    },
+
     _toggleOnClick: function () {
       var me = this;
       return this.map.data.addListener("click", function (event) {
@@ -504,7 +514,7 @@ define([
     _endBox: function (control, condition, callback) {
       var me = this;
       return function (e) {
-        if (condition() && control.mouseIsDown) {
+        if (condition() && control.mouseIsDown && control.gribBoundingBox) {
           control.mouseIsDown = false;
           control.mouseUpPos = e.latLng;
           var bounds = control.gribBoundingBox.getBounds();
@@ -712,7 +722,7 @@ define([
   });
 
   function clearSelection(modelItem){
-    //modelItem.root().setSelection(MapModel.SelectionStates.NONE);
+    modelItem.root().setSelection(MapModel.SelectionStates.NONE);
   }
 
   function addToSelection(modelItem) {
