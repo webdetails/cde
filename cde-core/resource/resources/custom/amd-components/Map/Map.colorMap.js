@@ -18,7 +18,7 @@ define([
 
       var colorMap = [];
       if (this.colormap == null || (_.isArray(this.colormap) && !this.colormap.length)) {
-        colorMap = _.clone(this.colormaps.default);
+        colorMap = _.clone(this.colormaps["default"]);
       } else {
         colorMap = _.map(this.colormap, JSON.parse);
       }

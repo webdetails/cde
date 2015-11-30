@@ -32,7 +32,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.setValue(idList);
     },
     processChange: function () {
-      return console.debug("processChange was called: ", new Date().toISOString()), this.dashboard.processChange(this.name),
+      return this.dashboard.processChange(this.name),
         this;
     }
   };
@@ -520,7 +520,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     getColorMap: function () {
       var colorMap = [];
-      colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps.default) : _.map(this.colormap, JSON.parse),
+      colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps["default"]) : _.map(this.colormap, JSON.parse),
         colorMap = _.map(colorMap, color2array);
       var cmap = [];
       for (k = 1, L = colorMap.length; L > k; k++) cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
@@ -860,7 +860,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     renderMap: function (target) {
       var projectionMap = new OpenLayers.Projection("EPSG:900913"), projectionWGS84 = new OpenLayers.Projection("EPSG:4326"), mapOptions = {
-        zoom: this.options.viewport.zoomLevel.default,
+        zoom: this.options.viewport.zoomLevel["default"],
         zoomDuration: 10,
         displayProjection: projectionWGS84,
         projection: projectionMap,
@@ -931,7 +931,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       if (_.isFinite(zoomLevel)) this.map.zoomTo(zoomLevel); else {
         var bounds = new OpenLayers.Bounds(), markersBounds = this.layers.markers.getDataExtent(), shapesBounds = this.layers.shapes.getDataExtent();
         markersBounds || shapesBounds ? (bounds.extend(markersBounds), bounds.extend(shapesBounds)) : bounds = null,
-          bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel.default);
+          bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
       }
       var centerPoint, projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       _.isFinite(centerLatitude) && _.isFinite(centerLongitude) ? (centerPoint = new OpenLayers.LonLat(centerLongitude, centerLatitude).transform(projectionWGS84, this.map.getProjectionObject()),
@@ -1949,7 +1949,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       },
       render: function () {
         this.mapEngine.render(this.model);
-        var centerLatitude = this.configuration.viewport.center.latitude, centerLongitude = this.configuration.viewport.center.longitude, defaultZoomLevel = this.configuration.viewport.zoomLevel.default;
+        var centerLatitude = this.configuration.viewport.center.latitude, centerLongitude = this.configuration.viewport.center.longitude, defaultZoomLevel = this.configuration.viewport.zoomLevel["default"];
         this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
       },
       _relayMapEngineEvents: function () {

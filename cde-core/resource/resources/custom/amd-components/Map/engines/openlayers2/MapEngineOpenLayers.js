@@ -187,7 +187,7 @@ define([
       var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
 
       var mapOptions = {
-        zoom: this.options.viewport.zoomLevel.default,
+        zoom: this.options.viewport.zoomLevel["default"],
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
         projection: projectionMap,
@@ -316,7 +316,7 @@ define([
         if (bounds) {
           this.map.zoomToExtent(bounds);
         } else {
-          this.map.zoomTo(this.options.viewport.zoomLevel.default);
+          this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
         }
       }
 
