@@ -187,7 +187,7 @@
      {
       "name": "options",
       "type": "JavaScript",
-      "value": "function(){\n    return {};\n} "
+      "value": "function f(){\n    return {\n        component:{\n            Root:{\n                options:{\n                    expandMode: 'relative'\n                }\n            }\n        }\n    };\n} "
      }
     ],
     "type": "ComponentsFilterComponent",
@@ -365,7 +365,7 @@
      {
       "name": "options",
       "type": "JavaScript",
-      "value": "function(){\n    return {};\n} "
+      "value": "function f(){\n    return {\n        component:{\n            Root:{\n                options:{\n                    expandMode: 'relative'\n                }\n            }\n        }\n    };\n} "
      }
     ],
     "type": "ComponentsFilterComponent",
@@ -543,7 +543,7 @@
      {
       "name": "options",
       "type": "JavaScript",
-      "value": "function(){\n    return {};\n} "
+      "value": "function f(){\n    return {\n        component:{\n            Root:{\n                options:{\n                    expandMode: 'relative'\n                }\n            }\n        }\n    };\n} "
      }
     ],
     "type": "ComponentsFilterComponent",
@@ -721,7 +721,7 @@
      {
       "name": "options",
       "type": "JavaScript",
-      "value": "function(){\n    return {};\n} "
+      "value": "function f(){\n    return {\n        component:{\n            Root:{\n                options:{\n                    expandMode: 'relative'\n                }\n            }\n        }\n    };\n} "
      }
     ],
     "type": "ComponentsFilterComponent",
@@ -1078,7 +1078,7 @@
    }
   ]
  },
- "filename": "/public/plugin-samples/pentaho-cdf-dd/tests/FilterComponent/filter_addIn_accordion.cdfde",
+ "filename": "public/plugin-samples/pentaho-cdf-dd/tests/FilterComponent/filter_addIn_accordion.wcdf",
  "layout": {
   "rows": [
    {
@@ -1139,7 +1139,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": ".filter-accordion .filter-root-body{\n    position: relative;\n}\n\n.filter-accordion .filter-root-header:hover{\n   border: 1px solid #000;   \n}\n\n.filter-accordion{\n    border: 1px solid black;\n    border-radius: 4px;\n    background: #fee;\n    padding: 30px;\n}\ndt {\n    padding-left: 10px;\n    font-family: monospace;\n}\ndd {\n    padding-left: 30px;\n} "
+      "value": ".filter-accordion .filter-root-header:hover{\n   border: 1px solid #000;   \n}\n\n.filter-accordion{\n    border: 1px solid black;\n    border-radius: 4px;\n    background: #fee;\n    padding: 30px;\n}\ndt {\n    padding-left: 10px;\n    font-family: monospace;\n}\ndd {\n    padding-left: 30px;\n} "
      },
      {
       "name": "resourceType",
@@ -1460,7 +1460,7 @@
      {
       "name": "html",
       "type": "Html",
-      "value": "<h2>Accordion addIn</h2>\n<p>\n    If you a have a group of related filters, \n    you might want to have them behave as an accordion: whenever a filter is opened, \n    the remaining filters should close themselves.\n</p>\n\n<h3>Implementation</h3>\n<p>\n    This addIn acts on the slot <code>postUpdate</code>, which runs when data is imported into the filter's <code>model</code>.\n    The addIn works by \n    hooking a callback to an event emitted by <code>model</code> whenever the filter \n    is expanded/collapsed.\n    <br/>\n    Whenever the user expands a filter, a global event on the \"Dashboards\" object is issued.\n    The remaining filters configured to use this addIn will listen to the event. \n    If they share the same \"group\", they will close themselves accordingly.\n</p>\n\n<h3>Reference</h3>\n<p>\nTo override the default configuration of the addIn, add the following snippet to\nthe filter's <code>preExecution</code> callback:\n</p>\n<pre>\n    this.setAddInOptions('postUpdate', 'accordion', {\n        group: 'myGroup' // Name of the group whose this filter belongs to\n    });\n</pre>\n<p>\nAlso, add the following CSS. Note that <code>.filter-accordion</code> is the CSS class \nof a container that holds the group of filters\n</p>\n<pre>\n    \n.filter-accordion .filter-root-body{\n    position: relative; /* we want the filters to expand */\n}\n</pre>\n\n<h3>Example</h3> "
+      "value": "<h2>Accordion addIn</h2>\n<p>\n    If you a have a group of related filters, \n    you might want to have them behave as an accordion: whenever a filter is opened, \n    the remaining filters should close themselves.\n</p>\n\n<h3>Implementation</h3>\n<p>\n    This addIn acts on the slot <code>postUpdate</code>, which runs when data is imported into the filter's <code>model</code>.\n    The addIn works by \n    hooking a callback to an event emitted by <code>model</code> whenever the filter \n    is expanded/collapsed.\n    <br/>\n    Whenever the user expands a filter, a global event on the \"Dashboards\" object is issued.\n    The remaining filters configured to use this addIn will listen to the event. \n    If they share the same \"group\", they will close themselves accordingly.\n</p>\n\n<h3>Reference</h3>\n<p>\nTo override the default configuration of the addIn, add the following snippet to\nthe filter's <code>preExecution</code> callback:\n</p>\n<pre>\n    this.setAddInOptions('postUpdate', 'accordion', {\n        group: 'myGroup' // Name of the group whose this filter belongs to\n    });\n</pre>\n<p>\nAlso, define the following \"Advanced Options\":\n</p>\n<pre>\nfunction f(){\n    return {\n        component:{\n            Root:{\n                options:{\n                    expandMode: 'relative' //prevents filters from overlapping\n                }\n            }\n        }\n    };\n} \n</pre>\n\n<h3>Example</h3> "
      },
      {
       "name": "fontSize",
