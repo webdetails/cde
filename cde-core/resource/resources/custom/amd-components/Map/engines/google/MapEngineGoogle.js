@@ -711,6 +711,9 @@ define([
 
   });
 
+  function clearSelection(modelItem){
+    //modelItem.root().setSelection(MapModel.SelectionStates.NONE);
+  }
 
   function addToSelection(modelItem) {
     modelItem.setSelection(MapModel.SelectionStates.ALL);
