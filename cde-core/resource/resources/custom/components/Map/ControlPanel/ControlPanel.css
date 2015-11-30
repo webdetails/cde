@@ -20,6 +20,10 @@
     background-color: #FFFFFF;
 }
 
+.no-svg .map-control-panel .map-control-button {
+    background-image: url(../images/map-btns-sprite.png);
+}
+
 .map-control-panel .map-control-button:hover {
     cursor: pointer;
     background-color: #a0a0a0;

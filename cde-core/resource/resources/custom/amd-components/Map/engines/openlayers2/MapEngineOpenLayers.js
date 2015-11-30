@@ -187,7 +187,7 @@ define([
       var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
 
       var mapOptions = {
-        zoom: this.options.viewport.zoomLevel.default,
+        zoom: this.options.viewport.zoomLevel["default"],
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
         projection: projectionMap,
@@ -316,7 +316,7 @@ define([
         if (bounds) {
           this.map.zoomToExtent(bounds);
         } else {
-          this.map.zoomTo(this.options.viewport.zoomLevel.default);
+          this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
         }
       }
 
@@ -385,8 +385,8 @@ define([
         "boxselectionend": function (e) {
           _.each(e.layers, function (layer) {
             _.each(layer.selectedFeatures, function (f) {
-              var newState = !f.attributes.model.getSelection();
-              f.attributes.model.setSelection(newState);
+              //var newState = !f.attributes.model.getSelection(); //toggle
+              addToSelection(f.attributes.model);
             });
           });
           e.object.unselectAll();
@@ -563,9 +563,14 @@ define([
   return OpenLayersEngine;
 
   function clearSelection(me) {
+    var SelectionStates = MapModel.SelectionStates;
     if (me.model) {
       me.model.setSelection(SelectionStates.NONE);
     }
+  }
+
+  function addToSelection(modelItem) {
+    modelItem.setSelection(MapModel.SelectionStates.ALL);
   }
 
   function toggleSelection(me) {

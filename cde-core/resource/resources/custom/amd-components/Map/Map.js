@@ -220,7 +220,7 @@ define([
         this.mapEngine.render(this.model);
         var centerLatitude = this.configuration.viewport.center.latitude;
         var centerLongitude = this.configuration.viewport.center.longitude;
-        var defaultZoomLevel = this.configuration.viewport.zoomLevel.default;
+        var defaultZoomLevel = this.configuration.viewport.zoomLevel["default"];
         this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
       },
 

@@ -18,7 +18,7 @@ define([
 
       var colorMap = [];
       if (this.colormap == null || (_.isArray(this.colormap) && !this.colormap.length)) {
-        colorMap = _.clone(this.colormaps.default);
+        colorMap = _.clone(this.colormaps["default"]);
       } else {
         colorMap = _.map(this.colormap, JSON.parse);
       }
@@ -46,7 +46,7 @@ define([
     },
     toGrayscale: function (color) {
       var rgba = color2array(color);
-      var g = Math.round(0.2989 * rgba[0] + 0.5870 * rgba[1] + 0.1140 * rgba[2]);
+      var g = Math.round(Math.sqrt(0.2989 * rgba[0]*rgba[0] + 0.5870 * rgba[1]*rgba[1] + 0.1140 * rgba[2]*rgba[2]));
       var v = [g, g, g, rgba[3]];
       return 'rgba(' + v.join(',') + ')';
     }
