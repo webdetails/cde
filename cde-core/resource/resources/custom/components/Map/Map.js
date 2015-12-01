@@ -437,6 +437,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           API_KEY: this.API_KEY || window.API_KEY
         }
       }
+    }, controls = {
+      enableKeyboardNavigation: !0,
+      enableZoomOnMouseWheel: !1
     }, viewport = {
       center: {
         latitude: parseFloat(this.centerLatitude),
@@ -451,6 +454,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     return $.extend(!0, {}, {
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
+      controls: controls,
       styleMap: this.styleMap,
       viewport: viewport
     }, _.result(this, "options"));
@@ -897,9 +901,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         zoomDuration: 10,
         displayProjection: projectionWGS84,
         projection: projectionMap,
-        controls: [new OpenLayers.Control.Navigation(), new OpenLayers.Control.DragPan(), new OpenLayers.Control.PinchZoom(), new OpenLayers.Control.LayerSwitcher({
-          ascending: !1
-        }), new OpenLayers.Control.ScaleLine(), new OpenLayers.Control.KeyboardDefaults(), new OpenLayers.Control.Attribution(), new OpenLayers.Control.TouchNavigation()]
+        controls: [new OpenLayers.Control.DragPan(), new OpenLayers.Control.PinchZoom(), new OpenLayers.Control.ScaleLine(), new OpenLayers.Control.Attribution()]
       };
       OpenLayers.TileManager && (mapOptions.tileManager = new OpenLayers.TileManager()),
         this.map = new OpenLayers.Map(target, mapOptions);
@@ -972,8 +974,21 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         this.map.setCenter(centerPoint));
     },
     addControls: function () {
-      this._addControlMousePosition(), this._addControlHover(), this._addControlClick(),
-        this._addControlBoxSelector(), this._addControlZoomBox();
+      this._addControlKeyboardNavigation(), this._addControlMouseNavigation(), this._addControlMousePosition(),
+        this._addControlHover(), this._addControlClick(), this._addControlBoxSelector(),
+        this._addControlZoomBox();
+    },
+    _addControlKeyboardNavigation: function () {
+      var allowKeyboard = this.options.controls.enableKeyboardNavigation === !0;
+      this.controls.keyboardNavigation = new OpenLayers.Control.KeyboardDefaults({}),
+        this.map.addControl(this.controls.keyboardNavigation), allowKeyboard ? this.controls.keyboardNavigation.activate() : this.controls.keyboardNavigation.deactivate();
+    },
+    _addControlMouseNavigation: function () {
+      var allowZoom = this.options.controls.enableZoomOnMouseWheel === !0;
+      this.controls.touchNavigation = new OpenLayers.Control.TouchNavigation(), this.map.addControl(this.controls.touchNavigation),
+        this.controls.mouseNavigation = new OpenLayers.Control.Navigation({
+          zoomWheelEnabled: allowZoom
+        }), this.map.addControl(this.controls.mouseNavigation), allowZoom ? this.controls.touchNavigation.activate() : this.controls.touchNavigation.deactivate();
     },
     _addControlMousePosition: function () {
       this.controls.mousePosition = new OpenLayers.Control.MousePosition(), this.map.addControl(this.controls.mousePosition);
@@ -1310,6 +1325,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     renderMap: function (target) {
       var mapOptions = {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scrollwheel: this.options.controls.enableZoomOnMouseWheel === !0,
+        keyboardShortcuts: this.options.controls.enableKeyboardNavigation === !0,
         disableDefaultUI: !0
       };
       this.map = new google.maps.Map(target, mapOptions), this.addLayers(), this.addControls(),
