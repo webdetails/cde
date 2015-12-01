@@ -21,7 +21,12 @@ define([
     'zoombox': 'zoombox',
     'selection': 'selection'
   };
-  var STATES = {
+  var GLOBAL_STATES = {
+    'allSelected': 'allSelected',
+    'someSelected': 'someSelected',
+    'noneSelected': 'noneSelected'
+  };
+  var LEAF_STATES = {
     'selected': 'selected',
     'unselected': 'unselected'
   };
@@ -48,15 +53,22 @@ define([
       styleMap: {}
     },
 
-    constructor: function(){
+    constructor: function () {
       this.base.apply(this, arguments);
-      if (this.isRoot()){
+      if (this.isRoot()) {
         this.setPanningMode();
+        this.set('canSelect', true);
+      }
+    },
+
+    setSelection: function(){
+      if (this.root().get('canSelect') === true){
+        this.base.apply(this, arguments);
       }
     },
 
     setPanningMode: function () {
-      if (this.isSelectionMode()){
+      if (this.isSelectionMode()) {
         this.trigger('selection:complete');
       }
       this.root().set('mode', MODES.pan);
@@ -89,11 +101,11 @@ define([
       return this.root().get('mode') === MODES.selection;
     },
 
-    isHover: function(){
+    isHover: function () {
       return this.get('isHighlighted') === true;
     },
 
-    setHover: function(bool){
+    setHover: function (bool) {
       return this.set('isHighlighted', bool === true);
     },
 
@@ -103,27 +115,28 @@ define([
      * Rules:
      *
      */
-    _getStyle: function (mode, state, action) {
+    _getStyle: function (mode, globalState, state, action) {
       var myStyleMap = this.get('styleMap');
 
       var parentStyle;
       if (this.parent()) {
-        parentStyle = this.parent()._getStyle(mode, state, action);
+        parentStyle = this.parent()._getStyle(mode, globalState, state, action);
       } else {
         parentStyle = {};
       }
 
       return $.extend(true,
-        getStyle(parentStyle, mode, state, action),
-        getStyle(myStyleMap, mode, state, action)
+        getStyle(parentStyle, mode, globalState, state, action),
+        getStyle(myStyleMap, mode, globalState, state, action)
       );
     },
 
     getStyle: function () {
       var mode = this.root().get('mode');
-      var state = (this.getSelection() === SelectionStates.ALL) ? STATES.selected : STATES.unselected;
-      var action = this.isHover() === true?  ACTIONS.hover: ACTIONS.normal;
-      return this._getStyle(mode, state, action);
+      var globalState = getGlobalState(this.root().getSelection());
+      var state = (this.getSelection() === SelectionStates.ALL) ? LEAF_STATES.selected : LEAF_STATES.unselected;
+      var action = this.isHover() === true ? ACTIONS.hover : ACTIONS.normal;
+      return this._getStyle(mode, globalState, state, action);
     },
 
     getFeatureType: function () {
@@ -143,23 +156,34 @@ define([
 
   }, {
     Modes: MODES,
-    States: STATES,
+    States: LEAF_STATES,
     Actions: ACTIONS,
     FeatureTypes: FEATURE_TYPES,
     SelectionStates: BaseSelectionTree.SelectionStates
   });
 
 
+  function getGlobalState(selectionState) {
+    switch (selectionState) {
+      case SelectionStates.ALL:
+        return GLOBAL_STATES.allSelected;
+      case SelectionStates.SOME:
+        return GLOBAL_STATES.someSelected;
+      case SelectionStates.NONE:
+        return GLOBAL_STATES.noneSelected;
+    }
+  }
 
-  function getStyle(config, mode, state, action) {
+  function getStyle(config, mode, globalState, leafState, action) {
     var styleKeywords = [
       _.values(ACTIONS),
-      _.values(STATES),
+      _.values(LEAF_STATES),
+      _.values(GLOBAL_STATES),
       _.values(MODES)
     ];
 
     var desiredKeywords = _.map(styleKeywords, function (list, idx) {
-      return _.intersection(list, [[action || '', state || '', mode || ''][idx]])[0];
+      return _.intersection(list, [[action || '', leafState || '', globalState || '', mode || ''][idx]])[0];
     });
 
     return computeStyle(config, desiredKeywords);

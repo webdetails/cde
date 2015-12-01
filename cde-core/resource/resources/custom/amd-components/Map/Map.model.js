@@ -60,6 +60,7 @@ define([
       this.model = new MapModel({
         styleMap: this.getStyleMap('global')
       });
+      this.model.set('canSelect', this.configuration.isSelector);
 
       var seriesRoot = this._initSeries(this.mapMode, json);
       if (json && json.metadata && json.resultset && json.resultset.length > 0) {

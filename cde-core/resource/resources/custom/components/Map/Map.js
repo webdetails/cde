@@ -32,14 +32,26 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.setValue(idList);
     },
     processChange: function () {
-      return console.debug("processChange was called: ", new Date().toISOString()), this.dashboard.processChange(this.name),
-        this;
+      return this.dashboard.processChange(this.name), this;
     }
   };
 }), define("cde/components/Map/model/MapModel", ["cdf/lib/BaseSelectionTree", "amd!cdf/lib/underscore", "cdf/lib/jquery"], function (BaseSelectionTree, _, $) {
-  function getStyle(config, mode, state, action) {
-    var styleKeywords = [_.values(ACTIONS), _.values(STATES), _.values(MODES)], desiredKeywords = _.map(styleKeywords, function (list, idx) {
-      return _.intersection(list, [[action || "", state || "", mode || ""][idx]])[0];
+  function getGlobalState(selectionState) {
+    switch (selectionState) {
+      case SelectionStates.ALL:
+        return GLOBAL_STATES.allSelected;
+
+      case SelectionStates.SOME:
+        return GLOBAL_STATES.someSelected;
+
+      case SelectionStates.NONE:
+        return GLOBAL_STATES.noneSelected;
+    }
+  }
+
+  function getStyle(config, mode, globalState, leafState, action) {
+    var styleKeywords = [_.values(ACTIONS), _.values(LEAF_STATES), _.values(GLOBAL_STATES), _.values(MODES)], desiredKeywords = _.map(styleKeywords, function (list, idx) {
+      return _.intersection(list, [[action || "", leafState || "", globalState || "", mode || ""][idx]])[0];
     });
     return computeStyle(config, desiredKeywords);
   }
@@ -61,7 +73,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     pan: "pan",
     zoombox: "zoombox",
     selection: "selection"
-  }, STATES = {
+  }, GLOBAL_STATES = {
+    allSelected: "allSelected",
+    someSelected: "someSelected",
+    noneSelected: "noneSelected"
+  }, LEAF_STATES = {
     selected: "selected",
     unselected: "unselected"
   }, ACTIONS = {
@@ -84,7 +100,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       styleMap: {}
     },
     constructor: function () {
-      this.base.apply(this, arguments), this.isRoot() && this.setPanningMode();
+      this.base.apply(this, arguments), this.isRoot() && (this.setPanningMode(), this.set("canSelect", !0));
+    },
+    setSelection: function () {
+      this.root().get("canSelect") === !0 && this.base.apply(this, arguments);
     },
     setPanningMode: function () {
       return this.isSelectionMode() && this.trigger("selection:complete"), this.root().set("mode", MODES.pan),
@@ -114,14 +133,14 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     setHover: function (bool) {
       return this.set("isHighlighted", bool === !0);
     },
-    _getStyle: function (mode, state, action) {
+    _getStyle: function (mode, globalState, state, action) {
       var parentStyle, myStyleMap = this.get("styleMap");
-      return parentStyle = this.parent() ? this.parent()._getStyle(mode, state, action) : {},
-        $.extend(!0, getStyle(parentStyle, mode, state, action), getStyle(myStyleMap, mode, state, action));
+      return parentStyle = this.parent() ? this.parent()._getStyle(mode, globalState, state, action) : {},
+        $.extend(!0, getStyle(parentStyle, mode, globalState, state, action), getStyle(myStyleMap, mode, globalState, state, action));
     },
     getStyle: function () {
-      var mode = this.root().get("mode"), state = this.getSelection() === SelectionStates.ALL ? STATES.selected : STATES.unselected, action = this.isHover() === !0 ? ACTIONS.hover : ACTIONS.normal;
-      return this._getStyle(mode, state, action);
+      var mode = this.root().get("mode"), globalState = getGlobalState(this.root().getSelection()), state = this.getSelection() === SelectionStates.ALL ? LEAF_STATES.selected : LEAF_STATES.unselected, action = this.isHover() === !0 ? ACTIONS.hover : ACTIONS.normal;
+      return this._getStyle(mode, globalState, state, action);
     },
     getFeatureType: function () {
       return FEATURE_TYPES[this._getParents([])[1]];
@@ -131,7 +150,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   }, {
     Modes: MODES,
-    States: STATES,
+    States: LEAF_STATES,
     Actions: ACTIONS,
     FeatureTypes: FEATURE_TYPES,
     SelectionStates: BaseSelectionTree.SelectionStates
@@ -288,7 +307,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     initModel: function (json) {
       this.model = new MapModel({
         styleMap: this.getStyleMap("global")
-      });
+      }), this.model.set("canSelect", this.configuration.isSelector);
       var seriesRoot = this._initSeries(this.mapMode, json);
       json && json.metadata && json.resultset && json.resultset.length > 0 && this._addSeriesToModel(seriesRoot, json);
     },
@@ -464,12 +483,19 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       },
       selected: {
         "fill-opacity": .8
+      },
+      noneSelected: {
+        unselected: {
+          "fill-opacity": .8
+        }
+      },
+      allSelected: {
+        selected: {
+          "fill-opacity": .8
+        }
       }
     },
     global_override_when_no_parameter_is_defined: {
-      unselected: {
-        "fill-opacity": .8
-      },
       hover: {
         cursor: "default"
       }
@@ -666,7 +692,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           me.updateItem(m);
         });
       }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model, value) {
-        model.children() || me.updateItem(model);
+        model.parent() !== model.root() && model.leafs().each(function (m) {
+          me.updateItem(m);
+        });
       }), model.leafs().each(function (m) {
         me.renderItem(m);
       }), model.isPanningMode() && me.setPanningMode(), model.isZoomBoxMode() && me.setZoomBoxMode(),
@@ -753,7 +781,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       toggleTable[SelectionStates.NONE] = SelectionStates.ALL, function (feature) {
       this.clickFeature(feature);
       var model = feature.attributes.model, newState = toggleTable[model.getSelection()];
-      model.setSelection(newState), model.setHover(!1);
+      model.setSelection(newState);
       var eventName = model.getFeatureType() + ":click";
       me.trigger("engine:selection:complete"), me.trigger(eventName, me.wrapEvent({
         feature: feature
