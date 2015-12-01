@@ -96,7 +96,7 @@ var ComponentsPanel = Panel.extend({
     componentsTableModel.setData(cdfdd.getDashboardData().components.rows);
 
     this.componentsTable.setTableModel(componentsTableModel);
-    this.componentsTable.init();
+    this.componentsTable.init(false);
   },
 
   initPropertiesTable: function() {
@@ -108,7 +108,7 @@ var ComponentsPanel = Panel.extend({
     propertiesTableModel.setColumnSetExpressions([undefined,
       function(row, value) {
         row.value = value;
-        if(row.name == 'name') {
+        if(row.name === 'name') {
           var _tableManager = TableManager.getTableManager("table-" + ComponentsPanel.COMPONENTS);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();
@@ -119,7 +119,7 @@ var ComponentsPanel = Panel.extend({
 
     this.propertiesTable.setTableModel(propertiesTableModel);
     this.propertiesTable.hasAdvancedProperties = true;
-    this.propertiesTable.init();
+    this.propertiesTable.init(false);
 
     this.componentsTable.setLinkedTableManager(this.propertiesTable);
     this.componentsTable.setLinkedTableManagerOperation(function(row, classType) {
@@ -128,7 +128,7 @@ var ComponentsPanel = Panel.extend({
       for(var p in props) {
         if(props.hasOwnProperty(p)) {
           var prop = props[p];
-          if(!prop.classType || prop.classType == classType) {
+          if(!prop.classType || prop.classType === classType) {
             arr.push(prop);
           }
         }
