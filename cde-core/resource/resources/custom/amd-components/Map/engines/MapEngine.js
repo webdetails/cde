@@ -48,10 +48,15 @@ define([
       });
 
       this.listenTo(this.model, 'change:isSelected change:isHighlighted change:isVisible', function (model, value) {
-        if (model.children()) {
-          return; // we only want to update leafs
+        if (model.parent() === model.root()){
+          // children of root ("markers" and "shapes") are virtual bags of items
+          // don't react to their events.
+          return;
         }
-        me.updateItem(model);
+        model.leafs().each(function(m){
+          //console.log('updating item ', m.get('id'), 'in reaction to', model.get('id'));
+          me.updateItem(m);
+        });
       });
 
       model.leafs().each(function (m) {

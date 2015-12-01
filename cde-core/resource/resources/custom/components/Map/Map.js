@@ -36,9 +36,22 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
 }), define("cde/components/Map/model/MapModel", ["cdf/lib/BaseSelectionTree", "amd!cdf/lib/underscore", "cdf/lib/jquery"], function (BaseSelectionTree, _, $) {
-  function getStyle(config, mode, state, action) {
-    var styleKeywords = [_.values(ACTIONS), _.values(STATES), _.values(MODES)], desiredKeywords = _.map(styleKeywords, function (list, idx) {
-      return _.intersection(list, [[action || "", state || "", mode || ""][idx]])[0];
+  function getGlobalState(selectionState) {
+    switch (selectionState) {
+      case SelectionStates.ALL:
+        return GLOBAL_STATES.allSelected;
+
+      case SelectionStates.SOME:
+        return GLOBAL_STATES.someSelected;
+
+      case SelectionStates.NONE:
+        return GLOBAL_STATES.noneSelected;
+    }
+  }
+
+  function getStyle(config, mode, globalState, leafState, action) {
+    var styleKeywords = [_.values(ACTIONS), _.values(LEAF_STATES), _.values(GLOBAL_STATES), _.values(MODES)], desiredKeywords = _.map(styleKeywords, function (list, idx) {
+      return _.intersection(list, [[action || "", leafState || "", globalState || "", mode || ""][idx]])[0];
     });
     return computeStyle(config, desiredKeywords);
   }
@@ -60,7 +73,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     pan: "pan",
     zoombox: "zoombox",
     selection: "selection"
-  }, STATES = {
+  }, GLOBAL_STATES = {
+    allSelected: "allSelected",
+    someSelected: "someSelected",
+    noneSelected: "noneSelected"
+  }, LEAF_STATES = {
     selected: "selected",
     unselected: "unselected"
   }, ACTIONS = {
@@ -83,7 +100,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       styleMap: {}
     },
     constructor: function () {
-      this.base.apply(this, arguments), this.isRoot() && this.setPanningMode();
+      this.base.apply(this, arguments), this.isRoot() && (this.setPanningMode(), this.set("canSelect", !0));
+    },
+    setSelection: function () {
+      this.root().get("canSelect") === !0 && this.base.apply(this, arguments);
     },
     setPanningMode: function () {
       return this.isSelectionMode() && this.trigger("selection:complete"), this.root().set("mode", MODES.pan),
@@ -113,14 +133,14 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     setHover: function (bool) {
       return this.set("isHighlighted", bool === !0);
     },
-    _getStyle: function (mode, state, action) {
+    _getStyle: function (mode, globalState, state, action) {
       var parentStyle, myStyleMap = this.get("styleMap");
-      return parentStyle = this.parent() ? this.parent()._getStyle(mode, state, action) : {},
-        $.extend(!0, getStyle(parentStyle, mode, state, action), getStyle(myStyleMap, mode, state, action));
+      return parentStyle = this.parent() ? this.parent()._getStyle(mode, globalState, state, action) : {},
+        $.extend(!0, getStyle(parentStyle, mode, globalState, state, action), getStyle(myStyleMap, mode, globalState, state, action));
     },
     getStyle: function () {
-      var mode = this.root().get("mode"), state = this.getSelection() === SelectionStates.ALL ? STATES.selected : STATES.unselected, action = this.isHover() === !0 ? ACTIONS.hover : ACTIONS.normal;
-      return this._getStyle(mode, state, action);
+      var mode = this.root().get("mode"), globalState = getGlobalState(this.root().getSelection()), state = this.getSelection() === SelectionStates.ALL ? LEAF_STATES.selected : LEAF_STATES.unselected, action = this.isHover() === !0 ? ACTIONS.hover : ACTIONS.normal;
+      return this._getStyle(mode, globalState, state, action);
     },
     getFeatureType: function () {
       return FEATURE_TYPES[this._getParents([])[1]];
@@ -130,7 +150,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   }, {
     Modes: MODES,
-    States: STATES,
+    States: LEAF_STATES,
     Actions: ACTIONS,
     FeatureTypes: FEATURE_TYPES,
     SelectionStates: BaseSelectionTree.SelectionStates
@@ -288,7 +308,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     initModel: function (json) {
       this.model = new MapModel({
         styleMap: this.getStyleMap("global")
-      });
+      }), this.model.set("canSelect", this.configuration.isSelector);
       var seriesRoot = this._initSeries(this.mapMode, json);
       json && json.metadata && json.resultset && json.resultset.length > 0 && this._addSeriesToModel(seriesRoot, json);
     },
@@ -418,6 +438,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           API_KEY: this.API_KEY || window.API_KEY
         }
       }
+    }, controls = {
+      enableKeyboardNavigation: !0,
+      enableZoomOnMouseWheel: !1
     }, viewport = {
       center: {
         latitude: parseFloat(this.centerLatitude),
@@ -432,6 +455,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     return $.extend(!0, {}, {
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
+      controls: controls,
       styleMap: this.styleMap,
       viewport: viewport
     }, _.result(this, "options"));
@@ -464,12 +488,19 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       },
       selected: {
         "fill-opacity": .8
+      },
+      noneSelected: {
+        unselected: {
+          "fill-opacity": .8
+        }
+      },
+      allSelected: {
+        selected: {
+          "fill-opacity": .8
+        }
       }
     },
     global_override_when_no_parameter_is_defined: {
-      unselected: {
-        "fill-opacity": .8
-      },
       hover: {
         cursor: "default"
       }
@@ -668,7 +699,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           me.updateItem(m);
         });
       }), this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function (model) {
-        model.children() || me.updateItem(model);
+        model.parent() !== model.root() && model.leafs().each(function (m) {
+          me.updateItem(m);
+        });
       }), model.leafs().each(function (m) {
         me.renderItem(m);
       }), model.isPanningMode() && me.setPanningMode(), model.isZoomBoxMode() && me.setZoomBoxMode(),
@@ -872,9 +905,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         zoomDuration: 10,
         displayProjection: projectionWGS84,
         projection: projectionMap,
-        controls: [new OpenLayers.Control.Navigation(), new OpenLayers.Control.DragPan(), new OpenLayers.Control.PinchZoom(), new OpenLayers.Control.LayerSwitcher({
-          ascending: !1
-        }), new OpenLayers.Control.ScaleLine(), new OpenLayers.Control.KeyboardDefaults(), new OpenLayers.Control.Attribution(), new OpenLayers.Control.TouchNavigation()]
+        controls: [new OpenLayers.Control.DragPan(), new OpenLayers.Control.PinchZoom(), new OpenLayers.Control.ScaleLine(), new OpenLayers.Control.Attribution()]
       };
       OpenLayers.TileManager && (mapOptions.tileManager = new OpenLayers.TileManager()),
         this.map = new OpenLayers.Map(target, mapOptions);
@@ -947,8 +978,21 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         this.map.setCenter(centerPoint));
     },
     addControls: function () {
-      this._addControlMousePosition(), this._addControlHover(), this._addControlClick(),
-        this._addControlBoxSelector(), this._addControlZoomBox();
+      this._addControlKeyboardNavigation(), this._addControlMouseNavigation(), this._addControlMousePosition(),
+        this._addControlHover(), this._addControlClick(), this._addControlBoxSelector(),
+        this._addControlZoomBox();
+    },
+    _addControlKeyboardNavigation: function () {
+      var allowKeyboard = this.options.controls.enableKeyboardNavigation === !0;
+      this.controls.keyboardNavigation = new OpenLayers.Control.KeyboardDefaults({}),
+        this.map.addControl(this.controls.keyboardNavigation), allowKeyboard ? this.controls.keyboardNavigation.activate() : this.controls.keyboardNavigation.deactivate();
+    },
+    _addControlMouseNavigation: function () {
+      var allowZoom = this.options.controls.enableZoomOnMouseWheel === !0;
+      this.controls.touchNavigation = new OpenLayers.Control.TouchNavigation(), this.map.addControl(this.controls.touchNavigation),
+        this.controls.mouseNavigation = new OpenLayers.Control.Navigation({
+          zoomWheelEnabled: allowZoom
+        }), this.map.addControl(this.controls.mouseNavigation), allowZoom ? this.controls.touchNavigation.activate() : this.controls.touchNavigation.deactivate();
     },
     _addControlMousePosition: function () {
       this.controls.mousePosition = new OpenLayers.Control.MousePosition(), this.map.addControl(this.controls.mousePosition);
@@ -1287,6 +1331,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     renderMap: function (target) {
       var mapOptions = {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scrollwheel: this.options.controls.enableZoomOnMouseWheel === !0,
+        keyboardShortcuts: this.options.controls.enableKeyboardNavigation === !0,
         disableDefaultUI: !0
       };
       this.map = new google.maps.Map(target, mapOptions), this.addLayers(), this.addControls(),
@@ -1796,12 +1842,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", cggMarker),
     cggMarker;
 }), define("cde/components/Map/Map.ext", [], function () {
-  var NewMapComponentExt = {
+  return {
     getMarkerImgPath: function () {
       return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/";
     }
   };
-  return NewMapComponentExt;
 }), define("cde/components/Map/addIns/MarkerImage/urlMarker/urlMarker", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../../Map.ext"], function (AddIn, Dashboard, NewMapComponentExt) {
   var urlMarker = new AddIn({
     name: "urlMarker",
