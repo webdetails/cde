@@ -620,7 +620,6 @@ define([
       var model = feature.attributes.model;
       var newState = toggleTable[model.getSelection()];
       model.setSelection(newState);
-      model.setHover(false);
       var eventName = model.getFeatureType() + ':click';
       me.trigger('engine:selection:complete');
       me.trigger(eventName, me.wrapEvent({feature: feature}));
