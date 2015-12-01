@@ -192,17 +192,15 @@ define([
         displayProjection: projectionWGS84,
         projection: projectionMap,
         controls: [
-          new OpenLayers.Control.Navigation(),
+          //new OpenLayers.Control.Navigation(),
           // new OpenLayers.Control.NavToolbar(),
           // new OpenLayers.Control.PanZoom(),
           //new OpenLayers.Control.ZoomPanel(),
           new OpenLayers.Control.DragPan(),
           new OpenLayers.Control.PinchZoom(),
-          new OpenLayers.Control.LayerSwitcher({'ascending': false}),
+          //new OpenLayers.Control.LayerSwitcher({'ascending': false}),
           new OpenLayers.Control.ScaleLine(),
-          new OpenLayers.Control.KeyboardDefaults(),
-          new OpenLayers.Control.Attribution(),
-          new OpenLayers.Control.TouchNavigation()
+          new OpenLayers.Control.Attribution()
         ]
       };
       if (OpenLayers.TileManager) {
@@ -332,6 +330,8 @@ define([
     },
 
     addControls: function () {
+      this._addControlKeyboardNavigation();
+      this._addControlMouseNavigation();
       this._addControlMousePosition();
       this._addControlHover();
       this._addControlClick();
@@ -339,11 +339,40 @@ define([
       this._addControlZoomBox();
     },
 
+    _addControlKeyboardNavigation: function(){
+      var allowKeyboard = (this.options.controls.enableKeyboardNavigation === true);
+      this.controls.keyboardNavigation = new OpenLayers.Control.KeyboardDefaults({
+        //observeElement: this.map.div
+      });
+      this.map.addControl(this.controls.keyboardNavigation);
+      if (allowKeyboard){
+        this.controls.keyboardNavigation.activate();
+      } else {
+        this.controls.keyboardNavigation.deactivate();
+      }
+    },
+
+    _addControlMouseNavigation: function(){
+      var allowZoom = (this.options.controls.enableZoomOnMouseWheel === true);
+      this.controls.touchNavigation = new OpenLayers.Control.TouchNavigation();
+      this.map.addControl(this.controls.touchNavigation);
+
+      this.controls.mouseNavigation = new OpenLayers.Control.Navigation({
+        zoomWheelEnabled: allowZoom
+      });
+      this.map.addControl(this.controls.mouseNavigation);
+      //this.controls.mouseNavigation.zoomWheelEnabled = allowZoom;
+      if (allowZoom){
+        this.controls.touchNavigation.activate();
+      } else {
+        this.controls.touchNavigation.deactivate();
+      }
+    },
+
     _addControlMousePosition: function () {
       this.controls.mousePosition = new OpenLayers.Control.MousePosition();
       this.map.addControl(this.controls.mousePosition);
     },
-
 
     _addControlClick: function () {
       this.controls.clickCtrl = new OpenLayers.Control.SelectFeature([this.layers.markers, this.layers.shapes], {
@@ -588,7 +617,6 @@ define([
       var model = feature.attributes.model;
       var newState = toggleTable[model.getSelection()];
       model.setSelection(newState);
-      model.setHover(false);
       var eventName = model.getFeatureType() + ':click';
       me.trigger('engine:selection:complete');
       me.trigger(eventName, me.wrapEvent({feature: feature}));

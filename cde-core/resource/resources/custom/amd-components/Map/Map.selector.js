@@ -66,7 +66,7 @@ define([], function () {
      * in the same format as they would be written to the parameter
      */
     processChange: function () {
-      console.debug('processChange was called: ', (new Date()).toISOString());
+      //console.debug('processChange was called: ', (new Date()).toISOString());
       this.dashboard.processChange(this.name);
       return this;
     }
