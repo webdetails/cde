@@ -17,12 +17,19 @@ define([
       },
       selected: {
         "fill-opacity": 0.8
+      },
+      noneSelected: {
+        unselected: {
+          "fill-opacity": 0.8
+        }
+      },
+      allSelected: {
+        selected: {
+          "fill-opacity": 0.8
+        }
       }
     },
     "global_override_when_no_parameter_is_defined": {
-      unselected: {
-        "fill-opacity": 0.8
-      },
       hover: {
         cursor: "default"
       }
