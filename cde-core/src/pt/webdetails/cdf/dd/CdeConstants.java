@@ -237,6 +237,10 @@ public class CdeConstants {
         INDENT1 + "normalizeId: function(id) '{'" + NEWLINE
         + INDENT2 + "return \"{0}_\" + id;" + NEWLINE
         + INDENT1 + "'},'" + NEWLINE;
+    public static final String DASHBOARD_MODULE_GET_MESSAGES_PATH =
+        INDENT1 + "getMessagesPath: function() '{'" + NEWLINE
+        + INDENT2 + "return {0};" + NEWLINE
+        + INDENT1 + "'}'," + NEWLINE;
     public static final String DASHBOARD_MODULE_STOP = INDENT1 + "});";
     public static final String CDF_AMD_BASE_COMPONENT_PATH = "cdf/components/";
     public static final String CDE_AMD_BASE_COMPONENT_PATH = "cde/components/";

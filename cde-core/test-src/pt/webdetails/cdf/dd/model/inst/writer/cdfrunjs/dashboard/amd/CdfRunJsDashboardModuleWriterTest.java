@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.render.ResourceMap;
@@ -47,6 +47,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       + INDENT1 + "view: {" + NEWLINE
       + INDENT2 + "fakeView: fakeView" + NEWLINE
       + INDENT1 + "}" + NEWLINE;
+  private static final String MESSAGES_PATH = "/test/repos/:path:to:dash.wcdf/";
 
   private static CdfRunJsDashboardModuleWriter dashboardWriterSpy;
   private static CdfRunJsDashboardWriteContext context;
@@ -56,8 +57,12 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
   public void setUp() throws Exception {
     dashboardWriterSpy =
       spy( new CdfRunJsDashboardModuleWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
-    context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
-    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+    doReturn( MESSAGES_PATH ).when( dashboardWriterSpy ).getWcdfReposPath( anyString() );
+
+    context = mock( CdfRunJsDashboardWriteContext.class );
+    doReturn( mock( Dashboard.class) ).when( context ).getDashboard();
+
+    options = mock( CdfRunJsDashboardWriteOptions.class );
   }
 
   @After
@@ -116,6 +121,7 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( "" )
       .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, layout ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, "\" + this._alias + \"" ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH, MESSAGES_PATH ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "jsCodeRsrc1" + NEWLINE + NEWLINE
