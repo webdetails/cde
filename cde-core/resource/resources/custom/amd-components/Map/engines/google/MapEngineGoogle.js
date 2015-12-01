@@ -242,6 +242,8 @@ define([
     renderMap: function (target) {
       var mapOptions = {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scrollwheel: this.options.controls.enableZoomOnMouseWheel === true,
+        keyboardShortcuts: this.options.controls.enableKeyboardNavigation === true,
         disableDefaultUI: true
       };
 
