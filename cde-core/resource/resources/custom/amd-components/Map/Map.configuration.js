@@ -61,6 +61,12 @@ define([
       }
     };
 
+    //
+    var controls = {
+      enableKeyboardNavigation: true,
+      enableZoomOnMouseWheel: false
+    };
+
     var viewport = {
       center: {
         latitude: parseFloat(this.centerLatitude),
@@ -77,6 +83,7 @@ define([
     return $.extend(true, {}, {
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
+      controls: controls,
       styleMap: this.styleMap,
       viewport: viewport
     }, _.result(this, 'options'));
