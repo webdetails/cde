@@ -32,8 +32,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.setValue(idList);
     },
     processChange: function () {
-      return console.debug("processChange was called: ", new Date().toISOString()), this.dashboard.processChange(this.name),
-        this;
+      return this.dashboard.processChange(this.name), this;
     }
   };
 }), define("cde/components/Map/model/MapModel", ["cdf/lib/BaseSelectionTree", "amd!cdf/lib/underscore", "cdf/lib/jquery"], function (BaseSelectionTree, _, $) {
