@@ -154,4 +154,20 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
         "TestComponent1, jsFileRsrc1" ),
         out.toString() );
   }
+
+  @Test
+  public void testReplaceCdfdeExtension() {
+    String[] paths = new String[]{"/path/to/file.wcdf", ":path:to:file",
+      ":path.cdfde:to.wcdf:file", ":path.cdfde/to.wcdf:file"};
+    for ( int i = 0; i < paths.length; i++ ) {
+      // everything that ends in .cdfde will now end in .wcdf
+      Assert.assertEquals(
+        dashboardWriterSpy.replaceCdfdeExtension( paths[i] + ".cdfde" ), paths[i] + ".wcdf" );
+    }
+    for ( int i = 0; i < paths.length; i++ ) {
+      // if it doesn't end in .cdfde, it will just be returned the same
+      Assert.assertEquals(
+        dashboardWriterSpy.replaceCdfdeExtension( paths[i] ), paths[i]);
+    }
+  }
 }
