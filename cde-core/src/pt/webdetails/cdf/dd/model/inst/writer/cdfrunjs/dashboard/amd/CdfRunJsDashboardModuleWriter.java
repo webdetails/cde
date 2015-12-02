@@ -211,7 +211,14 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     if ( StringUtils.isEmpty( path ) ) {
       return "undefined";
     }
-    return "\"" + Utils.getWcdfReposPath( path ) + "/\"";
+    return "\"" + replaceCdfdeExtension( Utils.getWcdfReposPath( path ) ) + "/\"";
+  }
+
+  protected String replaceCdfdeExtension( String path ) {
+    if ( path.endsWith( ".cdfde" ) ) {
+      return path.substring( 0, path.lastIndexOf( ".cdfde" )  ) + ".wcdf";
+    }
+    return path;
   }
 
 }
