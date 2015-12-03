@@ -19,6 +19,7 @@ define([
 
   var styleMaps = {
     global: {
+      //cursor: "grab",
       "stroke-width": 1,
       stroke: "white",
       hover: {
@@ -31,6 +32,14 @@ define([
       selected: {
         "fill-opacity": 0.8
       },
+      disabled: {
+        unselected:{
+          "fill-opacity": 0.8
+        },
+        hover: {
+          cursor: "grab"
+        }
+      },
       noneSelected: {
         unselected: {
           "fill-opacity": 0.8
@@ -40,11 +49,14 @@ define([
         selected: {
           "fill-opacity": 0.8
         }
+      },
+      "dragging": {
+        cursor: "move"
       }
     },
     "global_override_when_no_parameter_is_defined": {
       hover: {
-        cursor: "default"
+        //cursor: "grab"
       }
     },
     markers: {
