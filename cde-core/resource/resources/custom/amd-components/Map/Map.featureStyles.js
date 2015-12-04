@@ -14,30 +14,35 @@
 define([
   "cdf/lib/jquery",
   "amd!cdf/lib/underscore",
+  "./Map.ext",
   "cdf/Logger"
-], function ($, _, Logger) {
+], function ($, _, MapExt, Logger) {
+  "use strict";
+
+  function cursor(image, fallback){
+    var list = _.isString(image) ? [image] : image;
+    return _.map(list, function(img){
+      return "url(" + MapExt.getMarkerImgPath() + img + ")";
+    }).join(", ") + fallback;
+  }
 
   var styleMaps = {
     global: {
-      //cursor: "grab",
+      cursor: "inherit",
       "stroke-width": 1,
       stroke: "white",
       hover: {
-        stroke: "black",
-        cursor: "pointer"
+        stroke: "black"
       },
       unselected: {
-        "fill-opacity":  0.2
+        "fill-opacity": 0.2
       },
       selected: {
         "fill-opacity": 0.8
       },
       disabled: {
-        unselected:{
+        unselected: {
           "fill-opacity": 0.8
-        },
-        hover: {
-          cursor: "grab"
         }
       },
       noneSelected: {
@@ -50,13 +55,17 @@ define([
           "fill-opacity": 0.8
         }
       },
+      pan: {
+        //cursor: "move"
+      },
+      zoombox: {
+        //cursor: cursor(["zoom-cursor.svg", "zoom-cursor.png", "zoom-cursor.cur"], "zoom-in")
+      },
+      selection: {
+
+      },
       "dragging": {
-        cursor: "move"
-      }
-    },
-    "global_override_when_no_parameter_is_defined": {
-      hover: {
-        //cursor: "grab"
+        //cursor: "move"
       }
     },
     markers: {
@@ -87,19 +96,21 @@ define([
     var localStyleMap = _.result(this, "styleMap") || {};
     var styleMap = $.extend(true, {},
       styleMaps.global,
-      this.configuration.isSelector ? {} : styleMaps.global_override_when_no_parameter_is_defined,
-      styleMaps[styleName],
-      localStyleMap.global,
-      localStyleMap[styleName]
+      styleMaps[styleName]
     );
+
     // TODO: Remove shapeSettings definition/property in the next major version.
     switch (styleName) {
       case "shapes":
         Logger.warn("Usage of the 'shapeSettings' property (including shapeSettings.fillOpacity, shapeSettings.strokeWidth and shapeSettings.strokeColor) is deprecated.");
         Logger.warn("Support for these properties will be removed in the next major version.");
-      //return $.extend(true, styleMap, this.shapeSettings);
+      return $.extend(true, styleMap, this.shapeSettings);
     }
-    return styleMap;
+
+    return $.extend(true, styleMap,
+      localStyleMap.global,
+      localStyleMap[styleName]
+    );
   }
 
 

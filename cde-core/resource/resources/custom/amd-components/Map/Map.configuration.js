@@ -13,21 +13,12 @@
 
 define([
   'cdf/lib/jquery',
-  'amd!cdf/lib/underscore',
-  './Map.ext'
-], function ($, _, MapExt) {
-
+  'amd!cdf/lib/underscore'
+], function ($, _) {
+  "use strict";
   return {
     getConfiguration: getConfiguration
   };
-
-  function imgUrl(image, fallback) {
-    var imgList = _.isString(image) ? [image] : image;
-
-    return _.map(imgList, function(img){
-      return "url(" + MapExt.getMarkerImgPath() + image + ")";
-    }).join(', ') + fallback;
-  }
 
   /**
    * Validates the configuration options and gathers them by context
@@ -61,26 +52,6 @@ define([
         options: {
           rawOptions: {
             map: {}
-          },
-          style: {
-            pan: {
-              cursors: {
-                dragging: undefined,
-                draggable: undefined
-              }
-            },
-            zoombox: {
-              cursors: {
-                dragging: 'crosshair',
-                draggable: imgUrl(['zoom-cursor.svg', 'zoom-cursor.png','zoom-cursor.cur'], 'crosshair')
-              }
-            },
-            selection: {
-              cursors: {
-                dragging: 'crosshair',
-                draggable: 'crosshair'
-              }
-            }
           },
           tileServices: this.tileServices,
           tileServicesOptions: this.tileServicesOptions,
