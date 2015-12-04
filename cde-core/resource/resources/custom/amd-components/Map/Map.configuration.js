@@ -15,7 +15,7 @@ define([
   'cdf/lib/jquery',
   'amd!cdf/lib/underscore'
 ], function ($, _) {
-
+  "use strict";
   return {
     getConfiguration: getConfiguration
   };
