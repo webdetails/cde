@@ -16,6 +16,7 @@
 }
 
 .map-control-panel .map-control-button {
+    background-image: url(../images/map-btns-sprite.png);
     background-image: url(../images/map-btns-sprite.svg);
     background-color: #FFFFFF;
 }
