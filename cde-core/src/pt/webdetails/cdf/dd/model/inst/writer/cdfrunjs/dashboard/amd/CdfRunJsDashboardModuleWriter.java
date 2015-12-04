@@ -24,7 +24,6 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.ResourceMap;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
-import pt.webdetails.cdf.dd.util.Utils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -160,16 +159,12 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
           ctx.getOptions().getContextConfiguration(),
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS,
-            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
-            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
+            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) );
     } else {
       out.append( MessageFormat.format( DASHBOARD_MODULE_START, ctx.getOptions().getContextConfiguration() ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
             StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) )
-          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
-            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
+            .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) );
     }
 
     final String jsCodeSnippets = writeJsCodeResources( resources );
@@ -205,20 +200,6 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     out.append( MessageFormat.format( DEFINE_START,
         StringUtils.join( ids, "', '" ),
         StringUtils.join( classNames, ", " ) ) );
-  }
-
-  protected String getWcdfReposPath( String path ) {
-    if ( StringUtils.isEmpty( path ) ) {
-      return "undefined";
-    }
-    return "\"" + replaceCdfdeExtension( Utils.getWcdfReposPath( path ) ) + "/\"";
-  }
-
-  protected String replaceCdfdeExtension( String path ) {
-    if ( path.endsWith( ".cdfde" ) ) {
-      return path.substring( 0, path.lastIndexOf( ".cdfde" )  ) + ".wcdf";
-    }
-    return path;
   }
 
 }

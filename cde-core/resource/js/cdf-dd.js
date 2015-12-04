@@ -211,12 +211,9 @@ var CDFDD = Base.extend({
           case 9: //tab
             var nextTable = activePanel.selectNextTable();
             if(nextTable) {
-              var propertiesMode = $('.advancedProperties').hasClass('propertiesSelected') ? 'advanced' : 'simple';
-
               row = nextTable.getSelectedCell();
               row = !row.length ? [0,0] : row;
-
-              nextTable.selectCell(row[0], row[1], propertiesMode);
+              nextTable.selectCell(row[0], row[1], 'simple');
             }
             break;
 

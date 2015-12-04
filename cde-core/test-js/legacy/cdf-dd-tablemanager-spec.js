@@ -12,23 +12,10 @@
  */
 
 describe("CDF-DD-TABLEMANAGER-TESTS", function() {
-  var tableManager, tableModel,
-      tableManagerId = "test-tableManager";
-
-  beforeEach(function(done) {
-    $('<div id="' + tableManagerId + '">').appendTo('body');
-
-    tableManager = getTestTableManager();
-    tableModel = getTestTableModel();
-    tableModel.setData(_.extend([], exampleData_1));
-    tableManager.setTableModel(tableModel);
-    done();
-  });
-
-  afterEach(function(done) {
-    $('#' + tableManagerId).remove();
-    done();
-  });
+  var tableManager = getTestTableManager();
+  var tableModel = getTestTableModel();
+  tableModel.setData(_.extend([], exampleData_1));
+  tableManager.setTableModel(tableModel);
 
   it("correctly formats paths upon file picking",function() {
     var resourceFileRenderer = new ResourceFileRenderer(tableManager);
@@ -68,6 +55,7 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
   });
 
   it("correctly gets fileName before opening External Editor", function() {
+    var tableManager = new TableManager("test-tableManager");
     var resourceFileRenderer = new ResourceFileRenderer(tableManager);
 
     var file1 = "/myResource.css",
@@ -121,52 +109,12 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
         .toBe(systemCtx + file3);
   });
 
-  it("test TableManager complete init", function() {
-    var $table = $("#" + tableManagerId);
-    $table.append('<div class="scrollContainer completeClass">');
-    spyOn(tableManager, 'render');
-
-    tableManager.init(false);
-    var result = $table.html().replace(/>\s+/g, '>');
-    var expected = '<div class="tableContainer">' +
-        '<a id="anchor-test-tableManager" class="tableAnchor" href=""></a>' +
-        '<div class="tableCaption ui-state-default">' +
-        '<div class="simpleProperties propertiesSelected">Title</div>' +
-        '</div>' +
-        '<div class="scrollContainer">' +
-        '<table id="table-test-tableManager" class="table-test-tableManager myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">'  +
-        '<thead></thead><tbody class="ui-widget-content"></tbody></table>' +
-        '</div></div>';
-
-    expect(result).toEqual(expected);
-    expect($('.scrollContainer').hasClass('completeClass')).toBe(false);
-  });
-
-  it("test TableManager partial init", function() {
-    var $table = $("#" + tableManagerId);
-    $table.append('<div class="scrollContainer partialClass">');
-    spyOn(tableManager, 'render');
-
-    tableManager.init(true);
-    var result = $table.html().replace(/[>]\s+/g, '>');
-    var expected = '<div class="scrollContainer partialClass">' +
-        '<table id="table-test-tableManager" class="table-test-tableManager myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">'  +
-        '<thead></thead><tbody class="ui-widget-content"></tbody></table>' +
-        '</div>';
-
-    expect(result).toEqual(expected);
-    expect($('.scrollContainer').hasClass('partialClass')).toBe(true);
-  });
-
-  /*
-   * Scroll Tests
-   */
   describe("Testing Table Scroll #", function() {
     var table;
     beforeEach(function() {
-      table = $('<div id="' + tableManagerId + '" style="height: 75px; width: 100px;">' +
+      table = $('<div id="test-tableManager" style="height: 75px; width: 100px;">' +
       '  <div class="scrollContainer" style="max-height: 75px; overflow: scroll;">' +
-      '    <table id="table-' + tableManagerId + '">' +
+      '    <table id="table-test-tableManager">' +
       '      <tbody>' +
       '        <tr id="freeForm" style="height: 30px;"><td>a</td></tr>' +
       '        <tr id="col" style="height: 30px;"><td>b</td></tr>' +
@@ -178,8 +126,12 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
       table.appendTo('body');
     });
 
+    afterEach(function() {
+      $('#test-tableManager').remove();
+    });
+
     it("scrollTo - going down", function() {
-      var $scroll = $('#' + tableManagerId + ' .scrollContainer');
+      var $scroll = $('#test-tableManager .scrollContainer');
       spyOn(tableModel, 'getEvaluatedId').and.callFake(function(idx) {
         return table.find('tr:eq(' + idx + ')').attr('id');
       });
@@ -189,7 +141,7 @@ describe("CDF-DD-TABLEMANAGER-TESTS", function() {
     });
 
     it("scrollTo - going up", function() {
-      var $scroll = $('#' + tableManagerId + ' .scrollContainer');
+      var $scroll = $('#test-tableManager .scrollContainer');
       spyOn(tableModel, 'getEvaluatedId').and.callFake(function(idx) {
         return table.find('tr:eq(' + idx + ')').attr('id');
       });

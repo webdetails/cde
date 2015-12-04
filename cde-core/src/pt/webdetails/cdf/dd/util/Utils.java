@@ -534,15 +534,4 @@ public class Utils {
         || path.endsWith( ".cdfde" ) ) );
   }
 
-  public static String getWcdfReposPath( String path ) {
-    return CdeEngine.getEnv().getApplicationReposUrl() + toRepositoryPath( path );
-  }
-
-  public static  String toRepositoryPath( String path ) {
-    if ( !path.startsWith( "/" ) ) {
-      path = "/" + path;
-    }
-    return path.replaceAll( "/", ":" );
-  }
-
 }
