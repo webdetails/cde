@@ -21,6 +21,7 @@ define([
   return BaseEvents.extend({
     tileServices: undefined,
     tileServicesOptions: undefined,
+    $map: null,
     tileLayer: function (name) {
     },
     init: function () {
@@ -33,6 +34,18 @@ define([
     render: function (model) {
       this.model = model;
       var me = this;
+
+      //this.listenTo(this.model.root(), 'change:isDragging', function (model, value) {
+      //  model.leafs()
+      //    .filter(function(m) {
+      //      // Improve the perfomance by reducing the number of updated items down to 1.
+      //      return m.isHover();
+      //    })
+      //    .each(function (m) {
+      //      me.updateItem(m);
+      //    })
+      //});
+
 
       this.listenTo(this.model.root(), 'change:mode', function (model, value) {
         var modes = {
@@ -47,12 +60,12 @@ define([
       });
 
       this.listenTo(this.model, 'change:isSelected change:isHighlighted change:isVisible', function (model, value) {
-        if (model.parent() === model.root()){
+        if (model.parent() === model.root()) {
           // children of root ("markers" and "shapes") are virtual bags of items
           // don't react to their events.
           return;
         }
-        model.leafs().each(function(m){
+        model.leafs().each(function (m) {
           //console.log('updating item ', m.get('id'), 'in reaction to', model.get('id'));
           me.updateItem(m);
         });
@@ -61,13 +74,13 @@ define([
       model.leafs().each(function (m) {
         me.renderItem(m);
       });
-      if (model.isPanningMode()){
+      if (model.isPanningMode()) {
         me.setPanningMode();
       }
-      if (model.isZoomBoxMode()){
+      if (model.isZoomBoxMode()) {
         me.setZoomBoxMode();
       }
-      if (model.isSelectionMode()){
+      if (model.isSelectionMode()) {
         me.setSelectionMode();
       }
 
@@ -117,6 +130,16 @@ define([
         //isSelected: undefined, // not ready for inclusion yet
         raw: undefined
       };
+    },
+    _updateMode: function (mode) {
+      this.$map.removeClass(_.values(MapModel.Modes).join(' '))
+        .addClass(MapModel.Modes[mode]);
+    },
+    _updateDrag: function (isDragging) {
+      this.model.set('isDragging', !!isDragging);
+      this.$map
+        .toggleClass('dragging', !!isDragging)
+        .toggleClass('normal', !isDragging);
     },
     _selectUrl: function (paramString, urls) {
       /**

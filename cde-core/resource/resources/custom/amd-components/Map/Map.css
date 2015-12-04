@@ -3,3 +3,43 @@
     height: 0;
     z-index: 1013;
 }
+
+/*
+.map-container.pan,
+.map-container.pan.normal {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.map-container.pan.dragging {
+    cursor: -webkit-grabbing;
+    cursor: grabbing !important;
+}
+
+.map-container.zoombox,
+.map-container.zoombox.normal {
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+    cursor: url(./images/zoom-cursor.svg), url(./images/zoom-cursor.png), url(./images/zoom-cursor.cur), zoom-in;
+}
+
+.map-container.zoombox.dragging,
+.map-container.selection {
+    cursor: crosshair;
+}
+*/
+
+.map-container.zoombox{
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+    cursor: url(./images/zoom-cursor.svg), url(./images/zoom-cursor.png), url(./images/zoom-cursor.cur), zoom-in;
+}
+
+.map-container.pan{
+    cursor: move;
+}
+
+.map-container.selection{
+    cursor: default;
+}

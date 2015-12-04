@@ -1,8 +1,30 @@
 /**
  *
 **/
+
+.map-container .olDragBox,
+.map-container .olDragDown {
+    cursor: inherit;
+}
+.map-container.olMap.pan .olDragDown {
+    /*cursor: -webkit-grabbing;*/
+    /*cursor: grabbing;*/
+    cursor: inherit;
+}
+
+.map-container.olMap.pan .olDrawBox.olDragDown {
+    /*cursor: crosshair;*/
+}
+
+
+.map-container.olMap.zoombox .olDragDown{
+    /*cursor: crosshair;*/
+    cursor: inherit;
+}
+
+
 .olMap .olHandlerBoxZoomBox,
-.olMap .olHandlerBoxSelectFeature{
+.olMap .olHandlerBoxSelectFeature {
     border: 2px solid #2469B0;
     background-color: rgba(36, 105, 176, 0.21);
 }
@@ -11,7 +33,6 @@
 .olControlMousePosition.olControlNoSelect {
     display: none;
 }
-
 
 /**
  * Styling of popups
