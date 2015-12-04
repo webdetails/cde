@@ -84,7 +84,7 @@ define([
 
     _updateView: function(){
       var mode = this.model.getMode();
-      this.ph.find('.map-controls-mode')
+      this.ph.find('.map-control-panel')
         .removeClass(_.values(MapModel.Modes).join(' '))
         .addClass(mode)
     }
