@@ -24,7 +24,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       return selectedItems;
     },
     setValue: function (idList) {
-      if (!this.model) throw "Model is not initialized";
+      if (!this.model) {
+        throw "Model is not initialized";
+      }
       return this.model.setSelectedItems(idList), this;
     },
     updateSelection: function () {
@@ -162,7 +164,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
 }), define("cde/components/Map/_getMapping", ["amd!cdf/lib/underscore"], function (_) {
   function getMapping(json) {
     var map = {};
-    if (!json.metadata || 0 == json.metadata.length) return map;
+    if (!json.metadata || 0 == json.metadata.length) {
+      return map;
+    }
     var colToPropertyMapping = {
       key: "id",
       id: "id",
@@ -196,7 +200,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     simplifyPoints: function (points, precision_m) {
       function properRDP(points, epsilon) {
         var firstPoint = points[0], lastPoint = points[points.length - 1];
-        if (points.length < 3) return points;
+        if (points.length < 3) {
+          return points;
+        }
         for (var index = -1, dist = 0, i = 1; i < points.length - 1; i++) {
           var cDist = findPerpendicularDistance(points[i], firstPoint, lastPoint);
           cDist > dist && (dist = cDist, index = i);
@@ -226,7 +232,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     var addIn = this.getAddIn("ShapeResolver", configuration.addIns.ShapeResolver.name), url = configuration.addIns.ShapeResolver.options.url;
     !addIn && url && (addIn = url.endsWith("json") || url.endsWith("js") ? this.getAddIn("ShapeResolver", "simpleJSON") : this.getAddIn("ShapeResolver", "kml"));
     var deferred = $.Deferred();
-    if (!addIn) return deferred.resolve({}), deferred.promise();
+    if (!addIn) {
+      return deferred.resolve({}), deferred.promise();
+    }
     var idList = _.pluck(json.resultset, mapping.id), tgt = this, st = {
       keys: idList,
       ids: idList,
@@ -247,7 +255,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
 }), define("cde/components/Map/FeatureStore/resolveMarkers", ["cdf/lib/jquery", "amd!cdf/lib/underscore"], function ($, _) {
   function resolveMarkers(json, mapping, configuration) {
     var addIn = this.getAddIn("LocationResolver", configuration.addIns.LocationResolver.name), deferred = $.Deferred();
-    if (!addIn) return deferred.resolve({}), deferred.promise();
+    if (!addIn) {
+      return deferred.resolve({}), deferred.promise();
+    }
     var markerDefinitions, tgt = this, opts = this.getAddInOptions("LocationResolver", addIn.getName());
     return markerDefinitions = "coordinates" === mapping.addressType ? _.chain(json.resultset).map(function (row) {
       var id = row[mapping.id], location = [row[mapping.longitude], row[mapping.latitude]];
@@ -348,13 +358,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         var value = row[mapping.r];
         if (_.isNumber(value)) {
           var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / (v.max - v.min));
-          if (_.isFinite(r)) return r;
+          if (_.isFinite(r)) {
+            return r;
+          }
         }
       }
     },
     _detectExtremes: function (json) {
       var extremes = _.chain(this.mapping).map(function (colIndex, role) {
-        if (!_.isFinite(colIndex)) return [role, {}];
+        if (!_.isFinite(colIndex)) {
+          return [role, {}];
+        }
         var obj, values = _.pluck(json.resultset, colIndex);
         return obj = "Numeric" === json.metadata[colIndex].colType ? {
           type: "numeric",
@@ -405,20 +419,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       return _.isFinite(indexId) || (indexId = "shapes" === this.mapMode ? 0 : -1), indexId >= 0 && indexId < row.length ? row[indexId] : rowIdx;
     }
   };
-}), define("cde/components/Map/Map.ext", [], function () {
-  return {
-    getMarkerImgPath: function () {
-      return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/";
-    }
-  };
-}), define("cde/components/Map/Map.configuration", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "./Map.ext"], function ($, _, MapExt) {
-  function imgUrl(image, fallback) {
-    var imgList = _.isString(image) ? [image] : image;
-    return _.map(imgList, function (img) {
-        return "url(" + MapExt.getMarkerImgPath() + image + ")";
-      }).join(", ") + fallback;
-  }
-
+}), define("cde/components/Map/Map.configuration", ["cdf/lib/jquery", "amd!cdf/lib/underscore"], function ($, _) {
+  "use strict";
   function getConfiguration() {
     var addIns = {
       MarkerImage: {
@@ -447,26 +449,6 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         options: {
           rawOptions: {
             map: {}
-          },
-          style: {
-            pan: {
-              cursors: {
-                dragging: void 0,
-                draggable: void 0
-              }
-            },
-            zoombox: {
-              cursors: {
-                dragging: "crosshair",
-                draggable: imgUrl(["zoom-cursor.svg", "zoom-cursor.png", "zoom-cursor.cur"], "crosshair")
-              }
-            },
-            selection: {
-              cursors: {
-                dragging: "crosshair",
-                draggable: "crosshair"
-              }
-            }
           },
           tileServices: this.tileServices,
           tileServicesOptions: this.tileServicesOptions,
@@ -500,24 +482,32 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   return {
     getConfiguration: getConfiguration
   };
-}), define("cde/components/Map/Map.featureStyles", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/Logger"], function ($, _, Logger) {
+}), define("cde/components/Map/Map.ext", [], function () {
+  return {
+    getMarkerImgPath: function () {
+      return CONTEXT_PATH + "api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/";
+    }
+  };
+}), define("cde/components/Map/Map.featureStyles", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "./Map.ext", "cdf/Logger"], function ($, _, MapExt, Logger) {
+  "use strict";
   function getStyleMap(styleName) {
-    var localStyleMap = _.result(this, "styleMap") || {}, styleMap = $.extend(!0, {}, styleMaps.global, this.configuration.isSelector ? {} : styleMaps.global_override_when_no_parameter_is_defined, styleMaps[styleName], localStyleMap.global, localStyleMap[styleName]);
+    var localStyleMap = _.result(this, "styleMap") || {}, styleMap = $.extend(!0, {}, styleMaps.global, styleMaps[styleName]);
     switch (styleName) {
       case "shapes":
-        Logger.warn("Usage of the 'shapeSettings' property (including shapeSettings.fillOpacity, shapeSettings.strokeWidth and shapeSettings.strokeColor) is deprecated."),
-          Logger.warn("Support for these properties will be removed in the next major version.");
+        return Logger.warn("Usage of the 'shapeSettings' property (including shapeSettings.fillOpacity, shapeSettings.strokeWidth and shapeSettings.strokeColor) is deprecated."),
+          Logger.warn("Support for these properties will be removed in the next major version."),
+          $.extend(!0, styleMap, this.shapeSettings);
     }
-    return styleMap;
+    return $.extend(!0, styleMap, localStyleMap.global, localStyleMap[styleName]);
   }
 
   var styleMaps = {
     global: {
+      cursor: "inherit",
       "stroke-width": 1,
       stroke: "white",
       hover: {
-        stroke: "black",
-        cursor: "pointer"
+        stroke: "black"
       },
       unselected: {
         "fill-opacity": .2
@@ -528,9 +518,6 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       disabled: {
         unselected: {
           "fill-opacity": .8
-        },
-        hover: {
-          cursor: "grab"
         }
       },
       noneSelected: {
@@ -543,12 +530,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           "fill-opacity": .8
         }
       },
-      dragging: {
-        cursor: "move"
-      }
-    },
-    global_override_when_no_parameter_is_defined: {
-      hover: {}
+      pan: {},
+      zoombox: {},
+      selection: {},
+      dragging: {}
     },
     markers: {
       r: 10,
@@ -613,7 +598,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     }
   };
 }), define("text!cde/components/Map/ControlPanel/ControlPanel.html", [], function () {
-  return '<div class="map-control-panel">\n    <div class="map-control-button map-control-zoom-in"></div>\n    <div class="map-control-button map-control-zoom-out"></div>\n    <div class="map-controls-mode {{mode}}">\n        <div class="map-control-button map-control-pan"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
+  return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        <div class="map-control-button map-control-pan"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
 }), define("cde/components/Map/ControlPanel/ControlPanel", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/lib/mustache", "cdf/lib/BaseEvents", "../model/MapModel", "text!./ControlPanel.html", "css!./ControlPanel"], function ($, _, Mustache, BaseEvents, MapModel, template) {
   return BaseEvents.extend({
     constructor: function (domNode, model, configuration) {
@@ -656,7 +641,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     _updateView: function () {
       var mode = this.model.getMode();
-      this.ph.find(".map-controls-mode").removeClass(_.values(MapModel.Modes).join(" ")).addClass(mode);
+      this.ph.find(".map-control-panel").removeClass(_.values(MapModel.Modes).join(" ")).addClass(mode);
     }
   });
 }), define("cde/components/Map/Map.tileServices", [], function () {
@@ -808,7 +793,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     },
     _switchUrl: function (url) {
       var list = url.match(/(http[s]?:\/\/[0-9a-z.]*?)\{switch:([a-z0-9,]+)\}(.*)/);
-      if (!list || 0 == list.length) return url;
+      if (!list || 0 == list.length) {
+        return url;
+      }
       for (var servers = list[2].split(","), url_list = [], i = 0; i < servers.length; i++) url_list.push(list[1] + servers[i] + list[3]);
       return url_list;
     },
@@ -875,13 +862,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       }, validStyle = {};
       return _.each(foreignStyle, function (value, key) {
         var nativeKey = conversionTable[key];
-        if (nativeKey) validStyle[nativeKey] = value; else switch (key) {
-          case "visible":
-            validStyle.display = value ? !0 : "none";
-            break;
+        if (nativeKey) {
+          validStyle[nativeKey] = value;
+        } else {
+          switch (key) {
+            case "visible":
+              validStyle.display = value ? !0 : "none";
+              break;
 
-          default:
-            validStyle[key] = value;
+            default:
+              validStyle[key] = value;
+          }
         }
       }), validStyle;
     },
@@ -1019,7 +1010,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       this.map.zoomOut();
     },
     updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
-      if (_.isFinite(zoomLevel)) this.map.zoomTo(zoomLevel); else {
+      if (_.isFinite(zoomLevel)) {
+        this.map.zoomTo(zoomLevel);
+      } else {
         var bounds = new OpenLayers.Bounds(), markersBounds = this.layers.markers.getDataExtent(), shapesBounds = this.layers.shapes.getDataExtent();
         markersBounds || shapesBounds ? (bounds.extend(markersBounds), bounds.extend(shapesBounds)) : bounds = null,
           bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
@@ -1135,15 +1128,27 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
           featureunhighlighted: event_relay
         },
         outFeature: function (feature) {
-          if (this.hover) if (this.highlightOnly) if (feature._lastHighlighter == this.id) if (feature._prevHighlighter && feature._prevHighlighter != this.id) {
-            delete feature._lastHighlighter;
-            var control = this.map.getControl(feature._prevHighlighter);
-            control && (control.highlight(feature), this.events.triggerEvent("featureunhighlighted", {
-              feature: feature
-            }));
-          } else this.unhighlight(feature); else this.events.triggerEvent("featureunhighlighted", {
-            feature: feature
-          }); else this.unselect(feature);
+          if (this.hover) {
+            if (this.highlightOnly) {
+              if (feature._lastHighlighter == this.id) {
+                if (feature._prevHighlighter && feature._prevHighlighter != this.id) {
+                  delete feature._lastHighlighter;
+                  var control = this.map.getControl(feature._prevHighlighter);
+                  control && (control.highlight(feature), this.events.triggerEvent("featureunhighlighted", {
+                    feature: feature
+                  }));
+                } else {
+                  this.unhighlight(feature);
+                }
+              } else {
+                this.events.triggerEvent("featureunhighlighted", {
+                  feature: feature
+                });
+              }
+            } else {
+              this.unselect(feature);
+            }
+          }
         }
       }), this.controls.hoverCtrl.handlers.feature.stopDown = !1, this.map.addControl(this.controls.hoverCtrl),
         this.controls.hoverCtrl.activate();
@@ -1168,10 +1173,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
               latitude: p.lat,
               longitude: p.lon
             };
-          } else center = {
-            latitude: void 0,
-            longitude: void 0
-          };
+          } else {
+            center = {
+              latitude: void 0,
+              longitude: void 0
+            };
+          }
           return center;
         }, extentObj = e.object.getExtent(), viewport = {
           northEast: {},
@@ -1215,7 +1222,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
   return function ($) {
     var promise, now = $.now();
     return function (version, apiKey) {
-      if (promise) return promise;
+      if (promise) {
+        return promise;
+      }
       var params, deferred = $.Deferred(), resolve = function () {
         deferred.resolve(window.google && google.maps ? google.maps : !1);
       }, callbackName = "loadGoogleMaps_" + now++;
@@ -1241,6 +1250,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     };
   }($);
 }), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function ($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+  "use strict";
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
       this.htmlContent_ = htmlContent, this.popupContentDiv_ = popupContentDiv, this.borderColor_ = borderColor,
@@ -1376,24 +1386,28 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       }, validStyle = {};
       return _.each(foreignStyle, function (value, key) {
         var nativeKey = conversionTable[key];
-        if (nativeKey) validStyle[nativeKey] = value; else switch (key) {
-          case "visible":
-            validStyle.display = value ? !0 : "none";
-            break;
+        if (nativeKey) {
+          validStyle[nativeKey] = value;
+        } else {
+          switch (key) {
+            case "visible":
+              validStyle.display = value ? !0 : "none";
+              break;
 
-          case "icon-url":
-            validStyle.icon = value, validStyle.size = new google.maps.Size(foreignStyle.width, foreignStyle.height);
-            break;
+            case "icon-url":
+              validStyle.icon = value, validStyle.size = new google.maps.Size(foreignStyle.width, foreignStyle.height);
+              break;
 
-          case "symbol":
-            var symbols = {
-              circle: google.maps.SymbolPath.CIRCLE
-            }, symbol = symbols[value];
-            validStyle.path = _.isUndefined(symbol) ? value : symbol;
-            break;
+            case "symbol":
+              var symbols = {
+                circle: google.maps.SymbolPath.CIRCLE
+              }, symbol = symbols[value];
+              validStyle.path = _.isUndefined(symbol) ? value : symbol;
+              break;
 
-          default:
-            validStyle[key] = value;
+            default:
+              validStyle[key] = value;
+          }
         }
       }), modelItem && "marker" === modelItem.getFeatureType() && (validStyle.icon || (validStyle = {
         icon: validStyle
@@ -1607,10 +1621,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       if (null !== control.gribBoundingBox) {
         var bounds = new google.maps.LatLngBounds(control.mouseDownPos, null);
         bounds.extend(e.latLng), control.gribBoundingBox.setBounds(bounds);
-      } else control.gribBoundingBox = new google.maps.Rectangle($.extend({
-        map: this.map,
-        clickable: !1
-      }, this.boxStyle));
+      } else {
+        control.gribBoundingBox = new google.maps.Rectangle($.extend({
+          map: this.map,
+          clickable: !1
+        }, this.boxStyle));
+      }
     },
     unselectPrevShape: function (key, shapes, shapeStyle) {
       var myself = this, prevSelected = this.selectedFeature;
@@ -1647,7 +1663,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         name: name.indexOf("/") >= 0 ? "custom" : name,
         getTileUrl: function (coord, zoom) {
           var limit = Math.pow(2, zoom);
-          if (coord.y < 0 || coord.y >= limit) return "404.png";
+          if (coord.y < 0 || coord.y >= limit) {
+            return "404.png";
+          }
           coord.x = (coord.x % limit + limit) % limit;
           var url;
           if (_.isArray(urlList)) {
@@ -1659,7 +1677,9 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
               interpolate: /\$\{(.+?)\}/g
             });
             url = myself._selectUrl(s, urlList);
-          } else url = urlList;
+          } else {
+            url = urlList;
+          }
           return _.template(url, {
             x: coord.x,
             y: coord.y,
@@ -1915,11 +1935,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
     var mymap = {};
     return $(rawData).find("Placemark").each(function (idx, y) {
       var key;
-      if (_.isFunction(parseShapeKey)) try {
-        key = parseShapeKey(y);
-      } catch (e) {
+      if (_.isFunction(parseShapeKey)) {
+        try {
+          key = parseShapeKey(y);
+        } catch (e) {
+          key = $(y).find(idSelector).text();
+        }
+      } else {
         key = $(y).find(idSelector).text();
-      } else key = $(y).find(idSelector).text();
+      }
       var polygonArray = _.map($(y).find("Polygon"), function (yy) {
         var polygon = [];
         return _.each(["outerBoundaryIs", "innerBoundaryIs"], function (b) {
