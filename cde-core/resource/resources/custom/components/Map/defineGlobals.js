@@ -9,7 +9,7 @@
     "cdf/lib/Base": Base,
     "cdf/lib/BaseEvents": typeof(BaseEvents) === "undefined" ? {} : BaseEvents,
     "cdf/components/UnmanagedComponent": UnmanagedComponent,
-    "cdf/lib/BaseSelectionTree":  typeof(TreeFilter) === "undefined" ? {} : TreeFilter.Models.SelectionTree,
+    "cdf/lib/BaseSelectionTree": typeof(TreeFilter) === "undefined" ? {} : TreeFilter.Models.SelectionTree,
     "cdf/lib/OpenLayers": typeof(OpenLayers) === "undefined" ? {} : OpenLayers,
     "css!./Map": "",
     "css!./styleGoogle": "",
@@ -31,9 +31,9 @@
     return Dashboards;
   });
 
-  define("cdf/components/CggComponent.ext", [], function() {
+  define("cdf/components/CggComponent.ext", [], function () {
     var CggComponentExt = {
-      getCggDrawUrl: function() {
+      getCggDrawUrl: function () {
         return CONTEXT_PATH + "plugin/cgg/api/services/draw";
       }
     };
@@ -50,7 +50,7 @@
   });
 
   define("text!./ControlPanel.html", [], function () {
-    return '<div class="map-control-panel">\n    <div class="map-control-button map-control-zoom-in"></div>\n    <div class="map-control-button map-control-zoom-out"></div>\n    <div class="map-controls-mode {{mode}}">\n        <div class="map-control-button map-control-pan"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
+    return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        <div class="map-control-button map-control-pan"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
   });
 
 }());

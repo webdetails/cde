@@ -19,6 +19,7 @@ define([
   "../../model/MapModel",
   "css!./styleGoogle"
 ], function ($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+  "use strict";
 
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
 
@@ -257,12 +258,12 @@ define([
       this._registerDragCallbacks();
     },
 
-    _registerDragCallbacks: function(){
+    _registerDragCallbacks: function () {
       var me = this;
-      google.maps.event.addListener(this.map, "dragstart", function(){
+      google.maps.event.addListener(this.map, "dragstart", function () {
         me._updateDrag(true);
       });
-      google.maps.event.addListener(this.map, "dragend", function(){
+      google.maps.event.addListener(this.map, "dragend", function () {
         me._updateDrag(false);
       });
     },
@@ -385,8 +386,10 @@ define([
       google.maps.event.addListener(this.map, "zoom_changed", function () {
         if (me.map.getZoom() < minZoom) {
           me.map.setZoom(minZoom);
-        } else if ((!_.isNull(maxZoom)) && (me.map.getZoom() > maxZoom)) {
-          me.map.setZoom(maxZoom); // if is NULL, max is the limit of the map
+        } else {
+          if ((!_.isNull(maxZoom)) && (me.map.getZoom() > maxZoom)) {
+            me.map.setZoom(maxZoom); // if is NULL, max is the limit of the map
+          }
         }
       });
     },
@@ -625,8 +628,9 @@ define([
         zoomLevel = this.options.viewport.zoomLevel["default"];
       }
       this.map.setZoom(zoomLevel);
-      if (!this.zoomExtends())
+      if (!this.zoomExtends()) {
         this.map.panTo(new google.maps.LatLng(38, -9));
+      }
     },
 
     tileLayer: function (name) {
@@ -749,7 +753,7 @@ define([
 
   });
 
-  function clearSelection(modelItem){
+  function clearSelection(modelItem) {
     modelItem.root().setSelection(MapModel.SelectionStates.NONE);
   }
 
@@ -766,7 +770,7 @@ define([
   }
 
   function isInBounds(geometry, bounds) {
-    switch(geometry.type){
+    switch (geometry.type) {
       case "MultiPolygon":
         return containsMultiPolygon(bounds, geometry.coordinates);
       case "Polygon":
@@ -778,14 +782,14 @@ define([
     }
 
     function containsMultiPolygon(bounds, multiPolygon) {
-      var hasPolygon = function(polygon){
+      var hasPolygon = function (polygon) {
         return containsPolygon(bounds, polygon);
       };
       return _.some(multiPolygon, hasPolygon);
     }
 
-    function containsPolygon(bounds, polygon){
-      var hasPoint = function(point){
+    function containsPolygon(bounds, polygon) {
+      var hasPoint = function (point) {
         return containsPoint(bounds, point);
       };
       return _.some(polygon, function (line) {
@@ -793,7 +797,7 @@ define([
       });
     }
 
-    function containsPoint(bounds, point){
+    function containsPoint(bounds, point) {
       var latLng = new google.maps.LatLng(point[1], point[0]);
       return bounds.contains(latLng);
     }
