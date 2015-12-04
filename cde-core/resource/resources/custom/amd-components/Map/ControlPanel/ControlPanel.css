@@ -69,15 +69,18 @@
     background-position: 30px 120px;
 }
 
+.map-control-panel.pan .map-control-button.map-control-pan,
 .map-control-panel .map-control-button.map-control-pan:hover {
     background-position: 30px 90px;
 }
 
+.map-control-panel.zoombox .map-control-button.map-control-zoombox,
 .map-control-panel .map-control-button.map-control-zoombox:hover {
     background-position: 30px 60px;
 
 }
 
+.map-control-panel.selection .map-control-button.map-control-select,
 .map-control-panel .map-control-button.map-control-select:hover {
     background-position: 30px 30px;
 }
