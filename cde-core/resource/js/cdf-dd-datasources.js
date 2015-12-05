@@ -117,7 +117,7 @@ var DatasourcesPanel = Panel.extend({
     propertiesTableModel.setColumnSetExpressions([undefined,
       function(row, value) {
         row.value = value;
-        if(row.name === 'name') {
+        if(row.name == 'name') {
           var _tableManager = TableManager.getTableManager("table-" + DatasourcesPanel.DATASOURCES);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();
@@ -127,12 +127,12 @@ var DatasourcesPanel = Panel.extend({
     ]);
 
     this.propertiesTable.setTableModel(propertiesTableModel);
-    this.propertiesTable.init(false);
+    this.propertiesTable.init();
 
     this.datasourcesTable.setLinkedTableManager(this.propertiesTable);
     this.datasourcesTable.setLinkedTableManagerOperation(function(row) {
       var arr = [];
-      for(var p in row.properties) {
+      for(p in row.properties) {
         if(row.properties.hasOwnProperty(p)) {
           arr.push(row.properties[p]);
         }

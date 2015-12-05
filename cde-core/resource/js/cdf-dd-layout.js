@@ -27,16 +27,6 @@ var LayoutPanel = Panel.extend({
   },
 
   init: function() {
-    this.base();
-    this.logger.debug("Specific init");
-
-    this.initLayoutTable();
-    this.initPropertiesTable();
-
-    this.registerTableEvents();
-  },
-
-  initLayoutTable: function() {
     var operationSets = {
       blueprint: [
         new LayoutSaveAsTemplateOperation(),
@@ -85,6 +75,10 @@ var LayoutPanel = Panel.extend({
       ]
     };
 
+    this.base();
+    this.logger.debug("Specific init");
+
+    // Tree
     this.treeTable = new TableManager(LayoutPanel.TREE);
     this.treeTable.setTitle("Layout Structure");
 
@@ -93,26 +87,27 @@ var LayoutPanel = Panel.extend({
 
     var treeTableModel = new TableModel('layoutTreeTableModel');
     treeTableModel.setColumnNames(['Type', 'Name']);
-    treeTableModel.setColumnTypes(['String', 'String']);
     treeTableModel.setColumnGetExpressions([
       function(row) { return row.typeDesc; },
       function(row) { return row.properties[0].value; }
     ]);
-    treeTableModel.setRowId(function(row) {
-          return row.id;
-    });
-    treeTableModel.setRowType(function(row) {
-      return row.type;
-    });
-    treeTableModel.setParentId(function(row) {
-      return row.parent;
-    });
-    treeTableModel.setData(cdfdd.getDashboardData().layout.rows);
+    treeTableModel.setColumnTypes(['String', 'String']);
+    var rowId = function(row) { return row.id; };
+    treeTableModel.setRowId(rowId);
+    var rowType = function(row) { return row.type; };
+    treeTableModel.setRowType(rowType);
+    var parentId = function(row) { return row.parent; };
+    treeTableModel.setParentId(parentId);
+    var layoutRows = cdfdd.getDashboardData().layout.rows;
+    treeTableModel.setData(layoutRows);
     this.treeTable.setTableModel(treeTableModel);
-    this.treeTable.init(false);
-  },
+    this.treeTable.init();
 
-  initPropertiesTable: function() {
+    var layoutPanelTree = $('#' + LayoutPanel.TREE);
+    var propertiesTree = $('#' + LayoutPanel.PROPERTIES);
+    layoutPanelTree.addClass('selectedTable');
+
+    // Properties
     this.propertiesTable = new TableManager(LayoutPanel.PROPERTIES);
     this.propertiesTable.setTitle("Properties");
     var propertiesTableModel = new PropertiesTableModel('layoutPropertiesTableModel');
@@ -121,7 +116,7 @@ var LayoutPanel = Panel.extend({
     propertiesTableModel.setColumnSetExpressions([undefined,
       function(row, value) {
         row.value = value;
-        if(row.name === 'name') {
+        if(row.name == 'name') {
           var _tableManager = TableManager.getTableManager("table-" + LayoutPanel.TREE);
           this.logger.debug("Changing the name - applying to previous row in " + _tableManager + " in row " + _tableManager.getSelectedCell()[0]);
           var _cell = _tableManager.getSelectedCell();
@@ -132,7 +127,7 @@ var LayoutPanel = Panel.extend({
     ]);
 
     this.propertiesTable.setTableModel(propertiesTableModel);
-    this.propertiesTable.init(false);
+    this.propertiesTable.init();
 
     this.treeTable.setLinkedTableManager(this.propertiesTable);
     this.treeTable.setLinkedTableManagerOperation(function(row) {
@@ -144,12 +139,6 @@ var LayoutPanel = Panel.extend({
       }
       return arr;
     });
-  },
-
-  registerTableEvents: function() {
-    var layoutPanelTree = $('#' + LayoutPanel.TREE);
-    var propertiesTree = $('#' + LayoutPanel.PROPERTIES);
-    layoutPanelTree.addClass('selectedTable');
 
     layoutPanelTree.click(function(e) {
       propertiesTree.removeClass('selectedTable').addClass('unselectedTable');
@@ -167,6 +156,8 @@ var LayoutPanel = Panel.extend({
         '<div id="' + LayoutPanel.TREE + '" class="span-12 panel-scroll-element">Tree</div>\n' +
         '<div id="' + LayoutPanel.PROPERTIES + '" class="span-12 panel-scroll-element last">Properties</div>\n';
   },
+
+  // Get HtmlObjects
 
   getHtmlTargets: function() {
     var data = this.treeTable.getTableModel().getData();
@@ -213,7 +204,7 @@ var LayoutPanel = Panel.extend({
     var tm = TableManager.getTableManager("table-" + selectedTableId);
     var data = tm.getTableModel().getData();
 
-    if( data != null && data.length === 0) {
+    if( data != null && data.length == 0) {
       tm = TableManager.getTableManager("table-" + LayoutPanel.TREE);
     }
 
@@ -226,7 +217,7 @@ var LayoutPanel = Panel.extend({
     if(selectedTableId == LayoutPanel.TREE && this.treeTable.isSelectedCell) {
       $('#' + LayoutPanel.PROPERTIES).click();
       return this.propertiesTable;
-    } else if(selectedTableId === LayoutPanel.PROPERTIES) {
+    } else if(selectedTableId == LayoutPanel.PROPERTIES) {
       $('#' + LayoutPanel.TREE).click();
       return this.treeTable;
     }

@@ -41,17 +41,14 @@ var TableManager = Base.extend({
     TableManager.register(this);
   },
 
-  init: function(isPartialInit) {
-    this.reset(isPartialInit);
+  init: function() {
+    this.reset();
+    $("#" + this.id).append(this.newTable());
     this.render();
   },
 
-  reset: function(isPartialInit) {
-    var container = $("#" + this.id);
-    if(isPartialInit) {
-      container = container.find('.scrollContainer');
-    }
-    container.empty().append(this.newTable(isPartialInit));
+  reset: function() {
+    $("#" + this.id).empty();
   },
 
   render: function() {
@@ -83,31 +80,24 @@ var TableManager = Base.extend({
     this.updateOperations();
   },
 
-  newTable: function(isPartialInit) {
-    var table = '' +
-        '<table id="' + this.tableId + '" class="' + this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">' +
-        ' <thead></thead>' +
-        ' <tbody class="ui-widget-content"></tbody>' +
-        '</table>';
-
-    if(!isPartialInit) {
-      var operations = this.getOperations().length === 0 ? '' :
-          '<div id="' + this.tableId + 'Operations" style="float: right" class="cdfdd-operations"></div>';
-
-      var captionTitle = '<div class="simpleProperties propertiesSelected">' + this.title + '</div>' +
-          (!this.hasAdvancedProperties ? '' :
-          '<span class="propertiesSeparator">&nbsp;&nbsp;/&nbsp;&nbsp;</span>' +
-          '<div class="advancedProperties propertiesUnSelected">Advanced Properties</div>');
-
-      table = '' +
-          '<div class="tableContainer">' +
-          ' <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
-          ' <div class="tableCaption ui-state-default">' + captionTitle + operations + '</div>' +
-          ' <div class="scrollContainer">' + table + '</div>' +
-          '</div>';
-    }
-
-    return table;
+  newTable: function() {
+    return '' +
+        '<div class="tableContainer">\n' +
+        ' <a id="anchor-' + this.id + '" class="tableAnchor" href=""></a>' +
+        ' <div class="tableCaption ui-state-default">\n' +
+        '   <div class="simpleProperties propertiesSelected">' + this.title + '</div>\n' +
+        '   <div id="' + this.tableId + 'Operations" style="float: right" class="cdfdd-operations"></div>\n' +
+        (this.hasAdvancedProperties === true ? '<span style="float:left">&nbsp;&nbsp;/&nbsp;&nbsp;</span><div class="advancedProperties propertiesUnSelected">Advanced Properties</div>\n' : '') +
+        ' </div>\n' +
+        ' <div class="scrollContainer">\n' +
+        '   <table id="' + this.tableId + '" class="' + this.tableId + ' myTreeTable cdfdd ui-reset ui-clearfix ui-component ui-hover-state">\n' +
+        '     <thead>\n' +
+        '     </thead>\n' +
+        '     <tbody class="ui-widget-content">\n' +
+        '     </tbody>\n' +
+        '   </table>\n' +
+        ' </div>\n' +
+        '</div>\n';
   },
 
   addRow: function(row, pos) {
@@ -170,7 +160,6 @@ var TableManager = Base.extend({
 
   },
 
-  //region Drag&Drop
   dragAndDrop: function(row, id) {
     var layoutTreeName = "table-" + LayoutPanel.TREE;
     var tableManager = TableManager.getTableManager(layoutTreeName);
@@ -359,7 +348,6 @@ var TableManager = Base.extend({
 
     return $.inArray(dropRT, CellOperations.getCanMoveTo(dragRT)) > -1;
   },
-  //endregion
 
   renderColumn: function(tr, row, colIdx) {
     var tm = this.getTableModel();
@@ -498,25 +486,10 @@ var TableManager = Base.extend({
     }
   },
 
-  selectPropertiesMode: function(classType) {
-    if(this.hasAdvancedProperties) {
-      var $advancedProperties = $(".advancedProperties");
-      if(classType === 'advanced') {
-        $advancedProperties.attr("class", "advancedProperties propertiesSelected");
-        $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesUnSelected");
-      } else {
-        $advancedProperties.attr("class", "advancedProperties propertiesUnSelected");
-        $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesSelected");
-      }
-    }
-  },
-
   cellClick: function(row, col, classType) {
     // Update operations
-    var linkedTableManager = this.getLinkedTableManager();
-    if(typeof linkedTableManager !== 'undefined') {
-      linkedTableManager.cellUnselected();
-      linkedTableManager.selectPropertiesMode(classType);
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
+      this.getLinkedTableManager().cellUnselected();
     }
 
     this.isSelectedCell = true;
@@ -541,6 +514,7 @@ var TableManager = Base.extend({
   },
 
   selectCell: function(row, col, classType) {
+
     // Unselect
     this.cleanSelections();
     var $table = $('#' + this.getTableId());
@@ -553,6 +527,7 @@ var TableManager = Base.extend({
 
     // Fire cellClicked; get id
     this.cellClick(row, col, classType);
+
   },
 
   scrollTo: function(row) {
@@ -704,22 +679,25 @@ var TableManager = Base.extend({
   },
 
   fireDependencies: function(row, col, classType) {
-    var tableManager = this.getLinkedTableManager();
-    if(typeof tableManager !== 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
+
       var data = this.getLinkedTableManagerOperation()(this.getTableModel().getData()[row], classType);
+
+      var tableManager = this.getLinkedTableManager();
 
       tableManager.getTableModel().setData(data);
       tableManager.cleanSelections();
-      tableManager.init(true);
+      tableManager.init();
     }
   },
 
   cleanDependencies: function() {
-    var tableManager = this.getLinkedTableManager();
-    if(typeof tableManager !== 'undefined') {
+    if(typeof this.getLinkedTableManager() !== 'undefined') {
+      var tableManager = this.getLinkedTableManager();
+
       tableManager.getTableModel().setData([]);
       tableManager.cleanSelections();
-      tableManager.init(true);
+      tableManager.init();
     }
   },
 
@@ -889,42 +867,45 @@ var TableManager = Base.extend({
 
       if(!wasSelected) {
         $('#anchor-' + _tableManager.getId()).focus();
-        _tableManager.selectCell(row, col, 'simple');
+        console.log("#######", "# Was Here #", "#######");
       }
+
+      _tableManager.selectCell(row, col, 'simple');
     });
 
     $(document).on("click", ".advancedProperties", function() {
-      if(!$(this).hasClass("propertiesSelected")) {
-        var tbody = $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
-        tbody.fadeOut(300);
-        setTimeout(function() {
-          var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
-          if(myself.length > 0) {
-            var row = myself.parent().prevAll().length;
-            var col = myself.prevAll().length;
-            var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+      var tbody = $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
+      tbody.fadeOut(300);
+      setTimeout(function() {
+        var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
+        if(myself.length > 0) {
+          var row = myself.parent().prevAll().length;
+          var col = myself.prevAll().length;
+          var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+          var $advancedProperties = $(".advancedProperties");
+          _tableManager.selectCell(row, col, 'advanced');
+          $advancedProperties.attr("class", "advancedProperties propertiesSelected");
+          $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesUnSelected");
 
-            _tableManager.selectCell(row, col, 'advanced');
-          }
-        }, 500);
-      }
+        }
+      }, 500);
     });
 
     $(document).on("click", ".simpleProperties", function() {
-      if(!$(this).hasClass("propertiesSelected")) {
-        var tbody = $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
-        tbody.fadeOut(300);
-        setTimeout(function () {
-          var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
-          if (myself.length > 0) {
-            var row = myself.parent().prevAll().length;
-            var col = myself.prevAll().length;
-            var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
-
-            _tableManager.selectCell(row, col, 'simple');
-          }
-        }, 500);
-      }
+      var tbody = $("#table-" + ComponentsPanel.PROPERTIES + " tbody");
+      tbody.fadeOut(300);
+      setTimeout(function() {
+        var myself = $("#table-" + ComponentsPanel.COMPONENTS + " .ui-state-active td");
+        if(myself.length > 0) {
+          var row = myself.parent().prevAll().length;
+          var col = myself.prevAll().length;
+          var _tableManager = TableManager.getTableManager(myself.closest("table").attr("id"));
+          var $advancedProperties = $(".advancedProperties");
+          _tableManager.selectCell(row, col, 'simple');
+          $advancedProperties.attr("class", "advancedProperties propertiesUnSelected");
+          $advancedProperties.parent().find(".simpleProperties").attr("class", "simpleProperties propertiesSelected");
+        }
+      }, 500);
     });
   },
 
