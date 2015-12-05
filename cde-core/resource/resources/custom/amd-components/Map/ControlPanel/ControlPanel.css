@@ -16,6 +16,7 @@
 }
 
 .map-control-panel .map-control-button {
+    background-image: url(../images/map-btns-sprite.png);
     background-image: url(../images/map-btns-sprite.svg);
     background-color: #FFFFFF;
 }
@@ -36,15 +37,14 @@
 
 .map-control-panel .map-control-button.map-control-zoom-out {
     background-position: left 120px;
+    border-bottom: none;
 }
 
 .map-control-panel .map-control-button.map-control-pan {
     background-position: left 90px;
-    border-bottom: none;
 }
 
 .map-control-panel .map-control-button.map-control-zoombox {
-
     background-position: left 60px;
 }
 
@@ -53,9 +53,9 @@
     border-top: none;
 }
 
-.map-controls-mode.pan .map-control-pan,
-.map-controls-mode.zoombox .map-control-zoombox,
-.map-controls-mode.selection .map-control-select {
+.map-control-panel.pan .map-control-pan,
+.map-control-panel.zoombox .map-control-zoombox,
+.map-control-panel.selection .map-control-select {
     background-color: #a0a0a0;
 }
 
@@ -70,17 +70,18 @@
     background-position: 30px 120px;
 }
 
+.map-control-panel.pan .map-control-button.map-control-pan,
 .map-control-panel .map-control-button.map-control-pan:hover {
     background-position: 30px 90px;
-    border-bottom: none;
 }
 
+.map-control-panel.zoombox .map-control-button.map-control-zoombox,
 .map-control-panel .map-control-button.map-control-zoombox:hover {
     background-position: 30px 60px;
 
 }
 
+.map-control-panel.selection .map-control-button.map-control-select,
 .map-control-panel .map-control-button.map-control-select:hover {
     background-position: 30px 30px;
-    border-top: none;
 }

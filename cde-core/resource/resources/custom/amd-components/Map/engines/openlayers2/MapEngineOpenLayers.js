@@ -88,8 +88,7 @@ define([
       var coords;
       if (lastXy) {
         coords = this.map.getLonLatFromPixel(lastXy)
-          .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326')
-          );
+          .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326'));
       } else {
         coords = {lat: undefined, lon: undefined};
       }
@@ -147,11 +146,10 @@ define([
         });
         layer.addFeatures([f]);
       });
-
     },
 
-    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
 
+    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
       if (popupContentDiv && popupContentDiv.length > 0) {
         var div = $('<div/>');
         div.append($('#' + popupContentDiv));
@@ -196,7 +194,7 @@ define([
           // new OpenLayers.Control.NavToolbar(),
           // new OpenLayers.Control.PanZoom(),
           //new OpenLayers.Control.ZoomPanel(),
-          new OpenLayers.Control.DragPan(),
+          //new OpenLayers.Control.DragPan(),
           new OpenLayers.Control.PinchZoom(),
           //new OpenLayers.Control.LayerSwitcher({'ascending': false}),
           new OpenLayers.Control.ScaleLine(),
@@ -207,6 +205,7 @@ define([
         mapOptions.tileManager = new OpenLayers.TileManager();
       }
       this.map = new OpenLayers.Map(target, mapOptions);
+      this.$map = $(target);
 
       var me = this;
       this.map.isValidZoomLevel = function (z) {
@@ -227,19 +226,21 @@ define([
       });
     },
 
+
     addLayers: function () {
       var me = this;
       _.each(this.tilesets, function (thisTileset) {
         var layer;
-        var tileset = thisTileset.slice(0).split('-')[0],
-          variant = thisTileset.slice(0).split('-').slice(1).join('-') || 'default';
+        var tilesetId = _.isString(thisTileset) ? thisTileset : thisTileset.id;
+        var tileset = tilesetId.slice(0).split('-')[0];
+        var variant = tilesetId.slice(0).split('-').slice(1).join('-') || 'default';
         switch (tileset) {
           case 'googleXXX':
             layer = new OpenLayers.Layer.Google('Google Streets', {visibility: true, version: '3'});
             break;
 
           case 'opengeo':
-            layer = new OpenLayers.Layer.WMS(thisTileset,
+            layer = new OpenLayers.Layer.WMS(tilesetId,
               'http://maps.opengeo.org/geowebcache/service/wms', {
                 layers: variant,
                 bgcolor: '#A1BDC4'
@@ -250,13 +251,13 @@ define([
             break;
 
           default:
-            layer = me.tileLayer(thisTileset);
+            layer = me.tileLayer(tilesetId);
             break;
         }
 
         // add the OpenStreetMap layer to the map
         me.map.addLayer(layer);
-        me.layers[thisTileset] = layer;
+        me.layers[tilesetId] = layer;
       });
 
       // add layers for the markers and for the shapes
@@ -276,18 +277,21 @@ define([
       this.controls.clickCtrl.activate();
       this.controls.zoomBox.deactivate();
       this.controls.boxSelector.deactivate();
+      this._updateMode('pan');
     },
 
     setZoomBoxMode: function () {
       this.controls.clickCtrl.activate();
       this.controls.zoomBox.activate();
       this.controls.boxSelector.deactivate();
+      this._updateMode('zoombox');
     },
 
     setSelectionMode: function () {
       this.controls.clickCtrl.deactivate();
       this.controls.boxSelector.activate();
       this.controls.zoomBox.deactivate();
+      this._updateMode('selection');
     },
 
     zoomIn: function () {
@@ -339,20 +343,32 @@ define([
       this._addControlZoomBox();
     },
 
-    _addControlKeyboardNavigation: function(){
+    _addControlKeyboardNavigation: function () {
       var allowKeyboard = (this.options.controls.enableKeyboardNavigation === true);
       this.controls.keyboardNavigation = new OpenLayers.Control.KeyboardDefaults({
         //observeElement: this.map.div
       });
       this.map.addControl(this.controls.keyboardNavigation);
-      if (allowKeyboard){
+      if (allowKeyboard) {
         this.controls.keyboardNavigation.activate();
       } else {
         this.controls.keyboardNavigation.deactivate();
       }
     },
 
-    _addControlMouseNavigation: function(){
+    __patchDragHandler: function (handler) {
+      // NOTE: the following code is very fragile, might break if we change the library version from 2.13.1
+      var me = this;
+      handler.down = function () {
+        me._updateDrag(true);
+      };
+      handler.up = function () {
+        me._updateDrag(false);
+      };
+      //handler.stopDown = false;
+    },
+
+    _addControlMouseNavigation: function () {
       var allowZoom = (this.options.controls.enableZoomOnMouseWheel === true);
       this.controls.touchNavigation = new OpenLayers.Control.TouchNavigation();
       this.map.addControl(this.controls.touchNavigation);
@@ -361,8 +377,10 @@ define([
         zoomWheelEnabled: allowZoom
       });
       this.map.addControl(this.controls.mouseNavigation);
+      this.__patchDragHandler(this.controls.mouseNavigation.dragPan.handler);
+
       //this.controls.mouseNavigation.zoomWheelEnabled = allowZoom;
-      if (allowZoom){
+      if (allowZoom) {
         this.controls.touchNavigation.activate();
       } else {
         this.controls.touchNavigation.deactivate();
@@ -385,10 +403,14 @@ define([
       // allowing event to travel down
       this.controls.clickCtrl.handlers['feature'].stopDown = false;
       this.map.addControl(this.controls.clickCtrl);
-      //this.controls.clickCtrl.activate();
+      var me = this;
+      this.controls.clickCtrl.events.on({
+        "activate": function (e) {
+          me._updateDrag(false);
+        }
+      });
 
     },
-
 
     _addControlBoxSelector: function () {
       var me = this;
@@ -406,15 +428,18 @@ define([
       });
       this.map.addControl(this.controls.boxSelector);
       //TODO: apply modelItem.setHover(true) on all items inside the box
-
+      this.__patchDragHandler(this.controls.boxSelector.handlers.box.dragHandler);
       this.controls.boxSelector.events.on({
         "activate": function (e) {
+          e.object.unselectAll();
+          me._updateDrag(false);
+        },
+        "boxselectionstart": function (e) {
           e.object.unselectAll();
         },
         "boxselectionend": function (e) {
           _.each(e.layers, function (layer) {
             _.each(layer.selectedFeatures, function (f) {
-              //var newState = !f.attributes.model.getSelection(); //toggle
               addToSelection(f.attributes.model);
             });
           });
@@ -431,17 +456,22 @@ define([
         zoomOnClick: false
       });
       this.map.addControl(this.controls.zoomBox);
+      var me = this;
+      this.controls.zoomBox.events.on({
+        "activate": function (e) {
+          me._updateDrag(false);
+        }
+      });
+      this.__patchDragHandler(this.controls.zoomBox.handler.dragHandler);
     },
 
     _addControlHover: function () {
       var me = this;
-
       function event_relay(e) {
         var events = {
           'featurehighlighted': 'mouseover',
           'featureunhighlighted': 'mouseout'
         };
-
         //console.log('hoverCtrl', featureType, e.type, styles[e.type]);
         if (events[e.type]) {
           var model = e.feature.attributes.model;
@@ -449,8 +479,6 @@ define([
           me.trigger(model.getFeatureType() + ':' + events[e.type], me.wrapEvent(e));
         }
       }
-
-
       this.controls.hoverCtrl = new OpenLayers.Control.SelectFeature([this.layers.markers, this.layers.shapes], {
         hover: true,
         highlightOnly: true,
@@ -511,7 +539,7 @@ define([
       var layerName = featureType === 'marker' ? 'markers' : 'shapes';
       var layer = this.layers[layerName];
       var feature = layer.getFeaturesByAttribute('id', modelItem.get('id'))[0];
-      if (feature) {
+      if (feature && !_.isEqual(feature.style, style)) {
         feature.style = style;
         feature.layer.drawFeature(feature, style);
       }
@@ -620,7 +648,6 @@ define([
       var model = feature.attributes.model;
       var newState = toggleTable[model.getSelection()];
       model.setSelection(newState);
-      model.setHover(false);
       var eventName = model.getFeatureType() + ':click';
       me.trigger('engine:selection:complete');
       me.trigger(eventName, me.wrapEvent({feature: feature}));

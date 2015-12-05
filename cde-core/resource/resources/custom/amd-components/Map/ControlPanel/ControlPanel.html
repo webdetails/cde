@@ -1,9 +1,11 @@
-<div class="map-control-panel">
-    <div class="map-control-button map-control-zoom-in"></div>
-    <div class="map-control-button map-control-zoom-out"></div>
-    <div class="map-controls-mode {{mode}}">
-        <div class="map-control-button map-control-pan"></div>
+<div class="map-control-panel {{mode}}">
+    <div class="map-controls-zoom">
+        <div class="map-control-button map-control-zoom-in"></div>
+        <div class="map-control-button map-control-zoom-out"></div>
         <div class="map-control-button map-control-zoombox"></div>
+    </div>
+    <div class="map-controls-mode">
+        <div class="map-control-button map-control-pan"></div>
         {{#configuration.isSelector}}
         <div class="map-control-button map-control-select"></div>
         {{/configuration.isSelector}}
