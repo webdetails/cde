@@ -454,9 +454,20 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
         }
       }
     }, controls = {
+      doubleClickTimeoutMilliseconds: 300,
       enableKeyboardNavigation: !0,
       enableZoomOnMouseWheel: !1
     }, viewport = {
+      extent: {
+        southEast: {
+          latitude: -72.7,
+          longitude: -180
+        },
+        northWest: {
+          latitude: 84.2,
+          longitude: 180
+        }
+      },
       center: {
         latitude: parseFloat(this.centerLatitude),
         longitude: parseFloat(this.centerLongitude)
@@ -950,7 +961,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function 
       }), this.map.addPopup(popup, !0);
     },
     renderMap: function (target) {
-      var projectionMap = new OpenLayers.Projection("EPSG:900913"), projectionWGS84 = new OpenLayers.Projection("EPSG:4326"), mapOptions = {
+      var projectionMap = new OpenLayers.Projection("EPSG:900913"), projectionWGS84 = new OpenLayers.Projection("EPSG:4326"), extent = this.options.viewport.extent, restrictedExtent = new OpenLayers.Bounds(extent.southEast.longitude, extent.southEast.latitude, extent.northWest.longitude, extent.northWest.latitude).transform(projectionWGS84, projectionMap), mapOptions = {
         zoom: this.options.viewport.zoomLevel["default"],
         zoomDuration: 10,
         displayProjection: projectionWGS84,
