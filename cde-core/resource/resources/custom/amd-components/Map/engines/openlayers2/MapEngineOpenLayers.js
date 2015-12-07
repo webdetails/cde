@@ -182,11 +182,17 @@ define([
     renderMap: function (target) {
       var projectionMap = new OpenLayers.Projection('EPSG:900913');
       var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
+      var extent = this.options.viewport.extent;
+      var restrictedExtent = new OpenLayers.Bounds(
+        extent.southEast.longitude, extent.southEast.latitude,
+        extent.northWest.longitude, extent.northWest.latitude
+      ).transform(projectionWGS84, projectionMap);
 
       var mapOptions = {
         zoom: this.options.viewport.zoomLevel["default"],
         zoomDuration: 10, // approximately match Google's zoom animation
         displayProjection: projectionWGS84,
+        restrictedExtent: restrictedExtent,
         projection: projectionMap,
         controls: [
           //new OpenLayers.Control.PinchZoom(),
