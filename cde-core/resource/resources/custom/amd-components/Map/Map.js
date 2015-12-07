@@ -95,9 +95,7 @@ define([
              tileServices,
              OpenLayersEngine, GoogleMapEngine) {
 
-
-  var NewMapComponent = UnmanagedComponent
-    .extend(ILifecycle)
+  return UnmanagedComponent.extend(ILifecycle)
     .extend(ISelector)
     .extend(IMapModel)
     .extend(IConfiguration)
@@ -266,10 +264,10 @@ define([
 
         // Marker mouseover/mouseout events are not yet completely supported
         //this.on("marker:mouseover", function (event) {
-          //this.showPopup(event);
+        //this.showPopup(event);
         //});
         // this.on("marker:mouseout", function(event){
-          //this.hidePopup(event);
+        //this.hidePopup(event);
         // });
 
         this.on("shape:mouseover", function (event) {
@@ -379,6 +377,7 @@ define([
        */
 
 
+
       _initPopup: function () {
         if (this.popupContentsDiv) {
           var $popupContentsDiv = $("#" + this.popupContentsDiv);
@@ -415,10 +414,6 @@ define([
         }
       }
 
-
     });
-
-
-  return NewMapComponent;
 
 });

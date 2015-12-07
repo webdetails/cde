@@ -200,6 +200,26 @@ define([
         }
       }
       return urlTemplate;
+    },
+    _createClickHandler: function (singleClick, doubleClick, timeout) {
+      var me = this;
+      var clicks = 0;
+      return function () {
+        clicks++;
+        var self = this;
+        var args = _.map(arguments, _.identity);
+        args.unshift(me);
+        if (clicks === 1) {
+          setTimeout(function () {
+            if (clicks === 1) {
+              _.isFunction(singleClick) && singleClick.apply(self, args);
+            } else {
+              _.isFunction(doubleClick) && doubleClick.apply(self, args);
+            }
+            clicks = 0;
+          }, timeout || me.options.doubleClickTimeoutMilliseconds || 300);
+        }
+      };
     }
 
   });
