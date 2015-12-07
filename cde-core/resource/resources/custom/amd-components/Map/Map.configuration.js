@@ -1,7 +1,7 @@
 define([
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore'
-], function ($, _) {
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore"
+], function($, _) {
   "use strict";
   return {
     getConfiguration: getConfiguration
@@ -9,12 +9,13 @@ define([
 
   /**
    * Validates the configuration options and gathers them by context
+   *
    * @returns {{addIns: {MarkerImage: *, ShapeResolver: *, LocationResolver: *}}}
    */
   function getConfiguration() {
     var addIns = {
       MarkerImage: {
-        name: this.markerCggGraph ? 'cggMarker' : this.markerImageGetter,
+        name: this.markerCggGraph ? "cggMarker" : this.markerImageGetter,
         options: {
           cggScript: this.markerCggGraph,
           parameters: this.cggGraphParameters,
@@ -31,7 +32,7 @@ define([
         }
       },
       LocationResolver: {
-        name: this.locationResolver || 'openstreetmap',
+        name: this.locationResolver || "openstreetmap",
         options: {}
       },
       MapEngine: {
@@ -56,15 +57,15 @@ define([
     };
 
     var viewport = {
-      extent:{
-          southEast: {
-            latitude: -72.7,
-            longitude: -180
-          },
-          northWest: {
-            latitude: 84.2,
-            longitude: 180
-          }
+      extent: {
+        southEast: {
+          latitude: -72.7,
+          longitude: -180
+        },
+        northWest: {
+          latitude: 84.2,
+          longitude: 180
+        }
       },
       center: {
         latitude: parseFloat(this.centerLatitude),
@@ -78,13 +79,17 @@ define([
 
     };
 
-    return $.extend(true, {}, {
+    var configuration = $.extend(true, {}, {
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
       controls: controls,
       styleMap: this.styleMap,
       viewport: viewport
-    }, _.result(this, 'options'));
+    });
+    if (!_.isUndefined(this.options)) {
+      configuration = $.extend(true, configuration, _.isFunction(this.options) ? this.options(configuration) : this.options);
+    }
+    return configuration;
   }
 
 });

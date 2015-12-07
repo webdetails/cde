@@ -12,13 +12,13 @@
  */
 
 define([
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore',
-  '../nominatim/nominatim'
-], function (AddIn, Dashboard, $, _, nominatim) {
-
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore",
+  "../nominatim/nominatim"
+], function(AddIn, Dashboard, $, _, nominatim) {
+  "use strict";
   var mapquest = $.extend(true, {}, nominatim, {
     name: "mapquest",
     label: "MapQuest",

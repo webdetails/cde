@@ -1,14 +1,15 @@
 define([
-  'amd!cdf/lib/underscore'
-], function (_) {
-
+  "amd!cdf/lib/underscore"
+], function(_) {
+  "use strict";
   return getMapping;
 
   function getMapping(json) {
     var map = {};
 
-    if (!json.metadata || json.metadata.length == 0)
+    if (!json.metadata || json.metadata.length === 0) {
       return map;
+    }
 
     //Iterate through the metadata. We are looking for the following columns:
     // * address or one or more of 'Country', 'State', 'Region', 'County', 'City'
@@ -22,33 +23,33 @@ define([
     // * popupHeight - Height of the popup window
 
     var colToPropertyMapping = { // colName -> property
-      'key': 'id',
-      'id': 'id',
-      'fill': 'fill',
-      'fillColor': 'fill',
-      'r': 'r',
+      "key": "id",
+      "id": "id",
+      "fill": "fill",
+      "fillColor": "fill",
+      "r": "r",
       // previously defined mappings
-      'latitude': 'latitude',
-      'longitude': 'longitude',
-      'address': 'address',
-      'description': 'description',
-      'marker': 'marker', //iconUrl
-      'markerwidth': 'markerWidth',
-      'markerheight': 'markerHeight',
-      'popupcontents': 'popupContents',
-      'popupwidth': 'popupWidth',
-      'popupheight': 'popupHeight'
+      "latitude": "latitude",
+      "longitude": "longitude",
+      "address": "address",
+      "description": "description",
+      "marker": "marker", //iconUrl
+      "markerwidth": "markerWidth",
+      "markerheight": "markerHeight",
+      "popupcontents": "popupContents",
+      "popupwidth": "popupWidth",
+      "popupheight": "popupHeight"
     };
 
     var colNames = _.chain(json.metadata)
-      .pluck('colName')
-      .map(function (s) {
+      .pluck("colName")
+      .map(function(s) {
         return s.toLowerCase();
       })
       .value();
 
-    var map = _.chain(colNames)
-      .map(function (colName, idx) {
+    map = _.chain(colNames)
+      .map(function(colName, idx) {
         var property = colToPropertyMapping[colName];
         if (property) {
           return [property, idx];
@@ -60,11 +61,11 @@ define([
       .object()
       .value();
 
-    if ('latitude' in map || 'longitude' in map) {
-      map.addressType = 'coordinates';
+    if ("latitude" in map || "longitude" in map) {
+      map.addressType = "coordinates";
     }
-    if ('address' in map && !map.addressType) {
-      map.addressType = 'address';
+    if ("address" in map && !map.addressType) {
+      map.addressType = "address";
     }
 
     if (!map.id) {

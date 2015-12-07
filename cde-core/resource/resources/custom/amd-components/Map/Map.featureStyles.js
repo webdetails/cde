@@ -3,7 +3,7 @@ define([
   "amd!cdf/lib/underscore",
   "./Map.ext",
   "cdf/Logger"
-], function ($, _, MapExt, Logger) {
+], function($, _, MapExt, Logger) {
   "use strict";
 
   var styleMaps = {
@@ -71,7 +71,7 @@ define([
       case "shapes":
         Logger.warn("Usage of the 'shapeSettings' property (including shapeSettings.fillOpacity, shapeSettings.strokeWidth and shapeSettings.strokeColor) is deprecated.");
         Logger.warn("Support for these properties will be removed in the next major version.");
-        //$.extend(true, styleMap, this.shapeSettings);
+        $.extend(true, styleMap, this.shapeSettings);
         break;
     }
 
@@ -91,12 +91,11 @@ define([
    * @param fallback
    * @returns {*}
    */
-  function cursor(image, fallback){
+  function cursor(image, fallback) {
     var list = _.isString(image) ? [image] : image;
-    return _.map(list, function(img){
+    return _.map(list, function(img) {
         return "url(" + MapExt.getMarkerImgPath() + img + ")";
       }).join(", ") + fallback;
   }
-
 
 });
