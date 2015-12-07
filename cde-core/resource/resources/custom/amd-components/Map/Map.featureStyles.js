@@ -19,13 +19,6 @@ define([
 ], function ($, _, MapExt, Logger) {
   "use strict";
 
-  function cursor(image, fallback){
-    var list = _.isString(image) ? [image] : image;
-    return _.map(list, function(img){
-      return "url(" + MapExt.getMarkerImgPath() + img + ")";
-    }).join(", ") + fallback;
-  }
-
   var styleMaps = {
     global: {
       cursor: "inherit",
@@ -54,18 +47,6 @@ define([
         selected: {
           "fill-opacity": 0.8
         }
-      },
-      pan: {
-        //cursor: "move"
-      },
-      zoombox: {
-        //cursor: cursor(["zoom-cursor.svg", "zoom-cursor.png", "zoom-cursor.cur"], "zoom-in")
-      },
-      selection: {
-
-      },
-      "dragging": {
-        //cursor: "move"
       }
     },
     markers: {
@@ -93,7 +74,6 @@ define([
   };
 
   function getStyleMap(styleName) {
-    var localStyleMap = _.result(this, "styleMap") || {};
     var styleMap = $.extend(true, {},
       styleMaps.global,
       styleMaps[styleName]
@@ -104,13 +84,31 @@ define([
       case "shapes":
         Logger.warn("Usage of the 'shapeSettings' property (including shapeSettings.fillOpacity, shapeSettings.strokeWidth and shapeSettings.strokeColor) is deprecated.");
         Logger.warn("Support for these properties will be removed in the next major version.");
-      return $.extend(true, styleMap, this.shapeSettings);
+        //$.extend(true, styleMap, this.shapeSettings);
+        break;
     }
 
+    var localStyleMap = _.result(this, "styleMap") || {};
     return $.extend(true, styleMap,
       localStyleMap.global,
       localStyleMap[styleName]
     );
+  }
+
+  /**
+   * Builds a string associated with the CSS property cursor: e.g.
+   * cursor(["image1.svg", "image1.png"], "default")
+   * ->
+   * "url(./image1.svg), url(./image1.png), default"
+   * @param image
+   * @param fallback
+   * @returns {*}
+   */
+  function cursor(image, fallback){
+    var list = _.isString(image) ? [image] : image;
+    return _.map(list, function(img){
+        return "url(" + MapExt.getMarkerImgPath() + img + ")";
+      }).join(", ") + fallback;
   }
 
 

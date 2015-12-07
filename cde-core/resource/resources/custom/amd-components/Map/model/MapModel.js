@@ -181,15 +181,15 @@ define([
 
   function getStyle(config, mode, globalState, leafState, action, dragState) {
     var styleKeywords = [
-      ["dragging", "moving"], //EXPERIMENTAL
+      //["dragging", "moving"], //EXPERIMENTAL
       _.values(ACTIONS),
       _.values(LEAF_STATES),
-      _.values(GLOBAL_STATES),
-      _.values(MODES)
+      _.values(MODES),
+      _.values(GLOBAL_STATES)
     ];
 
     var desiredKeywords = _.map(styleKeywords, function (list, idx) {
-      return _.intersection(list, [[dragState || '', action || '', leafState || '', globalState || '', mode || ''][idx]])[0];
+      return _.intersection(list, [[ /*dragState || '',*/ action || '', leafState || '',  mode || '', globalState || ''][idx]])[0];
     });
 
     return computeStyle(config, desiredKeywords);

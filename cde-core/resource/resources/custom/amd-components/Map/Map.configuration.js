@@ -63,11 +63,22 @@ define([
 
     //
     var controls = {
+      doubleClickTimeoutMilliseconds: 300,
       enableKeyboardNavigation: true,
       enableZoomOnMouseWheel: false
     };
 
     var viewport = {
+      extent:{
+          southEast: {
+            latitude: -72.7,
+            longitude: -180
+          },
+          northWest: {
+            latitude: 84.2,
+            longitude: 180
+          }
+      },
       center: {
         latitude: parseFloat(this.centerLatitude),
         longitude: parseFloat(this.centerLongitude)
