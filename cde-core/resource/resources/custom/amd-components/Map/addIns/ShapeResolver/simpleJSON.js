@@ -12,26 +12,26 @@
  */
 
 define([
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore'
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore"
 ], function(AddIn, Dashboard, $, _) {
-
+  "use strict";
   var simpleJSON = {
-    name: 'simpleJSON',
-    label: 'Simple JSON shape resolver',
+    name: "simpleJSON",
+    label: "Simple JSON shape resolver",
     defaults: {
-      url: '' //url for the resource containing the json map definitions
+      url: "" //url for the resource containing the json map definitions
     },
     implementation: function(tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
-      if(url) {
+      if (url) {
         $.ajax(url, {
           async: true,
-          type: 'GET',
-          dataType: 'json',
+          type: "GET",
+          dataType: "json",
           success: function(latlonMap) {
             deferred.resolve(_.chain(latlonMap)
               .map(function(multiPolygonLatLon, key) {
@@ -40,7 +40,7 @@ define([
               .object()
               .value());
           },
-          error: function () {
+          error: function() {
             deferred.resolve({});
           }
         });
@@ -61,16 +61,16 @@ define([
     });
 
     return {
-      type: 'Feature',
+      type: "Feature",
       geometry: {
-        type: 'MultiPolygon',
+        type: "MultiPolygon",
         coordinates: lonLatMultiPolygon
       },
       properties: {}
     };
   }
 
-  Dashboard.registerGlobalAddIn('NewMapComponent', 'ShapeResolver', new AddIn(simpleJSON));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(simpleJSON));
 
   return simpleJSON;
 });

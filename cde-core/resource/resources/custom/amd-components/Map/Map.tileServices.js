@@ -11,7 +11,7 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define([], function () {
+define([], function() {
 
   /**
    * TileServices (servers providing png images representing the map)
@@ -78,7 +78,6 @@ define([], function () {
     "arcgis-delorme": "http://services.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/${z}/${y}/${x}"
   };
 
-
   return {
     tileServices: _tileServices,
     otherTileServices: [
@@ -90,6 +89,5 @@ define([], function () {
       "apple": {minZoom: 3, maxZoom: 14}
     }
   };
-
 
 });

@@ -12,26 +12,26 @@
  */
 
 define([
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore',
-  'cdf/lib/BaseEvents',
-  '../model/MapModel'
-], function ($, _, BaseEvents, MapModel) {
-
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore",
+  "cdf/lib/BaseEvents",
+  "../model/MapModel"
+], function($, _, BaseEvents, MapModel) {
+  "use strict";
   return BaseEvents.extend({
     tileServices: undefined,
     tileServicesOptions: undefined,
     $map: null,
-    tileLayer: function (name) {
+    tileLayer: function(name) {
     },
-    init: function () {
+    init: function() {
       var deferred = $.Deferred();
       deferred.resolve();
       return deferred.promise();
     },
-    renderMap: function (target) {
+    renderMap: function(target) {
     },
-    render: function (model) {
+    render: function(model) {
       this.model = model;
       var me = this;
 
@@ -46,32 +46,31 @@ define([
       //    })
       //});
 
-
-      this.listenTo(this.model.root(), 'change:mode', function (model, value) {
+      this.listenTo(this.model.root(), "change:mode", function(model, value) {
         var modes = {
-          'selection': me.setSelectionMode,
-          'zoombox': me.setZoomBoxMode,
-          'pan': me.setPanningMode
+          "selection": me.setSelectionMode,
+          "zoombox": me.setZoomBoxMode,
+          "pan": me.setPanningMode
         };
         modes[value] && modes[value].call(me);
-        model.leafs().each(function (m) {
+        model.leafs().each(function(m) {
           me.updateItem(m);
-        })
+        });
       });
 
-      this.listenTo(this.model, 'change:isSelected change:isHighlighted change:isVisible', function (model, value) {
+      this.listenTo(this.model, "change:isSelected change:isHighlighted change:isVisible", function(model, value) {
         if (model.parent() === model.root()) {
           // children of root ("markers" and "shapes") are virtual bags of items
           // don't react to their events.
           return;
         }
-        model.leafs().each(function (m) {
+        model.leafs().each(function(m) {
           //console.log('updating item ', m.get('id'), 'in reaction to', model.get('id'));
           me.updateItem(m);
         });
       });
 
-      model.leafs().each(function (m) {
+      model.leafs().each(function(m) {
         me.renderItem(m);
       });
       if (model.isPanningMode()) {
@@ -85,38 +84,38 @@ define([
       }
 
     },
-    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+    updateViewport: function(centerLongitude, centerLatitude, zoomLevel) {
     },
-    showPopup: function () {
+    showPopup: function() {
     },
-    _wrapEvent: function (modelItem) {
+    _wrapEvent: function(modelItem) {
       return {
         model: modelItem,
-        data: $.extend(true, {}, modelItem.get('data'), modelItem.get('rawData')), //TODO review this: data, or rawData?
-        id: modelItem.get('id'),
+        data: $.extend(true, {}, modelItem.get("data"), modelItem.get("rawData")), //TODO review this: data, or rawData?
+        id: modelItem.get("id"),
         featureType: modelItem.getFeatureType(),
         style: modelItem.getStyle(),
-        isSelected: function () {
+        isSelected: function() {
           return modelItem.getSelection() === MapModel.SelectionStates.ALL;
         }
       };
     },
-    toNativeStyle: function (foreignStyle) {
+    toNativeStyle: function(foreignStyle) {
       var validStyle = {};
-      _.each(foreignStyle, function (value, key) {
+      _.each(foreignStyle, function(value, key) {
         switch (key) {
-          case 'visible':
-          case 'zIndex':
-          case 'fillColor':
-          case 'fillOpacity':
-          case 'strokeColor':
-          case 'strokeOpacity':
-          case 'strokeWidth':
+          case "visible":
+          case "zIndex":
+          case "fillColor":
+          case "fillOpacity":
+          case "strokeColor":
+          case "strokeOpacity":
+          case "strokeWidth":
         }
       });
       return validStyle;
     },
-    wrapEvent: function (event, featureType) {
+    wrapEvent: function(event, featureType) {
       return {
         latitude: undefined,
         longitude: undefined,
@@ -124,24 +123,24 @@ define([
         feature: undefined,
         featureType: featureType,
         style: undefined, //feature-specific styling
-        mapEngineType: 'abstract',
-        draw: function (style) {
+        mapEngineType: "abstract",
+        draw: function(style) {
         },
         //isSelected: undefined, // not ready for inclusion yet
         raw: undefined
       };
     },
-    _updateMode: function (mode) {
-      this.$map.removeClass(_.values(MapModel.Modes).join(' '))
+    _updateMode: function(mode) {
+      this.$map.removeClass(_.values(MapModel.Modes).join(" "))
         .addClass(MapModel.Modes[mode]);
     },
-    _updateDrag: function (isDragging) {
-      this.model.set('isDragging', !!isDragging);
+    _updateDrag: function(isDragging) {
+      this.model.set("isDragging", !!isDragging);
       this.$map
-        .toggleClass('dragging', !!isDragging)
-        .toggleClass('normal', !isDragging);
+        .toggleClass("dragging", !!isDragging)
+        .toggleClass("moving", !isDragging);
     },
-    _selectUrl: function (paramString, urls) {
+    _selectUrl: function(paramString, urls) {
       /**
        * Method: selectUrl
        * selectUrl() implements the standard floating-point multiplicative
@@ -172,7 +171,7 @@ define([
       }
       return urls[Math.floor(product * urls.length)];
     },
-    _switchUrl: function (url) {
+    _switchUrl: function(url) {
       /*
        * support multiple servers in URL config
        * http://{switch:a,b}.tile.bbbike.org -> ["http://a.tile.bbbike.org", "http://a.tile.bbbike.org" ]
@@ -183,33 +182,36 @@ define([
         return url;
       }
       var servers = list[2].split(",");
-      var url_list = [];
-      for (var i = 0; i < servers.length; i++) {
-        url_list.push(list[1] + servers[i] + list[3]);
-      }
+      //var url_list = [];
+      //for (var i = 0; i < servers.length; i++) {
+      //  url_list.push(list[1] + servers[i] + list[3]);
+      //}
+      var url_list = _.map(servers, function(server) {
+        return list[1] + server + list[3];
+      });
       return url_list;
     },
-    _getTileServiceURL: function (name) {
+    _getTileServiceURL: function(name) {
       var urlTemplate = this.tileServices[name]; // || this.tileServices['default'],
       if (!urlTemplate) {
         // Allow the specification of an url from CDE
-        if ((name.length > 0) && (name.indexOf('{') > -1)) {
+        if ((name.length > 0) && (name.indexOf("{") > -1)) {
           urlTemplate = name;
           //name = 'custom';
         }
       }
       return urlTemplate;
     },
-    _createClickHandler: function (singleClick, doubleClick, timeout) {
+    _createClickHandler: function(singleClick, doubleClick, timeout) {
       var me = this;
       var clicks = 0;
-      return function () {
+      return function() {
         clicks++;
         var self = this;
         var args = _.map(arguments, _.identity);
         args.unshift(me);
         if (clicks === 1) {
-          setTimeout(function () {
+          setTimeout(function() {
             if (clicks === 1) {
               _.isFunction(singleClick) && singleClick.apply(self, args);
             } else {
