@@ -95,323 +95,323 @@ define([
              OpenLayersEngine, GoogleMapEngine) {
 
   return UnmanagedComponent.extend(ILifecycle)
-                           .extend(ISelector)
-                           .extend(IMapModel)
-                           .extend(IConfiguration)
-                           .extend(IFeatureStyle)
-                           .extend(IColorMap)
-                           .extend(tileServices)
-                           .extend({
-    mapEngine: undefined, // points to one instance of a MapEngine object
-    locationResolver: undefined, // addIn used to process location
-    //shapeResolver: undefined, // addIn used to process location
-    API_KEY: false, // API KEY for map services such as Google Maps
-    // Properies defined in CDE
-    //mapMode: ['', 'markers', 'shapes'][1],
-    //shapeDefinition: undefined,
-    //shapeSource: '',
-    //tilesets: ['mapquest'],
-    //colormap: [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]], //RGBA
-    // shapeMouseOver : function(event){
-    //     Logger.log('Currently at lat=' + event.latitude + ', lng=' + event.longitude + ': Beat '+ event.data.key + ':' + event.data.value + ' crimes');
-    //     return {
-    //         fillColor: 'blue',
-    //         fillOpacity: 1,
-    //         strokeColor: 'white',
-    //         strokeWidth: 2
-    //     };
+    .extend(ISelector)
+    .extend(IMapModel)
+    .extend(IConfiguration)
+    .extend(IFeatureStyle)
+    .extend(IColorMap)
+    .extend(tileServices)
+    .extend({
+      mapEngine: undefined, // points to one instance of a MapEngine object
+      locationResolver: undefined, // addIn used to process location
+      //shapeResolver: undefined, // addIn used to process location
+      API_KEY: false, // API KEY for map services such as Google Maps
+      // Properies defined in CDE
+      //mapMode: ['', 'markers', 'shapes'][1],
+      //shapeDefinition: undefined,
+      //shapeSource: '',
+      //tilesets: ['mapquest'],
+      //colormap: [[0, 102, 0, 255], [255, 255 ,0,255], [255, 0,0, 255]], //RGBA
+      // shapeMouseOver : function(event){
+      //     Logger.log('Currently at lat=' + event.latitude + ', lng=' + event.longitude + ': Beat '+ event.data.key + ':' + event.data.value + ' crimes');
+      //     return {
+      //         fillColor: 'blue',
+      //         fillOpacity: 1,
+      //         strokeColor: 'white',
+      //         strokeWidth: 2
+      //     };
 
-    // },
-    // shapeMouseOut: undefined,
-    // // function(event){
-    // //         return event.style;
-    // // },
-    // shapeMouseClick: function(event){
-    //     return {
-    //         fillColor: 'red',
-    //         fillOpacity: 1
-    //     };
-    // },
-    // // End
-    update: function () {
-      if (!this.preExec()) {
-        return false;
-      }
-      this.maybeToggleBlock(true);
+      // },
+      // shapeMouseOut: undefined,
+      // // function(event){
+      // //         return event.style;
+      // // },
+      // shapeMouseClick: function(event){
+      //     return {
+      //         fillColor: 'red',
+      //         fillOpacity: 1
+      //     };
+      // },
+      // // End
+      update: function () {
+        if (!this.preExec()) {
+          return false;
+        }
+        this.maybeToggleBlock(true);
 
-      this.configuration = this.getConfiguration();
-      this._initMapEngine()
-        .then(_.bind(this.init, this))
-        .then(_.bind(function () {
-          if (this.queryDefinition && !_.isEmpty(this.queryDefinition)) {
-            this.getQueryData();
-          } else {
-            // No datasource, we'll just display the map
-            this.onDataReady(this.testData || {});
+        this.configuration = this.getConfiguration();
+        this._initMapEngine()
+          .then(_.bind(this.init, this))
+          .then(_.bind(function () {
+            if (this.queryDefinition && !_.isEmpty(this.queryDefinition)) {
+              this.getQueryData();
+            } else {
+              // No datasource, we'll just display the map
+              this.onDataReady(this.testData || {});
+            }
+          }, this));
+      },
+
+
+      onDataReady: function (json) {
+        return $.when(this.resolveFeatures(json))
+          .then(_.bind(function (json) {
+            this.initModel(json);
+            this._initControlPanel();
+            this.updateSelection();
+            this._processMarkerImages();
+          }, this))
+          .then(_.bind(this.render, this))
+          .then(_.bind(this._concludeUpdate, this));
+      },
+
+      _initMapEngine: function () {
+        var options = $.extend(true, {},
+          this.configuration.addIns.MapEngine.options, {
+            options: this.configuration
           }
-        }, this));
-    },
+        );
 
-
-    onDataReady: function (json) {
-      return $.when(this.resolveFeatures(json))
-        .then(_.bind(function (json) {
-          this.initModel(json);
-          this._initControlPanel();
-          this.updateSelection();
-          this._processMarkerImages();
-        }, this))
-        .then(_.bind(this.render, this))
-        .then(_.bind(this._concludeUpdate, this));
-    },
-
-    _initMapEngine: function () {
-      var options = $.extend(true, {},
-        this.configuration.addIns.MapEngine.options, {
-          options: this.configuration
-        }
-      );
-
-      if (this.configuration.addIns.MapEngine.name == "google") {
-        this.mapEngine = new GoogleMapEngine(options);
-      } else {
-        this.mapEngine = new OpenLayersEngine(options);
-      }
-      return this.mapEngine.init()
-    },
-
-    init: function () {
-      var $map = $('<div class="map-container"/>');
-      $map.css({
-        position: "relative",
-        overflow: "hidden",
-        width: "100%",
-        height: "100%"
-      });
-      $map.appendTo(this.placeholder().empty());
-      this._relayMapEngineEvents();
-      this._registerEvents();
-
-      this.mapEngine.renderMap($map.get(0));
-      this._initPopup();
-    },
-
-    _initControlPanel: function () {
-      var $controlPanel = $('<div class="map-controls" />').prependTo(this.placeholder());
-      this.controlPanel = new ControlPanel($controlPanel, this.model, this.configuration);
-      this.controlPanel.render();
-      var me = this;
-      var eventMapping = {
-        'zoom:in': _.bind(this.mapEngine.zoomIn, this.mapEngine),
-        'zoom:out': _.bind(this.mapEngine.zoomOut, this.mapEngine)
-      };
-
-      _.each(eventMapping, function (callback, event) {
-        if (_.isFunction(callback)) {
-          me.listenTo(me.controlPanel, event, callback);
-        }
-      });
-    },
-
-    render: function () {
-      this.mapEngine.render(this.model);
-      var centerLatitude = this.configuration.viewport.center.latitude;
-      var centerLongitude = this.configuration.viewport.center.longitude;
-      var defaultZoomLevel = this.configuration.viewport.zoomLevel.default;
-      this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
-    },
-
-    _relayMapEngineEvents: function () {
-      var engine = this.mapEngine;
-      var component = this;
-      var events = [
-        "marker:click", "marker:mouseover", "marker:mouseout",
-        "shape:click", "shape:mouseover", "shape:mouseout",
-        "map:zoom", "map:center" //TODO: consider renaming these to viewport:zoom and viewport:center
-      ];
-      _.each(events, function (event) {
-        component.listenTo(engine, event, function () {
-          var args = _.union([event], arguments);
-          component.trigger.apply(component, args);
-        });
-      });
-
-      this.listenTo(this.mapEngine, "engine:selection:complete", function () {
-        component.processChange();
-      });
-
-    },
-
-    _registerEvents: function () {
-      /** Registers handlers for mouse events
-       *
-       */
-      var me = this;
-      this.on("marker:click", function (event) {
-        if (this.model.isPanningMode()) {
-          //me.processChange();
-        }
-        var result;
-        if (_.isFunction(me.markerClickFunction)) {
-          result = me.markerClickFunction(event);
-        }
-        if (result !== false && me.model.isPanningMode() && _.isEmpty(this.parameter)) {
-          // built-in click handler for markers
-          me.showPopup(event);
-        }
-      });
-
-      // Marker mouseover/mouseout events are not yet completely supported
-      //this.on("marker:mouseover", function (event) {
-        //this.showPopup(event);
-      //});
-      // this.on("marker:mouseout", function(event){
-        //this.hidePopup(event);
-      // });
-
-      this.on("shape:mouseover", function (event) {
-        //this.showPopup(event);
-        if (_.isFunction(me.shapeMouseOver)) {
-          var result = me.shapeMouseOver(event);
-          if (result) {
-            result = _.isObject(result) ? result : {};
-            event.draw(_.defaults(result, {"z-index": 1}, event.style));
-          }
-        }
-      });
-
-      this.on("shape:mouseout", function (event) {
-        var result = {};
-        if (_.isFunction(me.shapeMouseOut)) {
-          result = me.shapeMouseOut(event);
-        }
-        result = _.isObject(result) ? result : {};
-        if (_.size(result) > 0) {
-          event.draw(_.defaults(result, event.style));
-        }
-      });
-
-      this.on("shape:click", function (event) {
-        //if (this.model.isPanningMode()) {
-        //me.processChange();
-        //}
-        if (_.isFunction(me.shapeMouseClick)) {
-          var result = me.shapeMouseClick(event);
-          return;
-          if (result) {
-            result = _.isObject(result) ? result : {};
-            var selStyle = _.defaults(result, event.style);
-            //event.setSelectedStyle(selStyle);
-            //event.draw(selStyle);
-          }
-        }
-      });
-    },
-
-
-    _processMarkerImages: function () {
-      var markersRoot = this.model.findWhere({id: "markers"});
-      if (!markersRoot) {
-        return;
-      }
-
-      var state = {
-        height: this.configuration.addIns.MarkerImage.options.height,
-        width: this.configuration.addIns.MarkerImage.options.width,
-        url: this.configuration.addIns.MarkerImage.options.iconUrl
-      };
-
-      markersRoot.leafs()
-        .each(_.bind(processRow, this))
-        .value();
-
-      function processRow(m) {
-        var mapping = this.mapping || {};
-        var row = m.get("rawData") || [];
-
-        var st = $.extend(true, {}, state, {
-          data: row,
-          position: m.get("rowIdx"),
-          height: row[mapping.markerHeight],
-          width: row[mapping.markerWidth]
-        });
-
-        // Select addIn, consider all legacy special cases
-        var addinName = this.configuration.addIns.MarkerImage.name,
-          extraSt = {},
-          extraOpts = {};
-        if (addinName === "cggMarker") {
-          extraSt = {
-            cggGraphName: this.configuration.addIns.MarkerImage.options.cggScript,
-            parameters: _.object(_.map(this.configuration.addIns.MarkerImage.options.parameters, function (parameter) {
-              return [parameter[0], row[mapping[parameter[1]]]];
-            }))
-          };
-        }
-
-        // Invoke addIn
-        var addIn = this.getAddIn("MarkerImage", addinName);
-        if (!addIn) {
-          return;
-        }
-        $.extend(true, st, extraSt);
-        var opts = $.extend(true, {}, this.getAddInOptions("MarkerImage", addIn.getName()), extraOpts);
-        var markerIcon = addIn.call(this.placeholder(), st, opts);
-
-        // Update model's style
-        if (_.isObject(markerIcon)) {
-          $.extend(true, m.attributes.styleMap, markerIcon);
+        if (this.configuration.addIns.MapEngine.name == "google") {
+          this.mapEngine = new GoogleMapEngine(options);
         } else {
-          $.extend(true, m.attributes.styleMap, {
-            width: st.width,
-            height: st.height,
-            "icon-url": markerIcon
+          this.mapEngine = new OpenLayersEngine(options);
+        }
+        return this.mapEngine.init()
+      },
+
+      init: function () {
+        var $map = $('<div class="map-container"/>');
+        $map.css({
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          height: "100%"
+        });
+        $map.appendTo(this.placeholder().empty());
+        this._relayMapEngineEvents();
+        this._registerEvents();
+
+        this.mapEngine.renderMap($map.get(0));
+        this._initPopup();
+      },
+
+      _initControlPanel: function () {
+        var $controlPanel = $('<div class="map-controls" />').prependTo(this.placeholder());
+        this.controlPanel = new ControlPanel($controlPanel, this.model, this.configuration);
+        this.controlPanel.render();
+        var me = this;
+        var eventMapping = {
+          'zoom:in': _.bind(this.mapEngine.zoomIn, this.mapEngine),
+          'zoom:out': _.bind(this.mapEngine.zoomOut, this.mapEngine)
+        };
+
+        _.each(eventMapping, function (callback, event) {
+          if (_.isFunction(callback)) {
+            me.listenTo(me.controlPanel, event, callback);
+          }
+        });
+      },
+
+      render: function () {
+        this.mapEngine.render(this.model);
+        var centerLatitude = this.configuration.viewport.center.latitude;
+        var centerLongitude = this.configuration.viewport.center.longitude;
+        var defaultZoomLevel = this.configuration.viewport.zoomLevel.default;
+        this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
+      },
+
+      _relayMapEngineEvents: function () {
+        var engine = this.mapEngine;
+        var component = this;
+        var events = [
+          "marker:click", "marker:mouseover", "marker:mouseout",
+          "shape:click", "shape:mouseover", "shape:mouseout",
+          "map:zoom", "map:center" //TODO: consider renaming these to viewport:zoom and viewport:center
+        ];
+        _.each(events, function (event) {
+          component.listenTo(engine, event, function () {
+            var args = _.union([event], arguments);
+            component.trigger.apply(component, args);
           });
-        }
-      }
-    },
-
-    /**
-     * Legacy stuff associated with popups that should be revised sometime
-     */
-
-
-    _initPopup: function () {
-      if (this.popupContentsDiv) {
-        var $popupContentsDiv = $("#" + this.popupContentsDiv);
-        var $popupDivHolder = $popupContentsDiv.clone();
-        //after first render, the popupContentsDiv gets moved inside ph, it will be discarded above, make sure we re-add him
-        if (this.popupContentsDiv && $popupContentsDiv.length != 1) {
-          this.placeholder().append($popupDivHolder.html("None"));
-        }
-      }
-    },
-
-    showPopup: function (event) {
-      var data = event.data || [];
-      var me = this;
-      if (this.popupContentsDiv || data[me.mapping.popupContents]) {
-        _.each(this.popupParameters, function (paramDef) {
-          me.dashboard.fireChange(paramDef[1], data[me.mapping[paramDef[0].toLowerCase()]]);
         });
 
-        var height = data[me.mapping.popupContentsHeight] || this.popupHeight;
-        var width = data[me.mapping.popupContentsWidth] || this.popupWidth;
-        var contents = data[me.mapping.popupContents] || $("#" + this.popupContentsDiv).html(); //TODO: revisit this
+        this.listenTo(this.mapEngine, "engine:selection:complete", function () {
+          component.processChange();
+        });
 
-        // TODO: The following block should be revised, as it depends on too many parameters.
-        // Why should we hardcode the border colors after all?
-        var borderColor = "#394246";
-        var isDefaultMarker = _.isUndefined(data.marker) && !this.markerCggGraph && _.isUndefined(me.marker) && me.configuration.addIns.MarkerImage.name === "urlMarker";
-        if (isDefaultMarker) { // access defaultMarkers
-          var borderColors = ["#394246", "#11b4eb", "#7a879a", "#e35c15", "#674f73"];
-          borderColor = borderColors[event.model.get("rowIdx") % borderColors.length];
+      },
+
+      _registerEvents: function () {
+        /** Registers handlers for mouse events
+         *
+         */
+        var me = this;
+        this.on("marker:click", function (event) {
+          if (this.model.isPanningMode()) {
+            //me.processChange();
+          }
+          var result;
+          if (_.isFunction(me.markerClickFunction)) {
+            result = me.markerClickFunction(event);
+          }
+          if (result !== false && me.model.isPanningMode() && _.isEmpty(this.parameter)) {
+            // built-in click handler for markers
+            me.showPopup(event);
+          }
+        });
+
+        // Marker mouseover/mouseout events are not yet completely supported
+        //this.on("marker:mouseover", function (event) {
+        //this.showPopup(event);
+        //});
+        // this.on("marker:mouseout", function(event){
+        //this.hidePopup(event);
+        // });
+
+        this.on("shape:mouseover", function (event) {
+          //this.showPopup(event);
+          if (_.isFunction(me.shapeMouseOver)) {
+            var result = me.shapeMouseOver(event);
+            if (result) {
+              result = _.isObject(result) ? result : {};
+              event.draw(_.defaults(result, {"z-index": 1}, event.style));
+            }
+          }
+        });
+
+        this.on("shape:mouseout", function (event) {
+          var result = {};
+          if (_.isFunction(me.shapeMouseOut)) {
+            result = me.shapeMouseOut(event);
+          }
+          result = _.isObject(result) ? result : {};
+          if (_.size(result) > 0) {
+            event.draw(_.defaults(result, event.style));
+          }
+        });
+
+        this.on("shape:click", function (event) {
+          //if (this.model.isPanningMode()) {
+          //me.processChange();
+          //}
+          if (_.isFunction(me.shapeMouseClick)) {
+            var result = me.shapeMouseClick(event);
+            return;
+            if (result) {
+              result = _.isObject(result) ? result : {};
+              var selStyle = _.defaults(result, event.style);
+              //event.setSelectedStyle(selStyle);
+              //event.draw(selStyle);
+            }
+          }
+        });
+      },
+
+
+      _processMarkerImages: function () {
+        var markersRoot = this.model.findWhere({id: "markers"});
+        if (!markersRoot) {
+          return;
         }
 
-        this.mapEngine.showPopup(event.data, event.feature, height, width, contents, this.popupContentsDiv, borderColor);
-      }
-    }
+        var state = {
+          height: this.configuration.addIns.MarkerImage.options.height,
+          width: this.configuration.addIns.MarkerImage.options.width,
+          url: this.configuration.addIns.MarkerImage.options.iconUrl
+        };
 
-  });
+        markersRoot.leafs()
+          .each(_.bind(processRow, this))
+          .value();
+
+        function processRow(m) {
+          var mapping = this.mapping || {};
+          var row = m.get("rawData") || [];
+
+          var st = $.extend(true, {}, state, {
+            data: row,
+            position: m.get("rowIdx"),
+            height: row[mapping.markerHeight],
+            width: row[mapping.markerWidth]
+          });
+
+          // Select addIn, consider all legacy special cases
+          var addinName = this.configuration.addIns.MarkerImage.name,
+            extraSt = {},
+            extraOpts = {};
+          if (addinName === "cggMarker") {
+            extraSt = {
+              cggGraphName: this.configuration.addIns.MarkerImage.options.cggScript,
+              parameters: _.object(_.map(this.configuration.addIns.MarkerImage.options.parameters, function (parameter) {
+                return [parameter[0], row[mapping[parameter[1]]]];
+              }))
+            };
+          }
+
+          // Invoke addIn
+          var addIn = this.getAddIn("MarkerImage", addinName);
+          if (!addIn) {
+            return;
+          }
+          $.extend(true, st, extraSt);
+          var opts = $.extend(true, {}, this.getAddInOptions("MarkerImage", addIn.getName()), extraOpts);
+          var markerIcon = addIn.call(this.placeholder(), st, opts);
+
+          // Update model's style
+          if (_.isObject(markerIcon)) {
+            $.extend(true, m.attributes.styleMap, markerIcon);
+          } else {
+            $.extend(true, m.attributes.styleMap, {
+              width: st.width,
+              height: st.height,
+              "icon-url": markerIcon
+            });
+          }
+        }
+      },
+
+      /**
+       * Legacy stuff associated with popups that should be revised sometime
+       */
+
+
+      _initPopup: function () {
+        if (this.popupContentsDiv) {
+          var $popupContentsDiv = $("#" + this.popupContentsDiv);
+          var $popupDivHolder = $popupContentsDiv.clone();
+          //after first render, the popupContentsDiv gets moved inside ph, it will be discarded above, make sure we re-add him
+          if (this.popupContentsDiv && $popupContentsDiv.length != 1) {
+            this.placeholder().append($popupDivHolder.html("None"));
+          }
+        }
+      },
+
+      showPopup: function (event) {
+        var data = event.data || [];
+        var me = this;
+        if (this.popupContentsDiv || data[me.mapping.popupContents]) {
+          _.each(this.popupParameters, function (paramDef) {
+            me.dashboard.fireChange(paramDef[1], data[me.mapping[paramDef[0].toLowerCase()]]);
+          });
+
+          var height = data[me.mapping.popupContentsHeight] || this.popupHeight;
+          var width = data[me.mapping.popupContentsWidth] || this.popupWidth;
+          var contents = data[me.mapping.popupContents] || $("#" + this.popupContentsDiv).html(); //TODO: revisit this
+
+          // TODO: The following block should be revised, as it depends on too many parameters.
+          // Why should we hardcode the border colors after all?
+          var borderColor = "#394246";
+          var isDefaultMarker = _.isUndefined(data.marker) && !this.markerCggGraph && _.isUndefined(me.marker) && me.configuration.addIns.MarkerImage.name === "urlMarker";
+          if (isDefaultMarker) { // access defaultMarkers
+            var borderColors = ["#394246", "#11b4eb", "#7a879a", "#e35c15", "#674f73"];
+            borderColor = borderColors[event.model.get("rowIdx") % borderColors.length];
+          }
+
+          this.mapEngine.showPopup(event.data, event.feature, height, width, contents, this.popupContentsDiv, borderColor);
+        }
+      }
+
+    });
 
 });

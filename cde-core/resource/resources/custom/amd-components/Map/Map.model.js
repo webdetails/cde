@@ -24,7 +24,7 @@ define([
              getMapping,
              resolveShapes, resolveMarkers) {
 
-
+  "use strict";
   return {
     resolveFeatures: function (json) {
       var mapping = getMapping(json);
@@ -39,14 +39,16 @@ define([
             me.features.shapes = shapeDefinition;
             return json;
           });
-      } else if (this.mapMode === "markers") {
-        deferred = this._resolveMarkers(json, this.mapping, this.configuration)
-          .then(function (markerDefinitions) {
-            me.features.markers = markerDefinitions;
-            return json;
-          });
       } else {
-        deferred = $.when(json);
+        if (this.mapMode === "markers") {
+          deferred = this._resolveMarkers(json, this.mapping, this.configuration)
+            .then(function (markerDefinitions) {
+              me.features.markers = markerDefinitions;
+              return json;
+            });
+        } else {
+          deferred = $.when(json);
+        }
       }
       return deferred.promise();
     },
@@ -61,6 +63,11 @@ define([
         styleMap: this.getStyleMap('global')
       });
       this.model.set('canSelect', this.configuration.isSelector);
+      if (this.configuration.isSelector === true) {
+        this.model.setSelectionMode();
+      } else {
+        this.model.setPanningMode();
+      }
 
       var seriesRoot = this._initSeries(this.mapMode, json);
       if (json && json.metadata && json.resultset && json.resultset.length > 0) {
@@ -90,23 +97,10 @@ define([
     },
 
     attributeMapping: {
-      fill: function (context, seriesRoot, mapping, row, rowIdx) {
+      fill: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.fill];
-
-        var useGradient = (context.mode === MapModel.Modes.pan && context.state === MapModel.States.unselected && context.action === MapModel.Actions.normal);
-        useGradient = useGradient || (context.mode === MapModel.Modes.selection && context.state === MapModel.States.selected && context.action === MapModel.Actions.normal);
-        useGradient = true;
         var colormap = seriesRoot.get('colormap') || this.getColorMap();
-
-
-        var isGrayscale = (context.mode === MapModel.Modes.selection && context.state === MapModel.States.unselected && context.action === MapModel.Actions.normal);
-        isGrayscale = false;
-        if (isGrayscale) {
-          colormap = _.map(colormap, this.toGrayscale);
-        }
-
-
-        if (_.isNumber(value) && (useGradient || isGrayscale)) {
+        if (_.isNumber(value)) {
           return this.mapColor(value,
             seriesRoot.get('extremes').fill.min,
             seriesRoot.get('extremes').fill.max,
@@ -114,10 +108,10 @@ define([
           );
         }
       },
-      label: function (context, seriesRoot, mapping, row, rowIdx) {
+      label: function (context, seriesRoot, mapping, row) {
         return _.isEmpty(row) ? undefined : (row[mapping.label] + '');
       },
-      r: function (context, seriesRoot, mapping, row, rowIdx) {
+      r: function (context, seriesRoot, mapping, row) {
         var value = row[mapping.r];
         if (_.isNumber(value)) {
           var rmin = this.scales.r[0];
@@ -135,7 +129,7 @@ define([
     _detectExtremes: function (json) {
       var extremes = _.chain(this.mapping)
         .map(function (colIndex, role) {
-          if (!_.isFinite(colIndex)){
+          if (!_.isFinite(colIndex)) {
             return [role, {}];
           }
           var values = _.pluck(json.resultset, colIndex);
@@ -150,7 +144,7 @@ define([
             obj = {
               type: 'categoric',
               items: _.uniq(values)
-            }
+            };
           }
           return [role, obj];
 
