@@ -18,8 +18,8 @@ define([
   "../jquery.transport.xdr",
   "amd!cdf/lib/underscore"
 ], function(AddIn, Dashboard, Logger, $, _) {
-
-  var thisAddIn = {
+  "use strict";
+  var geoJSON = {
     name: "geoJSON",
     label: "GeoJSON shape resolver",
     defaults: {
@@ -70,5 +70,7 @@ define([
     return id;
   }
 
-  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(geoJSON));
+
+  return geoJSON;
 });

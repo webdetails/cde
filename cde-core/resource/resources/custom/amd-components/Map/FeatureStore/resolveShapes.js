@@ -1,9 +1,22 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 define([
   "cdf/lib/jquery",
   "amd!cdf/lib/underscore",
   "./shapeConversion"
 ], function($, _, ShapeConversion) {
-
+  "use strict";
   return resolveShapes;
 
   function resolveShapes(json, mapping, configuration) {
@@ -23,16 +36,15 @@ define([
     }
 
     var idList = _.pluck(json.resultset, mapping.id);
-    var tgt = this,
-      st = {
-        keys: idList, //TODO Consider keys -> ids
-        ids: idList,
-        tableData: json,
-        _simplifyPoints: ShapeConversion.simplifyPoints,
-        _parseShapeKey: configuration.addIns.ShapeResolver.options.parseShapeKey,
-        _shapeSource: url
-      };
-    var promise = addIn.call(tgt, st, this.getAddInOptions("ShapeResolver", addIn.getName()));
+    var st = {
+      keys: idList, //TODO Consider keys -> ids
+      ids: idList,
+      tableData: json,
+      _simplifyPoints: ShapeConversion.simplifyPoints,
+      _parseShapeKey: configuration.addIns.ShapeResolver.options.parseShapeKey,
+      _shapeSource: url
+    };
+    var promise = addIn.call(this, st, this.getAddInOptions("ShapeResolver", addIn.getName()));
     $.when(promise).then(function(result) {
       var shapeDefinitions = _.chain(result)
         .map(function(geoJSONFeature, key) {

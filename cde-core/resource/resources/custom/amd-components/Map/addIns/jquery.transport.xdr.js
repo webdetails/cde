@@ -1,4 +1,5 @@
 define(["cdf/lib/jquery"], function($) {
+  "use strict";
   /*
    Adapted by Webdetails
    */

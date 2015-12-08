@@ -1,8 +1,21 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 define([
   "amd!cdf/lib/underscore"
 ], function(_) {
-
-  var IColorMap = {
+  "use strict";
+  return {
     /** Mixin for handling color maps
      This should probably be elevated to a proper class with a nice database of colormaps
      or be replaced with a proper color handling library
@@ -32,7 +45,7 @@ define([
        });
        */
       var cmap = [];
-      for (k = 1, L = colorMap.length; k < L; k++) {
+      for (var k = 1, L = colorMap.length; k < L; k++) {
         cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
       }
       return _.map(cmap, function(v) {
@@ -64,6 +77,7 @@ define([
         rgba = [parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 1];
       } else if (color.substring(0, 4) === "rgba") {
         rgba = color.slice(5, -1).split(",").map(parseFloat); // assume rgba(R,G,B,A) format
+
       }
     }
     return rgba;
@@ -86,7 +100,5 @@ define([
     }
     return d;
   }
-
-  return IColorMap;
 
 });

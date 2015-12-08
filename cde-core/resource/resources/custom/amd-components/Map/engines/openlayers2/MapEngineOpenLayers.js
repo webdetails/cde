@@ -207,8 +207,9 @@ define([
 
       var me = this;
       this.map.isValidZoomLevel = function(z) {
-        var minZoom = _.isFinite(me.options.viewport.zoomLevel.min) ? me.options.viewport.zoomLevel.min : 0;
-        var maxZoom = _.isFinite(me.options.viewport.zoomLevel.max) ? me.options.viewport.zoomLevel.max : this.getNumZoomLevels();
+        var zoomLevelConfig = me.options.viewport.zoomLevel;
+        var minZoom = _.isFinite(zoomLevelConfig.min) ? zoomLevelConfig.min : 0;
+        var maxZoom = _.isFinite(zoomLevelConfig.max) ? zoomLevelConfig.max : this.getNumZoomLevels();
         return (z != null) && (z >= minZoom) && (z <= maxZoom);
       };
 
@@ -322,11 +323,13 @@ define([
       var projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       var centerPoint;
       if (_.isFinite(centerLatitude) && _.isFinite(centerLongitude)) {
-        centerPoint = (new OpenLayers.LonLat(centerLongitude, centerLatitude)).transform(projectionWGS84, this.map.getProjectionObject());
+        centerPoint = (new OpenLayers.LonLat(centerLongitude, centerLatitude))
+          .transform(projectionWGS84, this.map.getProjectionObject());
         this.map.setCenter(centerPoint);
       } else {
         if (!bounds) {
-          centerPoint = (new OpenLayers.LonLat(-10, 20)).transform(projectionWGS84, this.map.getProjectionObject());
+          centerPoint = (new OpenLayers.LonLat(-10, 20))
+            .transform(projectionWGS84, this.map.getProjectionObject());
           this.map.setCenter(centerPoint);
         }
       }

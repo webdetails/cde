@@ -30,16 +30,16 @@
 }
 */
 
-.map-container.zoombox {
+.map-container.zoombox{
     cursor: -webkit-zoom-in;
     cursor: zoom-in;
     cursor: url(./images/zoom-cursor.svg), url(./images/zoom-cursor.png), url(./images/zoom-cursor.cur), zoom-in;
 }
 
-.map-container.pan {
+.map-container.pan{
     cursor: move;
 }
 
-.map-container.selection {
+.map-container.selection{
     cursor: default;
 }

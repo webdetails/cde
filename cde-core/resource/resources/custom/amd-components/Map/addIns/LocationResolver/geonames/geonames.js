@@ -16,7 +16,7 @@ define([
   "cdf/Dashboard.Clean",
   "../../jquery.transport.xdr"
 ], function(AddIn, Dashboard, $) {
-
+  "use strict";
   var geonames = {
     name: "geonames",
     label: "GeoNames",
@@ -78,6 +78,7 @@ define([
       });
     }
   };
+
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames));
 
   return geonames;

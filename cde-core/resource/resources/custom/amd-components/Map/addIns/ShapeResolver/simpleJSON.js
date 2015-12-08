@@ -17,8 +17,8 @@ define([
   "../jquery.transport.xdr",
   "amd!cdf/lib/underscore"
 ], function(AddIn, Dashboard, $, _) {
-
-  var thisAddIn = {
+  "use strict";
+  var simpleJSON = {
     name: "simpleJSON",
     label: "Simple JSON shape resolver",
     defaults: {
@@ -33,13 +33,12 @@ define([
           type: "GET",
           dataType: "json",
           success: function(latlonMap) {
-            var map = _.chain(latlonMap)
+            deferred.resolve(_.chain(latlonMap)
               .map(function(multiPolygonLatLon, key) {
                 return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
               })
               .object()
-              .value();
-            deferred.resolve(map);
+              .value());
           },
           error: function() {
             deferred.resolve({});
@@ -61,7 +60,7 @@ define([
       });
     });
 
-    var feature = {
+    return {
       type: "Feature",
       geometry: {
         type: "MultiPolygon",
@@ -69,8 +68,9 @@ define([
       },
       properties: {}
     };
-    return feature;
   }
 
-  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(simpleJSON));
+
+  return simpleJSON;
 });

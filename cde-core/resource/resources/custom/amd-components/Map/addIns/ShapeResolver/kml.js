@@ -16,8 +16,8 @@ define([
   "../jquery.transport.xdr",
   "amd!cdf/lib/underscore"
 ], function(AddIn, Dashboard, $, _) {
-
-  var thisAddIn = {
+  "use strict";
+  var kml = {
     name: "kml",
     label: "KML shape resolver",
     defaults: {
@@ -36,8 +36,7 @@ define([
           type: "GET",
           processData: false,
           success: function(data) {
-            var map = getShapeFromKML(data, opt.idSelector, parseShapeKey);
-            deferred.resolve(map);
+            deferred.resolve(getShapeFromKML(data, opt.idSelector, parseShapeKey));
           },
           error: function() {
             deferred.resolve({});
@@ -74,7 +73,7 @@ define([
         var polygon = [];
         _.each(["outerBoundaryIs", "innerBoundaryIs"], function(b) {
           var polygonObj = $(yy).find(b + " LinearRing coordinates");
-          //if (polygonObj.length >0){
+          //if(polygonObj.length >0) {
           _.each(polygonObj, function(v) {
             var s = $(v).text().trim();
             if (s.length > 0) {
@@ -101,7 +100,7 @@ define([
   }
 
   function multiPolygonToGeoJSON(polygonArray) {
-    var feature = {
+    return {
       type: "Feature",
       geometry: {
         type: "MultiPolygon",
@@ -109,9 +108,10 @@ define([
       },
       properties: {}
     };
-    return feature;
   }
 
-  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(kml));
+
+  return kml;
 
 });
