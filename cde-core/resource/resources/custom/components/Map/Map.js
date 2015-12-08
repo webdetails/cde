@@ -1262,37 +1262,44 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     }
   });
 }), define("cde/components/Map/engines/google/MapComponentAsyncLoader", ["cdf/lib/jquery"], function($) {
-  var loadGoogleMaps = function($) {
+  return function($) {
     var promise, now = $.now();
     return function(version, apiKey) {
       if (promise) {
         return promise;
       }
-      var params, deferred = $.Deferred(), resolve = function() {
+      var deferred = $.Deferred(), resolve = function() {
         deferred.resolve(window.google && google.maps ? google.maps : !1);
-      }, callbackName = "loadGoogleMaps_" + now++;
-      return window.google && google.maps ? resolve() : window.google && google.load ? google.load("maps", version || 3, {
-        callback: resolve
-      }) : (params = $.extend({
-        v: version || 3,
-        callback: callbackName
-      }, apiKey ? {
-        key: apiKey
-      } : {}), window[callbackName] = function() {
-        resolve(), setTimeout(function() {
-          try {
-            delete window[callbackName];
-          } catch (e) {
-          }
-        }, 20);
-      }, $.ajax({
-        dataType: "script",
-        data: params,
-        url: "http://maps.googleapis.com/maps/api/js"
-      })), promise = deferred.promise();
+      };
+      if (window.google && google.maps) {
+        resolve();
+      } else if (window.google && google.load) {
+        google.load("maps", version || 3, {
+          callback: resolve
+        });
+      } else {
+        var callbackName = "loadGoogleMaps_" + now++, params = $.extend({
+          v: version || 3,
+          callback: callbackName
+        }, apiKey ? {
+          key: apiKey
+        } : {});
+        window[callbackName] = function() {
+          resolve(), setTimeout(function() {
+            try {
+              delete window[callbackName];
+            } catch (e) {
+            }
+          }, 20);
+        }, $.ajax({
+          dataType: "script",
+          data: params,
+          url: "http://maps.googleapis.com/maps/api/js"
+        });
+      }
+      return promise = deferred.promise();
     };
   }($);
-  return loadGoogleMaps;
 }), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
@@ -1385,7 +1392,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     },
     wrapEvent: function(event) {
-      var me = this, modelItem = event.feature.getProperty("model");
+      var me = this, feature = event.feature, modelItem = feature.getProperty("model");
       return $.extend(this._wrapEvent(modelItem), {
         latitude: event.latLng.lat(),
         longitude: event.latLng.lng(),
@@ -1396,7 +1403,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           }, options || {});
           me.showPopup(null, feature, opt.height, opt.width, html, null, null);
         },
-        feature: event.feature,
+        feature: feature,
         mapEngineType: "google3",
         draw: function(style) {
           var validStyle = me.toNativeStyle(style);
@@ -1476,9 +1483,16 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       var me = this;
       google.maps.event.addListener(this.map, "dragstart", function() {
         me._updateDrag(!0);
-      }), google.maps.event.addListener(this.map, "dragend", function() {
-        me._updateDrag(!1);
       });
+      var extent = this.options.viewport.extent, restrictedExtent = new google.maps.LatLngBounds(new google.maps.LatLng(extent.southEast.latitude, extent.southEast.longitude), new google.maps.LatLng(extent.northWest.latitude, extent.northWest.longitude));
+      google.maps.event.addListener(this.map, "dragend", function() {
+        me._restrictPanning(restrictedExtent), me._updateDrag(!1);
+      });
+    },
+    _restrictPanning: function(restrictedExtent) {
+      var c = this.map.getCenter(), x = c.lng(), y = c.lat(), b = this.map.getBounds(), h = .5 * (b.getNorthEast().lat() - b.getSouthWest().lat()), w = .5 * (b.getNorthEast().lng() - b.getSouthWest().lng()), maxX = restrictedExtent.getNorthEast().lng(), minX = restrictedExtent.getSouthWest().lng(), maxY = restrictedExtent.getNorthEast().lat(), minY = restrictedExtent.getSouthWest().lat();
+      minX > x - w && (x = minX + w), x + w > maxX && (x = maxX - w), minY > y - h && (y = minY + h),
+      y + h > maxY && (y = maxY - h), (c.lng() !== x || c.lat() !== y) && this.map.setCenter(new google.maps.LatLng(y, x));
     },
     zoomExtends: function() {
       var bounds = new google.maps.LatLngBounds();
@@ -2192,7 +2206,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         var options = $.extend(!0, {}, this.configuration.addIns.MapEngine.options, {
           options: this.configuration
         });
-        return this.mapEngine = "google" == this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(options) : new OpenLayersEngine(options),
+        return this.mapEngine = "google" === this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(options) : new OpenLayersEngine(options),
           this.mapEngine.init();
       },
       init: function() {
@@ -2234,30 +2248,27 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         });
       },
       _registerEvents: function() {
+        function redrawUponCallback(event, callback, extraDefaults) {
+          var result = {};
+          _.isFunction(callback) && (result = callback.call(me, event)), result = _.isObject(result) ? result : {},
+          _.size(result) > 0 && event.draw(_.defaults(result, extraDefaults, event.style));
+        }
+
         var me = this;
         this.on("marker:click", function(event) {
-          this.model.isPanningMode();
           var result;
           _.isFunction(me.markerClickFunction) && (result = me.markerClickFunction(event)),
           result !== !1 && me.model.isPanningMode() && _.isEmpty(this.parameter) && me.showPopup(event);
         }), this.on("shape:mouseover", function(event) {
-          if (_.isFunction(me.shapeMouseOver)) {
-            var result = me.shapeMouseOver(event);
-            result && (result = _.isObject(result) ? result : {}, event.draw(_.defaults(result, {
-              "z-index": 1
-            }, event.style)));
-          }
+          redrawUponCallback(event, me.shapeMouseOver, {
+            "z-index": 1
+          });
         }), this.on("shape:mouseout", function(event) {
-          var result = {};
-          _.isFunction(me.shapeMouseOut) && (result = me.shapeMouseOut(event)), result = _.isObject(result) ? result : {},
-          _.size(result) > 0 && event.draw(_.defaults(result, event.style));
+          redrawUponCallback(event, me.shapeMouseOut, {
+            "z-index": 0
+          });
         }), this.on("shape:click", function(event) {
-          if (_.isFunction(me.shapeMouseClick)) {
-            {
-              me.shapeMouseClick(event);
-            }
-            return;
-          }
+          redrawUponCallback(event, me.shapeMouseClick);
         });
       },
       _processMarkerImages: function() {

@@ -135,7 +135,8 @@ define([
 
     wrapEvent: function(event, featureType) {
       var me = this;
-      var modelItem = event.feature.getProperty("model");
+      var feature = event.feature;
+      var modelItem = feature.getProperty("model");
       return $.extend(this._wrapEvent(modelItem), {
         latitude: event.latLng.lat(),
         longitude: event.latLng.lng(),
@@ -146,7 +147,7 @@ define([
           }, options || {});
           me.showPopup(null, feature, opt.height, opt.width, html, null, null);
         },
-        feature: event.feature,
+        feature: feature,
         mapEngineType: "google3",
         draw: function(style) {
           // this function is currently called by the shape callbacks
@@ -258,10 +259,51 @@ define([
       google.maps.event.addListener(this.map, "dragstart", function() {
         me._updateDrag(true);
       });
+
+      var extent = this.options.viewport.extent;
+      var restrictedExtent = new google.maps.LatLngBounds(
+        new google.maps.LatLng(extent.southEast.latitude, extent.southEast.longitude),
+        new google.maps.LatLng(extent.northWest.latitude, extent.northWest.longitude)
+      );
       google.maps.event.addListener(this.map, "dragend", function() {
+        me._restrictPanning(restrictedExtent);
         me._updateDrag(false);
       });
     },
+
+    _restrictPanning: function(restrictedExtent) {
+      var c = this.map.getCenter(),
+        x = c.lng(),
+        y = c.lat();
+      var b = this.map.getBounds();
+      var h = 0.5 * (b.getNorthEast().lat() - b.getSouthWest().lat());
+      var w = 0.5 * (b.getNorthEast().lng() - b.getSouthWest().lng());
+
+      var maxX = restrictedExtent.getNorthEast().lng();
+      var minX = restrictedExtent.getSouthWest().lng();
+      var maxY = restrictedExtent.getNorthEast().lat();
+      var minY = restrictedExtent.getSouthWest().lat();
+
+
+      if (x - w < minX) {
+        x = minX + w;
+      }
+      if (x + w > maxX) {
+        x = maxX - w;
+      }
+      if (y - h < minY) {
+        y = minY + h ;
+      }
+      if (y + h > maxY) {
+        y = maxY - h;
+      }
+
+      if (c.lng() !== x || c.lat() !== y) {
+        this.map.setCenter(new google.maps.LatLng(y, x));
+      }
+
+    },
+
 
     zoomExtends: function() {
       var bounds = new google.maps.LatLngBounds();
