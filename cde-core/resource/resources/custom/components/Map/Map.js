@@ -1,4 +1,5 @@
 define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(_) {
+  "use strict";
   return {
     maybeToggleBlock: function(block) {
       this.isSilent() || (block ? this.block() : this.unblock());
@@ -39,6 +40,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     }
   };
 }), define("cde/components/Map/model/MapModel", ["cdf/lib/BaseSelectionTree", "amd!cdf/lib/underscore", "cdf/lib/jquery"], function(BaseSelectionTree, _, $) {
+  "use strict";
   function getGlobalState(selectionState) {
     switch (selectionState) {
       case SelectionStates.ALL:
@@ -667,6 +669,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     }
   });
 }), define("cde/components/Map/Map.tileServices", [], function() {
+  "use strict";
   var _tileServices = {
     "default": "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}.png",
     apple: "http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_US&z=${z}&x=${x}&y=${y}&v=9",
@@ -1901,7 +1904,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           st.continuationFunction(location);
         }
       }, onError = function() {
-        st.continuationFunction(void 0);
+        st.continuationFunction([]);
       };
       return $.ajax({
         dataType: "json",
@@ -1915,7 +1918,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim)),
     nominatim;
-}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore", "../nominatim/nominatim"], function(AddIn, Dashboard, $, _, nominatim) {
+}), define("cde/components/Map/addIns/LocationResolver/mapquest/mapquest", ["cdf/lib/jquery", "cdf/AddIn", "cdf/Dashboard.Clean", "../nominatim/nominatim"], function($, AddIn, Dashboard, nominatim) {
   "use strict";
   var mapquest = $.extend(!0, {}, nominatim, {
     name: "mapquest",

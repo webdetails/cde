@@ -14,7 +14,7 @@
 define([
   "amd!cdf/lib/underscore"
 ], function(_) {
-
+  "use strict";
   return {
     maybeToggleBlock: function(block) {
       if (!this.isSilent()) {
