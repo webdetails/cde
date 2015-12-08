@@ -58,11 +58,11 @@ define([
     var viewport = {
       extent: {
         southEast: {
-          latitude: -72.7,
+          latitude: -72.7, //clip Antartica
           longitude: -180
         },
         northWest: {
-          latitude: 84.2,
+          latitude: 84.2, //clip North Pole
           longitude: 180
         }
       },
