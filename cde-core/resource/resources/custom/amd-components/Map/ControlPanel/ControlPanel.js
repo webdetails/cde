@@ -20,7 +20,7 @@ define([
   "text!./ControlPanel.html",
   "css!./ControlPanel"
 ], function($, _, Mustache, BaseEvents, MapModel, template) {
-
+  "use strict";
   return BaseEvents.extend({
     constructor: function(domNode, model, configuration) {
       this.base();

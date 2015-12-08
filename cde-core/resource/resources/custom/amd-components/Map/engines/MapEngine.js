@@ -17,9 +17,8 @@ define([
   "cdf/lib/BaseEvents",
   "../model/MapModel"
 ], function($, _, BaseEvents, MapModel) {
-  var SelectionStates = MapModel.SelectionStates;
-
-  var MapEngine = BaseEvents.extend({
+  "use strict";
+  return BaseEvents.extend({
     tileServices: undefined,
     tileServicesOptions: undefined,
     $map: null,
@@ -97,7 +96,7 @@ define([
         featureType: modelItem.getFeatureType(),
         style: modelItem.getStyle(),
         isSelected: function() {
-          return modelItem.getSelection() === SelectionStates.ALL;
+          return modelItem.getSelection() === MapModel.SelectionStates.ALL;
         }
       };
     },
@@ -139,7 +138,7 @@ define([
       this.model.set("isDragging", !!isDragging);
       this.$map
         .toggleClass("dragging", !!isDragging)
-        .toggleClass("normal", !isDragging);
+        .toggleClass("moving", !isDragging);
     },
     _selectUrl: function(paramString, urls) {
       /**
@@ -183,10 +182,13 @@ define([
         return url;
       }
       var servers = list[2].split(",");
-      var url_list = [];
-      for (var i = 0; i < servers.length; i++) {
-        url_list.push(list[1] + servers[i] + list[3]);
-      }
+      //var url_list = [];
+      //for (var i = 0; i < servers.length; i++) {
+      //  url_list.push(list[1] + servers[i] + list[3]);
+      //}
+      var url_list = _.map(servers, function(server) {
+        return list[1] + server + list[3];
+      });
       return url_list;
     },
     _getTileServiceURL: function(name) {
@@ -222,7 +224,5 @@ define([
     }
 
   });
-
-  return MapEngine;
 
 });

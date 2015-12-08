@@ -1,8 +1,22 @@
+/*!
+ * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ *
+ * This software was developed by Webdetails and is provided under the terms
+ * of the Mozilla Public License, Version 2.0, or any later version. You may not use
+ * this file except in compliance with the license. If you need a copy of the license,
+ * please go to http://mozilla.org/MPL/2.0/. The Initial Developer is Webdetails.
+ *
+ * Software distributed under the Mozilla Public License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. Please refer to
+ * the license for the specific language governing your rights and limitations.
+ */
+
 define([
   "cdf/lib/BaseSelectionTree",
   "amd!cdf/lib/underscore",
   "cdf/lib/jquery"
 ], function(BaseSelectionTree, _, $) {
+  "use strict";
   var MODES = {
     "pan": "pan",
     "zoombox": "zoombox",
@@ -125,7 +139,7 @@ define([
       var globalState = getGlobalState(canSelect ? this.root().getSelection() : "disabled");
       var state = (this.getSelection() === SelectionStates.ALL) ? LEAF_STATES.selected : LEAF_STATES.unselected;
       var action = this.isHover() === true ? ACTIONS.hover : ACTIONS.normal;
-      var dragState = this.root().get("isDragging") ? "dragging" : "moving"; //EXPERIMENTAL
+      var dragState = this.root().get("isDragging")  ? "dragging" : "moving"; //EXPERIMENTAL
       return this._getStyle(mode, globalState, state, action, dragState);
     },
 
@@ -174,7 +188,7 @@ define([
     ];
 
     var desiredKeywords = _.map(styleKeywords, function(list, idx) {
-      return _.intersection(list, [[/*dragState || '',*/ action || "", leafState || "", mode || "", globalState || ""][idx]])[0];
+      return _.intersection(list, [[/*dragState || '',*/ action || "", leafState || "",  mode || "", globalState || ""][idx]])[0];
     });
 
     return computeStyle(config, desiredKeywords);
