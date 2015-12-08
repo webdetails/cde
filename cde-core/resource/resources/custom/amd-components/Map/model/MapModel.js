@@ -3,6 +3,7 @@ define([
   "amd!cdf/lib/underscore",
   "cdf/lib/jquery"
 ], function(BaseSelectionTree, _, $) {
+  "use strict";
   var MODES = {
     "pan": "pan",
     "zoombox": "zoombox",

@@ -78,7 +78,7 @@ define([
         }
       };
       var onError = function() {
-        st.continuationFunction(undefined);
+        st.continuationFunction([]);
       };
       return $.ajax({
         dataType: "json",

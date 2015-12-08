@@ -12,7 +12,7 @@
  */
 
 define([], function() {
-
+  "use strict";
   /**
    * TileServices (servers providing png images representing the map)
    OpenStreetMaps default tiles are ugly, I found many nicer tilesets that work in both map engines (google/openlayers)

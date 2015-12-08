@@ -18,7 +18,7 @@ define([
 
       var colorMap = [];
       if (this.colormap == null || (_.isArray(this.colormap) && !this.colormap.length)) {
-        colorMap = _.clone(this.colormaps.default);
+        colorMap = _.clone(this.colormaps["default"]);
       } else {
         colorMap = _.map(this.colormap, JSON.parse);
       }
@@ -59,15 +59,12 @@ define([
       if (rgba.length === 3) {
         rgba.push(1);
       }
-    } else {
-      if (_.isString(color)) {
-        if (color[0] === "#") {
-          rgba = [parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 1];
-        } else {
-          if (color.substring(0, 4) === "rgba") {
-            rgba = color.slice(5, -1).split(",").map(parseFloat); // assume rgba(R,G,B,A) format
-          }
-        }
+    } else if (_.isString(color)) {
+      if (color[0] === "#") {
+        rgba = [parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 1];
+      } else if (color.substring(0, 4) === "rgba") {
+        rgba = color.slice(5, -1).split(",").map(parseFloat); // assume rgba(R,G,B,A) format
+
       }
     }
     return rgba;
