@@ -87,13 +87,13 @@ define([
   "./addIns/mapAddIns",
   "css!./Map"
 ], function($, _, UnmanagedComponent,
-             ILifecycle,
-             ISelector, IMapModel, IConfiguration, IFeatureStyle,
-             IColorMap,
-             ControlPanel,
-             tileServices,
-             OpenLayersEngine, GoogleMapEngine) {
-
+            ILifecycle,
+            ISelector, IMapModel, IConfiguration, IFeatureStyle,
+            IColorMap,
+            ControlPanel,
+            tileServices,
+            OpenLayersEngine, GoogleMapEngine) {
+  "use strict";
   return UnmanagedComponent.extend(ILifecycle)
     .extend(ISelector)
     .extend(IMapModel)
@@ -171,7 +171,7 @@ define([
           }
         );
 
-        if (this.configuration.addIns.MapEngine.name == "google") {
+        if (this.configuration.addIns.MapEngine.name === "google") {
           this.mapEngine = new GoogleMapEngine(options);
         } else {
           this.mapEngine = new OpenLayersEngine(options);
@@ -264,33 +264,28 @@ define([
         // this.on("marker:mouseout", function(event){
         //this.hidePopup(event);
         // });
-
-        this.on("shape:mouseover", function(event) {
-          //this.showPopup(event);
-          if (_.isFunction(me.shapeMouseOver)) {
-            var result = me.shapeMouseOver(event);
-            if (result) {
-              result = _.isObject(result) ? result : {};
-              event.draw(_.defaults(result, {"z-index": 1}, event.style));
-            }
-          }
-        });
-
-        this.on("shape:mouseout", function(event) {
+        function redrawUponCallback(event, callback, extraDefaults){
           var result = {};
-          if (_.isFunction(me.shapeMouseOut)) {
-            result = me.shapeMouseOut(event);
+          if (_.isFunction(callback)) {
+            result = callback.call(me, event);
           }
           result = _.isObject(result) ? result : {};
           if (_.size(result) > 0) {
-            event.draw(_.defaults(result, event.style));
+            event.draw(_.defaults(result, extraDefaults, event.style));
           }
+        }
+
+        this.on("shape:mouseover", function(event) {
+          //this.showPopup(event);
+          redrawUponCallback(event, me.shapeMouseOver, {"z-index": 1});
+        });
+
+        this.on("shape:mouseout", function(event) {
+          redrawUponCallback(event, me.shapeMouseOut, {"z-index": 0});
         });
 
         this.on("shape:click", function(event) {
-          if (_.isFunction(me.shapeMouseClick)) {
-            var result = me.shapeMouseClick(event);
-          }
+          redrawUponCallback(event, me.shapeMouseClick);
         });
       },
 
