@@ -12,11 +12,11 @@
  */
 
 define([
-  'cdf/lib/jquery',
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  '../nominatim/nominatim'
-], function ($, AddIn, Dashboard, nominatim) {
+  "cdf/lib/jquery",
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "../nominatim/nominatim"
+], function($, AddIn, Dashboard, nominatim) {
 
   var mapquest = $.extend(true, {}, nominatim, {
     name: "mapquest",

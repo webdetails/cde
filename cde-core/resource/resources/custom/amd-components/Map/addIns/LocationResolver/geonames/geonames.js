@@ -12,66 +12,66 @@
  */
 
 define([
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  '../../jquery.transport.xdr'
-], function (AddIn, Dashboard, $) {
-  
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "../../jquery.transport.xdr"
+], function(AddIn, Dashboard, $) {
+
   var geonames = {
     name: "geonames",
     label: "GeoNames",
     defaults: {
-      username: '',
-      url: 'http://ws.geonames.org/searchJSON'
+      username: "",
+      url: "http://ws.geonames.org/searchJSON"
     },
     implementation: function(tgt, st, opt) {
       var location;
       var name = st.address;
       var featureClass;
-      if(!name) {
+      if (!name) {
         //Check city
-        if(st.city) {
+        if (st.city) {
           name = st.city;
-          featureClass = 'P';
-        } else if(st.county) {
+          featureClass = "P";
+        } else if (st.county) {
           name = st.county;
-          featureClass = 'A';
-        } else if(st.region) {
+          featureClass = "A";
+        } else if (st.region) {
           name = st.region;
-          featureClass = 'A';
-        } else if(st.state) {
+          featureClass = "A";
+        } else if (st.state) {
           name = st.state;
-          featureClass = 'A';
-        } else if(st.country) {
+          featureClass = "A";
+        } else if (st.country) {
           name = st.country;
-          featureClass = 'A';
+          featureClass = "A";
         }
       }
 
       var params = {
-        q: name.replace(/&/g,","),
+        q: name.replace(/&/g, ","),
         maxRows: 1,
         dataType: "json",
         username: opt.username,
         featureClass: featureClass
       };
-      if(featureClass) {
+      if (featureClass) {
         params.featureClass = featureClass;
       }
       var onSuccess = function(result) {
-        if(result.geonames && result.geonames.length > 0) {
+        if (result.geonames && result.geonames.length > 0) {
           location = [parseFloat(result.geonames[0].lng),
-                      parseFloat(result.geonames[0].lat)];
+            parseFloat(result.geonames[0].lat)];
           st.continuationFunction(location);
         }
       };
-      var onError = function(){
+      var onError = function() {
         st.continuationFunction(undefined);
       };
       return $.ajax({
         dataType: "json",
         url: opt.url,
-        method: 'GET',
+        method: "GET",
         data: params,
         success: onSuccess,
         error: onError

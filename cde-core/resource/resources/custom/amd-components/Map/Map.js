@@ -86,13 +86,13 @@ define([
   "./engines/google/MapEngineGoogle",
   "./addIns/mapAddIns",
   "css!./Map"
-], function ($, _, UnmanagedComponent,
-             ILifecycle,
-             ISelector, IMapModel, IConfiguration, IFeatureStyle,
-             IColorMap,
-             ControlPanel,
-             tileServices,
-             OpenLayersEngine, GoogleMapEngine) {
+], function($, _, UnmanagedComponent,
+            ILifecycle,
+            ISelector, IMapModel, IConfiguration, IFeatureStyle,
+            IColorMap,
+            ControlPanel,
+            tileServices,
+            OpenLayersEngine, GoogleMapEngine) {
 
   return UnmanagedComponent.extend(ILifecycle)
     .extend(ISelector)
@@ -133,7 +133,7 @@ define([
       //     };
       // },
       // // End
-      update: function () {
+      update: function() {
         if (!this.preExec()) {
           return false;
         }
@@ -142,7 +142,7 @@ define([
         this.configuration = this.getConfiguration();
         this._initMapEngine()
           .then(_.bind(this.init, this))
-          .then(_.bind(function () {
+          .then(_.bind(function() {
             if (this.queryDefinition && !_.isEmpty(this.queryDefinition)) {
               this.getQueryData();
             } else {
@@ -152,10 +152,9 @@ define([
           }, this));
       },
 
-
-      onDataReady: function (json) {
+      onDataReady: function(json) {
         return $.when(this.resolveFeatures(json))
-          .then(_.bind(function (json) {
+          .then(_.bind(function(json) {
             this.initModel(json);
             this._initControlPanel();
             this.updateSelection();
@@ -165,7 +164,7 @@ define([
           .then(_.bind(this._concludeUpdate, this));
       },
 
-      _initMapEngine: function () {
+      _initMapEngine: function() {
         var options = $.extend(true, {},
           this.configuration.addIns.MapEngine.options, {
             options: this.configuration
@@ -177,10 +176,10 @@ define([
         } else {
           this.mapEngine = new OpenLayersEngine(options);
         }
-        return this.mapEngine.init()
+        return this.mapEngine.init();
       },
 
-      init: function () {
+      init: function() {
         var $map = $('<div class="map-container"/>');
         $map.css({
           position: "relative",
@@ -196,24 +195,24 @@ define([
         this._initPopup();
       },
 
-      _initControlPanel: function () {
+      _initControlPanel: function() {
         var $controlPanel = $('<div class="map-controls" />').prependTo(this.placeholder());
         this.controlPanel = new ControlPanel($controlPanel, this.model, this.configuration);
         this.controlPanel.render();
         var me = this;
         var eventMapping = {
-          'zoom:in': _.bind(this.mapEngine.zoomIn, this.mapEngine),
-          'zoom:out': _.bind(this.mapEngine.zoomOut, this.mapEngine)
+          "zoom:in": _.bind(this.mapEngine.zoomIn, this.mapEngine),
+          "zoom:out": _.bind(this.mapEngine.zoomOut, this.mapEngine)
         };
 
-        _.each(eventMapping, function (callback, event) {
+        _.each(eventMapping, function(callback, event) {
           if (_.isFunction(callback)) {
             me.listenTo(me.controlPanel, event, callback);
           }
         });
       },
 
-      render: function () {
+      render: function() {
         this.mapEngine.render(this.model);
         var centerLatitude = this.configuration.viewport.center.latitude;
         var centerLongitude = this.configuration.viewport.center.longitude;
@@ -221,7 +220,7 @@ define([
         this.mapEngine.updateViewport(centerLongitude, centerLatitude, defaultZoomLevel);
       },
 
-      _relayMapEngineEvents: function () {
+      _relayMapEngineEvents: function() {
         var engine = this.mapEngine;
         var component = this;
         var events = [
@@ -229,25 +228,25 @@ define([
           "shape:click", "shape:mouseover", "shape:mouseout",
           "map:zoom", "map:center" //TODO: consider renaming these to viewport:zoom and viewport:center
         ];
-        _.each(events, function (event) {
-          component.listenTo(engine, event, function () {
+        _.each(events, function(event) {
+          component.listenTo(engine, event, function() {
             var args = _.union([event], arguments);
             component.trigger.apply(component, args);
           });
         });
 
-        this.listenTo(this.mapEngine, "engine:selection:complete", function () {
+        this.listenTo(this.mapEngine, "engine:selection:complete", function() {
           component.processChange();
         });
 
       },
 
-      _registerEvents: function () {
+      _registerEvents: function() {
         /** Registers handlers for mouse events
          *
          */
         var me = this;
-        this.on("marker:click", function (event) {
+        this.on("marker:click", function(event) {
           if (this.model.isPanningMode()) {
             //me.processChange();
           }
@@ -269,7 +268,7 @@ define([
         //this.hidePopup(event);
         // });
 
-        this.on("shape:mouseover", function (event) {
+        this.on("shape:mouseover", function(event) {
           //this.showPopup(event);
           if (_.isFunction(me.shapeMouseOver)) {
             var result = me.shapeMouseOver(event);
@@ -280,7 +279,7 @@ define([
           }
         });
 
-        this.on("shape:mouseout", function (event) {
+        this.on("shape:mouseout", function(event) {
           var result = {};
           if (_.isFunction(me.shapeMouseOut)) {
             result = me.shapeMouseOut(event);
@@ -291,7 +290,7 @@ define([
           }
         });
 
-        this.on("shape:click", function (event) {
+        this.on("shape:click", function(event) {
           //if (this.model.isPanningMode()) {
           //me.processChange();
           //}
@@ -308,8 +307,7 @@ define([
         });
       },
 
-
-      _processMarkerImages: function () {
+      _processMarkerImages: function() {
         var markersRoot = this.model.findWhere({id: "markers"});
         if (!markersRoot) {
           return;
@@ -343,7 +341,7 @@ define([
           if (addinName === "cggMarker") {
             extraSt = {
               cggGraphName: this.configuration.addIns.MarkerImage.options.cggScript,
-              parameters: _.object(_.map(this.configuration.addIns.MarkerImage.options.parameters, function (parameter) {
+              parameters: _.object(_.map(this.configuration.addIns.MarkerImage.options.parameters, function(parameter) {
                 return [parameter[0], row[mapping[parameter[1]]]];
               }))
             };
@@ -375,8 +373,7 @@ define([
        * Legacy stuff associated with popups that should be revised sometime
        */
 
-
-      _initPopup: function () {
+      _initPopup: function() {
         if (this.popupContentsDiv) {
           var $popupContentsDiv = $("#" + this.popupContentsDiv);
           var $popupDivHolder = $popupContentsDiv.clone();
@@ -387,11 +384,11 @@ define([
         }
       },
 
-      showPopup: function (event) {
+      showPopup: function(event) {
         var data = event.data || [];
         var me = this;
         if (this.popupContentsDiv || data[me.mapping.popupContents]) {
-          _.each(this.popupParameters, function (paramDef) {
+          _.each(this.popupParameters, function(paramDef) {
             me.dashboard.fireChange(paramDef[1], data[me.mapping[paramDef[0].toLowerCase()]]);
           });
 

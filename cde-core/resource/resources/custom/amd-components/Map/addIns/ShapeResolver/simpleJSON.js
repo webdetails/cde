@@ -12,36 +12,36 @@
  */
 
 define([
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  '../jquery.transport.xdr',
-  'amd!cdf/lib/underscore'
-], function (AddIn, Dashboard, $, _) {
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "../jquery.transport.xdr",
+  "amd!cdf/lib/underscore"
+], function(AddIn, Dashboard, $, _) {
 
   var thisAddIn = {
-    name: 'simpleJSON',
-    label: 'Simple JSON shape resolver',
+    name: "simpleJSON",
+    label: "Simple JSON shape resolver",
     defaults: {
-      url: '' //url for the resource containing the json map definitions
+      url: "" //url for the resource containing the json map definitions
     },
-    implementation: function (tgt, st, opt) {
+    implementation: function(tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
       if (url) {
         $.ajax(url, {
           async: true,
-          type: 'GET',
-          dataType: 'json',
-          success: function (latlonMap) {
+          type: "GET",
+          dataType: "json",
+          success: function(latlonMap) {
             var map = _.chain(latlonMap)
-              .map(function (multiPolygonLatLon, key) {
+              .map(function(multiPolygonLatLon, key) {
                 return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
               })
               .object()
               .value();
             deferred.resolve(map);
           },
-          error: function () {
+          error: function() {
             deferred.resolve({});
           }
         });
@@ -53,18 +53,18 @@ define([
   };
 
   function multiPolygonToGeoJSON(latLonMultiPolygon) {
-    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function (polygon) {
-      return _.map(polygon, function (lineString) {
-        return _.map(lineString, function (point) {
+    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon) {
+      return _.map(polygon, function(lineString) {
+        return _.map(lineString, function(point) {
           return point.reverse();
         });
       });
     });
 
     var feature = {
-      type: 'Feature',
+      type: "Feature",
       geometry: {
-        type: 'MultiPolygon',
+        type: "MultiPolygon",
         coordinates: lonLatMultiPolygon
       },
       properties: {}
@@ -72,6 +72,5 @@ define([
     return feature;
   }
 
-
-  Dashboard.registerGlobalAddIn('NewMapComponent', 'ShapeResolver', new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
 });

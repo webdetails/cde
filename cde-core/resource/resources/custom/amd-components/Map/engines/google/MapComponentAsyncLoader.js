@@ -1,37 +1,37 @@
 /*!
-* JavaScript - loadGoogleMaps( version, apiKey, language )
-*
-* - Load Google Maps API using jQuery Deferred.
-* Useful if you want to only load the Google Maps API on-demand.
-* - Requires jQuery 1.5
-*
-* Copyright (c) 2011 Glenn Baker
-* Dual licensed under the MIT and GPL licenses.
-*
-* The MIT License (MIT)
-* Copyright (c) 2011 Glenn Baker
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
+ * JavaScript - loadGoogleMaps( version, apiKey, language )
+ *
+ * - Load Google Maps API using jQuery Deferred.
+ * Useful if you want to only load the Google Maps API on-demand.
+ * - Requires jQuery 1.5
+ *
+ * Copyright (c) 2011 Glenn Baker
+ * Dual licensed under the MIT and GPL licenses.
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2011 Glenn Baker
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 define([
-  'cdf/lib/jquery'
-], function ($) {
+  "cdf/lib/jquery"
+], function($) {
 
   var loadGoogleMaps = (function($) {
 
@@ -39,33 +39,33 @@ define([
 
     return function(version, apiKey) {
 
-      if(promise) {
+      if (promise) {
         return promise;
       }
 
       //Create a Deferred Object
       var deferred = $.Deferred(),
 
-        //Declare a resolve function, pass google.maps for the done functions
+      //Declare a resolve function, pass google.maps for the done functions
         resolve = function() {
           deferred.resolve(window.google && google.maps ? google.maps : false);
 
         },
 
-        //global callback name
+      //global callback name
         callbackName = "loadGoogleMaps_" + (now++),
 
-        //Ajax URL params
+      //Ajax URL params
         params;
 
       //If google.maps exists, then Google Maps API was probably loaded with the <script> tag
-      if(window.google && google.maps) {
+      if (window.google && google.maps) {
 
         resolve();
 
         //If the google.load method exists, lets load the Google Maps API in Async.
 
-      } else if(window.google && google.load) {
+      } else if (window.google && google.load) {
 
         google.load("maps", version || 3, {
           //"other_params": "sensor=false",
@@ -79,9 +79,9 @@ define([
         //Ajax URL params
         params = $.extend(
           {
-            'v': version || 3,
+            "v": version || 3,
             //'sensor': false,
-            'callback': callbackName
+            "callback": callbackName
           },
           apiKey ? {"key": apiKey} : {});
 
@@ -94,7 +94,8 @@ define([
           setTimeout(function() {
             try {
               delete window[callbackName];
-            } catch(e) {}
+            } catch (e) {
+            }
 
           }, 20);
 
@@ -102,9 +103,9 @@ define([
 
         //Can't use the jXHR promise because 'script' doesn't support 'callback=?'
         $.ajax({
-          dataType: 'script',
+          dataType: "script",
           data: params,
-          url: 'http://maps.googleapis.com/maps/api/js'
+          url: "http://maps.googleapis.com/maps/api/js"
 
         });
 
