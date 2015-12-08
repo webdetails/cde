@@ -1,7 +1,7 @@
 define([
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore'
-], function ($, _) {
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore"
+], function($, _) {
   "use strict";
   return {
     getConfiguration: getConfiguration
@@ -14,7 +14,7 @@ define([
   function getConfiguration() {
     var addIns = {
       MarkerImage: {
-        name: this.markerCggGraph ? 'cggMarker' : this.markerImageGetter,
+        name: this.markerCggGraph ? "cggMarker" : this.markerImageGetter,
         options: {
           cggScript: this.markerCggGraph,
           parameters: this.cggGraphParameters,
@@ -31,7 +31,7 @@ define([
         }
       },
       LocationResolver: {
-        name: this.locationResolver || 'openstreetmap',
+        name: this.locationResolver || "openstreetmap",
         options: {}
       },
       MapEngine: {
@@ -56,15 +56,15 @@ define([
     };
 
     var viewport = {
-      extent:{
-          southEast: {
-            latitude: -72.7,
-            longitude: -180
-          },
-          northWest: {
-            latitude: 84.2,
-            longitude: 180
-          }
+      extent: {
+        southEast: {
+          latitude: -72.7,
+          longitude: -180
+        },
+        northWest: {
+          latitude: 84.2,
+          longitude: 180
+        }
       },
       center: {
         latitude: parseFloat(this.centerLatitude),
@@ -84,7 +84,7 @@ define([
       controls: controls,
       styleMap: this.styleMap,
       viewport: viewport
-    }, _.result(this, 'options'));
+    }, _.result(this, "options"));
   }
 
 });

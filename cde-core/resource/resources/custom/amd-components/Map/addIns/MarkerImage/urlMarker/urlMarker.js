@@ -12,26 +12,26 @@
  */
 
 define([
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  '../../../Map.ext'
-], function (AddIn, Dashboard, NewMapComponentExt) {
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "../../../Map.ext"
+], function(AddIn, Dashboard, NewMapComponentExt) {
 
   var urlMarker = new AddIn({
     name: "urlMarker",
     label: "Url Marker",
     defaults: {
-      defaultUrl: NewMapComponentExt.getMarkerImgPath() + 'marker_grey.png',
+      defaultUrl: NewMapComponentExt.getMarkerImgPath() + "marker_grey.png",
       imagePath: NewMapComponentExt.getMarkerImgPath(),
       images: [
-        'marker_grey.png',
-        'marker_blue.png',
-        'marker_grey02.png',
-        'marker_orange.png',
-        'marker_purple.png',
+        "marker_grey.png",
+        "marker_blue.png",
+        "marker_grey02.png",
+        "marker_orange.png",
+        "marker_purple.png",
       ]
     },
-    implementation: function (tgt, st, opt) {
+    implementation: function(tgt, st, opt) {
       if (st.url) {
         return st.url;
       }

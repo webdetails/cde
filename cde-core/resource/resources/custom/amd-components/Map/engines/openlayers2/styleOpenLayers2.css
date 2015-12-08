@@ -6,6 +6,7 @@
 .map-container .olDragDown {
     cursor: inherit;
 }
+
 .map-container.olMap.pan .olDragDown {
     /*cursor: -webkit-grabbing;*/
     /*cursor: grabbing;*/
@@ -16,12 +17,10 @@
     /*cursor: crosshair;*/
 }
 
-
-.map-container.olMap.zoombox .olDragDown{
+.map-container.olMap.zoombox .olDragDown {
     /*cursor: crosshair;*/
     cursor: inherit;
 }
-
 
 .olMap .olHandlerBoxZoomBox,
 .olMap .olHandlerBoxSelectFeature {
