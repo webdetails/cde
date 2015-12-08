@@ -62,6 +62,7 @@ define([
           });
           //Last, try pure jQuery Ajax technique to load the Google Maps API in Async.
         } else {
+          var callbackName = "loadGoogleMaps_" + (now++);
           //Ajax URL params
           var params = $.extend({
               "v": version || 3,
@@ -72,7 +73,6 @@ define([
           );
 
           //Declare the global callback
-          var callbackName = "loadGoogleMaps_" + (now++);
           window[callbackName] = function() {
             resolve();
             //Delete callback
