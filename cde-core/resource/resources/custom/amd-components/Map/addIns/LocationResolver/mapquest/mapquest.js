@@ -12,12 +12,12 @@
  */
 
 define([
-  'cdf/lib/jquery',
-  'cdf/AddIn',
-  'cdf/Dashboard.Clean',
-  '../nominatim/nominatim'
-], function ($, AddIn, Dashboard, nominatim) {
-
+  "cdf/lib/jquery",
+  "cdf/AddIn",
+  "cdf/Dashboard.Clean",
+  "../nominatim/nominatim"
+], function($, AddIn, Dashboard, nominatim) {
+  "use strict";
   var mapquest = $.extend(true, {}, nominatim, {
     name: "mapquest",
     label: "MapQuest",
@@ -27,6 +27,7 @@ define([
   });
 
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(mapquest));
+
   return mapquest;
 
 });

@@ -899,7 +899,7 @@
      {
       "name": "fillOpacity",
       "type": "Float",
-      "value": 0.5
+      "value": ""
      },
      {
       "name": "locationResolver",
@@ -974,12 +974,12 @@
      {
       "name": "strokeColor",
       "type": "String",
-      "value": "white"
+      "value": ""
      },
      {
       "name": "strokeWidth",
       "type": "Float",
-      "value": 2
+      "value": ""
      },
      {
       "name": "tilesets",
@@ -1224,7 +1224,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
      },
      {
       "name": "postExecution",

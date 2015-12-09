@@ -15,58 +15,58 @@
  *
  */
 define([
-  'cdf/lib/jquery',
-  'amd!cdf/lib/underscore',
-  '../MapEngine',
-  'cdf/lib/OpenLayers',
-  '../../model/MapModel',
-  'css!./styleOpenLayers2'
-], function ($, _, MapEngine, OpenLayers, MapModel) {
+  "cdf/lib/jquery",
+  "amd!cdf/lib/underscore",
+  "../MapEngine",
+  "cdf/lib/OpenLayers",
+  "../../model/MapModel",
+  "css!./styleOpenLayers2"
+], function($, _, MapEngine, OpenLayers, MapModel) {
   "use strict";
   return MapEngine.extend({
     map: undefined,
     //    featureLayer: undefined,
     API_KEY: 0,
-    constructor: function (options) {
+    constructor: function(options) {
       this.base();
       $.extend(this, options);
       this.layers = {}; // map layers
       this.controls = {}; // map controls
     },
 
-    toNativeStyle: function (foreignStyle) {
+    toNativeStyle: function(foreignStyle) {
       var conversionTable = {
         // SVG standard attributes : OpenLayers2 attributes
-        'fill': 'fillColor',
-        'fill-opacity': 'fillOpacity',
-        'stroke': 'strokeColor',
-        'stroke-opacity': 'strokeOpacity',
-        'stroke-width': 'strokeWidth',
-        'r': 'pointRadius',
-        'z-index': 'graphicZIndex',
-        'icon-url': 'externalGraphic',
-        'iconUrl': 'externalGraphic',
-        'width': 'graphicWidth',
-        'height': 'graphicHeight',
+        "fill": "fillColor",
+        "fill-opacity": "fillOpacity",
+        "stroke": "strokeColor",
+        "stroke-opacity": "strokeOpacity",
+        "stroke-width": "strokeWidth",
+        "r": "pointRadius",
+        "z-index": "graphicZIndex",
+        "icon-url": "externalGraphic",
+        "iconUrl": "externalGraphic",
+        "width": "graphicWidth",
+        "height": "graphicHeight",
         //Adapted
-        'symbol': 'graphicName',
+        "symbol": "graphicName",
         //Backwards compatibility
-        'fillColor': 'fillColor',
-        'fillOpacity': 'fillOpacity',
-        'strokeColor': 'strokeColor',
-        'strokeOpacity': 'strokeOpacity',
-        'strokeWidth': 'strokeWidth',
-        'zIndex': 'graphicZIndex'
+        "fillColor": "fillColor",
+        "fillOpacity": "fillOpacity",
+        "strokeColor": "strokeColor",
+        "strokeOpacity": "strokeOpacity",
+        "strokeWidth": "strokeWidth",
+        "zIndex": "graphicZIndex"
       };
       var validStyle = {};
-      _.each(foreignStyle, function (value, key) {
+      _.each(foreignStyle, function(value, key) {
         var nativeKey = conversionTable[key];
         if (nativeKey) {
           validStyle[nativeKey] = value;
         } else {
           switch (key) {
-            case 'visible':
-              validStyle['display'] = value ? true : 'none';
+            case "visible":
+              validStyle["display"] = value ? true : "none";
               break;
             default:
               // be permissive about the validation
@@ -79,7 +79,7 @@ define([
       return validStyle;
     },
 
-    wrapEvent: function (event) {
+    wrapEvent: function(event) {
       var feature = event.feature;
       var modelItem = event.feature.attributes.model;
 
@@ -87,34 +87,34 @@ define([
       var coords;
       if (lastXy) {
         coords = this.map.getLonLatFromPixel(lastXy)
-          .transform(this.map.getProjectionObject(), new OpenLayers.Projection('EPSG:4326'));
+          .transform(this.map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
       } else {
         coords = {lat: undefined, lon: undefined};
       }
 
       var me = this;
       return $.extend(this._wrapEvent(modelItem), {
-        mapEngineType: 'openlayers2',
+        mapEngineType: "openlayers2",
         latitude: coords.lat,
         longitude: coords.lon,
         feature: feature, // can refer to either the shape or the marker
-        _popup: function (html, options) {
+        _popup: function(html, options) {
           var opt = $.extend({
             width: 100,
             height: 100
           }, options || {});
           me.showPopup(null, feature, opt.height, opt.width, html, null, null);
         },
-        draw: function (style) {
+        draw: function(style) {
           // currently only makes sense to be called on shape callbacks
           var validStyle = me.toNativeStyle(style);
           event.feature.layer.drawFeature(feature, validStyle);
         },
         // TODO: BEGIN code that must die
-        _setSelectedStyle: function (style) {
+        _setSelectedStyle: function(style) {
           event.feature.attributes.clickSelStyle = style;
         },
-        _getSelectedStyle: function () {
+        _getSelectedStyle: function() {
           return event.feature.attributes.clickSelStyle;
         },
         // END code that might need to die
@@ -122,15 +122,14 @@ define([
       });
     },
 
-
-    renderItem: function (modelItem) {
+    renderItem: function(modelItem) {
       if (!modelItem) {
         return;
       }
-      var layer = this.layers[modelItem.root().children().first().get('id')];
-      var geoJSON = modelItem.get('geoJSON');
+      var layer = this.layers[modelItem.root().children().first().get("id")];
+      var geoJSON = modelItem.get("geoJSON");
       var me = this;
-      $.when(geoJSON).then(function (feature) {
+      $.when(geoJSON).then(function(feature) {
         if (!feature) {
           return;
         }
@@ -138,7 +137,7 @@ define([
         var style = modelItem.getStyle();
         $.extend(true, f, {
           attributes: {
-            id: modelItem.get('id'),
+            id: modelItem.get("id"),
             model: modelItem
           },
           style: me.toNativeStyle(style)
@@ -147,15 +146,14 @@ define([
       });
     },
 
-
-    showPopup: function (data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
+    showPopup: function(data, feature, popupHeight, popupWidth, contents, popupContentDiv, borderColor) {
       if (popupContentDiv && popupContentDiv.length > 0) {
-        var div = $('<div/>');
-        div.append($('#' + popupContentDiv));
+        var div = $("<div/>");
+        div.append($("#" + popupContentDiv));
         contents = div.html();
       }
 
-      var name = 'featurePopup';
+      var name = "featurePopup";
       if (borderColor !== undefined) {
         name = name + borderColor.substring(1);
       }
@@ -172,16 +170,16 @@ define([
       feature.popup = popup;
       popup.feature = feature;
 
-      _.each(this.map.popups, function (elt) {
+      _.each(this.map.popups, function(elt) {
         elt.hide(); //possible memory leak?
       });
 
       this.map.addPopup(popup, true);
     },
 
-    renderMap: function (target) {
-      var projectionMap = new OpenLayers.Projection('EPSG:900913');
-      var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
+    renderMap: function(target) {
+      var projectionMap = new OpenLayers.Projection("EPSG:900913");
+      var projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       var extent = this.options.viewport.extent;
       var restrictedExtent = new OpenLayers.Bounds(
         extent.southEast.longitude, extent.southEast.latitude,
@@ -208,12 +206,12 @@ define([
       this.$map = $(target);
 
       var me = this;
-      this.map.isValidZoomLevel = function (z) {
-        var minZoom = _.isFinite(me.options.viewport.zoomLevel.min) ? me.options.viewport.zoomLevel.min : 0;
-        var maxZoom = _.isFinite(me.options.viewport.zoomLevel.max) ? me.options.viewport.zoomLevel.max : this.getNumZoomLevels();
-        return (z != null) && (z >= minZoom) && (z <= maxZoom );
+      this.map.isValidZoomLevel = function(z) {
+        var zoomLevelConfig = me.options.viewport.zoomLevel;
+        var minZoom = _.isFinite(zoomLevelConfig.min) ? zoomLevelConfig.min : 0;
+        var maxZoom = _.isFinite(zoomLevelConfig.max) ? zoomLevelConfig.max : this.getNumZoomLevels();
+        return (z != null) && (z >= minZoom) && (z <= maxZoom);
       };
-
 
       this.addLayers();
       this.addControls();
@@ -226,27 +224,26 @@ define([
       });
     },
 
-
-    addLayers: function () {
+    addLayers: function() {
       var me = this;
-      _.each(this.tilesets, function (thisTileset) {
+      _.each(this.tilesets, function(thisTileset) {
         var layer;
         var tilesetId = _.isString(thisTileset) ? thisTileset : thisTileset.id;
-        var tileset = tilesetId.slice(0).split('-')[0];
-        var variant = tilesetId.slice(0).split('-').slice(1).join('-') || 'default';
+        var tileset = tilesetId.slice(0).split("-")[0];
+        var variant = tilesetId.slice(0).split("-").slice(1).join("-") || "default";
         switch (tileset) {
-          case 'googleXXX':
-            layer = new OpenLayers.Layer.Google('Google Streets', {visibility: true, version: '3'});
+          case "googleXXX":
+            layer = new OpenLayers.Layer.Google("Google Streets", {visibility: true, version: "3"});
             break;
 
-          case 'opengeo':
+          case "opengeo":
             layer = new OpenLayers.Layer.WMS(tilesetId,
-              'http://maps.opengeo.org/geowebcache/service/wms', {
+              "http://maps.opengeo.org/geowebcache/service/wms", {
                 layers: variant,
-                bgcolor: '#A1BDC4'
+                bgcolor: "#A1BDC4"
               }, {
                 wrapDateLine: true,
-                transitionEffect: 'resize'
+                transitionEffect: "resize"
               });
             break;
 
@@ -261,48 +258,48 @@ define([
       });
 
       // add layers for the markers and for the shapes
-      this.layers.shapes = new OpenLayers.Layer.Vector('Shapes', {
+      this.layers.shapes = new OpenLayers.Layer.Vector("Shapes", {
         //styleMap: olStyleMap,
         rendererOptions: {
           zIndexing: true
         }
       });
 
-      this.layers.markers = new OpenLayers.Layer.Vector('Markers');
+      this.layers.markers = new OpenLayers.Layer.Vector("Markers");
 
       this.map.addLayers([this.layers.shapes, this.layers.markers]);
     },
 
-    setPanningMode: function () {
+    setPanningMode: function() {
       this.controls.clickCtrl.activate();
       this.controls.zoomBox.deactivate();
       this.controls.boxSelector.deactivate();
-      this._updateMode('pan');
+      this._updateMode("pan");
     },
 
-    setZoomBoxMode: function () {
+    setZoomBoxMode: function() {
       this.controls.clickCtrl.activate();
       this.controls.zoomBox.activate();
       this.controls.boxSelector.deactivate();
-      this._updateMode('zoombox');
+      this._updateMode("zoombox");
     },
 
-    setSelectionMode: function () {
+    setSelectionMode: function() {
       this.controls.clickCtrl.deactivate();
       this.controls.boxSelector.activate();
       this.controls.zoomBox.deactivate();
-      this._updateMode('selection');
+      this._updateMode("selection");
     },
 
-    zoomIn: function () {
+    zoomIn: function() {
       this.map.zoomIn();
     },
 
-    zoomOut: function () {
+    zoomOut: function() {
       this.map.zoomOut();
     },
 
-    updateViewport: function (centerLongitude, centerLatitude, zoomLevel) {
+    updateViewport: function(centerLongitude, centerLatitude, zoomLevel) {
       var bounds;
       if (_.isFinite(zoomLevel)) {
         this.map.zoomTo(zoomLevel);
@@ -323,20 +320,22 @@ define([
         }
       }
 
-      var projectionWGS84 = new OpenLayers.Projection('EPSG:4326');
+      var projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       var centerPoint;
       if (_.isFinite(centerLatitude) && _.isFinite(centerLongitude)) {
-        centerPoint = (new OpenLayers.LonLat(centerLongitude, centerLatitude)).transform(projectionWGS84, this.map.getProjectionObject());
+        centerPoint = (new OpenLayers.LonLat(centerLongitude, centerLatitude))
+          .transform(projectionWGS84, this.map.getProjectionObject());
         this.map.setCenter(centerPoint);
       } else {
         if (!bounds) {
-          centerPoint = (new OpenLayers.LonLat(-10, 20)).transform(projectionWGS84, this.map.getProjectionObject());
+          centerPoint = (new OpenLayers.LonLat(-10, 20))
+            .transform(projectionWGS84, this.map.getProjectionObject());
           this.map.setCenter(centerPoint);
         }
       }
     },
 
-    addControls: function () {
+    addControls: function() {
       this._addControlKeyboardNavigation();
       this._addControlMouseNavigation();
       this._addControlMousePosition();
@@ -346,7 +345,7 @@ define([
       this._addControlZoomBox();
     },
 
-    _addControlKeyboardNavigation: function () {
+    _addControlKeyboardNavigation: function() {
       var allowKeyboard = (this.options.controls.enableKeyboardNavigation === true);
       this.controls.keyboardNavigation = new OpenLayers.Control.KeyboardDefaults({
         //observeElement: this.map.div
@@ -359,19 +358,19 @@ define([
       }
     },
 
-    __patchDragHandler: function (handler) {
+    __patchDragHandler: function(handler) {
       // NOTE: the following code is very fragile, might break if we change the library version from 2.13.1
       var me = this;
-      handler.down = function () {
+      handler.down = function() {
         me._updateDrag(true);
       };
-      handler.up = function () {
+      handler.up = function() {
         me._updateDrag(false);
       };
       //handler.stopDown = false;
     },
 
-    _addControlMouseNavigation: function () {
+    _addControlMouseNavigation: function() {
       var allowZoom = (this.options.controls.enableZoomOnMouseWheel === true);
       this.controls.mouseNavigation = new OpenLayers.Control.Navigation({
         zoomWheelEnabled: allowZoom
@@ -388,37 +387,37 @@ define([
       }
     },
 
-    _addControlMousePosition: function () {
+    _addControlMousePosition: function() {
       this.controls.mousePosition = new OpenLayers.Control.MousePosition();
       this.map.addControl(this.controls.mousePosition);
     },
 
-    _addControlClick: function () {
+    _addControlClick: function() {
       this.controls.clickCtrl = new OpenLayers.Control.SelectFeature([this.layers.markers, this.layers.shapes], {
         clickout: true,
         callbacks: {
           clickout: this._createClickHandler(null, doZoomIn),
-          click: function(feature){
+          click: function(feature) {
             this.clickFeature(feature);
             var modelItem = feature.attributes.model;
-            var eventName = modelItem.getFeatureType() + ':click';
+            var eventName = modelItem.getFeatureType() + ":click";
             me.trigger(eventName, me.wrapEvent({feature: feature}));
           }
         }
       });
       // allowing event to travel down
-      this.controls.clickCtrl.handlers['feature'].stopDown = false;
+      this.controls.clickCtrl.handlers["feature"].stopDown = false;
       this.map.addControl(this.controls.clickCtrl);
       var me = this;
       this.controls.clickCtrl.events.on({
-        "activate": function (e) {
+        "activate": function(e) {
           me._updateDrag(false);
         }
       });
 
     },
 
-    _addControlBoxSelector: function () {
+    _addControlBoxSelector: function() {
       var me = this;
       // add box selector controler
       this.controls.boxSelector = new OpenLayers.Control.SelectFeature([this.layers.shapes, this.layers.markers], {
@@ -436,27 +435,27 @@ define([
       //TODO: apply modelItem.setHover(true) on all items inside the box
       this.__patchDragHandler(this.controls.boxSelector.handlers.box.dragHandler);
       this.controls.boxSelector.events.on({
-        "activate": function (e) {
+        "activate": function(e) {
           e.object.unselectAll();
           me._updateDrag(false);
         },
-        "boxselectionstart": function (e) {
+        "boxselectionstart": function(e) {
           e.object.unselectAll();
         },
-        "boxselectionend": function (e) {
-          _.each(e.layers, function (layer) {
-            _.each(layer.selectedFeatures, function (f) {
+        "boxselectionend": function(e) {
+          _.each(e.layers, function(layer) {
+            _.each(layer.selectedFeatures, function(f) {
               addToSelection(f.attributes.model);
             });
           });
           e.object.unselectAll();
-          me.trigger('engine:selection:complete');
+          me.trigger("engine:selection:complete");
         }
       });
 
     },
 
-    _addControlZoomBox: function () {
+    _addControlZoomBox: function() {
       // add zoom box controler
       this.controls.zoomBox = new OpenLayers.Control.ZoomBox({
         zoomOnClick: !true
@@ -464,33 +463,33 @@ define([
       this.map.addControl(this.controls.zoomBox);
       var me = this;
       this.controls.zoomBox.events.on({
-        "activate": function (e) {
+        "activate": function(e) {
           me._updateDrag(false);
         }
       });
       this.__patchDragHandler(this.controls.zoomBox.handler.dragHandler);
     },
 
-    _addControlHover: function () {
+    _addControlHover: function() {
       var me = this;
 
       function event_relay(e) {
         var events = {
-          'featurehighlighted': 'mouseover',
-          'featureunhighlighted': 'mouseout'
+          "featurehighlighted": "mouseover",
+          "featureunhighlighted": "mouseout"
         };
         //console.log('hoverCtrl', featureType, e.type, styles[e.type]);
         if (events[e.type]) {
           var model = e.feature.attributes.model;
-          model.setHover(events[e.type] === 'mouseover');
-          me.trigger(model.getFeatureType() + ':' + events[e.type], me.wrapEvent(e));
+          model.setHover(events[e.type] === "mouseover");
+          me.trigger(model.getFeatureType() + ":" + events[e.type], me.wrapEvent(e));
         }
       }
 
       this.controls.hoverCtrl = new OpenLayers.Control.SelectFeature([this.layers.markers, this.layers.shapes], {
         hover: true,
         highlightOnly: true,
-        renderIntent: 'temporary',
+        renderIntent: "temporary",
         eventListeners: {
           featurehighlighted: event_relay,
           featureunhighlighted: event_relay
@@ -498,7 +497,7 @@ define([
         //// this version of OpenLayers has issues with the outFeature function
         // this version of the function patches those issues
         // code from -> http://osgeo-org.1560.x6.nabble.com/SelectFeature-outFeature-method-tt3890333.html#a4988237
-        outFeature: function (feature) {
+        outFeature: function(feature) {
           if (this.hover) {
             if (this.highlightOnly) {
               // we do nothing if we're not the last highlighter of the
@@ -516,7 +515,7 @@ define([
                   if (control) {
                     control.highlight(feature);
                     // THIS IS ADDED BY ME
-                    this.events.triggerEvent('featureunhighlighted', {
+                    this.events.triggerEvent("featureunhighlighted", {
                       feature: feature
                     });
                   }
@@ -525,7 +524,7 @@ define([
                 }
               } else {
                 // THIS IS ELSE BLOCK AND TRIGGER CALL ADDED BY ME
-                this.events.triggerEvent('featureunhighlighted', {
+                this.events.triggerEvent("featureunhighlighted", {
                   feature: feature
                 });
               }
@@ -536,40 +535,40 @@ define([
         }
       });
       // allowing event to travel down
-      this.controls.hoverCtrl.handlers['feature'].stopDown = false;
+      this.controls.hoverCtrl.handlers["feature"].stopDown = false;
       this.map.addControl(this.controls.hoverCtrl);
       this.controls.hoverCtrl.activate();
     },
 
-    updateItem: function (modelItem) {
+    updateItem: function(modelItem) {
       var style = this.toNativeStyle(modelItem.getStyle());
       var featureType = modelItem.getFeatureType();
-      var layerName = featureType === 'marker' ? 'markers' : 'shapes';
+      var layerName = featureType === "marker" ? "markers" : "shapes";
       var layer = this.layers[layerName];
-      var feature = layer.getFeaturesByAttribute('id', modelItem.get('id'))[0];
+      var feature = layer.getFeaturesByAttribute("id", modelItem.get("id"))[0];
       if (feature && !_.isEqual(feature.style, style)) {
         feature.style = style;
         feature.layer.drawFeature(feature, style);
       }
     },
 
-    tileLayer: function (name) {
+    tileLayer: function(name) {
       var urlTemplate = this._getTileServiceURL(name);
       var options = _.extend({
-        'transitionEffect': 'resize'
+        "transitionEffect": "resize"
       }, this.tileServicesOptions[name] || {});
       return new OpenLayers.Layer.XYZ(name, this._switchUrl(urlTemplate), _.extend({}, options));
 
     },
 
-    registerViewportEvents: function () {
+    registerViewportEvents: function() {
       var me = this;
       var eventMap = {
-        'zoomend': 'map:zoom',
-        'movestart': 'map:center'
+        "zoomend": "map:zoom",
+        "movestart": "map:center"
       };
-      _.each(eventMap, function (mapEvent, engineEvent) {
-        me.map.events.register(engineEvent, me.map, function (e) {
+      _.each(eventMap, function(mapEvent, engineEvent) {
+        me.map.events.register(engineEvent, me.map, function(e) {
           var wrappedEvent = wrapViewportEvent.call(me, e);
           me.trigger(mapEvent, wrappedEvent);
         });
@@ -577,8 +576,8 @@ define([
 
       function wrapViewportEvent(e) {
         var mapProj = this.map.getProjectionObject();
-        var wsg84 = new OpenLayers.Projection('EPSG:4326');
-        var transformPoint = function (centerPoint) {
+        var wsg84 = new OpenLayers.Projection("EPSG:4326");
+        var transformPoint = function(centerPoint) {
           var center;
           if (centerPoint) {
             var p = centerPoint.clone().transform(mapProj, wsg84);
@@ -627,17 +626,16 @@ define([
 
   function doClearSelection(me, feature) {
     if (me.model) {
-      me.model.flatten().each(function (m) {
+      me.model.flatten().each(function(m) {
         m.setSelection(MapModel.SelectionStates.NONE);
       });
-      me.trigger('engine:selection:complete');
+      me.trigger("engine:selection:complete");
     }
   }
 
   function addToSelection(modelItem) {
     modelItem.setSelection(MapModel.SelectionStates.ALL);
   }
-
 
   function doZoomIn(me) {
     me.zoomIn();
@@ -647,8 +645,8 @@ define([
     this.clickFeature(feature);
     var modelItem = feature.attributes.model;
     toggleSelection(modelItem);
-    var eventName = modelItem.getFeatureType() + ':click';
-    me.trigger('engine:selection:complete');
+    var eventName = modelItem.getFeatureType() + ":click";
+    me.trigger("engine:selection:complete");
     me.trigger(eventName, me.wrapEvent({feature: feature}));
   }
 

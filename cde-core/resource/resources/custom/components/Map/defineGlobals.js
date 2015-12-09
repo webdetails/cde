@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
   var myglobals = {
     "cdf/lib/jquery": $,
@@ -17,30 +17,29 @@
     "css!./ControlPanel/ControlPanel": ""
   };
 
-
   CONTEXT_PATH = Dashboards.getWebAppPath() + "/";
 
   for (var p in myglobals) {
-    define(p, function () {
+    define(p, function() {
       return myglobals[p];
     });
   }
 
-  define("cdf/Dashboard.Clean", function () {
+  define("cdf/Dashboard.Clean", function() {
     Dashboards.registerGlobalAddIn = Dashboards.registerGlobalAddIn || Dashboards.registerAddIn;
     return Dashboards;
   });
 
-  define("cdf/components/CggComponent.ext", [], function () {
+  define("cdf/components/CggComponent.ext", [], function() {
     var CggComponentExt = {
-      getCggDrawUrl: function () {
+      getCggDrawUrl: function() {
         return CONTEXT_PATH + "plugin/cgg/api/services/draw";
       }
     };
     return CggComponentExt;
   });
 
-  define("cdf/Logger", function () {
+  define("cdf/Logger", function() {
     return {
       log: Dashboards.log,
       debug: Dashboards.log,
@@ -49,7 +48,7 @@
     };
   });
 
-  define("text!./ControlPanel.html", [], function () {
+  define("text!./ControlPanel.html", [], function() {
     return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        <div class="map-control-button map-control-pan"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
   });
 
