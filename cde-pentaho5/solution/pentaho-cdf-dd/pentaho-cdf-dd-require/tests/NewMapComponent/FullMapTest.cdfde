@@ -26,17 +26,12 @@
      },
      {
       "name": "parameter",
-      "value": "",
-      "type": "Parameter"
+      "type": "Parameter",
+      "value": ""
      },
      {
       "name": "listeners",
       "type": "Listeners",
-      "value": "[]"
-     },
-     {
-      "name": "parameters",
-      "type": "CdaParameters",
       "value": "[]"
      },
      {
@@ -115,6 +110,11 @@
       "value": "50"
      },
      {
+      "name": "parameters",
+      "type": "CdaParameters",
+      "value": "[]"
+     },
+     {
       "name": "popupContentsDiv",
       "type": "String",
       "value": "HiddenContentCol"
@@ -191,13 +191,13 @@
      },
      {
       "name": "preChange",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "postChange",
-      "value": "",
-      "type": "JavaScript"
+      "type": "JavaScript",
+      "value": ""
      },
      {
       "name": "tooltip",
@@ -353,7 +353,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
      },
      {
       "name": "postExecution",
@@ -1028,7 +1028,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    };\n} "
      },
      {
       "name": "postExecution",

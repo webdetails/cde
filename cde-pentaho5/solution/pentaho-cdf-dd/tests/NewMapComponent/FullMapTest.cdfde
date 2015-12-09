@@ -353,7 +353,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    }\n} "
      },
      {
       "name": "postExecution",
@@ -1028,7 +1028,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": ""
+      "value": "function f(){\n    this.lifecycle = {\n        silent: true\n    }\n} "
      },
      {
       "name": "postExecution",
