@@ -11,8 +11,8 @@
  * the license for the specific language governing your rights and limitations.
  */
 
-define([], function () {
-
+define([], function() {
+  "use strict";
   return {
 
     /**
@@ -22,13 +22,13 @@ define([], function () {
      * @return {Array} List of strings containing the IDs of the selected items,
      * in the same format as they would be written to the parameter
      */
-    getValue: function () {
+    getValue: function() {
       var selectedItems = this.model.leafs()
-        .filter(function(m){
+        .filter(function(m) {
           return m.getSelection() === true;
         })
-        .map(function(m){
-          return m.get('id');
+        .map(function(m) {
+          return m.get("id");
         })
         .value();
       return selectedItems;
@@ -42,16 +42,16 @@ define([], function () {
      * which will be written to the parameter
      * @chainable
      */
-    setValue: function (idList) {
+    setValue: function(idList) {
       if (this.model) {
         this.model.setSelectedItems(idList);
       } else {
-        throw 'Model is not initialized';
+        throw "Model is not initialized";
       }
       return this;
     },
 
-    updateSelection: function () {
+    updateSelection: function() {
       // Mark selected model items
       var idList = this.dashboard.getParameterValue(this.parameter);
       this.setValue(idList);
@@ -65,12 +65,11 @@ define([], function () {
      * @param {Array} value List of strings containing the IDs of the selected items,
      * in the same format as they would be written to the parameter
      */
-    processChange: function () {
+    processChange: function() {
       //console.debug('processChange was called: ', (new Date()).toISOString());
       this.dashboard.processChange(this.name);
       return this;
     }
   };
-
 
 });
