@@ -989,15 +989,7 @@ define("cde/components/Map/Map.configuration", [
       },
       MapEngine: {
         name: this.mapEngineType,
-        options: {
-          //rawOptions: {
-          //  map: {}
-          //},
-          //tileServices: this.tileServices,
-          //tileServicesOptions: this.tileServicesOptions,
-          //tilesets: (_.isString(this.tilesets)) ? [this.tilesets] : this.tilesets,
-          //API_KEY: this.API_KEY || window.API_KEY
-        }
+        options: {}
       }
     };
 
@@ -1297,7 +1289,7 @@ define("cde/components/Map/Map.colorMap", [
 });
 
 define("text!cde/components/Map/ControlPanel/ControlPanel.html", [], function() {
-  return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        <div class="map-control-button map-control-pan"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
+  return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n        <div class="map-control-button map-control-pan"></div>\n    </div>\n</div>';
 });
 
 /*!
@@ -1917,9 +1909,9 @@ define("cde/components/Map/engines/openlayers2/OpenLayers_patchLayerGooglev3", [
      *
      * (code)
      * {
-     *     sphericalMercator: true,
-     *     projection: "EPSG:900913"
-     * }
+       *     sphericalMercator: true,
+       *     projection: "EPSG:900913"
+       * }
      * (end)
      */
     DEFAULTS: {
@@ -3092,7 +3084,6 @@ define("cde/components/Map/engines/google/MapEngineGoogle", [
       strokeWeight: 0.9
     },
     overlays: [],
-    API_KEY: false,
     selectedFeature: undefined,
 
     constructor: function(options) {
@@ -3104,7 +3095,7 @@ define("cde/components/Map/engines/google/MapEngineGoogle", [
     },
 
     init: function() {
-      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(
+      return $.when(MapComponentAsyncLoader("3", this.options.API_KEY)).then(
         function(status) {
           OurMapOverlay.prototype = new google.maps.OverlayView();
           OurMapOverlay.prototype.onAdd = function() {
@@ -4688,13 +4679,6 @@ define("cde/components/Map/Map", [
       },
 
       _initMapEngine: function() {
-        var options = $.extend(true, {},
-          //this.configuration.addIns.MapEngine.options,
-          {
-            options: this.configuration
-          }
-        );
-
         if (this.configuration.addIns.MapEngine.name === "google") {
           this.mapEngine = new GoogleMapEngine(this.configuration);
         } else {
