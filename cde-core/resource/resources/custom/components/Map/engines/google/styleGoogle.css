@@ -12,3 +12,8 @@
     background-color: white;
     z-index:0;
 }
+
+.map-attribution {
+    font-size: 11px;
+    text-align: right;
+}

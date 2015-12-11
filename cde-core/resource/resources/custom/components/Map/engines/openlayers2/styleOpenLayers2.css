@@ -7,21 +7,16 @@
     cursor: inherit;
 }
 .map-container.olMap.pan .olDragDown {
-    /*cursor: -webkit-grabbing;*/
-    /*cursor: grabbing;*/
     cursor: inherit;
 }
-
-.map-container.olMap.pan .olDrawBox.olDragDown {
-    /*cursor: crosshair;*/
-}
-
 
 .map-container.olMap.zoombox .olDragDown{
-    /*cursor: crosshair;*/
     cursor: inherit;
 }
 
+.map-container .olControlAttribution {
+    bottom: 3px;
+}
 
 .olMap .olHandlerBoxZoomBox,
 .olMap .olHandlerBoxSelectFeature {
