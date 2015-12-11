@@ -46,19 +46,18 @@ define([
       strokeWeight: 0.9
     },
     overlays: [],
-    API_KEY: false,
     selectedFeature: undefined,
 
     constructor: function(options) {
       this.base();
-      $.extend(this, options);
+      this.options = options;
       this.controls = {}; // map controls
       this.controls.listenersHandle = {};
 
     },
 
     init: function() {
-      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(
+      return $.when(MapComponentAsyncLoader("3", this.options.API_KEY)).then(
         function(status) {
           OurMapOverlay.prototype = new google.maps.OverlayView();
           OurMapOverlay.prototype.onAdd = function() {
@@ -248,6 +247,10 @@ define([
       this.map = new google.maps.Map(target, mapOptions);
       this.$map = $(this.map.getDiv());
 
+      // Add div for attribution
+      this.$attribution = $('<div class="map-attribution" />');
+      $(target).after(this.$attribution);
+
       this.addLayers();
       this.addControls();
       this.registerViewportEvents();
@@ -284,7 +287,6 @@ define([
       var maxY = restrictedExtent.getNorthEast().lat();
       var minY = restrictedExtent.getSouthWest().lat();
 
-
       if (x - w < minX) {
         x = minX + w;
       }
@@ -297,13 +299,10 @@ define([
       if (y + h > maxY) {
         y = maxY - h;
       }
-
       if (c.lng() !== x || c.lat() !== y) {
         this.map.setCenter(new google.maps.LatLng(y, x));
       }
-
     },
-
 
     zoomExtends: function() {
       var bounds = new google.maps.LatLngBounds();
@@ -629,15 +628,19 @@ define([
       var layers = [],
         layerIds = [],
         layerOptions = [];
-      for (var k = 0; k < this.tilesets.length; k++) {
-        var thisTileset = this.tilesets[k].slice(0);
+      for (var k = 0; k < this.options.tiles.tilesets.length; k++) {
+        var thisTileset = this.options.tiles.tilesets[k].slice(0);
         layerIds.push(thisTileset);
         layerOptions.push({
           mapTypeId: thisTileset
         });
 
-        if (this.tileServices[thisTileset]) {
+        if (this.options.tiles.services[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
+          var attribution = this._getTileServiceAttribution(thisTileset);
+          if (!_.isEmpty(attribution)){
+            this.$attribution.append($("<div>" + attribution + "</div>"));
+          }
         } else {
           layers.push("");
         }
@@ -670,7 +673,7 @@ define([
         tileSize: new google.maps.Size(256, 256),
         minZoom: 1,
         maxZoom: 19
-      }, this.tileServicesOptions[name] || {});
+      }, this.options.tiles.services[name].options || {});
       var urlList = this._switchUrl(this._getTileServiceURL(name));
       var myself = this;
 

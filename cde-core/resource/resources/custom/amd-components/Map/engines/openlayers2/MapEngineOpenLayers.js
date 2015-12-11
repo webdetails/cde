@@ -18,10 +18,11 @@ define([
   "cdf/lib/jquery",
   "amd!cdf/lib/underscore",
   "../MapEngine",
-  "cdf/lib/OpenLayers",
+  "./OpenLayers_patchLayerGooglev3",
   "../../model/MapModel",
+  "../google/MapComponentAsyncLoader",
   "css!./styleOpenLayers2"
-], function($, _, MapEngine, OpenLayers, MapModel) {
+], function($, _, MapEngine, OpenLayers, MapModel, loadGoogleMaps) {
   "use strict";
   return MapEngine.extend({
     map: undefined,
@@ -29,9 +30,21 @@ define([
     API_KEY: 0,
     constructor: function(options) {
       this.base();
-      $.extend(this, options);
+      //$.extend(this, options);
+      this.options = options;
       this.layers = {}; // map layers
       this.controls = {}; // map controls
+    },
+
+    init: function() {
+      var hasGoogle = _.some(this.options.tiles.tilesets, function(t) {
+        return t.indexOf("google") > -1;
+      });
+      if (hasGoogle) {
+        return $.when(loadGoogleMaps("3", this.options.API_KEY));
+      } else {
+        return this.base();
+      }
     },
 
     toNativeStyle: function(foreignStyle) {
@@ -226,14 +239,32 @@ define([
 
     addLayers: function() {
       var me = this;
-      _.each(this.tilesets, function(thisTileset) {
+      _.each(this.options.tiles.tilesets, function(thisTileset) {
         var layer;
         var tilesetId = _.isString(thisTileset) ? thisTileset : thisTileset.id;
         var tileset = tilesetId.slice(0).split("-")[0];
         var variant = tilesetId.slice(0).split("-").slice(1).join("-") || "default";
         switch (tileset) {
-          case "googleXXX":
-            layer = new OpenLayers.Layer.Google("Google Streets", {visibility: true, version: "3"});
+          case "google":
+            var mapOpts = {
+              "default": {
+                type: google.maps.MapTypeId.ROADMAP
+              },
+              "roadmap": {
+                type: google.maps.MapTypeId.ROADMAP
+              },
+              "terrain": {
+                type: google.maps.MapTypeId.TERRAIN
+              },
+              "satellite": {
+                type: google.maps.MapTypeId.SATELLITE
+              },
+              "hybrid": {
+                type: google.maps.MapTypeId.HYBRID
+              }
+            };
+
+            layer = new OpenLayers.Layer.Google(tilesetId, mapOpts[variant]);
             break;
 
           case "opengeo":
@@ -554,9 +585,11 @@ define([
 
     tileLayer: function(name) {
       var urlTemplate = this._getTileServiceURL(name);
+      var attribution = this._getTileServiceAttribution(name);
       var options = _.extend({
+        attribution: attribution,
         "transitionEffect": "resize"
-      }, this.tileServicesOptions[name] || {});
+      }, this._getTileServiceOptions(name));
       return new OpenLayers.Layer.XYZ(name, this._switchUrl(urlTemplate), _.extend({}, options));
 
     },
