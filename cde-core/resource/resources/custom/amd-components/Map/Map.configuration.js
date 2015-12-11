@@ -51,15 +51,13 @@ define([
       MapEngine: {
         name: this.mapEngineType,
         options: {
-          rawOptions: {
-            map: {}
-          },
-          tileServices: this.tileServices,
-          tileServicesOptions: this.tileServicesOptions,
-          tilesets: (_.isString(this.tilesets)) ? [this.tilesets] : this.tilesets,
-          API_KEY: this.API_KEY || window.API_KEY
         }
       }
+    };
+
+    var tiles = {
+      services: this.tileServices,
+      tilesets: (_.isString(this.tilesets)) ? [this.tilesets] : this.tilesets
     };
 
     //
@@ -93,6 +91,8 @@ define([
     };
 
     var configuration = $.extend(true, {}, {
+      API_KEY: this.API_KEY || window.API_KEY,
+      tiles: tiles,
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
       controls: controls,
