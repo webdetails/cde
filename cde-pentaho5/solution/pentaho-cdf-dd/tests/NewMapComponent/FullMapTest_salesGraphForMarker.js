@@ -6,6 +6,11 @@ var render_salesGraphForMarker = {
   priority: 5,
   parameters: [["customer","CustomerNameParameter"]],
   executeAtStart: true,
+  preExecution: function f(){
+    this.lifecycle = {
+        silent: true
+    }
+} ,
   listeners: [],
   chartDefinition:  {
     dataAccessId: "salesGraphQuery",

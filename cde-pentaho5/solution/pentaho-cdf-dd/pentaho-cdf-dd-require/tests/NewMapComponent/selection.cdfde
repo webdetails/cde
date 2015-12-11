@@ -1099,7 +1099,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>';\nrequire(['cdf/lib/OpenLayers','cdf/lib/OpenStreetMap'], function(OpenLayers) { \n    OpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/theme/dark/'; \n}); "
+      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>'; "
      },
      {
       "name": "resourceType",
