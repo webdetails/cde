@@ -958,25 +958,25 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       } else {
         var center = this.map.getCenter(), container = document.createElement("div");
         container.className = "olForeignContainer", container.style.width = "100%", container.style.height = "100%",
-              mapObject = new google.maps.Map(container, {
-                center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
-                zoom: this.map.getZoom() || 0,
-                mapTypeId: this.type,
-                disableDefaultUI: !0,
-                keyboardShortcuts: !1,
-                draggable: !1,
-                disableDoubleClickZoom: !0,
-                scrollwheel: !1,
-                streetViewControl: !1,
-                tilt: this.useTiltImages ? 45 : 0
-              });
+          mapObject = new google.maps.Map(container, {
+            center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
+            zoom: this.map.getZoom() || 0,
+            mapTypeId: this.type,
+            disableDefaultUI: !0,
+            keyboardShortcuts: !1,
+            draggable: !1,
+            disableDoubleClickZoom: !0,
+            scrollwheel: !1,
+            streetViewControl: !1,
+            tilt: this.useTiltImages ? 45 : 0
+          });
         var googleControl = document.createElement("div");
         googleControl.style.width = "100%", googleControl.style.height = "100%", mapObject.controls[google.maps.ControlPosition.TOP_LEFT].push(googleControl),
-              cache = {
-                googleControl: googleControl,
-                mapObject: mapObject,
-                count: 1
-              }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
+          cache = {
+            googleControl: googleControl,
+            mapObject: mapObject,
+            count: 1
+          }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
       }
       this.mapObject = mapObject, this.setGMapVisibility(this.visibility);
     },
@@ -1836,19 +1836,24 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     setPanningMode: function() {
       this._removeListeners(), this._updateMode("pan"), this._updateDrag(!1);
       var listeners = this.controls.listenersHandle;
-      listeners.click = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: !0
+      }), listeners.click = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
     },
     setZoomBoxMode: function() {
       this._removeListeners(), this._updateMode("zoombox"), this._updateDrag(!1);
       var me = this, control = this.controls.zoomBox, listeners = this.controls.listenersHandle;
-      listeners.click = this._toggleOnClick();
-      var onMouseDown = function(e) {
-        me.model.isZoomBoxMode() && me._beginBox(control, e);
-      };
-      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown),
-        listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: !1
+      }), listeners.click = this._toggleOnClick(), listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+        control.isDragging = 1 === e.buttons;
+      });
       var onMouseMove = function(e) {
-        me.model.isZoomBoxMode() && control.mouseIsDown && me._onBoxResize(control, e);
+        me.model.isZoomBoxMode() && control.isDragging && (control.mouseIsDown ? me._onBoxResize(control, e) : me._beginBox(control, e));
       };
       listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove),
         listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
@@ -1863,17 +1868,18 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     setSelectionMode: function() {
       this._removeListeners(), this._updateMode("selection"), this._updateDrag(!1);
       var me = this, control = me.controls.boxSelector, listeners = this.controls.listenersHandle;
-      listeners.toggleOnClick = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
-      var onMouseDown = function(e) {
-        me.model.isSelectionMode() && me._beginBox(control, e);
-      };
-      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown),
-        listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: !1
+      }), listeners.toggleOnClick = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick(),
+        listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+          control.isDragging = 1 === e.buttons;
+        });
       var onMouseMove = function(e) {
-        me.model.isSelectionMode() && control.mouseIsDown && me._onBoxResize(control, e);
+        me.model.isSelectionMode() && control.isDragging && (control.mouseIsDown ? me._onBoxResize(control, e) : me._beginBox(control, e));
       };
-      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove),
-        listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
+      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
       var onMouseUp = this._endBox(control, function() {
         return me.model.isSelectionMode();
       }, function(bounds) {
@@ -1884,8 +1890,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           });
         }), me.trigger("engine:selection:complete");
       });
-      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp),
-        listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
     },
     _clearOnClick: function() {
       var me = this;
@@ -1903,12 +1908,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     },
     _beginBox: function(control, e) {
-      control.mouseIsDown = !0, control.mouseDownPos = e.latLng, this._updateDrag(!0),
-        this.map.setOptions({
-          draggingCursor: "inherit",
-          draggableCursor: "inherit",
-          draggable: !1
-        });
+      control.mouseIsDown = !0, control.mouseDownPos = e.latLng, this._updateDrag(!0);
     },
     _endBox: function(control, condition, callback) {
       var me = this;
@@ -1917,11 +1917,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           control.mouseIsDown = !1, control.mouseUpPos = e.latLng;
           var bounds = control.gribBoundingBox.getBounds();
           callback(bounds), control.gribBoundingBox.setMap(null), control.gribBoundingBox = null,
-            me._updateDrag(!1), me.map.setOptions({
-            draggingCursor: "inherit",
-            draggableCursor: "inherit",
-            draggable: !0
-          });
+            me._updateDrag(!1);
         }
       };
     },
@@ -1951,8 +1947,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.options.tiles.tilesets.length; k++) {
         var thisTileset = this.options.tiles.tilesets[k].slice(0);
         if (layerIds.push(thisTileset), layerOptions.push({
-          mapTypeId: thisTileset
-        }), this.options.tiles.services[thisTileset]) {
+            mapTypeId: thisTileset
+          }), this.options.tiles.services[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
           var attribution = this._getTileServiceAttribution(thisTileset);
           _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
