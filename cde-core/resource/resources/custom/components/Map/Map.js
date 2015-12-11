@@ -607,7 +607,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     }
   };
 }), define("cdf/lib/require-text/text!cde/components/Map/ControlPanel/ControlPanel.html", [], function() {
-  return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        <div class="map-control-button map-control-pan"></div>\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n    </div>\n</div>';
+  return '<div class="map-control-panel {{mode}}">\n    <div class="map-controls-zoom">\n        <div class="map-control-button map-control-zoom-in"></div>\n        <div class="map-control-button map-control-zoom-out"></div>\n        <div class="map-control-button map-control-zoombox"></div>\n    </div>\n    <div class="map-controls-mode">\n        {{#configuration.isSelector}}\n        <div class="map-control-button map-control-select"></div>\n        {{/configuration.isSelector}}\n        <div class="map-control-button map-control-pan"></div>\n    </div>\n</div>';
 }), define("cde/components/Map/ControlPanel/ControlPanel", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "cdf/lib/mustache", "cdf/lib/BaseEvents", "../model/MapModel", "text!./ControlPanel.html", "css!./ControlPanel"], function($, _, Mustache, BaseEvents, MapModel, template) {
   return BaseEvents.extend({
     constructor: function(domNode, model, configuration) {
@@ -958,25 +958,25 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       } else {
         var center = this.map.getCenter(), container = document.createElement("div");
         container.className = "olForeignContainer", container.style.width = "100%", container.style.height = "100%",
-          mapObject = new google.maps.Map(container, {
-            center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
-            zoom: this.map.getZoom() || 0,
-            mapTypeId: this.type,
-            disableDefaultUI: !0,
-            keyboardShortcuts: !1,
-            draggable: !1,
-            disableDoubleClickZoom: !0,
-            scrollwheel: !1,
-            streetViewControl: !1,
-            tilt: this.useTiltImages ? 45 : 0
-          });
+              mapObject = new google.maps.Map(container, {
+                center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
+                zoom: this.map.getZoom() || 0,
+                mapTypeId: this.type,
+                disableDefaultUI: !0,
+                keyboardShortcuts: !1,
+                draggable: !1,
+                disableDoubleClickZoom: !0,
+                scrollwheel: !1,
+                streetViewControl: !1,
+                tilt: this.useTiltImages ? 45 : 0
+              });
         var googleControl = document.createElement("div");
         googleControl.style.width = "100%", googleControl.style.height = "100%", mapObject.controls[google.maps.ControlPosition.TOP_LEFT].push(googleControl),
-          cache = {
-            googleControl: googleControl,
-            mapObject: mapObject,
-            count: 1
-          }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
+              cache = {
+                googleControl: googleControl,
+                mapObject: mapObject,
+                count: 1
+              }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
       }
       this.mapObject = mapObject, this.setGMapVisibility(this.visibility);
     },
@@ -1951,8 +1951,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.options.tiles.tilesets.length; k++) {
         var thisTileset = this.options.tiles.tilesets[k].slice(0);
         if (layerIds.push(thisTileset), layerOptions.push({
-            mapTypeId: thisTileset
-          }), this.options.tiles.services[thisTileset]) {
+          mapTypeId: thisTileset
+        }), this.options.tiles.services[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
           var attribution = this._getTileServiceAttribution(thisTileset);
           _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
