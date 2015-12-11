@@ -1769,7 +1769,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>';\nOpenLayers.ImgPath = '/pentaho/content/pentaho-cdf-dd/resources/custom/components/Map/theme/dark/'; "
+      "value": "window.API_KEY = window.API_KEY || 0;//'<GOOGLE_API_KEY>'; "
      },
      {
       "name": "resourceType",
@@ -1792,7 +1792,7 @@
      {
       "name": "resourceCode",
       "type": "Resource",
-      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n.olControlZoomPanel div {\n    background-image: url(/pentaho/content/pentaho-cdf-dd/resources/custom/amd-components/Map/theme/dark/zoom-panel.png);\n}\n/*\n.olControlLayerSwitcher .layersDiv {\nbackground-color: #6b6b6b;\n}\n*/ \n\npre.prettyprint {\nborder: 1px none #888;\n} \n\n.WDhidden{\n    display: none;\n} "
+      "value": "#simpleTest, #testTileServices, \n#testWithMarker, #testWithGeoLocalization, \n#testWithShapes\n{\n    width: 700px;\n    height: 500px;\n    margin-bottom:5px;\n} \n\n\n.WDdataCellBody {\n    padding-left: 100px;\n    padding-bottom: 10px;\n}\n\n\npre.prettyprint {\nborder: 1px none #888;\n} \n\n.WDhidden{\n    display: none;\n} "
      },
      {
       "name": "resourceType",
