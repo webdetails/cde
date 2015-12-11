@@ -192,7 +192,8 @@ define([
       return url_list;
     },
     _getTileServiceURL: function(name) {
-      var urlTemplate = this.tileServices[name]; // || this.tileServices['default'],
+      var tileService = this.options.tiles.services[name];
+      var urlTemplate = _.isObject(tileService) ? tileService.url : tileService;
       if (!urlTemplate) {
         // Allow the specification of an url from CDE
         if ((name.length > 0) && (name.indexOf("{") > -1)) {
@@ -201,6 +202,15 @@ define([
         }
       }
       return urlTemplate;
+    },
+    _getTileServiceAttribution: function(name) {
+      var tileService = this.options.tiles.services[name];
+      return _.isObject(tileService) ? tileService.attribution : "";
+    },
+    _getTileServiceOptions: function(name) {
+      var tileService = this.options.tiles.services[name];
+      var opts = _.isObject(tileService) ? tileService.options : {};
+      return opts || {};
     },
     _createClickHandler: function(singleClick, doubleClick, timeout) {
       var me = this;
@@ -218,7 +228,7 @@ define([
               _.isFunction(doubleClick) && doubleClick.apply(self, args);
             }
             clicks = 0;
-          }, timeout || me.options.doubleClickTimeoutMilliseconds || 300);
+          }, timeout || me.options.controls.doubleClickTimeoutMilliseconds || 300);
         }
       };
     }

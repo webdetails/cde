@@ -166,16 +166,10 @@ define([
       },
 
       _initMapEngine: function() {
-        var options = $.extend(true, {},
-          this.configuration.addIns.MapEngine.options, {
-            options: this.configuration
-          }
-        );
-
         if (this.configuration.addIns.MapEngine.name === "google") {
-          this.mapEngine = new GoogleMapEngine(options);
+          this.mapEngine = new GoogleMapEngine(this.configuration);
         } else {
-          this.mapEngine = new OpenLayersEngine(options);
+          this.mapEngine = new OpenLayersEngine(this.configuration);
         }
         return this.mapEngine.init();
       },

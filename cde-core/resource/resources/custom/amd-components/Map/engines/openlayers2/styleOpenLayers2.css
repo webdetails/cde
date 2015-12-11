@@ -22,6 +22,9 @@
     cursor: inherit;
 }
 
+.map-container .olControlAttribution {
+    bottom: 3px;
+}
 
 .olMap .olHandlerBoxZoomBox,
 .olMap .olHandlerBoxSelectFeature {
