@@ -24,10 +24,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       return selectedItems;
     },
     setValue: function(idList) {
-        if (!this.model) {
-            throw "Model is not initialized";
-        }
-        return this.model.setSelectedItems(idList), this;
+      if (!this.model) {
+        throw "Model is not initialized";
+      }
+      return this.model.setSelectedItems(idList), this;
     },
     updateSelection: function() {
       var idList = this.dashboard.getParameterValue(this.parameter);
@@ -164,10 +164,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
 }), define("cde/components/Map/_getMapping", ["amd!cdf/lib/underscore"], function(_) {
   function getMapping(json) {
     var map = {};
-      if (!json.metadata || 0 === json.metadata.length) {
-          return map;
-      }
-      var colToPropertyMapping = {
+    if (!json.metadata || 0 === json.metadata.length) {
+      return map;
+    }
+    var colToPropertyMapping = {
       key: "id",
       id: "id",
       fill: "fill",
@@ -200,10 +200,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     simplifyPoints: function(points, precision_m) {
       function properRDP(points, epsilon) {
         var firstPoint = points[0], lastPoint = points[points.length - 1];
-          if (points.length < 3) {
-              return points;
-          }
-          for (var index = -1, dist = 0, i = 1; i < points.length - 1; i++) {
+        if (points.length < 3) {
+          return points;
+        }
+        for (var index = -1, dist = 0, i = 1; i < points.length - 1; i++) {
           var cDist = findPerpendicularDistance(points[i], firstPoint, lastPoint);
           cDist > dist && (dist = cDist, index = i);
         }
@@ -232,10 +232,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     var addIn = this.getAddIn("ShapeResolver", configuration.addIns.ShapeResolver.name), url = configuration.addIns.ShapeResolver.options.url;
     !addIn && url && (addIn = url.endsWith("json") || url.endsWith("js") ? this.getAddIn("ShapeResolver", "simpleJSON") : this.getAddIn("ShapeResolver", "kml"));
     var deferred = $.Deferred();
-      if (!addIn) {
-          return deferred.resolve({}), deferred.promise();
-      }
-      var idList = _.pluck(json.resultset, mapping.id), st = {
+    if (!addIn) {
+      return deferred.resolve({}), deferred.promise();
+    }
+    var idList = _.pluck(json.resultset, mapping.id), st = {
       keys: idList,
       ids: idList,
       tableData: json,
@@ -255,10 +255,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
 }), define("cde/components/Map/FeatureStore/resolveMarkers", ["cdf/lib/jquery", "amd!cdf/lib/underscore"], function($, _) {
   function resolveMarkers(json, mapping, configuration) {
     var addIn = this.getAddIn("LocationResolver", configuration.addIns.LocationResolver.name), deferred = $.Deferred();
-      if (!addIn) {
-          return deferred.resolve({}), deferred.promise();
-      }
-      var markerDefinitions, tgt = this, opts = this.getAddInOptions("LocationResolver", addIn.getName());
+    if (!addIn) {
+      return deferred.resolve({}), deferred.promise();
+    }
+    var markerDefinitions, tgt = this, opts = this.getAddInOptions("LocationResolver", addIn.getName());
     return markerDefinitions = "coordinates" === mapping.addressType ? _.chain(json.resultset).map(function(row) {
       var id = row[mapping.id], location = [row[mapping.longitude], row[mapping.latitude]];
       return [id, createFeatureFromLocation(location)];
@@ -354,18 +354,18 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         var value = row[mapping.r];
         if (_.isNumber(value)) {
           var rmin = this.scales.r[0], rmax = this.scales.r[1], v = seriesRoot.get("extremes").r, r = Math.sqrt(rmin * rmin + (rmax * rmax - rmin * rmin) * (value - v.min) / (v.max - v.min));
-            if (_.isFinite(r)) {
-                return r;
-            }
+          if (_.isFinite(r)) {
+            return r;
+          }
         }
       }
     },
     _detectExtremes: function(json) {
       var extremes = _.chain(this.mapping).map(function(colIndex, role) {
-          if (!_.isFinite(colIndex)) {
-              return [role, {}];
-          }
-          var obj, values = _.pluck(json.resultset, colIndex);
+        if (!_.isFinite(colIndex)) {
+          return [role, {}];
+        }
+        var obj, values = _.pluck(json.resultset, colIndex);
         return obj = "Numeric" === json.metadata[colIndex].colType ? {
           type: "numeric",
           min: _.min(values),
@@ -441,16 +441,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       },
       MapEngine: {
         name: this.mapEngineType,
-        options: {
-          rawOptions: {
-            map: {}
-          },
-          tileServices: this.tileServices,
-          tileServicesOptions: this.tileServicesOptions,
-          tilesets: _.isString(this.tilesets) ? [this.tilesets] : this.tilesets,
-          API_KEY: this.API_KEY || window.API_KEY
-        }
+        options: {}
       }
+    }, tiles = {
+      services: this.tileServices,
+      tilesets: _.isString(this.tilesets) ? [this.tilesets] : this.tilesets
     }, controls = {
       doubleClickTimeoutMilliseconds: 300,
       enableKeyboardNavigation: !0,
@@ -476,6 +471,8 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         "default": this.defaultZoomLevel
       }
     }, configuration = $.extend(!0, {}, {
+      API_KEY: this.API_KEY || window.API_KEY,
+      tiles: tiles,
       isSelector: !_.isEmpty(this.parameter),
       addIns: addIns,
       controls: controls,
@@ -568,17 +565,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
 
   function interpolate(a, b, n) {
     var k, kk, step, colormap = [], d = [];
-      for (k = 0; k < a.length; k++) {
-          for (colormap[k] = [], kk = 0, step = (b[k] - a[k]) / n; n > kk; kk++) {
-              colormap[k][kk] = a[k] + kk * step;
-          }
+    for (k = 0; k < a.length; k++) {
+      for (colormap[k] = [], kk = 0, step = (b[k] - a[k]) / n; n > kk; kk++) {
+        colormap[k][kk] = a[k] + kk * step;
       }
-    for (k = 0; k < colormap[0].length && 3 > k; k++) {
-        for (d[k] = [], kk = 0; kk < colormap.length; kk++) {
-            d[k][kk] = Math.round(colormap[kk][k]);
-        }
     }
-      return d;
+    for (k = 0; k < colormap[0].length && 3 > k; k++) {
+      for (d[k] = [], kk = 0; kk < colormap.length; kk++) {
+        d[k][kk] = Math.round(colormap[kk][k]);
+      }
+    }
+    return d;
   }
 
   return {
@@ -593,10 +590,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       var colorMap = [];
       colorMap = null == this.colormap || _.isArray(this.colormap) && !this.colormap.length ? _.clone(this.colormaps["default"]) : _.map(this.colormap, JSON.parse),
         colorMap = _.map(colorMap, color2array);
-        for (var cmap = [], k = 1, L = colorMap.length; L > k; k++) {
-            cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
-        }
-        return _.map(cmap, function(v) {
+      for (var cmap = [], k = 1, L = colorMap.length; L > k; k++) {
+        cmap = cmap.concat(interpolate(colorMap[k - 1], colorMap[k], 32));
+      }
+      return _.map(cmap, function(v) {
         return "rgba(" + v.join(",") + ")";
       });
     },
@@ -656,29 +653,55 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       this.ph.find(".map-control-panel").removeClass(_.values(MapModel.Modes).join(" ")).addClass(mode);
     }
   });
-}), define("cde/components/Map/Map.tileServices", [], function() {
-  var _tileServices = {
-    "default": "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}.png",
-    apple: "http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_US&z=${z}&x=${x}&y=${y}&v=9",
-    google: "http://mt{switch:0,1,2,3}.googleapis.com/vt?x=${x}&y=${y}&z=${z}",
+}), define("cde/components/Map/Map.tileServices", ["cdf/lib/jquery", "amd!cdf/lib/underscore"], function($, _) {
+  function mapObj(obj, callback) {
+    return _.object(_.map(obj, function(value, key) {
+      return [key, callback(value, key)];
+    }));
+  }
+
+  var tileServices = $.extend({
+    google: {},
+    "google-roadmap": {},
+    "google-terrain": {},
+    "google-satellite": {},
+    "google-hybrid": {}
+  }, mapObj({
+    openstreetmaps: "http://{switch:a,b,c}.tile.openstreetmap.org/${z}/${x}/${y}.png",
+    "openstreemaps-bw": "http://{switch:a,b}.tiles.wmflabs.org/bw-mapnik/${z}/${x}/${y}.png"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreeMap</a> contributors',
+      legaInfo: ["http://www.openstreetmap.org/copyright"]
+    };
+  }), mapObj({
+    "nokia-normal": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day/${z}/${x}/${y}/256/png8",
+    "nokia-normal-grey": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day.grey/${z}/${x}/${y}/256/png8",
+    "nokia-normal-transit": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day.transit/${z}/${x}/${y}/256/png8",
+    "nokia-satellite": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/satellite.day/${z}/${x}/${y}/256/png8",
+    "nokia-terrain": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/terrain.day/${z}/${x}/${y}/256/png8"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="https://www.here.com/">HERE</a>',
+      legalInfo: ["https://legal.here.com/en/terms/serviceterms/us/"]
+    };
+  }), mapObj({
     mapquest: "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
     "mapquest-normal": "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png",
     "mapquest-hybrid": "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/hyb/${z}/${x}/${y}.png",
-    "mapquest-sat": "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-    "mapbox-world-light": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/mapbox.world-light/${z}/${x}/${y}.jpg",
-    "mapbox-world-dark": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/mapbox.world-dark/${z}/${x}/${y}.jpg",
-    "mapbox-terrain": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/examples.map-9ijuk24y/${z}/${x}/${y}.jpg",
-    "mapbox-satellite": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/${z}/${x}/${y}.png",
-    "mapbox-example": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/examples.c7d2024a/${z}/${x}/${y}.png",
-    "mapbox-example2": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/examples.bc17bb2a/${z}/${x}/${y}.png",
-    openstreetmaps: "http://{switch:a,b,c}.tile.openstreetmap.org/${z}/${x}/${y}.png",
-    openmapsurfer: "http://129.206.74.245:8001/tms_r.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-roads": "http://129.206.74.245:8001/tms_r.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-semitransparent": "http://129.206.74.245:8003/tms_h.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-hillshade": "http://129.206.74.245:8004/tms_hs.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-contour": "http://129.206.74.245:8006/tms_b.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-administrative": "http://129.206.74.245:8007/tms_b.ashx?x=${x}&y=${y}&z=${z}",
-    "openmapsurfer-roads-grayscale": "http://129.206.74.245:8008/tms_rg.ashx?x=${x}&y=${y}&z=${z}",
+    "mapquest-sat": "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+      legalInfo: ["http://maps.stamen.com/"]
+    };
+  }), mapObj({
     stamen: "http://{switch:a,b,c,d}.tile.stamen.com/terrain/${z}/${x}/${y}.jpg",
     "stamen-terrain": "http://{switch:a,b,c,d}.tile.stamen.com/terrain/${z}/${x}/${y}.jpg",
     "stamen-terrain-background": "http://{switch:a,b,c,d}.tile.stamen.com/terrain-background/${z}/${x}/${y}.jpg",
@@ -691,21 +714,101 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     "stamen-toner-lines": "http://{switch:a,b,c,d}.tile.stamen.com/toner-lines/${z}/${x}/${y}.png",
     "stamen-toner-2010": "http://{switch:a,b,c,d}.tile.stamen.com/toner-2010/${z}/${x}/${y}.png",
     "stamen-toner-2011": "http://{switch:a,b,c,d}.tile.stamen.com/toner-2011/${z}/${x}/${y}.png",
-    "stamen-watercolor": "http://{switch:a,b,c,d}.tile.stamen.com/watercolor/${z}/${x}/${y}.jpg",
-    "nokia-normal": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day/${z}/${x}/${y}/256/png8",
-    "nokia-normal-grey": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day.grey/${z}/${x}/${y}/256/png8",
-    "nokia-normal-transit": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day.transit/${z}/${x}/${y}/256/png8",
-    "nokia-satellite": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/satellite.day/${z}/${x}/${y}/256/png8",
-    "nokia-terrain": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/terrain.day/${z}/${x}/${y}/256/png8",
-    "arcgis-street": "http://services.arcgisonline.com/ArcGIS/rest/services/World_street_Map/MapServer/tile/${z}/${y}/${x}",
-    "arcgis-topographic": "http://services.arcgisonline.com/ArcGIS/rest/services/World_street_Topo/MapServer/tile/${z}/${y}/${x}",
-    "arcgis-natgeo": "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/${z}/${y}/${x}",
-    "arcgis-world": "http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}",
-    "arcgis-lightgray": "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}.png",
-    "arcgis-delorme": "http://services.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/${z}/${y}/${x}"
-  };
-  return {
-    tileServices: _tileServices,
+    "stamen-watercolor": "http://{switch:a,b,c,d}.tile.stamen.com/watercolor/${z}/${x}/${y}.jpg"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+      legalInfo: ["http://maps.stamen.com/"]
+    };
+  }), mapObj({
+    "mapbox-satellite": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/${z}/${x}/${y}.png",
+    "mapbox-control-room": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.control-room/${z}/${x}/${y}.png",
+    "mapbox-blue-marble-jan": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.blue-marble-topo-jan/${z}/${x}/${y}.png",
+    "mapbox-blue-marble-jul": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.blue-marble-topo-jul/${z}/${x}/${y}.png",
+    "mapbox-blue-marble-jul-bw": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.blue-marble-topo-jul-bw/${z}/${x}/${y}.png",
+    "mapbox-natural-earth-1": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.natural-earth-1/${z}/${x}/${y}.png",
+    "mapbox-natural-earth-2": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.natural-earth-2/${z}/${x}/${y}.png",
+    "mapbox-natural-earth-hypso": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.natural-earth-hypso/${z}/${x}/${y}.png",
+    "mapbox-natural-earth-hypso-bathy": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.natural-earth-hypso-bathy/${z}/${x}/${y}.png",
+    "mapbox-oceans-white": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.oceans-white/${z}/${x}/${y}.png",
+    "mapbox-world-black": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-black/${z}/${x}/${y}.png",
+    "mapbox-world-blank-bright": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-blank-bright/${z}/${x}/${y}.png",
+    "mapbox-world-blank-light": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-blank-light/${z}/${x}/${y}.png",
+    "mapbox-world-blue": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-blue/${z}/${x}/${y}.png",
+    "mapbox-world-bright": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-bright/${z}/${x}/${y}.png",
+    "mapbox-world-dark": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-dark/${z}/${x}/${y}.png",
+    "mapbox-world-glass": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-glass/${z}/${x}/${y}.png",
+    "mapbox-world-light": "https://{switch:a,b,c,d}.tiles.mapbox.com/v3/mapbox.world-light/${z}/${x}/${y}.png",
+    "mapbox-world-print": "https://{switch:a,b}.tiles.mapbox.com/v3/mapbox.world-print/${z}/${x}/${y}.png"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Data by &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      legalInfo: ["http://mapbox.com/about/maps/", "http://www.openstreetmap.org/copyright"]
+    };
+  }), mapObj({
+    openmapsurfer: "http://129.206.74.245:8001/tms_r.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-roads": "http://129.206.74.245:8001/tms_r.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-roads-grayscale": "http://129.206.74.245:8008/tms_rg.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-semitransparent": "http://129.206.74.245:8003/tms_h.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-hillshade": "http://129.206.74.245:8004/tms_hs.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-contour": "http://129.206.74.245:8006/tms_il.ashx?x=${x}&y=${y}&z=${z}",
+    "openmapsurfer-administrative": "http://129.206.74.245:8007/tms_b.ashx?x=${x}&y=${y}&z=${z}"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="http://korona.geog.uni-heidelberg.de/contact.html">OpenMapSurfer</a>',
+      legalInfo: ["http://korona.geog.uni-heidelberg.de/contact.html"]
+    };
+  }), mapObj({
+    "cartodb-positron": "http://{switch:a,b,c,d}.basemaps.cartocdn.com/light_all/${z}/${x}/${y}.png",
+    "cartodb-positron-nolabels": "http://{switch:a,b,c,d}.basemaps.cartocdn.com/light_nolabels/${z}/${x}/${y}.png",
+    "cartodb-darkmatter": "http://{switch:a,b,c,d}.basemaps.cartocdn.com/dark_all/${z}/${x}/${y}.png",
+    "cartodb-darkmatter-nolabels": "http://{switch:a,b,c,d}.basemaps.cartocdn.com/dark_nolabels/${z}/${x}/${y}.png"
+  }, function(url, key) {
+    return {
+      id: key,
+      url: url,
+      attribution: 'Map tiles by <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>, under <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>. Data by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>, under ODbL.',
+      legalInfo: ["https://cartodb.com/basemaps/"]
+    };
+  }), mapObj({
+    "esri-street": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_street_Map/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer">Esri</a>'
+    },
+    "esri-ocean-basemap": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer">Esri</a>'
+    },
+    "esri-natgeo": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer">Esri</a>'
+    },
+    "esri-world": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">Esri</a>'
+    },
+    "esri-lightgray": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer">Esri</a>'
+    },
+    "esri-delorme": {
+      url: "http://services.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/${z}/${y}/${x}",
+      attribution: 'Map tiles by &copy; <a href="http://services.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer">Esri</a>'
+    }
+  }, function(obj, key) {
+    return $.extend(obj, {
+      id: key,
+      legalInfo: ["http://www.esri.com/legal/software-license", "http://downloads2.esri.com/ArcGISOnline/docs/tou_summary.pdf"]
+    });
+  }));
+  return tileServices["default"] = tileServices["cartodb-positron-nolabels"], {
+    tileServices: tileServices,
     otherTileServices: [],
     tileServicesOptions: {
       apple: {
@@ -799,26 +902,34 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       this.model.set("isDragging", !!isDragging), this.$map.toggleClass("dragging", !!isDragging).toggleClass("moving", !isDragging);
     },
     _selectUrl: function(paramString, urls) {
-        for (var product = 1, URL_HASH_FACTOR = (Math.sqrt(5) - 1) / 2, i = 0, len = paramString.length; len > i; i++) {
-            product *= paramString.charCodeAt(i) * URL_HASH_FACTOR,
-              product -= Math.floor(product);
-        }
-        return urls[Math.floor(product * urls.length)];
+      for (var product = 1, URL_HASH_FACTOR = (Math.sqrt(5) - 1) / 2, i = 0, len = paramString.length; len > i; i++) {
+        product *= paramString.charCodeAt(i) * URL_HASH_FACTOR,
+          product -= Math.floor(product);
+      }
+      return urls[Math.floor(product * urls.length)];
     },
     _switchUrl: function(url) {
       var list = url.match(/(http[s]?:\/\/[0-9a-z.]*?)\{switch:([a-z0-9,]+)\}(.*)/);
-        if (!list || 0 == list.length) {
-            return url;
-        }
-        var servers = list[2].split(","), url_list = _.map(servers, function(server) {
+      if (!list || 0 == list.length) {
+        return url;
+      }
+      var servers = list[2].split(","), url_list = _.map(servers, function(server) {
         return list[1] + server + list[3];
       });
       return url_list;
     },
     _getTileServiceURL: function(name) {
-      var urlTemplate = this.tileServices[name];
+      var tileService = this.options.tiles.services[name], urlTemplate = _.isObject(tileService) ? tileService.url : tileService;
       return urlTemplate || name.length > 0 && name.indexOf("{") > -1 && (urlTemplate = name),
         urlTemplate;
+    },
+    _getTileServiceAttribution: function(name) {
+      var tileService = this.options.tiles.services[name];
+      return _.isObject(tileService) ? tileService.attribution : "";
+    },
+    _getTileServiceOptions: function(name) {
+      var tileService = this.options.tiles.services[name], opts = _.isObject(tileService) ? tileService.options : {};
+      return opts || {};
     },
     _createClickHandler: function(singleClick, doubleClick, timeout) {
       var me = this, clicks = 0;
@@ -828,11 +939,171 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         args.unshift(me), 1 === clicks && setTimeout(function() {
           1 === clicks ? _.isFunction(singleClick) && singleClick.apply(self, args) : _.isFunction(doubleClick) && doubleClick.apply(self, args),
             clicks = 0;
-        }, timeout || me.options.doubleClickTimeoutMilliseconds || 300);
+        }, timeout || me.options.controls.doubleClickTimeoutMilliseconds || 300);
       };
     }
   });
-}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "css!./styleOpenLayers2"], function($, _, MapEngine, OpenLayers, MapModel) {
+}), define("cde/components/Map/engines/openlayers2/OpenLayers_patchLayerGooglev3", ["cdf/lib/OpenLayers"], function(OpenLayers) {
+  return OpenLayers.Layer.Google.v3 = {
+    DEFAULTS: {
+      sphericalMercator: !0,
+      projection: "EPSG:900913"
+    },
+    animationEnabled: !0,
+    loadMapObject: function() {
+      this.type || (this.type = google.maps.MapTypeId.ROADMAP);
+      var mapObject, cache = OpenLayers.Layer.Google.cache[this.map.id];
+      if (cache) {
+        mapObject = cache.mapObject, ++cache.count;
+      } else {
+        var center = this.map.getCenter(), container = document.createElement("div");
+        container.className = "olForeignContainer", container.style.width = "100%", container.style.height = "100%",
+          mapObject = new google.maps.Map(container, {
+            center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
+            zoom: this.map.getZoom() || 0,
+            mapTypeId: this.type,
+            disableDefaultUI: !0,
+            keyboardShortcuts: !1,
+            draggable: !1,
+            disableDoubleClickZoom: !0,
+            scrollwheel: !1,
+            streetViewControl: !1,
+            tilt: this.useTiltImages ? 45 : 0
+          });
+        var googleControl = document.createElement("div");
+        googleControl.style.width = "100%", googleControl.style.height = "100%", mapObject.controls[google.maps.ControlPosition.TOP_LEFT].push(googleControl),
+          cache = {
+            googleControl: googleControl,
+            mapObject: mapObject,
+            count: 1
+          }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
+      }
+      this.mapObject = mapObject, this.setGMapVisibility(this.visibility);
+    },
+    onMapResize: function() {
+      this.visibility && google.maps.event.trigger(this.mapObject, "resize");
+    },
+    setGMapVisibility: function(visible) {
+      var cache = OpenLayers.Layer.Google.cache[this.map.id], map = this.map;
+      if (cache) {
+        for (var layer, type = this.type, layers = map.layers, i = layers.length - 1; i >= 0; --i) {
+          if (layer = layers[i],
+            layer instanceof OpenLayers.Layer.Google && layer.visibility === !0 && layer.inRange === !0) {
+            type = layer.type, visible = !0;
+            break;
+          }
+        }
+        var container = this.mapObject.getDiv();
+        if (visible === !0) {
+          if (container.parentNode !== map.div) {
+            if (cache.rendered) {
+              cache.googleControl.appendChild(map.viewPortDiv);
+            } else {
+              container.style.visibility = "hidden";
+              var me = this;
+              google.maps.event.addListenerOnce(this.mapObject, "tilesloaded", function() {
+                cache.rendered = !0, container.style.visibility = "", me.setGMapVisibility(!0),
+                  me.moveTo(me.map.getCenter()), cache.googleControl.appendChild(map.viewPortDiv),
+                  me.setGMapVisibility(me.visible);
+              });
+            }
+            map.div.appendChild(container), google.maps.event.trigger(this.mapObject, "resize");
+          }
+          this.mapObject.setMapTypeId(type);
+        } else {
+          cache.googleControl.hasChildNodes() && (map.div.appendChild(map.viewPortDiv),
+            map.div.removeChild(container));
+        }
+      }
+    },
+    getMapContainer: function() {
+      return this.mapObject.getDiv();
+    },
+    getMapObjectBoundsFromOLBounds: function(olBounds) {
+      var moBounds = null;
+      if (null != olBounds) {
+        var sw = this.sphericalMercator ? this.inverseMercator(olBounds.bottom, olBounds.left) : new OpenLayers.LonLat(olBounds.bottom, olBounds.left), ne = this.sphericalMercator ? this.inverseMercator(olBounds.top, olBounds.right) : new OpenLayers.LonLat(olBounds.top, olBounds.right);
+        moBounds = new google.maps.LatLngBounds(new google.maps.LatLng(sw.lat, sw.lon), new google.maps.LatLng(ne.lat, ne.lon));
+      }
+      return moBounds;
+    },
+    getMapObjectLonLatFromMapObjectPixel: function(moPixel) {
+      var size = this.map.getSize(), lon = this.getLongitudeFromMapObjectLonLat(this.mapObject.center), lat = this.getLatitudeFromMapObjectLonLat(this.mapObject.center), res = this.map.getResolution(), delta_x = moPixel.x - size.w / 2, delta_y = moPixel.y - size.h / 2, lonlat = new OpenLayers.LonLat(lon + delta_x * res, lat - delta_y * res);
+      return this.wrapDateLine && (lonlat = lonlat.wrapDateLine(this.maxExtent)), this.getMapObjectLonLatFromLonLat(lonlat.lon, lonlat.lat);
+    },
+    getMapObjectPixelFromMapObjectLonLat: function(moLonLat) {
+      var lon = this.getLongitudeFromMapObjectLonLat(moLonLat), lat = this.getLatitudeFromMapObjectLonLat(moLonLat), res = this.map.getResolution(), extent = this.map.getExtent();
+      return this.getMapObjectPixelFromXY(1 / res * (lon - extent.left), 1 / res * (extent.top - lat));
+    },
+    setMapObjectCenter: function(center, zoom) {
+      if (this.animationEnabled === !1 && zoom != this.mapObject.zoom) {
+        var mapContainer = this.getMapContainer();
+        google.maps.event.addListenerOnce(this.mapObject, "idle", function() {
+          mapContainer.style.visibility = "";
+        }), mapContainer.style.visibility = "hidden";
+      }
+      this.mapObject.setOptions({
+        center: center,
+        zoom: zoom
+      });
+    },
+    getMapObjectZoomFromMapObjectBounds: function(moBounds) {
+      return this.mapObject.getBoundsZoomLevel(moBounds);
+    },
+    getMapObjectLonLatFromLonLat: function(lon, lat) {
+      var gLatLng;
+      if (this.sphericalMercator) {
+        var lonlat = this.inverseMercator(lon, lat);
+        gLatLng = new google.maps.LatLng(lonlat.lat, lonlat.lon);
+      } else {
+        gLatLng = new google.maps.LatLng(lat, lon);
+      }
+      return gLatLng;
+    },
+    getMapObjectPixelFromXY: function(x, y) {
+      return new google.maps.Point(x, y);
+    }
+  }, OpenLayers;
+}), define("cde/components/Map/engines/google/MapComponentAsyncLoader", ["cdf/lib/jquery"], function($) {
+  return function($) {
+    var promise, now = $.now();
+    return function(version, apiKey) {
+      if (promise) {
+        return promise;
+      }
+      var deferred = $.Deferred(), resolve = function() {
+        deferred.resolve(window.google && google.maps ? google.maps : !1);
+      };
+      if (window.google && google.maps) {
+        resolve();
+      } else if (window.google && google.load) {
+        google.load("maps", version || 3, {
+          callback: resolve
+        });
+      } else {
+        var callbackName = "loadGoogleMaps_" + now++, params = $.extend({
+          v: version || 3,
+          callback: callbackName
+        }, apiKey ? {
+          key: apiKey
+        } : {});
+        window[callbackName] = function() {
+          resolve(), setTimeout(function() {
+            try {
+              delete window[callbackName];
+            } catch (e) {
+            }
+          }, 20);
+        }, $.ajax({
+          dataType: "script",
+          data: params,
+          url: "http://maps.googleapis.com/maps/api/js"
+        });
+      }
+      return promise = deferred.promise();
+    };
+  }($);
+}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./OpenLayers_patchLayerGooglev3", "../../model/MapModel", "../google/MapComponentAsyncLoader", "css!./styleOpenLayers2"], function($, _, MapEngine, OpenLayers, MapModel, loadGoogleMaps) {
   function doClearSelection(me) {
     me.model && (me.model.flatten().each(function(m) {
       m.setSelection(MapModel.SelectionStates.NONE);
@@ -869,7 +1140,13 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     map: void 0,
     API_KEY: 0,
     constructor: function(options) {
-      this.base(), $.extend(this, options), this.layers = {}, this.controls = {};
+      this.base(), this.options = options, this.layers = {}, this.controls = {};
+    },
+    init: function() {
+      var hasGoogle = _.some(this.options.tiles.tilesets, function(t) {
+        return t.indexOf("google") > -1;
+      });
+      return hasGoogle ? $.when(loadGoogleMaps("3", this.options.API_KEY)) : this.base();
     },
     toNativeStyle: function(foreignStyle) {
       var conversionTable = {
@@ -895,20 +1172,20 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       return _.each(foreignStyle, function(value, key) {
         var nativeKey = conversionTable[key];
         if (nativeKey) {
-            validStyle[nativeKey] = value;
+          validStyle[nativeKey] = value;
         } else {
-            switch (key) {
-                case "visible":
-                    validStyle.display = value ? !0 : "none";
-                    break;
+          switch (key) {
+            case "visible":
+              validStyle.display = value ? !0 : "none";
+              break;
 
-                default:
-                    validStyle[key] = value;
-            }
+            default:
+              validStyle[key] = value;
+          }
         }
       }), validStyle;
     },
-      wrapEvent: function(event) {
+    wrapEvent: function(event) {
       var coords, feature = event.feature, modelItem = event.feature.attributes.model, lastXy = this.controls.mousePosition.lastXy;
       coords = lastXy ? this.map.getLonLatFromPixel(lastXy).transform(this.map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326")) : {
         lat: void 0,
@@ -994,14 +1271,28 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     },
     addLayers: function() {
       var me = this;
-      _.each(this.tilesets, function(thisTileset) {
+      _.each(this.options.tiles.tilesets, function(thisTileset) {
         var layer, tilesetId = _.isString(thisTileset) ? thisTileset : thisTileset.id, tileset = tilesetId.slice(0).split("-")[0], variant = tilesetId.slice(0).split("-").slice(1).join("-") || "default";
         switch (tileset) {
-          case "googleXXX":
-            layer = new OpenLayers.Layer.Google("Google Streets", {
-              visibility: !0,
-              version: "3"
-            });
+          case "google":
+            var mapOpts = {
+              "default": {
+                type: google.maps.MapTypeId.ROADMAP
+              },
+              roadmap: {
+                type: google.maps.MapTypeId.ROADMAP
+              },
+              terrain: {
+                type: google.maps.MapTypeId.TERRAIN
+              },
+              satellite: {
+                type: google.maps.MapTypeId.SATELLITE
+              },
+              hybrid: {
+                type: google.maps.MapTypeId.HYBRID
+              }
+            };
+            layer = new OpenLayers.Layer.Google(tilesetId, mapOpts[variant]);
             break;
 
           case "opengeo":
@@ -1044,15 +1335,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     },
     updateViewport: function(centerLongitude, centerLatitude, zoomLevel) {
       var bounds;
-        if (_.isFinite(zoomLevel)) {
-            this.map.zoomTo(zoomLevel);
-        } else {
-            bounds = new OpenLayers.Bounds();
-            var markersBounds = this.layers.markers.getDataExtent(), shapesBounds = this.layers.shapes.getDataExtent();
-            markersBounds || shapesBounds ? (bounds.extend(markersBounds), bounds.extend(shapesBounds)) : bounds = null,
-              bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
-        }
-        var centerPoint, projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
+      if (_.isFinite(zoomLevel)) {
+        this.map.zoomTo(zoomLevel);
+      } else {
+        bounds = new OpenLayers.Bounds();
+        var markersBounds = this.layers.markers.getDataExtent(), shapesBounds = this.layers.shapes.getDataExtent();
+        markersBounds || shapesBounds ? (bounds.extend(markersBounds), bounds.extend(shapesBounds)) : bounds = null,
+          bounds ? this.map.zoomToExtent(bounds) : this.map.zoomTo(this.options.viewport.zoomLevel["default"]);
+      }
+      var centerPoint, projectionWGS84 = new OpenLayers.Projection("EPSG:4326");
       _.isFinite(centerLatitude) && _.isFinite(centerLongitude) ? (centerPoint = new OpenLayers.LonLat(centerLongitude, centerLatitude).transform(projectionWGS84, this.map.getProjectionObject()),
         this.map.setCenter(centerPoint)) : bounds || (centerPoint = new OpenLayers.LonLat(-10, 20).transform(projectionWGS84, this.map.getProjectionObject()),
         this.map.setCenter(centerPoint));
@@ -1169,27 +1460,27 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           featureunhighlighted: event_relay
         },
         outFeature: function(feature) {
-            if (this.hover) {
-                if (this.highlightOnly) {
-                    if (feature._lastHighlighter == this.id) {
-                        if (feature._prevHighlighter && feature._prevHighlighter != this.id) {
-                            delete feature._lastHighlighter;
-                            var control = this.map.getControl(feature._prevHighlighter);
-                            control && (control.highlight(feature), this.events.triggerEvent("featureunhighlighted", {
-                                feature: feature
-                            }));
-                        } else {
-                            this.unhighlight(feature);
-                        }
-                    } else {
-                        this.events.triggerEvent("featureunhighlighted", {
-                            feature: feature
-                        });
-                    }
+          if (this.hover) {
+            if (this.highlightOnly) {
+              if (feature._lastHighlighter == this.id) {
+                if (feature._prevHighlighter && feature._prevHighlighter != this.id) {
+                  delete feature._lastHighlighter;
+                  var control = this.map.getControl(feature._prevHighlighter);
+                  control && (control.highlight(feature), this.events.triggerEvent("featureunhighlighted", {
+                    feature: feature
+                  }));
                 } else {
-                    this.unselect(feature);
+                  this.unhighlight(feature);
                 }
+              } else {
+                this.events.triggerEvent("featureunhighlighted", {
+                  feature: feature
+                });
+              }
+            } else {
+              this.unselect(feature);
             }
+          }
         }
       }), this.controls.hoverCtrl.handlers.feature.stopDown = !1, this.map.addControl(this.controls.hoverCtrl),
         this.controls.hoverCtrl.activate();
@@ -1199,28 +1490,29 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       feature && !_.isEqual(feature.style, style) && (feature.style = style, feature.layer.drawFeature(feature, style));
     },
     tileLayer: function(name) {
-      var urlTemplate = this._getTileServiceURL(name), options = _.extend({
+      var urlTemplate = this._getTileServiceURL(name), attribution = this._getTileServiceAttribution(name), options = _.extend({
+        attribution: attribution,
         transitionEffect: "resize"
-      }, this.tileServicesOptions[name] || {});
+      }, this._getTileServiceOptions(name));
       return new OpenLayers.Layer.XYZ(name, this._switchUrl(urlTemplate), _.extend({}, options));
     },
     registerViewportEvents: function() {
       function wrapViewportEvent(e) {
         var mapProj = this.map.getProjectionObject(), wsg84 = new OpenLayers.Projection("EPSG:4326"), transformPoint = function(centerPoint) {
           var center;
-            if (centerPoint) {
-                var p = centerPoint.clone().transform(mapProj, wsg84);
-                center = {
-                    latitude: p.lat,
-                    longitude: p.lon
-                };
-            } else {
-                center = {
-                    latitude: void 0,
-                    longitude: void 0
-                };
-            }
-            return center;
+          if (centerPoint) {
+            var p = centerPoint.clone().transform(mapProj, wsg84);
+            center = {
+              latitude: p.lat,
+              longitude: p.lon
+            };
+          } else {
+            center = {
+              latitude: void 0,
+              longitude: void 0
+            };
+          }
+          return center;
         }, extentObj = e.object.getExtent(), viewport = {
           northEast: {},
           southWest: {}
@@ -1259,45 +1551,6 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     }
   });
-}), define("cde/components/Map/engines/google/MapComponentAsyncLoader", ["cdf/lib/jquery"], function($) {
-  return function($) {
-    var promise, now = $.now();
-    return function(version, apiKey) {
-        if (promise) {
-            return promise;
-        }
-        var deferred = $.Deferred(), resolve = function() {
-        deferred.resolve(window.google && google.maps ? google.maps : !1);
-      };
-        if (window.google && google.maps) {
-            resolve();
-        } else if (window.google && google.load) {
-            google.load("maps", version || 3, {
-                callback: resolve
-            });
-        } else {
-            var callbackName = "loadGoogleMaps_" + now++, params = $.extend({
-                v: version || 3,
-                callback: callbackName
-            }, apiKey ? {
-                key: apiKey
-            } : {});
-            window[callbackName] = function() {
-                resolve(), setTimeout(function() {
-                    try {
-                        delete window[callbackName];
-                    } catch (e) {
-                    }
-                }, 20);
-            }, $.ajax({
-                dataType: "script",
-                data: params,
-                url: "http://maps.googleapis.com/maps/api/js"
-            });
-        }
-        return promise = deferred.promise();
-    };
-  }($);
 }), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
@@ -1362,13 +1615,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       strokeWeight: .9
     },
     overlays: [],
-    API_KEY: !1,
     selectedFeature: void 0,
     constructor: function(options) {
-      this.base(), $.extend(this, options), this.controls = {}, this.controls.listenersHandle = {};
+      this.base(), this.options = options, this.controls = {}, this.controls.listenersHandle = {};
     },
     init: function() {
-      return $.when(MapComponentAsyncLoader("3", this.API_KEY)).then(function() {
+      return $.when(MapComponentAsyncLoader("3", this.options.API_KEY)).then(function() {
         OurMapOverlay.prototype = new google.maps.OverlayView(), OurMapOverlay.prototype.onAdd = function() {
           var div = document.createElement("DIV");
           div.id = "MapOverlay", div.style.position = "absolute", div.style.border = this.borderColor_ ? "3px solid " + this.borderColor_ : "none";
@@ -1435,30 +1687,30 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       return _.each(foreignStyle, function(value, key) {
         var nativeKey = conversionTable[key];
         if (nativeKey) {
-            validStyle[nativeKey] = value;
+          validStyle[nativeKey] = value;
         } else {
-            switch (key) {
-                case "visible":
-                    validStyle.display = value ? !0 : "none";
-                    break;
+          switch (key) {
+            case "visible":
+              validStyle.display = value ? !0 : "none";
+              break;
 
-                case "icon-url":
-                    validStyle.icon = value, validStyle.size = new google.maps.Size(foreignStyle.width, foreignStyle.height);
-                    break;
+            case "icon-url":
+              validStyle.icon = value, validStyle.size = new google.maps.Size(foreignStyle.width, foreignStyle.height);
+              break;
 
-                case "symbol":
-                    var symbols = {
-                        circle: google.maps.SymbolPath.CIRCLE
-                    }, symbol = symbols[value];
-                    validStyle.path = _.isUndefined(symbol) ? value : symbol;
-                    break;
+            case "symbol":
+              var symbols = {
+                circle: google.maps.SymbolPath.CIRCLE
+              }, symbol = symbols[value];
+              validStyle.path = _.isUndefined(symbol) ? value : symbol;
+              break;
 
-                default:
-                    validStyle[key] = value;
-            }
+            default:
+              validStyle[key] = value;
+          }
         }
       }), modelItem && "marker" === modelItem.getFeatureType() && (validStyle.icon || (validStyle = {
-          icon: validStyle
+        icon: validStyle
       })), validStyle;
     },
     updateItem: function(modelItem) {
@@ -1475,6 +1727,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         disableDefaultUI: !0
       };
       this.map = new google.maps.Map(target, mapOptions), this.$map = $(this.map.getDiv()),
+        this.$attribution = $('<div class="map-attribution" />'), $(target).after(this.$attribution),
         this.addLayers(), this.addControls(), this.registerViewportEvents(), this._registerDragCallbacks();
     },
     _registerDragCallbacks: function() {
@@ -1673,17 +1926,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       };
     },
     _onBoxResize: function(control, e) {
-        if (null !== control.gribBoundingBox) {
-            var bounds = new google.maps.LatLngBounds(control.mouseDownPos, null);
-            bounds.extend(e.latLng), control.gribBoundingBox.setBounds(bounds);
-        } else {
-            control.gribBoundingBox = new google.maps.Rectangle($.extend({
-                map: this.map,
-                clickable: !1
-            }, this.boxStyle));
-        }
+      if (null !== control.gribBoundingBox) {
+        var bounds = new google.maps.LatLngBounds(control.mouseDownPos, null);
+        bounds.extend(e.latLng), control.gribBoundingBox.setBounds(bounds);
+      } else {
+        control.gribBoundingBox = new google.maps.Rectangle($.extend({
+          map: this.map,
+          clickable: !1
+        }, this.boxStyle));
+      }
     },
-      unselectPrevShape: function(key, shapes, shapeStyle) {
+    unselectPrevShape: function(key, shapes, shapeStyle) {
       var myself = this, prevSelected = this.selectedFeature;
       if (prevSelected && prevSelected[0] !== key) {
         var prevShapes = prevSelected[1], prevStyle = prevSelected[2];
@@ -1695,16 +1948,22 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       this.selectedFeature = [key, shapes, shapeStyle];
     },
     addLayers: function() {
-      for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.tilesets.length; k++) {
-        var thisTileset = this.tilesets[k].slice(0);
-        layerIds.push(thisTileset), layerOptions.push({
-          mapTypeId: thisTileset
-        }), this.tileServices[thisTileset] ? layers.push(this.tileLayer(thisTileset)) : layers.push("");
-      }
-        for (k = 0; k < layers.length; k++) {
-            _.isEmpty(layers[k]) || (this.map.mapTypes.set(layerIds[k], layers[k]),
-              this.map.setMapTypeId(layerIds[k]), this.map.setOptions(layerOptions[k]));
+      for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.options.tiles.tilesets.length; k++) {
+        var thisTileset = this.options.tiles.tilesets[k].slice(0);
+        if (layerIds.push(thisTileset), layerOptions.push({
+            mapTypeId: thisTileset
+          }), this.options.tiles.services[thisTileset]) {
+          layers.push(this.tileLayer(thisTileset));
+          var attribution = this._getTileServiceAttribution(thisTileset);
+          _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
+        } else {
+          layers.push("");
         }
+      }
+      for (k = 0; k < layers.length; k++) {
+        _.isEmpty(layers[k]) || (this.map.mapTypes.set(layerIds[k], layers[k]),
+          this.map.setMapTypeId(layerIds[k]), this.map.setOptions(layerOptions[k]));
+      }
     },
     updateViewport: function(centerLongitude, centerLatitude, zoomLevel) {
       zoomLevel || (zoomLevel = this.options.viewport.zoomLevel["default"]), this.map.setZoom(zoomLevel),
@@ -1715,29 +1974,29 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         tileSize: new google.maps.Size(256, 256),
         minZoom: 1,
         maxZoom: 19
-      }, this.tileServicesOptions[name] || {}), urlList = this._switchUrl(this._getTileServiceURL(name)), myself = this;
+      }, this.options.tiles.services[name].options || {}), urlList = this._switchUrl(this._getTileServiceURL(name)), myself = this;
       return new google.maps.ImageMapType(_.defaults({
         name: name.indexOf("/") >= 0 ? "custom" : name,
         getTileUrl: function(coord, zoom) {
           var limit = Math.pow(2, zoom);
-            if (coord.y < 0 || coord.y >= limit) {
-                return "404.png";
-            }
-            coord.x = (coord.x % limit + limit) % limit;
+          if (coord.y < 0 || coord.y >= limit) {
+            return "404.png";
+          }
+          coord.x = (coord.x % limit + limit) % limit;
           var url;
-            if (_.isArray(urlList)) {
-                var s = _.template("${z}/${x}/${y}", {
-                    x: coord.x,
-                    y: coord.y,
-                    z: zoom
-                }, {
-                    interpolate: /\$\{(.+?)\}/g
-                });
-                url = myself._selectUrl(s, urlList);
-            } else {
-                url = urlList;
-            }
-            return _.template(url, {
+          if (_.isArray(urlList)) {
+            var s = _.template("${z}/${x}/${y}", {
+              x: coord.x,
+              y: coord.y,
+              z: zoom
+            }, {
+              interpolate: /\$\{(.+?)\}/g
+            });
+            url = myself._selectUrl(s, urlList);
+          } else {
+            url = urlList;
+          }
+          return _.template(url, {
             x: coord.x,
             y: coord.y,
             z: zoom
@@ -1805,45 +2064,6 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     }
   });
-}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery"], function(AddIn, Dashboard, $) {
-  var geonames = {
-    name: "geonames",
-    label: "GeoNames",
-    defaults: {
-      username: "",
-      url: "http://ws.geonames.org/searchJSON"
-    },
-    implementation: function(tgt, st, opt) {
-      var location, featureClass, name = st.address;
-      name || (st.city ? (name = st.city, featureClass = "P") : st.county ? (name = st.county,
-        featureClass = "A") : st.region ? (name = st.region, featureClass = "A") : st.state ? (name = st.state,
-        featureClass = "A") : st.country && (name = st.country, featureClass = "A"));
-      var params = {
-        q: name.replace(/&/g, ","),
-        maxRows: 1,
-        dataType: "json",
-        username: opt.username,
-        featureClass: featureClass
-      };
-      featureClass && (params.featureClass = featureClass);
-      var onSuccess = function(result) {
-        result.geonames && result.geonames.length > 0 && (location = [parseFloat(result.geonames[0].lng), parseFloat(result.geonames[0].lat)],
-          st.continuationFunction(location));
-      }, onError = function() {
-        st.continuationFunction(void 0);
-      };
-      return $.ajax({
-        dataType: "json",
-        url: opt.url,
-        method: "GET",
-        data: params,
-        success: onSuccess,
-        error: onError
-      });
-    }
-  };
-  return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames)),
-    geonames;
 }), define("cde/components/Map/addIns/jquery.transport.xdr", ["cdf/lib/jquery"], function($) {
   var module_messages = {
     get: function(code, param) {
@@ -1905,10 +2125,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
               case "html":
                 data.html = xdr.responseText;
             }
-              if (error) {
-                  return cb(500, text.get(6, error));
-              }
-              var headers = ["Content-Type: " + xdr.contentType, "Content-Length: " + xdr.responseText.length];
+            if (error) {
+              return cb(500, text.get(6, error));
+            }
+            var headers = ["Content-Type: " + xdr.contentType, "Content-Length: " + xdr.responseText.length];
             cb(200, "OK", data, headers.join("\r\n"));
           }, xdr.onerror = function() {
             cb(500, text.get(7));
@@ -1925,6 +2145,45 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       }) : _error(2, method) : _error(1);
     }
   }), $;
+}), define("cde/components/Map/addIns/LocationResolver/geonames/geonames", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr"], function(AddIn, Dashboard, $) {
+  var geonames = {
+    name: "geonames",
+    label: "GeoNames",
+    defaults: {
+      username: "",
+      url: "http://ws.geonames.org/searchJSON"
+    },
+    implementation: function(tgt, st, opt) {
+      var location, featureClass, name = st.address;
+      name || (st.city ? (name = st.city, featureClass = "P") : st.county ? (name = st.county,
+        featureClass = "A") : st.region ? (name = st.region, featureClass = "A") : st.state ? (name = st.state,
+        featureClass = "A") : st.country && (name = st.country, featureClass = "A"));
+      var params = {
+        q: name.replace(/&/g, ","),
+        maxRows: 1,
+        dataType: "json",
+        username: opt.username,
+        featureClass: featureClass
+      };
+      featureClass && (params.featureClass = featureClass);
+      var onSuccess = function(result) {
+        result.geonames && result.geonames.length > 0 && (location = [parseFloat(result.geonames[0].lng), parseFloat(result.geonames[0].lat)],
+          st.continuationFunction(location));
+      }, onError = function() {
+        st.continuationFunction(void 0);
+      };
+      return $.ajax({
+        dataType: "json",
+        url: opt.url,
+        method: "GET",
+        data: params,
+        success: onSuccess,
+        error: onError
+      });
+    }
+  };
+  return Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames)),
+    geonames;
 }), define("cde/components/Map/addIns/LocationResolver/nominatim/nominatim", ["cdf/AddIn", "cdf/Dashboard.Clean", "../../jquery.transport.xdr", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, $, _) {
   var nominatim = {
     name: "openstreetmap",
@@ -2000,15 +2259,15 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       st.width && (cggParameters.width = st.width), st.height && (cggParameters.height = st.height),
         cggParameters.noChartBg = !0;
       var parameter;
-        for (parameter in st.parameters) {
-            cggParameters[parameter] = st.parameters[parameter];
-        }
-        var level = Dashboard.debug;
+      for (parameter in st.parameters) {
+        cggParameters[parameter] = st.parameters[parameter];
+      }
+      var level = Dashboard.debug;
       level > 1 && (cggParameters.debug = !0, cggParameters.debugLevel = level);
-        for (parameter in cggParameters) {
-            void 0 !== cggParameters[parameter] && (url += "&param" + parameter + "=" + encodeURIComponent(cggParameters[parameter]));
-        }
-        return url;
+      for (parameter in cggParameters) {
+        void 0 !== cggParameters[parameter] && (url += "&param" + parameter + "=" + encodeURIComponent(cggParameters[parameter]));
+      }
+      return url;
     }
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(cggMarker)),
@@ -2028,7 +2287,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(urlMarker)),
     urlMarker;
-}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/simpleJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, $, _) {
   function multiPolygonToGeoJSON(latLonMultiPolygon) {
     var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon) {
       return _.map(polygon, function(lineString) {
@@ -2072,21 +2331,21 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(simpleJSON)),
     simpleJSON;
-}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/kml", ["cdf/AddIn", "cdf/Dashboard.Clean", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, $, _) {
   function getShapeFromKML(rawData, idSelector, parseShapeKey) {
     var mymap = {};
     return $(rawData).find("Placemark").each(function(idx, y) {
       var key;
       if (_.isFunction(parseShapeKey)) {
-          try {
-              key = parseShapeKey(y);
-          } catch (e) {
-              key = $(y).find(idSelector).text();
-          }
-      } else {
+        try {
+          key = parseShapeKey(y);
+        } catch (e) {
           key = $(y).find(idSelector).text();
+        }
+      } else {
+        key = $(y).find(idSelector).text();
       }
-        var polygonArray = _.map($(y).find("Polygon"), function(yy) {
+      var polygonArray = _.map($(y).find("Polygon"), function(yy) {
         var polygon = [];
         return _.each(["outerBoundaryIs", "innerBoundaryIs"], function(b) {
           var polygonObj = $(yy).find(b + " LinearRing coordinates");
@@ -2141,7 +2400,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
   };
   return Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(kml)),
     kml;
-}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "cdf/lib/jquery", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, Logger, $, _) {
+}), define("cde/components/Map/addIns/ShapeResolver/geoJSON", ["cdf/AddIn", "cdf/Dashboard.Clean", "cdf/Logger", "../jquery.transport.xdr", "amd!cdf/lib/underscore"], function(AddIn, Dashboard, Logger, $, _) {
   function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features).map(function(feature, idx) {
       var id = getFeatureId(feature, idPropertyName) || idx;
@@ -2201,10 +2460,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         }, this)).then(_.bind(this.render, this)).then(_.bind(this._concludeUpdate, this));
       },
       _initMapEngine: function() {
-        var options = $.extend(!0, {}, this.configuration.addIns.MapEngine.options, {
-          options: this.configuration
-        });
-        return this.mapEngine = "google" === this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(options) : new OpenLayersEngine(options),
+        return this.mapEngine = "google" === this.configuration.addIns.MapEngine.name ? new GoogleMapEngine(this.configuration) : new OpenLayersEngine(this.configuration),
           this.mapEngine.init();
       },
       init: function() {
