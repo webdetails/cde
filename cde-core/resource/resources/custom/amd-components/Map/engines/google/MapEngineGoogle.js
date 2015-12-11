@@ -296,7 +296,7 @@ define([
         x = maxX - w;
       }
       if (y - h < minY) {
-        y = minY + h ;
+        y = minY + h;
       }
       if (y + h > maxY) {
         y = maxY - h;
@@ -444,6 +444,11 @@ define([
       this._updateMode("pan");
       this._updateDrag(false);
       var listeners = this.controls.listenersHandle;
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: true
+      });
       listeners.click = this._toggleOnClick();
       listeners.clearOnClick = this._clearOnClick();
     },
@@ -455,20 +460,28 @@ define([
       var me = this;
       var control = this.controls.zoomBox;
       var listeners = this.controls.listenersHandle;
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: false
+      });
 
       listeners.click = this._toggleOnClick();
 
-      var onMouseDown = function(e) {
-        if (me.model.isZoomBoxMode()) {
-          me._beginBox(control, e);
-        }
-      };
-      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown);
-      listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
+
+      listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+        control.isDragging = (e.buttons === 1);
+      });
 
       var onMouseMove = function(e) {
-        if (me.model.isZoomBoxMode() && control.mouseIsDown) {
-          me._onBoxResize(control, e);
+        if (me.model.isZoomBoxMode()) {
+          if (control.isDragging) {
+            if (control.mouseIsDown) {
+              me._onBoxResize(control, e);
+            } else {
+              me._beginBox(control, e);
+            }
+          }
         }
       };
       listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
@@ -484,6 +497,7 @@ define([
       );
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
       listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+
     },
 
     setSelectionMode: function() {
@@ -493,26 +507,32 @@ define([
       var me = this;
       var control = me.controls.boxSelector;
       var listeners = this.controls.listenersHandle;
+      this.map.setOptions({
+        draggingCursor: "inherit",
+        draggableCursor: "inherit",
+        draggable: false
+      });
 
       listeners.toggleOnClick = this._toggleOnClick();
       listeners.clearOnClick = this._clearOnClick();
 
-      var onMouseDown = function(e) {
-        if (me.model.isSelectionMode()) {
-          //console.log('Mouse up!');
-          me._beginBox(control, e);
-        }
-      };
-      listeners.mousedown = google.maps.event.addListener(this.map, "mousedown", onMouseDown);
-      listeners.mousedownData = this.map.data.addListener("mousedown", onMouseDown);
-
+      listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+        control.isDragging = (e.buttons === 1);
+      });
+      
       var onMouseMove = function(e) {
-        if (me.model.isSelectionMode() && control.mouseIsDown) {
-          me._onBoxResize(control, e);
+        if (me.model.isSelectionMode()) {
+          if (control.isDragging) {
+            if (control.mouseIsDown) {
+              me._onBoxResize(control, e);
+            } else {
+              me._beginBox(control, e);
+            }
+          }
         }
       };
       listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
-      listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
+      //listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
 
       var onMouseUp = this._endBox(control,
         function() {
@@ -537,7 +557,7 @@ define([
       );
 
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
-      listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+      //listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
     },
 
     /*-----------------------------*/
@@ -566,11 +586,6 @@ define([
       control.mouseIsDown = true;
       control.mouseDownPos = e.latLng;
       this._updateDrag(true);
-      this.map.setOptions({
-        draggingCursor: "inherit", // allows CSS to control mouse cursor
-        draggableCursor: "inherit",
-        draggable: false
-      });
     },
 
     _endBox: function(control, condition, callback) {
@@ -585,13 +600,7 @@ define([
 
           control.gribBoundingBox.setMap(null);
           control.gribBoundingBox = null;
-
           me._updateDrag(false);
-          me.map.setOptions({
-            draggingCursor: "inherit",
-            draggableCursor: "inherit",
-            draggable: true
-          });
         }
       };
     },
@@ -640,7 +649,7 @@ define([
         if (this.options.tiles.services[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
           var attribution = this._getTileServiceAttribution(thisTileset);
-          if (!_.isEmpty(attribution)){
+          if (!_.isEmpty(attribution)) {
             this.$attribution.append($("<div>" + attribution + "</div>"));
           }
         } else {
