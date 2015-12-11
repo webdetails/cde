@@ -46,7 +46,7 @@
 
 .map-control-panel .map-control-button.map-control-select {
     background-position: left 30px;
-    border-top: none;
+    border-bottom: none;
 }
 
 .map-control-panel.pan .map-control-pan,
