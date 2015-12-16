@@ -55,7 +55,7 @@ define([
       return url;
 
     }
-  });
+  };
   Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", cggMarker);
 
   return cggMarker;
