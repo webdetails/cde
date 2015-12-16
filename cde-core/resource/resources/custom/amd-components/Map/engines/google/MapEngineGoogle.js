@@ -21,7 +21,6 @@ define([
 ], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
   "use strict";
 
-
   function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
 
     // Now initialize all properties.
@@ -39,8 +38,7 @@ define([
     this.setMap(map);
   }
 
-
-  var GoogleMapEngine = MapEngine.extend({
+  return MapEngine.extend({
     map: undefined,
     centered: false,
     boxStyle: {

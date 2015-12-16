@@ -104,9 +104,6 @@ define([], function() {
         window.open("data:text/json;charset=utf-8," + escape(JSON.stringify(this.shapeDefinition)));
       }
     }
-
   };
-
-  return shapeConversion;
 
 });

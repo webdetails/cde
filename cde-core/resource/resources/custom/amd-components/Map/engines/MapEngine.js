@@ -235,6 +235,4 @@ define([
 
   });
 
-  return MapEngine;
-
 });

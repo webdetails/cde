@@ -68,9 +68,9 @@ define([
       },
       properties: {}
     };
-    return feature;
   }
 
   Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(simpleJSON));
 
+  return simpleJSON;
 });

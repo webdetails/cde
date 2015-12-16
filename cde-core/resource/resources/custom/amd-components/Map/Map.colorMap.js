@@ -88,7 +88,4 @@ define([
     return d;
   }
 
-  return IColorMap;
-
-
 });

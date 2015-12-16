@@ -56,7 +56,8 @@ define([
 
     }
   };
-  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", cggMarker);
+
+  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(cggMarker));
 
   return cggMarker;
 

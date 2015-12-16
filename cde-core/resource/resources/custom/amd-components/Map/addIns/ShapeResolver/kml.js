@@ -37,8 +37,7 @@ define([
           type: "GET",
           processData: false,
           success: function(data) {
-            var map = getShapeFromKML(data, opt.idSelector, parseShapeKey);
-            deferred.resolve(map);
+            deferred.resolve(getShapeFromKML(data, opt.idSelector, parseShapeKey));
           },
           error: function(){
             deferred.resolve({});

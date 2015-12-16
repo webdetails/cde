@@ -70,5 +70,7 @@ define([
     return id;
   }
 
-  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(thisAddIn));
+  Dashboard.registerGlobalAddIn("NewMapComponent", "ShapeResolver", new AddIn(geoJSON));
+
+  return geoJSON;
 });

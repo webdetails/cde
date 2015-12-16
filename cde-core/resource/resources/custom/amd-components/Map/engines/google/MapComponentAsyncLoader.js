@@ -96,11 +96,8 @@ define([
       }
       promise = deferred.promise();
       return promise;
-
     };
 
   })($);
-
-  return loadGoogleMaps;
 
 });

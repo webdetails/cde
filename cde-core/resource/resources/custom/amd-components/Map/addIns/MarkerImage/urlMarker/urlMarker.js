@@ -42,7 +42,8 @@ define([
       return opt.defaultUrl;
     }
   };
-  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", urlMarker);
+
+  Dashboard.registerGlobalAddIn("NewMapComponent", "MarkerImage", new AddIn(urlMarker));
 
   return urlMarker;
 
