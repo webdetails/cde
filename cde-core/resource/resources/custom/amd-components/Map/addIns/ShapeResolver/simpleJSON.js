@@ -38,8 +38,7 @@ define([
                 return [key, multiPolygonToGeoJSON(multiPolygonLatLon)];
               })
               .object()
-              .value();
-            deferred.resolve(map);
+              .value());
           },
           error: function() {
             deferred.resolve({});
