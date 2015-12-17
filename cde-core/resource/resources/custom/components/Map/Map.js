@@ -957,127 +957,6 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       };
     }
   });
-}), define("cde/components/Map/engines/openlayers2/OpenLayers_patchLayerGooglev3", ["cdf/lib/OpenLayers"], function(OpenLayers) {
-  return OpenLayers.Layer.Google.v3 = {
-    DEFAULTS: {
-      sphericalMercator: !0,
-      projection: "EPSG:900913"
-    },
-    animationEnabled: !0,
-    loadMapObject: function() {
-      this.type || (this.type = google.maps.MapTypeId.ROADMAP);
-      var mapObject, cache = OpenLayers.Layer.Google.cache[this.map.id];
-      if (cache) {
-        mapObject = cache.mapObject, ++cache.count;
-      } else {
-        var center = this.map.getCenter(), container = document.createElement("div");
-        container.className = "olForeignContainer", container.style.width = "100%", container.style.height = "100%",
-          mapObject = new google.maps.Map(container, {
-            center: center ? new google.maps.LatLng(center.lat, center.lon) : new google.maps.LatLng(0, 0),
-            zoom: this.map.getZoom() || 0,
-            mapTypeId: this.type,
-            disableDefaultUI: !0,
-            keyboardShortcuts: !1,
-            draggable: !1,
-            disableDoubleClickZoom: !0,
-            scrollwheel: !1,
-            streetViewControl: !1,
-            tilt: this.useTiltImages ? 45 : 0
-          });
-        var googleControl = document.createElement("div");
-        googleControl.style.width = "100%", googleControl.style.height = "100%", mapObject.controls[google.maps.ControlPosition.TOP_LEFT].push(googleControl),
-          cache = {
-            googleControl: googleControl,
-            mapObject: mapObject,
-            count: 1
-          }, OpenLayers.Layer.Google.cache[this.map.id] = cache;
-      }
-      this.mapObject = mapObject, this.setGMapVisibility(this.visibility);
-    },
-    onMapResize: function() {
-      this.visibility && google.maps.event.trigger(this.mapObject, "resize");
-    },
-    setGMapVisibility: function(visible) {
-      var cache = OpenLayers.Layer.Google.cache[this.map.id], map = this.map;
-      if (cache) {
-        for (var layer, type = this.type, layers = map.layers, i = layers.length - 1; i >= 0; --i) {
-          if (layer = layers[i],
-            layer instanceof OpenLayers.Layer.Google && layer.visibility === !0 && layer.inRange === !0) {
-            type = layer.type, visible = !0;
-            break;
-          }
-        }
-        var container = this.mapObject.getDiv();
-        if (visible === !0) {
-          if (container.parentNode !== map.div) {
-            if (cache.rendered) {
-              cache.googleControl.appendChild(map.viewPortDiv);
-            } else {
-              container.style.visibility = "hidden";
-              var me = this;
-              google.maps.event.addListenerOnce(this.mapObject, "tilesloaded", function() {
-                cache.rendered = !0, container.style.visibility = "", me.setGMapVisibility(!0),
-                  me.moveTo(me.map.getCenter()), cache.googleControl.appendChild(map.viewPortDiv),
-                  me.setGMapVisibility(me.visible);
-              });
-            }
-            map.div.appendChild(container), google.maps.event.trigger(this.mapObject, "resize");
-          }
-          this.mapObject.setMapTypeId(type);
-        } else {
-          cache.googleControl.hasChildNodes() && (map.div.appendChild(map.viewPortDiv),
-            map.div.removeChild(container));
-        }
-      }
-    },
-    getMapContainer: function() {
-      return this.mapObject.getDiv();
-    },
-    getMapObjectBoundsFromOLBounds: function(olBounds) {
-      var moBounds = null;
-      if (null != olBounds) {
-        var sw = this.sphericalMercator ? this.inverseMercator(olBounds.bottom, olBounds.left) : new OpenLayers.LonLat(olBounds.bottom, olBounds.left), ne = this.sphericalMercator ? this.inverseMercator(olBounds.top, olBounds.right) : new OpenLayers.LonLat(olBounds.top, olBounds.right);
-        moBounds = new google.maps.LatLngBounds(new google.maps.LatLng(sw.lat, sw.lon), new google.maps.LatLng(ne.lat, ne.lon));
-      }
-      return moBounds;
-    },
-    getMapObjectLonLatFromMapObjectPixel: function(moPixel) {
-      var size = this.map.getSize(), lon = this.getLongitudeFromMapObjectLonLat(this.mapObject.center), lat = this.getLatitudeFromMapObjectLonLat(this.mapObject.center), res = this.map.getResolution(), delta_x = moPixel.x - size.w / 2, delta_y = moPixel.y - size.h / 2, lonlat = new OpenLayers.LonLat(lon + delta_x * res, lat - delta_y * res);
-      return this.wrapDateLine && (lonlat = lonlat.wrapDateLine(this.maxExtent)), this.getMapObjectLonLatFromLonLat(lonlat.lon, lonlat.lat);
-    },
-    getMapObjectPixelFromMapObjectLonLat: function(moLonLat) {
-      var lon = this.getLongitudeFromMapObjectLonLat(moLonLat), lat = this.getLatitudeFromMapObjectLonLat(moLonLat), res = this.map.getResolution(), extent = this.map.getExtent();
-      return this.getMapObjectPixelFromXY(1 / res * (lon - extent.left), 1 / res * (extent.top - lat));
-    },
-    setMapObjectCenter: function(center, zoom) {
-      if (this.animationEnabled === !1 && zoom != this.mapObject.zoom) {
-        var mapContainer = this.getMapContainer();
-        google.maps.event.addListenerOnce(this.mapObject, "idle", function() {
-          mapContainer.style.visibility = "";
-        }), mapContainer.style.visibility = "hidden";
-      }
-      this.mapObject.setOptions({
-        center: center,
-        zoom: zoom
-      });
-    },
-    getMapObjectZoomFromMapObjectBounds: function(moBounds) {
-      return this.mapObject.getBoundsZoomLevel(moBounds);
-    },
-    getMapObjectLonLatFromLonLat: function(lon, lat) {
-      var gLatLng;
-      if (this.sphericalMercator) {
-        var lonlat = this.inverseMercator(lon, lat);
-        gLatLng = new google.maps.LatLng(lonlat.lat, lonlat.lon);
-      } else {
-        gLatLng = new google.maps.LatLng(lat, lon);
-      }
-      return gLatLng;
-    },
-    getMapObjectPixelFromXY: function(x, y) {
-      return new google.maps.Point(x, y);
-    }
-  }, OpenLayers;
 }), define("cde/components/Map/engines/google/MapComponentAsyncLoader", ["cdf/lib/jquery"], function($) {
   "use strict";
   return function($) {
@@ -1118,7 +997,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       return promise = deferred.promise();
     };
   }($);
-}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./OpenLayers_patchLayerGooglev3", "../../model/MapModel", "../google/MapComponentAsyncLoader", "css!./styleOpenLayers2"], function($, _, MapEngine, OpenLayers, MapModel, loadGoogleMaps) {
+}), define("cde/components/Map/engines/openlayers2/MapEngineOpenLayers", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "cdf/lib/OpenLayers", "../../model/MapModel", "../google/MapComponentAsyncLoader", "css!./styleOpenLayers2"], function($, _, MapEngine, OpenLayers, MapModel, loadGoogleMaps) {
   "use strict";
   function doClearSelection(me, feature) {
     me.model && (me.model.flatten().each(function(m) {
