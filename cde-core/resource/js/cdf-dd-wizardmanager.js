@@ -759,7 +759,7 @@ var OlapParameterWizard = OlapWizard.extend({
 
   renderMainOlapArea: function() {
     var myself = this;
-    var content = $('\n' +
+    var content = $.parseHTML('\n' +
         '<div class="popup-input-container cdfdd-component-options-label type-option">' +
         '  <span class="popup-label">Type</span>' +
         '  <select class="popup-select cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select>' +
@@ -991,7 +991,7 @@ var OlapChartWizard = OlapWizard.extend({
 
   renderMainOlapArea: function() {
     var myself = this;
-    var content = $('\n' +
+    var content = $.parseHTML('\n' +
         '<div class="popup-input-container cdfdd-component-options-label chart-type-option">' +
         '  <span class="popup-label">Chart Type</span>' +
         '  <select class="popup-select cdfdd-component-options-type" onchange="WizardManager.getWizardManager(\'' + this.getWizardId() + '\').processChange()" id="cdfdd-olap-parameter-type" name="cdfdd-olap-parameter-type"></select>' +
