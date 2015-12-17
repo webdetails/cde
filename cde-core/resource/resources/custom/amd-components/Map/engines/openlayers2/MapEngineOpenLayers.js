@@ -19,7 +19,7 @@ define([
   "cdf/lib/jquery",
   "amd!cdf/lib/underscore",
   "../MapEngine",
-  "./OpenLayers_patchLayerGooglev3",
+  "cdf/lib/OpenLayers",
   "../../model/MapModel",
   "../google/MapComponentAsyncLoader",
   "css!./styleOpenLayers2"
