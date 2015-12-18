@@ -76,6 +76,7 @@
     'cdf/lib/jquery': 'empty:',
     'cdf/lib/mustache': 'empty:',
     'cdf/lib/OpenLayers': 'empty:',
+    'cdf/lib/OpenMap/OpenLayers/OpenLayers': 'empty:',
     'cdf/lib/OpenStreetMap': 'empty:'
   },
 
