@@ -153,7 +153,6 @@
         <include name="lib/require-text/**/*"/>
         <include name="lib/Raphael/raphael.js"/>
         <include name="lib/jQuery/jquery.js"/>
-        <include name="lib/jquery-migrate-1.2.1.js"/>
         <include name="lib/fancybox/jquery.fancybox.css"/>
         <include name="lib/fancybox/jquery.fancybox.js"/>
         <include name="components/CggComponent.ext.js"/>
