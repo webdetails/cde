@@ -17,26 +17,11 @@ define([
   "../MapEngine",
   "./MapComponentAsyncLoader",
   "../../model/MapModel",
+  "./MapOverlay",
   "css!./styleGoogle"
-], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+], function($, _, MapEngine, MapComponentAsyncLoader, MapModel, OurMapOverlay) {
   "use strict";
 
-  function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
-
-    // Now initialize all properties.
-    this.startPoint_ = startPoint;
-    this.width_ = width;
-    this.height_ = height;
-    this.map_ = map;
-    this.htmlContent_ = htmlContent;
-    this.popupContentDiv_ = popupContentDiv;
-    this.borderColor_ = borderColor;
-
-    this.div_ = null;
-
-    // Explicitly call setMap() on this overlay
-    this.setMap(map);
-  }
 
   return MapEngine.extend({
     map: undefined,
