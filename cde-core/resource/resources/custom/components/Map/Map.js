@@ -1446,14 +1446,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     }
   });
-}), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+}), define("cde/components/Map/engines/google/MapOverlay", ["cdf/lib/jquery"], function($) {
   "use strict";
-  function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
+  function MapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
       this.htmlContent_ = htmlContent, this.popupContentDiv_ = popupContentDiv, this.borderColor_ = borderColor,
       this.div_ = null, this.setMap(map);
   }
 
+  return MapOverlay;
+}), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "./MapOverlay", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel, OurMapOverlay) {
+  "use strict";
   function clearSelection(modelItem) {
     modelItem.root().setSelection(MapModel.SelectionStates.NONE);
   }
