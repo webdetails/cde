@@ -17,26 +17,11 @@ define([
   "../MapEngine",
   "./MapComponentAsyncLoader",
   "../../model/MapModel",
+  "./MapOverlay",
   "css!./styleGoogle"
-], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+], function($, _, MapEngine, MapComponentAsyncLoader, MapModel, OurMapOverlay) {
   "use strict";
 
-  function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
-
-    // Now initialize all properties.
-    this.startPoint_ = startPoint;
-    this.width_ = width;
-    this.height_ = height;
-    this.map_ = map;
-    this.htmlContent_ = htmlContent;
-    this.popupContentDiv_ = popupContentDiv;
-    this.borderColor_ = borderColor;
-
-    this.div_ = null;
-
-    // Explicitly call setMap() on this overlay
-    this.setMap(map);
-  }
 
   return MapEngine.extend({
     map: undefined,
@@ -53,7 +38,6 @@ define([
       this.options = options;
       this.controls = {}; // map controls
       this.controls.listenersHandle = {};
-
     },
 
     init: function() {
@@ -156,10 +140,10 @@ define([
           feature.setVisible(_.has(style, "visible") ? !!style.visible : true);
         },
         _setSelectedStyle: function(style) {
-          feature.selStyle = style;
+          feature._selStyle = style;
         },
         _getSelectedStyle: function() {
-          return feature.selStyle;
+          return feature._selStyle;
         },
         raw: event
       });
@@ -441,14 +425,32 @@ define([
       this._removeListeners();
       this._updateMode("pan");
       this._updateDrag(false);
-      var listeners = this.controls.listenersHandle;
       this.map.setOptions({
         draggingCursor: "inherit",
         draggableCursor: "inherit",
         draggable: true
       });
-      listeners.click = this._toggleOnClick();
-      listeners.clearOnClick = this._clearOnClick();
+
+      return;
+      var listeners = this.controls.listenersHandle;
+      listeners.clickOnData = this.map.data.addListener("click",
+        this._createClickHandler(function(me, event) {
+          //console.log('Click on feature!');
+          var modelItem = event.feature.getProperty("model");
+          toggleSelection(modelItem);
+          me.trigger("engine:selection:complete");
+          var featureType = modelItem.getFeatureType();
+          me.trigger(featureType + ":click", me.wrapEvent(event));
+        })
+      );
+
+      listeners.clickOnMap = google.maps.event.addListener(this.map, "click",
+        this._createClickHandler(function(me, event) {
+          clearSelection(me.model);
+          me.trigger("engine:selection:complete");
+        })
+      );
+
     },
 
     setZoomBoxMode: function() {
@@ -464,26 +466,21 @@ define([
         draggable: false
       });
 
-      listeners.click = this._toggleOnClick();
-
-
       listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
         control.isDragging = (e.buttons === 1);
       });
 
       var onMouseMove = function(e) {
-        if (me.model.isZoomBoxMode()) {
-          if (control.isDragging) {
-            if (control.mouseIsDown) {
-              me._onBoxResize(control, e);
-            } else {
-              me._beginBox(control, e);
-            }
+        if (me.model.isZoomBoxMode() && control.isDragging) {
+          if (control.mouseIsDown) {
+            me._onBoxResize(control, e);
+          } else {
+            me._beginBox(control, e);
           }
         }
       };
       listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
-      listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
+      listeners.mousemoveFeature = this.map.data.addListener("mousemove", onMouseMove);
 
       var onMouseUp = this._endBox(control,
         function() {
@@ -494,7 +491,7 @@ define([
         }
       );
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
-      listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+      listeners.mouseupFeature = this.map.data.addListener("mouseup", onMouseUp);
 
     },
 
@@ -511,74 +508,71 @@ define([
         draggable: false
       });
 
-      listeners.toggleOnClick = this._toggleOnClick();
-      listeners.clearOnClick = this._clearOnClick();
-
       listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
         control.isDragging = (e.buttons === 1);
       });
-      
+
       var onMouseMove = function(e) {
-        if (me.model.isSelectionMode()) {
-          if (control.isDragging) {
-            if (control.mouseIsDown) {
-              me._onBoxResize(control, e);
-            } else {
-              me._beginBox(control, e);
-            }
+        if (me.model.isSelectionMode() && control.isDragging) {
+          if (control.mouseIsDown) {
+            me._onBoxResize(control, e);
+          } else {
+            me._beginBox(control, e);
           }
         }
       };
-      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
-      //listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
 
-      var onMouseUp = this._endBox(control,
-        function() {
-          return me.model.isSelectionMode();
-        },
-        function(bounds) {
-          //console.log('Mouse up!');
-          me.model.leafs()
-            .each(function(m) {
-              var id = m.get("id");
-              if (me.map.data.getFeatureById(id) != undefined) {
-                $.when(m.get("geoJSON")).then(function(obj) {
-                  // Area contains shape
-                  if (isInBounds(obj.geometry, bounds)) {
-                    addToSelection(m);
-                  }
-                });
-              }
-            });
+      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
+      listeners.mousemoveFeature = this.map.data.addListener("mousemove", onMouseMove);
+
+      var isSelectionMode = function() {
+        return me.model.isSelectionMode();
+      };
+
+      var addFeaturesInBoundsToSelection = function(bounds) {
+        //console.log('Mouse up!');
+        me.model.leafs()
+          .each(function(m) {
+            var id = m.get("id");
+            if (me.map.data.getFeatureById(id) != undefined) {
+              $.when(m.get("geoJSON")).then(function(obj) {
+                // $.when is executed immediately, as the feature is already resolved
+                // Area contains shape
+                if (isInBounds(obj.geometry, bounds)) {
+                  addToSelection(m);
+                }
+              });
+            }
+          });
+        me.trigger("engine:selection:complete");
+      };
+
+      var onMouseUpOverMap = this._endBox(control,
+        isSelectionMode,
+        addFeaturesInBoundsToSelection,
+        this._createClickHandler(function(me, event) {
+          clearSelection(me.model);
+          //console.log('Click on map!');
           me.trigger("engine:selection:complete");
-        }
+        })
       );
 
-      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
-      //listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+      var onMouseUpOverFeature = this._endBox(control,
+        isSelectionMode,
+        addFeaturesInBoundsToSelection,
+        this._createClickHandler(function(me, event) {
+          var modelItem = event.feature.getProperty("model");
+          toggleSelection(modelItem);
+          me.trigger("engine:selection:complete");
+          var featureType = modelItem.getFeatureType();
+          me.trigger(featureType + ":click", me.wrapEvent(event));
+        }, null)
+      );
+
+      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUpOverMap);
+      listeners.mouseupFeature = this.map.data.addListener("mouseup", onMouseUpOverFeature);
     },
 
-    /*-----------------------------*/
-    _clearOnClick: function() {
-      var me = this;
-      return google.maps.event.addListener(this.map, "click", function(event) {
-        clearSelection(me.model);
-        //console.log('Click on map!');
-        me.trigger("engine:selection:complete");
-      });
-    },
-
-    _toggleOnClick: function() {
-      var me = this;
-      return this.map.data.addListener("click", function(event) {
-        //console.log('Click on feature!');
-        var modelItem = event.feature.getProperty("model");
-        toggleSelection(modelItem);
-        me.trigger("engine:selection:complete");
-        var featureType = modelItem.getFeatureType();
-        me.trigger(featureType + ":click", me.wrapEvent(event));
-      });
-    },
 
     _beginBox: function(control, e) {
       control.mouseIsDown = true;
@@ -586,19 +580,25 @@ define([
       this._updateDrag(true);
     },
 
-    _endBox: function(control, condition, callback) {
+    _endBox: function(control, condition, dragEndCallback, clickCallback) {
       var me = this;
       return function(e) {
-        if (condition() && control.mouseIsDown && control.gribBoundingBox) {
-          control.mouseIsDown = false;
-          control.mouseUpPos = e.latLng;
-          var bounds = control.gribBoundingBox.getBounds();
+        if (condition()) {
+          if (control.mouseIsDown && control.gribBoundingBox) {
+            control.mouseIsDown = false;
+            control.mouseUpPos = e.latLng;
+            var bounds = control.gribBoundingBox.getBounds();
 
-          callback(bounds);
+            dragEndCallback(bounds);
 
-          control.gribBoundingBox.setMap(null);
-          control.gribBoundingBox = null;
-          me._updateDrag(false);
+            control.gribBoundingBox.setMap(null);
+            control.gribBoundingBox = null;
+            me._updateDrag(false);
+          } else {
+            if (_.isFunction(clickCallback)) {
+              clickCallback(e);
+            }
+          }
         }
       };
     },
@@ -614,22 +614,6 @@ define([
           clickable: false
         }, this.boxStyle));
       }
-    },
-
-    unselectPrevShape: function(key, shapes, shapeStyle) {
-      var myself = this;
-      var prevSelected = this.selectedFeature;
-      if (prevSelected && prevSelected[0] !== key) {
-        var prevShapes = prevSelected[1];
-        var prevStyle = prevSelected[2];
-        _.each(prevShapes, function(s) {
-          var validStyle = myself.toNativeStyle(prevStyle);
-          s.setOptions(validStyle);
-          s.setVisible(false);
-          s.setVisible(_.has(prevStyle, "visible") ? !!prevStyle.visible : true);
-        });
-      }
-      this.selectedFeature = [key, shapes, shapeStyle];
     },
 
     addLayers: function() {
@@ -813,6 +797,9 @@ define([
   }
 
   function isInBounds(geometry, bounds) {
+    if (!bounds) {
+      return false;
+    }
     switch (geometry.type) {
       case "MultiPolygon":
         return containsMultiPolygon(bounds, geometry.coordinates);
