@@ -1813,15 +1813,41 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
     },
     addLayers: function() {
       for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.options.tiles.tilesets.length; k++) {
-        var thisTileset = this.options.tiles.tilesets[k].slice(0);
-        if (layerIds.push(thisTileset), layerOptions.push({
-            mapTypeId: thisTileset
-          }), this.options.tiles.services[thisTileset]) {
-          layers.push(this.tileLayer(thisTileset));
-          var attribution = this._getTileServiceAttribution(thisTileset);
-          _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
-        } else {
-          layers.push("");
+        var tilesetId = this.options.tiles.tilesets[k].slice(0);
+        layerIds.push(tilesetId);
+        var tileset = tilesetId.slice(0).split("-")[0], variant = tilesetId.slice(0).split("-").slice(1).join("-") || "default";
+        switch (tileset) {
+          case "google":
+            var mapOpts = {
+              "default": {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              },
+              roadmap: {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              },
+              terrain: {
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+              },
+              satellite: {
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+              },
+              hybrid: {
+                mapTypeId: google.maps.MapTypeId.HYBRID
+              }
+            };
+            layerOptions.push(mapOpts[variant] || mapOpts.default), layers.push("");
+            break;
+
+          default:
+            if (layerOptions.push({
+                mapTypeId: tilesetId
+              }), this.options.tiles.services[tilesetId]) {
+              layers.push(this.tileLayer(tilesetId));
+              var attribution = this._getTileServiceAttribution(tilesetId);
+              _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
+            } else {
+              layers.push("");
+            }
         }
       }
       for (k = 0; k < layers.length; k++) {
