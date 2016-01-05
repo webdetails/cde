@@ -1446,14 +1446,17 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       });
     }
   });
-}), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel) {
+}), define("cde/components/Map/engines/google/MapOverlay", ["cdf/lib/jquery"], function($) {
   "use strict";
-  function OurMapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
+  function MapOverlay(startPoint, width, height, htmlContent, popupContentDiv, map, borderColor) {
     this.startPoint_ = startPoint, this.width_ = width, this.height_ = height, this.map_ = map,
       this.htmlContent_ = htmlContent, this.popupContentDiv_ = popupContentDiv, this.borderColor_ = borderColor,
       this.div_ = null, this.setMap(map);
   }
 
+  return MapOverlay;
+}), define("cde/components/Map/engines/google/MapEngineGoogle", ["cdf/lib/jquery", "amd!cdf/lib/underscore", "../MapEngine", "./MapComponentAsyncLoader", "../../model/MapModel", "./MapOverlay", "css!./styleGoogle"], function($, _, MapEngine, MapComponentAsyncLoader, MapModel, OurMapOverlay) {
+  "use strict";
   function clearSelection(modelItem) {
     modelItem.root().setSelection(MapModel.SelectionStates.NONE);
   }
@@ -1488,18 +1491,21 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       return bounds.contains(latLng);
     }
 
+    if (!bounds) {
+      return !1;
+    }
     switch (geometry.type) {
-      case "MultiPolygon":
-        return containsMultiPolygon(bounds, geometry.coordinates);
+    case "MultiPolygon":
+      return containsMultiPolygon(bounds, geometry.coordinates);
 
-      case "Polygon":
-        return containsPolygon(bounds, geometry.coordinates);
+    case "Polygon":
+      return containsPolygon(bounds, geometry.coordinates);
 
-      case "Point":
-        return containsPoint(bounds, geometry.coordinates);
+    case "Point":
+      return containsPoint(bounds, geometry.coordinates);
 
-      default:
-        return !1;
+    default:
+      return !1;
     }
   }
 
@@ -1556,10 +1562,10 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
           feature.setOptions(validStyle), feature.setVisible(!1), feature.setVisible(_.has(style, "visible") ? !!style.visible : !0);
         },
         _setSelectedStyle: function(style) {
-          feature.selStyle = style;
+          feature._selStyle = style;
         },
         _getSelectedStyle: function() {
-          return feature.selStyle;
+          return feature._selStyle;
         },
         raw: event
       });
@@ -1730,13 +1736,11 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
       this.map.setZoom(this.map.getZoom() - 1);
     },
     setPanningMode: function() {
-      this._removeListeners(), this._updateMode("pan"), this._updateDrag(!1);
-      var listeners = this.controls.listenersHandle;
-      this.map.setOptions({
+      return this._removeListeners(), this._updateMode("pan"), this._updateDrag(!1), void this.map.setOptions({
         draggingCursor: "inherit",
         draggableCursor: "inherit",
         draggable: !0
-      }), listeners.click = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick();
+      });
     },
     setZoomBoxMode: function() {
       this._removeListeners(), this._updateMode("zoombox"), this._updateDrag(!1);
@@ -1745,21 +1749,21 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         draggingCursor: "inherit",
         draggableCursor: "inherit",
         draggable: !1
-      }), listeners.click = this._toggleOnClick(), listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+      }), listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
         control.isDragging = 1 === e.buttons;
       });
       var onMouseMove = function(e) {
         me.model.isZoomBoxMode() && control.isDragging && (control.mouseIsDown ? me._onBoxResize(control, e) : me._beginBox(control, e));
       };
       listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove),
-        listeners.mousemoveData = this.map.data.addListener("mousemove", onMouseMove);
+        listeners.mousemoveFeature = this.map.data.addListener("mousemove", onMouseMove);
       var onMouseUp = this._endBox(control, function() {
         return me.model.isZoomBoxMode();
       }, function(bounds) {
         me.map.fitBounds(bounds);
       });
       listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp),
-        listeners.mouseupData = this.map.data.addListener("mouseup", onMouseUp);
+        listeners.mouseupFeature = this.map.data.addListener("mouseup", onMouseUp);
     },
     setSelectionMode: function() {
       this._removeListeners(), this._updateMode("selection"), this._updateDrag(!1);
@@ -1768,52 +1772,49 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         draggingCursor: "inherit",
         draggableCursor: "inherit",
         draggable: !1
-      }), listeners.toggleOnClick = this._toggleOnClick(), listeners.clearOnClick = this._clearOnClick(),
-        listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
-          control.isDragging = 1 === e.buttons;
-        });
+      }), listeners.drag = google.maps.event.addDomListener(this.map.getDiv(), "mousemove", function(e) {
+        control.isDragging = 1 === e.buttons;
+      });
       var onMouseMove = function(e) {
         me.model.isSelectionMode() && control.isDragging && (control.mouseIsDown ? me._onBoxResize(control, e) : me._beginBox(control, e));
       };
-      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove);
-      var onMouseUp = this._endBox(control, function() {
+      listeners.mousemove = google.maps.event.addListener(this.map, "mousemove", onMouseMove),
+        listeners.mousemoveFeature = this.map.data.addListener("mousemove", onMouseMove);
+      var isSelectionMode = function() {
         return me.model.isSelectionMode();
-      }, function(bounds) {
+      }, addFeaturesInBoundsToSelection = function(bounds) {
         me.model.leafs().each(function(m) {
           var id = m.get("id");
           void 0 != me.map.data.getFeatureById(id) && $.when(m.get("geoJSON")).then(function(obj) {
             isInBounds(obj.geometry, bounds) && addToSelection(m);
           });
         }), me.trigger("engine:selection:complete");
-      });
-      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUp);
-    },
-    _clearOnClick: function() {
-      var me = this;
-      return google.maps.event.addListener(this.map, "click", function(event) {
+      }, onMouseUpOverMap = this._endBox(control, isSelectionMode, addFeaturesInBoundsToSelection, this._createClickHandler(function(me, event) {
         clearSelection(me.model), me.trigger("engine:selection:complete");
-      });
-    },
-    _toggleOnClick: function() {
-      var me = this;
-      return this.map.data.addListener("click", function(event) {
+      })), onMouseUpOverFeature = this._endBox(control, isSelectionMode, addFeaturesInBoundsToSelection, this._createClickHandler(function(me, event) {
         var modelItem = event.feature.getProperty("model");
         toggleSelection(modelItem), me.trigger("engine:selection:complete");
         var featureType = modelItem.getFeatureType();
         me.trigger(featureType + ":click", me.wrapEvent(event));
-      });
+      }, null));
+      listeners.mouseup = google.maps.event.addListener(this.map, "mouseup", onMouseUpOverMap),
+        listeners.mouseupFeature = this.map.data.addListener("mouseup", onMouseUpOverFeature);
     },
     _beginBox: function(control, e) {
       control.mouseIsDown = !0, control.mouseDownPos = e.latLng, this._updateDrag(!0);
     },
-    _endBox: function(control, condition, callback) {
+    _endBox: function(control, condition, dragEndCallback, clickCallback) {
       var me = this;
       return function(e) {
-        if (condition() && control.mouseIsDown && control.gribBoundingBox) {
-          control.mouseIsDown = !1, control.mouseUpPos = e.latLng;
-          var bounds = control.gribBoundingBox.getBounds();
-          callback(bounds), control.gribBoundingBox.setMap(null), control.gribBoundingBox = null,
-            me._updateDrag(!1);
+        if (condition()) {
+          if (control.mouseIsDown && control.gribBoundingBox) {
+            control.mouseIsDown = !1, control.mouseUpPos = e.latLng;
+            var bounds = control.gribBoundingBox.getBounds();
+            dragEndCallback(bounds), control.gribBoundingBox.setMap(null), control.gribBoundingBox = null,
+              me._updateDrag(!1);
+          } else {
+            _.isFunction(clickCallback) && clickCallback(e);
+          }
         }
       };
     },
@@ -1828,23 +1829,12 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
         }, this.boxStyle));
       }
     },
-    unselectPrevShape: function(key, shapes, shapeStyle) {
-      var myself = this, prevSelected = this.selectedFeature;
-      if (prevSelected && prevSelected[0] !== key) {
-        var prevShapes = prevSelected[1], prevStyle = prevSelected[2];
-        _.each(prevShapes, function(s) {
-          var validStyle = myself.toNativeStyle(prevStyle);
-          s.setOptions(validStyle), s.setVisible(!1), s.setVisible(_.has(prevStyle, "visible") ? !!prevStyle.visible : !0);
-        });
-      }
-      this.selectedFeature = [key, shapes, shapeStyle];
-    },
     addLayers: function() {
       for (var layers = [], layerIds = [], layerOptions = [], k = 0; k < this.options.tiles.tilesets.length; k++) {
         var thisTileset = this.options.tiles.tilesets[k].slice(0);
         if (layerIds.push(thisTileset), layerOptions.push({
-            mapTypeId: thisTileset
-          }), this.options.tiles.services[thisTileset]) {
+          mapTypeId: thisTileset
+        }), this.options.tiles.services[thisTileset]) {
           layers.push(this.tileLayer(thisTileset));
           var attribution = this._getTileServiceAttribution(thisTileset);
           _.isEmpty(attribution) || this.$attribution.append($("<div>" + attribution + "</div>"));
