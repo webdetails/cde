@@ -622,20 +622,48 @@ define([
         layerIds = [],
         layerOptions = [];
       for (var k = 0; k < this.options.tiles.tilesets.length; k++) {
-        var thisTileset = this.options.tiles.tilesets[k].slice(0);
-        layerIds.push(thisTileset);
-        layerOptions.push({
-          mapTypeId: thisTileset
-        });
+        var tilesetId = this.options.tiles.tilesets[k].slice(0);
+        layerIds.push(tilesetId);
+        var tileset = tilesetId.slice(0).split("-")[0];
+        var variant = tilesetId.slice(0).split("-").slice(1).join("-") || "default";
+        switch (tileset) {
+          case "google":
+            var mapOpts = {
+              "default": {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              },
+              "roadmap": {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              },
+              "terrain": {
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+              },
+              "satellite": {
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+              },
+              "hybrid": {
+                mapTypeId: google.maps.MapTypeId.HYBRID
+              }
+            };
 
-        if (this.options.tiles.services[thisTileset]) {
-          layers.push(this.tileLayer(thisTileset));
-          var attribution = this._getTileServiceAttribution(thisTileset);
-          if (!_.isEmpty(attribution)) {
-            this.$attribution.append($("<div>" + attribution + "</div>"));
-          }
-        } else {
-          layers.push("");
+            layerOptions.push(mapOpts[variant] || mapOpts.default);
+            layers.push("");
+            break;
+
+          default:
+            layerOptions.push({
+              mapTypeId: tilesetId
+            });
+
+            if (this.options.tiles.services[tilesetId]) {
+              layers.push(this.tileLayer(tilesetId));
+              var attribution = this._getTileServiceAttribution(tilesetId);
+              if (!_.isEmpty(attribution)) {
+                this.$attribution.append($("<div>" + attribution + "</div>"));
+              }
+            } else {
+              layers.push("");
+            }
         }
 
       } //for tilesets
