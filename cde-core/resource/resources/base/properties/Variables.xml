@@ -5,7 +5,7 @@
 	<DefaultValue>"[]"</DefaultValue>
 	<Description>Variables</Description>
 	<Tooltip>Variables passed to Kettle</Tooltip>
-	<InputType>ValuesArray</InputType>
+	<InputType>VariablesValues</InputType>
 	<OutputType>Array</OutputType>
 	<Order>28</Order>
 	<Version>1.0</Version>

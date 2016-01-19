@@ -208,7 +208,8 @@ var ValuesArrayRenderer = CellRenderer.extend({
   //used for value input labels
   argTitle: 'Arg',
   valTitle: 'Value',
-
+  argTooltip:'',
+  valTooltip:'',
   popupTitle: 'Parameters',
 
   argPlaceholderText: 'Insert Text...',
@@ -732,14 +733,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getArgSection: function(index, value) {
     return '' +
         '<div class="popup-arg-container">' +
-        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" value="' + value + '" placeholder="' + this.argPlaceholderText + '">' +
+        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" title="' + this.argTooltip + ' "value=" ' + value + '" placeholder="' + this.argPlaceholderText +'">' +
         '</div>';
   },
 
   getValueSection: function(index, value) {
     return '' +
         '<div class="popup-value-container">' +
-        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" value="' + value + '" placeholder="' + this.valPlaceHolderText + '">' +
+        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" title="' + this.valTooltip + ' "value="' + value + '" placeholder="' + this.valPlaceHolderText + '">' +
         '</div>';
   },
 
@@ -840,12 +841,16 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
   }
 });
 
+var VariablesValuesRenderer = ValuesArrayRenderer.extend({
+	argTooltip: 'parameter name on the dashboard',
+	valTooltip: 'variable name in Kettle'
+});
+
 var ExpandParametersRenderer = ValuesArrayRenderer.extend({
   popupTitle: "Expand Parameters",
   argTitle: "Index"
 });
 //endregion
-
 //region Multi Dimension No Autocomplete Renderers
 var ListArgValNoParamRenderer = ValuesArrayRenderer.extend({
   autocomplete: false,
