@@ -733,14 +733,14 @@ var ValuesArrayRenderer = CellRenderer.extend({
   getArgSection: function(index, value) {
     return '' +
         '<div class="popup-arg-container">' +
-        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" title="' + this.argTooltip + ' "value=" ' + value + '" placeholder="' + this.argPlaceholderText +'">' +
+        '  <input id="arg_' + index + '" class="popup-text-input arg-input" type="text" title="' + this.argTooltip + '" value="' + value + '" placeholder="' + this.argPlaceholderText +'">' +
         '</div>';
   },
 
   getValueSection: function(index, value) {
     return '' +
         '<div class="popup-value-container">' +
-        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" title="' + this.valTooltip + ' "value="' + value + '" placeholder="' + this.valPlaceHolderText + '">' +
+        '  <input id="val_' + index + '" class="popup-text-input value-input" type="text" title="' + this.valTooltip + '" value="' + value + '" placeholder="' + this.valPlaceHolderText + '">' +
         '</div>';
   },
 
