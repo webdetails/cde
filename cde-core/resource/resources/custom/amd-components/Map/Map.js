@@ -281,6 +281,13 @@ define([
         this.on("shape:click", function(event) {
           redrawUponCallback(event, me.shapeMouseClick);
         });
+
+        // Add handler to close popups when click outside map
+        if (!this.outsideHandlerClickRegistered) {
+          document.addEventListener('click', function(event) { me._clickOutsideHandler(event); }, true);
+          this.outsideHandlerClickRegistered = true;
+        }
+        
       },
 
       _processMarkerImages: function() {
@@ -382,6 +389,20 @@ define([
           }
 
           this.mapEngine.showPopup(event.data, event.feature, height, width, contents, this.popupContentsDiv, borderColor);
+        }
+      },
+
+      _clickOutsideHandler: function(event) {
+
+        var ph = this.placeholder('.map-container')[0];
+
+        var $src = $(event.srcElement);
+        var isChildOfMap = _.filter($src.parents(), function(node){
+          return node === ph;  
+        }).length > 0;
+
+        if (!isChildOfMap){
+          this.mapEngine.closePopups();
         }
       }
 
