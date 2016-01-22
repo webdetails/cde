@@ -103,7 +103,16 @@ define([
             div.style.height = this.height_ + "px";
           };
 
+           
           OurMapOverlay.prototype.onRemove = function() {
+
+            if (this.popupContentDiv_) {
+              $(this.div_).detach();
+              this.div_.style.display = "none";
+              this.div_ = null;
+            }
+
+            /*
             if (this.popupContentDiv_) {
               $("#" + this.popupContentDiv_).append($(this.div_));
               $(this.div_).detach();
@@ -111,6 +120,8 @@ define([
             this.div_.style.display = "none";
             this.div_.parentNode.removeChild(this.div_);
             this.div_ = null;
+            */
+            
           };
 
         });
@@ -215,6 +226,21 @@ define([
       var feature = this.map.data.getFeatureById(id);
       var style = this.toNativeStyle(modelItem.getStyle(), modelItem);
       this.map.data.overrideStyle(feature, style);
+    },
+
+    closePopups: function(){
+      this._popups = this._popups || [];
+      _.each(this._popups, function(p) {
+        p.close();
+      });
+    },
+
+    closePopups0: function() {
+      this._popups = this._popups || [];
+      _.each(this._popups, function(p) {
+        p.setMap(null);
+        p = null;
+      });
     },
 
     renderMap: function(target) {
@@ -387,6 +413,7 @@ define([
       };
     },
 
+    /*
     _addControlClick: function() {
       var me = this;
       this.map.data.addListener("click", function(e) {
@@ -395,6 +422,7 @@ define([
         me.trigger("engine:selection:complete");
       });
     },
+    */
 
     _addLimitZoomLimits: function() {
       var minZoom = _.isFinite(this.options.viewport.zoomLevel.min) ? this.options.viewport.zoomLevel.min : 0;
@@ -422,6 +450,9 @@ define([
     },
 
     setPanningMode: function() {
+
+      var me = this;
+        
       this._removeListeners();
       this._updateMode("pan");
       this._updateDrag(false);
@@ -431,6 +462,24 @@ define([
         draggable: true
       });
 
+      var listeners = this.controls.listenersHandle;
+      listeners.clickOnData = this.map.data.addListener("click",
+        this._createClickHandler(function(me, event) {
+          //console.log('Click on feature!');
+          var modelItem = event.feature.getProperty("model");
+          var featureType = modelItem.getFeatureType();
+          me.trigger(featureType + ":click", me.wrapEvent(event));
+        })
+      );
+
+      listeners.clickOnMap = google.maps.event.addListener(this.map, "click",
+        this._createClickHandler(function(me, event) {
+          me.closePopups();
+        })
+      );
+
+
+      /*
       return;
       var listeners = this.controls.listenersHandle;
       listeners.clickOnData = this.map.data.addListener("click",
@@ -450,6 +499,7 @@ define([
           me.trigger("engine:selection:complete");
         })
       );
+      */
 
     },
 
@@ -738,10 +788,16 @@ define([
       }
 
       var popup = new OurMapOverlay(feature.getGeometry().get(), popupWidth, popupHeight, contents, popupContentDiv, this.map, borderColor);
+
+      /*
       this._popups = this._popups || [];
       _.each(this._popups, function(p) {
         p.setMap(null);
       });
+      */
+
+      this.closePopups();
+
       this._popups.push(popup);
     },
 
@@ -751,10 +807,16 @@ define([
         position: feature.getGeometry().get(),
         maxWidth: popupWidth
       });
+
+      /*
       this._popups = this._popups || [];
       _.each(this._popups, function(p) {
         p.close();
       });
+      */
+
+      this.closePopups();
+
       popup.open(this.map);
       this._popups.push(popup);
     },
