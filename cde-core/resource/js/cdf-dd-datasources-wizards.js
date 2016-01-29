@@ -15,7 +15,7 @@
 var OlapMembersWizardEntry = PalleteWizardEntry.extend({
 
   id: "MDXMEBMERSWIZARD_ENTRY",
-  name: "OLAP Selector wizard",
+  name: "OLAP Selector Wizard",
   description: "Generates a query to fetch the members of a dimension. Useful to use with selectors",
   category: "Wizards",
   categoryDesc: "Wizards",
@@ -39,7 +39,7 @@ CDFDDDatasourcesArray.push(new OlapMembersWizardEntry());
 var OlapChartWizardEntry = PalleteWizardEntry.extend({
 
   id: "OLAP_CHART_WIZARD_ENTRY",
-  name: "OLAP Chart wizard",
+  name: "OLAP Chart Wizard",
   description: "Generates a chart.",
   category: "Wizards",
   categoryDesc: "Wizards",
