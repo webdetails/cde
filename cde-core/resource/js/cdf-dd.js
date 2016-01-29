@@ -764,7 +764,6 @@ var CDFDD = Base.extend({
       }
     };
 
-
     var addCSS = function(fileRef) {
       var fileref = document.createElement("link");
       fileref.setAttribute("rel", "stylesheet");
@@ -780,10 +779,33 @@ var CDFDD = Base.extend({
           allCtrl[i].parentNode.removeChild(allCtrl[i]);
       }
     };
-
-    var htmlHref = "./static/" + mode + ".html";
-    var cssFileRef = "./css/" + mode + ".css";
-
+      
+	var htmlHref = webAppPath+"/plugin/pentaho-cdf-dd/api/resources/static/" + mode + ".html";
+	var cssFileRef = webAppPath+"/plugin/pentaho-cdf-dd/api/resources/css/" + mode + ".css";
+    
+	var addImg= function(){	
+	$("#cdeimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdeimg.png");
+	$("#cdetutimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdetutimg.png");
+	$("#cdesample1").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample1.png");
+	$("#cdesample2").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample2.png");
+	$("#cdesample3").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesample3.png");
+	$("#CdfTutorialImg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/CdfTutorialImg.png");
+	$("#cdfsample1").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample1.png");
+	$("#cdfsample2").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample2.png");
+	$("#cdfsample3").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdfsample3.png");
+	$("#cdesampleimg").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdesampleimg.png");
+	$("#demo_spaulo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_spaulo.png");
+	$("#demo_orlando").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_orlando.png");
+	$("#demo_geek").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_geek.png");
+	$("#demo_productsale").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_productsale.png");
+	$("#demo_netherlands").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/demo_netherlands.png");
+	$("#cdedemo01").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo01.png");
+	$("#cdedemo02").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo02.png");
+	$("#cdedemo03").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cdedemo03.png");	
+	$("#cde_logo").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/cde_logo.png");
+	$(".link_img").attr("src",webAppPath+"/plugin/pentaho-cdf-dd/api/resources/images/link.png");	
+	};	  
+	
     $.fancybox({
       ajax: {
         type: "GET"
@@ -800,7 +822,10 @@ var CDFDD = Base.extend({
       },
       onClosed: function() {
         removeCSS(cssFileRef);
-      }
+      },
+	  onComplete: function() {
+		 addImg();		  
+	  }
     });
 
     if(mode == 'about.fancybox') {
