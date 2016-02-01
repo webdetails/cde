@@ -1005,8 +1005,10 @@ var CacheKeysValuesRenderer = ListArgValNoParamRenderer.extend({
 
 var CdaColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
   popupTitle: 'Columns',
-  argTitle: 'Index',
-  valTitle: 'Name'
+  argTitle: 'Column index',
+  valTitle: 'Column name',
+  argTooltip: 'index of the new column',
+  valTooltip: 'name of the new column'
 });
 
 var CdaCalculatedColumnsArrayRenderer = ListArgValNoParamRenderer.extend({
