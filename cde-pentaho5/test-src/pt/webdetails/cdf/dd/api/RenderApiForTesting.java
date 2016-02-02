@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -13,6 +13,7 @@
 
 package pt.webdetails.cdf.dd.api;
 
+import org.pentaho.platform.api.engine.IParameterProvider;
 import pt.webdetails.cdf.dd.DashboardManager;
 import pt.webdetails.cdf.dd.DashboardManagerForTests;
 import pt.webdetails.cdf.dd.ICdeEnvironment;
@@ -22,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RenderApiForTesting extends RenderApi {
   private DashboardManager dashboardManagerForTests;
+  static String cdfRequireContextConfiguration = "";
+  static String cdfRequireContext = "";
+  static String cdfContext = "";
 
   public RenderApiForTesting( ICdeEnvironment cdeEnvironment ) {
     this.privateEnviroment = cdeEnvironment;
@@ -36,8 +40,27 @@ public class RenderApiForTesting extends RenderApi {
   }
 
   @Override
-  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {}
+  protected void setCorsHeaders( HttpServletRequest request, HttpServletResponse response ) {
+  }
 
   @Override
-  protected boolean hasSystemOrUserReadAccess( String path ) { return true; }
+  protected boolean hasSystemOrUserReadAccess( String path ) {
+    return true;
+  }
+
+  @Override
+  protected String getCdfRequireConfig( String filePath, IParameterProvider requestParams ) throws Exception {
+    return cdfRequireContextConfiguration;
+  }
+
+  @Override
+  protected String getCdfRequireContext( String filePath, IParameterProvider requestParams ) throws Exception {
+    return cdfRequireContext;
+  }
+
+  @Override
+  protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams )
+    throws Exception {
+    return cdfContext;
+  }
 }
