@@ -31,7 +31,7 @@ if(typeof CONTEXT_PATH !== "undefined") { // production
   } else if(typeof CONTEXT_PATH !== "undefined") { // production
     prefix = CONTEXT_PATH;
 
-  } else if(typeof FULL_QUALIFIED_URL != "undefined") { // embedded
+  } else if(typeof FULL_QUALIFIED_URL !== "undefined") { // embedded
     prefix = FULL_QUALIFIED_URL;
 
   } else { // build

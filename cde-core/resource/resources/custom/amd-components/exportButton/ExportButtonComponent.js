@@ -16,10 +16,10 @@ define([
   'cdf/dashboard/Utils',
   'cdf/Logger',
   'cdf/lib/jquery',
-  'css!./ExportButtonComponent'],
-  function(BaseComponent, Utils, Logger, $) {
+  'css!./ExportButtonComponent'
+], function(BaseComponent, Utils, Logger, $) {
 
-  var ExportButtonComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     ph: undefined,
     tc: undefined,
@@ -28,15 +28,14 @@ define([
     /* BUILD THE COMPONENT */
 
     update: function() {
-      
       var myself = this;
-      $.extend(this.options, this);
+      $.extend(myself.options, myself);
 
       myself.ph = $("#" + myself.htmlObject);
       myself.ph.empty();
       var bar = $('<span class="exportButton"></span>').appendTo(myself.ph);
       var componentName = (myself.componentName.indexOf("render_") == 0 ? "" : "render_") + myself.componentName;
-      var comp = this.dashboard.getComponentByName(componentName);
+      var comp = myself.dashboard.getComponentByName(componentName);
       var overrideParameters = Utils.propertiesArrayToObject(myself.parameters);    
       bar.text(myself.label).click(function() {
         var foundQuery = false;
@@ -76,9 +75,6 @@ define([
       }
       return extraSettings;
     }
-
   });
-
-  return ExportButtonComponent;
 
 });

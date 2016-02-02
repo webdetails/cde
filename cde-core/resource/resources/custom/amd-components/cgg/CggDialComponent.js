@@ -13,7 +13,7 @@
 
 define(['./CggComponent'], function(CggComponent) {
 
-  var CggDialComponent = CggComponent.extend({
+  return CggComponent.extend({
     script: "system/pentaho-cdf-dd/resources/custom/amd-components/cgg/charts/dial.js",
     
     getScriptUrl: function() {
@@ -26,7 +26,5 @@ define(['./CggComponent'], function(CggComponent) {
       data.paramscale  = this.intervals;
     }
   });
-
-  return CggDialComponent;
 
 });

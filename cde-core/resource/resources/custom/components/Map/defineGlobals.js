@@ -10,7 +10,7 @@
     "cdf/lib/BaseEvents": typeof(BaseEvents) === "undefined" ? {} : BaseEvents,
     "cdf/components/UnmanagedComponent": UnmanagedComponent,
     "cdf/lib/BaseSelectionTree": typeof(TreeFilter) === "undefined" ? {} : TreeFilter.Models.SelectionTree,
-    "cdf/lib/OpenLayers": typeof(OpenLayers) === "undefined" ? {Layer: {Google: {}}} : OpenLayers,
+    "cdf/lib/OpenLayers": typeof(OpenLayers) === "undefined" ? {} : OpenLayers,
     "css!./Map": "",
     "css!./styleGoogle": "",
     "css!./styleOpenLayers2": "",

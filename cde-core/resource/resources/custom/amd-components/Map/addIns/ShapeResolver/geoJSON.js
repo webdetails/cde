@@ -53,7 +53,7 @@ define([
 
   function toMappedGeoJSON(json, idPropertyName) {
     var map = _.chain(json.features)
-      .map(function (feature, idx) {
+      .map(function(feature, idx) {
         var id = getFeatureId(feature, idPropertyName) || idx;
         return [id, feature];
       })

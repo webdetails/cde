@@ -16,7 +16,7 @@ define('cde/components/gmapsoverlay/GMapsOverlayComponent.ext', [], function() {
   /*
    *  Google Maps Overlay component
    */
-  var GMapsOverlayComponentExt = {
+  return {
     getResourceUrl: function() {
       return "res";
     },
@@ -26,5 +26,4 @@ define('cde/components/gmapsoverlay/GMapsOverlayComponent.ext', [], function() {
     }
   };
 
-  return GMapsOverlayComponentExt;
 });

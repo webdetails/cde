@@ -17,56 +17,56 @@
  *
  * Places markers on a map or represents values as a color code
  *
-
- Changelog 2014-02-27 -------------
- Support for representing data as a colored shape in a map,
- e.g. population of a country using a color map.
-
- New CDE properties:
- - mapMode = markers, shapes, just the map
- - colormap = [[0,0,0,255],[255,255,255,0]] (RGBA array for defining the colormap of the shapes)
- - shapeSource: file/url with the shape definitions
- - shapeMouseOver, shapeMouseOut, shapeMouseClick: callbacks for handling shapes
- - tilesets: which of the tilesets to use for rendering the map (added support for about 30 tilesets)
-
- Internal changes:
- - renamed OpenStreetMapEngine to OpenLayersEngine, modified mapEngineType enums to "openlayers" (default), "google"
- - added a bunch of functions to the map engines
-
- Features:
-
- 1) SHAPES:
- Loading of shapes in the following file formats
- - GeoJSON (used as the internal representation of shapes and markers)
- - JSON (not quite the same format as Kleyson's gmapsoverlay component)
- - KML (google earth)
-
- Goodies:
- - possibility to reduce the number of points (useful for importing complex KML/GeoJSON files)
-
- TODO:
- - ability to have both markers and shapes in the same datasource
-
-
- 2) TILES (png images representing the map)
- OpenStreetMaps default tiles are ugly, I found many nicer tilesets that work in both map engines (google/openlayers)
- To compare the various tilesets, visit http://mc.bbbike.org/mc/?num=2
-
- Example of valid values for the CDE property "tilesets"
- 'mapquest'
- ['mapquest']
- ['mapquest', 'apple']
- 'custom/static/localMapService/${z}/${x}/${y}.png'
- "http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"
- "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"
-
- 3) TODOs/Ideas
-
- - Write map engines for jvectormap, openlayers3
- - improve handling of markers and popups
- - implement firing of "marker:mouseout" and "marker:mouseover" events and add corresponding callbacks
- - generalize handling of colours (shapes currently support only RGBA )
-
+ *
+ * Changelog 2014-02-27 -------------
+ * Support for representing data as a colored shape in a map,
+ * e.g. population of a country using a color map.
+ *
+ * New CDE properties:
+ * - mapMode = markers, shapes, just the map
+ * - colormap = [[0,0,0,255],[255,255,255,0]] (RGBA array for defining the colormap of the shapes)
+ * - shapeSource: file/url with the shape definitions
+ * - shapeMouseOver, shapeMouseOut, shapeMouseClick: callbacks for handling shapes
+ * - tilesets: which of the tilesets to use for rendering the map (added support for about 30 tilesets)
+ *
+ * Internal changes:
+ * - renamed OpenStreetMapEngine to OpenLayersEngine, modified mapEngineType enums to "openlayers" (default), "google"
+ * - added a bunch of functions to the map engines
+ *
+ * Features:
+ *
+ * 1) SHAPES:
+ * Loading of shapes in the following file formats
+ * - GeoJSON (used as the internal representation of shapes and markers)
+ * - JSON (not quite the same format as Kleyson's gmapsoverlay component)
+ * - KML (google earth)
+ *
+ * Goodies:
+ * - possibility to reduce the number of points (useful for importing complex KML/GeoJSON files)
+ *
+ * TODO:
+ * - ability to have both markers and shapes in the same datasource
+ *
+ *
+ * 2) TILES (png images representing the map)
+ * OpenStreetMaps default tiles are ugly, I found many nicer tilesets that work in both map engines (google/openlayers)
+ * To compare the various tilesets, visit http://mc.bbbike.org/mc/?num=2
+ *
+ * Example of valid values for the CDE property "tilesets"
+ * 'mapquest'
+ * ['mapquest']
+ * ['mapquest', 'apple']
+ * 'custom/static/localMapService/${z}/${x}/${y}.png'
+ * "http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"
+ * "http://otile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.png"
+ *
+ * 3) TODOs/Ideas
+ *
+ * - Write map engines for jvectormap, openlayers3
+ * - improve handling of markers and popups
+ * - implement firing of "marker:mouseout" and "marker:mouseover" events and add corresponding callbacks
+ * - generalize handling of colours (shapes currently support only RGBA )
+ *
  *
  */
 
@@ -79,7 +79,6 @@ define([
   "./Map.model",
   "./Map.configuration",
   "./Map.featureStyles",
-
   "./Map.colorMap",
   "./ControlPanel/ControlPanel",
   "./Map.tileServices",

@@ -25,13 +25,12 @@ define([
       idSelector: "name",
       parseShapeKey: null
     },
-    implementation: function (tgt, st, opt) {
+    implementation: function(tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource,
         parseShapeKey = opt.parseShapeKey || st._parseShapeKey;
 
       if (url) {
-
         $.ajax(url, {
           async: true,
           type: "GET",
@@ -39,7 +38,7 @@ define([
           success: function(data) {
             deferred.resolve(getShapeFromKML(data, opt.idSelector, parseShapeKey));
           },
-          error: function(){
+          error: function() {
             deferred.resolve({});
           }
         });
@@ -50,7 +49,7 @@ define([
     }
   };
 
-  function getShapeFromKML(rawData, idSelector, parseShapeKey){
+  function getShapeFromKML(rawData, idSelector, parseShapeKey) {
     /*
      Parse a KML file, return a JSON dictionary where each key is associated with an array of shapes of the form
      mymap = {'Cascais:'[ [[lat0, long0],[lat1, long1]] ]}; // 1 array with a list of points
@@ -82,7 +81,7 @@ define([
                 return _.map(el.split(",").slice(0, 2), parseFloat);//.reverse();
               });
               //p =  this.reducePoints(p.slice(0, pp.length -1), precision_m); // this would reduce the number of points in the shape
-              polygon.push( p );
+              polygon.push(p);
             }
           });
           //}

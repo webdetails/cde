@@ -1,4 +1,3 @@
-
 /*!
  * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
  *

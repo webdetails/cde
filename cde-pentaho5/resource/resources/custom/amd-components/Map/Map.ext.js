@@ -12,13 +12,11 @@
  */
 
 define([], function() {
-  var NewMapComponentExt = {
 
+  return {
     getMarkerImgPath: function() {
       return CONTEXT_PATH + 'api/repos/pentaho-cdf-dd/resources/custom/amd-components/Map/images/';
     }
   };
-
-  return NewMapComponentExt;
 
 });

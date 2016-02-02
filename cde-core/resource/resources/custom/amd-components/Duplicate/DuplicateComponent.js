@@ -14,12 +14,12 @@
 define([
   'cdf/components/BaseComponent',
   'cdf/Logger',
-  'cdf/lib/jquery'],
-  function(BaseComponent, Logger, $) {
+  'cdf/lib/jquery'
+], function(BaseComponent, Logger, $) {
 
   var duplicateIndex = 0;
 
-  var DuplicateComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     update: function() {
       var myself = this,
@@ -106,5 +106,4 @@ define([
     }
   });
 
-  return DuplicateComponent;
 });

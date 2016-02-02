@@ -91,6 +91,7 @@ define([
 
     }
   };
+
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(nominatim));
 
   return nominatim;

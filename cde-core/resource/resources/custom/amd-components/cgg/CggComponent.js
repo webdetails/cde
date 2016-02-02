@@ -14,10 +14,10 @@
 define([
   'cdf/components/UnmanagedComponent',
   'cdf/components/CggComponent.ext',
-  'cdf/lib/jquery'],
-  function(UnmanagedComponent, CggComponentExt, $) {
+  'cdf/lib/jquery'
+], function(UnmanagedComponent, CggComponentExt, $) {
 
-  var CggComponent = UnmanagedComponent.extend({
+  return UnmanagedComponent.extend({
 
     ph: null,
     have_SVG: true,
@@ -131,7 +131,5 @@ define([
       return obj;
     }
   });
-
-  return CggComponent;
 
 });

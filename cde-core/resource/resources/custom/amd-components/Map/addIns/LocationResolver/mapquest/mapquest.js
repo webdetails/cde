@@ -27,6 +27,7 @@ define([
   });
 
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(mapquest));
+
   return mapquest;
 
 });

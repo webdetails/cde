@@ -13,12 +13,11 @@
 
 define('cde/components/TextEditor/TextEditorComponent.ext', [], function() {
 
-  var TextEditorComponentExt = {
+  return {
 
     getUrl: function() {
       return "dummy/path?";
     }
   };
 
-  return TextEditorComponentExt;
 });

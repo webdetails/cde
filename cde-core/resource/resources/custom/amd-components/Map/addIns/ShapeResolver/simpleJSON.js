@@ -24,7 +24,7 @@ define([
     defaults: {
       url: "" //url for the resource containing the json map definitions
     },
-    implementation: function (tgt, st, opt) {
+    implementation: function(tgt, st, opt) {
       var deferred = $.Deferred();
       var url = opt.url || st._shapeSource;
       if (url) {
@@ -52,9 +52,9 @@ define([
   };
 
   function multiPolygonToGeoJSON(latLonMultiPolygon) {
-    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function (polygon) {
-      return _.map(polygon, function (lineString) {
-        return _.map(lineString, function (point) {
+    var lonLatMultiPolygon = _.map(latLonMultiPolygon, function(polygon) {
+      return _.map(polygon, function(lineString) {
+        return _.map(lineString, function(point) {
           return point.reverse();
         });
       });

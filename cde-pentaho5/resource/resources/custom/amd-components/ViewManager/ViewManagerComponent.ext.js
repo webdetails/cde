@@ -13,7 +13,7 @@
 
 define([], function() {
 
-  var ViewManagerComponentExt = {
+  return {
 
     getViewsEndpoint: function(name) {
       if(name && name.length) {
@@ -28,7 +28,5 @@ define([], function() {
         + "/generatedContent?view=" + view.replace(/\+/g, "%20");
     }
   };
-
-  return ViewManagerComponentExt;
 
 });

@@ -25,7 +25,7 @@ define([
    *  Text editor component
    */
 
-  var TextEditorComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     $ph: undefined,
     $rightPanel: undefined,
@@ -196,7 +196,5 @@ define([
     }
 
   });
-
-  return TextEditorComponent;
 
 });

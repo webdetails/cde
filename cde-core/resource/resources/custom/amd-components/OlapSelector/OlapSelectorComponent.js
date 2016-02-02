@@ -21,16 +21,18 @@ define([
   './lib/OlapUtils',
   './OlapSelectorComponent.ext',
   'css!./OlapSelectorComponent'
-], function(BaseComponent,
-            Utils,
-            $,
-            _,
-            OlapSelectorView,
-            OlapSelectorModel,
-            OlapUtils,
-            OlapSelectorComponentExt) {
+], function(
+  BaseComponent,
+  Utils,
+  $,
+  _,
+  OlapSelectorView,
+  OlapSelectorModel,
+  OlapUtils,
+  OlapSelectorComponentExt
+) {
 
-  var OlapSelectorComponent = BaseComponent.extend({
+  return BaseComponent.extend({
 
     init: function() {
       var olapUtilsInstance = new OlapUtils({
@@ -128,7 +130,5 @@ define([
       return values;
     }
   });
-
-  return OlapSelectorComponent;
 
 });

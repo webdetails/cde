@@ -78,6 +78,7 @@ define([
       });
     }
   };
+
   Dashboard.registerGlobalAddIn("NewMapComponent", "LocationResolver", new AddIn(geonames));
 
   return geonames;

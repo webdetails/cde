@@ -92,7 +92,7 @@ define([
   };
   _.templateSettings = _TemplateSettings;
 
-  var ViewManagerView = Backbone.View.extend({
+  return Backbone.View.extend({
 
     collection: ViewCollection,
 
@@ -304,7 +304,5 @@ define([
       );
     }
   });
-
-  return ViewManagerView;
 
 });

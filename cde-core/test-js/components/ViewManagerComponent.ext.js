@@ -13,7 +13,7 @@
 
 define('cde/components/ViewManager/ViewManagerComponent.ext', [], function() {
 
-  var ViewManagerComponentExt = {
+  return {
 
     getViewsEndpoint: function(name) {
       return "fake/path";
@@ -24,5 +24,4 @@ define('cde/components/ViewManager/ViewManagerComponent.ext', [], function() {
     }
   };
 
-  return ViewManagerComponentExt;
 });
