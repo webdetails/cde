@@ -43,7 +43,7 @@ var ExportButtonComponent = BaseComponent.extend({
 	  //if(dtOptions.bFilter) {
 	  var dtOptions = component.ph.dataTableSettings[0];
 	  if(dtOptions.oFeatures.bFilter) {
-		var searchInput = component.ph.find('input');
+		var searchInput = component.ph.find('input').filter("[type=search]");
 		if(searchInput) {
 		  extraSettings.dtFilter = searchInput.val();
 		  if(dtOptions.aoColumns){
