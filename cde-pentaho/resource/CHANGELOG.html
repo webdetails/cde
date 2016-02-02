@@ -1,5 +1,108 @@
 <html>
 
+<h1>
+        Release Notes - Community Dashboard Editor - Version 16.01.22
+    </h1>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-431'>CDE-431</a>] -         When adding a parameter of the Date type to a query it returns a 501 error
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-462'>CDE-462</a>] -         [IE8/9] MapComponent - marker for cities and shapes don&#39;t render
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-561'>CDE-561</a>] -         Required dashboards fail to work with components that depend on DOM objects other than htmlObject
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-645'>CDE-645</a>] -         HtmlObject saved without ${h} syntax
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-647'>CDE-647</a>] -         In a datasource parameters popup, the &quot;remove row&quot; operation doesn&#39;t select entire row
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-660'>CDE-660</a>] -         Layout Tree - Keyboard commands do not work when opened in a PUC tab
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-671'>CDE-671</a>] -         When editing a dashboard and adding a script to the name of a component the script is executed
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-672'>CDE-672</a>] -         Adding a script to the parameter popup of a chart wrong value is shown
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-673'>CDE-673</a>] -         Adding a script to the Output Options of a datasource freezes the dashboard
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-674'>CDE-674</a>] -         When adding special characters to the title of a chart they are replaced
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-675'>CDE-675</a>] -         When adding a script to the title of a chart it is executed and when rendering dashboard dashboard code is shown
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-678'>CDE-678</a>] -         CSS on MapComponentReference is different from 5.x to 6.0
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-679'>CDE-679</a>] -         As a user, I would like to use custom styles in a Sparkl Application
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-691'>CDE-691</a>] -         Autocomplete dropdown does not reappear after selection is made
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-708'>CDE-708</a>] -         Dashboard component does not instantiate parameters in sub dashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-709'>CDE-709</a>] -         Bookmarkable parameters to not work in requirejs Dashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-723'>CDE-723</a>] -         [IE9/10] Map Component - markers are not clickable
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-724'>CDE-724</a>] -         [IE8/9/10] Map Component fails to open on Require
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-725'>CDE-725</a>] -         [IE8/9] Filter Addin Accordion - page doesn&#39;t expand when click Single and Multiple Selection
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-749'>CDE-749</a>] -         NewMapComponent: On the Google map engine, clicking actually triggers a &quot;drag&quot; operation.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-781'>CDE-781</a>] -         NewMapComponent: When using google as map engine and switching the tileset to google an error is thrown
+</li>
+           <li>[<a href='http://jira.pentaho.com/browse/CDF-586'>CDF-586</a>] -         FilterComponent placed near the bottom: when expanding upon onClick event, is remains concealed behind the main window
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDF-678'>CDF-678</a>] -         FilterComponent - Changing default pageLength in server side search sample to 50
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDA-104'>CDA-104</a>] -          Calculated Column at Compound Queries
+</li>                            
+</ul>
+            
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-202'>CDE-202</a>] -         Datasources improvements on CDE
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-204'>CDE-204</a>] -         MDX datasource: Tooltips Improvement 
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-341'>CDE-341</a>] -         Generate tag Name of CDA file from CDE datasource
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-558'>CDE-558</a>] -         Resultset created by postChange() should be persisted
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-669'>CDE-669</a>] -         Avoid a FOUC when rendering AMD dashboards
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-686'>CDE-686</a>] -         Create a component&#39;s property input type similar to HtmlObject, but that also accepts rows and columns with content
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-690'>CDE-690</a>] -         As a user of the map component, I would like to be able to select multiple markers/shapes by drawing rectangles
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-730'>CDE-730</a>] -         NewMapComponent - As a user, I want to click on a blank space / sea in the map to clear selections
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-731'>CDE-731</a>] -         NewMapComponent - As a user, I want to add elements to current selection instead of toggling them, when using the rectangle selection tool
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-732'>CDE-732</a>] -         NewMapComponent - As a user, I want the mousewheel zoom to be disabled on the map, by default
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-733'>CDE-733</a>] -         NewMapComponent - As a user, I want the selection logic of the map to act as a filter for a dashboard
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-734'>CDE-734</a>] -         NewMapComponent - As a user, I want the cursor to turn to &quot;move&quot; when hovering the map, if the move control is active
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-735'>CDE-735</a>] -         NewMapComponent - As a user, I don&#39;t want to see a overlay with loading spinner every time I click on a map element
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-737'>CDE-737</a>] -         NewMapComponent - Update cursors.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-739'>CDE-739</a>] -         NewMapComponent - Active control button state is not clear.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-740'>CDE-740</a>] -         NewMapComponent - Selection controls icons are not enough simple and intuitive.
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-744'>CDE-744</a>] -         As a user of the map component using the tile service X, I need to display an attribution of credit.  
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-747'>CDE-747</a>] -         NewMapComponent - Re-order control buttons
+</li>
+<li>[<a href='http://jira.pentaho.com/browse/CDE-748'>CDE-748</a>] -         NewMapComponent - Restrict pan option
+</li>
+</ul>
+                                              
+           
+           
+
+
 
 <h1>
         Release Notes - Community Dashboard Editor - Version 15.10.26
