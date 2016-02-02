@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="dummyDatasource" type="scripting.scripting">
+         <Initscript/>
+         <Language>Beanshell</Language>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="dummyDatasource" id="dummyDatasource"
+               type="scriptable">
+      <Name>dummyDatasource</Name>
+      <Cache duration="3600" enabled="true"/>
+      <Columns/>
+      <Parameters/>
+      <Query><![CDATA[dummyImplementation]]></Query>
+   </DataAccess>
+</CDADescriptor>

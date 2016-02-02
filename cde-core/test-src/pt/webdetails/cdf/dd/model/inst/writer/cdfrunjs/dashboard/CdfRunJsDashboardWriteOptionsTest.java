@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -36,7 +36,7 @@ public class CdfRunJsDashboardWriteOptionsTest extends TestCase {
     Assert.assertEquals( "Alias correctly set", normalAlias1, createAndGetAlias( normalAlias1 ) );
     Assert.assertEquals( "Alias correctly set", normalAlias2, createAndGetAlias( normalAlias2 ) );
     Assert.assertEquals( "Alias correctly set", "id_" + spacedAlias1.replace( " ", "32" ),
-        createAndGetAlias( spacedAlias1 ) );
+      createAndGetAlias( spacedAlias1 ) );
 
     Assert.assertTrue( createAndGetAlias( spacedAlias2 ).startsWith( "id_" + spacedAlias1.replace( " ", "32" ) ) );
     Assert.assertTrue( createAndGetAlias( spacedAlias2 ).endsWith( CdeConstants.DASHBOARD_ALIAS_TAG ) );
@@ -46,11 +46,11 @@ public class CdfRunJsDashboardWriteOptionsTest extends TestCase {
     Assert.assertTrue( createAndGetAlias( spacedAlias3 ).contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
 
     Assert.assertEquals( "id_I-9112633643536379438424041123125124464493-61_4312459393463606212696",
-        createAndGetAlias( messyAlias ) );
+      createAndGetAlias( messyAlias ) );
   }
 
   private String createAndGetAlias( String alias ) {
-    return new CdfRunJsDashboardWriteOptions( alias, false, false, false, "", "", "" ).getAliasPrefix();
+    return new CdfRunJsDashboardWriteOptions( alias, false, false, false, "", "" ).getAliasPrefix();
   }
 
 }

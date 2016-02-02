@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -157,14 +157,13 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     if ( ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
       out.append( MessageFormat.format(
           DASHBOARD_MODULE_START_EMPTY_ALIAS,
-          ctx.getOptions().getContextConfiguration(),
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS,
             ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
             getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
     } else {
-      out.append( MessageFormat.format( DASHBOARD_MODULE_START, ctx.getOptions().getContextConfiguration() ) )
+      out.append( DASHBOARD_MODULE_START )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
             StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) )

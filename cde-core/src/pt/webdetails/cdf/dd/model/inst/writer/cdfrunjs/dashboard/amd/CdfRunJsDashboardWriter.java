@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -500,11 +500,9 @@ public class CdfRunJsDashboardWriter extends JsWriterAbstract implements IThingW
 
     //write dashboard declaration
     if ( ctx.getOptions().isDebug() ) {
-      out.append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, ctx.getOptions().getContextConfiguration() ) )
-        .append( NEWLINE );
+      out.append( DASHBOARD_DECLARATION_DEBUG ).append( NEWLINE );
     } else {
-      out.append( MessageFormat.format( DASHBOARD_DECLARATION, ctx.getOptions().getContextConfiguration() ) )
-        .append( NEWLINE );
+      out.append( DASHBOARD_DECLARATION ).append( NEWLINE );
     }
 
     // write JS Code snippets
