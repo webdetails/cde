@@ -1881,11 +1881,12 @@ $(function() {
     },
     content: function(data, settings, original) {
       // If it is string assume it is an array.
+      var json;
       if(String == data.constructor) {
-        eval('var json = ' + data);
+        json = JSON.parse(data);
       } else {
         // Otherwise assume it is a hash already.
-        var json = data;
+        json = data;
       }
       for(var key in json) {
         if(!json.hasOwnProperty(key)) {
