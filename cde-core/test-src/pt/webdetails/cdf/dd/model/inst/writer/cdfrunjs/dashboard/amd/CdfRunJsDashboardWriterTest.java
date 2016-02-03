@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -53,22 +53,6 @@ import static org.mockito.Mockito.*;
 import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 
 public class CdfRunJsDashboardWriterTest extends TestCase {
-
-  private static final String CONTEXT_CONFIGURATION = "{" + NEWLINE
-      + INDENT1 + "context: {" + NEWLINE
-      + INDENT2 + "fakeContext: fakeContext" + NEWLINE
-      + INDENT1 + "}" + NEWLINE
-      + INDENT1 + "storage: {" + NEWLINE
-      + INDENT2 + "fakeStorage: fakeStorage" + NEWLINE
-      + INDENT1 + "}" + NEWLINE
-      + INDENT1 + "view: {" + NEWLINE
-      + INDENT2 + "fakeView: fakeView" + NEWLINE
-      + INDENT1 + "}" + NEWLINE;
-
-  private static final String DATA_SOURCE = "{" + NEWLINE
-    + INDENT2 + "accessId: : \"dataSourceComp1\"," + NEWLINE
-    + INDENT2 + "path: \"/path/fake.cda\"" + NEWLINE
-    + INDENT1 + "}";
 
   private static Dashboard dash;
   private static DashboardWcdfDescriptor dashboardWcdfDescriptor;
@@ -232,7 +216,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "sparkl" ).when( comp3 ).getPluginIdFromOrigin();
     doReturn( "Comp3Component" ).when( comp3 ).getComponentClassName();
     doReturn( "sparkl/comp/Comp3Component" ).when( dashboardWriterSpy ).writeComponentModuleId( comp3,
-        "Comp3Component" );
+      "Comp3Component" );
 
     doReturn( componentList ).when( dash ).getRegulars();
 
@@ -260,15 +244,15 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( true ).when( comp ).isPrimitiveComponent();
     doReturn( true ).when( comp ).isComponentStaticSystemOrigin();
     Assert.assertEquals(
-        CDF_AMD_BASE_COMPONENT_PATH + className,
-        dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+      CDF_AMD_BASE_COMPONENT_PATH + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
     // custom component from static system origin
     comp = mock( Component.class );
     doReturn( true ).when( comp ).isCustomComponent();
     doReturn( true ).when( comp ).isComponentStaticSystemOrigin();
     Assert.assertEquals(
-        CDE_AMD_BASE_COMPONENT_PATH + className,
-        dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+      CDE_AMD_BASE_COMPONENT_PATH + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
     // custom component from plugin repository origin with no implementation path
     comp = mock( Component.class );
     doReturn( true ).when( comp ).isCustomComponent();
@@ -277,8 +261,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( null ).when( comp ).getComponentImplementationPath();
     doReturn( "comp/component.xml" ).when( comp ).getComponentSourcePath();
     Assert.assertEquals(
-        CDE_AMD_REPO_COMPONENT_PATH + "comp/" + className,
-        dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+      CDE_AMD_REPO_COMPONENT_PATH + "comp/" + className,
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
     // custom component from plugin repository origin
     comp = mock( Component.class );
     doReturn( true ).when( comp ).isCustomComponent();
@@ -286,8 +270,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( true ).when( comp ).isComponentPluginRepositoryOrigin();
     doReturn( "comp/comp.js" ).when( comp ).getComponentImplementationPath();
     Assert.assertEquals(
-        CDE_AMD_REPO_COMPONENT_PATH + "comp/comp",
-        dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+      CDE_AMD_REPO_COMPONENT_PATH + "comp/comp",
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
     // custom component from other plugin static system origin
     comp = mock( Component.class );
     doReturn( true ).when( comp ).isCustomComponent();
@@ -297,8 +281,8 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "sparkl" ).when( comp ).getPluginIdFromOrigin();
     doReturn( "comp/comp.js" ).when( comp ).getComponentImplementationPath();
     Assert.assertEquals(
-        "sparkl" + PLUGIN_COMPONENT_FOLDER + "CompComponent",
-        dashboardWriterSpy.writeComponentModuleId( comp, className ) );
+      "sparkl" + PLUGIN_COMPONENT_FOLDER + "CompComponent",
+      dashboardWriterSpy.writeComponentModuleId( comp, className ) );
     // widget components are not supported
     comp = mock( Component.class );
     doReturn( true ).when( comp ).isWidgetComponent();
@@ -311,16 +295,16 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     doReturn( "Title 1" ).when( wcdf ).getTitle();
     doReturn( wcdf ).when( dash ).getWcdf();
     Assert.assertEquals(
-        MessageFormat.format( TITLE, dash.getWcdf().getTitle() ) + NEWLINE
+      MessageFormat.format( TITLE, dash.getWcdf().getTitle() ) + NEWLINE
         + MessageFormat.format( SCRIPT, dashboardWriterSpy.writeWebcontext( "cdf", true ) ),
-        dashboardWriterSpy.writeHeaders( dash ) );
+      dashboardWriterSpy.writeHeaders( dash ) );
   }
 
   @Test
   public void testWriteWebContext() {
     Assert.assertEquals(
-        MessageFormat.format( WEBCONTEXT, "cdf", "true" ),
-        dashboardWriterSpy.writeWebcontext( "cdf", true ) );
+      MessageFormat.format( WEBCONTEXT, "cdf", "true" ),
+      dashboardWriterSpy.writeWebcontext( "cdf", true ) );
   }
 
   @Test
@@ -340,11 +324,11 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .wrapRequireDefinitions( resources, componentModules, components, context );
 
     Assert.assertEquals(
-        layout + NEWLINE
+      layout + NEWLINE
         + "<script language=\"javascript\" type=\"text/javascript\">" + NEWLINE
         + "content" + NEWLINE
         + "</script>" + NEWLINE,
-        dashboardWriterSpy.writeContent( resources, layout, componentModules, components, context ) );
+      dashboardWriterSpy.writeContent( resources, layout, componentModules, components, context ) );
   }
 
   @Test
@@ -359,7 +343,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     // deprecated
     doReturn( false ).when( dashboardWcdfDescriptor ).isWidget();
     doReturn( "" ).when( dashboardWcdfDescriptor ).getWidgetName();
-    String[] widgetParams = {""};
+    String[] widgetParams = { "" };
     doReturn( widgetParams ).when( dashboardWcdfDescriptor ).getWidgetParameters();
 
     JSONObject json = new JSONObject();
@@ -436,7 +420,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     moduleClassNames.add( "TestComponent2" );
     moduleClassNames.add( "jsFileRsrc1" );
 
-    doReturn( CONTEXT_CONFIGURATION ).when( options ).getContextConfiguration();
     doReturn( false ).when( options ).isDebug();
     doReturn( options ).when( context ).getOptions();
 
@@ -447,7 +430,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardResult
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
         StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) ).append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
+      .append( DASHBOARD_DECLARATION ).append( NEWLINE )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -466,7 +449,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .append( MessageFormat.format( REQUIRE_START, StringUtils.join( moduleIds, "'," + NEWLINE + INDENT1 + "'" ),
         StringUtils.join( moduleClassNames, "," + NEWLINE + INDENT1 ) ) )
       .append( NEWLINE )
-      .append( MessageFormat.format( DASHBOARD_DECLARATION_DEBUG, CONTEXT_CONFIGURATION  ) ).append( NEWLINE )
+      .append( DASHBOARD_DECLARATION_DEBUG ).append( NEWLINE )
       .append( "jsCodeRsrc1" ).append( NEWLINE )
       .append( content ).append( NEWLINE )
       .append( DASHBOARD_INIT )
@@ -482,7 +465,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
   @Test
   public void testDashboardType() {
     CdfRunJsDashboardWriter dashboardWriter =
-        new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT );
+      new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT );
     assertEquals( dashboardWriter.getDashboardModule().getId(), "cdf/Dashboard.Blueprint" );
     dashboardWriter =
       new CdfRunJsDashboardWriter( DashboardWcdfDescriptor.DashboardRendererType.BOOTSTRAP );
@@ -510,14 +493,14 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     Assert.assertEquals(
-        MessageFormat.format(
-          REQUIRE_START,
-          "cdf/components/TestComponent1',"
-            + NEWLINE + INDENT1 + "'cde/resources/jsFileRsrc1',"
-            + NEWLINE + INDENT1 + "'css!cde/resources/cssFileRsrc1",
-          "TestComponent1,"
-            + NEWLINE + INDENT1 + "jsFileRsrc1" ) + NEWLINE,
-        out.toString() );
+      MessageFormat.format(
+        REQUIRE_START,
+        "cdf/components/TestComponent1',"
+          + NEWLINE + INDENT1 + "'cde/resources/jsFileRsrc1',"
+          + NEWLINE + INDENT1 + "'css!cde/resources/cssFileRsrc1",
+        "TestComponent1,"
+          + NEWLINE + INDENT1 + "jsFileRsrc1" ) + NEWLINE,
+      out.toString() );
   }
 
   @Test
@@ -547,15 +530,15 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.CODE, "jsCodeRsrc1", "jsCodeRsrcrPath1", "jsCodeRsrc1" );
     // absolute file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "jsFileRsrc4", "http://dummy/jsFileRsrcPath4.js",
-        "jsFileRsrc4" );
+      "jsFileRsrc4" );
     // absolute unnamed file resource
     testResources.add( ResourceKind.JAVASCRIPT, ResourceType.FILE, "", "http://dummy/jsFileRsrcPath5.js",
-        "jsFileRsrc5" );
+      "jsFileRsrc5" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc1", "cssFileRsrcPath1", "cssFileRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc2", "cssFileRsrcPath2.css", "cssFileRsrc2" );
     testResources.add( ResourceKind.CSS, ResourceType.CODE, "cssCodeRsrc1", "cssCodeRsrcPath1", "cssCodeRsrc1" );
     testResources.add( ResourceKind.CSS, ResourceType.FILE, "cssFileRsrc3", "http://dummy/cssFileRsrcPath3.css",
-        "cssFileRsrc3" );
+      "cssFileRsrc3" );
 
     // context
     doReturn( "jsFileRsrcPath1" ).when( context ).replaceTokensAndAlias( "jsFileRsrcPath1" );
@@ -571,7 +554,7 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
       .when( context ).replaceTokensAndAlias( "http://dummy/cssFileRsrcPath3.css" );
 
     Map<String, String> resourceModules =
-        dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
+      dashboardWriterSpy.writeFileResourcesRequireJSPathConfig( out, testResources, context );
     assertEquals( "jsFileRsrc1", resourceModules.get( "cde/resources/jsFileRsrcPath1" ) );
     assertEquals( "", resourceModules.get( "cde/resources/a/file2" ) );
     assertEquals( "jsFileRsrc3", resourceModules.get( "cde/resources/a/file3" ) );
@@ -582,9 +565,9 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     assertEquals( "", resourceModules.get( "css!cde/resources/cssFileRsrc3" ) );
 
     assertEquals( "requireCfg['paths']['cde/resources/jsFileRsrc4'] = 'http://dummy/jsFileRsrcPath4';\n"
-        + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';\n"
-        + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';\n"
-        + "require.config(requireCfg);", out.toString().trim() );
+      + "requireCfg['paths']['cde/resources/1234'] = 'http://dummy/jsFileRsrcPath5';\n"
+      + "requireCfg['paths']['cde/resources/cssFileRsrc3'] = 'http://dummy/cssFileRsrcPath3';\n"
+      + "require.config(requireCfg);", out.toString().trim() );
 
     Map<String, String> expectedResourceModules = new LinkedHashMap<String, String>();
     expectedResourceModules.put( "cde/resources/jsFileRsrcPath1", "jsFileRsrc1" );
@@ -614,6 +597,6 @@ public class CdfRunJsDashboardWriterTest extends TestCase {
     expectedClassNames.add( "jsFileRsrc1" );
 
     Assert.assertEquals( expectedClassNames,
-        dashboardWriterSpy.getJsModuleClassNames( testResources ) );
+      dashboardWriterSpy.getJsModuleClassNames( testResources ) );
   }
 }
