@@ -14,8 +14,9 @@
 define([
   'cdf/Dashboard.Clean',
   'cde/components/ExportButtonComponent',
+  'cdf/components/TableComponent',
   'cdf/lib/jquery'
-], function(Dashboard, ExportButtonComponent, $) {
+], function(Dashboard, ExportButtonComponent, TableComponent, $) {
 
   /**
    * ## The Export Button Component
@@ -38,10 +39,43 @@ define([
       listeners: []
     });
 
+
+    var tableDefinition = {
+     colHeaders: ["Customers", "Sales"],
+     colTypes: ['string', 'numeric'],
+     colFormats: [null, '%.0f'],
+     colWidths: ['500px', null],
+     displayLength: 10,
+     filter: "true",
+     queryType: "mdx",
+     catalog: "mondrian:/SteelWheels",
+     jndi: "SampleData",
+     colSearchable: ["0"],
+     query: function() {
+     return "SELECT NON EMPTY {[Measures].[Sales]} ON COLUMNS, "
+           + "NON EMPTY TopCount([Customers].[All Customers].Children, 50.0, [Measures].[Sales]) "
+           + "ON ROWS FROM [SteelWheelsSales]";
+      }
+    }
+
+    var tableWithFilter= new TableComponent({	 
+        type: "TableComponent",
+        name: "table",
+        htmlObject: "SampleTable",
+        executeAtStart: true,
+        chartDefinition: tableDefinition,
+        postExecution: function() {  
+        $("#"+this.htmlObject).prepend('<input value="wrong">');
+       }
+    });
+
+
     dashboard.addComponent(exportButtonComponent);
+
 
     // inject sampleObject div
     var $htmlObject = $('<div>').attr('id', exportButtonComponent.htmlObject);
+
 
     /**
      * ## The Export Button Component # allows a dashboard to execute update
@@ -59,6 +93,36 @@ define([
       });
 
       dashboard.update(exportButtonComponent);
+
     });
+
+    dashboard.addComponent(tableWithFilter);
+
+    var $htmlObject2 = $('<div>').attr('id',tableWithFilter.htmlObject);
+    var expected = "right";
+    
+    /**
+     * ## The Export Button Component # discern between a input and the filter input
+     */
+    
+    it("discern between a input and the filter input",function(done) {
+      $('body').append($htmlObject);
+      $('body').append($htmlObject2);
+      spyOn(exportButtonComponent, 'getFilterSettings').and.callThrough();
+      spyOn($, 'ajax').and.callFake(function(params) {
+      params.success('{"metadata":["Sales"],"values":[["Euro+ Shopping Channel","914.11"],["Mini Gifts Ltd.","6558.02"]]}');
+    });
+	  
+      tableWithFilter.once("cdf:postExecution",function() {
+        $("[type=search]").val('right');
+        expect(exportButtonComponent.getFilterSettings(tableWithFilter).dtFilter).toEqual(expected);
+        $htmlObject.remove();
+        $htmlObject2.remove();
+        done();
+      });
+
+      dashboard.update(tableWithFilter);
+      
+    });
+   })
   });
-});
