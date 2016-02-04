@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -813,7 +813,7 @@ var CdaParametersRenderer = ValuesArrayRenderer.extend({
     var name = $("#arg_" + i).val();
     var value = $("#val_" + i).val();
     var type = $("#type_" + i).val();
-    var access = $("#access_" + i).attr('checked') ? 'private' : '';
+    var access = $("#access_" + i).prop('checked') ? 'private' : '';
 
     var isDate = $.inArray(type, this.patternUnlockTypes) != -1;
     var pattern = isDate ? $("#pattern_" + i).val() : "";
