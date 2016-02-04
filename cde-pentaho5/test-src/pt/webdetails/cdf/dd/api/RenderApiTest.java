@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -20,16 +20,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import pt.webdetails.cdf.dd.CdeConstants;
 import pt.webdetails.cdf.dd.CdeEngineForTests;
 import pt.webdetails.cdf.dd.CdeEnvironmentForTests;
 import pt.webdetails.cdf.dd.IPluginResourceLocationManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceManager;
 import pt.webdetails.cdf.dd.datasources.IDataSourceProvider;
+import pt.webdetails.cdf.dd.extapi.ICdeApiPathProvider;
 import pt.webdetails.cdf.dd.model.core.writer.ThingWriteException;
 import pt.webdetails.cpf.context.api.IUrlProvider;
 import pt.webdetails.cpf.repository.api.FileAccess;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IBasicFileFilter;
+import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
 import pt.webdetails.cpf.repository.api.IUserContentAccess;
 import pt.webdetails.cpf.session.IUserSession;
@@ -42,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.mockito.Matchers.*;
@@ -53,16 +57,19 @@ public class RenderApiTest {
   private static final String USER_DIR = System.getProperty( "user.dir" );
   private static final String TEST_RESOURCES = USER_DIR + File.separator + "test-resources";
   private static final String DUMMY_WCDF =
-      TEST_RESOURCES + File.separator + "dummyDashboard" + File.separator + "dummy.wcdf";
+    TEST_RESOURCES + File.separator + "dummyDashboard" + File.separator + "dummy.wcdf";
+  private static final String DUMMY_REQUIRE_WCDF =
+    TEST_RESOURCES + File.separator + "dummyDashboard" + File.separator + "dummyRequire.wcdf";
   private static final String PROPERTY_NAME =
-      TEST_RESOURCES + File.separator + "resources" + File.separator + "base" + File.separator + "properties"
+    TEST_RESOURCES + File.separator + "resources" + File.separator + "base" + File.separator + "properties"
       + File.separator + "Name.xml";
   private static final String STYLE_CLEAN =
-      TEST_RESOURCES + File.separator + "resources" + File.separator + "styles" + File.separator + "Clean.html";
+    TEST_RESOURCES + File.separator + "resources" + File.separator + "styles" + File.separator + "Clean.html";
   private static final String DEFAULT_ROOT = "http://localhost:8080/";
 
   private static CdeEnvironmentForTests cdeEnvironmentForTests;
   private static IUserContentAccess mockedUserContentAccess;
+  private static HttpServletRequest mockedHttpServletRequest;
 
   @BeforeClass
   public static void setUp() throws Exception {
@@ -75,22 +82,22 @@ public class RenderApiTest {
     mockedUserContentAccess = mock( IUserContentAccess.class );
     when( mockedUserContentAccess.fileExists( anyString() ) ).thenReturn( true );
     when( mockedUserContentAccess.fetchFile( anyString() ) )
-        .thenAnswer( new Answer<IBasicFile>() {
-          @Override
+      .thenAnswer( new Answer<IBasicFile>() {
+        @Override
         public IBasicFile answer( InvocationOnMock invocationOnMock ) throws Throwable {
-              File file = new File( (String) invocationOnMock.getArguments()[ 0 ] );
-            return getBasicFileFromFile( file );
-          }
-        } );
+          File file = new File( (String) invocationOnMock.getArguments()[ 0 ] );
+          return getBasicFileFromFile( file );
+        }
+      } );
     when( mockedUserContentAccess.hasAccess( anyString(), any( FileAccess.class ) ) )
       .thenReturn( true );
     when( mockedUserContentAccess.getFileInputStream( anyString() ) )
-        .thenAnswer( new Answer<InputStream>() {
-          @Override
-          public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
-            return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
-          }
-        } );
+      .thenAnswer( new Answer<InputStream>() {
+        @Override
+        public InputStream answer( InvocationOnMock invocationOnMock ) throws Throwable {
+          return getInputStreamFromFileName( (String) invocationOnMock.getArguments()[ 0 ] );
+        }
+      } );
 
     //mock IReadAccess
     IReadAccess mockedReadAccess = mock( IReadAccess.class );
@@ -103,35 +110,39 @@ public class RenderApiTest {
       }
     } );
 
+    //mock IRWAccess
+    IRWAccess mockedRWAccess = mock( IRWAccess.class );
+
     //mock IPluginResourceLocationManager
     IPluginResourceLocationManager mockedPluginResourceLocationManager =
-        mock( IPluginResourceLocationManager.class );
+      mock( IPluginResourceLocationManager.class );
     when( mockedPluginResourceLocationManager.getStyleResourceLocation( anyString() ) )
       .thenReturn( STYLE_CLEAN );
 
     JSON dataSourceDefinition = JSONObject.fromObject( "{ \"scriptable_scripting\": {"
-        + "\"metadata\": {"
-        + "\"name\": \"scriptable over scripting\","
-        + "\"conntype\": \"scripting.scripting\","
-        + "\"datype\": \"scriptable\","
-        + "\"group\": \"SCRIPTING\","
-        + "\"groupdesc\": \"SCRIPTING Queries\"},"
-        + "\"definition\": {"
-        + "\"connection\": {"
-        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
-        + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
-        + "\"dataaccess\": {"
-        + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
-        + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
-        + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
-        + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
-        + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
-        + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
+      + "\"metadata\": {"
+      + "\"name\": \"scriptable over scripting\","
+      + "\"conntype\": \"scripting.scripting\","
+      + "\"datype\": \"scriptable\","
+      + "\"group\": \"SCRIPTING\","
+      + "\"groupdesc\": \"SCRIPTING Queries\"},"
+      + "\"definition\": {"
+      + "\"connection\": {"
+      + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"language\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+      + "\"initscript\": {\"type\": \"STRING\", \"placement\": \"CHILD\"}},"
+      + "\"dataaccess\": {"
+      + "\"id\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"access\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"parameters\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"output\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"columns\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"},"
+      + "\"query\": {\"type\": \"STRING\", \"placement\": \"CHILD\"},"
+      + "\"connection\": {\"type\": \"STRING\", \"placement\": \"ATTRIB\"},"
+      + "\"cache\": {\"type\": \"BOOLEAN\", \"placement\": \"CHILD\"},"
+      + "\"cacheDuration\": {\"type\": \"NUMERIC\", \"placement\": \"ATTRIB\"},"
+      + "\"cacheKeys\": {\"type\": \"ARRAY\", \"placement\": \"CHILD\"}}}}}" );
+
     //mock IDataSourceProvider
     IDataSourceProvider ds = mock( IDataSourceProvider.class );
     when( ds.getId() ).thenReturn( "cda" );
@@ -151,48 +162,119 @@ public class RenderApiTest {
     IUserSession mockedUserSession = mock( IUserSession.class );
     when( mockedUserSession.isAdministrator() ).thenReturn( false );
 
+    // mock ICdeApiPathProvider
+    ICdeApiPathProvider mockedCdeApiPathProvider = mock( ICdeApiPathProvider.class );
+    when( mockedCdeApiPathProvider.getPluginStaticBaseUrl() ).thenReturn( "/" );
+
     cdeEnvironmentForTests = new CdeEnvironmentForTests();
     cdeEnvironmentForTests.setMockedContentAccess( mockedUserContentAccess );
     cdeEnvironmentForTests.setMockedReadAccess( mockedReadAccess );
+    cdeEnvironmentForTests.setMockedRWAccess( mockedRWAccess );
     cdeEnvironmentForTests.setMockedPluginResourceLocationManager( mockedPluginResourceLocationManager );
     cdeEnvironmentForTests.setMockedDataSourceManager( mockedDataSourceManager );
     cdeEnvironmentForTests.setMockedUrlProvider( mockedUrlProvider );
     cdeEnvironmentForTests.setMockedUserSession( mockedUserSession );
+    cdeEnvironmentForTests.setMockedCdeApiPathProvider( mockedCdeApiPathProvider );
 
     renderApi = new RenderApiForTesting( cdeEnvironmentForTests );
     new CdeEngineForTests( cdeEnvironmentForTests );
+
+    mockedHttpServletRequest = mock( HttpServletRequest.class );
+    when( mockedHttpServletRequest.getParameterMap() ).thenReturn( new HashMap() );
   }
 
   @Test
   public void testGetHeaders() throws IOException, ThingWriteException {
     //case1 -> absolute=true&root=(empty)
     String case1 =
-        doCase( "", true, "http" );
+      doGetHeadersCase( "", true, "http" );
 
     //case2 -> absolute=false&root=localhost:8080
     String case2 =
-        doCase( "testRoot", false, "http" );
+      doGetHeadersCase( "testRoot", false, "http" );
 
     //case3 -> absolute=true&root=localhost:8080
     String case3 =
-        doCase( "testRoot", true, "http" );
+      doGetHeadersCase( "testRoot", true, "http" );
 
     //case4 -> absolute=false&root=(empty)
     String case4 =
-        doCase( "", false, "http" );
+      doGetHeadersCase( "", false, "http" );
 
     //case5 -> absolute=true&root=localhost:8080&scheme=https
     String case5 =
-        doCase( "testRoot", true, "https" );
+      doGetHeadersCase( "testRoot", true, "https" );
 
     Assert.assertTrue( case1.contains( "http://localhost:8080/js/CDF.js" )
-        && case1.contains( "http://localhost:8080/css/CDF-CSS.css" ) );
+      && case1.contains( "http://localhost:8080/css/CDF-CSS.css" ) );
     Assert.assertTrue( case2.contains( "/js/CDF.js" ) && case2.contains( "/css/CDF-CSS.css" ) );
     Assert.assertTrue( case3.contains( "http://testRoot/js/CDF.js" )
-        && case3.contains( "http://testRoot/css/CDF-CSS.css" ) );
+      && case3.contains( "http://testRoot/css/CDF-CSS.css" ) );
     Assert.assertTrue( case4.contains( "/js/CDF.js" ) && case4.contains( "/css/CDF-CSS.css" ) );
     Assert.assertTrue( case5.contains( "https://testRoot/js/CDF.js" )
-        && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
+      && case5.contains( "https://testRoot/css/CDF-CSS.css" ) );
+  }
+
+  @Test
+  public void testContextConfigurationsInjectionInRender() throws IOException, ThingWriteException {
+
+    // with requirejs dashboards
+
+    String reqCase1 = doRenderCase( DUMMY_REQUIRE_WCDF );
+    Assert.assertTrue( reqCase1.contains( "new Dashboard({})" ) );
+
+    String requireContextConfiguration = "{\"context\": \"test\"}";
+    RenderApiForTesting.cdfRequireContextConfiguration = requireContextConfiguration;
+    String reqCase2 = doRenderCase( DUMMY_REQUIRE_WCDF );
+    Assert.assertTrue( reqCase2.contains( "new Dashboard(" + requireContextConfiguration + ")" ) );
+
+    String cdfRequireContext = "cdf-require-context-for-tests";
+    RenderApiForTesting.cdfRequireContext = cdfRequireContext;
+    String reqCase3 = doRenderCase( DUMMY_REQUIRE_WCDF );
+    Assert.assertTrue( reqCase3.contains( cdfRequireContext ) );
+
+    // with legacy dashboards
+
+    String legacyCase1 = doRenderCase( DUMMY_WCDF );
+    Assert.assertTrue( legacyCase1.contains( "Dashboards.init();" ) );
+
+    String cdfContextConfiguration = "{\"context\": \"test\"}";
+    RenderApiForTesting.cdfContext = cdfContextConfiguration;
+    String legacyCase2 = doRenderCase( DUMMY_WCDF );
+    Assert.assertTrue( legacyCase2.contains( cdfContextConfiguration ) );
+
+    resetContextConfigurations();
+  }
+
+  @Test
+  public void testContextConfigurationsInjectionInGetDashboard() throws IOException, ThingWriteException {
+    String alias = "test_alias";
+    String case1 = doGetDashboardCase( "" );
+    String case2 = doGetDashboardCase( alias );
+    Assert.assertTrue( case1.contains( "$.extend(extendedOpts, {}, opts);" ) );
+    Assert.assertTrue( case2.contains( "$.extend(extendedOpts, {}, opts);" ) );
+    // empty alias, so layout will contain the alias tag to be replaced
+    Assert.assertTrue( case1.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
+    // alias provided, layout will not contain the alias tag, it will instead contain the alias provided
+    Assert.assertFalse( case2.contains( CdeConstants.DASHBOARD_ALIAS_TAG ) );
+    Assert.assertTrue( case2.contains( alias ) );
+
+    String requireContextConfiguration = "{\"context\": \"test\"}";
+    RenderApiForTesting.cdfRequireContextConfiguration = requireContextConfiguration;
+    String case3 = doGetDashboardCase( "" );
+    String case4 = doGetDashboardCase( alias );
+    Assert.assertTrue( case3.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
+    Assert.assertTrue( case4.contains( "$.extend(extendedOpts, " + requireContextConfiguration + ", opts);" ) );
+
+    String cdfRequireContext = "cdf-require-context-for-tests";
+    RenderApiForTesting.cdfRequireContext = cdfRequireContext;
+    String case5 = doGetDashboardCase( "" );
+    String case6 = doGetDashboardCase( alias );
+    // cdfRequireContext will not be injected in getDashboard
+    Assert.assertEquals( case3, case5 );
+    Assert.assertEquals( case4, case6 );
+
+    resetContextConfigurations();
   }
 
   @Test
@@ -240,11 +322,27 @@ public class RenderApiTest {
     Assert.assertEquals( expected, renderApi.newDashboard( "", false, false, null, null ) );
   }
 
-  private String doCase( String root,
-                         boolean absolute, String scheme )
+  private String doGetHeadersCase( String root,
+                                   boolean absolute, String scheme )
     throws IOException, ThingWriteException {
     return renderApi
       .getHeaders( "", "", DUMMY_WCDF, false, root, absolute, true, false, scheme, null, null );
+  }
+
+  private String doRenderCase( String wcdf ) throws IOException, ThingWriteException {
+    return renderApi.render( "", "", wcdf, false, "", false, true, false, "http", "", "", mockedHttpServletRequest );
+  }
+
+  private String doGetDashboardCase( String alias )
+    throws IOException, ThingWriteException {
+    return renderApi.getDashboard( DUMMY_REQUIRE_WCDF, false, "", false, true, false, "http", "", "", alias,
+      mockedHttpServletRequest );
+  }
+
+  private void resetContextConfigurations() {
+    RenderApiForTesting.cdfRequireContextConfiguration = "";
+    RenderApiForTesting.cdfRequireContext = "";
+    RenderApiForTesting.cdfContext = "";
   }
 
   public static InputStream getInputStreamFromFileName( String fileName ) throws FileNotFoundException {

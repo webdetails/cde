@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -75,8 +75,8 @@ public class RenderApi {
   @Path( "/getComponentDefinitions" )
   @Produces( MimeTypes.JAVASCRIPT )
   public String getComponentDefinitions(
-      @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
-      @Context HttpServletResponse response ) throws IOException {
+    @QueryParam( MethodParams.SUPPORTS ) @DefaultValue( DashboardSupportedTypes.LEGACY ) String supports,
+    @Context HttpServletResponse response ) throws IOException {
     // Get and output the definitions
     if ( !StringUtils.isEmpty( supports ) && supports.equals( DashboardSupportedTypes.AMD ) ) {
       return MetaModelManager.getInstance().getAmdJsDefinition();
@@ -107,7 +107,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null, "" );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getContent();
   }
 
@@ -133,7 +133,7 @@ public class RenderApi {
     String filePath = getWcdfRelativePath( solution, path, file );
 
     CdfRunJsDashboardWriteResult dashboardWrite =
-        this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null, "" );
+      this.loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, null );
     return dashboardWrite.getHeader();
   }
 
@@ -173,19 +173,18 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), filePath, getObjectName(), this.getPentahoSession(),
-        iLogger, requestParams );
+      iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting Dashboard Rendering" );
-      String config = InterPluginBroker.getCdfRequireConfig( filePath, requestParams );
       CdfRunJsDashboardWriteResult dashboard =
-          loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style, config );
+        loadDashboard( filePath, schemeToUse, root, absolute, bypassCache, debug, style );
 
       DashboardWcdfDescriptor dashboardWcdf = DashboardWcdfDescriptor.load( filePath );
       String context = dashboardWcdf.isRequire()
-          ? InterPluginBroker.getCdfRequireContext( filePath, requestParams )
-          : InterPluginBroker.getCdfContext( filePath, "", view, requestParams );
-      String result = dashboard.render( context );
+        ? getCdfRequireContext( filePath, requestParams )
+        : getCdfContext( filePath, "", view, requestParams );
+      String result = dashboard.render( context, getCdfRequireConfig( filePath, requestParams ) );
 
       //i18n token replacement
       if ( !StringUtils.isEmpty( result ) && !dashboardWcdf.isRequire() ) {
@@ -193,11 +192,11 @@ public class RenderApi {
         msgDir = msgDir.startsWith( Util.SEPARATOR ) ? msgDir : Util.SEPARATOR + msgDir;
 
         result = new MessageBundlesHelper(
-            msgDir,
-            Utils.getAppropriateReadAccess( msgDir ),
-            CdeEnvironment.getPluginSystemWriter(),
-            getEnv().getLocale(),
-            getEnv().getExtApi().getPluginStaticBaseUrl() )
+          msgDir,
+          Utils.getAppropriateReadAccess( msgDir ),
+          CdeEnvironment.getPluginSystemWriter(),
+          getEnv().getLocale(),
+          getEnv().getExtApi().getPluginStaticBaseUrl() )
           .replaceParameters( result, null );
       }
 
@@ -205,7 +204,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-          this.getPentahoSession(), iLogger, start, uuid, end );
+        this.getPentahoSession(), iLogger, start, uuid, end );
 
       return result;
     } catch ( Exception ex ) { //TODO: better error handling?
@@ -214,7 +213,7 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), filePath, getObjectName(),
-          this.getPentahoSession(), iLogger, start, uuid, end );
+        this.getPentahoSession(), iLogger, start, uuid, end );
 
       return msg;
     }
@@ -258,15 +257,13 @@ public class RenderApi {
     IParameterProvider requestParams = getParameterProvider( request.getParameterMap() );
 
     UUID uuid = CpfAuditHelper.startAudit( getPluginName(), path, getObjectName(), this.getPentahoSession(),
-        iLogger, requestParams );
+      iLogger, requestParams );
 
     try {
       logger.info( "[Timing] CDE Starting To Generate Dashboard AMD Module" );
-      String config = InterPluginBroker.getCdfRequireConfig( path, requestParams );
+      String config = getCdfRequireConfig( path, requestParams );
       CdfRunJsDashboardWriteResult dashboard =
-          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias, config );
-
-      String result = dashboard.getContent();
+          getDashboardModule( path, schemeToUse, root, absolute, bypassCache, debug, style, alias );
 
       //TODO: how to process i18n for a required dashboard
       //i18n token replacement
@@ -275,16 +272,16 @@ public class RenderApi {
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
-          this.getPentahoSession(), iLogger, start, uuid, end );
+        this.getPentahoSession(), iLogger, start, uuid, end );
 
-      return result;
+      return dashboard.getContent( config );
     } catch ( Exception ex ) { //TODO: better error handling?
       String msg = "Could not load dashboard: " + ex.getMessage();
       logger.error( msg, ex );
 
       end = System.currentTimeMillis();
       CpfAuditHelper.endAudit( getPluginName(), path, getObjectName(),
-          this.getPentahoSession(), iLogger, start, uuid, end );
+        this.getPentahoSession(), iLogger, start, uuid, end );
 
       return msg;
     }
@@ -318,6 +315,7 @@ public class RenderApi {
       return msg;
     }
   }
+
   @GET
   @Path( "/getDashboardDatasources" )
   @Produces( MimeTypes.JSON )
@@ -348,13 +346,13 @@ public class RenderApi {
   @Path( "/edit" )
   @Produces( MimeTypes.HTML )
   public String edit(
-      @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
-      @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
-      @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-      @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
-      @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
-      @Context HttpServletRequest request,
-      @Context HttpServletResponse response ) throws Exception {
+    @QueryParam( MethodParams.SOLUTION ) @DefaultValue( "" ) String solution,
+    @QueryParam( MethodParams.PATH ) @DefaultValue( "" ) String path,
+    @QueryParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
+    @QueryParam( MethodParams.DEBUG ) @DefaultValue( "false" ) boolean debug,
+    @QueryParam( "isDefault" ) @DefaultValue( "false" ) boolean isDefault,
+    @Context HttpServletRequest request,
+    @Context HttpServletResponse response ) throws Exception {
 
     String wcdfPath = getWcdfRelativePath( solution, path, file );
 
@@ -433,29 +431,29 @@ public class RenderApi {
   }
 
   private CdfRunJsDashboardWriteResult loadDashboard( String filePath, String scheme, String root, boolean absolute,
-                                                      boolean bypassCache, boolean debug, String style, String config )
+                                                      boolean bypassCache, boolean debug, String style )
     throws ThingWriteException {
 
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( "", false, absolute, debug, root, scheme, config );
+      new CdfRunJsDashboardWriteOptions( "", false, absolute, debug, root, scheme );
     return getDashboardManager().getDashboardCdfRunJs( filePath, options, bypassCache, style );
   }
 
   private CdfRunJsDashboardWriteResult getDashboardModule( String path, String scheme, String root,
                                                            boolean absolute, boolean bypassCache, boolean debug,
-                                                           String style, String alias, String config )
+                                                           String style, String alias )
     throws ThingWriteException, UnsupportedEncodingException {
 
     final String dashboardAlias;
     if ( StringUtils.isEmpty( alias ) ) {
       dashboardAlias =
-          FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
+        FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + CdeConstants.DASHBOARD_ALIAS_TAG;
     } else {
       dashboardAlias = FilenameUtils.removeExtension( FilenameUtils.getName( path ) ) + "_" + alias;
 
     }
     CdfRunJsDashboardWriteOptions options =
-        new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme, config );
+      new CdfRunJsDashboardWriteOptions( dashboardAlias, true, absolute, debug, root, scheme );
 
     return getDashboardManager().getDashboardCdfRunJs( path, options, bypassCache, style );
 
@@ -526,4 +524,16 @@ public class RenderApi {
     CorsUtil.getInstance().setCorsHeaders( request, response );
   }
 
+  protected String getCdfRequireConfig( String filePath, IParameterProvider requestParams ) throws Exception {
+    return InterPluginBroker.getCdfRequireConfig( filePath, requestParams );
+  }
+
+  protected String getCdfRequireContext( String filePath, IParameterProvider requestParams ) throws Exception {
+    return InterPluginBroker.getCdfRequireContext( filePath, requestParams );
+  }
+
+  protected String getCdfContext( String filePath, String action, String view, IParameterProvider requestParams )
+    throws Exception {
+    return InterPluginBroker.getCdfContext( filePath, action, view, requestParams );
+  }
 }

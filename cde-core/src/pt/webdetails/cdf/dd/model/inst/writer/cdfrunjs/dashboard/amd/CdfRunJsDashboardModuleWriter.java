@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -24,6 +24,7 @@ import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboa
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteResult;
 import pt.webdetails.cdf.dd.render.ResourceMap;
 import pt.webdetails.cdf.dd.structure.DashboardWcdfDescriptor;
+import pt.webdetails.cdf.dd.util.Utils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -156,15 +157,18 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     if ( ctx.getOptions().getAliasPrefix().contains( CdeConstants.DASHBOARD_ALIAS_TAG ) ) {
       out.append( MessageFormat.format(
           DASHBOARD_MODULE_START_EMPTY_ALIAS,
-          ctx.getOptions().getContextConfiguration(),
           StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
           .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS,
-            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) );
+            ctx.getOptions().getAliasPrefix().replace( CdeConstants.DASHBOARD_ALIAS_TAG, "\" + this._alias + \"" ) ) )
+          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
+            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
     } else {
-      out.append( MessageFormat.format( DASHBOARD_MODULE_START, ctx.getOptions().getContextConfiguration() ) )
+      out.append( DASHBOARD_MODULE_START )
           .append( MessageFormat.format( DASHBOARD_MODULE_LAYOUT,
             StringEscapeUtils.escapeJavaScript( layout.replace( NEWLINE, "" ) ) ) )
-            .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) );
+          .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, ctx.getOptions().getAliasPrefix() ) )
+          .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH,
+            getWcdfReposPath( ctx.getDashboard().getSourcePath() ) ) );
     }
 
     final String jsCodeSnippets = writeJsCodeResources( resources );
@@ -200,6 +204,20 @@ public class CdfRunJsDashboardModuleWriter extends CdfRunJsDashboardWriter {
     out.append( MessageFormat.format( DEFINE_START,
         StringUtils.join( ids, "', '" ),
         StringUtils.join( classNames, ", " ) ) );
+  }
+
+  protected String getWcdfReposPath( String path ) {
+    if ( StringUtils.isEmpty( path ) ) {
+      return "undefined";
+    }
+    return "\"" + replaceCdfdeExtension( Utils.getWcdfReposPath( path ) ) + "/\"";
+  }
+
+  protected String replaceCdfdeExtension( String path ) {
+    if ( path.endsWith( ".cdfde" ) ) {
+      return path.substring( 0, path.lastIndexOf( ".cdfde" )  ) + ".wcdf";
+    }
+    return path;
   }
 
 }

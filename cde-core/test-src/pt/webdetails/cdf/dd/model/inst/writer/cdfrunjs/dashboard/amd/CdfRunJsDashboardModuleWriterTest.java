@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import pt.webdetails.cdf.dd.model.inst.Dashboard;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteContext;
 import pt.webdetails.cdf.dd.model.inst.writer.cdfrunjs.dashboard.CdfRunJsDashboardWriteOptions;
 import pt.webdetails.cdf.dd.render.ResourceMap;
@@ -37,16 +37,7 @@ import static pt.webdetails.cdf.dd.CdeConstants.Writer.*;
 
 public class CdfRunJsDashboardModuleWriterTest extends TestCase {
 
-  private static final String CONTEXT_CONFIGURATION = "{" + NEWLINE
-      + INDENT1 + "context: {" + NEWLINE
-      + INDENT2 + "fakeContext: fakeContext" + NEWLINE
-      + INDENT1 + "}" + NEWLINE
-      + INDENT1 + "storage: {" + NEWLINE
-      + INDENT2 + "fakeStorage: fakeStorage" + NEWLINE
-      + INDENT1 + "}" + NEWLINE
-      + INDENT1 + "view: {" + NEWLINE
-      + INDENT2 + "fakeView: fakeView" + NEWLINE
-      + INDENT1 + "}" + NEWLINE;
+  private static final String MESSAGES_PATH = "/test/repos/:path:to:dash.wcdf/";
 
   private static CdfRunJsDashboardModuleWriter dashboardWriterSpy;
   private static CdfRunJsDashboardWriteContext context;
@@ -56,8 +47,12 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
   public void setUp() throws Exception {
     dashboardWriterSpy =
       spy( new CdfRunJsDashboardModuleWriter( DashboardWcdfDescriptor.DashboardRendererType.BLUEPRINT ) );
-    context = Mockito.mock( CdfRunJsDashboardWriteContext.class );
-    options = Mockito.mock( CdfRunJsDashboardWriteOptions.class );
+    doReturn( MESSAGES_PATH ).when( dashboardWriterSpy ).getWcdfReposPath( anyString() );
+
+    context = mock( CdfRunJsDashboardWriteContext.class );
+    doReturn( mock( Dashboard.class ) ).when( context ).getDashboard();
+
+    options = mock( CdfRunJsDashboardWriteOptions.class );
   }
 
   @After
@@ -100,7 +95,6 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     moduleClassNames.add( "TestComponent2" );
     moduleClassNames.add( "jsFileRsrc1" );
 
-    doReturn( CONTEXT_CONFIGURATION ).when( options ).getContextConfiguration();
     doReturn( "@ALIAS@" ).when( options ).getAliasPrefix();
     doReturn( options ).when( context ).getOptions();
 
@@ -114,8 +108,9 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
         StringUtils.join( moduleIds, "', '" ),
         StringUtils.join( moduleClassNames, ", " ) ) )
       .append( "" )
-      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, CONTEXT_CONFIGURATION, layout ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_START_EMPTY_ALIAS, layout ) )
       .append( MessageFormat.format( DASHBOARD_MODULE_NORMALIZE_ALIAS, "\" + this._alias + \"" ) )
+      .append( MessageFormat.format( DASHBOARD_MODULE_GET_MESSAGES_PATH, MESSAGES_PATH ) )
       .append( DASHBOARD_MODULE_RENDERER ).append( NEWLINE )
       .append( DASHBOARD_MODULE_SETUP_DOM ).append( NEWLINE )
       .append( MessageFormat.format( DASHBOARD_MODULE_PROCESS_COMPONENTS, "jsCodeRsrc1" + NEWLINE + NEWLINE
@@ -124,8 +119,9 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
       .append( DEFINE_STOP );
 
     Assert.assertEquals(
-        dashboardResult.toString(),
-        dashboardWriterSpy.wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
+      dashboardResult.toString(),
+      dashboardWriterSpy
+        .wrapRequireModuleDefinitions( layout, testResources, testComponentModules, content, context ) );
   }
 
   @Test
@@ -143,9 +139,25 @@ public class CdfRunJsDashboardModuleWriterTest extends TestCase {
     dashboardWriterSpy.writeRequireJsExecutionFunction( out, moduleIds, moduleClassNames );
 
     Assert.assertEquals(
-        MessageFormat.format( DEFINE_START,
+      MessageFormat.format( DEFINE_START,
         "cdf/components/TestComponent1', 'cde/resources/jsFileRsrc1', 'css!cde/resources/cssFileRsrc1",
         "TestComponent1, jsFileRsrc1" ),
-        out.toString() );
+      out.toString() );
+  }
+
+  @Test
+  public void testReplaceCdfdeExtension() {
+    String[] paths = new String[] { "/path/to/file.wcdf", ":path:to:file",
+      ":path.cdfde:to.wcdf:file", ":path.cdfde/to.wcdf:file" };
+    for ( int i = 0; i < paths.length; i++ ) {
+      // everything that ends in .cdfde will now end in .wcdf
+      Assert.assertEquals(
+        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] + ".cdfde" ), paths[ i ] + ".wcdf" );
+    }
+    for ( int i = 0; i < paths.length; i++ ) {
+      // if it doesn't end in .cdfde, it will just be returned the same
+      Assert.assertEquals(
+        dashboardWriterSpy.replaceCdfdeExtension( paths[ i ] ), paths[ i ] );
+    }
   }
 }
