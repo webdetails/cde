@@ -33,6 +33,7 @@ module.exports = function(config) {
       'test-js/legacy/mockDashboards.js',
       'resource/js/cdf-dd-config.js',
       'resource/js/jquery.treeTable.js',
+      'resource/js/jqueryFileTree.js',
       'resource/resources/ace/src/ace.js',
       'resource/js/cdf-dd-aceWrapper.js',
       'resource/js/cdf-dd-tablemanager.js',
