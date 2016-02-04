@@ -75,3 +75,5 @@ var exampleData_2 = [
   { 'id': 'second', 'parent': "UnIqEiD", 'type': "LayoutRow",
     properties: [{ 'name': "name", 'value': "second" }] }
 ];
+
+var CDFDDDataUrl = "/fake/path";
