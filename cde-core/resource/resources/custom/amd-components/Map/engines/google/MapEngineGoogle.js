@@ -646,7 +646,7 @@ define([
               }
             };
 
-            layerOptions.push(mapOpts[variant] || mapOpts.default);
+            layerOptions.push(mapOpts[variant] || mapOpts["default"]);
             layers.push("");
             break;
 
