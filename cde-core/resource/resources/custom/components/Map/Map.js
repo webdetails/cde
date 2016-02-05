@@ -1835,7 +1835,7 @@ define("cde/components/Map/Map.lifecycle", ["amd!cdf/lib/underscore"], function(
                 mapTypeId: google.maps.MapTypeId.HYBRID
               }
             };
-            layerOptions.push(mapOpts[variant] || mapOpts.default), layers.push("");
+            layerOptions.push(mapOpts[variant] || mapOpts["default"]), layers.push("");
             break;
 
           default:
