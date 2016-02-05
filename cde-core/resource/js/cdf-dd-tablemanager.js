@@ -1550,8 +1550,8 @@ var SelectMultiRenderer = CellRenderer.extend({
       if(typeof myself.postProcessValue === "function") {
         val = myself.postProcessValue(val);
       }
-      value = "['" + val.replace(/, /g, "','") + "']";
-      if(value === "['${p:Select options}']") {
+      value = '["' + val.replace(/, /g, '","') + '"]';
+      if(value === '["${p:Select options}"]') {
         value = "[]";
       }
       myself.logger.debug("Saving new value: " + value);
