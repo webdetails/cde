@@ -31,8 +31,10 @@ define([
         myself.requiredDashboard.setupDOM();
         myself.requiredDashboard._processComponents();
         myself.mapParameters(function() {
-          myself.requiredDashboard.init();
-          myself.postExec();
+          myself.requiredDashboard.on('cdf:postInit',function(event) { 
+            myself.postExec();
+         });
+        myself.requiredDashboard.init();
         });
       });
     },
