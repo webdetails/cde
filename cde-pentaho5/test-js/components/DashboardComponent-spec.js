@@ -125,5 +125,18 @@ define([
 
       dashboard.update(dashboardComponent);
     });
+
+    /**
+     * ## The Dashboard Component # must wait for the required Dashboard to finish executing
+     */
+     it("allows the external dashboard to finish executing before itself", function(done) {
+      makeAjaxSpy(true);
+     
+       dashboardComponent.once('cdf:postExecution', function() {
+         expect(dashboardComponent.requiredDashboard.runningCalls).toEqual(1);
+         done();
+      });
+       dashboard.update(dashboardComponent);
+    });
   });
 });
