@@ -944,7 +944,7 @@
      },
      {
       "name": "expression",
-      "value": "function f() {\n    if(!this.dashboard.view) {\n        return \"View is unavailable\";\n    }\n    res = \"\";\n    for(p in this.dashboard.view) {\n        if(this.dashboard.view.hasOwnProperty(p)) {\n            res += p + \"&nbsp;:&nbsp;\" + JSON.stringify(this.dashboard.view[p]) + \"<br>\";\n        }\n    }\n    return res;\n} ",
+      "value": "function f() {\r\n    if(!this.dashboard.view) {\r\n        return \"View is unavailable\";\r\n    }\r\n    res = \"\";\r\n    for(p in this.dashboard.view) {\r\n        if(this.dashboard.view.hasOwnProperty(p)) {\r\n            if(JSON.stringify(this.dashboard.view[p])!=\"null\"){\r\n              res += p + \"&nbsp;:&nbsp;\" + JSON.stringify(this.dashboard.view[p]) + \"<br>\";    \r\n            }\r\n            else{\r\n                return \"View is unavailable\";\r\n            }\r\n            \r\n        }\r\n    }\r\n    return res;\r\n} "
       "type": "JavaScript"
      },
      {
