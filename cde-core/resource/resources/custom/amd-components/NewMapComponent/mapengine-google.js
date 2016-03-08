@@ -334,12 +334,12 @@ define([
             var url;
             if(_.isArray(urlList)) {
               url = urlList[ (coord.x + coord.y + zoom) % urlList.length ];
-              var s =  _.template('${z}/${x}/${y}', {x: coord.x, y: coord.y, z: zoom}, {interpolate: /\$\{(.+?)\}/g});
+              var s =  _.template('${z}/${x}/${y}', {interpolate: /\$\{(.+?)\}/g})({x: coord.x, y: coord.y, z: zoom});
               url = myself._selectUrl(s, urlList);
             } else {
               url = urlList;
             }
-            return _.template(url, {x:coord.x, y:coord.y, z:zoom}, {interpolate: /\$\{(.+?)\}/g});
+            return _.template(url, {interpolate: /\$\{(.+?)\}/g})({x:coord.x, y:coord.y, z:zoom});
           }
         }
       }, options));
