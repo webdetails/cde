@@ -371,12 +371,12 @@ define([
             coord.x = ((coord.x % limit) + limit) % limit;
             var url;
             if (_.isArray(urlList)) {
-              var s = _.template('${z}/${x}/${y}', {x: coord.x, y: coord.y, z: zoom}, {interpolate: /\$\{(.+?)\}/g});
+              var s = _.template('${z}/${x}/${y}', {interpolate: /\$\{(.+?)\}/g})({x: coord.x, y: coord.y, z: zoom});
               url = myself._selectUrl(s, urlList);
             } else {
               url = urlList;
             }
-            return _.template(url, {x: coord.x, y: coord.y, z: zoom}, {interpolate: /\$\{(.+?)\}/g});
+            return _.template(url, {interpolate: /\$\{(.+?)\}/g})({x: coord.x, y: coord.y, z: zoom});
           }
         }
       }, options));
