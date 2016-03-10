@@ -385,7 +385,7 @@ var SaveRequests = {
 
     $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", saveSettingsParams, function(result) {
       try {
-        var json = eval("(" + result + ")");
+        var json = JSON.parse(result);
         if(json.status == "true") {
           myself.setDashboardWcdf(wcdf);
           // We need to reload the layout engine in case the rendererType changed
@@ -405,7 +405,7 @@ var SaveRequests = {
     var successFunction = function(result) {
       //$.getJSON("/pentaho/content/pentaho-cdf-dd/Syncronize", saveParams, function(json) {
       try {
-        var json = eval("(" + result + ")");
+        var json = JSON.parse(result);
         if(json.status == "true") {
           if(stripArgs.needsReload) {
             window.location.reload();
@@ -445,7 +445,7 @@ var SaveRequests = {
 
     var successFunction = function(result) {
       try {
-        var json = eval("(" + result + ")");
+        var json = JSON.parse(result);
         if(json.status == "true") {
           if(selectedFolder[0] == "/") {
             selectedFolder = selectedFolder.substring(1, selectedFolder.length);
@@ -540,7 +540,19 @@ var LoadRequests = {
     }
 
     $.post(wd.cde.endpoints.getPluginUrl() + "Syncronize", loadParams, function(result) {
-      var json = eval("(" + eval("(" + result + ")").result + ")");
+      var tmp = JSON.parse(result);
+
+      var json;
+      if (tmp) {
+        if (typeof tmp.result === 'string') {
+          json = JSON.parse(tmp.result);
+        } else {
+          json = tmp.result;
+        }
+      } else {
+        json = undefined;
+      }
+
       if(json && json.status == "true") {
         myself.setDashboardData(myself.unstrip(json.result.data));
         myself.setDashboardWcdf(json.result.wcdf);
@@ -567,7 +579,7 @@ var PreviewRequests = {
 
     var successFunction = function(result) {
       try {
-        var json = eval("(" + result + ")");
+        var json = JSON.parse(result);
         if(json.status == "true") {
           $.fancybox({
             type: "iframe",
