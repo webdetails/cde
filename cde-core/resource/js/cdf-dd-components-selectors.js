@@ -31,10 +31,13 @@ var ListenersRenderer = SelectMultiRenderer.extend({
     var data = Panel.getPanel(ComponentsPanel.MAIN_PANEL).getParameters();
     var _str = "{";
     $.each(data, function(i, val) {
-      _str += "'" + val.properties[0].value + "': '" + val.properties[0].value + "',";
+      _str += '"' + val.properties[0].value + '": "' + val.properties[0].value + '",';
     });
 
-    _str += " 'selected':" + (this.value.replace(/\$\{p:(.+?)\}/g, '$1')) + "}";
+    // this.value is already enclosured, but the enclosure can be both ' and "
+    // hence replace all ' with "
+    var selected = this.value.replace(/\$\{p:(.+?)\}/g, '$1').replace(/\'/g, '"');
+    _str += ' "selected":' + selected + "}";
     return _str;
   },
 

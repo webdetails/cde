@@ -49,7 +49,7 @@ Util.parseJsonResult = function(jsonStr){
 	var json = { status : false, result : 'Could not parse result.' }
 	if(jsonStr){
 		try{
-		 json = eval("(" + jsonStr + ")");//ToDo: is jquery's json parser a viable alternative?
+		  json = JSON.parse(jsonStr);
 		}
 		catch (e) {
 			this.logger.error('Could not parse json result �' + jsonStr + '�, ' + e);
