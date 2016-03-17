@@ -44,7 +44,8 @@ define([
         dataSourceMapping: [["dataSource", "dummyDataSource"]],
         executeAtStart: true,
         htmlObject: "sampleObject",
-        listeners: []
+        listeners: [],
+        oneWayMap: false
       });
       dashboard.addComponent(dashboardComponent);
 
@@ -121,6 +122,44 @@ define([
       dashboardComponent.once('cdf:postExecution', function() {
         expect(dashboardComponent.requiredDashboard.getDataSource("dummyDataSource").origin).toEqual("DashboardComponent");
         done();
+      });
+
+      dashboard.update(dashboardComponent);
+    });
+
+    /**
+     * ## The Dashboard Component # allow parameter mapping in both directions
+     */
+    it("allow parameter mapping in both directions", function(done) {
+      makeAjaxSpy();
+
+      dashboard.setParameter("param1", 1);
+      dashboardComponent.once('cdf:postExecution', function() {
+        dashboardComponent.requiredDashboard.once("dummyParam:fireChange", function() {
+          expect(dashboard.getParameterValue("param1")).toEqual("1");
+          expect(dashboard.getParameterValue("param1")).not.toEqual(1);
+          done();
+        });
+        dashboardComponent.requiredDashboard.fireChange("dummyParam", "1");
+      });
+
+      dashboard.update(dashboardComponent);
+    });
+
+    /**
+     * ## The Dashboard Component # should not allow parameter mapping in both directions if oneWayMap is activated
+     */
+    it("should not allow parameter mapping in both directions if oneWayMap is activated", function(done) {
+      makeAjaxSpy();
+
+      dashboardComponent.oneWayMap = true;
+      dashboard.setParameter("param1", 1);
+      dashboardComponent.once('cdf:postExecution', function() {
+        dashboardComponent.requiredDashboard.once("dummyParam:fireChange", function() {
+          expect(dashboard.getParameterValue("param1")).not.toEqual("1");
+          done();
+        });
+        dashboardComponent.requiredDashboard.fireChange("dummyParam", "1");
       });
 
       dashboard.update(dashboardComponent);
