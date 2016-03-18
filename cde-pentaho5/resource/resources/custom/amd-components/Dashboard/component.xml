@@ -20,6 +20,7 @@
       <Property>refreshPeriod</Property>
       <Property>htmlObject</Property>
       <Property>listeners</Property>
+      <Property>oneWayMap</Property>
     </Model>
     <Implementation supportsLegacy="false" supportsAMD="true">
       <Code src="DashboardComponent.js" />
@@ -60,6 +61,19 @@
             <Tooltip>Map datasources to the dashboard</Tooltip>
             <InputType>DataSourceMapping</InputType>
             <OutputType>Array</OutputType>
+            <Order>30</Order>
+            <Version>1.0</Version>
+          </Header>
+        </DesignerProperty>
+        <DesignerProperty>
+          <Header>
+            <Name>oneWayMap</Name>
+            <Parent>BaseProperty</Parent>
+            <DefaultValue>"false"</DefaultValue>
+            <Description>One Way Map</Description>
+            <Tooltip>If true parameter propagation will only go from this dashboard, to the required one</Tooltip>
+            <InputType>Boolean</InputType>
+            <OutputType>Boolean</OutputType>
             <Order>30</Order>
             <Version>1.0</Version>
           </Header>

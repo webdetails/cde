@@ -31,7 +31,7 @@ define([
         myself.requiredDashboard.setupDOM();
         myself.requiredDashboard._processComponents();
         myself.mapParameters(function() {
-          myself.requiredDashboard.on('cdf:postInit',function(event) { 
+          myself.requiredDashboard.on('cdf:postInit', function(event) { 
             myself.postExec();
          });
         myself.requiredDashboard.init();
@@ -78,9 +78,16 @@ define([
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
-                reqDash.fireChange(otherParam, evt.value);
+                if(reqDash.getParameterValue(otherParam) !== evt.value) {
+                  reqDash.fireChange(otherParam, evt.value);
+                }
               };
               myself.dashboard.on(eventName, fun);
+              reqDash.on(otherParam + ":fireChange", function (evt) {
+                if((myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
+                  myself.dashboard.fireChange(myParam, evt.value);
+                }
+              });
 
               if(!myself.registeredEvents[eventName]) {
                 myself.registeredEvents[eventName] = [];
