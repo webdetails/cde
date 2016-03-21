@@ -79,19 +79,19 @@ define([
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
                 if(reqDash.getParameterValue(otherParam) !== evt.value) {
-                  myself.loopThroughMapping(function(myParam, otherParam) {
-                    reqDash.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
-                  });
-                  reqDash.fireChange(otherParam, evt.value);
+                   myself.loopThroughMapping(function(myParam, otherParam) {
+                     reqDash.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
+                   });
+                 reqDash.fireChange(otherParam, evt.value);
                 }
               };
               myself.dashboard.on(eventName, fun);
               reqDash.on(otherParam + ":fireChange", function (evt) {
                 if((myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
-                  myself.loopThroughMapping(function(myParam, otherParam) {
-                    myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
-                  });
-                  myself.dashboard.fireChange(myParam, evt.value);
+                   myself.loopThroughMapping(function(myParam, otherParam) {
+                     myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
+                   });
+                 myself.dashboard.fireChange(myParam, evt.value);
                 }
               });
 
