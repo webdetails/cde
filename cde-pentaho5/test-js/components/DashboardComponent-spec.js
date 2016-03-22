@@ -165,6 +165,23 @@ define([
 
       dashboard.update(dashboardComponent);
     });
+    /**
+     * ## The Dashboard Component # should not allow parameter mapping if propagation is paused
+     */
+    it("should not allow parameter mapping if propagation is paused", function(done) {
+      makeAjaxSpy();
+ 
+      dashboardComponent.once('cdf:postExecution', function() {
+        dashboardComponent.requiredDashboard.once("dummyParam:fireChange", function() {
+          expect(dashboard.getParameterValue("param1")).not.toEqual("test");
+          done();
+        });
+        dashboardComponent.pausePropagation();
+        dashboardComponent.requiredDashboard.fireChange("dummyParam", "test");
+      });
+
+      dashboard.update(dashboardComponent);
+    });
 
     /**
      * ## The Dashboard Component # should propagate all parameters when one parameter changes from the main dashboard to the required dashboard

@@ -19,6 +19,17 @@ define([
 
   return UnmanagedComponent.extend({
 
+    /**
+     * @summary Pauses parameter propagation if true.
+     * @description Flag that controls if the mapped parameters should propagate or not.
+     *
+     * @name cdf.components.DashboardComponent#_pause
+     * @type {boolean}
+     * @default false
+     * @private
+     */
+    _pause: false,
+
     update: function() {
       if(!this.preExec()) {
         return false;
@@ -78,7 +89,7 @@ define([
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
-                if(reqDash.getParameterValue(otherParam) !== evt.value) {
+                if((!myself._pause) && (reqDash.getParameterValue(otherParam) !== evt.value)) {
                   myself.loopThroughMapping(function(myParam, otherParam) {
                     reqDash.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
                   });
@@ -87,7 +98,7 @@ define([
               };
               myself.dashboard.on(eventName, fun);
               reqDash.on(otherParam + ":fireChange", function (evt) {
-                if((myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
+                if((!myself._pause) && (myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
                   myself.loopThroughMapping(function(myParam, otherParam) {
                     myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
                   });
@@ -111,6 +122,24 @@ define([
           withCredentials: true
         }
       });
+    },
+
+    /**
+     * @summary Pauses parameter propagation.
+     * @description <p>Method that causes parameters to stop propagating</p>.
+     *              <p>To resume propagation {@link cdf.components.DashboardComponent#resumePropagation|resumePropagation} should be called.</p>
+     */
+    pausePropagation: function () {
+      this._pause = true;
+    },
+
+    /**
+     * @summary Resumes parameter propagation.
+     * @description <p>Method that allows parameters to propagate.</p>
+     *              <p>To stop propagation {@link cdf.components.DashboardComponent#pausePropagation|pausePropagation} should be called.</p>
+     */
+    resumePropagation: function () {
+      this._pause = false;
     },
 
     loopThroughMapping: function(fun){
