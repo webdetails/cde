@@ -19,6 +19,8 @@ define([
 
   return UnmanagedComponent.extend({
 
+    pause:false,
+
     update: function() {
       if(!this.preExec()) {
         return false;
@@ -78,7 +80,7 @@ define([
             if(myself.isParameterPublic(otherParam)) {
               var eventName = myParam + ":fireChange";
               var fun = function(evt) {
-                if(reqDash.getParameterValue(otherParam) !== evt.value) {
+                if((!myself.pause) && (reqDash.getParameterValue(otherParam) !== evt.value)) {
                    myself.loopThroughMapping(function(myParam, otherParam) {
                      reqDash.setParameter(otherParam, myself.dashboard.getParameterValue(myParam));
                    });
@@ -87,7 +89,7 @@ define([
               };
               myself.dashboard.on(eventName, fun);
               reqDash.on(otherParam + ":fireChange", function (evt) {
-                if((myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
+                if((!myself.pause) && (myself.oneWayMap == false) && (myself.dashboard.getParameterValue(myParam) !== evt.value)) {
                    myself.loopThroughMapping(function(myParam, otherParam) {
                      myself.dashboard.setParameter(myParam, reqDash.getParameterValue(otherParam));
                    });
@@ -111,6 +113,14 @@ define([
           withCredentials: true
         }
       });
+    },
+
+    pausePropagation : function () {
+      this.pause = true;
+    },
+
+    resumePropagation : function () {
+      this.pause = false;
     },
 
     loopThroughMapping: function(fun){
