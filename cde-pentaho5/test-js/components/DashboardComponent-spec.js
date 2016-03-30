@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -30,6 +30,7 @@ define([
       dashboard.init();
       dashboard.addParameter("param1", "");
       dashboard.addParameter("param2", "");
+      dashboard.addParameter("param3", "");
 
       dashboard.addDataSource("dataSource", {
         origin: "DashboardComponent"
@@ -40,7 +41,7 @@ define([
         name: "render_test",
         priority: 5,
         dashboardPath: "cde/test/dummyDashboard",
-        parameterMapping: [["param1", "dummyParam"], ["param2", "privateParam"]],
+        parameterMapping: [["param1", "dummyParam"], ["param2", "privateParam"], ["param3", "multiMapParam"]],
         dataSourceMapping: [["dataSource", "dummyDataSource"]],
         executeAtStart: true,
         htmlObject: "sampleObject",
@@ -53,7 +54,7 @@ define([
 
     var makeAjaxSpy = function(datasources) {
       var successObj = {
-        parameters: ["dummyParam"],
+        parameters: ["dummyParam", "multiMapParam"],
         dataSources: datasources ? ["dummyDataSource"] : [],
         // split function to bypass i18n error
         split: function() { return ""; }
@@ -160,6 +161,45 @@ define([
           done();
         });
         dashboardComponent.requiredDashboard.fireChange("dummyParam", "1");
+      });
+
+      dashboard.update(dashboardComponent);
+    });
+
+    /**
+     * ## The Dashboard Component # should propagate all parameters when one parameter changes from the main dashboard to the required dashboard
+     */
+    it("should propagate all parameters when one parameter changes from the main dashboard to the required dashboard", function(done) {
+      makeAjaxSpy();
+
+      dashboardComponent.once('cdf:postExecution', function() {
+        dashboardComponent.requiredDashboard.once("multiMapParam:fireChange", function() {
+          expect(dashboardComponent.requiredDashboard.getParameterValue("multiMapParam")).toEqual("test");
+          expect(dashboardComponent.requiredDashboard.getParameterValue("dummyParam")).toEqual("custom");
+          done();
+        });
+        dashboard.setParameter("param1", "custom");
+        dashboard.fireChange("param3", "test");
+       
+      });
+
+      dashboard.update(dashboardComponent);
+    });
+    
+    /**
+     * ## The Dashboard Component # should propagate all parameters when one parameter changes from required dashboard to the main dashboard
+     */
+    it("should propagate all parameters when one parameter changes from required dashboard to the main dashboard", function(done) {
+      makeAjaxSpy();
+
+      dashboardComponent.once('cdf:postExecution', function() {
+        dashboard.once("param1:fireChange", function() {
+          expect(dashboard.getParameterValue("param1")).toEqual("test");
+          expect(dashboard.getParameterValue("param3")).toEqual("custom");
+          done();
+        });
+        dashboardComponent.requiredDashboard.setParameter("multiMapParam", "custom");
+        dashboardComponent.requiredDashboard.fireChange("dummyParam", "test");
       });
 
       dashboard.update(dashboardComponent);

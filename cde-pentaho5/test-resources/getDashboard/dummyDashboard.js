@@ -1,5 +1,5 @@
 /*!
- * Copyright 2002 - 2015 Webdetails, a Pentaho company. All rights reserved.
+ * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
  * This software was developed by Webdetails and is provided under the terms
  * of the Mozilla Public License, Version 2.0, or any later version. You may not use
@@ -84,6 +84,8 @@ define('cde/test/dummyDashboard', ['cdf/Dashboard.Bootstrap', 'cdf/Logger', 'cdf
       dashboard.setParameterViewMode("dummyParam", "unused");
       dashboard.addParameter("privateParam", "");
       dashboard.setParameterViewMode("privateParam", "unused");
+      dashboard.addParameter("multiMapParam", "");
+      dashboard.setParameterViewMode("multiMapParam", "unused");
 
       dashboard.addComponents([render_button]);
 
