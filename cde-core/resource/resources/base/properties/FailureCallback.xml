@@ -1,0 +1,14 @@
+<DesignerProperty>
+<Header>
+	<Name>failureCallback</Name>
+	<Parent>BaseProperty</Parent>
+	<DefaultValue></DefaultValue>
+	<Description>Failure Callback</Description>
+	<Tooltip>Function to be called after a failed query</Tooltip>
+	<InputType>JavaScript</InputType>
+	<Advanced>true</Advanced>
+	<OutputType>Function</OutputType>
+	<Order>92</Order>
+	<Version>1.0</Version>
+</Header>
+</DesignerProperty>
