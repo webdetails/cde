@@ -1,4 +1,3 @@
-//WINGMAN TEST
 /*!
  * Copyright 2002 - 2016 Webdetails, a Pentaho company. All rights reserved.
  *
