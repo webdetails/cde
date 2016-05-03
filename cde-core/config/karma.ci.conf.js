@@ -60,8 +60,16 @@ module.exports = function(config) {
     reporters: ['progress', 'junit', 'html', 'coverage'],
 
     coverageReporter: {
-      type: 'cobertura',
-      dir: 'bin/test-reports/coverage/reports/'
+      reporters: [
+        {
+          type: 'html',
+          dir:  'bin/test-reports/coverage/html/reports/'
+        },
+        {
+          type: 'cobertura',
+          dir:  'bin/test-reports/coverage/reports/'
+        }
+      ]
     },
 
     junitReporter: {
