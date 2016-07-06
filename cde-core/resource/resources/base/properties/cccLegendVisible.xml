@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the legend items of the color axis should be visible (applies to color axes of discrete domain).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>334</Order>
+    <Order>336</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
