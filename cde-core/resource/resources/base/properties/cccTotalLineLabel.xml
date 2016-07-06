@@ -7,7 +7,7 @@
     <Tooltip>The description of the legend item of the water line.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>499</Order>
+    <Order>519</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

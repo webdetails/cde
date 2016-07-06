@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccColor2AxisPreserveMap</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>color2AxisPreserveMap</Description>
+    <Tooltip>Indicates if the color map used in the first render is to be preserved, regardless of having been explicitly specified through or inferred from .</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>277</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

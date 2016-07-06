@@ -7,7 +7,7 @@
     <Tooltip>The minimum spacing between tick labels, in em units (does not apply to discrete-hierarchical axes).</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>359</Order>
+    <Order>368</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

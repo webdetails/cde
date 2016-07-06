@@ -7,7 +7,7 @@
     <Tooltip>Controls the type of scale domain coordination that should be performed amongst the axes of the same id of each small chart (applies to continuous axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>354</Order>
+    <Order>362</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

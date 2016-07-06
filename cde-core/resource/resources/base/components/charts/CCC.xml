@@ -57,6 +57,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
           <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
@@ -65,9 +66,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -78,6 +81,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -108,8 +113,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -162,8 +169,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -174,6 +183,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -192,8 +203,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -204,6 +217,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -224,6 +239,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -241,6 +257,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -248,6 +265,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -282,6 +300,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -381,8 +400,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -433,8 +454,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -445,6 +468,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -463,8 +488,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -475,6 +502,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -497,6 +526,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -514,6 +544,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -521,6 +552,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -556,6 +588,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -656,8 +689,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -713,8 +748,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -725,6 +762,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -746,6 +785,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -757,6 +797,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -764,6 +805,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -933,6 +975,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="areasVisible">cccAreasVisible</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
@@ -942,9 +985,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -955,6 +1000,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -985,8 +1032,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -1038,8 +1087,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -1050,6 +1101,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -1068,8 +1121,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -1080,6 +1135,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -1100,6 +1157,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -1117,6 +1175,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -1124,6 +1183,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -1158,6 +1218,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -1313,6 +1374,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -1321,11 +1383,14 @@
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
           <Property name="shape">cccShape</Property>
+          <Property name="sizeAxisDomainAlign">cccSizeAxisDomainAlign</Property>
+          <Property name="sizeAxisFixedLength">cccSizeAxisFixedLength</Property>
           <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
           <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
           <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
           <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
           <Property name="sizeRole">cccSizeRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
           <Property name="titleAlign">cccTitleAlign</Property>
@@ -1391,6 +1456,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="areasVisible">cccAreasVisible</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
@@ -1400,9 +1466,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -1413,6 +1481,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -1443,8 +1513,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -1496,8 +1568,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -1508,6 +1582,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -1526,8 +1602,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -1538,6 +1616,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -1558,6 +1638,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -1575,6 +1656,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -1582,6 +1664,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -1616,6 +1699,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -1674,8 +1758,10 @@
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -1686,6 +1772,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -1712,12 +1800,14 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
           <Property name="colorDomain">cccColorDomain</Property>
           <Property name="colorMax">cccColorMax</Property>
           <Property name="colorMin">cccColorMin</Property>
           <Property name="colorMissing">cccColorMissing</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorScaleType">cccColorScaleType</Property>
           <Property name="colorTransform">cccColorTransform</Property>
@@ -1771,8 +1861,10 @@
           <Property name="nullShape">cccNullShape</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -1783,6 +1875,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -1804,6 +1898,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -1812,11 +1907,14 @@
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
           <Property name="shape">cccShape</Property>
+          <Property name="sizeAxisDomainAlign">cccSizeAxisDomainAlign</Property>
+          <Property name="sizeAxisFixedLength">cccSizeAxisFixedLength</Property>
           <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
           <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
           <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
           <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
           <Property name="sizeRole">cccSizeRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -1908,8 +2006,10 @@
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -1920,6 +2020,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -1946,12 +2048,14 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
           <Property name="colorDomain">cccColorDomain</Property>
           <Property name="colorMax">cccColorMax</Property>
           <Property name="colorMin">cccColorMin</Property>
           <Property name="colorMissing">cccColorMissing</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorScaleType">cccColorScaleType</Property>
           <Property name="colorTransform">cccColorTransform</Property>
@@ -2005,8 +2109,10 @@
           <Property name="nullShape">cccNullShape</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -2017,6 +2123,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -2038,6 +2146,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -2046,11 +2155,14 @@
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
           <Property name="shape">cccShape</Property>
+          <Property name="sizeAxisDomainAlign">cccSizeAxisDomainAlign</Property>
+          <Property name="sizeAxisFixedLength">cccSizeAxisFixedLength</Property>
           <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
           <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
           <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
           <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
           <Property name="sizeRole">cccSizeRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -2183,8 +2295,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -2235,8 +2349,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -2247,6 +2363,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -2265,8 +2383,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -2277,6 +2397,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -2299,6 +2421,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -2316,6 +2439,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -2323,6 +2447,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -2357,6 +2482,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -2421,6 +2547,7 @@
           <Property name="clearSelectionMode">cccClearSelectionMode</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -2478,12 +2605,14 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -2566,6 +2695,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
           <Property name="baseAxisBandSizeMin">cccBaseAxisBandSizeMin</Property>
@@ -2574,9 +2704,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -2587,6 +2719,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -2617,8 +2751,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -2671,8 +2807,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -2683,6 +2821,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -2701,8 +2841,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -2713,6 +2855,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -2733,6 +2877,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -2750,6 +2895,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -2757,6 +2903,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -2791,6 +2938,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -2848,6 +2996,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="areasVisible">cccAreasVisible</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
@@ -2857,9 +3006,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -2870,6 +3021,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -2900,8 +3053,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -2953,8 +3108,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -2965,6 +3122,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -2983,8 +3142,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -2995,6 +3156,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -3015,6 +3178,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -3032,6 +3196,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -3039,6 +3204,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -3073,6 +3239,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -3130,6 +3297,7 @@
           <Property name="colors">cccColors</Property>
           <Property name="title">title</Property>
           <Property name="animate">cccAnimate</Property>
+          <Property name="areasFillOpacity">cccAreasFillOpacity</Property>
           <Property name="areasVisible">cccAreasVisible</Property>
           <Property name="baseAxisBandSize">cccBaseAxisBandSize</Property>
           <Property name="baseAxisBandSizeMax">cccBaseAxisBandSizeMax</Property>
@@ -3139,9 +3307,11 @@
           <Property name="baseAxisBandSpacingMin">cccBaseAxisBandSpacingMin</Property>
           <Property name="baseAxisClickAction">cccBaseAxisClickAction</Property>
           <Property name="baseAxisDesiredTickCount">cccBaseAxisDesiredTickCount</Property>
+          <Property name="baseAxisDomainAlign">cccBaseAxisDomainAlign</Property>
           <Property name="baseAxisDomainRoundMode">cccBaseAxisDomainRoundMode</Property>
           <Property name="baseAxisDomainScope">cccBaseAxisDomainScope</Property>
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
+          <Property name="baseAxisFixedLength">cccBaseAxisFixedLength</Property>
           <Property name="baseAxisFixedMax">cccBaseAxisFixedMax</Property>
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
@@ -3152,6 +3322,8 @@
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
+          <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
+          <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
           <Property name="baseAxisSize">cccBaseAxisSize</Property>
           <Property name="baseAxisSizeMax">cccBaseAxisSizeMax</Property>
           <Property name="baseAxisTickExponentMax">cccBaseAxisTickExponentMax</Property>
@@ -3182,8 +3354,10 @@
           <Property name="color2AxisLegendDrawMarker">cccColor2AxisLegendDrawMarker</Property>
           <Property name="color2AxisLegendShape">cccColor2AxisLegendShape</Property>
           <Property name="color2AxisLegendVisible">cccColor2AxisLegendVisible</Property>
+          <Property name="color2AxisPreserveMap">cccColor2AxisPreserveMap</Property>
           <Property name="color2AxisTransform">cccColor2AxisTransform</Property>
           <Property name="color2AxisUnbound">cccColor2AxisUnbound</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -3235,8 +3409,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="ortho2AxisDesiredTickCount">cccOrtho2AxisDesiredTickCount</Property>
+          <Property name="ortho2AxisDomainAlign">cccOrtho2AxisDomainAlign</Property>
           <Property name="ortho2AxisDomainRoundMode">cccOrtho2AxisDomainRoundMode</Property>
           <Property name="ortho2AxisDomainScope">cccOrtho2AxisDomainScope</Property>
+          <Property name="ortho2AxisFixedLength">cccOrtho2AxisFixedLength</Property>
           <Property name="ortho2AxisFixedMax">cccOrtho2AxisFixedMax</Property>
           <Property name="ortho2AxisFixedMin">cccOrtho2AxisFixedMin</Property>
           <Property name="ortho2AxisFont">cccOrtho2AxisFont</Property>
@@ -3247,6 +3423,8 @@
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
           <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
+          <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
+          <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
           <Property name="ortho2AxisSize">cccOrtho2AxisSize</Property>
           <Property name="ortho2AxisSizeMax">cccOrtho2AxisSizeMax</Property>
           <Property name="ortho2AxisTickExponentMax">cccOrtho2AxisTickExponentMax</Property>
@@ -3265,8 +3443,10 @@
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -3277,6 +3457,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -3297,6 +3479,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plot2">cccPlot2</Property>
+          <Property name="plot2AreasFillOpacity">cccPlot2AreasFillOpacity</Property>
           <Property name="plot2AreasVisible">cccPlot2AreasVisible</Property>
           <Property name="plot2ColorAxis">cccPlot2ColorAxis</Property>
           <Property name="plot2DotsVisible">cccPlot2DotsVisible</Property>
@@ -3314,6 +3497,7 @@
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -3321,6 +3505,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -3355,6 +3540,7 @@
           <Property name="tooltipOffset">cccTooltipOffset</Property>
           <Property name="tooltipOpacity">cccTooltipOpacity</Property>
           <Property name="tooltipUseCorners">cccTooltipUseCorners</Property>
+          <Property name="trendAreasFillOpacity">cccTrendAreasFillOpacity</Property>
           <Property name="trendAreasVisible">cccTrendAreasVisible</Property>
           <Property name="trendColorAxis">cccTrendColorAxis</Property>
           <Property name="trendDotsVisible">cccTrendDotsVisible</Property>
@@ -3417,6 +3603,7 @@
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
           <Property name="colorMode">cccColorMode</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorSliceBrightnessFactor">cccColorSliceBrightnessFactor</Property>
           <Property name="colorTransform">cccColorTransform</Property>
@@ -3453,18 +3640,22 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="sizeAxisDomainAlign">cccSizeAxisDomainAlign</Property>
+          <Property name="sizeAxisFixedLength">cccSizeAxisFixedLength</Property>
           <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
           <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
           <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
           <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
           <Property name="sizeRole">cccSizeRole</Property>
           <Property name="sliceOrder">cccSliceOrder</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -3547,6 +3738,7 @@
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
           <Property name="colorMode">cccColorMode</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -3598,6 +3790,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -3605,11 +3798,14 @@
           <Property name="selectable">cccSelectable</Property>
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
+          <Property name="sizeAxisDomainAlign">cccSizeAxisDomainAlign</Property>
+          <Property name="sizeAxisFixedLength">cccSizeAxisFixedLength</Property>
           <Property name="sizeAxisFixedMax">cccSizeAxisFixedMax</Property>
           <Property name="sizeAxisFixedMin">cccSizeAxisFixedMin</Property>
           <Property name="sizeAxisOriginIsZero">cccSizeAxisOriginIsZero</Property>
           <Property name="sizeAxisUseAbs">cccSizeAxisUseAbs</Property>
           <Property name="sizeRole">cccSizeRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>
@@ -3725,6 +3921,7 @@
           <Property name="clearSelectionMode">cccClearSelectionMode</Property>
           <Property name="clickable">cccClickable</Property>
           <Property name="clickAction">cccClickAction</Property>
+          <Property name="colorPreserveMap">cccColorPreserveMap</Property>
           <Property name="colorRole">cccColorRole</Property>
           <Property name="colorTransform">cccColorTransform</Property>
           <Property name="colorUnbound">cccColorUnbound</Property>
@@ -3776,8 +3973,10 @@
           <Property name="nullInterpolationMode">cccNullInterpolationMode</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
+          <Property name="orthoAxisDomainAlign">cccOrthoAxisDomainAlign</Property>
           <Property name="orthoAxisDomainRoundMode">cccOrthoAxisDomainRoundMode</Property>
           <Property name="orthoAxisDomainScope">cccOrthoAxisDomainScope</Property>
+          <Property name="orthoAxisFixedLength">cccOrthoAxisFixedLength</Property>
           <Property name="orthoAxisFixedMax">cccOrthoAxisFixedMax</Property>
           <Property name="orthoAxisFixedMin">cccOrthoAxisFixedMin</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
@@ -3788,6 +3987,8 @@
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
+          <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
+          <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
           <Property name="orthoAxisSize">cccOrthoAxisSize</Property>
           <Property name="orthoAxisSizeMax">cccOrthoAxisSizeMax</Property>
           <Property name="orthoAxisTickExponentMax">cccOrthoAxisTickExponentMax</Property>
@@ -3811,6 +4012,7 @@
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
           <Property name="pointingMode">cccPointingMode</Property>
+          <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
           <Property name="renderedCallback">cccRenderedCallback</Property>
@@ -3818,6 +4020,7 @@
           <Property name="selectionChangedAction">cccSelectionChangedAction</Property>
           <Property name="seriesInRows">cccSeriesInRows</Property>
           <Property name="seriesRole">cccSeriesRole</Property>
+          <Property name="slidingWindow">cccSlidingWindow</Property>
           <Property name="smallAspectRatio">cccSmallAspectRatio</Property>
           <Property name="smallContentMargins">cccSmallContentMargins</Property>
           <Property name="smallContentPaddings">cccSmallContentPaddings</Property>

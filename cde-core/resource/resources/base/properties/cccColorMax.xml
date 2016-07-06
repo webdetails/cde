@@ -7,7 +7,7 @@
     <Tooltip>The maximum color (applies to numeric domain axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>275</Order>
+    <Order>281</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
