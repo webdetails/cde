@@ -7,7 +7,7 @@
     <Tooltip>The color to use when an optional color role is unbound.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>284</Order>
+    <Order>291</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

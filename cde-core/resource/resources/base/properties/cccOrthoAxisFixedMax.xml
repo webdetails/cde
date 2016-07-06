@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>orthoAxisFixedMax</Description>
-    <Tooltip>The fixed maximum domain value that the axis will show (applies to continuous axes).</Tooltip>
+    <Tooltip>The fixed maximum value of the axis domain (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>394</Order>
+    <Order>407</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -1,0 +1,19 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccOrtho2AxisDomainAlign</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>center</DefaultValue>
+    <Description>ortho2AxisDomainAlign</Description>
+    <Tooltip>The domain alignment to use when the domain has a fixed or implied length (applies to continuous axes).</Tooltip>
+    <InputType type="valuelist"/>
+    <OutputType>String</OutputType>
+    <Order>360</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+  <Values>
+    <Value display="Center">center</Value>
+    <Value display="Max">max</Value>
+    <Value display="Min">min</Value>
+  </Values>
+</DesignerProperty>

@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccAreasFillOpacity</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>0.5</DefaultValue>
+    <Description>areasFillOpacity</Description>
+    <Tooltip>A value that is multiplied by the opacity value of the area's base color.</Tooltip>
+    <InputType>Float</InputType>
+    <OutputType>Number</OutputType>
+    <Order>203</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

@@ -4,10 +4,10 @@
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
     <Description>baseAxisFixedMin</Description>
-    <Tooltip>The fixed minimum domain value that the axis will show (applies to continuous axes).</Tooltip>
+    <Tooltip>The fixed minimum value of the axis domain (applies to continuous axes).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>222</Order>
+    <Order>225</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

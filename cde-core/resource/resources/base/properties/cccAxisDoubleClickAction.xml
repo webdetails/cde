@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when the user double-clicks on a bullet's title or sub-title.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>204</Order>
+    <Order>205</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
