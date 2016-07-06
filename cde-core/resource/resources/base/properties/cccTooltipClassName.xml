@@ -7,7 +7,7 @@
     <Tooltip>A custom class to mark the root tooltip element.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>509</Order>
+    <Order>511</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
