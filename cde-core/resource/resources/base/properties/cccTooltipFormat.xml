@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called to build the tooltip of a visual element.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>515</Order>
+    <Order>518</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

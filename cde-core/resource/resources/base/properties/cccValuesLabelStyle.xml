@@ -7,7 +7,7 @@
     <Tooltip>The style used to place value labels.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>544</Order>
+    <Order>547</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The value visual role is a plot-level visual role that represents its main measure under analysis, specifically, it is visually encoded by the orthogonal position of points.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>541</Order>
+    <Order>544</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
