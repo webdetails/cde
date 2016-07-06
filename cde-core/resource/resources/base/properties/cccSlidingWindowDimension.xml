@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccSlidingWindowDimension</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue></DefaultValue>
+    <Description>slidingWindowDimension</Description>
+    <Tooltip>The name of the dimension associated with the sliding window.</Tooltip>
+    <InputType>String</InputType>
+    <OutputType>String</OutputType>
+    <Order>484</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

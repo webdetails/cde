@@ -1,0 +1,14 @@
+<DesignerProperty>
+  <Header>
+    <Name>cccPreserveLayout</Name>
+    <Parent>BaseProperty</Parent>
+    <DefaultValue>false</DefaultValue>
+    <Description>preserveLayout</Description>
+    <Tooltip>Indicates if the layout should be preserved between renders.</Tooltip>
+    <InputType>Boolean</InputType>
+    <OutputType>Boolean</OutputType>
+    <Order>464</Order>
+    <Advanced>true</Advanced>
+    <Version>2.0</Version>
+  </Header>
+</DesignerProperty>

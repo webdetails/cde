@@ -7,7 +7,7 @@
     <Tooltip>The maximum ticks' major unit (difference in domain value between consecutive ticks).</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>372</Order>
+    <Order>385</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

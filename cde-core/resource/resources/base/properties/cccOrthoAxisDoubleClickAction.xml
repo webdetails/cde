@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called when the user double-clicks on a tick label (applies to discrete axes).</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>393</Order>
+    <Order>407</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
