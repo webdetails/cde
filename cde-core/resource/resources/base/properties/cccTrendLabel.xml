@@ -7,7 +7,7 @@
     <Tooltip>A description to show next to the trended data.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>527</Order>
+    <Order>530</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

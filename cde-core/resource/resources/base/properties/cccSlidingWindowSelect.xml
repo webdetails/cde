@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccValueFormat</Name>
+    <Name>cccSlidingWindowSelect</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue></DefaultValue>
-    <Description>valueFormat</Description>
-    <Tooltip>A function that formats the non-null values of numeric dimensions.</Tooltip>
+    <Description>slidingWindowSelect</Description>
+    <Tooltip>A function that, given a dataset, selects the data to be removed.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>543</Order>
+    <Order>486</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
