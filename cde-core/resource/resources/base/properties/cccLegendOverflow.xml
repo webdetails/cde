@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccLegendLegendOverflow</Name>
+    <Name>cccLegendOverflow</Name>
     <Parent>BaseProperty</Parent>
     <DefaultValue>clip</DefaultValue>
-    <Description>legendLegendOverflow</Description>
+    <Description>legendOverflow</Description>
     <Tooltip>The behavior of the legend panel when an overflow is detected.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>327</Order>
+    <Order>329</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
