@@ -7,7 +7,7 @@
     <Tooltip>The space between bullets, in pixel units.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>263</Order>
+    <Order>265</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

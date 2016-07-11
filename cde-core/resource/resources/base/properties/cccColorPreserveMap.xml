@@ -7,7 +7,7 @@
     <Tooltip>Indicates if the color map used in the first render is to be preserved, regardless of having been explicitly specified through or inferred from .</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>286</Order>
+    <Order>288</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

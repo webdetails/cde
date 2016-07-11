@@ -7,7 +7,7 @@
     <Tooltip>The side of the bullet where the title and sub-title are placed.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>266</Order>
+    <Order>268</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

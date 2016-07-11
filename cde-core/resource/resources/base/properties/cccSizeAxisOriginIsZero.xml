@@ -7,7 +7,7 @@
     <Tooltip>Indicates if it should be ensured that zero domain value is shown (applies to numeric axes).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>479</Order>
+    <Order>482</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

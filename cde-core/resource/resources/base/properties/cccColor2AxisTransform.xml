@@ -7,7 +7,7 @@
     <Tooltip>The color transform function.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>278</Order>
+    <Order>280</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

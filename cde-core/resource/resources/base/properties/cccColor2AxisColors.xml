@@ -7,7 +7,7 @@
     <Tooltip>The colors of a color axis.</Tooltip>
     <InputType>Array</InputType>
     <OutputType>Array</OutputType>
-    <Order>271</Order>
+    <Order>273</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
