@@ -7,7 +7,7 @@
     <Tooltip>The domain length to show on the sliding window axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>485</Order>
+    <Order>488</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

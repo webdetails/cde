@@ -75,6 +75,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -183,7 +185,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -217,7 +218,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -377,6 +377,8 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
@@ -473,7 +475,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -507,7 +508,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -669,6 +669,8 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
@@ -772,7 +774,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -1009,6 +1010,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -1116,7 +1119,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -1150,7 +1152,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -1307,6 +1308,8 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
@@ -1372,6 +1375,8 @@
           <Property name="orthoAxisDoubleClickAction">cccOrthoAxisDoubleClickAction</Property>
           <Property name="orthoAxisFont">cccOrthoAxisFont</Property>
           <Property name="orthoAxisGrid">cccOrthoAxisGrid</Property>
+          <Property name="orthoAxisLabelDesiredAngles">cccOrthoAxisLabelDesiredAngles</Property>
+          <Property name="orthoAxisLabelRotationDirection">cccOrthoAxisLabelRotationDirection</Property>
           <Property name="orthoAxisLabelSpacingMin">cccOrthoAxisLabelSpacingMin</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
@@ -1498,6 +1503,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -1605,7 +1612,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -1639,7 +1645,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -1798,7 +1803,6 @@
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
-          <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
           <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
@@ -1903,7 +1907,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -2051,7 +2054,6 @@
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOriginIsZero">cccBaseAxisOriginIsZero</Property>
-          <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
           <Property name="baseAxisPosition">cccBaseAxisPosition</Property>
           <Property name="baseAxisPreserveRatio">cccBaseAxisPreserveRatio</Property>
           <Property name="baseAxisRatio">cccBaseAxisRatio</Property>
@@ -2156,7 +2158,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -2305,6 +2306,8 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
@@ -2401,7 +2404,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -2435,7 +2437,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -2761,6 +2762,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -2869,7 +2872,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -2903,7 +2905,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -3068,6 +3069,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -3175,7 +3178,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -3209,7 +3211,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -3374,6 +3375,8 @@
           <Property name="baseAxisFixedMin">cccBaseAxisFixedMin</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisMinorTicks">cccBaseAxisMinorTicks</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
@@ -3481,7 +3484,6 @@
           <Property name="ortho2AxisMinorTicks">cccOrtho2AxisMinorTicks</Property>
           <Property name="ortho2AxisOffset">cccOrtho2AxisOffset</Property>
           <Property name="ortho2AxisOriginIsZero">cccOrtho2AxisOriginIsZero</Property>
-          <Property name="ortho2AxisOverlappedLabelsMode">cccOrtho2AxisOverlappedLabelsMode</Property>
           <Property name="ortho2AxisPosition">cccOrtho2AxisPosition</Property>
           <Property name="ortho2AxisPreserveRatio">cccOrtho2AxisPreserveRatio</Property>
           <Property name="ortho2AxisRatio">cccOrtho2AxisRatio</Property>
@@ -3515,7 +3517,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
@@ -3970,6 +3971,8 @@
           <Property name="baseAxisDoubleClickAction">cccBaseAxisDoubleClickAction</Property>
           <Property name="baseAxisFont">cccBaseAxisFont</Property>
           <Property name="baseAxisGrid">cccBaseAxisGrid</Property>
+          <Property name="baseAxisLabelDesiredAngles">cccBaseAxisLabelDesiredAngles</Property>
+          <Property name="baseAxisLabelRotationDirection">cccBaseAxisLabelRotationDirection</Property>
           <Property name="baseAxisLabelSpacingMin">cccBaseAxisLabelSpacingMin</Property>
           <Property name="baseAxisOffset">cccBaseAxisOffset</Property>
           <Property name="baseAxisOverlappedLabelsMode">cccBaseAxisOverlappedLabelsMode</Property>
@@ -4058,7 +4061,6 @@
           <Property name="orthoAxisMinorTicks">cccOrthoAxisMinorTicks</Property>
           <Property name="orthoAxisOffset">cccOrthoAxisOffset</Property>
           <Property name="orthoAxisOriginIsZero">cccOrthoAxisOriginIsZero</Property>
-          <Property name="orthoAxisOverlappedLabelsMode">cccOrthoAxisOverlappedLabelsMode</Property>
           <Property name="orthoAxisPosition">cccOrthoAxisPosition</Property>
           <Property name="orthoAxisPreserveRatio">cccOrthoAxisPreserveRatio</Property>
           <Property name="orthoAxisRatio">cccOrthoAxisRatio</Property>
