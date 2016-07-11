@@ -7,7 +7,7 @@
     <Tooltip>The percentage padding, on each of the sides of the plot panel that are orthogonal to the axis orientation.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>230</Order>
+    <Order>232</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

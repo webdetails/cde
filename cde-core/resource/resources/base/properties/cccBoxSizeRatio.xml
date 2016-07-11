@@ -7,7 +7,7 @@
     <Tooltip>The percentage of box space over total space in a category band and with a grouped layout.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>257</Order>
+    <Order>259</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
