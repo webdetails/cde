@@ -2,7 +2,7 @@
   <Header>
     <Name>cccOrthoAxisLabelDesiredAngles</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>[]</DefaultValue>
+    <DefaultValue></DefaultValue>
     <Description>orthoAxisLabelDesiredAngles</Description>
     <Tooltip>List of angles to try when overlappedLabelsMode is 'rotate' or 'rotatethenhide' (applies to normal discrete axes).</Tooltip>
     <InputType>Array</InputType>
