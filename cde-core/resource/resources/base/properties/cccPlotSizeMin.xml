@@ -1,13 +1,13 @@
 <DesignerProperty>
   <Header>
-    <Name>cccTitleMargins</Name>
+    <Name>cccPlotSizeMin</Name>
     <Parent>BaseProperty</Parent>
-    <DefaultValue>0</DefaultValue>
-    <Description>titleMargins</Description>
-    <Tooltip>The margins of the panel.</Tooltip>
+    <DefaultValue></DefaultValue>
+    <Description>plotSizeMin</Description>
+    <Tooltip>The minimum size of the plot panel, in pixel units.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>511</Order>
+    <Order>466</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -258,6 +258,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -550,6 +551,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -809,6 +811,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -926,6 +929,7 @@
           <Property name="measuresIndexes">cccMeasuresIndexes</Property>
           <Property name="orientation">cccOrientation</Property>
           <Property name="paddings">cccPaddings</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="rangeRole">cccRangeRole</Property>
           <Property name="readers">cccReaders</Property>
           <Property name="renderCallback">cccRenderCallback</Property>
@@ -1192,6 +1196,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -1398,6 +1403,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -1685,6 +1691,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -1930,6 +1937,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -2181,6 +2189,7 @@
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -2479,6 +2488,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -2650,6 +2660,7 @@
           <Property name="multiChartSingleRowFillsHeight">cccMultiChartSingleRowFillsHeight</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -2945,6 +2956,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -3251,6 +3263,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -3557,6 +3570,7 @@
           <Property name="plot2ValuesMask">cccPlot2ValuesMask</Property>
           <Property name="plot2ValuesVisible">cccPlot2ValuesVisible</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -3703,6 +3717,7 @@
           <Property name="orientation">cccOrientation</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -3858,6 +3873,7 @@
           <Property name="orientation">cccOrientation</Property>
           <Property name="paddings">cccPaddings</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
@@ -4086,6 +4102,7 @@
           <Property name="panelSizeRatio">cccPanelSizeRatio</Property>
           <Property name="percentValueFormat">cccPercentValueFormat</Property>
           <Property name="plotFrameVisible">cccPlotFrameVisible</Property>
+          <Property name="plotSizeMin">cccPlotSizeMin</Property>
           <Property name="pointingMode">cccPointingMode</Property>
           <Property name="preserveLayout">cccPreserveLayout</Property>
           <Property name="readers">cccReaders</Property>
