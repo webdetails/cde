@@ -7,7 +7,7 @@
     <Tooltip>The x visual role is a plot-level visual role that is visually encoded by the base position of the "point" visual element.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>556</Order>
+    <Order>557</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

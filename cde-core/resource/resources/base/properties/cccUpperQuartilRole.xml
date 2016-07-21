@@ -7,7 +7,7 @@
     <Tooltip>The upperQuartil visual role is a plot-level visual role that is visually encoded by the top position of the box visual element, along the orthogonal axis.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>543</Order>
+    <Order>544</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
