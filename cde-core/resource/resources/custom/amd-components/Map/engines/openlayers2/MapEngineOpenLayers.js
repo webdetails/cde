@@ -468,6 +468,16 @@ define([
       this.controls.boxSelector.events.on({
         "activate": function(e) {
           e.object.unselectAll();
+          
+          var features = _.union(e.object.layers[0].features, e.object.layers[1].features);
+          var selectedItems = me.model.getSelectedItems();
+          _.each( features, function(f){
+            var id = f.attributes.model.get('id');
+            if(_.contains(selectedItems, id)){
+              e.object.select(f);
+            } 
+          })
+          
           me._updateDrag(false);
         },
         "boxselectionstart": function(e) {
