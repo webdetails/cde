@@ -371,21 +371,6 @@
         "cdf/Logger",
         "cdf/components/BaseComponent"
       ]
-    },
-    {
-      name: "cde/components/ViewManager/ViewManagerComponent",
-      exclude: [
-        // CSSs, otherwise paths (e.g. background images) are rewritten relative to the page and not the CSS file path
-        "css!cde/components/ViewManager/ViewManagerComponent",
-        // CDF dependencies (overhead, these might already have been loaded)
-        "cdf/lib/jquery",
-        "cdf/components/BaseComponent",
-        // ViewManagerModel / ViewManagerView
-        "amd!cdf/lib/backbone",
-        "amd!cdf/lib/underscore",
-        "cdf/lib/base64",
-        "cdf/Logger"
-      ]
     }
   ]
 })
