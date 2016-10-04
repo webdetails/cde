@@ -18,6 +18,8 @@
       <Property>executeAtStart</Property>
       <Property>preChange</Property>
       <Property>postChange</Property>
+      <Property>width</Property>
+      <Property>height</Property>
       <Property>postFetch</Property>
       <Property>htmlObject</Property>
       <Property>preExecution</Property>
