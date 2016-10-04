@@ -2,7 +2,7 @@
 <Header>
 	<Name>width</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue></DefaultValue>
+	<DefaultValue>300</DefaultValue>
 	<Description>Width</Description>
 	<Tooltip>Element width, in pixels </Tooltip>
 	<InputType>Integer</InputType>

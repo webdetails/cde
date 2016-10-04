@@ -2,7 +2,7 @@
 <Header>
 	<Name>height</Name>
 	<Parent>BaseProperty</Parent>
-	<DefaultValue></DefaultValue>
+	<DefaultValue>300</DefaultValue>
 	<Description>Height</Description>
 	<Tooltip>Element height, in pixels </Tooltip>
 	<InputType>Integer</InputType>
