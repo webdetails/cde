@@ -7,7 +7,7 @@
     <Tooltip>The type of scale to use, in what concerns the range of the scale (applies to numeric domain axes).</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>290</Order>
+    <Order>291</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

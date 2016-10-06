@@ -7,7 +7,7 @@
     <Tooltip>Controls how colors are drawn from the color scale to paint visual elements.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>286</Order>
+    <Order>287</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

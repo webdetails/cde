@@ -7,7 +7,7 @@
     <Tooltip>Indicates if multiple measures "are in" columns or in rows (applies to crosstab data format).</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>302</Order>
+    <Order>303</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

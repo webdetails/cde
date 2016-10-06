@@ -7,7 +7,7 @@
     <Tooltip>The multiChart visual role is a chart-level visual role that allows turning a chart into a small multiples chart, .</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>357</Order>
+    <Order>358</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
