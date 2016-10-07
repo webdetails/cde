@@ -38,13 +38,12 @@ define([
 
     update: function() {
       this.detectSvg();
-      this.clear();
-
+      
       var url    = CggComponentExt.getCggDrawUrl(),
           data   = this.processParams(),
           script = this.getScriptUrl(),
           myself = this,
-          ph     = this.placeholder();
+          ph     = $('#' + this.htmlObject);
 
       if (this.have_SVG) {
         myself.triggerAjax({
