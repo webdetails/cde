@@ -19,12 +19,12 @@ var CggComponent = UnmanagedComponent.extend({
 
   update: function() {
     this.detectSvg();
-    this.clear();
+    
     var url    = wd.helpers.cggHelper.getCggDrawUrl(),
         data   = this.processParams(),
         script = this.getScriptUrl(),
         myself = this,
-        ph     = this.placeholder();
+        ph     = $('#' + this.htmlObject);
         
         
     if (this.have_SVG) {
