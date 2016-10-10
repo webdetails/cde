@@ -385,7 +385,7 @@
      {
       "name": "preExecution",
       "type": "JavaScript",
-      "value": "function f(){\n    this.mapEngineType = [ this.dashboard.getParameterValue('${p:mapEngineParam}') ]; \n    this.tilesets = [ this.dashboard.getParameterValue('${p:tileServiceParam}') ]; \n} "
+      "value": "function f(){\n    this.mapEngineType = this.dashboard.getParameterValue('${p:mapEngineParam}'); \n    this.tilesets = [ this.dashboard.getParameterValue('${p:tileServiceParam}') ]; \n} "
      },
      {
       "name": "postExecution",
