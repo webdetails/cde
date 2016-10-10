@@ -7,7 +7,7 @@
     <Tooltip>The fixed size of legend items, in pixel units or as a percentage.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>328</Order>
+    <Order>329</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

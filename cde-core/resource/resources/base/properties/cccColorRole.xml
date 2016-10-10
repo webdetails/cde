@@ -7,7 +7,7 @@
     <Tooltip>The color visual role is a plot-level visual role that is visually encoded by the color of visual elements.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>289</Order>
+    <Order>290</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

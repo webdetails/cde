@@ -7,7 +7,7 @@
     <Tooltip>Indicates if empty slices should be shown.</Tooltip>
     <InputType>Boolean</InputType>
     <OutputType>Boolean</OutputType>
-    <Order>310</Order>
+    <Order>311</Order>
     <Advanced>false</Advanced>
     <Version>2.0</Version>
   </Header>
