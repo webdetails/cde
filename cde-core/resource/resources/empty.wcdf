@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cdf>
-  <title>@DASBOARD_TITLE@</title>
+  <title>@DASHBOARD_TITLE@</title>
   <author></author>
-  <description>@DASBOARD_DESCRIPTION@</description>
+  <description>@DASHBOARD_DESCRIPTION@</description>
   <icon></icon>
   <style></style>
   <rendererType>bootstrap</rendererType>
