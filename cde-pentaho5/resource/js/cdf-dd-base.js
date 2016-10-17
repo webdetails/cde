@@ -286,7 +286,7 @@ var SynchronizeRequests = {
   },
 
   initSettings: function(saveSettingsParams, wcdf, myself, callback) {
-    saveSettingsParams.require = wcdf.require || true;
+    saveSettingsParams.require = wcdf.require;
     $.post(wd.cde.endpoints.getPluginUrl() + "syncronizer/syncronizeDashboard", saveSettingsParams, function(result) {
       try {
         if(result && result.status === "true") {

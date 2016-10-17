@@ -24,8 +24,8 @@ public class CdeConstants {
   public static final String DESIGNER_CDF_TAG = "@CDF@";
   public static final String DESIGNER_STYLES_TAG = "@STYLES@";
   public static final String DESIGNER_SCRIPTS_TAG = "@SCRIPTS@";
-  public static final String DASHBOARD_TITLE_TAG = "@DASBOARD_TITLE@";
-  public static final String DASHBOARD_DESCRIPTION_TAG = "@DASBOARD_DESCRIPTION@";
+  public static final String DASHBOARD_TITLE_TAG = "@DASHBOARD_TITLE@";
+  public static final String DASHBOARD_DESCRIPTION_TAG = "@DASHBOARD_DESCRIPTION@";
   public static final String DASHBOARD_SUPPORT_TAG = "@SUPPORT_TYPE@";
   public static final String DESIGNER_RESOURCE = "resources/cdf-dd.html";
   public static final String DESIGNER_RESOURCE_DEFAULT = "resources/cdf-dd-default.html";
