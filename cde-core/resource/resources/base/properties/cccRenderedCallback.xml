@@ -7,7 +7,7 @@
     <Tooltip>A callback function that is called after the chart has finished rendering, including any animations.</Tooltip>
     <InputType>JavaScript</InputType>
     <OutputType>Function</OutputType>
-    <Order>472</Order>
+    <Order>475</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The name of the dimension associated with the sliding window.</Tooltip>
     <InputType>String</InputType>
     <OutputType>String</OutputType>
-    <Order>488</Order>
+    <Order>491</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>
