@@ -7,7 +7,7 @@
     <Tooltip>The ratio of the width over the height of a small chart.</Tooltip>
     <InputType>Float</InputType>
     <OutputType>Number</OutputType>
-    <Order>491</Order>
+    <Order>494</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

@@ -7,7 +7,7 @@
     <Tooltip>The behavior to apply when the text of value labels does not fit within the bounds of its corresponding visual element.</Tooltip>
     <InputType type="valuelist"/>
     <OutputType>String</OutputType>
-    <Order>555</Order>
+    <Order>560</Order>
     <Advanced>true</Advanced>
     <Version>2.0</Version>
   </Header>

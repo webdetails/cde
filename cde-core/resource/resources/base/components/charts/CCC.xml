@@ -100,6 +100,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -203,6 +204,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -236,6 +238,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -285,6 +288,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -295,6 +299,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -394,6 +399,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -494,6 +500,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -527,6 +534,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="overflowMarkersVisible">cccOverflowMarkersVisible</Property>
@@ -578,6 +586,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="stacked">cccStacked</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
@@ -589,6 +598,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -687,6 +697,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -794,6 +805,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -838,6 +850,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -848,6 +861,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -944,6 +958,7 @@
           <Property name="titleRole">cccTitleRole</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -1039,6 +1054,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -1141,6 +1157,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -1174,6 +1191,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -1223,6 +1241,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -1233,6 +1252,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -1329,6 +1349,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -1396,6 +1417,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisTooltipAutoContent">cccOrthoAxisTooltipAutoContent</Property>
           <Property name="orthoAxisTooltipEnabled">cccOrthoAxisTooltipEnabled</Property>
           <Property name="orthoAxisTooltipFormat">cccOrthoAxisTooltipFormat</Property>
@@ -1434,6 +1456,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -1534,6 +1557,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -1636,6 +1660,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -1669,6 +1694,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -1718,6 +1744,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -1728,6 +1755,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -1828,6 +1856,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisVisible">cccBaseAxisVisible</Property>
           <Property name="baseAxisZeroLine">cccBaseAxisZeroLine</Property>
           <Property name="clearSelectionMode">cccClearSelectionMode</Property>
@@ -1932,6 +1961,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -1972,6 +2002,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -1982,6 +2013,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -2080,6 +2112,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisVisible">cccBaseAxisVisible</Property>
           <Property name="baseAxisZeroLine">cccBaseAxisZeroLine</Property>
           <Property name="clearSelectionMode">cccClearSelectionMode</Property>
@@ -2184,6 +2217,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -2224,6 +2258,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -2234,6 +2269,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -2331,6 +2367,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -2431,6 +2468,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -2464,6 +2502,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="overflowMarkersVisible">cccOverflowMarkersVisible</Property>
@@ -2515,6 +2554,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -2525,6 +2565,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -2686,6 +2727,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -2696,6 +2738,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -2798,6 +2841,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -2901,6 +2945,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -2934,6 +2979,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -2983,6 +3029,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -2993,6 +3040,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -3106,6 +3154,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -3208,6 +3257,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -3241,6 +3291,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -3290,6 +3341,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -3300,6 +3352,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -3413,6 +3466,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -3515,6 +3569,7 @@
           <Property name="ortho2AxisTitleMargins">cccOrtho2AxisTitleMargins</Property>
           <Property name="ortho2AxisTitleSize">cccOrtho2AxisTitleSize</Property>
           <Property name="ortho2AxisTitleSizeMax">cccOrtho2AxisTitleSizeMax</Property>
+          <Property name="ortho2AxisTitleVisible">cccOrtho2AxisTitleVisible</Property>
           <Property name="ortho2AxisVisible">cccOrtho2AxisVisible</Property>
           <Property name="ortho2AxisZeroLine">cccOrtho2AxisZeroLine</Property>
           <Property name="orthoAxisDesiredTickCount">cccOrthoAxisDesiredTickCount</Property>
@@ -3548,6 +3603,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="paddings">cccPaddings</Property>
@@ -3597,6 +3653,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -3607,6 +3664,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -3751,6 +3809,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="titleAlign">cccTitleAlign</Property>
           <Property name="titleFont">cccTitleFont</Property>
@@ -3759,6 +3818,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -3907,6 +3967,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="titleAlign">cccTitleAlign</Property>
           <Property name="titleFont">cccTitleFont</Property>
@@ -3915,6 +3976,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
@@ -4003,6 +4065,7 @@
           <Property name="baseAxisTitleMargins">cccBaseAxisTitleMargins</Property>
           <Property name="baseAxisTitleSize">cccBaseAxisTitleSize</Property>
           <Property name="baseAxisTitleSizeMax">cccBaseAxisTitleSizeMax</Property>
+          <Property name="baseAxisTitleVisible">cccBaseAxisTitleVisible</Property>
           <Property name="baseAxisTooltipAutoContent">cccBaseAxisTooltipAutoContent</Property>
           <Property name="baseAxisTooltipEnabled">cccBaseAxisTooltipEnabled</Property>
           <Property name="baseAxisTooltipFormat">cccBaseAxisTooltipFormat</Property>
@@ -4095,6 +4158,7 @@
           <Property name="orthoAxisTitleMargins">cccOrthoAxisTitleMargins</Property>
           <Property name="orthoAxisTitleSize">cccOrthoAxisTitleSize</Property>
           <Property name="orthoAxisTitleSizeMax">cccOrthoAxisTitleSizeMax</Property>
+          <Property name="orthoAxisTitleVisible">cccOrthoAxisTitleVisible</Property>
           <Property name="orthoAxisVisible">cccOrthoAxisVisible</Property>
           <Property name="orthoAxisZeroLine">cccOrthoAxisZeroLine</Property>
           <Property name="overflowMarkersVisible">cccOverflowMarkersVisible</Property>
@@ -4129,6 +4193,7 @@
           <Property name="smallTitlePosition">cccSmallTitlePosition</Property>
           <Property name="smallTitleSize">cccSmallTitleSize</Property>
           <Property name="smallTitleSizeMax">cccSmallTitleSizeMax</Property>
+          <Property name="smallTitleVisible">cccSmallTitleVisible</Property>
           <Property name="smallWidth">cccSmallWidth</Property>
           <Property name="timeSeries">cccTimeSeries</Property>
           <Property name="timeSeriesFormat">cccTimeSeriesFormat</Property>
@@ -4139,6 +4204,7 @@
           <Property name="titlePosition">cccTitlePosition</Property>
           <Property name="titleSize">cccTitleSize</Property>
           <Property name="titleSizeMax">cccTitleSizeMax</Property>
+          <Property name="titleVisible">cccTitleVisible</Property>
           <Property name="tooltipArrowVisible">cccTooltipArrowVisible</Property>
           <Property name="tooltipClassName">cccTooltipClassName</Property>
           <Property name="tooltipEnabled">cccTooltipEnabled</Property>
