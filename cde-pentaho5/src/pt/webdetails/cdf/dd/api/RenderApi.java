@@ -405,7 +405,7 @@ public class RenderApi {
     if ( !CdeEnvironment.canCreateContent() ) {
       return "This functionality is limited to users with permission 'Create Content'";
     }
-    return getEditor( path, debug, request.getScheme(), isDefault, response, false );
+    return getEditor( path, debug, request.getScheme(), isDefault, response, true );
   }
 
   @GET
