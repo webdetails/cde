@@ -167,7 +167,7 @@
           <Header>
             <Name>tilesets</Name>
             <Parent>BaseProperty</Parent>
-            <DefaultValue>mapquest</DefaultValue>
+            <DefaultValue>default</DefaultValue>
             <Description>Tilesets to display as layers</Description>
             <Tooltip>Tilesets to display as layers</Tooltip>
             <Advanced>false</Advanced>
@@ -178,15 +178,23 @@
           </Header>
           <Values>
             <Value>default</Value>
-            <Value>apple</Value>
+            <Value>cartodb-positron</Value>
+            <Value>cartodb-positron-nolabels</Value>
+            <Value>cartodb-darkmatter</Value>
+            <Value>cartodb-darkmatter-nolabels</Value>
+
             <Value>mapquest</Value>
             <Value>mapquest-normal</Value>
             <Value>mapquest-hybrid</Value>
+
             <Value>mapbox-world-light</Value>
             <Value>mapbox-world-dark</Value>
             <Value>mapbox-terrain</Value>
             <Value>mapbox-satellite</Value>
+
             <Value>openstreetmaps</Value>
+            <Value>openstreetmaps-bw</Value>
+
             <Value>openmapsurfer</Value>
             <Value>openmapsurfer-roads</Value>
             <Value>openmapsurfer-semitransparent</Value>
@@ -194,7 +202,13 @@
             <Value>openmapsurfer-contour</Value>
             <Value>openmapsurfer-administrative</Value>
             <Value>openmapsurfer-roads-grayscale</Value>
+
             <Value>google</Value>
+            <Value>google-roadmap</Value>
+            <Value>google-terrain</Value>
+            <Value>google-satellite</Value>
+            <Value>google-hybrid</Value>
+
             <Value>stamen</Value>
             <Value>stamen-watercolor</Value>
             <Value>stamen-terrain</Value>
@@ -208,17 +222,12 @@
             <Value>stamen-toner-labels</Value>
             <Value>stamen-toner-2010</Value>
             <Value>stamen-toner-2011</Value>
+
             <Value>nokia-normal</Value>
             <Value>nokia-normal-grey</Value>
             <Value>nokia-normal-transit</Value>
             <Value>nokia-satellite</Value>
             <Value>nokia-terrain</Value>
-            <Value>arcgis-street</Value>
-            <Value>arcgis-topographics</Value>
-            <Value>arcgis-natgeo</Value>
-            <Value>arcgis-world</Value>
-            <Value>arcgis-lightgray</Value>
-            <Value>arcgis-delorme</Value>
           </Values>
         </DesignerProperty>
         <DesignerProperty>
